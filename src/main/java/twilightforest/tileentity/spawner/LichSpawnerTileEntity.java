@@ -11,7 +11,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class LichSpawnerTileEntity extends BossSpawnerTileEntity<LichEntity> {
 
 	public LichSpawnerTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.LICH_SPAWNER.get(), TFEntities.lich, pos, state);
+		super(TFTileEntities.LICH_SPAWNER, TFEntities.lich, pos, state);
 	}
 
 	@Override

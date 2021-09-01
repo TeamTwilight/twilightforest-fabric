@@ -30,7 +30,7 @@ public class ActiveGhastTrapTileEntity extends BlockEntity {
 	private final Random rand = new Random();
 
 	public ActiveGhastTrapTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.GHAST_TRAP.get(), pos, state);
+		super(TFTileEntities.GHAST_TRAP, pos, state);
 	}
 
 	private static void tickInactive(Level level, BlockPos pos, BlockState state, ActiveGhastTrapTileEntity te) {
@@ -62,7 +62,7 @@ public class ActiveGhastTrapTileEntity extends BlockEntity {
 			}
 
 			if (chargeLevel >= 1 && te.counter % 10 == 0) {
-				TFBlocks.ghast_trap.get().sparkle(level, pos);
+				TFBlocks.ghast_trap.sparkle(level, pos);
 				level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.0F, 1.0F, false);
 			}
 			if (chargeLevel >= 2) {
@@ -73,7 +73,7 @@ public class ActiveGhastTrapTileEntity extends BlockEntity {
 			}
 			if (chargeLevel >= 3) {
 				level.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX() + 0.1 + te.rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + te.rand.nextFloat() * 0.8, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05, 0.05, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05);
-				TFBlocks.ghast_trap.get().sparkle(level, pos);
+				TFBlocks.ghast_trap.sparkle(level, pos);
 				if (te.counter % 5 == 0) {
 					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, 1.5F, 2F, false);
 				}
@@ -92,7 +92,7 @@ public class ActiveGhastTrapTileEntity extends BlockEntity {
 		double dz = sz - highlight.getZ();
 
 		for (int i = 0; i < 5; i++) {
-			level.addParticle(TFParticleType.GHAST_TRAP.get(), sx, sy, sz, -dx, -dy, -dz);
+			level.addParticle(TFParticleType.GHAST_TRAP, sx, sy, sz, -dx, -dy, -dz);
 		}
 	}
 
@@ -128,7 +128,7 @@ public class ActiveGhastTrapTileEntity extends BlockEntity {
 		if (level.isClientSide) {
 			// smoke when done
 			if (te.counter > 100 && te.counter % 4 == 0) {
-				level.addParticle(TFParticleType.HUGE_SMOKE.get(), pos.getX() + 0.5, pos.getY() + 0.95, pos.getZ() + 0.5, Math.cos(te.counter / 10.0) * 0.05, 0.25D, Math.sin(te.counter / 10.0) * 0.05);
+				level.addParticle(TFParticleType.HUGE_SMOKE, pos.getX() + 0.5, pos.getY() + 0.95, pos.getZ() + 0.5, Math.cos(te.counter / 10.0) * 0.05, 0.25D, Math.sin(te.counter / 10.0) * 0.05);
 
 			} else if (te.counter < 100) {
 
@@ -140,12 +140,12 @@ public class ActiveGhastTrapTileEntity extends BlockEntity {
 				double dy = 20D;
 				double dz = Math.sin(te.counter / 10.0) * 2.5;
 
-				level.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, dx, dy, dz);
-				level.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, -dx, dy, -dz);
-				level.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, -dx, dy / 2, dz);
-				level.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, dx, dy / 2, -dz);
-				level.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, dx / 2, dy / 4, dz / 2);
-				level.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, -dx / 2, dy / 4, -dz / 2);
+				level.addParticle(TFParticleType.GHAST_TRAP, x, y, z, dx, dy, dz);
+				level.addParticle(TFParticleType.GHAST_TRAP, x, y, z, -dx, dy, -dz);
+				level.addParticle(TFParticleType.GHAST_TRAP, x, y, z, -dx, dy / 2, dz);
+				level.addParticle(TFParticleType.GHAST_TRAP, x, y, z, dx, dy / 2, -dz);
+				level.addParticle(TFParticleType.GHAST_TRAP, x, y, z, dx / 2, dy / 4, dz / 2);
+				level.addParticle(TFParticleType.GHAST_TRAP, x, y, z, -dx / 2, dy / 4, -dz / 2);
 			}
 
 			// appropriate sound

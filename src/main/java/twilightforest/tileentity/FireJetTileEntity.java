@@ -22,11 +22,11 @@ public class FireJetTileEntity extends BlockEntity {
 	private int counter = 0;
 
 	public FireJetTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.FLAME_JET.get(), pos, state);
+		super(TFTileEntities.FLAME_JET, pos, state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, FireJetTileEntity te) {
-		if (state.getBlock() == TFBlocks.fire_jet.get() || state.getBlock() == TFBlocks.encased_fire_jet.get()) {
+		if (state.getBlock() == TFBlocks.fire_jet || state.getBlock() == TFBlocks.encased_fire_jet) {
 			switch (state.getValue(FireJetBlock.STATE)) {
 			case POPPING: tickPopping(level, pos, state, te); break;
 			case FLAME: tickFlame(level, pos, state, te); break;
@@ -39,7 +39,7 @@ public class FireJetTileEntity extends BlockEntity {
 			te.counter = 0;
 			// turn to flame
 			if (!level.isClientSide) {
-				if (state.getBlock() == TFBlocks.fire_jet.get() || state.getBlock() == TFBlocks.encased_fire_jet.get()) {
+				if (state.getBlock() == TFBlocks.fire_jet || state.getBlock() == TFBlocks.encased_fire_jet) {
 					level.setBlockAndUpdate(pos, state.setValue(FireJetBlock.STATE, FireJetVariant.FLAME));
 				} else {
 					level.removeBlock(pos, false);
@@ -65,7 +65,7 @@ public class FireJetTileEntity extends BlockEntity {
 			te.counter = 0;
 			// idle again
 			if (!level.isClientSide) {
-				if (state.getBlock() == TFBlocks.fire_jet.get() || state.getBlock() == TFBlocks.encased_fire_jet.get()) {
+				if (state.getBlock() == TFBlocks.fire_jet || state.getBlock() == TFBlocks.encased_fire_jet) {
 					level.setBlockAndUpdate(pos, state.setValue(FireJetBlock.STATE, FireJetVariant.IDLE));
 				} else {
 					level.removeBlock(pos, false);
@@ -76,11 +76,11 @@ public class FireJetTileEntity extends BlockEntity {
 		if (level.isClientSide) {
 			if (te.counter % 2 == 0) {
 				level.addParticle(ParticleTypes.LARGE_SMOKE, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.0D, 0.0D);
-				level.addParticle(TFParticleType.LARGE_FLAME.get(), x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.5D, 0.0D);
-				level.addParticle(TFParticleType.LARGE_FLAME.get(), x - 0.5, y + 1.0, z + 0.5, 0.05D, 0.5D, 0.0D);
-				level.addParticle(TFParticleType.LARGE_FLAME.get(), x + 0.5, y + 1.0, z - 0.5, 0.0D, 0.5D, 0.05D);
-				level.addParticle(TFParticleType.LARGE_FLAME.get(), x + 1.5, y + 1.0, z + 0.5, -0.05D, 0.5D, 0.0D);
-				level.addParticle(TFParticleType.LARGE_FLAME.get(), x + 0.5, y + 1.0, z + 1.5, 0.0D, 0.5D, -0.05D);
+				level.addParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.5D, 0.0D);
+				level.addParticle(TFParticleType.LARGE_FLAME, x - 0.5, y + 1.0, z + 0.5, 0.05D, 0.5D, 0.0D);
+				level.addParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z - 0.5, 0.0D, 0.5D, 0.05D);
+				level.addParticle(TFParticleType.LARGE_FLAME, x + 1.5, y + 1.0, z + 0.5, -0.05D, 0.5D, 0.0D);
+				level.addParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 1.5, 0.0D, 0.5D, -0.05D);
 			}
 
 			// sounds

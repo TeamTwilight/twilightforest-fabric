@@ -1,45 +1,30 @@
 package twilightforest.inventory;
 
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ResultContainer;
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.Container;
-import net.minecraft.world.inventory.ClickType;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.nbt.ByteTag;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.common.crafting.IShapedRecipe;
 import twilightforest.TFConfig;
 import twilightforest.block.TFBlocks;
 import twilightforest.inventory.slot.AssemblySlot;
 import twilightforest.inventory.slot.UncraftingResultSlot;
 import twilightforest.inventory.slot.UncraftingSlot;
 import twilightforest.util.TFItemStackUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.nbt.ByteTag;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 
 public class UncraftingContainer extends AbstractContainerMenu {
 
@@ -71,7 +56,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 	}
 
 	public UncraftingContainer(int id, Inventory inventory, Level world, ContainerLevelAccess positionData) {
-		super(TFContainers.UNCRAFTING.get(), id);
+		super(TFContainers.UNCRAFTING, id);
 
 		this.positionData = positionData;
 		this.world = world;
@@ -125,31 +110,31 @@ public class UncraftingContainer extends AbstractContainerMenu {
 
 				CraftingRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				ItemStack[] recipeItems = getIngredients(recipe);
-
-				if (recipe instanceof IShapedRecipe) {
-
-					int recipeWidth  = ((IShapedRecipe) recipe).getRecipeWidth();
-					int recipeHeight = ((IShapedRecipe) recipe).getRecipeHeight();
-
-					// set uncrafting grid
-					for (int invY = 0; invY < recipeHeight; invY++) {
-						for (int invX = 0; invX < recipeWidth; invX++) {
-
-							int index = invX + invY * recipeWidth;
-							if (index >= recipeItems.length) continue;
-
-							ItemStack ingredient = normalizeIngredient(recipeItems[index].copy());
-							this.uncraftingMatrix.setItem(invX + invY * 3, ingredient);
-						}
-					}
-				} else {
+				//TODO
+//				if (recipe instanceof IShapedRecipe) {
+//
+//					int recipeWidth  = ((IShapedRecipe) recipe).getRecipeWidth();
+//					int recipeHeight = ((IShapedRecipe) recipe).getRecipeHeight();
+//
+//					// set uncrafting grid
+//					for (int invY = 0; invY < recipeHeight; invY++) {
+//						for (int invX = 0; invX < recipeWidth; invX++) {
+//
+//							int index = invX + invY * recipeWidth;
+//							if (index >= recipeItems.length) continue;
+//
+//							ItemStack ingredient = normalizeIngredient(recipeItems[index].copy());
+//							this.uncraftingMatrix.setItem(invX + invY * 3, ingredient);
+//						}
+//					}
+//				} else {
 					for (int i = 0; i < this.uncraftingMatrix.getContainerSize(); i++) {
 						if (i < recipeItems.length) {
 							ItemStack ingredient = normalizeIngredient(recipeItems[i].copy());
 							this.uncraftingMatrix.setItem(i, ingredient);
 						}
 					}
-				}
+				//}
 
 				// mark the appropriate number of damaged components
 				if (inputStack.isDamaged()) {
@@ -286,7 +271,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 	}
 
 	private static boolean isIngredientProblematic(ItemStack ingredient) {
-		return !ingredient.isEmpty() && ingredient.getItem().hasContainerItem(ingredient);
+		return !ingredient.isEmpty()/* && ingredient.getItem().hasContainerItem(ingredient)*/;
 	}
 
 	private static ItemStack normalizeIngredient(ItemStack ingredient) {
@@ -490,7 +475,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 			}
 
 			// don't allow uncrafting if the server option is turned off
-			if (TFConfig.COMMON_CONFIG.disableUncrafting.get()) {
+			if (TFConfig.COMMON_CONFIG.disableUncrafting) {
 				return;
 			}
 
@@ -622,6 +607,6 @@ public class UncraftingContainer extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(positionData, player, TFBlocks.uncrafting_table.get());
+		return stillValid(positionData, player, TFBlocks.uncrafting_table);
 	}
 }

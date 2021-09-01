@@ -19,7 +19,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.client.IWeatherRenderHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.registration.biomes.BiomeKeys;
@@ -29,7 +28,7 @@ import java.util.Random;
 /**
  * Copypasta of EntityRenderer.renderRainSnow() hacked to include progression environmental effects
  */
-public class TFWeatherRenderer implements IWeatherRenderHandler {
+public class TFWeatherRenderer {
 
 	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
@@ -61,7 +60,6 @@ public class TFWeatherRenderer implements IWeatherRenderHandler {
 	}
 
 	//Helpful tip: x, y, and z relate to the looking entity's position.
-	@Override
 	public void render(int ticks, float partialTicks, ClientLevel world, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
 		// do normal weather rendering
 		renderNormalWeather(lightmap, world, mc, partialTicks, xIn, yIn, zIn);

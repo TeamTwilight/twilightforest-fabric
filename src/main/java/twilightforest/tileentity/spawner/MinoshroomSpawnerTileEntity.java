@@ -11,7 +11,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class MinoshroomSpawnerTileEntity extends BossSpawnerTileEntity<MinoshroomEntity> {
 
 	public MinoshroomSpawnerTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.MINOSHROOM_SPAWNER.get(), TFEntities.minoshroom, pos, state);
+		super(TFTileEntities.MINOSHROOM_SPAWNER, TFEntities.minoshroom, pos, state);
 	}
 
 	@Override

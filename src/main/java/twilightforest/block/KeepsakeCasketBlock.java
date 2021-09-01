@@ -1,67 +1,50 @@
 package twilightforest.block;
 
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.level.block.entity.LidBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.DoubleBlockCombiner;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.*;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.TFSounds;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.item.TFItems;
-import twilightforest.tileentity.CicadaTileEntity;
 import twilightforest.tileentity.KeepsakeCasketTileEntity;
-
-import javax.annotation.Nullable;
-import java.util.List;
+import twilightforest.tileentity.TFTileEntities;
 import java.util.Optional;
 
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
+import javax.annotation.Nullable;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.*;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.tileentity.TFTileEntities;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.*;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable {
 
@@ -110,7 +93,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.KEEPSAKE_CASKET.get(), KeepsakeCasketTileEntity::tick);
+		return createTickerHelper(type, TFTileEntities.KEEPSAKE_CASKET, KeepsakeCasketTileEntity::tick);
 	}
 
 	@Override
@@ -126,17 +109,17 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 		}
 	}
 
-	@Override
-	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
-		return 1000000000F;
-	}
+//	@Override
+//	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
+//		return 1000000000F;
+//	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		boolean flag = false;
 		if(state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() == Blocks.AIR || state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() != Fluids.EMPTY) {
 			ItemStack stack = player.getItemInHand(handIn);
-			if (!(stack.getItem() == TFItems.charm_of_keeping_3.get())) {
+			if (!(stack.getItem() == TFItems.charm_of_keeping_3)) {
 				if (worldIn.isClientSide) {
 					return InteractionResult.SUCCESS;
 				} else {
@@ -148,7 +131,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 					flag = true;
 				}
 			} else {
-				if (stack.getItem() == TFItems.charm_of_keeping_3.get() && state.getValue(BREAKAGE) > 0) {
+				if (stack.getItem() == TFItems.charm_of_keeping_3 && state.getValue(BREAKAGE) > 0) {
 					if (!player.isCreative()) stack.shrink(1);
 					worldIn.setBlockAndUpdate(pos, state.setValue(BREAKAGE, state.getValue(BREAKAGE) - 1));
 					worldIn.playSound(null, pos, TFSounds.CASKET_REPAIR, SoundSource.BLOCKS, 0.5F, worldIn.random.nextFloat() * 0.1F + 0.9F);
@@ -279,7 +262,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	//[VanillCopy] of ChestBlock.getLidRotationCallback, uses TileEntityKeepsakeCasket instead
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static DoubleBlockCombiner.Combiner<KeepsakeCasketTileEntity, Float2FloatFunction> getLidRotationCallback(final LidBlockEntity lid) {
 		return new DoubleBlockCombiner.Combiner<KeepsakeCasketTileEntity, Float2FloatFunction>() {
 			public Float2FloatFunction acceptDouble(KeepsakeCasketTileEntity p_225539_1_, KeepsakeCasketTileEntity p_225539_2_) {

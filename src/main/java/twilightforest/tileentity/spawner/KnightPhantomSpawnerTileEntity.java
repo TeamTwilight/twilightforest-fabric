@@ -21,7 +21,7 @@ public class KnightPhantomSpawnerTileEntity extends BossSpawnerTileEntity<Knight
 	private int spawned = 0;
 
 	public KnightPhantomSpawnerTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.KNIGHT_PHANTOM_SPAWNER.get(), TFEntities.knight_phantom, pos, state);
+		super(TFTileEntities.KNIGHT_PHANTOM_SPAWNER, TFEntities.knight_phantom, pos, state);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class KnightPhantomSpawnerTileEntity extends BossSpawnerTileEntity<Knight
 			myCreature.finalizeSpawn(world, world.getCurrentDifficultyAt(new BlockPos(myCreature.blockPosition())), MobSpawnType.SPAWNER, null, null);
 
 			if(i == 5 && world.getDifficulty() == Difficulty.HARD){
-				myCreature.setItemSlot(EquipmentSlot.OFFHAND,new ItemStack(TFItems.knightmetal_shield.get()));
+				myCreature.setItemSlot(EquipmentSlot.OFFHAND,new ItemStack(TFItems.knightmetal_shield));
 			}
 
 			// set creature's home to this

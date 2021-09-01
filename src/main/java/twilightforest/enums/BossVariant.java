@@ -12,16 +12,16 @@ import java.util.function.Supplier;
 
 public enum BossVariant implements StringRepresentable, SkullBlock.Type {
 
-	NAGA          (TrophyType.GOLD    , TFTileEntities.NAGA_SPAWNER::get),
-	LICH          (TrophyType.GOLD    , TFTileEntities.LICH_SPAWNER::get),
-	HYDRA         (TrophyType.GOLD    , TFTileEntities.HYDRA_SPAWNER::get),
-	UR_GHAST      (TrophyType.GOLD    , TFTileEntities.UR_GHAST_SPAWNER::get),
-	KNIGHT_PHANTOM(TrophyType.IRON    , TFTileEntities.KNIGHT_PHANTOM_SPAWNER::get),
-	SNOW_QUEEN    (TrophyType.GOLD    , TFTileEntities.SNOW_QUEEN_SPAWNER::get),
-	MINOSHROOM    (TrophyType.IRON    , TFTileEntities.MINOSHROOM_SPAWNER::get),
-	ALPHA_YETI    (TrophyType.IRON    , TFTileEntities.ALPHA_YETI_SPAWNER::get),
+	NAGA          (TrophyType.GOLD    , () -> TFTileEntities.NAGA_SPAWNER),
+	LICH          (TrophyType.GOLD    , () -> TFTileEntities.LICH_SPAWNER),
+	HYDRA         (TrophyType.GOLD    , () -> TFTileEntities.HYDRA_SPAWNER),
+	UR_GHAST      (TrophyType.GOLD    , () -> TFTileEntities.UR_GHAST_SPAWNER),
+	KNIGHT_PHANTOM(TrophyType.IRON    , () -> TFTileEntities.KNIGHT_PHANTOM_SPAWNER),
+	SNOW_QUEEN    (TrophyType.GOLD    , () -> TFTileEntities.SNOW_QUEEN_SPAWNER),
+	MINOSHROOM    (TrophyType.IRON    , () -> TFTileEntities.MINOSHROOM_SPAWNER),
+	ALPHA_YETI    (TrophyType.IRON    , () -> TFTileEntities.ALPHA_YETI_SPAWNER),
 	QUEST_RAM     (TrophyType.IRONWOOD, null),
-	FINAL_BOSS    (TrophyType.GOLD    , TFTileEntities.FINAL_BOSS_SPAWNER::get);
+	FINAL_BOSS    (TrophyType.GOLD    , () -> TFTileEntities.FINAL_BOSS_SPAWNER);
 
 	private final TrophyType trophyType;
 	private final Supplier<BlockEntityType<? extends BossSpawnerTileEntity<?>>> blockEntityType;

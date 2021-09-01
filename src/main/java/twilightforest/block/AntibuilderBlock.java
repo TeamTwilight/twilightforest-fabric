@@ -36,6 +36,6 @@ public class AntibuilderBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.ANTIBUILDER.get(), AntibuilderTileEntity::tick);
+		return createTickerHelper(type, TFTileEntities.ANTIBUILDER, AntibuilderTileEntity::tick);
 	}
 }

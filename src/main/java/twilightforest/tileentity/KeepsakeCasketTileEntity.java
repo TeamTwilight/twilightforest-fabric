@@ -1,35 +1,35 @@
 package twilightforest.tileentity;
 
-import com.mojang.authlib.GameProfile;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.LidBlockEntity;
-import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraft.core.NonNullList;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
-import net.minecraft.network.chat.Component;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
-
-import javax.annotation.Nullable;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.LidBlockEntity;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+
 //used a fair bit of chest logic in this for the lid
-@OnlyIn(value = Dist.CLIENT, _interface = LidBlockEntity.class)
+@Environment(EnvType.CLIENT)
 public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity implements LidBlockEntity {
     private static final int limit = 9 * 5;
     public NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
@@ -45,7 +45,7 @@ public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity i
     private int ticksSinceSync;
 
     public KeepsakeCasketTileEntity(BlockPos pos, BlockState state) {
-        super(TFTileEntities.KEEPSAKE_CASKET.get(), pos, state);
+        super(TFTileEntities.KEEPSAKE_CASKET, pos, state);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity i
     //[VanillaCopy] of EnderChestTileEntity, with some small adaptations
     public static void tick(Level level, BlockPos pos, BlockState state, KeepsakeCasketTileEntity te) {
         if (++te.ticksSinceSync % 20 * 4 == 0) {
-            level.blockEvent(pos, TFBlocks.keepsake_casket.get(), 1, te.numPlayersUsing);
+            level.blockEvent(pos, TFBlocks.keepsake_casket, 1, te.numPlayersUsing);
         }
         te.prevLidAngle = te.lidAngle;
         if (te.numPlayersUsing > 0 && te.lidAngle == 0.0F) {
@@ -186,7 +186,7 @@ public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity i
     @Override
     public void setRemoved() {
         playeruuid = null;
-        this.invalidateCaps();
+        //this.invalidateCaps();
         super.setRemoved();
     }
 
@@ -196,7 +196,7 @@ public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity i
                 this.numPlayersUsing = 0;
             }
             ++this.numPlayersUsing;
-            this.level.blockEvent(this.worldPosition, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
+            this.level.blockEvent(this.worldPosition, TFBlocks.keepsake_casket, 1, this.numPlayersUsing);
         }
 
     }
@@ -204,12 +204,12 @@ public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity i
     public void stopOpen(Player player) {
         if (!player.isSpectator()) {
             --this.numPlayersUsing;
-            this.level.blockEvent(this.worldPosition, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
+            this.level.blockEvent(this.worldPosition, TFBlocks.keepsake_casket, 1, this.numPlayersUsing);
         }
 
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     @Override
     public float getOpenNess(float partialTicks) {
         return Mth.lerp(partialTicks, this.prevLidAngle, this.lidAngle);

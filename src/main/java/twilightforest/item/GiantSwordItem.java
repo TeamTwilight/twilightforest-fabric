@@ -14,6 +14,6 @@ public class GiantSwordItem extends SwordItem {
 
 	@Override
 	public boolean isValidRepairItem(ItemStack stack, ItemStack material) {
-		return material.getItem() == TFItems.ironwood_ingot.get() || super.isValidRepairItem(stack, material);
+		return material.getItem() == TFItems.ironwood_ingot || super.isValidRepairItem(stack, material);
 	}
 }

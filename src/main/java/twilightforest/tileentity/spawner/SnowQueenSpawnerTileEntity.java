@@ -11,7 +11,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class SnowQueenSpawnerTileEntity extends BossSpawnerTileEntity<SnowQueenEntity> {
 
 	public SnowQueenSpawnerTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.SNOW_QUEEN_SPAWNER.get(), TFEntities.snow_queen, pos, state);
+		super(TFTileEntities.SNOW_QUEEN_SPAWNER, TFEntities.snow_queen, pos, state);
 	}
 
 	@Override

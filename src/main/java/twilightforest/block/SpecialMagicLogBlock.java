@@ -1,7 +1,9 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -172,7 +174,7 @@ public class SpecialMagicLogBlock extends RotatedPillarBlock {
 	 * Send a tiny update packet to the client to inform it of the changed biome
 	 */
 	private void sendChangedBiome(LevelChunk chunk, BlockPos pos, Biome biome) {
-		ChangeBiomePacket message = new ChangeBiomePacket(pos, biome.getRegistryName());
+		ChangeBiomePacket message = new ChangeBiomePacket(pos, BuiltinRegistries.BIOME.getKey(biome));
 		TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), message);
 	}
 

@@ -1,9 +1,17 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableList;
+
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
+
+import com.mojang.brigadier.LiteralMessage;
+import me.shedaniel.clothconfig2.api.ConfigBuilder;
+import me.shedaniel.clothconfig2.api.ConfigCategory;
+import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -11,7 +19,6 @@ import twilightforest.world.components.feature.TFGenCaveStalactite;
 
 import java.util.*;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFConfig {
 
 	public static Common COMMON_CONFIG;
@@ -19,30 +26,29 @@ public class TFConfig {
 
 	public static class Common {
 
-		public Common(ForgeConfigSpec.Builder builder) {
-			builder.
-					comment("Settings that are not reversible without consequences.").
-					push("Dimension Settings");
+		public Common(ConfigBuilder configBuilder) {
+			ConfigCategory temp = configBuilder.getOrCreateCategory(new TextComponent("Dimension Settings"));
+			ConfigEntryBuilder builder = configBuilder.entryBuilder();
 			{
-				DIMENSION.newPlayersSpawnInTF = builder.
-						translation(config + "spawn_in_tf").
-						comment("If true, players spawning for the first time will spawn in the Twilight Forest.").
-						define("newPlayersSpawnInTF", false);
-				DIMENSION.skylightForest = builder.
-						translation(config + "skylight_forest").
-						worldRestart().
-						comment("If true, Twilight Forest will generate as a void except for Major Structures").
-						define("skylightForest", false);
-				DIMENSION.skylightOaks = builder.
-						translation(config + "skylight_oaks").
-						worldRestart().
-						comment("If true, giant Twilight Oaks will also spawn in void worlds").
-						define("skylightOaks", true);
-				DIMENSION.portalDestinationID = builder.
-						translation(config + "portal_destination_id").
-						worldRestart().
-						comment("Marked dimension ID for Twilight Portals and some other Twilight mod logic as well").
-						define("portalDestinationID", "twilightforest:twilight_forest");
+				temp.addEntry(builder.startBooleanToggle(new TranslatableComponent(config + "spawn_in_tf"), DIMENSION.newPlayersSpawnInTF)
+						.setTooltip(new TextComponent("If true, players spawning for the first time will spawn in the Twilight Forest."))
+						.setDefaultValue(false)
+						.build());
+				temp.addEntry(builder.startBooleanToggle(new TranslatableComponent(config + "skylight_forest"), DIMENSION.skylightForest)
+						.setTooltip(new TextComponent("If true, Twilight Forest will generate as a void except for Major Structures"))
+						.setDefaultValue(false)
+						.build());
+				temp.addEntry(builder.startBooleanToggle(new TranslatableComponent(config + "skylight_oaks"), DIMENSION.skylightOaks)
+						.setTooltip(new TextComponent("If true, giant Twilight Oaks will also spawn in void worlds"))
+						.setDefaultValue(true)
+						.build());
+				//temp.addEntry(builder.startStrList())
+				DIMENSION.portalDestinationID = "twilightforest:twilight_forest";
+//				DIMENSION.portalDestinationID = builder.
+//						translation(config + "portal_destination_id").
+//						worldRestart().
+//						comment("Marked dimension ID for Twilight Portals and some other Twilight mod logic as well").
+//						define("portalDestinationID", "twilightforest:twilight_forest");
 				builder.pop().
 						comment("""
 								Defines custom stalactites generated in hollow hills.
@@ -186,27 +192,27 @@ public class TFConfig {
 
 		public static class Dimension {
 
-			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
-			public ForgeConfigSpec.BooleanValue skylightForest;
-			public ForgeConfigSpec.BooleanValue skylightOaks;
+			public boolean newPlayersSpawnInTF;
+			public boolean skylightForest;
+			public boolean skylightOaks;
 
 			// Find a different way to validate if a world is passible as a "Twilight Forest" instead of hardcoding Dim ID (Instanceof check for example) before strictly using this
 			// Reason this is needed is so users can reconfig portals to use Skylight Forest or a Void Forest or another dimension entirely
-			public ForgeConfigSpec.ConfigValue<String> portalDestinationID;
+			public String portalDestinationID;
 
 			public HollowHillStalactites hollowHillStalactites = new HollowHillStalactites();
 
 			public static class HollowHillStalactites {
 
-				public ForgeConfigSpec.ConfigValue<List<? extends String>> largeHill;
-				public ForgeConfigSpec.ConfigValue<List<? extends String>> mediumHill;
-				public ForgeConfigSpec.ConfigValue<List<? extends String>> smallHill;
-				public ForgeConfigSpec.BooleanValue useConfigOnly;
+				public List<? extends String> largeHill;
+				public List<? extends String> mediumHill;
+				public List<? extends String> smallHill;
+				public boolean useConfigOnly;
 
 				public void load() {
-					registerHill(smallHill.get(), 1);
-					registerHill(mediumHill.get(), 2);
-					registerHill(largeHill.get(), 3);
+					registerHill(smallHill, 1);
+					registerHill(mediumHill, 2);
+					registerHill(largeHill, 3);
 				}
 
 				private void registerHill(List<? extends String> definitions, int tier) {
@@ -239,40 +245,40 @@ public class TFConfig {
 			}
 		}
 
-		public ForgeConfigSpec.BooleanValue doCompat;
+		public boolean doCompat;
 
 		public Performance PERFORMANCE = new Performance();
 
 		public static class Performance {
-			public ForgeConfigSpec.DoubleValue canopyCoverage;
-			public ForgeConfigSpec.IntValue twilightOakChance;
-			public ForgeConfigSpec.IntValue leavesLightOpacity;
-			public ForgeConfigSpec.BooleanValue glacierPackedIce;
-			public ForgeConfigSpec.BooleanValue enableSkylight;
+			public double canopyCoverage;
+			public int twilightOakChance;
+			public int leavesLightOpacity;
+			public boolean glacierPackedIce;
+			public boolean enableSkylight;
 
 			public boolean shadersSupported = true;
 		}
 
-		public ForgeConfigSpec.ConfigValue<String> originDimension;
-		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
-		public ForgeConfigSpec.BooleanValue adminOnlyPortals;
-		public ForgeConfigSpec.BooleanValue disablePortalCreation;
-		public ForgeConfigSpec.BooleanValue checkPortalDestination;
-		public ForgeConfigSpec.BooleanValue portalLightning;
-		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
-		public ForgeConfigSpec.BooleanValue progressionRuleDefault;
-		public ForgeConfigSpec.BooleanValue disableUncrafting;
-		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
+		public String originDimension;
+		public boolean allowPortalsInOtherDimensions;
+		public boolean adminOnlyPortals;
+		public boolean disablePortalCreation;
+		public boolean checkPortalDestination;
+		public boolean portalLightning;
+		public boolean shouldReturnPortalBeUsable;
+		public boolean progressionRuleDefault;
+		public boolean disableUncrafting;
+		public boolean casketUUIDLocking;
 
 		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
 
 		public static class ShieldInteractions {
 
-			public ForgeConfigSpec.BooleanValue parryNonTwilightAttacks;
-			public ForgeConfigSpec.IntValue shieldParryTicksArrow;
-			public ForgeConfigSpec.IntValue shieldParryTicksFireball;
-			public ForgeConfigSpec.IntValue shieldParryTicksThrowable;
-			public ForgeConfigSpec.IntValue shieldParryTicksBeam;
+			public boolean parryNonTwilightAttacks;
+			public int shieldParryTicksArrow;
+			public int shieldParryTicksFireball;
+			public int shieldParryTicksThrowable;
+			public int shieldParryTicksBeam;
 		}
 
 	}
@@ -365,23 +371,23 @@ public class TFConfig {
 			builder.pop();
 		}
 
-		public ForgeConfigSpec.BooleanValue silentCicadas;
-		public ForgeConfigSpec.BooleanValue firstPersonEffects;
-		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
-		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
-		public ForgeConfigSpec.BooleanValue disableHereBeDragons;
+		public boolean silentCicadas;
+		public boolean firstPersonEffects;
+		public boolean rotateTrophyHeadsGui;
+		public boolean disableOptifineNagScreen;
+		public boolean disableHereBeDragons;
 
 		public final LoadingScreen LOADING_SCREEN = new LoadingScreen();
 
 		public static class LoadingScreen {
 
-			public ForgeConfigSpec.BooleanValue enable;
-			public ForgeConfigSpec.IntValue cycleLoadingScreenFrequency;
-			public ForgeConfigSpec.DoubleValue frequency;
-			public ForgeConfigSpec.DoubleValue scale;
-			public ForgeConfigSpec.DoubleValue scaleDeviation;
-			public ForgeConfigSpec.DoubleValue tiltRange;
-			public ForgeConfigSpec.DoubleValue tiltConstant;
+			public boolean enable;
+			public int cycleLoadingScreenFrequency;
+			public double frequency;
+			public double scale;
+			public double scaleDeviation;
+			public double tiltRange;
+			public double tiltConstant;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> loadingIconStacks;
 
 			private ImmutableList<ItemStack> loadingScreenIcons;

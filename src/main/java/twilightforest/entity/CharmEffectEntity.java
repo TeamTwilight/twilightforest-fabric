@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -16,17 +17,11 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-@OnlyIn(
-				value = Dist.CLIENT,
-				_interface = ItemSupplier.class
-)
+@Environment(EnvType.CLIENT)
 public class CharmEffectEntity extends Entity implements ItemSupplier {
 	private static final EntityDataAccessor<Integer> DATA_OWNER = SynchedEntityData.defineId(CharmEffectEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<ItemStack> DATA_ITEMID = SynchedEntityData.defineId(CharmEffectEntity.class, EntityDataSerializers.ITEM_STACK);
@@ -112,10 +107,9 @@ public class CharmEffectEntity extends Entity implements ItemSupplier {
 		this.newPosRotationIncrements = posRotationIncrements;
 	}
 
-	@Nonnull
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+		return new ClientboundAddEntityPacket(this);
 	}
 
 	@Override
@@ -128,7 +122,7 @@ public class CharmEffectEntity extends Entity implements ItemSupplier {
 		entityData.set(DATA_OWNER, owner.getId());
 	}
 
-	@Nullable
+	//@Nullable
 	public LivingEntity getOwner() {
 		Entity e = this.level.getEntity(entityData.get(DATA_OWNER));
 		if (e instanceof LivingEntity)
@@ -150,7 +144,7 @@ public class CharmEffectEntity extends Entity implements ItemSupplier {
 	@Override
 	protected void addAdditionalSaveData(CompoundTag cmp) {}
 
-	@Nonnull
+	//@Nonnull
 	@Override
 	public ItemStack getItem() {
 		return getItemID();

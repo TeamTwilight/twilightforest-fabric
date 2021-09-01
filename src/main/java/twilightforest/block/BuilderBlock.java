@@ -186,6 +186,6 @@ public class BuilderBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.TOWER_BUILDER.get(), CarminiteBuilderTileEntity::tick);
+		return createTickerHelper(type, TFTileEntities.TOWER_BUILDER, CarminiteBuilderTileEntity::tick);
 	}
 }

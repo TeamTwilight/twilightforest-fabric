@@ -25,7 +25,7 @@ public class OptifineWarningScreen extends Screen {
 
 	static {
 		(url = new TranslatableComponent(TwilightForestMod.ID + ".gui.optifine.suggestions"))
-				.withStyle(style -> style.withColor(ChatFormatting.GREEN).setUnderlined(true).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://gist.github.com/alkyaly/02830c560d15256855bc529e1e232e88")));
+				.withStyle(style -> style.withColor(ChatFormatting.GREEN).withUnderlined(true).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://gist.github.com/alkyaly/02830c560d15256855bc529e1e232e88")));
 	}
 
 	protected OptifineWarningScreen(Screen screen) {

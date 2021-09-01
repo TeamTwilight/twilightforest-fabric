@@ -11,7 +11,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class FinalBossSpawnerTileEntity extends BossSpawnerTileEntity<PlateauBossEntity> {
 
 	public FinalBossSpawnerTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.FINAL_BOSS_SPAWNER.get(), TFEntities.plateau_boss, pos, state);
+		super(TFTileEntities.FINAL_BOSS_SPAWNER, TFEntities.plateau_boss, pos, state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, BossSpawnerTileEntity<?> te) {

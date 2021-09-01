@@ -16,7 +16,7 @@ public class UncraftingEnabledCondition implements ICondition {
 
 	@Override
 	public boolean test() {
-		return !TFConfig.COMMON_CONFIG.disableUncrafting.get(); //(because true is off and false is on)
+		return !TFConfig.COMMON_CONFIG.disableUncrafting; //(because true is off and false is on)
 	}
 
 	public static class Serializer implements IConditionSerializer<UncraftingEnabledCondition> {

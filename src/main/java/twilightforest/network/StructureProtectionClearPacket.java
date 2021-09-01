@@ -1,7 +1,10 @@
 package twilightforest.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+
 import net.minecraftforge.client.IWeatherRenderHandler;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
@@ -10,7 +13,7 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 
 import java.util.function.Supplier;
 
-public class StructureProtectionClearPacket {
+public class StructureProtectionClearPacket extends ISimplePacket {
 
 	public StructureProtectionClearPacket() {}
 
@@ -18,9 +21,14 @@ public class StructureProtectionClearPacket {
 
 	public void encode(FriendlyByteBuf unused) {}
 
+	@Override
+	public void onMessage(Player playerEntity) {
+		Handler.onMessage(this);
+	}
+
 	public static class Handler {
-		public static boolean onMessage(StructureProtectionClearPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static boolean onMessage(StructureProtectionClearPacket message) {
+			Minecraft.getInstance().execute(() -> {
 				DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
 
 				// add weather box if needed

@@ -1,16 +1,21 @@
 package twilightforest.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import twilightforest.tileentity.CinderFurnaceTileEntity;
+import twilightforest.tileentity.TFTileEntities;
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -27,14 +32,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.tileentity.CinderFurnaceTileEntity;
-import twilightforest.tileentity.TFTileEntities;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Random;
 
 public class CinderFurnaceBlock extends BaseEntityBlock {
 
@@ -51,7 +48,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 		return RenderShape.MODEL;
 	}
 
-	@Override
+	//@Override
 	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
 		return state.getValue(LIT) ? 15 : 0;
 	}
@@ -71,7 +68,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.CINDER_FURNACE.get(), CinderFurnaceTileEntity::tick);
+		return createTickerHelper(type, TFTileEntities.CINDER_FURNACE, CinderFurnaceTileEntity::tick);
 	}
 
 	@Override
@@ -99,7 +96,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
 		if (state.getValue(LIT)) {

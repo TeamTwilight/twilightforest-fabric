@@ -17,7 +17,6 @@ import twilightforest.world.components.feature.TFGenCaveStalactite;
 
 import java.util.function.Consumer;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class IMCHandler {
 
 	private static final ImmutableList.Builder<BlockState> ORE_BLOCKS_BUILDER = ImmutableList.builder();
@@ -52,21 +51,20 @@ public class IMCHandler {
 							 • [String Property Key] - String         : Key is nameable to a property key, and the string value attached to it is value to property.
 	 </pre>
 	 */
-	@SubscribeEvent
-	public static void onIMC(InterModProcessEvent event) {
-		InterModComms.getMessages(TwilightForestMod.ID).forEach(message-> {
-			Object thing = message.getMessageSupplier().get();
-			if (thing instanceof CompoundTag) {
-				CompoundTag imcCompound = ((CompoundTag) thing);
-
-				readFromTagList(imcCompound.getList("Ore_Blocks", Constants.NBT.TAG_COMPOUND), IMCHandler::handleOre);
-				readFromTagList(imcCompound.getList("Crumbling",  Constants.NBT.TAG_COMPOUND), IMCHandler::handleCrumble);
-			}
-
-			if (thing instanceof ItemStack && message.getMethod().equals("Loading_Icon")) {
-				LOADING_ICONS_BUILDER.add((ItemStack) thing);
-			}
-		});
+	public static void onIMC(/*InterModProcessEvent event*/) {
+//		InterModComms.getMessages(TwilightForestMod.ID).forEach(message-> {
+//			Object thing = message.getMessageSupplier().get();
+//			if (thing instanceof CompoundTag) {
+//				CompoundTag imcCompound = ((CompoundTag) thing);
+//
+//				readFromTagList(imcCompound.getList("Ore_Blocks", Constants.NBT.TAG_COMPOUND), IMCHandler::handleOre);
+//				readFromTagList(imcCompound.getList("Crumbling",  Constants.NBT.TAG_COMPOUND), IMCHandler::handleCrumble);
+//			}
+//
+//			if (thing instanceof ItemStack && message.getMethod().equals("Loading_Icon")) {
+//				LOADING_ICONS_BUILDER.add((ItemStack) thing);
+//			}
+//		});
 	}
 
 	private static void readFromTagList(ListTag list, Consumer<CompoundTag> consumer) {

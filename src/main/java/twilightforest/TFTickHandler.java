@@ -78,14 +78,14 @@ public class TFTickHandler {
 	}
 
 	private static void sendStructureProtectionPacket(Level world, Player player, BoundingBox sbb) {
-		if (player instanceof ServerPlayer) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new StructureProtectionPacket(sbb));
+		if (player instanceof ServerPlayer serverPlayer) {
+			TFPacketHandler.CHANNEL.send(serverPlayer, new StructureProtectionPacket(sbb));
 		}
 	}
 
 	private static void sendAllClearPacket(Level world, Player player) {
-		if (player instanceof ServerPlayer) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new StructureProtectionClearPacket());
+		if (player instanceof ServerPlayer serverPlayer) {
+			TFPacketHandler.CHANNEL.send(serverPlayer, new StructureProtectionClearPacket());
 		}
 	}
 
@@ -114,9 +114,9 @@ public class TFTickHandler {
 	}
 
 	private static void checkForPortalCreation(Player player, Level world, float rangeToCheck) {
-		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
-				|| world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())
-				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
+		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension))
+				|| world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID)
+				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions) {
 
 			List<ItemEntity> itemList = world.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
 
@@ -124,7 +124,7 @@ public class TFTickHandler {
 				if (ItemTagGenerator.PORTAL_ACTIVATOR.contains(entityItem.getItem().getItem())) {
 					BlockPos pos = new BlockPos(entityItem.position().subtract(0, -0.1d, 0)); //TODO Quick fix, find if there's a more performant fix than this
 					BlockState state = world.getBlockState(pos);
-					if (TFBlocks.twilight_portal.get().canFormPortal(state)) {
+					if (TFBlocks.twilight_portal.canFormPortal(state)) {
 						Random rand = new Random();
 						for (int i = 0; i < 2; i++) {
 							double vx = rand.nextGaussian() * 0.02D;
@@ -134,7 +134,7 @@ public class TFTickHandler {
 							world.addParticle(ParticleTypes.EFFECT, entityItem.getX(), entityItem.getY() + 0.2, entityItem.getZ(), vx, vy, vz);
 						}
 
-						if (TFBlocks.twilight_portal.get().tryToCreatePortal(world, pos, entityItem, player)) {
+						if (TFBlocks.twilight_portal.tryToCreatePortal(world, pos, entityItem, player)) {
 							TFAdvancements.MADE_TF_PORTAL.trigger((ServerPlayer) player);
 							return;
 						}

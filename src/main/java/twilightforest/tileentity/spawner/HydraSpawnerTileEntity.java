@@ -10,7 +10,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class HydraSpawnerTileEntity extends BossSpawnerTileEntity<HydraEntity> {
 
 	public HydraSpawnerTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.HYDRA_SPAWNER.get(), TFEntities.hydra, pos, state);
+		super(TFTileEntities.HYDRA_SPAWNER, TFEntities.hydra, pos, state);
 	}
 
 	@Override

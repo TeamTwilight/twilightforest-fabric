@@ -44,9 +44,6 @@ public class SpikeBlockEntity extends BlockChainGoblinEntity.MultipartGenericsAr
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	protected void defineSynchedData() {
-	}
 
 	@Override
 	protected boolean canRide(Entity entityIn) {

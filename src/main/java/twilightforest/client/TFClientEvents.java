@@ -1,24 +1,10 @@
 package twilightforest.client;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Options;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.CameraType;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.network.chat.*;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IWeatherRenderHandler;
-import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -27,8 +13,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
@@ -38,18 +22,36 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.data.ItemTagGenerator;
 import twilightforest.item.TFItems;
-
+import java.util.Map;
 import java.util.Objects;
 
-@OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
+@Environment(EnvType.CLIENT)
 public class TFClientEvents {
 
-	@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 	public static class ModBusEvents {
 
-		@SubscribeEvent
-		public static void modelBake(ModelBakeEvent event) {
+		public static void modelBake(Map<ResourceLocation, BakedModel> event) {
 			fullbrightItem(event, TFItems.fiery_ingot);
 			fullbrightItem(event, TFItems.fiery_boots);
 			fullbrightItem(event, TFItems.fiery_chestplate);
@@ -60,18 +62,18 @@ public class TFClientEvents {
 			fullbright(event, TFBlocks.fiery_block.getId(), "");
 		}
 
-		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
-			fullbright(event, Objects.requireNonNull(item.getId()), "inventory");
+		private static void fullbrightItem(Map<ResourceLocation, BakedModel> event, Item item) {
+			fullbright(event, Objects.requireNonNull(Registry.ITEM.getKey(item)), "inventory");
 		}
 
-		private static void fullbright(ModelBakeEvent event, ResourceLocation rl, String state) {
+		private static void fullbright(Map<ResourceLocation, BakedModel> event, ResourceLocation rl, String state) {
 			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			event.getModelRegistry().put(mrl, new FullbrightBakedModel(event.getModelRegistry().get(mrl)));
+			event.put(mrl, new FullbrightBakedModel(event.get(mrl)));
 		}
 
-		@SubscribeEvent
-		public static void texStitch(TextureStitchEvent.Pre evt) {
-			TextureAtlas map = evt.getMap();
+//		@SubscribeEvent
+//		public static void texStitch(TextureStitchEvent.Pre evt) {
+//			TextureAtlas map = evt.getMap();
 
 		//FIXME bring back if you can get GradientMappedTexture working
 		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
@@ -126,18 +128,18 @@ public class TFClientEvents {
 		new GradientNode(1.0f, 0xFF_FF_FF_FF)
 	};*/
 
-		@SubscribeEvent
-		public static void registerModels(ModelRegistryEvent event) {
-			ModelLoader.addSpecialModel(ShieldLayer.LOC);
-			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
-			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
-			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
-
-			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_obsidian"));
-			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_stone"));
-			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_basalt"));
-		}
-	}
+//		@SubscribeEvent
+//		public static void registerModels(ModelRegistryEvent event) {
+//			ModelLoader.addSpecialModel(ShieldLayer.LOC);
+//			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
+//			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
+//			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
+//
+//			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_obsidian"));
+//			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_stone"));
+//			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_basalt"));
+//		}
+//	}
 
 	/**
 	 * Stop the game from rendering the mount health for unfriendly creatures

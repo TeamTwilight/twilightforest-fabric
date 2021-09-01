@@ -12,7 +12,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class EnderBowItem extends BowItem {
 	private static final String KEY = "twilightforest:ender";
 

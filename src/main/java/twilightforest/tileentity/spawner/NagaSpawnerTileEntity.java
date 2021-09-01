@@ -10,7 +10,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class NagaSpawnerTileEntity extends BossSpawnerTileEntity<NagaEntity> {
 
 	public NagaSpawnerTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.NAGA_SPAWNER.get(), TFEntities.naga, pos, state);
+		super(TFTileEntities.NAGA_SPAWNER, TFEntities.naga, pos, state);
 	}
 
 	@Override

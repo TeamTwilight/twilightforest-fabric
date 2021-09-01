@@ -11,7 +11,7 @@ public class MoonwormTileEntity extends BlockEntity {
 	public int desiredYaw;
 
 	public MoonwormTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.MOONWORM.get(), pos, state);
+		super(TFTileEntities.MOONWORM, pos, state);
 		currentYaw = -1;
 		yawDelay = 0;
 		desiredYaw = 0;

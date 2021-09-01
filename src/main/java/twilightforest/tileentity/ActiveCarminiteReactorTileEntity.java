@@ -28,7 +28,7 @@ public class ActiveCarminiteReactorTileEntity extends BlockEntity {
 
 
 	public ActiveCarminiteReactorTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.CARMINITE_REACTOR.get(), pos, state);
+		super(TFTileEntities.CARMINITE_REACTOR, pos, state);
 		Random rand = new Random();
 
 		// determine the two smaller bursts
@@ -59,8 +59,8 @@ public class ActiveCarminiteReactorTileEntity extends BlockEntity {
 
 				if (te.counter % 5 == 0) {
 					if (te.counter == 5) {
-						BlockState fakeGold = TFBlocks.fake_gold.get().defaultBlockState();
-						BlockState fakeDiamond = TFBlocks.fake_diamond.get().defaultBlockState();
+						BlockState fakeGold = TFBlocks.fake_gold.defaultBlockState();
+						BlockState fakeDiamond = TFBlocks.fake_diamond.defaultBlockState();
 
 						// transformation!
 						te.createFakeBlock(pos.offset(1, 1, 1), fakeDiamond);
@@ -105,7 +105,7 @@ public class ActiveCarminiteReactorTileEntity extends BlockEntity {
 						te.drawBlob(pos, (primary - offset) / 40, Blocks.AIR.defaultBlockState(), primary - offset, false);
 					}
 					if (primary <= 200) {
-						te.drawBlob(pos, primary / 40, TFBlocks.reactor_debris.get().defaultBlockState(), te.counter, false);
+						te.drawBlob(pos, primary / 40, TFBlocks.reactor_debris.defaultBlockState(), te.counter, false);
 					}
 
 					// secondary burst

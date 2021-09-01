@@ -125,6 +125,6 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.GHAST_TRAP.get(), ActiveGhastTrapTileEntity::tick);
+		return createTickerHelper(type, TFTileEntities.GHAST_TRAP, ActiveGhastTrapTileEntity::tick);
 	}
 }

@@ -33,6 +33,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -102,7 +105,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 			if (recursivelyValidatePortal(world, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
 
-				if (TFConfig.COMMON_CONFIG.checkPortalDestination.get()) {
+				if (TFConfig.COMMON_CONFIG.checkPortalDestination) {
 					boolean checkProgression = TFGenerationSettings.isProgressionEnforced(catalyst.level);
 					if (!TFTeleporter.isSafeAround(world, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
@@ -114,11 +117,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 				}
 
 				catalyst.getItem().shrink(1);
-				causeLightning(world, pos, TFConfig.COMMON_CONFIG.portalLightning.get());
+				causeLightning(world, pos, TFConfig.COMMON_CONFIG.portalLightning);
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
 					if (checkedPos.getValue()) {
-						world.setBlock(checkedPos.getKey(), TFBlocks.twilight_portal.get().defaultBlockState(), 2);
+						world.setBlock(checkedPos.getKey(), TFBlocks.twilight_portal.defaultBlockState(), 2);
 					}
 				}
 
@@ -144,9 +147,9 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			List<Entity> list = world.getEntitiesOfClass(Entity.class, new AABB(pos).inflate(range));
 
 			for (Entity victim : list) {
-				if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) {
+				//if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) {
 					victim.thunderHit((ServerLevel) world, bolt);
-				}
+				//}
 			}
 		}
 	}
@@ -254,7 +257,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	// Full [VanillaCopy] of BlockPortal.randomDisplayTick
 	// TODO Eeeh... Let's look at changing this too alongside a new model.
 	@Override
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
 		int random = rand.nextInt(100);
 		if (stateIn.getValue(DISALLOW_RETURN) && random < 80) return;

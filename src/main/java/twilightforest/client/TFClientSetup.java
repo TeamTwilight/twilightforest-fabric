@@ -11,6 +11,8 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+
+import net.fabricmc.api.ClientModInitializer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -32,10 +34,14 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Objects;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
-public class TFClientSetup {
+public class TFClientSetup implements ClientModInitializer {
 
 	public static boolean optifinePresent = false;
+
+	@Override
+	public void onInitializeClient() {
+
+	}
 
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
 	public static class ForgeEvents {

@@ -76,11 +76,11 @@ public class HugeLilyPadItem extends WaterLilyBlockItem {
 					world.setBlock(blockpos1.east().south(), lilypad.setValue(PIECE, SE), 11);
 					world.setBlock(blockpos1.south(), lilypad.setValue(PIECE, SW), 11);
 
-					if (player instanceof ServerPlayer) {
-						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, blockpos1, itemstack);
-						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, blockpos1.east(), itemstack);
-						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, blockpos1.east().south(), itemstack);
-						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, blockpos1.south(), itemstack);
+					if (player instanceof ServerPlayer serverPlayer) {
+						CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, blockpos1, itemstack);
+						CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, blockpos1.east(), itemstack);
+						CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, blockpos1.east().south(), itemstack);
+						CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, blockpos1.south(), itemstack);
 					}
 
 					if (!player.abilities.instabuild) {

@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapRenderer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
@@ -16,7 +17,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 // Rewraps vanilla SPacketMaps to properly expose our custom decorations
-public class MagicMapPacket {
+public class MagicMapPacket extends ISimplePacket {
 	private final byte[] featureData;
 	private final ClientboundMapItemDataPacket inner;
 
@@ -44,6 +45,11 @@ public class MagicMapPacket {
 		//} catch (IOException e) {
 		//	throw new RuntimeException("Couldn't write inner SPacketMaps", e);
 		//}
+	}
+
+	@Override
+	public void onMessage(Player playerEntity) {
+
 	}
 
 	public static class Handler {

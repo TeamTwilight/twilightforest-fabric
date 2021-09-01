@@ -46,7 +46,7 @@ public class FireJetBlock extends BaseEntityBlock {
 	}
 
 	@Nullable
-	@Override
+	//@Override
 	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
 		return state.getValue(STATE) == FireJetVariant.IDLE ? null : BlockPathTypes.DAMAGE_FIRE;
 	}
@@ -96,6 +96,6 @@ public class FireJetBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.FLAME_JET.get(), FireJetTileEntity::tick);
+		return createTickerHelper(type, TFTileEntities.FLAME_JET, FireJetTileEntity::tick);
 	}
 }

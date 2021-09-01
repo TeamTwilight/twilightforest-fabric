@@ -30,7 +30,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import twilightforest.world.components.placements.ChunkBlanketingDecorator;
 import twilightforest.world.components.placements.OutOfStructureFilter;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class TwilightFeatures {
     private static final List<FoliagePlacerType<?>> FOLIAGE_PLACER_TYPES = new ArrayList<>();
     private static final List<TreeDecoratorType<?>> TREE_DECORATOR_TYPES = new ArrayList<>();

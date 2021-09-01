@@ -27,7 +27,7 @@ public class AntibuilderTileEntity extends BlockEntity {
 	private BlockState[] blockData;
 
 	public AntibuilderTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.ANTIBUILDER.get(), pos, state);
+		super(TFTileEntities.ANTIBUILDER, pos, state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, AntibuilderTileEntity te) {
@@ -49,7 +49,7 @@ public class AntibuilderTileEntity extends BlockEntity {
 			} else {
 
 				// new plan, take a snapshot of the world when we are first activated, and then rapidly revert changes
-				if (te.blockData == null && level.isAreaLoaded(pos, AntibuilderTileEntity.RADIUS)) {
+				if (te.blockData == null/* && level.isAreaLoaded(pos, AntibuilderTileEntity.RADIUS)*/) {
 					te.captureBlockData();
 					te.slowScan = true;
 				}
@@ -229,7 +229,7 @@ public class AntibuilderTileEntity extends BlockEntity {
 		} else if (this.rand.nextInt(REVERT_CHANCE) == 0) {
 			// don't revert everything instantly
 			if (!replaceWith.isAir()) {
-				replaceWith = TFBlocks.antibuilt_block.get().defaultBlockState();
+				replaceWith = TFBlocks.antibuilt_block.defaultBlockState();
 			}
 
 			if (stateThere.isAir()) {

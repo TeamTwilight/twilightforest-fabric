@@ -15,14 +15,14 @@ public class TrophyItem extends StandingAndWallBlockItem {
 		super(floorBlockIn, wallBlockIn, builder);
 	}
 
-	@Override
-	public boolean canEquip(ItemStack stack, EquipmentSlot armorType, Entity entity) {
-		return armorType == EquipmentSlot.HEAD;
-	}
-
-	@Override
-	@Nullable
-	public EquipmentSlot getEquipmentSlot(ItemStack stack) {
-		return EquipmentSlot.HEAD;
-	}
+//	@Override
+//	public boolean canEquip(ItemStack stack, EquipmentSlot armorType, Entity entity) {
+//		return armorType == EquipmentSlot.HEAD;
+//	}
+//
+//	@Override
+//	@Nullable
+//	public EquipmentSlot getEquipmentSlot(ItemStack stack) {
+//		return EquipmentSlot.HEAD;
+//	}
 }

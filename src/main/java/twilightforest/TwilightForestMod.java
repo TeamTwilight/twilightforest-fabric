@@ -1,6 +1,9 @@
 package twilightforest;
 
 import com.google.common.collect.Maps;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.protocol.PacketUtils;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.core.BlockSource;
@@ -17,6 +20,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
+
+import net.fabricmc.api.ModInitializer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,11 +63,8 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TFTileEntities;
-import twilightforest.world.registration.TFDimensions;
-import twilightforest.world.registration.TFBiomeFeatures;
+import twilightforest.world.registration.*;
 import twilightforest.world.components.feature.TFGenCaveStalactite;
-import twilightforest.world.registration.TFStructures;
-import twilightforest.world.registration.TwilightFeatures;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
@@ -73,9 +75,7 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 
-@Mod(TwilightForestMod.ID)
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class TwilightForestMod {
+public class TwilightForestMod implements ModInitializer {
 
 	// TODO: might be a good idea to find proper spots for all of these? also remove redundants
 	public static final String ID = "twilightforest";
@@ -104,19 +104,19 @@ public class TwilightForestMod {
 
 		{
 			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
-			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, specPair.getRight());
+			ModLoadingContext.registerConfig(ModConfig.Type.COMMON, specPair.getRight());
 			TFConfig.COMMON_CONFIG = specPair.getLeft();
 		}
 		{
 			final Pair<TFConfig.Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Client::new);
-			ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, specPair.getRight());
+			ModLoadingContext.registerConfig(ModConfig.Type.CLIENT, specPair.getRight());
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
 
 		ASMHooks.registerMultipartEvents(MinecraftForge.EVENT_BUS);
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
-		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
+		IEventBus modbus = FMLJavaModLoadingContext.getModEventBus();
 		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
@@ -126,14 +126,15 @@ public class TwilightForestMod {
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		modbus.addGenericListener(StructureFeature.class, TFStructures::register);
 		MinecraftForge.EVENT_BUS.addListener(TFStructures::load);
-		TFBiomeFeatures.FEATURES.register(modbus);
+		//TFBiomeFeatures.FEATURES.register(modbus);
+		TwilightSurfaceBuilders.register();
 		TFContainers.CONTAINERS.register(modbus);
 //		TFEnchantments.ENCHANTMENTS.register(modbus);
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new TwilightFeatures();
 		new BiomeGrassColors();
 
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
+		if (TFConfig.COMMON_CONFIG.doCompat) {
 			try {
 				TFCompat.preInitCompat();
 			} catch (Exception e) {
@@ -164,33 +165,31 @@ public class TwilightForestMod {
 		event.register(IShieldCapability.class);
 	}
 
-	@SubscribeEvent
-	public void sendIMCs(InterModEnqueueEvent evt) {
+	public void sendIMCs() {
 		TFCompat.IMCSender();
 	}
 
-	@SubscribeEvent
-	public static void init(FMLCommonSetupEvent evt) {
+	public static void init() {
 		TFPacketHandler.init();
 		TFAdvancements.init();
 		BiomeKeys.addBiomeTypes();
 		TFDimensions.init();
 
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
+		if (TFConfig.COMMON_CONFIG.doCompat) {
 			try {
 				TFCompat.initCompat();
 			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
+				TFConfig.COMMON_CONFIG.doCompat = false;
 				LOGGER.error("Had an error loading init compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
 		}
 
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
+		if (TFConfig.COMMON_CONFIG.doCompat) {
 			try {
 				TFCompat.postInitCompat();
 			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
+				TFConfig.COMMON_CONFIG.doCompat = false;
 				LOGGER.error("Had an error loading postInit compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
@@ -199,32 +198,32 @@ public class TwilightForestMod {
 		TFConfig.build();
 		TFGenCaveStalactite.loadStalactites();
 
-		evt.enqueueWork(() -> {
+		Minecraft.getInstance().execute(() -> {
 			TFBlocks.tfCompostables();
 			TFBlocks.TFBurnables();
 			TFBlocks.TFPots();
 			TFSounds.registerParrotSounds();
 
 			AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
-			AxeItem.STRIPPABLES.put(TFBlocks.oak_log.get(), TFBlocks.stripped_oak_log.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.canopy_log.get(), TFBlocks.stripped_canopy_log.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.mangrove_log.get(), TFBlocks.stripped_mangrove_log.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.dark_log.get(), TFBlocks.stripped_dark_log.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.time_log.get(), TFBlocks.stripped_time_log.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.transformation_log.get(), TFBlocks.stripped_transformation_log.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.mining_log.get(), TFBlocks.stripped_mining_log.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.sorting_log.get(), TFBlocks.stripped_sorting_log.get());
+			AxeItem.STRIPPABLES.put(TFBlocks.oak_log, TFBlocks.stripped_oak_log);
+			AxeItem.STRIPPABLES.put(TFBlocks.canopy_log, TFBlocks.stripped_canopy_log);
+			AxeItem.STRIPPABLES.put(TFBlocks.mangrove_log, TFBlocks.stripped_mangrove_log);
+			AxeItem.STRIPPABLES.put(TFBlocks.dark_log, TFBlocks.stripped_dark_log);
+			AxeItem.STRIPPABLES.put(TFBlocks.time_log, TFBlocks.stripped_time_log);
+			AxeItem.STRIPPABLES.put(TFBlocks.transformation_log, TFBlocks.stripped_transformation_log);
+			AxeItem.STRIPPABLES.put(TFBlocks.mining_log, TFBlocks.stripped_mining_log);
+			AxeItem.STRIPPABLES.put(TFBlocks.sorting_log, TFBlocks.stripped_sorting_log);
 
-			AxeItem.STRIPPABLES.put(TFBlocks.oak_wood.get(), TFBlocks.stripped_oak_wood.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.canopy_wood.get(), TFBlocks.stripped_canopy_wood.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.mangrove_wood.get(), TFBlocks.stripped_mangrove_wood.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.dark_wood.get(), TFBlocks.stripped_dark_wood.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.time_wood.get(), TFBlocks.stripped_time_wood.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.transformation_wood.get(), TFBlocks.stripped_transformation_wood.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.mining_wood.get(), TFBlocks.stripped_mining_wood.get());
-			AxeItem.STRIPPABLES.put(TFBlocks.sorting_wood.get(), TFBlocks.stripped_sorting_wood.get());
+			AxeItem.STRIPPABLES.put(TFBlocks.oak_wood, TFBlocks.stripped_oak_wood);
+			AxeItem.STRIPPABLES.put(TFBlocks.canopy_wood, TFBlocks.stripped_canopy_wood);
+			AxeItem.STRIPPABLES.put(TFBlocks.mangrove_wood, TFBlocks.stripped_mangrove_wood);
+			AxeItem.STRIPPABLES.put(TFBlocks.dark_wood, TFBlocks.stripped_dark_wood);
+			AxeItem.STRIPPABLES.put(TFBlocks.time_wood, TFBlocks.stripped_time_wood);
+			AxeItem.STRIPPABLES.put(TFBlocks.transformation_wood, TFBlocks.stripped_transformation_wood);
+			AxeItem.STRIPPABLES.put(TFBlocks.mining_wood, TFBlocks.stripped_mining_wood);
+			AxeItem.STRIPPABLES.put(TFBlocks.sorting_wood, TFBlocks.stripped_sorting_wood);
 
-			DispenserBlock.registerBehavior(TFItems.moonworm_queen.get(), new MoonwormDispenseBehavior() {
+			DispenserBlock.registerBehavior(TFItems.moonworm_queen, new MoonwormDispenseBehavior() {
 				@Override
 				protected Projectile getProjectileEntity(Level worldIn, Position position, ItemStack stackIn) {
 					return new MoonwormShotEntity(worldIn, position.x(), position.y(), position.z());
@@ -240,28 +239,28 @@ public class TwilightForestMod {
 					return stack;
 				}
 			};
-			DispenserBlock.registerBehavior(TFBlocks.naga_trophy.get().asItem(), idispenseitembehavior);
-			DispenserBlock.registerBehavior(TFBlocks.lich_trophy.get().asItem(), idispenseitembehavior);
-			DispenserBlock.registerBehavior(TFBlocks.minoshroom_trophy.get().asItem(), idispenseitembehavior);
-			DispenserBlock.registerBehavior(TFBlocks.hydra_trophy.get().asItem(), idispenseitembehavior);
-			DispenserBlock.registerBehavior(TFBlocks.knight_phantom_trophy.get().asItem(), idispenseitembehavior);
-			DispenserBlock.registerBehavior(TFBlocks.ur_ghast_trophy.get().asItem(), idispenseitembehavior);
-			DispenserBlock.registerBehavior(TFBlocks.snow_queen_trophy.get().asItem(), idispenseitembehavior);
-			DispenserBlock.registerBehavior(TFBlocks.quest_ram_trophy.get().asItem(), idispenseitembehavior);
-			DispenserBlock.registerBehavior(TFBlocks.cicada.get().asItem(), idispenseitembehavior);
-			DispenserBlock.registerBehavior(TFBlocks.firefly.get().asItem(), idispenseitembehavior);
-			DispenserBlock.registerBehavior(TFBlocks.moonworm.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerBehavior(TFBlocks.naga_trophy.asItem(), idispenseitembehavior);
+			DispenserBlock.registerBehavior(TFBlocks.lich_trophy.asItem(), idispenseitembehavior);
+			DispenserBlock.registerBehavior(TFBlocks.minoshroom_trophy.asItem(), idispenseitembehavior);
+			DispenserBlock.registerBehavior(TFBlocks.hydra_trophy.asItem(), idispenseitembehavior);
+			DispenserBlock.registerBehavior(TFBlocks.knight_phantom_trophy.asItem(), idispenseitembehavior);
+			DispenserBlock.registerBehavior(TFBlocks.ur_ghast_trophy.asItem(), idispenseitembehavior);
+			DispenserBlock.registerBehavior(TFBlocks.snow_queen_trophy.asItem(), idispenseitembehavior);
+			DispenserBlock.registerBehavior(TFBlocks.quest_ram_trophy.asItem(), idispenseitembehavior);
+			DispenserBlock.registerBehavior(TFBlocks.cicada.asItem(), idispenseitembehavior);
+			DispenserBlock.registerBehavior(TFBlocks.firefly.asItem(), idispenseitembehavior);
+			DispenserBlock.registerBehavior(TFBlocks.moonworm.asItem(), idispenseitembehavior);
 
 			DispenseItemBehavior pushmobsbehavior = new FeatherFanDispenseBehavior();
-			DispenserBlock.registerBehavior(TFItems.peacock_fan.get().asItem(), pushmobsbehavior);
+			DispenserBlock.registerBehavior(TFItems.peacock_fan.asItem(), pushmobsbehavior);
 
 			DispenseItemBehavior crumblebehavior = new CrumbleDispenseBehavior();
-			DispenserBlock.registerBehavior(TFItems.crumble_horn.get().asItem(), crumblebehavior);
+			DispenserBlock.registerBehavior(TFItems.crumble_horn.asItem(), crumblebehavior);
 
 			DispenseItemBehavior transformbehavior = new TransformationDispenseBehavior();
-			DispenserBlock.registerBehavior(TFItems.transformation_powder.get().asItem(), transformbehavior);
+			DispenserBlock.registerBehavior(TFItems.transformation_powder.asItem(), transformbehavior);
 
-			DispenserBlock.registerBehavior(TFItems.twilight_scepter.get(), new MoonwormDispenseBehavior() {
+			DispenserBlock.registerBehavior(TFItems.twilight_scepter, new MoonwormDispenseBehavior() {
 				@Override
 				protected Projectile getProjectileEntity(Level worldIn, Position position, ItemStack stackIn) {
 					return new TwilightWandBoltEntity(worldIn, position.x(), position.y(), position.z());
@@ -306,5 +305,10 @@ public class TwilightForestMod {
 
 	public static Rarity getRarity() {
 		return rarity != null ? rarity : Rarity.EPIC;
+	}
+
+	@Override
+	public void onInitialize() {
+
 	}
 }

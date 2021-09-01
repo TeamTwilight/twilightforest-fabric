@@ -6,10 +6,11 @@ import net.minecraft.server.packs.ResourcePackFileNotFoundException;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.loading.moddiscovery.ModFile;
-import net.minecraftforge.forgespi.locating.IModFile;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
@@ -24,13 +25,13 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class TwilightLegacyPack extends AbstractPackResources {
-    private final IModFile modFile;
+    private final ModContainer modFile;
     private static final String subDir = "classic/";
 
-    public TwilightLegacyPack(IModFile modFile) {
-        super(modFile.getFilePath().toFile());
+    public TwilightLegacyPack(ModContainer modFile) {
+        super(modFile.getRootPath().toFile());
         this.modFile = modFile;
     }
 
@@ -38,7 +39,7 @@ public class TwilightLegacyPack extends AbstractPackResources {
     @Override
     public Set<String> getNamespaces(PackType type) {
         try {
-            Path root = modFile.findResource(subDir + type.getDirectory()).toAbsolutePath();
+            Path root = modFile.getPath(subDir + type.getDirectory()).toAbsolutePath();
 
             return Files.walk(root,1)
                     .map(path -> root.relativize(path.toAbsolutePath()))
@@ -57,7 +58,7 @@ public class TwilightLegacyPack extends AbstractPackResources {
     // Forgecopy ModFileResourcePack#getInputStream: added `subDir + `
     @Override
     protected InputStream getResource(String location) throws IOException {
-        final Path path = modFile.findResource(subDir + location);
+        final Path path = modFile.getPath(subDir + location);
 
         if (!Files.exists(path)) {
             TwilightForestMod.LOGGER.error("File does not exist!");
@@ -70,14 +71,14 @@ public class TwilightLegacyPack extends AbstractPackResources {
     // Forgecopy ModFileResourcePack#resourceExists: added `subDir + `
     @Override
     protected boolean hasResource(String resourcePath) {
-        return Files.exists(modFile.findResource(subDir + resourcePath));
+        return Files.exists(modFile.getPath(subDir + resourcePath));
     }
 
     // Forgecopy ModFileResourcePack#getAllResourceLocations: added `subDir + `
     @Override
     public Collection<ResourceLocation> getResources(PackType type, String namespaceIn, String pathIn, int maxDepthIn, Predicate<String> filterIn) {
         try {
-            Path root = modFile.findResource(subDir + type.getDirectory()).toAbsolutePath();
+            Path root = modFile.getPath(subDir + type.getDirectory()).toAbsolutePath();
             Path inputPath = root.getFileSystem().getPath(pathIn);
 
             return Files.walk(root).

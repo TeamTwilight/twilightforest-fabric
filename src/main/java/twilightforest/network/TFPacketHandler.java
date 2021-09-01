@@ -1,20 +1,13 @@
 package twilightforest.network;
 
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
-import net.minecraftforge.fmllegacy.network.NetworkRegistry;
-import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.fabricmc.api.EnvType;
 import twilightforest.TwilightForestMod;
 
 import java.util.function.Supplier;
 
 public class TFPacketHandler {
 	private static final String PROTOCOL_VERSION = "1";
-	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-			TwilightForestMod.prefix("channel"),
-			() -> PROTOCOL_VERSION,
-			PROTOCOL_VERSION::equals,
-			PROTOCOL_VERSION::equals
-	);
+	public static final NetworkWrapper CHANNEL = new NetworkWrapper(TwilightForestMod.prefix("channel"));
 
 	@SuppressWarnings("UnusedAssignment")
 	public static void init() {
@@ -25,8 +18,9 @@ public class TFPacketHandler {
 				return AreaProtectionPacket.Handler.onMessage(message, ctx);
 			}
 		}).add();
-		CHANNEL.messageBuilder(ChangeBiomePacket.class, id++).encoder(ChangeBiomePacket::encode).decoder(ChangeBiomePacket::new).consumer(ChangeBiomePacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(EnforceProgressionStatusPacket.class, id++).encoder(EnforceProgressionStatusPacket::encode).decoder(EnforceProgressionStatusPacket::new).consumer(EnforceProgressionStatusPacket.Handler::onMessage).add();
+		CHANNEL.registerPacket(ChangeBiomePacket.class, ChangeBiomePacket::new, EnvType.CLIENT);
+		CHANNEL.registerPacket(EnforceProgressionStatusPacket.class, EnforceProgressionStatusPacket::new, EnvType.CLIENT);
+		CHANNEL.registerPacket(StructureProtectionPacket.class, StructureProtectionPacket::new, EnvType.CLIENT);
 		CHANNEL.messageBuilder(StructureProtectionPacket.class, id++).encoder(StructureProtectionPacket::encode).decoder(StructureProtectionPacket::new).consumer(StructureProtectionPacket.Handler::onMessage).add();
 		CHANNEL.messageBuilder(StructureProtectionClearPacket.class, id++).encoder(StructureProtectionClearPacket::encode).decoder(StructureProtectionClearPacket::new).consumer(StructureProtectionClearPacket.Handler::onMessage).add();
 		CHANNEL.messageBuilder(ThrowPlayerPacket.class, id++).encoder(ThrowPlayerPacket::encode).decoder(ThrowPlayerPacket::new).consumer(ThrowPlayerPacket.Handler::onMessage).add();

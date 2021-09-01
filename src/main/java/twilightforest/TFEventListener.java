@@ -803,7 +803,7 @@ public class TFEventListener {
 	}
 
 	private static void sendEnforcedProgressionStatus(ServerPlayer player, boolean isEnforced) {
-		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EnforceProgressionStatusPacket(isEnforced));
+		TFPacketHandler.CHANNEL.send(player, new EnforceProgressionStatusPacket(isEnforced));
 	}
 
 	private static void sendSkylightEnabled(ServerPlayer player, boolean skylightEnabled) {

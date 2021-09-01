@@ -1,17 +1,13 @@
 package twilightforest.capabilities.shield;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.util.INBTSerializable;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import twilightforest.TwilightForestMod;
 
-public interface IShieldCapability extends INBTSerializable<CompoundTag> {
+import net.minecraft.resources.ResourceLocation;
+
+public interface IShieldCapability extends Component {
 
 	ResourceLocation ID = TwilightForestMod.prefix("cap_shield");
-
-	void setEntity(LivingEntity entity);
 
 	void update();
 

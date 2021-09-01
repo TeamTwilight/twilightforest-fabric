@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraftforge.common.Tags;
 import twilightforest.block.CinderFurnaceBlock;
 import twilightforest.block.TFBlocks;
 
@@ -58,10 +57,10 @@ public class CinderFurnaceTileEntity extends FurnaceBlockEntity {
 							Item item = itemstack.getItem();
 							itemstack.shrink(1);
 
-							if (itemstack.isEmpty()) {
-								ItemStack item1 = item.getContainerItem(itemstack);
-								te.items.set(1, item1);
-							}
+//							if (itemstack.isEmpty()) {
+//								ItemStack item1 = item.getContainerItem(itemstack);
+//								te.items.set(1, item1);
+//							}
 						}
 					}
 				}
@@ -120,7 +119,7 @@ public class CinderFurnaceTileEntity extends FurnaceBlockEntity {
 		if (this.level.hasChunkAt(pos)) {
 			Block nearbyBlock = this.getLevel().getBlockState(pos).getBlock();
 
-			if (nearbyBlock != TFBlocks.cinder_log.get() && BlockTags.LOGS.contains(nearbyBlock)) {
+			if (nearbyBlock != TFBlocks.cinder_log && BlockTags.LOGS.contains(nearbyBlock)) {
 				this.getLevel().setBlock(pos, getCinderLog(dx, dy, dz), 2);
 				this.getLevel().levelEvent(2004, pos, 0);
 				this.getLevel().levelEvent(2004, pos, 0);
@@ -144,8 +143,8 @@ public class CinderFurnaceTileEntity extends FurnaceBlockEntity {
 			direction = dy == 0 ? Direction.Axis.Y : null; //We return null so we can get Cinder Wood.
 		}
 
-		return direction != null ? TFBlocks.cinder_log.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction)
-				: TFBlocks.cinder_wood.get().defaultBlockState();
+		return direction != null ? TFBlocks.cinder_log.defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction)
+				: TFBlocks.cinder_wood.defaultBlockState();
 	}
 
 	/**
@@ -175,7 +174,7 @@ public class CinderFurnaceTileEntity extends FurnaceBlockEntity {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
 					BlockPos pos = getBlockPos().offset(dx, dy, dz);
-					if (this.level.hasChunkAt(pos) && this.getLevel().getBlockState(pos).getBlock() == TFBlocks.cinder_log.get()) {
+					if (this.level.hasChunkAt(pos) && this.getLevel().getBlockState(pos).getBlock() == TFBlocks.cinder_log) {
 						count++;
 					}
 				}
@@ -239,7 +238,7 @@ public class CinderFurnaceTileEntity extends FurnaceBlockEntity {
 	}
 
 	private boolean canMultiply(ItemStack input, ItemStack output) {
-		return ItemTags.LOGS.contains(input.getItem()) || Tags.Items.ORES.contains(input.getItem());
+		return ItemTags.LOGS.contains(input.getItem()) || ItemTags.COAL_ORES.contains(input.getItem()) || ItemTags.COPPER_ORES.contains(input.getItem()) || ItemTags.REDSTONE_ORES.contains(input.getItem()) || ItemTags.LAPIS_ORES.contains(input.getItem()) || ItemTags.DIAMOND_ORES.contains(input.getItem()) || ItemTags.EMERALD_ORES.contains(input.getItem());
 	}
 
 	/**

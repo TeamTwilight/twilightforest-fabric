@@ -2,12 +2,14 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
 
 import java.util.function.Supplier;
 
-public class EnforceProgressionStatusPacket {
+public class EnforceProgressionStatusPacket extends ISimplePacket {
 
 	private final boolean enforce;
 
@@ -23,15 +25,15 @@ public class EnforceProgressionStatusPacket {
 		buf.writeBoolean(enforce);
 	}
 
+	@Override
+	public void onMessage(Player playerEntity) {
+		Handler.onMessage(this);
+	}
+
 	public static class Handler {
 
-		public static boolean onMessage(EnforceProgressionStatusPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null);
-				}
-			});
+		public static boolean onMessage(EnforceProgressionStatusPacket message) {
+			Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null);
 			return true;
 		}
 	}

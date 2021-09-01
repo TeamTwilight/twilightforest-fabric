@@ -10,7 +10,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class AlphaYetiSpawnerTileEntity extends BossSpawnerTileEntity<AlphaYetiEntity> {
 
 	public AlphaYetiSpawnerTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.ALPHA_YETI_SPAWNER.get(), TFEntities.yeti_alpha, pos, state);
+		super(TFTileEntities.ALPHA_YETI_SPAWNER, TFEntities.yeti_alpha, pos, state);
 	}
 
 	@Override
