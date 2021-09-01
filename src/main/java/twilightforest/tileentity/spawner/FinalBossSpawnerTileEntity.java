@@ -2,6 +2,7 @@ package twilightforest.tileentity.spawner;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -14,7 +15,9 @@ public class FinalBossSpawnerTileEntity extends BossSpawnerTileEntity<PlateauBos
 		super(TFTileEntities.FINAL_BOSS_SPAWNER, TFEntities.plateau_boss, pos, state);
 	}
 
-	public static void tick(Level level, BlockPos pos, BlockState state, BossSpawnerTileEntity<?> te) {
-
+	//no spawning for you
+	@Override
+	protected boolean spawnMyBoss(ServerLevelAccessor world) {
+		return false;
 	}
 }

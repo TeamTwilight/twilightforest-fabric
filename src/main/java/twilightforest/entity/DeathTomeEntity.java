@@ -19,6 +19,7 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 import twilightforest.entity.projectile.TomeBoltEntity;
 import twilightforest.loot.TFTreasure;
@@ -53,10 +54,20 @@ public class DeathTomeEntity extends Monster implements RangedAttackMob {
 	public void aiStep() {
 		super.aiStep();
 
+		Vec3 vel = this.getDeltaMovement();
+		if (!this.onGround && vel.y < 0.0D) {
+			this.setDeltaMovement(vel.multiply(1.0D, 0.6D, 1.0D));
+		}
+
 		for (int i = 0; i < 1; ++i) {
 			this.level.addParticle(ParticleTypes.ENCHANT, this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.random.nextDouble() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(),
 					0, 0.5, 0);
 		}
+	}
+
+	@Override
+	public boolean causeFallDamage(float p_147187_, float p_147188_, DamageSource p_147189_) {
+		return false;
 	}
 
 	@Override

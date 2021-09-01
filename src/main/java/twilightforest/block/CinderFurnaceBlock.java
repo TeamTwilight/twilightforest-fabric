@@ -39,7 +39,7 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	private static final DirectionProperty FACING = TFHorizontalBlock.FACING;
 
 	CinderFurnaceBlock() {
-		super(Properties.of(Material.WOOD)/*.harvestTool(ToolType.PICKAXE)*/.requiresCorrectToolForDrops().strength(7.0F).lightLevel((state) -> 15));
+		super(Properties.of(Material.WOOD).requiresCorrectToolForDrops().strength(7.0F).lightLevel((state) -> 15));
 		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
 	}
 

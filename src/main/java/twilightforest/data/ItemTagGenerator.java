@@ -181,7 +181,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFBlocks.slider.get().asItem(),
 				TFBlocks.stone_twist.get().asItem(),
 				TFBlocks.stone_twist_thin.get().asItem(),
-				TFBlocks.uncrafting_table.get().asItem(),
 				TFItems.ore_meter.get()
 		);
 	}

@@ -66,6 +66,7 @@ public class RenderLayerRegistration {
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.stone_twist_thin.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.fiery_block.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.firefly_jar.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(TFBlocks.firefly_spawner.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.cicada_jar.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.moss_patch.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(TFBlocks.mayapple.get(), cutout);

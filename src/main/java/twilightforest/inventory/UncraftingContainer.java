@@ -490,6 +490,8 @@ public class UncraftingContainer extends AbstractContainerMenu {
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.tinkerInput) {
 			this.slotsChanged(this.tinkerInput);
 		}
+
+		super.clicked(slotNum, mouseButton, clickType, player);
 	}
 
 	/**
@@ -582,7 +584,8 @@ public class UncraftingContainer extends AbstractContainerMenu {
 			return ItemStack.EMPTY;
 		}
 
-		return transferSlot.remove(slotNum);
+		transferSlot.onTake(player, transferStack);
+		return transferStack;
 	}
 
 	@Override

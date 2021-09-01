@@ -114,9 +114,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
                         break;
                 }
 
-                if (world.setBlock(blockPos, chest, 16 | 2)) {
-                    TFTreasure.basement.generateChestContents(world, blockPos);
-                }
+                TFTreasure.basement.generateLootContainer(world, blockPos, chest, 16 | 2);
             }
         }
     }

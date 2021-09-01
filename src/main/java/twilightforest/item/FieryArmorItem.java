@@ -25,17 +25,11 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.FieryArmorModel;
 
 import javax.annotation.Nullable;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
-import net.minecraft.world.item.Item.Properties;
-import twilightforest.client.model.armor.TFArmorModel;
-
 public class FieryArmorItem extends ArmorItem {
-	@OnlyIn(Dist.CLIENT)
-	private static final MutableComponent TOOLTIP_TEXT = new TranslatableComponent("item.twilightforest.fiery_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.fiery_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public FieryArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
 		super(armorMaterial, armorType, props);
@@ -54,7 +48,7 @@ public class FieryArmorItem extends ArmorItem {
 	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(TOOLTIP_TEXT);
+		tooltip.add(TOOLTIP);
 	}
 
 	@Override

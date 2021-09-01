@@ -39,8 +39,9 @@ public class GlassSwordItem extends SwordItem {
 			tags.putBoolean("Unbreakable", true);
 
 			ListTag lore = new ListTag();
-			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.1\"}"));
-			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.2\"}"));
+			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.1\",\"italic\":false,\"color\":\"gray\"}"));
+			// TODO uncomment if someone asks if this will ever generate as loot
+			//  lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.2\",\"italic\":false,\"color\":\"gray\"}"));
 
 			CompoundTag display = new CompoundTag();
 			display.put("Lore", lore);

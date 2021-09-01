@@ -1,18 +1,18 @@
 package twilightforest.loot;
 
 import com.google.common.collect.Sets;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.conditions.IsMinion;
 import twilightforest.loot.conditions.ModExists;
@@ -49,6 +49,7 @@ public class TFTreasure {
 	public static final TFTreasure troll_garden = new TFTreasure("troll_garden");
 	public static final TFTreasure troll_vault = new TFTreasure("troll_vault");
 	public static final TFTreasure graveyard = new TFTreasure("graveyard");
+	public static final TFTreasure quest_grove = new TFTreasure("quest_grove_dropper");
 
 	public static final ResourceLocation BIGHORN_SHEEP_WHITE = register("entities/bighorn_sheep/white");
 	public static final ResourceLocation BIGHORN_SHEEP_ORANGE = register("entities/bighorn_sheep/orange");
@@ -94,18 +95,29 @@ public class TFTreasure {
 		MOD_EXISTS = registerCondition("mod_exists", new LootItemConditionType(new ModExists.ConditionSerializer()));
 	}
 
-	public void generateChest(LevelAccessor world, BlockPos pos, Direction dir, boolean trapped) {
-		world.setBlock(pos, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.FACING, dir), 2);
-		BlockEntity te = world.getBlockEntity(pos);
-		if (te instanceof ChestBlockEntity) {
-			((ChestBlockEntity) te).setLootTable(lootTable, ((WorldGenLevel)world).getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
-		}
+	public void generateChest(WorldGenLevel world, BlockPos pos, Direction dir, boolean trapped) {
+		this.generateLootContainer(world, pos, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.FACING, dir), 2);
+	}
+
+	public void generateLootContainer(WorldGenLevel world, BlockPos pos, BlockState state, int flags) {
+		world.setBlock(pos, state, flags);
+
+		this.generateChestContents(world, pos);
+	}
+
+	public void generateLootContainer(LevelAccessor world, BlockPos pos, BlockState state, int flags, long seed) {
+		world.setBlock(pos, state, flags);
+
+		this.generateChestContents(world, pos, seed);
 	}
 
 	public void generateChestContents(WorldGenLevel world, BlockPos pos) {
-		BlockEntity te = world.getBlockEntity(pos);
-		if (te instanceof ChestBlockEntity)
-			((ChestBlockEntity) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
+		this.generateChestContents(world, pos, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
+	}
+
+	public void generateChestContents(LevelAccessor world, BlockPos pos, long seed) {
+		if (world.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity lootContainer)
+			lootContainer.setLootTable(lootTable, seed);
 	}
 
 	private static LootItemFunctionType registerFunction(String name, LootItemFunctionType function) {

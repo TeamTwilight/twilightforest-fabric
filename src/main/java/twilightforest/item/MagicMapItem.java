@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-// FIXME: Maps are empty. Anything could be the cause, so the comment sits here
 
 public class MagicMapItem extends MapItem {
+
 	public static final String STR_ID = "magicmap";
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
@@ -62,7 +62,8 @@ public class MagicMapItem extends MapItem {
 
 	@Nullable
 	public static TFMagicMapData getData(ItemStack stack, Level world) {
-		return TFMagicMapData.getMagicMapData(world, getMapName(getMapId(stack)));
+		Integer id = getMapId(stack);
+		return id == null ? null : TFMagicMapData.getMagicMapData(world, getMapName(id));
 	}
 
 	@Nullable
@@ -78,9 +79,16 @@ public class MagicMapItem extends MapItem {
 
 	private static TFMagicMapData createMapData(ItemStack stack, Level world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension) {
 		int i = world.getFreeMapId();
-//		TFMagicMapData mapdata = new TFMagicMapData(getMapName(i));
-		TFMagicMapData mapdata = new TFMagicMapData(x, z, (byte)scale, trackingPosition, unlimitedTracking, false, dimension);
-		TFMagicMapData.registerMagicMapData(world, mapdata); // call our own register method
+
+		// magic maps are offset by 1024 from normal maps so that 0,0 is in the middle of the map containing those coords
+		int mapSize = 128 * (1 << scale);
+		int roundX = (int) Math.round((double) x / mapSize);
+		int roundZ = (int) Math.round((double) z / mapSize);
+		int scaledX = roundX * mapSize;
+		int scaledZ = roundZ * mapSize;
+
+		TFMagicMapData mapdata = new TFMagicMapData(scaledX, scaledZ, (byte)scale, trackingPosition, unlimitedTracking, false, dimension);
+		TFMagicMapData.registerMagicMapData(world, mapdata, getMapName(i)); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
 		return mapdata;
 	}
@@ -138,7 +146,7 @@ public class MagicMapItem extends MapItem {
 							byte ourPixel = (byte) (mapcolor.id * 4 + brightness);
 
 							if (orgPixel != ourPixel) {
-								data.colors[xPixel + zPixel * 128] = ourPixel;
+								data.setColor(xPixel, zPixel, ourPixel);
 								data.setDirty();
 							}
 
@@ -240,12 +248,9 @@ public class MagicMapItem extends MapItem {
 	@Override
 	@Nullable
 	public Packet<?> getUpdatePacket(ItemStack stack, Level world, Player player) {
-		Packet<?> p = super.getUpdatePacket(stack, world, player);
-		if (p instanceof ClientboundMapItemDataPacket) {
-			TFMagicMapData mapdata = getCustomMapData(stack, world);
-			return TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(mapdata, (ClientboundMapItemDataPacket) p), NetworkDirection.PLAY_TO_CLIENT);
-		} else {
-			return p;
-		}
+		Integer id = getMapId(stack);
+		TFMagicMapData mapdata = getCustomMapData(stack, world);
+		Packet<?> p = id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
+		return p instanceof ClientboundMapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(mapdata, (ClientboundMapItemDataPacket) p), NetworkDirection.PLAY_TO_CLIENT) : p;
 	}
 }

@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import com.google.gson.JsonObject;
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.SimpleContainer;
@@ -54,7 +55,7 @@ public class FieryPickItem extends PickaxeItem {
 	@Environment(EnvType.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip"));
+		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
 	}
 
 	private static class SmeltModifier extends LootModifier {

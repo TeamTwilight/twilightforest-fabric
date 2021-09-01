@@ -269,6 +269,27 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.charm_of_keeping_1.get()).setWeight(20))
                                 .add(LootItem.lootTableItem(TFBlocks.mangrove_sapling.get().asItem()).setWeight(25))));
 
+        register.accept(TFTreasure.quest_grove.lootTable,
+                LootTable.lootTable()
+                        .withPool(LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(4))
+                                .add(LootItem.lootTableItem(Blocks.WHITE_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.ORANGE_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.MAGENTA_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.LIGHT_BLUE_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.YELLOW_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.LIME_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.PINK_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.GRAY_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.LIGHT_GRAY_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.CYAN_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.PURPLE_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.BLUE_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.BROWN_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.GREEN_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.RED_WOOL))
+                                .add(LootItem.lootTableItem(Blocks.BLACK_WOOL))));
+
         register.accept(TFTreasure.tower_library.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()

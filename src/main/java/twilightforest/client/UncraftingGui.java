@@ -35,12 +35,12 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 	protected void init() {
 		super.init();
 
-		this.addWidget(new CycleButton(leftPos + 40, topPos + 22, true, button -> {
+		this.addRenderableWidget(new CycleButton(leftPos + 40, topPos + 22, true, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(0));
 			menu.unrecipeInCycle++;
 			menu.slotsChanged(menu.tinkerInput);
 		}));
-		this.addWidget(new CycleButton(leftPos + 40, topPos + 55, false, button -> {
+		this.addRenderableWidget(new CycleButton(leftPos + 40, topPos + 55, false, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(1));
 			menu.unrecipeInCycle--;
 			menu.slotsChanged(menu.tinkerInput);
@@ -48,12 +48,12 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 
 		//this.buttonList.add(new ModeButton(uiLeft + 7, guiTop + 57));
 
-		this.addWidget(new CycleButtonMini(leftPos + 27, topPos + 56, true, button -> {
+		this.addRenderableWidget(new CycleButtonMini(leftPos + 27, topPos + 56, true, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(2));
 			menu.ingredientsInCycle++;
 			menu.slotsChanged(menu.tinkerInput);
 		}));
-		this.addWidget(new CycleButtonMini(leftPos + 27, topPos + 63, false, button -> {
+		this.addRenderableWidget(new CycleButtonMini(leftPos + 27, topPos + 63, false, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(3));
 			menu.ingredientsInCycle--;
 			menu.slotsChanged(menu.tinkerInput);
@@ -61,12 +61,12 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 
 		//this.buttonList.add(new RefreshButton(uiLeft + 26, guiTop + 57));
 
-		this.addWidget(new CycleButton(leftPos + 121, topPos + 22, true, button -> {
+		this.addRenderableWidget(new CycleButton(leftPos + 121, topPos + 22, true, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(4));
 			menu.unrecipeInCycle++;
 			menu.slotsChanged(menu.assemblyMatrix);
 		}));
-		this.addWidget(new CycleButton(leftPos + 121, topPos + 55, false, button -> {
+		this.addRenderableWidget(new CycleButton(leftPos + 121, topPos + 55, false, button -> {
 			TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(5));
 			menu.unrecipeInCycle--;
 			menu.slotsChanged(menu.assemblyMatrix);
@@ -112,7 +112,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 
 		// show the costs if there are any
 		Font fontRendererObj = this.minecraft.font;
-		Lighting.setupForFlatItems();
+		//Lighting.setupForFlatItems();
 
 		int costVal = tfContainer.getUncraftingCost();
 		if (costVal > 0) {

@@ -4,6 +4,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.core.Direction;
+import net.minecraft.data.models.blockstates.Condition;
+import net.minecraft.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.data.models.blockstates.VariantProperties;
+import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.model.TexturedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -137,6 +144,17 @@ public class BlockstateGenerator extends BlockStateProvider {
         simpleBlock(TFBlocks.knight_phantom_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.ur_ghast_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.quest_ram_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+
+		simpleBlock(TFBlocks.zombie_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.zombie_wall_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.skeleton_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.skeleton_wall_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.wither_skele_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.wither_skele_wall_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.creeper_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.creeper_wall_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.player_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.player_wall_skull_candle.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         
 		ModelFile shieldModel = models().cubeTop(TFBlocks.stronghold_shield.getId().getPath(), prefix("block/shield_outside"), prefix("block/shield_inside"));
 		getVariantBuilder(TFBlocks.stronghold_shield.get())
@@ -194,7 +212,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 						prefix("block/" + TFBlocks.huge_stalk.getId().getPath()),
 						prefix("block/" + TFBlocks.huge_stalk.getId().getPath() + "_top")));
 		perFaceBlock(TFBlocks.huge_mushgloom.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_gloom_cap"));
-		simpleBlock(TFBlocks.huge_mushgloom_stem.get());
+		perFaceBlock(TFBlocks.huge_mushgloom_stem.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_mushgloom_stem"));
 		simpleBlock(TFBlocks.trollvidr.get(), models().cross(TFBlocks.trollvidr.getId().getPath(), blockTexture(TFBlocks.trollvidr.get())));
 		simpleBlock(TFBlocks.unripe_trollber.get(), models().cross(TFBlocks.unripe_trollber.getId().getPath(), blockTexture(TFBlocks.unripe_trollber.get())));
 		ModelFile trollber = models().withExistingParent(TFBlocks.trollber.getId().getPath(), prefix("block/util/cross_2_layer"))
@@ -273,6 +291,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.boss_spawner_alpha_yeti.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
 		simpleBlock(TFBlocks.boss_spawner_final_boss.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
 		simpleBlockExisting(TFBlocks.firefly_jar.get());
+		simpleBlockExisting(TFBlocks.firefly_spawner.get());
 		simpleBlockExisting(TFBlocks.cicada_jar.get());
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.root.get());
@@ -284,7 +303,25 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("side", prefix("block/uncrafting_side")));
 		registerSmokersAndJets();
 		axisBlock(TFBlocks.stone_twist.get(), prefix("block/stone_twist/twist_side"), prefix("block/stone_twist/twist_end"));
-		ConfiguredModel[] lapisModels = new ConfiguredModel[4];
+		axisBlock(TFBlocks.stone_bold.get(), prefix("block/stone_pillar_side"), prefix("block/stone_pillar_end"));
+		simpleBlock(TFBlocks.empty_bookshelf.get(), models().cubeColumn("empty_bookshelf", prefix("block/wood/bookshelf_spawner/bookshelf_empty"), prefix("block/wood/planks_canopy_0")));
+		simpleBlock(TFBlocks.canopy_bookshelf.get(), models().cubeColumn("canopy_bookshelf", prefix("block/wood/bookshelf_canopy"), prefix("block/wood/planks_canopy_0")));
+		//if theres a better way to do this block please do it. I dont want to think about it right now
+		getVariantBuilder(TFBlocks.tome_spawner.get()).forAllStatesExcept(s -> {
+			switch (s.getValue(TomeSpawnerBlock.BOOK_STAGES)) {
+				case 1 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_1", prefix("block/wood/bookshelf_spawner/bookshelf_1"), prefix("block/wood/planks_canopy_0"))).build(); }
+				case 2 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_2", prefix("block/wood/bookshelf_spawner/bookshelf_2"), prefix("block/wood/planks_canopy_0"))).build(); }
+				case 3 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_3", prefix("block/wood/bookshelf_spawner/bookshelf_3"), prefix("block/wood/planks_canopy_0"))).build(); }
+				case 4 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_4", prefix("block/wood/bookshelf_spawner/bookshelf_4"), prefix("block/wood/planks_canopy_0"))).build(); }
+				case 5 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_5", prefix("block/wood/bookshelf_spawner/bookshelf_5"), prefix("block/wood/planks_canopy_0"))).build(); }
+				case 6 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_6", prefix("block/wood/bookshelf_spawner/bookshelf_6"), prefix("block/wood/planks_canopy_0"))).build(); }
+				case 7 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_7", prefix("block/wood/bookshelf_spawner/bookshelf_7"), prefix("block/wood/planks_canopy_0"))).build(); }
+				case 8 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_8", prefix("block/wood/bookshelf_spawner/bookshelf_8"), prefix("block/wood/planks_canopy_0"))).build(); }
+				case 9 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_9", prefix("block/wood/bookshelf_spawner/bookshelf_9"), prefix("block/wood/planks_canopy_0"))).build(); }
+				default -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_10", prefix("block/wood/bookshelf_spawner/bookshelf_10"), prefix("block/wood/planks_canopy_0"))).build(); }
+			}
+		}, TomeSpawnerBlock.SPAWNER);
+		//ConfiguredModel[] lapisModels = new ConfiguredModel[4];
 		//for (int i = 0; i < 4; i++) {
 		//	String modelName = TFBlocks.lapis_block.getId().getPath();
 		//	if (i != 0) {
@@ -551,9 +588,14 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.mushgloom.get(), models().withExistingParent(TFBlocks.mushgloom.getId().getPath(), prefix("block/util/cross_2_layer"))
 						.texture("cross", blockTexture(TFBlocks.mushgloom.get()))
 						.texture("cross2", prefix("block/" + TFBlocks.mushgloom.getId().getPath() + "_head")));
-		simpleBlock(TFBlocks.torchberry_plant.get(), models().withExistingParent(TFBlocks.torchberry_plant.getId().getPath(), prefix("block/util/cross_2_layer"))
-						.texture("cross", blockTexture(TFBlocks.torchberry_plant.get()))
-						.texture("cross2", prefix("block/" + TFBlocks.torchberry_plant.getId().getPath() + "_glow")));
+
+		ModelFile berry = models().withExistingParent(TFBlocks.torchberry_plant.getId().getPath(), prefix("block/util/cross_2_layer"))
+				.texture("cross", blockTexture(TFBlocks.torchberry_plant.get()))
+				.texture("cross2", prefix("block/" + TFBlocks.torchberry_plant.getId().getPath() + "_glow"));
+		ModelFile noBerry = models().withExistingParent(TFBlocks.torchberry_plant.getId().getPath() + "_no_berries", new ResourceLocation("block/cross"))
+				.texture("cross", blockTexture(TFBlocks.torchberry_plant.get()));
+		getVariantBuilder(TFBlocks.torchberry_plant.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(s.getValue(TorchberryPlantBlock.HAS_BERRIES) ? berry : noBerry).build());
+
 		simpleBlockExisting(TFBlocks.root_strand.get());
 		simpleBlockExisting(TFBlocks.fallen_leaves.get());
 	}
@@ -1445,9 +1487,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void perFaceBlock(Block b, ResourceLocation inside, ResourceLocation outside) {
-		ModelFile modelInside = models().withExistingParent(b.getRegistryName().getPath() + "_inside", prefix("block/util/north_face"))
+		ModelFile modelInside = models().withExistingParent(b.getRegistryName().getPath() + "_inside", new ResourceLocation("block/template_single_face"))
 						.texture("texture", inside);
-		ModelFile modelOutside = models().withExistingParent(b.getRegistryName().getPath() + "_outside", prefix("block/util/north_face"))
+		ModelFile modelOutside = models().withExistingParent(b.getRegistryName().getPath() + "_outside", new ResourceLocation("block/template_single_face"))
 						.texture("texture", outside);
 		getMultipartBuilder(b).part().modelFile(modelInside).addModel().condition(HugeMushroomBlock.NORTH, false).end();
 		getMultipartBuilder(b).part().modelFile(modelOutside).addModel().condition(HugeMushroomBlock.NORTH, true).end();

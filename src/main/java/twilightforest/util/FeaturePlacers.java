@@ -2,8 +2,13 @@ package twilightforest.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
@@ -19,6 +24,18 @@ import java.util.function.BiFunction;
  */
 public final class FeaturePlacers {
     public static final BiFunction<LevelSimulatedReader, BlockPos, Boolean> VALID_TREE_POS = TreeFeature::validTreePos;
+
+    public static <T extends Mob> void placeEntity(EntityType<T> entityType, BlockPos pos, ServerLevelAccessor levelAccessor) {
+        Mob mob = entityType.create(levelAccessor.getLevel());
+
+        if (mob == null) return;
+
+        mob.setPersistenceRequired();
+        mob.moveTo(pos, 0.0F, 0.0F);
+        mob.finalizeSpawn(levelAccessor, levelAccessor.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null ,null);
+        levelAccessor.addFreshEntityWithPassengers(mob);
+        levelAccessor.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+    }
 
     /**
      * Draws a line from {x1, y1, z1} to {x2, y2, z2}

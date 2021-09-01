@@ -4,20 +4,13 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
-import twilightforest.TFMazeMapData;
-import twilightforest.network.MazeMapPacket;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
@@ -27,6 +20,13 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
+import twilightforest.TFMazeMapData;
+import twilightforest.network.MazeMapPacket;
+import twilightforest.network.TFPacketHandler;
+
+import javax.annotation.Nullable;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 // FIXME: Map does not display data. Investigate
@@ -45,7 +45,7 @@ public class MazeMapItem extends MapItem {
 
 	// [VanillaCopy] super with own item and methods, plus y and mapOres
 	public static ItemStack setupNewMap(Level world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
-		ItemStack itemstack = new ItemStack(mapOres ? TFItems.ore_map : TFItems.maze_map);
+		ItemStack itemstack = new ItemStack(mapOres ? TFItems.ore_map.get() : TFItems.maze_map.get());
 		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.dimension(), worldY);
 		return itemstack;
 	}
@@ -55,17 +55,8 @@ public class MazeMapItem extends MapItem {
 		return TFMazeMapData.getMazeMapData(world, getMapName(getMapId(stack)));
 	}
 
-	//@Override
-	public static MapItemSavedData getSavedData(ItemStack pStack, Level pLevel) {
-		// Forge: Add instance method so that mods can override
-		Item map = pStack.getItem();
-		if(map instanceof MapItem) {
-			return ((MazeMapItem)map).getCustomMapData(pStack, pLevel);
-		}
-		return null;
-	}
-
 	@Nullable
+	@Override
 	protected TFMazeMapData getCustomMapData(ItemStack stack, Level world) {
 		TFMazeMapData mapdata = getData(stack, world);
 		if (mapdata == null && !world.isClientSide) {
@@ -185,15 +176,7 @@ public class MazeMapItem extends MapItem {
 											multiset.add(MaterialColor.DIAMOND, 1000);
 										} else if (state.getBlock() == Blocks.EMERALD_ORE) {
 											multiset.add(MaterialColor.EMERALD, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.COAL_ORES)) {
-											multiset.add(MaterialColor.COLOR_PINK, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.IRON_ORES)) {
-											multiset.add(MaterialColor.COLOR_PINK, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.REDSTONE_ORES)) {
-											multiset.add(MaterialColor.COLOR_PINK, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.LAPIS_ORES)) {
-											multiset.add(MaterialColor.COLOR_PINK, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.DIAMOND_ORES)) {
+										} else if (state.getBlock() != Blocks.AIR && state.is(Tags.Blocks.ORES)) {
 											multiset.add(MaterialColor.COLOR_PINK, 1000);
 										}
 									}
@@ -257,7 +240,7 @@ public class MazeMapItem extends MapItem {
 	public Packet<?> getUpdatePacket(ItemStack stack, Level worldIn, Player player) {
 		Packet<?> p = super.getUpdatePacket(stack, worldIn, player);
 		if (p instanceof ClientboundMapItemDataPacket) {
-			return new MazeMapPacket((ClientboundMapItemDataPacket) p);
+			return TFPacketHandler.CHANNEL.toVanillaPacket(new MazeMapPacket((ClientboundMapItemDataPacket) p), NetworkDirection.PLAY_TO_CLIENT);
 		} else {
 			return p;
 		}

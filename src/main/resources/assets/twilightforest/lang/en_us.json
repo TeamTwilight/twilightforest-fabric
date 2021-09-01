@@ -204,6 +204,7 @@
   "block.twilightforest.boss_spawner_snow_queen": "Snow Queen Boss Spawner",
   "block.twilightforest.boss_spawner_final_boss": "Final Boss Boss Spawner",
   "block.twilightforest.firefly_jar": "Firefly Jar",
+  "block.twilightforest.firefly_particle_spawner": "Firefly Particle Spawner",
   "block.twilightforest.cicada_jar": "Cicada Jar",
   "block.twilightforest.moss_patch": "Moss Patch",
   "block.twilightforest.mayapple": "Mayapple",
@@ -350,8 +351,11 @@
   "block.twilightforest.twilight_portal_miniature_structure": "Miniature Twilight Portal",
   "block.twilightforest.naga_courtyard_miniature_structure": "Miniature Naga Courtyard",
   "block.twilightforest.lich_tower_miniature_structure": "Miniature Lich Tower",
-  "block.twilightforest.stone_twist": "Stone Twist",
-  "block.twilightforest.stone_twist_thin": "Stone Pillar",
+  "block.twilightforest.stone_twist": "Twisted Stone",
+  "block.twilightforest.stone_twist_thin": "Twisted Stone Pillar",
+  "block.twilightforest.stone_pillar_bold": "Bold Stone Pillar",
+  "block.twilightforest.empty_bookshelf": "Empty Bookshelf",
+  "block.twilightforest.death_tome_spawner": "Death Tome Spawner",
   "block.twilightforest.etched_nagastone": "Etched Nagastone",
   "block.twilightforest.nagastone_pillar": "Nagastone Pillar",
   "block.twilightforest.nagastone_stairs_left": "Nagastone Stairs (Left)",
@@ -382,6 +386,17 @@
   "block.twilightforest.casket.broken": "Your Keepsake Casket was too damaged to hold any more items. All items that would be stored in your casket were dropped on the ground.",
   "block.twilightforest.casket.locked": "This Casket can only be opened by %s!",
 
+  "block.twilightforest.zombie_skull_candle": "Zombie Skull Candle",
+  "block.twilightforest.zombie_wall_skull_candle": "Zombie Wall Skull Candle",
+  "block.twilightforest.skeleton_skull_candle": "Skeleton Skull Candle",
+  "block.twilightforest.skeleton_wall_skull_candle": "Skeleton Wall Skull Candle",
+  "block.twilightforest.wither_skeleton_skull_candle": "Wither Skeleton Skull Candle",
+  "block.twilightforest.wither_skeleton_wall_skull_candle": "Wither Skeleton Wall Skull Candle",
+  "block.twilightforest.creeper_skull_candle": "Creeper Skull Candle",
+  "block.twilightforest.creeper_wall_skull_candle": "Creeper Wall Skull Candle",
+  "block.twilightforest.player_skull_candle": "Player Skull Candle",
+  "block.twilightforest.player_wall_skull_candle": "Player Wall Skull Candle",
+
   "block.twilightforest.potted_twilight_oak_sapling": "Potted Sickly Twilight Oak Sapling",
   "block.twilightforest.potted_canopy_sapling": "Potted Canopy Tree Sapling",
   "block.twilightforest.potted_mangrove_sapling": "Potted Twilight Mangrove Sapling",
@@ -410,6 +425,7 @@
   "block.twilightforest.canopy_door": "Canopy Door",
   "block.twilightforest.canopy_sign": "Canopy Sign",
   "block.twilightforest.canopy_wall_sign": "Canopy Wall Sign",
+  "block.twilightforest.canopy_bookshelf": "Canopy Bookshelf",
 
   "block.twilightforest.dark_planks": "Darkwood Planks",
   "block.twilightforest.dark_stairs": "Darkwood Stairs",
@@ -703,6 +719,9 @@
   "item.twilightforest.glass_sword.tooltip.2": "Will never generate as loot",
 
   "item.twilightforest.arctic_armor.tooltip": "Dyeable like Leather Armor",
+
+  "item.twilightforest.skull_candle.desc": "Has: %s %s Candle",
+  "item.twilightforest.skull_candle.desc.multiple": "Has: %s %s Candles",
 
   // Entities
   "entity.twilightforest.wild_boar": "Wild Boar",
@@ -1206,6 +1225,8 @@
   "twilightforest.config.loading_icon_tilt_pushback.tooltip": "Pushback value to re-center the wobble of loading icon.",
   "twilightforest.config.casket_uuid_locking": "Keepsake Casket UUID Locking",
   "twilightforest.config.casket_uuid_locking.tooltip": "If true, Keepsake Caskets that are spawned when a player dies will not be accessible by other players. Use this if you dont want people taking from other people's death caskets. NOTE: server operators will still be able to open locked caskets.",
+  "twilightforest.config.disable_skull_candles": "Disable Skull Candle Creation",
+  "twilightforest.config.disable_skull_candles.tooltip": "If true, disables the ability to make Skull Candles by right clicking a vanilla skull with a candle. Turn this on if you're having mod conflict issues for some reason.",
 
   // Books
   "twilightforest.book.lichtower.1": "\u00A78[[An explorer's notebook, gnawed on by monsters]]\u00A70\n\n_I have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse",

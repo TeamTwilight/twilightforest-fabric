@@ -28,8 +28,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.TFPartEntity;
-import twilightforest.events.EntityJoinWorldEvent;
-import twilightforest.events.EntityLeaveWorldEvent;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 

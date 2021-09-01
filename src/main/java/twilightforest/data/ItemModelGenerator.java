@@ -78,7 +78,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.huge_stalk.get());
 		getBuilder(TFBlocks.huge_mushgloom.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
 						.texture("all", prefix("block/huge_gloom_cap"));
-		toBlock(TFBlocks.huge_mushgloom_stem.get());
+		getBuilder(TFBlocks.huge_mushgloom_stem.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
+				.texture("all", prefix("block/huge_mushgloom_stem"));
 		generated(TFBlocks.trollvidr.getId().getPath(), prefix("block/" + TFBlocks.trollvidr.getId().getPath()));
 		generated(TFBlocks.unripe_trollber.getId().getPath(), prefix("block/" + TFBlocks.unripe_trollber.getId().getPath()));
 		generated(TFBlocks.trollber.getId().getPath(), prefix("block/" + TFBlocks.trollber.getId().getPath()));
@@ -153,6 +154,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.boss_spawner_alpha_yeti.get(), new ResourceLocation("block/spawner"));
 		toBlockModel(TFBlocks.boss_spawner_final_boss.get(), new ResourceLocation("block/spawner"));
 		toBlock(TFBlocks.firefly_jar.get());
+		toBlock(TFBlocks.firefly_spawner.get());
 		toBlock(TFBlocks.cicada_jar.get());
 		generated(TFBlocks.moss_patch.getId().getPath(), prefix("block/patch/moss"));
 		generated(TFBlocks.mayapple.getId().getPath(), prefix("block/mayapple"));
@@ -183,6 +185,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.spiral_bricks.get(), prefix("block/spiral_bricks/x_spiral_bottom_right"));
 		toBlock(TFBlocks.stone_twist.get());
 		toBlockModel(TFBlocks.stone_twist_thin.get(), prefix("block/pillar/pillar_inventory"));
+		toBlock(TFBlocks.stone_bold.get());
+		toBlockModel(TFBlocks.tome_spawner.get(), prefix("block/death_tome_spawner_10"));
+		toBlock(TFBlocks.empty_bookshelf.get());
+		toBlock(TFBlocks.canopy_bookshelf.get());
 		//toBlock(TFBlocks.lapis_block.get());
 
 		toBlock(TFBlocks.oak_log.get());

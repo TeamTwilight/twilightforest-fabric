@@ -11,6 +11,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -23,14 +24,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.*;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -71,6 +71,7 @@ import twilightforest.data.BlockTagGenerator;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.CharmEffectEntity;
 import twilightforest.entity.IHostileMount;
+import twilightforest.entity.KoboldEntity;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.enums.BlockLoggingEnum;
@@ -236,6 +237,63 @@ public class TFEventListener {
 		if (living instanceof Player && isRidingUnfriendly(living) && damageSource == DamageSource.IN_WALL) {
 			event.setCanceled(true);
 		}
+	}
+
+	//I wanted to make sure absolutely nothing broke, so I also check against the namespaces of the item to make sure theyre vanilla.
+	//Worst case some stupid mod adds their own stuff to the minecraft namespace and breaks this, then you can disable this via config.
+	@SubscribeEvent
+	public static void createSkullCandle(PlayerInteractEvent.RightClickBlock event) {
+		ItemStack stack = event.getItemStack();
+		Level world = event.getWorld();
+		BlockPos pos = event.getPos();
+		BlockState state = world.getBlockState(pos);
+		if(!TFConfig.COMMON_CONFIG.disableSkullCandles.get()) {
+			if (stack.is(ItemTags.CANDLES) && stack.getItem().getRegistryName().getNamespace().equals("minecraft") && !event.getPlayer().isShiftKeyDown()) {
+				if (state.getBlock() instanceof AbstractSkullBlock && state.getBlock().getRegistryName().getNamespace().equals("minecraft")) {
+					SkullBlock.Types type = (SkullBlock.Types) ((AbstractSkullBlock) state.getBlock()).getType();
+					boolean wall = state.getBlock() instanceof WallSkullBlock;
+					switch (type) {
+						case SKELETON -> {
+							if (wall) makeWallSkull(event, TFBlocks.skeleton_wall_skull_candle.get());
+							else makeFloorSkull(event, TFBlocks.skeleton_skull_candle.get());
+						}
+						case WITHER_SKELETON -> {
+							if (wall) makeWallSkull(event, TFBlocks.wither_skele_wall_skull_candle.get());
+							else makeFloorSkull(event, TFBlocks.wither_skele_skull_candle.get());
+						}
+						case PLAYER -> {
+							if (wall) makeWallSkull(event, TFBlocks.player_wall_skull_candle.get());
+							else makeFloorSkull(event, TFBlocks.player_skull_candle.get());
+						}
+						case ZOMBIE -> {
+							if (wall) makeWallSkull(event, TFBlocks.zombie_wall_skull_candle.get());
+							else makeFloorSkull(event, TFBlocks.zombie_skull_candle.get());
+						}
+						case CREEPER -> {
+							if (wall) makeWallSkull(event, TFBlocks.creeper_wall_skull_candle.get());
+							else makeFloorSkull(event, TFBlocks.creeper_skull_candle.get());
+						}
+					}
+					if(!event.getPlayer().getAbilities().instabuild) stack.shrink(1);
+					//this is to prevent anything from being placed afterwords
+					event.setCanceled(true);
+				}
+			}
+		}
+	}
+
+	private static void makeFloorSkull(PlayerInteractEvent.RightClickBlock event, Block newBlock) {
+		event.getWorld().setBlockAndUpdate(event.getPos(), newBlock.defaultBlockState()
+				.setValue(AbstractSkullCandleBlock.CANDLES, 1)
+				.setValue(AbstractSkullCandleBlock.COLOR, AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()))
+				.setValue(SkullCandleBlock.ROTATION, event.getWorld().getBlockState(event.getPos()).getValue(SkullBlock.ROTATION)));
+	}
+
+	private static void makeWallSkull(PlayerInteractEvent.RightClickBlock event, Block newBlock) {
+		event.getWorld().setBlockAndUpdate(event.getPos(), newBlock.defaultBlockState()
+				.setValue(AbstractSkullCandleBlock.CANDLES, 1)
+				.setValue(AbstractSkullCandleBlock.COLOR, AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()))
+				.setValue(WallSkullCandleBlock.FACING, event.getWorld().getBlockState(event.getPos()).getValue(WallSkullBlock.FACING)));
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -745,7 +803,7 @@ public class TFEventListener {
 	public static void livingAttack(LivingAttackEvent event) {
 		LivingEntity living = event.getEntityLiving();
 		// cancel attacks in protected areas
-		if (!living.level.isClientSide && living instanceof Enemy && event.getSource().getEntity() instanceof Player
+		if (!living.level.isClientSide && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof KoboldEntity)
 				&& isAreaProtected(living.level, (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
 
 			event.setCanceled(true);

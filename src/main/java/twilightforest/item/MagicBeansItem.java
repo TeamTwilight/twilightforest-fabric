@@ -1,5 +1,11 @@
 package twilightforest.item;
 
+import net.minecraft.advancements.Advancement;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -14,6 +20,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import javax.annotation.Nonnull;
@@ -39,9 +46,17 @@ public class MagicBeansItem extends Item {
 				ItemStack is = player.getItemInHand(context.getHand());
 				is.shrink(1);
 				makeHugeStalk(world, pos, minY, maxY);
+				if (player instanceof ServerPlayer) {
+					player.awardStat(Stats.ITEM_USED.get(this));
 
-				if (player instanceof ServerPlayer)
-					TFAdvancements.ITEM_USE_TRIGGER.trigger((ServerPlayer) player, is, world, pos);
+					//fallback if the other part doesnt work since its inconsistent
+					PlayerAdvancements advancements = ((ServerPlayer) player).getAdvancements();
+					ServerAdvancementManager manager = ((ServerLevel)player.getCommandSenderWorld()).getServer().getAdvancements();
+					Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("beanstalk"));
+					if(advancement != null) {
+						advancements.award(advancement, "use_beans");
+					}
+				}
 			}
 
 			return InteractionResult.SUCCESS;

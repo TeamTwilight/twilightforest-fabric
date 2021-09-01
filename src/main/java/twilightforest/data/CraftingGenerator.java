@@ -69,6 +69,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_item", has(TFBlocks.firefly.get()))
 				.save(consumer);
 
+		ShapelessRecipeBuilder.shapeless(TFBlocks.firefly_spawner.get())
+				.requires(Ingredient.of(TFBlocks.firefly_jar.get()))
+				.requires(Ingredient.of(TFBlocks.firefly.get()))
+				.requires(Ingredient.of(Blocks.POPPY))
+				.unlockedBy("has_jar", has(TFBlocks.firefly_jar.get()))
+				.save(consumer);
+
 		ShapelessRecipeBuilder.shapeless(TFBlocks.cicada_jar.get())
 				.requires(Ingredient.of(TFBlocks.cicada.get()))
 				.requires(Ingredient.of(Items.GLASS_BOTTLE))
@@ -111,6 +118,23 @@ public class CraftingGenerator extends CraftingDataHelper {
 		
 		crackedWoodRecipes(consumer, "smoked", RecipeSerializer.SMOKING_RECIPE, 100);
 		crackedStoneRecipes(consumer, "smelted", RecipeSerializer.SMELTING_RECIPE, 200);
+
+		ShapedRecipeBuilder.shaped(TFBlocks.empty_bookshelf.get())
+				.pattern("---")
+				.pattern("   ")
+				.pattern("---")
+				.define('-', TFBlocks.canopy_slab.get())
+				.unlockedBy("has_item", has(TFBlocks.canopy_slab.get()))
+				.save(consumer);
+
+		ShapedRecipeBuilder.shaped(TFBlocks.canopy_bookshelf.get())
+				.pattern("---")
+				.pattern("BBB")
+				.pattern("---")
+				.define('-', TFBlocks.canopy_planks.get())
+				.define('B', Items.BOOK)
+				.unlockedBy("has_item", has(TFBlocks.canopy_planks.get()))
+				.save(consumer);
 
 		ShapelessRecipeBuilder.shapeless(TFItems.armor_shard_cluster.get())
 				.requires(Ingredient.of(TFItems.armor_shard.get()))

@@ -28,23 +28,12 @@ public class MagicMapPacket extends ISimplePacket {
 
 	public MagicMapPacket(FriendlyByteBuf buf) {
 		featureData = buf.readByteArray();
-
 		inner = new ClientboundMapItemDataPacket(buf);
-		/*try {
-			inner.read(buf);
-		} catch (IOException e) {
-			throw new RuntimeException("Couldn't read inner SPacketMaps", e);
-		}*/
 	}
 
 	public void encode(FriendlyByteBuf buf) {
 		buf.writeByteArray(featureData);
-
-		//try {
-			inner.write(buf);
-		//} catch (IOException e) {
-		//	throw new RuntimeException("Couldn't write inner SPacketMaps", e);
-		//}
+		inner.write(buf);
 	}
 
 	@Override
@@ -70,7 +59,7 @@ public class MagicMapPacket extends ISimplePacket {
 						//	}
 						//}
 
-						TFMagicMapData.registerMagicMapData(Minecraft.getInstance().level, mapdata);
+						TFMagicMapData.registerMagicMapData(Minecraft.getInstance().level, mapdata, s);
 					}
 
 					message.inner.applyToMap(mapdata);
@@ -91,7 +80,7 @@ public class MagicMapPacket extends ISimplePacket {
 						mapdata.decorations.putAll(saveVanilla);
 					}
 
-					//mapitemrenderer.update(mapdata);
+					mapitemrenderer.update(message.inner.getMapId(), mapdata);
 				}
 			});
 

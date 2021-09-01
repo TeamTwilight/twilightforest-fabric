@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -80,9 +81,9 @@ public class CompressedBlock extends Block {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		if (this == TFBlocks.steeleaf_block.get()) {
-			tooltip.add(new TranslatableComponent("block.steeleaf.tooltip"));
+			tooltip.add(new TranslatableComponent("block.steeleaf.tooltip").withStyle(ChatFormatting.GRAY));
 		} else if (this == TFBlocks.arctic_fur_block.get()) {
-			tooltip.add(new TranslatableComponent("block.arctic.tooltip"));
+			tooltip.add(new TranslatableComponent("block.arctic.tooltip").withStyle(ChatFormatting.GRAY));
 		}
 	}
 }

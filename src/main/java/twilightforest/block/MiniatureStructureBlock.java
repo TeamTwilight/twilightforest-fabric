@@ -13,6 +13,6 @@ import java.util.List;
 
 public class MiniatureStructureBlock extends Block {
     public MiniatureStructureBlock() {
-        super(Properties.of(Material.BARRIER).requiresCorrectToolForDrops()/*.harvestTool(ToolType.PICKAXE)*/.strength(0.75F).noOcclusion());
+        super(Properties.of(Material.BARRIER).requiresCorrectToolForDrops().strength(0.75F).noOcclusion());
     }
 }

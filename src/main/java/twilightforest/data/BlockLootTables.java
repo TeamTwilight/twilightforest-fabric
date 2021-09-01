@@ -1,24 +1,28 @@
 package twilightforest.data;
 
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntry;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
+import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
@@ -137,6 +141,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		add(TFBlocks.liveroot_block.get(), createSingleItemTableWithSilkTouch(TFBlocks.liveroot_block.get(), TFItems.liveroot.get()));
 		dropSelf(TFBlocks.uncrafting_table.get());
 		dropSelf(TFBlocks.firefly_jar.get());
+		dropSelf(TFBlocks.firefly_spawner.get());
 		dropSelf(TFBlocks.cicada_jar.get());
 		add(TFBlocks.moss_patch.get(), createShearsOnlyDrop(TFBlocks.moss_patch.get()));
 		add(TFBlocks.mayapple.get(), createShearsOnlyDrop(TFBlocks.mayapple.get()));
@@ -183,9 +188,24 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		add(TFBlocks.snow_queen_wall_trophy.get(), createSingleItemTable(TFBlocks.snow_queen_trophy.get().asItem()));
 		add(TFBlocks.quest_ram_trophy.get(), createSingleItemTable(TFBlocks.quest_ram_trophy.get().asItem()));
 		add(TFBlocks.quest_ram_wall_trophy.get(), createSingleItemTable(TFBlocks.quest_ram_trophy.get().asItem()));
+
+		add(TFBlocks.zombie_skull_candle.get(), dropWithoutSilk(Blocks.ZOMBIE_HEAD));
+		add(TFBlocks.zombie_wall_skull_candle.get(), dropWithoutSilk(Blocks.ZOMBIE_HEAD));
+		add(TFBlocks.skeleton_skull_candle.get(), dropWithoutSilk(Blocks.SKELETON_SKULL));
+		add(TFBlocks.skeleton_wall_skull_candle.get(), dropWithoutSilk(Blocks.SKELETON_SKULL));
+		add(TFBlocks.wither_skele_skull_candle.get(), dropWithoutSilk(Blocks.WITHER_SKELETON_SKULL));
+		add(TFBlocks.wither_skele_wall_skull_candle.get(), dropWithoutSilk(Blocks.WITHER_SKELETON_SKULL));
+		add(TFBlocks.creeper_skull_candle.get(), dropWithoutSilk(Blocks.CREEPER_HEAD));
+		add(TFBlocks.creeper_wall_skull_candle.get(), dropWithoutSilk(Blocks.CREEPER_HEAD));
+		add(TFBlocks.player_skull_candle.get(), dropWithoutSilk(Blocks.PLAYER_HEAD));
+		add(TFBlocks.player_wall_skull_candle.get(), dropWithoutSilk(Blocks.PLAYER_HEAD));
+
 		dropSelf(TFBlocks.iron_ladder.get());
 		dropSelf(TFBlocks.stone_twist.get());
 		dropSelf(TFBlocks.stone_twist_thin.get());
+		dropSelf(TFBlocks.stone_bold.get());
+		registerEmpty(TFBlocks.tome_spawner.get());
+		dropWhenSilkTouch(TFBlocks.empty_bookshelf.get());
 		//registerDropSelfLootTable(TFBlocks.lapis_block.get());
 		add(TFBlocks.keepsake_casket.get(), casketInfo(TFBlocks.keepsake_casket.get()));
 		dropPottedContents(TFBlocks.potted_twilight_oak_sapling.get());
@@ -243,6 +263,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.canopy_trapdoor.get());
 		add(TFBlocks.canopy_sign.get(), createSingleItemTable(TFBlocks.canopy_sign.get().asItem()));
 		add(TFBlocks.canopy_wall_sign.get(), createSingleItemTable(TFBlocks.canopy_sign.get().asItem()));
+		add(TFBlocks.canopy_bookshelf.get(), createSingleItemTableWithSilkTouch(TFBlocks.canopy_bookshelf.get(), Items.BOOK, ConstantValue.exactly(3.0F)));
 
 		dropSelf(TFBlocks.mangrove_log.get());
 		dropSelf(TFBlocks.stripped_mangrove_log.get());
@@ -375,6 +396,11 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 
 	private static LootTable.Builder casketInfo(Block block) {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).apply(CopyBlockState.copyState(block).copy(KeepsakeCasketBlock.BREAKAGE)));
+	}
+
+	private static LootTable.Builder dropWithoutSilk(Block block) {
+		LootItemCondition.Builder HAS_SILK_TOUCH = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.data.loot.BlockLoot.class, null, "f_124062_");
+		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(HAS_SILK_TOUCH.invert()).add(LootItem.lootTableItem(block)));
 	}
 
 	private void registerEmpty(Block b) {

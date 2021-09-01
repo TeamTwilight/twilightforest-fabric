@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.TFEntities;
 import twilightforest.world.registration.ConfiguredFeatures;
 import twilightforest.world.registration.ConfiguredSurfaceBuilders;
@@ -408,9 +409,19 @@ public abstract class BiomeHelper {
 	}
 
     public static BiomeSpecialEffects.Builder whiteAshParticles(BiomeSpecialEffects.Builder builder) {
-        builder.ambientParticle(new AmbientParticleSettings(ParticleTypes.WHITE_ASH, 0.2f));
+        builder.ambientParticle(new AmbientParticleSettings(ParticleTypes.WHITE_ASH, 0.1f));
         return builder;
     }
+
+	public static BiomeSpecialEffects.Builder fireflyForestParticles(BiomeSpecialEffects.Builder builder) {
+		builder.ambientParticle(new AmbientParticleSettings(TFParticleType.WANDERING_FIREFLY.get(), 0.001f));
+		return builder;
+	}
+
+	public static BiomeSpecialEffects.Builder fireflyParticles(BiomeSpecialEffects.Builder builder) {
+		builder.ambientParticle(new AmbientParticleSettings(TFParticleType.WANDERING_FIREFLY.get(), 0.0005f));
+		return builder;
+	}
 
     //Caves!
 	public static void addCaves(BiomeGenerationSettings.Builder biome) {

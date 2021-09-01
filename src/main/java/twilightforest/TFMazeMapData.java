@@ -12,6 +12,7 @@ import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -24,11 +25,21 @@ public class TFMazeMapData extends MapItemSavedData {
 		super(x, z, scale, trackpos, unlimited, locked, dim);
 	}
 
-	//TODO: Evaluate this
 	public static TFMazeMapData load(CompoundTag nbt) {
 		MapItemSavedData data = MapItemSavedData.load(nbt);
-		TFMazeMapData tfdata = (TFMazeMapData) data;
+		final boolean trackingPosition = !nbt.contains("trackingPosition", 1) || nbt.getBoolean("trackingPosition");
+		final boolean unlimitedTracking = nbt.getBoolean("unlimitedTracking");
+		final boolean locked = nbt.getBoolean("locked");
+		TFMazeMapData tfdata = new TFMazeMapData(data.x, data.z, data.scale, trackingPosition, unlimitedTracking, locked, data.dimension);
+
+		tfdata.colors = data.colors;
+		tfdata.bannerMarkers.putAll(data.bannerMarkers);
+		tfdata.decorations.putAll(data.decorations);
+		tfdata.frameMarkers.putAll(data.frameMarkers);
+		tfdata.trackedDecorationCount = data.trackedDecorationCount;
+
 		tfdata.yCenter = nbt.getInt("yCenter");
+
 		return tfdata;
 	}
 
@@ -39,8 +50,7 @@ public class TFMazeMapData extends MapItemSavedData {
 		return ret;
 	}
 
-	public void calculateMapCenter(Level world, int x, int y, int z, int mapScale) {
-		// FIXME super.setOrigin(x, z, mapScale);
+	public void calculateMapCenter(Level world, int x, int y, int z) {
 		this.yCenter = y;
 
 		// when we are in a labyrinth, snap to the LABYRINTH
@@ -64,11 +74,11 @@ public class TFMazeMapData extends MapItemSavedData {
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
-	public static void registerMazeMapData(Level world, TFMazeMapData data) {
+	public static void registerMazeMapData(Level world, TFMazeMapData data, String id) {
 		if (world.isClientSide) {
-			// FIXME CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getId(), data);
+			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(id, data);
 		} else {
-			world.getServer().overworld().getDataStorage().set(MapItem.makeKey(world.getFreeMapId()), data);
+			world.getServer().overworld().getDataStorage().set(id, data);
 		}
 	}
 }

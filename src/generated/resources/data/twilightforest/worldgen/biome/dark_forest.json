@@ -13,6 +13,12 @@
       "replace_current_music": true
     },
     "grass_color_modifier": "twilightforest:dark_forest",
+    "particle": {
+      "options": {
+        "type": "twilightforest:wandering_firefly"
+      },
+      "probability": 5.0E-4
+    },
     "sky_color": 2105930,
     "foliage_color": 3890751,
     "grass_color": 4941652,

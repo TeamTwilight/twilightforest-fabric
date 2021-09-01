@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -180,12 +181,12 @@ public class KnightPhantomEntity extends FlyingMob implements Enemy {
 
 		super.die(cause);
 
-		if (!level.isClientSide && getNearbyKnights().isEmpty() && cause != DamageSource.OUT_OF_WORLD) {
+		if (level instanceof ServerLevel serverLevel && getNearbyKnights().isEmpty() && cause != DamageSource.OUT_OF_WORLD) {
 
 			BlockPos treasurePos = hasHome() ? getRestrictCenter().below() : new BlockPos(this.blockPosition());
 
 			// make treasure for killing the last knight
-			TFTreasure.stronghold_boss.generateChest(level, treasurePos, Direction.NORTH, false);
+			TFTreasure.stronghold_boss.generateChest(serverLevel, treasurePos, Direction.NORTH, false);
 
 			// mark the stronghold as defeated
 			TFGenerationSettings.markStructureConquered(level, treasurePos, TFFeature.KNIGHT_STRONGHOLD);

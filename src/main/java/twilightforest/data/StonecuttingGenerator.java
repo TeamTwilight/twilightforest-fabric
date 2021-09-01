@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
@@ -47,6 +48,13 @@ public class StonecuttingGenerator extends RecipeProvider {
 		consumer.accept(stonecutting(TFBlocks.etched_nagastone_mossy.get(), TFBlocks.nagastone_stairs_mossy_right.get()));
 		consumer.accept(stonecutting(TFBlocks.etched_nagastone_weathered.get(), TFBlocks.nagastone_stairs_weathered_left.get()));
 		consumer.accept(stonecutting(TFBlocks.etched_nagastone_weathered.get(), TFBlocks.nagastone_stairs_weathered_right.get()));
+
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_right.get(), TFBlocks.nagastone_stairs_left.get()));
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_left.get(), TFBlocks.nagastone_stairs_right.get()));
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_mossy_right.get(), TFBlocks.nagastone_stairs_mossy_left.get()));
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_mossy_right.get()));
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_weathered_right.get(), TFBlocks.nagastone_stairs_weathered_left.get()));
+		consumer.accept(stonecutting(TFBlocks.nagastone_stairs_weathered_left.get(), TFBlocks.nagastone_stairs_weathered_right.get()));
 		
 		consumer.accept(stonecutting(TFBlocks.dark_log.get(), TFBlocks.tower_wood.get()));
 		consumer.accept(stonecutting(TFBlocks.dark_wood.get(), TFBlocks.tower_wood.get()));
@@ -82,6 +90,9 @@ public class StonecuttingGenerator extends RecipeProvider {
 		consumer.accept(stonecutting(TFBlocks.maze_stone_mosaic.get(), TFBlocks.maze_stone_chiseled.get()));
 		consumer.accept(stonecutting(TFBlocks.maze_stone_mosaic.get(), TFBlocks.maze_stone_decorative.get()));
 		consumer.accept(stonecutting(TFBlocks.maze_stone_mosaic.get(), TFBlocks.maze_stone_brick.get()));
+
+		consumer.accept(stonecutting(Blocks.STONE, TFBlocks.stone_twist.get()));
+		consumer.accept(stonecutting(Blocks.STONE, TFBlocks.stone_bold.get()));
 	}
 
 	@Override

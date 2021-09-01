@@ -29,12 +29,12 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void commonBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().setPlayerCanSpawn(), twilightForestGen())
+				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()), defaultMobSpawning().setPlayerCanSpawn(), twilightForestGen())
 						.build()
 		);
 
 		biomes.put(BiomeKeys.DENSE_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder().waterColor(0x005522), defaultMobSpawning().setPlayerCanSpawn(), denseForestGen())
+				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).waterColor(0x005522), defaultMobSpawning().setPlayerCanSpawn(), denseForestGen())
 						.temperature(0.7F)
 						.downfall(0.8F)
 						.depth(0.1f)
@@ -43,7 +43,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.FIREFLY_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().setPlayerCanSpawn(), fireflyForestGen())
+				biomeWithDefaults(fireflyForestParticles(defaultAmbientBuilder()), defaultMobSpawning().setPlayerCanSpawn(), fireflyForestGen())
 						.temperature(0.5F)
 						.downfall(1)
 						.depth(0.0625f)
@@ -74,14 +74,14 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void mushroomBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.MUSHROOM_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().setPlayerCanSpawn(), mushroomForestGen())
+				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()), defaultMobSpawning().setPlayerCanSpawn(), mushroomForestGen())
 						.temperature(0.8F)
 						.downfall(0.8F)
 						.build()
 		);
 
 		biomes.put(BiomeKeys.DENSE_MUSHROOM_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().setPlayerCanSpawn(), denseMushroomForestGen())
+				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()), defaultMobSpawning().setPlayerCanSpawn(), denseMushroomForestGen())
 						.temperature(0.8F)
 						.downfall(1)
 						.depth(0.0625f)
@@ -101,7 +101,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.ENCHANTED_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder().foliageColorOverride(0x00FFFF).grassColorOverride(0x00FFFF).grassColorModifier(BiomeGrassColors.ENCHANTED_FOREST), defaultMobSpawning(), enchantedForestGen())
+				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).foliageColorOverride(0x00FFFF).grassColorOverride(0x00FFFF).grassColorModifier(BiomeGrassColors.ENCHANTED_FOREST), defaultMobSpawning(), enchantedForestGen())
 						.build()
 		);
 
@@ -128,7 +128,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void swampBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SWAMP,
-				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x5C694E).foliageColorOverride(0x496137).waterColor(0xE0FFAE).grassColorModifier(BiomeGrassColors.SWAMP), swampSpawning(), swampGen())
+				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).grassColorOverride(0x5C694E).foliageColorOverride(0x496137).waterColor(0xE0FFAE).grassColorModifier(BiomeGrassColors.SWAMP), swampSpawning(), swampGen())
 						.biomeCategory(Biome.BiomeCategory.SWAMP)
 						.temperature(0.8F)
 						.downfall(0.9F)
@@ -150,7 +150,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void darkForestBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.DARK_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x4B6754).foliageColorOverride(0x3B5E3F).grassColorModifier(BiomeGrassColors.DARK_FOREST), darkForestSpawning(), darkForestGen())
+				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).grassColorOverride(0x4B6754).foliageColorOverride(0x3B5E3F).grassColorModifier(BiomeGrassColors.DARK_FOREST), darkForestSpawning(), darkForestGen())
 						.temperature(0.7F)
 						.downfall(0.8F)
 						.depth(0.0625f)
@@ -189,7 +189,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void highlandsBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.HIGHLANDS,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), highlandsGen())
+				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()), defaultMobSpawning(), highlandsGen())
 						.biomeCategory(Biome.BiomeCategory.MESA)
 						.temperature(0.4F)
 						.downfall(0.7F)

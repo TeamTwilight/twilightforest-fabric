@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -313,16 +314,17 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 	private void startTantrum() {
 		this.setInTantrum(true);
 
+		// FIXME Use custom rain rendering instead like we do for blocking-off biomes, this is ridiculous especially for multiplayer
 		// start raining
-		int rainTime = 300 * 20;
+		//int rainTime = 300 * 20;
 
-		PrimaryLevelData worldInfo = (PrimaryLevelData) level.getServer().getLevel(Level.OVERWORLD).getLevelData(); // grab the overworld to set weather properly
+		//PrimaryLevelData worldInfo = (PrimaryLevelData) level.getServer().getLevel(Level.OVERWORLD).getLevelData(); // grab the overworld to set weather properly
 
-		worldInfo.setClearWeatherTime(0);
-		worldInfo.setRainTime(rainTime);
-		worldInfo.setThunderTime(rainTime);
-		worldInfo.setRaining(true);
-		worldInfo.setThundering(true);
+		//worldInfo.setClearWeatherTime(0);
+		//worldInfo.setRainTime(rainTime);
+		//worldInfo.setThunderTime(rainTime);
+		//worldInfo.setRaining(true);
+		//worldInfo.setThundering(true);
 
 		spawnGhastsAtTraps();
 	}
@@ -585,8 +587,8 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 	@Override
 	protected void tickDeath() {
 		super.tickDeath();
-		if (this.deathTime == 20 && !level.isClientSide) {
-			TFTreasure.darktower_boss.generateChest(level, findChestCoords(), Direction.NORTH, false);
+		if (this.deathTime == 20 && level instanceof ServerLevel serverLevel) {
+			TFTreasure.darktower_boss.generateChest(serverLevel, findChestCoords(), Direction.NORTH, false);
 		}
 	}
 
