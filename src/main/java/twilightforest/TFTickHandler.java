@@ -30,10 +30,8 @@ import twilightforest.world.registration.TFGenerationSettings;
 import java.util.List;
 import java.util.Random;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFTickHandler {
 
-	@SubscribeEvent
 	public static void playerTick(TickEvent.PlayerTickEvent event) {
 		Player player = event.player;
 
@@ -43,7 +41,7 @@ public class TFTickHandler {
 		ServerLevel world = (ServerLevel) player.level;
 
 		// check for portal creation, at least if it's not disabled
-		if (!world.isClientSide && !TFConfig.COMMON_CONFIG.disablePortalCreation.get() && event.phase == TickEvent.Phase.END && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
+		if (!world.isClientSide && !TFConfig.COMMON_CONFIG.disablePortalCreation && event.phase == TickEvent.Phase.END && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
 			if (TFConfig.COMMON_CONFIG.adminOnlyPortals.get()) {
 				if (world.getServer().getProfilePermissions(player.getGameProfile()) != 0) {
