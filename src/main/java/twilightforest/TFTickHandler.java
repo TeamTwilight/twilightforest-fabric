@@ -1,49 +1,43 @@
 package twilightforest;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.core.Vec3i;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.ItemTagGenerator;
-import twilightforest.network.StructureProtectionPacket;
 import twilightforest.network.StructureProtectionClearPacket;
+import twilightforest.network.StructureProtectionPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
-
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+
 public class TFTickHandler {
 
-	public static void playerTick(TickEvent.PlayerTickEvent event) {
-		Player player = event.player;
-
+	public static void playerTick(Player player) {
 		if (!(player.level instanceof ServerLevel))
 			return;
 
 		ServerLevel world = (ServerLevel) player.level;
 
 		// check for portal creation, at least if it's not disabled
-		if (!world.isClientSide && !TFConfig.COMMON_CONFIG.disablePortalCreation && event.phase == TickEvent.Phase.END && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
+		if (!world.isClientSide && !TFConfig.COMMON_CONFIG.disablePortalCreation && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
-			if (TFConfig.COMMON_CONFIG.adminOnlyPortals.get()) {
+			if (TFConfig.COMMON_CONFIG.adminOnlyPortals) {
 				if (world.getServer().getProfilePermissions(player.getGameProfile()) != 0) {
 					// reduce range to 4.0 when the option is on
 					checkForPortalCreation(player, world, 4.0F);
@@ -55,7 +49,7 @@ public class TFTickHandler {
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (!world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0
+		if (!world.isClientSide && player.tickCount % 20 == 0
 				&& TFGenerationSettings.isProgressionEnforced(world)
 				&& TFGenerationSettings.usesTwilightChunkGenerator(world)
 				&& !player.isCreative() && !player.isSpectator()) {
@@ -64,7 +58,7 @@ public class TFTickHandler {
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (!world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
+		if (!world.isClientSide && player.tickCount % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
 			if (TFGenerationSettings.usesTwilightChunkGenerator(world)) {
 				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);
