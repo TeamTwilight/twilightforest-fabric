@@ -217,6 +217,7 @@
   "block.twilightforest.root": "Roots",
   "block.twilightforest.liveroot_block": "Liveroots",
   "block.twilightforest.uncrafting_table": "Uncrafting Table",
+  "container.uncrafting_table.disabled": "Uncrafting is disabled via config",
   "block.twilightforest.smoker": "Smoker",
   "block.twilightforest.encased_smoker": "Encased Smoker",
   "block.twilightforest.fire_jet": "Fire Jet",

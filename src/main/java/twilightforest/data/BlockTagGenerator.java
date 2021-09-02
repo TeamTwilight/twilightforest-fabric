@@ -367,7 +367,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.canopy_bookshelf.get()
         );
 
-        //vanilla doesnt use the leaves tag
         tag(BlockTags.MINEABLE_WITH_HOE).add(
                 //vanilla doesnt use the leaves tag
                 TFBlocks.oak_leaves.get(),
@@ -378,6 +377,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.mining_leaves.get(),
                 TFBlocks.sorting_leaves.get(),
                 TFBlocks.thorn_leaves.get(),
+                TFBlocks.thorn_rose.get(),
                 TFBlocks.beanstalk_leaves.get(),
                 TFBlocks.steeleaf_block.get(),
                 TFBlocks.arctic_fur_block.get()

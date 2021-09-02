@@ -1,6 +1,9 @@
 package twilightforest.block;
 
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -29,6 +32,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 import java.util.Random;
@@ -75,7 +79,7 @@ public class Experiment115Block extends Block {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!player.isShiftKeyDown()) {
-			if (bitesTaken > 0 && stack.getItem() == TFItems.experiment_115) {
+			if (bitesTaken > 0 && stack.getItem() == TFItems.experiment_115.get()) {
 				worldIn.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken - 1));
 				if (!player.isCreative()) stack.shrink(1);
 				if (player instanceof ServerPlayer) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
@@ -83,7 +87,17 @@ public class Experiment115Block extends Block {
 			} else if (((!state.getValue(REGENERATE)) && stack.getItem() == Items.REDSTONE) && (player.isCreative() || bitesTaken == 0)) {
 				worldIn.setBlockAndUpdate(pos, state.setValue(REGENERATE,true));
 				if (!player.isCreative()) stack.shrink(1);
-				if (player instanceof ServerPlayer) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
+				if (player instanceof ServerPlayer) {
+					player.awardStat(Stats.ITEM_USED.get(Items.REDSTONE));
+
+					//fallback if the advancement criteria doesnt work since its inconsistent
+					PlayerAdvancements advancements = ((ServerPlayer) player).getAdvancements();
+					ServerAdvancementManager manager = ((ServerLevel)player.getCommandSenderWorld()).getServer().getAdvancements();
+					Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("experiment_115_self_replenishing"));
+					if(advancement != null) {
+						advancements.award(advancement, "place_complete_e115");
+					}
+				}
 				return InteractionResult.SUCCESS;
 			}
 		}
@@ -98,13 +112,15 @@ public class Experiment115Block extends Block {
             int i = state.getValue(BITES_TAKEN);
 
             if (i < 7) {
-            	world.setBlock(pos, state.setValue(BITES_TAKEN, Integer.valueOf(i + 1)), 3);
+            	world.setBlock(pos, state.setValue(BITES_TAKEN, i + 1), 3);
             } else {
             	world.removeBlock(pos, false);
             }
 
-            if (player instanceof ServerPlayer)
-                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.experiment_115, 8 - i));
+            if (player instanceof ServerPlayer) {
+				CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.experiment_115.get(), 8 - i));
+				player.awardStat(Stats.ITEM_USED.get(TFItems.experiment_115.get()));
+			}
 
             return InteractionResult.SUCCESS;
         }
@@ -144,8 +160,7 @@ public class Experiment115Block extends Block {
 
     @Override
 	@Deprecated
-    public boolean hasAnalogOutputSignal(BlockState state)
-    {
+    public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
 
