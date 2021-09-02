@@ -45,7 +45,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 	public boolean canUse() {
 		this.attackTarget = this.entityHost.getLastHurtByMob();
 
-		if (this.attackTarget == null || this.entityHost.distanceTo(attackTarget) > this.breathRange || !this.entityHost.getSensing().hasLineOfSight(attackTarget) || !EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(attackTarget)) {
+		if (this.attackTarget == null || this.entityHost.distanceTo(attackTarget) > this.breathRange || !this.entityHost.getSensing().hasLineOfSight(attackTarget) || !EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(attackTarget)) {
 			return false;
 		} else {
 			breathX = attackTarget.getX();
@@ -74,7 +74,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 		return this.durationLeft > 0 && this.entityHost.isAlive() && this.attackTarget.isAlive()
 				&& this.entityHost.distanceTo(attackTarget) <= this.breathRange
 				&& this.entityHost.getSensing().hasLineOfSight(attackTarget)
-				&& EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(attackTarget);
+				&& EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(attackTarget);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 		possibleList.removeAll(Arrays.asList(Objects.requireNonNull(entityHost.getParts())));
 
 		for (Entity possibleEntity : possibleList) {
-			if (possibleEntity.isPickable() && possibleEntity != this.entityHost && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(possibleEntity)) {
+			if (possibleEntity.isPickable() && possibleEntity != this.entityHost && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(possibleEntity)) {
 				float borderSize = possibleEntity.getPickRadius();
 				AABB collisionBB = possibleEntity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
 				Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);

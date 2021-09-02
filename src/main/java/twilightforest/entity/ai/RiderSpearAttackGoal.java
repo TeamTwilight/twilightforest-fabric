@@ -11,7 +11,7 @@ import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class RiderSpearAttackGoal extends Goal {
 
-	private LowerGoblinKnightEntity entity;
+	private final LowerGoblinKnightEntity entity;
 
 	public RiderSpearAttackGoal(LowerGoblinKnightEntity lowerKnight) {
 		this.entity = lowerKnight;
@@ -20,7 +20,7 @@ public class RiderSpearAttackGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof UpperGoblinKnightEntity && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity.getTarget())) {
+		if (!this.entity.getPassengers().isEmpty() && this.entity.getPassengers().get(0) instanceof UpperGoblinKnightEntity && entity.getTarget() != null && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(entity.getTarget())) {
 			int timer = ((UpperGoblinKnightEntity) this.entity.getPassengers().get(0)).heavySpearTimer;
 			return timer > 0 && timer < UpperGoblinKnightEntity.HEAVY_SPEAR_TIMER_START;
 		} else {

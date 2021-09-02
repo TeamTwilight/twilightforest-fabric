@@ -10,7 +10,7 @@ import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class HeavySpearAttackGoal extends Goal {
 
-	private UpperGoblinKnightEntity entity;
+	private final UpperGoblinKnightEntity entity;
 
 	public HeavySpearAttackGoal(UpperGoblinKnightEntity upperKnight) {
 		this.entity = upperKnight;
@@ -26,6 +26,6 @@ public class HeavySpearAttackGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		return entity.heavySpearTimer > 0 && entity.heavySpearTimer < UpperGoblinKnightEntity.HEAVY_SPEAR_TIMER_START && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity.getTarget());
+		return entity.heavySpearTimer > 0 && entity.heavySpearTimer < UpperGoblinKnightEntity.HEAVY_SPEAR_TIMER_START && entity.getTarget() != null && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(entity.getTarget());
 	}
 }

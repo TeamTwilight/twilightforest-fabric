@@ -62,7 +62,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 			int length = this.getBoundingBox().minX() - towerBB.minX();
 			if (length >= 0) {
 				entranceDoor = entranceDoor.west(length);
-				makeEntranceBridge(list, rand, this.getGenDepth() + 1, myDoor.getX(), myDoor.getY(), myDoor.getZ(), length, Rotation.CLOCKWISE_180);
+				// FIXME makeEntranceBridge(list, rand, this.getGenDepth() + 1, myDoor.getX(), myDoor.getY(), myDoor.getZ(), length, Rotation.CLOCKWISE_180);
 			}
 		}
 		if (myDoor.getX() == this.size - 1) {

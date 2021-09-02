@@ -24,6 +24,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
+import twilightforest.entity.ai.RiderSpearAttackGoal;
 
 import javax.annotation.Nullable;
 
@@ -39,8 +40,7 @@ public class LowerGoblinKnightEntity extends Monster {
 
 	@Override
 	protected void registerGoals() {
-		//FIXME using this goal here bricks worlds. Gotta figure that out
-		//this.goalSelector.addGoal(0, new RiderSpearAttackGoal(this));
+		this.goalSelector.addGoal(0, new RiderSpearAttackGoal(this));
 		this.goalSelector.addGoal(1, new FloatGoal(this));
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
