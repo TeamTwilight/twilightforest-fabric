@@ -16,7 +16,7 @@ public class FireReactEnchantment extends Enchantment {
 		});
 	}
 
-	@Override
+	//@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack) {
 		return false;
 	}

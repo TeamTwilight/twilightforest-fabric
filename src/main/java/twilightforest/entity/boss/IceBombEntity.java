@@ -10,9 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.BlockSnapshot;
-import net.minecraftforge.event.world.BlockEvent;
 import twilightforest.entity.projectile.TFThrowableEntity;
 import twilightforest.entity.YetiEntity;
 import twilightforest.potions.TFPotions;
@@ -57,8 +54,7 @@ public class IceBombEntity extends TFThrowableEntity {
 			for (int y = -range; y <= range; y++) {
 				for (int z = -range; z <= range; z++) {
 					BlockPos pos = new BlockPos(ix + x, iy + y, iz + z);
-					BlockSnapshot blocksnapshot = BlockSnapshot.create(level.dimension(), level, pos);
-					if (!level.isClientSide && !MinecraftForge.EVENT_BUS.post(new BlockEvent.EntityPlaceEvent(blocksnapshot, level.getBlockState(pos), null))) {
+					if (!level.isClientSide) {
 						this.doTerrainEffect(pos);
 					}
 				}
@@ -147,7 +143,7 @@ public class IceBombEntity extends TFThrowableEntity {
 					entity.discard();
 				} else {
 					entity.hurt(TFDamageSources.frozen(this, (LivingEntity)this.getOwner()), 1);
-					entity.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 20 * 5, 2));
+					entity.addEffect(new MobEffectInstance(TFPotions.frosty, 20 * 5, 2));
 				}
 			}
 		}

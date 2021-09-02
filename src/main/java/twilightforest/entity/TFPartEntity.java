@@ -12,6 +12,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.PartEntity;
+import twilightforest.extensions.IEntityEx;
 
 import java.util.Objects;
 
@@ -127,7 +128,7 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 	}
 
 	public static void assignPartIDs(Entity parent) {
-		PartEntity<?>[] parts = parent.getParts();
+		PartEntity<?>[] parts = ((IEntityEx)parent).getParts();
 		for (int i = 0, partsLength = Objects.requireNonNull(parts).length; i < partsLength; i++) {
 			PartEntity<?> part = parts[i];
 			part.setId(parent.getId() + i);

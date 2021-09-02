@@ -13,12 +13,13 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.entity.projectile.TFThrowableEntity;
 import twilightforest.util.TFDamageSources;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
+@Environment(EnvType.CLIENT)
 public class LichBoltEntity extends TFThrowableEntity implements ItemSupplier {
 
 	@SuppressWarnings("unused")
@@ -83,7 +84,7 @@ public class LichBoltEntity extends TFThrowableEntity implements ItemSupplier {
 		return 0.001F;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {

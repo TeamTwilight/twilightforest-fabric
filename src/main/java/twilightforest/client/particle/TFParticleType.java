@@ -42,6 +42,8 @@ public class TFParticleType {
 		}
 	});
 
+	public static void init() {}
+
 	@Environment(EnvType.CLIENT)
 	public static void registerFactories() {
 		ParticleEngine particles = Minecraft.getInstance().particleEngine;

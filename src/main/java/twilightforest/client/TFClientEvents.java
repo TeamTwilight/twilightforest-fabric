@@ -2,6 +2,7 @@ package twilightforest.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IWeatherRenderHandler;
@@ -21,6 +22,7 @@ import twilightforest.client.model.item.FullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.data.ItemTagGenerator;
+import twilightforest.extensions.IEffectsEx;
 import twilightforest.item.TFItems;
 import java.util.Map;
 import java.util.Objects;
@@ -59,7 +61,7 @@ public class TFClientEvents {
 			fullbrightItem(event, TFItems.fiery_leggings);
 			fullbrightItem(event, TFItems.fiery_pickaxe);
 			fullbrightItem(event, TFItems.fiery_sword);
-			fullbright(event, TFBlocks.fiery_block.getId(), "");
+			fullbright(event, Registry.BLOCK.getKey(TFBlocks.fiery_block), "");
 		}
 
 		private static void fullbrightItem(Map<ResourceLocation, BakedModel> event, Item item) {
@@ -107,6 +109,12 @@ public class TFClientEvents {
 		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_flow"  ), RegisterBlockEvent.essenceFieryFlow      , true, FIERY_ESSENCE_GRADIENT_MAP));*/
 		}
 
+		public static void registerFabricEvents() {
+			ClientTickEvents.START_CLIENT_TICK.register((client -> renderTick(client)));
+			ClientTickEvents.END_CLIENT_TICK.register(client -> clientTick());
+
+		}
+
 		//TODO: Fields are unused due to missing compat
 	/*public static final GradientNode[] KNIGHTMETAL_GRADIENT_MAP = {
 			new GradientNode(0.0f , 0xFF_33_32_32),
@@ -144,66 +152,59 @@ public class TFClientEvents {
 	/**
 	 * Stop the game from rendering the mount health for unfriendly creatures
 	 */
-	@SubscribeEvent
-	public static void preOverlay(RenderGameOverlayEvent.Pre event) {
-		if (event.getType() == RenderGameOverlayEvent.ElementType.LAYER) {
-			if (TFEventListener.isRidingUnfriendly(Minecraft.getInstance().player)) {
-				event.setCanceled(true);
-			}
-		}
-	}
+//	@SubscribeEvent
+//	public static void preOverlay(RenderGameOverlayEvent.Pre event) {
+//		if (event.getType() == RenderGameOverlayEvent.ElementType.LAYER) {
+//			if (TFEventListener.isRidingUnfriendly(Minecraft.getInstance().player)) {
+//				event.setCanceled(true);
+//			}
+//		}
+//	}
 
 	/**
 	 * Render effects in first-person perspective
 	 */
-	@SubscribeEvent
-	public static void renderWorldLast(RenderWorldLastEvent event) {
-
-		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
-
-		Options settings = Minecraft.getInstance().options;
-		if (settings.getCameraType() != CameraType.FIRST_PERSON || settings.hideGui) return;
-
-		Entity entity = Minecraft.getInstance().getCameraEntity();
-		if (entity instanceof LivingEntity) {
-			EntityRenderer<? extends Entity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
-			if (renderer instanceof LivingEntityRenderer<?,?>) {
-				for (RenderEffect effect : RenderEffect.VALUES) {
-					if (effect.shouldRender((LivingEntity) entity, true)) {
-						effect.render((LivingEntity) entity, ((LivingEntityRenderer<?,?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTicks(), true);
-					}
-				}
-			}
-		}
-	}
+//	@SubscribeEvent
+//	public static void renderWorldLast(RenderWorldLastEvent event) {
+//
+//		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects) return;
+//
+//		Options settings = Minecraft.getInstance().options;
+//		if (settings.getCameraType() != CameraType.FIRST_PERSON || settings.hideGui) return;
+//
+//		Entity entity = Minecraft.getInstance().getCameraEntity();
+//		if (entity instanceof LivingEntity) {
+//			EntityRenderer<? extends Entity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
+//			if (renderer instanceof LivingEntityRenderer<?,?>) {
+//				for (RenderEffect effect : RenderEffect.VALUES) {
+//					if (effect.shouldRender((LivingEntity) entity, true)) {
+//						effect.render((LivingEntity) entity, ((LivingEntityRenderer<?,?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTicks(), true);
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	/**
 	 * On the tick, we kill the vignette
 	 */
-	@SubscribeEvent
-	public static void renderTick(TickEvent.RenderTickEvent event) {
-		if (event.phase == TickEvent.Phase.START) {
-			Minecraft minecraft = Minecraft.getInstance();
+	public static void renderTick(Minecraft minecraft) {
+		// only fire if we're in the twilight forest
+		if (minecraft.level != null && "twilightforest".equals(minecraft.level.dimension().location().getNamespace())) {
+			// vignette
+			if (minecraft.gui != null) {
+				minecraft.gui.vignetteBrightness = 0.0F;
+			}
+		}//*/
 
-			// only fire if we're in the twilight forest
-			if (minecraft.level != null && "twilightforest".equals(minecraft.level.dimension().location().getNamespace())) {
-				// vignette
-				if (minecraft.gui != null) {
-					minecraft.gui.vignetteBrightness = 0.0F;
-				}
-			}//*/
-
-			if (minecraft.player != null && TFEventListener.isRidingUnfriendly(minecraft.player)) {
-				if (minecraft.gui != null) {
-					minecraft.gui.setOverlayMessage(TextComponent.EMPTY, false);
-				}
+		if (minecraft.player != null && TFEventListener.isRidingUnfriendly(minecraft.player)) {
+			if (minecraft.gui != null) {
+				minecraft.gui.setOverlayMessage(TextComponent.EMPTY, false);
 			}
 		}
 	}
 
-	@SubscribeEvent
-	public static void clientTick(TickEvent.ClientTickEvent event) {
-		if (event.phase != TickEvent.Phase.END) return;
+	public static void clientTick() {
 		time++;
 
 		Minecraft mc = Minecraft.getInstance();
@@ -220,17 +221,16 @@ public class TFClientEvents {
 
 		// add weather box if needed
 		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo) {
-			IWeatherRenderHandler weatherRenderer = info.getWeatherRenderHandler();
-			if (weatherRenderer instanceof TFWeatherRenderer)
-				((TFWeatherRenderer) weatherRenderer).tick();
+			TFWeatherRenderer weatherRenderer = ((IEffectsEx)info).getHandler();
+			weatherRenderer.tick();
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	private static final MutableComponent WIP_TEXT_0 = new TranslatableComponent("twilightforest.misc.wip0").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	private static final MutableComponent WIP_TEXT_1 = new TranslatableComponent("twilightforest.misc.wip1").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	private static final MutableComponent NYI_TEXT = new TranslatableComponent("twilightforest.misc.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 
 	@SubscribeEvent

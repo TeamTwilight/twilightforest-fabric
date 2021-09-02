@@ -19,8 +19,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
@@ -126,7 +127,7 @@ public class MinoshroomEntity extends MinotaurEntity {
 		return success;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public float getChargeAnimationScale(float p_189795_1_) {
 		return (this.prevClientSideChargeAnimation + (this.clientSideChargeAnimation - this.prevClientSideChargeAnimation) * p_189795_1_) / 6.0F;
 	}
@@ -138,7 +139,7 @@ public class MinoshroomEntity extends MinotaurEntity {
 	@Override
 	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
 		super.populateDefaultEquipmentSlots(difficulty);
-		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe.get()));
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe));
 	}
 
 	@Override
@@ -158,7 +159,7 @@ public class MinoshroomEntity extends MinotaurEntity {
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasRestriction()) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_minoshroom.get().defaultBlockState());
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_minoshroom.defaultBlockState());
 			}
 			discard();
 		} else {

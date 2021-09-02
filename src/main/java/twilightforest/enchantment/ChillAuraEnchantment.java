@@ -14,7 +14,7 @@ public class ChillAuraEnchantment extends Enchantment {
 				EquipmentSlot.LEGS, EquipmentSlot.FEET });
 	}
 
-	@Override
+	//@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack) {
 		return false;
 	}

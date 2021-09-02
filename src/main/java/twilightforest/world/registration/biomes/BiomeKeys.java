@@ -1,5 +1,6 @@
 package twilightforest.world.registration.biomes;
 
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
@@ -7,13 +8,11 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.data.worldgen.SurfaceBuilders;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+
 import twilightforest.TwilightForestMod;
 
 public class BiomeKeys {
-	public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, TwilightForestMod.ID);
+	//public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, TwilightForestMod.ID);
 
 	public static final ResourceKey<Biome> FOREST = makeKey("forest");
 	public static final ResourceKey<Biome> DENSE_FOREST = makeKey("dense_forest");
@@ -44,7 +43,7 @@ public class BiomeKeys {
 
 	private static ResourceKey<Biome> makeKey(String name) {
 		// Apparently this resolves biome shuffling /shrug
-		BIOMES.register(name, () -> new Biome.BiomeBuilder()
+		Registry.register(BuiltinRegistries.BIOME, TwilightForestMod.prefix(name), new Biome.BiomeBuilder()
 				.precipitation(Biome.Precipitation.NONE)
 				.biomeCategory(Biome.BiomeCategory.NONE)
 				.depth(0)
@@ -59,34 +58,34 @@ public class BiomeKeys {
 		return ResourceKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix(name));
 	}
 
-	public static final BiomeDictionary.Type TWILIGHT = BiomeDictionary.Type.getType("TWILIGHT");
+	//public static final BiomeDictionary.Type TWILIGHT = BiomeDictionary.Type.getType("TWILIGHT");
 
 	public static void addBiomeTypes() {
-		BiomeDictionary.addTypes(FOREST, TWILIGHT, BiomeDictionary.Type.FOREST);
-		BiomeDictionary.addTypes(DENSE_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DENSE);
-		BiomeDictionary.addTypes(FIREFLY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.LUSH);
-		BiomeDictionary.addTypes(CLEARING, TWILIGHT, BiomeDictionary.Type.PLAINS, BiomeDictionary.Type.SPARSE);
-		BiomeDictionary.addTypes(OAK_SAVANNAH, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.SPARSE);
-		BiomeDictionary.addTypes(STREAM, TWILIGHT, BiomeDictionary.Type.RIVER);
-		BiomeDictionary.addTypes(LAKE, TWILIGHT, BiomeDictionary.Type.OCEAN);
-
-		BiomeDictionary.addTypes(MUSHROOM_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MUSHROOM);
-		BiomeDictionary.addTypes(DENSE_MUSHROOM_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MUSHROOM);
-
-		BiomeDictionary.addTypes(ENCHANTED_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MAGICAL);
-		BiomeDictionary.addTypes(SPOOKY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY);
-
-		BiomeDictionary.addTypes(SWAMP, TWILIGHT, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.WET);
-		BiomeDictionary.addTypes(FIRE_SWAMP, TWILIGHT, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.WASTELAND, BiomeDictionary.Type.HOT);
-
-		BiomeDictionary.addTypes(DARK_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY);
-		BiomeDictionary.addTypes(DARK_FOREST_CENTER, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY, BiomeDictionary.Type.MAGICAL);
-
-		BiomeDictionary.addTypes(SNOWY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD, BiomeDictionary.Type.CONIFEROUS);
-		BiomeDictionary.addTypes(GLACIER, TWILIGHT, BiomeDictionary.Type.COLD, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.WASTELAND);
-
-		BiomeDictionary.addTypes(HIGHLANDS, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.CONIFEROUS);
-		BiomeDictionary.addTypes(THORNLANDS, TWILIGHT, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND);
-		BiomeDictionary.addTypes(FINAL_PLATEAU, TWILIGHT, BiomeDictionary.Type.MESA, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND);
+//		BiomeDictionary.addTypes(FOREST, TWILIGHT, BiomeDictionary.Type.FOREST);
+//		BiomeDictionary.addTypes(DENSE_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DENSE);
+//		BiomeDictionary.addTypes(FIREFLY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.LUSH);
+//		BiomeDictionary.addTypes(CLEARING, TWILIGHT, BiomeDictionary.Type.PLAINS, BiomeDictionary.Type.SPARSE);
+//		BiomeDictionary.addTypes(OAK_SAVANNAH, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.SPARSE);
+//		BiomeDictionary.addTypes(STREAM, TWILIGHT, BiomeDictionary.Type.RIVER);
+//		BiomeDictionary.addTypes(LAKE, TWILIGHT, BiomeDictionary.Type.OCEAN);
+//
+//		BiomeDictionary.addTypes(MUSHROOM_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MUSHROOM);
+//		BiomeDictionary.addTypes(DENSE_MUSHROOM_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MUSHROOM);
+//
+//		BiomeDictionary.addTypes(ENCHANTED_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MAGICAL);
+//		BiomeDictionary.addTypes(SPOOKY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY);
+//
+//		BiomeDictionary.addTypes(SWAMP, TWILIGHT, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.WET);
+//		BiomeDictionary.addTypes(FIRE_SWAMP, TWILIGHT, BiomeDictionary.Type.SWAMP, BiomeDictionary.Type.WASTELAND, BiomeDictionary.Type.HOT);
+//
+//		BiomeDictionary.addTypes(DARK_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY);
+//		BiomeDictionary.addTypes(DARK_FOREST_CENTER, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY, BiomeDictionary.Type.MAGICAL);
+//
+//		BiomeDictionary.addTypes(SNOWY_FOREST, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD, BiomeDictionary.Type.CONIFEROUS);
+//		BiomeDictionary.addTypes(GLACIER, TWILIGHT, BiomeDictionary.Type.COLD, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.WASTELAND);
+//
+//		BiomeDictionary.addTypes(HIGHLANDS, TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.MOUNTAIN, BiomeDictionary.Type.CONIFEROUS);
+//		BiomeDictionary.addTypes(THORNLANDS, TWILIGHT, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND);
+//		BiomeDictionary.addTypes(FINAL_PLATEAU, TWILIGHT, BiomeDictionary.Type.MESA, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND);
 	}
 }

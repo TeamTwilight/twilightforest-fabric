@@ -77,6 +77,8 @@ public class TFTileEntities {
 					TFBlocks.mine_sign, TFBlocks.mine_wall_sign,
 					TFBlocks.sort_sign, TFBlocks.sort_wall_sign).build(null));
 
+	public static void init() {}
+
 	@Environment(EnvType.CLIENT)
 	public static void registerTileEntityRenders() {
 		// tile entities

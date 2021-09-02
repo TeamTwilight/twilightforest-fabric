@@ -119,15 +119,16 @@ public class TwilightForestMod implements ModInitializer {
 		ASMHooks.registerMultipartEvents();
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
-		IEventBus modbus = FMLJavaModLoadingContext.getModEventBus();
-		TFBlocks.BLOCKS.register(modbus);
-		TFItems.ITEMS.register(modbus);
-		TFPotions.POTIONS.register(modbus);
-		BiomeKeys.BIOMES.register(modbus);
-		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
-		TFTileEntities.TILE_ENTITIES.register(modbus);
-		TFParticleType.PARTICLE_TYPES.register(modbus);
-		modbus.addGenericListener(StructureFeature.class, TFStructures::register);
+		//IEventBus modbus = FMLJavaModLoadingContext.getModEventBus();
+//		TFBlocks.BLOCKS.register(modbus);
+//		TFItems.ITEMS.register(modbus);
+//		TFPotions.POTIONS.register(modbus);
+//		BiomeKeys.BIOMES.register(modbus);
+//		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
+		TFTileEntities.init();
+		TFParticleType.init();
+		TFStructures.registerFabricEvents();
+		TFStructures.register();
 		MinecraftForge.EVENT_BUS.addListener(TFStructures::load);
 		//TFBiomeFeatures.FEATURES.register(modbus);
 		TwilightSurfaceBuilders.register();
@@ -150,23 +151,23 @@ public class TwilightForestMod implements ModInitializer {
 		}
 	}
 
-	@SubscribeEvent
-	public static void registerSerializers(RegistryEvent.Register<RecipeSerializer<?>> evt) {
-		//How do I add a condition serializer as fast as possible? An event that fires really early
-		CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
-		TFTreasure.init();
-	}
+//	@SubscribeEvent
+//	public static void registerSerializers(RegistryEvent.Register<RecipeSerializer<?>> evt) {
+//		//How do I add a condition serializer as fast as possible? An event that fires really early
+//		CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
+//		TFTreasure.init();
+//	}
 
-	@SubscribeEvent
-	public static void registerLootModifiers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
-		evt.getRegistry().register(new FieryPickItem.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
-		evt.getRegistry().register(new TFEventListener.Serializer().setRegistryName(ID + ":giant_block_grouping"));
-	}
+//	@SubscribeEvent
+//	public static void registerLootModifiers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
+//		evt.getRegistry().register(new FieryPickItem.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
+//		evt.getRegistry().register(new TFEventListener.Serializer().setRegistryName(ID + ":giant_block_grouping"));
+//	}
 
-	@SubscribeEvent
-	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-		event.register(IShieldCapability.class);
-	}
+//	@SubscribeEvent
+//	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+//		event.register(IShieldCapability.class);
+//	}
 
 	public void sendIMCs() {
 		TFCompat.IMCSender();

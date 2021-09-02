@@ -10,6 +10,7 @@ import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.capabilities.shield.ShieldCapabilityHandler;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 public class CapabilityList implements EntityComponentInitializer {
@@ -25,6 +26,6 @@ public class CapabilityList implements EntityComponentInitializer {
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-		registry.registerForPlayers(SHIELD_CAPABILITY_COMPONENT_KEY, ShieldCapabilityHandler::new, RespawnCopyStrategy.ALWAYS_COPY);
+		registry.registerFor(LivingEntity.class, SHIELD_CAPABILITY_COMPONENT_KEY, ShieldCapabilityHandler::new);
 	}
 }

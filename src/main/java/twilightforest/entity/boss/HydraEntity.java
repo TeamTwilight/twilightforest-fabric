@@ -25,11 +25,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.model.entity.PartEntity;
 import twilightforest.entity.TFPartEntity;
+import twilightforest.extensions.IEntityEx;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFFeature;
@@ -41,7 +41,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class HydraEntity extends Mob implements Enemy {
+public class HydraEntity extends Mob implements Enemy, IEntityEx {
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 100;
@@ -123,7 +123,7 @@ public class HydraEntity extends Mob implements Enemy {
 	@Override
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL) {
-			level.setBlockAndUpdate(blockPosition().offset(0, 2, 0), TFBlocks.boss_spawner_hydra.get().defaultBlockState());
+			level.setBlockAndUpdate(blockPosition().offset(0, 2, 0), TFBlocks.boss_spawner_hydra.defaultBlockState());
 			discard();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
@@ -559,7 +559,7 @@ public class HydraEntity extends Mob implements Enemy {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (ForgeEventFactory.getMobGriefingEvent(level, this)) {
+		if (this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(level, pos, this)) {
 					level.destroyBlock(pos, false);
@@ -747,7 +747,7 @@ public class HydraEntity extends Mob implements Enemy {
 		if (this.deathTime == 200) {
 			if (!this.level.isClientSide && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
 				int i = this.getExperienceReward(this.lastHurtByPlayer);
-				i = ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, i);
+				//i = ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, i);
 				while (i > 0) {
 					int j = ExperienceOrb.getExperienceValue(i);
 					i -= j;

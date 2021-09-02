@@ -11,12 +11,13 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.entity.projectile.TFThrowableEntity;
 import twilightforest.util.TFDamageSources;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
+@Environment(EnvType.CLIENT)
 public class LichBombEntity extends TFThrowableEntity implements ItemSupplier {
 
 	public LichBombEntity(EntityType<? extends LichBombEntity> type, Level world) {

@@ -64,7 +64,7 @@ public class FallingIceEntity extends FallingBlockEntity {
 			double dy = this.getY() - 3F + 3F * (random.nextFloat() - random.nextFloat());
 			double dz = this.getZ() + 2F * (random.nextFloat() - random.nextFloat());
 
-			level.addParticle(TFParticleType.SNOW_WARNING.get(), dx, dy, dz, 0, -1, 0);
+			level.addParticle(TFParticleType.SNOW_WARNING, dx, dy, dz, 0, -1, 0);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class FallingIceEntity extends FallingBlockEntity {
 			this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, stateId), dx, dy, dz, 0, 0, 0);
 		}
 
-		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.defaultBlockState(), level, blockPosition(), null).getBreakSound(), 3F, 0.5F);
+		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.defaultBlockState()).getBreakSound(), 3F, 0.5F);
 		return false;
 	}
 

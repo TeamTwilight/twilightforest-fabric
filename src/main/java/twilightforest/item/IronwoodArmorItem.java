@@ -16,7 +16,7 @@ public class IronwoodArmorItem extends ArmorItem {
 		super(armorMaterial, armorType, props);
 	}
 
-	@Override
+	//@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "ironwood_2.png";

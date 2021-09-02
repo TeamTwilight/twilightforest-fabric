@@ -35,15 +35,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import twilightforest.client.model.entity.PartEntity;
 import twilightforest.entity.TFPartEntity;
 import twilightforest.extensions.IEntityEx;
@@ -216,7 +213,7 @@ public class NagaEntity extends Monster implements IEntityEx {
 
 		@Override
 		public boolean canUse() {
-			return /*taskOwner.getAttackTarget() != null &&*/ taskOwner.horizontalCollision && ForgeEventFactory.getMobGriefingEvent(taskOwner.level, taskOwner);
+			return /*taskOwner.getAttackTarget() != null &&*/ taskOwner.horizontalCollision /*&& ForgeEventFactory.getMobGriefingEvent(taskOwner.level, taskOwner)*/;
 		}
 
 		@Override
@@ -410,7 +407,7 @@ public class NagaEntity extends Monster implements IEntityEx {
 
 		super.aiStep();
 
-		if (level.isClientSide || !ForgeEventFactory.getMobGriefingEvent(level, this)) return;
+		if (level.isClientSide || !this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) return;
 
 		AABB bb = this.getBoundingBox();
 
@@ -570,7 +567,7 @@ public class NagaEntity extends Monster implements IEntityEx {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!ForgeEventFactory.getMobGriefingEvent(level, this)) return;
+		if (!this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) return;
 
 		int floor = (int) getBoundingBox().minY;
 		int targetY = (int) getTarget().getBoundingBox().minY;

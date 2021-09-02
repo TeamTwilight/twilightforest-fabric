@@ -549,7 +549,7 @@ public class HydraHeadContainer {
 				dy *= velocity;
 				dz *= velocity;
 
-				headEntity.level.addParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
+				headEntity.level.addParticle(TFParticleType.LARGE_FLAME, px, py, pz, dx, dy, dz);
 			}
 		}
 

@@ -41,3 +41,15 @@ accessible method net/minecraft/client/particle/ParticleEngine register (Lnet/mi
 accessible field net/minecraft/world/entity/Entity dimensions Lnet/minecraft/world/entity/EntityDimensions;
 accessible field net/minecraft/client/gui/screens/Screen renderables Ljava/util/List;
 accessible class net/minecraft/client/Minecraft$ExperimentalDialogType
+accessible method net/minecraft/client/renderer/Sheets createSignMaterial (Lnet/minecraft/world/level/block/state/properties/WoodType;)Lnet/minecraft/client/resources/model/Material;
+accessible field net/minecraft/server/packs/repository/PackRepository sources Ljava/util/Set;
+accessible method net/minecraft/client/renderer/entity/ItemRenderer renderQuadList (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;Ljava/util/List;Lnet/minecraft/world/item/ItemStack;II)V
+mutable field net/minecraft/world/level/levelgen/StructureSettings DEFAULTS Lcom/google/common/collect/ImmutableMap;
+accessible field net/minecraft/world/level/levelgen/flat/FlatLevelGeneratorSettings STRUCTURE_FEATURES Ljava/util/Map;
+accessible field net/minecraft/world/level/levelgen/StructureSettings structureConfig Ljava/util/Map;
+mutable field net/minecraft/world/level/levelgen/StructureSettings structureConfig Ljava/util/Map;
+accessible method net/minecraft/world/inventory/MenuType$MenuSupplier create (ILnet/minecraft/world/entity/player/Inventory;)Lnet/minecraft/world/inventory/AbstractContainerMenu;
+accessible method net/minecraft/world/damagesource/DamageSource setIsFire ()Lnet/minecraft/world/damagesource/DamageSource;
+accessible field net/minecraft/world/entity/item/FallingBlockEntity fallDamagePerDistance F
+accessible field net/minecraft/world/entity/item/FallingBlockEntity fallDamageMax I
+accessible field net/minecraft/world/entity/item/FallingBlockEntity hurtEntities Z

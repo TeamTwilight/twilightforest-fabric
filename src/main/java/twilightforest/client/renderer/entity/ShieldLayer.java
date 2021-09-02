@@ -16,7 +16,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
-import net.minecraftforge.client.model.data.EmptyModelData;
 import org.apache.commons.lang3.ArrayUtils;
 import twilightforest.TwilightForestMod;
 import twilightforest.capabilities.CapabilityList;
@@ -38,7 +37,7 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 	private int getShieldCount(T entity) {
 		return entity instanceof LichEntity
 						? ((LichEntity) entity).getShieldStrength()
-						: entity.getCapability(CapabilityList.SHIELDS).map(IShieldCapability::shieldsLeft).orElse(0);
+						: CapabilityList.SHIELD_CAPABILITY_COMPONENT_KEY.maybeGet(entity).map(IShieldCapability::shieldsLeft).orElse(0);
 	}
 
 	private void renderShields(PoseStack stack, MultiBufferSource buffer, T entity, float partialTicks) {
@@ -73,7 +72,7 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 				Minecraft.getInstance().getItemRenderer().renderQuadList(
 						stack,
 						buffer.getBuffer(Sheets.translucentCullBlockSheet()),
-						model.getQuads(null, dir, RAND, EmptyModelData.INSTANCE),
+						model.getQuads(null, dir, RAND),
 						ItemStack.EMPTY,
 						0xF000F0,
 						OverlayTexture.NO_OVERLAY

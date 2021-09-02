@@ -1,8 +1,9 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
 
 public class HydraNeckEntity extends HydraPartEntity {
@@ -16,7 +17,7 @@ public class HydraNeckEntity extends HydraPartEntity {
 		this.head = head;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public ResourceLocation renderer() {
 		return RENDERER;
 	}
