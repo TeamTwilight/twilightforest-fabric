@@ -116,7 +116,7 @@ public class TwilightForestMod implements ModInitializer {
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
 
-		ASMHooks.registerMultipartEvents(MinecraftForge.EVENT_BUS);
+		ASMHooks.registerMultipartEvents();
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
 		IEventBus modbus = FMLJavaModLoadingContext.getModEventBus();

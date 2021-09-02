@@ -4,10 +4,11 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+@Environment(EnvType.CLIENT)
 public class GhastTrapParticle extends TextureSheetParticle {
 
 	private final float reddustParticleScale;
@@ -68,7 +69,7 @@ public class GhastTrapParticle extends TextureSheetParticle {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static class Factory implements ParticleProvider<SimpleParticleType> {
 		private final SpriteSet spriteSet;
 

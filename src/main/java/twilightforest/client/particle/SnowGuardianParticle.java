@@ -5,8 +5,9 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class SnowGuardianParticle extends SnowParticle {
 
@@ -16,7 +17,7 @@ public class SnowGuardianParticle extends SnowParticle {
 		this.rCol = this.gCol = this.bCol = 0.75F + this.random.nextFloat() * 0.25F;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static class Factory implements ParticleProvider<SimpleParticleType> {
 		private final SpriteSet spriteSet;
 

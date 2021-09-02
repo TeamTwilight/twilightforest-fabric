@@ -1,13 +1,11 @@
 package twilightforest.compat;
 
-import net.minecraft.world.item.Item;
-
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.ModList;
 import twilightforest.TwilightForestMod;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 //I was having an issue where the game refused to load with the enum method and I couldnt figure it out, so I moved to a new method of registering compat
 //It works the same as it used to, but all the content for each mod should be in its own class.

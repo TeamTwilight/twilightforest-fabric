@@ -7,10 +7,11 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.entity.PartEntity;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.PartEntity;
 
 import java.util.Objects;
 
@@ -36,12 +37,12 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 		super(parent);
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public ResourceLocation renderer() {
 		return RENDERER;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements) {
 		interpTargetX = x;
 		interpTargetY = y;

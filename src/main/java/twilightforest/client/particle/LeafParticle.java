@@ -8,11 +8,11 @@ import net.minecraft.util.Mth;
 import com.mojang.math.Quaternion;
 import net.minecraft.world.phys.Vec3;
 import com.mojang.math.Vector3f;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.client.particle.data.LeafParticleData;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class LeafParticle extends TextureSheetParticle {
 
 	private final Vec3 target;
@@ -117,7 +117,7 @@ public class LeafParticle extends TextureSheetParticle {
 		return 240 | 240 << 16;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static class Factory implements ParticleProvider<LeafParticleData> {
 		private final SpriteSet spriteSet;
 

@@ -19,17 +19,14 @@ import net.minecraft.sounds.Musics;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import twilightforest.client.model.entity.PartEntity;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.TFPartEntity;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.network.UpdateTFMultipartPacket;
+import twilightforest.extensions.IEntityEx;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -62,7 +59,7 @@ public class ASMHooks {
 	 * [AFTER FIRST INVOKEVIRTUAL]
 	 */
 	public static Music music(Music music) {
-		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && Minecraft.getInstance().level.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get()))
+		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && Minecraft.getInstance().level.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID))
 			return Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).getBackgroundMusic().orElse(Musics.GAME);
 		return music;
 	}
@@ -71,28 +68,29 @@ public class ASMHooks {
 	private static final Int2ObjectMap<TFPartEntity<?>> multiparts = new Int2ObjectOpenHashMap<>();
 
 	// This only works on the client side in 1.17...
-	public static void registerMultipartEvents(IEventBus bus) {
-		bus.addListener((Consumer<EntityJoinWorldEvent>) event -> {
-			if(event.getWorld().isClientSide() && event.getEntity().isMultipartEntity())
-			synchronized (cache) {
-				cache.computeIfAbsent(event.getWorld(), (w) -> new ArrayList<>());
-				cache.get(event.getWorld()).addAll(Arrays.stream(Objects.requireNonNull(event.getEntity().getParts())).
-						filter(TFPartEntity.class::isInstance).map(obj -> (TFPartEntity<?>) obj).
-						collect(Collectors.toList()));
 
-			}
-		});
-		bus.addListener((Consumer<EntityLeaveWorldEvent>) event -> {
-			if(event.getWorld().isClientSide() && event.getEntity().isMultipartEntity())
-			synchronized (cache) {
-				cache.computeIfPresent(event.getWorld(), (world, list) -> {
-					list.removeAll(Arrays.stream(Objects.requireNonNull(event.getEntity().getParts())).
+	public static void registerMultipartEvents() {
+		ServerEntityEvents.ENTITY_LOAD.register(((entity, world) -> {
+			if(world.isClientSide() && ((IEntityEx)entity).isMultipartEntity())
+				synchronized (cache) {
+					cache.computeIfAbsent(world, (w) -> new ArrayList<>());
+					cache.get(world).addAll(Arrays.stream(Objects.requireNonNull(((IEntityEx)entity).getParts())).
 							filter(TFPartEntity.class::isInstance).map(obj -> (TFPartEntity<?>) obj).
 							collect(Collectors.toList()));
-					return list;
-				});
-			}
-		});
+
+				}
+		}));
+		ServerEntityEvents.ENTITY_UNLOAD.register(((entity, world) -> {
+			if(world.isClientSide() && ((IEntityEx)entity).isMultipartEntity())
+				synchronized (cache) {
+					cache.computeIfPresent(world, (worldE, list) -> {
+						list.removeAll(Arrays.stream(Objects.requireNonNull(((IEntityEx)entity).getParts())).
+								filter(TFPartEntity.class::isInstance).map(obj -> (TFPartEntity<?>) obj).
+								collect(Collectors.toList()));
+						return list;
+					});
+				}
+		}));
 	}
 
 	/**
@@ -101,8 +99,8 @@ public class ASMHooks {
 	 * [FIRST INST]
 	 */
 	public static void trackingStart(Entity entity) {
-		if (entity.isMultipartEntity()) {
-			List<TFPartEntity<?>> list = Arrays.stream(Objects.requireNonNull(entity.getParts())).
+		if (((IEntityEx)entity).isMultipartEntity()) {
+			List<TFPartEntity<?>> list = Arrays.stream(Objects.requireNonNull(((IEntityEx)entity).getParts())).
 					filter(TFPartEntity.class::isInstance).map(obj -> (TFPartEntity<?>) obj).
 					collect(Collectors.toList());
 			list.forEach(part -> multiparts.put(part.getId(), part));
@@ -119,8 +117,8 @@ public class ASMHooks {
 	 * [FIRST INST]
 	 */
 	public static void trackingEnd(Entity entity) {
-		if (entity.isMultipartEntity()) {
-			List<TFPartEntity<?>> list = Arrays.stream(Objects.requireNonNull(entity.getParts())).
+		if (((IEntityEx)entity).isMultipartEntity()) {
+			List<TFPartEntity<?>> list = Arrays.stream(Objects.requireNonNull(((IEntityEx)entity).getParts())).
 					filter(TFPartEntity.class::isInstance).map(obj -> (TFPartEntity<?>) obj).
 					collect(Collectors.toList());
 			list.forEach(part -> multiparts.remove(part.getId()));
@@ -172,8 +170,10 @@ public class ASMHooks {
 	 * [AFTER GETFIELD]
 	 */
 	public static Entity updateMultiparts(Entity entity) {
-		if (entity.isMultipartEntity())
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new UpdateTFMultipartPacket(entity));
+		if (((IEntityEx)entity).isMultipartEntity())
+			//TODO: PORT
+			return null;
+			//TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new UpdateTFMultipartPacket(entity));
 		return entity;
 	}
 
@@ -183,7 +183,7 @@ public class ASMHooks {
 	 * [BEFORE LAST ARETURN]
 	 */
 	@Nullable
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static EntityRenderer<?> getMultipartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
 		if(entity instanceof TFPartEntity<?>)
 			return TFEntities.BakedMultiPartRenderers.lookup(((TFPartEntity<?>) entity).renderer());
@@ -195,7 +195,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#onResourceManagerReload(ResourceManager)}<br>
 	 * [AFTER FIRST INVOKESPECIAL]
 	 */
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static EntityRendererProvider.Context bakeMultipartRenders(EntityRendererProvider.Context context) {
 		TFEntities.BakedMultiPartRenderers.bakeMultiPartRenderers(context);
 		return context;
@@ -210,8 +210,8 @@ public class ASMHooks {
 		List<Entity> list = new ArrayList<>();
 		iter.forEach(entity -> {
 			list.add(entity);
-			if(entity.isMultipartEntity() && entity.getParts() != null) {
-				for (PartEntity<?> part : entity.getParts()) {
+			if(((IEntityEx)entity).isMultipartEntity() && ((IEntityEx)entity).getParts() != null) {
+				for (PartEntity<?> part : ((IEntityEx)entity).getParts()) {
 					if(part instanceof TFPartEntity)
 						list.add(part);
 				}
@@ -226,7 +226,7 @@ public class ASMHooks {
 	 * [AFTER ALL ALOAD 6]
 	 */
 	public static Minecraft.ExperimentalDialogType dragons(Minecraft.ExperimentalDialogType type) {
-		return TFConfig.CLIENT_CONFIG.disableHereBeDragons.get() ? Minecraft.ExperimentalDialogType.NONE : type;
+		return TFConfig.CLIENT_CONFIG.disableHereBeDragons ? Minecraft.ExperimentalDialogType.NONE : type;
 	}
 
 }

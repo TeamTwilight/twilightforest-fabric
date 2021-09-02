@@ -43,18 +43,17 @@ public class TFClientSetup implements ClientModInitializer {
 
 	}
 
-	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
 	public static class ForgeEvents {
 
 		private static boolean optifineWarningShown = false;
 
-		@SubscribeEvent
-		public static void showOptifineWarning(GuiScreenEvent.InitGuiEvent.Post event) {
-			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && event.getGui() instanceof TitleScreen) {
-				optifineWarningShown = true;
-				Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getGui()));
-			}
-		}
+//		@SubscribeEvent
+//		public static void showOptifineWarning(GuiScreenEvent.InitGuiEvent.Post event) {
+//			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && event.getGui() instanceof TitleScreen) {
+//				optifineWarningShown = true;
+//				Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getGui()));
+//			}
+//		}
 
 	}
 

@@ -1,27 +1,18 @@
 package twilightforest.client.particle;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.core.Registry;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.particles.ParticleType;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fmllegacy.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.data.LeafParticleData;
 import twilightforest.client.particle.data.PinnedFireflyData;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
+
 public class TFParticleType {
 
 	//public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, TwilightForestMod.ID);
@@ -38,13 +29,13 @@ public class TFParticleType {
 	public static final SimpleParticleType ANNIHILATE = Registry.register(Registry.PARTICLE_TYPE,TwilightForestMod.ID+":annihilate", new SimpleParticleType(false));
 	public static final SimpleParticleType HUGE_SMOKE = Registry.register(Registry.PARTICLE_TYPE,TwilightForestMod.ID+":huge_smoke", new SimpleParticleType(false));
 	public static final SimpleParticleType FIREFLY = Registry.register(Registry.PARTICLE_TYPE,TwilightForestMod.ID+":firefly", new SimpleParticleType(false));
-	public static final ParticleType<PinnedFireflyData> FIREFLY_PINNED = Registry.register(Registry.PARTICLE_TYPE,TwilightForestMod.ID+":firefly_pinned", () -> new ParticleType<PinnedFireflyData>(false, new PinnedFireflyData.Deserializer()) {
+	public static final ParticleType<PinnedFireflyData> FIREFLY_PINNED = Registry.register(Registry.PARTICLE_TYPE,TwilightForestMod.ID+":firefly_pinned", new ParticleType<PinnedFireflyData>(false, new PinnedFireflyData.Deserializer()) {
 		@Override
 		public Codec<PinnedFireflyData> codec() {
 			return PinnedFireflyData.codecFirefly();
 		}
 	});
-	public static final RParticleType<LeafParticleData> FALLEN_LEAF = Registry.register(Registry.PARTICLE_TYPE,TwilightForestMod.ID+":fallen_leaf", () -> new ParticleType<LeafParticleData>(false, new LeafParticleData.Deserializer()) {
+	public static final ParticleType<LeafParticleData> FALLEN_LEAF = Registry.register(Registry.PARTICLE_TYPE,TwilightForestMod.ID+":fallen_leaf", new ParticleType<LeafParticleData>(false, new LeafParticleData.Deserializer()) {
 		@Override
 		public Codec<LeafParticleData> codec() {
 			return LeafParticleData.codecLeaf();

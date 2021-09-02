@@ -75,7 +75,7 @@ public class Experiment115Block extends Block {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!player.isShiftKeyDown()) {
-			if (bitesTaken > 0 && stack.getItem() == TFItems.experiment_115.get()) {
+			if (bitesTaken > 0 && stack.getItem() == TFItems.experiment_115) {
 				worldIn.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken - 1));
 				if (!player.isCreative()) stack.shrink(1);
 				if (player instanceof ServerPlayer) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
@@ -104,7 +104,7 @@ public class Experiment115Block extends Block {
             }
 
             if (player instanceof ServerPlayer)
-                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.experiment_115.get(), 8 - i));
+                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.experiment_115, 8 - i));
 
             return InteractionResult.SUCCESS;
         }

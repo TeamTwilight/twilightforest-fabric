@@ -2,11 +2,9 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraft.world.entity.player.Player;
 
-import java.util.function.Supplier;
-
-public class ThrowPlayerPacket {
+public class ThrowPlayerPacket extends ISimplePacket {
 	private final float motionX;
 	private final float motionY;
 	private final float motionZ;
@@ -29,10 +27,15 @@ public class ThrowPlayerPacket {
 		buf.writeFloat(motionZ);
 	}
 
+	@Override
+	public void onMessage(Player playerEntity) {
+		Handler.onMessage(this);
+	}
+
 	public static class Handler {
 
-		public static boolean onMessage(ThrowPlayerPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(ThrowPlayerPacket message) {
+			Minecraft.getInstance().execute(new Runnable() {
 				@Override
 				public void run() {
 					Minecraft.getInstance().player.push(message.motionX, message.motionY, message.motionZ);

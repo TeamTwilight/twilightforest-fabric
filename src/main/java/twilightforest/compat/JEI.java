@@ -1,30 +1,34 @@
 package twilightforest.compat;
 
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.constants.VanillaRecipeCategoryUid;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeTransferRegistration;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
+import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
+import me.shedaniel.rei.api.client.registry.transfer.TransferHandlerRegistry;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.util.EntryStacks;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.inventory.UncraftingContainer;
 
-@JeiPlugin
-public class JEI implements IModPlugin {
+import net.minecraft.world.item.ItemStack;
+
+public class JEI implements REIClientPlugin {
     @Override
-    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(TFBlocks.uncrafting_table.get()), VanillaRecipeCategoryUid.CRAFTING);
+    public void registerCategories(CategoryRegistry registry) {
+        registry.addWorkstations(CategoryIdentifier.of("minecraft", "plugins/crafting"), EntryStacks.of(new ItemStack(TFBlocks.uncrafting_table)));
     }
 
     @Override
-    public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        registration.addRecipeTransferHandler(UncraftingContainer.class, VanillaRecipeCategoryUid.CRAFTING, 11, 9, 20, 36);
+    public void registerTransferHandlers(TransferHandlerRegistry registry) {
+        //registry.register(UncraftingContainer.class);
     }
 
+//    @Override
+//    public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+//        registration.addRecipeTransferHandler(UncraftingContainer.class, VanillaRecipeCategoryUid.CRAFTING, 11, 9, 20, 36);
+//    }
+
+
     @Override
-    public ResourceLocation getPluginUid() {
-        return TwilightForestMod.prefix("jei_plugin");
+    public String getPluginProviderName() {
+        return TwilightForestMod.prefix("jei_plugin").toString();
     }
 }

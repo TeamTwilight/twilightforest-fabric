@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -34,7 +35,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.tileentity.SkullCandleTileEntity;
 
 import javax.annotation.Nullable;
@@ -74,7 +74,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 	//input one of the enum names to convert it into a candle block
 	public static Block candleColorToCandle(String candleName) {
 		if(!candleName.equals(CandleColors.PLAIN.getSerializedName())) {
-			return Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(candleName + "_candle")));
+			return Objects.requireNonNull(Registry.BLOCK.get(new ResourceLocation(candleName + "_candle")));
 		}
 		return Blocks.CANDLE;
 	}
@@ -82,7 +82,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 	//inverse of above
 	public static CandleColors candleToCandleColor(Item candle) {
 		if(!(candle == Blocks.CANDLE.asItem())) {
-			return CandleColors.valueOf(candle.getRegistryName().getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
+			return CandleColors.valueOf(Registry.ITEM.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
 		}
 		return CandleColors.PLAIN;
 	}
@@ -117,7 +117,8 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 		super.playerDestroy(world, player, pos, state, entity, stack);
 	}
 
-	@Override
+	//TODO: Port
+	//@Override
 	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
 		ItemStack newStack = new ItemStack(this);
 		CompoundTag tag = new CompoundTag();

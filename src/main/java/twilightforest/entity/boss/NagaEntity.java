@@ -44,7 +44,9 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import twilightforest.client.model.entity.PartEntity;
 import twilightforest.entity.TFPartEntity;
+import twilightforest.extensions.IEntityEx;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
@@ -56,7 +58,7 @@ import twilightforest.world.registration.TFGenerationSettings;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class NagaEntity extends Monster {
+public class NagaEntity extends Monster implements IEntityEx {
 
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
@@ -679,7 +681,7 @@ public class NagaEntity extends Monster {
 			toAttack.push(motion.x * 1.25D, 0.5D, motion.z * 1.25D);
 			this.setDeltaMovement(motion.x * -1.5D, motion.y + 0.5D, motion.z * -1.5D);
 			if (toAttack instanceof ServerPlayer)
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) toAttack), new ThrowPlayerPacket((float) toAttack.getDeltaMovement().x(), (float) toAttack.getDeltaMovement().y(), (float) toAttack.getDeltaMovement().z()));
+				TFPacketHandler.CHANNEL.send((ServerPlayer) toAttack, new ThrowPlayerPacket((float) toAttack.getDeltaMovement().x(), (float) toAttack.getDeltaMovement().y(), (float) toAttack.getDeltaMovement().z()));
 			hurt(DamageSource.GENERIC, 4F);
 			level.playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.level.random.nextFloat() * 0.4F);
 			movementAI.doDaze();
@@ -708,7 +710,7 @@ public class NagaEntity extends Monster {
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL) {
 			if (getRestrictCenter() != BlockPos.ZERO) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_naga.get().defaultBlockState());
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_naga.defaultBlockState());
 			}
 			discard();
 		} else {
@@ -825,7 +827,7 @@ public class NagaEntity extends Monster {
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 
-		if (compound.contains("Home", Constants.NBT.TAG_INT_ARRAY)) {
+		if (compound.contains("Home", 11)) {
 			int[] home = compound.getIntArray("Home");
 			this.restrictTo(new BlockPos(home[0], home[1], home[2]), 20);
 		} else {

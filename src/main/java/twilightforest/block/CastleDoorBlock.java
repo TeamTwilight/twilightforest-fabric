@@ -157,7 +157,7 @@ public class CastleDoorBlock extends Block {
 
 						double speed = rand.nextGaussian() * 0.2D;
 
-						((ServerLevel)world).sendParticles(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
+						((ServerLevel)world).sendParticles(TFParticleType.ANNIHILATE, x, y, z, 1, 0, 0, 0, speed);
 					}
 				}
 			}

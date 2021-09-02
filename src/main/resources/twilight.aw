@@ -35,3 +35,9 @@ accessible method net/minecraft/world/level/block/TrapDoorBlock <init> (Lnet/min
 accessible method net/minecraft/world/level/block/StairBlock <init> (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
 accessible method net/minecraft/world/level/block/HalfTransparentBlock <init> (Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
 accessible method net/minecraft/world/level/block/SaplingBlock <init> (Lnet/minecraft/world/level/block/grower/AbstractTreeGrower;Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
+accessible class net/minecraft/client/particle/ParticleEngine$SpriteParticleRegistration
+accessible method net/minecraft/client/particle/SuspendedTownParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDD)V
+accessible method net/minecraft/client/particle/ParticleEngine register (Lnet/minecraft/core/particles/ParticleType;Lnet/minecraft/client/particle/ParticleProvider;)V
+accessible field net/minecraft/world/entity/Entity dimensions Lnet/minecraft/world/entity/EntityDimensions;
+accessible field net/minecraft/client/gui/screens/Screen renderables Ljava/util/List;
+accessible class net/minecraft/client/Minecraft$ExperimentalDialogType

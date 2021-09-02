@@ -1,34 +1,31 @@
 package twilightforest.block;
 
 import com.mojang.math.Vector3f;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import twilightforest.TFSounds;
+import twilightforest.enums.TowerDeviceVariant;
+import twilightforest.tileentity.CarminiteBuilderTileEntity;
+import twilightforest.tileentity.TFTileEntities;
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.util.*;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TFSounds;
-import twilightforest.enums.TowerDeviceVariant;
-import twilightforest.tileentity.*;
-
-import javax.annotation.Nullable;
-import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public class BuilderBlock extends BaseEntityBlock {
 
@@ -110,7 +107,7 @@ public class BuilderBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
 		if (state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE) {
 			this.sparkle(world, pos);
@@ -166,7 +163,7 @@ public class BuilderBlock extends BaseEntityBlock {
 	public static void activateBuiltBlocks(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
-		if (state.getBlock() == TFBlocks.built_block.get() && !state.getValue(TranslucentBuiltBlock.ACTIVE)) {
+		if (state.getBlock() == TFBlocks.built_block && !state.getValue(TranslucentBuiltBlock.ACTIVE)) {
 			world.setBlockAndUpdate(pos, state.setValue(TranslucentBuiltBlock.ACTIVE, true));
 			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundSource.BLOCKS, 0.3F, 0.6F);
 			world.getBlockTicks().scheduleTick(pos, state.getBlock(), /*state.getBlock().tickRate(world)*/ 15); //TODO: Potentially incorrect, but we aren't allowed block tick rates
