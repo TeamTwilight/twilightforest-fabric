@@ -22,6 +22,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
+import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -86,15 +88,16 @@ public class TwilightForestMod implements ModInitializer {
 	// odd one out, as armor textures are a stringy mess at present
 	public static final String ARMOR_DIR = ID + ":textures/armor/";
 
-	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true)); //Putting it in UPDATES since other world stuff is here
+	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRuleRegistry.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true)); //Putting it in UPDATES since other world stuff is here
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	private static final Rarity rarity = Rarity.create("TWILIGHT", ChatFormatting.DARK_GREEN);
+	private static final Rarity rarity = Rarity.valueOf("TWILIGHT");
 
 	public TwilightForestMod() {
 		// FIXME: safeRunWhenOn is being real jank for some reason, look into it
 		//noinspection Convert2Lambda,Anonymous2MethodRef
+
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> new Runnable() {
 			@Override
 			public void run() {
@@ -138,7 +141,7 @@ public class TwilightForestMod implements ModInitializer {
 			try {
 				TFCompat.preInitCompat();
 			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
+				TFConfig.COMMON_CONFIG.doCompat = false;
 				LOGGER.error("Had an error loading preInit compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
