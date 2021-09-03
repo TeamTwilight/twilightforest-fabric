@@ -2,6 +2,7 @@ package twilightforest.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,8 +20,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
@@ -45,7 +44,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	public void renderByItem(ItemStack stack, ItemTransforms.TransformType camera, PoseStack ms, MultiBufferSource buffers, int light, int overlay) {
 
 		if (dummy == null) {
-			dummy = ForgeRegistries.BLOCK_ENTITIES.getValue(typeId).create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
+			dummy = Registry.BLOCK_ENTITY_TYPE.get(typeId).create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
 		}
 		Item item = stack.getItem();
 		if (item instanceof BlockItem) {
@@ -62,14 +61,14 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 
 					ms.pushPose();
 					ms.translate(0.5F, 0.5F, -1.5F);
-					Minecraft.getInstance().getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemTransforms.TransformType.GUI, false, ms, buffers, 240, overlay, ForgeHooksClient.handleCameraTransforms(ms, modelBack, camera, false));
+					Minecraft.getInstance().getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemTransforms.TransformType.GUI, false, ms, buffers, 240, overlay, modelBack /*ForgeHooksClient.handleCameraTransforms(ms, modelBack, camera, false)*/);
 					ms.popPose();
 
 					ms.pushPose();
 					ms.translate(0.5F, 0.5F, 0.5F);
 					if(((AbstractTrophyBlock) block).getVariant() == BossVariant.HYDRA || ((AbstractTrophyBlock) block).getVariant() == BossVariant.QUEST_RAM) ms.scale(0.9F, 0.9F, 0.9F);
 					ms.mulPose(Vector3f.XP.rotationDegrees(30));
-					ms.mulPose(Vector3f.YN.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : -45));
+					ms.mulPose(Vector3f.YN.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui ? TFClientEvents.rotationTicker : -45));
 					ms.translate(-0.5F, -0.5F, -0.5F);
 					ms.translate(0.0F, 0.25F, 0.0F);
 					if(((AbstractTrophyBlock) block).getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
@@ -81,7 +80,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					TrophyTileEntityRenderer.render((Direction) null, 180.0F, trophy, variant, 0.0F, ms, buffers, light, camera);
 				}
 			} else if (block instanceof KeepsakeCasketBlock) {
-				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(new KeepsakeCasketTileEntity(BlockPos.ZERO, TFBlocks.keepsake_casket.get().defaultBlockState()), ms, buffers, light, overlay);
+				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(new KeepsakeCasketTileEntity(BlockPos.ZERO, TFBlocks.keepsake_casket.defaultBlockState()), ms, buffers, light, overlay);
 			} else {
 				BlockEntityRenderer<BlockEntity> renderer = Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(dummy);
 				renderer.render(null, 0, ms, buffers, light, overlay);

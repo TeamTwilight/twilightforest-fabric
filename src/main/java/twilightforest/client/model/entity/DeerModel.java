@@ -7,15 +7,15 @@ import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.entity.passive.DeerEntity;
 
 /**
  * ModelWildDeer - MCVinnyq
  * Created using Tabula 8.0.0
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class DeerModel extends QuadrupedModel<DeerEntity> {
     private final ModelPart neck;
     private final ModelPart realHead;

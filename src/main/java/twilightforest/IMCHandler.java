@@ -8,11 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import twilightforest.world.components.feature.TFGenCaveStalactite;
 
 import java.util.function.Consumer;
@@ -85,7 +80,7 @@ public class IMCHandler {
 	private static void handleCrumble(CompoundTag nbt) {
 		BlockState key = NbtUtils.readBlockState(nbt);
 		if (key.getBlock() != Blocks.AIR) {
-			readStatesFromTagList(nbt.getList("Crumbling", Constants.NBT.TAG_COMPOUND), value -> CRUMBLE_BLOCKS_BUILDER.put(key, value));
+			readStatesFromTagList(nbt.getList("Crumbling", 10), value -> CRUMBLE_BLOCKS_BUILDER.put(key, value));
 		}
 	}
 
@@ -95,7 +90,7 @@ public class IMCHandler {
 		if (nbtState.getBlock() != Blocks.AIR) {
 			ORE_BLOCKS_BUILDER.add(nbtState);
 
-			if (nbt.contains("Stalactite_Settings", Constants.NBT.TAG_COMPOUND)) {
+			if (nbt.contains("Stalactite_Settings", 10)) {
 				CompoundTag settings = nbt.getCompound("Stalactite_Settings");
 				int weight    = readInt(settings, "Weight", 15);
 				int hillSize  = readInt(settings, "Hill_Size", 3);
@@ -108,11 +103,11 @@ public class IMCHandler {
 	}
 
 	private static int readInt(CompoundTag tag, String key, int defaultValue) {
-		return tag.contains(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getInt(key) : defaultValue;
+		return tag.contains(key, 99) ? tag.getInt(key) : defaultValue;
 	}
 
 	private static float readFloat(CompoundTag tag, String key, float defaultValue) {
-		return tag.contains(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getFloat(key) : defaultValue;
+		return tag.contains(key, 99) ? tag.getFloat(key) : defaultValue;
 	}
 
 	public static ImmutableList<ItemStack> getLoadingIconStacks() {

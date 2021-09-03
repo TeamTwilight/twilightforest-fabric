@@ -18,9 +18,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
@@ -43,7 +43,7 @@ public class KnightmetalBlock extends Block {
 	}
 
 	@Nullable
-	@Override
+	//@Override
 	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
 		return BlockPathTypes.DAMAGE_CACTUS;
 	}
@@ -55,7 +55,7 @@ public class KnightmetalBlock extends Block {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		tooltip.add(TOOLTIP);
 	}

@@ -1,13 +1,10 @@
 package twilightforest.network;
 
+import twilightforest.TwilightForestMod;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
-import twilightforest.TwilightForestMod;
-
-import java.util.function.Supplier;
 
 public class EnforceProgressionStatusPacket extends ISimplePacket {
 

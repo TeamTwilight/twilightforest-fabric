@@ -8,5 +8,5 @@ import net.minecraft.world.entity.LivingEntity;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
-    @Inject(method = "updatingUsingItem", at = @At())
+    //@Inject(method = "updatingUsingItem", at = @At())
 }

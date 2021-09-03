@@ -20,8 +20,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import twilightforest.TFSounds;
@@ -185,7 +185,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public boolean displayFireAnimation() {
 		return false;
 	}

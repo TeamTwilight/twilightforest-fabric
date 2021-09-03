@@ -8,13 +8,13 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.entity.CarminiteGhastguardEntity;
 
 import java.util.Random;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class TFGhastModel<T extends CarminiteGhastguardEntity> extends HierarchicalModel<T> {
 	protected final static int tentacleCount = 9;
 	private final ModelPart root, body;

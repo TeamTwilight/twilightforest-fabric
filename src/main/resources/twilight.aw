@@ -53,3 +53,7 @@ accessible method net/minecraft/world/damagesource/DamageSource setIsFire ()Lnet
 accessible field net/minecraft/world/entity/item/FallingBlockEntity fallDamagePerDistance F
 accessible field net/minecraft/world/entity/item/FallingBlockEntity fallDamageMax I
 accessible field net/minecraft/world/entity/item/FallingBlockEntity hurtEntities Z
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData bannerMarkers Ljava/util/Map;
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData frameMarkers Ljava/util/Map;
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData trackedDecorationCount I
+accessible method net/minecraft/server/level/ChunkMap isExistingChunkFull (Lnet/minecraft/world/level/ChunkPos;)Z

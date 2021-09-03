@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -26,9 +27,10 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.ForgeEventFactory;
+
+import twilightforest.client.model.entity.PartEntity;
 import twilightforest.entity.TFPartEntity;
+import twilightforest.extensions.IEntityEx;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
@@ -50,7 +52,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
-public class SnowQueenEntity extends Monster implements IBreathAttacker {
+public class SnowQueenEntity extends Monster implements IBreathAttacker, IEntityEx {
 
 	private static final int MAX_SUMMONS = 6;
 	private static final EntityDataAccessor<Boolean> BEAM_FLAG = SynchedEntityData.defineId(SnowQueenEntity.class, EntityDataSerializers.BOOLEAN);
@@ -145,7 +147,7 @@ public class SnowQueenEntity extends Monster implements IBreathAttacker {
 			float py = this.getEyeHeight() + (this.random.nextFloat() - this.random.nextFloat()) * 0.5F;
 			float pz = (this.random.nextFloat() - this.random.nextFloat()) * 0.3F;
 
-			level.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+			level.addParticle(TFParticleType.SNOW_GUARDIAN, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 		}
 
 		// during drop phase, all the ice blocks should make particles
@@ -155,7 +157,7 @@ public class SnowQueenEntity extends Monster implements IBreathAttacker {
 				float py = (this.random.nextFloat() - this.random.nextFloat()) * 0.5F;
 				float pz = (this.random.nextFloat() - this.random.nextFloat()) * 0.5F;
 
-				level.addParticle(TFParticleType.SNOW_WARNING.get(), ice.xOld + px, ice.yOld + py, ice.zOld + pz, 0, 0, 0);
+				level.addParticle(TFParticleType.SNOW_WARNING, ice.xOld + px, ice.yOld + py, ice.zOld + pz, 0, 0, 0);
 			}
 		}
 
@@ -184,7 +186,7 @@ public class SnowQueenEntity extends Monster implements IBreathAttacker {
 				dy *= velocity;
 				dz *= velocity;
 
-				level.addParticle(TFParticleType.ICE_BEAM.get(), px, py, pz, dx, dy, dz);
+				level.addParticle(TFParticleType.ICE_BEAM, px, py, pz, dx, dy, dz);
 			}
 		}
 	}
@@ -232,7 +234,7 @@ public class SnowQueenEntity extends Monster implements IBreathAttacker {
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL) {
 			if (getRestrictCenter() != BlockPos.ZERO) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_snow_queen.get().defaultBlockState());
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_snow_queen.defaultBlockState());
 			}
 			discard();
 		} else {
@@ -326,7 +328,7 @@ public class SnowQueenEntity extends Monster implements IBreathAttacker {
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
-		if (ForgeEventFactory.getMobGriefingEvent(level, this)) {
+		if (this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				BlockState state = level.getBlockState(pos);
 				if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {

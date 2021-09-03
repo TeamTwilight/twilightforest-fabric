@@ -19,8 +19,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import javax.annotation.Nullable;
 
@@ -44,12 +44,12 @@ public class ForceFieldBlock extends ConnectableRotatedPillarBlock implements Si
 				facing == Direction.NORTH || axis == Direction.Axis.Z ?  0 : this.boundingBoxWidthUpper);
 	}
 
-	@Override
+	//@Override
 	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
 		return false;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (adjacentBlockState.is(this)) {
 			if (!side.getAxis().isHorizontal()) {

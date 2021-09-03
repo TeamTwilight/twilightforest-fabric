@@ -14,8 +14,8 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
@@ -219,7 +219,7 @@ public class IEShaderRegister {
 			shaderCallback = shader -> { for(ShaderUniform param: shaderParams) { param.assignUniform(shader); } };
 		}
 
-		@OnlyIn(Dist.CLIENT)
+		@Environment(EnvType.CLIENT)
 		@Override
 		public RenderType getRenderType(RenderType baseType) {
 			if(this.render == null) {

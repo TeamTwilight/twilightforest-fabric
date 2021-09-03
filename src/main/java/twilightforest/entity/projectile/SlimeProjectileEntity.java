@@ -13,8 +13,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class SlimeProjectileEntity extends TFThrowableEntity implements ItemSupplier {
@@ -54,7 +54,7 @@ public class SlimeProjectileEntity extends TFThrowableEntity implements ItemSupp
 		return true;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {

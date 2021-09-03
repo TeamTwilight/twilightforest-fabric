@@ -20,12 +20,12 @@ public class MagicLeavesBlock extends LeavesBlock {
 
 	@Override
 	public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
-		return TFConfig.COMMON_CONFIG.PERFORMANCE.leavesLightOpacity.get();
+		return TFConfig.COMMON_CONFIG.PERFORMANCE.leavesLightOpacity;
 	}
 
 	@Override
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
-		if (state.getBlock() == TFBlocks.transformation_leaves.get()) {
+		if (state.getBlock() == TFBlocks.transformation_leaves) {
 			for (int i = 0; i < 1; ++i) {
 				this.sparkleRunes(world, pos, random);
 			}
@@ -65,7 +65,7 @@ public class MagicLeavesBlock extends LeavesBlock {
 		}
 
 		if (rx < pos.getX() || rx > pos.getX() + 1 || ry < pos.getY() || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1) {
-			world.addParticle(TFParticleType.LEAF_RUNE.get(), rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			world.addParticle(TFParticleType.LEAF_RUNE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 }

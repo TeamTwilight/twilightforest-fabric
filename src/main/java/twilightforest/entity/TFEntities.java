@@ -25,8 +25,8 @@ import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.NaturalSpawner;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -383,7 +383,7 @@ public class TFEntities {
 		event.put(rising_zombie, Zombie.createAttributes().build());
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	@SubscribeEvent
 	public static void registerEntityRenderer(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(wild_boar, m -> new BoarRenderer(m, new BoarModel<>(m.bakeLayer(TFModelLayers.BOAR))));
@@ -471,7 +471,7 @@ public class TFEntities {
 		event.registerEntityRenderer(ice_arrow, DefaultArrowRenderer::new);
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static class BakedMultiPartRenderers {
 
 		private static final Map<ResourceLocation, EntityRenderer<?>> renderers = new HashMap<>();

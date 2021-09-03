@@ -1,20 +1,16 @@
 package twilightforest.network;
 
+import twilightforest.TFMagicMapData;
+import twilightforest.item.MagicMapItem;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapRenderer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
-import twilightforest.TFMagicMapData;
-import twilightforest.item.MagicMapItem;
-
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 
 // Rewraps vanilla SPacketMaps to properly expose our custom decorations
 public class MagicMapPacket extends ISimplePacket {
@@ -38,12 +34,12 @@ public class MagicMapPacket extends ISimplePacket {
 
 	@Override
 	public void onMessage(Player playerEntity) {
-
+		Handler.onMessage(this);
 	}
 
 	public static class Handler {
-		public static boolean onMessage(MagicMapPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(MagicMapPacket message) {
+			Minecraft.getInstance().execute(new Runnable() {
 				@Override
 				public void run() {
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas

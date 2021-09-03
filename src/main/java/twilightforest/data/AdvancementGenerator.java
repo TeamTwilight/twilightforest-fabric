@@ -511,7 +511,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 
 	private Advancement.Builder addDendrologistBlock(Advancement.Builder builder) {
 		for (Block dendrologistBlock : DENDROLOGIST_BLOCKS) {
-			builder.addCriterion(dendrologistBlock.getRegistryName().getPath(), InventoryChangeTrigger.TriggerInstance.hasItems(dendrologistBlock));
+			builder.addCriterion(Registry.BLOCK.getKey(dendrologistBlock).getPath(), InventoryChangeTrigger.TriggerInstance.hasItems(dendrologistBlock));
 		}
 		return builder;
 	}

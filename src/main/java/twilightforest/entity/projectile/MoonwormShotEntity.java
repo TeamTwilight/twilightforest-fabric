@@ -16,8 +16,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 
@@ -76,7 +76,7 @@ public class MoonwormShotEntity extends TFThrowableEntity {
 		return 0.03F;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {

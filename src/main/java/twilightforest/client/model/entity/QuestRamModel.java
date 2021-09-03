@@ -11,15 +11,16 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.entity.passive.QuestRamEntity;
 
 /**
  * ModelQuestingRam - MCVinnyq
  * Created using Tabula 8.0.0
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class QuestRamModel extends QuadrupedModel<QuestRamEntity> {
     public ModelPart horns;
     public ModelPart backtorso, frontTorso;

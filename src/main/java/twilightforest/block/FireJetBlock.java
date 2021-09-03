@@ -16,8 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import twilightforest.data.BlockTagGenerator;
-import twilightforest.data.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.tileentity.FireJetTileEntity;
 import twilightforest.tileentity.TFTileEntities;
@@ -84,7 +82,8 @@ public class FireJetBlock extends BaseEntityBlock {
 
 	private boolean isLava(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-		return state.is(BlockTagGenerator.FIRE_JET_FUEL) || state.getBlock().getFluidState(state).is(FluidTagGenerator.FIRE_JET_FUEL);
+		return false;
+		//return state.is(BlockTagGenerator.FIRE_JET_FUEL) || state.getBlock().getFluidState(state).is(FluidTagGenerator.FIRE_JET_FUEL);
 	}
 
 	@Nullable

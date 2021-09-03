@@ -18,8 +18,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraftforge.client.IItemRenderProperties;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	private static final MutableComponent TOOLTIP_TEXT = new TranslatableComponent("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public ArcticArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
@@ -141,7 +141,7 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 	}*/
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		tooltip.add(TOOLTIP_TEXT);

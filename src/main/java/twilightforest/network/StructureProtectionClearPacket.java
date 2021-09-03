@@ -5,13 +5,10 @@ import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 
-import net.minecraftforge.client.IWeatherRenderHandler;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
-
-import java.util.function.Supplier;
+import twilightforest.extensions.IEffectsEx;
 
 public class StructureProtectionClearPacket extends ISimplePacket {
 
@@ -33,10 +30,10 @@ public class StructureProtectionClearPacket extends ISimplePacket {
 
 				// add weather box if needed
 				if (info instanceof TwilightForestRenderInfo) {
-					IWeatherRenderHandler weatherRenderer = info.getWeatherRenderHandler();
+					TFWeatherRenderer weatherRenderer = ((IEffectsEx)info).getHandler();
 
 					if (weatherRenderer instanceof TFWeatherRenderer) {
-						((TFWeatherRenderer) weatherRenderer).setProtectedBox(null);
+						weatherRenderer.setProtectedBox(null);
 					}
 				}
 			});

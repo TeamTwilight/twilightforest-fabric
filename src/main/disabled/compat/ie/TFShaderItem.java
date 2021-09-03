@@ -29,8 +29,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
@@ -120,7 +120,7 @@ public class TFShaderItem extends Item implements IShaderItem {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> list, TooltipFlag flag) {
         list.add(new TranslatableComponent(Lib.DESC_INFO + "shader.level").append(TextUtils.applyFormat(new TranslatableComponent(Lib.DESC_INFO + "shader.rarity." + this.getRarity(stack).name().toLowerCase(Locale.US)), getRarity(stack).color)));
         if(ShaderRegistry.shaderRegistry.containsKey(getShaderName(stack))) {

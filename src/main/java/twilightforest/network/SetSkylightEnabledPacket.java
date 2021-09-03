@@ -1,11 +1,9 @@
 package twilightforest.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraft.world.entity.player.Player;
 
-import java.util.function.Supplier;
-
-public class SetSkylightEnabledPacket {
+public class SetSkylightEnabledPacket extends ISimplePacket {
 
     private final boolean enabled;
 
@@ -21,8 +19,13 @@ public class SetSkylightEnabledPacket {
         buf.writeBoolean(enabled);
     }
 
+    @Override
+    public void onMessage(Player playerEntity) {
+        Handler.onMessage(this);
+    }
+
     public static class Handler {
-        public static boolean onMessage(SetSkylightEnabledPacket message, Supplier<NetworkEvent.Context> ctx) {
+        public static boolean onMessage(SetSkylightEnabledPacket message) {
             // FIXME UNUSED AND CLEAR ALL
             // TwilightForestDimension.setSkylightEnabled(message.enabled);
             return true;

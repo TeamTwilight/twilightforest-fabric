@@ -21,8 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.RiderSpearAttackGoal;
 
@@ -193,7 +193,7 @@ public class LowerGoblinKnightEntity extends Monster {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void handleEntityEvent(byte id) {
 		if (id == 5) {
 			ItemStack broken = new ItemStack(Items.IRON_CHESTPLATE);

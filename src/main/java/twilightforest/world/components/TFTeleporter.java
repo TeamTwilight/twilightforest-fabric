@@ -21,7 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
-import net.minecraftforge.common.util.ITeleporter;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
@@ -39,7 +38,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class TFTeleporter implements ITeleporter {
+public class TFTeleporter/* implements ITeleporter*/ {
 
 	private static final Map<ResourceLocation, Map<ColumnPos, PortalPosition>> destinationCoordinateCache = new HashMap<>();
 	private static final Object2LongMap<ColumnPos> columnMap = new Object2LongOpenHashMap<>();
@@ -51,7 +50,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	@Nullable
-	@Override
+	//@Override
 	public PortalInfo getPortalInfo(Entity entity, ServerLevel dest, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
 		PortalInfo pos;
 		if ((pos = placeInExistingPortal(dest, entity, entity.blockPosition(), entity instanceof Player)) == null) {
@@ -167,7 +166,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean isPortal(BlockState state) {
-		return state.getBlock() == TFBlocks.twilight_portal.get();
+		return state.getBlock() == TFBlocks.twilight_portal;
 	}
 
 	// from the start point, builds a set of all directly adjacent non-portal blocks
@@ -426,7 +425,7 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockAndUpdate(pos.east().south().below(), dirt);
 
 		// portal in it
-		BlockState portal = TFBlocks.twilight_portal.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
+		BlockState portal = TFBlocks.twilight_portal.defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable));
 
 		world.setBlock(pos, portal, 2);
 		world.setBlock(pos.east(), portal, 2);
@@ -490,7 +489,7 @@ public class TFTeleporter implements ITeleporter {
 		return new PortalInfo(pos, Vec3.ZERO, entity.yRot, entity.xRot);
 	}
 
-	@Override
+	//@Override
 	public Entity placeEntity(Entity entity, ServerLevel currentWorld, ServerLevel destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
 		entity.fallDistance = 0;
 		return repositionEntity.apply(false);

@@ -5,13 +5,9 @@ import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraftforge.client.IWeatherRenderHandler;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
-
-import java.util.function.Supplier;
 
 public class StructureProtectionPacket extends ISimplePacket {
 

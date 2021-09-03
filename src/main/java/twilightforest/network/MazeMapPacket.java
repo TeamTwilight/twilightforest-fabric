@@ -5,13 +5,8 @@ import net.minecraft.client.gui.MapRenderer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import twilightforest.TFMazeMapData;
 import twilightforest.item.MazeMapItem;
-
-import java.io.IOException;
-import java.util.function.Supplier;
 
 /**
  * Vanilla's SPacketMaps handler looks for and loads the vanilla MapData instances.
@@ -44,7 +39,7 @@ public class MazeMapPacket extends ISimplePacket {
 
 	@Override
 	public void onMessage(Player playerEntity) {
-
+		Handler.onMessage(this);
 	}
 
 	public static class Handler {
@@ -63,7 +58,7 @@ public class MazeMapPacket extends ISimplePacket {
 					//	}
 					//}
 
-					TFMazeMapData.registerMazeMapData(Minecraft.getInstance().level, mapdata);
+					TFMazeMapData.registerMazeMapData(Minecraft.getInstance().level, mapdata, s);
 				}
 
 				message.inner.applyToMap(mapdata);

@@ -125,7 +125,7 @@ public class TFClientSetup implements ClientModInitializer {
 //	}
 
 	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
-		renderer.addLayer(new ShieldLayer<>(renderer));
-		renderer.addLayer(new IceLayer<>(renderer));
+//		renderer.addLayer(new ShieldLayer<>(renderer));
+//		renderer.addLayer(new IceLayer<>(renderer));
 	}
 }

@@ -47,7 +47,7 @@ public class HedgeBlock extends Block {
 	}
 
 	@Nullable
-	@Override
+	//@Override
 	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
 		return entity != null && shouldDamage(entity) ? BlockPathTypes.DAMAGE_CACTUS : null;
 	}
@@ -106,13 +106,13 @@ public class HedgeBlock extends Block {
 		return !(entity instanceof Spider || entity instanceof ItemEntity || entity.isIgnoringBlockTriggers());
 	}
 
-	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return 0;
-	}
-
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return 0;
-	}
+//	@Override
+//	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+//		return 0;
+//	}
+//
+//	@Override
+//	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+//		return 0;
+//	}
 }

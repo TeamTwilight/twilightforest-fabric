@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -14,9 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.item.TFItems;
@@ -84,7 +82,7 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 			if (!state.isAir()) {
 				if (getOwner() instanceof Player) {
 					Player player = (Player) getOwner();
-					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
+					//if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
 						if (canAnnihilate(pos, state)) {
 							this.level.removeBlock(pos, false);
 							this.playSound(SoundEvents.GENERIC_EXTINGUISH_FIRE, 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
@@ -92,9 +90,9 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 						} else {
 							this.hasHitObstacle = true;
 						}
-					} else {
-						this.hasHitObstacle = true;
-					}
+					//} else {
+					//	this.hasHitObstacle = true;
+					//}
 				}
 			}
 		}
@@ -119,7 +117,7 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 
 						double speed = rand.nextGaussian() * 0.2D;
 
-						((ServerLevel)world).sendParticles(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
+						((ServerLevel)world).sendParticles(TFParticleType.ANNIHILATE, x, y, z, 1, 0, 0, 0, speed);
 					}
 				}
 			}
@@ -179,7 +177,7 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower != null && thrower.getUseItem().getItem() == TFItems.cube_of_annihilation.get()) {
+		if (thrower != null && thrower.getUseItem().getItem() == TFItems.cube_of_annihilation) {
 			thrower.stopUsingItem();
 		}
 	}
@@ -195,6 +193,6 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+		return new ClientboundAddEntityPacket(this);
 	}
 }

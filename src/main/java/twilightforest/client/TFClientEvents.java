@@ -3,38 +3,19 @@ package twilightforest.client;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IWeatherRenderHandler;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.data.ItemTagGenerator;
 import twilightforest.extensions.IEffectsEx;
 import twilightforest.item.TFItems;
 import java.util.Map;
 import java.util.Objects;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Registry;
@@ -43,10 +24,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 
 @Environment(EnvType.CLIENT)
 public class TFClientEvents {
@@ -233,27 +211,26 @@ public class TFClientEvents {
 	@Environment(EnvType.CLIENT)
 	private static final MutableComponent NYI_TEXT = new TranslatableComponent("twilightforest.misc.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 
-	@SubscribeEvent
-	public static void tooltipEvent(ItemTooltipEvent event) {
-		ItemStack item = event.getItemStack();
-
-		// WIP takes precedence over NYI
-		boolean wip = item.is(ItemTagGenerator.WIP);
-		boolean nyi = !wip && item.is(ItemTagGenerator.NYI);
-
-		if (!wip && !nyi)
-			return;
-
-		//if (item.getDisplayName() instanceof MutableComponent displayName)
-		//	displayName/*.append(wip ? " [WIP]" : " [NYI]")*/.setStyle(displayName.getStyle().withColor(ChatFormatting.DARK_GRAY));
-
-		if (wip) {
-			event.getToolTip().add(WIP_TEXT_0);
-			event.getToolTip().add(WIP_TEXT_1);
-		} else {
-			event.getToolTip().add(NYI_TEXT);
-		}
-	}
+//	public static void tooltipEvent(ItemTooltipEvent event) {
+//		ItemStack item = event.getItemStack();
+//
+//		// WIP takes precedence over NYI
+//		boolean wip = item.is(ItemTagGenerator.WIP);
+//		boolean nyi = !wip && item.is(ItemTagGenerator.NYI);
+//
+//		if (!wip && !nyi)
+//			return;
+//
+//		//if (item.getDisplayName() instanceof MutableComponent displayName)
+//		//	displayName/*.append(wip ? " [WIP]" : " [NYI]")*/.setStyle(displayName.getStyle().withColor(ChatFormatting.DARK_GRAY));
+//
+//		if (wip) {
+//			event.getToolTip().add(WIP_TEXT_0);
+//			event.getToolTip().add(WIP_TEXT_1);
+//		} else {
+//			event.getToolTip().add(NYI_TEXT);
+//		}
+//	}
 
 	public static int time = 0;
 	private static int rotationTickerI = 0;

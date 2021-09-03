@@ -7,5 +7,6 @@ public class TwilightForestModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         TFParticleType.registerFactories();
+        twilightforest.client.TFClientSetup.addLegacyPack();
     }
 }

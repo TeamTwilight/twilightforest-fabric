@@ -2,24 +2,21 @@ package twilightforest.client.model;
 
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Environment(EnvType.CLIENT)
 public class TFLayerDefinitions {
 
-	@SubscribeEvent
+	//TODO: HOOK
 	public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
 
 		event.registerLayerDefinition(TFModelLayers.ARCTIC_ARMOR_INNER, () -> LayerDefinition.create(ArcticArmorModel.addPieces(LayerDefinitions.INNER_ARMOR_DEFORMATION), 64, 32));

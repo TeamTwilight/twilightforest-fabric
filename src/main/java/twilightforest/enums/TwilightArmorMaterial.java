@@ -5,8 +5,8 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.item.TFItems;
 
 import java.util.function.Supplier;
@@ -40,7 +40,7 @@ public enum TwilightArmorMaterial implements ArmorMaterial {
 		this.repairMaterial = repairMaterial;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	@Override
 	public String getName() {
 		return name;

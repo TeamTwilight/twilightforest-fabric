@@ -6,15 +6,15 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.entity.MinotaurEntity;
 
 /**
  * ModelMinotaur - MCVinnyq
  * Created using Tabula 8.0.0
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class MinotaurModel extends HumanoidModel<MinotaurEntity> {
 
     public MinotaurModel(ModelPart root) {

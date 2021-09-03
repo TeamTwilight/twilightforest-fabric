@@ -12,8 +12,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import java.util.Map;
 import java.util.Random;
@@ -69,7 +69,7 @@ public class TrollsteinnBlock extends Block {
 		return ret;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
 		if (rand.nextInt(2) == 0) {

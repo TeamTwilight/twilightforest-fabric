@@ -7,11 +7,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ProtectionBoxEntity;
-
-import java.util.function.Supplier;
 
 public class AreaProtectionPacket extends ISimplePacket {
 

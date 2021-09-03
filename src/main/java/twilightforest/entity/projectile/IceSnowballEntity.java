@@ -12,8 +12,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.TFDamageSources;
 
@@ -57,7 +57,7 @@ public class IceSnowballEntity extends TFThrowableEntity implements ItemSupplier
 		return true;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {

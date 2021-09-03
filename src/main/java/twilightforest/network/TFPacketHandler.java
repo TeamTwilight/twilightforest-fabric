@@ -12,23 +12,18 @@ public class TFPacketHandler {
 	@SuppressWarnings("UnusedAssignment")
 	public static void init() {
 		int id = 0;
-		CHANNEL.messageBuilder(AreaProtectionPacket.class, id++).encoder(AreaProtectionPacket::encode).decoder(AreaProtectionPacket::new).consumer(new SimpleChannel.MessageBuilder.ToBooleanBiFunction<AreaProtectionPacket, Supplier<NetworkEvent.Context>>() {
-			@Override
-			public boolean applyAsBool(AreaProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
-				return AreaProtectionPacket.Handler.onMessage(message, ctx);
-			}
-		}).add();
+		CHANNEL.registerPacket(AreaProtectionPacket.class, AreaProtectionPacket::new, EnvType.CLIENT);
 		CHANNEL.registerPacket(ChangeBiomePacket.class, ChangeBiomePacket::new, EnvType.CLIENT);
 		CHANNEL.registerPacket(EnforceProgressionStatusPacket.class, EnforceProgressionStatusPacket::new, EnvType.CLIENT);
 		CHANNEL.registerPacket(StructureProtectionPacket.class, StructureProtectionPacket::new, EnvType.CLIENT);
 		CHANNEL.registerPacket(StructureProtectionClearPacket.class, StructureProtectionClearPacket::new, EnvType.CLIENT);
-		CHANNEL.messageBuilder(ThrowPlayerPacket.class, id++).encoder(ThrowPlayerPacket::encode).decoder(ThrowPlayerPacket::new).consumer(ThrowPlayerPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(MagicMapPacket.class, id++).encoder(MagicMapPacket::encode).decoder(MagicMapPacket::new).consumer(MagicMapPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(MazeMapPacket.class, id++).encoder(MazeMapPacket::encode).decoder(MazeMapPacket::new).consumer(MazeMapPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UpdateShieldPacket.class, id++).encoder(UpdateShieldPacket::encode).decoder(UpdateShieldPacket::new).consumer(UpdateShieldPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(SetSkylightEnabledPacket.class, id++).encoder(SetSkylightEnabledPacket::encode).decoder(SetSkylightEnabledPacket::new).consumer(SetSkylightEnabledPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UncraftingGuiPacket.class, id++).encoder(UncraftingGuiPacket::encode).decoder(UncraftingGuiPacket::new).consumer(UncraftingGuiPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(UpdateTFMultipartPacket.class, id++).encoder(UpdateTFMultipartPacket::encode).decoder(UpdateTFMultipartPacket::new).consumer(UpdateTFMultipartPacket.Handler::onMessage).add();
-		CHANNEL.messageBuilder(SpawnFallenLeafFromPacket.class, id++).encoder(SpawnFallenLeafFromPacket::encode).decoder(SpawnFallenLeafFromPacket::new).consumer(SpawnFallenLeafFromPacket.Handler::onMessage).add();
+		CHANNEL.registerPacket(ThrowPlayerPacket.class, ThrowPlayerPacket::new, EnvType.CLIENT);
+		CHANNEL.registerPacket(MagicMapPacket.class, MagicMapPacket::new, EnvType.CLIENT);
+		CHANNEL.registerPacket(MazeMapPacket.class, MazeMapPacket::new, EnvType.CLIENT);
+		CHANNEL.registerPacket(UpdateShieldPacket.class, UpdateShieldPacket::new, EnvType.CLIENT);
+		CHANNEL.registerPacket(SetSkylightEnabledPacket.class, SetSkylightEnabledPacket::new, EnvType.CLIENT);
+		CHANNEL.registerPacket(UncraftingGuiPacket.class, UncraftingGuiPacket::new, EnvType.CLIENT);
+		CHANNEL.registerPacket(UpdateTFMultipartPacket.class, UpdateTFMultipartPacket::new, EnvType.CLIENT);
+		CHANNEL.registerPacket(SpawnFallenLeafFromPacket.class, SpawnFallenLeafFromPacket::new, EnvType.CLIENT);
 	}
 }

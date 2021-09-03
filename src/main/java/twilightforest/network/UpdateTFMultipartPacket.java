@@ -4,16 +4,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import twilightforest.client.model.entity.PartEntity;
 import twilightforest.entity.TFPartEntity;
+import twilightforest.extensions.IEntityEx;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.function.Supplier;
 
-public class UpdateTFMultipartPacket {
+public class UpdateTFMultipartPacket extends ISimplePacket {
 
 	private int id;
 	private FriendlyByteBuf buffer;
@@ -30,7 +29,7 @@ public class UpdateTFMultipartPacket {
 
 	public void encode(FriendlyByteBuf buf) {
 		buf.writeInt(entity.getId());
-		PartEntity<?>[] parts = entity.getParts();
+		PartEntity<?>[] parts = ((IEntityEx)entity).getParts();
 		// We assume the client and server part arrays are identical, else everything will crash and burn. Don't even bother handling it.
 		if (parts != null) {
 			for (PartEntity<?> part : parts) {
@@ -46,17 +45,22 @@ public class UpdateTFMultipartPacket {
 		}
 	}
 
+	@Override
+	public void onMessage(Player playerEntity) {
+		Handler.onMessage(this);
+	}
+
 	public static class Handler {
-		public static boolean onMessage(UpdateTFMultipartPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(UpdateTFMultipartPacket message) {
+			Minecraft.getInstance().execute(new Runnable() {
 				@Override
 				public void run() {
 					Level world = Minecraft.getInstance().level;
 					if (world == null)
 						return;
 					Entity ent = world.getEntity(message.id);
-					if (ent != null && ent.isMultipartEntity()) {
-						PartEntity<?>[] parts = ent.getParts();
+					if (ent != null && ((IEntityEx)ent).isMultipartEntity()) {
+						PartEntity<?>[] parts = ((IEntityEx)ent).getParts();
 						if (parts == null)
 							return;
 						for (PartEntity<?> part : parts) {

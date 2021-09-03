@@ -1,9 +1,20 @@
 package twilightforest.block;
 
+import twilightforest.TFSounds;
+import twilightforest.enums.MagicWoodVariant;
+import twilightforest.item.OreMagnetItem;
+import twilightforest.network.ChangeBiomePacket;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.util.WorldUtil;
+import twilightforest.world.registration.biomes.BiomeKeys;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.DefaultedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -26,18 +37,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
-import twilightforest.TFSounds;
-import twilightforest.enums.MagicWoodVariant;
-import twilightforest.item.OreMagnetItem;
-import twilightforest.network.ChangeBiomePacket;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.biomes.BiomeKeys;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class SpecialMagicLogBlock extends RotatedPillarBlock {
 
@@ -175,7 +174,8 @@ public class SpecialMagicLogBlock extends RotatedPillarBlock {
 	 */
 	private void sendChangedBiome(LevelChunk chunk, BlockPos pos, Biome biome) {
 		ChangeBiomePacket message = new ChangeBiomePacket(pos, BuiltinRegistries.BIOME.getKey(biome));
-		TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), message);
+		((ServerChunkCache)chunk.getLevel().getChunkSource()).chunkMap.getPlayers(chunk.getPos(),false).forEach((serverPlayer -> TFPacketHandler.CHANNEL.send(serverPlayer, message)));
+
 	}
 
 	/**

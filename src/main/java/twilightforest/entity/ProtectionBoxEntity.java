@@ -7,8 +7,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class ProtectionBoxEntity extends Entity {
 
@@ -76,7 +76,7 @@ public class ProtectionBoxEntity extends Entity {
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	@Override
 	public boolean displayFireAnimation() {
 		return false;

@@ -1,14 +1,13 @@
 package twilightforest.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import twilightforest.inventory.UncraftingContainer;
 
-import java.util.function.Supplier;
-
-public class UncraftingGuiPacket {
+public class UncraftingGuiPacket extends ISimplePacket {
     private int type;
 
     public UncraftingGuiPacket(int type) {
@@ -23,13 +22,16 @@ public class UncraftingGuiPacket {
         buf.writeInt(type);
     }
 
+    @Override
+    public void onMessage(Player playerEntity) {
+        Handler.onMessage(this, (ServerPlayer) playerEntity);
+    }
+
     public static class Handler {
 
         @SuppressWarnings("Convert2Lambda")
-        public static boolean onMessage(UncraftingGuiPacket message, Supplier<NetworkEvent.Context> ctx) {
-            ServerPlayer player = ctx.get().getSender();
-
-            ctx.get().enqueueWork(new Runnable() {
+        public static boolean onMessage(UncraftingGuiPacket message, ServerPlayer player) {
+            Minecraft.getInstance().execute(new Runnable() {
                 @Override
                 public void run() {
                     AbstractContainerMenu container = player.containerMenu;

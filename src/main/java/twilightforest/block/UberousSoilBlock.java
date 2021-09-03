@@ -18,8 +18,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.PlantType;
 
 import java.util.Random;
 
@@ -36,13 +34,13 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 		return AABB;
 	}
 
-	@Override
+	/*@Override
 	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction direction, IPlantable plantable) {
 		if (direction != Direction.UP)
 			return false;
 		PlantType plantType = plantable.getPlantType(world, pos.relative(direction));
 		return plantType == PlantType.CROP || plantType == PlantType.PLAINS || plantType == PlantType.CAVE;
-	}
+	}*/
 
 	@Override
 	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
@@ -53,8 +51,9 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 			world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
 		}
 
+		//TODO: PORT
 		// todo should probably use IGrowable and loop until it can't grow anymore
-		if (above.getBlock() instanceof IPlantable) {
+		/*if (above.getBlock() instanceof IPlantable) {
 			IPlantable plant = (IPlantable) above.getBlock();
 			// revert to farmland or grass
 			if (plant.getPlantType(world, pos.above()) == PlantType.CROP) {
@@ -63,7 +62,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 				world.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
 			} else {
 				world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
-			}
+			}*/
 			// apply bonemeal
 			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
 			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());

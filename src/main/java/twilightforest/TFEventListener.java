@@ -116,13 +116,13 @@ public class TFEventListener {
 		UseBlockCallback.EVENT.register(((player, world, hand, hitResult) -> createSkullCandle(player, world, hand, hitResult)));
 	}
 
-	@SubscribeEvent
-	public static void addReach(ItemAttributeModifierEvent event) {
-		Item item = event.getItemStack().getItem();
-		if((item == TFItems.giant_pickaxe || item == TFItems.giant_sword) && event.getSlotType() == EquipmentSlot.MAINHAND) {
-			event.addModifier(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Tool modifier", 2.5, AttributeModifier.Operation.ADDITION));
-		}
-	}
+//	@SubscribeEvent
+//	public static void addReach(ItemAttributeModifierEvent event) {
+//		Item item = event.getItemStack().getItem();
+//		if((item == TFItems.giant_pickaxe || item == TFItems.giant_sword) && event.getSlotType() == EquipmentSlot.MAINHAND) {
+//			event.addModifier(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Tool modifier", 2.5, AttributeModifier.Operation.ADDITION));
+//		}
+//	}
 	//TODO: Hook
 	public static void onCrafting(ItemStack itemStack, Player player, Container inv) {
 
@@ -186,7 +186,7 @@ public class TFEventListener {
 
 		//@Override
 		public ManipulateDrops read(ResourceLocation name, JsonObject json, LootItemCondition[] conditionsIn) {
-			return null
+			return null;
 			//return new ManipulateDrops(conditionsIn);
 		}
 

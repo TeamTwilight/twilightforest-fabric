@@ -1,19 +1,18 @@
 package twilightforest.network;
 
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import twilightforest.client.particle.data.LeafParticleData;
-
 import java.util.Random;
-import java.util.function.Supplier;
 
-public class SpawnFallenLeafFromPacket {
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
+
+public class SpawnFallenLeafFromPacket extends ISimplePacket {
 
 	private final BlockPos pos;
 	private final Vec3 motion;
@@ -35,9 +34,14 @@ public class SpawnFallenLeafFromPacket {
 		buf.writeDouble(motion.z);
 	}
 
+	@Override
+	public void onMessage(Player playerEntity) {
+		Handler.onMessage(this);
+	}
+
 	public static class Handler {
-		public static boolean onMessage(SpawnFallenLeafFromPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(SpawnFallenLeafFromPacket message) {
+			Minecraft.getInstance().execute(new Runnable() {
 				@Override
 				public void run() {
 					Random rand = new Random();
