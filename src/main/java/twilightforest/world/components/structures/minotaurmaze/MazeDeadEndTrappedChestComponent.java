@@ -49,8 +49,8 @@ public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 //		this.setBlockState(world, Blocks.TORCH, 0, 4, 3, 4, sbb);
 
 		// doorway w/ bars
-		this.generateBox(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.maze_stone_chiseled.get().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.maze_stone_chiseled.defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.maze_stone_decorative.defaultBlockState(), AIR, false);
 		this.generateBox(world, sbb, 2, 1, 0, 3, 3, 1, Blocks.IRON_BARS.defaultBlockState(), AIR, false);
 
 		// TNT!

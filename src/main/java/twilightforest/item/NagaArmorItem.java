@@ -15,7 +15,7 @@ public class NagaArmorItem extends ArmorItem {
 		super(materialIn, equipmentSlotIn, props);
 	}
 
-	@Override
+	//@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "naga_scale_2.png";

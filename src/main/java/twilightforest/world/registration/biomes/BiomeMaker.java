@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.registration.TFStructures;
@@ -101,7 +102,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.ENCHANTED_FOREST,
-				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).foliageColorOverride(0x00FFFF).grassColorOverride(0x00FFFF).grassColorModifier(BiomeGrassColors.ENCHANTED_FOREST), defaultMobSpawning(), enchantedForestGen())
+				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).foliageColorOverride(0x00FFFF).grassColorOverride(0x00FFFF).grassColorModifier(BiomeSpecialEffects.GrassColorModifier.DARK_FOREST/*BiomeGrassColors.ENCHANTED_FOREST*/), defaultMobSpawning(), enchantedForestGen())
 						.build()
 		);
 
@@ -128,7 +129,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void swampBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SWAMP,
-				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).grassColorOverride(0x5C694E).foliageColorOverride(0x496137).waterColor(0xE0FFAE).grassColorModifier(BiomeGrassColors.SWAMP), swampSpawning(), swampGen())
+				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).grassColorOverride(0x5C694E).foliageColorOverride(0x496137).waterColor(0xE0FFAE).grassColorModifier(BiomeSpecialEffects.GrassColorModifier.SWAMP/*BiomeGrassColors.SWAMP*/), swampSpawning(), swampGen())
 						.biomeCategory(Biome.BiomeCategory.SWAMP)
 						.temperature(0.8F)
 						.downfall(0.9F)
@@ -150,7 +151,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void darkForestBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.DARK_FOREST,
-				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).grassColorOverride(0x4B6754).foliageColorOverride(0x3B5E3F).grassColorModifier(BiomeGrassColors.DARK_FOREST), darkForestSpawning(), darkForestGen())
+				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).grassColorOverride(0x4B6754).foliageColorOverride(0x3B5E3F).grassColorModifier(BiomeSpecialEffects.GrassColorModifier.DARK_FOREST/*BiomeGrassColors.DARK_FOREST*/), darkForestSpawning(), darkForestGen())
 						.temperature(0.7F)
 						.downfall(0.8F)
 						.depth(0.0625f)
@@ -159,7 +160,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.DARK_FOREST_CENTER, // FIXME: colors
-				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x667540).foliageColorOverride(0xF9821E).grassColorModifier(BiomeGrassColors.DARK_FOREST_CENTER), new MobSpawnSettings.Builder(), darkForestCenterGen())
+				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x667540).foliageColorOverride(0xF9821E).grassColorModifier(BiomeSpecialEffects.GrassColorModifier.DARK_FOREST/*BiomeGrassColors.DARK_FOREST_CENTER*/), new MobSpawnSettings.Builder(), darkForestCenterGen())
 						.depth(0.0625f)
 						.scale(0.05F)
 						.build()

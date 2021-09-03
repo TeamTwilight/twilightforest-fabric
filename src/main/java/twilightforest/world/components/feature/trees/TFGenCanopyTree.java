@@ -49,9 +49,10 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
-			return false;
-		}
+		//TODO: PORT
+//		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
+//			return false;
+//		}
 
 		this.leaves.clear();
 
@@ -102,7 +103,8 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
 		// only actually draw the branch if it's not going to load new chunks
-		if (world.isAreaLoaded(dest, 5)) {
+		//TODO: PORT
+		if (/*world.isAreaLoaded(dest, 5)*/true) {
 
 			if (trunk) {
 				FeaturePlacers.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider, treeRNG);

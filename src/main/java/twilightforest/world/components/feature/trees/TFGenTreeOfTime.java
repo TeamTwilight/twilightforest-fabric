@@ -31,9 +31,10 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
-			return false;
-		}
+		//TODO: PORT
+//		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
+//			return false;
+//		}
 
 		// make a tree!
 
@@ -50,7 +51,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 1, 2, 18, 0.9D, 3, 5, 3, false, config);
 
 		// add clock block
-		world.setBlock(pos.offset(-1, 2, 0), TFBlocks.time_log_core.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
+		world.setBlock(pos.offset(-1, 2, 0), TFBlocks.time_log_core.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
 
 		return true;
 	}

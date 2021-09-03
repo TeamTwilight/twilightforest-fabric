@@ -30,7 +30,7 @@ public abstract class IceMobEntity extends Monster {
 				float py = this.getEyeHeight() + (this.random.nextFloat() - this.random.nextFloat()) * 0.5F;
 				float pz = (this.random.nextFloat() - this.random.nextFloat()) * 0.3F;
 
-				level.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+				level.addParticle(TFParticleType.SNOW_GUARDIAN, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 				if (this.level.getBiome(this.blockPosition()).getTemperature(this.blockPosition()) > 1.0F || this.isOnFire()) {
 					this.level.addParticle(ParticleTypes.CLOUD, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0.1F, 0);
 					this.level.addParticle(ParticleTypes.DRIPPING_WATER, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);

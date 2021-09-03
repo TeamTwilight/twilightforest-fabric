@@ -60,7 +60,7 @@ public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 	private void placePillarEnclosure(WorldGenLevel world, BoundingBox sbb,
 									  int dx, int dz) {
 		for (int y = 1; y < 5; y++) {
-			final BlockState chiselledMazeBlock = TFBlocks.maze_stone_chiseled.get().defaultBlockState();
+			final BlockState chiselledMazeBlock = TFBlocks.maze_stone_chiseled.defaultBlockState();
 			placeBlock(world, chiselledMazeBlock, dx, y, dz, sbb);
 			placeBlock(world, chiselledMazeBlock, dx + 2, y, dz, sbb);
 			placeBlock(world, chiselledMazeBlock, dx, y, dz + 2, sbb);

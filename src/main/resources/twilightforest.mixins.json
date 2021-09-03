@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "twilightforest.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "EntityMixin",
+    "BiomeSpecialEffectsMixin",
+    "ItemMixin",
+    "LivingEntityMixin",
+    "MinecraftMixin",
+    "PlayerMixin",
+    "RarityMixin",
+    "SpawnPlacementsMixin"
+  ],
+  "client": [
+    "client.BlockColorsMixin",
+    "client.DimensionSpecialEffectsMixin",
+    "client.ItemColorsMixin",
+    "client.LevelRendererMixin",
+    "client.ModelManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

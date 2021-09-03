@@ -28,7 +28,7 @@ public class TFGenPlantRoots extends Feature<NoneFeatureConfiguration> {
 
 		for (; pos.getY() > 5; pos = pos.below()) {
 			if (world.isEmptyBlock(pos) && TFPlantBlock.canPlaceRootAt(world, pos) && random.nextInt(6) > 0) {
-				world.setBlock(pos, TFBlocks.root_strand.get().defaultBlockState(), 16 | 2);
+				world.setBlock(pos, TFBlocks.root_strand.defaultBlockState(), 16 | 2);
 			} else {
 				pos = new BlockPos(
 						copyX + random.nextInt(4) - random.nextInt(4),

@@ -8,6 +8,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -90,7 +92,7 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBl
     public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         Level world = tileEntityIn.getLevel();
         boolean flag = world != null;
-        BlockState blockstate = flag ? tileEntityIn.getBlockState() : TFBlocks.keepsake_casket.get().defaultBlockState();
+        BlockState blockstate = flag ? tileEntityIn.getBlockState() : TFBlocks.keepsake_casket.defaultBlockState();
         Block block = blockstate.getBlock();
         if (block instanceof KeepsakeCasketBlock) {
             BlockLoggingEnum type = blockstate.getValue(BlockLoggingEnum.MULTILOGGED);
@@ -103,8 +105,8 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBl
                 matrixStackIn.translate(0.5D, 0.5D, 0.5D);
                 matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-facing));
                 matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
-                ResourceLocation BLOCK = TwilightForestMod.prefix("block/casket_" + type.getBlock().getRegistryName().getPath().toLowerCase(Locale.ROOT));
-                BakedModel blockrender = Minecraft.getInstance().getModelManager().getModel(BLOCK);
+                ResourceLocation BLOCK = TwilightForestMod.prefix("block/casket_" + Registry.BLOCK.getKey(type.getBlock()).getPath().toLowerCase(Locale.ROOT));
+                BakedModel blockrender = Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(BLOCK.toString()));
                 BlockRenderDispatcher render = Minecraft.getInstance().getBlockRenderer();
                 render.getModelRenderer().tesselateBlock(world, blockrender, type.getBlock().defaultBlockState(), tileEntityIn.getBlockPos(), matrixStackIn, bufferIn.getBuffer(RenderType.translucent()), false, world.random, Mth.getSeed(BlockPos.ZERO), OverlayTexture.NO_OVERLAY);
                 matrixStackIn.popPose();

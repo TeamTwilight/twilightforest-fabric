@@ -19,12 +19,12 @@ import java.util.Random;
 
 public class TFGenFallenHollowLog extends Feature<NoneFeatureConfiguration> {
 
-	final BlockState mossPatch = TFBlocks.moss_patch.get().defaultBlockState();
-	final BlockState oakLeaves = TFBlocks.oak_leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
-	final BlockState oakLogWithZAxis = TFBlocks.oak_log.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
-	final BlockState oakLogWithXAxis = TFBlocks.oak_log.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+	final BlockState mossPatch = TFBlocks.moss_patch.defaultBlockState();
+	final BlockState oakLeaves = TFBlocks.oak_leaves.defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
+	final BlockState oakLogWithZAxis = TFBlocks.oak_log.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+	final BlockState oakLogWithXAxis = TFBlocks.oak_log.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 	final BlockState grass = Blocks.GRASS_BLOCK.defaultBlockState();
-	final BlockState firefly = TFBlocks.firefly.get().defaultBlockState();
+	final BlockState firefly = TFBlocks.firefly.defaultBlockState();
 
 	public TFGenFallenHollowLog(Codec<NoneFeatureConfiguration> configIn) {
 		super(configIn);

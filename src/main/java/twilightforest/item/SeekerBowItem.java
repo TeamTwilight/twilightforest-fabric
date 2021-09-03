@@ -10,7 +10,7 @@ public class SeekerBowItem extends BowItem {
 		super(props);
 	}
 
-	@Override
+	//@Override
 	public AbstractArrow customArrow(AbstractArrow arrow) {
 		return new SeekerArrowEntity(arrow.level, arrow.getOwner());
 	}

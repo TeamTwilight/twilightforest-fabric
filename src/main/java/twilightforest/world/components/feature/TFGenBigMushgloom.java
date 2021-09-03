@@ -42,7 +42,7 @@ public class TFGenBigMushgloom extends Feature<NoneFeatureConfiguration> {
 
 		// generate!
 		for (int dy = 0; dy < height - 2; dy++) {
-			world.setBlock(pos.above(dy), TFBlocks.huge_mushgloom_stem.get().defaultBlockState(), 3);
+			world.setBlock(pos.above(dy), TFBlocks.huge_mushgloom_stem.defaultBlockState(), 3);
 		}
 
 		makeMushroomCap(world, pos.above(height - 2));
@@ -54,7 +54,7 @@ public class TFGenBigMushgloom extends Feature<NoneFeatureConfiguration> {
 	}
 
 	private void makeMushroomCap(LevelAccessor world, BlockPos pos) {
-		BlockState defState = TFBlocks.huge_mushgloom.get().defaultBlockState();
+		BlockState defState = TFBlocks.huge_mushgloom.defaultBlockState();
 		world.setBlock(pos.offset(-1, 0, -1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.NORTH_WEST, defState), 3);
 		world.setBlock(pos.offset(0, 0, -1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.NORTH, defState), 3);
 		world.setBlock(pos.offset(1, 0, -1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.NORTH_EAST, defState), 3);

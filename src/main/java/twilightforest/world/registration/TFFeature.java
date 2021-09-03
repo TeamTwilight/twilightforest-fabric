@@ -1,6 +1,8 @@
 package twilightforest.world.registration;
 
 import com.google.common.collect.ImmutableMap;
+
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -625,7 +627,7 @@ public enum TFFeature {
 		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// does the biome have a feature?
-		TFFeature biomeFeature = BIOME_FEATURES.get(biome.getRegistryName());
+		TFFeature biomeFeature = BIOME_FEATURES.get(BuiltinRegistries.BIOME.getKey(biome));
 		if(biomeFeature != null && biomeFeature.isStructureEnabled)
 			return biomeFeature;
 

@@ -298,7 +298,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		decorateTorches(world, rand, floorLevel, sbb);
 
 		// seems like we should have a spawner
-		placeBlock(world, TFBlocks.boss_spawner_lich.get().defaultBlockState(), size / 2, floorLevel + 2, size / 2, sbb);
+		placeBlock(world, TFBlocks.boss_spawner_lich.defaultBlockState(), size / 2, floorLevel + 2, size / 2, sbb);
 	}
 
 	protected void makeTowerPaintings(WorldGenLevel world, Random rand, BoundingBox sbb) {

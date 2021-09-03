@@ -166,7 +166,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		if (decoRNG.nextInt(8) == 0) {
 			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, Blocks.OBSIDIAN.defaultBlockState(), rotation);
 		} else if (decoRNG.nextInt(4) == 0) {
-			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, TFBlocks.trollsteinn.get().defaultBlockState(), rotation);
+			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, TFBlocks.trollsteinn.defaultBlockState(), rotation);
 		} else {
 			// normal stone
 			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, Blocks.STONE.defaultBlockState(), rotation);
@@ -178,13 +178,13 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		int z = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 		int y = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 
-		this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y, z, size - 2, y + 3, z + 3, TFBlocks.trollsteinn.get().defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
+		this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y, z, size - 2, y + 3, z + 3, TFBlocks.trollsteinn.defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
 		if (decoRNG.nextBoolean()) {
 			// down
-			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, 1, z, size - 6, y - 1, z + 3, TFBlocks.trollsteinn.get().defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
+			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, 1, z, size - 6, y - 1, z + 3, TFBlocks.trollsteinn.defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
 		} else {
 			// up
-			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y + 4, z, size - 6, height - 2, z + 3, TFBlocks.trollsteinn.get().defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
+			this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.25F, size - 9, y + 4, z, size - 6, height - 2, z + 3, TFBlocks.trollsteinn.defaultBlockState(), Blocks.STONE.defaultBlockState(), rotation);
 		}
 	}
 
@@ -199,7 +199,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 
 			int width = 1 + decoRNG.nextInt(2) + decoRNG.nextInt(2);
 			int depth = 1 + decoRNG.nextInt(2) + decoRNG.nextInt(2);
-			Block mushBlock = ((decoRNG.nextInt(3) == 0) ? TFBlocks.huge_mushgloom.get() : (decoRNG.nextBoolean() ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK));
+			Block mushBlock = ((decoRNG.nextInt(3) == 0) ? TFBlocks.huge_mushgloom : (decoRNG.nextBoolean() ? Blocks.BROWN_MUSHROOM_BLOCK : Blocks.RED_MUSHROOM_BLOCK));
 			makeSingleBracketMushroom(world, sbb, rotation, z, y, width, depth, mushBlock.defaultBlockState());
 
 			// wiggle a little

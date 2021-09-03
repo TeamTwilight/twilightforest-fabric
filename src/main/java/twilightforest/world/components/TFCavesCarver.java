@@ -101,7 +101,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 						return false;
 					} else {
 						if (rand.nextInt(10) == 0 && access.getBlockState(pos).is(Blocks.CAVE_AIR) && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
-							access.setBlockState(pos.relative(facing), TFBlocks.trollsteinn.get().defaultBlockState(), false);
+							access.setBlockState(pos.relative(facing), TFBlocks.trollsteinn.defaultBlockState(), false);
 						}
 						access.setBlockState(pos, CAVE_AIR, false);
 
@@ -189,7 +189,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	@Override
 	protected boolean canReplaceBlock(BlockState state) {
-		return super.canReplaceBlock(state) || state.is(TFBlocks.trollsteinn.get()) || state.is(Blocks.ROOTED_DIRT) || state.is(Blocks.COARSE_DIRT);
+		return super.canReplaceBlock(state) || state.is(TFBlocks.trollsteinn) || state.is(Blocks.ROOTED_DIRT) || state.is(Blocks.COARSE_DIRT);
 	}
 
 	private static boolean shouldSkip(double posX, double posY, double posZ, double minY) {

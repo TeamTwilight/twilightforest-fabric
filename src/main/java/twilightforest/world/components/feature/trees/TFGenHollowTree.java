@@ -84,9 +84,10 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
-			return false;
-		}
+		//TODO: PORT
+//		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
+//			return false;
+//		}
 
 		// make a tree!
 
@@ -451,8 +452,8 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
-			world.setBlock(src, TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
+		if (TFBlocks.firefly.defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
+			world.setBlock(src, TFBlocks.firefly.defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
 		}
 	}
 
@@ -472,8 +473,8 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.cicada.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
-			world.setBlock(src, TFBlocks.cicada.get().defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
+		if (TFBlocks.cicada.defaultBlockState().setValue(DirectionalBlock.FACING, facing).canSurvive(world, src)) {
+			world.setBlock(src, TFBlocks.cicada.defaultBlockState().setValue(DirectionalBlock.FACING, facing), 3);
 		}
 	}
 }

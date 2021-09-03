@@ -32,8 +32,8 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// fill room with bricks
-		generateBox(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.maze_stone_decorative.get().defaultBlockState(), AIR, false);
-		generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.maze_stone_brick.get().defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.maze_stone_decorative.defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.maze_stone_brick.defaultBlockState(), AIR, false);
 
 		// 4x4 room in the middle
 		generateAirBox(world, sbb, 6, 2, 6, 9, 3, 9);

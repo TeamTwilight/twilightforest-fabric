@@ -144,7 +144,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 
 			// make the actual stalactite
 			CaveStalactiteConfig stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
-			TFBiomeFeatures.CAVE_STALACTITE.get().configured(stalag).place(world, generator, stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.configured(stalag).place(world, generator, stalRNG, pos);
 		}
 	}
 

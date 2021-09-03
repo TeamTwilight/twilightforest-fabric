@@ -167,8 +167,8 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, state -> state.getMaterial() == Material.STONE);
 
-		BlockState floor = TFBlocks.castle_brick.get().defaultBlockState();
-		BlockState border = TFBlocks.castle_brick_frame.get().defaultBlockState();
+		BlockState floor = TFBlocks.castle_brick.defaultBlockState();
+		BlockState border = TFBlocks.castle_brick_frame.defaultBlockState();
 
 		Predicate<BlockState> replacing = state -> {
 			Material material = state.getMaterial();
@@ -200,18 +200,18 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	protected static final Predicate<Biome> plateauBiomes = biome -> true; /* FIXME or remove
-			biome == TFBiomes.highlandsCenter.get() || biome == TFBiomes.thornlands.get()*/;
+			biome == TFBiomes.highlandsCenter || biome == TFBiomes.thornlands*/;
 
 	protected BlockState getRuneColor(BlockState forceFieldColor) {
-		return forceFieldColor == TFBlocks.force_field_blue.get().defaultBlockState() ? TFBlocks.castle_rune_brick_blue.get().defaultBlockState() : TFBlocks.castle_rune_brick_yellow.get().defaultBlockState();
+		return forceFieldColor == TFBlocks.force_field_blue.defaultBlockState() ? TFBlocks.castle_rune_brick_blue.defaultBlockState() : TFBlocks.castle_rune_brick_yellow.defaultBlockState();
 	}
 
 	protected BlockState getForceFieldColor(Random decoRNG) {
 		int i = decoRNG.nextInt(2) + 3;
 
 		if (i == 3)
-			return TFBlocks.force_field_green.get().defaultBlockState();
+			return TFBlocks.force_field_green.defaultBlockState();
 		else
-			return TFBlocks.force_field_blue.get().defaultBlockState();
+			return TFBlocks.force_field_blue.defaultBlockState();
 	}
 }

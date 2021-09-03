@@ -193,7 +193,7 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_ur_ghast.get().defaultBlockState());
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_ur_ghast.defaultBlockState());
 			}
 			discard();
 		} else {
@@ -224,7 +224,7 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 			bossInfo.setProgress(getHealth() / getMaxHealth());
 		} else {
 			if (this.isInTantrum()) {
-				level.addParticle(TFParticleType.BOSS_TEAR.get(),
+				level.addParticle(TFParticleType.BOSS_TEAR,
 						this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
 						this.getY() + this.random.nextDouble() * this.getBbHeight() * 0.5D,
 						this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
@@ -522,8 +522,8 @@ public class UrGhastEntity extends CarminiteGhastguardEntity {
 	}
 
 	private boolean isTrapAt(BlockPos pos) {
-		BlockState inactive = TFBlocks.ghast_trap.get().defaultBlockState().setValue(GhastTrapBlock.ACTIVE, false);
-		BlockState active = TFBlocks.ghast_trap.get().defaultBlockState().setValue(GhastTrapBlock.ACTIVE, true);
+		BlockState inactive = TFBlocks.ghast_trap.defaultBlockState().setValue(GhastTrapBlock.ACTIVE, false);
+		BlockState active = TFBlocks.ghast_trap.defaultBlockState().setValue(GhastTrapBlock.ACTIVE, true);
 		return level.hasChunkAt(pos)
 				&& (level.getBlockState(pos) == inactive || level.getBlockState(pos) == active);
 	}

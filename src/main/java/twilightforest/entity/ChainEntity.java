@@ -10,7 +10,7 @@ public class ChainEntity extends BlockChainGoblinEntity.MultipartGenericsAreDumb
 		super(parent);
 	}
 
-	//@Override
+	@Override
 	protected void defineSynchedData() {
 		realSize = EntityDimensions.scalable(0.75F, 0.75F);
 	}
@@ -18,6 +18,16 @@ public class ChainEntity extends BlockChainGoblinEntity.MultipartGenericsAreDumb
 	@Override
 	public boolean isPickable() {
 		return false;
+	}
+
+	@Override
+	protected void readAdditionalSaveData(CompoundTag compoundTag) {
+
+	}
+
+	@Override
+	protected void addAdditionalSaveData(CompoundTag compoundTag) {
+
 	}
 
 }

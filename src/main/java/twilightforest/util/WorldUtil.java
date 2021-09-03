@@ -45,7 +45,7 @@ public final class WorldUtil {
 
 	@Nullable
 	public static ChunkGeneratorTwilightBase getChunkGenerator(LevelAccessor level) {
-		if (level instanceof ServerLevel serverLevel && serverLevel.getChunkSource().generator instanceof ChunkGeneratorTwilightBase chunkGenerator)
+		if (level instanceof ServerLevel serverLevel && serverLevel.getChunkSource().getGenerator() instanceof ChunkGeneratorTwilightBase chunkGenerator)
 			return chunkGenerator;
 
 		return null;
@@ -56,7 +56,7 @@ public final class WorldUtil {
 	}
 
 	public static int getSeaLevel(ChunkSource source) {
-		return source instanceof ServerChunkCache serverCache ? getSeaLevel(serverCache.generator) : TFGenerationSettings.SEALEVEL;
+		return source instanceof ServerChunkCache serverCache ? getSeaLevel(serverCache.getGenerator()) : TFGenerationSettings.SEALEVEL;
 	}
 
 	public static int getSeaLevel(ChunkGenerator generator) {

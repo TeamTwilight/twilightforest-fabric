@@ -73,4 +73,38 @@ accessible method net/minecraft/world/entity/animal/Sheep getOffspringColor (Lne
 accessible class net/minecraft/client/renderer/RenderStateShard$TransparencyStateShard
 accessible field net/minecraft/world/entity/ai/control/MoveControl operation Lnet/minecraft/world/entity/ai/control/MoveControl$Operation;
 accessible class net/minecraft/world/entity/ai/control/MoveControl$Operation
-accessible field net/minecraft/world/entity/LivingEntity breakItem (Lnet/minecraft/world/item/ItemStack;)V
+accessible method net/minecraft/world/entity/LivingEntity breakItem (Lnet/minecraft/world/item/ItemStack;)V
+accessible method net/minecraft/world/entity/monster/Ghast$GhastLookGoal <init> (Lnet/minecraft/world/entity/monster/Ghast;)V
+accessible field net/minecraft/client/multiplayer/ClientAdvancements progress Ljava/util/Map;
+accessible method net/minecraft/world/level/levelgen/feature/TreeFeature updateLeaves (Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/world/level/levelgen/structure/BoundingBox;Ljava/util/Set;Ljava/util/Set;)Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer baseHeight I
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer heightRandA I
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer heightRandB I
+accessible method net/minecraft/client/model/HumanoidModel getAttackArm (Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/entity/HumanoidArm;
+accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator surfaceNoise Lnet/minecraft/world/level/levelgen/synth/SurfaceNoise;
+accessible field net/minecraft/world/level/levelgen/structure/StructurePiece rotation Lnet/minecraft/world/level/block/Rotation;
+accessible field net/minecraft/world/level/levelgen/structure/StructurePiece orientation Lnet/minecraft/core/Direction;
+accessible field net/minecraft/world/level/levelgen/structure/StructurePiece mirror Lnet/minecraft/world/level/block/Mirror;
+accessible field net/minecraft/world/level/BaseSpawner spawnRange I
+accessible field net/minecraft/world/level/BaseSpawner maxNearbyEntities I
+accessible field net/minecraft/world/level/BaseSpawner spawnCount I
+accessible class net/minecraft/data/worldgen/Features$Decorators
+accessible method net/minecraft/world/level/levelgen/carver/WorldCarver getCarveState (Lnet/minecraft/world/level/levelgen/carver/CarvingContext;Lnet/minecraft/world/level/levelgen/carver/CarverConfiguration;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/Aquifer;)Lnet/minecraft/world/level/block/state/BlockState;
+accessible method net/minecraft/world/level/levelgen/carver/WorldCarver isDebugEnabled (Lnet/minecraft/world/level/levelgen/carver/CarverConfiguration;)Z
+accessible method net/minecraft/world/level/levelgen/carver/CaveCarverConfiguration floorLevel Lnet/minecraft/util/valueproviders/FloatProvider;
+accessible method net/minecraft/world/level/levelgen/Heightmap setHeight (III)V
+accessible field net/minecraft/world/level/chunk/ChunkGenerator biomeSource Lnet/minecraft/world/level/biome/BiomeSource;
+accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator seed J
+accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator settings Ljava/util/function/Supplier;
+accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings isNoiseCavesEnabled ()Z
+accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings isAquifersEnabled ()Z
+accessible class net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator$NoodleCaveNoiseModifier
+accessible class net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator$OreVeinNoiseSource
+accessible method net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator$NoodleCaveNoiseModifier listInterpolators (Ljava/util/function/Consumer;)V
+accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings disableMobGeneration ()Z
+accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings isOreVeinsEnabled ()Z
+accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings isNoodleCavesEnabled ()Z
+accessible method net/minecraft/world/level/levelgen/Beardifier <init> (Lnet/minecraft/world/level/StructureFeatureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)V
+accessible method net/minecraft/world/level/levelgen/Beardifier beardifyOrBury (III)D
+accessible field net/minecraft/world/level/levelgen/carver/CaveCarverConfiguration floorLevel Lnet/minecraft/util/valueproviders/FloatProvider;
+accessible method net/minecraft/world/entity/monster/AbstractSkeleton getStepSound ()Lnet/minecraft/sounds/SoundEvent;

@@ -96,7 +96,7 @@ public class IceTowerBossWingComponent extends IceTowerWingComponent {
 			}
 		}
 
-		final BlockState snowQueenSpawner = TFBlocks.boss_spawner_snow_queen.get().defaultBlockState();
+		final BlockState snowQueenSpawner = TFBlocks.boss_spawner_snow_queen.defaultBlockState();
 
 		this.setBlockStateRotated(world, snowQueenSpawner, 7, top - 6, 7, Rotation.NONE, sbb);
 

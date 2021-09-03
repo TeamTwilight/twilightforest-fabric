@@ -41,7 +41,7 @@ public class MagicBeansItem extends Item {
 
 		int minY = pos.getY() + 1;
 		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight() + 40));
-		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil.get()) {
+		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil) {
 			if (!world.isClientSide) {
 				ItemStack is = player.getItemInHand(context.getHand());
 				is.shrink(1);
@@ -135,7 +135,7 @@ public class MagicBeansItem extends Item {
 
 	private void placeLeaves(Level world, BlockPos pos) {
 		// stalk at center
-		world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.get().defaultBlockState());
+		world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.defaultBlockState());
 
 		// small squares
 		for (int dx = -1; dx <= 1; dx++) {
@@ -160,7 +160,7 @@ public class MagicBeansItem extends Item {
 	private boolean tryToPlaceStalk(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.isAir() || state.getMaterial().isReplaceable() || (state.isAir() || state.is(BlockTags.LEAVES)) || BlockTags.LEAVES.contains(state.getBlock()) /*|| state.getBlock().canSustainLeaves(state, world, pos)*/) {
-			world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.get().defaultBlockState());
+			world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.defaultBlockState());
 			return true;
 		} else {
 			return false;
@@ -170,7 +170,7 @@ public class MagicBeansItem extends Item {
 	private void tryToPlaceLeaves(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.isAir() || state.is(BlockTags.LEAVES)) {
-			world.setBlock(pos, TFBlocks.beanstalk_leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 2);
+			world.setBlock(pos, TFBlocks.beanstalk_leaves.defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 2);
 		}
 	}
 }

@@ -29,9 +29,9 @@ public class TFGenTrollRoots extends Feature<NoneFeatureConfiguration> {
 		for (; pos.getY() > 5; pos = pos.below()) {
 			if (world.isEmptyBlock(pos) && TrollRootBlock.canPlaceRootBelow(world, pos.above()) && random.nextInt(6) > 0) {
 				if (random.nextInt(10) == 0) {
-					world.setBlock(pos, TFBlocks.unripe_trollber.get().defaultBlockState(), 16 | 2);
+					world.setBlock(pos, TFBlocks.unripe_trollber.defaultBlockState(), 16 | 2);
 				} else {
-					world.setBlock(pos, TFBlocks.trollvidr.get().defaultBlockState(), 16 | 2);
+					world.setBlock(pos, TFBlocks.trollvidr.defaultBlockState(), 16 | 2);
 				}
 			} else {
 				pos = new BlockPos(

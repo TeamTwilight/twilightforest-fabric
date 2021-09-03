@@ -50,7 +50,7 @@ public class TFGenThorns extends Feature<NoneFeatureConfiguration> {
 
 			if (world.canSeeSkyFromBelowWater(pos)) {
 				if (Math.abs(dPos.getX() - oPos.getX()) < MAX_SPREAD && Math.abs(dPos.getZ() - oPos.getZ()) < MAX_SPREAD && canPlaceThorns(world, dPos)) {
-					world.setBlock(dPos, TFBlocks.brown_thorns.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
+					world.setBlock(dPos, TFBlocks.brown_thorns.defaultBlockState().setValue(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
 
 					// did we make it to the end?
 					if (i == length - 1) {
@@ -59,10 +59,10 @@ public class TFGenThorns extends Feature<NoneFeatureConfiguration> {
 						if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isEmptyBlock(dPos.relative(dir))) {
 							if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
 								// leaf
-								world.setBlock(dPos.relative(dir), TFBlocks.thorn_leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 3);
+								world.setBlock(dPos.relative(dir), TFBlocks.thorn_leaves.defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 3);
 							} else {
 								// rose
-								world.setBlock(dPos.relative(dir), TFBlocks.thorn_rose.get().defaultBlockState(), 3);
+								world.setBlock(dPos.relative(dir), TFBlocks.thorn_rose.defaultBlockState(), 3);
 							}
 						}
 					}
@@ -108,7 +108,7 @@ public class TFGenThorns extends Feature<NoneFeatureConfiguration> {
 			BlockPos nextPos = pos.relative(dir, middle).relative(nextDir);
 
 			if (world.isEmptyBlock(nextPos)) {
-				world.setBlock(nextPos, TFBlocks.thorn_leaves.get().defaultBlockState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
+				world.setBlock(nextPos, TFBlocks.thorn_leaves.defaultBlockState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
 			}
 		}
 	}

@@ -32,18 +32,18 @@ public class CourtyardStairsTemplateProcessor extends RandomizedTemplateProcesso
 
 	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldInfo, StructureTemplate.StructureBlockInfo newInfo, StructurePlaceSettings placementSettingsIn, @Nullable StructureTemplate template) {
+	public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldInfo, StructureTemplate.StructureBlockInfo newInfo, StructurePlaceSettings placementSettingsIn) {
 		Random random = placementSettingsIn.getRandom(newInfo.pos);
 
 		if (shouldPlaceBlock(random)) {
 			BlockState state = newInfo.state;
 			Block block = state.getBlock();
 
-			if (block == TFBlocks.nagastone_stairs_left.get())
-				return random.nextBoolean() ? newInfo : new StructureTemplate.StructureBlockInfo(newInfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_weathered_left.get()), StairBlock.FACING, StairBlock.HALF, StairBlock.SHAPE), null);
+			if (block == TFBlocks.nagastone_stairs_left)
+				return random.nextBoolean() ? newInfo : new StructureTemplate.StructureBlockInfo(newInfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_left, TFBlocks.nagastone_stairs_weathered_left), StairBlock.FACING, StairBlock.HALF, StairBlock.SHAPE), null);
 
-			if (block == TFBlocks.nagastone_stairs_right.get())
-				return random.nextBoolean() ? newInfo : new StructureTemplate.StructureBlockInfo(newInfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_right.get(), TFBlocks.nagastone_stairs_weathered_right.get()), StairBlock.FACING, StairBlock.HALF, StairBlock.SHAPE), null);
+			if (block == TFBlocks.nagastone_stairs_right)
+				return random.nextBoolean() ? newInfo : new StructureTemplate.StructureBlockInfo(newInfo.pos, translateState(state, randomBlock(random, TFBlocks.nagastone_stairs_mossy_right, TFBlocks.nagastone_stairs_weathered_right), StairBlock.FACING, StairBlock.HALF, StairBlock.SHAPE), null);
 
 			return newInfo;
 		}

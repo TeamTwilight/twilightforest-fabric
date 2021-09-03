@@ -29,7 +29,7 @@ public class MossyCobbleTemplateProcessor extends RandomizedTemplateProcessor {
 
 	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_215194_3_, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, @Nullable StructureTemplate template) {
+	public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_215194_3_, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn) {
 		Random random = placementSettingsIn.getRandom(pos);
 
 		if (shouldPlaceBlock(random)) {

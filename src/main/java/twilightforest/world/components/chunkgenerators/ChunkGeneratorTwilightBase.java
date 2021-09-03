@@ -32,7 +32,7 @@ import java.util.function.Supplier;
 // TODO: doc out all the vanilla copying
 // Actually, figure out how to get this back up again
 //TODO: PORT (Maybe make a wrapper?)
-public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerator {
+public abstract class ChunkGeneratorTwilightBase extends TFNoiseBasedChunkGenerator {
 	protected final long seed;
 	protected final Supplier<NoiseGeneratorSettings> dimensionSettings;
 	public final NoiseGeneratorSettings settings;
@@ -43,7 +43,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 		super(provider, seed, settings);
 		this.seed = seed;
 		this.dimensionSettings = settings;
-		this.settings = this.dimensionSettings;
+		this.settings = this.dimensionSettings.get();
 	}
 
 	@Deprecated // Keep until Vanilla gets their stuff together
@@ -362,9 +362,10 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = TFStructureStart.gatherPotentialSpawns(structureManager, classification, pos);
 		if (potentialStructureSpawns != null)
 			return WeightedRandomList.create(potentialStructureSpawns);
-		WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = StructureSpawnManager.getStructureSpawns(structureManager, classification, pos);
-		if (spawns != null)
-			return spawns;
+		//TODO: PORT
+//		WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = StructureSpawnManager.getStructureSpawns(structureManager, classification, pos);
+//		if (spawns != null)
+//			return spawns;
 		return classification == MobCategory.MONSTER && pos.getY() >= TFGenerationSettings.SEALEVEL ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, classification, pos);
 	}
 

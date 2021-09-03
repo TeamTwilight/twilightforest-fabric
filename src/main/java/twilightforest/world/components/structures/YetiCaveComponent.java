@@ -72,7 +72,7 @@ public class YetiCaveComponent extends HollowHillComponent {
 		}
 
 		// spawn alpha yeti
-		final BlockState yetiSpawner = TFBlocks.boss_spawner_alpha_yeti.get().defaultBlockState();
+		final BlockState yetiSpawner = TFBlocks.boss_spawner_alpha_yeti.defaultBlockState();
 		setBlockStateRotated(world, yetiSpawner, radius, 1, radius, Rotation.NONE, sbb);
 
 		return true;

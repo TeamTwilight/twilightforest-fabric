@@ -2,6 +2,7 @@ package twilightforest;
 
 import com.google.common.collect.Maps;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
@@ -65,7 +66,7 @@ public class TwilightForestMod implements ModInitializer {
 
 	private static final Rarity rarity = Rarity.valueOf("TWILIGHT");
 
-	public TwilightForestMod() {
+	public void run() {
 		// FIXME: safeRunWhenOn is being real jank for some reason, look into it
 		//noinspection Convert2Lambda,Anonymous2MethodRef
 
@@ -278,5 +279,6 @@ public class TwilightForestMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		init();
+		ClientLifecycleEvents.CLIENT_STARTED.register((client -> run()));
 	}
 }

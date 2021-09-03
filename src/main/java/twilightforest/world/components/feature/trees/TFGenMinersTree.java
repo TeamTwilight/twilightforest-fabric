@@ -29,9 +29,10 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// check soil
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
-			return false;
-		}
+		//TODO: PORT
+//		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
+//			return false;
+//		}
 
 		// 9 block high trunk
 		for (int dy = 0; dy <= 9; dy++) {
@@ -52,8 +53,8 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		putBranchWithLeaves(world, trunkPlacer, leavesPlacer, random, pos.offset(0, 6, -5), false, config);
 
 		// place minewood core
-		world.setBlock(pos.above(), TFBlocks.mining_log_core.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
-		world.getBlockTicks().scheduleTick(pos.above(), TFBlocks.mining_log_core.get(), 20);
+		world.setBlock(pos.above(), TFBlocks.mining_log_core.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);
+		world.getBlockTicks().scheduleTick(pos.above(), TFBlocks.mining_log_core, 20);
 
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {

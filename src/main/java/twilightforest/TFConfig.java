@@ -20,8 +20,8 @@ import net.minecraft.world.level.block.Block;
 
 public class TFConfig {
 
-	public static Common COMMON_CONFIG;
-	public static Client CLIENT_CONFIG;
+	public static Common COMMON_CONFIG = new Common(ConfigBuilder.create());
+	public static Client CLIENT_CONFIG = new Client();
 
 	public static class Common {
 
@@ -55,18 +55,18 @@ public class TFConfig {
 			ConfigEntryBuilder thing = configBuilder.entryBuilder();
 			Buider buider = new Buider(thing);
 			{
-				temp.addEntry(thing.startBooleanToggle(new TranslatableComponent(config + "spawn_in_tf"), DIMENSION.newPlayersSpawnInTF)
-						.setTooltip(new TextComponent("If true, players spawning for the first time will spawn in the Twilight Forest."))
-						.setDefaultValue(false)
-						.build());
-				temp.addEntry(thing.startBooleanToggle(new TranslatableComponent(config + "skylight_forest"), DIMENSION.skylightForest)
-						.setTooltip(new TextComponent("If true, Twilight Forest will generate as a void except for Major Structures"))
-						.setDefaultValue(false)
-						.build());
-				temp.addEntry(thing.startBooleanToggle(new TranslatableComponent(config + "skylight_oaks"), DIMENSION.skylightOaks)
-						.setTooltip(new TextComponent("If true, giant Twilight Oaks will also spawn in void worlds"))
-						.setDefaultValue(true)
-						.build());
+//				temp.addEntry(thing.startBooleanToggle(new TranslatableComponent(config + "spawn_in_tf"), DIMENSION.newPlayersSpawnInTF)
+//						.setTooltip(new TextComponent("If true, players spawning for the first time will spawn in the Twilight Forest."))
+//						.setDefaultValue(false)
+//						.build());
+//				temp.addEntry(thing.startBooleanToggle(new TranslatableComponent(config + "skylight_forest"), DIMENSION.skylightForest)
+//						.setTooltip(new TextComponent("If true, Twilight Forest will generate as a void except for Major Structures"))
+//						.setDefaultValue(false)
+//						.build());
+//				temp.addEntry(thing.startBooleanToggle(new TranslatableComponent(config + "skylight_oaks"), DIMENSION.skylightOaks)
+//						.setTooltip(new TextComponent("If true, giant Twilight Oaks will also spawn in void worlds"))
+//						.setDefaultValue(true)
+//						.build());
 				//temp.addEntry(builder.startStrList())
 				DIMENSION.portalDestinationID = "twilightforest:twilight_forest";
 //				DIMENSION.portalDestinationID = builder.
@@ -74,43 +74,43 @@ public class TFConfig {
 //						worldRestart().
 //						comment("Marked dimension ID for Twilight Portals and some other Twilight mod logic as well").
 //						define("portalDestinationID", "twilightforest:twilight_forest");
-				ConfigCategory cat = configBuilder.getOrCreateCategory(new TextComponent("Custom Hollow Hill Stalactites"));
-						cat.setDescription((Supplier<Optional<FormattedText[]>>) new TextComponent("""
-								Defines custom stalactites generated in hollow hills.
-								Format is "modid:block size maxLength minHeight weight", where the properties are:
-								Size - the maximum length of the stalactite relative to the space between hill floor and ceiling,
-								Max length - maximum length of a stalactite in blocks,
-								Min height - minimum space between the hill floor and the stalactite to let it generate,
-								Weight - how often it generates.
-
-								For example: "minecraft:iron_ore 0.7 8 1 24" would add a stalactite equal to the default iron ore stalactite."""));
-
+//				ConfigCategory cat = configBuilder.getOrCreateCategory(new TextComponent("Custom Hollow Hill Stalactites"));
+//						cat.setDescription((Supplier<Optional<FormattedText[]>>) new TextComponent("""
+//								Defines custom stalactites generated in hollow hills.
+//								Format is "modid:block size maxLength minHeight weight", where the properties are:
+//								Size - the maximum length of the stalactite relative to the space between hill floor and ceiling,
+//								Max length - maximum length of a stalactite in blocks,
+//								Min height - minimum space between the hill floor and the stalactite to let it generate,
+//								Weight - how often it generates.
+//
+//								For example: "minecraft:iron_ore 0.7 8 1 24" would add a stalactite equal to the default iron ore stalactite."""));
+//
 				{
-					cat.addEntry(thing.startStrList(new TranslatableComponent(config + "large_hill"), DIMENSION.hollowHillStalactites.largeHill)
-							.setTooltip(new TextComponent("Blocks generating as stalactites in large hills only"))
-							.setDefaultValue(new ArrayList<>())
-							.build());
-					cat.addEntry(thing.startStrList(new TranslatableComponent(config + "medium_hill"), DIMENSION.hollowHillStalactites.mediumHill)
-							.setTooltip(new TextComponent("Blocks generating as stalactites in medium and large hills"))
-							.setDefaultValue(new ArrayList<>())
-							.build());
-					cat.addEntry(thing.startStrList(new TranslatableComponent(config + "small_hill"), DIMENSION.hollowHillStalactites.smallHill)
-							.setTooltip(new TextComponent("Blocks generating as stalactites in all hills"))
-							.setDefaultValue(new ArrayList<>())
-							.build());
-					cat.addEntry(thing.startBooleanToggle(new TranslatableComponent(config + "stalactite_config_only"), DIMENSION.hollowHillStalactites.useConfigOnly)
-							.setTooltip(new TextComponent("If true, default stalactites and stalactites defined by other mods will not be used."))
-							.setDefaultValue(false)
-							.build());
+//					cat.addEntry(thing.startStrList(new TranslatableComponent(config + "large_hill"), DIMENSION.hollowHillStalactites.largeHill)
+//							.setTooltip(new TextComponent("Blocks generating as stalactites in large hills only"))
+//							.setDefaultValue(new ArrayList<>())
+//							.build());
+//					cat.addEntry(thing.startStrList(new TranslatableComponent(config + "medium_hill"), DIMENSION.hollowHillStalactites.mediumHill)
+//							.setTooltip(new TextComponent("Blocks generating as stalactites in medium and large hills"))
+//							.setDefaultValue(new ArrayList<>())
+//							.build());
+//					cat.addEntry(thing.startStrList(new TranslatableComponent(config + "small_hill"), DIMENSION.hollowHillStalactites.smallHill)
+//							.setTooltip(new TextComponent("Blocks generating as stalactites in all hills"))
+//							.setDefaultValue(new ArrayList<>())
+//							.build());
+//					cat.addEntry(thing.startBooleanToggle(new TranslatableComponent(config + "stalactite_config_only"), DIMENSION.hollowHillStalactites.useConfigOnly)
+//							.setTooltip(new TextComponent("If true, default stalactites and stalactites defined by other mods will not be used."))
+//							.setDefaultValue(false)
+//							.build());
 				}
 			}
-			ConfigCategory misc = configBuilder.getOrCreateCategory(new TextComponent("Misc"));
-			misc.addEntry(thing.startBooleanToggle(new TextComponent("doCompat"), doCompat)
-					.setTooltip(new TextComponent("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired."))
-					.setDefaultValue(true)
-					.build());
-			ConfigCategory pre = configBuilder.getOrCreateCategory(new TextComponent("Performance Tweaks"));
-			pre.setDescription((FormattedText[]) List.of(new TextComponent("Lets you sacrifice various things to improve world performance.")).toArray());
+//			ConfigCategory misc = configBuilder.getOrCreateCategory(new TextComponent("Misc"));
+//			misc.addEntry(thing.startBooleanToggle(new TextComponent("doCompat"), doCompat)
+//					.setTooltip(new TextComponent("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired."))
+//					.setDefaultValue(true)
+//					.build());
+//			ConfigCategory pre = configBuilder.getOrCreateCategory(new TextComponent("Performance Tweaks"));
+//			pre.setDescription((FormattedText[]) List.of(new TextComponent("Lets you sacrifice various things to improve world performance.")).toArray());
 			{
 //				PERFORMANCE.canopyCoverage = builder.
 //						translation(config + "canopy_coverage").
@@ -421,11 +421,11 @@ public class TFConfig {
 
 				iconList.addAll(IMCHandler.getLoadingIconStacks());
 
-				for (String s : loadingIconStacks) {
-					parseItemStack(s).ifPresent(iconList::add);
-				}
+//				for (String s : loadingIconStacks) {
+//					parseItemStack(s).ifPresent(iconList::add);
+//				}
 
-				loadingScreenIcons = iconList.build();
+				//loadingScreenIcons = iconList.build();
 			}
 		}
 

@@ -51,13 +51,13 @@ public class TFGenFallenSmallLog extends Feature<NoneFeatureConfiguration> {
 		switch (rand.nextInt(7)) {
 			case 0:
 			default:
-				logState = TFBlocks.oak_log.get().defaultBlockState();
+				logState = TFBlocks.oak_log.defaultBlockState();
 				break;
 			case 1:
-				logState = TFBlocks.canopy_log.get().defaultBlockState();
+				logState = TFBlocks.canopy_log.defaultBlockState();
 				break;
 			case 2:
-				logState = TFBlocks.mangrove_log.get().defaultBlockState();
+				logState = TFBlocks.mangrove_log.defaultBlockState();
 				break;
 			case 3:
 				logState = Blocks.OAK_LOG.defaultBlockState();
@@ -85,7 +85,7 @@ public class TFGenFallenSmallLog extends Feature<NoneFeatureConfiguration> {
 			for (int lx = 0; lx < length; lx++) {
 				world.setBlock(pos.offset(lx, 0, 1), logState, 3);
 				if (rand.nextInt(3) > 0) {
-					world.setBlock(pos.offset(lx, 1, 1), TFBlocks.moss_patch.get().defaultBlockState(), 3);
+					world.setBlock(pos.offset(lx, 1, 1), TFBlocks.moss_patch.defaultBlockState(), 3);
 				}
 			}
 		} else {
@@ -95,7 +95,7 @@ public class TFGenFallenSmallLog extends Feature<NoneFeatureConfiguration> {
 			for (int lz = 0; lz < length; lz++) {
 				world.setBlock(pos.offset(1, 0, lz), logState, 3);
 				if (rand.nextInt(3) > 0) {
-					world.setBlock(pos.offset(1, 1, lz), TFBlocks.moss_patch.get().defaultBlockState(), 3);
+					world.setBlock(pos.offset(1, 1, lz), TFBlocks.moss_patch.defaultBlockState(), 3);
 				}
 			}
 		}
@@ -108,7 +108,7 @@ public class TFGenFallenSmallLog extends Feature<NoneFeatureConfiguration> {
 
 				world.setBlock(pos.offset(bx, 0, bz), branchState, 3);
 				if (rand.nextBoolean()) {
-					world.setBlock(pos.offset(bx, 1, bz), TFBlocks.moss_patch.get().defaultBlockState(), 3);
+					world.setBlock(pos.offset(bx, 1, bz), TFBlocks.moss_patch.defaultBlockState(), 3);
 				}
 			} else {
 				int bx = rand.nextBoolean() ? 2 : 0;
@@ -116,7 +116,7 @@ public class TFGenFallenSmallLog extends Feature<NoneFeatureConfiguration> {
 
 				world.setBlock(pos.offset(bx, 0, bz), branchState, 3);
 				if (rand.nextBoolean()) {
-					world.setBlock(pos.offset(bx, 1, bz), TFBlocks.moss_patch.get().defaultBlockState(), 3);
+					world.setBlock(pos.offset(bx, 1, bz), TFBlocks.moss_patch.defaultBlockState(), 3);
 				}
 			}
 		}

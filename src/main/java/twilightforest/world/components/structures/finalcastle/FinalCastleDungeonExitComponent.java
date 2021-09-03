@@ -62,7 +62,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 		}
 
 		// door
-		final BlockState castleDoor = TFBlocks.castle_door_pink.get().defaultBlockState();
+		final BlockState castleDoor = TFBlocks.castle_door_pink.defaultBlockState();
 
 		this.generateBox(world, sbb, 7, 0, 16, 7, 3, 18, castleDoor, AIR, false);
 		this.generateBox(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);
@@ -88,11 +88,11 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 
 	@Override
 	protected BlockState getForceFieldColor(Random decoRNG) {
-		return TFBlocks.force_field_pink.get().defaultBlockState();
+		return TFBlocks.force_field_pink.defaultBlockState();
 	}
 
 	@Override
 	protected BlockState getRuneColor(BlockState fieldColor) {
-		return TFBlocks.castle_rune_brick_pink.get().defaultBlockState();
+		return TFBlocks.castle_rune_brick_pink.defaultBlockState();
 	}
 }

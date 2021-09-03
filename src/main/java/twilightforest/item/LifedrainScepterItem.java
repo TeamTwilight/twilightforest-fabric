@@ -52,7 +52,7 @@ public class LifedrainScepterItem extends Item {
 		}
 	}
 
-	@Override
+	//@Override
 	public float getXpRepairRatio(ItemStack stack) {
 		return 1f;
 	}
@@ -114,11 +114,11 @@ public class LifedrainScepterItem extends Item {
 		return pointedEntity;
 	}
 
-	@Override
+	//@Override
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
 		Level world = living.level;
 
-		if (stack.getDamageValue() == this.getMaxDamage(stack)) {
+		if (stack.getDamageValue() == this.getMaxDamage()) {
 			// do not use
 			living.stopUsingItem();
 			return;
@@ -224,12 +224,12 @@ public class LifedrainScepterItem extends Item {
 		return UseAnim.BOW;
 	}
 
-	@Override
+	//@Override
 	public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
 		return oldStack.getItem() == newStack.getItem();
 	}
 
-	@Override
+	//@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged || newStack.getItem() != oldStack.getItem();
 	}

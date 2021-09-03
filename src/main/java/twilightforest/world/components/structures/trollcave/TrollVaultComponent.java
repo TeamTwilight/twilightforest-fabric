@@ -41,7 +41,7 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
-		this.generateBox(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giant_obsidian.get().defaultBlockState(), TFBlocks.giant_obsidian.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giant_obsidian.defaultBlockState(), TFBlocks.giant_obsidian.defaultBlockState(), false);
 
 		// clear inside
 		this.generateAirBox(world, sbb, 4, 4, 4, 7, 7, 7);

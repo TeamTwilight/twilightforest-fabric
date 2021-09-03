@@ -9,8 +9,8 @@ import twilightforest.world.components.structures.TFStructureDecorator;
 public class StrongholdDecorator extends TFStructureDecorator {
 
 	public StrongholdDecorator() {
-		this.blockState = TFBlocks.underbrick.get().defaultBlockState();
-		this.accentState = TFBlocks.underbrick_cracked.get().defaultBlockState();
+		this.blockState = TFBlocks.underbrick.defaultBlockState();
+		this.accentState = TFBlocks.underbrick_cracked.defaultBlockState();
 		this.fenceState = Blocks.COBBLESTONE_WALL.defaultBlockState();
 		this.stairState = Blocks.STONE_BRICK_STAIRS.defaultBlockState();
 		this.pillarState = Blocks.MOSSY_STONE_BRICKS.defaultBlockState();

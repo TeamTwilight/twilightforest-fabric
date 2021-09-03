@@ -37,9 +37,10 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
+		//TODO: PORT
+		/*if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
 			return false;
-		}
+		}*/
 
 		//okay build a tree!  Go up to the height
 		buildTrunk(world, trunkPlacer, random, pos, treeHeight, config);

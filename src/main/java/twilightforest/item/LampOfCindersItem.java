@@ -79,7 +79,7 @@ public class LampOfCindersItem extends Item {
 	public void releaseUsing(ItemStack stack, Level world, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
-		if (useTime > FIRING_TIME && (stack.getDamageValue() + 1) < this.getMaxDamage(stack)) {
+		if (useTime > FIRING_TIME && (stack.getDamageValue() + 1) < this.getMaxDamage()) {
 			doBurnEffect(world, living);
 		}
 	}

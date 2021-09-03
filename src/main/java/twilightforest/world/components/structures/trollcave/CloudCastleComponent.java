@@ -77,9 +77,9 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// make haus
-		this.generateBox(world, sbb, 8, 0, 8, 23, 3, 23, TFBlocks.fluffy_cloud.get().defaultBlockState(), TFBlocks.fluffy_cloud.get().defaultBlockState(), false);
-		this.generateBox(world, sbb, 8, 4, 8, 23, 15, 23, TFBlocks.giant_cobblestone.get().defaultBlockState(), TFBlocks.giant_cobblestone.get().defaultBlockState(), false);
-		this.generateBox(world, sbb, 8, 16, 8, 23, 19, 23, TFBlocks.giant_log.get().defaultBlockState(), TFBlocks.giant_log.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 0, 8, 23, 3, 23, TFBlocks.fluffy_cloud.defaultBlockState(), TFBlocks.fluffy_cloud.defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 4, 8, 23, 15, 23, TFBlocks.giant_cobblestone.defaultBlockState(), TFBlocks.giant_cobblestone.defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 16, 8, 23, 19, 23, TFBlocks.giant_log.defaultBlockState(), TFBlocks.giant_log.defaultBlockState(), false);
 
 		// clear inside
 		this.generateAirBox(world, sbb, 12, 4, 12, 19, 15, 19);

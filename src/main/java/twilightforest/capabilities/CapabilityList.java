@@ -4,13 +4,11 @@ import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
-import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
 import twilightforest.TwilightForestMod;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.capabilities.shield.ShieldCapabilityHandler;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 public class CapabilityList implements EntityComponentInitializer {

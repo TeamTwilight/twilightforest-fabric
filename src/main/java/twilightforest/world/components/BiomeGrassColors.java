@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class BiomeGrassColors {
 	private static final Random COLOR_RNG = new Random();
-	private static int getEnchantedColor(int x, int z) {
+	public static int getEnchantedColor(int x, int z) {
 		// center of the biome is at % 256 - 8
 		int cx = 256 * Math.round((x - 8) / 256F) + 8;
 		int cz = 256 * Math.round((z - 8) / 256F) + 8;
@@ -35,22 +35,12 @@ public class BiomeGrassColors {
 		return color;
 	}
 
-	public static final GrassColorModifier ENCHANTED_FOREST = make("enchanted_forest", (x, z, color) -> {
-		return (color & 0xFFFF00) + getEnchantedColor((int) x, (int) z); //TODO
-	});
+	//public static final GrassColorModifier ENCHANTED_FOREST = GrassColorModifier.valueOf(TwilightForestMod.prefix("enchanted_forest").toString());
 
 	// FIXME Flat color, resolve
-	public static final GrassColorModifier SWAMP = make("swamp", (x, z, color) -> ((GrassColor.get(0.8F, 0.9F) & 0xFEFEFE) + 0x4E0E4E) / 2);
+	//public static final GrassColorModifier SWAMP = GrassColorModifier.valueOf(TwilightForestMod.prefix("swamp").toString());
 	// FIXME Flat color, resolve
-	public static final GrassColorModifier DARK_FOREST = make("dark_forest", (x, z, color) -> ((GrassColor.get(0.7F, 0.8F) & 0xFEFEFE) + 0x1E0E4E) / 2);
-	public static final GrassColorModifier DARK_FOREST_CENTER = make("dark_forest_center", (x, z, color) -> {
-		double d0 = Biome.BIOME_INFO_NOISE.getValue(x * 0.0225D, z * 0.0225D, false); //TODO: Check
-		return d0 < -0.2D ? 0x667540 : 0x554114;
-	});
+	//public static final GrassColorModifier DARK_FOREST = GrassColorModifier.valueOf(TwilightForestMod.prefix("dark_forest").toString());
+	//public static final GrassColorModifier DARK_FOREST_CENTER = GrassColorModifier.valueOf(TwilightForestMod.prefix("dark_forest_center").toString());
 
-	private static GrassColorModifier make(String name, GrassColorModifier.ColorModifier delegate) {
-		name = TwilightForestMod.prefix(name).toString();
-
-		return GrassColorModifier.create(name, name, delegate);
-	}
 }

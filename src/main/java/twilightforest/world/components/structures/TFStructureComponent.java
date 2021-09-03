@@ -60,14 +60,14 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 			.add(Blocks.STONE_BRICK_STAIRS)
 			.add(Blocks.LAVA)
 			.add(Blocks.WATER)
-			.add(TFBlocks.castle_stairs_brick.get())
-			.add(TFBlocks.force_field_blue.get())
-			.add(TFBlocks.force_field_green.get())
-			.add(TFBlocks.force_field_pink.get())
-			.add(TFBlocks.force_field_purple.get())
-			.add(TFBlocks.force_field_orange.get())
-			.add(TFBlocks.brown_thorns.get())
-			.add(TFBlocks.green_thorns.get())
+			.add(TFBlocks.castle_stairs_brick)
+			.add(TFBlocks.force_field_blue)
+			.add(TFBlocks.force_field_green)
+			.add(TFBlocks.force_field_pink)
+			.add(TFBlocks.force_field_purple)
+			.add(TFBlocks.force_field_orange)
+			.add(TFBlocks.brown_thorns)
+			.add(TFBlocks.green_thorns)
 			.build();
 
 
@@ -149,8 +149,8 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 	      BlockPos blockpos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
 
 	      if (boundingboxIn.isInside(blockpos)) {
-	          if (this.mirror != Mirror.NONE) {
-	             blockstateIn = blockstateIn.mirror(this.mirror);
+	          if (this.getMirror() != Mirror.NONE) {
+	             blockstateIn = blockstateIn.mirror(this.getMirror());
 	          }
 
 	          if (this.rotation != Rotation.NONE) {

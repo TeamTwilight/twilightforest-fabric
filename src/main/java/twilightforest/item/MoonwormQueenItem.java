@@ -66,9 +66,9 @@ public class MoonwormQueenItem extends Item {
 
 		ItemStack itemstack = player.getItemInHand(context.getHand());
 
-		if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && worldIn.isUnobstructed(TFBlocks.moonworm.get().defaultBlockState(), pos, CollisionContext.empty())) {
+		if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && worldIn.isUnobstructed(TFBlocks.moonworm.defaultBlockState(), pos, CollisionContext.empty())) {
 			if (this.tryPlace(blockItemUseContext).shouldSwing()) {
-				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
+				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos));
 				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				// TF - damage stack instead of shrinking
 				player.stopUsingItem();
@@ -138,7 +138,7 @@ public class MoonwormQueenItem extends Item {
 						}
 					}
 
-					SoundType soundtype = blockstate1.getSoundType(world, blockpos, context.getPlayer());
+					SoundType soundtype = blockstate1.getSoundType();
 					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, context.getPlayer()), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 					if (playerentity == null || !playerentity.abilities.instabuild) {
 						itemstack.hurtAndBreak(1, playerentity, (user) -> user.broadcastBreakEvent(playerentity.getUsedItemHand()));
@@ -151,7 +151,7 @@ public class MoonwormQueenItem extends Item {
 	}
 
 	protected SoundEvent getPlaceSound(BlockState state, Level world, BlockPos pos, Player entity) {
-		return state.getSoundType(world, pos, entity).getPlaceSound();
+		return state.getSoundType().getPlaceSound();
 	}
 
 	@Nullable
@@ -165,7 +165,7 @@ public class MoonwormQueenItem extends Item {
 
 	@Nullable
 	protected BlockState getStateForPlacement(BlockPlaceContext context) {
-		BlockState blockstate = TFBlocks.moonworm.get().getStateForPlacement(context);
+		BlockState blockstate = TFBlocks.moonworm.getStateForPlacement(context);
 		return blockstate != null && this.canPlace(context, blockstate) ? blockstate : null;
 	}
 

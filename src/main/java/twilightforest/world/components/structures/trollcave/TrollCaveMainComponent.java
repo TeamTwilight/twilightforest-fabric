@@ -39,7 +39,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	protected int height;
 
 	// FIXME Can we just pluck it from the data pack?
-	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(5, 11), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT)));
+	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(5, 11), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT)));
 
 	public TrollCaveMainComponent(ServerLevel level, CompoundTag nbt) {
 		this(TrollCavePieces.TFTCMai, nbt);
@@ -158,7 +158,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 					if (dist > threshold) {
 						this.placeBlock(world, Blocks.AIR.defaultBlockState(), x, y, z, boundingBox);
 					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlock(world, x, y, z, boundingBox).is(BlockTags.BASE_STONE_OVERWORLD)) {
-						this.placeBlock(world, TFBlocks.trollsteinn.get().defaultBlockState(), x, y, z, boundingBox);
+						this.placeBlock(world, TFBlocks.trollsteinn.defaultBlockState(), x, y, z, boundingBox);
 					}
 				}
 			}
@@ -218,7 +218,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		return new BlockPos(x, y, z);
 	}
 
-	protected static final Predicate<Biome> highlands = biome -> false; // FIXME biome == TFBiomes.highlands.get();
+	protected static final Predicate<Biome> highlands = biome -> false; // FIXME biome == TFBiomes.highlands;
 
 	/**
 	 * Make a random stone stalactite

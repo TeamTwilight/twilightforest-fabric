@@ -49,20 +49,21 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 		return feature;
 	}
 
-	@Override
-	public List<MobSpawnSettings.SpawnerData> getDefaultSpawnList() {
-		return getFeature().getCombinedMonsterSpawnableList();
-	}
-
-	@Override
-	public List<MobSpawnSettings.SpawnerData> getDefaultCreatureSpawnList() {
-		return getFeature().getCombinedCreatureSpawnableList();
-	}
-
-	@Override
-	public boolean getDefaultRestrictsSpawnsToInside() {
-		return true;
-	}
+	//TODO: PORT
+//	@Override
+//	public List<MobSpawnSettings.SpawnerData> getDefaultSpawnList() {
+//		return getFeature().getCombinedMonsterSpawnableList();
+//	}
+//
+//	@Override
+//	public List<MobSpawnSettings.SpawnerData> getDefaultCreatureSpawnList() {
+//		return getFeature().getCombinedCreatureSpawnableList();
+//	}
+//
+//	@Override
+//	public boolean getDefaultRestrictsSpawnsToInside() {
+//		return true;
+//	}
 
 	@Override
 	public GenerationStep.Decoration step() {

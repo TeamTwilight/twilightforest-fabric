@@ -16,7 +16,7 @@ public class SteeleafArmorItem extends ArmorItem {
 		super(material, slot, props);
 	}
 
-	@Override
+	//@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "steeleaf_2.png";

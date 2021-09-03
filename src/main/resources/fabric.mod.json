@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "twilightforest",
+  "version": "${version}",
+  "name": "The Twilight Forest",
+  "description": "An enchanted forest dimension.",
+  "authors": [
+    "Benimatic",
+    "AtomicBlom",
+    "Drullkus",
+    "Killer_Demon",
+    "quadraxis",
+    "Tamaized",
+    "williewillus",
+    "GizmoTheMoonPig",
+    "AlphaMode"
+  ],
+  "contact": {},
+  "license": "GNU LESSER GENERAL PUBLIC LICENSE Version 2.1",
+  "icon": "twilightforest_logo.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+    ],
+    "main": [
+      "twilightforest.TwilightForestMod"
+    ]
+  },
+  "mixins": [
+    "twilightforest.mixins.json"
+  ],
+  "accessWidener": "twilight.aw",
+  "depends": {
+    "fabricloader": ">=0.11.6",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  }
+}

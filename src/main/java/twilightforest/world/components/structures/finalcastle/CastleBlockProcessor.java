@@ -16,11 +16,11 @@ public class CastleBlockProcessor extends StructurePiece.BlockSelector {
 			float randFloat = random.nextFloat();
 
 			if (randFloat < 0.1F) {
-				next = TFBlocks.castle_brick_worn.get().defaultBlockState();
+				next = TFBlocks.castle_brick_worn.defaultBlockState();
 			} else if (randFloat < 0.2F) {
-				next = TFBlocks.castle_brick_cracked.get().defaultBlockState();
+				next = TFBlocks.castle_brick_cracked.defaultBlockState();
 			} else {
-				next = TFBlocks.castle_brick.get().defaultBlockState();
+				next = TFBlocks.castle_brick.defaultBlockState();
 			}
 		}
 	}
