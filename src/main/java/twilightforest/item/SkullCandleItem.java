@@ -42,12 +42,12 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 		}
 	}
 
-	@Override
+	//@Override
 	public boolean canEquip(ItemStack stack, EquipmentSlot armorType, Entity entity) {
 		return armorType == EquipmentSlot.HEAD;
 	}
 
-	@Override
+	//@Override
 	@Nullable
 	public EquipmentSlot getEquipmentSlot(ItemStack stack) {
 		return EquipmentSlot.HEAD;

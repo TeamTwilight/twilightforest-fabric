@@ -39,13 +39,14 @@ public class FallingIceRenderer extends EntityRenderer<FallingIceEntity> {
 				stack.translate(-0.5D, 0.0D, -0.5D);
 				stack.scale(3, 3, 3); // TF - scale 3
 				BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
-				for (net.minecraft.client.renderer.RenderType type : net.minecraft.client.renderer.RenderType.chunkBufferLayers()) {
-					if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
-						net.minecraftforge.client.ForgeHooksClient.setRenderLayer(type);
-						blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(entity.getStartPos()), OverlayTexture.NO_OVERLAY);
-					}
-				}
-				net.minecraftforge.client.ForgeHooksClient.setRenderLayer(null);
+				//TODO: PORT
+//				for (net.minecraft.client.renderer.RenderType type : net.minecraft.client.renderer.RenderType.chunkBufferLayers()) {
+//					if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
+//						net.minecraftforge.client.ForgeHooksClient.setRenderLayer(type);
+//						blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(entity.getStartPos()), OverlayTexture.NO_OVERLAY);
+//					}
+//				}
+//				net.minecraftforge.client.ForgeHooksClient.setRenderLayer(null);
 				stack.popPose();
 				super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 			}

@@ -3,6 +3,7 @@ package twilightforest.data;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -226,11 +227,11 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/major_landmarks/hollow_hills");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.arctic_fur.get()))
-				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.arctic_helmet.get()))
-				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.arctic_chestplate.get()))
-				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.arctic_leggings.get()))
-				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.arctic_boots.get()))
+				.addCriterion("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.arctic_fur))
+				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.arctic_helmet))
+				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.arctic_chestplate))
+				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.arctic_leggings))
+				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.arctic_boots))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/arctic_armor_set");
 
@@ -254,21 +255,21 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/bows");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("carminite", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.carminite.get()))
-				.addCriterion("carminite_block", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.carminite_block.get()))
+				.addCriterion("carminite", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.carminite))
+				.addCriterion("carminite_block", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.carminite_block))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/carminite");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_charm1", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.charm_of_keeping_1.get()))
-				.addCriterion("has_charm2", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.charm_of_keeping_2.get()))
-				.addCriterion("has_charm3", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.charm_of_keeping_3.get()))
+				.addCriterion("has_charm1", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.charm_of_keeping_1))
+				.addCriterion("has_charm2", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.charm_of_keeping_2))
+				.addCriterion("has_charm3", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.charm_of_keeping_3))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/charm_of_keeping");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_charm1", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.charm_of_life_1.get()))
-				.addCriterion("has_charm2", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.charm_of_life_2.get()))
+				.addCriterion("has_charm1", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.charm_of_life_1))
+				.addCriterion("has_charm2", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.charm_of_life_2))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/charm_of_life");
 
@@ -279,163 +280,163 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/charms");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.crumble_horn.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.crumble_horn))
 				.addCriterion("used", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/crumble_horn_used")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/crumble_horn");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("used", ItemUsedOnBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(TFItems.crumble_horn.get())))
+				.addCriterion("used", ItemUsedOnBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(TFItems.crumble_horn)))
 				.save(consumer, "twilightforest:alt/treasures/crumble_horn_used");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_jet", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.fire_jet.get()))
-				.addCriterion("has_towerwood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.tower_wood_encased.get()))
-				.addCriterion("has_encased_ver", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.encased_fire_jet.get()))
+				.addCriterion("has_jet", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.fire_jet))
+				.addCriterion("has_towerwood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.tower_wood_encased))
+				.addCriterion("has_encased_ver", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.encased_fire_jet))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/encased_fire_jet");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_smoker", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.smoker.get()))
-				.addCriterion("has_towerwood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.tower_wood_encased.get()))
-				.addCriterion("has_encased_ver", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.encased_smoker.get()))
+				.addCriterion("has_smoker", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.smoker))
+				.addCriterion("has_towerwood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.tower_wood_encased))
+				.addCriterion("has_encased_ver", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.encased_smoker))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/encased_smoker");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ender_bow.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ender_bow))
 				.save(consumer, "twilightforest:alt/treasures/ender_bow");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_blood", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_blood.get()))
-				.addCriterion("has_tears", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_tears.get()))
-				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_ingot.get()))
-				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_helmet.get()))
-				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_chestplate.get()))
-				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_leggings.get()))
-				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_boots.get()))
+				.addCriterion("has_blood", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_blood))
+				.addCriterion("has_tears", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_tears))
+				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_ingot))
+				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_helmet))
+				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_chestplate))
+				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_leggings))
+				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_boots))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/fiery_armor_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_blood", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_blood.get()))
-				.addCriterion("has_tears", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_tears.get()))
+				.addCriterion("has_blood", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_blood))
+				.addCriterion("has_tears", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_tears))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/fiery_blood_tears");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_blood", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_blood.get()))
-				.addCriterion("has_tears", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_tears.get()))
-				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_ingot.get()))
-				.addCriterion("has_sword", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_sword.get()))
-				.addCriterion("has_pick", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_pickaxe.get()))
+				.addCriterion("has_blood", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_blood))
+				.addCriterion("has_tears", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_tears))
+				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_ingot))
+				.addCriterion("has_sword", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_sword))
+				.addCriterion("has_pick", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.fiery_pickaxe))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/fiery_tool_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.fire_jet.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.fire_jet))
 				.addCriterion("in_swamp", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/fire_swamp")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/fire_jet");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_cobble", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_cobblestone.get()))
-				.addCriterion("has_wood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_log.get()))
-				.addCriterion("has_leaves", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_leaves.get()))
-				.addCriterion("has_obby", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_obsidian.get()))
+				.addCriterion("has_cobble", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_cobblestone))
+				.addCriterion("has_wood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_log))
+				.addCriterion("has_leaves", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_leaves))
+				.addCriterion("has_obby", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_obsidian))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/giant_blocks");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_cobble", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_cobblestone.get()))
-				.addCriterion("has_wood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_log.get()))
-				.addCriterion("has_pick", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.giant_pickaxe.get()))
-				.addCriterion("has_sword", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.giant_sword.get()))
+				.addCriterion("has_cobble", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_cobblestone))
+				.addCriterion("has_wood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.giant_log))
+				.addCriterion("has_pick", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.giant_pickaxe))
+				.addCriterion("has_sword", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.giant_sword))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/giant_tool_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.glass_sword.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.glass_sword))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/glass_sword");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ice_bomb.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ice_bomb))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/ice_bomb");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ice_bow.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ice_bow))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/ice_bow");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ice_sword.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ice_sword))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/ice_sword");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_raw.get()))
-				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_ingot.get()))
-				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_helmet.get()))
-				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_chestplate.get()))
-				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_leggings.get()))
-				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_boots.get()))
+				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_raw))
+				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_ingot))
+				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_helmet))
+				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_chestplate))
+				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_leggings))
+				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_boots))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/ironwood_armor_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_raw.get()))
-				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_ingot.get()))
-				.addCriterion("has_sword", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_sword.get()))
-				.addCriterion("has_pick", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_pickaxe.get()))
-				.addCriterion("has_axe", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_axe.get()))
-				.addCriterion("has_shovel", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_shovel.get()))
-				.addCriterion("has_hoe", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_hoe.get()))
+				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_raw))
+				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_ingot))
+				.addCriterion("has_sword", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_sword))
+				.addCriterion("has_pick", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_pickaxe))
+				.addCriterion("has_axe", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_axe))
+				.addCriterion("has_shovel", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_shovel))
+				.addCriterion("has_hoe", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ironwood_hoe))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/ironwood_tool_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_shard", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.armor_shard.get()))
-				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.armor_shard_cluster.get()))
-				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_ingot.get()))
-				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_helmet.get()))
-				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_chestplate.get()))
-				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_leggings.get()))
-				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_boots.get()))
+				.addCriterion("has_shard", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.armor_shard))
+				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.armor_shard_cluster))
+				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_ingot))
+				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_helmet))
+				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_chestplate))
+				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_leggings))
+				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_boots))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/knightmetal_armor_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_shard", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.armor_shard.get()))
-				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.armor_shard_cluster.get()))
-				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_ingot.get()))
-				.addCriterion("has_sword", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_sword.get()))
-				.addCriterion("has_pick", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_pickaxe.get()))
-				.addCriterion("has_axe", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_axe.get()))
+				.addCriterion("has_shard", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.armor_shard))
+				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.armor_shard_cluster))
+				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_ingot))
+				.addCriterion("has_sword", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_sword))
+				.addCriterion("has_pick", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_pickaxe))
+				.addCriterion("has_axe", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.knightmetal_axe))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/knightmetal_tool_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.lifedrain_scepter.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.lifedrain_scepter))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/lifedrain_scepter");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.magic_beans.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.magic_beans))
 				.addCriterion("used", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treaures/magic_beanstalk")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/magic_beans");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", ItemUsedOnBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(TFBlocks.uberous_soil.get()).build()), ItemPredicate.Builder.item().of(TFItems.magic_beans.get())))
+				.addCriterion("has_item", ItemUsedOnBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(TFBlocks.uberous_soil).build()), ItemPredicate.Builder.item().of(TFItems.magic_beans)))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/magic_beanstalk");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_focus", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.magic_map_focus.get()))
-				.addCriterion("has_empty", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.magic_map_empty.get()))
-				.addCriterion("has_filled", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.magic_map.get()))
+				.addCriterion("has_focus", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.magic_map_focus))
+				.addCriterion("has_empty", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.magic_map_empty))
+				.addCriterion("has_filled", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.magic_map))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/magic_map");
 
@@ -455,24 +456,24 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/maps");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_focus", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.maze_map_focus.get()))
-				.addCriterion("has_empty", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.maze_map_empty.get()))
-				.addCriterion("has_filled", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.maze_map.get()))
+				.addCriterion("has_focus", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.maze_map_focus))
+				.addCriterion("has_empty", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.maze_map_empty))
+				.addCriterion("has_filled", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.maze_map))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/maze_map");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.mazebreaker_pickaxe.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.mazebreaker_pickaxe))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/mazebreaker_pickaxe");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.minotaur_axe.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.minotaur_axe))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/minotaur_axe_diamond");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.minotaur_axe_gold.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.minotaur_axe_gold))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/minotaur_axe_gold");
 
@@ -483,26 +484,26 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/minotaur_axes");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.moon_dial.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.moon_dial))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/moon_dial");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_scale", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.naga_scale.get()))
-				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.naga_chestplate.get()))
-				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.naga_leggings.get()))
+				.addCriterion("has_scale", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.naga_scale))
+				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.naga_chestplate))
+				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.naga_leggings))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/naga_armor_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_empty", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ore_map_empty.get()))
-				.addCriterion("has_filled", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ore_map.get()))
+				.addCriterion("has_empty", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ore_map_empty))
+				.addCriterion("has_filled", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.ore_map))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/ore_map");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_helm", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.phantom_helmet.get()))
-				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.phantom_chestplate.get()))
+				.addCriterion("has_helm", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.phantom_helmet))
+				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.phantom_chestplate))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/phantom_armor_set");
 
@@ -515,37 +516,37 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/scepters");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.seeker_bow.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.seeker_bow))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/seeker_bow");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.shield_scepter.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.shield_scepter))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/shield_scepter");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.smoker.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.smoker))
 				.addCriterion("in_swamp", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/fire_swamp")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/smoking_block");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_ingot.get()))
-				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_helmet.get()))
-				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_chestplate.get()))
-				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_leggings.get()))
-				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_boots.get()))
+				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_ingot))
+				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_helmet))
+				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_chestplate))
+				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_leggings))
+				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_boots))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/steeleaf_armor_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_ingot.get()))
-				.addCriterion("has_sword", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_sword.get()))
-				.addCriterion("has_pick", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_pickaxe.get()))
-				.addCriterion("has_axe", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_axe.get()))
-				.addCriterion("has_shovel", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_shovel.get()))
-				.addCriterion("has_hoe", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_hoe.get()))
+				.addCriterion("has_ingot", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_ingot))
+				.addCriterion("has_sword", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_sword))
+				.addCriterion("has_pick", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_pickaxe))
+				.addCriterion("has_axe", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_axe))
+				.addCriterion("has_shovel", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_shovel))
+				.addCriterion("has_hoe", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.steeleaf_hoe))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/steeleaf_tool_set");
 
@@ -561,38 +562,38 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/tools");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_sapling", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.time_sapling.get()))
-				.addCriterion("has_log", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.time_log.get()))
-				.addCriterion("has_wood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.time_wood.get()))
-				.addCriterion("has_leaves", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.time_leaves.get()))
+				.addCriterion("has_sapling", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.time_sapling))
+				.addCriterion("has_log", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.time_log))
+				.addCriterion("has_wood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.time_wood))
+				.addCriterion("has_leaves", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.time_leaves))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/tree_of_time");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_sapling", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.sorting_sapling.get()))
-				.addCriterion("has_log", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.sorting_log.get()))
-				.addCriterion("has_leaves", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.sorting_leaves.get()))
+				.addCriterion("has_sapling", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.sorting_sapling))
+				.addCriterion("has_log", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.sorting_log))
+				.addCriterion("has_leaves", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.sorting_leaves))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/tree_of_sorting");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_sapling", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.mining_sapling.get()))
-				.addCriterion("has_log", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.mining_log.get()))
-				.addCriterion("has_wood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.mining_wood.get()))
-				.addCriterion("has_leaves", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.mining_leaves.get()))
+				.addCriterion("has_sapling", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.mining_sapling))
+				.addCriterion("has_log", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.mining_log))
+				.addCriterion("has_wood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.mining_wood))
+				.addCriterion("has_leaves", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.mining_leaves))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/tree_of_mining");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_sapling", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.transformation_sapling.get()))
-				.addCriterion("has_log", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.transformation_log.get()))
-				.addCriterion("has_wood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.transformation_wood.get()))
-				.addCriterion("has_leaves", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.transformation_leaves.get()))
+				.addCriterion("has_sapling", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.transformation_sapling))
+				.addCriterion("has_log", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.transformation_log))
+				.addCriterion("has_wood", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.transformation_wood))
+				.addCriterion("has_leaves", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.transformation_leaves))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/tree_of_transformation");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.triple_bow.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.triple_bow))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/triple_bow");
 
@@ -610,31 +611,31 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/trophies");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.trophy_pedestal.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.trophy_pedestal))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/trophy_pedestal");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.twilight_scepter.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.twilight_scepter))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/twilight_scepter");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.uncrafting_table.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.uncrafting_table))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/uncrafting_table");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.alpha_fur.get()))
-				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.yeti_helmet.get()))
-				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.yeti_chestplate.get()))
-				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.yeti_leggings.get()))
-				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.yeti_boots.get()))
+				.addCriterion("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.alpha_fur))
+				.addCriterion("has_helmet", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.yeti_helmet))
+				.addCriterion("has_chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.yeti_chestplate))
+				.addCriterion("has_leggings", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.yeti_leggings))
+				.addCriterion("has_boots", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.yeti_boots))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/yeti_armor_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.zombie_scepter.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.zombie_scepter))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/zombie_scepter");
 
@@ -648,29 +649,29 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/foods/any");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.experiment_115.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.experiment_115))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/foods/experiment_115");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.hydra_chop.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.hydra_chop))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/foods/hydra_chop");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.maze_wafer.get()))
+				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.maze_wafer))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/foods/maze_wafer");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.raw_meef.get()))
-				.addCriterion("has_cooked", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.cooked_meef.get()))
+				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.raw_meef))
+				.addCriterion("has_cooked", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.cooked_meef))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/foods/meef");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.raw_venison.get()))
-				.addCriterion("has_cooked", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.cooked_venison.get()))
+				.addCriterion("has_raw", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.raw_venison))
+				.addCriterion("has_cooked", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.cooked_venison))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/foods/venison");
 	}
@@ -691,13 +692,13 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.addCriterion("summon", SummonedEntityTrigger.TriggerInstance.summonedEntity(EntityPredicate.Builder.entity().of(entity)))
 				.addCriterion("tame", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(entity).build()))
 				.requirements(RequirementsStrategy.OR)
-				.save(consumer, "twilightforest:alt/entities/" + entity.getRegistryName().getPath());
+				.save(consumer, "twilightforest:alt/entities/" + Registry.ENTITY_TYPE.getKey(entity).getPath());
 	}
 
 	private void landmarkAdvancement(StructureFeature<?> structure, Consumer<Advancement> consumer, Advancement root) {
 		Advancement.Builder.advancement().parent(root)
 				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.inFeature(structure)))
-				.save(consumer, "twilightforest:alt/major_landmarks/" + structure.getRegistryName().getPath());
+				.save(consumer, "twilightforest:alt/major_landmarks/" + Registry.STRUCTURE_FEATURE.getKey(structure).getPath());
 	}
 
 	private void minorKeyBiomes(Consumer<Advancement> consumer, Advancement root) {

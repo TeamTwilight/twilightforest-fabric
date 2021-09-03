@@ -13,12 +13,12 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.StructureFeatureManager;
-import net.minecraftforge.common.world.StructureSpawnManager;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -31,6 +31,7 @@ import java.util.function.Supplier;
 
 // TODO: doc out all the vanilla copying
 // Actually, figure out how to get this back up again
+//TODO: PORT (Maybe make a wrapper?)
 public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerator {
 	protected final long seed;
 	protected final Supplier<NoiseGeneratorSettings> dimensionSettings;
@@ -42,7 +43,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 		super(provider, seed, settings);
 		this.seed = seed;
 		this.dimensionSettings = settings;
-		this.settings = this.dimensionSettings.get();
+		this.settings = this.dimensionSettings;
 	}
 
 	@Deprecated // Keep until Vanilla gets their stuff together
@@ -179,14 +180,14 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 						final int oceanFloor = primer.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
 
 						if (dist < 7 || cv < 0.05F) {
-							primer.setBlock(movingPos.setY(y), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y), TFBlocks.wispy_cloud.defaultBlockState(), 3);
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.defaultBlockState(), 3);
 							}
-							primer.setBlock(movingPos.setY(y - depth), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y - depth), TFBlocks.wispy_cloud.defaultBlockState(), 3);
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.defaultBlockState(), 3);
 							}
 						}
 

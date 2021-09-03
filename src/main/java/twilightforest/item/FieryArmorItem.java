@@ -19,14 +19,12 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraftforge.client.IItemRenderProperties;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.FieryArmorModel;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class FieryArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.fiery_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
@@ -35,14 +33,14 @@ public class FieryArmorItem extends ArmorItem {
 		super(armorMaterial, armorType, props);
 	}
 
-	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
-		if (slot == EquipmentSlot.LEGS) {
-			return TwilightForestMod.ARMOR_DIR + "fiery_2.png";
-		} else {
-			return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
-		}
-	}
+//	@Override
+//	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+//		if (slot == EquipmentSlot.LEGS) {
+//			return TwilightForestMod.ARMOR_DIR + "fiery_2.png";
+//		} else {
+//			return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
+//		}
+//	}
 
 	@Override
 	@Environment(EnvType.CLIENT)
@@ -51,20 +49,20 @@ public class FieryArmorItem extends ArmorItem {
 		tooltip.add(TOOLTIP);
 	}
 
-	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(ArmorRender.INSTANCE);
-	}
-
-	private static final class ArmorRender implements IItemRenderProperties {
-		private static final ArmorRender INSTANCE = new ArmorRender();
-
-		@Override
-		@SuppressWarnings("unchecked")
-		public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defModel) {
-			EntityModelSet models = Minecraft.getInstance().getEntityModels();
-			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.FIERY_ARMOR_INNER : TFModelLayers.FIERY_ARMOR_OUTER);
-			return (A) new FieryArmorModel(root);
-		}
-	}
+//	@Override
+//	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+//		consumer.accept(ArmorRender.INSTANCE);
+//	}
+//
+//	private static final class ArmorRender implements IItemRenderProperties {
+//		private static final ArmorRender INSTANCE = new ArmorRender();
+//
+//		@Override
+//		@SuppressWarnings("unchecked")
+//		public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defModel) {
+//			EntityModelSet models = Minecraft.getInstance().getEntityModels();
+//			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.FIERY_ARMOR_INNER : TFModelLayers.FIERY_ARMOR_OUTER);
+//			return (A) new FieryArmorModel(root);
+//		}
+//	}
 }

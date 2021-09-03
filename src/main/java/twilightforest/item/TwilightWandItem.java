@@ -45,7 +45,7 @@ public class TwilightWandItem extends Item {
 		}
 	}
 
-	@Override
+	//@Override
 	public float getXpRepairRatio(ItemStack stack) {
 		return 1f;
 	}

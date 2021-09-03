@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
@@ -20,10 +21,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
@@ -35,7 +32,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class OreMagnetItem extends Item {
 
 	private static final float WIGGLE = 10F;
@@ -90,7 +86,7 @@ public class OreMagnetItem extends Item {
 		}
 	}
 
-	@Override
+//	@Override
 	public float getXpRepairRatio(ItemStack stack) {
 		return 0.1f;
 	}
@@ -239,7 +235,7 @@ public class OreMagnetItem extends Item {
 		TwilightForestMod.LOGGER.info("GENERATING ORE TO BLOCK MAPPING");
 
 		for (Block blockReplaceOre : BlockTagGenerator.ORE_MAGNET_BLOCK_REPLACE_ORE.getValues()) {
-			ResourceLocation rl = blockReplaceOre.getRegistryName();
+			ResourceLocation rl = Registry.BLOCK.getKey(blockReplaceOre);
 			Tag<Block> tag = BlockTags.getAllTags().getTagOrEmpty(TwilightForestMod.prefix("ore_magnet/" + rl.getNamespace() + "/" + rl.getPath()));
 
 			for (Block oreBlock : tag.getValues()) {
@@ -247,34 +243,36 @@ public class OreMagnetItem extends Item {
 			}
 		}
 
-		Set<Block> remainingOres = new HashSet<>(Tags.Blocks.ORES.getValues());
-		remainingOres.removeAll(ORE_TO_BLOCK_REPLACEMENTS.keySet());
-		remainingOres.removeIf(b -> "minecraft".equals(b.getRegistryName().getNamespace()));
-		if (!remainingOres.isEmpty()) {
-			TwilightForestMod.LOGGER.warn(remainingOres
-					.stream()
-					.peek(ore -> ORE_TO_BLOCK_REPLACEMENTS.put(ore, Blocks.STONE))
-					.map(Block::getRegistryName)
-					.map(ResourceLocation::toString)
-					.collect(Collectors.joining(", ", "Partially supported ores with Ore Magnet, [", "], will relate these to `minecraft:stone`. Mod packers/Mod devs are encouraged to add support for their ores to our ore magnet through block tag jsons"))
-			);
-		} else {
-			// You're probably NEVER going to see this message on a modpack
-			TwilightForestMod.LOGGER.info("No remaining ores to map!");
-		}
+		//TODO: PORT
+//		Set<Block> remainingOres = new HashSet<>(Tags.Blocks.ORES.getValues());
+//		remainingOres.removeAll(ORE_TO_BLOCK_REPLACEMENTS.keySet());
+//		remainingOres.removeIf(b -> "minecraft".equals(b.getRegistryName().getNamespace()));
+//		if (!remainingOres.isEmpty()) {
+//			TwilightForestMod.LOGGER.warn(remainingOres
+//					.stream()
+//					.peek(ore -> ORE_TO_BLOCK_REPLACEMENTS.put(ore, Blocks.STONE))
+//					.map(Block::getRegistryName)
+//					.map(ResourceLocation::toString)
+//					.collect(Collectors.joining(", ", "Partially supported ores with Ore Magnet, [", "], will relate these to `minecraft:stone`. Mod packers/Mod devs are encouraged to add support for their ores to our ore magnet through block tag jsons"))
+//			);
+//		} else {
+//			// You're probably NEVER going to see this message on a modpack
+//			TwilightForestMod.LOGGER.info("No remaining ores to map!");
+//		}
 
 		cacheNeedsBuild = false;
 	}
 
-	@SubscribeEvent
-	public static void buildOreMagnetCache(AddReloadListenerEvent event) {
-		event.addListener((stage, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor) -> {
-			if (!cacheNeedsBuild) {
-				ORE_TO_BLOCK_REPLACEMENTS.clear();
-				cacheNeedsBuild = true;
-			}
-
-			return stage.wait(null).thenRun(() -> {}); // Nothing to do here
-		});
-	}
+	//TODO: PORT
+//	@SubscribeEvent
+//	public static void buildOreMagnetCache(AddReloadListenerEvent event) {
+//		event.addListener((stage, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor) -> {
+//			if (!cacheNeedsBuild) {
+//				ORE_TO_BLOCK_REPLACEMENTS.clear();
+//				cacheNeedsBuild = true;
+//			}
+//
+//			return stage.wait(null).thenRun(() -> {}); // Nothing to do here
+//		});
+//	}
 }

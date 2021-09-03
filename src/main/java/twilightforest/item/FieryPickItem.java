@@ -20,11 +20,6 @@ import net.minecraft.world.level.Level;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
-import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -58,39 +53,39 @@ public class FieryPickItem extends PickaxeItem {
 		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
 	}
 
-	private static class SmeltModifier extends LootModifier {
-
-		protected final LootItemCondition[] conditions;
-
-		public SmeltModifier(LootItemCondition[] conditionsIn) {
-			super(conditionsIn);
-			this.conditions = conditionsIn;
-		}
-
-		@Override
-		public List<ItemStack> doApply(List<ItemStack> originalLoot, LootContext context) {
-			List<ItemStack> newLoot = new ArrayList<>();
-			originalLoot.forEach((stack) -> newLoot.add(
-					context.getLevel().getRecipeManager()
-							.getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), context.getLevel())
-							.map(SmeltingRecipe::getResultItem)
-							.filter(itemStack -> !itemStack.isEmpty())
-							.map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack, stack.getCount() * itemStack.getCount()))
-							.orElse(stack)));
-			return newLoot;
-		}
-	}
-
-	public static class Serializer extends GlobalLootModifierSerializer<SmeltModifier> {
-
-		@Override
-		public SmeltModifier read(ResourceLocation name, JsonObject json, LootItemCondition[] conditionsIn) {
-			return new SmeltModifier(conditionsIn);
-		}
-
-		@Override
-		public JsonObject write(SmeltModifier instance) {
-			return null;
-		}
-	}
+//	private static class SmeltModifier extends LootModifier {
+//
+//		protected final LootItemCondition[] conditions;
+//
+//		public SmeltModifier(LootItemCondition[] conditionsIn) {
+//			super(conditionsIn);
+//			this.conditions = conditionsIn;
+//		}
+//
+//		@Override
+//		public List<ItemStack> doApply(List<ItemStack> originalLoot, LootContext context) {
+//			List<ItemStack> newLoot = new ArrayList<>();
+//			originalLoot.forEach((stack) -> newLoot.add(
+//					context.getLevel().getRecipeManager()
+//							.getRecipeFor(RecipeType.SMELTING, new SimpleContainer(stack), context.getLevel())
+//							.map(SmeltingRecipe::getResultItem)
+//							.filter(itemStack -> !itemStack.isEmpty())
+//							.map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack, stack.getCount() * itemStack.getCount()))
+//							.orElse(stack)));
+//			return newLoot;
+//		}
+//	}
+//
+//	public static class Serializer extends GlobalLootModifierSerializer<SmeltModifier> {
+//
+//		@Override
+//		public SmeltModifier read(ResourceLocation name, JsonObject json, LootItemCondition[] conditionsIn) {
+//			return new SmeltModifier(conditionsIn);
+//		}
+//
+//		@Override
+//		public JsonObject write(SmeltModifier instance) {
+//			return null;
+//		}
+//	}
 }

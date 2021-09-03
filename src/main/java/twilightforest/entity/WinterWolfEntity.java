@@ -105,7 +105,7 @@ public class WinterWolfEntity extends HostileWolfEntity implements IBreathAttack
 			dy *= velocity;
 			dz *= velocity;
 
-			level.addParticle(TFParticleType.SNOW.get(), px, py, pz, dx, dy, dz);
+			level.addParticle(TFParticleType.SNOW, px, py, pz, dx, dy, dz);
 		}
 	}
 	

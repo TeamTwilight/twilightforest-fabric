@@ -76,7 +76,7 @@ public class UncraftingInventory implements Container {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return !TFConfig.COMMON_CONFIG.disableUncrafting.get();
+		return !TFConfig.COMMON_CONFIG.disableUncrafting;
 	}
 
 	@Override

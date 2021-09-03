@@ -18,7 +18,7 @@ public class PinnedFireflyData implements ParticleOptions {
 
 	@Override
 	public ParticleType<?> getType() {
-		return TFParticleType.FIREFLY_PINNED.get();
+		return TFParticleType.FIREFLY_PINNED;
 	}
 
 	public static Codec<PinnedFireflyData> codecFirefly() {

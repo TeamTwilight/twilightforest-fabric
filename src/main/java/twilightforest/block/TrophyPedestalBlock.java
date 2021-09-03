@@ -134,7 +134,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 		for (int sx = -5; sx <= 5; sx++)
 			for (int sy = -5; sy <= 5; sy++)
 				for (int sz = -5; sz <= 5; sz++)
-					if (world.getBlockState(pos.offset(sx, sy, sz)).getBlock() == TFBlocks.stronghold_shield.get()) {
+					if (world.getBlockState(pos.offset(sx, sy, sz)).getBlock() == TFBlocks.stronghold_shield) {
 						world.destroyBlock(pos.offset(sx, sy, sz), false);
 					}
 	}

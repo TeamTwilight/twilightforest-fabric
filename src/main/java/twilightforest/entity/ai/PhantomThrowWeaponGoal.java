@@ -49,7 +49,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 		double tz = targetedEntity.getZ() - sz;
 
 		boss.playSound(TFSounds.PHANTOM_THROW_AXE, 1.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.2F + 0.4F);
-		ThrownWepEntity projectile = new ThrownWepEntity(TFEntities.thrown_wep, boss.level, boss).setItem(new ItemStack(TFItems.knightmetal_axe.get()));
+		ThrownWepEntity projectile = new ThrownWepEntity(TFEntities.thrown_wep, boss.level, boss).setItem(new ItemStack(TFItems.knightmetal_axe));
 
 		float speed = 0.75F;
 
@@ -75,7 +75,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 			double vz = Mth.sin(throwAngle);
 
 
-			ThrownWepEntity projectile = new ThrownWepEntity(TFEntities.thrown_wep, boss.level, boss).setDamage(3).setVelocity(0.015F).setItem(new ItemStack(TFItems.knightmetal_pickaxe.get()));
+			ThrownWepEntity projectile = new ThrownWepEntity(TFEntities.thrown_wep, boss.level, boss).setDamage(3).setVelocity(0.015F).setItem(new ItemStack(TFItems.knightmetal_pickaxe));
 
 
 			projectile.moveTo(sx, sy, sz, i * 45F, boss.xRot);

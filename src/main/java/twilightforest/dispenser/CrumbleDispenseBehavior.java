@@ -84,13 +84,13 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
         addCrumble(() -> Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS::defaultBlockState);
         addCrumble(() -> Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, Blocks.BLACKSTONE::defaultBlockState);
         addCrumble(() -> Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS::defaultBlockState);
-        addCrumble(TFBlocks.maze_stone_brick, () -> TFBlocks.maze_stone_cracked.get().defaultBlockState());
-        addCrumble(TFBlocks.underbrick, () -> TFBlocks.underbrick_cracked.get().defaultBlockState());
-        addCrumble(TFBlocks.tower_wood, () -> TFBlocks.tower_wood_cracked.get().defaultBlockState());
-        addCrumble(TFBlocks.deadrock, () -> TFBlocks.deadrock_cracked.get().defaultBlockState());
-        addCrumble(TFBlocks.castle_brick, () -> TFBlocks.castle_brick_cracked.get().defaultBlockState());
-        addCrumble(TFBlocks.nagastone_pillar, () -> TFBlocks.nagastone_pillar_weathered.get().defaultBlockState());
-        addCrumble(TFBlocks.etched_nagastone, () -> TFBlocks.etched_nagastone_weathered.get().defaultBlockState());
+        addCrumble(() -> TFBlocks.maze_stone_brick, () -> TFBlocks.maze_stone_cracked.defaultBlockState());
+        addCrumble(() -> TFBlocks.underbrick, () -> TFBlocks.underbrick_cracked.defaultBlockState());
+        addCrumble(() -> TFBlocks.tower_wood, () -> TFBlocks.tower_wood_cracked.defaultBlockState());
+        addCrumble(() -> TFBlocks.deadrock, () -> TFBlocks.deadrock_cracked.defaultBlockState());
+        addCrumble(() -> TFBlocks.castle_brick, () -> TFBlocks.castle_brick_cracked.defaultBlockState());
+        addCrumble(() -> TFBlocks.nagastone_pillar, () -> TFBlocks.nagastone_pillar_weathered.defaultBlockState());
+        addCrumble(() -> TFBlocks.etched_nagastone, () -> TFBlocks.etched_nagastone_weathered.defaultBlockState());
         addCrumble(() -> Blocks.STONE, Blocks.COBBLESTONE::defaultBlockState);
         addCrumble(() -> Blocks.COBBLESTONE, Blocks.GRAVEL::defaultBlockState);
         addCrumble(() -> Blocks.SANDSTONE, Blocks.SAND::defaultBlockState);
@@ -113,7 +113,7 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
     }
 
     private void addCrumble(Supplier<Block> block, Supplier<BlockState> result) {
-        addCrumble(state -> state.getBlock() == block.get(), state -> result.get());
+        addCrumble(state -> state.getBlock() == block, state -> result.get());
     }
 
     private void addCrumble(Predicate<BlockState> test, UnaryOperator<BlockState> transform) {
@@ -121,7 +121,7 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
     }
 
     private void addHarvest(Supplier<Block> block) {
-        addHarvest(state -> state.getBlock() == block.get());
+        addHarvest(state -> state.getBlock() == block);
     }
 
     private void addHarvest(Predicate<BlockState> test) {

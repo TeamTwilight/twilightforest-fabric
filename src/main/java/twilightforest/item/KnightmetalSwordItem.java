@@ -12,9 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
@@ -22,23 +20,21 @@ import twilightforest.TwilightForestMod;
 import javax.annotation.Nullable;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class KnightmetalSwordItem extends SwordItem {
 
 	private static final int BONUS_DAMAGE = 2;
 
 	public KnightmetalSwordItem(Tier material, Properties props) {
 		super(material, 3, -2.4F, props);
+		//AttackEntityCallback.EVENT.register(((player, world, hand, entity, hitResult) -> hitResult));
 	}
 
-	@SubscribeEvent
-	public static void onDamage(LivingAttackEvent evt) {
-		LivingEntity target = evt.getEntityLiving();
+	//TODO: HOOK
+	public static void onDamage(LivingEntity target, DamageSource source) {
+		if (!target.level.isClientSide && source.getDirectEntity() instanceof LivingEntity) {
+			ItemStack weapon = ((LivingEntity) source.getDirectEntity()).getMainHandItem();
 
-		if (!target.level.isClientSide && evt.getSource().getDirectEntity() instanceof LivingEntity) {
-			ItemStack weapon = ((LivingEntity) evt.getSource().getDirectEntity()).getMainHandItem();
-
-			if (!weapon.isEmpty() && ((target.getArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe.get() || weapon.getItem() == TFItems.knightmetal_sword.get())) || (target.getArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe.get()))) {
+			if (!weapon.isEmpty() && ((target.getArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe || weapon.getItem() == TFItems.knightmetal_sword)) || (target.getArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe))) {
 				// TODO scale bonus dmg with the amount of armor?
 				target.hurt(DamageSource.MAGIC, BONUS_DAMAGE);
 				// don't prevent main damage from applying

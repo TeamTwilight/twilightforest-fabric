@@ -240,13 +240,13 @@ public final class FeaturePlacers {
     public static void addFirefly(LevelAccessor world, BlockPos pos, int height, double angle) {
         int iAngle = (int) (angle * 4.0);
         if (iAngle == 0) {
-            setIfEmpty(world, pos.offset( 1, height,  0), TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.EAST));
+            setIfEmpty(world, pos.offset( 1, height,  0), TFBlocks.firefly.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.EAST));
         } else if (iAngle == 1) {
-            setIfEmpty(world, pos.offset(-1, height,  0), TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.WEST));
+            setIfEmpty(world, pos.offset(-1, height,  0), TFBlocks.firefly.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.WEST));
         } else if (iAngle == 2) {
-            setIfEmpty(world, pos.offset( 0, height,  1), TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.SOUTH));
+            setIfEmpty(world, pos.offset( 0, height,  1), TFBlocks.firefly.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.SOUTH));
         } else if (iAngle == 3) {
-            setIfEmpty(world, pos.offset( 0, height, -1), TFBlocks.firefly.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.NORTH));
+            setIfEmpty(world, pos.offset( 0, height, -1), TFBlocks.firefly.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.NORTH));
         }
     }
 

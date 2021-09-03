@@ -84,60 +84,60 @@ public class SnowGuardianEntity extends IceMobEntity {
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwood_sword.get();
+						return TFItems.ironwood_sword;
 					case 1:
-						return TFItems.steeleaf_sword.get();
+						return TFItems.steeleaf_sword;
 					case 2:
 					case 3:
-						return TFItems.knightmetal_sword.get();
+						return TFItems.knightmetal_sword;
 				}
 			case FEET:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwood_boots.get();
+						return TFItems.ironwood_boots;
 					case 1:
-						return TFItems.steeleaf_boots.get();
+						return TFItems.steeleaf_boots;
 					case 2:
-						return TFItems.knightmetal_boots.get();
+						return TFItems.knightmetal_boots;
 					case 3:
-						return TFItems.arctic_boots.get();
+						return TFItems.arctic_boots;
 				}
 			case LEGS:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwood_leggings.get();
+						return TFItems.ironwood_leggings;
 					case 1:
-						return TFItems.steeleaf_leggings.get();
+						return TFItems.steeleaf_leggings;
 					case 2:
-						return TFItems.knightmetal_leggings.get();
+						return TFItems.knightmetal_leggings;
 					case 3:
-						return TFItems.arctic_leggings.get();
+						return TFItems.arctic_leggings;
 				}
 			case CHEST:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwood_chestplate.get();
+						return TFItems.ironwood_chestplate;
 					case 1:
-						return TFItems.steeleaf_chestplate.get();
+						return TFItems.steeleaf_chestplate;
 					case 2:
-						return TFItems.knightmetal_chestplate.get();
+						return TFItems.knightmetal_chestplate;
 					case 3:
-						return TFItems.arctic_chestplate.get();
+						return TFItems.arctic_chestplate;
 				}
 			case HEAD:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwood_helmet.get();
+						return TFItems.ironwood_helmet;
 					case 1:
-						return TFItems.steeleaf_helmet.get();
+						return TFItems.steeleaf_helmet;
 					case 2:
-						return TFItems.knightmetal_helmet.get();
+						return TFItems.knightmetal_helmet;
 					case 3:
-						return TFItems.arctic_helmet.get();
+						return TFItems.arctic_helmet;
 				}
 		}
 	}
@@ -161,7 +161,7 @@ public class SnowGuardianEntity extends IceMobEntity {
 				float py = this.getEyeHeight() + (this.random.nextFloat() - this.random.nextFloat()) * 0.5F;
 				float pz = (this.random.nextFloat() - this.random.nextFloat()) * 0.3F;
 
-				level.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+				level.addParticle(TFParticleType.SNOW_GUARDIAN, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 			}
 		}
 	}

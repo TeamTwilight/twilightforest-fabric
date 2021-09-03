@@ -50,7 +50,7 @@ public class RovingCubeEntity extends Monster {
 				float py = this.getEyeHeight() - 0.25F + (this.random.nextFloat() - this.random.nextFloat()) * 2.0F;
 				float pz = (this.random.nextFloat() - this.random.nextFloat()) * 2.0F;
 
-				level.addParticle(TFParticleType.ANNIHILATE.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+				level.addParticle(TFParticleType.ANNIHILATE, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 			}
 		}
 	}

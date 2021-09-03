@@ -13,8 +13,6 @@ import net.fabricmc.api.Environment;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import twilightforest.data.ItemTagGenerator;
-
 public class KnightmetalShieldItem extends ShieldItem {
 
     public KnightmetalShieldItem(Properties props) {
@@ -28,10 +26,10 @@ public class KnightmetalShieldItem extends ShieldItem {
 
     @Override
     public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
-        return repair.is(ItemTagGenerator.KNIGHTMETAL_INGOTS) || !repair.is(ItemTags.PLANKS) && super.isValidRepairItem(toRepair, repair);
+        return /*repair.is(ItemTagGenerator.KNIGHTMETAL_INGOTS) || */!repair.is(ItemTags.PLANKS) && super.isValidRepairItem(toRepair, repair);
     }
 
-    @Override
+    //@Override
     public boolean isShield(ItemStack stack, @Nullable LivingEntity entity) {
         return true;
     }

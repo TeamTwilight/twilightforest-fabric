@@ -50,7 +50,7 @@ public class UncraftingSlot extends Slot {
 		}
 
 		// if uncrafting is disabled, no!
-		if (TFConfig.COMMON_CONFIG.disableUncrafting.get()) {
+		if (TFConfig.COMMON_CONFIG.disableUncrafting) {
 			return false;
 		}
 

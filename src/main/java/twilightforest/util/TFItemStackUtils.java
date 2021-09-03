@@ -6,7 +6,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.NonNullList;
-import net.minecraftforge.items.CapabilityItemHandler;
 import twilightforest.TwilightForestMod;
 
 import java.util.Collections;
@@ -16,31 +15,32 @@ public class TFItemStackUtils {
 
 	public static int damage = 0;
 
-	@Deprecated
-	public static boolean consumeInventoryItem(LivingEntity living, final Predicate<ItemStack> matcher, final int count) {
-		TwilightForestMod.LOGGER.warn("consumeInventoryItem accessed! Forge requires the player to be alive before we can access this cap. This cap is most likely being accessed for an Afterdeath Charm!");
-
-		return living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inv -> {
-			int innerCount = count;
-			boolean consumedSome = false;
-
-			for (int i = 0; i < inv.getSlots() && innerCount > 0; i++) {
-				ItemStack stack = inv.getStackInSlot(i);
-				if (matcher.test(stack)) {
-					ItemStack consumed = inv.extractItem(i, innerCount, false);
-					innerCount -= consumed.getCount();
-					consumedSome = true;
-				}
-			}
-
-			//TODO: Baubles is dead, replace with curios
-			/*if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer) {
-				consumedSome |= Baubles.consumeInventoryItem((EntityPlayer) living, matcher, count);
-			}*/
-
-			return consumedSome;
-		}).orElse(false);
-	}
+	//TODO: PORT IF NEEDED?
+//	@Deprecated
+//	public static boolean consumeInventoryItem(LivingEntity living, final Predicate<ItemStack> matcher, final int count) {
+//		TwilightForestMod.LOGGER.warn("consumeInventoryItem accessed! Forge requires the player to be alive before we can access this cap. This cap is most likely being accessed for an Afterdeath Charm!");
+//
+//		return living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inv -> {
+//			int innerCount = count;
+//			boolean consumedSome = false;
+//
+//			for (int i = 0; i < inv.getSlots() && innerCount > 0; i++) {
+//				ItemStack stack = inv.getStackInSlot(i);
+//				if (matcher.test(stack)) {
+//					ItemStack consumed = inv.extractItem(i, innerCount, false);
+//					innerCount -= consumed.getCount();
+//					consumedSome = true;
+//				}
+//			}
+//
+//			//TODO: Baubles is dead, replace with curios
+//			/*if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer) {
+//				consumedSome |= Baubles.consumeInventoryItem((EntityPlayer) living, matcher, count);
+//			}*/
+//
+//			return consumedSome;
+//		}).orElse(false);
+//	}
 
 	public static boolean consumeInventoryItem(final Player player, final Item item) {
 		return consumeInventoryItem(player.getInventory().armor, item) || consumeInventoryItem(player.getInventory().items, item) || consumeInventoryItem(player.getInventory().offhand, item);

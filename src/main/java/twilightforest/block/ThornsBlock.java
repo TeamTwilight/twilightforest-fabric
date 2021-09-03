@@ -40,14 +40,15 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	@Override
 	public boolean canConnectTo(BlockState state, boolean solidSide) {
 		return (state.getBlock() instanceof ThornsBlock
-						|| state.getBlock() == TFBlocks.thorn_rose.get()
-						|| state.getBlock() == TFBlocks.thorn_leaves.get()
+						|| state.getBlock() == TFBlocks.thorn_rose
+						|| state.getBlock() == TFBlocks.thorn_leaves
 						|| state.getMaterial() == Material.PLANT
 						|| state.getMaterial() == Material.DIRT);
 	}
 
+	//TODO: PORT
 	@Nullable
-	@Override
+	//@Override
 	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
 		return BlockPathTypes.DAMAGE_CACTUS;
 	}
@@ -68,18 +69,19 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		super.stepOn(world, pos, state, entity);
 	}
 
-	@Override
-	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-		if (!player.abilities.instabuild) {
-			if (!world.isClientSide) {
-				// grow more
-				this.doThornBurst(world, pos, state);
-			}
-			return false;
-		} else {
-			return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
-		}
-	}
+	//TODO: PORT
+//	@Override
+//	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+//		if (!player.abilities.instabuild) {
+//			if (!world.isClientSide) {
+//				// grow more
+//				this.doThornBurst(world, pos, state);
+//			}
+//			return false;
+//		} else {
+//			return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+//		}
+//	}
 
 	@Override
 	@Deprecated
@@ -122,7 +124,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 			BlockPos dPos = pos.relative(dir, i);
 
 			if (world.isEmptyBlock(dPos)) {
-				world.setBlock(dPos, TFBlocks.green_thorns.get().defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
+				world.setBlock(dPos, TFBlocks.green_thorns.defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
 			} else {
 				break;
 			}

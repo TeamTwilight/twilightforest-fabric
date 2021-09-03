@@ -19,10 +19,11 @@ public class GiantLeavesBlock extends GiantBlock {
 
 	@Override
 	public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
-		return TFConfig.COMMON_CONFIG.PERFORMANCE.leavesLightOpacity.get();
+		return TFConfig.COMMON_CONFIG.PERFORMANCE.leavesLightOpacity;
 	}
 
-	@Override
+	//TODO: PORT
+//	@Override
 	public boolean canCreatureSpawn(BlockState state, BlockGetter world, BlockPos pos, SpawnPlacements.Type type, @Nullable EntityType<?> entityType) {
 		return false;
 	}

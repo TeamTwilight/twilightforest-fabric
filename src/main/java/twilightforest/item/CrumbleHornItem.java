@@ -1,45 +1,40 @@
 package twilightforest.item;
 
-import net.minecraft.advancements.Advancement;
-import net.minecraft.server.PlayerAdvancements;
-import net.minecraft.server.ServerAdvancementManager;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.world.BlockEvent;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import org.apache.commons.lang3.tuple.Pair;
-
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.extensions.IItem;
 import twilightforest.util.WorldUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-import net.minecraft.world.item.Item.Properties;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class CrumbleHornItem extends Item implements IItem {
 
@@ -59,13 +54,13 @@ public class CrumbleHornItem extends Item implements IItem {
 		addCrumble(() -> Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS::defaultBlockState);
 		addCrumble(() -> Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, Blocks.BLACKSTONE::defaultBlockState);
 		addCrumble(() -> Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS::defaultBlockState);
-		addCrumble(TFBlocks.maze_stone_brick, () -> TFBlocks.maze_stone_cracked.defaultBlockState());
-		addCrumble(TFBlocks.underbrick, () -> TFBlocks.underbrick_cracked.defaultBlockState());
-		addCrumble(TFBlocks.tower_wood, () -> TFBlocks.tower_wood_cracked.defaultBlockState());
-		addCrumble(TFBlocks.deadrock, () -> TFBlocks.deadrock_cracked.defaultBlockState());
-		addCrumble(TFBlocks.castle_brick, () -> TFBlocks.castle_brick_cracked.defaultBlockState());
-		addCrumble(TFBlocks.nagastone_pillar, () -> TFBlocks.nagastone_pillar_weathered.defaultBlockState());
-		addCrumble(TFBlocks.etched_nagastone, () -> TFBlocks.etched_nagastone_weathered.defaultBlockState());
+		addCrumble(() -> TFBlocks.maze_stone_brick, () -> TFBlocks.maze_stone_cracked.defaultBlockState());
+		addCrumble(() -> TFBlocks.underbrick, () -> TFBlocks.underbrick_cracked.defaultBlockState());
+		addCrumble(() -> TFBlocks.tower_wood, () -> TFBlocks.tower_wood_cracked.defaultBlockState());
+		addCrumble(() -> TFBlocks.deadrock, () -> TFBlocks.deadrock_cracked.defaultBlockState());
+		addCrumble(() -> TFBlocks.castle_brick, () -> TFBlocks.castle_brick_cracked.defaultBlockState());
+		addCrumble(() -> TFBlocks.nagastone_pillar, () -> TFBlocks.nagastone_pillar_weathered.defaultBlockState());
+		addCrumble(() -> TFBlocks.etched_nagastone, () -> TFBlocks.etched_nagastone_weathered.defaultBlockState());
 		addCrumble(() -> Blocks.STONE, Blocks.COBBLESTONE::defaultBlockState);
 		addCrumble(() -> Blocks.COBBLESTONE, Blocks.GRAVEL::defaultBlockState);
 		addCrumble(() -> Blocks.SANDSTONE, Blocks.SAND::defaultBlockState);
@@ -134,12 +129,12 @@ public class CrumbleHornItem extends Item implements IItem {
 		return 72000;
 	}
 
-	@Override
+	//@Override
 	public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
 		return oldStack.getItem() == newStack.getItem();
 	}
 
-	@Override
+	//@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged || newStack.getItem() != oldStack.getItem();
 	}
@@ -174,7 +169,7 @@ public class CrumbleHornItem extends Item implements IItem {
 		if (state.isAir()) return false;
 
 		if(living instanceof Player) {
-			if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, (Player)living))) return false;
+			if (!PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(world, (Player) living, pos,state, null)) return false;
 		}
 
 		for (Pair<Predicate<BlockState>, UnaryOperator<BlockState>> transform : crumbleTransforms) {
@@ -191,7 +186,7 @@ public class CrumbleHornItem extends Item implements IItem {
 		for (Predicate<BlockState> predicate : harvestedStates) {
 			if (predicate.test(state) && world.random.nextInt(CHANCE_HARVEST) == 0) {
 				if (living instanceof Player) {
-					if (block.canHarvestBlock(state, world, pos, (Player) living)) {
+					if (/*block.canHarvestBlock(state, world, pos, (Player) living)*/true) {
 						world.removeBlock(pos, false);
 						block.playerDestroy(world, (Player) living, pos, state, world.getBlockEntity(pos), ItemStack.EMPTY);
 						world.levelEvent(2001, pos, Block.getId(state));
@@ -200,7 +195,7 @@ public class CrumbleHornItem extends Item implements IItem {
 
 						return true;
 					}
-				} else if (ForgeEventFactory.getMobGriefingEvent(world, living)) {
+				} else if (world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 					world.destroyBlock(pos, true);
 
 					postTrigger(living);

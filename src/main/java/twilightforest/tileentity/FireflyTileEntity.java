@@ -17,7 +17,7 @@ public class FireflyTileEntity extends BlockEntity {
 	private int glowDelay;
 
 	public FireflyTileEntity(BlockPos pos, BlockState state) {
-		super(TFTileEntities.FIREFLY.get(), pos, state);
+		super(TFTileEntities.FIREFLY, pos, state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, FireflyTileEntity te) {
@@ -76,6 +76,6 @@ public class FireflyTileEntity extends BlockEntity {
 		double rz = worldPosition.getZ() + level.random.nextFloat();
 //    	ModLoader.getMinecraftInstance().effectRenderer.addEffect(fireflyfx);
 		// ^ keeping here only for pure lolz
-		level.addParticle(TFParticleType.FIREFLY.get(), rx, ry, rz, 0, 0, 0);
+		level.addParticle(TFParticleType.FIREFLY, rx, ry, rz, 0, 0, 0);
 	}
 }

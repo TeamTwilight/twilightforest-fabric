@@ -76,7 +76,7 @@ public class CicadaShotEntity extends TFThrowableEntity {
     public void handleEntityEvent(byte id) {
         if (id == 3) {
             for (int i = 0; i < 8; ++i) {
-                this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, TFBlocks.cicada.get().defaultBlockState()), false, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+                this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, TFBlocks.cicada.defaultBlockState()), false, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
             }
         } else {
             super.handleEntityEvent(id);
@@ -93,7 +93,7 @@ public class CicadaShotEntity extends TFThrowableEntity {
 
                 DirectionalPlaceContext context = new DirectionalPlaceContext(level, pos, blockray.getDirection(), ItemStack.EMPTY, blockray.getDirection().getOpposite());
                 if (currentState.canBeReplaced(context)) {
-                    level.setBlockAndUpdate(pos, TFBlocks.cicada.get().defaultBlockState().setValue(DirectionalBlock.FACING, ((BlockHitResult) ray).getDirection()));
+                    level.setBlockAndUpdate(pos, TFBlocks.cicada.defaultBlockState().setValue(DirectionalBlock.FACING, ((BlockHitResult) ray).getDirection()));
                 } else {
                     ItemEntity squish = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), Items.GRAY_DYE.getDefaultInstance());
                     squish.spawnAtLocation(squish.getItem());

@@ -22,9 +22,9 @@ public class IceSwordItem extends SwordItem {
 
 		if (result) {
 			if (!target.level.isClientSide) {
-				target.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 20 * 10, 2));
+				target.addEffect(new MobEffectInstance(TFPotions.frosty, 20 * 10, 2));
 			} else {
-				target.level.addParticle(TFParticleType.SNOW.get(), target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
+				target.level.addParticle(TFParticleType.SNOW, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5);
 			}
 		}
 

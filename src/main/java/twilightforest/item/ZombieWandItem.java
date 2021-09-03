@@ -62,7 +62,8 @@ public class ZombieWandItem extends Item {
 		return InteractionResultHolder.fail(stack);
 	}
 
-	@Override
+	//TODO: PORT
+//	@Override
 	public float getXpRepairRatio(ItemStack stack) {
 		return 1f;
 	}

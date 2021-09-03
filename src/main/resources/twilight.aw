@@ -65,3 +65,12 @@ accessible field net/minecraft/client/model/geom/LayerDefinitions OUTER_ARMOR_DE
 accessible field net/minecraft/client/model/geom/LayerDefinitions INNER_ARMOR_DEFORMATION Lnet/minecraft/client/model/geom/builders/CubeDeformation;
 accessible class net/minecraft/world/level/levelgen/structure/StructurePiece$BlockSelector
 accessible method net/minecraft/world/entity/SpawnPlacements register (Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/SpawnPlacements$Type;Lnet/minecraft/world/level/levelgen/Heightmap$Types;Lnet/minecraft/world/entity/SpawnPlacements$SpawnPredicate;)V
+accessible field net/minecraft/world/entity/ai/goal/GoalSelector availableGoals Ljava/util/Set;
+accessible method net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacerType <init> (Lcom/mojang/serialization/Codec;)V
+accessible method net/minecraft/world/level/levelgen/feature/treedecorators/TreeDecoratorType <init> (Lcom/mojang/serialization/Codec;)V
+accessible method net/minecraft/world/level/levelgen/feature/foliageplacers/FoliagePlacerType <init> (Lcom/mojang/serialization/Codec;)V
+accessible method net/minecraft/world/entity/animal/Sheep getOffspringColor (Lnet/minecraft/world/entity/animal/Animal;Lnet/minecraft/world/entity/animal/Animal;)Lnet/minecraft/world/item/DyeColor;
+accessible class net/minecraft/client/renderer/RenderStateShard$TransparencyStateShard
+accessible field net/minecraft/world/entity/ai/control/MoveControl operation Lnet/minecraft/world/entity/ai/control/MoveControl$Operation;
+accessible class net/minecraft/world/entity/ai/control/MoveControl$Operation
+accessible field net/minecraft/world/entity/LivingEntity breakItem (Lnet/minecraft/world/item/ItemStack;)V

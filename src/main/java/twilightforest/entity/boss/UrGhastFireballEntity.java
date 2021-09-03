@@ -4,13 +4,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.projectile.ITFProjectile;
 
 public class UrGhastFireballEntity extends LargeFireball implements ITFProjectile {
@@ -33,7 +33,7 @@ public class UrGhastFireballEntity extends LargeFireball implements ITFProjectil
 					this.doEnchantDamageEffects((LivingEntity)this.getOwner(), ((EntityHitResult) result).getEntity());
 				}
 
-				boolean flag = ForgeEventFactory.getMobGriefingEvent(this.level, this.getOwner());
+				boolean flag = this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
 				this.level.explode(null, this.getX(), this.getY(), this.getZ(), this.power, flag, flag ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.NONE);
 				this.discard();
 			}

@@ -1,6 +1,8 @@
 package twilightforest.world.components.structures.lichtower;
 
 import com.google.common.collect.Lists;
+
+import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,8 +33,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+
+import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CastleBlock;
@@ -53,8 +55,20 @@ import java.util.Random;
 
 public class TowerWingComponent extends TFStructureComponentOld {
 
+	private static Method getHangingEntity_updateFacingWithBoundingBox() {
+		try {
+			if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
+				return HangingEntity.class.getDeclaredMethod("setDirection ", Direction.class);
+			}
+			return HangingEntity.class.getDeclaredMethod("method_6892 ", Direction.class);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-	private static final Method HangingEntity_updateFacingWithBoundingBox = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "m_6022_", Direction.class);
+	private static final Method HangingEntity_updateFacingWithBoundingBox = getHangingEntity_updateFacingWithBoundingBox();
 	private static final MethodHandle handle_HangingEntity_updateFacingWithBoundingBox;
 
 	static {
@@ -1915,7 +1929,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	protected Motive getPaintingOfSize(Random rand, int minSize) {
 		ArrayList<Motive> valid = new ArrayList<>();
 
-		for (Motive art : ForgeRegistries.PAINTING_TYPES) {
+		for (Motive art : Registry.MOTIVE) {
 			if (art.getWidth() >= minSize || art.getHeight() >= minSize) {
 				valid.add(art);
 			}

@@ -14,9 +14,9 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 
@@ -124,13 +124,13 @@ public class TowerwoodBorerEntity extends Monster {
 			} else {
 				Random random = this.mob.getRandom();
 
-				if (random.nextInt(10) == 0 && ForgeEventFactory.getMobGriefingEvent(this.mob.level, this.mob)) {
+				if (random.nextInt(10) == 0 && this.mob.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 					this.facing = Direction.getRandom(random);
 					BlockPos blockpos = (new BlockPos(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ())).relative(this.facing);
 					BlockState iblockstate = this.mob.level.getBlockState(blockpos);
 
 					// TF - Change block check
-					if (iblockstate == TFBlocks.tower_wood.get().defaultBlockState()) {
+					if (iblockstate == TFBlocks.tower_wood.defaultBlockState()) {
 						this.doMerge = true;
 						return true;
 					}
@@ -162,9 +162,9 @@ public class TowerwoodBorerEntity extends Monster {
 				BlockState iblockstate = world.getBlockState(blockpos);
 
 				// TF - Change block check
-				if (iblockstate == TFBlocks.tower_wood.get().defaultBlockState()) {
+				if (iblockstate == TFBlocks.tower_wood.defaultBlockState()) {
 					// TF - Change block type
-					world.setBlock(blockpos, TFBlocks.tower_wood_infested.get().defaultBlockState(), 3);
+					world.setBlock(blockpos, TFBlocks.tower_wood_infested.defaultBlockState(), 3);
 					this.mob.spawnAnim();
 					this.mob.discard();
 				}
@@ -217,12 +217,12 @@ public class TowerwoodBorerEntity extends Monster {
 							BlockState iblockstate = world.getBlockState(blockpos1);
 
 							// TF - Change block check
-							if (iblockstate == TFBlocks.tower_wood_infested.get().defaultBlockState()) {
-								if (ForgeEventFactory.getMobGriefingEvent(world, this.silverfish)) {
+							if (iblockstate == TFBlocks.tower_wood_infested.defaultBlockState()) {
+								if (world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 									world.destroyBlock(blockpos1, true);
 								} else {
 									// TF - reset to normal tower wood
-									world.setBlock(blockpos1, TFBlocks.tower_wood.get().defaultBlockState(), 3);
+									world.setBlock(blockpos1, TFBlocks.tower_wood.defaultBlockState(), 3);
 								}
 
 								if (random.nextBoolean()) {

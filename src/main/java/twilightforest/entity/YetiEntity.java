@@ -174,7 +174,7 @@ public class YetiEntity extends Monster implements IHostileMount {
 		}
 	}
 
-	@Override
+	//@Override
 	public boolean canRiderInteract() {
 		return true;
 	}

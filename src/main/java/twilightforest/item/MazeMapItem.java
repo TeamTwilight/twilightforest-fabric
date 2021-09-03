@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -20,8 +21,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.fmllegacy.network.NetworkDirection;
 import twilightforest.TFMazeMapData;
 import twilightforest.network.MazeMapPacket;
 import twilightforest.network.TFPacketHandler;
@@ -45,7 +44,7 @@ public class MazeMapItem extends MapItem {
 
 	// [VanillaCopy] super with own item and methods, plus y and mapOres
 	public static ItemStack setupNewMap(Level world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
-		ItemStack itemstack = new ItemStack(mapOres ? TFItems.ore_map.get() : TFItems.maze_map.get());
+		ItemStack itemstack = new ItemStack(mapOres ? TFItems.ore_map : TFItems.maze_map);
 		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.dimension(), worldY);
 		return itemstack;
 	}
@@ -56,7 +55,7 @@ public class MazeMapItem extends MapItem {
 	}
 
 	@Nullable
-	@Override
+	//@Override
 	protected TFMazeMapData getCustomMapData(ItemStack stack, Level world) {
 		TFMazeMapData mapdata = getData(stack, world);
 		if (mapdata == null && !world.isClientSide) {
@@ -71,8 +70,8 @@ public class MazeMapItem extends MapItem {
 		int i = world.getFreeMapId();
 //		TFMazeMapData mapdata = new TFMazeMapData(getMapName(i));
 		TFMazeMapData mapdata = new TFMazeMapData(x, z, (byte)scale, trackingPosition, unlimitedTracking, false, dimension);
-		mapdata.calculateMapCenter(world, x, y, z, scale); // call our own map center calculation
-		TFMazeMapData.registerMazeMapData(world, mapdata); // call our own register method
+		mapdata.calculateMapCenter(world, x, y, z/*, scale*/); // call our own map center calculation
+		TFMazeMapData.registerMazeMapData(world, mapdata, ""); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
 		return mapdata;
 	}
@@ -176,7 +175,19 @@ public class MazeMapItem extends MapItem {
 											multiset.add(MaterialColor.DIAMOND, 1000);
 										} else if (state.getBlock() == Blocks.EMERALD_ORE) {
 											multiset.add(MaterialColor.EMERALD, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.is(Tags.Blocks.ORES)) {
+										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.COAL_ORES)) {
+											multiset.add(MaterialColor.COLOR_PINK, 1000);
+										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.IRON_ORES)) {
+											multiset.add(MaterialColor.COLOR_PINK, 1000);
+										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.COPPER_ORES)) {
+											multiset.add(MaterialColor.COLOR_PINK, 1000);
+										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.REDSTONE_ORES)) {
+											multiset.add(MaterialColor.COLOR_PINK, 1000);
+										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.LAPIS_ORES)) {
+											multiset.add(MaterialColor.COLOR_PINK, 1000);
+										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.DIAMOND_ORES)) {
+											multiset.add(MaterialColor.COLOR_PINK, 1000);
+										} else if (state.getBlock() != Blocks.AIR && state.is(BlockTags.EMERALD_ORES)) {
 											multiset.add(MaterialColor.COLOR_PINK, 1000);
 										}
 									}
@@ -240,7 +251,7 @@ public class MazeMapItem extends MapItem {
 	public Packet<?> getUpdatePacket(ItemStack stack, Level worldIn, Player player) {
 		Packet<?> p = super.getUpdatePacket(stack, worldIn, player);
 		if (p instanceof ClientboundMapItemDataPacket) {
-			return TFPacketHandler.CHANNEL.toVanillaPacket(new MazeMapPacket((ClientboundMapItemDataPacket) p), NetworkDirection.PLAY_TO_CLIENT);
+			return new MazeMapPacket((ClientboundMapItemDataPacket) p);
 		} else {
 			return p;
 		}

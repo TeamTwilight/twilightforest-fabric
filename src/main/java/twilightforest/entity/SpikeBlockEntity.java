@@ -20,6 +20,10 @@ public class SpikeBlockEntity extends BlockChainGoblinEntity.MultipartGenericsAr
 	}
 
 	@Override
+	protected void defineSynchedData() {
+	}
+
+	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		return false;
 	}

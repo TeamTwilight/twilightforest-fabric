@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
@@ -16,8 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.fmllegacy.network.NetworkDirection;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFMagicMapData;
 import twilightforest.network.MagicMapPacket;
@@ -55,7 +54,7 @@ public class MagicMapItem extends MapItem {
 	}
 
 	public static ItemStack setupNewMap(Level world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
-		ItemStack itemstack = new ItemStack(TFItems.magic_map.get());
+		ItemStack itemstack = new ItemStack(TFItems.magic_map);
 		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.dimension());
 		return itemstack;
 	}
@@ -67,7 +66,7 @@ public class MagicMapItem extends MapItem {
 	}
 
 	@Nullable
-	@Override
+	//@Override
 	protected TFMagicMapData getCustomMapData(ItemStack stack, Level world) {
 		TFMagicMapData mapdata = getData(stack, world);
 		if (mapdata == null && !world.isClientSide) {
@@ -134,7 +133,7 @@ public class MagicMapItem extends MapItem {
 						// make streams more visible
 						Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
 						Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
-						biome = overBiome != null && BiomeKeys.STREAM.location().equals(overBiome.getRegistryName()) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(downBiome.getRegistryName()) ? downBiome : biome;
+						biome = overBiome != null && BiomeKeys.STREAM.location().equals(BuiltinRegistries.BIOME.getKey(overBiome)) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(BuiltinRegistries.BIOME.getKey(downBiome)) ? downBiome : biome;
 
 						MapColorBrightness colorBrightness = this.getMapColorPerBiome(world, biome);
 
@@ -174,7 +173,7 @@ public class MagicMapItem extends MapItem {
 		}
 		if(biome == null)
 			return new MapColorBrightness(MaterialColor.COLOR_BLACK);
-		ResourceLocation key = biome.getRegistryName();
+		ResourceLocation key = BuiltinRegistries.BIOME.getKey(biome);
 			MapColorBrightness color = BIOME_COLORS.get(key);
 			if (color != null) {
 				return color;
@@ -214,7 +213,7 @@ public class MagicMapItem extends MapItem {
 			setupBiomeColors();
 		}
 
-		MapColorBrightness c = BIOME_COLORS.get(ForgeRegistries.BIOMES.getKey(biome));
+		MapColorBrightness c = BIOME_COLORS.get(BuiltinRegistries.BIOME.getKey(biome));
 
 		return c != null ? getMapColor(c) : 0xFF000000;
 	}
@@ -251,6 +250,6 @@ public class MagicMapItem extends MapItem {
 		Integer id = getMapId(stack);
 		TFMagicMapData mapdata = getCustomMapData(stack, world);
 		Packet<?> p = id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
-		return p instanceof ClientboundMapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(mapdata, (ClientboundMapItemDataPacket) p), NetworkDirection.PLAY_TO_CLIENT) : p;
+		return p instanceof ClientboundMapItemDataPacket ? new MagicMapPacket(mapdata, (ClientboundMapItemDataPacket) p) : p;
 	}
 }

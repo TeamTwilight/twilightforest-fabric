@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.core.BlockPos;
@@ -11,7 +13,6 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
-import net.minecraftforge.common.IPlantable;
 
 import java.util.List;
 import java.util.Random;
@@ -66,8 +67,8 @@ public class TFTreeFeatureConfig implements FeatureConfiguration {
 		this.forcePlacement = true;
 	}
 
-	public IPlantable getSapling(Random rand, BlockPos pos) {
-		return (IPlantable) sapling.getState(rand, pos).getBlock();
+	public Block getSapling(Random rand, BlockPos pos) {
+		return sapling.getState(rand, pos).getBlock();
 	}
 
 	public static class Builder {

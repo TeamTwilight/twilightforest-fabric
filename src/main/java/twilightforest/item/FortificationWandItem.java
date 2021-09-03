@@ -36,7 +36,7 @@ public class FortificationWandItem extends Item {
 		}
 
 		if (!world.isClientSide) {
-			player.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
+			CapabilityList.SHIELD_CAPABILITY_COMPONENT_KEY.maybeGet(player).ifPresent(cap -> {
 				cap.replenishShields();
 				stack.hurt(1, world.random, (ServerPlayer) null);
 			});
@@ -48,10 +48,11 @@ public class FortificationWandItem extends Item {
 		return InteractionResultHolder.success(stack);
 	}
 
-	@Override
-	public float getXpRepairRatio(ItemStack stack) {
-		return 1f;
-	}
+	//TODO: PORT
+//	@Override
+//	public float getXpRepairRatio(ItemStack stack) {
+//		return 1f;
+//	}
 
 	@Override
 	@Environment(EnvType.CLIENT)

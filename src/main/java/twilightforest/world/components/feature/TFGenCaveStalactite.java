@@ -253,7 +253,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 		largeHillStalactites.clear();
 
 		TFConfig.COMMON_CONFIG.DIMENSION.hollowHillStalactites.load();
-		if (TFConfig.COMMON_CONFIG.DIMENSION.hollowHillStalactites.useConfigOnly.get()) {
+		if (TFConfig.COMMON_CONFIG.DIMENSION.hollowHillStalactites.useConfigOnly) {
 			if (smallHillStalactites.isEmpty()) {
 				TwilightForestMod.LOGGER.info("Not all hollow hills are populated with the config, adding fallback");
 				registerStalactite(1, Blocks.STONE.defaultBlockState(), 0.7F, 8, 1, 1);

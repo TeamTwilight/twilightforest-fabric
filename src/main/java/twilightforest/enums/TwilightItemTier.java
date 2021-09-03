@@ -9,11 +9,11 @@ import java.util.function.Supplier;
 
 public enum TwilightItemTier implements Tier {
 	// harvestLevel, maxUses, efficiency, damage, enchantability
-	TOOL_IRONWOOD(2, 512, 6.5F, 2, 25, () -> Ingredient.of(TFItems.ironwood_ingot.get())),
-	TOOL_FIERY(4, 1024, 9F, 4, 10, () -> Ingredient.of(TFItems.fiery_ingot.get())),
-	TOOL_STEELEAF(3, 131, 8.0F, 3, 9, () -> Ingredient.of(TFItems.steeleaf_ingot.get())),
-	TOOL_KNIGHTLY(3, 512, 8.0F, 3, 8, () -> Ingredient.of(TFItems.knightmetal_ingot.get())),
-	TOOL_GIANT(1, 1024, 4.0F, 1.0F, 5, () -> Ingredient.of(TFItems.knightmetal_ingot.get())),
+	TOOL_IRONWOOD(2, 512, 6.5F, 2, 25, () -> Ingredient.of(TFItems.ironwood_ingot)),
+	TOOL_FIERY(4, 1024, 9F, 4, 10, () -> Ingredient.of(TFItems.fiery_ingot)),
+	TOOL_STEELEAF(3, 131, 8.0F, 3, 9, () -> Ingredient.of(TFItems.steeleaf_ingot)),
+	TOOL_KNIGHTLY(3, 512, 8.0F, 3, 8, () -> Ingredient.of(TFItems.knightmetal_ingot)),
+	TOOL_GIANT(1, 1024, 4.0F, 1.0F, 5, () -> Ingredient.of(TFItems.knightmetal_ingot)),
 	TOOL_ICE(0, 32, 1.0F, 3.5F, 5, () -> Ingredient.of(Blocks.PACKED_ICE)),
 	TOOL_GLASS(0, 1, 1.0F, 36.0F, 30, () -> Ingredient.EMPTY);
 

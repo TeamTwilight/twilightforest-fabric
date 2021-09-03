@@ -25,7 +25,7 @@ public class LeafParticleData implements ParticleOptions {
 	@Nonnull
 	@Override
 	public ParticleType<?> getType() {
-		return TFParticleType.FALLEN_LEAF.get();
+		return TFParticleType.FALLEN_LEAF;
 	}
 
 	public static Codec<LeafParticleData> codecLeaf() {

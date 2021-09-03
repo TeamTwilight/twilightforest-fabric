@@ -79,7 +79,7 @@ public class MinotaurEntity extends Monster implements ITFCharger {
 		int result = (int) (random / additionalDiff);
 
 		if (result == 0)
-			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe_gold.get()));
+			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe_gold));
 		else
 			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
 	}

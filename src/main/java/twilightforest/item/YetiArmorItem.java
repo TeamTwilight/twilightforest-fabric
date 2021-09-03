@@ -18,14 +18,12 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraftforge.client.IItemRenderProperties;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.YetiArmorModel;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class YetiArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.yeti_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
@@ -34,7 +32,7 @@ public class YetiArmorItem extends ArmorItem {
 		super(material, slot, props);
 	}
 
-	@Override
+	//@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS || slot == EquipmentSlot.CHEST) {
 			return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
@@ -71,20 +69,20 @@ public class YetiArmorItem extends ArmorItem {
 		tooltips.add(TOOLTIP);
 	}
 
-	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(ArmorRender.INSTANCE);
-	}
-
-	private static final class ArmorRender implements IItemRenderProperties {
-		private static final ArmorRender INSTANCE = new ArmorRender();
-
-		@Override
-		@SuppressWarnings("unchecked")
-		public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defModel) {
-			EntityModelSet models = Minecraft.getInstance().getEntityModels();
-			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.YETI_ARMOR_INNER : TFModelLayers.YETI_ARMOR_OUTER);
-			return (A) new YetiArmorModel(armorSlot, root);
-		}
-	}
+//	@Override
+//	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+//		consumer.accept(ArmorRender.INSTANCE);
+//	}
+//
+//	private static final class ArmorRender implements IItemRenderProperties {
+//		private static final ArmorRender INSTANCE = new ArmorRender();
+//
+//		@Override
+//		@SuppressWarnings("unchecked")
+//		public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A defModel) {
+//			EntityModelSet models = Minecraft.getInstance().getEntityModels();
+//			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.YETI_ARMOR_INNER : TFModelLayers.YETI_ARMOR_OUTER);
+//			return (A) new YetiArmorModel(armorSlot, root);
+//		}
+//	}
 }

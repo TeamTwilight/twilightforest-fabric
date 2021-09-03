@@ -31,7 +31,7 @@ public class TripleBowItem extends BowItem {
 			ItemStack itemstack = entityplayer.getProjectile(stack);
 
 			int i = this.getUseDuration(stack) - timeLeft;
-			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !itemstack.isEmpty() || flag);
+			//i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !itemstack.isEmpty() || flag);
 			if (i < 0) return;
 
 			if (!itemstack.isEmpty() || flag) {
@@ -41,7 +41,8 @@ public class TripleBowItem extends BowItem {
 
 				float f = getPowerForTime(i);
 				if (!(f < 0.1D)) {
-					boolean flag1 = entityplayer.abilities.instabuild || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
+					//TODO: PORT
+					boolean flag1 = entityplayer.abilities.instabuild || (itemstack.getItem() instanceof ArrowItem /*&& ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, entityplayer)*/);
 					if (!worldIn.isClientSide) {
 						ArrowItem arrowitem = (ArrowItem)(itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
 						AbstractArrow entityarrow = arrowitem.createArrow(worldIn, itemstack, entityplayer);

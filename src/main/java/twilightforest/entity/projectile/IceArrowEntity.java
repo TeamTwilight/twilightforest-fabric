@@ -41,7 +41,7 @@ public class IceArrowEntity extends TFArrowEntity {
 		if (ray instanceof EntityHitResult) {
 			if (!level.isClientSide && ((EntityHitResult)ray).getEntity() instanceof LivingEntity) {
 				int chillLevel = 2;
-				((LivingEntity) ((EntityHitResult)ray).getEntity()).addEffect(new MobEffectInstance(TFPotions.frosty.get(), 20 * 10, chillLevel));
+				((LivingEntity) ((EntityHitResult)ray).getEntity()).addEffect(new MobEffectInstance(TFPotions.frosty, 20 * 10, chillLevel));
 			}
 		}
 	}

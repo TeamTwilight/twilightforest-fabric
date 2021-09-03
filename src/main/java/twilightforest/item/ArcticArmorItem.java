@@ -1,33 +1,20 @@
 package twilightforest.item;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.LayeredCauldronBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraftforge.client.IItemRenderProperties;
-import twilightforest.TwilightForestMod;
-import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.armor.TFArmorModel;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.function.Consumer;
 
 public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 	@Environment(EnvType.CLIENT)
@@ -37,14 +24,15 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 		super(armorMaterial, armorType, props);
 	}
 
-	@Override
+	//TODO: PORT
+	/*@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, @Nullable String layer) {
 		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "arcticarmor_2" + (layer == null ? "_dyed" : "_overlay") + ".png";
 		} else {
 			return TwilightForestMod.ARMOR_DIR + "arcticarmor_1" + (layer == null ? "_dyed" : "_overlay") + ".png";
 		}
-	}
+	}*/
 
 	@Override
 	public boolean hasCustomColor(ItemStack stack) {
@@ -147,12 +135,12 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 		tooltip.add(TOOLTIP_TEXT);
 	}
 
-	@Override
+	/*@Override
 	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 		consumer.accept(ArmorRender.INSTANCE);
-	}
+	}*/
 
-	private static final class ArmorRender implements IItemRenderProperties {
+	/*private static final class ArmorRender implements IItemRenderProperties {
 		private static final ArmorRender INSTANCE = new ArmorRender();
 
 		@Override
@@ -162,5 +150,5 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.ARCTIC_ARMOR_INNER : TFModelLayers.ARCTIC_ARMOR_OUTER);
 			return (A) new TFArmorModel(root);
 		}
-	}
+	}*/
 }

@@ -138,8 +138,8 @@ public class TrollEntity extends Monster implements RangedAttackMob {
 	}
 
 	private void ripenBer(int offset, BlockPos pos) {
-		if (this.level.getBlockState(pos).getBlock() == TFBlocks.unripe_trollber.get() && this.random.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
-			this.level.setBlockAndUpdate(pos, TFBlocks.trollber.get().defaultBlockState());
+		if (this.level.getBlockState(pos).getBlock() == TFBlocks.unripe_trollber && this.random.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
+			this.level.setBlockAndUpdate(pos, TFBlocks.trollber.defaultBlockState());
 			level.levelEvent(2004, pos, 0);
 		}
 	}
@@ -163,6 +163,6 @@ public class TrollEntity extends Monster implements RangedAttackMob {
 
 	public static boolean canSpawn(EntityType<? extends TrollEntity> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
 		BlockPos blockpos = pos.below();
-		return !(world.getBlockState(blockpos).getBlock() == TFBlocks.giant_obsidian.get()) && !world.canSeeSky(pos) && pos.getY() < 60;
+		return !(world.getBlockState(blockpos).getBlock() == TFBlocks.giant_obsidian) && !world.canSeeSky(pos) && pos.getY() < 60;
 	}
 }

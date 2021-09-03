@@ -23,6 +23,7 @@ import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.ThrowSpikeBlockGoal;
+import twilightforest.extensions.IEntityEx;
 import twilightforest.util.TFDamageSources;
 
 import java.util.List;
@@ -36,7 +37,7 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
-public class BlockChainGoblinEntity extends Monster {
+public class BlockChainGoblinEntity extends Monster implements IEntityEx {
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
 	private static final AttributeModifier MODIFIER = new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION);
 

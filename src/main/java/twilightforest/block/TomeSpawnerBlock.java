@@ -58,7 +58,8 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 		return RenderShape.MODEL;
 	}
 
-	@Override
+	//TODO: PORT
+	//@Override
 	public float getEnchantPowerBonus(BlockState state, LevelReader world, BlockPos pos) {
 		return state.getValue(BOOK_STAGES) * 0.1F;
 	}
@@ -72,6 +73,6 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return state.getValue(SPAWNER) ? createTickerHelper(type, TFTileEntities.TOME_SPAWNER.get(), TomeSpawnerTileEntity::tick) : null;
+		return state.getValue(SPAWNER) ? createTickerHelper(type, TFTileEntities.TOME_SPAWNER, TomeSpawnerTileEntity::tick) : null;
 	}
 }

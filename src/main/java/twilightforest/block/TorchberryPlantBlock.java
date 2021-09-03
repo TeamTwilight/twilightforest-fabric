@@ -37,7 +37,7 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 		if(state.getValue(HAS_BERRIES)) {
 			level.setBlockAndUpdate(pos, state.setValue(HAS_BERRIES, false));
 			level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
-			ItemEntity torchberries = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.torchberries.get()));
+			ItemEntity torchberries = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.torchberries));
 			level.addFreshEntity(torchberries);
 			return InteractionResult.sidedSuccess(level.isClientSide);
 		}
