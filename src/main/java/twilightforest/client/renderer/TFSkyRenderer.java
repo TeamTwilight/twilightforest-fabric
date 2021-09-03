@@ -13,7 +13,6 @@ import net.minecraft.world.phys.Vec3;
 import com.mojang.math.Vector3f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraftforge.client.ISkyRenderHandler;
 
 import java.util.Random;
 
@@ -21,7 +20,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tesselator;
 
 @Environment(EnvType.CLIENT)
-public class TFSkyRenderer implements ISkyRenderHandler {
+public class TFSkyRenderer /*implements ISkyRenderHandler*/ {
 
 	private VertexBuffer starVBO;
 	private final VertexFormat vertexBufferFormat = DefaultVertexFormat.POSITION;
@@ -31,7 +30,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 	}
 
 	// [VanillaCopy] RenderGlobal.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
-	@Override
+	//@Override
 	@Environment(EnvType.CLIENT)
 	public void render(int ticks, float partialTicks, PoseStack ms, ClientLevel world, Minecraft mc) {
 		LevelRenderer rg = mc.levelRenderer;

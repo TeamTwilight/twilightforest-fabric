@@ -16,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
 import com.mojang.math.Vector3f;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.ForgeHooksClient;
 import twilightforest.entity.SlideBlockEntity;
 
 import java.util.Random;
@@ -58,16 +57,18 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlockEntity> {
 					}
 
 					BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
-					for (RenderType type : RenderType.chunkBufferLayers()) {
-						if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
-							ForgeHooksClient.setRenderLayer(type);
-							blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(blockpos), OverlayTexture.NO_OVERLAY);
-						}
-					}
-					ForgeHooksClient.setRenderLayer(null);
+					throw new RuntimeException("PORT");
+					//TODO: PORT
+//					for (RenderType type : RenderType.chunkBufferLayers()) {
+//						if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
+//							ForgeHooksClient.setRenderLayer(type);
+//							blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(blockpos), OverlayTexture.NO_OVERLAY);
+//						}
+//					}
+//					ForgeHooksClient.setRenderLayer(null);
 
-					stack.popPose();
-					super.render(entity, yaw, partialTicks, stack, buffer, light);
+					//stack.popPose();
+					//super.render(entity, yaw, partialTicks, stack, buffer, light);
 				}
 			}
 		}

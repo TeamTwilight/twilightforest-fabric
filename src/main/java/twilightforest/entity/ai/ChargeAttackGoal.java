@@ -4,11 +4,11 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.ITFCharger;
 import twilightforest.util.EntityUtil;
 
@@ -103,7 +103,7 @@ public class ChargeAttackGoal extends Goal {
 				}
 			}
 		} else if (canBreak) {
-			if (!charger.level.isClientSide && ForgeEventFactory.getMobGriefingEvent(charger.level, charger)) {
+			if (!charger.level.isClientSide && charger.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 
 				AABB bb = charger.getBoundingBox();
 				int minx = Mth.floor(bb.minX - 0.75D);

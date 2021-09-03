@@ -17,7 +17,7 @@ import net.fabricmc.api.Environment;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.TFDamageSources;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
+@Environment(EnvType.CLIENT)
 public class IceSnowballEntity extends TFThrowableEntity implements ItemSupplier {
 
 	private static final int DAMAGE = 2;
@@ -76,9 +76,10 @@ public class IceSnowballEntity extends TFThrowableEntity implements ItemSupplier
 			if (!level.isClientSide && target instanceof LivingEntity) {
 				target.hurt(TFDamageSources.snowballFight(this, (LivingEntity) this.getOwner()), DAMAGE);
 				//damage armor pieces
-				if(target instanceof Player) {
+				if(target instanceof Player player) {
+					//TODO: PORT
 					for(ItemStack stack : target.getArmorSlots())
-					stack.hurtAndBreak(random.nextInt(1), ((Player)target), (user) -> user.broadcastBreakEvent(stack.getEquipmentSlot()));
+					stack.hurtAndBreak(random.nextInt(1), player, (user) -> user.broadcastBreakEvent(player.getUsedItemHand()/* stack.getEquipmentSlot()*/));
 				}
 			}
 		}

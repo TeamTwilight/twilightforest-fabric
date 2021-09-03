@@ -2,8 +2,6 @@ package twilightforest.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraftforge.common.PlantType;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import twilightforest.client.particle.data.LeafParticleData;
 import twilightforest.enums.PlantVariant;
 import twilightforest.network.SpawnFallenLeafFromPacket;
@@ -14,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -41,6 +40,8 @@ public class TFPlantBlock extends BushBlock {
 	private static final VoxelShape FIDDLEHEAD_SHAPE = box(3, 0, 3, 13, 14, 13);
 
 	public final PlantVariant plantVariant;
+
+	private Random RANDOM = new Random();
 
 	protected TFPlantBlock(PlantVariant plant, BlockBehaviour.Properties props) {
 		super(props);
@@ -162,7 +163,7 @@ public class TFPlantBlock extends BushBlock {
 							(world.random.nextFloat() * -0.5F) * entityIn.getDeltaMovement().z()
 				);
 			} else if (world instanceof ServerLevel)
-				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entityIn), new SpawnFallenLeafFromPacket(pos, entityIn.getDeltaMovement()));
+				((ServerChunkCache)entityIn.getCommandSenderWorld().getChunkSource()).broadcast(entityIn, new SpawnFallenLeafFromPacket(pos, entityIn.getDeltaMovement()));
 		}
 	}
 }

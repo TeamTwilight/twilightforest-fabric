@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -22,15 +23,13 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import twilightforest.TFSounds;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnData {
+public class SlideBlockEntity extends Entity /*implements IEntityAdditionalSpawnData */{
 
 	private static final int WARMUP_TIME = 20;
 	private static final EntityDataAccessor<Direction> MOVE_DIRECTION = SynchedEntityData.defineId(SlideBlockEntity.class, EntityDataSerializers.DIRECTION);
@@ -202,7 +201,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 		compound.putByte("Direction", (byte) entityData.get(MOVE_DIRECTION).get3DDataValue());
 	}
 
-	@Override
+	/*@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeInt(Block.getId(myState));
 	}
@@ -210,7 +209,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 	@Override
 	public void readSpawnData(FriendlyByteBuf additionalData) {
 		myState = Block.stateById(additionalData.readInt());
-	}
+	}*/
 
 	@Override
 	public boolean isPushable() {
@@ -229,7 +228,7 @@ public class SlideBlockEntity extends Entity implements IEntityAdditionalSpawnDa
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+		return new ClientboundAddEntityPacket(this);
 	}
 
 	public BlockState getBlockState() {

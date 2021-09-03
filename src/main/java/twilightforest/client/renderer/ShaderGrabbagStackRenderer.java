@@ -14,13 +14,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -36,7 +35,7 @@ public class ShaderGrabbagStackRenderer implements BlockEntityRenderer<ShaderGra
         }
     }
 
-    public static ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")));
+    public static ItemStack stack = new ItemStack(Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")));
     private final ItemTransforms.TransformType transform = ItemTransforms.TransformType.NONE;
 
     public ShaderGrabbagStackRenderer(BlockEntityRendererProvider.Context renderer) {
@@ -58,15 +57,15 @@ public class ShaderGrabbagStackRenderer implements BlockEntityRenderer<ShaderGra
         if (transform == ItemTransforms.TransformType.GUI) {
             ms.pushPose(); // Stack + 2
             ms.translate(0.5F, 0.5F, -1.5F);
-            Minecraft.getInstance().getItemRenderer().render(stack, ItemTransforms.TransformType.GUI, false, ms, buffers, light, overlay, ForgeHooksClient.handleCameraTransforms(ms, modelBack, transform, false));
+            Minecraft.getInstance().getItemRenderer().render(stack, ItemTransforms.TransformType.GUI, false, ms, buffers, light, overlay, modelBack/*ForgeHooksClient.handleCameraTransforms(ms, modelBack, transform, false)*/);
             ms.popPose(); // Stack + 1
             ms.translate(0.5F, 0.5F, 0F);
-            ms.mulPose(Vector3f.YP.rotation(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : 0));
+            ms.mulPose(Vector3f.YP.rotation(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui ? TFClientEvents.rotationTicker : 0));
 
             ms.pushPose(); // Stack + 2
             ms.translate(0.5F, 0.5F, 0.5F);
             // Render the lunchbox
-            Minecraft.getInstance().getItemRenderer().render(stack, transform, false, ms, buffers, light, overlay, ForgeHooksClient.handleCameraTransforms(ms, modelCase, transform, false));
+            Minecraft.getInstance().getItemRenderer().render(stack, transform, false, ms, buffers, light, overlay, modelCase/*ForgeHooksClient.handleCameraTransforms(ms, modelCase, transform, false)*/);
             ms.popPose(); // Stack + 1
 
             // Render the star burst
@@ -111,7 +110,7 @@ public class ShaderGrabbagStackRenderer implements BlockEntityRenderer<ShaderGra
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
             ms.popPose(); // Stack + 1
         } else {
-            Minecraft.getInstance().getItemRenderer().render(stack, transform, false, ms, buffers, light, overlay, ForgeHooksClient.handleCameraTransforms(ms, modelCase, transform, false));
+            Minecraft.getInstance().getItemRenderer().render(stack, transform, false, ms, buffers, light, overlay, modelCase/*ForgeHooksClient.handleCameraTransforms(ms, modelCase, transform, false)*/);
         }
         GlStateManager._enableCull();
         ms.popPose(); // Stack + 0

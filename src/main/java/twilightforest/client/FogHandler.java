@@ -1,22 +1,22 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.biomes.BiomeKeys;
-
 import java.util.Objects;
 import java.util.Optional;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.util.Mth;
+
+//TODO: PORT
 public class FogHandler {
 
 	private static final float[] spoopColors = new float[3];
 	private static float spoopColor = 0F;
 	private static float spoopFog = 1F;
 
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void fogColors(EntityViewRenderEvent.FogColors event) {
 		boolean flag = isSpooky();
 		if (flag || spoopColor > 0F) {
@@ -66,7 +66,7 @@ public class FogHandler {
 
 //			RenderSystem.setupNvFogDistance();
 		}
-	}
+	}*/
 
 	private static boolean isSpooky() {
 		return Minecraft.getInstance().level != null && Minecraft.getInstance().player != null &&

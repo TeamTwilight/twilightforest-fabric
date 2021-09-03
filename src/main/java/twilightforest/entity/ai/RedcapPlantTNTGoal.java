@@ -1,10 +1,10 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.core.BlockPos;
-import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.RedcapEntity;
 
 public class RedcapPlantTNTGoal extends RedcapBaseGoal {
@@ -20,7 +20,7 @@ public class RedcapPlantTNTGoal extends RedcapBaseGoal {
 				&& !redcap.heldTNT.isEmpty()
 				&& redcap.distanceToSqr(attackTarget) < 25
 				&& !isTargetLookingAtMe(attackTarget)
-				&& ForgeEventFactory.getMobGriefingEvent(redcap.level, redcap)
+				&& redcap.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)
 				&& !isLitTNTNearby(8)
 				&& findBlockTNTNearby(5) == null;
 	}

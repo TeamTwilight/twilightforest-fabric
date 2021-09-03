@@ -2,8 +2,6 @@ package twilightforest.client;
 
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.ISkyRenderHandler;
-import net.minecraftforge.client.IWeatherRenderHandler;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 
@@ -13,7 +11,7 @@ import net.minecraft.client.renderer.DimensionSpecialEffects.SkyType;
 
 public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
-    private ISkyRenderHandler skyRenderer;
+    private TFSkyRenderer skyRenderer;
     private TFWeatherRenderer weatherRenderer;
 
     public TwilightForestRenderInfo(float cloudHeight, boolean placebo, SkyType fogType, boolean brightenLightMap, boolean entityLightingBottomsLit) {
@@ -66,8 +64,7 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
     }
 
     @Nullable
-    @Override
-    public ISkyRenderHandler getSkyRenderHandler() {
+    public TFSkyRenderer getSkyRenderHandler() {
         if (skyRenderer == null)
             skyRenderer = new TFSkyRenderer();
         return skyRenderer;

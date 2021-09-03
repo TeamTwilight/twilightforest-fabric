@@ -53,24 +53,24 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 		//TODO: PORT
 		// todo should probably use IGrowable and loop until it can't grow anymore
-		/*if (above.getBlock() instanceof IPlantable) {
-			IPlantable plant = (IPlantable) above.getBlock();
-			// revert to farmland or grass
-			if (plant.getPlantType(world, pos.above()) == PlantType.CROP) {
-				world.setBlockAndUpdate(pos, Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 2));
-			} else if (plant.getPlantType(world, pos.above()) == PlantType.PLAINS) {
-				world.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
-			} else {
-				world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
-			}*/
-			// apply bonemeal
-			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-			// green sparkles
-			world.levelEvent(2005, pos.above(), 0);
-		}
+//		if (above.getBlock() instanceof IPlantable) {
+//			IPlantable plant = (IPlantable) above.getBlock();
+//			// revert to farmland or grass
+//			if (plant.getPlantType(world, pos.above()) == PlantType.CROP) {
+//				world.setBlockAndUpdate(pos, Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 2));
+//			} else if (plant.getPlantType(world, pos.above()) == PlantType.PLAINS) {
+//				world.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
+//			} else {
+//				world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
+//			}
+//			// apply bonemeal
+//			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
+//			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
+//			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
+//			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
+//			// green sparkles
+//			world.levelEvent(2005, pos.above(), 0);
+//		}
 	}
 
 	@Override

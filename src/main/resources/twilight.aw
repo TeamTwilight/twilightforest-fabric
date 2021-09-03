@@ -57,3 +57,11 @@ accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData banne
 accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData frameMarkers Ljava/util/Map;
 accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData trackedDecorationCount I
 accessible method net/minecraft/server/level/ChunkMap isExistingChunkFull (Lnet/minecraft/world/level/ChunkPos;)Z
+accessible field net/minecraft/client/renderer/LevelRenderer skyBuffer Lcom/mojang/blaze3d/vertex/VertexBuffer;
+accessible field net/minecraft/client/renderer/LevelRenderer darkBuffer Lcom/mojang/blaze3d/vertex/VertexBuffer;
+mutable field net/minecraft/world/entity/player/Inventory player Lnet/minecraft/world/entity/player/Player;
+accessible field net/minecraft/client/model/geom/LayerDefinitions FISH_PATTERN_DEFORMATION Lnet/minecraft/client/model/geom/builders/CubeDeformation;
+accessible field net/minecraft/client/model/geom/LayerDefinitions OUTER_ARMOR_DEFORMATION Lnet/minecraft/client/model/geom/builders/CubeDeformation;
+accessible field net/minecraft/client/model/geom/LayerDefinitions INNER_ARMOR_DEFORMATION Lnet/minecraft/client/model/geom/builders/CubeDeformation;
+accessible class net/minecraft/world/level/levelgen/structure/StructurePiece$BlockSelector
+accessible method net/minecraft/world/entity/SpawnPlacements register (Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/SpawnPlacements$Type;Lnet/minecraft/world/level/levelgen/Heightmap$Types;Lnet/minecraft/world/entity/SpawnPlacements$SpawnPredicate;)V

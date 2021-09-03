@@ -13,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
-import net.minecraftforge.resource.VanillaResourceType;
 import org.lwjgl.opengl.*;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;

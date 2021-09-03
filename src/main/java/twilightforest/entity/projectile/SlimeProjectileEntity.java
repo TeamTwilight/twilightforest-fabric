@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
+@Environment(EnvType.CLIENT)
 public class SlimeProjectileEntity extends TFThrowableEntity implements ItemSupplier {
 
 	public SlimeProjectileEntity(EntityType<? extends SlimeProjectileEntity> type, Level world) {
@@ -74,9 +74,10 @@ public class SlimeProjectileEntity extends TFThrowableEntity implements ItemSupp
 			if (!level.isClientSide && target instanceof LivingEntity) {
 				target.hurt(DamageSource.thrown(this, this.getOwner()), 4);
 				//damage armor pieces
-				if(target instanceof Player) {
+				if(target instanceof Player player) {
+					//TODO: PORT
 					for(ItemStack stack : target.getArmorSlots())
-						stack.hurtAndBreak(random.nextInt(1), ((Player)target), (user) -> user.broadcastBreakEvent(stack.getEquipmentSlot()));
+						stack.hurtAndBreak(random.nextInt(1), player, (user) -> user.broadcastBreakEvent(player.getUsedItemHand()/*stack.getEquipmentSlot()*/));
 				}
 			}
 		}

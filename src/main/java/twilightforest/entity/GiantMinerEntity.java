@@ -90,7 +90,7 @@ public class GiantMinerEntity extends Monster {
 	}
 
 	public static boolean canSpawn(EntityType<? extends GiantMinerEntity> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
-		return pos.getY() > 60 && (Mob.checkMobSpawnRules(type, world, reason, pos, rand) || world.getBlockState(pos).getBlock() == TFBlocks.wispy_cloud.get() || world.getBlockState(pos).getBlock() == TFBlocks.fluffy_cloud.get());
+		return pos.getY() > 60 && (Mob.checkMobSpawnRules(type, world, reason, pos, rand) || world.getBlockState(pos).getBlock() == TFBlocks.wispy_cloud || world.getBlockState(pos).getBlock() == TFBlocks.fluffy_cloud);
 	}
 
 	@Override
