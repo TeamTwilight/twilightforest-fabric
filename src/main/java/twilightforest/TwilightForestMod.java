@@ -19,6 +19,7 @@ import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
 import twilightforest.dispenser.TransformationDispenseBehavior;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.MoonwormShotEntity;
 import twilightforest.entity.projectile.TwilightWandBoltEntity;
 import twilightforest.item.TFItems;
@@ -146,6 +147,9 @@ public class TwilightForestMod implements ModInitializer {
 		BiomeKeys.addBiomeTypes();
 		TFDimensions.init();
 		TFBlockItems.registerBlockItems();
+		TFEntities.registerEntities();
+		TFEntities.addEntityAttributes();
+		TFEntities.registerSpawnEggs();
 
 		if (TFConfig.COMMON_CONFIG.doCompat) {
 			try {

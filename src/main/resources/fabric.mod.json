@@ -27,7 +27,7 @@
 
     ],
     "preLaunch": [
-
+      "twilightforest.data.DataGenerators"
     ]
   },
   "mixins": [

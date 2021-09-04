@@ -1,13 +1,7 @@
 package twilightforest.data;
 
-import com.mojang.bridge.game.GameVersion;
 import me.shedaniel.cloth.api.datagen.v1.DataGeneratorHandler;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
-import twilightforest.TwilightForestMod;
 import java.nio.file.Paths;
 
 import net.minecraft.SharedConstants;
@@ -35,6 +29,7 @@ public class DataGenerators implements PreLaunchEntrypoint {
 	public void onPreLaunch() {
 		try {
 			SharedConstants.tryDetectVersion();
+			Bootstrap.bootStrap();
 			DataGeneratorHandler handler = DataGeneratorHandler.create(Paths.get("../src/generated/resource"));
 			gatherData(handler);
 			handler.run();

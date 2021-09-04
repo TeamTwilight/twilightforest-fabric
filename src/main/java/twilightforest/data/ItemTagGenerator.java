@@ -66,14 +66,14 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	@Override
 	protected void addTags() {
 		//tag(TWILIGHT_OAK_LOGS);
-//		this.copy(BlockTagGenerator.TWILIGHT_OAK_LOGS, TWILIGHT_OAK_LOGS);
-//		this.copy(BlockTagGenerator.CANOPY_LOGS, CANOPY_LOGS);
-//		this.copy(BlockTagGenerator.MANGROVE_LOGS, MANGROVE_LOGS);
-//		this.copy(BlockTagGenerator.DARKWOOD_LOGS, DARKWOOD_LOGS);
-//		this.copy(BlockTagGenerator.TIME_LOGS, TIME_LOGS);
-//		this.copy(BlockTagGenerator.TRANSFORMATION_LOGS, TRANSFORMATION_LOGS);
-//		this.copy(BlockTagGenerator.MINING_LOGS, MINING_LOGS);
-//		this.copy(BlockTagGenerator.SORTING_LOGS, SORTING_LOGS);
+		this.copy(BlockTagGenerator.TWILIGHT_OAK_LOGS, TWILIGHT_OAK_LOGS);
+		this.copy(BlockTagGenerator.CANOPY_LOGS, CANOPY_LOGS);
+		this.copy(BlockTagGenerator.MANGROVE_LOGS, MANGROVE_LOGS);
+		this.copy(BlockTagGenerator.DARKWOOD_LOGS, DARKWOOD_LOGS);
+		this.copy(BlockTagGenerator.TIME_LOGS, TIME_LOGS);
+		this.copy(BlockTagGenerator.TRANSFORMATION_LOGS, TRANSFORMATION_LOGS);
+		this.copy(BlockTagGenerator.MINING_LOGS, MINING_LOGS);
+		this.copy(BlockTagGenerator.SORTING_LOGS, SORTING_LOGS);
 
 //		this.copy(BlockTagGenerator.TF_LOGS, TWILIGHT_LOGS);
 //		tag(ItemTags.LOGS).addTag(TWILIGHT_LOGS);

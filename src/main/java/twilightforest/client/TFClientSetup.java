@@ -6,6 +6,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
+import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TFTileEntities;
@@ -44,6 +45,7 @@ public class TFClientSetup implements ClientModInitializer {
 	}
 
     public static void clientSetup() {
+        TFEntities.registerEntityRenderer();
 		try {
 			Class.forName("net.optifine.Config");
 			optifinePresent = true;
