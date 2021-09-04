@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
@@ -16,6 +17,7 @@ public class FlammableBlock extends Block {
 		super(props);
 		this.flammability = flammability;
 		this.spreadSpeed = spreadSpeed;
+		FlammableBlockRegistry.getDefaultInstance().add(this, flammability, spreadSpeed);
 	}
 
 	//TODO: PORT

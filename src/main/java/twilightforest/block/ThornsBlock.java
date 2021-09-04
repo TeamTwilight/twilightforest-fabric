@@ -20,13 +20,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
+import twilightforest.extensions.IAIPath;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
+public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, IAIPath {
 
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -48,7 +49,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	//TODO: PORT
 	@Nullable
-	//@Override
+	@Override
 	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
 		return BlockPathTypes.DAMAGE_CACTUS;
 	}
