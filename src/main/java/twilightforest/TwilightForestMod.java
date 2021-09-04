@@ -14,6 +14,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.TFCompat;
+import twilightforest.data.DataGenerators;
 import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;

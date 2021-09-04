@@ -38,7 +38,7 @@ public record AdvancementProvider(DataGenerator generator) implements DataProvid
 		};
 
 		new AdvancementGenerator().accept(consumer);
-		new PatchouliAdvancementGenerator().accept(consumer);
+		//new PatchouliAdvancementGenerator().accept(consumer);
 	}
 
 	private static Path createPath(Path path, Advancement advancement) {

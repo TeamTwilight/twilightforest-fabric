@@ -108,3 +108,6 @@ accessible method net/minecraft/world/level/levelgen/Beardifier <init> (Lnet/min
 accessible method net/minecraft/world/level/levelgen/Beardifier beardifyOrBury (III)D
 accessible field net/minecraft/world/level/levelgen/carver/CaveCarverConfiguration floorLevel Lnet/minecraft/util/valueproviders/FloatProvider;
 accessible method net/minecraft/world/entity/monster/AbstractSkeleton getStepSound ()Lnet/minecraft/sounds/SoundEvent;
+accessible field net/minecraft/world/level/block/state/BlockBehaviour material Lnet/minecraft/world/level/material/Material;
+accessible method net/minecraft/resources/RegistryWriteOps <init> (Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/core/RegistryAccess;)V
+accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings <init> (Lnet/minecraft/world/level/levelgen/StructureSettings;Lnet/minecraft/world/level/levelgen/NoiseSettings;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;IIIIZZZZZZ)V

@@ -1,7 +1,0 @@
-{
-  "parent": "twilightforest:world",
-  "name": "Biomes",
-  "description": "Distant lands everywhere!",
-  "icon": "twilightforest:magic_map",
-  "sortnum": 0
-}

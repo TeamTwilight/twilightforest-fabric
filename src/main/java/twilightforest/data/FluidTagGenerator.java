@@ -20,6 +20,9 @@ public class FluidTagGenerator extends FluidTagsProvider {
 
     @Override
     protected void addTags() {
+        //load the tag for cursed reasons
+        tag(FluidTags.LAVA);
+        tag(FluidTags.WATER);
         tag(FIRE_JET_FUEL).addTag(FluidTags.LAVA);
         tag(PORTAL_FLUID).addTag(FluidTags.WATER);
     }

@@ -1,6 +1,12 @@
 package twilightforest.world.registration;
 
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.LevelStem;
+
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightForest;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightSky;
