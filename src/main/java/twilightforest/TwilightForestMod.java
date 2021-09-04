@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.block.TFBlockItems;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
@@ -143,6 +144,7 @@ public class TwilightForestMod implements ModInitializer {
 		TFAdvancements.init();
 		BiomeKeys.addBiomeTypes();
 		TFDimensions.init();
+		TFBlockItems.registerBlockItems();
 
 		if (TFConfig.COMMON_CONFIG.doCompat) {
 			try {

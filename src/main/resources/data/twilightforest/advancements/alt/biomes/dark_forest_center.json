@@ -1,0 +1,18 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "in_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "twilightforest:dark_forest_center"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_biome"
+    ]
+  ]
+}

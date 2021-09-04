@@ -1,0 +1,12 @@
+{
+  "criteria": {
+    "hidden": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "hidden"
+    ]
+  ]
+}

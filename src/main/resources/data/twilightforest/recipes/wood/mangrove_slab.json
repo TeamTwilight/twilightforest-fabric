@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "twilightforest:mangrove_planks"
+    }
+  },
+  "result": {
+    "item": "twilightforest:mangrove_slab",
+    "count": 6
+  }
+}

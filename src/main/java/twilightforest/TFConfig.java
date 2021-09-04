@@ -224,9 +224,9 @@ public class TFConfig {
 
 			public static class HollowHillStalactites {
 
-				public List<String> largeHill;
-				public List<String> mediumHill;
-				public List<String> smallHill;
+				public List<String> largeHill = new ArrayList<>();
+				public List<String> mediumHill = new ArrayList<>();
+				public List<String> smallHill = new ArrayList<>();
 				public boolean useConfigOnly;
 
 				public void load() {
@@ -279,7 +279,7 @@ public class TFConfig {
 			public boolean shadersSupported = true;
 		}
 
-		public String originDimension;
+		public String originDimension = "minecraft:overworld";
 		public boolean allowPortalsInOtherDimensions;
 		public boolean adminOnlyPortals;
 		public boolean disablePortalCreation;

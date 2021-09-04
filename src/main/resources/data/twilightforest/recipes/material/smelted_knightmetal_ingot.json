@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "twilightforest:armor_shard_cluster"
+  },
+  "result": "twilightforest:knightmetal_ingot",
+  "experience": 1.0,
+  "cookingtime": 200
+}

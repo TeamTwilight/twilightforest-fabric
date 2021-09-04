@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:canopy_planks"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:canopy_button"
+  }
+}

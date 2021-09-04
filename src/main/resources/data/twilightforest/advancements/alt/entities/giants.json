@@ -1,0 +1,23 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_armored": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/entities/armored_giant"
+      }
+    },
+    "has_miner": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/entities/giant_miner"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_armored",
+      "has_miner"
+    ]
+  ]
+}
