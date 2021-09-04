@@ -1,5 +1,7 @@
 package twilightforest.capabilities.shield;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import twilightforest.TFSounds;
 
 import net.minecraft.nbt.CompoundTag;
@@ -7,6 +9,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.network.UpdateShieldPacket;
 
 public class ShieldCapabilityHandler implements IShieldCapability {
 	private int temporaryShields;
@@ -95,7 +99,9 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	}
 
 	private void sendUpdatePacket() {
-		if (host instanceof ServerPlayer) {}
+		if (host instanceof ServerPlayer) {
+			PlayerLookup.tracking(host).forEach(a -> TFPacketHandler.CHANNEL.send(a, new UpdateShieldPacket(host, this)));
+		}
 			//TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> host), new UpdateShieldPacket(host, this));
 	}
 
