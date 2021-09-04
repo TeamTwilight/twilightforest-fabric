@@ -1,5 +1,7 @@
 package twilightforest.tileentity;
 
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
@@ -7,6 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import twilightforest.TFSounds;
 import twilightforest.block.BuilderBlock;
 import twilightforest.block.TranslucentBuiltBlock;
 import twilightforest.block.TFBlocks;
@@ -62,7 +65,7 @@ public class CarminiteBuilderTileEntity extends BlockEntity {
 				if (te.blocksMade <= RANGE && level.isEmptyBlock(nextPos)) {
 					level.setBlock(nextPos, te.blockBuiltState, 3);
 
-					level.levelEvent(1001, nextPos, 0);
+					level.playSound(null, pos, TFSounds.BUILDER_CREATE, SoundSource.BLOCKS, 0.75F, 1.2F);
 
 					te.lastBlockCoords = nextPos;
 

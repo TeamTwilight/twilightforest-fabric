@@ -108,14 +108,12 @@ public class WinterWolfEntity extends HostileWolfEntity implements IBreathAttack
 			level.addParticle(TFParticleType.SNOW, px, py, pz, dx, dy, dz);
 		}
 	}
-	
+
 	@Override
-	public void setTarget(@Nullable LivingEntity entity) {
-		if (entity != null && entity != getTarget())
-			playSound(TFSounds.WINTER_WOLF_TARGET, 4F, getVoicePitch());
-		super.setTarget(entity);
+	protected SoundEvent getTargetSound() {
+		return TFSounds.WINTER_WOLF_TARGET;
 	}
-	
+
 	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.WINTER_WOLF_IDLE;

@@ -111,6 +111,8 @@ public class DeathTomeModel extends HierarchicalModel<DeathTomeEntity> {
 
     @Override
     public void setupAnim(DeathTomeEntity entity, float limbAngle, float limbDistance, float customAngle, float headYaw, float headPitch) {
+        this.root.yRot = Mth.HALF_PI;
+
         this.book.zRot = -0.8726646259971647F;
 
         this.paperStorm.yRot = customAngle * Mth.DEG_TO_RAD + Mth.HALF_PI;

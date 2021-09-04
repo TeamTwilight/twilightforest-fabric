@@ -1,6 +1,4 @@
 {
-  // 未実装のものの一部については、コメントアウトして今は翻訳を行っていません。
-  
   "itemGroup.twilightforest": "Twilight Forest",
 
   // ADVANCEMENTS
@@ -354,7 +352,6 @@
   "block.twilightforest.lich_tower_miniature_structure": "リッチタワーのミニチュア [未実装]",
   "block.twilightforest.stone_twist": "ねじれ模様の石 [未実装]",
   "block.twilightforest.stone_twist_thin": "石の柱 [未実装]",
-  "block.twilightforest.lapis_block": "ラピスブロック [未実装]",
   "block.twilightforest.etched_nagastone": "エッチングナーガストーン",
   "block.twilightforest.nagastone_pillar": "ナーガストーンの柱",
   "block.twilightforest.nagastone_stairs_left": "ナーガストーンの階段(左)",
@@ -991,6 +988,11 @@
   "subtitles.twilightforest.block.casket.close": "形見の棺が閉じられる",
   "subtitles.twilightforest.block.casket.repair": "プレイヤーが棺を直す",
   "subtitles.twilightforest.block.casket.locked": "形見の棺がクリックされる",
+  "subtitles.twilightforest.block.jet.start": "間欠炎が動く",
+  "subtitles.twilightforest.block.jet.active": "間欠炎が炎を放つ",
+  "subtitles.twilightforest.block.jet.pop": "間欠炎が発射される",
+  "subtitles.twilightforest.block.smoker.start": "噴煙が動く",
+  "subtitles.twilightforest.block.reactor.idle": "カーミナイトリアクターがシューと音を立てる",
 
   "subtitles.twilightforest.item.blockchain.collide": "モーニングスターがブロックに当たる",
   "subtitles.twilightforest.item.blockchain.hit": "モーニングスターがエンティティに当たる",
@@ -1008,13 +1010,7 @@
   "subtitles.twilightforest.item.charm.keep": "保護の護石がアイテムを守る",
   "subtitles.twilightforest.item.charm.life": "命の護石がプレイヤーを回復させる",
 
-  "subtitles.twilightforest.te.jet.start": "間欠炎が動く",
-  "subtitles.twilightforest.te.jet.active": "間欠炎が炎を放つ",
-  "subtitles.twilightforest.te.jet.pop": "間欠炎が発射される",
-  "subtitles.twilightforest.te.smoker.start": "噴煙が動く",
-  "subtitles.twilightforest.te.reactor.idle": "カーミナイトリアクターがシューと音を立てる",
-
-  "subtitles.random.slider": "滑走トラップが作動する",
+  "subtitles.twilightforest.random.slider": "滑走トラップが作動する",
 
   // Death Messages
   "death.attack.twilightforest.ghastTear": "%1$sは炎の涙に焼かれた",
@@ -1094,19 +1090,6 @@
   "twilightforest.config.skylight_forest.tooltip": "trueにすると、黄昏の森ディメンジョンが、主要な構造物を除いてヴォイドワールドとして生成されます。",
   "twilightforest.config.skylight_oaks": "天空の木 [制作中]",
   "twilightforest.config.skylight_oaks.tooltip": "trueにすると、巨大なトワイライトオークもヴォイドワールドに生成されます。",
-
-  "twilightforest.config.world_gen_weights": "ワールド生成時の発生割合",
-  "twilightforest.config.world_gen_weights.tooltip": "様々な小さいランドマークの発生割合",
-  "twilightforest.config.stone_circle_weight": "ストーンサークルの発生割合",
-  "twilightforest.config.well_weight": "井戸の発生割合",
-  "twilightforest.config.stalagmite_weight": "石筍の発生割合",
-  "twilightforest.config.foundation_weight": "廃屋の発生割合",
-  "twilightforest.config.monolith_weight": "モノリスの発生割合",
-  "twilightforest.config.grove_ruins_weight": "朽ち果てた遺跡の発生割合",
-  "twilightforest.config.hollow_stump_weight": "切り株の発生割合",
-  "twilightforest.config.fallen_hollow_log_weight": "穴の空いた倒木の発生割合",
-  "twilightforest.config.fallen_small_log_weight": "穴の空いた小さな倒木の発生割合",
-  "twilightforest.config.druid_hut_weight": "ドルイドの小屋の発生割合",
 
   "twilightforest.config.hollow_hill_stalactites": "亡霊鉱山の鍾乳石のカスタマイズ",
   "twilightforest.config.hollow_hill_stalactites.tooltip": "亡霊鉱山に生成されるカスタム鍾乳石を定義します。\nフォーマットは\\\"modid:block<:meta> size maxLength minHeight weight\\\"で、各プロパティの意味は以下の通りです:\nsize - 亡霊鉱山の床から天井までの間の空間に対する鍾乳石の最大長(割合)、\nmaxLength - 鍾乳石の最大長、\nminHeight - 床と鍾乳石の間に必要な最小スペース、\nweight - どの程度生成するか。\n\n例: \\\"minecraft:iron_ore 0.7 8 1 24\\\" これは、デフォルトの鉄鉱石の鍾乳石を生成する定義に等しいです。",
@@ -1254,17 +1237,11 @@
   "fluid.fiery_essence": "灼熱エッセンス",
 
   // TCon
-
   "material.nagascale": "ナーガの鱗",
-  "material.nagascale.prefix": "ナーガの鱗の%s",
   "material.steeleaf": "葉鋼",
-  "material.steeleaf.prefix": "葉鋼の%s",
   "material.fierymetal": "灼熱",
-  "material.fierymetal.prefix": "灼熱の%s",
   "material.knightmetal": "ナイトメタル",
-  "material.knightmetal.prefix": "騎士の%s",
   "material.raven_feather": "カラスの羽根",
-  "material.raven_feather.prefix": "カラスの羽根の%s",
 
   "modifier.twilit": "薄明",
   "modifier.twilit.desc": "§o黄昏の森の祝福。§r\n黄昏の森での採掘速度が上がる。\n黄昏の森以外では攻撃力が上がる。",

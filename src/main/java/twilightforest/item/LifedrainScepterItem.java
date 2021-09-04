@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.world.item.Item.Properties;
+import twilightforest.entity.boss.AlphaYetiEntity;
 
 public class LifedrainScepterItem extends Item {
 
@@ -129,8 +130,8 @@ public class LifedrainScepterItem extends Item {
 			// is the player looking at an entity
 			Entity pointedEntity = getPlayerLookTarget(world, living);
 
-			if (pointedEntity instanceof LivingEntity) {
-				LivingEntity target = (LivingEntity) pointedEntity;
+			if (pointedEntity instanceof LivingEntity target) {
+				if(target instanceof AlphaYetiEntity alpha && !alpha.isRampaging() && !alpha.isTired()) return;
 
 				if (target.getEffect(MobEffects.MOVEMENT_SLOWDOWN) != null || target.getHealth() < 1) {
 

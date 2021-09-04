@@ -75,8 +75,12 @@ public class HostileWolfEntity extends Wolf implements Enemy {
 	@Override
 	public void setTarget(@Nullable LivingEntity entity) {
 		if (entity != null && entity != getTarget())
-			playSound(TFSounds.HOSTILE_WOLF_TARGET, 4F, getVoicePitch());
+			playSound(getTargetSound(), 4F, getVoicePitch());
 		super.setTarget(entity);
+	}
+
+	protected SoundEvent getTargetSound() {
+		return TFSounds.HOSTILE_WOLF_TARGET;
 	}
 
 	@Override

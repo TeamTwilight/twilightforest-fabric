@@ -166,6 +166,17 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
         itemRenderer.blitOffset = 0.0F;
 	}
 
+	@Override
+	protected void renderTooltip(PoseStack pPoseStack, int pX, int pY) {
+		UncraftingContainer container = this.menu;
+		for (int i = 0; i < 9; i++) {
+			if (container.getCarried().isEmpty() && container.slots.get(2 + i).hasItem() && this.hoveredSlot == container.slots.get(11 + i)) {
+				this.renderTooltip(pPoseStack, container.slots.get(2 + i).getItem(), pX, pY);
+			}
+		}
+		super.renderTooltip(pPoseStack, pX, pY);
+	}
+
 	private static class CycleButton extends Button {
 		private final boolean up;
 

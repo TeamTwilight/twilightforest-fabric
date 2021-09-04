@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.Entity;
@@ -29,6 +28,8 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
+import net.minecraftforge.event.ForgeEventFactory;
+import twilightforest.entity.projectile.TwilightWandBoltEntity;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
@@ -163,7 +164,7 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 		double py = hgt % 5F;
 		double pz = 3F * Math.sin(rotation);
 
-		level.addParticle(TFParticleType.SNOW, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+		level.addParticle(TFParticleType.SNOW.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 	}
 
 	@Override
@@ -176,7 +177,7 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		// no arrow damage when in ranged mode
-		if (!this.canRampage && !this.isTired() && source.isProjectile()) {
+		if (!this.canRampage && !this.isTired() && (source.isProjectile() || source.getDirectEntity() instanceof TwilightWandBoltEntity)) {
 			return false;
 		}
 
@@ -237,13 +238,13 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 		}
 	}
 
-	//@Override
+	@Override
 	public boolean canRiderInteract() {
 		return true;
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
-		if (this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+		if (ForgeEventFactory.getMobGriefingEvent(level, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(level, pos, this)) {
 					level.destroyBlock(pos, false);
@@ -328,7 +329,7 @@ public class AlphaYetiEntity extends Monster implements RangedAttackMob, IHostil
 	public void checkDespawn() {
 		if (level.getDifficulty() == Difficulty.PEACEFUL) {
 			if (!hasRestriction()) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_alpha_yeti.defaultBlockState());
+				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.boss_spawner_alpha_yeti.get().defaultBlockState());
 			}
 			remove(RemovalReason.DISCARDED);
 		} else {

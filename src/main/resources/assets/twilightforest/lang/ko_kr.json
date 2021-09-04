@@ -182,7 +182,7 @@
   "block.twilightforest.firefly": "반딧불이",
   "block.twilightforest.cicada": "매미",
   "block.twilightforest.cicada.desc": "레일건을 가진 사람을 향해 발사된다면요?",
-  "block.twilightforest.portal": "황혼의 숲 포탈",
+  "block.twilightforest.twilight_portal": "황혼의 숲 포탈",
   "block.twilightforest.maze_stone": "미로석",
   "block.twilightforest.maze_stone_brick": "미로 석재 벽돌",
   "block.twilightforest.maze_stone_chiseled": "조각된 미로석",
@@ -352,7 +352,6 @@
   "block.twilightforest.lich_tower_miniature_structure": "미니어처 리치의 탑",
   "block.twilightforest.stone_twist": "돌 트위스트",
   "block.twilightforest.stone_twist_thin": "돌 기둥",
-  "block.twilightforest.lapis_block": "라피스 블록",
   "block.twilightforest.etched_nagastone": "조각된 나가석",
   "block.twilightforest.nagastone_pillar": "나가석 기둥",
   "block.twilightforest.nagastone_stairs_left": "나가석 계단 (왼쪽)",
@@ -988,6 +987,11 @@
   "subtitles.twilightforest.block.casket.close": "기념품 상자가 닫힙니다.",
   "subtitles.twilightforest.block.casket.repair": "플레이어가 기념품 상자를 수리합니다.",
   "subtitles.twilightforest.block.casket.locked": "기념품 상자가 잠겼습니다.",
+  "subtitles.twilightforest.block.jet.start": "화염 분출기의 작동을 시작합니다.",
+  "subtitles.twilightforest.block.jet.active": "화염 분출기가 확 타오릅니다.",
+  "subtitles.twilightforest.block.jet.pop": "화염 분출기가 펑 하는 소리를 냅니다.",
+  "subtitles.twilightforest.block.smoker.start": "연기가 피어오릅니다.",
+  "subtitles.twilightforest.block.reactor.idle": "카미나이트 반응기가 놀고 있습니다.",
 
   "subtitles.twilightforest.item.blockchain.collide": "블록과 사슬이 블록을 때립니다.",
   "subtitles.twilightforest.item.blockchain.hit": "블록과 사슬이 엔티티를 때립니다.",
@@ -1005,13 +1009,7 @@
   "subtitles.twilightforest.item.charm.keep": "보존의 부적이 아이템을 되돌립니다.",
   "subtitles.twilightforest.item.charm.life": "생명의 부적이 플레이어를 재생시킵니다.",
 
-  "subtitles.twilightforest.te.jet.start": "화염 분출기의 작동을 시작합니다.",
-  "subtitles.twilightforest.te.jet.active": "화염 분출기가 확 타오릅니다.",
-  "subtitles.twilightforest.te.jet.pop": "화염 분출기가 펑 하는 소리를 냅니다.",
-  "subtitles.twilightforest.te.smoker.start": "연기가 피어오릅니다.",
-  "subtitles.twilightforest.te.reactor.idle": "카미나이트 반응기가 놀고 있습니다.",
-
-  "subtitles.random.slider": "미끄럼 함정이 움직입니다.",
+  "subtitles.twilightforest.random.slider": "미끄럼 함정이 움직입니다.",
 
   // Death Messages
   "death.attack.twilightforest.ghastTear": "%1$s이(가) 불타는 눈물에 데었습니다.",
@@ -1091,19 +1089,6 @@
   "twilightforest.config.skylight_forest.tooltip": "만약 True이라면, 황혼의 숲 주요 구조물을 제외한 빈 공간으로 생성됩니다.",
   "twilightforest.config.skylight_oaks": "하늘빛 참나무",
   "twilightforest.config.skylight_oaks.tooltip": "만약 True이라면, 거대한 황혼 참나무는 빈 세계에서 생성할 것입니다.",
-
-  "twilightforest.config.world_gen_weights": "세계 생성 가중치",
-  "twilightforest.config.world_gen_weights.tooltip": "다양한 작은 특징에 대한 가중치",
-  "twilightforest.config.stone_circle_weight": "환상 열석 가중치",
-  "twilightforest.config.well_weight": "우물 가중치",
-  "twilightforest.config.stalagmite_weight": "석순 가중치",
-  "twilightforest.config.foundation_weight": "토대 가중치",
-  "twilightforest.config.monolith_weight": "돌 기둥 가중치",
-  "twilightforest.config.grove_ruins_weight": "수풀의 폐허 가중치",
-  "twilightforest.config.hollow_stump_weight": "움푹 꺼진 그루터기 가중치",
-  "twilightforest.config.fallen_hollow_log_weight": "떨어진 움푹 꺼진 나무 원목 가중치",
-  "twilightforest.config.fallen_small_log_weight": "떨어진 작은 나무 원목 가중치",
-  "twilightforest.config.druid_hut_weight": "드루이드 오두막 가중치",
 
   "twilightforest.config.hollow_hill_stalactites": "맞춤형 움푹 꺼진 언덕 종유석",
   "twilightforest.config.hollow_hill_stalactites.tooltip": "움품 꺼진 언덕에서 생성되는 맞춤형 종유석을 정의합니다.\n_형식은 \\\"modid:block<:meta> size max_Length min_Height weight\\\"입니다. 속성이 있는 위치:\n_크기(Size) - 언덕 바닥과 천장 사이의 공간에 따른 종유석의 최대 길이,\n_최대 길이(Max length) - 종유석의 최대 길이(블록 단위),\n_최소 높이(Min height) - 언덕 바닥과 종유석 사이의 최소 공간 생성,\n_가중치(Weight) - 발생 빈도\n\n_예시: \\\"minecraft:iron_ore 0.7 8 1 24\\\"는 기본 철광석 종유석과 동일한 종유석을 추가합니다.",

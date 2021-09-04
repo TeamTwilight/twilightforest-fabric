@@ -204,6 +204,7 @@
   "block.twilightforest.boss_spawner_snow_queen": "冰雪女王 Boss刷怪笼",
   "block.twilightforest.boss_spawner_final_boss": "最终Boss Boss刷怪笼",
   "block.twilightforest.firefly_jar": "萤火虫罐子",
+  //"block.twilightforest.firefly_particle_spawner": "Firefly Particle Spawner",
   "block.twilightforest.cicada_jar": "蝉罐子",
   "block.twilightforest.moss_patch": "苔藓块【开发中】",
   "block.twilightforest.mayapple": "鬼臼果",
@@ -216,6 +217,7 @@
   "block.twilightforest.root": "根",
   "block.twilightforest.liveroot_block": "活根",
   "block.twilightforest.uncrafting_table": "拆解台",
+  //"container.uncrafting_table.disabled": "Uncrafting is disabled via config",
   "block.twilightforest.smoker": "烟雾方块",
   "block.twilightforest.encased_smoker": "封装烟雾方块",
   "block.twilightforest.fire_jet": "射焰方块",
@@ -266,9 +268,12 @@
   "block.twilightforest.vanishing_block": "消失方块",
   "block.twilightforest.locked_vanishing_block": "锁定的消失方块",
   "block.twilightforest.carminite_builder": "砷铅铁建造器",
+  //"block.twilightforest.built_block": "Built Block",
   "block.twilightforest.antibuilder": "反建器",
+  //"block.twilightforest.antibuilt_block": "Anti-built Block",
   "block.twilightforest.ghast_trap": "恶魂陷阱",
   "block.twilightforest.carminite_reactor": "砷铅铁反应堆",
+  //"block.twilightforest.reactor_debris": "Reactor Debris",
   "block.twilightforest.fake_gold": "伪金块",
   "block.twilightforest.fake_diamond": "伪钻石块",
   "block.twilightforest.trophy": "暮色森林奖杯",
@@ -352,7 +357,9 @@
   "block.twilightforest.lich_tower_miniature_structure": "微雕：巫妖塔【未实现】",
   "block.twilightforest.stone_twist": "螺纹石【未实现】",
   "block.twilightforest.stone_twist_thin": "石柱【未实现】",
-  "block.twilightforest.lapis_block": "青金石块【未实现】",
+  //"block.twilightforest.stone_pillar_bold": "Bold Stone Pillar",
+  //"block.twilightforest.empty_bookshelf": "Empty Bookshelf",
+  //"block.twilightforest.death_tome_spawner": "Death Tome Spawner",
   "block.twilightforest.etched_nagastone": "蚀刻娜迦石",
   "block.twilightforest.nagastone_pillar": "娜迦石柱",
   "block.twilightforest.nagastone_stairs_left": "娜迦石楼梯（左）",
@@ -368,7 +375,7 @@
   "block.twilightforest.iron_ladder": "铁梯子",
   "block.twilightforest.terrorcotta_circle": "圈状陶瓦",
   "block.twilightforest.terrorcotta_diagonal": "对角陶瓦",
-  "block.twilightforest.experiment115": "试验物品 115",
+  "block.twilightforest.experiment_115": "试验物品 115",
   "block.twilightforest.hydra_trophy": "九头蛇奖杯",
   "block.twilightforest.naga_trophy": "娜迦奖杯",
   "block.twilightforest.minoshroom_trophy": "米诺菇奖杯",
@@ -382,6 +389,17 @@
   "block.twilightforest.keepsake_casket": "遗物匣【开发中】",
   "block.twilightforest.casket.broken": "你的遗物匣破损不堪，无法存放更多物品。所有本应存入匣中的物品全部掉落在地。",
   "block.twilightforest.casket.locked": "这个匣子只能由%s打开！",
+
+  /*"block.twilightforest.zombie_skull_candle": "Zombie Skull Candle",
+  "block.twilightforest.zombie_wall_skull_candle": "Zombie Wall Skull Candle",
+  "block.twilightforest.skeleton_skull_candle": "Skeleton Skull Candle",
+  "block.twilightforest.skeleton_wall_skull_candle": "Skeleton Wall Skull Candle",
+  "block.twilightforest.wither_skeleton_skull_candle": "Wither Skeleton Skull Candle",
+  "block.twilightforest.wither_skeleton_wall_skull_candle": "Wither Skeleton Wall Skull Candle",
+  "block.twilightforest.creeper_skull_candle": "Creeper Skull Candle",
+  "block.twilightforest.creeper_wall_skull_candle": "Creeper Wall Skull Candle",
+  "block.twilightforest.player_skull_candle": "Player Skull Candle",
+  "block.twilightforest.player_wall_skull_candle": "Player Wall Skull Candle",*/
 
   "block.twilightforest.potted_twilight_oak_sapling": "暮色橡树树苗盆栽",
   "block.twilightforest.potted_canopy_sapling": "苍穹树树苗盆栽",
@@ -411,6 +429,7 @@
   "block.twilightforest.canopy_door": "苍穹木门",
   "block.twilightforest.canopy_sign": "苍穹木告示牌",
   "block.twilightforest.canopy_wall_sign": "墙上的苍穹木告示牌",
+  //"block.twilightforest.canopy_bookshelf": "Canopy Bookshelf",
 
   "block.twilightforest.dark_planks": "黑木木板",
   "block.twilightforest.dark_stairs": "黑木楼梯",
@@ -590,7 +609,6 @@
   "item.twilightforest.tower_key": "塔钥匙",
   "item.twilightforest.borer_essence": "蛀虫精华",
   "item.twilightforest.carminite": "砷铅铁矿石",
-  "item.twilightforest.tf_trophy": "%s奖杯",
   "item.twilightforest.armor_shard": "装甲碎片",
   "item.twilightforest.knightmetal_ingot": "骑士金属锭",
   "item.twilightforest.armor_shard_cluster": "装甲碎片堆",
@@ -701,6 +719,10 @@
   "item.twilightforest.phantom_armor.tooltip": "死亡时不会掉落",
   "item.twilightforest.yeti_armor.tooltip": "冻结攻击者",
   "item.twilightforest.arctic_armor.tooltip": "能像皮革盔甲一样染色",
+  //"item.twilightforest.glass_sword.tooltip.1": "Creative Mode only",
+
+  //"item.twilightforest.skull_candle.desc": "Has: %s %s Candle",
+  //"item.twilightforest.skull_candle.desc.multiple": "Has: %s %s Candles",
 
   // 实体
   "entity.twilightforest.wild_boar": "野猪",
@@ -972,6 +994,7 @@
   "subtitles.twilightforest.block.builder.on": "建造器：启动",
   "subtitles.twilightforest.block.builder.off": "建造器：关闭",
   "subtitles.twilightforest.block.builder.replace": "建造器：替换方块",
+  //"subtitles.twilightforest.block.builder.create": "Builder creates block",
   "subtitles.twilightforest.block.door.activate": "城堡门：消失失败",
   "subtitles.twilightforest.block.door.reappear": "城堡门：重现",
   "subtitles.twilightforest.block.door.vanish": "城堡门：消失",
@@ -988,6 +1011,11 @@
   "subtitles.twilightforest.block.casket.close": "遗物匣：关闭",
   "subtitles.twilightforest.block.casket.repair": "玩家：修复遗物匣",
   "subtitles.twilightforest.block.casket.locked": "遗物匣：咔哒",
+  "subtitles.twilightforest.block.jet.start": "射焰方块：开始活动",
+  "subtitles.twilightforest.block.jet.active": "射焰方块：射焰",
+  "subtitles.twilightforest.block.jet.pop": "射焰方块：砰砰",
+  "subtitles.twilightforest.block.smoker.start": "烟雾方块：开始活动",
+  "subtitles.twilightforest.block.reactor.idle": "砷铅铁反应堆：呼呼作响",
 
   "subtitles.twilightforest.item.blockchain.collide": "链锤：击中方块",
   "subtitles.twilightforest.item.blockchain.hit": "链锤：击中实体",
@@ -1005,13 +1033,7 @@
   "subtitles.twilightforest.item.charm.keep": "保管符咒：返还物品",
   "subtitles.twilightforest.item.charm.life": "生命符咒：复活玩家",
 
-  "subtitles.twilightforest.te.jet.start": "射焰方块：开始活动",
-  "subtitles.twilightforest.te.jet.active": "射焰方块：射焰",
-  "subtitles.twilightforest.te.jet.pop": "射焰方块：砰砰",
-  "subtitles.twilightforest.te.smoker.start": "烟雾方块：开始活动",
-  "subtitles.twilightforest.te.reactor.idle": "砷铅铁反应堆：呼呼作响",
-
-  "subtitles.random.slider": "滑动陷阱：移动",
+  "subtitles.twilightforest.random.slider": "滑动陷阱：移动",
 
   // 死亡信息
   "death.attack.twilightforest.ghastTear": "%1$s被炽热之泪烫死了",
@@ -1091,19 +1113,6 @@
   "twilightforest.config.skylight_forest.tooltip": "启用后，暮色森林将以空岛的风格生成，只在虚空中生成主要建筑。",
   "twilightforest.config.skylight_oaks": "穹光橡树【开发中】",
   "twilightforest.config.skylight_oaks.tooltip": "启用后，高大暮色橡树也会在虚空中生成。",
-
-  "twilightforest.config.world_gen_weights": "世界生成权重",
-  "twilightforest.config.world_gen_weights.tooltip": "调整各种小型地标的生成权重。",
-  "twilightforest.config.stone_circle_weight": "圆石阵权重",
-  "twilightforest.config.well_weight": "水井权重",
-  "twilightforest.config.stalagmite_weight": "石笋权重",
-  "twilightforest.config.foundation_weight": "地基遗迹权重",
-  "twilightforest.config.monolith_weight": "黑曜石柱权重",
-  "twilightforest.config.grove_ruins_weight": "花园遗迹权重",
-  "twilightforest.config.hollow_stump_weight": "空心树墩权重",
-  "twilightforest.config.fallen_hollow_log_weight": "倒下的空心木头权重",
-  "twilightforest.config.fallen_small_log_weight": "倒下的小树权重",
-  "twilightforest.config.druid_hut_weight": "德鲁伊小屋权重",
 
   "twilightforest.config.hollow_hill_stalactites": "自定义矿山钟乳石生成",
   "twilightforest.config.hollow_hill_stalactites.tooltip": "在这里你可以自定义矿山生成的矿物钟乳石类型。\n格式如下：“modid:block<:meta> [尺寸] [最大长度] [最低生成高度] [权重]”，其中各项参数为：\n尺寸 - 钟乳石柱的长度，以矿山高度（矿山内部地面到顶部）衡量。\n最大长度 - 钟乳石柱的最大长度，以方块数量衡量\n最低生成高度 - 最低允许的钟乳石生成位置距离矿山内部地面的距离，低于这个高度时不生成。\n权重 - 决定生成频率。\n\n例如：minecraft:iron_ore 0.7 8 1 24 会增加一次和默认的铁矿石柱一样的生成。",
@@ -1245,13 +1254,11 @@
   "twilightforest.book.unknown.2": "也许我还有什么事情没有做，抑或我还没击败什么怪物。我想是时候掉头回去了。当然，我会回来看看看有没有新进展的。",
 
   // 流体
-
   "fluid.fierymetal": "熔融炽铁",
   "fluid.knightmetal": "熔融骑士金属",
   "fluid.fiery_essence": "炽热精华",
 
   // 匠魂联动
-
   "material.nagascale": "娜迦鳞片",
   "material.steeleaf": "钢叶",
   "material.fierymetal": "炽铁",

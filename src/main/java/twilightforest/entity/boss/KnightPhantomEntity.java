@@ -34,6 +34,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
+import twilightforest.util.TFDamageSources;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
@@ -213,7 +214,7 @@ public class KnightPhantomEntity extends FlyingMob implements Enemy {
 			i += EnchantmentHelper.getKnockbackBonus(this);
 		}
 
-		boolean flag = entityIn.hurt(DamageSource.mobAttack(this), f);
+		boolean flag = entityIn.hurt(TFDamageSources.haunt(this), f);
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {

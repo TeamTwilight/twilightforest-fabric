@@ -58,12 +58,10 @@ public class MistWolfEntity extends HostileWolfEntity {
 			return false;
 		}
 	}
-	
+
 	@Override
-	public void setTarget(@Nullable LivingEntity entity) {
-		if (entity != null && entity != getTarget())
-			playSound(TFSounds.MISTWOLF_TARGET, 4F, getVoicePitch());
-		super.setTarget(entity);
+	protected SoundEvent getTargetSound() {
+		return TFSounds.MISTWOLF_TARGET;
 	}
 
 	@Override
