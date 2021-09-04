@@ -1,5 +1,4 @@
 {
-  "scale": 0.1,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -164,9 +163,11 @@
   },
   "spawn_costs": {},
   "player_spawn_friendly": false,
+  "forge:registry_name": "twilightforest:lake",
   "precipitation": "rain",
   "temperature": 0.66,
   "downfall": 1.0,
   "category": "ocean",
-  "depth": -0.9
+  "depth": -0.9,
+  "scale": 0.1
 }

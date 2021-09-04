@@ -19,29 +19,21 @@
   },
   "surface_builder": "twilightforest:deadrock_filler",
   "carvers": {},
-  "features": [
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [
-      "twilightforest:stone_circle",
-      "twilightforest:outside_stalagmite",
-      "twilightforest:monolith",
-      "twilightforest:hollow_stump",
-      "twilightforest:hollow_log",
-      "twilightforest:small_log",
-      "twilightforest:thorns"
-    ]
+  "features": [],
+  "starts": [
+    "twilightforest:configured_final_castle"
   ],
-  "starts": [],
+  "creature_spawn_probability": 0.3,
   "spawners": {
     "monster": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "twilightforest:raven",
+        "weight": 10,
+        "minCount": 4,
+        "maxCount": 4
+      }
+    ],
     "ambient": [],
     "underground_water_creature": [],
     "water_creature": [],
@@ -50,11 +42,11 @@
   },
   "spawn_costs": {},
   "player_spawn_friendly": false,
-  "forge:registry_name": "twilightforest:thornlands",
+  "forge:registry_name": "twilightforest:final_plateau",
   "precipitation": "rain",
   "temperature": 0.3,
   "downfall": 0.2,
-  "category": "none",
-  "depth": 3.0,
-  "scale": 0.1
+  "category": "mesa",
+  "depth": 5.25,
+  "scale": 0.025
 }

@@ -12,13 +12,23 @@
       "max_delay": 12000,
       "replace_current_music": true
     },
+    "particle": {
+      "options": {
+        "type": "twilightforest:wandering_firefly"
+      },
+      "probability": 5.0E-4
+    },
     "sky_color": 2105930,
     "fog_color": 12648408,
-    "water_color": 4159204,
+    "water_color": 21794,
     "water_fog_color": 329011
   },
   "surface_builder": "minecraft:ocean_sand",
-  "carvers": {},
+  "carvers": {
+    "air": [
+      "twilightforest:tf_caves"
+    ]
+  },
   "features": [
     [],
     [],
@@ -27,27 +37,58 @@
     [],
     [],
     [
+      "minecraft:disk_clay",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite",
+      "twilightforest:ore/wood_roots_spread",
       "minecraft:ore_coal",
       "minecraft:ore_iron",
       "minecraft:ore_gold",
       "minecraft:ore_redstone",
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
-      "minecraft:ore_copper",
-      "minecraft:disk_sand",
-      "minecraft:disk_clay",
-      "minecraft:disk_gravel",
-      "twilightforest:small_andesite",
-      "twilightforest:small_diorite",
-      "twilightforest:small_granite"
+      "minecraft:ore_copper"
     ],
-    [],
     [
-      "minecraft:seagrass_normal",
-      "minecraft:seagrass_simple"
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries"
+    ],
+    [
+      "minecraft:patch_grass_forest",
+      "minecraft:patch_tall_grass",
+      "minecraft:patch_sugar_cane",
+      "minecraft:jungle_bush",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:small_log",
+      "twilightforest:well",
+      "twilightforest:foundation",
+      "twilightforest:grove_ruins",
+      "twilightforest:druid_hut",
+      "twilightforest:tree/canopy_trees",
+      "twilightforest:tree/twilight_oak_trees",
+      "twilightforest:tree/vanilla/vanilla_tf_oak",
+      "twilightforest:tree/vanilla/vanilla_tf_birch",
+      "twilightforest:tree/twilight_oak_trees",
+      "twilightforest:tree/vanilla/vanilla_tf_oak",
+      "twilightforest:tree/vanilla/vanilla_tf_birch",
+      "twilightforest:tree/hollow_placer"
     ]
   ],
-  "starts": [],
+  "starts": [
+    "twilightforest:configured_hedge_maze",
+    "twilightforest:configured_hollow_hill_small",
+    "twilightforest:configured_hollow_hill_medium",
+    "twilightforest:configured_hollow_hill_large",
+    "twilightforest:configured_courtyard",
+    "twilightforest:configured_lich_tower"
+  ],
   "spawners": {
     "monster": [
       {
@@ -162,12 +203,12 @@
     "misc": []
   },
   "spawn_costs": {},
-  "player_spawn_friendly": false,
-  "forge:registry_name": "twilightforest:stream",
+  "player_spawn_friendly": true,
+  "forge:registry_name": "twilightforest:dense_forest",
   "precipitation": "rain",
-  "temperature": 0.5,
-  "downfall": 0.1,
-  "category": "river",
-  "depth": -0.8,
-  "scale": 0.0
+  "temperature": 0.7,
+  "downfall": 0.8,
+  "category": "forest",
+  "depth": 0.1,
+  "scale": 0.2
 }

@@ -291,4 +291,6 @@ public final class TreeConfigurations {
             .ignoreVines()
             .build();
 
+    public static void init() {}
+
 }

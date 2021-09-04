@@ -1,9 +1,13 @@
 package twilightforest.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.model.TFLayerDefinitions;
+import twilightforest.client.model.TFModelLayers;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.entity.TFEntities;
@@ -27,7 +31,7 @@ public class TFClientSetup implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		clientSetup();
+        clientSetup();
 	}
 
 	public static class ForgeEvents {
@@ -44,8 +48,13 @@ public class TFClientSetup implements ClientModInitializer {
 
 	}
 
+	//TODO: Clean this shit up
     public static void clientSetup() {
+        TFLayerDefinitions.registerLayers();
+        TFModelLayers.init();
         TFEntities.registerEntityRenderer();
+        ClientLifecycleEvents.CLIENT_STARTED.register((client -> TFParticleType.registerFactories()));
+        twilightforest.client.TFClientSetup.addLegacyPack();
 		try {
 			Class.forName("net.optifine.Config");
 			optifinePresent = true;
@@ -53,9 +62,8 @@ public class TFClientSetup implements ClientModInitializer {
 			optifinePresent = false;
 		}
 		TFItems.addItemModelProperties();
-
-        //MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
         RenderLayerRegistration.init();
+        //MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
         TFTileEntities.registerTileEntityRenders();
         TFContainers.renderScreens();
 

@@ -29,4 +29,6 @@ public class TFStructureProcessors {
 	public static <P extends StructureProcessor> StructureProcessorType<P> registerProcessor(String name, Codec<P> processor) {
 		return Registry.register(Registry.STRUCTURE_PROCESSOR, TwilightForestMod.prefix(name), () -> processor);
 	}
+
+	public static void init() {}
 }

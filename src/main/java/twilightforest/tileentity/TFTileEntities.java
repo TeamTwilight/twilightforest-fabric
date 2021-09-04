@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
-import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.renderer.tileentity.*;
@@ -94,12 +94,12 @@ public class TFTileEntities {
 	public static void registerTileEntityRenders() {
 		// tile entities
 		//Fabric has a api for this but I already made the aw
-		BlockEntityRenderers.register(FIREFLY, FireflyTileEntityRenderer::new);
-		BlockEntityRenderers.register(CICADA, CicadaTileEntityRenderer::new);
-		BlockEntityRenderers.register(MOONWORM, MoonwormTileEntityRenderer::new);
-		BlockEntityRenderers.register(TROPHY, TrophyTileEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(FIREFLY, FireflyTileEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(CICADA, CicadaTileEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(MOONWORM, MoonwormTileEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(TROPHY, TrophyTileEntityRenderer::new);
 		BlockEntityRenderers.register(TF_SIGN, SignRenderer::new);
-		BlockEntityRenderers.register(KEEPSAKE_CASKET, CasketTileEntityRenderer::new);
-		BlockEntityRenderers.register(SKULL_CANDLE, SkullCandleTileEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(KEEPSAKE_CASKET, CasketTileEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(SKULL_CANDLE, SkullCandleTileEntityRenderer::new);
 	}
 }

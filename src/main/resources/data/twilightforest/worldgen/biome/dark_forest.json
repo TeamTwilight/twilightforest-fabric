@@ -1,0 +1,139 @@
+{
+  "effects": {
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "grass_color_modifier": "twilightforest:dark_forest",
+    "particle": {
+      "options": {
+        "type": "twilightforest:wandering_firefly"
+      },
+      "probability": 5.0E-4
+    },
+    "sky_color": 2105930,
+    "foliage_color": 3890751,
+    "grass_color": 4941652,
+    "fog_color": 12648408,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "surface_builder": "minecraft:grass",
+  "carvers": {
+    "air": [
+      "twilightforest:tf_caves"
+    ]
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:ore_coal",
+      "minecraft:ore_iron",
+      "minecraft:ore_gold",
+      "minecraft:ore_redstone",
+      "minecraft:ore_diamond",
+      "minecraft:ore_lapis",
+      "minecraft:ore_copper"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries"
+    ],
+    [
+      "twilightforest:dark_grass",
+      "twilightforest:dark_ferns",
+      "twilightforest:dark_mushglooms",
+      "twilightforest:dark_mushrooms",
+      "twilightforest:dark_pumpkins",
+      "twilightforest:dark_dead_bushes",
+      "twilightforest:tree/bush_dark_forest_trees",
+      "twilightforest:tree/darkwood_trees",
+      "twilightforest:tree/bush_dark_forest_trees",
+      "twilightforest:tree/oak_dark_forest_trees",
+      "twilightforest:tree/birch_dark_forest_trees"
+    ]
+  ],
+  "starts": [
+    "twilightforest:configured_knight_stronghold"
+  ],
+  "spawners": {
+    "monster": [],
+    "creature": [
+      {
+        "type": "minecraft:enderman",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:zombie",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:skeleton",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "twilightforest:mist_wolf",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "twilightforest:skeleton_druid",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "twilightforest:king_spider",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "twilightforest:kobold",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:witch",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "ambient": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {},
+  "player_spawn_friendly": false,
+  "forge:registry_name": "twilightforest:dark_forest",
+  "precipitation": "rain",
+  "temperature": 0.7,
+  "downfall": 0.8,
+  "category": "forest",
+  "depth": 0.0625,
+  "scale": 0.05
+}

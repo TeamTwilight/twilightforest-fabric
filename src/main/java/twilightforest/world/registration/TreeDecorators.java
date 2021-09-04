@@ -13,4 +13,6 @@ import twilightforest.world.components.feature.trees.treeplacers.TrunkSideDecora
 public final class TreeDecorators {
     public static final TreeRootsDecorator LIVING_ROOTS = new TreeRootsDecorator(3, 1, 5, (new WeightedStateProvider(new SimpleWeightedRandomList.Builder<BlockState>().add(BlockConstants.ROOTS, 6).add(TFBlocks.liveroot_block.defaultBlockState(), 1).build())));
     public static final TrunkSideDecorator FIREFLY = new TrunkSideDecorator(1, 1.0f, new SimpleStateProvider(TFBlocks.firefly.defaultBlockState().setValue(FireflyBlock.FACING, Direction.NORTH)));
+
+    public static void init() {}
 }
