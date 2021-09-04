@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:air",
+    "minecraft:air",
+    "minecraft:air",
+    "minecraft:air",
+    "minecraft:air",
+    "minecraft:air",
+    "minecraft:air",
+    "minecraft:air",
+    "minecraft:air",
+    "minecraft:air",
+    "minecraft:air",
+    "twilightforest:ore_meter"
+  ]
+}

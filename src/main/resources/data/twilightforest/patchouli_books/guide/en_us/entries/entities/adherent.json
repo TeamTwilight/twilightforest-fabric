@@ -1,0 +1,14 @@
+{
+  "name": "Adherent",
+  "icon": "twilightforest:adherent_spawn_egg",
+  "category": "entities",
+  "advancement": "twilightforest:alt/entities/adherent",
+  "sortnum": 9010,
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "twilightforest:adherent",
+      "text": "things and stuff"
+    }
+  ]
+}

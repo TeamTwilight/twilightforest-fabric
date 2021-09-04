@@ -1,0 +1,25 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "in_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "twilightforest:snowy_forest"
+        }
+      }
+    },
+    "has_other": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/biomes/twilight_glacier"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_biome",
+      "has_other"
+    ]
+  ]
+}

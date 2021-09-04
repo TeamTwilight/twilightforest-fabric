@@ -1,0 +1,87 @@
+{
+  "parent": "twilightforest:progress_yeti",
+  "display": {
+    "icon": {
+      "item": "twilightforest:arctic_chestplate",
+      "nbt": "{Damage:0}"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.arctic_dyed"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.arctic_dyed.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:arctic_helmet"
+            ],
+            "nbt": "{display:{hasColor:1b}}"
+          }
+        ]
+      }
+    },
+    "chestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:arctic_chestplate"
+            ],
+            "nbt": "{display:{hasColor:1b}}"
+          }
+        ]
+      }
+    },
+    "leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:arctic_leggings"
+            ],
+            "nbt": "{display:{hasColor:1b}}"
+          }
+        ]
+      }
+    },
+    "boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:arctic_boots"
+            ],
+            "nbt": "{display:{hasColor:1b}}"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "helmet"
+    ],
+    [
+      "chestplate"
+    ],
+    [
+      "leggings"
+    ],
+    [
+      "boots"
+    ]
+  ]
+}

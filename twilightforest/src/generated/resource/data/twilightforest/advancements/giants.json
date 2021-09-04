@@ -1,0 +1,63 @@
+{
+  "parent": "twilightforest:beanstalk",
+  "display": {
+    "icon": {
+      "item": "twilightforest:giant_pickaxe",
+      "nbt": "{Damage:0}"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.giants"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.giants.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.giant_miner"
+        },
+        {
+          "translate": "item.twilightforest.giant_pickaxe"
+        }
+      ]
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "giant": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:giant_miner"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "pickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:magic_beans"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "giant"
+    ],
+    [
+      "pickaxe"
+    ]
+  ]
+}

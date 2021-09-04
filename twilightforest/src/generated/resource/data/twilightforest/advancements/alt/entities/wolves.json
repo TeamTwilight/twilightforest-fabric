@@ -1,0 +1,30 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_hostile": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/entities/hostile_wolf"
+      }
+    },
+    "has_mist": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/entities/mist_wolf"
+      }
+    },
+    "has_winter": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/entities/winter_wolf"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_hostile",
+      "has_mist",
+      "has_winter"
+    ]
+  ]
+}

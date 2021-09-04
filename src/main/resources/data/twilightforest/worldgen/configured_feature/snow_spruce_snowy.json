@@ -1,0 +1,23 @@
+{
+  "config": {
+    "feature": "twilightforest:snow_spruce",
+    "decorator": {
+      "config": {
+        "outer": {
+          "config": {
+            "max_water_depth": 0
+          },
+          "type": "minecraft:water_depth_threshold"
+        },
+        "inner": {
+          "config": {
+            "heightmap": "OCEAN_FLOOR"
+          },
+          "type": "minecraft:heightmap"
+        }
+      },
+      "type": "minecraft:decorated"
+    }
+  },
+  "type": "minecraft:decorated"
+}

@@ -1,0 +1,108 @@
+{
+  "parent": "twilightforest:progress_hydra",
+  "display": {
+    "icon": {
+      "item": "twilightforest:fiery_sword",
+      "nbt": "{Damage:0}"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.fiery_set"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.fiery_set.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 75
+  },
+  "criteria": {
+    "fiery_pick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_pickaxe"
+            ]
+          }
+        ]
+      }
+    },
+    "fiery_sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_sword"
+            ]
+          }
+        ]
+      }
+    },
+    "fiery_helmet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_helmet"
+            ]
+          }
+        ]
+      }
+    },
+    "fiery_chestplate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_chestplate"
+            ]
+          }
+        ]
+      }
+    },
+    "fiery_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_leggings"
+            ]
+          }
+        ]
+      }
+    },
+    "fiery_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_boots"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "fiery_pick",
+      "fiery_sword"
+    ],
+    [
+      "fiery_helmet",
+      "fiery_chestplate",
+      "fiery_leggings",
+      "fiery_boots"
+    ]
+  ]
+}

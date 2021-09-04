@@ -1,0 +1,14 @@
+{
+  "name": "Harbinger Cube",
+  "icon": "twilightforest:harbinger_cube_spawn_egg",
+  "category": "entities",
+  "advancement": "twilightforest:alt/entities/harbinger_cube",
+  "sortnum": 9010,
+  "pages": [
+    {
+      "type": "entity",
+      "entity": "twilightforest:harbinger_cube",
+      "text": "things and stuff"
+    }
+  ]
+}

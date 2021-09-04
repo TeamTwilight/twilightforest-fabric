@@ -1,0 +1,69 @@
+{
+  "parent": "twilightforest:twilight_hunter",
+  "display": {
+    "icon": {
+      "item": "minecraft:air"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.kill_naga"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.kill_naga.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.naga"
+        },
+        {
+          "translate": "item.twilightforest.naga_scale"
+        }
+      ]
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "naga": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:naga"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "scale": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:naga_scale"
+            ]
+          }
+        ]
+      }
+    },
+    "kill_mob": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:twilight_hunter"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "naga",
+      "scale"
+    ],
+    [
+      "kill_mob"
+    ]
+  ]
+}

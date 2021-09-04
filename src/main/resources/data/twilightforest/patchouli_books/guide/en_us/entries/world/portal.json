@@ -1,0 +1,63 @@
+{
+  "name": "Building a Portal",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
+  "category": "world",
+  "sortnum": -1010,
+  "pages": [
+    {
+      "type": "multiblock",
+      "name": "Twilight Portal",
+      "text": "Once you finish digging and planting the formation, fill it with water!",
+      "multiblock": {
+        "pattern": [
+          [ " FF ", "F0AF", "FAAF", " FF " ],
+          [ " GG ", "GWWG", "GWWG", " GG " ],
+          [ "    ", " DD ", " DD ", "    " ]
+        ],
+        "mapping": {
+          " ": "ANY",
+          "A": "AIR",
+          "W": "minecraft:water[level=15]",
+          "F": "minecraft:poppy",
+          "G": "minecraft:grass_block",
+          "D": "minecraft:dirt"
+        },
+        "symmetrical": true,
+        "offset"     : [0, 1, 0],
+        "view_offset": [0, 0, 0]
+      }
+    }, {
+      "type": "text",
+      "title": "Valid Portal Criteria",
+      "text": "$(li)Grass Blocks can be swapped out for any earth-y block. Examples: Farmland, Mycelium, Uberous Soil $(li)Poppies can be switched out for any other flower, leaf, or crop! $(li)A portal can be any size as long as there are less than 64 water spaces. You can even make it different shapes too! $(li)The bottom of the portal $(l)MUST$() stay as dirt."
+    }, {
+      "type": "spotlight",
+      "title": "Activation Item",
+      "item": "#twilightforest:portal/activator",
+      "text": "Drop a diamond into the water!"
+    }, {
+      "type": "multiblock",
+      "name": "Completed Twilight Portal",
+      "text": "If you see the purple swirls, hop right in!",
+      "enable_visualize": false,
+      "advancement": "twilightforest:root",
+      "multiblock": {
+        "pattern": [
+          [ " FF ", "F0AF", "FAAF", " FF " ],
+          [ " GG ", "GWWG", "GWWG", " GG " ],
+          [ "    ", " DD ", " DD ", "    " ]
+        ],
+        "mapping": {
+          " ": "ANY",
+          "A": "AIR",
+          "W": "twilightforest:twilight_portal",
+          "F": "minecraft:poppy",
+          "G": "minecraft:grass_block",
+          "D": "minecraft:dirt"
+        },
+        "offset"     : [0, 1, 0],
+        "view_offset": [0, 0, 0]
+      }
+    }
+  ]
+}

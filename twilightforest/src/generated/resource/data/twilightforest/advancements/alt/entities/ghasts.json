@@ -1,0 +1,23 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_ghastling": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/entities/mini_ghast"
+      }
+    },
+    "has_ghastguard": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/entities/tower_ghast"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ghastling",
+      "has_ghastguard"
+    ]
+  ]
+}

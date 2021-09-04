@@ -1,0 +1,79 @@
+{
+  "parent": "twilightforest:ghast_trap",
+  "display": {
+    "icon": {
+      "item": "minecraft:air"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.progress_ur_ghast"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.progress_ur_ghast.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.ur_ghast"
+        }
+      ]
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "ghast": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:ur_ghast"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:air"
+            ]
+          }
+        ]
+      }
+    },
+    "tear": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_tears"
+            ]
+          }
+        ]
+      }
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:ghast_trap"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ghast",
+      "trophy",
+      "tear"
+    ],
+    [
+      "previous_progression"
+    ]
+  ]
+}

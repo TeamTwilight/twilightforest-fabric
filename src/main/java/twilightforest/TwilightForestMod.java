@@ -27,10 +27,7 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.feature.TFGenCaveStalactite;
-import twilightforest.world.registration.TFDimensions;
-import twilightforest.world.registration.TFStructures;
-import twilightforest.world.registration.TwilightFeatures;
-import twilightforest.world.registration.TwilightSurfaceBuilders;
+import twilightforest.world.registration.*;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import java.util.Locale;
 
@@ -98,7 +95,11 @@ public class TwilightForestMod implements ModInitializer {
 		TFStructures.registerFabricEvents();
 		TFStructures.register();
 		//MinecraftForge.EVENT_BUS.addListener(TFStructures::load);
-		//TFBiomeFeatures.FEATURES.register(modbus);
+		TFBiomeFeatures.init();
+		ConfiguredSurfaceBuilders.init();
+		ConfiguredWorldCarvers.register();
+		TwilightFeatures.registerPlacementConfigs();
+		ConfiguredFeatures.init();
 		TwilightSurfaceBuilders.register();
 		//TFContainers.CONTAINERS.register(modbus);
 //		TFEnchantments.ENCHANTMENTS.register(modbus);

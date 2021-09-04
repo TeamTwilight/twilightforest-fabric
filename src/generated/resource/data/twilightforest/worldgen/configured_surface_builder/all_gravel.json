@@ -1,0 +1,14 @@
+{
+  "config": {
+    "top_material": {
+      "Name": "minecraft:gravel"
+    },
+    "under_material": {
+      "Name": "minecraft:gravel"
+    },
+    "underwater_material": {
+      "Name": "minecraft:gravel"
+    }
+  },
+  "type": "minecraft:default"
+}

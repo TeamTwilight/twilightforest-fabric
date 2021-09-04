@@ -1,0 +1,23 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "has_stable": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/entities/stable_ice_core"
+      }
+    },
+    "has_unstable": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:alt/entities/unstable_ice_core"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stable",
+      "has_unstable"
+    ]
+  ]
+}

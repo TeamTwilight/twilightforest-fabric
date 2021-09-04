@@ -1,0 +1,69 @@
+{
+  "parent": "twilightforest:progress_yeti",
+  "display": {
+    "icon": {
+      "item": "minecraft:air"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.progress_glacier"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.progress_glacier.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.snow_queen"
+        },
+        {
+          "translate": "structure.aurora_palace"
+        }
+      ]
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "queen": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:snow_queen"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:air"
+            ]
+          }
+        ]
+      }
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_yeti"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "queen",
+      "trophy"
+    ],
+    [
+      "previous_progression"
+    ]
+  ]
+}

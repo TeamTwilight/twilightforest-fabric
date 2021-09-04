@@ -1,0 +1,21 @@
+{
+  "result": {
+    "nbt": "{Enchantments:[{lvl:1s,id:\"minecraft:fortune\"}]}",
+    "item": "twilightforest:ironwood_axe",
+    "type": "minecraft:item_nbt"
+  },
+  "pattern": [
+    "##",
+    "#X",
+    " X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/ironwood"
+    },
+    "X": {
+      "tag": "forge:rods/wooden"
+    }
+  }
+}

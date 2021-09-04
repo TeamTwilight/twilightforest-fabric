@@ -1,0 +1,79 @@
+{
+  "parent": "twilightforest:progress_lich",
+  "display": {
+    "icon": {
+      "item": "twilightforest:alpha_fur"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.progress_yeti"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.progress_yeti.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.yeti_alpha"
+        }
+      ]
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "yeti": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:yeti_alpha"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:air"
+            ]
+          }
+        ]
+      }
+    },
+    "fur": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:alpha_fur"
+            ]
+          }
+        ]
+      }
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_lich"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "yeti",
+      "trophy",
+      "fur"
+    ],
+    [
+      "previous_progression"
+    ]
+  ]
+}

@@ -88,4 +88,6 @@ public class TFBiomeFeatures {
 			new SnowTreePlacer(TreeConfiguration.CODEC));
 	public static final Feature<RandomPatchConfiguration> DARK_FOREST_PLACER = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":dark_forest_placer", 
 			new TFGenDarkForestFeature(RandomPatchConfiguration.CODEC));
+
+	public static void init() {}
 }

@@ -1,0 +1,19 @@
+{
+  "result": {
+    "nbt": "{Enchantments:[{lvl:1s,id:\"minecraft:protection\"}]}",
+    "item": "twilightforest:ironwood_chestplate",
+    "type": "minecraft:item_nbt"
+  },
+  "group": "ironwood_armor",
+  "pattern": [
+    "# #",
+    "###",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/ironwood"
+    }
+  }
+}

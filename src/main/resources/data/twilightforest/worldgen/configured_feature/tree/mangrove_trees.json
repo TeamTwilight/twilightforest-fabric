@@ -1,0 +1,32 @@
+{
+  "config": {
+    "feature": "twilightforest:tree/base/mangrove_tree",
+    "decorator": {
+      "config": {
+        "outer": {
+          "config": {},
+          "type": "minecraft:square"
+        },
+        "inner": {
+          "config": {
+            "outer": {
+              "config": {
+                "max_water_depth": 6
+              },
+              "type": "minecraft:water_depth_threshold"
+            },
+            "inner": {
+              "config": {
+                "heightmap": "OCEAN_FLOOR"
+              },
+              "type": "minecraft:heightmap"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    }
+  },
+  "type": "minecraft:decorated"
+}

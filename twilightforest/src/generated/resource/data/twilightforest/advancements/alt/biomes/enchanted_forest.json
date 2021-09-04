@@ -1,0 +1,18 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "in_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "twilightforest:enchanted_forest"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_biome"
+    ]
+  ]
+}

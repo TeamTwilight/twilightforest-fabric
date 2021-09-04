@@ -1,0 +1,17 @@
+{
+  "name": "Hedge Maze",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
+  "category": "major_landmarks",
+  "advancement": "twilightforest:alt/major_landmarks/hedge_maze",
+  "sortnum": 2000,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Hedge Maze",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

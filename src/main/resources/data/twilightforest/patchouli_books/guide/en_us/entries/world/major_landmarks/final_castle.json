@@ -1,0 +1,17 @@
+{
+  "name": "Final Tower",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
+  "category": "major_landmarks",
+  "advancement": "twilightforest:alt/major_landmarks/final_castle",
+  "sortnum": 9001,
+  "pages": [
+    {
+      "type": "image",
+      "title": "Final Plateau Castle",
+      "images": ["twilightforest:textures/gui/patchouli_images/test_filler.png"]
+    }, {
+      "type": "text",
+      "text": "things and stuff"
+    }
+  ]
+}

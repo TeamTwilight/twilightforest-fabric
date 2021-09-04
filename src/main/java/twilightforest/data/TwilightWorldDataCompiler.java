@@ -45,8 +45,8 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 
 	@Override
 	public void generate(HashCache directoryCache) {
-		ConfiguredSurfaceBuilders.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_SURFACE_BUILDER_REGISTRY));
-		ConfiguredWorldCarvers.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_CARVER_REGISTRY));
+		//ConfiguredSurfaceBuilders.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_SURFACE_BUILDER_REGISTRY));
+		//ConfiguredWorldCarvers.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_CARVER_REGISTRY));
 
 		Map<ResourceLocation, Biome> biomes = this.getBiomes();
 		biomes.forEach((rl, biome) -> this.dynamicRegistries.registry(Registry.BIOME_REGISTRY).ifPresent(reg -> Registry.register(reg, rl, biome)));

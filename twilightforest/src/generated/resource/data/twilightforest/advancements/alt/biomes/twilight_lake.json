@@ -1,0 +1,18 @@
+{
+  "parent": "twilightforest:alt/root",
+  "criteria": {
+    "in_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "twilightforest:lake"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_biome"
+    ]
+  ]
+}

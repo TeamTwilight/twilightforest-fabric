@@ -1,0 +1,61 @@
+{
+  "parent": "twilightforest:progress_trophy_pedestal",
+  "display": {
+    "icon": {
+      "item": "minecraft:air"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.progress_knights"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.progress_knights.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "knight": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "twilightforest:knight_phantom"
+            },
+            "entity": "this"
+          }
+        ]
+      }
+    },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:air"
+            ]
+          }
+        ]
+      }
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_trophy_pedestal"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "knight",
+      "trophy"
+    ],
+    [
+      "previous_progression"
+    ]
+  ]
+}

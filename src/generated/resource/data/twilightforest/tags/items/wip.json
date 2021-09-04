@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:air",
+    "minecraft:air",
+    "minecraft:air",
+    "twilightforest:cube_of_annihilation"
+  ]
+}

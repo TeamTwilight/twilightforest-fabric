@@ -207,4 +207,6 @@ public final class ConfiguredFeatures {
 
     //music!
     public static final Music TFMUSICTYPE = new Music(TFSounds.MUSIC, 1200, 12000, true);
+
+    public static void init() {}
 }
