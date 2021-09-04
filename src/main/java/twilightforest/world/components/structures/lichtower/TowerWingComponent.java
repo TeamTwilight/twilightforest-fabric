@@ -58,7 +58,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	private static Method getHangingEntity_updateFacingWithBoundingBox() {
 		try {
 			if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
-				return HangingEntity.class.getDeclaredMethod("setDirection ", Direction.class);
+				return HangingEntity.class.getDeclaredMethod("setDirection", Direction.class);
 			}
 			return HangingEntity.class.getDeclaredMethod("method_6892 ", Direction.class);
 		} catch (NoSuchMethodException e) {

@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import twilightforest.TwilightForestMod;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -43,7 +44,9 @@ public class NetworkWrapper {
             Packet packet = packetIdMap.get(id);
             ISimplePacket object = (ISimplePacket) packet.decoder.apply(packetByteBuf);
 //            if(object instanceof IThreadsafePacket)
+            TwilightForestMod.LOGGER.info(Thread.currentThread());
             PacketUtils.ensureRunningOnSameThread(object, serverPlayNetworkHandler, serverPlayerEntity.getLevel());
+            TwilightForestMod.LOGGER.info(Thread.currentThread());
             packet.consumer.accept(object, serverPlayerEntity);
         });
 
@@ -52,7 +55,9 @@ public class NetworkWrapper {
             Packet packet = packetIdMap.get(id);
             ISimplePacket object = (ISimplePacket) packet.decoder.apply(packetByteBuf);
 //            if(object instanceof IThreadsafePacket)
-            PacketUtils.ensureRunningOnSameThread(object, clientPlayNetworkHandler, minecraftClient);
+            //TwilightForestMod.LOGGER.info(Thread.currentThread());
+            //PacketUtils.ensureRunningOnSameThread(object, clientPlayNetworkHandler, minecraftClient);
+            //TwilightForestMod.LOGGER.info(Thread.currentThread());
             packet.consumer.accept(object, minecraftClient.player);
         });
     }

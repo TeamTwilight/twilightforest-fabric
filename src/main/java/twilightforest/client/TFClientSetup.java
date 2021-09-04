@@ -53,7 +53,7 @@ public class TFClientSetup implements ClientModInitializer {
         TFLayerDefinitions.registerLayers();
         TFModelLayers.init();
         TFEntities.registerEntityRenderer();
-        ClientLifecycleEvents.CLIENT_STARTED.register((client -> TFParticleType.registerFactories()));
+        TFParticleType.registerFactories();
         twilightforest.client.TFClientSetup.addLegacyPack();
 		try {
 			Class.forName("net.optifine.Config");
