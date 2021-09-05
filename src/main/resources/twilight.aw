@@ -110,3 +110,4 @@ accessible method net/minecraft/world/entity/monster/AbstractSkeleton getStepSou
 accessible field net/minecraft/world/level/block/state/BlockBehaviour material Lnet/minecraft/world/level/material/Material;
 accessible method net/minecraft/resources/RegistryWriteOps <init> (Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/core/RegistryAccess;)V
 accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings <init> (Lnet/minecraft/world/level/levelgen/StructureSettings;Lnet/minecraft/world/level/levelgen/NoiseSettings;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;IIIIZZZZZZ)V
+accessible class net/minecraft/server/level/ServerLevel$EntityCallbacks

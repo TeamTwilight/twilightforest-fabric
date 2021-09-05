@@ -8,7 +8,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.server.Bootstrap;
 
-public class DataGenerators implements PreLaunchEntrypoint {
+public class DataGenerators {
 
 	public static void gatherData(DataGeneratorHandler handler) {
 		handler.install(new AdvancementProvider(handler.getDataGenerator()));
@@ -25,16 +25,17 @@ public class DataGenerators implements PreLaunchEntrypoint {
         handler.install(new TwilightWorldDataCompiler(handler.getDataGenerator()));
 	}
 
-	@Override
-	public void onPreLaunch() {
+	public static int run() {
 		try {
 			SharedConstants.tryDetectVersion();
 			Bootstrap.bootStrap();
 			DataGeneratorHandler handler = DataGeneratorHandler.create(Paths.get("../src/generated/resource"));
 			gatherData(handler);
 			handler.run();
+			return 0;
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
+			return -1;
 			//System.exit(1);
 		}
 //		System.exit(0);

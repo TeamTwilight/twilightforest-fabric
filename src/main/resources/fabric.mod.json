@@ -29,7 +29,9 @@
 
     ],
     "preLaunch": [
-      "twilightforest.data.DataGenerators"
+    ],
+    "cardinal-components": [
+      "twilightforest.capabilities.CapabilityList"
     ]
   },
   "mixins": [
@@ -41,5 +43,10 @@
     "fabric": "*",
     "minecraft": "1.17.x",
     "java": ">=16"
+  },
+  "custom": {
+    "cardinal-components": [
+      "twilightforest:shield"
+    ]
   }
 }

@@ -207,8 +207,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
         // So yes, we could do fluid tags for the portal pool but the problem is that we're -replacing- the block, effectively replacing what would be waterlogged, with the portal block
         // In the future if we can "portal log" blocks then we can re-explore doing it as a fluid
         tag(PORTAL_POOL).add(Blocks.WATER);
-        tag(BlockTags.FLOWERS);
-        tag(BlockTags.CROPS);
+//        tag(BlockTags.FLOWERS);
+//        tag(BlockTags.CROPS);
         tag(PORTAL_DECO).addTag(BlockTags.FLOWERS).addTag(BlockTags.LEAVES).addTag(BlockTags.SAPLINGS).addTag(BlockTags.CROPS).add(Blocks.BAMBOO)
                 .add(getAllMinecraftOrTwilightBlocks(b -> (b.material == Material.PLANT || b.material == Material.REPLACEABLE_PLANT || b.material == Material.LEAVES) && !plants.contains(b)));
 

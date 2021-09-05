@@ -12,7 +12,11 @@
     "PlayerMixin",
     "RarityMixin",
     "SpawnPlacementsMixin",
-    "ChunkMapMixin"
+    "ChunkMapMixin",
+    "LevelMixinPatch",
+    "ServerLevelMixinPatch",
+    "ServerLevelEntityCallbacksMixinPatch",
+    "ServerEntityMixinPatch"
   ],
   "client": [
     "client.BlockColorsMixin",
@@ -22,6 +26,7 @@
     "client.ModelManagerMixin",
     "client.EntityRenderDispatcherMixin"
   ],
+  "plugin": "twilightforest.mixin.plugin.TwilightForestMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   }

@@ -291,6 +291,6 @@ public class TwilightForestMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		init();
-		ClientLifecycleEvents.CLIENT_STARTED.register((client -> run()));
+		run();
 	}
 }

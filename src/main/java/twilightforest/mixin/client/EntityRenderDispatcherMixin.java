@@ -6,11 +6,18 @@ import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import twilightforest.ASMHooks;
 import twilightforest.client.model.entity.PartEntity;
 import twilightforest.extensions.IEntityEx;
 
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -75,5 +82,10 @@ public class EntityRenderDispatcherMixin {
         Matrix3f matrix3f = pMatrixStack.last().normal();
         pBuffer.vertex(matrix4f, 0.0F, pEntity.getEyeHeight(), 0.0F).color(0, 0, 255, 255).normal(matrix3f, (float)vec3.x, (float)vec3.y, (float)vec3.z).endVertex();
         pBuffer.vertex(matrix4f, (float)(vec3.x * 2.0D), (float)((double)pEntity.getEyeHeight() + vec3.y * 2.0D), (float)(vec3.z * 2.0D)).color(0, 0, 255, 255).normal(matrix3f, (float)vec3.x, (float)vec3.y, (float)vec3.z).endVertex();
+    }
+
+    @Inject(method = "onResourceManagerReload", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILSOFT)
+    public void nonAsmCursedness(ResourceManager resourceManager, CallbackInfo ci, EntityRendererProvider.Context context) {
+        ASMHooks.bakeMultipartRenders(context);
     }
 }
