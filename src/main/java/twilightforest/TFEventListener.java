@@ -864,19 +864,6 @@ public class TFEventListener {
 		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EnforceProgressionStatusPacket(isEnforced));
 	}
 
-	private static void sendSkylightEnabled(ServerPlayer player, boolean skylightEnabled) {
-		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SetSkylightEnabledPacket(skylightEnabled));
-	}
-
-	// TODO: This previously used the network-connection connected events
-	// TODO: which no longer seem to be present.
-	@SubscribeEvent
-	public static void onClientConnect(PlayerEvent.PlayerLoggedInEvent event) {
-		// This event is only ever fired on the server side
-		ServerPlayer player = (ServerPlayer) event.getPlayer();
-//		sendSkylightEnabled(player, TwilightForestDimension.isSkylightEnabled(TFGenerationSettings.getDimensionData(player.world)));
-	}
-
 	/**
 	 * When world is loaded, check if the game rule is defined
 	 */
