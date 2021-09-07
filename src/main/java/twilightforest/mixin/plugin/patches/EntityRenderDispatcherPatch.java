@@ -1,5 +1,6 @@
 package twilightforest.mixin.plugin.patches;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
@@ -56,16 +57,22 @@ public class EntityRenderDispatcherPatch implements Patch {
 
     @Override
     public String getMixinClass() {
-        return "net.minecraft.client.renderer.entity.EntityRenderDispatcher";
+        if(FabricLoader.getInstance().isDevelopmentEnvironment())
+            return "net.minecraft.client.renderer.entity.EntityRenderDispatcher";
+        return "net.minecraft.class_898";
     }
 
     @Override
     public String getMethodName() {
-        return "getRenderer";
+        if(FabricLoader.getInstance().isDevelopmentEnvironment())
+            return "getRenderer";
+        return "method_3550";
     }
 
     @Override
     public String getMethodDesc() {
-        return "(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;";
+        if(FabricLoader.getInstance().isDevelopmentEnvironment())
+            return "(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;";
+        return "(Lnet/minecraft/class_1297;)Lnet/minecraft/class_897;";
     }
 }

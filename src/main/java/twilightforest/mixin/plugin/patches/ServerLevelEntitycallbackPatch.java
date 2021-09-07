@@ -1,5 +1,6 @@
 package twilightforest.mixin.plugin.patches;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -46,12 +47,12 @@ public class ServerLevelEntitycallbackPatch implements Patch {
 
     @Override
     public String getMixinClass() {
-        return "net.minecraft.server.level.ServerLevel$EntityCallbacks";
+        return FabricLoader.getInstance().getMappingResolver().mapClassName("named", "net.minecraft.server.level.ServerLevel$EntityCallbacks");
     }
 
     @Override
     public String getMethodName() {
-        return "onTrackingStart";
+        return FabricLoader.getInstance().getMappingResolver().mapMethodName("named", getMixinClass(), "onTrackingStart", getMethodDesc());
     }
 
     @Override

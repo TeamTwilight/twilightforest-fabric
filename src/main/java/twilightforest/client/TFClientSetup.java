@@ -3,6 +3,7 @@ package twilightforest.client;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.TFLayerDefinitions;
@@ -17,6 +18,8 @@ import twilightforest.tileentity.TFTileEntities;
 import java.lang.reflect.Field;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
@@ -38,13 +41,12 @@ public class TFClientSetup implements ClientModInitializer {
 
 		private static boolean optifineWarningShown = false;
 
-//		@SubscribeEvent
-//		public static void showOptifineWarning(GuiScreenEvent.InitGuiEvent.Post event) {
-//			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && event.getGui() instanceof TitleScreen) {
-//				optifineWarningShown = true;
-//				Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getGui()));
-//			}
-//		}
+		public static void showOptifineWarning(Screen screen) {
+			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen && screen instanceof TitleScreen) {
+				optifineWarningShown = true;
+				Minecraft.getInstance().setScreen(new OptifineWarningScreen(screen));
+			}
+		}
 
 	}
 
@@ -54,13 +56,16 @@ public class TFClientSetup implements ClientModInitializer {
         TFModelLayers.init();
         TFEntities.registerEntityRenderer();
         TFParticleType.registerFactories();
-        twilightforest.client.TFClientSetup.addLegacyPack();
-		try {
-			Class.forName("net.optifine.Config");
-			optifinePresent = true;
-		} catch (ClassNotFoundException e) {
-			optifinePresent = false;
-		}
+        //twilightforest.client.TFClientSetup.addLegacyPack();
+        System.out.println(FabricLoader.getInstance().isModLoaded("optifabric")+ ": Optifine loaded?");
+        if(FabricLoader.getInstance().isModLoaded("optifabric"))
+            optifinePresent = true;
+//		try {
+//			Class.forName("net.optifine.Config");
+//			optifinePresent = true;
+//		} catch (ClassNotFoundException e) {
+//			optifinePresent = false;
+//		}
 		TFItems.addItemModelProperties();
         RenderLayerRegistration.init();
         //MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());

@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -51,12 +52,13 @@ public class BrittleFlaskItem extends Item {
 		return stack;
 	}
 
-	@Override
+	//TODO: PORT
+	//@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 		return stack.getOrCreateTag().contains("Potion");
 	}
 
-	@Override
+	//@Override
 	public int getRGBDurabilityForDisplay(ItemStack stack) {
 		return PotionUtils.getColor(stack);
 	}
@@ -159,7 +161,7 @@ public class BrittleFlaskItem extends Item {
 
 	private void addTowardsAdvancement(String potionDrank, Player drinker) {
 		if(lastUsedPotion == null) {
-			lastUsedPotion = Potions.EMPTY.getRegistryName().toString();
+			lastUsedPotion = Registry.POTION.getKey(Potions.EMPTY).toString();
 		}
 
 		if (!lastUsedPotion.equals(potionDrank)) {
@@ -170,7 +172,7 @@ public class BrittleFlaskItem extends Item {
 			timesUsed++;
 		}
 
-		if(timesUsed >= 4 && drinker instanceof ServerPlayer player && drinker.isAlive() && lastUsedPotion.equals(Potions.STRONG_HARMING.getRegistryName().toString()) && advancementWindow) {
+		if(timesUsed >= 4 && drinker instanceof ServerPlayer player && drinker.isAlive() && lastUsedPotion.equals(Registry.POTION.getKey(Potions.STRONG_HARMING).toString()) && advancementWindow) {
 			PlayerAdvancements advancements = player.getAdvancements();
 			ServerAdvancementManager manager = ((ServerLevel) player.getCommandSenderWorld()).getServer().getAdvancements();
 			Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("full_mettle_alchemist"));
@@ -206,7 +208,8 @@ public class BrittleFlaskItem extends Item {
 		if(!stack.getOrCreateTag().getBoolean("Refillable")) tooltip.add(new TranslatableComponent("item.twilightforest.flask_no_refill").withStyle(ChatFormatting.RED));
 	}
 
-	@Override
+	//TODO: PORT
+	//@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 		return Math.abs((double)stack.getOrCreateTag().getInt("Uses") - 4) / 4;
 	}

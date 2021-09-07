@@ -1,5 +1,7 @@
 package twilightforest.mixin.plugin;
 
+import net.fabricmc.loader.api.FabricLoader;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -14,12 +16,17 @@ public class TwilightForestMixinPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         patches = new ArrayList<>();
-        patches.add(new LevelPatch());
+//        patches.add(new LevelPatch());
         patches.add(new ServerLevelPatch());
-        patches.add(new ServerLevelEntitycallbackPatch());
-        patches.add(new ServerEntityPatch());
+//        patches.add(new ServerLevelEntitycallbackPatch());
+//        patches.add(new ServerEntityPatch());
         patches.add(new EntityRenderDispatcherPatch());
-        patches.add(new LevelRendererPatch());
+//        patches.add(new LevelRendererPatch());
+        for(String namespace : FabricLoader.getInstance().getMappingResolver().getNamespaces()) {
+            System.out.println(namespace);
+        }
+        System.out.println(FabricLoader.getInstance().getMappingResolver().getCurrentRuntimeNamespace());
+        System.out.println(FabricLoader.getInstance().getMappingResolver().mapClassName("official", "net.minecraft.client.renderer.entity.EntityRenderDispatcher"));
     }
 
     @Override
@@ -50,10 +57,12 @@ public class TwilightForestMixinPlugin implements IMixinConfigPlugin {
         for(Patch patch : patches) {
             //System.out.println(targetClassName.equals(patch.getMixinClass()) + " : " + targetClassName);
             patch.applyClass(targetClass);
+
             if(patch.getMixinClass().equals(targetClassName)) {
                 for(MethodNode node : targetClass.methods) {
-                    //System.out.println(node.desc);
-                    System.out.println(node.name + " : "+ node.desc);
+
+                    System.out.println(node.desc);
+                    //System.out.println(node.name + " : "+ node.desc);
                     if(node.name.equals(patch.getMethodName()) && node.desc.equals(patch.getMethodDesc())) {
                         patch.applyMethod(node);
                     }

@@ -21,7 +21,6 @@ public class TFPacketHandler {
 		CHANNEL.registerPacket(MagicMapPacket.class, MagicMapPacket::new, EnvType.CLIENT);
 		CHANNEL.registerPacket(MazeMapPacket.class, MazeMapPacket::new, EnvType.CLIENT);
 		CHANNEL.registerPacket(UpdateShieldPacket.class, UpdateShieldPacket::new, EnvType.CLIENT);
-		CHANNEL.registerPacket(SetSkylightEnabledPacket.class, SetSkylightEnabledPacket::new, EnvType.CLIENT);
 		CHANNEL.registerPacket(UncraftingGuiPacket.class, UncraftingGuiPacket::new, EnvType.CLIENT);
 		CHANNEL.registerPacket(UpdateTFMultipartPacket.class, UpdateTFMultipartPacket::new, EnvType.CLIENT);
 		CHANNEL.registerPacket(SpawnFallenLeafFromPacket.class, SpawnFallenLeafFromPacket::new, EnvType.CLIENT);

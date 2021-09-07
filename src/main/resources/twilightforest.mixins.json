@@ -24,7 +24,8 @@
     "client.ItemColorsMixin",
     "client.LevelRendererMixin",
     "client.ModelManagerMixin",
-    "client.EntityRenderDispatcherMixin"
+    "client.EntityRenderDispatcherMixin",
+    "client.ScreenMixin"
   ],
   "plugin": "twilightforest.mixin.plugin.TwilightForestMixinPlugin",
   "injectors": {

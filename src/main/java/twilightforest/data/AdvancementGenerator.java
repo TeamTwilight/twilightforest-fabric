@@ -500,10 +500,10 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 	}
 
 	private ItemStack flaskWithHarming() {
-		ItemStack itemstack = new ItemStack(TFItems.greater_flask.get());
+		ItemStack itemstack = new ItemStack(TFItems.greater_flask);
 		CompoundTag compoundtag = itemstack.getOrCreateTag();
 		compoundtag.putInt("Uses", 4);
-		compoundtag.putString("Potion", Potions.STRONG_HARMING.getRegistryName().toString());
+		compoundtag.putString("Potion", Registry.POTION.getKey(Potions.STRONG_HARMING).toString());
 		return itemstack;
 	}
 

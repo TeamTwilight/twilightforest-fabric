@@ -65,7 +65,7 @@ public class TwilightForestMod implements ModInitializer {
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	private static final Rarity rarity = Rarity.valueOf("TWILIGHT");
+	private static final Rarity rarity = Rarity.EPIC;//Rarity.valueOf("TWILIGHT");
 
 	public void run() {
 		// FIXME: safeRunWhenOn is being real jank for some reason, look into it
@@ -155,6 +155,7 @@ public class TwilightForestMod implements ModInitializer {
 		TFEntities.registerEntities();
 		TFEntities.addEntityAttributes();
 		TFEntities.registerSpawnEggs();
+		TFEventListener.registerFabricEvents();
 
 		if (TFConfig.COMMON_CONFIG.doCompat) {
 			try {

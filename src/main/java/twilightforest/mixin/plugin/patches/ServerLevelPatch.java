@@ -1,5 +1,6 @@
 package twilightforest.mixin.plugin.patches;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -31,12 +32,16 @@ public class ServerLevelPatch implements Patch {
 
     @Override
     public String getMixinClass() {
-        return "net.minecraft.server.level.ServerLevel";
+        if(FabricLoader.getInstance().isDevelopmentEnvironment())
+            return "net.minecraft.server.level.ServerLevel";
+        return "net.minecraft.class_3218";
     }
 
     @Override
     public String getMethodName() {
-        return "getEntityOrPart";
+        if(FabricLoader.getInstance().isDevelopmentEnvironment())
+            return "getEntityOrPart";
+        return "method_31424";
     }
 
     @Override

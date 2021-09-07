@@ -1,5 +1,6 @@
 package twilightforest.mixin.plugin.patches;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -48,12 +49,16 @@ public class LevelRendererPatch implements Patch {
 
     @Override
     public String getMixinClass() {
-        return "net.minecraft.client.renderer.LevelRenderer";
+        if(FabricLoader.getInstance().isDevelopmentEnvironment())
+            return "net.minecraft.client.renderer.LevelRenderer";
+        return "net.minecraft.class_898";
     }
 
     @Override
     public String getMethodName() {
-        return "renderLevel";
+        if(FabricLoader.getInstance().isDevelopmentEnvironment())
+            return "renderLevel";
+        return "method_22710";
     }
 
     @Override

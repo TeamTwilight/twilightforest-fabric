@@ -1,5 +1,6 @@
 package twilightforest.mixin.plugin.patches;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -34,12 +35,12 @@ public class LevelPatch implements Patch {
 
     @Override
     public String getMixinClass() {
-        return "net.minecraft.world.level.Level";
+        return FabricLoader.getInstance().getMappingResolver().mapClassName("named", "net.minecraft.world.level.Level");
     }
 
     @Override
     public String getMethodName() {
-        return "getEntities";
+        return FabricLoader.getInstance().getMappingResolver().mapMethodName("named", getMixinClass(), "getEntities", getMethodDesc());
     }
 
     @Override

@@ -53,9 +53,9 @@ import net.minecraft.world.entity.SpawnPlacements;
 
 public class TFEntities {
 
-	public static final SpawnPlacements.Type ON_ICE = SpawnPlacements.Type.valueOf("TF_ON_ICE");
+	public static final SpawnPlacements.Type ON_ICE = SpawnPlacements.Type.ON_GROUND;//SpawnPlacements.Type.valueOf("TF_ON_ICE");
 
-	public static final SpawnPlacements.Type CLOUDS = SpawnPlacements.Type.valueOf("CLOUD_DWELLERS");
+	public static final SpawnPlacements.Type CLOUDS = SpawnPlacements.Type.ON_GROUND;//SpawnPlacements.Type.valueOf("CLOUD_DWELLERS");
 
 	private static final List<EntityType<?>> ALL = new ArrayList<>();
 	public static final EntityType<BoarEntity> wild_boar = make(TFEntityNames.WILD_BOAR, BoarEntity::new, MobCategory.CREATURE, 0.9F, 0.9F);

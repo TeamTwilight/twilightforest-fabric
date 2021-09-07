@@ -1,5 +1,6 @@
 package twilightforest.mixin.plugin.patches;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
@@ -14,12 +15,12 @@ public class ServerEntityPatch implements Patch {
 
     @Override
     public String getMixinClass() {
-        return "net.minecraft.server.level.ServerEntity";
+        return FabricLoader.getInstance().getMappingResolver().mapClassName("named", "net.minecraft.server.level.ServerEntity");
     }
 
     @Override
     public String getMethodName() {
-        return "sendDirtyEntityData";
+        return FabricLoader.getInstance().getMappingResolver().mapMethodName("named", getMixinClass(), "sendDirtyEntityData", getMethodDesc());
     }
 
     @Override

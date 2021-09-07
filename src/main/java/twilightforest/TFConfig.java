@@ -391,11 +391,11 @@ public class TFConfig {
 //			builder.pop();
 		}
 
-		public boolean silentCicadas;
+		public boolean silentCicadas = false;
 		public boolean firstPersonEffects;
-		public boolean rotateTrophyHeadsGui;
-		public boolean disableOptifineNagScreen;
-		public boolean disableHereBeDragons;
+		public boolean rotateTrophyHeadsGui = true;
+		public boolean disableOptifineNagScreen = false;
+		public boolean disableHereBeDragons = false;
 
 		public final LoadingScreen LOADING_SCREEN = new LoadingScreen();
 

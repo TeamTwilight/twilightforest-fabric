@@ -6,20 +6,26 @@ import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import twilightforest.ASMHooks;
 import twilightforest.client.model.entity.PartEntity;
 import twilightforest.extensions.IEntityEx;
 
+import java.util.Map;
+
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
@@ -27,9 +33,14 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 @Mixin(EntityRenderDispatcher.class)
-public class EntityRenderDispatcherMixin {
+public abstract class EntityRenderDispatcherMixin {
 
     //TODO: Make this not a overwrite
+
+    @Shadow public abstract <T extends Entity> EntityRenderer<? super T> getRenderer(T entity);
+
+    @Shadow private Map<EntityType<?>, EntityRenderer<?>> renderers;
+
     /**
      * @author AlphaMode
      * fuck you forge I don't want to write a actual mixin rn
@@ -88,4 +99,9 @@ public class EntityRenderDispatcherMixin {
     public void nonAsmCursedness(ResourceManager resourceManager, CallbackInfo ci, EntityRendererProvider.Context context) {
         ASMHooks.bakeMultipartRenders(context);
     }
+
+//    @Inject(method = "getRenderer", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
+//    public <T extends Entity> void getMultipartRenderer(T entity, CallbackInfoReturnable<EntityRenderer<? super T>> cir) {
+//        ASMHooks.getMultipartRenderer(this.renderers.get(entity.getType()), entity);
+//    }
 }
