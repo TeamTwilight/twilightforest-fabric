@@ -125,7 +125,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 		if (costVal > 0) {
 			int color;
 			String cost = "" + costVal;
-			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.instabuild) {
+			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.getAbilities().instabuild) {
 				color = 0xA00000;
 			} else {
 				color = 0x80FF20;
@@ -137,7 +137,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 		if (costVal > 0) {
 			int color;
 			String cost = "" + costVal;
-			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.instabuild) {
+			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.getAbilities().instabuild) {
 				color = 0xA00000;
 			} else {
 				color = 0x80FF20;

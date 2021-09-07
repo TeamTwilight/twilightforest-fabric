@@ -179,7 +179,7 @@ public class SwarmSpiderEntity extends Spider {
 
 		if (this.getFirstPassenger() != null || worldIn.getRandom().nextInt(20) <= difficulty.getDifficulty().getId()) {
 			SkeletonDruidEntity druid = TFEntities.skeleton_druid.create(this.level);
-			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, 0.0F);
+			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 			druid.setBaby(true);
 			druid.finalizeSpawn(worldIn, difficulty, MobSpawnType.JOCKEY, null, null);
 

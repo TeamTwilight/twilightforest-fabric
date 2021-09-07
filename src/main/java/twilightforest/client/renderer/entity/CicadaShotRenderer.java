@@ -33,8 +33,8 @@ public class CicadaShotRenderer extends EntityRenderer<CicadaShotEntity> {
 		stack.translate(0.0, 0.5, 0.0);
 		stack.scale(-1f, -1f, -1f);
 
-		stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.yRot) - 180.0F));
-		stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.xRot)));
+		stack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 180.0F));
+		stack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
 
 		VertexConsumer builder = buffer.getBuffer(this.cicadaModel.renderType(textureLoc));
 		this.cicadaModel.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

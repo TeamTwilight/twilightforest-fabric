@@ -218,7 +218,7 @@ public class KnightPhantomEntity extends FlyingMob implements Enemy {
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {
-				((LivingEntity) entityIn).knockback(i * 0.5F, Mth.sin(this.yRot * 0.017453292F), (-Mth.cos(this.yRot * 0.017453292F)));
+				((LivingEntity) entityIn).knockback(i * 0.5F, Mth.sin(this.getYRot() * 0.017453292F), (-Mth.cos(this.getYRot() * 0.017453292F)));
 				setDeltaMovement(new Vec3(
 						getDeltaMovement().x() * 0.6D,
 						getDeltaMovement().y(),

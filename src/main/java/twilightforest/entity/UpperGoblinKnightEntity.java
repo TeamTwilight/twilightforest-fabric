@@ -153,7 +153,7 @@ public class UpperGoblinKnightEntity extends Monster {
 				this.setTarget(((Mob) this.getVehicle()).getTarget());
 			}
 
-			if(getTarget() instanceof Player && ((Player)getTarget()).abilities.invulnerable) {
+			if(getTarget() instanceof Player && ((Player)getTarget()).getAbilities().invulnerable) {
 				this.setTarget(null);
 			}
 

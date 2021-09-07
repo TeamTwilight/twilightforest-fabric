@@ -34,7 +34,7 @@ public abstract class TFPartRenderer<T extends TFPartEntity<?>, M extends ListMo
 		matrixStackIn.pushPose();
 
 		float f = Mth.rotLerp(partialTicks, entityIn.prevRenderYawOffset, entityIn.renderYawOffset);
-		float f6 = Mth.lerp(partialTicks, entityIn.xRotO, entityIn.xRot);
+		float f6 = Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot());
 
 		float f7 = this.handleRotationFloat(entityIn, partialTicks);
 		this.applyRotations(entityIn, matrixStackIn, f7, f, partialTicks);

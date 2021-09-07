@@ -24,7 +24,7 @@ public class EmptyMazeMapItem extends ComplexItem {
 	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
 		ItemStack itemstack = MazeMapItem.setupNewMap(worldIn, Mth.floor(playerIn.getX()), Mth.floor(playerIn.getZ()), (byte) 0, true, false, Mth.floor(playerIn.getY()), this.mapOres);
 		ItemStack itemstack1 = playerIn.getItemInHand(handIn);
-		if (!playerIn.abilities.instabuild) {
+		if (!playerIn.getAbilities().instabuild) {
 			itemstack1.shrink(1);
 		}
 

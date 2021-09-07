@@ -95,7 +95,7 @@ public class CarminiteBuilderTileEntity extends BlockEntity {
 	private Direction findNextFacing() {
 		if (this.trackedPlayer != null) {
 			// check up and down
-			int pitch = Mth.floor(trackedPlayer.xRot * 4.0F / 360.0F + 1.5D) & 3;
+			int pitch = Mth.floor(trackedPlayer.getXRot() * 4.0F / 360.0F + 1.5D) & 3;
 
 			if (pitch == 0) {
 				return Direction.UP;

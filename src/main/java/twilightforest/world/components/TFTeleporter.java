@@ -486,7 +486,7 @@ public class TFTeleporter/* implements ITeleporter*/ {
 	}
 
 	private static PortalInfo makePortalInfo(Entity entity, Vec3 pos) {
-		return new PortalInfo(pos, Vec3.ZERO, entity.yRot, entity.xRot);
+		return new PortalInfo(pos, Vec3.ZERO, entity.getYRot(), entity.getXRot());
 	}
 
 	//@Override

@@ -238,6 +238,9 @@
   "item.twilightforest.powder.use": { "subtitle": "subtitles.twilightforest.item.powder.use", "sounds": ["mob/zombie/remedy"] },
   "item.twilightforest.charm.keep": { "subtitle": "subtitles.twilightforest.item.charm.keep", "sounds": ["mob/zombie/unfect"] },
   "item.twilightforest.charm.life": { "subtitle": "subtitles.twilightforest.item.charm.life", "sounds": ["item/totem/use_totem"] },
+  "item.twilightforest.flask.break": { "subtitle": "subtitles.twilightforest.item.flask.break", "sounds": [ "random/glass1", "random/glass2", "random/glass3" ] },
+  "item.twilightforest.flask.crack": { "subtitle": "subtitles.twilightforest.item.flask.crack", "sounds": [ "random/glass1", "random/glass2", "random/glass3" ] },
+  "item.twilightforest.flask.fill": { "subtitle": "subtitles.twilightforest.item.flask.fill", "sounds": [ "block/brewing_stand/brew1", "block/brewing_stand/brew2" ] },
 
   "random.twilightforest.slider": { "subtitle": "subtitles.twilightforest.random.slider", "sounds": [ "twilightforest:random/creakgo2" ] },
 

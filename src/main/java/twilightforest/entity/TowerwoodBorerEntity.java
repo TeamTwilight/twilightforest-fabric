@@ -92,7 +92,7 @@ public class TowerwoodBorerEntity extends Monster {
 
 	@Override
 	public void tick() {
-		this.yBodyRot = this.yRot;
+		this.yBodyRot = this.getYRot();
 		super.tick();
 	}
 

@@ -45,13 +45,11 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		super.addChildren(parent, list, rand);
 
 		// add entrance tower
-		BoundingBox towerBB = BoundingBox.infinite();
+		BoundingBox towerBB = new BoundingBox(this.boundingBox.getCenter());
 
-		/*if (list instanceof StructureStart<?> start) { FIXME
-			for (StructurePiece structurecomponent : start.getPieces()) {
-				towerBB.expand(structurecomponent.getBoundingBox());
-			}
-		}*/
+		if (list instanceof StructureStart<?> start)
+			for (StructurePiece structurecomponent : start.getPieces())
+				towerBB.encapsulate(structurecomponent.getBoundingBox());
 
 		// TODO: make this more general
 		BlockPos myDoor = this.openings.get(0);
@@ -62,7 +60,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 			int length = this.getBoundingBox().minX() - towerBB.minX();
 			if (length >= 0) {
 				entranceDoor = entranceDoor.west(length);
-				// FIXME makeEntranceBridge(list, rand, this.getGenDepth() + 1, myDoor.getX(), myDoor.getY(), myDoor.getZ(), length, Rotation.CLOCKWISE_180);
+				makeEntranceBridge(list, rand, this.getGenDepth() + 1, myDoor.getX(), myDoor.getY(), myDoor.getZ(), length, Rotation.CLOCKWISE_180);
 			}
 		}
 		if (myDoor.getX() == this.size - 1) {

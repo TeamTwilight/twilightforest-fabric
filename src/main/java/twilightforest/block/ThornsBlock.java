@@ -20,14 +20,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
-import twilightforest.extensions.IAIPath;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, IAIPath {
+public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
 
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -41,13 +40,12 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	@Override
 	public boolean canConnectTo(BlockState state, boolean solidSide) {
 		return (state.getBlock() instanceof ThornsBlock
-						|| state.getBlock() == TFBlocks.thorn_rose
-						|| state.getBlock() == TFBlocks.thorn_leaves
+						|| state.getBlock() == TFBlocks.thorn_rose.get()
+						|| state.getBlock() == TFBlocks.thorn_leaves.get()
 						|| state.getMaterial() == Material.PLANT
 						|| state.getMaterial() == Material.DIRT);
 	}
 
-	//TODO: PORT
 	@Nullable
 	@Override
 	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
@@ -70,19 +68,18 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		super.stepOn(world, pos, state, entity);
 	}
 
-	//TODO: PORT
-//	@Override
-//	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-//		if (!player.abilities.instabuild) {
-//			if (!world.isClientSide) {
-//				// grow more
-//				this.doThornBurst(world, pos, state);
-//			}
-//			return false;
-//		} else {
-//			return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
-//		}
-//	}
+	@Override
+	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+		if (!player.getAbilities().instabuild) {
+			if (!world.isClientSide) {
+				// grow more
+				this.doThornBurst(world, pos, state);
+			}
+			return false;
+		} else {
+			return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+		}
+	}
 
 	@Override
 	@Deprecated
@@ -125,7 +122,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 			BlockPos dPos = pos.relative(dir, i);
 
 			if (world.isEmptyBlock(dPos)) {
-				world.setBlock(dPos, TFBlocks.green_thorns.defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
+				world.setBlock(dPos, TFBlocks.green_thorns.get().defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
 			} else {
 				break;
 			}

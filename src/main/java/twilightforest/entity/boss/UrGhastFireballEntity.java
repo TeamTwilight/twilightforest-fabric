@@ -50,7 +50,7 @@ public class UrGhastFireballEntity extends LargeFireball implements ITFProjectil
 		float f = Mth.sqrt((float) distanceToSqr(vec3d));
 		this.yRot = (float) (Mth.atan2(vec3d.x, z) * (180F / (float) Math.PI));
 		this.xRot = (float) (Mth.atan2(vec3d.y, f) * (180F / (float) Math.PI));
-		this.yRotO = this.yRot;
-		this.xRotO = this.xRot;
+		this.yRotO = this.getYRot();
+		this.xRotO = this.getXRot();
 	}
 }

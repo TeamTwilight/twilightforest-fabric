@@ -26,7 +26,7 @@ public class TwilightWandBoltEntity extends TFThrowableEntity implements ItemSup
 
 	public TwilightWandBoltEntity(Level world, LivingEntity thrower) {
 		super(TFEntities.wand_bolt, world, thrower);
-		shootFromRotation(thrower, thrower.xRot, thrower.yRot, 0, 1.5F, 1.0F);
+		shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0, 1.5F, 1.0F);
 	}
 
 	public TwilightWandBoltEntity(Level worldIn, double x, double y, double z) {

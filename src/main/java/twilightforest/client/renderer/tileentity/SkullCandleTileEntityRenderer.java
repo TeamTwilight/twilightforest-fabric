@@ -73,7 +73,9 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleTileEntity> impl
 		ms.translate(0.0F, flag ? 0.75F : 0.45F, 0.0F);
 		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
 				AbstractSkullCandleBlock.candleColorToCandle(state.getValue(AbstractSkullCandleBlock.COLOR).getSerializedName())
-						.defaultBlockState().setValue(CandleBlock.CANDLES, state.getValue(AbstractSkullCandleBlock.CANDLES)), ms, buffer, light, overlay);
+						.defaultBlockState()
+						.setValue(CandleBlock.CANDLES, state.getValue(AbstractSkullCandleBlock.CANDLES))
+						.setValue(CandleBlock.LIT, state.getValue(AbstractSkullCandleBlock.LIT)), ms, buffer, light, overlay);
 	}
 
 	public static void renderSkull(@Nullable Direction dir, float ticks, float animTime, PoseStack ms, MultiBufferSource buffer, int light, SkullModelBase base, RenderType render) {

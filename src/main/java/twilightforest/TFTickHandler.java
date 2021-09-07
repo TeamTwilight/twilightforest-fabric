@@ -1,43 +1,54 @@
 package twilightforest;
 
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.ItemTagGenerator;
-import twilightforest.network.StructureProtectionClearPacket;
+import twilightforest.item.BrittleFlaskItem;
 import twilightforest.network.StructureProtectionPacket;
+import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.PlayerHelper;
 import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
+
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFTickHandler {
 
-	public static void playerTick(Player player) {
+	@SubscribeEvent
+	public static void playerTick(TickEvent.PlayerTickEvent event) {
+		Player player = event.player;
+
 		if (!(player.level instanceof ServerLevel))
 			return;
 
 		ServerLevel world = (ServerLevel) player.level;
 
 		// check for portal creation, at least if it's not disabled
-		if (!world.isClientSide && !TFConfig.COMMON_CONFIG.disablePortalCreation && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination ? 100 : 20) == 0) {
+		if (!world.isClientSide && !TFConfig.COMMON_CONFIG.disablePortalCreation.get() && event.phase == TickEvent.Phase.END && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
-			if (TFConfig.COMMON_CONFIG.adminOnlyPortals) {
+			if (TFConfig.COMMON_CONFIG.adminOnlyPortals.get()) {
 				if (world.getServer().getProfilePermissions(player.getGameProfile()) != 0) {
 					// reduce range to 4.0 when the option is on
 					checkForPortalCreation(player, world, 4.0F);
@@ -48,8 +59,13 @@ public class TFTickHandler {
 			}
 		}
 
+		//tick every second for the advancement bit of the flask, but only if we dont have the advancement
+		if(!world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && !PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("full_mettle_alchemist"))) {
+			BrittleFlaskItem.ticker();
+		}
+
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (!world.isClientSide && player.tickCount % 20 == 0
+		if (!world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0
 				&& TFGenerationSettings.isProgressionEnforced(world)
 				&& TFGenerationSettings.usesTwilightChunkGenerator(world)
 				&& !player.isCreative() && !player.isSpectator()) {
@@ -58,7 +74,7 @@ public class TFTickHandler {
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (!world.isClientSide && player.tickCount % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
+		if (!world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
 			if (TFGenerationSettings.usesTwilightChunkGenerator(world)) {
 				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);
@@ -70,14 +86,14 @@ public class TFTickHandler {
 	}
 
 	private static void sendStructureProtectionPacket(Level world, Player player, BoundingBox sbb) {
-		if (player instanceof ServerPlayer serverPlayer) {
-			TFPacketHandler.CHANNEL.send(serverPlayer, new StructureProtectionPacket(sbb));
+		if (player instanceof ServerPlayer) {
+			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new StructureProtectionPacket(sbb));
 		}
 	}
 
 	private static void sendAllClearPacket(Level world, Player player) {
-		if (player instanceof ServerPlayer serverPlayer) {
-			TFPacketHandler.CHANNEL.send(serverPlayer, new StructureProtectionClearPacket());
+		if (player instanceof ServerPlayer) {
+			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new StructureProtectionClearPacket());
 		}
 	}
 
@@ -106,9 +122,9 @@ public class TFTickHandler {
 	}
 
 	private static void checkForPortalCreation(Player player, Level world, float rangeToCheck) {
-		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension))
-				|| world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID)
-				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions) {
+		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
+				|| world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())
+				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
 			List<ItemEntity> itemList = world.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
 
@@ -116,7 +132,7 @@ public class TFTickHandler {
 				if (ItemTagGenerator.PORTAL_ACTIVATOR.contains(entityItem.getItem().getItem())) {
 					BlockPos pos = new BlockPos(entityItem.position().subtract(0, -0.1d, 0)); //TODO Quick fix, find if there's a more performant fix than this
 					BlockState state = world.getBlockState(pos);
-					if (TFBlocks.twilight_portal.canFormPortal(state)) {
+					if (TFBlocks.twilight_portal.get().canFormPortal(state)) {
 						Random rand = new Random();
 						for (int i = 0; i < 2; i++) {
 							double vx = rand.nextGaussian() * 0.02D;
@@ -126,7 +142,7 @@ public class TFTickHandler {
 							world.addParticle(ParticleTypes.EFFECT, entityItem.getX(), entityItem.getY() + 0.2, entityItem.getZ(), vx, vy, vz);
 						}
 
-						if (TFBlocks.twilight_portal.tryToCreatePortal(world, pos, entityItem, player)) {
+						if (TFBlocks.twilight_portal.get().tryToCreatePortal(world, pos, entityItem, player)) {
 							TFAdvancements.MADE_TF_PORTAL.trigger((ServerPlayer) player);
 							return;
 						}

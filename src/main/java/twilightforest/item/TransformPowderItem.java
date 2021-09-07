@@ -68,7 +68,7 @@ public class TransformPowderItem extends Item {
 			return InteractionResult.PASS;
 		}
 
-		newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.yRot, target.xRot);
+		newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
 		if (newEntity instanceof Mob && target.level instanceof ServerLevelAccessor) {
 			ServerLevelAccessor world = (ServerLevelAccessor) target.level;
 			((Mob) newEntity).finalizeSpawn(world, target.level.getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);

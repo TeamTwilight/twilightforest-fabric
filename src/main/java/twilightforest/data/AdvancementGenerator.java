@@ -16,6 +16,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Block;
 import twilightforest.TFConfig;
 import twilightforest.world.registration.TFStructures;
@@ -392,6 +394,15 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				.rewards(AdvancementRewards.Builder.experience(100))
 				.save(consumer, "twilightforest:lich_scepters");
 
+		Advancement.Builder.advancement().parent(lich).display(
+						flaskWithHarming(),
+						new TranslatableComponent("advancement.twilightforest.full_mettle_alchemist"),
+						new TranslatableComponent("advancement.twilightforest.full_mettle_alchemist.desc"),
+						null, FrameType.CHALLENGE, true, true, true)
+				.addCriterion("drink_4_harming", new ImpossibleTrigger.TriggerInstance())
+				.rewards(AdvancementRewards.Builder.experience(100))
+				.save(consumer, "twilightforest:full_mettle_alchemist");
+
 		Advancement.Builder.advancement().parent(minoshroom).display(
 						TFItems.mazebreaker_pickaxe,
 						new TranslatableComponent("advancement.twilightforest.mazebreaker"),
@@ -485,6 +496,14 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 		ItemStack itemstack = new ItemStack(TFItems.experiment_115);
 		CompoundTag compoundtag = itemstack.getOrCreateTagElement(nbt);
 		compoundtag.putInt(nbt, 1);
+		return itemstack;
+	}
+
+	private ItemStack flaskWithHarming() {
+		ItemStack itemstack = new ItemStack(TFItems.greater_flask.get());
+		CompoundTag compoundtag = itemstack.getOrCreateTag();
+		compoundtag.putInt("Uses", 4);
+		compoundtag.putString("Potion", Potions.STRONG_HARMING.getRegistryName().toString());
 		return itemstack;
 	}
 

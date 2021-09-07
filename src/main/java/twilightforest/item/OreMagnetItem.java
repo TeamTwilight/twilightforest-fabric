@@ -177,10 +177,10 @@ public class OreMagnetItem extends Item {
 	 * in the likely case there's no ore in the exact look direction.
 	 */
 	private Vec3 getOffsetLook(LivingEntity living, float yawOffset, float pitchOffset) {
-		float var2 = Mth.cos(-(living.yRot + yawOffset) * 0.017453292F - (float) Math.PI);
-		float var3 = Mth.sin(-(living.yRot + yawOffset) * 0.017453292F - (float) Math.PI);
-		float var4 = -Mth.cos(-(living.xRot + pitchOffset) * 0.017453292F);
-		float var5 = Mth.sin(-(living.xRot + pitchOffset) * 0.017453292F);
+		float var2 = Mth.cos(-(living.getYRot() + yawOffset) * 0.017453292F - (float) Math.PI);
+		float var3 = Mth.sin(-(living.getYRot() + yawOffset) * 0.017453292F - (float) Math.PI);
+		float var4 = -Mth.cos(-(living.getXRot() + pitchOffset) * 0.017453292F);
+		float var5 = Mth.sin(-(living.getXRot() + pitchOffset) * 0.017453292F);
 		return new Vec3(var3 * var4, var5, var2 * var4);
 	}
 

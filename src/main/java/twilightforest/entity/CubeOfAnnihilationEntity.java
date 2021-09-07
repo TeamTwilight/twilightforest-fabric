@@ -34,7 +34,7 @@ public class CubeOfAnnihilationEntity extends ThrowableProjectile {
 	public CubeOfAnnihilationEntity(EntityType<? extends CubeOfAnnihilationEntity> type, Level world, LivingEntity thrower) {
 		super(type, thrower, world);
 		this.fireImmune();
-		this.shootFromRotation(thrower, thrower.xRot, thrower.yRot, 0F, 1.5F, 1F);
+		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0F, 1.5F, 1F);
 	}
 
 	@Override

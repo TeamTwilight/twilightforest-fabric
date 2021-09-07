@@ -34,8 +34,8 @@ public class CicadaShotEntity extends TFThrowableEntity {
 
     public CicadaShotEntity(Level worldIn, @Nullable LivingEntity living, double x, double y, double z) {
         super(TFEntities.cicada_shot, worldIn);
-        float yaw = living != null ? living.yRot : 0;
-        float pitch = living !=null ? living.xRot : 0;
+        float yaw = living != null ? living.getYRot() : 0;
+        float pitch = living != null ? living.getXRot() : 0;
         this.moveTo(living.getX(), living.getY() + living.getEyeHeight(), living.getZ(), yaw, pitch);
         this.setPos(this.getX(), this.getY(), this.getZ());
         setDeltaMovement(x, y, z);

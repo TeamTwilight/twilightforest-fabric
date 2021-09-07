@@ -61,28 +61,28 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 			double d0 = this.getX() + (this.interpTargetX - this.getX()) / (double)this.newPosRotationIncrements;
 			double d2 = this.getY() + (this.interpTargetY - this.getY()) / (double)this.newPosRotationIncrements;
 			double d4 = this.getZ() + (this.interpTargetZ - this.getZ()) / (double)this.newPosRotationIncrements;
-			double d6 = Mth.wrapDegrees(this.interpTargetYaw - (double)this.yRot);
-			this.yRot = (float)((double)this.yRot + d6 / (double)this.newPosRotationIncrements);
-			this.xRot = (float)((double)this.xRot + (this.interpTargetPitch - (double)this.xRot) / (double)this.newPosRotationIncrements);
+			double d6 = Mth.wrapDegrees(this.interpTargetYaw - (double)this.getYRot());
+			this.yRot = (float)((double)this.getYRot() + d6 / (double)this.newPosRotationIncrements);
+			this.xRot = (float)((double)this.getXRot() + (this.interpTargetPitch - (double)this.getXRot()) / (double)this.newPosRotationIncrements);
 			--this.newPosRotationIncrements;
 			this.setPos(d0, d2, d4);
-			this.setRot(this.yRot, this.xRot);
+			this.setRot(this.getYRot(), this.getXRot());
 		}
 
-		while (yRot - yRotO < -180F) yRotO -= 360F;
-		while (yRot - yRotO >= 180F) yRotO += 360F;
+		while (getYRot() - yRotO < -180F) yRotO -= 360F;
+		while (getYRot() - yRotO >= 180F) yRotO += 360F;
 
 		while (renderYawOffset - prevRenderYawOffset < -180F) prevRenderYawOffset -= 360F;
 		while (renderYawOffset - prevRenderYawOffset >= 180F) prevRenderYawOffset += 360F;
 
-		while (xRot - xRotO < -180F) xRotO -= 360F;
-		while (xRot - xRotO >= 180F) xRotO += 360F;
+		while (getXRot() - xRotO < -180F) xRotO -= 360F;
+		while (getXRot() - xRotO >= 180F) xRotO += 360F;
 	}
 
 	public final void updateLastPos() {
 		moveTo(getX(), getY(), getZ());
-		yRotO = yRot;
-		xRotO = xRot;
+		yRotO = getYRot();
+		xRotO = getXRot();
 		tickCount++;
 	}
 
@@ -110,8 +110,8 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 		buffer.writeDouble(getX());
 		buffer.writeDouble(getY());
 		buffer.writeDouble(getZ());
-		buffer.writeFloat(yRot);
-		buffer.writeFloat(xRot);
+		buffer.writeFloat(getYRot());
+		buffer.writeFloat(getXRot());
 		buffer.writeFloat(dimensions.width);
 		buffer.writeFloat(dimensions.height);
 		buffer.writeBoolean(dimensions.fixed);

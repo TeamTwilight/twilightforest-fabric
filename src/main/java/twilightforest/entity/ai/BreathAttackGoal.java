@@ -158,8 +158,8 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 		double distance = Mth.sqrt((float) (xOffset * xOffset + zOffset * zOffset));
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
 		float zdAngle = (float) (-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
-		entityHost.xRot = -updateRotation(entityHost.xRot, zdAngle, pitchConstraint);
-		entityHost.yRot = updateRotation(entityHost.yRot, xyAngle, yawConstraint);
+		entityHost.xRot = -updateRotation(entityHost.getXRot(), zdAngle, pitchConstraint);
+		entityHost.yRot = updateRotation(entityHost.getYRot(), xyAngle, yawConstraint);
 
 	}
 

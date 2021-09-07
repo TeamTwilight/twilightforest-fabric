@@ -338,7 +338,7 @@ public class LichEntity extends Monster {
 		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
 
 		LichBoltEntity projectile = new LichBoltEntity(TFEntities.lich_bolt, level, this);
-		projectile.moveTo(sx, sy, sz, yRot, xRot);
+		projectile.moveTo(sx, sy, sz, getYRot(), getXRot());
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 
 		level.addFreshEntity(projectile);
@@ -357,7 +357,7 @@ public class LichEntity extends Monster {
 		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
 
 		LichBombEntity projectile = new LichBombEntity(TFEntities.lich_bomb, level, this);
-		projectile.moveTo(sx, sy, sz, yRot, xRot);
+		projectile.moveTo(sx, sy, sz, getYRot(), getXRot());
 		projectile.shoot(tx, ty, tz, 0.35F, 1.0F);
 
 		level.addFreshEntity(projectile);
@@ -426,7 +426,7 @@ public class LichEntity extends Monster {
 		if (dest != null) {
 			teleportToNoChecks(dest.x, dest.y, dest.z);
 			this.getLookControl().setLookAt(entity, 100F, 100F);
-			this.yBodyRot = this.yRot;
+			this.yBodyRot = this.getYRot();
 
 			if (!this.getSensing().hasLineOfSight(entity)) {
 				teleportToNoChecks(srcX, srcY, srcZ);

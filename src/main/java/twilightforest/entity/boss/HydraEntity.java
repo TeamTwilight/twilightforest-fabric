@@ -141,7 +141,7 @@ public class HydraEntity extends Mob implements Enemy, IEntityEx {
 	{
 		float f = Mth.wrapDegrees(p_110146_1_ - this.yBodyRot);
 		this.yBodyRot += f * 0.3F;
-		float f1 = Mth.wrapDegrees(this.yRot - this.yBodyRot);
+		float f1 = Mth.wrapDegrees(this.getYRot() - this.yBodyRot);
 		boolean flag = f1 < -90.0F || f1 >= 90.0F;
 
 		if (f1 < -75.0F)
@@ -154,7 +154,7 @@ public class HydraEntity extends Mob implements Enemy, IEntityEx {
 			f1 = 75.0F;
 		}
 
-		this.yBodyRot = this.yRot - f1;
+		this.yBodyRot = this.getYRot() - f1;
 
 		if (f1 * f1 > 2500.0F)
 		{

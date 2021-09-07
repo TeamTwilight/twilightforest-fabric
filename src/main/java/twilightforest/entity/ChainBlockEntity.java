@@ -64,7 +64,7 @@ public class ChainBlockEntity extends ThrowableProjectile /*implements IEntityAd
 		chain4 = new ChainEntity(this);
 		chain5 = new ChainEntity(this);
 		partsArray =  new BlockChainGoblinEntity.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
-		this.shootFromRotation(thrower, thrower.xRot, thrower.yRot, 0F, 1.5F, 1F);
+		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0F, 1.5F, 1F);
 	}
 
 	private void setHand(InteractionHand hand) {

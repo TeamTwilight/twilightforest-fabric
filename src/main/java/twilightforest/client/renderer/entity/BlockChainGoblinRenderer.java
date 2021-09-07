@@ -51,7 +51,7 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblinEntity, M extend
 		VertexConsumer ivertexbuilder = buffer.getBuffer(this.model.renderType(textureLoc));
 		stack.translate(blockInX, blockInY, blockInZ);
 
-		float pitch = goblin.xRotO + (goblin.xRot - goblin.xRotO) * partialTicks;
+		float pitch = goblin.xRotO + (goblin.getXRot() - goblin.xRotO) * partialTicks;
 		stack.mulPose(Vector3f.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
 		stack.mulPose(Vector3f.XP.rotationDegrees(pitch));
 

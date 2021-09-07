@@ -39,7 +39,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
 		stack.pushPose();
 		VertexConsumer ivertexbuilder = buffer.getBuffer(this.model.renderType(textureLoc));
 
-		float pitch = chainBlock.xRotO + (chainBlock.xRot - chainBlock.xRotO) * partialTicks;
+		float pitch = chainBlock.xRotO + (chainBlock.getXRot() - chainBlock.xRotO) * partialTicks;
 		stack.mulPose(Vector3f.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
 		stack.mulPose(Vector3f.XP.rotationDegrees(pitch));
 
@@ -63,7 +63,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
 		VertexConsumer ivertexbuilder = buffer.getBuffer(chainModel.renderType(textureLoc));
 
 		stack.translate(chainInX, chainInY, chainInZ);
-		float pitch = chain.xRotO + (chain.xRot - chain.xRotO) * partialTicks;
+		float pitch = chain.xRotO + (chain.getXRot() - chain.xRotO) * partialTicks;
 		stack.mulPose(Vector3f.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
 		stack.mulPose(Vector3f.XP.rotationDegrees(pitch));
 

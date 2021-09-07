@@ -26,7 +26,7 @@ public class HydraNeckRenderer extends TFPartRenderer<HydraNeckEntity, HydraNeck
 		HydraHeadContainer headCon = HydraHeadRenderer.getHeadObject(entityIn.head);
 		if (headCon != null)
 			if (headCon.shouldRenderHead()) {
-				float yawDiff = entityIn.yRot - entityIn.yRotO;
+				float yawDiff = entityIn.getYRot() - entityIn.yRotO;
 				if (yawDiff > 180) {
 					yawDiff -= 360;
 				} else if (yawDiff < -180) {

@@ -162,7 +162,7 @@ public class WraithEntity extends FlyingMob implements Enemy {
 		public void tick() {
 			if (this.parentEntity.getTarget() == null) {
 				this.parentEntity.yRot = -((float) Mth.atan2(this.parentEntity.getDeltaMovement().x(), this.parentEntity.getDeltaMovement().z())) * (180F / (float) Math.PI);
-				this.parentEntity.yBodyRot = this.parentEntity.yRot;
+				this.parentEntity.yBodyRot = this.parentEntity.getYRot();
 			} else {
 				LivingEntity entitylivingbase = this.parentEntity.getTarget();
 
@@ -170,7 +170,7 @@ public class WraithEntity extends FlyingMob implements Enemy {
 					double d1 = entitylivingbase.getX() - this.parentEntity.getX();
 					double d2 = entitylivingbase.getZ() - this.parentEntity.getZ();
 					this.parentEntity.yRot = -((float) Mth.atan2(d1, d2)) * (180F / (float) Math.PI);
-					this.parentEntity.yBodyRot = this.parentEntity.yRot;
+					this.parentEntity.yBodyRot = this.parentEntity.getYRot();
 				}
 			}
 		}
@@ -203,7 +203,7 @@ public class WraithEntity extends FlyingMob implements Enemy {
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {
-				((LivingEntity) entityIn).knockback(i * 0.5F, Mth.sin(this.yRot * 0.017453292F), (-Mth.cos(this.yRot * 0.017453292F)));
+				((LivingEntity) entityIn).knockback(i * 0.5F, Mth.sin(this.getYRot() * 0.017453292F), (-Mth.cos(this.getYRot() * 0.017453292F)));
 				this.setDeltaMovement(getDeltaMovement().x() * 0.6D, getDeltaMovement().y(), getDeltaMovement().z() * 0.6D);
 			}
 

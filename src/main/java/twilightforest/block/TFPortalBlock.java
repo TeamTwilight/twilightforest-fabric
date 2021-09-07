@@ -247,7 +247,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if (destination ==  ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID)) && entity instanceof ServerPlayer && forcedEntry) {
 			ServerPlayer playerMP = (ServerPlayer) entity;
 			// set respawn point for TF dimension to near the arrival portal, only if we spawn here on world creation
-			playerMP.setRespawnPosition(destination, playerMP.blockPosition(), playerMP.yRot, true, false);
+			playerMP.setRespawnPosition(destination, playerMP.blockPosition(), playerMP.getYRot(), true, false);
 		}
 
 	}

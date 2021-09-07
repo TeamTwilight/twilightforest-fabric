@@ -180,7 +180,7 @@ public class TinyBirdEntity extends BirdEntity {
 			));
 
 			float f = (float) (Mth.atan2(this.getDeltaMovement().z(), this.getDeltaMovement().x()) * (180D / Math.PI)) - 90.0F;
-			float f1 = Mth.wrapDegrees(f - this.yRot);
+			float f1 = Mth.wrapDegrees(f - this.getYRot());
 			this.zza = 0.5F;
 			this.yRot += f1;
 

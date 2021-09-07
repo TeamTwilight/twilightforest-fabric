@@ -1,0 +1,32 @@
+{
+  "parent": "twilightforest:progress_lich",
+  "display": {
+    "icon": {
+      "item": "twilightforest:greater_potion_flask",
+      "nbt": "{Potion:\"minecraft:strong_harming\",Uses:4}"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.full_mettle_alchemist"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.full_mettle_alchemist.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "rewards": {
+    "experience": 100
+  },
+  "criteria": {
+    "drink_4_harming": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "drink_4_harming"
+    ]
+  ]
+}

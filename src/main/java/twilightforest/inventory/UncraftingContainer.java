@@ -462,7 +462,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 
 		// if the player is trying to take the result item and they don't have the XP to pay for it, reject them
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.tinkerResult
-				&& calculateRecraftingCost() > player.experienceLevel && !player.abilities.instabuild) {
+				&& calculateRecraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
 
 			return;
 		}
@@ -470,7 +470,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.uncraftingMatrix) {
 
 			// similarly, reject uncrafting if they can't do that either
-			if (calculateUncraftingCost() > player.experienceLevel && !player.abilities.instabuild) {
+			if (calculateUncraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
 				return;
 			}
 

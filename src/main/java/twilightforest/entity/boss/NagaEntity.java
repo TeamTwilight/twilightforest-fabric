@@ -688,7 +688,7 @@ public class NagaEntity extends Monster implements IEntityEx {
 
 		if (result) {
 			// charging, apply extra pushback
-			toAttack.push(-Mth.sin((yRot * 3.141593F) / 180F) * 2.0F, 0.4F, Mth.cos((yRot * 3.141593F) / 180F) * 2.0F);
+			toAttack.push(-Mth.sin((getYRot() * 3.141593F) / 180F) * 2.0F, 0.4F, Mth.cos((getYRot() * 3.141593F) / 180F) * 2.0F);
 		}
 
 		return result;
@@ -776,7 +776,7 @@ public class NagaEntity extends Monster implements IEntityEx {
 			double followZ = leader.getZ();
 
 			// also weight the position so that the segments straighten out a little bit, and the front ones straighten more
-			float angle = (((leader.yRot + 180) * 3.141593F) / 180F);
+			float angle = (((leader.getYRot() + 180) * 3.141593F) / 180F);
 
 
 			double straightenForce = 0.05D + (1.0 / (i + 1)) * 0.5D;

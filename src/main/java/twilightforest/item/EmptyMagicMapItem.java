@@ -22,7 +22,7 @@ public class EmptyMagicMapItem extends ComplexItem {
 		// TF - scale at 4
 		ItemStack itemstack = MagicMapItem.setupNewMap(worldIn, Mth.floor(playerIn.getX()), Mth.floor(playerIn.getZ()), (byte) 4, true, false);
 		ItemStack itemstack1 = playerIn.getItemInHand(handIn);
-		if (!playerIn.abilities.instabuild) {
+		if (!playerIn.getAbilities().instabuild) {
 			itemstack1.shrink(1);
 		}
 

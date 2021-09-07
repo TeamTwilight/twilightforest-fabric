@@ -463,7 +463,7 @@ public class HydraHeadContainer {
 				biteMinYaw = 90;
 			}
 
-			float yawOffOffset = Mth.wrapDegrees(headEntity.yRot - hydra.yBodyRot);
+			float yawOffOffset = Mth.wrapDegrees(headEntity.getYRot() - hydra.yBodyRot);
 
 			if (yawOffOffset > biteMaxYaw) {
 				headEntity.yRot = hydra.yBodyRot + biteMaxYaw;
@@ -792,8 +792,8 @@ public class HydraHeadContainer {
 		double endX = headEntity.getX();
 		double endY = headEntity.getY();
 		double endZ = headEntity.getZ();
-		float endYaw = headEntity.yRot;
-		float endPitch = headEntity.xRot;
+		float endYaw = headEntity.getYRot();
+		float endPitch = headEntity.getXRot();
 
 		for (; startYaw - endYaw < -180F; endYaw -= 360F) {
 		}
@@ -851,7 +851,7 @@ public class HydraHeadContainer {
 	}
 
 	private void faceIdle(float yawConstraint, float pitchConstraint) {
-		float angle = (((hydra.yRot) * 3.141593F) / 180F);
+		float angle = (((hydra.getYRot()) * 3.141593F) / 180F);
 		float distance = 30.0F;
 
 		double dx = hydra.getX() - Mth.sin(angle) * distance;
@@ -886,8 +886,8 @@ public class HydraHeadContainer {
 		double distance = Mth.sqrt((float) (xOffset * xOffset + zOffset * zOffset));
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
 		float zdAngle = (float) (-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
-		headEntity.xRot = -updateRotation(headEntity.xRot, zdAngle, pitchConstraint);
-		headEntity.yRot = updateRotation(headEntity.yRot, xyAngle, yawConstraint);
+		headEntity.xRot = -updateRotation(headEntity.getXRot(), zdAngle, pitchConstraint);
+		headEntity.yRot = updateRotation(headEntity.getYRot(), xyAngle, yawConstraint);
 	}
 
 	private float updateRotation(float current, float intended, float increment) {

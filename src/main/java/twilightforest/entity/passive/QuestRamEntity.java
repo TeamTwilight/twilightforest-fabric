@@ -131,7 +131,7 @@ public class QuestRamEntity extends Animal {
 		ItemStack currentItem = player.getItemInHand(hand);
 
 		if (tryAccept(currentItem)) {
-			if (!player.abilities.instabuild) {
+			if (!player.getAbilities().instabuild) {
 				currentItem.shrink(1);
 			}
 

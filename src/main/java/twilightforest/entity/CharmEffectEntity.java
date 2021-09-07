@@ -45,7 +45,7 @@ public class CharmEffectEntity extends Entity implements ItemSupplier {
 		this.setOwner(owner);
 		this.setItemID(item);
 
-		this.moveTo(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), owner.yRot, owner.xRot);
+		this.moveTo(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), owner.getYRot(), owner.getXRot());
 
 		Vec3 look = new Vec3(DISTANCE, 0, 0);
 		double x = getX() + (look.x * DISTANCE);
@@ -65,12 +65,12 @@ public class CharmEffectEntity extends Entity implements ItemSupplier {
 			double d0 = this.getX() + (this.interpTargetX - this.getX()) / this.newPosRotationIncrements;
 			double d1 = this.getY() + (this.interpTargetY - this.getY()) / this.newPosRotationIncrements;
 			double d2 = this.getZ() + (this.interpTargetZ - this.getZ()) / this.newPosRotationIncrements;
-			double d3 = Mth.wrapDegrees(this.interpTargetYaw - this.yRot);
-			this.yRot = (float) (this.yRot + d3 / this.newPosRotationIncrements);
-			this.xRot = (float) (this.xRot + (this.interpTargetPitch - this.xRot) / this.newPosRotationIncrements);
+			double d3 = Mth.wrapDegrees(this.interpTargetYaw - this.getYRot());
+			this.yRot = (float) (this.getYRot() + d3 / this.newPosRotationIncrements);
+			this.xRot = (float) (this.getXRot() + (this.interpTargetPitch - this.getXRot()) / this.newPosRotationIncrements);
 			--this.newPosRotationIncrements;
 			this.setPos(d0, d1, d2);
-			this.setRot(this.yRot, this.xRot);
+			this.setRot(this.getYRot(), this.getXRot());
 		}
 
 		LivingEntity orbiting = getOwner();
@@ -78,7 +78,7 @@ public class CharmEffectEntity extends Entity implements ItemSupplier {
 		if (orbiting != null) {
 			float rotation = this.tickCount / 10.0F + offset;
 			Vec3 look = new Vec3(DISTANCE, 0, 0).yRot(rotation);
-			this.moveTo(orbiting.getX() + look.x, orbiting.getY() + orbiting.getEyeHeight(), orbiting.getZ() + look.z, orbiting.yRot, orbiting.xRot);
+			this.moveTo(orbiting.getX() + look.x, orbiting.getY() + orbiting.getEyeHeight(), orbiting.getZ() + look.z, orbiting.getYRot(), orbiting.getXRot());
 		}
 
 		if (!this.getItemID().isEmpty()) {

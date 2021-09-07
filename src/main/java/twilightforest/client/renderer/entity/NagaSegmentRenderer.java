@@ -24,7 +24,7 @@ public class NagaSegmentRenderer<T extends NagaSegmentEntity> extends TFPartRend
 		if(!entityIn.isInvisible()) {
 			matrixStackIn.pushPose();
 
-			float yawDiff = entityIn.yRot - entityIn.yRotO;
+			float yawDiff = entityIn.getYRot() - entityIn.yRotO;
 			if (yawDiff > 180) {
 				yawDiff -= 360;
 			} else if (yawDiff < -180) {
@@ -33,7 +33,7 @@ public class NagaSegmentRenderer<T extends NagaSegmentEntity> extends TFPartRend
 			float yaw2 = entityIn.yRotO + yawDiff * partialTicks;
 
 			matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(yaw2));
-			matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(entityIn.xRot));
+			matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(entityIn.getXRot()));
 
 			//matrixStackIn.scale(2.0F, 2.0F, 2.0F);
 			//matrixStackIn.translate(0.0D, -1.501F, 0.0D);

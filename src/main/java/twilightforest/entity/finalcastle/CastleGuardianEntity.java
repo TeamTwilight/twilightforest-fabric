@@ -23,7 +23,7 @@ public class CastleGuardianEntity extends PathfinderMob { // Not exactly living 
     protected float tickHeadTurn(float renderYawOffset, float p_110146_2_) {
         float f = Mth.wrapDegrees(renderYawOffset - this.yBodyRot);
         this.yBodyRot += f * 0.5F;
-        float f1 = Mth.wrapDegrees(this.yRot - this.yBodyRot);
+        float f1 = Mth.wrapDegrees(this.getYRot() - this.yBodyRot);
         boolean flag = f1 < -90.0F || f1 >= 90.0F;
 
         if (f1 < -75.0F)
@@ -32,7 +32,7 @@ public class CastleGuardianEntity extends PathfinderMob { // Not exactly living 
         if (f1 >= 75.0F)
             f1 = 75.0F;
 
-        this.yBodyRot = this.yRot - f1;
+        this.yBodyRot = this.getYRot() - f1;
 
         if (f1 * f1 > 2500.0F)
             this.yBodyRot += f1 * 0.5F;

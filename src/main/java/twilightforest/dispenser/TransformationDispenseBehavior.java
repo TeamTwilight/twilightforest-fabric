@@ -42,7 +42,7 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
                    EntityType<?> type = transformMap.get(livingentity.getType());
                    Entity newEntity = type.create(world);
                    if(type != null && newEntity != null) {
-                       newEntity.moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity.yRot, livingentity.xRot);
+                       newEntity.moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity.getYRot(), livingentity.getXRot());
                        if (newEntity instanceof Mob && livingentity.level instanceof ServerLevelAccessor) {
                            ServerLevelAccessor sworld = (ServerLevelAccessor) livingentity.level;
                            ((Mob) newEntity).finalizeSpawn(sworld, livingentity.level.getCurrentDifficultyAt(livingentity.blockPosition()), MobSpawnType.CONVERSION, null, null);

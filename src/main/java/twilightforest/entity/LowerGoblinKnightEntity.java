@@ -99,7 +99,7 @@ public class LowerGoblinKnightEntity extends Monster {
 		livingData = super.finalizeSpawn(worldIn, difficulty, reason, livingData, dataTag);
 
 		UpperGoblinKnightEntity upper = new UpperGoblinKnightEntity(TFEntities.goblin_knight_upper, this.level);
-		upper.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, 0.0F);
+		upper.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 		upper.finalizeSpawn(worldIn, difficulty, MobSpawnType.NATURAL, livingData, dataTag);
 		upper.startRiding(this);
 
@@ -116,7 +116,7 @@ public class LowerGoblinKnightEntity extends Monster {
 		if (isVehicle() && getPassengers().get(0) instanceof LivingEntity && this.getTarget() == null) {
 			this.setTarget(((Mob) this.getPassengers().get(0)).getTarget());
 		}
-		if(getTarget() instanceof Player && ((Player)getTarget()).abilities.invulnerable) {
+		if(getTarget() instanceof Player && ((Player)getTarget()).getAbilities().invulnerable) {
 			this.setTarget(null);
 		}
 		super.customServerAiStep();

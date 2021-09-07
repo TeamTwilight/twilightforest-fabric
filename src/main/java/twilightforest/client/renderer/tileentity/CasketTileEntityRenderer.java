@@ -95,12 +95,12 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBl
         BlockState blockstate = flag ? tileEntityIn.getBlockState() : TFBlocks.keepsake_casket.defaultBlockState();
         Block block = blockstate.getBlock();
         if (block instanceof KeepsakeCasketBlock) {
-            BlockLoggingEnum type = blockstate.getValue(BlockLoggingEnum.MULTILOGGED);
+            //BlockLoggingEnum type = blockstate.getValue(BlockLoggingEnum.MULTILOGGED);
             int damage = blockstate.getValue(KeepsakeCasketBlock.BREAKAGE);
-            boolean solid = type.getBlock() != Blocks.AIR && type.getFluid() == Fluids.EMPTY;
+            //boolean solid = type.getBlock() != Blocks.AIR && type.getFluid() == Fluids.EMPTY;
             float facing = blockstate.getValue(HorizontalDirectionalBlock.FACING).toYRot();
 
-            if(solid) {
+            /*if(solid) {
                 matrixStackIn.pushPose();
                 matrixStackIn.translate(0.5D, 0.5D, 0.5D);
                 matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-facing));
@@ -110,7 +110,7 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBl
                 BlockRenderDispatcher render = Minecraft.getInstance().getBlockRenderer();
                 render.getModelRenderer().tesselateBlock(world, blockrender, type.getBlock().defaultBlockState(), tileEntityIn.getBlockPos(), matrixStackIn, bufferIn.getBuffer(RenderType.translucent()), false, world.random, Mth.getSeed(BlockPos.ZERO), OverlayTexture.NO_OVERLAY);
                 matrixStackIn.popPose();
-            }
+            }*/
 
             matrixStackIn.pushPose();
             matrixStackIn.scale(-1, -1, -1);

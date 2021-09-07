@@ -41,6 +41,8 @@
   "advancement.twilightforest.kill_lich.desc": "Slay the %s at top of his tower and retrieve a scepter to clear poisonous mosquitoes from the Swamp, see through blinding darkness of the Dark Forest's curse, and resist the Snowy Forest's chill.",
   "advancement.twilightforest.lich_scepters": "By Our Powers Combined!",
   "advancement.twilightforest.lich_scepters.desc": "Acquire all four scepters of power.",
+  "advancement.twilightforest.full_mettle_alchemist": "Full Mettle Alchemist",
+  "advancement.twilightforest.full_mettle_alchemist.desc": "Drink four doses of Harming II from a potion flask in under 8 seconds and survive.",
 
   // Swamp Progression
   "advancement.twilightforest.progress_labyrinth": "Mighty Stroganoff",
@@ -601,6 +603,10 @@
   "item.twilightforest.crumble_horn": "Crumble Horn",
   "item.twilightforest.peacock_fan": "Peacock Feather Fan",
   "item.twilightforest.moonworm_queen": "Moonworm Queen",
+  "item.twilightforest.brittle_potion_flask": "Brittle Potion Flask",
+  "item.twilightforest.greater_potion_flask": "Greater Potion Flask",
+  "item.twilightforest.flask_doses": "Doses: %s/%s",
+  "item.twilightforest.flask_no_refill": "Cannot be refilled",
   "item.twilightforest.charm_of_life_1": "Charm of Life I",
   "item.twilightforest.charm_of_life_2": "Charm of Life II",
   "item.twilightforest.charm_of_keeping_1": "Charm of Keeping I",
@@ -1033,6 +1039,9 @@
   "subtitles.twilightforest.item.powder.use": "Transformation Powder used",
   "subtitles.twilightforest.item.charm.keep": "Charm of Keeping returns items",
   "subtitles.twilightforest.item.charm.life": "Charm of Life regenerates player",
+  "subtitles.twilightforest.item.flask.break": "Brittle Flask shatters",
+  "subtitles.twilightforest.item.flask.crack": "Brittle Flask cracks",
+  "subtitles.twilightforest.item.flask.fill": "Potion Flask fills",
 
   "subtitles.twilightforest.random.slider": "Sliding Trap moves",
 

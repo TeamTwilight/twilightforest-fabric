@@ -108,8 +108,8 @@ public class PinchBeetleEntity extends Monster implements IHostileMount {
 		if (!this.getPassengers().isEmpty()) {
 			float distance = 0.9F;
 
-			double dx = Math.cos((this.yRot + 90) * Math.PI / 180.0D) * distance;
-			double dz = Math.sin((this.yRot + 90) * Math.PI / 180.0D) * distance;
+			double dx = Math.cos((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
+			double dz = Math.sin((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
 
 			return new Vec3(this.getX() + dx, this.getY() + this.getPassengersRidingOffset() + this.getPassengers().get(0).getMyRidingOffset(), this.getZ() + dz);
 		} else {

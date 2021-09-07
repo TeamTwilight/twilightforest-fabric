@@ -71,7 +71,8 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 
 	@Override
 	public RenderShape getRenderShape(BlockState state) {
-		return (state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() != Blocks.AIR && state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) ? RenderShape.MODEL : RenderShape.ENTITYBLOCK_ANIMATED;
+		// ENTITYBLOCK_ANIMATED uses only the BlockEntityRender while MODEL uses both the BER and baked model
+		return state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() == Blocks.AIR ? RenderShape.ENTITYBLOCK_ANIMATED : RenderShape.MODEL;
 	}
 
 	@Override

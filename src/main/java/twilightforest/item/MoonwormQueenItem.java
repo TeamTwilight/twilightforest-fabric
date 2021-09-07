@@ -140,7 +140,7 @@ public class MoonwormQueenItem extends Item {
 
 					SoundType soundtype = blockstate1.getSoundType();
 					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, context.getPlayer()), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-					if (playerentity == null || !playerentity.abilities.instabuild) {
+					if (playerentity == null || !playerentity.getAbilities().instabuild) {
 						itemstack.hurtAndBreak(1, playerentity, (user) -> user.broadcastBreakEvent(playerentity.getUsedItemHand()));
 					}
 
