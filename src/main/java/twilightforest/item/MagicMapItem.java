@@ -17,6 +17,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+
+import twilightforest.extensions.IMapItemEx;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFMagicMapData;
 import twilightforest.network.MagicMapPacket;
@@ -29,7 +31,7 @@ import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 
-public class MagicMapItem extends MapItem {
+public class MagicMapItem extends MapItem implements IMapItemEx {
 
 	public static final String STR_ID = "magicmap";
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
@@ -66,8 +68,8 @@ public class MagicMapItem extends MapItem {
 	}
 
 	@Nullable
-	//@Override
-	protected TFMagicMapData getCustomMapData(ItemStack stack, Level world) {
+	@Override
+	public TFMagicMapData getCustomMapData(ItemStack stack, Level world) {
 		TFMagicMapData mapdata = getData(stack, world);
 		if (mapdata == null && !world.isClientSide) {
 			mapdata = MagicMapItem.createMapData(stack, world, world.getLevelData().getXSpawn(), world.getLevelData().getZSpawn(), 3, false, false, world.dimension());

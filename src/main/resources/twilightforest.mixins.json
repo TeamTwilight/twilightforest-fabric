@@ -16,7 +16,9 @@
     "LevelMixinPatch",
     "ServerLevelMixinPatch",
     "ServerLevelEntityCallbacksMixinPatch",
-    "ServerEntityMixinPatch"
+    "ServerEntityMixinPatch",
+    "MapItemMixin",
+    "MapDecorationMixin"
   ],
   "client": [
     "client.BlockColorsMixin",
@@ -25,7 +27,9 @@
     "client.LevelRendererMixin",
     "client.ModelManagerMixin",
     "client.EntityRenderDispatcherMixin",
-    "client.ScreenMixin"
+    "client.ScreenMixin",
+    "client.MapRendererMixin",
+    "client.ItemInHandRendererMixin"
   ],
   "plugin": "twilightforest.mixin.plugin.TwilightForestMixinPlugin",
   "injectors": {

@@ -111,3 +111,6 @@ accessible field net/minecraft/world/level/block/state/BlockBehaviour material L
 accessible method net/minecraft/resources/RegistryWriteOps <init> (Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/core/RegistryAccess;)V
 accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings <init> (Lnet/minecraft/world/level/levelgen/StructureSettings;Lnet/minecraft/world/level/levelgen/NoiseSettings;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/state/BlockState;IIIIZZZZZZ)V
 accessible class net/minecraft/server/level/ServerLevel$EntityCallbacks
+accessible class net/minecraft/client/gui/MapRenderer$MapInstance
+accessible field net/minecraft/client/gui/MapRenderer MAP_ICONS Lnet/minecraft/client/renderer/RenderType;
+accessible method net/minecraft/tags/BlockTags bind (Ljava/lang/String;)Lnet/minecraft/tags/Tag$Named;

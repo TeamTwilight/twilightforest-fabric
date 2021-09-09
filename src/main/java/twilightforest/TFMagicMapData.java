@@ -16,6 +16,7 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import twilightforest.extensions.IMapDecorationEx;
 import twilightforest.world.registration.TFFeature;
 
 import javax.annotation.Nullable;
@@ -136,7 +137,7 @@ public class TFMagicMapData extends MapItemSavedData {
 		}
 	}
 
-	public static class TFMapDecoration extends MapDecoration {
+	public static class TFMapDecoration extends MapDecoration implements IMapDecorationEx {
 
 
 		@Environment(EnvType.CLIENT)
@@ -154,7 +155,7 @@ public class TFMagicMapData extends MapItemSavedData {
 			this.featureId = featureId;
 		}
 
-		//@Override
+		@Override
 		@Environment(EnvType.CLIENT)
 		public boolean render(int idx) {
 			// TODO: Forge needs to pass in the ms and buffers, but for now this works

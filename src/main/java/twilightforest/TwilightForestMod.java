@@ -151,7 +151,7 @@ public class TwilightForestMod implements ModInitializer {
 		TFAdvancements.init();
 		BiomeKeys.addBiomeTypes();
 		TFDimensions.init();
-		TFBlockItems.registerBlockItems();
+		TFBlocks.registerItemblocks();
 		TFEntities.registerEntities();
 		TFEntities.addEntityAttributes();
 		TFEntities.registerSpawnEggs();

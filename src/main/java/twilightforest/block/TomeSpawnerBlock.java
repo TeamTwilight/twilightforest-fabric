@@ -78,13 +78,14 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 		return state.getValue(SPAWNER) ? createTickerHelper(type, TFTileEntities.TOME_SPAWNER, TomeSpawnerTileEntity::tick) : null;
 	}
 
-	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return 20;
-	}
-
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return 30;
-	}
+	//TODO: PORT
+//	@Override
+//	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+//		return 20;
+//	}
+//
+//	@Override
+//	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+//		return 30;
+//	}
 }

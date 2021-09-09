@@ -14,7 +14,8 @@ public class GiantLeavesBlock extends GiantBlock {
 		super(props);
 	}
 
-	@Override
+	//TODO: PORT
+//	@Override
 	public boolean canCreatureSpawn(BlockState state, BlockGetter world, BlockPos pos, SpawnPlacements.Type type, @Nullable EntityType<?> entityType) {
 		return false;
 	}

@@ -2,6 +2,8 @@ package twilightforest.world.components.chunkgenerators;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
@@ -69,7 +71,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
 						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2);
-						if (BiomeKeys.DARK_FOREST.location().equals(biome.getRegistryName()) || BiomeKeys.DARK_FOREST_CENTER.location().equals(biome.getRegistryName())) {
+						if (BiomeKeys.DARK_FOREST.location().equals(BuiltinRegistries.BIOME.getKey(biome)) || BiomeKeys.DARK_FOREST_CENTER.location().equals(BuiltinRegistries.BIOME.getKey(biome))) {
 							thicks[dX + dZ * 5]++;
 							biomeFound = true;
 						}
@@ -135,7 +137,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 
 					treeBottom -= noise;
 
-					BlockState darkLeaves = TFBlocks.hardened_dark_leaves.get().defaultBlockState();
+					BlockState darkLeaves = TFBlocks.hardened_dark_leaves.defaultBlockState();
 
 					for (int y = treeBottom; y < treeTop; y++) {
 						primer.setBlock(pos.atY(y), darkLeaves, 3);

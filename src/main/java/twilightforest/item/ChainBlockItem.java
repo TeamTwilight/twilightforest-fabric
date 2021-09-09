@@ -11,15 +11,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.TierSortingRegistry;
 import twilightforest.TFSounds;
 import twilightforest.entity.ChainBlockEntity;
 import twilightforest.entity.TFEntities;
-import twilightforest.util.TwilightItemTier;
+import twilightforest.enums.TwilightItemTier;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -29,7 +27,7 @@ public class ChainBlockItem extends DiggerItem {
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
 	protected ChainBlockItem(Properties props) {
-		super(6, -3.0F, TwilightItemTier.KNIGHTMETAL, BlockTags.BASE_STONE_OVERWORLD, props);
+		super(6, -3.0F, TwilightItemTier.TOOL_KNIGHTLY, BlockTags.BASE_STONE_OVERWORLD, props);
 	}
 
 	@Override
@@ -106,11 +104,12 @@ public class ChainBlockItem extends DiggerItem {
 		return true;
 	}
 
-	@Override
+	//TODO: PORT
+	//@Override
 	public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
-		if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
-				|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
-			return TierSortingRegistry.isCorrectTierForDrops(Tiers.IRON, state);
+//		if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
+//				|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
+//			return TierSortingRegistry.isCorrectTierForDrops(Tiers.IRON, state);
 		return false;
 	}
 

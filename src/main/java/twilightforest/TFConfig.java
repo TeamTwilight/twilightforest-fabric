@@ -205,7 +205,7 @@ public class TFConfig {
 //						translation(config + "parry_window_beam").
 //						defineInRange("shieldParryTicksBeam", 10, 0, Integer.MAX_VALUE);
 			}
-			builder.pop();
+			//builder.pop();
 		}
 
 		public Dimension DIMENSION = new Dimension();

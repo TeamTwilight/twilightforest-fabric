@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,16 +17,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import twilightforest.TFSounds;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
 
-public class ChainBlockEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
+public class ChainBlockEntity extends ThrowableProjectile /*implements IEntityAdditionalSpawnData*/ {
 
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
@@ -178,17 +177,17 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 			Block block = state.getBlock();
 
 			// TODO: The "explosion" parameter can't actually be null
-			if (!state.isAir() && block.getExplosionResistance(state, level, pos, null) < 7F
-					&& state.getDestroySpeed(level, pos) >= 0 && block.canEntityDestroy(state, level, pos, this)) {
-
+			if (!state.isAir() && block.getExplosionResistance() < 7F
+					&& state.getDestroySpeed(level, pos) >= 0 /*&& block.canEntityDestroy(state, level, pos, this)*/) {
+				//TODO: PORT
 				if (getOwner() instanceof Player player) {
-					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
-						if (block.canHarvestBlock(state, level, pos, player)) {
+					if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(level, player, pos, state, null)) {
+//						if (block.canHarvestBlock(state, level, pos, player)) {
 							block.playerDestroy(level, player, pos, state, level.getBlockEntity(pos), player.getItemInHand(getHand()));
 
 							level.destroyBlock(pos, false);
 							this.blocksSmashed++;
-						}
+//						}
 					}
 				}
 			}
@@ -267,18 +266,19 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower != null && thrower.getUseItem().getItem() == TFItems.block_and_chain.get()) {
+		if (thrower != null && thrower.getUseItem().getItem() == TFItems.block_and_chain) {
 			thrower.stopUsingItem();
 		}
 	}
 
-	@Override
+	//TODO: PORT
+//	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeInt(getOwner() != null ? getOwner().getId() : -1);
 		buffer.writeBoolean(getHand() == InteractionHand.MAIN_HAND);
 	}
 
-	@Override
+//	@Override
 	public void readSpawnData(FriendlyByteBuf additionalData) {
 		Entity e = level.getEntity(additionalData.readInt());
 		if (e instanceof LivingEntity) {
@@ -289,6 +289,6 @@ public class ChainBlockEntity extends ThrowableProjectile implements IEntityAddi
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+		return new ClientboundAddEntityPacket(this);
 	}
 }

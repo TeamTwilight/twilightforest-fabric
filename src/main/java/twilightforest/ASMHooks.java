@@ -17,7 +17,10 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.AABB;
 
 import net.fabricmc.api.EnvType;
@@ -27,6 +30,7 @@ import twilightforest.client.model.entity.PartEntity;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.TFPartEntity;
 import twilightforest.extensions.IEntityEx;
+import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -34,7 +38,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.WeakHashMap;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -53,6 +56,33 @@ public class ASMHooks {
 		TFMagicMapData.TFMapDecoration.RenderContext.light = light;
 	}
 
+	private static boolean isOurMap(ItemStack stack) {
+		return stack.is(TFItems.magic_map) || stack.is(TFItems.maze_map) || stack.is(TFItems.ore_map);
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderArmWithItem(AbstractClientPlayer, float, float, InteractionHand, float, ItemStack, float, PoseStack, MultiBufferSource, int)} <br>
+	 * [AFTER INST AFTER FIRST GETSTATIC {@link net.minecraft.world.item.Items#FILLED_MAP}]
+	 */
+	public static boolean shouldMapRender(boolean o, ItemStack stack) {
+		return o || isOurMap(stack);
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderMap(PoseStack, MultiBufferSource, int, ItemStack)}<br>
+	 * [BEFORE FIRST ASTORE 6]
+	 * <p></p>
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.item.MapItem#appendHoverText(ItemStack, Level, List, TooltipFlag)}<br>
+	 * [AFTER INVOKESTATIC {@link net.minecraft.world.item.MapItem#getSavedData(Integer, Level)}]
+	 */
+	@Nullable
+	public static MapItemSavedData renderMapData(@Nullable MapItemSavedData o, ItemStack stack, Level level) {
+		return o == null && isOurMap(stack) ? MapItem.getSavedData(stack, level) : o;
+	}
+
 	/**
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.sounds.MusicManager#tick()}<br>
@@ -68,7 +98,6 @@ public class ASMHooks {
 	private static final Int2ObjectMap<TFPartEntity<?>> multiparts = new Int2ObjectOpenHashMap<>();
 
 	// This only works on the client side in 1.17...
-
 	public static void registerMultipartEvents() {
 		ServerEntityEvents.ENTITY_LOAD.register(((entity, world) -> {
 			if(world.isClientSide() && ((IEntityEx)entity).isMultipartEntity())
@@ -170,11 +199,11 @@ public class ASMHooks {
 	 * [AFTER GETFIELD]
 	 */
 	public static Entity updateMultiparts(Entity entity) {
-		if (((IEntityEx)entity).isMultipartEntity())
-			//TODO: PORT
-			return null;
-			//TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new UpdateTFMultipartPacket(entity));
-		return entity;
+		//TODO: PORT
+//		if (entity.isMultipartEntity())
+//			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new UpdateTFMultipartPacket(entity));
+//		return entity;
+		return null;
 	}
 
 	/**
@@ -196,9 +225,8 @@ public class ASMHooks {
 	 * [AFTER FIRST INVOKESPECIAL]
 	 */
 	@Environment(EnvType.CLIENT)
-	public static EntityRendererProvider.Context bakeMultipartRenders(EntityRendererProvider.Context context) {
+	public static void bakeMultipartRenders(EntityRendererProvider.Context context) {
 		TFEntities.BakedMultiPartRenderers.bakeMultiPartRenderers(context);
-		return context;
 	}
 
 	/**
@@ -211,7 +239,7 @@ public class ASMHooks {
 		iter.forEach(entity -> {
 			list.add(entity);
 			if(((IEntityEx)entity).isMultipartEntity() && ((IEntityEx)entity).getParts() != null) {
-				for (PartEntity<?> part : ((IEntityEx)entity).getParts()) {
+				for (PartEntity<?> part : Objects.requireNonNull(((IEntityEx) entity).getParts())) {
 					if(part instanceof TFPartEntity)
 						list.add(part);
 				}

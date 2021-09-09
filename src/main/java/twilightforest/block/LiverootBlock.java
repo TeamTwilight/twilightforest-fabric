@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.ToolActions;
 import twilightforest.item.TFItems;
 
 public class LiverootBlock extends Block {
@@ -23,13 +22,14 @@ public class LiverootBlock extends Block {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-		if(player.getItemInHand(hand).getItem().canPerformAction(player.getItemInHand(hand), ToolActions.AXE_STRIP)) {
-			level.setBlockAndUpdate(pos, TFBlocks.root.get().defaultBlockState());
-			ItemEntity liveroot = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.liveroot.get()));
-			level.addFreshEntity(liveroot);
-			level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
-			player.getItemInHand(hand).hurtAndBreak(1, player, evt -> evt.broadcastBreakEvent(hand));
-		}
+		//TODO: PORT
+//		if(player.getItemInHand(hand).getItem().canPerformAction(player.getItemInHand(hand), ToolActions.AXE_STRIP)) {
+//			level.setBlockAndUpdate(pos, TFBlocks.root.defaultBlockState());
+//			ItemEntity liveroot = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.liveroot));
+//			level.addFreshEntity(liveroot);
+//			level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
+//			player.getItemInHand(hand).hurtAndBreak(1, player, evt -> evt.broadcastBreakEvent(hand));
+//		}
 		return super.use(state, level, pos, player, hand, hitResult);
 	}
 }

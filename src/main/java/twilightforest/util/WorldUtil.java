@@ -1,5 +1,6 @@
 package twilightforest.util;
 
+import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -63,5 +64,9 @@ public final class WorldUtil {
 		if (generator instanceof ChunkGeneratorTwilightBase) {
 			return generator.getSeaLevel();
 		} else return TFGenerationSettings.SEALEVEL;
+	}
+
+	public static boolean isLoaded(Level level, BlockPos pPos) {
+		return level.isOutsideBuildHeight(pPos) ? false : level.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(pPos.getX()), SectionPos.blockToSectionCoord(pPos.getZ()));
 	}
 }

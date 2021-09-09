@@ -22,11 +22,13 @@ public class TwilightForestMixinPlugin implements IMixinConfigPlugin {
 //        patches.add(new ServerEntityPatch());
         patches.add(new EntityRenderDispatcherPatch());
 //        patches.add(new LevelRendererPatch());
+//        patches.add(new ItemInHandRenderPatch());
         for(String namespace : FabricLoader.getInstance().getMappingResolver().getNamespaces()) {
-            System.out.println(namespace);
+            //System.out.println(namespace);
         }
-        System.out.println(FabricLoader.getInstance().getMappingResolver().getCurrentRuntimeNamespace());
-        System.out.println(FabricLoader.getInstance().getMappingResolver().mapClassName("official", "net.minecraft.client.renderer.entity.EntityRenderDispatcher"));
+//        System.out.println(FabricLoader.getInstance().getMappingResolver().mapClassName("intermediary", "net.minecraft.class_310"));
+//        System.out.println(FabricLoader.getInstance().getMappingResolver().mapFieldName("named", "net.minecraft.client.Minecraft", "class_638", "Lnet/minecraft/client/multiplayer/ClientLevel;"));
+//        System.out.println("L"+FabricLoader.getInstance().getMappingResolver().mapClassName("intermediary","net.minecraft.class_638")+";");
     }
 
     @Override
@@ -52,18 +54,27 @@ public class TwilightForestMixinPlugin implements IMixinConfigPlugin {
 
     }
 
+    private boolean warned = false;
+
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+        if(!warned) {
+            warned = true;
+            System.out.println("PATCHING CLASSES");
+        }
+
         for(Patch patch : patches) {
-            //System.out.println(targetClassName.equals(patch.getMixinClass()) + " : " + targetClassName);
+//            System.out.println(patch.getMixinClass() + " "+targetClassName.equals(patch.getMixinClass()) + " : " + targetClassName);
             patch.applyClass(targetClass);
 
             if(patch.getMixinClass().equals(targetClassName)) {
+                System.out.println("PATCHING CLASS: "+ targetClassName);
                 for(MethodNode node : targetClass.methods) {
 
-                    System.out.println(node.desc);
+                    //System.out.println(node.desc);
                     //System.out.println(node.name + " : "+ node.desc);
                     if(node.name.equals(patch.getMethodName()) && node.desc.equals(patch.getMethodDesc())) {
+                        System.out.println("PATCHING METHOD: "+ node.name+node.desc);
                         patch.applyMethod(node);
                     }
                 }
