@@ -50,12 +50,13 @@ public class PeacockFanItem extends Item {
 			}
 		} else {
 			if(player.isFallFlying()) {
-				player.setDeltaMovement(new Vec3(
-						player.getDeltaMovement().x() * 3F,
-						1.5F,
-						player.getDeltaMovement().z() * 3F
-				));
-				player.getCooldowns().addCooldown(this, 60);
+				Vec3 look = player.getLookAngle();
+				Vec3 movement = player.getDeltaMovement();
+				//add a directional boost similar to the rocket, but slightly faster and always add a little more upwards
+				player.setDeltaMovement(movement.add(
+						look.x * 0.1D + (look.x * 2.0D - movement.x) * 0.5D,
+						(look.y * 0.1D + (look.y * 2.0D - movement.y) * 0.5D) + 1.25D,
+						look.z * 0.1D + (look.z * 2.0D - movement.z) * 0.5D));
 			}
 			// jump if the player is in the air
 			if (!player.isOnGround() && !player.hasEffect(MobEffects.JUMP) && !player.isSwimming() && !launched) {
@@ -88,14 +89,14 @@ public class PeacockFanItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if(entityIn instanceof Player && ((Player)entityIn).isFallFlying() && isSelected) {
+		if(entityIn instanceof Player player && player.isFallFlying() && (player.getItemInHand(InteractionHand.OFF_HAND).getItem() == this || isSelected)) {
 			entityIn.fallDistance = 0.0F;
 		}
-		if(entityIn instanceof Player && ((Player)entityIn).hasEffect(MobEffects.JUMP)) {
+		if(entityIn instanceof Player player && player.hasEffect(MobEffects.JUMP)) {
 			entityIn.fallDistance = 0.0F;
 		}
-		if (entityIn instanceof Player && entityIn.isOnGround() && launched) {
-			((Player)entityIn).removeEffect(MobEffects.JUMP);
+		if (entityIn instanceof Player player && player.isOnGround() && launched) {
+			player.removeEffect(MobEffects.JUMP);
 			launched = false;
 		}
 		super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);

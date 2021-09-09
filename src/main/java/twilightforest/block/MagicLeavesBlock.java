@@ -2,12 +2,10 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TFConfig;
 import twilightforest.client.particle.TFParticleType;
 
 import java.util.Random;
@@ -19,13 +17,8 @@ public class MagicLeavesBlock extends LeavesBlock {
 	}
 
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
-		return TFConfig.COMMON_CONFIG.PERFORMANCE.leavesLightOpacity;
-	}
-
-	@Override
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
-		if (state.getBlock() == TFBlocks.transformation_leaves) {
+		if (state.getBlock() == TFBlocks.transformation_leaves.get()) {
 			for (int i = 0; i < 1; ++i) {
 				this.sparkleRunes(world, pos, random);
 			}
@@ -65,7 +58,7 @@ public class MagicLeavesBlock extends LeavesBlock {
 		}
 
 		if (rx < pos.getX() || rx > pos.getX() + 1 || ry < pos.getY() || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1) {
-			world.addParticle(TFParticleType.LEAF_RUNE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			world.addParticle(TFParticleType.LEAF_RUNE.get(), rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 }

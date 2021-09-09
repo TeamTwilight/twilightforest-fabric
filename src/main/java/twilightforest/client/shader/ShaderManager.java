@@ -154,7 +154,7 @@ public final class ShaderManager {
 
     @SuppressWarnings("WeakerAccess")
     public static boolean useShaders() {
-        return TFConfig.COMMON_CONFIG.PERFORMANCE.shadersSupported;
+        return true;//TFConfig.COMMON_CONFIG.PERFORMANCE.shadersSupported;
     }
 
     // Most of the code taken from the LWJGL wiki

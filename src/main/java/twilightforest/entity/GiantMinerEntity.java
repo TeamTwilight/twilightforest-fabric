@@ -73,6 +73,12 @@ public class GiantMinerEntity extends Monster {
 	}
 
 	@Override
+	protected void enchantSpawnedWeapon(float chance) {}
+
+	@Override
+	protected void enchantSpawnedArmor(float chance, EquipmentSlot slot) {}
+
+	@Override
 	public boolean doHurtTarget(Entity entityIn) {
 		entityIn.hurt(TFDamageSources.ant(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return super.doHurtTarget(entityIn);
@@ -85,8 +91,8 @@ public class GiantMinerEntity extends Monster {
 
 	@Override
 	public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-		List<GiantMinerEntity> giantsNearby = worldIn.getEntitiesOfClass(GiantMinerEntity.class, this.getBoundingBox().inflate(50));
-		return giantsNearby.size() < 7;
+		List<GiantMinerEntity> giantsNearby = worldIn.getEntitiesOfClass(GiantMinerEntity.class, this.getBoundingBox().inflate(100, 10, 100));
+		return giantsNearby.size() < 10;
 	}
 
 	public static boolean canSpawn(EntityType<? extends GiantMinerEntity> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
