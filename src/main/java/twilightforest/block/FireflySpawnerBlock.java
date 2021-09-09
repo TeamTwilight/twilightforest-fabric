@@ -2,14 +2,21 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.item.TFItems;
 
 import java.util.Random;
 
@@ -39,12 +46,30 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock{
 	}
 
 	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		ItemStack stack = player.getItemInHand(hand);
+		if(stack.getItem() == TFBlocks.firefly.get().asItem() && !player.isShiftKeyDown() && state.getValue(RADIUS) < 10) {
+			level.setBlockAndUpdate(pos, state.setValue(RADIUS, state.getValue(RADIUS) + 1));
+			if(!player.isCreative()) stack.shrink(1);
+			player.displayClientMessage(new TranslatableComponent("block.twilightforest.firefly_spawner_radius", state.getValue(RADIUS) + 1), true);
+			return InteractionResult.sidedSuccess(level.isClientSide);
+		} else if(player.isShiftKeyDown() && state.getValue(RADIUS) > 1) {
+			level.setBlockAndUpdate(pos, state.setValue(RADIUS, state.getValue(RADIUS) - 1));
+			ItemEntity bug = new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 1, pos.getZ() + 0.5D, new ItemStack(TFBlocks.firefly.get()));
+			level.addFreshEntity(bug);
+			player.displayClientMessage(new TranslatableComponent("block.twilightforest.firefly_spawner_radius", state.getValue(RADIUS) - 1), true);
+			return InteractionResult.sidedSuccess(level.isClientSide);
+		}
+		return super.use(state, level, pos, player, hand, hitResult);
+	}
+
+	@Override
 	public ParticleType<?> getParticlesToSpawn() {
 		return TFParticleType.WANDERING_FIREFLY;
 	}
 
 	@Override
-	public int getParticleCountPerSpawn() {
-		return 15;
+	public int getParticleCountPerSpawn(BlockState state) {
+		return (int)Math.ceil((double)state.getValue(RADIUS) / 2);
 	}
 }

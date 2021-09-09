@@ -3,7 +3,6 @@ package twilightforest.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,19 +16,21 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
-
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import twilightforest.TFSounds;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
 
-public class ChainBlockEntity extends ThrowableProjectile /*implements IEntityAdditionalSpawnData*/ {
+public class ChainBlockEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
 
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
 
-	private static EntityDataAccessor<Boolean> HAND = SynchedEntityData.defineId(ChainBlockEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> HAND = SynchedEntityData.defineId(ChainBlockEntity.class, EntityDataSerializers.BOOLEAN);
 	private boolean isReturning = false;
 	private int blocksSmashed = 0;
 	private double velX;
@@ -96,8 +97,7 @@ public class ChainBlockEntity extends ThrowableProjectile /*implements IEntityAd
 			return;
 		}
 
-		if (ray instanceof EntityHitResult) {
-			EntityHitResult entityRay = (EntityHitResult) ray;
+		if (ray instanceof EntityHitResult entityRay) {
 
 			// only hit living things
 			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getOwner()) {
@@ -108,8 +108,7 @@ public class ChainBlockEntity extends ThrowableProjectile /*implements IEntityAd
 			}
 		}
 
-		if (ray instanceof BlockHitResult) {
-			BlockHitResult blockRay = (BlockHitResult) ray;
+		if (ray instanceof BlockHitResult blockRay) {
 
 			if (blockRay.getBlockPos() != null && !this.level.isEmptyBlock(blockRay.getBlockPos())) {
 				if (!this.isReturning) {
@@ -160,7 +159,7 @@ public class ChainBlockEntity extends ThrowableProjectile /*implements IEntityAd
 					}
 
 					// demolish some blocks
-					this.affectBlocksInAABB(this.getBoundingBox());
+					this.affectBlocksInAABB(this.getBoundingBox().inflate(0.25D));
 				}
 
 				this.isReturning = true;
@@ -179,19 +178,17 @@ public class ChainBlockEntity extends ThrowableProjectile /*implements IEntityAd
 			Block block = state.getBlock();
 
 			// TODO: The "explosion" parameter can't actually be null
-			if (!state.isAir() && block.getExplosionResistance() < 7F
-					&& state.getDestroySpeed(level, pos) >= 0 /*&& block.canEntityDestroy(state, level, pos, this)*/) {
+			if (!state.isAir() && block.getExplosionResistance(state, level, pos, null) < 7F
+					&& state.getDestroySpeed(level, pos) >= 0 && block.canEntityDestroy(state, level, pos, this)) {
 
-				if (getOwner() instanceof Player) {
-					Player player = (Player) getOwner();
-
-					if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(level, player, pos, state, null)) {
-						//if (block.canHarvestBlock(state, level, pos, player)) {
+				if (getOwner() instanceof Player player) {
+					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
+						if (block.canHarvestBlock(state, level, pos, player)) {
 							block.playerDestroy(level, player, pos, state, level.getBlockEntity(pos), player.getItemInHand(getHand()));
 
 							level.destroyBlock(pos, false);
 							this.blocksSmashed++;
-						//}
+						}
 					}
 				}
 			}
@@ -270,13 +267,12 @@ public class ChainBlockEntity extends ThrowableProjectile /*implements IEntityAd
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower != null && thrower.getUseItem().getItem() == TFItems.block_and_chain) {
+		if (thrower != null && thrower.getUseItem().getItem() == TFItems.block_and_chain.get()) {
 			thrower.stopUsingItem();
 		}
 	}
 
-	//TODO: PORT
-	/*@Override
+	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeInt(getOwner() != null ? getOwner().getId() : -1);
 		buffer.writeBoolean(getHand() == InteractionHand.MAIN_HAND);
@@ -289,10 +285,10 @@ public class ChainBlockEntity extends ThrowableProjectile /*implements IEntityAd
 			setOwner(e);
 		}
 		setHand(additionalData.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
-	}*/
+	}
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

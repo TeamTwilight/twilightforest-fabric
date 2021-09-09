@@ -20,9 +20,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
@@ -46,13 +45,18 @@ public class JarBlock extends Block {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-		ItemEntity jarStuff = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), this == TFBlocks.firefly_jar ? TFBlocks.firefly.asItem().getDefaultInstance() : TFBlocks.cicada.asItem().getDefaultInstance());
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		ItemEntity jarStuff = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), this == TFBlocks.firefly_jar.get() ? TFBlocks.firefly.get().asItem().getDefaultInstance() : TFBlocks.cicada.get().asItem().getDefaultInstance());
 		if(player.isShiftKeyDown()) {
 			worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			jarStuff.spawnAtLocation(jarStuff.getItem());
 			jarStuff.spawnAtLocation(Items.GLASS_BOTTLE);
 			return InteractionResult.SUCCESS;
+		} else {
+			if(player.getItemInHand(hand).getItem() == Blocks.POPPY.asItem() && this == TFBlocks.firefly_jar.get()) {
+				worldIn.setBlockAndUpdate(pos, TFBlocks.firefly_spawner.get().defaultBlockState().setValue(AbstractParticleSpawnerBlock.RADIUS, 1));
+				return InteractionResult.SUCCESS;
+			}
 		}
 		return InteractionResult.PASS;
 	}
@@ -61,21 +65,21 @@ public class JarBlock extends Block {
 	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
 		super.randomTick(state, worldIn, pos, random);
 		//need to counter a higher random tick speed resulting in so many sounds, so here we go
-		if(!TFConfig.CLIENT_CONFIG.silentCicadas && random.nextInt(worldIn.getGameRules().getRule(GameRules.RULE_RANDOMTICKING).get()) <= 3) {
+		if(!TFConfig.CLIENT_CONFIG.silentCicadas.get() && random.nextInt(worldIn.getGameRules().getRule(GameRules.RULE_RANDOMTICKING).get()) <= 3) {
 			worldIn.playSound(null, pos, TFSounds.CICADA, SoundSource.BLOCKS, 1.0F, 1.0F);
 		}
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
-		if(this == TFBlocks.firefly_jar) {
+		if(this == TFBlocks.firefly_jar.get()) {
 			for (int i = 0; i < 2; i++) {
 				double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 				double dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
 				double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 
-				world.addParticle(TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
+				world.addParticle(TFParticleType.FIREFLY.get(), dx, dy, dz, 0, 0, 0);
 			}
 		} else {
 			double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);

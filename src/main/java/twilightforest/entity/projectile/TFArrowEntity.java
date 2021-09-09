@@ -18,6 +18,7 @@ public abstract class TFArrowEntity extends AbstractArrow implements ITFProjecti
 	public TFArrowEntity(EntityType<? extends TFArrowEntity> type, Level worldIn, Entity shooter) {
 		super(type, worldIn);
 		this.setOwner(shooter);
+		this.setPos(shooter.getX(), shooter.getEyeY() - 0.1D, shooter.getZ());
 	}
 
 	@Override

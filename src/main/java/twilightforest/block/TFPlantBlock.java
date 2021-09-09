@@ -1,28 +1,22 @@
 package twilightforest.block;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import twilightforest.client.particle.data.LeafParticleData;
-import twilightforest.enums.PlantVariant;
-import twilightforest.network.SpawnFallenLeafFromPacket;
-import twilightforest.network.TFPacketHandler;
-import java.util.Random;
-
+import net.minecraft.BlockUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -30,8 +24,21 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.PlantType;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import twilightforest.client.particle.data.LeafParticleData;
+import twilightforest.enums.PlantVariant;
+import twilightforest.network.SpawnFallenLeafFromPacket;
+import twilightforest.network.TFPacketHandler;
 
-public class TFPlantBlock extends BushBlock {
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+
+public class TFPlantBlock extends BushBlock implements BonemealableBlock {
 	private static final VoxelShape MAYAPPLE_SHAPE = box(4, 0, 4, 13, 6, 13);
 	private static final VoxelShape FALLEN_LEAVES_SHAPE = box(0, 0, 0, 16, 1, 16);
 	private static final VoxelShape MUSHGLOOM_SHAPE = box(2, 0, 2, 14, 8, 14);
@@ -40,8 +47,6 @@ public class TFPlantBlock extends BushBlock {
 	private static final VoxelShape FIDDLEHEAD_SHAPE = box(3, 0, 3, 13, 14, 13);
 
 	public final PlantVariant plantVariant;
-
-	private Random RANDOM = new Random();
 
 	protected TFPlantBlock(PlantVariant plant, BlockBehaviour.Properties props) {
 		super(props);
@@ -55,7 +60,7 @@ public class TFPlantBlock extends BushBlock {
 		return switch (plantVariant) {
 			case TORCHBERRY, ROOT_STRAND -> TFPlantBlock.canPlaceRootAt(world, pos);
 			case FALLEN_LEAVES, MUSHGLOOM, MOSSPATCH -> soil.isFaceSturdy(world, pos, Direction.UP);
-			default -> (world.getMaxLocalRawBrightness(pos) >= 3 || world.canSeeSkyFromBelowWater(pos))/* && soil.canSustainPlant(world, pos.below(), Direction.UP, this)*/;
+			default -> (world.getMaxLocalRawBrightness(pos) >= 3 || world.canSeeSkyFromBelowWater(pos)) && soil.canSustainPlant(world, pos.below(), Direction.UP, this);
 		};
 	}
 
@@ -63,9 +68,9 @@ public class TFPlantBlock extends BushBlock {
 	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter access, BlockPos pos, CollisionContext context) {
 		switch(plantVariant) {
-			case MOSSPATCH -> { return createCTMShape(TFBlocks.moss_patch, access, pos); }
+			case MOSSPATCH -> { return createCTMShape(TFBlocks.moss_patch.get(), access, pos); }
 			case MAYAPPLE -> { return MAYAPPLE_SHAPE; }
-			case CLOVERPATCH -> { return createCTMShape(TFBlocks.clover_patch, access, pos); }
+			case CLOVERPATCH -> { return createCTMShape(TFBlocks.clover_patch.get(), access, pos); }
 			case FIDDLEHEAD -> { return FIDDLEHEAD_SHAPE; }
 			case MUSHGLOOM -> { return MUSHGLOOM_SHAPE; }
 			case TORCHBERRY -> { return TORCHBERRY_SHAPE; }
@@ -99,12 +104,12 @@ public class TFPlantBlock extends BushBlock {
 			// can always hang below dirt blocks
 			return true;
 		} else {
-			return (state.getBlock() == TFBlocks.root_strand
-					|| state == TFBlocks.root.defaultBlockState());
+			return (state.getBlock() == TFBlocks.root_strand.get()
+					|| state == TFBlocks.root.get().defaultBlockState());
 		}
 	}
 
-	/*@Override
+	@Override
 	public PlantType getPlantType(BlockGetter world, BlockPos pos) {
 		BlockState blockState = world.getBlockState(pos);
 		if (blockState.getBlock() == this) {
@@ -114,16 +119,16 @@ public class TFPlantBlock extends BushBlock {
 			};
 		}
 		return PlantType.PLAINS;
-	}*/
+	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
 		super.animateTick(state, world, pos, random);
 
-		if (state.getBlock() == TFBlocks.moss_patch && random.nextInt(10) == 0) {
+		if (state.getBlock() == TFBlocks.moss_patch.get() && random.nextInt(10) == 0) {
 			world.addParticle(ParticleTypes.MYCELIUM, pos.getX() + random.nextFloat(), pos.getY() + 0.1F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
-		} else if (state.getBlock() == TFBlocks.fallen_leaves && random.nextInt(50) == 0) {
+		} else if (state.getBlock() == TFBlocks.fallen_leaves.get() && random.nextInt(50) == 0) {
 			float dist = 10F;
 			if (!world.canSeeSkyFromBelowWater(pos)) {
 				for (int y = 0; y <= dist; y++)
@@ -147,7 +152,7 @@ public class TFPlantBlock extends BushBlock {
 	@Deprecated
 	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entityIn) {
 		super.entityInside(state, world, pos, entityIn);
-		if (state.getBlock() == TFBlocks.fallen_leaves && entityIn instanceof LivingEntity && (entityIn.getDeltaMovement().x() != 0 || entityIn.getDeltaMovement().z() != 0) && RANDOM.nextBoolean()) {
+		if (state.getBlock() == TFBlocks.fallen_leaves.get() && entityIn instanceof LivingEntity && (entityIn.getDeltaMovement().x() != 0 || entityIn.getDeltaMovement().z() != 0) && RANDOM.nextBoolean()) {
 			if(world.isClientSide) {
 				int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), world, pos, 0);
 				int r = Mth.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
@@ -163,7 +168,39 @@ public class TFPlantBlock extends BushBlock {
 							(world.random.nextFloat() * -0.5F) * entityIn.getDeltaMovement().z()
 				);
 			} else if (world instanceof ServerLevel)
-				((ServerChunkCache)entityIn.getCommandSenderWorld().getChunkSource()).broadcast(entityIn, new SpawnFallenLeafFromPacket(pos, entityIn.getDeltaMovement()));
+				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entityIn), new SpawnFallenLeafFromPacket(pos, entityIn.getDeltaMovement()));
 		}
+	}
+
+	@Override
+	public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient) {
+		return state.getBlock() == TFBlocks.root_strand.get() && isBottomOpen(level, pos);
+	}
+
+	@Override
+	public boolean isBonemealSuccess(Level level, Random random, BlockPos pos, BlockState state) {
+		return state.getBlock() == TFBlocks.root_strand.get() && isBottomOpen(level, pos);
+	}
+
+	@Override
+	public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState state) {
+		if(state.getBlock() == TFBlocks.root_strand.get()) {
+			BlockPos.MutableBlockPos mutable = pos.mutable();
+			do {
+				mutable.move(Direction.DOWN);
+			} while(level.getBlockState(mutable).is(TFBlocks.root_strand.get()));
+			if(level.getBlockState(mutable).isAir() || level.getBlockState(mutable).getMaterial().isReplaceable()) {
+				level.setBlockAndUpdate(mutable, TFBlocks.root_strand.get().defaultBlockState());
+			}
+		}
+	}
+
+	private boolean isBottomOpen(BlockGetter level, BlockPos pos) {
+		BlockPos.MutableBlockPos mutable = pos.mutable();
+		do {
+			mutable.move(Direction.DOWN);
+		} while(level.getBlockState(mutable).is(TFBlocks.root_strand.get()));
+
+		return level.getBlockState(mutable).isAir() || level.getBlockState(mutable).getMaterial().isReplaceable();
 	}
 }

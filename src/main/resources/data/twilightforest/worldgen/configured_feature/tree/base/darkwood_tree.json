@@ -17,7 +17,7 @@
     },
     "foliage_provider": {
       "state": {
-        "Name": "twilightforest:dark_leaves"
+        "Name": "twilightforest:hardened_dark_leaves"
       },
       "type": "minecraft:simple_state_provider"
     },
