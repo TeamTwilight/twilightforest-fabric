@@ -403,13 +403,13 @@ public class TFConfig {
 
 		public static class LoadingScreen {
 
-			public boolean enable;
-			public int cycleLoadingScreenFrequency;
-			public double frequency;
-			public double scale;
-			public double scaleDeviation;
-			public double tiltRange;
-			public double tiltConstant;
+			public boolean enable = true;
+			public int cycleLoadingScreenFrequency = 0;
+			public double frequency = 5.0;
+			public double scale = 3.0;
+			public double scaleDeviation = 5.25;
+			public double tiltRange = 11.25;
+			public double tiltConstant = 22.5;
 			public List<? extends String> loadingIconStacks;
 
 			private ImmutableList<ItemStack> loadingScreenIcons;

@@ -57,7 +57,7 @@ public class TFClientSetup implements ClientModInitializer {
         TFModelLayers.init();
         TFEntities.registerEntityRenderer();
         TFParticleType.registerFactories();
-        ScreenEvents.AFTER_INIT.register(((client, screen, scaledWidth, scaledHeight) -> LoadingScreenListener.onOpenGui(screen)));
+        ScreenEvents.BEFORE_INIT.register(((client, screen, scaledWidth, scaledHeight) -> LoadingScreenListener.onOpenGui(screen)));
         twilightforest.client.TFClientSetup.addLegacyPack();
         System.out.println(FabricLoader.getInstance().isModLoaded("optifabric")+ ": Optifine loaded?");
         if(FabricLoader.getInstance().isModLoaded("optifabric"))
