@@ -44,9 +44,16 @@ public class LockedVanishingBlock extends VanishingBlock implements IBlockMethod
 		return state.getValue(LOCKED) ? 6000000.0F : super.getExplosionResistance(state, world, pos, explosion);
 	}
 
+	//IF THIS CAUSES ISSUES THIS IS THE OLD ORIGINAL CAN ENTITY DESTORY METHOD I CHANGED IT.
+	/*
 	@Override
 	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
 		return !state.getValue(LOCKED) && super.canEntityDestroy(state, world, pos, entity);
+	}
+	 */
+	@Override
+	public boolean canEntityDestroy(BlockState state, BlockPos pos, Entity entity) {
+		return !state.getValue(LOCKED) && super.canEntityDestroy(state, pos, entity);
 	}
 
 	@Override

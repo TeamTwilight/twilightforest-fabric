@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -28,4 +29,5 @@ public class BookshelfBlock extends Block implements IBlockMethods{
 	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return 30;
 	}
+
 }

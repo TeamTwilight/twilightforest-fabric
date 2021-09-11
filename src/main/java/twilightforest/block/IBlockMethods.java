@@ -40,7 +40,7 @@ public interface IBlockMethods {
     default float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
         return 0.0f;
     }
-    default boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
+    default boolean canEntityDestroy(BlockState state, BlockPos pos, Entity entity) {
         return true;
     }
 
