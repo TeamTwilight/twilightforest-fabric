@@ -11,6 +11,8 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.resources.ResourceLocation;
+
+import net.fabricmc.fabric.api.tag.TagRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
@@ -19,52 +21,52 @@ import java.util.function.Predicate;
 
 public class BlockTagGenerator extends BlockTagsProvider {
     //Should use fabric tag api but I wanna see how this goes
-    public static final Tag.Named<Block> TOWERWOOD = BlockTags.bind(TwilightForestMod.prefix("towerwood").toString());
+    public static final Tag.Named<Block> TOWERWOOD = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("towerwood"));
 
-    public static final Tag.Named<Block> TWILIGHT_OAK_LOGS = BlockTags.bind(TwilightForestMod.prefix("twilight_oak_logs").toString());
-    public static final Tag.Named<Block> CANOPY_LOGS = BlockTags.bind(TwilightForestMod.prefix("canopy_logs").toString());
-    public static final Tag.Named<Block> MANGROVE_LOGS = BlockTags.bind(TwilightForestMod.prefix("mangrove_logs").toString());
-    public static final Tag.Named<Block> DARKWOOD_LOGS = BlockTags.bind(TwilightForestMod.prefix("darkwood_logs").toString());
-    public static final Tag.Named<Block> TIME_LOGS = BlockTags.bind(TwilightForestMod.prefix("timewood_logs").toString());
-    public static final Tag.Named<Block> TRANSFORMATION_LOGS = BlockTags.bind(TwilightForestMod.prefix("transwood_logs").toString());
-    public static final Tag.Named<Block> MINING_LOGS = BlockTags.bind(TwilightForestMod.prefix("mining_logs").toString());
-    public static final Tag.Named<Block> SORTING_LOGS = BlockTags.bind(TwilightForestMod.prefix("sortwood_logs").toString());
+    public static final Tag.Named<Block> TWILIGHT_OAK_LOGS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("twilight_oak_logs"));
+    public static final Tag.Named<Block> CANOPY_LOGS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("canopy_logs"));
+    public static final Tag.Named<Block> MANGROVE_LOGS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("mangrove_logs"));
+    public static final Tag.Named<Block> DARKWOOD_LOGS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("darkwood_logs"));
+    public static final Tag.Named<Block> TIME_LOGS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("timewood_logs"));
+    public static final Tag.Named<Block> TRANSFORMATION_LOGS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("transwood_logs"));
+    public static final Tag.Named<Block> MINING_LOGS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("mining_logs"));
+    public static final Tag.Named<Block> SORTING_LOGS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("sortwood_logs"));
 
-    public static final Tag.Named<Block> TF_LOGS = BlockTags.bind(TwilightForestMod.prefix("logs").toString());
-    public static final Tag.Named<Block> TF_FENCES = BlockTags.bind(TwilightForestMod.prefix("fences").toString());
-    public static final Tag.Named<Block> TF_FENCE_GATES = BlockTags.bind(TwilightForestMod.prefix("fence_gates").toString());
+    public static final Tag.Named<Block> TF_LOGS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("logs"));
+    public static final Tag.Named<Block> TF_FENCES = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("fences"));
+    public static final Tag.Named<Block> TF_FENCE_GATES = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("fence_gates"));
 
-    public static final Tag.Named<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.bind("forge:storage_blocks/arctic_fur");
-    public static final Tag.Named<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.bind("forge:storage_blocks/carminite");
-    public static final Tag.Named<Block> STORAGE_BLOCKS_FIERY = BlockTags.bind("forge:storage_blocks/fiery");
-    public static final Tag.Named<Block> STORAGE_BLOCKS_IRONWOOD = BlockTags.bind("forge:storage_blocks/ironwood");
-    public static final Tag.Named<Block> STORAGE_BLOCKS_KNIGHTMETAL = BlockTags.bind("forge:storage_blocks/knightmetal");
-    public static final Tag.Named<Block> STORAGE_BLOCKS_STEELEAF = BlockTags.bind("forge:storage_blocks/steeleaf");
+    public static final Tag.Named<Block> STORAGE_BLOCKS_ARCTIC_FUR = (Tag.Named<Block>) TagRegistry.block(new ResourceLocation("c:arctic_fur_storage_block"));
+    public static final Tag.Named<Block> STORAGE_BLOCKS_CARMINITE = (Tag.Named<Block>) TagRegistry.block(new ResourceLocation("c:carminite_storage_block"));
+    public static final Tag.Named<Block> STORAGE_BLOCKS_FIERY = (Tag.Named<Block>) TagRegistry.block(new ResourceLocation("c:fiery_storage_block"));
+    public static final Tag.Named<Block> STORAGE_BLOCKS_IRONWOOD = (Tag.Named<Block>) TagRegistry.block(new ResourceLocation("c:ironwood_storage_block"));
+    public static final Tag.Named<Block> STORAGE_BLOCKS_KNIGHTMETAL = (Tag.Named<Block>) TagRegistry.block(new ResourceLocation("c:knightmetal_storage_block"));
+    public static final Tag.Named<Block> STORAGE_BLOCKS_STEELEAF = (Tag.Named<Block>) TagRegistry.block(new ResourceLocation("c:steeleaf_storage_block"));
 
-    public static final Tag.Named<Block> ORES_IRONWOOD = BlockTags.bind("forge:ores/ironwood");
-    public static final Tag.Named<Block> ORES_KNIGHTMETAL = BlockTags.bind("forge:ores/knightmetal");
+    public static final Tag.Named<Block> ORES_IRONWOOD = (Tag.Named<Block>) TagRegistry.block(new ResourceLocation("c:ironwood_ores"));
+    public static final Tag.Named<Block> ORES_KNIGHTMETAL = (Tag.Named<Block>) TagRegistry.block(new ResourceLocation("c:knightmetal_ores"));
 
-    public static final Tag.Named<Block> PORTAL_EDGE = BlockTags.bind(TwilightForestMod.prefix("portal/edge").toString());
-    public static final Tag.Named<Block> PORTAL_POOL = BlockTags.bind(TwilightForestMod.prefix("portal/fluid").toString());
-    public static final Tag.Named<Block> PORTAL_DECO = BlockTags.bind(TwilightForestMod.prefix("portal/decoration").toString());
+    public static final Tag.Named<Block> PORTAL_EDGE = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("portal/edge"));
+    public static final Tag.Named<Block> PORTAL_POOL = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("portal/fluid"));
+    public static final Tag.Named<Block> PORTAL_DECO = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("portal/decoration"));
 
-    public static final Tag.Named<Block> SPECIAL_POTS = BlockTags.bind(TwilightForestMod.prefix("dark_tower_excluded_pots").toString());
-    public static final Tag.Named<Block> TROPHIES = BlockTags.bind(TwilightForestMod.prefix("trophies").toString());
-    public static final Tag.Named<Block> FIRE_JET_FUEL = BlockTags.bind(TwilightForestMod.prefix("fire_jet_fuel").toString());
+    public static final Tag.Named<Block> SPECIAL_POTS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("dark_tower_excluded_pots"));
+    public static final Tag.Named<Block> TROPHIES = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("trophies"));
+    public static final Tag.Named<Block> FIRE_JET_FUEL = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("fire_jet_fuel"));
 
-    public static final Tag.Named<Block> COMMON_PROTECTIONS = BlockTags.bind(TwilightForestMod.prefix("common_protections").toString());
-    public static final Tag.Named<Block> ANNIHILATION_INCLUSIONS = BlockTags.bind(TwilightForestMod.prefix("annihilation_inclusions").toString());
-    public static final Tag.Named<Block> ANTIBUILDER_IGNORES = BlockTags.bind(TwilightForestMod.prefix("antibuilder_ignores").toString());
-    public static final Tag.Named<Block> CARMINITE_REACTOR_IMMUNE = BlockTags.bind(TwilightForestMod.prefix("carminite_reactor_immune").toString());
-    public static final Tag.Named<Block> STRUCTURE_BANNED_INTERACTIONS = BlockTags.bind(TwilightForestMod.prefix("structure_banned_interactions").toString());
+    public static final Tag.Named<Block> COMMON_PROTECTIONS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("common_protections"));
+    public static final Tag.Named<Block> ANNIHILATION_INCLUSIONS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("annihilation_inclusions"));
+    public static final Tag.Named<Block> ANTIBUILDER_IGNORES = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("antibuilder_ignores"));
+    public static final Tag.Named<Block> CARMINITE_REACTOR_IMMUNE = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("carminite_reactor_immune"));
+    public static final Tag.Named<Block> STRUCTURE_BANNED_INTERACTIONS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("structure_banned_interactions"));
 
-    public static final Tag.Named<Block> ORE_MAGNET_SAFE_REPLACE_BLOCK = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/ore_safe_replace_block").toString());
-    public static final Tag.Named<Block> ORE_MAGNET_BLOCK_REPLACE_ORE = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/block_replace_ore").toString());
-    public static final Tag.Named<Block> ORE_MAGNET_STONE = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/minecraft/stone").toString());
-    public static final Tag.Named<Block> ORE_MAGNET_NETHERRACK = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/minecraft/netherrack").toString());
-    public static final Tag.Named<Block> ORE_MAGNET_END_STONE = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/minecraft/end_stone").toString());
-    public static final Tag.Named<Block> ORE_MAGNET_ROOT = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/" + TwilightForestMod.ID + "/" + Registry.BLOCK.getKey(TFBlocks.root).getPath()).toString());
-    public static final Tag.Named<Block> ORE_MAGNET_DEEPSLATE = BlockTags.bind(TwilightForestMod.prefix("ore_magnet/minecraft/deepslate").toString());
+    public static final Tag.Named<Block> ORE_MAGNET_SAFE_REPLACE_BLOCK = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("ore_magnet/ore_safe_replace_block"));
+    public static final Tag.Named<Block> ORE_MAGNET_BLOCK_REPLACE_ORE = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("ore_magnet/block_replace_ore"));
+    public static final Tag.Named<Block> ORE_MAGNET_STONE = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("ore_magnet/minecraft/stone"));
+    public static final Tag.Named<Block> ORE_MAGNET_NETHERRACK = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("ore_magnet/minecraft/netherrack"));
+    public static final Tag.Named<Block> ORE_MAGNET_END_STONE = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("ore_magnet/minecraft/end_stone"));
+    public static final Tag.Named<Block> ORE_MAGNET_ROOT = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("ore_magnet/" + TwilightForestMod.ID + "/" + Registry.BLOCK.getKey(TFBlocks.root).getPath()));
+    public static final Tag.Named<Block> ORE_MAGNET_DEEPSLATE = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("ore_magnet/minecraft/deepslate"));
 
     public BlockTagGenerator(DataGenerator generator) {
         super(generator);
