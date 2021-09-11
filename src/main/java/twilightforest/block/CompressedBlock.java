@@ -25,7 +25,7 @@ import java.util.List;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class CompressedBlock extends Block {
+public class CompressedBlock extends Block implements IBlockMethods{
 
 	public CompressedBlock(Properties props) {
 		super(props);
@@ -69,15 +69,15 @@ public class CompressedBlock extends Block {
 	}
 
 	//TODO: PORT
-//	@Override
-//	public boolean isFireSource(BlockState state, LevelReader world, BlockPos pos, Direction side) {
-//		return this == TFBlocks.fiery_block;
-//	}
-//
-//	@Override
-//	public boolean isStickyBlock(BlockState state) {
-//		return this == TFBlocks.carminite_block;
-//	}
+	@Override
+	public boolean isFireSource(BlockState state, LevelReader world, BlockPos pos, Direction side) {
+		return this == TFBlocks.fiery_block;
+	}
+
+	@Override
+	public boolean isStickyBlock(BlockState state) {
+		return this == TFBlocks.carminite_block;
+	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {

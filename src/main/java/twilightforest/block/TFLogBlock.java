@@ -14,16 +14,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TFLogBlock extends RotatedPillarBlock {
+public class TFLogBlock extends RotatedPillarBlock implements IBlockMethods{
 
 	protected TFLogBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}
 
+	@Override
 	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return 5;
 	}
 
+	@Override
 	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return 5;
 	}

@@ -18,7 +18,8 @@
     "ServerLevelEntityCallbacksMixinPatch",
     "ServerEntityMixinPatch",
     "MapItemMixin",
-    "MapDecorationMixin"
+    "MapDecorationMixin",
+    "ServerPlayerMixin"
   ],
   "client": [
     "client.BlockColorsMixin",

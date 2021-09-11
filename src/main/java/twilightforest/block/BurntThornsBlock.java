@@ -37,9 +37,9 @@ public class BurntThornsBlock extends ThornsBlock {
 	}
 
 	//TODO: PORT
-//	@Override
-//	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-//		state.getBlock().playerWillDestroy(world, pos, state, player);
-//		return world.setBlock(pos, fluid.createLegacyBlock(), world.isClientSide ? 11 : 3);
-//	}
+	@Override
+	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+		state.getBlock().playerWillDestroy(world, pos, state, player);
+		return world.setBlock(pos, fluid.createLegacyBlock(), world.isClientSide ? 11 : 3);
+	}
 }

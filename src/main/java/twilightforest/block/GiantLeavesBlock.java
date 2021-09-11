@@ -8,14 +8,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
-public class GiantLeavesBlock extends GiantBlock {
+public class GiantLeavesBlock extends GiantBlock implements IBlockMethods{
 
 	public GiantLeavesBlock(Properties props) {
 		super(props);
 	}
 
-	//TODO: PORT
-//	@Override
+	@Override
 	public boolean canCreatureSpawn(BlockState state, BlockGetter world, BlockPos pos, SpawnPlacements.Type type, @Nullable EntityType<?> entityType) {
 		return false;
 	}
