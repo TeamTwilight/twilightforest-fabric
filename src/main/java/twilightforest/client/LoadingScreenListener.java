@@ -16,9 +16,9 @@ import twilightforest.block.TFBlocks;
 @Environment(EnvType.CLIENT)
 public class LoadingScreenListener {
 
-	private final Minecraft client = Minecraft.getInstance();
+	private static final Minecraft client = Minecraft.getInstance();
 	//TODO: PORT
-	public void onOpenGui(Screen event) {
+	public static void onOpenGui(Screen event) {
 		if (event instanceof ReceivingLevelScreen && client.player != null) {
 			ResourceKey<Level> tfDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID));
 			if (client.player.getCommandSenderWorld().getBlockState(client.player.blockPosition().below()) == TFBlocks.twilight_portal.defaultBlockState() || client.player.getCommandSenderWorld().dimension() == tfDimension) {

@@ -8,7 +8,6 @@
     "BiomeSpecialEffectsMixin",
     "ItemMixin",
     "LivingEntityMixin",
-    "MinecraftMixin",
     "PlayerMixin",
     "RarityMixin",
     "SpawnPlacementsMixin",
@@ -18,7 +17,8 @@
     "ServerLevelEntityCallbacksMixinPatch",
     "ServerEntityMixinPatch",
     "MapItemMixin",
-    "MapDecorationMixin"
+    "MapDecorationMixin",
+    "ServerPlayerMixin"
   ],
   "client": [
     "client.BlockColorsMixin",
@@ -28,6 +28,7 @@
     "client.ModelManagerMixin",
     "client.EntityRenderDispatcherMixin",
     "client.ScreenMixin",
+    "client.MinecraftMixin",
     "client.MapRendererMixin",
     "client.ItemInHandRendererMixin"
   ],
