@@ -268,7 +268,7 @@ public class TFEventListener {
 				}
 			}
 //		}
-		return InteractionResult.SUCCESS;
+		return InteractionResult.PASS;
 	}
 
 	private static void makeFloorSkull(Level world, BlockPos pos, Item item, Block newBlock) {
@@ -715,7 +715,7 @@ public class TFEventListener {
 		if (!world.isClientSide && isBlockProtectedFromInteraction(world, pos) && isAreaProtected(world, player, pos)) {
 			return InteractionResult.FAIL;
 		}
-		return InteractionResult.SUCCESS;
+		return InteractionResult.PASS;
 	}
 
 	/**

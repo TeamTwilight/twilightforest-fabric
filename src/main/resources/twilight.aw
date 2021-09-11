@@ -113,4 +113,6 @@ accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings <ini
 accessible class net/minecraft/server/level/ServerLevel$EntityCallbacks
 accessible class net/minecraft/client/gui/MapRenderer$MapInstance
 accessible field net/minecraft/client/gui/MapRenderer MAP_ICONS Lnet/minecraft/client/renderer/RenderType;
-accessible method net/minecraft/tags/BlockTags bind (Ljava/lang/String;)Lnet/minecraft/tags/Tag$Named;
+accessible field net/minecraft/server/level/ServerLevel players Ljava/util/List;
+accessible field net/minecraft/server/level/ServerLevel navigatingMobs Ljava/util/Set;
+accessible method net/minecraft/world/entity/Entity unsetRemoved ()V

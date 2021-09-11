@@ -279,6 +279,7 @@ public class TFTeleporter/* implements ITeleporter*/ {
 		loadSurroundingArea(world, pos);
 
 		BlockPos spot = findPortalCoords(world, pos, blockPos -> isPortalAt(world, blockPos));
+		TwilightForestMod.LOGGER.info(spot);
 		String name = entity.getName().getString();
 
 		if (spot != null) {

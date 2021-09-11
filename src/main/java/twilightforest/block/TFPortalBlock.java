@@ -41,6 +41,7 @@ import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
+import twilightforest.extensions.IEntityEx;
 import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.components.TFTeleporter;
 
@@ -241,8 +242,9 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if(serverWorld == null)
 			return;
 
+		TwilightForestMod.LOGGER.info(entity);
 		//TODO: PORT?
-		entity.changeDimension(serverWorld/*, new TFTeleporter(forcedEntry)*/);
+		((IEntityEx)entity).changeDimension(serverWorld, new TFTeleporter(forcedEntry));
 
 		if (destination ==  ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID)) && entity instanceof ServerPlayer && forcedEntry) {
 			ServerPlayer playerMP = (ServerPlayer) entity;
