@@ -9,7 +9,7 @@ import net.minecraft.world.level.BlockGetter;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public class FlammableBlock extends Block {
+public class FlammableBlock extends Block implements IBlockMethods{
 	private final int flammability;
 	private final int spreadSpeed;
 
@@ -20,12 +20,14 @@ public class FlammableBlock extends Block {
 		FlammableBlockRegistry.getDefaultInstance().add(this, flammability, spreadSpeed);
 	}
 
-	//TODO: PORT
-//	@Override public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-//		return flammability;
-//	}
-//
-//	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-//		return spreadSpeed;
-//	}
+
+	@Override
+	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return flammability;
+	}
+
+	@Override
+	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return spreadSpeed;
+	}
 }

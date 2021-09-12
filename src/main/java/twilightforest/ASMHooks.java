@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
@@ -31,6 +32,8 @@ import twilightforest.entity.TFEntities;
 import twilightforest.entity.TFPartEntity;
 import twilightforest.extensions.IEntityEx;
 import twilightforest.item.TFItems;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.network.UpdateTFMultipartPacket;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -124,7 +127,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerLevel#onTrackingStart(Entity)}<br>
+	 * {@link net.minecraft.server.level.ServerLevel.EntityCallbacks#onTrackingStart(Entity)}<br>
 	 * [FIRST INST]
 	 */
 	public static void trackingStart(Entity entity) {
@@ -142,7 +145,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerLevel#onTrackingEnd(Entity)}<br>
+	 * {@link net.minecraft.server.level.ServerLevel.EntityCallbacks#onTrackingEnd(Entity)}<br>
 	 * [FIRST INST]
 	 */
 	public static void trackingEnd(Entity entity) {
@@ -199,11 +202,9 @@ public class ASMHooks {
 	 * [AFTER GETFIELD]
 	 */
 	public static Entity updateMultiparts(Entity entity) {
-		//TODO: PORT
-//		if (entity.isMultipartEntity())
-//			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new UpdateTFMultipartPacket(entity));
-//		return entity;
-		return null;
+		if (((IEntityEx)entity).isMultipartEntity())
+			((ServerChunkCache)entity.getCommandSenderWorld().getChunkSource()).chunkMap.getPlayers(entity.chunkPosition(), false).forEach((serverPlayer) -> TFPacketHandler.CHANNEL.send(serverPlayer, new UpdateTFMultipartPacket(entity)));
+		return entity;
 	}
 
 	/**
