@@ -31,8 +31,7 @@ import java.util.function.Supplier;
 
 // TODO: doc out all the vanilla copying
 // Actually, figure out how to get this back up again
-//TODO: PORT (Maybe make a wrapper?)
-public abstract class ChunkGeneratorTwilightBase extends TFNoiseBasedChunkGenerator {
+public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerator {
 	protected final long seed;
 	protected final Supplier<NoiseGeneratorSettings> dimensionSettings;
 	public final NoiseGeneratorSettings settings;

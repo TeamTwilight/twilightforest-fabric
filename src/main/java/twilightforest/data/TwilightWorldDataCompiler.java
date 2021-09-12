@@ -27,10 +27,6 @@ import net.minecraft.world.level.levelgen.NoiseSlideSettings;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightForest;
 import twilightforest.world.components.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.TFNoiseBasedChunkGenerator;
-import twilightforest.world.registration.ConfiguredWorldCarvers;
-import twilightforest.world.registration.TFDimensions;
-import twilightforest.world.registration.ConfiguredSurfaceBuilders;
 import twilightforest.world.registration.biomes.BiomeMaker;
 
 import java.util.Map;
@@ -128,7 +124,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		//TFDimensions.init();
 
 		//FIXME: The issue with generated files using 0 as the seed is here. We need to somehow just...not have it here?
-		TFNoiseBasedChunkGenerator forestChunkGen =
+		NoiseBasedChunkGenerator forestChunkGen =
 				new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> forestDimensionSettings);
 				//new ChunkGeneratorTwilightForest(new FixedBiomeSource(getFromDynRegistry(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("enchanted_forest"))), 0L, () -> forestDimensionSettings);
 
