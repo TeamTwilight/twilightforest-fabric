@@ -131,7 +131,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerLevel#onTrackingStart(Entity)}<br>
+	 * {@link net.minecraft.server.level.ServerLevel.EntityCallbacks#onTrackingStart(Entity)}<br>
 	 * [FIRST INST]
 	 */
 	public static void trackingStart(Entity entity) {
@@ -149,7 +149,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerLevel#onTrackingEnd(Entity)}<br>
+	 * {@link net.minecraft.server.level.ServerLevel.EntityCallbacks#onTrackingEnd(Entity)}<br>
 	 * [FIRST INST]
 	 */
 	public static void trackingEnd(Entity entity) {
