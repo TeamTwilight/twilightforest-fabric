@@ -65,12 +65,12 @@ public class LoadingScreenGui extends Screen {
 			this.contentNeedsAssignment = false;
 		}
 
-		if (minecraft.level != null && LOADING_SCREEN.cycleLoadingScreenFrequency != 0) {
+		if (minecraft.level != null && LOADING_SCREEN.cycleLoadingScreenFrequency.get() != 0) {
 			if (lastWorldUpdateTick != minecraft.level.getGameTime() % 240000) {
 
 				lastWorldUpdateTick = minecraft.level.getGameTime() % 240000;
 
-				if (lastWorldUpdateTick % LOADING_SCREEN.cycleLoadingScreenFrequency == 0) {
+				if (lastWorldUpdateTick % LOADING_SCREEN.cycleLoadingScreenFrequency.get() == 0) {
 					assignContent();
 				}
 			}
@@ -110,22 +110,22 @@ public class LoadingScreenGui extends Screen {
 	}
 
 	private void drawBouncingWobblyItem(float partialTicks, float width, float height) {
-		float sineTicker = (TFClientEvents.sineTicker + partialTicks) * (float) LOADING_SCREEN.frequency;
-		float sineTicker2 = (TFClientEvents.sineTicker + 314f + partialTicks) * (float) LOADING_SCREEN.frequency;
+		float sineTicker = (TFClientEvents.sineTicker + partialTicks) * LOADING_SCREEN.frequency.get().floatValue();
+		float sineTicker2 = (TFClientEvents.sineTicker + 314f + partialTicks) * LOADING_SCREEN.frequency.get().floatValue();
 
 		PoseStack stack = RenderSystem.getModelViewStack();
 
 		stack.pushPose();
 
 		// Shove it!
-		stack.translate(width - ((width / 30f) * LOADING_SCREEN.scale/*.floatValue()*/), height - (height / 10f), 0f); // Bottom right Corner
+		stack.translate(width - ((width / 30f) * LOADING_SCREEN.scale.get().floatValue()), height - (height / 10f), 0f); // Bottom right Corner
 
-		if (LOADING_SCREEN.enable) {
+		if (LOADING_SCREEN.enable.get()) {
 			// Wobble it!
-			stack.mulPose(Vector3f.XP.rotation(Mth.sin(sineTicker / (float) LOADING_SCREEN.tiltRange) * (float) LOADING_SCREEN.tiltConstant));
+			stack.mulPose(Vector3f.XP.rotation(Mth.sin(sineTicker / LOADING_SCREEN.tiltRange.get().floatValue()) * LOADING_SCREEN.tiltConstant.get().floatValue()));
 
 			// Bounce it!
-			stack.scale(((Mth.sin(((sineTicker2 + 180F) / (float) LOADING_SCREEN.tiltRange/*.floatValue()*/) * 2F) / (float) LOADING_SCREEN.scaleDeviation/*.floatValue()*/) + 2F) * ((float) LOADING_SCREEN.scale/*.floatValue()*/ / 2F), ((Mth.sin(((sineTicker + 180F) / (float) LOADING_SCREEN.tiltRange/*.floatValue()*/) * 2F) / (float) LOADING_SCREEN.scaleDeviation/*.floatValue()*/) + 2F) * ((float) LOADING_SCREEN.scale/*.floatValue()*/ / 2F), 1F);
+			stack.scale(((Mth.sin(((sineTicker2 + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / (float) LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), ((Mth.sin(((sineTicker + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), 1F);
 		}
 
 		// Shift it!

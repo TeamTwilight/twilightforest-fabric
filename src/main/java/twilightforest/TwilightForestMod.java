@@ -6,6 +6,12 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLModContainer;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
@@ -71,16 +77,18 @@ public class TwilightForestMod implements ModInitializer {
 		// FIXME: safeRunWhenOn is being real jank for some reason, look into it
 		//noinspection Convert2Lambda,Anonymous2MethodRef
 
-//		{
-//			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
-//			ModLoadingContext.registerConfig(ModConfig.Type.COMMON, specPair.getRight());
-//			TFConfig.COMMON_CONFIG = specPair.getLeft();
-//		}
-//		{
-//			final Pair<TFConfig.Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Client::new);
-//			ModLoadingContext.registerConfig(ModConfig.Type.CLIENT, specPair.getRight());
-//			TFConfig.CLIENT_CONFIG = specPair.getLeft();
-//		}
+		//This is trash
+		ModLoadingContext.get().setActiveContainer(new FMLModContainer(ID), null);
+		{
+			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
+			ModLoadingContext.get().getActiveContainer().addConfig(new ModConfig(ModConfig.Type.COMMON, specPair.getRight(), ModLoadingContext.get().getActiveContainer()));
+			TFConfig.COMMON_CONFIG = specPair.getLeft();
+		}
+		{
+			final Pair<TFConfig.Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Client::new);
+			ModLoadingContext.get().getActiveContainer().addConfig(new ModConfig(ModConfig.Type.CLIENT, specPair.getRight(), ModLoadingContext.get().getActiveContainer()));
+			TFConfig.CLIENT_CONFIG = specPair.getLeft();
+		}
 
 		ASMHooks.registerMultipartEvents();
 		this.registerCommands();
@@ -111,11 +119,11 @@ public class TwilightForestMod implements ModInitializer {
 		new TwilightFeatures();
 		new BiomeGrassColors();
 
-		if (TFConfig.COMMON_CONFIG.doCompat) {
+		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
 				TFCompat.preInitCompat();
 			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat = false;
+				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading preInit compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
@@ -157,21 +165,21 @@ public class TwilightForestMod implements ModInitializer {
 		TFEntities.registerSpawnEggs();
 		TFEventListener.registerFabricEvents();
 
-		if (TFConfig.COMMON_CONFIG.doCompat) {
+		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
 				TFCompat.initCompat();
 			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat = false;
+				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading init compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
 		}
 
-		if (TFConfig.COMMON_CONFIG.doCompat) {
+		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
 				TFCompat.postInitCompat();
 			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat = false;
+				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading postInit compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
@@ -291,7 +299,10 @@ public class TwilightForestMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		init();
 		run();
+		LOGGER.info("Portal Lighting: "+TFConfig.COMMON_CONFIG.portalLightning.get());
+		init();
+		TwilightForestMod.LOGGER.info("RUNNING OK");
+
 	}
 }

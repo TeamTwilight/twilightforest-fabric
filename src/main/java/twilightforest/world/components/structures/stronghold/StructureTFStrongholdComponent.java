@@ -488,7 +488,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 					boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
 					Block blockID = this.getBlock(world, x, y, z, sbb).getBlock();
 
-					if (blockID == Blocks.AIR && !TFConfig.COMMON_CONFIG.DIMENSION.skylightForest) {
+					if (blockID == Blocks.AIR && !TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get()) {
 						// cobblestone to "fill in holes"
 						if (wall) {
 							this.placeBlock(world, Blocks.COBBLESTONE.defaultBlockState(), x, y, z, sbb);

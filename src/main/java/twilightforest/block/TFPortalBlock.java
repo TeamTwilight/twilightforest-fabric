@@ -103,7 +103,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 			if (recursivelyValidatePortal(world, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
 
-				if (TFConfig.COMMON_CONFIG.checkPortalDestination) {
+				if (TFConfig.COMMON_CONFIG.checkPortalDestination.get()) {
 					boolean checkProgression = TFGenerationSettings.isProgressionEnforced(catalyst.level);
 					if (!TFTeleporter.isSafeAround(world, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
@@ -115,7 +115,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 				}
 
 				catalyst.getItem().shrink(1);
-				causeLightning(world, pos, TFConfig.COMMON_CONFIG.portalLightning);
+				causeLightning(world, pos, TFConfig.COMMON_CONFIG.portalLightning.get());
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
 					if (checkedPos.getValue()) {
@@ -214,10 +214,10 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static ResourceKey<Level> getDestination(Entity entity) {
-		ResourceKey<Level> twilightForest = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID));
+		ResourceKey<Level> twilightForest = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get()));
 
 		return !entity.getCommandSenderWorld().dimension().location().equals(twilightForest.location())
-				? twilightForest : ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension)); // FIXME: cache this for gods sake
+				? twilightForest : ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())); // FIXME: cache this for gods sake
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
@@ -246,7 +246,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		//TODO: PORT?
 		((IEntityEx)entity).changeDimension(serverWorld, new TFTeleporter(forcedEntry));
 
-		if (destination ==  ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID)) && entity instanceof ServerPlayer && forcedEntry) {
+		if (destination ==  ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())) && entity instanceof ServerPlayer && forcedEntry) {
 			ServerPlayer playerMP = (ServerPlayer) entity;
 			// set respawn point for TF dimension to near the arrival portal, only if we spawn here on world creation
 			playerMP.setRespawnPosition(destination, playerMP.blockPosition(), playerMP.getYRot(), true, false);

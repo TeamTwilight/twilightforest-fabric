@@ -475,7 +475,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 			}
 
 			// don't allow uncrafting if the server option is turned off
-			if (TFConfig.COMMON_CONFIG.disableUncrafting) {
+			if (TFConfig.COMMON_CONFIG.disableUncrafting.get()) {
 				return;
 			}
 

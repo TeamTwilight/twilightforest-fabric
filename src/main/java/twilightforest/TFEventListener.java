@@ -331,7 +331,7 @@ public class TFEventListener {
 				if (te instanceof KeepsakeCasketTileEntity) {
 					KeepsakeCasketTileEntity casket = (KeepsakeCasketTileEntity) te;
 
-					if (TFConfig.COMMON_CONFIG.casketUUIDLocking) {
+					if (TFConfig.COMMON_CONFIG.casketUUIDLocking.get()) {
 						//make it so only the player who died can open the chest if our config allows us
 						casket.playeruuid = player.getGameProfile().getId();
 					} else {

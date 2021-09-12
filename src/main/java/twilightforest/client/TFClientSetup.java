@@ -43,7 +43,7 @@ public class TFClientSetup implements ClientModInitializer {
 		private static boolean optifineWarningShown = false;
 
 		public static void showOptifineWarning(Screen screen) {
-			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen && screen instanceof TitleScreen) {
+			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && screen instanceof TitleScreen) {
 				optifineWarningShown = true;
 				Minecraft.getInstance().setScreen(new OptifineWarningScreen(screen));
 			}
