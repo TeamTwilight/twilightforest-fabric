@@ -95,6 +95,7 @@ public class TFEventListener {
 		ServerPlayerEvents.ALLOW_DEATH.register(((player, damageSource, damageAmount) -> applyDeathItems(player)));
 		ServerPlayerEvents.AFTER_RESPAWN.register(((oldPlayer, newPlayer, alive) -> onPlayerRespawn(newPlayer)));
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> breakBlock(world, player, pos, state));
+		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> onCasketBreak(world.getBlockState(pos).getBlock(), player, blockEntity));
 		//ServerWorldEvents.LOAD.register(((server, world) -> worldLoaded(world)));
 	}
 

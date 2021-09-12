@@ -1,11 +1,13 @@
 package twilightforest.block;
 
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ISTER;
 import twilightforest.item.*;
 import twilightforest.tileentity.TFTileEntities;
 
@@ -69,13 +71,13 @@ public class TFBlockItems {
 		blockItem(TFBlocks.stone_twist);
 		blockItem(TFBlocks.stone_twist_thin);
 		makeBlockItem(new BlockItem(TFBlocks.keepsake_casket, TFItems.defaultBuilder()) {
-			//TODO: PORT
+//			//TODO: PORT
 //			@Override
 //			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 //				consumer.accept(new IItemRenderProperties() {
 //					@Override
 //					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-//						return new ISTER(TFTileEntities.KEEPSAKE_CASKET.getId());
+//						return new ISTER(Registry.BLOCK_ENTITY_TYPE.getKey(TFTileEntities.KEEPSAKE_CASKET));
 //					}
 //				});
 //			}
@@ -372,13 +374,14 @@ public class TFBlockItems {
 
 	private static <B extends Block, W extends Block> Item trophyBlock(B block, W wallblock) {
 		return makeBlockItem(new TrophyItem(block, wallblock, TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity())) {
-			//TODO: PORT
+
+//			//TODO: PORT
 //			@Override
 //			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 //				consumer.accept(new IItemRenderProperties() {
 //					@Override
 //					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-//						return new ISTER(TFTileEntities.TROPHY.getId());
+//						return new ISTER(Registry.BLOCK_ENTITY_TYPE.getKey(TFTileEntities.TROPHY));
 //					}
 //				});
 //			}
@@ -387,13 +390,14 @@ public class TFBlockItems {
 
 	private static <T extends Block, E extends BlockEntity> Item wearableBlock(T block, BlockEntityType<E> tileentity) {
 		return makeBlockItem(new WearableItem(block, TFItems.defaultBuilder()) {
+
 			//TODO: PORT
 //			@Override
 //			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 //				consumer.accept(new IItemRenderProperties() {
 //					@Override
 //					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-//						return new ISTER(tileentity.getId());
+//						return new ISTER(Registry.BLOCK_ENTITY_TYPE.getKey(tileentity));
 //					}
 //				});
 //			}
