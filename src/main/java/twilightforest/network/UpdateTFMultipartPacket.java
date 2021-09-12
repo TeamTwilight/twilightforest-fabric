@@ -6,6 +6,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+
+import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.PartEntity;
 import twilightforest.entity.TFPartEntity;
 import twilightforest.extensions.IEntityEx;
@@ -51,33 +53,27 @@ public class UpdateTFMultipartPacket extends ISimplePacket {
 	}
 
 	public static class Handler {
-		public static boolean onMessage(UpdateTFMultipartPacket message) {
-			Minecraft.getInstance().execute(new Runnable() {
-				@Override
-				public void run() {
-					Level world = Minecraft.getInstance().level;
-					if (world == null)
-						return;
-					Entity ent = world.getEntity(message.id);
-					if (ent != null && ((IEntityEx)ent).isMultipartEntity()) {
-						PartEntity<?>[] parts = ((IEntityEx)ent).getParts();
-						if (parts == null)
-							return;
-						for (PartEntity<?> part : parts) {
-							if (part instanceof TFPartEntity) {
-								TFPartEntity<?> tfPart = (TFPartEntity<?>) part;
-								tfPart.readData(message.buffer);
-								if (message.buffer.readBoolean()) {
-									List<SynchedEntityData.DataItem<?>> data = SynchedEntityData.unpack(message.buffer);
-									if (data != null)
-										tfPart.getEntityData().assignValues(data);
-								}
-							}
+		public static void onMessage(UpdateTFMultipartPacket message) {
+			Level world = Minecraft.getInstance().level;
+			if (world == null)
+				return;
+			Entity ent = world.getEntity(message.id);
+			if (ent != null && ((IEntityEx)ent).isMultipartEntity()) {
+				PartEntity<?>[] parts = ((IEntityEx)ent).getParts();
+				if (parts == null)
+					return;
+				for (PartEntity<?> part : parts) {
+					if (part instanceof TFPartEntity) {
+						TFPartEntity<?> tfPart = (TFPartEntity<?>) part;
+						tfPart.readData(message.buffer);
+						if (message.buffer.readBoolean()) {
+							List<SynchedEntityData.DataItem<?>> data = SynchedEntityData.unpack(message.buffer);
+							if (data != null)
+								tfPart.getEntityData().assignValues(data);
 						}
 					}
 				}
-			});
-			return true;
+			}
 		}
 	}
 }

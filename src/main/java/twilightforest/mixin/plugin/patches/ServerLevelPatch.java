@@ -46,6 +46,8 @@ public class ServerLevelPatch implements Patch {
 
     @Override
     public String getMethodDesc() {
-        return "(I)Lnet/minecraft/world/entity/Entity;";
+        if (FabricLoader.getInstance().isDevelopmentEnvironment())
+            return "(I)Lnet/minecraft/world/entity/Entity;";
+        return "(I)Lnet/minecraft/class_1297;";
     }
 }

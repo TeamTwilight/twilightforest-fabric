@@ -6,6 +6,7 @@ import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import twilightforest.world.components.feature.TFGenCaveStalactite;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -15,6 +16,7 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 
@@ -401,19 +403,25 @@ public class TFConfig {
 
 		public static class LoadingScreen {
 
-			public boolean enable;
-			public int cycleLoadingScreenFrequency;
-			public double frequency;
-			public double scale;
-			public double scaleDeviation;
-			public double tiltRange;
-			public double tiltConstant;
+			public boolean enable = true;
+			public int cycleLoadingScreenFrequency = 0;
+			public double frequency = 5.0;
+			public double scale = 3.0;
+			public double scaleDeviation = 5.25;
+			public double tiltRange = 11.25;
+			public double tiltConstant = 22.5;
 			public List<? extends String> loadingIconStacks;
 
 			private ImmutableList<ItemStack> loadingScreenIcons;
 
+			private ImmutableList<ItemStack> getItems(String ...itemList) {
+				ImmutableList.Builder<ItemStack> items = new ImmutableList.Builder<>();
+				Arrays.stream(itemList).toList().forEach((item) -> items.add(new ItemStack(Registry.ITEM.get(new ResourceLocation(item)))));
+				return items.build();
+			}
+
 			public ImmutableList<ItemStack> getLoadingScreenIcons() {
-				return loadingScreenIcons;
+				return getItems("twilightforest:experiment_115", "twilightforest:magic_map", "twilightforest:charm_of_life_2", "twilightforest:charm_of_keeping_3", "twilightforest:phantom_helmet", "twilightforest:lamp_of_cinders", "twilightforest:carminite", "twilightforest:block_and_chain", "twilightforest:yeti_helmet", "twilightforest:hydra_chop", "twilightforest:magic_beans", "twilightforest:ironwood_raw", "twilightforest:naga_scale", "twilightforest:twilight_portal_miniature_structure", "twilightforest:lich_tower_miniature_structure", "twilightforest:knightmetal_block", "twilightforest:ghast_trap", "twilightforest:time_sapling", "twilightforest:transformation_sapling", "twilightforest:mining_sapling", "twilightforest:sorting_sapling", "twilightforest:rainboak_sapling", "twilightforest:borer_essence");//loadingScreenIcons;
 			}
 
 			void loadLoadingScreenIcons() {

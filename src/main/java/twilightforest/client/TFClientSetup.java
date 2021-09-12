@@ -2,6 +2,7 @@ package twilightforest.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -56,7 +57,9 @@ public class TFClientSetup implements ClientModInitializer {
         TFModelLayers.init();
         TFEntities.registerEntityRenderer();
         TFParticleType.registerFactories();
-        //twilightforest.client.TFClientSetup.addLegacyPack();
+        //ShaderManager.initShaders();
+        ScreenEvents.BEFORE_INIT.register(((client, screen, scaledWidth, scaledHeight) -> LoadingScreenListener.onOpenGui(screen)));
+        twilightforest.client.TFClientSetup.addLegacyPack();
         System.out.println(FabricLoader.getInstance().isModLoaded("optifabric")+ ": Optifine loaded?");
         if(FabricLoader.getInstance().isModLoaded("optifabric"))
             optifinePresent = true;
