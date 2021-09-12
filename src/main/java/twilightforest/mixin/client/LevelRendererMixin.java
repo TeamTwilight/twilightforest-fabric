@@ -35,7 +35,7 @@ public class LevelRendererMixin {
         }
     }
 
-    @Inject(method = "renderSky", at = @At(value = "INVOKE", target = "Ljava/lang/Runnable;run()V"), cancellable = true)
+    @Inject(method = "renderSky", at = @At(value = "INVOKE", target = "Ljava/lang/Runnable;run()V", shift = At.Shift.AFTER, ordinal = 0), cancellable = true)
     public void renderTwilightSky(PoseStack poseStack, Matrix4f matrix4f, float f, Runnable runnable, CallbackInfo ci) {
         if(level.effects() instanceof TwilightForestRenderInfo twilightForestRenderInfo) {
             twilightForestRenderInfo.getSkyRenderHandler().render(this.ticks, f,poseStack, this.level, this.minecraft);

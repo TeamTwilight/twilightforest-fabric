@@ -35,16 +35,20 @@ public class LevelPatch implements Patch {
 
     @Override
     public String getMixinClass() {
-        return FabricLoader.getInstance().getMappingResolver().mapClassName("named", "net.minecraft.world.level.Level");
+        return FabricLoader.getInstance().getMappingResolver().mapClassName("intermediary", "net.minecraft.class_1937");
     }
 
     @Override
     public String getMethodName() {
-        return FabricLoader.getInstance().getMappingResolver().mapMethodName("named", getMixinClass(), "getEntities", getMethodDesc());
+        if(FabricLoader.getInstance().isDevelopmentEnvironment())
+            return "getEntities";
+        return "method_31592";
     }
 
     @Override
     public String getMethodDesc() {
-        return "(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate<-Lnet/minecraft/world/entity/Entity;>;)Ljava/util/List<Lnet/minecraft/world/entity/Entity;>;";
+        if(FabricLoader.getInstance().isDevelopmentEnvironment())
+            return "(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;)Ljava/util/List;";
+        return "(Lnet/minecraft/class_1297;Lnet/minecraft/class_238;Ljava/util/function/Predicate;)Ljava/util/List;";
     }
 }
