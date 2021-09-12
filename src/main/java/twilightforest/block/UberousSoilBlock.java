@@ -21,7 +21,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Random;
 
-public class UberousSoilBlock extends Block implements BonemealableBlock {
+public class UberousSoilBlock extends Block implements BonemealableBlock, IBlockMethods {
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F));
 
 	protected UberousSoilBlock(Properties props) {

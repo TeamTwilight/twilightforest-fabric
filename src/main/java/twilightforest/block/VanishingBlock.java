@@ -41,7 +41,7 @@ import net.minecraft.world.InteractionResult;
  * @see ReappearingBlock , It is only separated from this class because vanilla does
  * not like having blockstate properties be conditionally registered.
  */
-public class VanishingBlock extends Block {
+public class VanishingBlock extends Block implements IBlockMethods{
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 	public static final BooleanProperty VANISHED = BooleanProperty.create("vanished");
 	private static final VoxelShape VANISHED_SHAPE = box(6, 6, 6, 10, 10, 10);
@@ -228,4 +228,6 @@ public class VanishingBlock extends Block {
 			world.getBlockTicks().scheduleTick(pos, state.getBlock(), 2 + world.random.nextInt(5));
 		}
 	}
+
+
 }

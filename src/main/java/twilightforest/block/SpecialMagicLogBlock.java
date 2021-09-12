@@ -124,6 +124,7 @@ public class SpecialMagicLogBlock extends RotatedPillarBlock {
 			}
 
 			//FIXME figure out how to get this working again
+			//FIXME MALEK SAMIR HODROJ WILL ALSO FIX THIS LMAO
 //			BlockEntity te = world.getBlockEntity(dPos);
 //			if (te instanceof TickableBlockEntity && !te.isRemoved()) {
 //				((TickableBlockEntity) te).tick();

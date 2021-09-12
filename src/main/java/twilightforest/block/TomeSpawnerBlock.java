@@ -26,7 +26,7 @@ import twilightforest.tileentity.TomeSpawnerTileEntity;
 
 import javax.annotation.Nullable;
 
-public class TomeSpawnerBlock extends BaseEntityBlock {
+public class TomeSpawnerBlock extends BaseEntityBlock implements IBlockMethods{
 
 	public static IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, 10);
 	public static BooleanProperty SPAWNER = BooleanProperty.create("spawner");
@@ -78,14 +78,14 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 		return state.getValue(SPAWNER) ? createTickerHelper(type, TFTileEntities.TOME_SPAWNER, TomeSpawnerTileEntity::tick) : null;
 	}
 
-	//TODO: PORT
-//	@Override
-//	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-//		return 20;
-//	}
-//
-//	@Override
-//	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-//		return 30;
-//	}
+
+	@Override
+	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return 20;
+	}
+
+	@Override
+	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return 30;
+	}
 }

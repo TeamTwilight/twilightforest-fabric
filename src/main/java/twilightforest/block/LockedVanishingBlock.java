@@ -22,7 +22,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 
-public class LockedVanishingBlock extends VanishingBlock {
+public class LockedVanishingBlock extends VanishingBlock implements IBlockMethods{
 
 	public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
 
@@ -38,16 +38,23 @@ public class LockedVanishingBlock extends VanishingBlock {
 	}
 
 
-	//TODO: PORT
-//	@Override
-//	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
-//		return state.getValue(LOCKED) ? 6000000.0F : super.getExplosionResistance(state, world, pos, explosion);
-//	}
-//
-//	@Override
-//	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
-//		return !state.getValue(LOCKED) && super.canEntityDestroy(state, world, pos, entity);
-//	}
+
+	@Override
+	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
+		return state.getValue(LOCKED) ? 6000000.0F : super.getExplosionResistance(state, world, pos, explosion);
+	}
+
+	//IF THIS CAUSES ISSUES THIS IS THE OLD ORIGINAL CAN ENTITY DESTORY METHOD I CHANGED IT.
+	/*
+	@Override
+	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
+		return !state.getValue(LOCKED) && super.canEntityDestroy(state, world, pos, entity);
+	}
+	 */
+	@Override
+	public boolean canEntityDestroy(BlockState state, BlockPos pos, Entity entity) {
+		return !state.getValue(LOCKED) && super.canEntityDestroy(state, pos, entity);
+	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
