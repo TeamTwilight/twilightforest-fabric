@@ -30,7 +30,7 @@ import java.util.Random;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public class HedgeBlock extends Block {
+public class HedgeBlock extends Block implements IBlockMethods{
 
 	private static final VoxelShape HEDGE_BB = Shapes.create(new AABB(0, 0, 0, 1, 0.9375, 1));
 
@@ -106,13 +106,13 @@ public class HedgeBlock extends Block {
 		return !(entity instanceof Spider || entity instanceof ItemEntity || entity.isIgnoringBlockTriggers());
 	}
 
-//	@Override
-//	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-//		return 0;
-//	}
-//
-//	@Override
-//	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-//		return 0;
-//	}
+	@Override
+	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return 0;
+	}
+
+	@Override
+	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return 0;
+	}
 }
