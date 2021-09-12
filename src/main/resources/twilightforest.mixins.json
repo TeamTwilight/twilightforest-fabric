@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BiomeSpecialEffectsMixin",
-    "BlockMixin",
     "ChunkMapMixin",
     "EntityMixin",
     "ItemMixin",
@@ -13,7 +12,6 @@
     "LivingEntityMixin",
     "MapDecorationMixin",
     "MapItemMixin",
-    "MinecraftMixin",
     "PlayerMixin",
     "RarityMixin",
     "ServerEntityMixinPatch",
