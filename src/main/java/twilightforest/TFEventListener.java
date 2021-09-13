@@ -2,6 +2,11 @@ package twilightforest;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
+import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
@@ -96,7 +101,14 @@ public class TFEventListener {
 		ServerPlayerEvents.AFTER_RESPAWN.register(((oldPlayer, newPlayer, alive) -> onPlayerRespawn(newPlayer)));
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> breakBlock(world, player, pos, state));
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> onCasketBreak(world.getBlockState(pos).getBlock(), player, blockEntity));
-		//ServerWorldEvents.LOAD.register(((server, world) -> worldLoaded(world)));
+		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> playerPortals(player, destination.dimension()));
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> onPlayerLogout(handler.player));
+
+		/*TODO: Currently there is a issue with the packet that forces client side gamerule of progression.
+		 * 	    In this case the level is null creating a null pointer exception within the EnforceProgressionStatusPacket
+		 */
+		//ServerPlayConnectionEvents.JOIN.register((handler, sender, client) -> playerLogsIn(handler.player, handler.player.getLevel()));
+
 	}
 
 //	@SubscribeEvent
@@ -381,7 +393,6 @@ public class TFEventListener {
 		}
 	}
 
-	//TODO: HOOK
 	//if our casket is owned by someone and that player isnt the one breaking it, stop them
 	public static boolean onCasketBreak(Block block, Player player, BlockEntity te) {
 		UUID checker;
@@ -607,7 +618,6 @@ public class TFEventListener {
 	/**
 	 * Dump stored items if player logs out
 	 */
-	//TODO: HOOK
 	public static void onPlayerLogout(Player player) {
 		dropStoredItems(player);
 	}
@@ -808,7 +818,7 @@ public class TFEventListener {
 	//TODO: HOOK
 	public static void playerLogsIn(Player player) {
 		if (!player.level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-			sendEnforcedProgressionStatus((ServerPlayer) player, TFGenerationSettings.isProgressionEnforced(player.level));
+			sendEnforcedProgressionStatus(serverPlayer, TFGenerationSettings.isProgressionEnforced(((ServerPlayer) player).getLevel()));
 			updateCapabilities(serverPlayer, player);
 			banishNewbieToTwilightZone(player);
 		}
@@ -817,8 +827,8 @@ public class TFEventListener {
 	/**
 	 * When player changes dimensions, send the rule status if they're moving to the Twilight Forest
 	 */
-	//TODO: HOOK
 	public static void playerPortals(Player player, ResourceKey<Level> to) {
+		TwilightForestMod.LOGGER.debug("Running event In which updates rule status if the destination is the Twilight Forest");
 		if (!player.level.isClientSide && player instanceof ServerPlayer serverPlayer) {
 			if (to.location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID)) {
 				sendEnforcedProgressionStatus(serverPlayer, TFGenerationSettings.isProgressionEnforced(player.level));
