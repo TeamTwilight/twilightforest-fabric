@@ -27,6 +27,7 @@ import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.components.structures.lichtowerrevamp.TowerFoyer;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.entity.*;
 import twilightforest.world.components.structures.*;
@@ -150,7 +151,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new TowerMainComponent(this, rand, 0, x, y, z);
+			return rand.nextBoolean() ? new TowerMainComponent(this, rand, 0, x, y, z) : new TowerFoyer(structureManager, new BlockPos(x, y + 1, z));
 		}
 	},
 	ICE_TOWER ( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {

@@ -18,6 +18,7 @@ import twilightforest.world.registration.TFFeature;
 /**
  * Copied a few things from {@link net.minecraft.world.level.levelgen.structure.TemplateStructurePiece}
  */
+@Deprecated // Should extend TemplateStructurePiece instead
 public abstract class TFStructureComponentTemplate extends TFStructureComponent {
 
     protected StructurePlaceSettings placeSettings = new StructurePlaceSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
