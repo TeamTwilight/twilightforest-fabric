@@ -73,6 +73,7 @@ public class TFClientSetup implements ClientModInitializer {
         RenderLayerRegistration.init();
         //MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
         TFTileEntities.registerTileEntityRenders();
+        TFTileEntities.registerTileEntitysItemRenders();
         TFContainers.renderScreens();
 
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);

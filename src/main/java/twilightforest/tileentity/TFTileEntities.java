@@ -1,17 +1,30 @@
 package twilightforest.tileentity;
 
+import com.mojang.authlib.minecraft.client.MinecraftClient;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRenderer;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.impl.client.rendering.BuiltinItemRendererRegistryImpl;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.AbstractSkullCandleBlock;
+import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.ISTER;
 import twilightforest.client.renderer.tileentity.*;
 import twilightforest.tileentity.spawner.*;
+
+import java.util.List;
 
 public class TFTileEntities {
 
@@ -101,5 +114,48 @@ public class TFTileEntities {
 		BlockEntityRenderers.register(TF_SIGN, SignRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(KEEPSAKE_CASKET, CasketTileEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(SKULL_CANDLE, SkullCandleTileEntityRenderer::new);
+
 	}
+
+	public static void registerTileEntitysItemRenders(){
+		List<AbstractTrophyBlock> TROPHYS = List.of(TFBlocks.naga_trophy, TFBlocks.lich_trophy, TFBlocks.minoshroom_trophy,
+				TFBlocks.hydra_trophy, TFBlocks.knight_phantom_trophy, TFBlocks.ur_ghast_trophy, TFBlocks.yeti_trophy,
+				TFBlocks.snow_queen_trophy, TFBlocks.quest_ram_trophy);
+
+		List<AbstractSkullCandleBlock> SKULLCANDLES = List.of(TFBlocks.zombie_skull_candle, TFBlocks.skeleton_skull_candle,
+				TFBlocks.wither_skele_skull_candle, TFBlocks.creeper_skull_candle, TFBlocks.player_skull_candle);
+
+		for(AbstractTrophyBlock block : TROPHYS){
+			BuiltinItemRendererRegistry.INSTANCE.register(block, (itemStack, transform, stack, source, light, overlay) -> {
+				new ISTER(Registry.BLOCK_ENTITY_TYPE.getKey(TFTileEntities.TROPHY)).renderByItem(itemStack, transform, stack, source, light, overlay);
+			});
+		}
+
+		for(AbstractSkullCandleBlock block : SKULLCANDLES){
+			BuiltinItemRendererRegistry.INSTANCE.register(block, (itemStack, transform, stack, source, light, overlay) -> {
+				new ISTER(Registry.BLOCK_ENTITY_TYPE.getKey(TFTileEntities.SKULL_CANDLE)).renderByItem(itemStack, transform, stack, source, light, overlay);
+			});
+		}
+
+		BuiltinItemRendererRegistry.INSTANCE.register(TFBlocks.cicada, (itemStack, transform, stack, source, light, overlay) -> {
+			new ISTER(Registry.BLOCK_ENTITY_TYPE.getKey(TFTileEntities.CICADA)).renderByItem(itemStack, transform, stack, source, light, overlay);
+		});
+
+		BuiltinItemRendererRegistry.INSTANCE.register(TFBlocks.firefly, (itemStack, transform, stack, source, light, overlay) -> {
+			new ISTER(Registry.BLOCK_ENTITY_TYPE.getKey(TFTileEntities.FIREFLY)).renderByItem(itemStack, transform, stack, source, light, overlay);
+		});
+
+		BuiltinItemRendererRegistry.INSTANCE.register(TFBlocks.moonworm, (itemStack, transform, stack, source, light, overlay) -> {
+			new ISTER(Registry.BLOCK_ENTITY_TYPE.getKey(TFTileEntities.MOONWORM)).renderByItem(itemStack, transform, stack, source, light, overlay);
+		});
+
+		BuiltinItemRendererRegistry.INSTANCE.register(TFBlocks.keepsake_casket, (itemStack, transform, stack, source, light, overlay) -> {
+			new ISTER(Registry.BLOCK_ENTITY_TYPE.getKey(TFTileEntities.KEEPSAKE_CASKET)).renderByItem(itemStack, transform, stack, source, light, overlay);
+		});
+
+
+
+
+	}
+
 }
