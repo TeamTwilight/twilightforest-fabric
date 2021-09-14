@@ -18,7 +18,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.util.TFDamageSources;
 
-@Environment(EnvType.CLIENT)
 public class TomeBoltEntity extends TFThrowableEntity implements ItemSupplier {
 
 	public TomeBoltEntity(EntityType<? extends TomeBoltEntity> type, Level world, LivingEntity thrower) {

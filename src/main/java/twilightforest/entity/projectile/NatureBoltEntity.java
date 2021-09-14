@@ -24,7 +24,6 @@ import net.fabricmc.api.Environment;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.TFDamageSources;
 
-@Environment(EnvType.CLIENT)
 public class NatureBoltEntity extends TFThrowableEntity implements ITFProjectile, ItemSupplier {
 
 	public NatureBoltEntity(EntityType<? extends NatureBoltEntity> type, Level world) {

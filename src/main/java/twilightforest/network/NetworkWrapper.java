@@ -1,6 +1,7 @@
 package twilightforest.network;
 
 import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -50,6 +51,11 @@ public class NetworkWrapper {
             packet.consumer.accept(object, serverPlayerEntity);
         });
 
+
+    }
+
+    @Environment(EnvType.CLIENT)
+    public void initClient() {
         ClientPlayNetworking.registerGlobalReceiver(identifier, (minecraftClient, clientPlayNetworkHandler, packetByteBuf, packetSender) -> {
             int id = packetByteBuf.readInt();
             Packet packet = packetIdMap.get(id);

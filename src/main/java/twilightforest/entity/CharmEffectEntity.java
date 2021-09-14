@@ -21,7 +21,6 @@ import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
 public class CharmEffectEntity extends Entity implements ItemSupplier {
 	private static final EntityDataAccessor<Integer> DATA_OWNER = SynchedEntityData.defineId(CharmEffectEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<ItemStack> DATA_ITEMID = SynchedEntityData.defineId(CharmEffectEntity.class, EntityDataSerializers.ITEM_STACK);
