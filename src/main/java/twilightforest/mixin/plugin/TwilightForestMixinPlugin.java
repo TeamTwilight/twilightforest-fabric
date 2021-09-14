@@ -34,6 +34,8 @@ public class TwilightForestMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if(mixinClassName.contains("BoundingBoxMixin") || mixinClassName.contains("WorldGenRegionMixin"))
+            return FabricLoader.getInstance().isDevelopmentEnvironment() ? true : false;
         return true;
     }
 
@@ -60,16 +62,19 @@ public class TwilightForestMixinPlugin implements IMixinConfigPlugin {
         }
 
         for(Patch patch : patches) {
-            //System.out.println(patch.getMixinClass() + " "+targetClassName.equals(patch.getMixinClass()) + " : " + targetClassName);
+//            System.out.println(patch.getMixinClass() + " "+targetClassName.equals(patch.getMixinClass()) + " : " + targetClassName);
 
             patch.applyClass(targetClass);
-
+            //System.out.println(patch.getMixinClass() + " : "+ patch.getMethodName()+patch.getMethodDesc());
             if(patch.getMixinClass().equals(targetClassName)) {
                 System.out.println("PATCHING CLASS: "+ targetClassName);
                 for(MethodNode node : targetClass.methods) {
+//                    if(targetClassName.contains("class_898")) {
+//                        System.out.println(node.name+node.desc);
+//                    }
 
                     //System.out.println(node.desc);
-//                    System.out.println(patch.getMixinClass() +" : " + patch.getMethodName()+patch.getMethodDesc() + " : " +node.name + " : "+ node.desc);
+                    //System.out.println(patch.getMixinClass() +" : " + patch.getMethodName()+patch.getMethodDesc() + " : " +node.name + " : "+ node.desc);
                     if(node.name.equals(patch.getMethodName()) && node.desc.equals(patch.getMethodDesc())) {
                         System.out.println("PATCHING METHOD: "+ node.name+node.desc);
                         patch.applyMethod(node);

@@ -36,6 +36,9 @@ repositories {
         name = 'Ladysnake Mods'
         url = 'https://ladysnake.jfrog.io/artifactory/mods'
     }
+    maven {
+        url "https://nexus.resourcefulbees.com/repository/maven-public/"
+    }
     mavenLocal()
 }
 
@@ -49,7 +52,7 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    implementation 'net.patchworkmc:event-racecar:1.0.1:with-typetools'
+
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
     modApi "com.terraformersmc:modmenu:2.0.2"
@@ -71,7 +74,10 @@ dependencies {
         exclude group: 'net.fabricmc.fabric-api'
     }*/
     implementation 'com.electronwill.night-config:toml:3.6.2'
-    modImplementation "net.alphamode:ForgeConfig:1.0.5"
+    modImplementation "net.alphamode:ForgeConfig:1.0.8"
+
+    include "net.alphamode:ForgeConfig:1.0.8"
+    modImplementation "com.telepathicgrunt:Blame-Fabric:1.17-4.2.0-fabric"
 }
 
 processResources {

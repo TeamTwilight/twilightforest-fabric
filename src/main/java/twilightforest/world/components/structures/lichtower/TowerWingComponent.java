@@ -60,7 +60,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
 				return HangingEntity.class.getDeclaredMethod("setDirection", Direction.class);
 			}
-			return HangingEntity.class.getDeclaredMethod("method_6892 ", Direction.class);
+			return HangingEntity.class.getDeclaredMethod("method_6892", Direction.class);
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		}

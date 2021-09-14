@@ -18,7 +18,7 @@ public class ServerLevelPatch implements Patch {
                                 Opcodes.INVOKESTATIC,
                                 "twilightforest/ASMHooks",
                                 "multipartFromID",
-                                "(Lnet/minecraft/world/entity/Entity;I)Lnet/minecraft/world/entity/Entity;",
+                                FabricLoader.getInstance().isDevelopmentEnvironment() ? "(Lnet/minecraft/world/entity/Entity;I)Lnet/minecraft/world/entity/Entity;" : "(Lnet/minecraft/class_1297;I)Lnet/minecraft/class_1297;",
                                 false
                         )
                 )

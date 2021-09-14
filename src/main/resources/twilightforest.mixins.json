@@ -18,7 +18,9 @@
     "ServerLevelEntityCallbacksMixinPatch",
     "ServerLevelMixinPatch",
     "ServerPlayerMixin",
-    "SpawnPlacementsMixin"
+    "SpawnPlacementsMixin",
+    "BoundingBoxMixin",
+    "WorldGenRegionMixin"
   ],
   "client": [
     "client.BlockColorsMixin",

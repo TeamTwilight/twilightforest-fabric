@@ -16,7 +16,7 @@ public class ServerEntityPatch implements Patch {
                                 Opcodes.INVOKESTATIC,
                                 "twilightforest/ASMHooks",
                                 "updateMultiparts",
-                                "(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/entity/Entity;",
+                                FabricLoader.getInstance().isDevelopmentEnvironment() ? "(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/entity/Entity;" : "(Lnet/minecraft/class_1297;)Lnet/minecraft/class_1297;",
                                 false
                         )
                 )
@@ -28,12 +28,12 @@ public class ServerEntityPatch implements Patch {
 
     @Override
     public String getMixinClass() {
-        return FabricLoader.getInstance().getMappingResolver().mapClassName("named", "net.minecraft.server.level.ServerEntity");
+        return FabricLoader.getInstance().getMappingResolver().mapClassName("intermediary", "net.minecraft.class_3231");
     }
 
     @Override
     public String getMethodName() {
-        return FabricLoader.getInstance().getMappingResolver().mapMethodName("named", "net.minecraft.class_3231", "sendDirtyEntityData", getMethodDesc());
+        return FabricLoader.getInstance().getMappingResolver().mapMethodName("intermediary", "net.minecraft.class_3231", "method_14306", getMethodDesc());
     }
 
     @Override

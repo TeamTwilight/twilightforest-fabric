@@ -17,7 +17,7 @@ public class ServerLevelPatchStart implements Patch {
                                 Opcodes.INVOKESTATIC,
                                 "twilightforest/ASMHooks",
                                 "trackingStart",
-                                "(Lnet/minecraft/world/entity/Entity;)V",
+                                FabricLoader.getInstance().isDevelopmentEnvironment() ? "(Lnet/minecraft/world/entity/Entity;)V" : "(Lnet/minecraft/class_1297;)V",
                                 false
                         )
                 )

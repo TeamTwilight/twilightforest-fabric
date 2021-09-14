@@ -21,7 +21,7 @@ public class LevelPatch implements Patch {
                                 Opcodes.INVOKESTATIC,
                                 "twilightforest/ASMHooks",
                                 "multipartHitbox",
-                                "(Ljava/util/List;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;)Ljava/util/List;",
+                                FabricLoader.getInstance().isDevelopmentEnvironment() ? "(Ljava/util/List;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;)Ljava/util/List;" : "(Ljava/util/List;Lnet/minecraft/class_1937;Lnet/minecraft/class_1297;Lnet/minecraft/class_238;Ljava/util/function/Predicate;)Ljava/util/List;",
                                 false
                         )
                 )

@@ -100,8 +100,9 @@ public abstract class EntityRenderDispatcherMixin {
         ASMHooks.bakeMultipartRenders(context);
     }
 
+
 //    @Inject(method = "getRenderer", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
 //    public <T extends Entity> void getMultipartRenderer(T entity, CallbackInfoReturnable<EntityRenderer<? super T>> cir) {
-//        ASMHooks.getMultipartRenderer(this.renderers.get(entity.getType()), entity);
+//        cir.setReturnValue((EntityRenderer<? super T>) ASMHooks.getMultipartRenderer(this.renderers.get(entity.getType()), entity));
 //    }
 }

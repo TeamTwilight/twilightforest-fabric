@@ -28,7 +28,7 @@ public class EntityRenderDispatcherPatch implements Patch {
                                 Opcodes.INVOKESTATIC,
                                 "twilightforest/ASMHooks",
                                 "getMultipartRenderer",
-                                "(Lnet/minecraft/client/renderer/entity/EntityRenderer;Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;",
+                                FabricLoader.getInstance().isDevelopmentEnvironment() ? "(Lnet/minecraft/client/renderer/entity/EntityRenderer;Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/client/renderer/entity/EntityRenderer;" : "(Lnet/minecraft/class_897;Lnet/minecraft/class_1297;)Lnet/minecraft/class_897;",
                                 false
                         )
                 )
@@ -66,7 +66,7 @@ public class EntityRenderDispatcherPatch implements Patch {
     public String getMethodName() {
         if(FabricLoader.getInstance().isDevelopmentEnvironment())
             return "getRenderer";
-        return "method_3550";
+        return "method_3953";
     }
 
     @Override
