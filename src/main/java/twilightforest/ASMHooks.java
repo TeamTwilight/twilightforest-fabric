@@ -36,11 +36,8 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.WeakHashMap;
+
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -235,9 +232,9 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(PoseStack, float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f)}<br>
 	 * [AFTER {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
-	public static Iterable<Entity> renderMutiparts(Iterable<Entity> iter) {
+	public static Iterable<Entity> renderMutiparts(Iterator<Entity> iter) {
 		List<Entity> list = new ArrayList<>();
-		iter.forEach(entity -> {
+		iter.forEachRemaining(entity -> {
 			list.add(entity);
 			if(((IEntityEx)entity).isMultipartEntity() && ((IEntityEx)entity).getParts() != null) {
 				for (PartEntity<?> part : Objects.requireNonNull(((IEntityEx) entity).getParts())) {

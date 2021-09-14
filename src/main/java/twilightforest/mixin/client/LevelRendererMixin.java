@@ -7,10 +7,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.ASMHooks;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
+
+import java.util.Iterator;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -43,8 +47,9 @@ public class LevelRendererMixin {
         }
     }
 
-    @Redirect(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;entitiesForRendering()Ljava/lang/Iterable;"))
-    public Iterable<Entity> renderMultiparts(ClientLevel clientLevel) {
-        return ASMHooks.renderMutiparts(this.level.entitiesForRendering());
+
+    @ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/Iterable;iterator()Ljava/util/Iterator;"), ordinal = 0)
+    public Iterator<Entity> renderMultiparts(Iterator iterator) {
+        return ASMHooks.renderMutiparts(iterator).iterator();
     }
 }
