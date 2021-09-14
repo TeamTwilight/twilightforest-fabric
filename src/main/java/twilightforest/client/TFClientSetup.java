@@ -77,6 +77,7 @@ public class TFClientSetup implements ClientModInitializer {
         TFPacketHandler.CHANNEL.initClient();
         TFLayerDefinitions.registerLayers();
         TFModelLayers.init();
+        TFClientEvents.ModBusEvents.registerFabricEvents();
         TFClientEvents.ModBusEvents.registerModels();
         TFEntityRenderers.registerEntityRenderer();
         TFParticleType.registerFactories();

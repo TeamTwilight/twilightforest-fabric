@@ -24,7 +24,6 @@
   ],
   "client": [
     "client.BlockColorsMixin",
-    "client.DimensionSpecialEffectsMixin",
     "client.EntityRenderDispatcherMixin",
     "client.ItemColorsMixin",
     "client.ItemInHandRendererMixin",

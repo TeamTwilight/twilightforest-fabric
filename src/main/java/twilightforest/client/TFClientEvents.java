@@ -8,9 +8,7 @@ import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
-import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.extensions.IEffectsEx;
 import twilightforest.item.TFItems;
 import java.util.Map;
 import java.util.Objects;
@@ -199,9 +197,8 @@ public class TFClientEvents {
 		DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
 
 		// add weather box if needed
-		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo) {
-			TFWeatherRenderer weatherRenderer = ((IEffectsEx)info).getHandler();
-			weatherRenderer.tick();
+		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo twilightForestRenderInfo) {
+			twilightForestRenderInfo.getWeatherRenderHandler().tick();
 		}
 	}
 
