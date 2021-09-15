@@ -8,6 +8,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.impl.client.rendering.ArmorRendererRegistryImpl;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.core.Registry;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -15,16 +19,12 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.model.TFLayerDefinitions;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.client.providers.ArcticArmorProvider;
-import twilightforest.client.providers.FieryArmorProvider;
-import twilightforest.client.providers.KnightArmorProvider;
+import twilightforest.client.providers.*;
 import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
-import twilightforest.item.ArcticArmorItem;
-import twilightforest.item.FieryArmorItem;
-import twilightforest.item.TFItems;
+import twilightforest.item.*;
 import twilightforest.tileentity.TFTileEntities;
 import java.lang.reflect.Field;
 
@@ -83,11 +83,13 @@ public class TFClientSetup implements ClientModInitializer {
 //		}
 		TFItems.addItemModelProperties();
         RenderLayerRegistration.init();
+        armorRegistry();
+        
         //MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
         TFTileEntities.registerTileEntityRenders();
         TFTileEntities.registerTileEntitysItemRenders();
         TFContainers.renderScreens();
-        armorRegistry();
+
 
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
         DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
@@ -106,20 +108,26 @@ public class TFClientSetup implements ClientModInitializer {
     }
 
     public static void armorRegistry(){
+        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.arctic_boots), TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.arctic_boots), TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
 
-        //ArmorRenderer.register();
+        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.fiery_boots), TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.fiery_boots), TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
 
-        ArcticArmorProvider PROVIDERTEST = new ArcticArmorProvider();
-        ArmorRenderingRegistry.registerModel(PROVIDERTEST, TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
-        ArmorRenderingRegistry.registerTexture(PROVIDERTEST, TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
+        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.knightmetal_boots), TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.knightmetal_boots), TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
 
-        FieryArmorProvider PROVIDERTEST2 = new FieryArmorProvider();
-        ArmorRenderingRegistry.registerModel(PROVIDERTEST2, TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
-        ArmorRenderingRegistry.registerTexture(PROVIDERTEST2, TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
+        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.phantom_chestplate), TFItems.phantom_helmet, TFItems.phantom_chestplate);
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.phantom_chestplate), TFItems.phantom_helmet, TFItems.phantom_chestplate);
 
-        KnightArmorProvider PROVIDERTEST3 = new KnightArmorProvider();
-        ArmorRenderingRegistry.registerModel(PROVIDERTEST3, TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
-        ArmorRenderingRegistry.registerTexture(PROVIDERTEST3, TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
+        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.yeti_boots), TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.yeti_boots), TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
+
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.naga_chestplate), TFItems.naga_chestplate, TFItems.naga_leggings);
+
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.ironwood_boots), TFItems.ironwood_boots, TFItems.ironwood_leggings, TFItems.ironwood_chestplate, TFItems.ironwood_helmet);
+
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.steeleaf_boots), TFItems.steeleaf_boots, TFItems.steeleaf_leggings, TFItems.steeleaf_chestplate, TFItems.steeleaf_helmet);
     }
 
 

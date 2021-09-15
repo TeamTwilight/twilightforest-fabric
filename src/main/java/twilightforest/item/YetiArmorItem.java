@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +19,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.NotNull;
+import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.YetiArmorModel;
@@ -25,21 +28,30 @@ import twilightforest.client.model.armor.YetiArmorModel;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class YetiArmorItem extends ArmorItem {
+public class YetiArmorItem extends ArmorItem implements ArmorRenderingRegistry.TextureProvider, ArmorRenderingRegistry.ModelProvider {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.yeti_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public YetiArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties props) {
 		super(material, slot, props);
 	}
 
-	//@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+	@Override
+	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @org.jetbrains.annotations.Nullable String suffix, ResourceLocation defaultTexture) {
 		if (slot == EquipmentSlot.LEGS || slot == EquipmentSlot.CHEST) {
-			return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png");
 		} else {
-			return TwilightForestMod.ARMOR_DIR + "yetiarmor_1.png";
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "yetiarmor_1.png");
 		}
 	}
+
+	//@Override
+	//public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+	//	if (slot == EquipmentSlot.LEGS || slot == EquipmentSlot.CHEST) {
+	//		return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
+	//	} else {
+	//		return TwilightForestMod.ARMOR_DIR + "yetiarmor_1.png";
+	//	}
+	//}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
@@ -67,6 +79,13 @@ public class YetiArmorItem extends ArmorItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltips, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltips, flags);
 		tooltips.add(TOOLTIP);
+	}
+
+	@Override
+	public @NotNull HumanoidModel<LivingEntity> getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot armorSlot, HumanoidModel<LivingEntity> defaultModel) {
+		EntityModelSet models = Minecraft.getInstance().getEntityModels();
+		ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.YETI_ARMOR_INNER : TFModelLayers.YETI_ARMOR_OUTER);
+		return new YetiArmorModel(armorSlot, root);
 	}
 
 //	@Override

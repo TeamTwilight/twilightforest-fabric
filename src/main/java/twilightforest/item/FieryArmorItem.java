@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,6 +20,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.NotNull;
+import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.FieryArmorModel;
@@ -26,11 +29,34 @@ import twilightforest.client.model.armor.FieryArmorModel;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class FieryArmorItem extends ArmorItem {
+public class FieryArmorItem extends ArmorItem implements ArmorRenderingRegistry.ModelProvider, ArmorRenderingRegistry.TextureProvider{
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.fiery_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public FieryArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
 		super(armorMaterial, armorType, props);
+	}
+
+	@Override
+	@Environment(EnvType.CLIENT)
+	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, world, tooltip, flags);
+		tooltip.add(TOOLTIP);
+	}
+
+	@Override
+	public @NotNull HumanoidModel<LivingEntity> getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot armorSlot, HumanoidModel<LivingEntity> defaultModel) {
+		EntityModelSet models = Minecraft.getInstance().getEntityModels();
+		ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.FIERY_ARMOR_INNER : TFModelLayers.FIERY_ARMOR_OUTER);
+		return new FieryArmorModel(root);
+	}
+
+	@Override
+	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @org.jetbrains.annotations.Nullable String suffix, ResourceLocation defaultTexture) {
+		if (slot == EquipmentSlot.LEGS) {
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "fiery_2.png");
+		} else {
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "fiery_1.png");
+		}
 	}
 
 //	@Override
@@ -41,13 +67,6 @@ public class FieryArmorItem extends ArmorItem {
 //			return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
 //		}
 //	}
-
-	@Override
-	@Environment(EnvType.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(TOOLTIP);
-	}
 
 //	@Override
 //	public void initializeClient(Consumer<IItemRenderProperties> consumer) {

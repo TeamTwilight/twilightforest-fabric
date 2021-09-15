@@ -2,6 +2,14 @@ package twilightforest.item;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
+import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.TwilightForestMod;
 import java.util.List;
 
@@ -22,8 +30,10 @@ import net.minecraft.world.item.enchantment.BindingCurseEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.VanishingCurseEnchantment;
 import net.minecraft.world.level.Level;
+import twilightforest.client.model.TFModelLayers;
+import twilightforest.client.model.armor.TFArmorModel;
 
-public class PhantomArmorItem extends ArmorItem {
+public class PhantomArmorItem extends ArmorItem implements ArmorRenderingRegistry.ModelProvider, ArmorRenderingRegistry.TextureProvider{
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.phantom_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public PhantomArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
@@ -45,6 +55,18 @@ public class PhantomArmorItem extends ArmorItem {
 	@Environment(EnvType.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(TOOLTIP);
+	}
+
+	@Override
+	public @NotNull HumanoidModel<LivingEntity> getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot armorSlot, HumanoidModel<LivingEntity> defaultModel) {
+		EntityModelSet models = Minecraft.getInstance().getEntityModels();
+		ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.PHANTOM_ARMOR_INNER : TFModelLayers.PHANTOM_ARMOR_OUTER);
+		return new TFArmorModel(root);
+	}
+
+	@Override
+	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @org.jetbrains.annotations.Nullable String suffix, ResourceLocation defaultTexture) {
+		return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
 	}
 
 //	@Override

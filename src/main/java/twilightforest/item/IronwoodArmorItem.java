@@ -1,19 +1,33 @@
 package twilightforest.item;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.TwilightForestMod;
 
-public class IronwoodArmorItem extends ArmorItem {
+public class IronwoodArmorItem extends ArmorItem implements ArmorRenderingRegistry.TextureProvider{
 
 	public IronwoodArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
 		super(armorMaterial, armorType, props);
+	}
+
+	@Override
+	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @Nullable String suffix, ResourceLocation defaultTexture) {
+		if (slot == EquipmentSlot.LEGS) {
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "ironwood_2.png");
+		} else {
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "ironwood_1.png");
+		}
 	}
 
 	//@Override

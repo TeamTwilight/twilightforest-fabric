@@ -27,7 +27,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 
-public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, ArmorRenderingRegistry.ModelProvider, ArmorRenderingRegistry.TextureProvider {
+public class ArcticArmorItem extends DyeableArmorItem implements DyeableLeatherItem, ArmorRenderingRegistry.ModelProvider, ArmorRenderingRegistry.TextureProvider {
 	@Environment(EnvType.CLIENT)
 	private static final MutableComponent TOOLTIP_TEXT = new TranslatableComponent("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
@@ -156,11 +156,9 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, Ar
 	@Override
 	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @org.jetbrains.annotations.Nullable String suffix, ResourceLocation defaultTexture) {
 		if (slot == EquipmentSlot.LEGS) {
-			//return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "arcticarmor_2" + (suffix == null ? "_dyed" : "_overlay") + ".png");
-			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "arcticarmor_2" + "_overlay" + ".png");
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "arcticarmor_2" + (suffix == null ? "_dyed" : "_overlay") + ".png");
 		} else {
-			//return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "arcticarmor_1" + (suffix == null ? "_dyed" : "_overlay") + ".png");
-			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "arcticarmor_1" + "_overlay" + ".png");
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "arcticarmor_1" + (suffix == null ? "_dyed" : "_overlay") + ".png");
 		}
 	}
 

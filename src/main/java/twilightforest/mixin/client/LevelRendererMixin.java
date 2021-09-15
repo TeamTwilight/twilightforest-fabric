@@ -2,11 +2,13 @@ package twilightforest.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.ASMHooks;
@@ -17,6 +19,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.world.entity.Entity;
+
+import java.util.Iterator;
 
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {
@@ -43,8 +47,10 @@ public class LevelRendererMixin {
         }
     }
 
-    @Redirect(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;entitiesForRendering()Ljava/lang/Iterable;"))
-    public Iterable<Entity> renderMultiparts(ClientLevel clientLevel) {
-        return ASMHooks.renderMutiparts(this.level.entitiesForRendering());
+    @ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/Iterable;iterator()Ljava/util/Iterator;"), ordinal = 0)
+    public Iterator<Entity> renderMultiparts(Iterator iterator) {
+        return ASMHooks.renderMutiparts(iterator).iterator();
     }
+
+
 }
