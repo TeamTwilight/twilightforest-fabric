@@ -5,15 +5,46 @@
       "config": {
         "outer": {
           "config": {
-            "max_water_depth": 0
+            "count": 2,
+            "extra_chance": 0.4,
+            "extra_count": 2
           },
-          "type": "minecraft:water_depth_threshold"
+          "type": "minecraft:count_extra"
         },
         "inner": {
           "config": {
-            "heightmap": "OCEAN_FLOOR"
+            "outer": {
+              "config": {
+                "outer": {
+                  "config": {},
+                  "type": "minecraft:square"
+                },
+                "inner": {
+                  "config": {
+                    "outer": {
+                      "config": {
+                        "max_water_depth": 0
+                      },
+                      "type": "minecraft:water_depth_threshold"
+                    },
+                    "inner": {
+                      "config": {
+                        "heightmap": "OCEAN_FLOOR"
+                      },
+                      "type": "minecraft:heightmap"
+                    }
+                  },
+                  "type": "minecraft:decorated"
+                }
+              },
+              "type": "minecraft:decorated"
+            },
+            "inner": {
+              "config": {},
+              "type": "twilightforest:nostructure"
+            }
           },
-          "type": "minecraft:heightmap"
+          "type": "minecraft:decorated"
         }
       },
       "type": "minecraft:decorated"

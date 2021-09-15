@@ -11,9 +11,9 @@
                   "config": {
                     "outer": {
                       "config": {
-                        "count": 1,
+                        "count": 2,
                         "extra_chance": 0.4,
-                        "extra_count": 1
+                        "extra_count": 2
                       },
                       "type": "minecraft:count_extra"
                     },
@@ -68,9 +68,9 @@
                   "config": {
                     "outer": {
                       "config": {
-                        "count": 1,
+                        "count": 2,
                         "extra_chance": 0.4,
-                        "extra_count": 1
+                        "extra_count": 2
                       },
                       "type": "minecraft:count_extra"
                     },

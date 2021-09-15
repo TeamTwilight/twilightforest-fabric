@@ -7,10 +7,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -28,8 +25,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
+import twilightforest.world.registration.TFFeature;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -43,8 +40,7 @@ public class HostileWolfEntity extends Wolf implements Enemy {
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
-		return Wolf.createAttributes()
-				.add(Attributes.MAX_HEALTH, 10.0D);
+		return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.ATTACK_DAMAGE, 2.0D);
 	}
 
 	@Override

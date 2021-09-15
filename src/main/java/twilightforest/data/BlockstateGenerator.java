@@ -298,7 +298,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 		axisBlock(TFBlocks.stone_twist.get(), prefix("block/stone_twist/twist_side"), prefix("block/stone_twist/twist_end"));
 		axisBlock(TFBlocks.stone_bold.get(), prefix("block/stone_pillar_side"), prefix("block/stone_pillar_end"));
 		simpleBlock(TFBlocks.empty_bookshelf.get(), models().cubeColumn("empty_bookshelf", prefix("block/wood/bookshelf_spawner/bookshelf_empty"), prefix("block/wood/planks_canopy_0")));
-		simpleBlock(TFBlocks.canopy_bookshelf.get(), models().cubeColumn("canopy_bookshelf", prefix("block/wood/bookshelf_canopy"), prefix("block/wood/planks_canopy_0")));
+		simpleBlock(TFBlocks.canopy_bookshelf.get(), ConfiguredModel.builder()
+				.weight(3).modelFile(models().cubeColumn("canopy_bookshelf", prefix("block/wood/bookshelf_canopy"), prefix("block/wood/planks_canopy_0"))).nextModel()
+				.modelFile(models().cubeColumn("canopy_bookshelf_1", prefix("block/wood/bookshelf_canopy_1"), prefix("block/wood/planks_canopy_0"))).nextModel()
+				.modelFile(models().cubeColumn("canopy_bookshelf_2", prefix("block/wood/bookshelf_canopy_2"), prefix("block/wood/planks_canopy_0"))).nextModel()
+				.modelFile(models().cubeColumn("canopy_bookshelf_3", prefix("block/wood/bookshelf_canopy_3"), prefix("block/wood/planks_canopy_0")))
+				.build());
 		//if theres a better way to do this block please do it. I dont want to think about it right now
 		getVariantBuilder(TFBlocks.tome_spawner.get()).forAllStatesExcept(s -> {
 			switch (s.getValue(TomeSpawnerBlock.BOOK_STAGES)) {
@@ -311,7 +316,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 				case 7 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_7", prefix("block/wood/bookshelf_spawner/bookshelf_7"), prefix("block/wood/planks_canopy_0"))).build(); }
 				case 8 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_8", prefix("block/wood/bookshelf_spawner/bookshelf_8"), prefix("block/wood/planks_canopy_0"))).build(); }
 				case 9 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_9", prefix("block/wood/bookshelf_spawner/bookshelf_9"), prefix("block/wood/planks_canopy_0"))).build(); }
-				default -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_10", prefix("block/wood/bookshelf_spawner/bookshelf_10"), prefix("block/wood/planks_canopy_0"))).build(); }
+				default -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_10", prefix("block/wood/bookshelf_canopy_3"), prefix("block/wood/planks_canopy_0"))).build(); }
 			}
 		}, TomeSpawnerBlock.SPAWNER);
 		//ConfiguredModel[] lapisModels = new ConfiguredModel[4];

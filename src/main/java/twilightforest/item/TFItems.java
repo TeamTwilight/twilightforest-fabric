@@ -34,11 +34,11 @@ import net.minecraft.world.item.Tiers;
 
 public class TFItems {
 	public static final FoodProperties EXPERIMENT_115 = new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).build();
-	public static final FoodProperties HYDRA_CHOP = new FoodProperties.Builder().nutrition(18).saturationMod(2.0F).effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F).build();
+	public static final FoodProperties HYDRA_CHOP = new FoodProperties.Builder().nutrition(18).saturationMod(2.0F).meat().effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F).build();
 	public static final FoodProperties MAZE_WAFER = new FoodProperties.Builder().nutrition(4).saturationMod(0.6F).build();
 	public static final FoodProperties MEEF_COOKED = new FoodProperties.Builder().nutrition(6).saturationMod(0.6F).meat().build();
 	public static final FoodProperties MEEF_RAW = new FoodProperties.Builder().nutrition(2).saturationMod(0.3F).meat().build();
-	public static final FoodProperties MEEF_STROGANOFF = new FoodProperties.Builder().nutrition(8).saturationMod(0.6F).build();
+	public static final FoodProperties MEEF_STROGANOFF = new FoodProperties.Builder().nutrition(8).saturationMod(0.6F).alwaysEat().build();
 	public static final FoodProperties VENISON_COOKED = new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).meat().build();
 	public static final FoodProperties VENISON_RAW = new FoodProperties.Builder().nutrition(3).saturationMod(0.3F).meat().build();
 	public static final FoodProperties TORCHBERRIES = new FoodProperties.Builder().alwaysEat().effect(() -> new MobEffectInstance(MobEffects.GLOWING, 100, 0), 0.75F).build();

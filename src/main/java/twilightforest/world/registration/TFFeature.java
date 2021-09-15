@@ -610,15 +610,8 @@ public enum TFFeature {
 
 	public static TFFeature generateFeature(int chunkX, int chunkZ, Biome biome, long seed) {
 		// Remove block comment start-marker to enable debug
-		/*if (true) {
-			switch ((chunkX + chunkZ) % 3) {
-				case 1:
-					return MEDIUM_HILL;
-				case 2:
-					return LARGE_HILL;
-				default:
-					return SMALL_HILL;
-			}
+		if (true) {
+			return LICH_TOWER;
 		}//*/
 
 		// set the chunkX and chunkZ to the center of the biome in case they arent already

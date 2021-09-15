@@ -2,7 +2,9 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -20,6 +22,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
+import twilightforest.item.TFItems;
 
 import java.util.Random;
 
@@ -71,6 +74,20 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
 			// green sparkles
 			world.levelEvent(2005, pos.above(), 0);
+		}
+	}
+
+	@Override
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+		if(level.isClientSide && rand.nextInt(5) == 0) {
+			for(Player player : level.players()) {
+				if (player.getMainHandItem().getItem().equals(TFItems.magic_beans.get()) || player.getOffhandItem().getItem().equals(TFItems.magic_beans.get())) {
+					for (int i = 0; i < 2; i++) {
+						level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX() + rand.nextDouble(), pos.getY() + 1.25D, pos.getZ() + rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+					}
+					break;
+				}
+			}
 		}
 	}
 
