@@ -1,6 +1,8 @@
 package twilightforest.block;
 
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import twilightforest.extensions.IBlockMethods;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
@@ -9,7 +11,7 @@ import net.minecraft.world.level.BlockGetter;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public class FlammableBlock extends Block implements IBlockMethods{
+public class FlammableBlock extends Block implements IBlockMethods {
 	private final int flammability;
 	private final int spreadSpeed;
 

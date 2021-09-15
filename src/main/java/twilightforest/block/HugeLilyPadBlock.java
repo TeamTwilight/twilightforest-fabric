@@ -49,7 +49,7 @@ public class HugeLilyPadBlock extends BushBlock {
 	}
 
 	@Override
-	protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
+	public boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
 		FluidState ifluidstate = worldIn.getFluidState(pos);
 		return ifluidstate.getType() == Fluids.WATER;
 	}

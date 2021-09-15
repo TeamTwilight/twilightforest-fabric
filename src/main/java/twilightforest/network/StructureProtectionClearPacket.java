@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.extensions.IEffectsEx;
 
 public class StructureProtectionClearPacket extends ISimplePacket {
 
@@ -29,8 +28,8 @@ public class StructureProtectionClearPacket extends ISimplePacket {
 				DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
 
 				// add weather box if needed
-				if (info instanceof TwilightForestRenderInfo) {
-					TFWeatherRenderer weatherRenderer = ((IEffectsEx)info).getHandler();
+				if (info instanceof TwilightForestRenderInfo twilightForestRenderInfo) {
+					TFWeatherRenderer weatherRenderer = twilightForestRenderInfo.getWeatherRenderHandler();
 
 					if (weatherRenderer instanceof TFWeatherRenderer) {
 						weatherRenderer.setProtectedBox(null);

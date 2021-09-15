@@ -17,7 +17,6 @@ import net.fabricmc.api.Environment;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.TFDamageSources;
 
-@Environment(EnvType.CLIENT)
 public class IceSnowballEntity extends TFThrowableEntity implements ItemSupplier {
 
 	private static final int DAMAGE = 2;

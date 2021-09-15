@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import twilightforest.extensions.IBlockMethods;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -8,7 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
-public class GiantLeavesBlock extends GiantBlock implements IBlockMethods{
+public class GiantLeavesBlock extends GiantBlock implements IBlockMethods {
 
 	public GiantLeavesBlock(Properties props) {
 		super(props);

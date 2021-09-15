@@ -18,14 +18,14 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
+
+import twilightforest.extensions.IBlockMethods;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
-public class CompressedBlock extends Block implements IBlockMethods{
+public class CompressedBlock extends Block implements IBlockMethods {
 
 	public CompressedBlock(Properties props) {
 		super(props);

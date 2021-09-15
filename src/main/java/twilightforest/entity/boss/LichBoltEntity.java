@@ -19,7 +19,6 @@ import net.fabricmc.api.Environment;
 import twilightforest.entity.projectile.TFThrowableEntity;
 import twilightforest.util.TFDamageSources;
 
-@Environment(EnvType.CLIENT)
 public class LichBoltEntity extends TFThrowableEntity implements ItemSupplier {
 
 	@SuppressWarnings("unused")

@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 //used a fair bit of chest logic in this for the lid
-@Environment(EnvType.CLIENT)
+//@Environment(EnvType.CLIENT)
 public class KeepsakeCasketTileEntity extends RandomizableContainerBlockEntity implements LidBlockEntity {
     private static final int limit = 9 * 5;
     public NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);

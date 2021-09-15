@@ -1,20 +1,20 @@
 package twilightforest.block;
 
+import twilightforest.extensions.IBlockMethods;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BookshelfBlock extends Block implements IBlockMethods{
+public class BookshelfBlock extends Block implements IBlockMethods {
 
 	public BookshelfBlock(Properties properties) {
 		super(properties);
 	}
 
-	//TODO: PORT
 	@Override
 	public float getEnchantPowerBonus(BlockState state, LevelReader world, BlockPos pos) {
 		return 1.0F;

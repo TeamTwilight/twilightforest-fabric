@@ -3,12 +3,12 @@ package twilightforest.client;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
-import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.extensions.IEffectsEx;
+import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.item.TFItems;
 import java.util.Map;
 import java.util.Objects;
@@ -85,7 +85,7 @@ public class TFClientEvents {
 		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/lava_flow"   ), RegisterBlockEvent.moltenKnightmetalFlow , true, KNIGHTMETAL_GRADIENT_MAP  ));
 		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_still" ), RegisterBlockEvent.essenceFieryStill     , true, FIERY_ESSENCE_GRADIENT_MAP));
 		map.setTextureEntry( new GradientMappedTexture( new ResourceLocation( "minecraft", "blocks/water_flow"  ), RegisterBlockEvent.essenceFieryFlow      , true, FIERY_ESSENCE_GRADIENT_MAP));*/
-		}
+//		}
 
 		public static void registerFabricEvents() {
 			ClientTickEvents.START_CLIENT_TICK.register((client -> renderTick(client)));
@@ -114,18 +114,17 @@ public class TFClientEvents {
 		new GradientNode(1.0f, 0xFF_FF_FF_FF)
 	};*/
 
-//		@SubscribeEvent
-//		public static void registerModels(ModelRegistryEvent event) {
-//			ModelLoader.addSpecialModel(ShieldLayer.LOC);
-//			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
-//			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
-//			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
-//
-//			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_obsidian"));
-//			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_stone"));
-//			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_basalt"));
-//		}
-//	}
+
+		public static void registerModels() {
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManger, consumer) -> consumer.accept(ShieldLayer.LOC));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManger, consumer) -> consumer.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory")));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManger, consumer) -> consumer.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory")));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManger, consumer) -> consumer.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory")));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManger, consumer) -> consumer.accept(TwilightForestMod.prefix("block/casket_obsidian")));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManger, consumer) -> consumer.accept(TwilightForestMod.prefix("block/casket_stone")));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((resourceManger, consumer) -> consumer.accept(TwilightForestMod.prefix("block/casket_basalt")));
+		}
+	}
 
 	/**
 	 * Stop the game from rendering the mount health for unfriendly creatures
@@ -198,9 +197,8 @@ public class TFClientEvents {
 		DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
 
 		// add weather box if needed
-		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo) {
-			TFWeatherRenderer weatherRenderer = ((IEffectsEx)info).getHandler();
-			weatherRenderer.tick();
+		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo twilightForestRenderInfo) {
+			twilightForestRenderInfo.getWeatherRenderHandler().tick();
 		}
 	}
 

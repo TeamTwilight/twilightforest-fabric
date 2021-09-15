@@ -17,7 +17,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.entity.TFEntities;
 
-@Environment(EnvType.CLIENT)
 public class TwilightWandBoltEntity extends TFThrowableEntity implements ItemSupplier {
 
 	public TwilightWandBoltEntity(EntityType<? extends TwilightWandBoltEntity> type, Level world) {

@@ -57,18 +57,18 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlockEntity> {
 					}
 
 					BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
-					throw new RuntimeException("PORT");
-					//TODO: PORT
-//					for (RenderType type : RenderType.chunkBufferLayers()) {
-//						if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
-//							ForgeHooksClient.setRenderLayer(type);
-//							blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(blockpos), OverlayTexture.NO_OVERLAY);
-//						}
-//					}
-//					ForgeHooksClient.setRenderLayer(null);
 
-					//stack.popPose();
-					//super.render(entity, yaw, partialTicks, stack, buffer, light);
+					//TODO: PORT (This seems fine for now no change is probably needed)
+					for (RenderType type : RenderType.chunkBufferLayers()) {
+						//if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
+							//ForgeHooksClient.setRenderLayer(type);
+							blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(blockpos), OverlayTexture.NO_OVERLAY);
+						//}
+					}
+					//ForgeHooksClient.setRenderLayer(null);
+
+					stack.popPose();
+					super.render(entity, yaw, partialTicks, stack, buffer, light);
 				}
 			}
 		}

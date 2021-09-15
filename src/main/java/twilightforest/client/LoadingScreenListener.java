@@ -17,7 +17,6 @@ import twilightforest.block.TFBlocks;
 public class LoadingScreenListener {
 
 	private static final Minecraft client = Minecraft.getInstance();
-	//TODO: PORT
 	public static void onOpenGui(Screen event) {
 		if (event instanceof ReceivingLevelScreen && client.player != null) {
 			ResourceKey<Level> tfDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get()));
