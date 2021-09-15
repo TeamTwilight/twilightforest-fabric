@@ -1,12 +1,14 @@
 package twilightforest.block;
 
+import twilightforest.extensions.IBlockMethods;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class HardenedDarkLeavesBlock extends Block implements IBlockMethods{
+public class HardenedDarkLeavesBlock extends Block implements IBlockMethods {
 
 	protected HardenedDarkLeavesBlock(Properties props) {
 		super(props);

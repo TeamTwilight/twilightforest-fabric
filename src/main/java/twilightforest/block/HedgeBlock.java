@@ -22,6 +22,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+
+import twilightforest.extensions.IBlockMethods;
 import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nullable;
@@ -30,7 +32,7 @@ import java.util.Random;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public class HedgeBlock extends Block implements IBlockMethods{
+public class HedgeBlock extends Block implements IBlockMethods {
 
 	private static final VoxelShape HEDGE_BB = Shapes.create(new AABB(0, 0, 0, 1, 0.9375, 1));
 

@@ -20,7 +20,8 @@
     "ServerPlayerMixin",
     "SpawnPlacementsMixin",
     "BoundingBoxMixin",
-    "WorldGenRegionMixin"
+    "WorldGenRegionMixin",
+    "ArmorItemMixin"
   ],
   "client": [
     "client.BlockColorsMixin",
@@ -31,7 +32,8 @@
     "client.MapRendererMixin",
     "client.ModelManagerMixin",
     "client.ScreenMixin",
-    "client.ClientPlayerInteractionManagerMixin"
+    "client.ClientPlayerInteractionManagerMixin",
+    "client.HumanoidArmorLayerMixin"
   ],
   "plugin": "twilightforest.mixin.plugin.TwilightForestMixinPlugin",
   "injectors": {

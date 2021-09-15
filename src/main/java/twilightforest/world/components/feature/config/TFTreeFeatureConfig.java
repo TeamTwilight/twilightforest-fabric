@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import twilightforest.block.IPlantable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -67,8 +68,8 @@ public class TFTreeFeatureConfig implements FeatureConfiguration {
 		this.forcePlacement = true;
 	}
 
-	public Block getSapling(Random rand, BlockPos pos) {
-		return sapling.getState(rand, pos).getBlock();
+	public IPlantable getSapling(Random rand, BlockPos pos) {
+		return (IPlantable) sapling.getState(rand, pos).getBlock();
 	}
 
 	public static class Builder {

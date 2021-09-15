@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import twilightforest.extensions.IBlockMethods;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -7,7 +9,7 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TFLeavesBlock extends LeavesBlock implements IBlockMethods{
+public class TFLeavesBlock extends LeavesBlock implements IBlockMethods {
 	protected TFLeavesBlock(BlockBehaviour.Properties props) {
 		super(props);
 	}

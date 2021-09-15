@@ -21,12 +21,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import twilightforest.TFSounds;
+import twilightforest.extensions.IBlockMethods;
 import twilightforest.tileentity.TFTileEntities;
 import twilightforest.tileentity.TomeSpawnerTileEntity;
 
 import javax.annotation.Nullable;
 
-public class TomeSpawnerBlock extends BaseEntityBlock implements IBlockMethods{
+public class TomeSpawnerBlock extends BaseEntityBlock implements IBlockMethods {
 
 	public static IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, 10);
 	public static BooleanProperty SPAWNER = BooleanProperty.create("spawner");

@@ -3,6 +3,7 @@ package twilightforest.client;
 import com.google.common.collect.Maps;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.TFConfig;
@@ -22,6 +23,7 @@ import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.MoonwormShotEntity;
 import twilightforest.entity.projectile.TwilightWandBoltEntity;
 import twilightforest.inventory.TFContainers;
+import twilightforest.item.KnightmetalArmorItem;
 import twilightforest.item.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.tileentity.TFTileEntities;
@@ -39,6 +41,7 @@ import net.minecraft.core.BlockSource;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.sounds.SoundSource;
@@ -74,6 +77,10 @@ public class TFClientSetup implements ClientModInitializer {
 
 	//TODO: Clean this shit up
     public static void clientSetup() {
+        ArmorRenderer.register((matrices, vertexConsumers, stack, entity, slot, light, model) -> {
+
+            ArmorRenderer.renderPart(matrices, vertexConsumers, light, stack, KnightmetalArmorItem.ArmorRender.INSTANCE.getArmorModel(entity, stack, slot, model), new ResourceLocation(KnightmetalArmorItem.getArmorTexture(stack, entity, slot, "")));
+        }, TFItems.knightmetal_helmet);
         TFPacketHandler.CHANNEL.initClient();
         TFLayerDefinitions.registerLayers();
         TFModelLayers.init();

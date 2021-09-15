@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.world.level.Explosion;
 import twilightforest.TFSounds;
 import twilightforest.enums.BlockLoggingEnum;
+import twilightforest.extensions.IBlockMethods;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.KeepsakeCasketTileEntity;
 import twilightforest.tileentity.TFTileEntities;
@@ -47,7 +48,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable, IBlockMethods{
+public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable, IBlockMethods {
 
 	public static final DirectionProperty FACING = TFHorizontalBlock.FACING;
 	public static final IntegerProperty BREAKAGE = IntegerProperty.create("damage", 0, 2);
