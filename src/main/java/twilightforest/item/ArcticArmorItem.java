@@ -7,16 +7,27 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
+import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
+import twilightforest.client.model.armor.TFArmorModel;
 
-public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
+public class ArcticArmorItem extends DyeableArmorItem implements DyeableLeatherItem, ArmorRenderingRegistry.ModelProvider, ArmorRenderingRegistry.TextureProvider {
 	@Environment(EnvType.CLIENT)
 	private static final MutableComponent TOOLTIP_TEXT = new TranslatableComponent("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
@@ -133,6 +144,22 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		tooltip.add(TOOLTIP_TEXT);
+	}
+
+	@Override
+	public @NotNull HumanoidModel<LivingEntity> getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot armorSlot, HumanoidModel<LivingEntity> defaultModel) {
+		EntityModelSet models = Minecraft.getInstance().getEntityModels();
+		ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.ARCTIC_ARMOR_INNER : TFModelLayers.ARCTIC_ARMOR_OUTER);
+		return new TFArmorModel(root);
+	}
+
+	@Override
+	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @org.jetbrains.annotations.Nullable String suffix, ResourceLocation defaultTexture) {
+		if (slot == EquipmentSlot.LEGS) {
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "arcticarmor_2" + (suffix == null ? "_dyed" : "_overlay") + ".png");
+		} else {
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "arcticarmor_1" + (suffix == null ? "_dyed" : "_overlay") + ".png");
+		}
 	}
 
 	/*@Override

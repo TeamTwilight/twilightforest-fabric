@@ -163,11 +163,12 @@ public class TFItems {
 	public static final Item cube_of_annihilation = Registry.register(Registry.ITEM, TwilightForestMod.ID + ":cube_of_annihilation", new CubeOfAnnihilationItem(unstackable().rarity(Rarity.UNCOMMON)));
 	public static final Item moon_dial = Registry.register(Registry.ITEM, TwilightForestMod.ID + ":moon_dial", new Item(defaultBuilder()));
 
-	public static CreativeModeTab creativeTab = FabricItemGroupBuilder.build(new ResourceLocation(TwilightForestMod.ID,TwilightForestMod.ID), () -> new ItemStack(TFBlocks.twilight_portal_miniature_structure));
+	public static void init(){
 
+	}
 
 	public static Item.Properties defaultBuilder() {
-		return new Item.Properties().tab(creativeTab);
+		return new Item.Properties().tab(TwilightForestMod.CREATIVETAB);
 	}
 
 	public static Item.Properties unstackable() {

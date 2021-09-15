@@ -1,29 +1,43 @@
 package twilightforest.item;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.TwilightForestMod;
 
-public class SteeleafArmorItem extends ArmorItem {
+public class SteeleafArmorItem extends ArmorItem implements ArmorRenderingRegistry.TextureProvider {
 
 	public SteeleafArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties props) {
 		super(material, slot, props);
 	}
 
-	//@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+	@Override
+	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @Nullable String suffix, ResourceLocation defaultTexture) {
 		if (slot == EquipmentSlot.LEGS) {
-			return TwilightForestMod.ARMOR_DIR + "steeleaf_2.png";
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "steeleaf_2.png");
 		} else {
-			return TwilightForestMod.ARMOR_DIR + "steeleaf_1.png";
+			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "steeleaf_1.png");
 		}
 	}
+
+	//@Override
+	//public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+	//	if (slot == EquipmentSlot.LEGS) {
+	//		return TwilightForestMod.ARMOR_DIR + "steeleaf_2.png";
+	//	} else {
+	//		return TwilightForestMod.ARMOR_DIR + "steeleaf_1.png";
+	//	}
+	//}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {

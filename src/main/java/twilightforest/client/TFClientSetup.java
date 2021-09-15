@@ -2,8 +2,33 @@ package twilightforest.client;
 
 import com.google.common.collect.Maps;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.Position;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DispenserBlock;
+import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -21,36 +46,15 @@ import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.tileentity.TFTileEntities;
+
 import java.lang.reflect.Field;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
-import net.minecraft.core.Position;
-import net.minecraft.core.dispenser.DispenseItemBehavior;
-import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.repository.Pack;
-import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.DispenserBlock;
-
+@Environment(EnvType.CLIENT)
 public class TFClientSetup implements ClientModInitializer {
 
 	public static boolean optifinePresent = false;
 
+    @Environment(EnvType.CLIENT)
 	@Override
 	public void onInitializeClient() {
         clientSetup();
@@ -92,10 +96,13 @@ public class TFClientSetup implements ClientModInitializer {
 //		}
 		TFItems.addItemModelProperties();
         RenderLayerRegistration.init();
+        armorRegistry();
+
         //MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
         TFTileEntities.registerTileEntityRenders();
         TFTileEntities.registerTileEntitysItemRenders();
         TFContainers.renderScreens();
+
 
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
         DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
@@ -183,8 +190,32 @@ public class TFClientSetup implements ClientModInitializer {
                 source.getLevel().playSound(null, pos, TFSounds.SCEPTER_PEARL, SoundSource.BLOCKS, 1, 1);
             }
         });
-       
+
     }
+
+    public static void armorRegistry(){
+        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.arctic_boots), TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.arctic_boots), TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
+
+        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.fiery_boots), TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.fiery_boots), TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
+
+        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.knightmetal_boots), TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.knightmetal_boots), TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
+
+        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.phantom_chestplate), TFItems.phantom_helmet, TFItems.phantom_chestplate);
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.phantom_chestplate), TFItems.phantom_helmet, TFItems.phantom_chestplate);
+
+        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.yeti_boots), TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.yeti_boots), TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
+
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.naga_chestplate), TFItems.naga_chestplate, TFItems.naga_leggings);
+
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.ironwood_boots), TFItems.ironwood_boots, TFItems.ironwood_leggings, TFItems.ironwood_chestplate, TFItems.ironwood_helmet);
+
+        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.steeleaf_boots), TFItems.steeleaf_boots, TFItems.steeleaf_leggings, TFItems.steeleaf_chestplate, TFItems.steeleaf_helmet);
+    }
+
 
     public static void addLegacyPack() {
         //noinspection ConstantConditions

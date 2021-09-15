@@ -2,6 +2,7 @@ package twilightforest.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,6 +22,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.world.entity.Entity;
+
+import java.util.Iterator;
 
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {
@@ -52,4 +55,6 @@ public class LevelRendererMixin {
     public Iterator<Entity> renderMultiparts(Iterator iterator) {
         return ASMHooks.renderMutiparts(iterator).iterator();
     }
+
+
 }
