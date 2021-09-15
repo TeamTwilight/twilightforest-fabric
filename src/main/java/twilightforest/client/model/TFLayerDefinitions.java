@@ -16,7 +16,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 @Environment(EnvType.CLIENT)
 public class TFLayerDefinitions {
 
-	//TODO: HOOK
 	public static void registerLayers() {
 
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.ARCTIC_ARMOR_INNER, () -> LayerDefinition.create(ArcticArmorModel.addPieces(LayerDefinitions.INNER_ARMOR_DEFORMATION), 64, 32));

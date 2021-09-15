@@ -1,19 +1,29 @@
 package twilightforest.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.impl.client.rendering.ArmorRendererRegistryImpl;
 import net.fabricmc.loader.api.FabricLoader;
+import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.TFLayerDefinitions;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.client.providers.ArcticArmorProvider;
+import twilightforest.client.providers.FieryArmorProvider;
+import twilightforest.client.providers.KnightArmorProvider;
 import twilightforest.client.renderer.entity.IceLayer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
+import twilightforest.item.ArcticArmorItem;
+import twilightforest.item.FieryArmorItem;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TFTileEntities;
 import java.lang.reflect.Field;
@@ -29,10 +39,12 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.LivingEntity;
 
+@Environment(EnvType.CLIENT)
 public class TFClientSetup implements ClientModInitializer {
 
 	public static boolean optifinePresent = false;
 
+    @Environment(EnvType.CLIENT)
 	@Override
 	public void onInitializeClient() {
         clientSetup();
@@ -75,6 +87,7 @@ public class TFClientSetup implements ClientModInitializer {
         TFTileEntities.registerTileEntityRenders();
         TFTileEntities.registerTileEntitysItemRenders();
         TFContainers.renderScreens();
+        armorRegistry();
 
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
         DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
@@ -91,6 +104,24 @@ public class TFClientSetup implements ClientModInitializer {
         });
        
     }
+
+    public static void armorRegistry(){
+
+        //ArmorRenderer.register();
+
+        ArcticArmorProvider PROVIDERTEST = new ArcticArmorProvider();
+        ArmorRenderingRegistry.registerModel(PROVIDERTEST, TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
+        ArmorRenderingRegistry.registerTexture(PROVIDERTEST, TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
+
+        FieryArmorProvider PROVIDERTEST2 = new FieryArmorProvider();
+        ArmorRenderingRegistry.registerModel(PROVIDERTEST2, TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
+        ArmorRenderingRegistry.registerTexture(PROVIDERTEST2, TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
+
+        KnightArmorProvider PROVIDERTEST3 = new KnightArmorProvider();
+        ArmorRenderingRegistry.registerModel(PROVIDERTEST3, TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
+        ArmorRenderingRegistry.registerTexture(PROVIDERTEST3, TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
+    }
+
 
     public static void addLegacyPack() {
         //noinspection ConstantConditions

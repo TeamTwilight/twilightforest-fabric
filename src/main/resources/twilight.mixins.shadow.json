@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "shadow.fabric.mixin.client.rendering",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+    "MixinArmorFeatureRenderer",
+    "MixinItem"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

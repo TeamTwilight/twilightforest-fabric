@@ -35,7 +35,8 @@
     ]
   },
   "mixins": [
-    "twilightforest.mixins.json"
+    "twilightforest.mixins.json",
+    "twilight.mixins.shadow.json"
   ],
   "accessWidener": "twilight.aw",
   "depends": {
