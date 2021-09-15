@@ -30,11 +30,11 @@ public class ItemMixin implements IItem {
     @Inject(method = "<init>", at = @At("TAIL"))
     public void clientInit(Item.Properties itemPro, CallbackInfo ci) {
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            initializeClient(properties -> {
-                if (properties == this)
-                    throw new IllegalStateException("Don't extend IItemRenderProperties in your item, use an anonymous class instead.");
-                this.renderProperties = properties;
-            });
+//            initializeClient(properties -> {
+//                if (properties == this)
+//                    throw new IllegalStateException("Don't extend IItemRenderProperties in your item, use an anonymous class instead.");
+//                this.renderProperties = properties;
+//            });
         }
     }
 }

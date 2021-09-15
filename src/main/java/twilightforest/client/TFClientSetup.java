@@ -2,8 +2,6 @@ package twilightforest.client;
 
 import com.google.common.collect.Maps;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.TFConfig;
@@ -13,17 +11,13 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.model.TFLayerDefinitions;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.client.renderer.entity.IceLayer;
-import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
 import twilightforest.dispenser.TransformationDispenseBehavior;
-import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.MoonwormShotEntity;
 import twilightforest.entity.projectile.TwilightWandBoltEntity;
 import twilightforest.inventory.TFContainers;
-import twilightforest.item.KnightmetalArmorItem;
 import twilightforest.item.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.tileentity.TFTileEntities;
@@ -77,10 +71,6 @@ public class TFClientSetup implements ClientModInitializer {
 
 	//TODO: Clean this shit up
     public static void clientSetup() {
-        ArmorRenderer.register((matrices, vertexConsumers, stack, entity, slot, light, model) -> {
-
-            ArmorRenderer.renderPart(matrices, vertexConsumers, light, stack, KnightmetalArmorItem.ArmorRender.INSTANCE.getArmorModel(entity, stack, slot, model), new ResourceLocation(KnightmetalArmorItem.getArmorTexture(stack, entity, slot, "")));
-        }, TFItems.knightmetal_helmet);
         TFPacketHandler.CHANNEL.initClient();
         TFLayerDefinitions.registerLayers();
         TFModelLayers.init();
