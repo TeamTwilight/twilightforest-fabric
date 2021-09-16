@@ -42,7 +42,7 @@ public class MagicBeansItem extends Item {
 
 		int minY = pos.getY() + 1;
 		int maxY = Math.max(pos.getY() + 100, 175);
-		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil.get()) {
+		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil) {
 			if (!world.isClientSide) {
 				stack.shrink(1);
 				makeHugeStalk(world, pos, minY, maxY);
@@ -130,7 +130,7 @@ public class MagicBeansItem extends Item {
 
 	private void placeLeaves(Level world, BlockPos pos) {
 		// stalk at center
-		world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.get().defaultBlockState());
+		world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.defaultBlockState());
 
 		// small squares
 		for (int dx = -1; dx <= 1; dx++) {
@@ -154,11 +154,11 @@ public class MagicBeansItem extends Item {
 	 */
 	private boolean tryToPlaceStalk(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-		if (state.isAir() || state.getMaterial().isReplaceable() || (state.isAir() || state.is(BlockTags.LEAVES)) || BlockTags.LEAVES.contains(state.getBlock()) || state.getBlock().equals(TFBlocks.fluffy_cloud.get())) {
-			world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.get().defaultBlockState());
+		if (state.isAir() || state.getMaterial().isReplaceable() || (state.isAir() || state.is(BlockTags.LEAVES)) || BlockTags.LEAVES.contains(state.getBlock()) || state.getBlock().equals(TFBlocks.fluffy_cloud)) {
+			world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.defaultBlockState());
 			if(pos.getY() > 150) {
 				for(int i = 0; i < 7; i++) {
-					if(world.getBlockState(pos.relative(Direction.UP, i)).equals(TFBlocks.wispy_cloud.get().defaultBlockState()) || world.getBlockState(pos.relative(Direction.UP, i)).equals(TFBlocks.fluffy_cloud.get().defaultBlockState())) {
+					if(world.getBlockState(pos.relative(Direction.UP, i)).equals(TFBlocks.wispy_cloud.defaultBlockState()) || world.getBlockState(pos.relative(Direction.UP, i)).equals(TFBlocks.fluffy_cloud.defaultBlockState())) {
 							world.setBlockAndUpdate(pos.relative(Direction.UP, i), Blocks.AIR.defaultBlockState());
 					}
 				}
@@ -172,7 +172,7 @@ public class MagicBeansItem extends Item {
 	private void tryToPlaceLeaves(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.isAir() || state.is(BlockTags.LEAVES)) {
-			world.setBlock(pos, TFBlocks.beanstalk_leaves.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 2);
+			world.setBlock(pos, TFBlocks.beanstalk_leaves.defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 2);
 		}
 	}
 }

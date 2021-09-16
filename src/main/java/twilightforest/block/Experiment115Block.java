@@ -34,13 +34,10 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class Experiment115Block extends Block {
 
@@ -110,7 +107,7 @@ public class Experiment115Block extends Block {
 				} else {
 					worldIn.removeBlock(pos, false);
 				}
-				if(!player.isCreative()) ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFItems.experiment_115.get()));
+				if(!player.isCreative()) player.getInventory().add(new ItemStack(TFItems.experiment_115));
 				return InteractionResult.SUCCESS;
 			}
 		}
