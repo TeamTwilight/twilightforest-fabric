@@ -2,9 +2,13 @@ package twilightforest;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.ChatFormatting;
@@ -16,6 +20,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
@@ -83,6 +88,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class TFEventListener {
 
+	@Environment(EnvType.SERVER)
+	private static MinecraftServer minecraftServer;
+
 	private static final ImmutableSet<String> SHIELD_DAMAGE_BLACKLIST = ImmutableSet.of(
 			"inWall", "cramming", "drown", "starve", "fall", "flyIntoWall", "outOfWorld", "fallingBlock"
 	);
@@ -103,7 +111,8 @@ public class TFEventListener {
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> onCasketBreak(world.getBlockState(pos).getBlock(), player, blockEntity));
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> playerPortals(player, destination.dimension()));
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> onPlayerLogout(handler.player));
-
+		//ServerPlayConnectionEvents.JOIN.register(((handler, sender, server) -> playerLogsIn(handler.getPlayer())));
+		ServerLifecycleEvents.SERVER_STARTED.register((server -> minecraftServer = server));
 		/*TODO: Currently there is a issue with the packet that forces client side gamerule of progression.
 		 * 	    In this case the level is null creating a null pointer exception within the EnforceProgressionStatusPacket
 		 */
@@ -248,7 +257,7 @@ public class TFEventListener {
 		ItemStack stack = player.getItemInHand(hand);
 		BlockPos pos = hitResult.getBlockPos();
 		BlockState state = world.getBlockState(pos);
-//		if(!TFConfig.COMMON_CONFIG.disableSkullCandles) {
+		if(!TFConfig.COMMON_CONFIG.disableSkullCandles.get()) {
 			if (stack.is(ItemTags.CANDLES) && Registry.ITEM.getKey(stack.getItem()).getNamespace().equals("minecraft") && !player.isShiftKeyDown()) {
 				if (state.getBlock() instanceof AbstractSkullBlock && Registry.BLOCK.getKey(state.getBlock()).getNamespace().equals("minecraft")) {
 					SkullBlock.Types type = (SkullBlock.Types) ((AbstractSkullBlock) state.getBlock()).getType();
@@ -280,7 +289,7 @@ public class TFEventListener {
 					return InteractionResult.FAIL;
 				}
 			}
-//		}
+		}
 		return InteractionResult.PASS;
 	}
 
@@ -643,7 +652,6 @@ public class TFEventListener {
 		}*/
 	}
 
-	//TODO: HOOK
 	public static void livingUpdate(LivingEntity living) {
 		CapabilityList.SHIELD_CAPABILITY_COMPONENT_KEY.maybeGet(living).ifPresent(IShieldCapability::update);
 
@@ -785,11 +793,12 @@ public class TFEventListener {
 
 	//TODO: PORT
 	private static void sendAreaProtectionPacket(Level world, BlockPos pos, BoundingBox sbb) {
+		minecraftServer.getPlayerList().broadcast(null, pos.getX(), pos.getY(), pos.getZ(), 64, world.dimension(), new AreaProtectionPacket(sbb, pos));
 		/*PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.dimension());
 		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new AreaProtectionPacket(sbb, pos));*/
 	}
 
-	public static boolean livingAttack(Player player, Entity entity, DamageSource source) {
+	public static boolean livingAttack(Entity entity, DamageSource source) {
 		if(!(entity instanceof LivingEntity)) return true;
 		LivingEntity living = (LivingEntity) entity;
 		// cancel attacks in protected areas
@@ -853,8 +862,10 @@ public class TFEventListener {
 		});
 	}
 
+	//TODO: PORT
 	private static void sendEnforcedProgressionStatus(ServerPlayer player, boolean isEnforced) {
-		TFPacketHandler.CHANNEL.send(player, new EnforceProgressionStatusPacket(isEnforced));
+		//player.connection.connection.send(new EnforceProgressionStatusPacket(isEnforced));
+		//TFPacketHandler.CHANNEL.send(player, new EnforceProgressionStatusPacket(isEnforced));
 		//TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EnforceProgressionStatusPacket(isEnforced));
 	}
 
@@ -877,14 +888,12 @@ public class TFEventListener {
 	}
 
 	// Advancement Trigger
-	//TODO: HOOK
 	public static void onAdvancementGet(Player player, Advancement advancement) {
 		if (player instanceof ServerPlayer) {
 			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((ServerPlayer) player, advancement);
 		}
 	}
 
-	//TODO: HOOK
 	public static void armorChanged(LivingEntity living, ItemStack from, ItemStack to) {
 		if (!living.level.isClientSide && living instanceof ServerPlayer) {
 			TFAdvancements.ARMOR_CHANGED.trigger((ServerPlayer) living, from, to);

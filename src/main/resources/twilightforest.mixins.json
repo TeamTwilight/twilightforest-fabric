@@ -20,7 +20,9 @@
     "ServerPlayerMixin",
     "SpawnPlacementsMixin",
     "BoundingBoxMixin",
-    "WorldGenRegionMixin"
+    "WorldGenRegionMixin",
+    "PlayerListMixin",
+    "PlayerAdvancementsMixin"
   ],
   "client": [
     "client.BlockColorsMixin",

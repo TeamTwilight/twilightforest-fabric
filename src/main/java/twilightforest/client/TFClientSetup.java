@@ -76,7 +76,6 @@ public class TFClientSetup implements ClientModInitializer {
 
 	//TODO: Clean this shit up
     public static void clientSetup() {
-        TFPacketHandler.CHANNEL.initClient();
         TFLayerDefinitions.registerLayers();
         TFModelLayers.init();
         TFClientEvents.ModBusEvents.registerFabricEvents();

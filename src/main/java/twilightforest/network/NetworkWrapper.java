@@ -44,27 +44,12 @@ public class NetworkWrapper {
             int id = packetByteBuf.readInt();
             Packet packet = packetIdMap.get(id);
             ISimplePacket object = (ISimplePacket) packet.decoder.apply(packetByteBuf);
+            TwilightForestMod.LOGGER.info("PACKET");
 //            if(object instanceof IThreadsafePacket)
             TwilightForestMod.LOGGER.info(Thread.currentThread());
             PacketUtils.ensureRunningOnSameThread(object, serverPlayNetworkHandler, serverPlayerEntity.getLevel());
             TwilightForestMod.LOGGER.info(Thread.currentThread());
             packet.consumer.accept(object, serverPlayerEntity);
-        });
-
-
-    }
-
-    @Environment(EnvType.CLIENT)
-    public void initClient() {
-        ClientPlayNetworking.registerGlobalReceiver(identifier, (minecraftClient, clientPlayNetworkHandler, packetByteBuf, packetSender) -> {
-            int id = packetByteBuf.readInt();
-            Packet packet = packetIdMap.get(id);
-            ISimplePacket object = (ISimplePacket) packet.decoder.apply(packetByteBuf);
-//            if(object instanceof IThreadsafePacket)
-            //TwilightForestMod.LOGGER.info(Thread.currentThread());
-            //PacketUtils.ensureRunningOnSameThread(object, clientPlayNetworkHandler, minecraftClient);
-            //TwilightForestMod.LOGGER.info(Thread.currentThread());
-            packet.consumer.accept(object, minecraftClient.player);
         });
     }
 
