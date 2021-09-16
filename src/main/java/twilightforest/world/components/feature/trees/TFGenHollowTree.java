@@ -48,6 +48,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	public boolean generate(WorldGenLevel world, Random random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
 		int diameter = random.nextInt(3) + 2;
 		int height = random.nextInt(64) + (diameter * 4);
+		pos = new BlockPos(pos.getX() + 8, pos.getY(), pos.getZ() + 8);
 
 		// do we have enough height?
 		if (world.isOutsideBuildHeight(pos.getY()) || world.isOutsideBuildHeight(pos.getY() + height + diameter)) {

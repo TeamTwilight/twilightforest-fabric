@@ -118,12 +118,4 @@ public class KoboldModel extends HumanoidModel<KoboldEntity> {
             this.mouth.xRot = 0.20944F;
         }
     }
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
-    }
 }

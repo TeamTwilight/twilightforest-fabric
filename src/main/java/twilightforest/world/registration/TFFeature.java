@@ -610,9 +610,9 @@ public enum TFFeature {
 
 	public static TFFeature generateFeature(int chunkX, int chunkZ, Biome biome, long seed) {
 		// Remove block comment start-marker to enable debug
-		if (true) {
+		/*if (true) {
 			return LICH_TOWER;
-		}//*/
+		}*/
 
 		// set the chunkX and chunkZ to the center of the biome in case they arent already
 		chunkX = Math.round(chunkX / 16F) * 16;

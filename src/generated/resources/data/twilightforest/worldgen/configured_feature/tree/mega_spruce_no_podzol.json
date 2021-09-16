@@ -2,63 +2,54 @@
   "config": {
     "feature": {
       "config": {
-        "feature": {
+        "feature": "twilightforest:tree/base/mega_spruce_no_podzol",
+        "decorator": {
           "config": {
-            "feature": "twilightforest:tree/base/mega_spruce_no_podzol",
-            "decorator": {
+            "outer": {
+              "config": {
+                "count": 2,
+                "extra_chance": 0.4,
+                "extra_count": 2
+              },
+              "type": "minecraft:count_extra"
+            },
+            "inner": {
               "config": {
                 "outer": {
                   "config": {
-                    "count": 2,
-                    "extra_chance": 0.4,
-                    "extra_count": 2
-                  },
-                  "type": "minecraft:count_extra"
-                },
-                "inner": {
-                  "config": {
                     "outer": {
+                      "config": {},
+                      "type": "minecraft:square"
+                    },
+                    "inner": {
                       "config": {
                         "outer": {
-                          "config": {},
-                          "type": "minecraft:square"
+                          "config": {
+                            "max_water_depth": 0
+                          },
+                          "type": "minecraft:water_depth_threshold"
                         },
                         "inner": {
                           "config": {
-                            "outer": {
-                              "config": {
-                                "max_water_depth": 0
-                              },
-                              "type": "minecraft:water_depth_threshold"
-                            },
-                            "inner": {
-                              "config": {
-                                "heightmap": "OCEAN_FLOOR"
-                              },
-                              "type": "minecraft:heightmap"
-                            }
+                            "heightmap": "OCEAN_FLOOR"
                           },
-                          "type": "minecraft:decorated"
+                          "type": "minecraft:heightmap"
                         }
                       },
                       "type": "minecraft:decorated"
-                    },
-                    "inner": {
-                      "config": {},
-                      "type": "twilightforest:nostructure"
                     }
                   },
                   "type": "minecraft:decorated"
+                },
+                "inner": {
+                  "config": {},
+                  "type": "twilightforest:nostructure"
                 }
               },
               "type": "minecraft:decorated"
             }
           },
           "type": "minecraft:decorated"
-        },
-        "decorator": {
-          "config": {},
-          "type": "minecraft:square"
         }
       },
       "type": "minecraft:decorated"

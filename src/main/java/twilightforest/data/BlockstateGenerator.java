@@ -316,7 +316,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 				case 7 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_7", prefix("block/wood/bookshelf_spawner/bookshelf_7"), prefix("block/wood/planks_canopy_0"))).build(); }
 				case 8 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_8", prefix("block/wood/bookshelf_spawner/bookshelf_8"), prefix("block/wood/planks_canopy_0"))).build(); }
 				case 9 -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_9", prefix("block/wood/bookshelf_spawner/bookshelf_9"), prefix("block/wood/planks_canopy_0"))).build(); }
-				default -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_10", prefix("block/wood/bookshelf_canopy_3"), prefix("block/wood/planks_canopy_0"))).build(); }
+				default -> { return ConfiguredModel.builder().modelFile(models().cubeColumn("block/death_tome_spawner_10", prefix("block/wood/bookshelf_canopy"), prefix("block/wood/planks_canopy_0"))).build(); }
 			}
 		}, TomeSpawnerBlock.SPAWNER);
 		//ConfiguredModel[] lapisModels = new ConfiguredModel[4];
