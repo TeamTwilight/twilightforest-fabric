@@ -27,7 +27,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 
-public class ArcticArmorItem extends DyeableArmorItem implements DyeableLeatherItem, ArmorRenderingRegistry.ModelProvider, ArmorRenderingRegistry.TextureProvider {
+public class ArcticArmorItem extends DyeableArmorItem implements ArmorRenderingRegistry.ModelProvider, ArmorRenderingRegistry.TextureProvider {
 	@Environment(EnvType.CLIENT)
 	private static final MutableComponent TOOLTIP_TEXT = new TranslatableComponent("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
