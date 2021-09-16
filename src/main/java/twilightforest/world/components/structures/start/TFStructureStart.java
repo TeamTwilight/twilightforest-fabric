@@ -1,6 +1,8 @@
 package twilightforest.world.components.structures.start;
 
 import com.mojang.serialization.Codec;
+
+import net.minecraft.core.Registry;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
@@ -82,7 +84,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 	@Override
 	public StructureStart<?> generate(RegistryAccess dynamicRegistries, ChunkGenerator generator, BiomeSource provider, StructureManager templateManager, long seed, ChunkPos pos, Biome biome, int refCount, WorldgenRandom rand, StructureFeatureConfiguration settings, C config, LevelHeightAccessor accessor) {
 		ChunkPos chunkpos = this.getPotentialFeatureChunk(settings, seed, rand, pos.x, pos.z);
-		if (this.isFeatureChunk(generator, provider, seed, rand, pos, biome, chunkpos, config, accessor)) {
+		if (this.isFeatureChunk(dynamicRegistries, generator, provider, seed, rand, pos, biome, chunkpos, config, accessor)) {
 			StructureStart<C> structurestart = this.createStructureStart(pos, refCount, seed);
 			structurestart.generatePieces(dynamicRegistries, generator, templateManager, pos, biome, config, accessor);
 			if (structurestart.isValid()) {
@@ -93,9 +95,9 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureF
 		return StructureStart.INVALID_START;
 	}
 
-	@Override
-	protected boolean isFeatureChunk(ChunkGenerator generator, BiomeSource provider, long seed, WorldgenRandom random, ChunkPos pos, Biome biome, ChunkPos structurePos, C config, LevelHeightAccessor accessor) {
-		return TFFeature.isInFeatureChunk(pos.x << 4, pos.z << 4) && TFFeature.generateFeature(pos.x, pos.z, biome, seed) == feature;
+	protected boolean isFeatureChunk(RegistryAccess registryAccess,ChunkGenerator generator, BiomeSource provider, long seed, WorldgenRandom random, ChunkPos pos, Biome biome, ChunkPos structurePos, C config, LevelHeightAccessor accessor) {
+
+		return TFFeature.isInFeatureChunk(pos.x << 4, pos.z << 4) && TFFeature.generateFeature(pos.x, pos.z, registryAccess.registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome), seed) == feature;
 	}
 
 	private static int getSpawnListIndexAt(StructureStart<?> start, BlockPos pos) {

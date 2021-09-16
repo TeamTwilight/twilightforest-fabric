@@ -606,10 +606,11 @@ public enum TFFeature {
 
 		// what biome is at the center of the chunk?
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
-		return generateFeature(chunkX, chunkZ, biomeAt, world.getSeed());
+		ResourceLocation biomeLoc = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biomeAt);
+		return generateFeature(chunkX, chunkZ, biomeLoc, world.getSeed());
 	}
 
-	public static TFFeature generateFeature(int chunkX, int chunkZ, Biome biome, long seed) {
+	public static TFFeature generateFeature(int chunkX, int chunkZ, ResourceLocation resourceLocation, long seed) {
 		// Remove block comment start-marker to enable debug
 		/*if (true) {
 			switch ((chunkX + chunkZ) % 3) {
@@ -627,7 +628,7 @@ public enum TFFeature {
 		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// does the biome have a feature?
-		TFFeature biomeFeature = BIOME_FEATURES.get(BuiltinRegistries.BIOME.getKey(biome));
+		TFFeature biomeFeature = BIOME_FEATURES.get(resourceLocation);
 		if(biomeFeature != null && biomeFeature.isStructureEnabled)
 			return biomeFeature;
 

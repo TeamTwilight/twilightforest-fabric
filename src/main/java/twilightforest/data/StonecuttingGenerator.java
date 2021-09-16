@@ -121,7 +121,7 @@ public class StonecuttingGenerator extends RecipeProvider {
 
             }
         });
-        if (this.getClass() == RecipeProvider.class) //Forge: Subclasses don't need this.
+//        if (this.getClass() == RecipeProvider.class) //Forge: Subclasses don't need this.
             saveAdvancement(pCache, Advancement.Builder.advancement().addCriterion("impossible", new ImpossibleTrigger.TriggerInstance()).serializeToJson(), path.resolve("data/minecraft/advancements/recipes/root.json"));
     }
 
