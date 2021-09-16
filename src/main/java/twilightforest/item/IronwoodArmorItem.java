@@ -15,20 +15,20 @@ import org.jetbrains.annotations.Nullable;
 import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.TwilightForestMod;
 
-public class IronwoodArmorItem extends ArmorItem implements ArmorRenderingRegistry.TextureProvider{
+public class IronwoodArmorItem extends ArmorItem {
 
 	public IronwoodArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
 		super(armorMaterial, armorType, props);
 	}
 
-	@Override
-	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @Nullable String suffix, ResourceLocation defaultTexture) {
-		if (slot == EquipmentSlot.LEGS) {
-			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "ironwood_2.png");
-		} else {
-			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "ironwood_1.png");
-		}
-	}
+//	@Override
+//	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @Nullable String suffix, ResourceLocation defaultTexture) {
+//		if (slot == EquipmentSlot.LEGS) {
+//			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "ironwood_2.png");
+//		} else {
+//			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "ironwood_1.png");
+//		}
+//	}
 
 	//@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {

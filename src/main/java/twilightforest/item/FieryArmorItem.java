@@ -29,7 +29,7 @@ import twilightforest.client.model.armor.FieryArmorModel;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class FieryArmorItem extends ArmorItem implements ArmorRenderingRegistry.ModelProvider, ArmorRenderingRegistry.TextureProvider{
+public class FieryArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.fiery_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public FieryArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
@@ -43,21 +43,21 @@ public class FieryArmorItem extends ArmorItem implements ArmorRenderingRegistry.
 		tooltip.add(TOOLTIP);
 	}
 
-	@Override
-	public @NotNull HumanoidModel<LivingEntity> getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot armorSlot, HumanoidModel<LivingEntity> defaultModel) {
-		EntityModelSet models = Minecraft.getInstance().getEntityModels();
-		ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.FIERY_ARMOR_INNER : TFModelLayers.FIERY_ARMOR_OUTER);
-		return new FieryArmorModel(root);
-	}
-
-	@Override
-	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @org.jetbrains.annotations.Nullable String suffix, ResourceLocation defaultTexture) {
-		if (slot == EquipmentSlot.LEGS) {
-			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "fiery_2.png");
-		} else {
-			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "fiery_1.png");
-		}
-	}
+//	@Override
+//	public @NotNull HumanoidModel<LivingEntity> getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot armorSlot, HumanoidModel<LivingEntity> defaultModel) {
+//		EntityModelSet models = Minecraft.getInstance().getEntityModels();
+//		ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.FIERY_ARMOR_INNER : TFModelLayers.FIERY_ARMOR_OUTER);
+//		return new FieryArmorModel(root);
+//	}
+//
+//	@Override
+//	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @org.jetbrains.annotations.Nullable String suffix, ResourceLocation defaultTexture) {
+//		if (slot == EquipmentSlot.LEGS) {
+//			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "fiery_2.png");
+//		} else {
+//			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "fiery_1.png");
+//		}
+//	}
 
 //	@Override
 //	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {

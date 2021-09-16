@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 
-public class KnightmetalArmorItem extends ArmorItem implements ArmorRenderingRegistry.ModelProvider, ArmorRenderingRegistry.TextureProvider{
+public class KnightmetalArmorItem extends ArmorItem {
 
 	private static final Map<EquipmentSlot, HumanoidModel<?>> knightlyArmorModel = new EnumMap<>(EquipmentSlot.class);
 
@@ -29,21 +29,21 @@ public class KnightmetalArmorItem extends ArmorItem implements ArmorRenderingReg
 		super(material, slot, props);
 	}
 
-	@Override
-	public @NotNull HumanoidModel<LivingEntity> getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot armorSlot, HumanoidModel<LivingEntity> defaultModel) {
-		EntityModelSet models = Minecraft.getInstance().getEntityModels();
-		ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.KNIGHTMETAL_ARMOR_INNER : TFModelLayers.KNIGHTMETAL_ARMOR_OUTER);
-		return new TFArmorModel(root);
-	}
-
-	@Override
-	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @Nullable String suffix, ResourceLocation defaultTexture) {
-		if (slot == EquipmentSlot.LEGS) {
-			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "knightly_2.png");
-		} else {
-			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "knightly_1.png");
-		}
-	}
+//	@Override
+//	public @NotNull HumanoidModel<LivingEntity> getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot armorSlot, HumanoidModel<LivingEntity> defaultModel) {
+//		EntityModelSet models = Minecraft.getInstance().getEntityModels();
+//		ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.KNIGHTMETAL_ARMOR_INNER : TFModelLayers.KNIGHTMETAL_ARMOR_OUTER);
+//		return new TFArmorModel(root);
+//	}
+//
+//	@Override
+//	public @NotNull ResourceLocation getArmorTexture(LivingEntity entity, ItemStack stack, EquipmentSlot slot, boolean secondLayer, @Nullable String suffix, ResourceLocation defaultTexture) {
+//		if (slot == EquipmentSlot.LEGS) {
+//			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "knightly_2.png");
+//		} else {
+//			return new ResourceLocation(TwilightForestMod.ARMOR_DIR + "knightly_1.png");
+//		}
+//	}
 
 	/*@Override
 	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {

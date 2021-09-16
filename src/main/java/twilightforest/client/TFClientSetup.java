@@ -36,6 +36,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.model.TFLayerDefinitions;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.client.providers.*;
 import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
@@ -193,27 +194,33 @@ public class TFClientSetup implements ClientModInitializer {
 
     }
 
-    public static void armorRegistry(){
-        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.arctic_boots), TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
-        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.arctic_boots), TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
+    @Environment(EnvType.CLIENT)
+    public static void armorRegistry() {
+        ArcticArmorProvider arcticArmorProvider = new ArcticArmorProvider();
+        ArmorRenderingRegistry.registerModel(arcticArmorProvider, TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
+        ArmorRenderingRegistry.registerTexture(arcticArmorProvider, TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
 
-        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.fiery_boots), TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
-        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.fiery_boots), TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
+        FieryArmorProvider fieryArmorProvider = new FieryArmorProvider();
+        ArmorRenderingRegistry.registerModel(fieryArmorProvider, TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
+        ArmorRenderingRegistry.registerTexture(fieryArmorProvider, TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
 
-        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.knightmetal_boots), TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
-        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.knightmetal_boots), TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
+        KnightArmorProvider knightArmorProvider = new KnightArmorProvider();
+        ArmorRenderingRegistry.registerModel(knightArmorProvider, TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
+        ArmorRenderingRegistry.registerTexture(knightArmorProvider, TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
 
-        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.phantom_chestplate), TFItems.phantom_helmet, TFItems.phantom_chestplate);
-        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.phantom_chestplate), TFItems.phantom_helmet, TFItems.phantom_chestplate);
+        PhantomArmorProvider phantomArmorProvider = new PhantomArmorProvider();
+        ArmorRenderingRegistry.registerModel(phantomArmorProvider, TFItems.phantom_helmet, TFItems.phantom_chestplate);
+        ArmorRenderingRegistry.registerTexture(phantomArmorProvider, TFItems.phantom_helmet, TFItems.phantom_chestplate);
 
-        ArmorRenderingRegistry.registerModel( ((ArmorRenderingRegistry.ModelProvider) TFItems.yeti_boots), TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
-        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.yeti_boots), TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
+        YetiArmorProvider yetiArmorProvider = new YetiArmorProvider();
+        ArmorRenderingRegistry.registerModel( yetiArmorProvider, TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
+        ArmorRenderingRegistry.registerTexture(yetiArmorProvider, TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
 
-        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.naga_chestplate), TFItems.naga_chestplate, TFItems.naga_leggings);
+        ArmorRenderingRegistry.registerTexture(new NagaArmorProvider(), TFItems.naga_chestplate, TFItems.naga_leggings);
 
-        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.ironwood_boots), TFItems.ironwood_boots, TFItems.ironwood_leggings, TFItems.ironwood_chestplate, TFItems.ironwood_helmet);
+        ArmorRenderingRegistry.registerTexture(new IronwoodArmorProvider(), TFItems.ironwood_boots, TFItems.ironwood_leggings, TFItems.ironwood_chestplate, TFItems.ironwood_helmet);
 
-        ArmorRenderingRegistry.registerTexture( ((ArmorRenderingRegistry.TextureProvider) TFItems.steeleaf_boots), TFItems.steeleaf_boots, TFItems.steeleaf_leggings, TFItems.steeleaf_chestplate, TFItems.steeleaf_helmet);
+        ArmorRenderingRegistry.registerTexture(new SteeleafArmorProvider(), TFItems.steeleaf_boots, TFItems.steeleaf_leggings, TFItems.steeleaf_chestplate, TFItems.steeleaf_helmet);
     }
 
 
