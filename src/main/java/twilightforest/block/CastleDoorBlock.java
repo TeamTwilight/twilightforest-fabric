@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
@@ -67,6 +68,11 @@ public class CastleDoorBlock extends Block {
 		if (!(block instanceof CastleDoorBlock) && world.hasNeighborSignal(pos)) {
 			onActivation(world, pos, state);
 		}
+	}
+
+	@Override
+	public PushReaction getPistonPushReaction(BlockState pState) {
+		return PushReaction.BLOCK;
 	}
 
 	private InteractionResult onActivation(Level world, BlockPos pos, BlockState state) {

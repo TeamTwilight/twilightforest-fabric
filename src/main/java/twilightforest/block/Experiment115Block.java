@@ -4,6 +4,8 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -32,6 +34,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
@@ -100,6 +103,16 @@ public class Experiment115Block extends Block {
 				}
 				return InteractionResult.SUCCESS;
 			}
+		} else {
+			if(!state.getValue(REGENERATE) && player.getUseItem().isEmpty()) {
+				if (bitesTaken < 7) {
+					worldIn.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken + 1));
+				} else {
+					worldIn.removeBlock(pos, false);
+				}
+				if(!player.isCreative()) ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFItems.experiment_115.get()));
+				return InteractionResult.SUCCESS;
+			}
 		}
 		return this.eatCake(worldIn, pos, state, player);
 	}
@@ -109,6 +122,7 @@ public class Experiment115Block extends Block {
         else {
             player.awardStat(Stats.EAT_CAKE_SLICE);
             player.getFoodData().eat(4, 0.3F);
+			world.playSound(null, pos, SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.5F, world.random.nextFloat() * 0.1F + 0.9F);
             int i = state.getValue(BITES_TAKEN);
 
             if (i < 7) {

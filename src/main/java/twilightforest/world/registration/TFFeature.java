@@ -29,6 +29,7 @@ import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.components.structures.lichtowerrevamp.TowerFoyer;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.entity.*;
 import twilightforest.world.components.structures.*;
@@ -152,7 +153,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new TowerMainComponent(this, rand, 0, x, y, z);
+			return rand.nextBoolean() ? new TowerMainComponent(this, rand, 0, x, y, z) : new TowerFoyer(structureManager, new BlockPos(x, y + 1, z));
 		}
 	},
 	ICE_TOWER ( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
@@ -613,15 +614,8 @@ public enum TFFeature {
 	public static TFFeature generateFeature(int chunkX, int chunkZ, ResourceLocation resourceLocation, long seed) {
 		// Remove block comment start-marker to enable debug
 		/*if (true) {
-			switch ((chunkX + chunkZ) % 3) {
-				case 1:
-					return MEDIUM_HILL;
-				case 2:
-					return LARGE_HILL;
-				default:
-					return SMALL_HILL;
-			}
-		}//*/
+			return LICH_TOWER;
+		}*/
 
 		// set the chunkX and chunkZ to the center of the biome in case they arent already
 		chunkX = Math.round(chunkX / 16F) * 16;

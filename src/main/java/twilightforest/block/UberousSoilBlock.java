@@ -1,25 +1,32 @@
 package twilightforest.block;
 
-import twilightforest.extensions.IBlockMethods;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BoneMealItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.PlantType;
+import twilightforest.item.TFItems;
 
 import java.util.Random;
 
-public class UberousSoilBlock extends Block implements BonemealableBlock, IBlockMethods {
+public class UberousSoilBlock extends Block implements BonemealableBlock {
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F));
 
 	protected UberousSoilBlock(Properties props) {
@@ -32,13 +39,13 @@ public class UberousSoilBlock extends Block implements BonemealableBlock, IBlock
 		return AABB;
 	}
 
-	/*@Override
+	@Override
 	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction direction, IPlantable plantable) {
 		if (direction != Direction.UP)
 			return false;
 		PlantType plantType = plantable.getPlantType(world, pos.relative(direction));
 		return plantType == PlantType.CROP || plantType == PlantType.PLAINS || plantType == PlantType.CAVE;
-	}*/
+	}
 
 	@Override
 	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
@@ -49,26 +56,39 @@ public class UberousSoilBlock extends Block implements BonemealableBlock, IBlock
 			world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
 		}
 
-		//TODO: PORT
 		// todo should probably use IGrowable and loop until it can't grow anymore
-//		if (above.getBlock() instanceof IPlantable) {
-//			IPlantable plant = (IPlantable) above.getBlock();
-//			// revert to farmland or grass
-//			if (plant.getPlantType(world, pos.above()) == PlantType.CROP) {
-//				world.setBlockAndUpdate(pos, Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 2));
-//			} else if (plant.getPlantType(world, pos.above()) == PlantType.PLAINS) {
-//				world.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
-//			} else {
-//				world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
-//			}
-//			// apply bonemeal
-//			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-//			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-//			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-//			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-//			// green sparkles
-//			world.levelEvent(2005, pos.above(), 0);
-//		}
+		if (above.getBlock() instanceof IPlantable) {
+			IPlantable plant = (IPlantable) above.getBlock();
+			// revert to farmland or grass
+			if (plant.getPlantType(world, pos.above()) == PlantType.CROP) {
+				world.setBlockAndUpdate(pos, Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 2));
+			} else if (plant.getPlantType(world, pos.above()) == PlantType.PLAINS) {
+				world.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
+			} else {
+				world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
+			}
+			// apply bonemeal
+			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
+			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
+			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
+			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
+			// green sparkles
+			world.levelEvent(2005, pos.above(), 0);
+		}
+	}
+
+	@Override
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+		if(level.isClientSide && rand.nextInt(5) == 0) {
+			for(Player player : level.players()) {
+				if (player.getMainHandItem().getItem().equals(TFItems.magic_beans.get()) || player.getOffhandItem().getItem().equals(TFItems.magic_beans.get())) {
+					for (int i = 0; i < 2; i++) {
+						level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX() + rand.nextDouble(), pos.getY() + 1.25D, pos.getZ() + rand.nextDouble(), 0.0D, 0.0D, 0.0D);
+					}
+					break;
+				}
+			}
+		}
 	}
 
 	@Override
