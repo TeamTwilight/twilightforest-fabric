@@ -1,25 +1,12 @@
 package twilightforest.item;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
-import twilightforest.TwilightForestMod;
 import java.util.EnumMap;
 import java.util.Map;
 
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ItemStack;
-import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.armor.TFArmorModel;
 
 public class KnightmetalArmorItem extends ArmorItem {
 

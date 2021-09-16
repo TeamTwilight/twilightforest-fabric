@@ -2,14 +2,6 @@ package twilightforest.item;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
-import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.TwilightForestMod;
 import java.util.List;
 
@@ -30,8 +22,6 @@ import net.minecraft.world.item.enchantment.BindingCurseEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.VanishingCurseEnchantment;
 import net.minecraft.world.level.Level;
-import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.armor.TFArmorModel;
 
 public class PhantomArmorItem extends ArmorItem {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.phantom_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
