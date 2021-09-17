@@ -21,7 +21,6 @@
     "SpawnPlacementsMixin",
     "BoundingBoxMixin",
     "WorldGenRegionMixin",
-    "PlayerListMixin",
     "PlayerAdvancementsMixin"
   ],
   "client": [

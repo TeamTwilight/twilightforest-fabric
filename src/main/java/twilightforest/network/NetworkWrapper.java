@@ -53,6 +53,16 @@ public class NetworkWrapper {
         });
     }
 
+    @Environment(EnvType.CLIENT)
+    public void initClient() {
+        ClientPlayNetworking.registerGlobalReceiver(identifier, (minecraftClient, clientPlayNetworkHandler, packetByteBuf, packetSender) -> {
+            int id = packetByteBuf.readInt();
+            Packet packet = packetIdMap.get(id);
+            ISimplePacket object = (ISimplePacket) packet.decoder.apply(packetByteBuf);
+            packet.consumer.accept(object, minecraftClient.player);
+        });
+    }
+
     public  <T extends ISimplePacket> void registerPacket(Class<T> clazz, Function<FriendlyByteBuf, T> decoder, EnvType side) {
         registerPacket(clazz, ISimplePacket::encode, decoder, ISimplePacket::onMessage, side);
     }
