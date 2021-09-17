@@ -193,7 +193,7 @@ public class TFBlocks {
 	public static final Block trollvidr                   = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":trollvidr", new TrollRootBlock(BlockBehaviour.Properties.of(Material.PLANT).sound(SoundType.GRASS).noCollission()));
 	public static final Block unripe_trollber             = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":unripe_trollber", new UnripeTorchClusterBlock(BlockBehaviour.Properties.of(Material.PLANT).sound(SoundType.GRASS).noCollission().randomTicks()));
 	public static final Block trollber                    = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":trollber", new TrollRootBlock(BlockBehaviour.Properties.of(Material.PLANT).sound(SoundType.GRASS).noCollission().lightLevel((state) -> 15)));
-	public static final HugeLilyPadBlock huge_lilypad     = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":huge_lilypad", new HugeLilyPadBlock(BlockBehaviour.Properties.of(Material.PLANT).sound(SoundType.GRASS)));
+	public static final HugeLilyPadBlock huge_lilypad   = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":huge_lilypad", new HugeLilyPadBlock(BlockBehaviour.Properties.of(Material.PLANT).sound(SoundType.GRASS)));
 	public static final Block huge_waterlily              = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":huge_waterlily", new HugeWaterLilyBlock(BlockBehaviour.Properties.of(Material.PLANT).sound(SoundType.GRASS)));
 	public static final RotatedPillarBlock slider         = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":slider", new SliderBlock());
 	public static final Block castle_brick                = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":castle_brick", new CastleBlock(MaterialColor.QUARTZ));
@@ -230,13 +230,13 @@ public class TFBlocks {
 	public static final Block castle_door_blue            = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":castle_door_blue", new CastleDoorBlock(BlockBehaviour.Properties.of(Material.STONE, (state) -> state.getValue(CastleDoorBlock.VANISHED) ? MaterialColor.NONE : MaterialColor.COLOR_CYAN).requiresCorrectToolForDrops().strength(100.0F, 35.0F)));
 	public static final Block experiment_115              = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":experiment_115", new Experiment115Block());
 	public static final Block twilight_portal_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":twilight_portal_miniature_structure", new MiniatureStructureBlock());
-//	public static final Block hedge_maze_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":hedge_maze_miniature_structure", new BlockTFMiniatureStructure());
+	//	public static final Block hedge_maze_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":hedge_maze_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block hollow_hill_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":hollow_hill_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block quest_grove_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":quest_grove_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block mushroom_tower_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mushroom_tower_miniature_structure", new BlockTFMiniatureStructure());
 	public static final Block naga_courtyard_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":naga_courtyard_miniature_structure", new MiniatureStructureBlock());
 	public static final Block lich_tower_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":lich_tower_miniature_structure", new MiniatureStructureBlock());
-//	public static final Block minotaur_labyrinth_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":minotaur_labyrinth_miniature_structure", new BlockTFMiniatureStructure());
+	//	public static final Block minotaur_labyrinth_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":minotaur_labyrinth_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block hydra_lair_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":hydra_lair_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block goblin_stronghold_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":goblin_stronghold_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block dark_tower_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":dark_tower_miniature_structure", new BlockTFMiniatureStructure());
@@ -303,6 +303,15 @@ public class TFBlocks {
 	public static final FlowerPotBlock potted_green_thorn = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":potted_green_thorn", new FlowerPotBlock(green_thorns, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
 	public static final FlowerPotBlock potted_dead_thorn = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":potted_dead_thorn", new FlowerPotBlock(burnt_thorns, BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
 
+	public static final BanisterBlock oak_banister          = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":oak_banister", new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
+	public static final BanisterBlock spruce_banister       = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":spruce_banister", new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.SPRUCE_PLANKS)));
+	public static final BanisterBlock birch_banister        = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":birch_banister", new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.BIRCH_PLANKS)));
+	public static final BanisterBlock jungle_banister       = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":jungle_banister", new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.JUNGLE_PLANKS)));
+	public static final BanisterBlock acacia_banister       = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":acacia_banister", new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.ACACIA_PLANKS)));
+	public static final BanisterBlock dark_oak_banister     = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":dark_oak_banister", new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.DARK_OAK_PLANKS)));
+	public static final BanisterBlock crimson_banister      = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":crimson_banister", new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_PLANKS)));
+	public static final BanisterBlock warped_banister       = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":warped_banister", new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.WARPED_PLANKS)));
+
 	public static final WoodType TWILIGHT_OAK = WoodType.register(new WoodType("twilight_oak"));
 	public static final WoodType CANOPY = WoodType.register(new WoodType("canopy"));
 	public static final WoodType MANGROVE = WoodType.register(new WoodType("mangrove"));
@@ -311,24 +320,6 @@ public class TFBlocks {
 	public static final WoodType TRANSFORMATION = WoodType.register(new WoodType("transformation"));
 	public static final WoodType MINING = WoodType.register(new WoodType("mining"));
 	public static final WoodType SORTING = WoodType.register(new WoodType("sorting"));
-
-	public static final RegistryObject<BanisterBlock> oak_banister          = BLOCKS.register("oak_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
-	public static final RegistryObject<BanisterBlock> spruce_banister       = BLOCKS.register("spruce_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.SPRUCE_PLANKS)));
-	public static final RegistryObject<BanisterBlock> birch_banister        = BLOCKS.register("birch_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.BIRCH_PLANKS)));
-	public static final RegistryObject<BanisterBlock> jungle_banister       = BLOCKS.register("jungle_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.JUNGLE_PLANKS)));
-	public static final RegistryObject<BanisterBlock> acacia_banister       = BLOCKS.register("acacia_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.ACACIA_PLANKS)));
-	public static final RegistryObject<BanisterBlock> dark_oak_banister     = BLOCKS.register("dark_oak_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.DARK_OAK_PLANKS)));
-	public static final RegistryObject<BanisterBlock> crimson_banister      = BLOCKS.register("crimson_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_PLANKS)));
-	public static final RegistryObject<BanisterBlock> warped_banister       = BLOCKS.register("warped_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.WARPED_PLANKS)));
-
-	public static final WoodType TWILIGHT_OAK = WoodType.create("twilight_oak");
-	public static final WoodType CANOPY = WoodType.create("canopy");
-	public static final WoodType MANGROVE = WoodType.create("mangrove");
-	public static final WoodType DARKWOOD = WoodType.create("darkwood");
-	public static final WoodType TIMEWOOD = WoodType.create("timewood");
-	public static final WoodType TRANSFORMATION = WoodType.create("transformation");
-	public static final WoodType MINING = WoodType.create("mining");
-	public static final WoodType SORTING = WoodType.create("sorting");
 	// TODO chests? boats?
 	public static final Block twilight_oak_planks           = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":twilight_oak_planks", new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final StairBlock twilight_oak_stairs      = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":twilight_oak_stairs", new StairBlock(twilight_oak_planks.defaultBlockState(), BlockBehaviour.Properties.copy(twilight_oak_planks)));
@@ -341,6 +332,7 @@ public class TFBlocks {
 	public static final TrapDoorBlock twilight_oak_trapdoor = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":twilight_oak_trapdoor", new TrapDoorBlock(BlockBehaviour.Properties.copy(twilight_oak_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final StandingSignBlock twilight_oak_sign = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":twilight_oak_sign", new TFSignBlock(BlockBehaviour.Properties.copy(twilight_oak_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TWILIGHT_OAK));
 	public static final WallSignBlock twilight_wall_sign    = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":twilight_wall_sign", new TFWallSignBlock(BlockBehaviour.Properties.copy(twilight_oak_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TWILIGHT_OAK));
+	public static final BanisterBlock twilight_oak_banister = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":twilight_oak_banister", new BanisterBlock(BlockBehaviour.Properties.copy(twilight_oak_planks)));
 	public static final Block canopy_planks                 = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":canopy_planks", new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final StairBlock canopy_stairs            = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":canopy_stairs", new StairBlock(canopy_planks.defaultBlockState(), BlockBehaviour.Properties.copy(canopy_planks)));
 	public static final Block canopy_slab                   = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":canopy_slab", new SlabBlock(BlockBehaviour.Properties.copy(canopy_planks)));
@@ -353,6 +345,7 @@ public class TFBlocks {
 	public static final StandingSignBlock canopy_sign       = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":canopy_sign", new TFSignBlock(BlockBehaviour.Properties.copy(canopy_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), CANOPY));
 	public static final WallSignBlock canopy_wall_sign      = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":canopy_wall_sign", new TFWallSignBlock(BlockBehaviour.Properties.copy(canopy_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), CANOPY));
 	public static final Block canopy_bookshelf              = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":canopy_bookshelf", new BookshelfBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(1.5F).sound(SoundType.WOOD)));
+	public static final BanisterBlock canopy_banister       = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":canopy_banister", new BanisterBlock(BlockBehaviour.Properties.copy(canopy_planks)));
 	public static final Block mangrove_planks               = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mangrove_planks", new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.DIRT).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final StairBlock mangrove_stairs          = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mangrove_stairs", new StairBlock(mangrove_planks.defaultBlockState(), BlockBehaviour.Properties.copy(mangrove_planks)));
 	public static final Block mangrove_slab                 = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mangrove_slab", new SlabBlock(BlockBehaviour.Properties.copy(mangrove_planks).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -364,6 +357,7 @@ public class TFBlocks {
 	public static final TrapDoorBlock mangrove_trapdoor     = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mangrove_trapdoor", new TrapDoorBlock(BlockBehaviour.Properties.copy(mangrove_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final StandingSignBlock mangrove_sign     = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mangrove_sign", new TFSignBlock(BlockBehaviour.Properties.copy(mangrove_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), MANGROVE));
 	public static final WallSignBlock mangrove_wall_sign    = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mangrove_wall_sign", new TFWallSignBlock(BlockBehaviour.Properties.copy(mangrove_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), MANGROVE));
+	public static final BanisterBlock mangrove_banister     = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mangrove_banister", new BanisterBlock(BlockBehaviour.Properties.copy(mangrove_planks)));
 	public static final Block dark_planks                   = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":dark_planks", new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_ORANGE).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final StairBlock dark_stairs              = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":dark_stairs", new StairBlock(dark_planks.defaultBlockState(), BlockBehaviour.Properties.copy(dark_planks)));
 	public static final Block dark_slab                     = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":dark_slab", new SlabBlock(BlockBehaviour.Properties.copy(dark_planks).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -375,6 +369,7 @@ public class TFBlocks {
 	public static final TrapDoorBlock dark_trapdoor         = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":dark_trapdoor", new TrapDoorBlock(BlockBehaviour.Properties.copy(dark_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final StandingSignBlock darkwood_sign     = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":darkwood_sign", new TFSignBlock(BlockBehaviour.Properties.copy(dark_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), DARKWOOD));
 	public static final WallSignBlock darkwood_wall_sign    = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":darkwood_wall_sign", new TFWallSignBlock(BlockBehaviour.Properties.copy(dark_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), DARKWOOD));
+	public static final BanisterBlock darkwood_banister     = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":darkwood_banister", new BanisterBlock(BlockBehaviour.Properties.copy(dark_planks)));
 	public static final Block time_planks                   = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":time_planks", new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.DIRT).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final StairBlock time_stairs              = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":time_stairs", new StairBlock(time_planks.defaultBlockState(), BlockBehaviour.Properties.copy(time_planks)));
 	public static final Block time_slab                     = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":time_slab", new SlabBlock(BlockBehaviour.Properties.copy(time_planks).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -386,6 +381,7 @@ public class TFBlocks {
 	public static final TrapDoorBlock time_trapdoor         = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":time_trapdoor", new TrapDoorBlock(BlockBehaviour.Properties.copy(time_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final StandingSignBlock time_sign         = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":time_sign", new TFSignBlock(BlockBehaviour.Properties.copy(time_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TIMEWOOD));
 	public static final WallSignBlock time_wall_sign        = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":time_wall_sign", new TFWallSignBlock(BlockBehaviour.Properties.copy(time_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TIMEWOOD));
+	public static final BanisterBlock time_banister         = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":time_banister", new BanisterBlock(BlockBehaviour.Properties.copy(time_planks)));
 	public static final Block trans_planks                  = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":trans_planks", new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final StairBlock trans_stairs             = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":trans_stairs", new StairBlock(trans_planks.defaultBlockState(), BlockBehaviour.Properties.copy(trans_planks)));
 	public static final Block trans_slab                    = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":trans_slab", new SlabBlock(BlockBehaviour.Properties.copy(trans_planks).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -397,6 +393,7 @@ public class TFBlocks {
 	public static final TrapDoorBlock trans_trapdoor        = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":trans_trapdoor", new TrapDoorBlock(BlockBehaviour.Properties.copy(trans_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final StandingSignBlock trans_sign        = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":trans_sign", new TFSignBlock(BlockBehaviour.Properties.copy(trans_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TRANSFORMATION));
 	public static final WallSignBlock trans_wall_sign       = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":trans_wall_sign", new TFWallSignBlock(BlockBehaviour.Properties.copy(trans_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TRANSFORMATION));
+	public static final BanisterBlock trans_banister        = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":trans_banister", new BanisterBlock(BlockBehaviour.Properties.copy(trans_planks)));
 	public static final Block mine_planks                   = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mine_planks", new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.SAND).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final StairBlock mine_stairs              = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mine_stairs", new StairBlock(mine_planks.defaultBlockState(), BlockBehaviour.Properties.copy(mine_planks)));
 	public static final Block mine_slab                     = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mine_slab", new SlabBlock(BlockBehaviour.Properties.copy(mine_planks).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -408,6 +405,7 @@ public class TFBlocks {
 	public static final TrapDoorBlock mine_trapdoor         = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mine_trapdoor", new TrapDoorBlock(BlockBehaviour.Properties.copy(mine_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final StandingSignBlock mine_sign         = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mine_sign", new TFSignBlock(BlockBehaviour.Properties.copy(mine_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), MINING));
 	public static final WallSignBlock mine_wall_sign        = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mine_wall_sign", new TFWallSignBlock(BlockBehaviour.Properties.copy(mine_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), MINING));
+	public static final BanisterBlock mine_banister         = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mine_banister", new BanisterBlock(BlockBehaviour.Properties.copy(mine_planks)));
 	public static final Block sort_planks                   = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":sort_planks", new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final StairBlock sort_stairs              = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":sort_stairs", new StairBlock(sort_planks.defaultBlockState(), BlockBehaviour.Properties.copy(sort_planks)));
 	public static final Block sort_slab                     = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":sort_slab", new SlabBlock(BlockBehaviour.Properties.copy(sort_planks).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -419,103 +417,8 @@ public class TFBlocks {
 	public static final TrapDoorBlock sort_trapdoor         = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":sort_trapdoor", new TrapDoorBlock(BlockBehaviour.Properties.copy(sort_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final StandingSignBlock sort_sign         = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":sort_sign", new TFSignBlock(BlockBehaviour.Properties.copy(sort_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), SORTING));
 	public static final WallSignBlock sort_wall_sign        = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":sort_wall_sign", new TFWallSignBlock(BlockBehaviour.Properties.copy(sort_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), SORTING));
-	public static final RegistryObject<Block> twilight_oak_planks           = BLOCKS.register("twilight_oak_planks", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> twilight_oak_stairs      = BLOCKS.register("twilight_oak_stairs", () -> new StairBlock(twilight_oak_planks.get().defaultBlockState(), BlockBehaviour.Properties.copy(twilight_oak_planks.get())));
-	public static final RegistryObject<Block> twilight_oak_slab             = BLOCKS.register("twilight_oak_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(twilight_oak_planks.get())));
-	public static final RegistryObject<Block> twilight_oak_button           = BLOCKS.register("twilight_oak_button", () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(twilight_oak_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> twilight_oak_fence            = BLOCKS.register("twilight_oak_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(twilight_oak_planks.get())));
-	public static final RegistryObject<Block> twilight_oak_gate             = BLOCKS.register("twilight_oak_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(twilight_oak_planks.get())));
-	public static final RegistryObject<Block> twilight_oak_plate            = BLOCKS.register("twilight_oak_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(twilight_oak_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<DoorBlock> twilight_oak_door         = BLOCKS.register("twilight_oak_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(twilight_oak_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<TrapDoorBlock> twilight_oak_trapdoor = BLOCKS.register("twilight_oak_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(twilight_oak_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<StandingSignBlock> twilight_oak_sign = BLOCKS.register("twilight_oak_sign", () -> new TFSignBlock(BlockBehaviour.Properties.copy(twilight_oak_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TWILIGHT_OAK));
-	public static final RegistryObject<WallSignBlock> twilight_wall_sign    = BLOCKS.register("twilight_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(twilight_oak_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TWILIGHT_OAK));
-	public static final RegistryObject<BanisterBlock> twilight_oak_banister = BLOCKS.register("twilight_oak_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(twilight_oak_planks.get())));
-	public static final RegistryObject<Block> canopy_planks                 = BLOCKS.register("canopy_planks", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> canopy_stairs            = BLOCKS.register("canopy_stairs", () -> new StairBlock(canopy_planks.get().defaultBlockState(), BlockBehaviour.Properties.copy(canopy_planks.get())));
-	public static final RegistryObject<Block> canopy_slab                   = BLOCKS.register("canopy_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(canopy_planks.get())));
-	public static final RegistryObject<Block> canopy_button                 = BLOCKS.register("canopy_button", () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(canopy_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> canopy_fence                  = BLOCKS.register("canopy_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(canopy_planks.get())));
-	public static final RegistryObject<Block> canopy_gate                   = BLOCKS.register("canopy_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(canopy_planks.get())));
-	public static final RegistryObject<Block> canopy_plate                  = BLOCKS.register("canopy_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(canopy_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<DoorBlock> canopy_door               = BLOCKS.register("canopy_door", () -> new DoorBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<TrapDoorBlock> canopy_trapdoor       = BLOCKS.register("canopy_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.SAND).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<StandingSignBlock> canopy_sign       = BLOCKS.register("canopy_sign", () -> new TFSignBlock(BlockBehaviour.Properties.copy(canopy_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), CANOPY));
-	public static final RegistryObject<WallSignBlock> canopy_wall_sign      = BLOCKS.register("canopy_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(canopy_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), CANOPY));
-	public static final RegistryObject<Block> canopy_bookshelf              = BLOCKS.register("canopy_bookshelf", () -> new BookshelfBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(1.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<BanisterBlock> canopy_banister       = BLOCKS.register("canopy_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(canopy_planks.get())));
-	public static final RegistryObject<Block> mangrove_planks               = BLOCKS.register("mangrove_planks", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.DIRT).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> mangrove_stairs          = BLOCKS.register("mangrove_stairs", () -> new StairBlock(mangrove_planks.get().defaultBlockState(), BlockBehaviour.Properties.copy(mangrove_planks.get())));
-	public static final RegistryObject<Block> mangrove_slab                 = BLOCKS.register("mangrove_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(mangrove_planks.get()).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> mangrove_button               = BLOCKS.register("mangrove_button", () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(mangrove_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> mangrove_fence                = BLOCKS.register("mangrove_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(mangrove_planks.get())));
-	public static final RegistryObject<Block> mangrove_gate                 = BLOCKS.register("mangrove_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(mangrove_planks.get())));
-	public static final RegistryObject<Block> mangrove_plate                = BLOCKS.register("mangrove_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(mangrove_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<DoorBlock> mangrove_door             = BLOCKS.register("mangrove_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(mangrove_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<TrapDoorBlock> mangrove_trapdoor     = BLOCKS.register("mangrove_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(mangrove_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<StandingSignBlock> mangrove_sign     = BLOCKS.register("mangrove_sign", () -> new TFSignBlock(BlockBehaviour.Properties.copy(mangrove_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), MANGROVE));
-	public static final RegistryObject<WallSignBlock> mangrove_wall_sign    = BLOCKS.register("mangrove_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(mangrove_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), MANGROVE));
-	public static final RegistryObject<BanisterBlock> mangrove_banister     = BLOCKS.register("mangrove_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(mangrove_planks.get())));
-	public static final RegistryObject<Block> dark_planks                   = BLOCKS.register("dark_planks", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.COLOR_ORANGE).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> dark_stairs              = BLOCKS.register("dark_stairs", () -> new StairBlock(dark_planks.get().defaultBlockState(), BlockBehaviour.Properties.copy(dark_planks.get())));
-	public static final RegistryObject<Block> dark_slab                     = BLOCKS.register("dark_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(dark_planks.get()).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> dark_button                   = BLOCKS.register("dark_button", () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(dark_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> dark_fence                    = BLOCKS.register("dark_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(dark_planks.get())));
-	public static final RegistryObject<Block> dark_gate                     = BLOCKS.register("dark_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(dark_planks.get())));
-	public static final RegistryObject<Block> dark_plate                    = BLOCKS.register("dark_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(dark_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<DoorBlock> dark_door                 = BLOCKS.register("dark_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(dark_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<TrapDoorBlock> dark_trapdoor         = BLOCKS.register("dark_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(dark_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<StandingSignBlock> darkwood_sign     = BLOCKS.register("darkwood_sign", () -> new TFSignBlock(BlockBehaviour.Properties.copy(dark_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), DARKWOOD));
-	public static final RegistryObject<WallSignBlock> darkwood_wall_sign    = BLOCKS.register("darkwood_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(dark_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), DARKWOOD));
-	public static final RegistryObject<BanisterBlock> darkwood_banister     = BLOCKS.register("darkwood_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(dark_planks.get())));
-	public static final RegistryObject<Block> time_planks                   = BLOCKS.register("time_planks", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.DIRT).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> time_stairs              = BLOCKS.register("time_stairs", () -> new StairBlock(time_planks.get().defaultBlockState(), BlockBehaviour.Properties.copy(time_planks.get())));
-	public static final RegistryObject<Block> time_slab                     = BLOCKS.register("time_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(time_planks.get()).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> time_button                   = BLOCKS.register("time_button", () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(time_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> time_fence                    = BLOCKS.register("time_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(time_planks.get())));
-	public static final RegistryObject<Block> time_gate                     = BLOCKS.register("time_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(time_planks.get())));
-	public static final RegistryObject<Block> time_plate                    = BLOCKS.register("time_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(time_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<DoorBlock> time_door                 = BLOCKS.register("time_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(time_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<TrapDoorBlock> time_trapdoor         = BLOCKS.register("time_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(time_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<StandingSignBlock> time_sign         = BLOCKS.register("time_sign", () -> new TFSignBlock(BlockBehaviour.Properties.copy(time_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TIMEWOOD));
-	public static final RegistryObject<WallSignBlock> time_wall_sign        = BLOCKS.register("time_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(time_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TIMEWOOD));
-	public static final RegistryObject<BanisterBlock> time_banister         = BLOCKS.register("time_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(time_planks.get())));
-	public static final RegistryObject<Block> trans_planks                  = BLOCKS.register("trans_planks", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> trans_stairs             = BLOCKS.register("trans_stairs", () -> new StairBlock(trans_planks.get().defaultBlockState(), BlockBehaviour.Properties.copy(trans_planks.get())));
-	public static final RegistryObject<Block> trans_slab                    = BLOCKS.register("trans_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(trans_planks.get()).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> trans_button                  = BLOCKS.register("trans_button", () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(trans_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> trans_fence                   = BLOCKS.register("trans_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(trans_planks.get())));
-	public static final RegistryObject<Block> trans_gate                    = BLOCKS.register("trans_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(trans_planks.get())));
-	public static final RegistryObject<Block> trans_plate                   = BLOCKS.register("trans_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(trans_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<DoorBlock> trans_door                = BLOCKS.register("trans_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(trans_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<TrapDoorBlock> trans_trapdoor        = BLOCKS.register("trans_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(trans_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<StandingSignBlock> trans_sign        = BLOCKS.register("trans_sign", () -> new TFSignBlock(BlockBehaviour.Properties.copy(trans_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TRANSFORMATION));
-	public static final RegistryObject<WallSignBlock> trans_wall_sign       = BLOCKS.register("trans_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(trans_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), TRANSFORMATION));
-	public static final RegistryObject<BanisterBlock> trans_banister        = BLOCKS.register("trans_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(trans_planks.get())));
-	public static final RegistryObject<Block> mine_planks                   = BLOCKS.register("mine_planks", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.SAND).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> mine_stairs              = BLOCKS.register("mine_stairs", () -> new StairBlock(mine_planks.get().defaultBlockState(), BlockBehaviour.Properties.copy(mine_planks.get())));
-	public static final RegistryObject<Block> mine_slab                     = BLOCKS.register("mine_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(mine_planks.get()).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> mine_button                   = BLOCKS.register("mine_button", () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(mine_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> mine_fence                    = BLOCKS.register("mine_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(mine_planks.get())));
-	public static final RegistryObject<Block> mine_gate                     = BLOCKS.register("mine_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(mine_planks.get())));
-	public static final RegistryObject<Block> mine_plate                    = BLOCKS.register("mine_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(mine_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<DoorBlock> mine_door                 = BLOCKS.register("mine_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(mine_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<TrapDoorBlock> mine_trapdoor         = BLOCKS.register("mine_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(mine_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<StandingSignBlock> mine_sign         = BLOCKS.register("mine_sign", () -> new TFSignBlock(BlockBehaviour.Properties.copy(mine_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), MINING));
-	public static final RegistryObject<WallSignBlock> mine_wall_sign        = BLOCKS.register("mine_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(mine_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), MINING));
-	public static final RegistryObject<BanisterBlock> mine_banister         = BLOCKS.register("mine_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(mine_planks.get())));
-	public static final RegistryObject<Block> sort_planks                   = BLOCKS.register("sort_planks", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> sort_stairs              = BLOCKS.register("sort_stairs", () -> new StairBlock(sort_planks.get().defaultBlockState(), BlockBehaviour.Properties.copy(sort_planks.get())));
-	public static final RegistryObject<Block> sort_slab                     = BLOCKS.register("sort_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(sort_planks.get()).strength(2.0F, 5.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> sort_button                   = BLOCKS.register("sort_button", () -> new WoodButtonBlock(BlockBehaviour.Properties.copy(sort_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> sort_fence                    = BLOCKS.register("sort_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(sort_planks.get())));
-	public static final RegistryObject<Block> sort_gate                     = BLOCKS.register("sort_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(sort_planks.get())));
-	public static final RegistryObject<Block> sort_plate                    = BLOCKS.register("sort_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(sort_planks.get()).noCollission().strength(0.5F).sound(SoundType.WOOD)));
-	public static final RegistryObject<DoorBlock> sort_door                 = BLOCKS.register("sort_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(sort_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<TrapDoorBlock> sort_trapdoor         = BLOCKS.register("sort_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(sort_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
-	public static final RegistryObject<StandingSignBlock> sort_sign         = BLOCKS.register("sort_sign", () -> new TFSignBlock(BlockBehaviour.Properties.copy(sort_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), SORTING));
-	public static final RegistryObject<WallSignBlock> sort_wall_sign        = BLOCKS.register("sort_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(sort_planks.get()).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), SORTING));
-	public static final RegistryObject<BanisterBlock> sort_banister         = BLOCKS.register("sort_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(sort_planks.get())));
+	public static final BanisterBlock sort_banister         = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":sort_banister", new BanisterBlock(BlockBehaviour.Properties.copy(sort_planks)));
+
 
 	public static void registerItemblocks() {
 		TFBlockItems.registerBlockItems();
@@ -587,7 +490,7 @@ public class TFBlocks {
 	}
 
 	public static void TFBurnables() {
-		//FireBlock fireblock = (FireBlock)Blocks.FIRE;
+		FireBlock fireblock = (FireBlock)Blocks.FIRE;
 		FlammableBlockRegistry.getDefaultInstance().add(root, 5, 20);
 		FlammableBlockRegistry.getDefaultInstance().add(liveroot_block, 5, 20);
 		FlammableBlockRegistry.getDefaultInstance().add(empty_bookshelf, 30, 20);

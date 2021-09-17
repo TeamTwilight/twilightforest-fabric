@@ -2,7 +2,6 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -24,8 +23,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolActions;
-import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.enums.BanisterShape;
 
@@ -92,14 +89,15 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         ItemStack held = player.getItemInHand(hand);
 
-        if (held.canPerformAction(ToolActions.AXE_WAX_OFF)) {
-            BlockState newState = state.cycle(SHAPE);
-
-            // If we reach BanisterShape.TALL it means we went a full cycle, so we'll also cycle the extension
-            level.setBlock(pos, newState.getValue(SHAPE) == BanisterShape.TALL ? newState.cycle(EXTENDED) : newState, 3);
-
-            return InteractionResult.SUCCESS;
-        }
+        //TODO: PORT
+//        if (held.canPerformAction(ToolActions.AXE_WAX_OFF)) {
+//            BlockState newState = state.cycle(SHAPE);
+//
+//            // If we reach BanisterShape.TALL it means we went a full cycle, so we'll also cycle the extension
+//            level.setBlock(pos, newState.getValue(SHAPE) == BanisterShape.TALL ? newState.cycle(EXTENDED) : newState, 3);
+//
+//            return InteractionResult.SUCCESS;
+//        }
 
         return super.use(state, level, pos, player, hand, hitResult);
     }
