@@ -66,11 +66,12 @@ public class TomeBoltEntity extends TFThrowableEntity implements ItemSupplier {
 		if (!this.level.isClientSide) {
 			if (result instanceof EntityHitResult) {
 				EntityHitResult entityRay = ((EntityHitResult) result);
-				if (entityRay.getEntity() instanceof LivingEntity
-						&& entityRay.getEntity().hurt(TFDamageSources.lostWords(this, (LivingEntity)this.getOwner()), 3)) {
-					// inflict move slowdown
-					int duration = level.getDifficulty() == Difficulty.PEACEFUL ? 2 : level.getDifficulty() == Difficulty.NORMAL ? 6 : 8;
-					((LivingEntity) entityRay.getEntity()).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration * 20, 1));
+				if (entityRay.getEntity() instanceof LivingEntity) {
+					if (entityRay.getEntity().hurt(random.nextBoolean() ? TFDamageSources.lostWords(this, (LivingEntity)this.getOwner()) : TFDamageSources.schooled(this, (LivingEntity)this.getOwner()), 3)) {
+						// inflict move slowdown
+						int duration = level.getDifficulty() == Difficulty.PEACEFUL ? 2 : level.getDifficulty() == Difficulty.NORMAL ? 6 : 8;
+						((LivingEntity) entityRay.getEntity()).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration * 20, 1));
+					}
 				}
 			}
 

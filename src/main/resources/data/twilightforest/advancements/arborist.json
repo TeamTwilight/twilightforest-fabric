@@ -1732,6 +1732,102 @@
         ]
       }
     },
+    "twilight_oak_banister": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:twilight_oak_banister"
+            ]
+          }
+        ]
+      }
+    },
+    "canopy_banister": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:canopy_banister"
+            ]
+          }
+        ]
+      }
+    },
+    "mangrove_banister": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mangrove_banister"
+            ]
+          }
+        ]
+      }
+    },
+    "darkwood_banister": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:darkwood_banister"
+            ]
+          }
+        ]
+      }
+    },
+    "time_banister": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_banister"
+            ]
+          }
+        ]
+      }
+    },
+    "trans_banister": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:trans_banister"
+            ]
+          }
+        ]
+      }
+    },
+    "mine_banister": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mine_banister"
+            ]
+          }
+        ]
+      }
+    },
+    "sort_banister": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:sort_banister"
+            ]
+          }
+        ]
+      }
+    },
     "liveroot": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -2174,6 +2270,30 @@
     ],
     [
       "fallen_leaves"
+    ],
+    [
+      "twilight_oak_banister"
+    ],
+    [
+      "canopy_banister"
+    ],
+    [
+      "mangrove_banister"
+    ],
+    [
+      "darkwood_banister"
+    ],
+    [
+      "time_banister"
+    ],
+    [
+      "trans_banister"
+    ],
+    [
+      "mine_banister"
+    ],
+    [
+      "sort_banister"
     ],
     [
       "liveroot"

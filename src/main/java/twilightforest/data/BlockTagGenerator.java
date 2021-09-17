@@ -35,6 +35,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
     public static final Tag.Named<Block> TF_LOGS = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("logs"));
     public static final Tag.Named<Block> TF_FENCES = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("fences"));
     public static final Tag.Named<Block> TF_FENCE_GATES = (Tag.Named<Block>) TagRegistry.block(TwilightForestMod.prefix("fence_gates"));
+    public static final Tag.Named<Block> TF_LOGS = BlockTags.bind(TwilightForestMod.prefix("logs").toString());
+    public static final Tag.Named<Block> TF_FENCES = BlockTags.bind(TwilightForestMod.prefix("fences").toString());
+    public static final Tag.Named<Block> TF_FENCE_GATES = BlockTags.bind(TwilightForestMod.prefix("fence_gates").toString());
+    public static final Tag.Named<Block> BANISTERS = BlockTags.bind(TwilightForestMod.prefix("banisters").toString());
 
     public static final Tag.Named<Block> STORAGE_BLOCKS_ARCTIC_FUR = (Tag.Named<Block>) TagRegistry.block(new ResourceLocation("c:arctic_fur_storage_block"));
     public static final Tag.Named<Block> STORAGE_BLOCKS_CARMINITE = (Tag.Named<Block>) TagRegistry.block(new ResourceLocation("c:carminite_storage_block"));
@@ -170,6 +174,28 @@ public class BlockTagGenerator extends BlockTagsProvider {
         tag(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.fiery_block);
         tag(BlockTags.PORTALS).add(TFBlocks.twilight_portal);
         tag(BlockTags.CLIMBABLE).add(TFBlocks.iron_ladder, TFBlocks.root_strand);
+        tag(BANISTERS).add(
+                TFBlocks.oak_banister.get(),
+                TFBlocks.spruce_banister.get(),
+                TFBlocks.birch_banister.get(),
+                TFBlocks.jungle_banister.get(),
+                TFBlocks.acacia_banister.get(),
+                TFBlocks.dark_oak_banister.get(),
+                TFBlocks.crimson_banister.get(),
+                TFBlocks.warped_banister.get(),
+                TFBlocks.twilight_oak_banister.get(),
+                TFBlocks.canopy_banister.get(),
+                TFBlocks.mangrove_banister.get(),
+                TFBlocks.darkwood_banister.get(),
+                TFBlocks.time_banister.get(),
+                TFBlocks.trans_banister.get(),
+                TFBlocks.mine_banister.get(),
+                TFBlocks.sort_banister.get()
+        );
+
+        tag(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.fiery_block.get());
+        tag(BlockTags.PORTALS).add(TFBlocks.twilight_portal.get());
+        tag(BlockTags.CLIMBABLE).add(TFBlocks.iron_ladder.get(), TFBlocks.root_strand.get());
 
         tag(BlockTags.STANDING_SIGNS).add(TFBlocks.twilight_oak_sign, TFBlocks.canopy_sign,
                 TFBlocks.mangrove_sign, TFBlocks.darkwood_sign,
@@ -365,6 +391,36 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.tome_spawner,
                 TFBlocks.empty_bookshelf,
                 TFBlocks.canopy_bookshelf
+        tag(BlockTags.MINEABLE_WITH_AXE).addTag(BANISTERS).add(
+                TFBlocks.hedge.get(),
+                TFBlocks.root.get(),
+                TFBlocks.liveroot_block.get(),
+                TFBlocks.uncrafting_table.get(),
+                TFBlocks.encased_smoker.get(),
+                TFBlocks.encased_fire_jet.get(),
+                TFBlocks.time_log_core.get(),
+                TFBlocks.transformation_log_core.get(),
+                TFBlocks.mining_log_core.get(),
+                TFBlocks.sorting_log_core.get(),
+                TFBlocks.tower_wood.get(),
+                TFBlocks.tower_wood_mossy.get(),
+                TFBlocks.tower_wood_cracked.get(),
+                TFBlocks.tower_wood_infested.get(),
+                TFBlocks.tower_wood_encased.get(),
+                TFBlocks.reappearing_block.get(),
+                TFBlocks.antibuilder.get(),
+                TFBlocks.carminite_reactor.get(),
+                TFBlocks.carminite_builder.get(),
+                TFBlocks.ghast_trap.get(),
+                TFBlocks.huge_stalk.get(),
+                TFBlocks.huge_mushgloom.get(),
+                TFBlocks.huge_mushgloom_stem.get(),
+                TFBlocks.cinder_log.get(),
+                TFBlocks.cinder_wood.get(),
+                TFBlocks.ironwood_block.get(),
+                TFBlocks.tome_spawner.get(),
+                TFBlocks.empty_bookshelf.get(),
+                TFBlocks.canopy_bookshelf.get()
         );
 
         tag(BlockTags.MINEABLE_WITH_HOE).add(

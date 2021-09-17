@@ -54,6 +54,9 @@ public class TFDamageSources {
     public static DamageSource lostWords(Entity source, LivingEntity mob) {
         return new IndirectEntityDamageSource(tfSource("lostWords"), source, mob).setProjectile().bypassArmor().setMagic(); //tome
     }
+    public static DamageSource schooled(Entity source, LivingEntity mob) {
+        return new IndirectEntityDamageSource(tfSource("schooled"), source, mob).setProjectile().bypassArmor().setMagic(); //tome
+    }
     public static DamageSource snowballFight(Entity source, LivingEntity mob) {
         return new IndirectEntityDamageSource(tfSource("snowballFight"), source, mob).setProjectile(); //ice core
     }
