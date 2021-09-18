@@ -4,7 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 pool:
-  vmImage: 'Ubuntu-latest'
+  vmImage: 'ubuntu-20.04'
+
+container: adoptopenjdk:latest
 
 variables:
   revision: $[counter('release-number', 0)]
