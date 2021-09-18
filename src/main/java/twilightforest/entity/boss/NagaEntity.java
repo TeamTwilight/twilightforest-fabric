@@ -41,6 +41,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+
+import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.PartEntity;
 import twilightforest.entity.TFPartEntity;
 import twilightforest.extensions.IEntityEx;

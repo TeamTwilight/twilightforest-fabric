@@ -242,8 +242,6 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if(serverWorld == null)
 			return;
 
-		TwilightForestMod.LOGGER.info(entity);
-		//TODO: PORT?
 		((IEntityEx)entity).changeDimension(serverWorld, new TFTeleporter(forcedEntry));
 
 		if (destination ==  ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())) && entity instanceof ServerPlayer && forcedEntry) {

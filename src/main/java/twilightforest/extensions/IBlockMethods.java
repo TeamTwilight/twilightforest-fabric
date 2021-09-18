@@ -2,15 +2,21 @@ package twilightforest.extensions;
 
 import twilightforest.block.IPlantable;
 
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.GlazedTerracottaBlock;
@@ -87,8 +93,31 @@ public interface IBlockMethods {
     default float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
         return 0.0f;
     }
-    default boolean canEntityDestroy(BlockState state, BlockPos pos, Entity entity) {
+
+    /**
+     * Determines if this block is can be destroyed by the specified entities normal behavior.
+     *
+     * @param state The current state
+     * @param world The current world
+     * @param pos Block position in world
+     * @return True to allow the ender dragon to destroy this block
+     */
+    default boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity)
+    {
+        if (entity instanceof EnderDragon)
+        {
+            return !BlockTags.DRAGON_IMMUNE.contains((Block) this);
+        }
+        else if ((entity instanceof WitherBoss) ||
+                (entity instanceof WitherSkull))
+        {
+            return state.isAir() || WitherBoss.canDestroy(state);
+        }
+
         return true;
     }
 
+    default boolean canEntityDestroy(BlockState state, BlockPos pos, Entity entity) {
+        return true;
+    }
 }

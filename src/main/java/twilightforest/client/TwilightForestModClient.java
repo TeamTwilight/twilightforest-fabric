@@ -8,9 +8,6 @@ import twilightforest.entity.TFEntities;
 public class TwilightForestModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        ClientLifecycleEvents.CLIENT_STARTED.register((client -> {
-
-
-        }));
+        
     }
 }

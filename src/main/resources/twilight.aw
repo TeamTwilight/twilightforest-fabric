@@ -149,3 +149,5 @@ accessible field net/minecraft/data/loot/LootTableProvider generator Lnet/minecr
 accessible field net/minecraft/data/recipes/RecipeProvider generator Lnet/minecraft/data/DataGenerator;
 accessible method net/minecraft/data/recipes/RecipeProvider saveRecipe (Lnet/minecraft/data/HashCache;Lcom/google/gson/JsonObject;Ljava/nio/file/Path;)V
 accessible method net/minecraft/data/recipes/RecipeProvider saveAdvancement (Lnet/minecraft/data/HashCache;Lcom/google/gson/JsonObject;Ljava/nio/file/Path;)V
+accessible class net/minecraft/tags/StaticTagHelper$Wrapper
+accessible field net/minecraft/tags/StaticTagHelper$Wrapper tag Lnet/minecraft/tags/Tag;

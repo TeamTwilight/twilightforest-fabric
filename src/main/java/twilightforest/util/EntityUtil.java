@@ -1,5 +1,7 @@
 package twilightforest.util;
 
+import twilightforest.extensions.IBlockMethods;
+
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,10 +24,9 @@ public class EntityUtil {
 
 	public static boolean canDestroyBlock(Level world, BlockPos pos, BlockState state, Entity entity) {
 		float hardness = state.getDestroySpeed(world, pos);
+		/* rude type limit */
 		return hardness >= 0f && hardness < 50f && !state.isAir()
-				/*&& state.getBlock().canEntityDestroy(state, world, pos, entity)*/
-				&& (/* rude type limit */!(entity instanceof LivingEntity)
-				/*|| ForgeEventFactory.onEntityDestroyBlock((LivingEntity) entity, pos, state)*/);
+				&& ((IBlockMethods) state.getBlock()).canEntityDestroy(state, world, pos, entity);
 	}
 
 	/**
