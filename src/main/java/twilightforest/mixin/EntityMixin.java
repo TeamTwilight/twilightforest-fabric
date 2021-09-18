@@ -3,10 +3,16 @@ package twilightforest.mixin;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.TwilightForestMod;
 import twilightforest.extensions.IEntityEx;
 import twilightforest.world.components.TFTeleporter;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -30,6 +36,9 @@ public abstract class EntityMixin implements IEntityEx {
     @Shadow protected abstract void removeAfterChangingDimensions();
 
     @Shadow @Nullable public abstract Entity changeDimension(ServerLevel serverLevel);
+
+    @Unique
+    private CompoundTag persistentData;
 
     @Override
     public Entity changeDimension(ServerLevel pServer, TFTeleporter teleporter) {
@@ -66,5 +75,23 @@ public abstract class EntityMixin implements IEntityEx {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public CompoundTag getPersistentData() {
+        if (persistentData == null)
+            persistentData = new CompoundTag();
+        return persistentData;
+    }
+
+    @Inject(method = "saveWithoutId", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;addAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V"))
+    public void addEntityData(CompoundTag compound, CallbackInfoReturnable<CompoundTag> cir) {
+        //I don't like using Forge Here Grrr
+        if (persistentData != null) compound.put("ForgeData", persistentData);
+    }
+
+    @Inject(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/CompoundTag;getBoolean(Ljava/lang/String;)Z", ordinal = 6))
+    public void loadEntityData(CompoundTag compound, CallbackInfo ci) {
+        if (compound.contains("ForgeData", 10)) persistentData = compound.getCompound("ForgeData");
     }
 }

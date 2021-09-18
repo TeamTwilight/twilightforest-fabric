@@ -9,17 +9,15 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.entity.projectile.IceArrowEntity;
+import twilightforest.extensions.IBowItemEx;
 
-import net.minecraft.world.item.Item.Properties;
-
-public class IceBowItem extends BowItem {
+public class IceBowItem extends BowItem implements IBowItemEx {
 
 	public IceBowItem(Properties props) {
 		super(props);
 	}
 
-	//TODO: PORT
-	//@Override
+	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow) {
 		return new IceArrowEntity(arrow.level, arrow.getOwner());
 	}

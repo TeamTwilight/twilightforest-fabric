@@ -243,22 +243,29 @@ public class OreMagnetItem extends Item {
 			}
 		}
 
-		//TODO: PORT
-//		Set<Block> remainingOres = new HashSet<>(Tags.Blocks.ORES.getValues());
-//		remainingOres.removeAll(ORE_TO_BLOCK_REPLACEMENTS.keySet());
-//		remainingOres.removeIf(b -> "minecraft".equals(b.getRegistryName().getNamespace()));
-//		if (!remainingOres.isEmpty()) {
-//			TwilightForestMod.LOGGER.warn(remainingOres
-//					.stream()
-//					.peek(ore -> ORE_TO_BLOCK_REPLACEMENTS.put(ore, Blocks.STONE))
-//					.map(Block::getRegistryName)
-//					.map(ResourceLocation::toString)
-//					.collect(Collectors.joining(", ", "Partially supported ores with Ore Magnet, [", "], will relate these to `minecraft:stone`. Mod packers/Mod devs are encouraged to add support for their ores to our ore magnet through block tag jsons"))
-//			);
-//		} else {
-//			// You're probably NEVER going to see this message on a modpack
-//			TwilightForestMod.LOGGER.info("No remaining ores to map!");
-//		}
+		Set<Block> remainingOres = new HashSet<>();
+		remainingOres.addAll(BlockTags.COAL_ORES.getValues());
+		remainingOres.addAll(BlockTags.COPPER_ORES.getValues());
+		remainingOres.addAll(BlockTags.GOLD_ORES.getValues());
+		remainingOres.addAll(BlockTags.IRON_ORES.getValues());
+		remainingOres.addAll(BlockTags.REDSTONE_ORES.getValues());
+		remainingOres.addAll(BlockTags.LAPIS_ORES.getValues());
+		remainingOres.addAll(BlockTags.EMERALD_ORES.getValues());
+		remainingOres.addAll(BlockTags.DIAMOND_ORES.getValues());
+		remainingOres.removeAll(ORE_TO_BLOCK_REPLACEMENTS.keySet());
+		remainingOres.removeIf(b -> "minecraft".equals(Registry.BLOCK.getKey(b).getNamespace()));
+		if (!remainingOres.isEmpty()) {
+			TwilightForestMod.LOGGER.warn(remainingOres
+					.stream()
+					.peek(ore -> ORE_TO_BLOCK_REPLACEMENTS.put(ore, Blocks.STONE))
+					.map(Registry.BLOCK::getKey)
+					.map(ResourceLocation::toString)
+					.collect(Collectors.joining(", ", "Partially supported ores with Ore Magnet, [", "], will relate these to `minecraft:stone`. Mod packers/Mod devs are encouraged to add support for their ores to our ore magnet through block tag jsons"))
+			);
+		} else {
+			// You're probably NEVER going to see this message on a modpack
+			TwilightForestMod.LOGGER.info("No remaining ores to map!");
+		}
 
 		cacheNeedsBuild = false;
 	}

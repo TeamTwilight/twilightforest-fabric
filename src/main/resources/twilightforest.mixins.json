@@ -22,7 +22,9 @@
     "BoundingBoxMixin",
     "WorldGenRegionMixin",
     "PlayerAdvancementsMixin",
-    "BlockMixin"
+    "BlockMixin",
+    "AbstractArrowMixin",
+    "BowItemMixin"
   ],
   "client": [
     "client.BlockColorsMixin",

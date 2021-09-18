@@ -34,8 +34,9 @@ import java.util.Optional;
 
 import net.minecraft.world.item.Item.Properties;
 import twilightforest.entity.boss.AlphaYetiEntity;
+import twilightforest.extensions.IItem;
 
-public class LifedrainScepterItem extends Item {
+public class LifedrainScepterItem extends Item implements IItem {
 
 	protected LifedrainScepterItem(Properties props) {
 		super(props);
@@ -115,7 +116,7 @@ public class LifedrainScepterItem extends Item {
 		return pointedEntity;
 	}
 
-	//@Override
+	@Override
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
 		Level world = living.level;
 

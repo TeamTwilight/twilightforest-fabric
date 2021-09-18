@@ -855,7 +855,6 @@ public class TFEventListener {
 		}
 	}
 
-	//TODO: HOOK
 	public static void onStartTracking(ServerPlayer player, Entity target) {
 		updateCapabilities(player, target);
 	}
@@ -865,16 +864,13 @@ public class TFEventListener {
 		CapabilityList.SHIELD_CAPABILITY_COMPONENT_KEY.maybeGet(entity).ifPresent(cap -> {
 			if (cap.shieldsLeft() > 0) {
 				TFPacketHandler.CHANNEL.send(player, new UpdateShieldPacket(entity, cap));
-				//TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new UpdateShieldPacket(entity, cap));
 			}
 		});
 	}
 
-	//TODO: PORT
+	//TODO: PORT?
 	private static void sendEnforcedProgressionStatus(ServerPlayer player, boolean isEnforced) {
-		//player.connection.connection.send(new EnforceProgressionStatusPacket(isEnforced));
-		//TFPacketHandler.CHANNEL.send(player, new EnforceProgressionStatusPacket(isEnforced));
-		//TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EnforceProgressionStatusPacket(isEnforced));
+		TFPacketHandler.CHANNEL.send(player, new EnforceProgressionStatusPacket(isEnforced));
 	}
 
 	// Teleport first-time players to Twilight Forest
