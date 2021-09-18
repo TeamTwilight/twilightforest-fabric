@@ -62,8 +62,7 @@ public class TwilightForestMixinPlugin implements IMixinConfigPlugin {
         }
 
         for(Patch patch : patches) {
-//            System.out.println(patch.getMixinClass() + " "+targetClassName.equals(patch.getMixinClass()) + " : " + targetClassName);
-
+            //System.out.println(patch.getMixinClass() + " "+targetClassName.equals(patch.getMixinClass()) + " : " + targetClassName);
             patch.applyClass(targetClass);
             //System.out.println(patch.getMixinClass() + " : "+ patch.getMethodName()+patch.getMethodDesc());
             if(patch.getMixinClass().equals(targetClassName)) {

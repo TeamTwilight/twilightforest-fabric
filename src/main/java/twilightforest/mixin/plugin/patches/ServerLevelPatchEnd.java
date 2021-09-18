@@ -29,7 +29,7 @@ public class ServerLevelPatchEnd implements Patch {
 
     @Override
     public String getMixinClass() {
-        return FabricLoader.getInstance().getMappingResolver().mapClassName("intermediary", "net.minecraft.class_3218");
+        return FabricLoader.getInstance().getMappingResolver().mapClassName("intermediary", "net.minecraft.class_3218$class_5526");
     }
 
     @Override
