@@ -61,8 +61,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock implements IBlockMethods {
 		return RenderShape.MODEL;
 	}
 
-	//TODO: PORT
-	//@Override
+	@Override
 	public float getEnchantPowerBonus(BlockState state, LevelReader world, BlockPos pos) {
 		return state.getValue(BOOK_STAGES) * 0.1F;
 	}

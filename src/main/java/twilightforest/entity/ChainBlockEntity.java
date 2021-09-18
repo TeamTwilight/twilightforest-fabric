@@ -20,6 +20,7 @@ import net.minecraft.world.phys.*;
 
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import twilightforest.TFSounds;
+import twilightforest.extensions.IBlockMethods;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
@@ -178,16 +179,16 @@ public class ChainBlockEntity extends ThrowableProjectile /*implements IEntityAd
 
 			// TODO: The "explosion" parameter can't actually be null
 			if (!state.isAir() && block.getExplosionResistance() < 7F
-					&& state.getDestroySpeed(level, pos) >= 0 /*&& block.canEntityDestroy(state, level, pos, this)*/) {
-				//TODO: PORT
+					&& state.getDestroySpeed(level, pos) >= 0 && ((IBlockMethods)block).canEntityDestroy(state, level, pos, this)) {
+
 				if (getOwner() instanceof Player player) {
 					if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(level, player, pos, state, null)) {
-//						if (block.canHarvestBlock(state, level, pos, player)) {
+						if (((IBlockMethods)block).canHarvestBlock(state, level, pos, player)) {
 							block.playerDestroy(level, player, pos, state, level.getBlockEntity(pos), player.getItemInHand(getHand()));
 
 							level.destroyBlock(pos, false);
 							this.blocksSmashed++;
-//						}
+						}
 					}
 				}
 			}

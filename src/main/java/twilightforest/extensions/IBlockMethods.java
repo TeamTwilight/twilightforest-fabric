@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -118,6 +119,19 @@ public interface IBlockMethods {
     }
 
     default boolean canEntityDestroy(BlockState state, BlockPos pos, Entity entity) {
+        return true;
+    }
+
+    /**
+     * Determines if the player can harvest this block, obtaining it's drops when the block is destroyed.
+     *
+     * @param world The current world
+     * @param pos The block's current position
+     * @param player The player damaging the block
+     * @return True to spawn the drops
+     */
+    default boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player)
+    {
         return true;
     }
 }

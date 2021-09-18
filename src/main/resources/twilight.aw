@@ -151,3 +151,4 @@ accessible method net/minecraft/data/recipes/RecipeProvider saveRecipe (Lnet/min
 accessible method net/minecraft/data/recipes/RecipeProvider saveAdvancement (Lnet/minecraft/data/HashCache;Lcom/google/gson/JsonObject;Ljava/nio/file/Path;)V
 accessible class net/minecraft/tags/StaticTagHelper$Wrapper
 accessible field net/minecraft/tags/StaticTagHelper$Wrapper tag Lnet/minecraft/tags/Tag;
+accessible field net/minecraft/world/entity/monster/Slime wasOnGround Z
