@@ -791,11 +791,19 @@ public class TFEventListener {
 		return false;
 	}
 
-	//TODO: PORT
 	private static void sendAreaProtectionPacket(Level world, BlockPos pos, BoundingBox sbb) {
-		minecraftServer.getPlayerList().broadcast(null, pos.getX(), pos.getY(), pos.getZ(), 64, world.dimension(), new AreaProtectionPacket(sbb, pos));
-		/*PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.dimension());
-		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new AreaProtectionPacket(sbb, pos));*/
+		AreaProtectionPacket packet = new AreaProtectionPacket(sbb, pos);
+		for(int i = 0; i < minecraftServer.getPlayerList().getPlayers().size(); ++i) {
+			ServerPlayer serverPlayer = minecraftServer.getPlayerList().getPlayers().get(i);
+			if (serverPlayer.level.dimension() == world.dimension()) {
+				double d = pos.getX() - serverPlayer.getX();
+				double e = pos.getY() - serverPlayer.getY();
+				double f = pos.getZ() - serverPlayer.getZ();
+				if (d * d + e * e + f * f < 64 * 64) {
+					TFPacketHandler.CHANNEL.send(serverPlayer, packet);
+				}
+			}
+		}
 	}
 
 	public static boolean livingAttack(Entity entity, DamageSource source) {
