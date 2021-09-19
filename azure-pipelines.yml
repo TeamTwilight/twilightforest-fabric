@@ -78,7 +78,7 @@ steps:
       downloadUrl="https://artprodcus3.artifacts.visualstudio.com/Abaabfa6c-deea-4587-ba05-c308c2597b7a/1ef09d39-06cf-41fa-ad98-7258b70c2a72/_apis/artifact/${path}0/content?format=file&subPath=%2F${jar}"
       jobResult=${agent_jobstatus^}
       Colour=65280
-      if [ "${jobResult}" = "Succeeded" ]
+      if [ "${jobResult}" != "Succeeded" ]
       then
       Colour=16711680
       fi
@@ -112,7 +112,7 @@ steps:
                       \"name\": \"Commit\",
                       \"value\": \"${BUILD_SOURCEVERSION:0:6}${BUILD_REPOSITORY_URI}/commit/${BUILD_SOURCEVERSION}\"
                   }"
-      if [ "${jobResult}" = "Succeeded" ]
+      if [ "${jobResult}" != "Succeeded" ]
       then
       json="${json},
                   {
