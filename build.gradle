@@ -9,9 +9,10 @@ loom {
 
 sourceCompatibility = JavaVersion.VERSION_16
 targetCompatibility = JavaVersion.VERSION_16
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 archivesBaseName = project.mod_id
-version = project.mod_version
+version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
 group = project.group_name
 
 repositories {
