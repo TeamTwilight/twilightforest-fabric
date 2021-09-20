@@ -15,6 +15,10 @@ archivesBaseName = project.mod_id
 version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
 group = project.group_name
 
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
 repositories {
     maven {
         url = "https://maven.shedaniel.me/"

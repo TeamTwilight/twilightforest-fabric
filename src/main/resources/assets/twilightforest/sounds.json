@@ -84,6 +84,7 @@
   "entity.twilightforest.kobold.ambient": { "subtitle": "subtitles.twilightforest.entity.kobold.ambient", "sounds": [ "twilightforest:mob/kobold/kobold0", "twilightforest:mob/kobold/kobold1", "twilightforest:mob/kobold/kobold2", "twilightforest:mob/kobold/kobold3", "twilightforest:mob/kobold/kobold4", "twilightforest:mob/kobold/kobold5" ] },
   "entity.twilightforest.kobold.death": { "subtitle": "subtitles.twilightforest.entity.kobold.death", "sounds": [ "twilightforest:mob/kobold/die0", "twilightforest:mob/kobold/die1", "twilightforest:mob/kobold/die2" ] },
   "entity.twilightforest.kobold.hurt": { "subtitle": "subtitles.twilightforest.entity.kobold.hurt", "sounds": [ "twilightforest:mob/kobold/hurt0", "twilightforest:mob/kobold/hurt1", "twilightforest:mob/kobold/hurt2" ] },
+  "entity.twilightforest.kobold.munch": { "subtitle": "subtitles.twilightforest.entity.kobold.munch", "sounds": [ "random/eat1", "random/eat2", "random/eat3" ] },
   "entity.twilightforest.lich.ambient": { "subtitle": "subtitles.twilightforest.entity.lich.ambient", "sounds": [ "mob/blaze/breathe1", "mob/blaze/breathe2", "mob/blaze/breathe3", "mob/blaze/breathe4" ] },
   "entity.twilightforest.lich.death": { "subtitle": "subtitles.twilightforest.entity.lich.death", "sounds": [ "mob/blaze/death" ] },
   "entity.twilightforest.lich.hurt": { "subtitle": "subtitles.twilightforest.entity.lich.hurt", "sounds": [  "mob/blaze/hit1", "mob/blaze/hit2", "mob/blaze/hit3", "mob/blaze/hit4" ] },
@@ -241,6 +242,7 @@
   "item.twilightforest.flask.break": { "subtitle": "subtitles.twilightforest.item.flask.break", "sounds": [ "random/glass1", "random/glass2", "random/glass3" ] },
   "item.twilightforest.flask.crack": { "subtitle": "subtitles.twilightforest.item.flask.crack", "sounds": [ "random/glass1", "random/glass2", "random/glass3" ] },
   "item.twilightforest.flask.fill": { "subtitle": "subtitles.twilightforest.item.flask.fill", "sounds": [ "block/brewing_stand/brew1", "block/brewing_stand/brew2" ] },
+  "item.twilightforest.armor.equip_knightmetal": { "subtitle": "subtitles.item.armor.equip", "sounds": [{ "name": "item/armor/equip_netherite1",  "volume": 0.8 }, { "name": "item/armor/equip_netherite2", "volume": 0.8 }, { "name": "item/armor/equip_netherite3", "volume": 0.8 }, { "name": "item/armor/equip_netherite4",  "volume": 0.8 }]},
 
   "random.twilightforest.slider": { "subtitle": "subtitles.twilightforest.random.slider", "sounds": [ "twilightforest:random/creakgo2" ] },
 
