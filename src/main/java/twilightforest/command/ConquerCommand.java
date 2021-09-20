@@ -9,7 +9,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
 
 public class ConquerCommand {
@@ -27,7 +27,7 @@ public class ConquerCommand {
         }
 
         // are you in a structure?
-        ChunkGeneratorTwilightBase chunkGenerator = WorldUtil.getChunkGenerator(source.getLevel());
+        ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(source.getLevel());
 
         BlockPos pos = new BlockPos(source.getPosition());
         if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {

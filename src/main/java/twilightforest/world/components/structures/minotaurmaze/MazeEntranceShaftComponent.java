@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
@@ -24,7 +25,7 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 		super(MinotaurMazePieces.TFMMES, nbt);
 	}
 
-	private int averageGroundLevel = -1;
+	private int averageGroundLevel = Integer.MIN_VALUE;
 
 	public MazeEntranceShaftComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
 		super(MinotaurMazePieces.TFMMES, feature, i, new BoundingBox(x, y, z, x + 6 - 1, y, z + 6 - 1)); // Flat, expand later
@@ -43,10 +44,10 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		BlockPos.MutableBlockPos pos = chunkPosIn.getWorldPosition().mutable().setX(this.boundingBox.minX()).setZ(this.boundingBox.minZ());
 
-		if (this.averageGroundLevel < 0) {
+		if (this.averageGroundLevel < generator.getMinY()) {
 			this.averageGroundLevel = this.getAverageGroundLevel(world, generator, sbb);
 
-			if (this.averageGroundLevel < 0) {
+			if (this.averageGroundLevel < generator.getMinY()) {
 				return true;
 			}
 
@@ -71,20 +72,22 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 	protected int getAverageGroundLevel(WorldGenLevel world, ChunkGenerator generator, BoundingBox boundingBox) {
 		int yTotal = 0;
 		int count = 0;
+		int yStart = Mth.clamp(generator.getSeaLevel(), this.boundingBox.minY(), this.boundingBox.maxY());
 
 		for (int z = this.boundingBox.minZ(); z <= this.boundingBox.maxZ(); ++z) {
 			for (int x = this.boundingBox.minX(); x <= this.boundingBox.maxX(); ++x) {
-				BlockPos pos = new BlockPos(x, 64, z);
+				BlockPos pos = new BlockPos(x, yStart, z);
+
 				if (boundingBox.isInside(pos)) {
 					final BlockPos topBlock = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos);
-					yTotal += Math.max(topBlock.getY(), generator.getSpawnHeight(world));
+					yTotal += Math.max(topBlock.getY(), generator.getSeaLevel());
 					++count;
 				}
 			}
 		}
 
 		if (count == 0) {
-			return -1;
+			return Integer.MIN_VALUE;
 		} else {
 			return yTotal / count;
 		}

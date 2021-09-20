@@ -1,93 +1,90 @@
 package twilightforest.world.registration;
 
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.BaseDiskFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
+import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.*;
 import twilightforest.world.components.feature.config.CaveStalactiteConfig;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
-import twilightforest.world.components.feature.templates.DruidHutFeature;
-import twilightforest.world.components.feature.templates.GroveRuinsFeature;
-import twilightforest.world.components.feature.templates.StoneCircleFeature;
+import twilightforest.world.components.feature.templates.*;
 import twilightforest.world.components.feature.trees.*;
 import twilightforest.world.components.feature.trees.growers.SnowTreePlacer;
 import twilightforest.world.components.feature.trees.growers.SnowUnderTrees;
-import twilightforest.world.components.feature.templates.GraveyardFeature;
 
 //I'd call this TFFeatures, but that'd be confused with TFFeature.
 
 public class TFBiomeFeatures {
 
-	//public static final DeferredRegister<Feature<?> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, TwilightForestMod.ID);
+	public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, TwilightForestMod.ID);
 	
-	public static final Feature<NoneFeatureConfiguration> BIG_MUSHGLOOM = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":big_mushgloom", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () ->
 			new TFGenBigMushgloom(NoneFeatureConfiguration.CODEC));
-	public static final Feature<TFTreeFeatureConfig> CANOPY_OAK = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":canopy_oak", 
-			new TFGenCanopyOak(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final Feature<CaveStalactiteConfig> CAVE_STALACTITE = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":cave_stalactite", 
+	//public static final RegistryObject<Feature<TFTreeFeatureConfig>> CANOPY_OAK = FEATURES.register("canopy_oak", () ->
+	//		new TFGenCanopyOak(TFTreeFeatureConfig.codecTFTreeConfig));
+	public static final RegistryObject<Feature<CaveStalactiteConfig>> CAVE_STALACTITE = FEATURES.register("cave_stalactite", () ->
 			new TFGenCaveStalactite(CaveStalactiteConfig.caveStalactiteCodec));
-	public static final Feature<TreeConfiguration> DARK_CANOPY_TREE = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":dark_canopy_tree", 
+	public static final RegistryObject<Feature<TreeConfiguration>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () ->
 			new TFGenDarkCanopyTree(TreeConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> DRUID_HUT = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":druid_hut", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> DRUID_HUT = FEATURES.register("druid_hut", () ->
 			new DruidHutFeature(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> FALLEN_HOLLOW_LOG = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":fallen_hollow_log", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_HOLLOW_LOG = FEATURES.register("fallen_hollow_log", () ->
 			new TFGenFallenHollowLog(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> FALLEN_LEAVES = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":fallen_leaves", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_LEAVES = FEATURES.register("fallen_leaves", () ->
 			new TFGenFallenLeaves(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> FALLEN_SMALL_LOG = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":fallen_small_log", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_SMALL_LOG = FEATURES.register("fallen_small_log", () ->
 			new TFGenFallenSmallLog(NoneFeatureConfiguration.CODEC));
-	public static final Feature<BlockStateConfiguration> FIRE_JET = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":fire_jet", 
+	public static final RegistryObject<Feature<BlockStateConfiguration>> FIRE_JET = FEATURES.register("fire_jet", () ->
 			new TFGenFireJet(BlockStateConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> FOUNDATION = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":foundation", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FOUNDATION = FEATURES.register("foundation", () ->
 			new TFGenFoundation(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> GRAVEYARD = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":graveyard", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> GRAVEYARD = FEATURES.register("graveyard", () ->
 			new GraveyardFeature(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> GROVE_RUINS = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":grove_ruins", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> GROVE_RUINS = FEATURES.register("grove_ruins", () ->
 			new GroveRuinsFeature(NoneFeatureConfiguration.CODEC));
-	public static final Feature<TFTreeFeatureConfig> HOLLOW_STUMP = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":hollow_stump", 
+	public static final RegistryObject<Feature<TFTreeFeatureConfig>> HOLLOW_STUMP = FEATURES.register("hollow_stump", () ->
 			new TFGenHollowStump(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final Feature<TFTreeFeatureConfig> HOLLOW_TREE = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":hollow_tree", 
+	public static final RegistryObject<Feature<TFTreeFeatureConfig>> HOLLOW_TREE = FEATURES.register("hollow_tree", () ->
 			new TFGenHollowTree(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final Feature<NoneFeatureConfiguration> HUGE_LILY_PAD = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":huge_lily_pad", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> HUGE_LILY_PAD = FEATURES.register("huge_lily_pad", () ->
 			new TFGenHugeLilyPad(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> HUGE_WATER_LILY = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":huge_water_lily", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> HUGE_WATER_LILY = FEATURES.register("huge_water_lily", () ->
 			new TFGenHugeWaterLily(NoneFeatureConfiguration.CODEC));
-	public static final Feature<BlockStateConfiguration> LAMPPOSTS = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":lampposts", 
+	public static final RegistryObject<Feature<BlockStateConfiguration>> LAMPPOSTS = FEATURES.register("lampposts", () ->
 			new TFGenLampposts(BlockStateConfiguration.CODEC));
-	public static final Feature<TFTreeFeatureConfig> MINERS_TREE = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":miners_tree", 
+	public static final RegistryObject<Feature<TFTreeFeatureConfig>> MINERS_TREE = FEATURES.register("miners_tree", () ->
 			new TFGenMinersTree(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final Feature<NoneFeatureConfiguration> MONOLITH = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":monolith", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> MONOLITH = FEATURES.register("monolith", () ->
 			new TFGenMonolith(NoneFeatureConfiguration.CODEC));
-	public static final Feature<DiskConfiguration> MYCELIUM_BLOB = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":mycelium_blob", 
+	public static final RegistryObject<Feature<DiskConfiguration>> MYCELIUM_BLOB = FEATURES.register("mycelium_blob", () ->
 			new BaseDiskFeature(DiskConfiguration.CODEC));
-	public static final Feature<CaveStalactiteConfig> OUTSIDE_STALAGMITE = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":outside_stalagmite", 
+	public static final RegistryObject<Feature<CaveStalactiteConfig>> OUTSIDE_STALAGMITE = FEATURES.register("outside_stalagmite", () ->
 			new TFGenOutsideStalagmite(CaveStalactiteConfig.caveStalactiteCodec));
-	public static final Feature<NoneFeatureConfiguration> PLANT_ROOTS = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":plant_roots", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> PLANT_ROOTS = FEATURES.register("plant_roots", () ->
 			new TFGenPlantRoots(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> STONE_CIRCLE = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":stone_circle", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> STONE_CIRCLE = FEATURES.register("stone_circle", () ->
 			new StoneCircleFeature(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> THORNS = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":thorns", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> THORNS = FEATURES.register("thorns", () ->
 			new TFGenThorns(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> TORCH_BERRIES = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":torch_berries", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> TORCH_BERRIES = FEATURES.register("torch_berries", () ->
 			new TFGenTorchBerries(NoneFeatureConfiguration.CODEC));
-	public static final Feature<TFTreeFeatureConfig> TREE_OF_TIME = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":tree_of_time", 
+	public static final RegistryObject<Feature<TFTreeFeatureConfig>> TREE_OF_TIME = FEATURES.register("tree_of_time", () ->
 			new TFGenTreeOfTime(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final Feature<NoneFeatureConfiguration> TROLL_ROOTS = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":troll_roots", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> TROLL_ROOTS = FEATURES.register("troll_roots", () ->
 			new TFGenTrollRoots(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> WEBS = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":webs", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WEBS = FEATURES.register("webs", () ->
 			new TFGenWebs(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> WELL = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":well", 
-			new TFGenWell(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> WOOD_ROOTS = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":wood_roots", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WELL = FEATURES.register("well", () ->
+			new WellFeature(NoneFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WOOD_ROOTS = FEATURES.register("wood_roots", () ->
 			new TFGenWoodRoots(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> SNOW_UNDER_TREES = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":snow_under_trees", 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SNOW_UNDER_TREES = FEATURES.register("snow_under_trees", () ->
 			new SnowUnderTrees(NoneFeatureConfiguration.CODEC));
-	public static final Feature<TreeConfiguration> SNOW_TREE = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":anywhere_tree", 
+	public static final RegistryObject<Feature<TreeConfiguration>> SNOW_TREE = FEATURES.register("anywhere_tree", () ->
 			new SnowTreePlacer(TreeConfiguration.CODEC));
-	public static final Feature<RandomPatchConfiguration> DARK_FOREST_PLACER = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":dark_forest_placer", 
+	public static final RegistryObject<Feature<RandomPatchConfiguration>> DARK_FOREST_PLACER = FEATURES.register("dark_forest_placer", () ->
 			new TFGenDarkForestFeature(RandomPatchConfiguration.CODEC));
-
-	public static void init() {}
 }

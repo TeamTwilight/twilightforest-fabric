@@ -1,6 +1,5 @@
 package twilightforest.world.registration;
 
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -26,9 +25,9 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.potions.TFPotions;
 import twilightforest.util.WorldUtil;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.HashMap;
@@ -81,7 +80,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.GLACIER, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
-				player.addEffect(new MobEffectInstance(TFPotions.frosty, 100, 3));
+				player.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 100, 3));
 			}
 			trySpawnHintMonster(player, world, TFFeature.ICE_TOWER);
 		});
@@ -94,7 +93,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.SNOWY_FOREST, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
-				player.addEffect(new MobEffectInstance(TFPotions.frosty, 100, 2));
+				player.addEffect(new MobEffectInstance(TFPotions.frosty.get(), 100, 2));
 				trySpawnHintMonster(player, world, TFFeature.YETI_CAVE);
 			}
 		});
@@ -132,7 +131,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		Biome currentBiome = world.getBiome(player.blockPosition());
 		if (isBiomeSafeFor(currentBiome, player))
 			return;
-		BiConsumer<Player, Level> exec = BIOME_PROGRESSION_ENFORCEMENT.get(BuiltinRegistries.BIOME.getKey(currentBiome));
+		BiConsumer<Player, Level> exec = BIOME_PROGRESSION_ENFORCEMENT.get(currentBiome.getRegistryName());
 		if (exec != null)
 			exec.accept(player, world);
 	}
@@ -148,11 +147,11 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	public static final int SEALEVEL = 0;
 
 	public static boolean isStrictlyTwilightForest(Level world) {
-		return world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID);
+		return world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get());
 	}
 
 	public static boolean usesTwilightChunkGenerator(ServerLevel world) {
-		return world.getChunkSource().getGenerator() instanceof ChunkGeneratorTwilightBase;
+		return world.getChunkSource().generator instanceof ChunkGeneratorTwilight;
 	}
 
 	public static boolean isProgressionEnforced(Level world) {
@@ -160,14 +159,14 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
-		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.level.isClientSide() ? entity.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome) : BuiltinRegistries.BIOME.getKey(biome));
+		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.level.isClientSide() ? entity.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome) : biome.getRegistryName());
 		if (advancements != null && entity instanceof Player)
 			return PlayerHelper.doesPlayerHaveRequiredAdvancements((Player) entity, advancements);
 		return true;
 	}
 
 	public static void markStructureConquered(Level world, BlockPos pos, TFFeature feature) {
-		ChunkGeneratorTwilightBase generator = WorldUtil.getChunkGenerator(world);
+		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
 		if (generator != null && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world) == feature) {
 			//generator.setStructureConquered(pos, true);
 		}
@@ -185,7 +184,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		int cz1 = Mth.floor((pos.getZ() - range) >> 4);
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
-		for (StructureFeature<?> structureFeature : Registry.STRUCTURE_FEATURE) {
+		for (StructureFeature<?> structureFeature : net.minecraftforge.registries.ForgeRegistries.STRUCTURE_FEATURES) {
 			if (!(structureFeature instanceof TFStructureStart))
 				continue;
 			TFFeature feature = ((TFStructureStart<?>) structureFeature).getFeature();

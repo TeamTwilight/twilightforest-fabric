@@ -1,60 +1,81 @@
 package twilightforest.world.components.chunkgenerators;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
-import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
-import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.StructureFeatureManager;
-import twilightforest.world.registration.TFFeature;
+import net.minecraft.world.level.levelgen.synth.SurfaceNoise;
+import net.minecraftforge.common.world.StructureSpawnManager;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.util.IntPair;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.world.components.structures.start.TFStructureStart;
+import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 
-// TODO: doc out all the vanilla copying
-// Actually, figure out how to get this back up again
-public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerator {
-	protected final long seed;
-	protected final Supplier<NoiseGeneratorSettings> dimensionSettings;
-	public final NoiseGeneratorSettings settings;
+// TODO override getBaseHeight and getBaseColumn for our advanced structure terraforming
+public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
+	public static final Codec<ChunkGeneratorTwilight> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
+			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
+			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel)
+	).apply(instance, instance.stable(ChunkGeneratorTwilight::new)));
+
+	private final boolean genDarkForestCanopy;
+	private final boolean monsterSpawnsBelowSeaLevel;
+
+	private final BlockState defaultBlock;
+	private final SurfaceNoise surfaceNoiseGetter;
 
 	public final ConcurrentHashMap<ChunkPos, TFFeature> featureCache = new ConcurrentHashMap<>();
 
-	public ChunkGeneratorTwilightBase(BiomeSource provider, long seed, Supplier<NoiseGeneratorSettings> settings) {
-		super(provider, seed, settings);
-		this.seed = seed;
-		this.dimensionSettings = settings;
-		this.settings = this.dimensionSettings.get();
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel) {
+		//super(delegate.getBiomeSource(), delegate.getBiomeSource(), delegate.getSettings(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.strongholdSeed);
+		super(delegate);
+		this.genDarkForestCanopy = genDarkForestCanopy;
+		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
+
+		if (delegate instanceof NoiseBasedChunkGenerator noiseGen) {
+			this.defaultBlock = noiseGen.defaultBlock;
+			this.surfaceNoiseGetter = noiseGen.surfaceNoise;
+		} else {
+			this.defaultBlock = Blocks.STONE.defaultBlockState();
+			this.surfaceNoiseGetter = (x, y, yScale, yMax) -> ChunkGeneratorTwilight.this.getSeaLevel();
+		}
 	}
 
-	@Deprecated // Keep until Vanilla gets their stuff together
 	@Override
-	public int getSeaLevel() {
-		return this.settings.seaLevel();
+	protected Codec<? extends ChunkGenerator> codec() {
+		return CODEC;
 	}
 
-	@Deprecated
 	@Override
-	public int getSpawnHeight(LevelHeightAccessor accessor) {
-		return 0;
+	public ChunkGenerator withSeed(long newSeed) {
+		return new ChunkGeneratorTwilight(this.delegate.withSeed(newSeed), this.genDarkForestCanopy, this.monsterSpawnsBelowSeaLevel);
+	}
+
+	@Override
+	public void buildSurfaceAndBedrock(WorldGenRegion world, ChunkAccess chunk) {
+		this.deformTerrainForFeature(world, chunk);
+
+		super.buildSurfaceAndBedrock(world, chunk);
+
+		this.addDarkForestCanopy(world, chunk);
 	}
 
 	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
@@ -179,14 +200,14 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 						final int oceanFloor = primer.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
 
 						if (dist < 7 || cv < 0.05F) {
-							primer.setBlock(movingPos.setY(y), TFBlocks.wispy_cloud.defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
 							}
-							primer.setBlock(movingPos.setY(y - depth), TFBlocks.wispy_cloud.defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y - depth), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
 							}
 						}
 
@@ -209,7 +230,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 
 		// raise the hill
 		int groundHeight = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
-		float noiseRaw = (float) (this.surfaceNoise.getSurfaceNoiseValue(movingPos.getX() / 64f, movingPos.getZ() / 64f, 1.0f, 256) * 32f);
+		float noiseRaw = (float) (this.surfaceNoiseGetter.getSurfaceNoiseValue(movingPos.getX() / 64f, movingPos.getZ() / 64f, 1.0f, 256) * 32f);
 		float totalHeightRaw = groundHeight * 0.5f + this.getSeaLevel() * 0.5f + hillHeight + noiseRaw;
 		int totalHeight = (int) (((int) totalHeightRaw >> 1) * 0.375f + totalHeightRaw * 0.625f);
 
@@ -356,23 +377,121 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseBasedChunkGenerato
 		}
 	}
 
-	@Override
-	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Biome biome, StructureFeatureManager structureManager, MobCategory classification, BlockPos pos) {
-		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = TFStructureStart.gatherPotentialSpawns(structureManager, classification, pos);
-		if (potentialStructureSpawns != null)
-			return WeightedRandomList.create(potentialStructureSpawns);
-		//TODO: PORT
-//		WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = StructureSpawnManager.getStructureSpawns(structureManager, classification, pos);
-//		if (spawns != null)
-//			return spawns;
-		return classification == MobCategory.MONSTER && pos.getY() >= TFGenerationSettings.SEALEVEL ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, classification, pos);
-	}
+	/**
+	 * Adds dark forest canopy.  This version uses the "unzoomed" array of biomes used in land generation to determine how many of the nearby blocks are dark forest
+	 */
+	// Currently this is too sophisicated to be made into a SurfaceBuilder, it looks like
+	private void addDarkForestCanopy(WorldGenRegion primer, ChunkAccess chunk) {
+		BlockPos blockpos = primer.getCenter().getWorldPosition();
+		int[] thicks = new int[5 * 5];
+		boolean biomeFound = false;
 
-	public TFFeature getFeatureCached(final ChunkPos chunk, final WorldGenLevel world) {
-		return this.featureCache.computeIfAbsent(chunk, chunkPos -> TFFeature.generateFeature(chunkPos.x, chunkPos.z, world));
+		for (int dZ = 0; dZ < 5; dZ++) {
+			for (int dX = 0; dX < 5; dX++) {
+				for (int bx = -1; bx <= 1; bx++) {
+					for (int bz = -1; bz <= 1; bz++) {
+						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
+						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2);
+						if (BiomeKeys.DARK_FOREST.location().equals(biome.getRegistryName()) || BiomeKeys.DARK_FOREST_CENTER.location().equals(biome.getRegistryName())) {
+							thicks[dX + dZ * 5]++;
+							biomeFound = true;
+						}
+					}
+				}
+			}
+		}
+
+		if (!biomeFound) return;
+
+		IntPair nearCenter = new IntPair();
+		TFFeature nearFeature = TFFeature.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, nearCenter);
+
+		double d = 0.03125D;
+		//depthBuffer = noiseGen4.generateNoiseOctaves(depthBuffer, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
+
+		for (int dZ = 0; dZ < 16; dZ++) {
+			for (int dX = 0; dX < 16; dX++) {
+				int qx = dX >> 2;
+				int qz = dZ >> 2;
+
+				float xweight = (dX % 4) * 0.25F + 0.125F;
+				float zweight = (dZ % 4) * 0.25F + 0.125F;
+
+				float thickness = thicks[qx + (qz) * 5] * (1F - xweight) * (1F - zweight)
+						+ thicks[qx + 1 + (qz) * 5] * (xweight) * (1F - zweight)
+						+ thicks[qx + (qz + 1) * 5] * (1F - xweight) * (zweight)
+						+ thicks[qx + 1 + (qz + 1) * 5] * (xweight) * (zweight)
+						- 4;
+
+				// make sure we're not too close to the tower
+				if (nearFeature == TFFeature.DARK_TOWER) {
+					int hx = nearCenter.x;
+					int hz = nearCenter.z;
+
+					int rx = dX - hx;
+					int rz = dZ - hz;
+					int dist = (int) Mth.sqrt(rx * rx + rz * rz);
+
+					if (dist < 24) {
+						thickness -= (24 - dist);
+					}
+				}
+
+				// TODO Clean up this math
+				if (thickness > 1) {
+					// We can use the Deltas here because the methods called will just
+					final int dY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, dX, dZ);
+					final int oceanFloor = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, dX, dZ);
+					BlockPos pos = primer.getCenter().getWorldPosition().offset(dX, dY, dZ);
+
+					// Skip any blocks over water
+					if (chunk.getBlockState(pos).getMaterial().isLiquid())
+						continue;
+
+					// just use the same noise generator as the terrain uses for stones
+					//int noise = Math.min(3, (int) (depthBuffer[dZ & 15 | (dX & 15) << 4] / 1.25f));
+					int noise = Math.min(3, (int) (this.surfaceNoiseGetter.getSurfaceNoiseValue((blockpos.getX() + dX) * 0.0625D, (blockpos.getZ() + dZ) * 0.0625D, 0.0625D, dX * 0.0625D) * 15F / 1.25F));
+
+					// manipulate top and bottom
+					int treeBottom = pos.getY() + 12 - (int) (thickness * 0.5F);
+					int treeTop = treeBottom + (int) (thickness * 1.5F);
+
+					treeBottom -= noise;
+
+					BlockState darkLeaves = TFBlocks.hardened_dark_leaves.get().defaultBlockState();
+
+					for (int y = treeBottom; y < treeTop; y++) {
+						primer.setBlock(pos.atY(y), darkLeaves, 3);
+					}
+
+					// What are you gonna do, call the cops?
+					forceHeightMapLevel(chunk, Heightmap.Types.WORLD_SURFACE_WG, pos, dY);
+					forceHeightMapLevel(chunk, Heightmap.Types.WORLD_SURFACE, pos, dY);
+					forceHeightMapLevel(chunk, Heightmap.Types.OCEAN_FLOOR_WG, pos, oceanFloor);
+					forceHeightMapLevel(chunk, Heightmap.Types.OCEAN_FLOOR, pos, oceanFloor);
+				}
+			}
+		}
 	}
 
 	static void forceHeightMapLevel(ChunkAccess chunk, Heightmap.Types type, BlockPos pos, int dY) {
 		chunk.getOrCreateHeightmapUnprimed(type).setHeight(pos.getX() & 15, pos.getZ() & 15, dY + 1);
+	}
+
+	@Override
+	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Biome biome, StructureFeatureManager structureManager, MobCategory mobCategory, BlockPos pos) {
+		if (!this.monsterSpawnsBelowSeaLevel) return super.getMobsAt(biome, structureManager, mobCategory, pos);
+
+		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = TFStructureStart.gatherPotentialSpawns(structureManager, mobCategory, pos);
+		if (potentialStructureSpawns != null)
+			return WeightedRandomList.create(potentialStructureSpawns);
+		WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = StructureSpawnManager.getStructureSpawns(structureManager, mobCategory, pos);
+		if (spawns != null)
+			return spawns;
+		return mobCategory == MobCategory.MONSTER && pos.getY() >= this.getSeaLevel() ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, mobCategory, pos);
+	}
+
+	public TFFeature getFeatureCached(final ChunkPos chunk, final WorldGenLevel world) {
+		return this.featureCache.computeIfAbsent(chunk, chunkPos -> TFFeature.generateFeature(chunkPos.x, chunkPos.z, world));
 	}
 }

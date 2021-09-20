@@ -73,16 +73,16 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
 
                 BlockPos placement = center.offset(xCircleOffset + ((int) xCircleOffset >> 31), randomPitch * (this.verticalRadius + 0.25f) + this.verticalBias, zCircleOffset + ((int) zCircleOffset >> 31));
 
-                placeLeafCluster(worldPlacer, random, placement.immutable(), baseTreeFeatureConfig.foliageProvider);
+                placeLeafCluster(worldReader, worldPlacer, random, placement.immutable(), baseTreeFeatureConfig.foliageProvider);
             }
         }
     }
 
-    private static void placeLeafCluster(BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos pos, BlockStateProvider state) {
-        FeaturePlacers.placeProvidedBlock(worldPlacer, pos, state, random);
-        FeaturePlacers.placeProvidedBlock(worldPlacer, pos.east(), state, random);
-        FeaturePlacers.placeProvidedBlock(worldPlacer, pos.south(), state, random);
-        FeaturePlacers.placeProvidedBlock(worldPlacer, pos.offset(1, 0, 1), state, random);
+    private static void placeLeafCluster(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos pos, BlockStateProvider state) {
+        FeaturePlacers.placeProvidedBlock(worldReader, worldPlacer, FeaturePlacers.VALID_TREE_POS, pos, state, random);
+        FeaturePlacers.placeProvidedBlock(worldReader, worldPlacer, FeaturePlacers.VALID_TREE_POS, pos.east(), state, random);
+        FeaturePlacers.placeProvidedBlock(worldReader, worldPlacer, FeaturePlacers.VALID_TREE_POS, pos.south(), state, random);
+        FeaturePlacers.placeProvidedBlock(worldReader, worldPlacer, FeaturePlacers.VALID_TREE_POS, pos.offset(1, 0, 1), state, random);
     }
 
     @Override // foliage Height

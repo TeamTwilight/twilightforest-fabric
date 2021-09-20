@@ -6,7 +6,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneDecoratorConfiguration;
 import net.minecraft.world.level.levelgen.placement.DecorationContext;
 import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightBase;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFFeature;
 
 import java.util.Random;
@@ -19,7 +19,7 @@ public class OutOfStructureFilter extends FeatureDecorator<NoneDecoratorConfigur
 
 	@Override
 	public Stream<BlockPos> getPositions(DecorationContext worldDecoratingHelper, Random random, NoneDecoratorConfiguration noPlacementConfig, BlockPos blockPos) {
-		if (!(worldDecoratingHelper.getLevel().getLevel().getChunkSource().getGenerator() instanceof ChunkGeneratorTwilightBase tfChunkGen))
+		if (!(worldDecoratingHelper.getLevel().getLevel().getChunkSource().generator instanceof ChunkGeneratorTwilight tfChunkGen))
 			return Stream.of(blockPos);
 
 		// Feature Center

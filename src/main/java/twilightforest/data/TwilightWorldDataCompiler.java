@@ -4,8 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.Lifecycle;
-
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;
@@ -25,8 +23,11 @@ import net.minecraft.world.level.levelgen.NoiseSettings;
 import net.minecraft.world.level.levelgen.NoiseSamplingSettings;
 import net.minecraft.world.level.levelgen.NoiseSlideSettings;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightForest;
 import twilightforest.world.components.TFBiomeProvider;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.registration.ConfiguredWorldCarvers;
+import twilightforest.world.registration.TFDimensions;
+import twilightforest.world.registration.ConfiguredSurfaceBuilders;
 import twilightforest.world.registration.biomes.BiomeMaker;
 
 import java.util.Map;
@@ -41,8 +42,8 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 
 	@Override
 	public void generate(HashCache directoryCache) {
-		//ConfiguredSurfaceBuilders.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_SURFACE_BUILDER_REGISTRY));
-		//ConfiguredWorldCarvers.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_CARVER_REGISTRY));
+		ConfiguredSurfaceBuilders.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_SURFACE_BUILDER_REGISTRY));
+		ConfiguredWorldCarvers.registerConfigurations(this.dynamicRegistries.registryOrThrow(Registry.CONFIGURED_CARVER_REGISTRY));
 
 		Map<ResourceLocation, Biome> biomes = this.getBiomes();
 		biomes.forEach((rl, biome) -> this.dynamicRegistries.registry(Registry.BIOME_REGISTRY).ifPresent(reg -> Registry.register(reg, rl, biome)));
@@ -121,11 +122,11 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		this.getOrCreateInRegistry(this.dynamicRegistries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY), ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.prefix("forest_noise_config")), () -> forestDimensionSettings);
 		this.getOrCreateInRegistry(this.dynamicRegistries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY), ResourceKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.prefix("sky_noise_config")), () -> skyDimensionSettings);
 
-		//TFDimensions.init();
+		TFDimensions.init();
 
 		//FIXME: The issue with generated files using 0 as the seed is here. We need to somehow just...not have it here?
 		NoiseBasedChunkGenerator forestChunkGen =
-				new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> forestDimensionSettings);
+				new NoiseBasedChunkGenerator(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> forestDimensionSettings);
 				//new ChunkGeneratorTwilightForest(new FixedBiomeSource(getFromDynRegistry(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("enchanted_forest"))), 0L, () -> forestDimensionSettings);
 
 		NoiseBasedChunkGenerator skyChunkGen = new NoiseBasedChunkGenerator(new TFBiomeProvider(0L, new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental())), 0L, () -> skyDimensionSettings);
@@ -157,7 +158,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		this.getOrCreateInRegistry(this.dynamicRegistries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY), ResourceKey.create(Registry.DIMENSION_TYPE_REGISTRY, new ResourceLocation(TwilightForestMod.ID, "forest_type")), () -> twilightType);
 
 		return ImmutableMap.of(
-				TwilightForestMod.prefix("twilight_forest"), new LevelStem(() -> twilightType, forestChunkGen)//,
+				TwilightForestMod.prefix("twilight_forest"), new LevelStem(() -> twilightType, new ChunkGeneratorTwilight(forestChunkGen, true, true))//,
 				//TwilightForestMod.prefix("skylight_forest"), new LevelStem(() -> twilightType, skyChunkGen)
 				// TODO add *actual* twilightforest:void world without islands
 		);
@@ -168,7 +169,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				.BIOMES
 				.entrySet()
 				.stream()
-				.peek(registryKeyBiomeEntry -> BuiltinRegistries.BIOME.get(registryKeyBiomeEntry.getKey().location()))
+				.peek(registryKeyBiomeEntry -> registryKeyBiomeEntry.getValue().setRegistryName(registryKeyBiomeEntry.getKey().location()))
 				.collect(Collectors.toMap(entry -> entry.getKey().location(), Map.Entry::getValue));
 	}
 }

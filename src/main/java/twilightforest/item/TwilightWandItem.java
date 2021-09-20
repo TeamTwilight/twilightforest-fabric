@@ -11,8 +11,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFSounds;
 import twilightforest.entity.projectile.TwilightWandBoltEntity;
 
@@ -45,13 +45,18 @@ public class TwilightWandItem extends Item {
 		}
 	}
 
-	//@Override
-	public float getXpRepairRatio(ItemStack stack) {
-		return 1f;
+	@Override
+	public boolean isEnchantable(ItemStack pStack) {
+		return false;
 	}
 
 	@Override
-	@Environment(EnvType.CLIENT)
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
+	}
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
 		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));

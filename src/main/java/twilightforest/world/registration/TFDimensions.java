@@ -8,10 +8,9 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightForest;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilightSky;
 import twilightforest.world.components.TFBiomeDistributor;
 import twilightforest.world.components.TFBiomeProvider;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 public class TFDimensions {
 	// Find a different way to validate if a world is passible as a "Twilight Forest" instead of hardcoding Dim ID (Instanceof check for example)
@@ -22,9 +21,6 @@ public class TFDimensions {
 		// TODO legacy
 		Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("grid"), TFBiomeProvider.TF_CODEC);
 
-		// For now use minecraft:noise until we need to terraform for features
-		Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("featured_noise"), ChunkGeneratorTwilightForest.CODEC);
-		// TODO Do we even need this? Or can we fold it into the featured_noise because its elasticity to handle skyworld generation
-		Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("sky_noise"), ChunkGeneratorTwilightSky.CODEC);
+		Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
 	}
 }

@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.minotaurmaze;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
@@ -85,21 +86,22 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 	protected int getAverageGroundLevel(WorldGenLevel world, ChunkGenerator generator, BoundingBox boundingBox) {
 		int yTotal = 0;
 		int count = 0;
+		int yStart = Mth.clamp(generator.getSeaLevel(), this.boundingBox.minY(), this.boundingBox.maxY());
 
 		for (int z = this.boundingBox.minZ(); z <= this.boundingBox.maxZ(); ++z) {
 			for (int x = this.boundingBox.minX(); x <= this.boundingBox.maxX(); ++x) {
-				BlockPos pos = new BlockPos(x, 64, z);
+				BlockPos pos = new BlockPos(x, yStart, z);
 
 				if (boundingBox.isInside(pos)) {
 					final BlockPos topPos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos);
-					yTotal += Math.max(topPos.getY(), WorldUtil.getSeaLevel(generator));
+					yTotal += Math.max(topPos.getY(), generator.getSeaLevel());
 					++count;
 				}
 			}
 		}
 
 		if (count == 0) {
-			return -1;
+			return Integer.MIN_VALUE;
 		} else {
 			return yTotal / count;
 		}

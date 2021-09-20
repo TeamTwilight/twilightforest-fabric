@@ -63,20 +63,14 @@ public final class FeaturePlacers {
      * Draws a line from {x1, y1, z1} to {x2, y2, z2}
      * This just takes a BlockState, used to set Trunk
      */
-    public static void drawBresenhamTree(BiConsumer<BlockPos, BlockState> placer, BlockPos from, BlockPos to, BlockStateProvider config, Random random) {
+    public static void drawBresenhamTree(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos from, BlockPos to, BlockStateProvider config, Random random) {
         for (BlockPos pixel : FeatureLogic.getBresenhamArrays(from, to)) {
-            placeProvidedBlock(placer, pixel, config, random);
+            placeProvidedBlock(world, placer, predicate, pixel, config, random);
         }
-    }
-
-    public static void placeProvidedBlock(BiConsumer<BlockPos, BlockState> worldPlacer, BlockPos pos, BlockStateProvider config, Random random) {
-        worldPlacer.accept(pos, config.getState(random, pos));
     }
 
     public static void placeProvidedBlock(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> worldPlacer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos pos, BlockStateProvider config, Random random) {
-        if (predicate.apply(world, pos)) {
-            worldPlacer.accept(pos, config.getState(random, pos));
-        }
+        if (predicate.apply(world, pos)) worldPlacer.accept(pos, config.getState(random, pos));
     }
 
     // Use for trunks with Odd-count widths
@@ -174,37 +168,37 @@ public final class FeaturePlacers {
         float xzRadiusSquared = xzRadius * xzRadius;
         float yRadiusSquared = yRadius * yRadius;
         float superRadiusSquared = xzRadiusSquared * yRadiusSquared;
-        FeaturePlacers.placeProvidedBlock(placer, centerPos, config, random);
+        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos, config, random);
 
         for (int y = 0; y <= yRadius; y++) {
             if (y > yRadius) continue;
 
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0,  y, 0), config, random);
-            FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( 0, -y, 0), config, random);
+            FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( 0,  y, 0), config, random);
+            FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( 0, -y, 0), config, random);
         }
 
         for (int x = 0; x <= xzRadius; x++) {
             for (int z = 1; z <= xzRadius; z++) {
                 if (x * x + z * z > xzRadiusSquared) continue;
 
-                FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  x, 0,  z), config, random);
-                FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -x, 0, -z), config, random);
-                FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -z, 0,  x), config, random);
-                FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  z, 0, -x), config, random);
+                FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x, 0,  z), config, random);
+                FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x, 0, -z), config, random);
+                FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z, 0,  x), config, random);
+                FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z, 0, -x), config, random);
 
                 for (int y = 1; y <= yRadius; y++) {
                     float xzSquare = ((x * x + z * z) * yRadiusSquared);
 
                     if (xzSquare + (y * y) * xzRadiusSquared <= superRadiusSquared) {
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  x,  y,  z), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -x,  y, -z), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -z,  y,  x), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  z,  y, -x), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x,  y,  z), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x,  y, -z), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z,  y,  x), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z,  y, -x), config, random);
 
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  x, -y,  z), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -x, -y, -z), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset( -z, -y,  x), config, random);
-                        FeaturePlacers.placeProvidedBlock(placer, centerPos.offset(  z, -y, -x), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  x, -y,  z), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -x, -y, -z), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset( -z, -y,  x), config, random);
+                        FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos.offset(  z, -y, -x), config, random);
                     }
                 }
             }

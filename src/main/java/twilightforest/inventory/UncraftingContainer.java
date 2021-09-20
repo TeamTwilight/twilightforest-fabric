@@ -347,9 +347,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 			return true;
 		}
 
-		if (inputStack.getItem() instanceof ArmorItem && resultStack.getItem() instanceof ArmorItem) {
-			ArmorItem inputArmor = (ArmorItem) inputStack.getItem();
-			ArmorItem resultArmor = (ArmorItem) resultStack.getItem();
+		if (inputStack.getItem() instanceof ArmorItem inputArmor && resultStack.getItem() instanceof ArmorItem resultArmor) {
 
 			return inputArmor.getSlot() == resultArmor.getSlot();
 		}
@@ -428,23 +426,12 @@ public class UncraftingContainer extends AbstractContainerMenu {
 	}
 
 	private static int getWeightModifier(Enchantment ench) {
-		switch (ench.getRarity().getWeight()) {
-			case 1:
-				return 8;
-			case 2:
-				return 4;
-			case 3:
-			case 4:
-			case 5:
-				return 2;
-			case 6:
-			case 7:
-			case 8:
-			case 9:
-			default:
-			case 10:
-				return 1;
-		}
+		return switch (ench.getRarity().getWeight()) {
+			case 1 -> 8;
+			case 2 -> 4;
+			case 3, 4, 5 -> 2;
+			default -> 1;
+		};
 	}
 
 	@Override
@@ -452,7 +439,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.assemblyMatrix
-				&& player.getInventory().getSelected().isEmpty() && !this.slots.get(slotNum).hasItem()) {
+				&& player.containerMenu.getCarried().isEmpty() && !this.slots.get(slotNum).hasItem()) {
 
 			// is the assembly matrix empty?
 			if (this.assemblyMatrix.isEmpty()) {
@@ -486,12 +473,12 @@ public class UncraftingContainer extends AbstractContainerMenu {
 			}
 		}
 
+		super.clicked(slotNum, mouseButton, clickType, player);
+
 		// just trigger this event whenever the input slot is clicked for any reason
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.tinkerInput) {
 			this.slotsChanged(this.tinkerInput);
 		}
-
-		super.clicked(slotNum, mouseButton, clickType, player);
 	}
 
 	/**
@@ -529,63 +516,51 @@ public class UncraftingContainer extends AbstractContainerMenu {
 	 */
 	@Override
 	public ItemStack quickMoveStack(Player player, int slotNum) {
-
-		Slot transferSlot = this.slots.get(slotNum);
-
-		if (transferSlot == null || !transferSlot.hasItem()) {
-			return ItemStack.EMPTY;
-		}
-
-		ItemStack transferStack = transferSlot.getItem();
-		ItemStack copyItem = transferStack.copy();
-
-		if (slotNum == 0) {
-			// result or input goes to inventory or hotbar
-			if (!this.moveItemStackTo(transferStack, 20, 56, true)) {
-				return ItemStack.EMPTY;
-			}
-
-			transferSlot.onQuickCraft(transferStack, copyItem);  // what does this do?
-		} else if (slotNum == 1) {
-			transferStack.getItem().onCraftedBy(transferStack, this.world, player);
-
-			if (!this.moveItemStackTo(transferStack, 20, 56, true))
-				return ItemStack.EMPTY;
-
-			transferSlot.onQuickCraft(transferStack, copyItem);
-		} else if (slotNum >= 20 && slotNum < 47) {
-			// Checks uncrafting input slot first
-			if (!this.moveItemStackTo(transferStack, 0, 1, false)) {
-				// inventory goes to hotbar
-				if (!this.moveItemStackTo(transferStack, 47, 56, false)) {
+		ItemStack itemstack = ItemStack.EMPTY;
+		Slot slot = this.slots.get(slotNum);
+		if (slot != null && slot.hasItem()) {
+			ItemStack itemstack1 = slot.getItem();
+			itemstack = itemstack1.copy();
+			if (slotNum == 0) {
+				if (!this.moveItemStackTo(itemstack1, 20, 56, false)) {
 					return ItemStack.EMPTY;
 				}
-			}
-		} else if (slotNum >= 47 && slotNum < 56) {
-			// Checks uncrafting input slot first
-			if (!this.moveItemStackTo(transferStack, 0, 1, false)) {
-				// hotbar goes to inventory
-				if (!this.moveItemStackTo(transferStack, 20, 47, false)) {
+				slot.onQuickCraft(itemstack1, itemstack);
+			}  else if (slotNum == 1) {
+				this.positionData.execute((p_39378_, p_39379_) -> {
+					itemstack1.getItem().onCraftedBy(itemstack1, p_39378_, player);
+				});
+				if (!this.moveItemStackTo(itemstack1, 20, 56, true)) {
 					return ItemStack.EMPTY;
 				}
+				slot.onQuickCraft(itemstack1, itemstack);
+			} else if (slotNum >= 20 && slotNum < 56) {
+				if (!this.moveItemStackTo(itemstack1, 2, 11, false)) {
+					if (slotNum < 47) {
+						if (!this.moveItemStackTo(itemstack1, 47, 56, false)) {
+							return ItemStack.EMPTY;
+						}
+					} else if (!this.moveItemStackTo(itemstack1, 20, 47, false)) {
+						return ItemStack.EMPTY;
+					}
+				}
+			} else if (!this.moveItemStackTo(itemstack1, 20, 56, false)) {
+				return ItemStack.EMPTY;
 			}
-		} else if (!this.moveItemStackTo(transferStack, 20, 56, false)) {
-			// crafting area goes to inventory or hotbar
-			return ItemStack.EMPTY;
+			if (itemstack1.isEmpty()) {
+				slot.set(ItemStack.EMPTY);
+			} else {
+				slot.setChanged();
+			}
+			if (itemstack1.getCount() == itemstack.getCount()) {
+				return ItemStack.EMPTY;
+			}
+			slot.onTake(player, itemstack1);
+			if (slotNum == 1) {
+				player.drop(itemstack1, false);
+			}
 		}
-
-		if (transferStack.getCount() == 0) {
-			transferSlot.set(ItemStack.EMPTY);
-		} else {
-			transferSlot.setChanged();
-		}
-
-		if (transferStack.getCount() == copyItem.getCount()) {
-			return ItemStack.EMPTY;
-		}
-
-		transferSlot.onTake(player, transferStack);
-		return transferStack;
+		return itemstack;
 	}
 
 	@Override

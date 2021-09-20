@@ -39,9 +39,9 @@ public class TFGenWell extends Feature<NoneFeatureConfiguration> {
 	 * make a cute little well
 	 */
 	public boolean generate3x3Well(WorldGenLevel world, Random rand, BlockPos pos) {
-		if (!FeatureUtil.isAreaSuitable(world, pos, 3, 4, 3)) {
-			return false;
-		}
+		//if (!FeatureUtil.isAreaSuitable(world, pos, 3, 4, 3)) {
+		//	return false;
+		//}
 
 		// make a cute well!
 		world.setBlock(pos, Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
@@ -112,9 +112,9 @@ public class TFGenWell extends Feature<NoneFeatureConfiguration> {
 	}
 
 	private boolean generate4x4Well(LevelAccessor world, Random rand, BlockPos pos) {
-		if (!FeatureUtil.isAreaSuitable(world, pos, 4, 4, 4)) {
-			return false;
-		}
+		//if (!FeatureUtil.isAreaSuitable(world, pos, 4, 4, 4)) {
+		//	return false;
+		//}
 
 		// make a cute well!
 		world.setBlock(pos, Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);

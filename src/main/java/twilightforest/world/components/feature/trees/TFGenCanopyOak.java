@@ -134,7 +134,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		}
 
 		if (trunk) {
-			FeaturePlacers.drawBresenhamTree(trunkPlacer, src, dest, config.trunkProvider, treeRNG);
+			FeaturePlacers.drawBresenhamTree(world, trunkPlacer, FeaturePlacers.VALID_TREE_POS, src, dest, config.trunkProvider, treeRNG);
 		} else {
 			FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, treeRNG, src, dest, config.branchProvider);
 		}

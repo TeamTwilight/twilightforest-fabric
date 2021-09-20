@@ -1,0 +1,17 @@
+{
+  "type": "twilightforest:forest_type",
+  "generator": {
+    "wrapped_generator": {
+      "biome_source": {
+        "seed": 0,
+        "type": "twilightforest:grid"
+      },
+      "seed": 0,
+      "settings": "twilightforest:forest_noise_config",
+      "type": "minecraft:noise"
+    },
+    "generate_dark_forest_canopy": true,
+    "monster_spawns_below_sealevel": true,
+    "type": "twilightforest:structure_locating_wrapper"
+  }
+}

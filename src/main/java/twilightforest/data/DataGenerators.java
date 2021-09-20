@@ -1,44 +1,32 @@
 package twilightforest.data;
 
-import me.shedaniel.cloth.api.datagen.v1.DataGeneratorHandler;
-import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
-import java.nio.file.Paths;
-
-import net.minecraft.SharedConstants;
-import net.minecraft.client.renderer.block.model.ItemModelGenerator;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
-import net.minecraft.server.Bootstrap;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import twilightforest.TwilightForestMod;
 
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
+	@SubscribeEvent
+	public static void gatherData(GatherDataEvent evt) {
+		DataGenerator generator = evt.getGenerator();
+		ExistingFileHelper helper = evt.getExistingFileHelper();
 
-	public static void gatherData(DataGeneratorHandler handler) {
-		handler.install(new AdvancementProvider(handler.getDataGenerator()));
-        //handler.install(new BlockstateGenerator(generator, helper));
-        //handler.install(new ItemModelGenerator(handler.getDataGenerator()));
-		BlockTagsProvider blocktags = new BlockTagGenerator(handler.getDataGenerator());
-        handler.install(blocktags);
-        handler.install(new FluidTagGenerator(handler.getDataGenerator()));
-        handler.install(new ItemTagGenerator(handler.getDataGenerator(), blocktags));
-        handler.install(new EntityTagGenerator(handler.getDataGenerator()));
-        handler.install(new LootGenerator(handler.getDataGenerator()));
-        handler.install(new StonecuttingGenerator(handler.getDataGenerator()));
-        //handler.install(new CraftingGenerator(handler.getDataGenerator()));
-        handler.install(new TwilightWorldDataCompiler(handler.getDataGenerator()));
-	}
-
-	public static int run() {
-		try {
-			SharedConstants.tryDetectVersion();
-			Bootstrap.bootStrap();
-			DataGeneratorHandler handler = DataGeneratorHandler.create(Paths.get("../src/generated/resource"));
-			gatherData(handler);
-			handler.run();
-			return 0;
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-			return -1;
-			//System.exit(1);
-		}
-//		System.exit(0);
+		generator.addProvider(new AdvancementProvider(generator));
+		evt.getGenerator().addProvider(new BlockstateGenerator(generator, helper));
+		evt.getGenerator().addProvider(new ItemModelGenerator(generator, helper));
+		BlockTagsProvider blocktags = new BlockTagGenerator(generator, helper);
+		generator.addProvider(blocktags);
+		generator.addProvider(new FluidTagGenerator(generator, helper));
+		generator.addProvider(new ItemTagGenerator(generator, blocktags, helper));
+		generator.addProvider(new EntityTagGenerator(generator, helper));
+		generator.addProvider(new CustomTagGenerator.EnchantmentTagGenerator(generator, helper));
+		generator.addProvider(new LootGenerator(generator));
+		generator.addProvider(new StonecuttingGenerator(generator));
+		generator.addProvider(new CraftingGenerator(generator));
+		generator.addProvider(new TwilightWorldDataCompiler(generator));
 	}
 }

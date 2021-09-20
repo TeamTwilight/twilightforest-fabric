@@ -20,31 +20,23 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import twilightforest.extensions.IBlockMethods;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.PlantType;
 import twilightforest.item.TFItems;
 
 import java.util.Random;
 
-public class UberousSoilBlock extends Block implements BonemealableBlock, IBlockMethods {
-	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F));
-
+public class UberousSoilBlock extends Block implements BonemealableBlock {
 	protected UberousSoilBlock(Properties props) {
 		super(props);
-	}
-
-	@Override
-	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		return AABB;
 	}
 
 	@Override
 	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction direction, IPlantable plantable) {
 		if (direction != Direction.UP)
 			return false;
-		IPlantable.PlantType plantType = plantable.getPlantType(world, pos.relative(direction));
-		return plantType == IPlantable.PlantType.CROP || plantType == IPlantable.PlantType.PLAINS || plantType == IPlantable.PlantType.CAVE;
+		PlantType plantType = plantable.getPlantType(world, pos.relative(direction));
+		return plantType == PlantType.CROP || plantType == PlantType.PLAINS || plantType == PlantType.CAVE;
 	}
 
 	@Override
@@ -60,9 +52,9 @@ public class UberousSoilBlock extends Block implements BonemealableBlock, IBlock
 		if (above.getBlock() instanceof IPlantable) {
 			IPlantable plant = (IPlantable) above.getBlock();
 			// revert to farmland or grass
-			if (plant.getPlantType(world, pos.above()) == IPlantable.PlantType.CROP) {
+			if (plant.getPlantType(world, pos.above()) == PlantType.CROP) {
 				world.setBlockAndUpdate(pos, Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 2));
-			} else if (plant.getPlantType(world, pos.above()) == IPlantable.PlantType.PLAINS) {
+			} else if (plant.getPlantType(world, pos.above()) == PlantType.PLAINS) {
 				world.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
 			} else {
 				world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
@@ -81,7 +73,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock, IBlock
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
 		if(level.isClientSide && rand.nextInt(5) == 0) {
 			for(Player player : level.players()) {
-				if (player.getMainHandItem().getItem().equals(TFItems.magic_beans) || player.getOffhandItem().getItem().equals(TFItems.magic_beans)) {
+				if (player.getMainHandItem().getItem().equals(TFItems.magic_beans.get()) || player.getOffhandItem().getItem().equals(TFItems.magic_beans.get())) {
 					for (int i = 0; i < 2; i++) {
 						level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX() + rand.nextDouble(), pos.getY() + 1.25D, pos.getZ() + rand.nextDouble(), 0.0D, 0.0D, 0.0D);
 					}

@@ -1,0 +1,128 @@
+{
+  "effects": {
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "grass_color_modifier": "twilightforest:swamp",
+    "particle": {
+      "options": {
+        "type": "twilightforest:wandering_firefly"
+      },
+      "probability": 5.0E-4
+    },
+    "sky_color": 2105930,
+    "foliage_color": 4809015,
+    "grass_color": 6056270,
+    "fog_color": 12648408,
+    "water_color": 14745518,
+    "water_fog_color": 329011
+  },
+  "surface_builder": "minecraft:ocean_sand",
+  "carvers": {
+    "air": [
+      "twilightforest:tf_caves"
+    ]
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:disk_clay",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite",
+      "twilightforest:ore/wood_roots_spread",
+      "minecraft:ore_coal",
+      "minecraft:ore_iron",
+      "minecraft:ore_gold",
+      "minecraft:ore_redstone",
+      "minecraft:ore_diamond",
+      "minecraft:ore_lapis",
+      "minecraft:ore_copper"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries"
+    ],
+    [
+      "minecraft:patch_grass_forest",
+      "minecraft:patch_tall_grass",
+      "minecraft:patch_sugar_cane",
+      "twilightforest:druid_hut",
+      "twilightforest:well",
+      "twilightforest:grove_ruins",
+      "twilightforest:foundation",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:small_log",
+      "minecraft:patch_sugar_cane_swamp",
+      "minecraft:vines",
+      "minecraft:patch_dead_bush",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer",
+      "twilightforest:tree/mangrove_trees",
+      "twilightforest:tree/swampy_oak_trees",
+      "twilightforest:tree/hollow_placer",
+      "twilightforest:huge_lily_pad",
+      "twilightforest:huge_water_lily",
+      "minecraft:patch_waterlilly"
+    ]
+  ],
+  "starts": [
+    "twilightforest:configured_labyrinth"
+  ],
+  "creature_spawn_probability": 0.2,
+  "spawners": {
+    "monster": [],
+    "creature": [
+      {
+        "type": "minecraft:creeper",
+        "weight": 10,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:zombie",
+        "weight": 10,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "twilightforest:mosquito_swarm",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "ambient": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {},
+  "player_spawn_friendly": false,
+  "forge:registry_name": "twilightforest:swamp",
+  "precipitation": "rain",
+  "temperature": 0.8,
+  "downfall": 0.9,
+  "category": "swamp",
+  "depth": -0.125,
+  "scale": 0.25
+}
