@@ -36,7 +36,6 @@ public class BurntThornsBlock extends ThornsBlock {
 		}
 	}
 
-	//TODO: PORT
 	@Override
 	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
 		state.getBlock().playerWillDestroy(world, pos, state, player);

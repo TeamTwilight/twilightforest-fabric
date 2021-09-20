@@ -1,5 +1,6 @@
 package twilightforest;
 
+import com.chocohead.mm.api.ClassTinkerers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
@@ -50,7 +51,7 @@ public class TwilightForestMod implements ModInitializer {
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	private static final Rarity rarity = Rarity.EPIC;//Rarity.valueOf("TWILIGHT");
+	private static final Rarity rarity = ClassTinkerers.getEnum(Rarity.class, "TWILIGHT");
 
 	public void run() {
 		// FIXME: safeRunWhenOn is being real jank for some reason, look into it

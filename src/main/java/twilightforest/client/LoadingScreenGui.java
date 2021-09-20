@@ -122,7 +122,7 @@ public class LoadingScreenGui extends Screen {
 
 		if (LOADING_SCREEN.enable.get()) {
 			// Wobble it!
-			stack.mulPose(Vector3f.XP.rotation(Mth.sin(sineTicker / LOADING_SCREEN.tiltRange.get().floatValue()) * LOADING_SCREEN.tiltConstant.get().floatValue()));
+			//stack.mulPose(Vector3f.XP.rotation(Mth.sin(sineTicker / LOADING_SCREEN.tiltRange.get().floatValue()) * LOADING_SCREEN.tiltConstant.get().floatValue()));
 
 			// Bounce it!
 			stack.scale(((Mth.sin(((sineTicker2 + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / (float) LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), ((Mth.sin(((sineTicker + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), 1F);

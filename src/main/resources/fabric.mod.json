@@ -28,7 +28,8 @@
       "twilightforest.TwilightForestMod"
 
     ],
-    "preLaunch": [
+    "mm:early_risers": [
+      "twilightforest.mixin.plugin.TFEarlyRiser"
     ],
     "cardinal-components": [
       "twilightforest.capabilities.CapabilityList"

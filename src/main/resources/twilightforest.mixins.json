@@ -24,7 +24,9 @@
     "PlayerAdvancementsMixin",
     "BlockMixin",
     "AbstractArrowMixin",
-    "BowItemMixin"
+    "BowItemMixin",
+    "BlockStateMixin",
+    "ServerPlayerGameModeMixin"
   ],
   "client": [
     "client.BlockColorsMixin",
@@ -36,7 +38,8 @@
     "client.ModelManagerMixin",
     "client.ScreenMixin",
     "client.ClientPlayerInteractionManagerMixin",
-    "client.GamerRendererMixin"
+    "client.GamerRendererMixin",
+    "client.MultiPlayerGameModeMixin"
   ],
   "plugin": "twilightforest.mixin.plugin.TwilightForestMixinPlugin",
   "injectors": {

@@ -40,6 +40,9 @@ repositories {
     maven {
         url "https://nexus.resourcefulbees.com/repository/maven-public/"
     }
+    maven {
+        url 'https://jitpack.io'
+    }
     mavenLocal()
 }
 
@@ -79,6 +82,9 @@ dependencies {
 
     include "net.alphamode:ForgeConfig:1.0.8"
     modImplementation "com.telepathicgrunt:Blame-Fabric:1.17-4.2.0-fabric"
+
+    modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'
+    include 'com.github.Chocohead:Fabric-ASM:v2.3'
 }
 
 processResources {

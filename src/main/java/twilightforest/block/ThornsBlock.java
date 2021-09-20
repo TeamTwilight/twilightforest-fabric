@@ -22,13 +22,14 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 
 import twilightforest.extensions.IAIPath;
+import twilightforest.extensions.IBlockMethods;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, IAIPath {
+public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, IAIPath, IBlockMethods {
 
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -70,8 +71,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		super.stepOn(world, pos, state, entity);
 	}
 
-	//TODO: PORT
-	//@Override
+	@Override
 	public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
 		if (!player.getAbilities().instabuild) {
 			if (!world.isClientSide) {
@@ -80,8 +80,8 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 			}
 			return false;
 		} else {
-			//return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
-			return true;
+			this.playerWillDestroy(world, pos, state, player);
+			return world.setBlock(pos, fluid.createLegacyBlock(), world.isClientSide ? 11 : 3);
 		}
 	}
 
