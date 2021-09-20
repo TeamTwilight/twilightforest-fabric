@@ -3,6 +3,7 @@ package twilightforest.data;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.core.Registry;
+import net.minecraft.tags.SetTag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
@@ -16,6 +17,7 @@ import net.fabricmc.fabric.api.tag.TagFactory;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -229,7 +231,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
         tag(PORTAL_EDGE).addTag(BlockTags.DIRT);
         // So yes, we could do fluid tags for the portal pool but the problem is that we're -replacing- the block, effectively replacing what would be waterlogged, with the portal block
         // In the future if we can "portal log" blocks then we can re-explore doing it as a fluid
-        tag(PORTAL_POOL).add(Blocks.WATER);
+        tag(BlockTags.FLOWERS);
+        tag(BlockTags.LEAVES);
+        tag(BlockTags.SAPLINGS);
+        tag(BlockTags.CROPS);
         tag(PORTAL_DECO)
                 .addTag(BlockTags.FLOWERS).addTag(BlockTags.LEAVES).addTag(BlockTags.SAPLINGS).addTag(BlockTags.CROPS)
                 .add(Blocks.BAMBOO)
@@ -315,6 +320,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 TFBlocks.fake_gold
         );
 
+        tag(BlockTags.BUTTONS);
         tag(STRUCTURE_BANNED_INTERACTIONS)
                 .addTag(BlockTags.BUTTONS).add(Blocks.CHEST).add(Blocks.TRAPPED_CHEST).add(Blocks.ENDER_CHEST).add(Blocks.LEVER)
                 .add(TFBlocks.antibuilder);
