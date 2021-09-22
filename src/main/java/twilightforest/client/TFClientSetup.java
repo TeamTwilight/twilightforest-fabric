@@ -59,6 +59,8 @@ public class TFClientSetup implements ClientModInitializer {
 
 	public static boolean optifinePresent = false;
 
+	public static TFConfigClient config;
+
     @Environment(EnvType.CLIENT)
 	@Override
 	public void onInitializeClient() {
@@ -81,6 +83,8 @@ public class TFClientSetup implements ClientModInitializer {
 	//TODO: Clean this shit up
     public static void clientSetup() {
         AutoConfig.register(TFConfigClient.class, Toml4jConfigSerializer::new);
+
+        config = AutoConfig.getConfigHolder(TFConfigClient.class).getConfig();
 
         TFPacketHandler.CHANNEL.initClient();
         TFLayerDefinitions.registerLayers();

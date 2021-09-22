@@ -3,6 +3,7 @@ package twilightforest.compat;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfig;
+import twilightforest.compat.clothConfig.TFConfigClient;
 import twilightforest.compat.clothConfig.TFConfigCommon;
 
 public class TFModMenu implements ModMenuApi {
@@ -10,7 +11,7 @@ public class TFModMenu implements ModMenuApi {
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return screen -> {
             //return TFConfigMenuFabric.getConfigBuilderWithDemo().setParentScreen(screen).build();
-            return AutoConfig.getConfigScreen(TFConfigCommon.class, screen).get();
+            return AutoConfig.getConfigScreen(TFConfigClient.class, screen).get();
         };
     }
 }
