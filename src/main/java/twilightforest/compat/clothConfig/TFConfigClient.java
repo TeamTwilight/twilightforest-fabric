@@ -4,60 +4,61 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
+import shadow.cloth.clothconfig.com.moandjiezana.toml.TomlComment;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.clothConfig.configEntry.ExtendedConfigEntry;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unused")
 @Config(name = "twilightconfigClient")
-@Config.Gui.Background(TwilightForestMod.ID + ":textures/block/maze_stone_brick.png")
-public class TFConfigClient implements ConfigData {
+@Config.Gui.CategoryBackground(category = "client", background = TwilightForestMod.ID + ":textures/block/maze_stone_brick.png")
+//@Config.Gui.Background(TwilightForestMod.ID + ":textures/block/maze_stone_brick.png")
+public class TFConfigClient extends TFConfigCommon implements ConfigData {
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.Tooltip
-    @Comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.")
+    @TomlComment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.")
     public boolean silent_cicadas = false;
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.Tooltip
-    @Comment("Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.")
+    @TomlComment("Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.")
     public boolean first_person_effects = true;
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.Tooltip
-    @Comment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.")
+    @TomlComment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.")
     public boolean animate_trophyitem = true;
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.Tooltip
-    @Comment("Disable the nag screen when Optifine is installed.")
+    @TomlComment("Disable the nag screen when Optifine is installed.")
     public boolean optifine = false;
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.Tooltip
-    @Comment("Disable the Here Be Dragons experimental warning screen.")
+    @TomlComment("Disable the Here Be Dragons experimental warning screen.")
     public boolean dragons = false;
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.CollapsibleObject
     @ConfigEntry.Gui.Tooltip
-    @Comment("Client only: Controls for the Loading screen")
+    @TomlComment("Client only: Controls for the Loading screen")
     public loading_Screen loading_screen = new loading_Screen();
 
     public static class loading_Screen {
 
         @ConfigEntry.Category("client")
         @ConfigEntry.Gui.Tooltip
-        @Comment("Wobble the Loading icon. Has no performance impact at all. For those who don't like fun.")
+        @TomlComment("Wobble the Loading icon. Has no performance impact at all. For those who don't like fun.")
         public boolean loading_icon_enable = true;
 
         @ConfigEntry.Category("client")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.BoundedDiscrete(min = 0, max = Integer.MAX_VALUE)
-        @Comment("How many ticks between each loading screen change. Set to 0 to not cycle at all.")
+        @TomlComment("How many ticks between each loading screen change. Set to 0 to not cycle at all.")
         public int loading_screen_swap_frequency = 0;
 
         @ConfigEntry.Category("client")
@@ -65,7 +66,7 @@ public class TFConfigClient implements ConfigData {
         //Orignal default value was 5F so fine a way to get Double values
         @ConfigEntry.Gui.Tooltip
         @ExtendedConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
-        @Comment("Frequency of wobble and bounce.")
+        @TomlComment("Frequency of wobble and bounce.")
         public float loading_icon_wobble_bounce_frequency = 5f;
 
         @ConfigEntry.Category("client")
@@ -73,7 +74,7 @@ public class TFConfigClient implements ConfigData {
         //Orignal default value was 3F so fine a way to get Double values
         @ConfigEntry.Gui.Tooltip
         @ExtendedConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
-        @Comment("Scale of whole bouncy loading icon.")
+        @TomlComment("Scale of whole bouncy loading icon.")
         public float loading_icon_scale = 3f;
 
         @ConfigEntry.Category("client")
@@ -81,7 +82,7 @@ public class TFConfigClient implements ConfigData {
         //Orignal default value was 5.25F so fine a way to get Double values
         @ConfigEntry.Gui.Tooltip
         @ExtendedConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
-        @Comment("How much the loading icon bounces.")
+        @TomlComment("How much the loading icon bounces.")
         public float loading_icon_bounciness = 5.25f;
 
         @ConfigEntry.Category("client")
@@ -89,7 +90,7 @@ public class TFConfigClient implements ConfigData {
         //Orignal default value was 11.25F and a max value of 360F so fine a way to get Double values
         @ConfigEntry.Gui.Tooltip
         @ExtendedConfigEntry.BoundedFloat(min = 0, max = 360F)
-        @Comment("How far the loading icon wobbles.")
+        @TomlComment("How far the loading icon wobbles.")
         public float loading_icon_tilting = 11.25f;
 
         @ConfigEntry.Category("client")
@@ -97,12 +98,12 @@ public class TFConfigClient implements ConfigData {
         //Orignal default value was 22.5F and a max value of 360F so fine a way to get Double values
         @ConfigEntry.Gui.Tooltip
         @ExtendedConfigEntry.BoundedFloat(min = 0, max = 360f)
-        @Comment("Pushback value to re-center the wobble of loading icon.")
+        @TomlComment("Pushback value to re-center the wobble of loading icon.")
         public float loading_icon_tilt_pushback = 22.5F;
 
         @ConfigEntry.Category("client")
         @ConfigEntry.Gui.Tooltip
-        @Comment("List of items to be used for the wobbling Loading Icon. (domain:item).")
+        @TomlComment("List of items to be used for the wobbling Loading Icon. (domain:item).")
         public List<String> loading_icon_stacks = Arrays.asList(
                 "twilightforest:experiment_115",
                 "twilightforest:magic_map",

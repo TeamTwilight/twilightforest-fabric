@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -24,12 +23,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.client.TFClientSetup;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.compat.clothConfig.TFConfigClient;
-import twilightforest.compat.clothConfig.TFConfigCommon;
 
 import java.util.Random;
 
@@ -70,7 +66,7 @@ public class JarBlock extends Block {
 	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
 		super.randomTick(state, worldIn, pos, random);
 		//need to counter a higher random tick speed resulting in so many sounds, so here we go
-		if(!TFClientSetup.clientConfig().silent_cicadas && random.nextInt(worldIn.getGameRules().getInt(GameRules.RULE_RANDOMTICKING)) <= 3 ) {
+		if(random.nextInt(worldIn.getGameRules().getInt(GameRules.RULE_RANDOMTICKING)) <= 3 && !TFClientSetup.configClient.silent_cicadas) {
 			worldIn.playSound(null, pos, TFSounds.CICADA, SoundSource.BLOCKS, 1.0F, 1.0F);
 		}
 	}

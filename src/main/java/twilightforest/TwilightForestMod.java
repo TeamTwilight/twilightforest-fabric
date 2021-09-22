@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.javafmlmod.FMLModContainer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import shadow.autoconfig.serializer.Toml4jConfigSerializerExtended;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
@@ -58,8 +60,10 @@ public class TwilightForestMod implements ModInitializer {
 
 	private static final Rarity rarity = ClassTinkerers.getEnum(Rarity.class, "TWILIGHT");
 
-	public static TFConfigCommon commonConfig(){
-		return AutoConfig.getConfigHolder(TFConfigCommon.class).getConfig();
+	public static TFConfigCommon configCommon;
+
+	public static void commonConfigReload(){
+		configCommon = AutoConfig.getConfigHolder(TFConfigCommon.class).getConfig();
 	}
 
 
@@ -67,8 +71,13 @@ public class TwilightForestMod implements ModInitializer {
 		// FIXME: safeRunWhenOn is being real jank for some reason, look into it
 		//noinspection Convert2Lambda,Anonymous2MethodRef
 
-		AutoConfig.register(TFConfigCommon.class, Toml4jConfigSerializer::new);
+		AutoConfig.register(TFConfigCommon.class, Toml4jConfigSerializerExtended::new);
 
+		//Move this to event class as this is the event in case the player changes anything within cloth config
+		AutoConfig.getConfigHolder(TFConfigCommon.class).registerLoadListener((manager, newData) -> {
+			commonConfigReload();
+			return InteractionResult.SUCCESS;
+		});
 
 		//This is trash
 		ModLoadingContext.get().setActiveContainer(new FMLModContainer(ID), null);

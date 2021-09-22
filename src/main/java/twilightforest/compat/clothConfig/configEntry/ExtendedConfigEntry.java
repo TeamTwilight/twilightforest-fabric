@@ -1,7 +1,5 @@
 package twilightforest.compat.clothConfig.configEntry;
 
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

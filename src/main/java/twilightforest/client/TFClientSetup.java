@@ -3,6 +3,7 @@ package twilightforest.client;
 import com.google.common.collect.Maps;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
+import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import me.shedaniel.autoconfig.util.Utils;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -27,6 +28,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArmorItem;
@@ -34,6 +36,7 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
+import shadow.autoconfig.serializer.Toml4jConfigSerializerExtended;
 import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
@@ -44,8 +47,8 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.providers.*;
 import twilightforest.compat.clothConfig.TFConfigClient;
-import twilightforest.compat.clothConfig.TFConfigCommon;
 import twilightforest.compat.clothConfig.configEntry.ExtendedConfigEntry;
+import twilightforest.compat.clothConfig.TFConfigTest;
 import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
@@ -65,7 +68,7 @@ public class TFClientSetup implements ClientModInitializer {
 
 	public static boolean optifinePresent = false;
 
-	public static TFConfigClient config;
+	public static TFConfigClient configClient;
 
     @Environment(EnvType.CLIENT)
 	@Override
@@ -86,12 +89,12 @@ public class TFClientSetup implements ClientModInitializer {
 
 	}
 
-	public static TFConfigClient clientConfig(){
-        return AutoConfig.getConfigHolder(TFConfigClient.class).getConfig();
+	public static void clientConfigReload(){
+        AutoConfig.getConfigHolder(TFConfigTest.tfConfigClient.getClass()).getConfig();
     }
 
     public static void registerCustomAnnotations(){
-        GuiRegistry registry = AutoConfig.getGuiRegistry(TFConfigClient.class);
+        GuiRegistry registry = AutoConfig.getGuiRegistry(TFConfigTest.class);
         ConfigEntryBuilder ENTRY_BUILDER = ConfigEntryBuilder.create();
 
         registry.registerAnnotationProvider(
@@ -137,12 +140,21 @@ public class TFClientSetup implements ClientModInitializer {
                 field -> field.getType() == double.class || field.getType() == Double.class,
                 ExtendedConfigEntry.BoundedDouble.class
         );
+
+
+
     }
 
 	//TODO: Clean this shit up
     public static void clientSetup() {
-        AutoConfig.register(TFConfigClient.class, Toml4jConfigSerializer::new);
+        //AutoConfig.register(TFConfigClient.class, Toml4jConfigSerializer::new);
+        AutoConfig.register(TFConfigTest.class, PartitioningSerializer.wrap(Toml4jConfigSerializerExtended::new));
 
+        //Move this to event class as this is the event in case the player changes anything within cloth config
+        AutoConfig.getConfigHolder(TFConfigTest.class).registerLoadListener((manager, newData) -> {
+            clientConfigReload();
+            return InteractionResult.SUCCESS;
+        });
         registerCustomAnnotations();
 
         TFPacketHandler.CHANNEL.initClient();

@@ -74,7 +74,9 @@ public class TFConfigMenuFabric implements ConfigData {
 
         ConfigBuilder builder = ConfigBuilder.create().setTitle(new TranslatableComponent("title.cloth-config.config"));
         builder.setDefaultBackgroundTexture(new ResourceLocation("minecraft:textures/block/oak_planks.png"));
-//        builder.setGlobalized(true);
+        //builder.setGlobalized(true);
+        //builder.alwaysShowTabs();
+        builder.getEntryBuilder();
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
         {
@@ -150,18 +152,20 @@ public class TFConfigMenuFabric implements ConfigData {
                 common.addEntry(Dimensions.build());
             }
 
-            common.addEntry(entryBuilder.startBooleanToggle(new TranslatableComponent(config + "doCompat"), true)
+            ConfigCategory client = builder.getOrCreateCategory(new TextComponent("client"));
+
+            client.addEntry(entryBuilder.startBooleanToggle(new TranslatableComponent(config + "doCompat"), true)
                     .setTooltip(toolTip("doCompat"))
                     .setDefaultValue(true)
                     .requireRestart()
                     .build());
 
-            common.addEntry(entryBuilder
+            client.addEntry(entryBuilder
                     .startStrField(new TranslatableComponent(config + "origin_dimension"), "minecraft:overworld")
                     .setTooltip(toolTip("origin_dimension"))
                     .build());
 
-            common.addEntry(entryBuilder
+            client.addEntry(entryBuilder
                     .startBooleanToggle(new TranslatableComponent(config + "portals_in_other_dimensions"), false)
                     .setTooltip(toolTip("portals_in_other_dimensions"))
                     .setDefaultValue(false)
@@ -257,8 +261,8 @@ public class TFConfigMenuFabric implements ConfigData {
         builder.setDefaultBackgroundTexture(new ResourceLocation(TwilightForestMod.ID, "textures/block/maze_stone_brick.png"));
 
         return builder;
-        /*
 
+        /*
         testing.addEntry(entryBuilder.startKeyCodeField(new TextComponent("Cool Key"), InputConstants.UNKNOWN).setDefaultValue(InputConstants.UNKNOWN).build());
         testing.addEntry(entryBuilder.startModifierKeyCodeField(new TextComponent("Cool Modifier Key"), ModifierKeyCode.of(InputConstants.Type.KEYSYM.getOrCreate(79), Modifier.of(false, true, false))).setDefaultValue(ModifierKeyCode.of(InputConstants.Type.KEYSYM.getOrCreate(79), Modifier.of(false, true, false))).build());
         testing.addEntry(entryBuilder.startDoubleList(new TextComponent("A list of Doubles"), Arrays.asList(1d, 2d, 3d)).setDefaultValue(Arrays.asList(1d, 2d, 3d)).build());
@@ -342,5 +346,7 @@ public class TFConfigMenuFabric implements ConfigData {
         return builder;
 
          */
+
+
     }
 }
