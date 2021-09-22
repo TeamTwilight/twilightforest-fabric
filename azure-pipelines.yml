@@ -59,7 +59,7 @@ steps:
     displayName: Copy Release build to artifact staging
     inputs:
       sourceFolder: './build/libs/'
-      contents: 'twilightforest-*-universal.jar'
+      contents: 'twilightforest-*.jar'
       targetFolder: $(build.artifactStagingDirectory)
     condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
 
@@ -74,7 +74,7 @@ steps:
   - bash: |
       rawpath="pipelineartifact://teamtwilight/projectId/1ef09d39-06cf-41fa-ad98-7258b70c2a72/buildId/${BUILD_BUILDID}/artifactName/Release"
       path=$(echo -ne $rawpath | base64)
-      jar="twilightforest-${JAVAPROPS_MINECRAFT_VERSION}-${JAVAPROPS_MOD_VERSION}.${REVISION}-universal.jar"
+      jar="twilightforest-${JAVAPROPS_MINECRAFT_VERSION}-${JAVAPROPS_MOD_VERSION}.${REVISION}.jar"
       downloadUrl="https://artprodcus3.artifacts.visualstudio.com/Abaabfa6c-deea-4587-ba05-c308c2597b7a/1ef09d39-06cf-41fa-ad98-7258b70c2a72/_apis/artifact/${path}0/content?format=file&subPath=%2F${jar}"
       jobResult=${AGENT_JOBSTATUS^}
       Colour=65280
