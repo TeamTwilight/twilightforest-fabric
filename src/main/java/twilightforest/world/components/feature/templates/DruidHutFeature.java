@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.components.processors.DruidHutTemplateProcessor;
+import twilightforest.world.components.processors.CobblePlankSwizzler;
 
 import java.util.Random;
 
@@ -35,87 +35,84 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
 
     @Override
     protected void modifySettings(StructurePlaceSettings settings, Random random) {
-        settings.addProcessor(new DruidHutTemplateProcessor(0.0F, random.nextInt(), random.nextInt(), random.nextInt()));
+        settings.addProcessor(new CobblePlankSwizzler(0.0F, random.nextInt(), random.nextInt(), random.nextInt()));
     }
 
     @Override
-    protected void postProcess(WorldGenLevel world, Random random, StructureManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
+    protected void postPlacement(WorldGenLevel world, Random random, StructureManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
         if (random.nextBoolean()) {
             StructureTemplate template = templateManager.getOrCreate(DruidHutFeature.BasementType.values()[random.nextInt(DruidHutFeature.BasementType.size)].getBasement(random.nextBoolean()));
 
-            if(template == null)
-                return;
+            if(template == null) return;
 
             placementPos = placementPos.below(12).relative(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-            template.placeInWorld(world, placementPos, placementPos, placementSettings.clearProcessors().addProcessor(new DruidHutTemplateProcessor(0.0F, random.nextInt(14), random.nextInt(14), random.nextInt(14))), random, 20);
+            template.placeInWorld(world, placementPos, placementPos, placementSettings.clearProcessors().addProcessor(new CobblePlankSwizzler(0.0F, random.nextInt(14), random.nextInt(14), random.nextInt(14))), random, 20);
 
-            for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK)) {
-                this.processData(info, world, rotation, mirror);
-            }
+            for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
+                if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA)
+                    this.processMarkers(info, world, rotation, mirror, random);
         }
     }
 
 	@Override
-	protected void processData(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror) {
-        if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA) {
-            String s = info.nbt.getString("metadata");
-            BlockPos blockPos = info.pos;
-            /**
-             `spawner` will place a Druid spawner.
+	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, Random random) {
+        String s = info.nbt.getString("metadata");
+        BlockPos blockPos = info.pos;
+        /**
+         `spawner` will place a Druid spawner.
 
-             `loot` will place a chest facing the was-North.
+         `loot` will place a chest facing the was-North.
 
-             `lootT` will place a trapped chest facing the was-North.
+         `lootT` will place a trapped chest facing the was-North.
 
-             `lootW` will place a chest facing the was-West.
-             `lootS` will place a chest facing the was-South.
+         `lootW` will place a chest facing the was-West.
+         `lootS` will place a chest facing the was-South.
 
-             `lootET` will place a trapped chest facing the was-East.
-             `lootNT` will place a trapped chest facing the was-North.
-             */
-            // removeBlock calls are required due to WorldGenRegion jank with cached TEs, this ensures the correct TE is used
-            if ("spawner".equals(s)) {
-                if (world.removeBlock(blockPos, false) && world.setBlock(blockPos, Blocks.SPAWNER.defaultBlockState(), 16 | 2)) {
-                    BlockEntity tile = world.getBlockEntity(blockPos);
+         `lootET` will place a trapped chest facing the was-East.
+         `lootNT` will place a trapped chest facing the was-North.
+         */
+        // removeBlock calls are required due to WorldGenRegion jank with cached TEs, this ensures the correct TE is used
+        if ("spawner".equals(s)) {
+            if (world.removeBlock(blockPos, false) && world.setBlock(blockPos, Blocks.SPAWNER.defaultBlockState(), 16 | 2)) {
+                BlockEntity tile = world.getBlockEntity(blockPos);
 
-                    if (tile instanceof SpawnerBlockEntity ms) {
-                        ms.getSpawner().setEntityId(TFEntities.skeleton_druid);
-                    }
+                if (tile instanceof SpawnerBlockEntity ms) {
+                    ms.getSpawner().setEntityId(TFEntities.skeleton_druid);
                 }
-            } else if (s.startsWith("loot")) {
-                world.removeBlock(blockPos, false);
-                BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.defaultBlockState() : Blocks.CHEST.defaultBlockState();
-
-                switch (s.substring(5, 6)) {
-                    case "L":
-                        chest = chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT);
-                        break;
-                    case "R":
-                        chest = chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.LEFT : ChestType.RIGHT);
-                        break;
-                    default:
-                        chest = chest.setValue(ChestBlock.TYPE, ChestType.SINGLE);
-                        break;
-                }
-
-                switch (s.substring(4, 5)) {
-                    case "W":
-                        chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
-                        break;
-                    case "E":
-                        chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
-                        break;
-                    case "S":
-                        chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
-                        break;
-                    default:
-                        chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
-                        break;
-                }
-
-                TFTreasure.basement.generateLootContainer(world, blockPos, chest, 16 | 2);
             }
+        } else if (s.startsWith("loot")) {
+            world.removeBlock(blockPos, false);
+            BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.defaultBlockState() : Blocks.CHEST.defaultBlockState();
+
+            switch (s.substring(5, 6)) {
+                case "L":
+                    chest = chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT);
+                    break;
+                case "R":
+                    chest = chest.setValue(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.LEFT : ChestType.RIGHT);
+                    break;
+                default:
+                    chest = chest.setValue(ChestBlock.TYPE, ChestType.SINGLE);
+                    break;
+            }
+
+            switch (s.substring(4, 5)) {
+                case "W":
+                    chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
+                    break;
+                case "E":
+                    chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
+                    break;
+                case "S":
+                    chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
+                    break;
+                default:
+                    chest = chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
+                    break;
+            }
+
+            TFTreasure.basement.generateLootContainer(world, blockPos, chest, 16 | 2);
         }
     }
 

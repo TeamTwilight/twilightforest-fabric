@@ -8,9 +8,11 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import twilightforest.block.TFBlocks;
@@ -248,5 +250,20 @@ public final class FeaturePlacers {
         if (world.isEmptyBlock(pos)) {
             world.setBlock(pos, state,3);
         }
+    }
+
+    public static BlockState transferAllStateKeys(BlockState stateIn, Block blockOut) {
+        return transferAllStateKeys(stateIn, blockOut.defaultBlockState());
+    }
+
+    public static BlockState transferAllStateKeys(BlockState stateIn, BlockState stateOut) {
+        for (Property<?> property : stateOut.getProperties()) {
+            stateOut = transferStateKey(stateIn, stateOut, property);
+        }
+        return stateOut;
+    }
+
+    public static <T extends Comparable<T>> BlockState transferStateKey(BlockState stateIn, BlockState stateOut, Property<T> property) {
+        return stateOut.setValue(property, stateIn.getValue(property));
     }
 }

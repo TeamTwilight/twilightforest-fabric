@@ -21,7 +21,7 @@ public class TFBiomeFeatures {
 	
 	public static final Feature<NoneFeatureConfiguration> BIG_MUSHGLOOM = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":big_mushgloom",
 			new TFGenBigMushgloom(NoneFeatureConfiguration.CODEC));
-	//public static final Feature<TFTreeFeatureConfig> CANOPY_OAK = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":canopy_oak",
+	//public static final Feature<TFTreeFeatureConfig>> CANOPY_OAK = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":canopy_oak",
 	//		new TFGenCanopyOak(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final Feature<CaveStalactiteConfig> CAVE_STALACTITE = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":cave_stalactite",
 			new TFGenCaveStalactite(CaveStalactiteConfig.caveStalactiteCodec));
@@ -75,8 +75,10 @@ public class TFBiomeFeatures {
 			new TFGenTrollRoots(NoneFeatureConfiguration.CODEC));
 	public static final Feature<NoneFeatureConfiguration> WEBS = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":webs",
 			new TFGenWebs(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> WELL = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":well",
-			new WellFeature(NoneFeatureConfiguration.CODEC));
+	public static final Feature<NoneFeatureConfiguration> SIMPLE_WELL = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":simple_well",
+			new SimpleWellFeature(NoneFeatureConfiguration.CODEC));
+	public static final Feature<NoneFeatureConfiguration> FANCY_WELL = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":fancy_well",
+			new FancyWellFeature(NoneFeatureConfiguration.CODEC));
 	public static final Feature<NoneFeatureConfiguration> WOOD_ROOTS = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":wood_roots",
 			new TFGenWoodRoots(NoneFeatureConfiguration.CODEC));
 	public static final Feature<NoneFeatureConfiguration> SNOW_UNDER_TREES = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":snow_under_trees",

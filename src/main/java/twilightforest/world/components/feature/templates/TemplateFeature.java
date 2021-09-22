@@ -4,7 +4,6 @@ import com.google.common.math.StatsAccumulator;
 import com.mojang.serialization.Codec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
@@ -16,11 +15,9 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.material.Material;
 
@@ -50,18 +47,18 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		ChunkPos chunkpos = new ChunkPos(pos);
 		BoundingBox structureMask = new BoundingBox(chunkpos.getMinBlockX(), world.getMinBuildHeight(), chunkpos.getMinBlockZ(), chunkpos.getMaxBlockX(), world.getMaxBuildHeight(), chunkpos.getMaxBlockZ());
 
-		BlockPos posSnap = chunkpos.getWorldPosition().offset(0, pos.getY() + this.yLevelMod(), 0);
+		BlockPos posSnap = chunkpos.getWorldPosition().offset(0, pos.getY(), 0);
 
 		Vec3i transformedSize = template.getSize(rotation);
 		int dx = random.nextInt(16 - transformedSize.getX());
 		int dz = random.nextInt(16 - transformedSize.getZ());
-		posSnap.offset(dx, 0, dz);
+		posSnap = posSnap.offset(dx, 0, dz);
 
 		BlockPos.MutableBlockPos startPos = new BlockPos.MutableBlockPos(posSnap.getX(), posSnap.getY(), posSnap.getZ());
 
-		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
-			return false;
-		}
+		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) return false;
+
+        startPos.move(0, this.yLevelOffset(), 0);
 
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
 
@@ -70,11 +67,11 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 
 		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
 
-		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK)) {
-            this.processData(info, world, rotation, mirror);
-        }
+		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
+            if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA)
+                this.processMarkers(info, world, rotation, mirror, random);
 
-        this.postProcess(world, random, templateManager, rotation, mirror, placementSettings, placementPos);
+        this.postPlacement(world, random, templateManager, rotation, mirror, placementSettings, placementPos);
 
 		return true;
 	}
@@ -85,14 +82,14 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 	protected void modifySettings(StructurePlaceSettings settings, Random random) {
     }
 
-	protected void processData(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror) {
+	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, Random random) {
     }
 
-    protected void postProcess(WorldGenLevel world, Random random, StructureManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
+    protected void postPlacement(WorldGenLevel world, Random random, StructureManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
     }
 
-    protected int yLevelMod() {
-        return -1;
+    protected int yLevelOffset() {
+        return 0;
     }
 
     private static boolean offsetToAverageGroundLevel(WorldGenLevel world, BlockPos.MutableBlockPos startPos, Vec3i size) {
@@ -123,7 +120,7 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
             return false;
         }
 
-        int baseY = (int) Math.round(heights.mean());
+        int baseY = (int) (heights.mean() + 0.5);
         int maxY = (int) heights.max();
 
         startPos.setY(baseY);

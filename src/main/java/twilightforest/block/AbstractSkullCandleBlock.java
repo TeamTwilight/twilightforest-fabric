@@ -119,7 +119,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 
 	//TODO: Port
 	//@Override
-	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+	public ItemStack getPickBlock(BlockState state) {
 		ItemStack newStack = new ItemStack(this);
 		CompoundTag tag = new CompoundTag();
 		tag.putString("color", state.getValue(COLOR).getSerializedName());

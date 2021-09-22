@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.DiskConfigurati
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.TFGenCaveStalactite;
 import twilightforest.world.registration.BlockConstants;
 import twilightforest.world.registration.TFFeature;
@@ -39,7 +40,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	protected int height;
 
 	// FIXME Can we just pluck it from the data pack?
-	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(5, 11), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT)));
+	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.configured(new DiskConfiguration(BlockConstants.UBEROUS_SOIL, UniformInt.of(4, 8), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT)));
 
 	public TrollCaveMainComponent(ServerLevel level, CompoundTag nbt) {
 		this(TrollCavePieces.TFTCMai, nbt);
@@ -243,9 +244,15 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		int dx = getWorldX(x, z);
 		int dz = getWorldZ(x, z);
 
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, world.getHeight(), dz);
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, WorldUtil.getSeaLevel(world.getLevel()) + 30, dz);
 
-		if (sbb.isInside(pos)) feature.place(world, generator, rand, pos);
+		for(int i = 0; i < 10; i++) {
+			pos.move(0, 1, 0);
+			if (sbb.isInside(pos)) {
+				feature.place(world, generator, rand, pos);
+				break;
+			}
+		}
 	}
 
 	protected void makeTreasureCrate(WorldGenLevel world, BoundingBox sbb) {

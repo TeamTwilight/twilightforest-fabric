@@ -9,7 +9,6 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.blockplacers.DoublePlantPlacer;
@@ -24,7 +23,6 @@ import net.minecraft.world.level.levelgen.placement.ConfiguredDecorator;
 import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 import net.minecraft.world.level.levelgen.placement.FrequencyWithExtraChanceDecoratorConfiguration;
 import net.minecraft.world.level.levelgen.placement.WaterDepthThresholdConfiguration;
-import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.config.CaveStalactiteConfig;
@@ -54,7 +52,7 @@ public final class ConfiguredFeatures {
     public static final ConfiguredFeature<TreeConfiguration, ? extends Feature<?>> BROWN_CANOPY_MUSHROOM_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/base/brown_canopy_mushroom"), Feature.TREE.configured(TreeConfigurations.MUSHROOM_BROWN));
     public static final ConfiguredFeature<TreeConfiguration, ? extends Feature<?>> RED_CANOPY_MUSHROOM_TREE_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushroom/base/red_canopy_mushroom"), Feature.TREE.configured(TreeConfigurations.MUSHROOM_RED));
     public static final ConfiguredFeature<TreeConfiguration, ? extends Feature<?>> MEGA_SPRUCE_NO_PODZOL_BASE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/base/mega_spruce_no_podzol"), TFBiomeFeatures.SNOW_TREE.configured(TreeConfigurations.BIG_SPRUCE));
-    //TODO we may not need two methods for this, but hollow trees are causing issues currently so we need to have this for now.
+
     private static final ConfiguredDecorator<?> DEFAULT_TREE_PLACEMENT = TwilightFeatures.CONFIGURED_PLACEMENT_NOTFSTRUCTURE.decorated(Features.Decorators.HEIGHTMAP_WITH_TREE_THRESHOLD).decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.4F, 2)));
     private static final ConfiguredDecorator<?> DEFAULT_TREE_PLACEMENT_SQUARED = TwilightFeatures.CONFIGURED_PLACEMENT_NOTFSTRUCTURE.decorated(Features.Decorators.HEIGHTMAP_WITH_TREE_THRESHOLD_SQUARED).decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.4F, 2)));
     //Spruce trees that can be placed on snow
@@ -81,12 +79,13 @@ public final class ConfiguredFeatures {
     public static final ConfiguredFeature<?, ?> SWAMPY_OAK_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/swampy_oak_trees"), SWAMPY_OAK_BASE.decorated(DEFAULT_TREE_PLACEMENT_SQUARED));
     public static final ConfiguredFeature<?, ?> HOLLOW_OAK_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/hollow_oak_trees"), HOLLOW_TREE_BASE.decorated(DEFAULT_TREE_PLACEMENT));
     public static final ConfiguredFeature<?, ?> MEGA_SPRUCE_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/mega_spruce_no_podzol"), MEGA_SPRUCE_NO_PODZOL_BASE.decorated(DEFAULT_TREE_PLACEMENT_SQUARED).countRandom(4));
-    public static final ConfiguredFeature<?, ?> OAK_DARK_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/oak_dark_forest_trees"), OAK_DARK_FOREST.decorated(DEFAULT_TREE_PLACEMENT_SQUARED).decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.6F, 1))).squared());
-    public static final ConfiguredFeature<?, ?> BIRCH_DARK_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/birch_dark_forest_trees"), BIRCH_DARK_FOREST.decorated(DEFAULT_TREE_PLACEMENT_SQUARED).decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.6F, 1))).squared());
-    public static final ConfiguredFeature<?, ?> BUSH_DARK_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/bush_dark_forest_trees"), BUSH_DARK_FOREST.decorated(DEFAULT_TREE_PLACEMENT_SQUARED).decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.6F, 1))).squared());
+    public static final ConfiguredFeature<?, ?> OAK_DARK_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/oak_dark_forest_trees"), OAK_DARK_FOREST.decorated(DEFAULT_TREE_PLACEMENT_SQUARED).decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.6F, 1))));
+    public static final ConfiguredFeature<?, ?> BIRCH_DARK_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/birch_dark_forest_trees"), BIRCH_DARK_FOREST.decorated(DEFAULT_TREE_PLACEMENT_SQUARED).decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.6F, 1))));
+    public static final ConfiguredFeature<?, ?> BUSH_DARK_FOREST_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/bush_dark_forest_trees"), BUSH_DARK_FOREST.decorated(DEFAULT_TREE_PLACEMENT_SQUARED).decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.6F, 1))));
 
     //"structures" that arent actually structures
-    public static final ConfiguredFeature<?, ?> WELL = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("well"), TFBiomeFeatures.WELL.configured(FeatureConfiguration.NONE).decorated(TwilightFeatures.CONFIGURED_PLACEMENT_NOTFSTRUCTURE).decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE).rarity(90));
+    public static final ConfiguredFeature<?, ?> SIMPLE_WELL = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("simple_well"), TFBiomeFeatures.SIMPLE_WELL.configured(FeatureConfiguration.NONE).decorated(TwilightFeatures.CONFIGURED_PLACEMENT_NOTFSTRUCTURE).decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE).rarity(60));
+    public static final ConfiguredFeature<?, ?> FANCY_WELL = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("fancy_well"), TFBiomeFeatures.FANCY_WELL.configured(FeatureConfiguration.NONE).decorated(TwilightFeatures.CONFIGURED_PLACEMENT_NOTFSTRUCTURE).decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE).rarity(240));
     public static final ConfiguredFeature<?, ?> DRUID_HUT = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("druid_hut"), TFBiomeFeatures.DRUID_HUT.configured(FeatureConfiguration.NONE).decorated(TwilightFeatures.CONFIGURED_PLACEMENT_NOTFSTRUCTURE).decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE).rarity(90));
     public static final ConfiguredFeature<?, ?> GRAVEYARD = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("graveyard"), TFBiomeFeatures.GRAVEYARD.configured(FeatureConfiguration.NONE).decorated(TwilightFeatures.CONFIGURED_PLACEMENT_NOTFSTRUCTURE).rarity(95));
 

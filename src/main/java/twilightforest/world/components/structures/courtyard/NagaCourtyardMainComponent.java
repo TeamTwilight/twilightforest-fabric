@@ -39,7 +39,7 @@ public class NagaCourtyardMainComponent extends StructureMazeGenerator {
 	@Override
 	public boolean postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// naga spawner seems important
-		placeBlock(world, TFBlocks.boss_spawner_naga.defaultBlockState(), RADIUS, 2, RADIUS, sbb);
+		placeBlock(world, TFBlocks.boss_spawner_naga.defaultBlockState(), RADIUS, 3, RADIUS, sbb);
 
 		return true;
 	}
