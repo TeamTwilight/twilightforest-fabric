@@ -38,9 +38,9 @@ public class TFTickHandler {
 		ServerLevel world = (ServerLevel) player.level;
 
 		// check for portal creation, at least if it's not disabled
-		if (!world.isClientSide && !TFConfig.COMMON_CONFIG.disablePortalCreation.get() && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
+		if (!world.isClientSide && !TwilightForestMod.COMMON_CONFIG.portals && player.tickCount % (TwilightForestMod.COMMON_CONFIG.check_portal_destination ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
-			if (TFConfig.COMMON_CONFIG.adminOnlyPortals.get()) {
+			if (TwilightForestMod.COMMON_CONFIG.admin_portals) {
 				if (world.getServer().getProfilePermissions(player.getGameProfile()) != 0) {
 					// reduce range to 4.0 when the option is on
 					checkForPortalCreation(player, world, 4.0F);
@@ -114,9 +114,9 @@ public class TFTickHandler {
 	}
 
 	private static void checkForPortalCreation(Player player, Level world, float rangeToCheck) {
-		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
-				|| world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())
-				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
+		if (world.dimension().location().equals(new ResourceLocation(TwilightForestMod.COMMON_CONFIG.origin_dimension))
+				|| world.dimension().location().toString().equals(TwilightForestMod.COMMON_CONFIG.dimension.portal_destination_id)
+				|| TwilightForestMod.COMMON_CONFIG.portals_in_other_dimensions) {
 
 			List<ItemEntity> itemList = world.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
 

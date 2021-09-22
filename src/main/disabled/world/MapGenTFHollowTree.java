@@ -6,7 +6,6 @@ import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.hollowtree.StructureTFHollowTreeStart;
 

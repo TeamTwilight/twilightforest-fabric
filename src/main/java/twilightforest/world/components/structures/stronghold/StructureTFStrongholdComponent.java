@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
@@ -488,7 +488,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 					boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
 					Block blockID = this.getBlock(world, x, y, z, sbb).getBlock();
 
-					if (blockID == Blocks.AIR && !TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get()) {
+					if (blockID == Blocks.AIR && !TwilightForestMod.COMMON_CONFIG.dimension.skylight_forest) {
 						// cobblestone to "fill in holes"
 						if (wall) {
 							this.placeBlock(world, Blocks.COBBLESTONE.defaultBlockState(), x, y, z, sbb);

@@ -6,7 +6,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.inventory.UncraftingInventory;
 
@@ -50,7 +50,7 @@ public class UncraftingSlot extends Slot {
 		}
 
 		// if uncrafting is disabled, no!
-		if (TFConfig.COMMON_CONFIG.disableUncrafting.get()) {
+		if (TwilightForestMod.COMMON_CONFIG.uncrafting) {
 			return false;
 		}
 

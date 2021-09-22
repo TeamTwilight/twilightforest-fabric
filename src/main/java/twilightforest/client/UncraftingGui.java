@@ -3,12 +3,10 @@ package twilightforest.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.components.Button;
-import com.mojang.blaze3d.platform.Lighting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,14 +15,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.inventory.UncraftingContainer;
 import twilightforest.network.UncraftingGuiPacket;
 import twilightforest.network.TFPacketHandler;
-
-import net.minecraft.client.gui.components.Button.OnPress;
 
 public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> {
 
@@ -86,7 +81,7 @@ public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> 
 	@Override
 	protected void renderLabels(PoseStack ms, int mouseX, int mouseY) {
 		this.font.draw(ms, I18n.get(TFBlocks.uncrafting_table.getDescriptionId()), 6, 6, 4210752);
-		if(TFConfig.COMMON_CONFIG.disableUncrafting.get()) {
+		if(TwilightForestMod.COMMON_CONFIG.uncrafting) {
 			this.font.draw(ms, new TranslatableComponent("container.uncrafting_table.disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 4210752);
 		} else {
 			this.font.draw(ms, I18n.get("container.inventory"), 7, this.imageHeight - 96 + 2, 4210752);

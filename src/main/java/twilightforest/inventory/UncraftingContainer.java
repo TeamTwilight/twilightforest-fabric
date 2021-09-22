@@ -1,6 +1,6 @@
 package twilightforest.inventory;
 
-import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.inventory.slot.AssemblySlot;
 import twilightforest.inventory.slot.UncraftingResultSlot;
@@ -462,7 +462,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 			}
 
 			// don't allow uncrafting if the server option is turned off
-			if (TFConfig.COMMON_CONFIG.disableUncrafting.get()) {
+			if (TwilightForestMod.COMMON_CONFIG.uncrafting) {
 				return;
 			}
 

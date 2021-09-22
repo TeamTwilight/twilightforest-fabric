@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.NonNullList;
-import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 
 public class UncraftingInventory implements Container {
 
@@ -76,7 +76,7 @@ public class UncraftingInventory implements Container {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return !TFConfig.COMMON_CONFIG.disableUncrafting.get();
+		return !TwilightForestMod.COMMON_CONFIG.uncrafting;
 	}
 
 	@Override

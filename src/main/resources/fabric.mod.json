@@ -20,6 +20,9 @@
   "icon": "twilightforest_logo.png",
   "environment": "*",
   "entrypoints": {
+    "modmenu": [
+      "twilightforest.compat.TFModMenu"
+    ],
     "client": [
       "twilightforest.client.TFClientSetup"
     ],

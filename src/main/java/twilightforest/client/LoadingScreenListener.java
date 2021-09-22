@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
 @Environment(EnvType.CLIENT)
@@ -19,7 +19,7 @@ public class LoadingScreenListener {
 	private static final Minecraft client = Minecraft.getInstance();
 	public static void onOpenGui(Screen event) {
 		if (event instanceof ReceivingLevelScreen && client.player != null) {
-			ResourceKey<Level> tfDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get()));
+			ResourceKey<Level> tfDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TwilightForestMod.COMMON_CONFIG.dimension.portal_destination_id));
 			if (client.player.getCommandSenderWorld().getBlockState(client.player.blockPosition().below()) == TFBlocks.twilight_portal.defaultBlockState() || client.player.getCommandSenderWorld().dimension() == tfDimension) {
 				LoadingScreenGui guiLoading = new LoadingScreenGui();
 				guiLoading.setEntering(client.player.getCommandSenderWorld().dimension() == Level.OVERWORLD);
