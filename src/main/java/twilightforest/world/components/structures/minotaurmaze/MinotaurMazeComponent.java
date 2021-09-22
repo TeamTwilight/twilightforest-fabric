@@ -13,7 +13,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -294,7 +294,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 		// clear the area
 		generateAirBox(world, sbb, 1, 1, 1, getDiameter(), 4, getDiameter());
-		boolean onlyReplaceCeiling = this.level == 1 && !TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get();
+		boolean onlyReplaceCeiling = this.level == 1 && !TwilightForestMod.COMMON_CONFIG.dimension.skylight_forest;
 		generateBox(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.maze_stone.defaultBlockState(), stone, onlyReplaceCeiling);
 		generateBox(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.maze_stone_mosaic.defaultBlockState(), stone, false);
 

@@ -3,9 +3,7 @@ package twilightforest.compat.clothConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import shadow.cloth.clothconfig.com.moandjiezana.toml.TomlComment;
-import twilightforest.TwilightForestMod;
 import twilightforest.compat.clothConfig.configEntry.ExtendedConfigEntry;
 
 import java.util.Arrays;
@@ -13,7 +11,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @Config(name = "twilightconfigClient")
-@Config.Gui.CategoryBackground(category = "client", background = TwilightForestMod.ID + ":textures/block/maze_stone_brick.png")
+
 //@Config.Gui.Background(TwilightForestMod.ID + ":textures/block/maze_stone_brick.png")
 public class TFConfigClient extends TFConfigCommon implements ConfigData {
 
@@ -46,9 +44,9 @@ public class TFConfigClient extends TFConfigCommon implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     @ConfigEntry.Gui.Tooltip
     @TomlComment("Client only: Controls for the Loading screen")
-    public loading_Screen loading_screen = new loading_Screen();
+    public LoadingScreen loading_screen = new LoadingScreen();
 
-    public static class loading_Screen {
+    public static class LoadingScreen {
 
         @ConfigEntry.Category("client")
         @ConfigEntry.Gui.Tooltip

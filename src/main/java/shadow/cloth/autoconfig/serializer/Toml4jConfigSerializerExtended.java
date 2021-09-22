@@ -1,9 +1,8 @@
-package shadow.autoconfig.serializer;
+package shadow.cloth.autoconfig.serializer;
 
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.serializer.ConfigSerializer;
-import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import me.shedaniel.autoconfig.util.Utils;
 import me.shedaniel.cloth.clothconfig.shadowed.com.moandjiezana.toml.Toml;
 import shadow.cloth.clothconfig.com.moandjiezana.toml.TomlWriter;

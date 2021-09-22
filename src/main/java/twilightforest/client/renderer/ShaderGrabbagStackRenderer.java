@@ -21,9 +21,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.lwjgl.opengl.GL11;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TFClientEvents;
+import twilightforest.client.TFClientSetup;
 import twilightforest.client.shader.ShaderManager;
 
 //FIXME I know how to make TEs do fun stuff but not Items
@@ -60,7 +60,7 @@ public class ShaderGrabbagStackRenderer implements BlockEntityRenderer<ShaderGra
             Minecraft.getInstance().getItemRenderer().render(stack, ItemTransforms.TransformType.GUI, false, ms, buffers, light, overlay, modelBack/*ForgeHooksClient.handleCameraTransforms(ms, modelBack, transform, false)*/);
             ms.popPose(); // Stack + 1
             ms.translate(0.5F, 0.5F, 0F);
-            ms.mulPose(Vector3f.YP.rotation(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : 0));
+            ms.mulPose(Vector3f.YP.rotation(TFClientSetup.CLIENT_CONFIG.animate_trophyitem ? TFClientEvents.rotationTicker : 0));
 
             ms.pushPose(); // Stack + 2
             ms.translate(0.5F, 0.5F, 0.5F);

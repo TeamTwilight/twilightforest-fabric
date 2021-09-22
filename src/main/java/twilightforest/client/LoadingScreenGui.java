@@ -10,6 +10,7 @@ import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -17,8 +18,9 @@ import net.minecraft.util.Mth;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.lwjgl.opengl.GL11;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.compat.clothConfig.TFConfig;
+import twilightforest.compat.clothConfig.TFConfigClient;
 
 import java.util.Random;
 
@@ -34,7 +36,7 @@ public class LoadingScreenGui extends Screen {
 
 	private static final Random random = new Random();
 	private static final float backgroundScale = 32.0F;
-	private static final TFConfig.Client.LoadingScreen LOADING_SCREEN = TFConfig.CLIENT_CONFIG.LOADING_SCREEN;
+	private static final TFConfigClient.LoadingScreen LOADING_SCREEN = TFClientSetup.CLIENT_CONFIG.loading_screen;
 
 	LoadingScreenGui() {
 	    super(NarratorChatListener.NO_TITLE);
@@ -65,12 +67,12 @@ public class LoadingScreenGui extends Screen {
 			this.contentNeedsAssignment = false;
 		}
 
-		if (minecraft.level != null && LOADING_SCREEN.cycleLoadingScreenFrequency.get() != 0) {
+		if (minecraft.level != null && LOADING_SCREEN.loading_screen_swap_frequency != 0) {
 			if (lastWorldUpdateTick != minecraft.level.getGameTime() % 240000) {
 
 				lastWorldUpdateTick = minecraft.level.getGameTime() % 240000;
 
-				if (lastWorldUpdateTick % LOADING_SCREEN.cycleLoadingScreenFrequency.get() == 0) {
+				if (lastWorldUpdateTick % LOADING_SCREEN.loading_screen_swap_frequency == 0) {
 					assignContent();
 				}
 			}
@@ -98,7 +100,7 @@ public class LoadingScreenGui extends Screen {
 
 	private void assignContent() {
 		backgroundTheme = BackgroundThemes.values()[random.nextInt(BackgroundThemes.values().length)];
-		item = LOADING_SCREEN.getLoadingScreenIcons().get(random.nextInt(LOADING_SCREEN.getLoadingScreenIcons().size()));
+		item = Registry.ITEM.get(new ResourceLocation(LOADING_SCREEN.loading_icon_stacks.get(random.nextInt(LOADING_SCREEN.loading_icon_stacks.size())))).getDefaultInstance();
 		seed = random.nextLong();
 	}
 
@@ -110,22 +112,22 @@ public class LoadingScreenGui extends Screen {
 	}
 
 	private void drawBouncingWobblyItem(float partialTicks, float width, float height) {
-		float sineTicker = (TFClientEvents.sineTicker + partialTicks) * LOADING_SCREEN.frequency.get().floatValue();
-		float sineTicker2 = (TFClientEvents.sineTicker + 314f + partialTicks) * LOADING_SCREEN.frequency.get().floatValue();
+		float sineTicker = (TFClientEvents.sineTicker + partialTicks) * LOADING_SCREEN.loading_icon_wobble_bounce_frequency;
+		float sineTicker2 = (TFClientEvents.sineTicker + 314f + partialTicks) * LOADING_SCREEN.loading_icon_wobble_bounce_frequency;
 
 		PoseStack stack = RenderSystem.getModelViewStack();
 
 		stack.pushPose();
 
 		// Shove it!
-		stack.translate(width - ((width / 30f) * LOADING_SCREEN.scale.get().floatValue()), height - (height / 10f), 0f); // Bottom right Corner
+		stack.translate(width - ((width / 30f) * LOADING_SCREEN.loading_icon_scale), height - (height / 10f), 0f); // Bottom right Corner
 
-		if (LOADING_SCREEN.enable.get()) {
+		if (LOADING_SCREEN.loading_icon_enable) {
 			// Wobble it!
 			//stack.mulPose(Vector3f.XP.rotation(Mth.sin(sineTicker / LOADING_SCREEN.tiltRange.get().floatValue()) * LOADING_SCREEN.tiltConstant.get().floatValue()));
 
 			// Bounce it!
-			stack.scale(((Mth.sin(((sineTicker2 + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / (float) LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), ((Mth.sin(((sineTicker + 180F) / LOADING_SCREEN.tiltRange.get().floatValue()) * 2F) / LOADING_SCREEN.scaleDeviation.get().floatValue()) + 2F) * (LOADING_SCREEN.scale.get().floatValue() / 2F), 1F);
+			stack.scale(((Mth.sin(((sineTicker2 + 180F) / LOADING_SCREEN.loading_icon_tilting) * 2F) / (float) LOADING_SCREEN.loading_icon_bounciness) + 2F) * (LOADING_SCREEN.loading_icon_scale / 2F), ((Mth.sin(((sineTicker + 180F) / LOADING_SCREEN.loading_icon_tilting) * 2F) / LOADING_SCREEN.loading_icon_bounciness) + 2F) * (LOADING_SCREEN.loading_icon_scale / 2F), 1F);
 		}
 
 		// Shift it!

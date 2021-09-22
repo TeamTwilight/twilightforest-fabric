@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
-import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import me.shedaniel.autoconfig.util.Utils;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.api.ClientModInitializer;
@@ -36,9 +35,8 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import shadow.autoconfig.serializer.Toml4jConfigSerializerExtended;
+import shadow.cloth.autoconfig.serializer.Toml4jConfigSerializerExtended;
 import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
-import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -48,7 +46,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.providers.*;
 import twilightforest.compat.clothConfig.TFConfigClient;
 import twilightforest.compat.clothConfig.configEntry.ExtendedConfigEntry;
-import twilightforest.compat.clothConfig.TFConfigTest;
+import twilightforest.compat.clothConfig.TFConfig;
 import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
@@ -68,7 +66,7 @@ public class TFClientSetup implements ClientModInitializer {
 
 	public static boolean optifinePresent = false;
 
-	public static TFConfigClient configClient;
+	public static TFConfigClient CLIENT_CONFIG;
 
     @Environment(EnvType.CLIENT)
 	@Override
@@ -81,7 +79,7 @@ public class TFClientSetup implements ClientModInitializer {
 		private static boolean optifineWarningShown = false;
 
 		public static void showOptifineWarning(Screen screen) {
-			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && screen instanceof TitleScreen) {
+			if (optifinePresent && !optifineWarningShown && !TFClientSetup.CLIENT_CONFIG.optifine && screen instanceof TitleScreen) {
 				optifineWarningShown = true;
 				Minecraft.getInstance().setScreen(new OptifineWarningScreen(screen));
 			}
@@ -90,11 +88,13 @@ public class TFClientSetup implements ClientModInitializer {
 	}
 
 	public static void clientConfigReload(){
-        AutoConfig.getConfigHolder(TFConfigTest.tfConfigClient.getClass()).getConfig();
+        CLIENT_CONFIG = AutoConfig.getConfigHolder(TFConfig.tfConfigClient.getClass()).getConfig();
+        //TFConfig test = AutoConfig.getConfigHolder(TFConfig.class).getConfig();
+
     }
 
     public static void registerCustomAnnotations(){
-        GuiRegistry registry = AutoConfig.getGuiRegistry(TFConfigTest.class);
+        GuiRegistry registry = AutoConfig.getGuiRegistry(TFConfig.class);
         ConfigEntryBuilder ENTRY_BUILDER = ConfigEntryBuilder.create();
 
         registry.registerAnnotationProvider(
@@ -147,15 +147,21 @@ public class TFClientSetup implements ClientModInitializer {
 
 	//TODO: Clean this shit up
     public static void clientSetup() {
-        //AutoConfig.register(TFConfigClient.class, Toml4jConfigSerializer::new);
-        AutoConfig.register(TFConfigTest.class, PartitioningSerializer.wrap(Toml4jConfigSerializerExtended::new));
+        AutoConfig.register(TFConfig.class, PartitioningSerializer.wrap(Toml4jConfigSerializerExtended::new));
+
+        AutoConfig.register(TFConfigClient.class, Toml4jConfigSerializerExtended::new);
+
+        registerCustomAnnotations();
+
 
         //Move this to event class as this is the event in case the player changes anything within cloth config
-        AutoConfig.getConfigHolder(TFConfigTest.class).registerLoadListener((manager, newData) -> {
+        AutoConfig.getConfigHolder(TFConfig.class).registerLoadListener((manager, newData) -> {
             clientConfigReload();
             return InteractionResult.SUCCESS;
         });
-        registerCustomAnnotations();
+
+        clientConfigReload();
+
 
         TFPacketHandler.CHANNEL.initClient();
         TFLayerDefinitions.registerLayers();

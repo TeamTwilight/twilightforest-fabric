@@ -2,37 +2,27 @@ package twilightforest;
 
 import com.chocohead.mm.api.ClassTinkerers;
 import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
-import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.state.properties.WoodType;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLModContainer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import shadow.autoconfig.serializer.Toml4jConfigSerializerExtended;
+import shadow.cloth.autoconfig.serializer.Toml4jConfigSerializerExtended;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.TFCompat;
-import twilightforest.compat.clothConfig.TFConfigClient;
 import twilightforest.compat.clothConfig.TFConfigCommon;
+import twilightforest.compat.clothConfig.TFConfig;
 import twilightforest.entity.TFEntities;
-import twilightforest.item.FieryPickItem;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.tileentity.TFTileEntities;
@@ -60,10 +50,10 @@ public class TwilightForestMod implements ModInitializer {
 
 	private static final Rarity rarity = ClassTinkerers.getEnum(Rarity.class, "TWILIGHT");
 
-	public static TFConfigCommon configCommon;
+	public static TFConfigCommon COMMON_CONFIG;
 
 	public static void commonConfigReload(){
-		configCommon = AutoConfig.getConfigHolder(TFConfigCommon.class).getConfig();
+		COMMON_CONFIG = AutoConfig.getConfigHolder(TFConfig.tfConfigCommon.getClass()).getConfig();
 	}
 
 
@@ -72,6 +62,7 @@ public class TwilightForestMod implements ModInitializer {
 		//noinspection Convert2Lambda,Anonymous2MethodRef
 
 		AutoConfig.register(TFConfigCommon.class, Toml4jConfigSerializerExtended::new);
+		commonConfigReload();
 
 		//Move this to event class as this is the event in case the player changes anything within cloth config
 		AutoConfig.getConfigHolder(TFConfigCommon.class).registerLoadListener((manager, newData) -> {
@@ -80,17 +71,20 @@ public class TwilightForestMod implements ModInitializer {
 		});
 
 		//This is trash
+		/*
 		ModLoadingContext.get().setActiveContainer(new FMLModContainer(ID), null);
 		{
-			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
+			final Pair<twilightforest.TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(twilightforest.TFConfig.Common::new);
 			ModLoadingContext.get().getActiveContainer().addConfig(new ModConfig(ModConfig.Type.COMMON, specPair.getRight(), ModLoadingContext.get().getActiveContainer()));
-			TFConfig.COMMON_CONFIG = specPair.getLeft();
+			twilightforest.TFConfig.COMMON_CONFIG = specPair.getLeft();
 		}
 		{
-			final Pair<TFConfig.Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Client::new);
+			final Pair<twilightforest.TFConfig.Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(twilightforest.TFConfig.Client::new);
 			ModLoadingContext.get().getActiveContainer().addConfig(new ModConfig(ModConfig.Type.CLIENT, specPair.getRight(), ModLoadingContext.get().getActiveContainer()));
-			TFConfig.CLIENT_CONFIG = specPair.getLeft();
+			twilightforest.TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
+
+		 */
 
 		ASMHooks.registerMultipartEvents();
 		this.registerCommands();
@@ -121,11 +115,11 @@ public class TwilightForestMod implements ModInitializer {
 		new TwilightFeatures();
 		new BiomeGrassColors();
 
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
+		if (TwilightForestMod.COMMON_CONFIG.compat) {
 			try {
 				TFCompat.preInitCompat();
 			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
+				TwilightForestMod.COMMON_CONFIG.compat = false;
 				LOGGER.error("Had an error loading preInit compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
@@ -166,27 +160,27 @@ public class TwilightForestMod implements ModInitializer {
 		TFEntities.registerSpawnEggs();
 		TFEventListener.registerFabricEvents();
 
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
+		if (TwilightForestMod.COMMON_CONFIG.compat) {
 			try {
 				TFCompat.initCompat();
 			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
+				TwilightForestMod.COMMON_CONFIG.compat = false;
 				LOGGER.error("Had an error loading init compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
 		}
 
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
+		if (TwilightForestMod.COMMON_CONFIG.compat) {
 			try {
 				TFCompat.postInitCompat();
 			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
+				TwilightForestMod.COMMON_CONFIG.compat = false;
 				LOGGER.error("Had an error loading postInit compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
 		}
 
-		TFConfig.build();
+		//twilightforest.TFConfig.build();
 		TFGenCaveStalactite.loadStalactites();
 
 		WoodType.register(TFBlocks.TWILIGHT_OAK);
@@ -226,7 +220,7 @@ public class TwilightForestMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		run();
-		LOGGER.info("Portal Lighting: "+TFConfig.COMMON_CONFIG.portalLightning.get());
+		LOGGER.info("Portal Lighting: "+ TwilightForestMod.COMMON_CONFIG.portal_lighting);
 		init();
 		TwilightForestMod.LOGGER.info("RUNNING OK");
 

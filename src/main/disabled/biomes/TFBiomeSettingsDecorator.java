@@ -16,7 +16,6 @@ import net.minecraft.world.gen.foliageplacer.FancyFoliagePlacer;
 import net.minecraft.world.gen.placement.*;
 import net.minecraft.world.gen.trunkplacer.FancyTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
-import twilightforest.TFConfig;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.components.feature.*;
 import twilightforest.world.components.feature.config.CaveStalactiteConfig;

@@ -5,7 +5,6 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -152,7 +151,7 @@ public class TFClientEvents {
 	 */
 	public static void renderWorldLast(float partialTicks) {
 
-		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
+		if (!TFClientSetup.CLIENT_CONFIG.first_person_effects) return;
 
 		Options settings = Minecraft.getInstance().options;
 		if (settings.getCameraType() != CameraType.FIRST_PERSON || settings.hideGui) return;

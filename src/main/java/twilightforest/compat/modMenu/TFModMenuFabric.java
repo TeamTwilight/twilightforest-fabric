@@ -1,4 +1,4 @@
-package twilightforest.compat.clothConfig;
+package twilightforest.compat.modMenu;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -28,7 +28,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Config(name = TwilightForestMod.ID)
-public class TFConfigMenuFabric implements ConfigData {
+public class TFModMenuFabric implements ConfigData {
     private static final String config = TwilightForestMod.ID + ".config.";
 
     private final static TranslatableComponent toolTip(String string){
