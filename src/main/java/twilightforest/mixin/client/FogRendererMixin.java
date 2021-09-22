@@ -24,9 +24,9 @@ public class FogRendererMixin {
 
     @Inject(method = "setupColor", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clearColor(FFFF)V"), cancellable = true)
     private static void fogHook(Camera activeRenderInfo, float partialTicks, ClientLevel level, int renderDistanceChunks, float bossColorModifier, CallbackInfo ci) {
-        Color color = FogHandler.fogColors(activeRenderInfo, partialTicks, fogRed, fogGreen, fogBlue);
-        fogRed = color.getRed();
-        fogGreen = color.getGreen();
-        fogBlue = color.getBlue();
+//        Color color = FogHandler.fogColors(activeRenderInfo, partialTicks, fogRed, fogGreen, fogBlue);
+//        fogRed = color.getRed();
+//        fogGreen = color.getGreen();
+//        fogBlue = color.getBlue();
     }
 }

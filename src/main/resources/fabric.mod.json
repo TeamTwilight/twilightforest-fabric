@@ -21,7 +21,6 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "twilightforest.client.TwilightForestModClient",
       "twilightforest.client.TFClientSetup"
     ],
     "main": [
