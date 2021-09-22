@@ -33,6 +33,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
@@ -193,7 +194,6 @@ public class TFEventListener {
 	}
 
 	public static boolean entityHurts(LivingEntity living, DamageSource damageSource) {
-
 		String damageType = damageSource.getMsgId();
 		Entity trueSource = damageSource.getEntity();
 
