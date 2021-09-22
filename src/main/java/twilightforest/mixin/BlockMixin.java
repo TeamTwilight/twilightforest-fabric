@@ -7,5 +7,4 @@ import net.minecraft.world.level.block.Block;
 
 @Mixin(Block.class)
 public class BlockMixin implements IBlockMethods {
-
 }
