@@ -80,11 +80,13 @@ public class TFClientSetup implements ClientModInitializer {
 
 	}
 
+	public static TFConfigClient clientConfig(){
+        return AutoConfig.getConfigHolder(TFConfigClient.class).getConfig();
+    }
+
 	//TODO: Clean this shit up
     public static void clientSetup() {
         AutoConfig.register(TFConfigClient.class, Toml4jConfigSerializer::new);
-
-        config = AutoConfig.getConfigHolder(TFConfigClient.class).getConfig();
 
         TFPacketHandler.CHANNEL.initClient();
         TFLayerDefinitions.registerLayers();

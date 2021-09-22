@@ -70,7 +70,7 @@ public class JarBlock extends Block {
 	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
 		super.randomTick(state, worldIn, pos, random);
 		//need to counter a higher random tick speed resulting in so many sounds, so here we go
-		if(TFClientSetup.config.silent_cicadas && random.nextInt(worldIn.getGameRules().getInt(GameRules.RULE_RANDOMTICKING)) <= 3 ) {
+		if(!TFClientSetup.clientConfig().silent_cicadas && random.nextInt(worldIn.getGameRules().getInt(GameRules.RULE_RANDOMTICKING)) <= 3 ) {
 			worldIn.playSound(null, pos, TFSounds.CICADA, SoundSource.BLOCKS, 1.0F, 1.0F);
 		}
 	}
