@@ -17,7 +17,7 @@
   ],
   "contact": {},
   "license": "GNU LESSER GENERAL PUBLIC LICENSE Version 2.1",
-  "icon": "twilightforest_logo.png",
+  "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "modmenu": [
@@ -51,6 +51,7 @@
   "custom": {
     "cardinal-components": [
       "twilightforest:shield"
-    ]
+    ],
+    "banner": "twilightforest_logo.png"
   }
 }
