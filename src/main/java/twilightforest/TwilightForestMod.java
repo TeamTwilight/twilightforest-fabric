@@ -27,6 +27,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.TFCompat;
+import twilightforest.compat.clothConfig.TFConfigClient;
 import twilightforest.compat.clothConfig.TFConfigCommon;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.FieryPickItem;
@@ -56,6 +57,11 @@ public class TwilightForestMod implements ModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
 	private static final Rarity rarity = ClassTinkerers.getEnum(Rarity.class, "TWILIGHT");
+
+	public static TFConfigCommon commonConfig(){
+		return AutoConfig.getConfigHolder(TFConfigCommon.class).getConfig();
+	}
+
 
 	public void run() {
 		// FIXME: safeRunWhenOn is being real jank for some reason, look into it

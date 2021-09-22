@@ -2,7 +2,10 @@ package twilightforest.client;
 
 import com.google.common.collect.Maps;
 import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
+import me.shedaniel.autoconfig.util.Utils;
+import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,6 +23,7 @@ import net.minecraft.core.BlockSource;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.sounds.SoundSource;
@@ -41,6 +45,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.providers.*;
 import twilightforest.compat.clothConfig.TFConfigClient;
 import twilightforest.compat.clothConfig.TFConfigCommon;
+import twilightforest.compat.clothConfig.configEntry.ExtendedConfigEntry;
 import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
@@ -53,6 +58,7 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.tileentity.TFTileEntities;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
 
 @Environment(EnvType.CLIENT)
 public class TFClientSetup implements ClientModInitializer {
@@ -84,9 +90,60 @@ public class TFClientSetup implements ClientModInitializer {
         return AutoConfig.getConfigHolder(TFConfigClient.class).getConfig();
     }
 
+    public static void registerCustomAnnotations(){
+        GuiRegistry registry = AutoConfig.getGuiRegistry(TFConfigClient.class);
+        ConfigEntryBuilder ENTRY_BUILDER = ConfigEntryBuilder.create();
+
+        registry.registerAnnotationProvider(
+                (i13n, field, config, defaults, guiProvider) -> {
+                    ExtendedConfigEntry.BoundedFloat bounds
+                            = field.getAnnotation(ExtendedConfigEntry.BoundedFloat.class);
+
+                    return Collections.singletonList(
+                            ENTRY_BUILDER.startFloatField(
+                                            new TranslatableComponent(i13n),
+                                            Utils.getUnsafely(field, config, 0f)
+
+                                    )
+                                    .setMax(bounds.max())
+                                    .setMin(bounds.min())
+                                    .setDefaultValue(() -> Utils.getUnsafely(field, defaults))
+                                    .setSaveConsumer(newValue -> Utils.setUnsafely(field, config, newValue))
+                                    .build()
+                    );
+                },
+                field -> field.getType() == float.class || field.getType() == Float.class,
+                ExtendedConfigEntry.BoundedFloat.class
+        );
+
+        registry.registerAnnotationProvider(
+                (i13n, field, config, defaults, guiProvider) -> {
+                    ExtendedConfigEntry.BoundedDouble bounds
+                            = field.getAnnotation(ExtendedConfigEntry.BoundedDouble.class);
+
+                    return Collections.singletonList(
+                            ENTRY_BUILDER.startDoubleField(
+                                            new TranslatableComponent(i13n),
+                                            Utils.getUnsafely(field, config, 0f)
+
+                                    )
+                                    .setMax(bounds.max())
+                                    .setMin(bounds.min())
+                                    .setDefaultValue(() -> Utils.getUnsafely(field, defaults))
+                                    .setSaveConsumer(newValue -> Utils.setUnsafely(field, config, newValue))
+                                    .build()
+                    );
+                },
+                field -> field.getType() == double.class || field.getType() == Double.class,
+                ExtendedConfigEntry.BoundedDouble.class
+        );
+    }
+
 	//TODO: Clean this shit up
     public static void clientSetup() {
         AutoConfig.register(TFConfigClient.class, Toml4jConfigSerializer::new);
+
+        registerCustomAnnotations();
 
         TFPacketHandler.CHANNEL.initClient();
         TFLayerDefinitions.registerLayers();

@@ -5,6 +5,7 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import twilightforest.TwilightForestMod;
+import twilightforest.compat.clothConfig.configEntry.ExtendedConfigEntry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,42 +61,42 @@ public class TFConfigClient implements ConfigData {
         public int loading_screen_swap_frequency = 0;
 
         @ConfigEntry.Category("client")
-        @ConfigEntry.Gui.Excluded
+        //@ConfigEntry.Gui.Excluded
         //Orignal default value was 5F so fine a way to get Double values
         @ConfigEntry.Gui.Tooltip
-        //@ConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
+        @ExtendedConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
         @Comment("Frequency of wobble and bounce.")
         public float loading_icon_wobble_bounce_frequency = 5f;
 
         @ConfigEntry.Category("client")
-        @ConfigEntry.Gui.Excluded
+        //@ConfigEntry.Gui.Excluded
         //Orignal default value was 3F so fine a way to get Double values
         @ConfigEntry.Gui.Tooltip
-        //@ConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
+        @ExtendedConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
         @Comment("Scale of whole bouncy loading icon.")
         public float loading_icon_scale = 3f;
 
         @ConfigEntry.Category("client")
-        @ConfigEntry.Gui.Excluded
+        //@ConfigEntry.Gui.Excluded
         //Orignal default value was 5.25F so fine a way to get Double values
         @ConfigEntry.Gui.Tooltip
-        //@ConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
+        @ExtendedConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
         @Comment("How much the loading icon bounces.")
         public float loading_icon_bounciness = 5.25f;
 
         @ConfigEntry.Category("client")
-        @ConfigEntry.Gui.Excluded
+        //@ConfigEntry.Gui.Excluded
         //Orignal default value was 11.25F and a max value of 360F so fine a way to get Double values
         @ConfigEntry.Gui.Tooltip
-        //@ConfigEntry.BoundedFloat(min = 0, max = 360F)
+        @ExtendedConfigEntry.BoundedFloat(min = 0, max = 360F)
         @Comment("How far the loading icon wobbles.")
         public float loading_icon_tilting = 11.25f;
 
         @ConfigEntry.Category("client")
-        @ConfigEntry.Gui.Excluded
+        //@ConfigEntry.Gui.Excluded
         //Orignal default value was 22.5F and a max value of 360F so fine a way to get Double values
         @ConfigEntry.Gui.Tooltip
-        //@ConfigEntry.BoundedFloat(min = 0, max = 360f)
+        @ExtendedConfigEntry.BoundedFloat(min = 0, max = 360f)
         @Comment("Pushback value to re-center the wobble of loading icon.")
         public float loading_icon_tilt_pushback = 22.5F;
 
