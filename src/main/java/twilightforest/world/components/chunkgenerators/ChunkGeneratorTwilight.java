@@ -97,45 +97,40 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		final int relativeFeatureX = featureRelativePos.x;
 		final int relativeFeatureZ = featureRelativePos.z;
 
-		switch (nearFeature) {
-			case SMALL_HILL, MEDIUM_HILL, LARGE_HILL, HYDRA_LAIR -> {
-				int hdiam = (nearFeature.size * 2 + 1) * 16;
+		if (TFFeature.isTheseFeatures(nearFeature, TFFeature.SMALL_HILL, TFFeature.MEDIUM_HILL, TFFeature.LARGE_HILL, TFFeature.HYDRA_LAIR)) {
+			int hdiam = (nearFeature.size * 2 + 1) * 16;
 
-				for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
-					for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
-						int featureDX = xInChunk - relativeFeatureX;
-						int featureDZ = zInChunk - relativeFeatureZ;
+			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
+				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
+					int featureDX = xInChunk - relativeFeatureX;
+					int featureDZ = zInChunk - relativeFeatureZ;
 
-						float dist = (int) Mth.sqrt(featureDX * featureDX + featureDZ * featureDZ);
-						float hheight = (int) (Mth.cos(dist / hdiam * Mth.PI) * (hdiam / 3F));
-						this.raiseHills(primer, chunk, nearFeature, hdiam, xInChunk, zInChunk, featureDX, featureDZ, hheight);
-					}
+					float dist = (int) Mth.sqrt(featureDX * featureDX + featureDZ * featureDZ);
+					float hheight = (int) (Mth.cos(dist / hdiam * Mth.PI) * (hdiam / 3F));
+					this.raiseHills(primer, chunk, nearFeature, hdiam, xInChunk, zInChunk, featureDX, featureDZ, hheight);
 				}
 			}
-			case HEDGE_MAZE, NAGA_COURTYARD, QUEST_GROVE -> {
-				for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
-					for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
-						int featureDX = xInChunk - relativeFeatureX;
-						int featureDZ = zInChunk - relativeFeatureZ;
+		} else if (TFFeature.isTheseFeatures(nearFeature, TFFeature.HEDGE_MAZE, TFFeature.NAGA_COURTYARD, TFFeature.QUEST_GROVE)) {
+			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
+				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
+					int featureDX = xInChunk - relativeFeatureX;
+					int featureDZ = zInChunk - relativeFeatureZ;
 
-						this.flattenTerrainForFeature(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
-					}
+					this.flattenTerrainForFeature(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
 				}
 			}
-			case YETI_CAVE -> {
-				for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
-					for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
-						int featureDX = xInChunk - relativeFeatureX;
-						int featureDZ = zInChunk - relativeFeatureZ;
+		} else if (nearFeature == TFFeature.YETI_CAVE) {
+			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
+				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
+					int featureDX = xInChunk - relativeFeatureX;
+					int featureDZ = zInChunk - relativeFeatureZ;
 
-						this.deformTerrainForYetiLair(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
-					}
+					this.deformTerrainForYetiLair(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
 				}
 			}
-			case TROLL_CAVE -> {
-				// troll cloud, more like
-				this.deformTerrainForTrollCloud2(primer, chunk, nearFeature, relativeFeatureX, relativeFeatureZ);
-			}
+		} else if (nearFeature == TFFeature.TROLL_CAVE) {
+			// troll cloud, more like
+			this.deformTerrainForTrollCloud2(primer, chunk, nearFeature, relativeFeatureX, relativeFeatureZ);
 		}
 
 		// done!
