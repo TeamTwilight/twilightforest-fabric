@@ -21,9 +21,11 @@ import java.util.Random;
 public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 
 	int entranceLevel;
+	boolean deepslateVer;
 
 	public StrongholdFoundryComponent(ServerLevel level, CompoundTag nbt) {
 		super(StrongholdPieces.TFSFo, nbt);
+		this.deepslateVer = nbt.getBoolean("deepslateVer");
 		this.entranceLevel = nbt.getInt("entranceLevel");
 	}
 
@@ -35,10 +37,12 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 	protected void addAdditionalSaveData(ServerLevel level, CompoundTag tagCompound) {
 		super.addAdditionalSaveData(level, tagCompound);
 		tagCompound.putInt("entranceLevel", this.entranceLevel);
+		tagCompound.putBoolean("deepslateVer", this.deepslateVer);
 	}
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+		this.deepslateVer = new Random().nextBoolean();
 		if (y > -15) {
 			this.entranceLevel = 3;
 			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -20, 0, 18, 25, 18, facing);
@@ -110,7 +114,6 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 
 		// suspended mass
 		Random massRandom = new Random(rand.nextLong());
-		boolean deepslateVer = rand.nextBoolean();
 
 		for (int x = 4; x < 14; x++) {
 			for (int z = 4; z < 14; z++) {

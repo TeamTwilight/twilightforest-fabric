@@ -54,7 +54,8 @@
     ],
     [
       "twilightforest:druid_hut",
-      "twilightforest:well",
+      "twilightforest:fancy_well",
+      "twilightforest:simple_well",
       "twilightforest:grove_ruins",
       "twilightforest:foundation",
       "twilightforest:stone_circle",

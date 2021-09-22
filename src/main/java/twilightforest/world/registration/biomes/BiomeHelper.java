@@ -317,7 +317,8 @@ public abstract class BiomeHelper {
 
 	public static void commonFeatures(BiomeGenerationSettings.Builder biome) {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DRUID_HUT);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.WELL);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FANCY_WELL);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SIMPLE_WELL);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.GROVE_RUINS);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FOUNDATION);
 

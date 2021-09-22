@@ -5,9 +5,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import twilightforest.util.FeaturePlacers;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import javax.annotation.Nullable;
@@ -33,13 +35,20 @@ public class MossyCobbleTemplateProcessor extends RandomizedTemplateProcessor {
 		Random random = placementSettingsIn.getRandom(pos);
 
 		if (shouldPlaceBlock(random)) {
-			Block block = blockInfo.state.getBlock();
+			BlockState state = blockInfo.state;
+			Block block = state.getBlock();
 
 			if (block == Blocks.COBBLESTONE)
 				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(blockInfo.pos, Blocks.MOSSY_COBBLESTONE.defaultBlockState(), null);
 
+			if (block == Blocks.COBBLESTONE_STAIRS)
+				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(blockInfo.pos, FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_STAIRS), null);
+
+			if (block == Blocks.COBBLESTONE_SLAB)
+				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(blockInfo.pos, FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_SLAB), null);
+
 			if (block == Blocks.COBBLESTONE_WALL)
-				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(blockInfo.pos, Blocks.MOSSY_COBBLESTONE_WALL.defaultBlockState(), null);
+				return random.nextBoolean() ? blockInfo : new StructureTemplate.StructureBlockInfo(blockInfo.pos, FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_WALL), null);
 
 			return blockInfo;
 		}

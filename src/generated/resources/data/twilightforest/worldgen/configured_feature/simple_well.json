@@ -1,0 +1,35 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {},
+              "type": "twilightforest:simple_well"
+            },
+            "decorator": {
+              "config": {},
+              "type": "twilightforest:nostructure"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {
+            "heightmap": "WORLD_SURFACE_WG"
+          },
+          "type": "minecraft:heightmap"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "chance": 60
+      },
+      "type": "minecraft:chance"
+    }
+  },
+  "type": "minecraft:decorated"
+}

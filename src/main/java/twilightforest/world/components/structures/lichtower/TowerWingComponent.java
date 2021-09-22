@@ -300,7 +300,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
 
 		// we are attached if our parent is taller than we are
-		boolean attached = parent.getBoundingBox().maxY() >= this.boundingBox.maxY();
+		boolean attached = parent.getBoundingBox().maxY() > this.boundingBox.maxY();
 
 		if (attached) {
 			makeAttachedRoof(list, rand);

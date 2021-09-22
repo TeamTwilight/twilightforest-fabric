@@ -6,7 +6,7 @@
           "config": {
             "feature": {
               "config": {},
-              "type": "twilightforest:well"
+              "type": "twilightforest:fancy_well"
             },
             "decorator": {
               "config": {},
@@ -26,7 +26,7 @@
     },
     "decorator": {
       "config": {
-        "chance": 90
+        "chance": 240
       },
       "type": "minecraft:chance"
     }
