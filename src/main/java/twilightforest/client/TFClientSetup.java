@@ -1,6 +1,8 @@
 package twilightforest.client;
 
 import com.google.common.collect.Maps;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -37,6 +39,8 @@ import twilightforest.client.model.TFLayerDefinitions;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.providers.*;
+import twilightforest.compat.clothConfig.TFConfigClient;
+import twilightforest.compat.clothConfig.TFConfigCommon;
 import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
@@ -76,6 +80,8 @@ public class TFClientSetup implements ClientModInitializer {
 
 	//TODO: Clean this shit up
     public static void clientSetup() {
+        AutoConfig.register(TFConfigClient.class, Toml4jConfigSerializer::new);
+
         TFPacketHandler.CHANNEL.initClient();
         TFLayerDefinitions.registerLayers();
         TFModelLayers.init();

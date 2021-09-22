@@ -1,6 +1,9 @@
 package twilightforest;
 
 import com.chocohead.mm.api.ClassTinkerers;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
+import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
@@ -24,6 +27,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.TFCompat;
+import twilightforest.compat.clothConfig.TFConfigCommon;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.FieryPickItem;
 import twilightforest.loot.TFTreasure;
@@ -56,6 +60,9 @@ public class TwilightForestMod implements ModInitializer {
 	public void run() {
 		// FIXME: safeRunWhenOn is being real jank for some reason, look into it
 		//noinspection Convert2Lambda,Anonymous2MethodRef
+
+		AutoConfig.register(TFConfigCommon.class, Toml4jConfigSerializer::new);
+
 
 		//This is trash
 		ModLoadingContext.get().setActiveContainer(new FMLModContainer(ID), null);

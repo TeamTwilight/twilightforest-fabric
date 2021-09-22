@@ -24,7 +24,6 @@
       "twilightforest.compat.TFModMenu"
     ],
     "client": [
-      "twilightforest.client.TwilightForestModClient",
       "twilightforest.client.TFClientSetup"
     ],
     "main": [
