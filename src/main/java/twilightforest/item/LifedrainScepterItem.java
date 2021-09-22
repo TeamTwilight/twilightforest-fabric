@@ -24,18 +24,19 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.TFSounds;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-import net.minecraft.world.item.Item.Properties;
 import twilightforest.entity.boss.AlphaYetiEntity;
+import twilightforest.extensions.IItem;
 
-public class LifedrainScepterItem extends Item {
+public class LifedrainScepterItem extends Item implements IItem {
 
 	protected LifedrainScepterItem(Properties props) {
 		super(props);
@@ -58,7 +59,8 @@ public class LifedrainScepterItem extends Item {
 		return false;
 	}
 
-	@Override
+	//TODO: PORT
+	//@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		return false;
 	}
@@ -124,7 +126,7 @@ public class LifedrainScepterItem extends Item {
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
 		Level world = living.level;
 
-		if (stack.getDamageValue() == this.getMaxDamage(stack)) {
+		if (stack.getDamageValue() == this.getMaxDamage()) {
 			// do not use
 			living.stopUsingItem();
 			return;
@@ -230,18 +232,19 @@ public class LifedrainScepterItem extends Item {
 		return UseAnim.BOW;
 	}
 
-	@Override
-	public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
-		return oldStack.getItem() == newStack.getItem();
-	}
+	//TODO: PORT
+//	@Override
+//	public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
+//		return oldStack.getItem() == newStack.getItem();
+//	}
+//
+//	@Override
+//	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+//		return slotChanged || newStack.getItem() != oldStack.getItem();
+//	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return slotChanged || newStack.getItem() != oldStack.getItem();
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, world, tooltip, flags);
 		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));

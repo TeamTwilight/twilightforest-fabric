@@ -1,4 +1,5 @@
 {
+  "scale": 0.05,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -189,11 +190,9 @@
   },
   "spawn_costs": {},
   "player_spawn_friendly": false,
-  "forge:registry_name": "twilightforest:highlands",
   "precipitation": "rain",
   "temperature": 0.4,
   "downfall": 0.7,
   "category": "mesa",
-  "depth": 1.75,
-  "scale": 0.05
+  "depth": 1.75
 }

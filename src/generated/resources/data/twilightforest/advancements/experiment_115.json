@@ -1,0 +1,35 @@
+{
+  "parent": "twilightforest:progress_knights",
+  "display": {
+    "icon": {
+      "item": "twilightforest:experiment_115"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.experiment_115"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.experiment_115.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "eat_experiment_115": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:experiment_115"
+          ]
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "eat_experiment_115"
+    ]
+  ]
+}

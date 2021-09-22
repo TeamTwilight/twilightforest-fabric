@@ -1,4 +1,5 @@
 {
+  "scale": 0.05,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -207,11 +208,9 @@
   },
   "spawn_costs": {},
   "player_spawn_friendly": true,
-  "forge:registry_name": "twilightforest:firefly_forest",
   "precipitation": "rain",
   "temperature": 0.5,
   "downfall": 1.0,
   "category": "forest",
-  "depth": 0.0625,
-  "scale": 0.05
+  "depth": 0.0625
 }

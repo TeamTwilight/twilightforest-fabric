@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#twilightforest:common_protections",
+    "twilightforest:fake_diamond",
+    "twilightforest:fake_gold"
+  ]
+}

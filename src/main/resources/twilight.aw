@@ -152,3 +152,7 @@ accessible method net/minecraft/data/recipes/RecipeProvider saveAdvancement (Lne
 accessible class net/minecraft/tags/StaticTagHelper$Wrapper
 accessible field net/minecraft/tags/StaticTagHelper$Wrapper tag Lnet/minecraft/tags/Tag;
 accessible field net/minecraft/world/entity/monster/Slime wasOnGround Z
+accessible method net/minecraft/data/loot/BlockLoot createSilkTouchDispatchTable (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/level/storage/loot/entries/LootPoolEntryContainer$Builder;)Lnet/minecraft/world/level/storage/loot/LootTable$Builder;
+accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator defaultBlock Lnet/minecraft/world/level/block/state/BlockState;
+accessible field net/minecraft/world/level/chunk/ChunkGenerator strongholdSeed J
+accessible field net/minecraft/client/resources/ClientPackSource BUILT_IN Lnet/minecraft/server/packs/metadata/pack/PackMetadataSection;

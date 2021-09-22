@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.data.DataGenerators;
 
 import net.minecraft.commands.CommandSourceStack;
@@ -18,13 +19,13 @@ public class TFCommand {
                 .then(CenterCommand.register())
                 .then(ConquerCommand.register())
                 .then(InfoCommand.register())
-                //.then(TestCommand.register())
+                .then(GenetateDataCommand.register())
                 .then(ShieldCommand.register());
         LiteralCommandNode<CommandSourceStack> node = dispatcher.register(builder);
         dispatcher.register(Commands.literal("tf").redirect(node));
         dispatcher.register(Commands.literal("tffeature").redirect(node));
 
         dispatcher.register(MapBiomesCommand.register());
-        dispatcher.register(Commands.literal("gendata").executes((source) -> DataGenerators.run()));
+        dispatcher.register(Commands.literal("gendata").executes((source) -> DataGenerators.gatherData()));
     }
 }

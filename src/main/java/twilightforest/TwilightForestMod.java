@@ -25,6 +25,8 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.TFEntities;
+import twilightforest.item.FieryPickItem;
+import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.components.BiomeGrassColors;
@@ -46,8 +48,6 @@ public class TwilightForestMod implements ModInitializer {
 	public static final String ARMOR_DIR = ID + ":textures/armor/";
 
 	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRuleRegistry.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true)); //Putting it in UPDATES since other world stuff is here
-
-	public static CreativeModeTab CREATIVETAB = FabricItemGroupBuilder.build(new ResourceLocation(TwilightForestMod.ID, TwilightForestMod.ID), () -> new ItemStack(TFBlocks.twilight_portal_miniature_structure));
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
@@ -88,11 +88,11 @@ public class TwilightForestMod implements ModInitializer {
 		TFStructures.register();
 		//MinecraftForge.EVENT_BUS.addListener(TFStructures::load);
 		TFBiomeFeatures.init();
-		ConfiguredSurfaceBuilders.init();
 		ConfiguredWorldCarvers.register();
 		TwilightFeatures.registerPlacementConfigs();
 		ConfiguredFeatures.init();
 		TwilightSurfaceBuilders.register();
+		registerSerializers();
 		//TFContainers.CONTAINERS.register(modbus);
 //		TFEnchantments.ENCHANTMENTS.register(modbus);
 		// Poke these so they exist when we need them FIXME this is probably terrible design
@@ -112,12 +112,11 @@ public class TwilightForestMod implements ModInitializer {
 		}
 	}
 
-//	@SubscribeEvent
-//	public static void registerSerializers(RegistryEvent.Register<RecipeSerializer<?>> evt) {
-//		//How do I add a condition serializer as fast as possible? An event that fires really early
-//		CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
-//		TFTreasure.init();
-//	}
+	public static void registerSerializers() {
+		//How do I add a condition serializer as fast as possible? An event that fires really early
+		//CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
+		TFTreasure.init();
+	}
 
 //	@SubscribeEvent
 //	public static void registerLootModifiers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {

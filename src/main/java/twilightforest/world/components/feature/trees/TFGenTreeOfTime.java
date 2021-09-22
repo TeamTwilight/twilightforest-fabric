@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import twilightforest.block.TFBlocks;
+import twilightforest.extensions.IBlockMethods;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 import twilightforest.world.components.feature.trees.TFGenHollowTree;
 
@@ -32,9 +33,9 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
 		//TODO: PORT
-//		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
-//			return false;
-//		}
+		if (!((IBlockMethods)state.getBlock()).canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
+			return false;
+		}
 
 		// make a tree!
 

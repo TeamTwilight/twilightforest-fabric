@@ -11,6 +11,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.WorldUtil;
 
 import java.util.Random;
 
@@ -44,8 +45,7 @@ public class TFGenHugeLilyPad extends Feature<NoneFeatureConfiguration> {
 					random.nextInt(4) - random.nextInt(4),
 					random.nextInt(8) - random.nextInt(8)
 			);
-			//TODO: PORT
-			if (shouldPlacePadAt(world, dPos) /*&& world.isAreaLoaded(dPos, 1)*/) {
+			if (shouldPlacePadAt(world, dPos) && WorldUtil.isAreaLoaded(world, dPos, 1)) {
 				final Direction horizontal = Direction.from2DDataValue(random.nextInt(4));
 				final BlockState lilypad = TFBlocks.huge_lilypad.defaultBlockState().setValue(FACING, horizontal);
 

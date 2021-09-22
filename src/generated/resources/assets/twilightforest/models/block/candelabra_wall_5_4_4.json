@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
+    "particle": "#candelabra",
     "candelabra": "twilightforest:block/candelabra"
   },
   "elements": [

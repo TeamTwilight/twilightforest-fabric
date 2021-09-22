@@ -19,7 +19,7 @@ public class OutOfStructureFilter extends FeatureDecorator<NoneDecoratorConfigur
 
 	@Override
 	public Stream<BlockPos> getPositions(DecorationContext worldDecoratingHelper, Random random, NoneDecoratorConfiguration noPlacementConfig, BlockPos blockPos) {
-		if (!(worldDecoratingHelper.getLevel().getLevel().getChunkSource().generator instanceof ChunkGeneratorTwilight tfChunkGen))
+		if (!(worldDecoratingHelper.getLevel().getLevel().getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight tfChunkGen))
 			return Stream.of(blockPos);
 
 		// Feature Center

@@ -3,6 +3,7 @@ package twilightforest.world.components.chunkgenerators;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
@@ -17,16 +18,20 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.synth.SurfaceNoise;
-import net.minecraftforge.common.world.StructureSpawnManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
+import twilightforest.util.StructureSpawnManager;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.Nullable;
 
 // TODO override getBaseHeight and getBaseColumn for our advanced structure terraforming
 public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
@@ -200,14 +205,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 						final int oceanFloor = primer.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
 
 						if (dist < 7 || cv < 0.05F) {
-							primer.setBlock(movingPos.setY(y), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y), TFBlocks.wispy_cloud.defaultBlockState(), 3);
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.defaultBlockState(), 3);
 							}
-							primer.setBlock(movingPos.setY(y - depth), TFBlocks.wispy_cloud.get().defaultBlockState(), 3);
+							primer.setBlock(movingPos.setY(y - depth), TFBlocks.wispy_cloud.defaultBlockState(), 3);
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.get().defaultBlockState(), 3);
+								primer.setBlock(movingPos.setY(y - d), TFBlocks.fluffy_cloud.defaultBlockState(), 3);
 							}
 						}
 
@@ -392,7 +397,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
 						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2);
-						if (BiomeKeys.DARK_FOREST.location().equals(biome.getRegistryName()) || BiomeKeys.DARK_FOREST_CENTER.location().equals(biome.getRegistryName())) {
+						if (BiomeKeys.DARK_FOREST.location().equals(primer.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome)) || BiomeKeys.DARK_FOREST_CENTER.location().equals(primer.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome))) {
 							thicks[dX + dZ * 5]++;
 							biomeFound = true;
 						}
@@ -458,7 +463,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 					treeBottom -= noise;
 
-					BlockState darkLeaves = TFBlocks.hardened_dark_leaves.get().defaultBlockState();
+					BlockState darkLeaves = TFBlocks.hardened_dark_leaves.defaultBlockState();
 
 					for (int y = treeBottom; y < treeTop; y++) {
 						primer.setBlock(pos.atY(y), darkLeaves, 3);

@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:twilight_oak_stairs",
+    "twilightforest:canopy_stairs",
+    "twilightforest:mangrove_stairs",
+    "twilightforest:dark_stairs",
+    "twilightforest:time_stairs",
+    "twilightforest:trans_stairs",
+    "twilightforest:mine_stairs",
+    "twilightforest:sort_stairs"
+  ]
+}

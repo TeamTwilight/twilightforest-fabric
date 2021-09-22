@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:builtin/entity",
+  "textures": {
+    "particle": "twilightforest:block/stone_twist/twist_blank"
+  }
+}

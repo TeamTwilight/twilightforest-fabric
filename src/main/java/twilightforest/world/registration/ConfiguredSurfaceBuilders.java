@@ -22,15 +22,11 @@ public class ConfiguredSurfaceBuilders {
 	public static final ConfiguredSurfaceBuilder<SurfaceBuilderBaseConfiguration> CONFIGURED_SNOW = SurfaceBuilder.DEFAULT.configured(SNOW_CONFIG);
 	public static final ConfiguredSurfaceBuilder<GlacierSurfaceBuilder.GlacierSurfaceConfig> CONFIGURED_GLACIER = TwilightSurfaceBuilders.GLACIER.configured(GLACIER_CONFIG);
 
-	public static void registerConfigurations() {
-		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, TwilightForestMod.prefix("coarse_podzol_surface"), ConfiguredSurfaceBuilders.CONFIGURED_HIGHLANDS);
-		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, TwilightForestMod.prefix("deadrock_filler"), ConfiguredSurfaceBuilders.CONFIGURED_PLATEAU);
-		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, TwilightForestMod.prefix("heavy_snow"), ConfiguredSurfaceBuilders.CONFIGURED_SNOW);
-		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, TwilightForestMod.prefix("all_gravel"), ConfiguredSurfaceBuilders.CONFIGURED_GRAVEL);
-		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, TwilightForestMod.prefix("glacier"), ConfiguredSurfaceBuilders.CONFIGURED_GLACIER);
-	}
-
-	public static void init() {
-		registerConfigurations();
+	public static void registerConfigurations(Registry<ConfiguredSurfaceBuilder<?>> registry) {
+		Registry.register(registry, TwilightForestMod.prefix("coarse_podzol_surface"), ConfiguredSurfaceBuilders.CONFIGURED_HIGHLANDS);
+		Registry.register(registry, TwilightForestMod.prefix("deadrock_filler"), ConfiguredSurfaceBuilders.CONFIGURED_PLATEAU);
+		Registry.register(registry, TwilightForestMod.prefix("heavy_snow"), ConfiguredSurfaceBuilders.CONFIGURED_SNOW);
+		Registry.register(registry, TwilightForestMod.prefix("all_gravel"), ConfiguredSurfaceBuilders.CONFIGURED_GRAVEL);
+		Registry.register(registry, TwilightForestMod.prefix("glacier"), ConfiguredSurfaceBuilders.CONFIGURED_GLACIER);
 	}
 }

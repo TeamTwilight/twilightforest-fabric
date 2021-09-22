@@ -1,4 +1,5 @@
 {
+  "scale": 0.2,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -204,11 +205,9 @@
   },
   "spawn_costs": {},
   "player_spawn_friendly": true,
-  "forge:registry_name": "twilightforest:dense_forest",
   "precipitation": "rain",
   "temperature": 0.7,
   "downfall": 0.8,
   "category": "forest",
-  "depth": 0.1,
-  "scale": 0.2
+  "depth": 0.1
 }

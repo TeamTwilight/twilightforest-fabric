@@ -30,12 +30,14 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.client.particle.data.LeafParticleData;
 import twilightforest.enums.PlantVariant;
+import twilightforest.extensions.IBlockMethods;
+import twilightforest.extensions.IBlockStateEx;
 import twilightforest.network.SpawnFallenLeafFromPacket;
 import twilightforest.network.TFPacketHandler;
 
 import java.util.Random;
 
-public class TFPlantBlock extends BushBlock implements BonemealableBlock {
+public class TFPlantBlock extends BushBlock implements BonemealableBlock, IBlockMethods, IPlantable {
 	private static final VoxelShape MAYAPPLE_SHAPE = box(4, 0, 4, 13, 6, 13);
 	private static final VoxelShape FALLEN_LEAVES_SHAPE = box(0, 0, 0, 16, 1, 16);
 	private static final VoxelShape MUSHGLOOM_SHAPE = box(2, 0, 2, 14, 8, 14);
@@ -60,7 +62,7 @@ public class TFPlantBlock extends BushBlock implements BonemealableBlock {
 			case TORCHBERRY, ROOT_STRAND -> TFPlantBlock.canPlaceRootAt(world, pos);
 			case FALLEN_LEAVES, MUSHGLOOM, MOSSPATCH -> soil.isFaceSturdy(world, pos, Direction.UP);
 			//TODO: PORT
-			default -> (world.getMaxLocalRawBrightness(pos) >= 3 || world.canSeeSkyFromBelowWater(pos))/* && soil.canSustainPlant(world, pos.below(), Direction.UP, this)*/;
+			default -> (world.getMaxLocalRawBrightness(pos) >= 3 || world.canSeeSkyFromBelowWater(pos)) && ((IBlockStateEx)soil).canSustainPlant(world, pos.below(), Direction.UP, this);
 		};
 	}
 
@@ -109,18 +111,17 @@ public class TFPlantBlock extends BushBlock implements BonemealableBlock {
 		}
 	}
 
-	//TODO: PORT
-//	@Override
-//	public PlantType getPlantType(BlockGetter world, BlockPos pos) {
-//		BlockState blockState = world.getBlockState(pos);
-//		if (blockState.getBlock() == this) {
-//			return switch (plantVariant) {
-//				case MOSSPATCH, MUSHGLOOM -> PlantType.CAVE;
-//				default -> PlantType.PLAINS;
-//			};
-//		}
-//		return PlantType.PLAINS;
-//	}
+	@Override
+	public PlantType getPlantType(BlockGetter world, BlockPos pos) {
+		BlockState blockState = world.getBlockState(pos);
+		if (blockState.getBlock() == this) {
+			return switch (plantVariant) {
+				case MOSSPATCH, MUSHGLOOM -> PlantType.CAVE;
+				default -> PlantType.PLAINS;
+			};
+		}
+		return PlantType.PLAINS;
+	}
 
 	@Override
 	@Environment(EnvType.CLIENT)
@@ -206,14 +207,13 @@ public class TFPlantBlock extends BushBlock implements BonemealableBlock {
 		return level.getBlockState(mutable).isAir() || level.getBlockState(mutable).getMaterial().isReplaceable();
 	}
 
-	///TODO: PORT
-//	@Override
-//	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-//		return 100;
-//	}
-//
-//	@Override
-//	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-//		return 60;
-//	}
+	@Override
+	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return 100;
+	}
+
+	@Override
+	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return 60;
+	}
 }

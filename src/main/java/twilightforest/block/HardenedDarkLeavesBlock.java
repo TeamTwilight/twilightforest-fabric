@@ -28,8 +28,9 @@ public class HardenedDarkLeavesBlock extends Block implements IBlockMethods {
 		return 0;
 	}
 
-	@Override
-	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
-		return new ItemStack(TFBlocks.dark_leaves.get());
-	}
+	//TODO: PORT
+//	@Override
+//	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+//		return new ItemStack(TFBlocks.dark_leaves);
+//	}
 }

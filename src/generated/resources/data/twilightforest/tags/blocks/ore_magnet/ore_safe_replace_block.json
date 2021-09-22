@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#twilightforest:ore_magnet/block_replace_ore",
+    "minecraft:dirt",
+    "minecraft:gravel",
+    "minecraft:sand",
+    "minecraft:red_sand"
+  ]
+}

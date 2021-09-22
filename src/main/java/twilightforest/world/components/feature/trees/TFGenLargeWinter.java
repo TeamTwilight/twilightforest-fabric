@@ -7,6 +7,8 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
+
+import twilightforest.extensions.IBlockMethods;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
@@ -37,10 +39,10 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
-		//TODO: PORT
-		/*if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
+
+		if (!((IBlockMethods)state.getBlock()).canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
 			return false;
-		}*/
+		}
 
 		//okay build a tree!  Go up to the height
 		buildTrunk(world, trunkPlacer, random, pos, treeHeight, config);
