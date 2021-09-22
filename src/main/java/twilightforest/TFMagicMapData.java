@@ -39,6 +39,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	}
 
 	public static TFMagicMapData load(CompoundTag nbt) {
+		TwilightForestMod.LOGGER.info("LOADING MAGIC DATA");
 		MapItemSavedData data = MapItemSavedData.load(nbt);
 		final boolean trackingPosition = !nbt.contains("trackingPosition", 1) || nbt.getBoolean("trackingPosition");
 		final boolean unlimitedTracking = nbt.getBoolean("unlimitedTracking");
@@ -138,7 +139,6 @@ public class TFMagicMapData extends MapItemSavedData {
 	}
 
 	public static class TFMapDecoration extends MapDecoration implements IMapDecorationEx {
-
 
 		@Environment(EnvType.CLIENT)
 		public static class RenderContext {

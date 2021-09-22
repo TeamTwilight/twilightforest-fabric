@@ -2,7 +2,6 @@ package twilightforest.world.registration;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

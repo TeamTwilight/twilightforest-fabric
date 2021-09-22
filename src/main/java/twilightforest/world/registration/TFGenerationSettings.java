@@ -160,7 +160,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
-		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.level.isClientSide() ? entity.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome) : BuiltinRegistries.BIOME.getKey(biome));
+		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
 		if (advancements != null && entity instanceof Player)
 			return PlayerHelper.doesPlayerHaveRequiredAdvancements((Player) entity, advancements);
 		return true;

@@ -174,7 +174,7 @@ public class SpecialMagicLogBlock extends RotatedPillarBlock {
 	 * Send a tiny update packet to the client to inform it of the changed biome
 	 */
 	private void sendChangedBiome(LevelChunk chunk, BlockPos pos, Biome biome) {
-		ChangeBiomePacket message = new ChangeBiomePacket(pos, BuiltinRegistries.BIOME.getKey(biome));
+		ChangeBiomePacket message = new ChangeBiomePacket(pos, chunk.getLevel().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
 		((ServerChunkCache)chunk.getLevel().getChunkSource()).chunkMap.getPlayers(chunk.getPos(),false).forEach((serverPlayer -> TFPacketHandler.CHANNEL.send(serverPlayer, message)));
 
 	}

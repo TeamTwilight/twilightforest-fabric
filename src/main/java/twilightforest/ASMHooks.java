@@ -80,6 +80,7 @@ public class ASMHooks {
 	 */
 	@Nullable
 	public static MapItemSavedData renderMapData(@Nullable MapItemSavedData o, ItemStack stack, Level level) {
+		TwilightForestMod.LOGGER.info(o == null && isOurMap(stack) ? MapItem.getSavedData(stack, level) : o);
 		return o == null && isOurMap(stack) ? MapItem.getSavedData(stack, level) : o;
 	}
 

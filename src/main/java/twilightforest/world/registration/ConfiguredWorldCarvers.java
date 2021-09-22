@@ -4,7 +4,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.TFCavesCarver;
 
 import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.VerticalAnchor;

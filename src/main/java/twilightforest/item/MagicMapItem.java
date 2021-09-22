@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
@@ -135,7 +136,7 @@ public class MagicMapItem extends MapItem implements IMapItemEx {
 						// make streams more visible
 						Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
 						Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
-						biome = overBiome != null && BiomeKeys.STREAM.location().equals(BuiltinRegistries.BIOME.getKey(overBiome)) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(BuiltinRegistries.BIOME.getKey(downBiome)) ? downBiome : biome;
+						biome = overBiome != null && BiomeKeys.STREAM.location().equals(world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(overBiome)) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(BuiltinRegistries.BIOME.getKey(downBiome)) ? downBiome : biome;
 
 						MapColorBrightness colorBrightness = this.getMapColorPerBiome(world, biome);
 
@@ -175,7 +176,7 @@ public class MagicMapItem extends MapItem implements IMapItemEx {
 		}
 		if(biome == null)
 			return new MapColorBrightness(MaterialColor.COLOR_BLACK);
-		ResourceLocation key = BuiltinRegistries.BIOME.getKey(biome);
+		ResourceLocation key = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
 			MapColorBrightness color = BIOME_COLORS.get(key);
 			if (color != null) {
 				return color;
