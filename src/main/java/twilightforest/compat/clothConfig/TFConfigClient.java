@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unused")
-@Config(name = "twilightconfigClient")
+@Config(name = "twilightforest-client")
 
 //@Config.Gui.Background(TwilightForestMod.ID + ":textures/block/maze_stone_brick.png")
 public class TFConfigClient extends TFConfigCommon implements ConfigData {

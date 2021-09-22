@@ -83,8 +83,6 @@ dependencies {
     }*/
     implementation 'com.electronwill.night-config:toml:3.6.2'
 
-
-
     modImplementation "com.telepathicgrunt:Blame-Fabric:1.17-4.2.0-fabric"
 
     modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'

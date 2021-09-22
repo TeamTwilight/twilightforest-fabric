@@ -6,8 +6,6 @@ import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
-import twilightforest.compat.clothConfig.TFConfigClient;
-import twilightforest.compat.clothConfig.TFConfigCommon;
 
 @Config(name = TwilightForestMod.ID)
 @Config.Gui.CategoryBackground(category = "client", background = TwilightForestMod.ID + ":textures/block/maze_stone_decorative.png")

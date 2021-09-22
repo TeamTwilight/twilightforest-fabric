@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
-@Config(name = "twilightconfig")
+@Config(name = "twilightforest-common")
 @Config.Gui.Background(TwilightForestMod.ID + ":textures/block/maze_stone_brick.png")
 //@Config.Gui.CategoryBackground(category = "common", background = TwilightForestMod.ID + ":textures/block/maze_stone_brick.png")
 public class TFConfigCommon implements ConfigData {
