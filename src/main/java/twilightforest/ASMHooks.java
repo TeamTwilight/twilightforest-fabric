@@ -169,7 +169,6 @@ public class ASMHooks {
 	 * [BEFORE ARETURN]
 	 */
 	public static synchronized List<Entity> multipartHitbox(List<Entity> list, Level world, @Nullable Entity entityIn, AABB boundingBox, @Nullable Predicate<? super Entity> predicate) {
-		TwilightForestMod.LOGGER.info(entityIn);
 		synchronized (cache) {
 			List<TFPartEntity<?>> parts = cache.get(world);
 			if(parts != null) {
