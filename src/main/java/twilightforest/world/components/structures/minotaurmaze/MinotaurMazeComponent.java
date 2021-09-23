@@ -294,7 +294,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 		// clear the area
 		generateAirBox(world, sbb, 1, 1, 1, getDiameter(), 4, getDiameter());
-		boolean onlyReplaceCeiling = this.level == 1 && !TwilightForestMod.COMMON_CONFIG.dimension.skylight_forest;
+		boolean onlyReplaceCeiling = this.level == 1 && !TwilightForestMod.COMMON_CONFIG.dimension.skylightForest;
 		generateBox(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.maze_stone.defaultBlockState(), stone, onlyReplaceCeiling);
 		generateBox(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.maze_stone_mosaic.defaultBlockState(), stone, false);
 

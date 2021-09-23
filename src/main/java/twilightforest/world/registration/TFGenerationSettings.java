@@ -147,7 +147,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	public static final int SEALEVEL = 0;
 
 	public static boolean isStrictlyTwilightForest(Level world) {
-		return world.dimension().location().toString().equals(TwilightForestMod.COMMON_CONFIG.dimension.portal_destination_id);
+		return world.dimension().location().toString().equals(TwilightForestMod.COMMON_CONFIG.dimension.portalDestinationID);
 	}
 
 	public static boolean usesTwilightChunkGenerator(ServerLevel world) {

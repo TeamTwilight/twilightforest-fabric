@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.ASMHooks;
 import twilightforest.extensions.IMapItemEx;
 
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
@@ -31,11 +32,11 @@ public abstract class MapItemMixin implements IMapItemEx {
 
     @Inject(method = "getSavedData(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;)Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;", at = @At("HEAD"), cancellable = true)
     private static void injectCustomMapData(ItemStack itemStack, Level level, CallbackInfoReturnable<MapItemSavedData> cir) {
-        Item map = itemStack.getItem();
-        if(map instanceof MapItem) {
-            cir.setReturnValue(ASMHooks.renderMapData(((IMapItemEx)map).getCustomMapData(itemStack, level), itemStack, level));
-        }
-        cir.setReturnValue(null);
+//        Item map = itemStack.getItem();
+//        if(map instanceof MapItem) {
+//            cir.setReturnValue(ASMHooks.renderMapData(((IMapItemEx)map).getCustomMapData(itemStack, level), itemStack, level));
+//        }
+//        cir.setReturnValue(null);
     }
 
     @Override

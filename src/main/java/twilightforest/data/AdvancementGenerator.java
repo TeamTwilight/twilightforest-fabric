@@ -70,7 +70,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 						LocationTrigger.TriggerInstance.located(
 								LocationPredicate.inDimension(
 										ResourceKey.create(Registry.DIMENSION_REGISTRY,
-												new ResourceLocation(TwilightForestMod.COMMON_CONFIG.dimension.portal_destination_id)))))
+												new ResourceLocation(TwilightForestMod.COMMON_CONFIG.dimension.portalDestinationID)))))
 				.addCriterion("make_portal",
 						new MakePortalTrigger.Instance(EntityPredicate.Composite.ANY))
 				.save(consumer, "twilightforest:root");
@@ -533,7 +533,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 							.located(
 									LocationPredicate.inDimension(
 											ResourceKey.create(Registry.DIMENSION_REGISTRY,
-													new ResourceLocation(TwilightForestMod.COMMON_CONFIG.dimension.portal_destination_id))))));
+													new ResourceLocation(TwilightForestMod.COMMON_CONFIG.dimension.portalDestinationID))))));
 		}
 		return builder;
 	}

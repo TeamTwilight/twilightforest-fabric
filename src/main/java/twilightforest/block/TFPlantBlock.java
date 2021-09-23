@@ -61,7 +61,6 @@ public class TFPlantBlock extends BushBlock implements BonemealableBlock, IBlock
 		return switch (plantVariant) {
 			case TORCHBERRY, ROOT_STRAND -> TFPlantBlock.canPlaceRootAt(world, pos);
 			case FALLEN_LEAVES, MUSHGLOOM, MOSSPATCH -> soil.isFaceSturdy(world, pos, Direction.UP);
-			//TODO: PORT
 			default -> (world.getMaxLocalRawBrightness(pos) >= 3 || world.canSeeSkyFromBelowWater(pos)) && ((IBlockStateEx)soil).canSustainPlant(world, pos.below(), Direction.UP, this);
 		};
 	}

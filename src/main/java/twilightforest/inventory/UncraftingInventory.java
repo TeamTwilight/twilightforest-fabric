@@ -76,7 +76,7 @@ public class UncraftingInventory implements Container {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return !TwilightForestMod.COMMON_CONFIG.uncrafting;
+		return !TwilightForestMod.COMMON_CONFIG.disableUncrafting;
 	}
 
 	@Override

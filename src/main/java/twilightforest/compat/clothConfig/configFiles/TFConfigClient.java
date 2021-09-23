@@ -20,27 +20,27 @@ public class TFConfigClient implements ConfigData {
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.Tooltip
     @TomlComment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.")
-    public boolean silent_cicadas = false;
+    public boolean silentCicadas = false;
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.Tooltip
     @TomlComment("Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.")
-    public boolean first_person_effects = true;
+    public boolean firstPersonEffects = true;
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.Tooltip
     @TomlComment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.")
-    public boolean animate_trophyitem = true;
+    public boolean rotateTrophyHeadsGui = true;
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.Tooltip
     @TomlComment("Disable the nag screen when Optifine is installed.")
-    public boolean optifine = false;
+    public boolean disableOptifineNagScreen = false;
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.Tooltip
     @TomlComment("Disable the Here Be Dragons experimental warning screen.")
-    public boolean dragons = false;
+    public boolean disableHereBeDragons = false;
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.CollapsibleObject
@@ -53,13 +53,13 @@ public class TFConfigClient implements ConfigData {
         @ConfigEntry.Category("client")
         @ConfigEntry.Gui.Tooltip
         @TomlComment("Wobble the Loading icon. Has no performance impact at all. For those who don't like fun.")
-        public boolean loading_icon_enable = true;
+        public boolean enable = true;
 
         @ConfigEntry.Category("client")
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.BoundedDiscrete(min = 0, max = Integer.MAX_VALUE)
         @TomlComment("How many ticks between each loading screen change. Set to 0 to not cycle at all.")
-        public int loading_screen_swap_frequency = 0;
+        public int cycleLoadingScreenFrequency = 0;
 
         @ConfigEntry.Category("client")
         //@ConfigEntry.Gui.Excluded
@@ -67,7 +67,7 @@ public class TFConfigClient implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         @ExtendedConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
         @TomlComment("Frequency of wobble and bounce.")
-        public float loading_icon_wobble_bounce_frequency = 5f;
+        public float frequency = 5f;
 
         @ConfigEntry.Category("client")
         //@ConfigEntry.Gui.Excluded
@@ -75,7 +75,7 @@ public class TFConfigClient implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         @ExtendedConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
         @TomlComment("Scale of whole bouncy loading icon.")
-        public float loading_icon_scale = 3f;
+        public float scale = 3f;
 
         @ConfigEntry.Category("client")
         //@ConfigEntry.Gui.Excluded
@@ -83,7 +83,7 @@ public class TFConfigClient implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         @ExtendedConfigEntry.BoundedFloat(min = 0, max = Float.MAX_VALUE)
         @TomlComment("How much the loading icon bounces.")
-        public float loading_icon_bounciness = 5.25f;
+        public float scaleDeviation = 5.25f;
 
         @ConfigEntry.Category("client")
         //@ConfigEntry.Gui.Excluded
@@ -91,7 +91,7 @@ public class TFConfigClient implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         @ExtendedConfigEntry.BoundedFloat(min = 0, max = 360F)
         @TomlComment("How far the loading icon wobbles.")
-        public float loading_icon_tilting = 11.25f;
+        public float tiltRange = 11.25f;
 
         @ConfigEntry.Category("client")
         //@ConfigEntry.Gui.Excluded
@@ -99,12 +99,12 @@ public class TFConfigClient implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         @ExtendedConfigEntry.BoundedFloat(min = 0, max = 360f)
         @TomlComment("Pushback value to re-center the wobble of loading icon.")
-        public float loading_icon_tilt_pushback = 22.5F;
+        public float tiltConstant = 22.5F;
 
         @ConfigEntry.Category("client")
         @ConfigEntry.Gui.Tooltip
         @TomlComment("List of items to be used for the wobbling Loading Icon. (domain:item).")
-        public List<String> loading_icon_stacks = Arrays.asList(
+        public List<String> loadingIconStacks = Arrays.asList(
                 "twilightforest:experiment_115",
                 "twilightforest:magic_map",
                 "twilightforest:charm_of_life_2",

@@ -32,7 +32,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
-		//TODO: PORT
+
 		if (!((IBlockMethods)state.getBlock()).canSustainPlant(state, world, pos.below(), Direction.UP, config.getSapling(random, pos))) {
 			return false;
 		}

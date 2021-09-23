@@ -59,7 +59,7 @@ public class TwilightForestMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		run();
-		LOGGER.info("Portal Lighting: "+ TwilightForestMod.COMMON_CONFIG.portal_lighting);
+		LOGGER.info("Portal Lighting: "+ TwilightForestMod.COMMON_CONFIG.portalLightning);
 		init();
 		TwilightForestMod.LOGGER.info("RUNNING OK");
 
@@ -97,11 +97,11 @@ public class TwilightForestMod implements ModInitializer {
 		new TwilightFeatures();
 		new BiomeGrassColors();
 
-		if (TwilightForestMod.COMMON_CONFIG.compat) {
+		if (TwilightForestMod.COMMON_CONFIG.doCompat) {
 			try {
 				TFCompat.preInitCompat();
 			} catch (Exception e) {
-				TwilightForestMod.COMMON_CONFIG.compat = false;
+				TwilightForestMod.COMMON_CONFIG.doCompat = false;
 				LOGGER.error("Had an error loading preInit compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
@@ -128,21 +128,21 @@ public class TwilightForestMod implements ModInitializer {
 
 		TFEventListener.registerFabricEvents();
 
-		if (TwilightForestMod.COMMON_CONFIG.compat) {
+		if (TwilightForestMod.COMMON_CONFIG.doCompat) {
 			try {
 				TFCompat.initCompat();
 			} catch (Exception e) {
-				TwilightForestMod.COMMON_CONFIG.compat = false;
+				TwilightForestMod.COMMON_CONFIG.doCompat = false;
 				LOGGER.error("Had an error loading init compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
 		}
 
-		if (TwilightForestMod.COMMON_CONFIG.compat) {
+		if (TwilightForestMod.COMMON_CONFIG.doCompat) {
 			try {
 				TFCompat.postInitCompat();
 			} catch (Exception e) {
-				TwilightForestMod.COMMON_CONFIG.compat = false;
+				TwilightForestMod.COMMON_CONFIG.doCompat = false;
 				LOGGER.error("Had an error loading postInit compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}

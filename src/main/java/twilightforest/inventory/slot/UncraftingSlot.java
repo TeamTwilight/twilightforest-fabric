@@ -50,7 +50,7 @@ public class UncraftingSlot extends Slot {
 		}
 
 		// if uncrafting is disabled, no!
-		if (TwilightForestMod.COMMON_CONFIG.uncrafting) {
+		if (TwilightForestMod.COMMON_CONFIG.disableUncrafting) {
 			return false;
 		}
 

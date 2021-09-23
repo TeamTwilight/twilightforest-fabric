@@ -1,7 +1,6 @@
 package twilightforest.mixin.plugin;
 
 import net.fabricmc.loader.api.FabricLoader;
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -24,6 +23,7 @@ public class TwilightForestMixinPlugin implements IMixinConfigPlugin {
         patches.add(new ServerEntityPatch());
         patches.add(new EntityRenderDispatcherPatch());
         patches.add(new MapItemPatch());
+
 //        patches.add(new LevelRendererPatch());
 //        patches.add(new ItemInHandRenderPatch());
     }

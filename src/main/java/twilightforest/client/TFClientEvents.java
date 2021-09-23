@@ -47,7 +47,7 @@ public class TFClientEvents {
 	private static final int SINE_TICKER_BOUND = (int) ((PI * 200.0F) - 1.0F);
 
 	public static void showOptifineWarning(Screen screen) {
-		if (TFClientSetup.optifinePresent && !TFClientSetup.optifineWarningShown && !TFClientSetup.CLIENT_CONFIG.optifine && screen instanceof TitleScreen) {
+		if (TFClientSetup.optifinePresent && !TFClientSetup.optifineWarningShown && !TFClientSetup.CLIENT_CONFIG.disableOptifineNagScreen && screen instanceof TitleScreen) {
 			TFClientSetup.optifineWarningShown = true;
 			Minecraft.getInstance().setScreen(new OptifineWarningScreen(screen));
 		}
@@ -94,7 +94,7 @@ public class TFClientEvents {
 	 */
 	public static void renderWorldLast(float partialTicks) {
 
-		if (!TFClientSetup.CLIENT_CONFIG.first_person_effects) return;
+		if (!TFClientSetup.CLIENT_CONFIG.firstPersonEffects) return;
 
 		Options settings = Minecraft.getInstance().options;
 		if (settings.getCameraType() != CameraType.FIRST_PERSON || settings.hideGui) return;

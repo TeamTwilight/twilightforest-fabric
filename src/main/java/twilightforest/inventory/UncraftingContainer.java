@@ -462,7 +462,7 @@ public class UncraftingContainer extends AbstractContainerMenu {
 			}
 
 			// don't allow uncrafting if the server option is turned off
-			if (TwilightForestMod.COMMON_CONFIG.uncrafting) {
+			if (TwilightForestMod.COMMON_CONFIG.disableUncrafting) {
 				return;
 			}
 

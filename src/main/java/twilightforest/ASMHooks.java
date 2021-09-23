@@ -26,6 +26,7 @@ import net.minecraft.world.phys.AABB;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import twilightforest.client.TFClientSetup;
 import twilightforest.client.model.entity.PartEntity;
@@ -81,7 +82,6 @@ public class ASMHooks {
 	 */
 	@Nullable
 	public static MapItemSavedData renderMapData(@Nullable MapItemSavedData o, ItemStack stack, Level level) {
-		TwilightForestMod.LOGGER.info(o == null && isOurMap(stack) ? MapItem.getSavedData(stack, level) : o);
 		return o == null && isOurMap(stack) ? MapItem.getSavedData(stack, level) : o;
 	}
 
@@ -91,7 +91,7 @@ public class ASMHooks {
 	 * [AFTER FIRST INVOKEVIRTUAL]
 	 */
 	public static Music music(Music music) {
-		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && Minecraft.getInstance().level.dimension().location().toString().equals(TwilightForestMod.COMMON_CONFIG.dimension.portal_destination_id))
+		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && Minecraft.getInstance().level.dimension().location().toString().equals(TwilightForestMod.COMMON_CONFIG.dimension.portalDestinationID))
 			return Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).getBackgroundMusic().orElse(Musics.GAME);
 		return music;
 	}
@@ -100,8 +100,9 @@ public class ASMHooks {
 	private static final Int2ObjectMap<TFPartEntity<?>> multiparts = new Int2ObjectOpenHashMap<>();
 
 	// This only works on the client side in 1.17...
+	@Environment(EnvType.CLIENT)
 	public static void registerMultipartEvents() {
-		ServerEntityEvents.ENTITY_LOAD.register(((entity, world) -> {
+		ClientEntityEvents.ENTITY_LOAD.register(((entity, world) -> {
 			if(world.isClientSide() && ((IEntityEx)entity).isMultipartEntity())
 				synchronized (cache) {
 					cache.computeIfAbsent(world, (w) -> new ArrayList<>());
@@ -111,7 +112,7 @@ public class ASMHooks {
 
 				}
 		}));
-		ServerEntityEvents.ENTITY_UNLOAD.register(((entity, world) -> {
+		ClientEntityEvents.ENTITY_UNLOAD.register(((entity, world) -> {
 			if(world.isClientSide() && ((IEntityEx)entity).isMultipartEntity())
 				synchronized (cache) {
 					cache.computeIfPresent(world, (worldE, list) -> {
@@ -168,6 +169,7 @@ public class ASMHooks {
 	 * [BEFORE ARETURN]
 	 */
 	public static synchronized List<Entity> multipartHitbox(List<Entity> list, Level world, @Nullable Entity entityIn, AABB boundingBox, @Nullable Predicate<? super Entity> predicate) {
+		TwilightForestMod.LOGGER.info(entityIn);
 		synchronized (cache) {
 			List<TFPartEntity<?>> parts = cache.get(world);
 			if(parts != null) {
@@ -182,6 +184,7 @@ public class ASMHooks {
 						list.add(part);
 				}
 			}
+
 			return list;
 		}
 	}
@@ -254,7 +257,7 @@ public class ASMHooks {
 	 * [AFTER ALL ALOAD 6]
 	 */
 	public static Minecraft.ExperimentalDialogType dragons(Minecraft.ExperimentalDialogType type) {
-		return TFClientSetup.CLIENT_CONFIG.dragons ? Minecraft.ExperimentalDialogType.NONE : type;
+		return TFClientSetup.CLIENT_CONFIG.disableHereBeDragons ? Minecraft.ExperimentalDialogType.NONE : type;
 	}
 
 }
