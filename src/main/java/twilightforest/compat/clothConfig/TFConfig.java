@@ -14,10 +14,10 @@ public class TFConfig extends PartitioningSerializer.GlobalData{
 
     @ConfigEntry.Category("common")
     @ConfigEntry.Gui.TransitiveObject
-    public static TFConfigCommon tfConfigCommon = new TFConfigCommon();
+    public TFConfigCommon tfConfigCommon = new TFConfigCommon();
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.TransitiveObject
     @Environment(EnvType.CLIENT)
-    public static TFConfigClient tfConfigClient = new TFConfigClient();
+    public TFConfigClient tfConfigClient = new TFConfigClient();
 }

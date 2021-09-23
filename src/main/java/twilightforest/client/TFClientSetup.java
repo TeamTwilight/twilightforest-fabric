@@ -67,6 +67,7 @@ public class TFClientSetup implements ClientModInitializer {
 	public static boolean optifinePresent = false;
 
 	public static TFConfigClient CLIENT_CONFIG;
+    public static TFConfig CLIENT_CONFIGTest;
 
     @Environment(EnvType.CLIENT)
 	@Override
@@ -88,7 +89,8 @@ public class TFClientSetup implements ClientModInitializer {
 	}
 
 	public static void clientConfigReload(){
-        CLIENT_CONFIG = AutoConfig.getConfigHolder(TFConfig.tfConfigClient.getClass()).getConfig();
+        //CLIENT_CONFIG = AutoConfig.getConfigHolder(TFConfigClient.class).getConfig();
+        CLIENT_CONFIG = AutoConfig.getConfigHolder(TFConfig.class).getConfig().tfConfigClient;
         //TFConfig test = AutoConfig.getConfigHolder(TFConfig.class).getConfig();
 
     }
@@ -147,20 +149,27 @@ public class TFClientSetup implements ClientModInitializer {
 
 	//TODO: Clean this shit up
     public static void clientSetup() {
-        AutoConfig.register(TFConfig.class, PartitioningSerializer.wrap(Toml4jConfigSerializerExtended::new));
-
-        AutoConfig.register(TFConfigClient.class, Toml4jConfigSerializerExtended::new);
+        //AutoConfig.register(TFConfigClient.class, Toml4jConfigSerializerExtended::new);
+        //AutoConfig.register(TFConfig.class, PartitioningSerializer.wrap(Toml4jConfigSerializerExtended::new));
 
         registerCustomAnnotations();
-
+        clientConfigReload();
 
         //Move this to event class as this is the event in case the player changes anything within cloth config
         AutoConfig.getConfigHolder(TFConfig.class).registerLoadListener((manager, newData) -> {
-            clientConfigReload();
+            CLIENT_CONFIG = newData.tfConfigClient;
+            //CLIENT_CONFIG = AutoConfig.getConfigHolder(newData.tfConfigClient.getClass()).getConfig();
             return InteractionResult.SUCCESS;
         });
 
-        clientConfigReload();
+        AutoConfig.getConfigHolder(TFConfig.class).registerSaveListener((manager, newData) -> {
+            CLIENT_CONFIG = newData.tfConfigClient;
+            //CLIENT_CONFIG = AutoConfig.getConfigHolder(newData.tfConfigClient.getClass()).getConfig();
+            return InteractionResult.SUCCESS;
+        });
+
+
+
 
 
         TFPacketHandler.CHANNEL.initClient();

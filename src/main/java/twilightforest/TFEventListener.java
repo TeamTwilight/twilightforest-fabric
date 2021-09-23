@@ -108,10 +108,6 @@ public class TFEventListener {
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> onPlayerLogout(handler.player));
 		//ServerPlayConnectionEvents.JOIN.register(((handler, sender, server) -> playerLogsIn(handler.getPlayer())));
 		ServerLifecycleEvents.SERVER_STARTED.register((server -> minecraftServer = server));
-		/*TODO: Currently there is a issue with the packet that forces client side gamerule of progression.
-		 * 	    In this case the level is null creating a null pointer exception within the EnforceProgressionStatusPacket
-		 */
-		//ServerPlayConnectionEvents.JOIN.register((handler, sender, client) -> playerLogsIn(handler.player, handler.player.getLevel()));
 
 	}
 

@@ -9,6 +9,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.item.*;
 import twilightforest.tileentity.TFTileEntities;
 
+import static twilightforest.TwilightForestMod.creativeTab;
+
 public class TFBlockItems {
 
 	public static void registerBlockItems() {
@@ -68,7 +70,7 @@ public class TFBlockItems {
 //      blockItem(TFBlocks.lapis_block);
 		blockItem(TFBlocks.stone_twist);
 		blockItem(TFBlocks.stone_twist_thin);
-		makeBlockItem(new BlockItem(TFBlocks.keepsake_casket, TFItems.defaultBuilder()) {
+		makeBlockItem(new BlockItem(TFBlocks.keepsake_casket, defaultBuilder()) {
 //			@Override
 //			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 //				consumer.accept(new IItemRenderProperties() {
@@ -88,8 +90,8 @@ public class TFBlockItems {
 		skullCandleItem(TFBlocks.wither_skele_skull_candle, TFBlocks.wither_skele_wall_skull_candle);
 		skullCandleItem(TFBlocks.creeper_skull_candle, TFBlocks.creeper_wall_skull_candle);
 		skullCandleItem(TFBlocks.player_skull_candle, TFBlocks.player_wall_skull_candle);
-		makeBlockItem(new HugeWaterLilyItem(TFBlocks.huge_waterlily, TFItems.defaultBuilder()), TFBlocks.huge_waterlily);
-		makeBlockItem(new HugeLilyPadItem(TFBlocks.huge_lilypad, TFItems.defaultBuilder()), TFBlocks.huge_lilypad);
+		makeBlockItem(new HugeWaterLilyItem(TFBlocks.huge_waterlily, defaultBuilder()), TFBlocks.huge_waterlily);
+		makeBlockItem(new HugeLilyPadItem(TFBlocks.huge_lilypad, defaultBuilder()), TFBlocks.huge_lilypad);
 		blockItem(TFBlocks.maze_stone);
 		blockItem(TFBlocks.maze_stone_brick);
 		blockItem(TFBlocks.maze_stone_cracked);
@@ -365,12 +367,17 @@ public class TFBlockItems {
 		blockItem(TFBlocks.sort_banister);
 	}
 
+	public static Item.Properties defaultBuilder() {
+		return new Item.Properties().tab(creativeTab);
+	}
+
+
 	private static <B extends Block> Item blockItem(B block) {
-		return makeBlockItem(new BlockItem(block, TFItems.defaultBuilder()), block);
+		return makeBlockItem(new BlockItem(block, defaultBuilder()), block);
 	}
 
 	private static <B extends AbstractSkullCandleBlock> Item skullCandleItem(B floor, B wall) {
-		return makeBlockItem(new SkullCandleItem(floor, wall, TFItems.defaultBuilder().rarity(Rarity.UNCOMMON)) {
+		return makeBlockItem(new SkullCandleItem(floor, wall, defaultBuilder().rarity(Rarity.UNCOMMON)) {
 //			@Override
 //			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 //				consumer.accept(new IItemRenderProperties() {
@@ -384,11 +391,11 @@ public class TFBlockItems {
 	}
 
 	private static <B extends Block> Item burningItem(B block, int burntime) {
-		return makeBlockItem(new FurnaceFuelItem(block, TFItems.defaultBuilder(), burntime), block);
+		return makeBlockItem(new FurnaceFuelItem(block, defaultBuilder(), burntime), block);
 	}
 
 	private static <B extends Block, W extends Block> Item trophyBlock(B block, W wallblock) {
-		return makeBlockItem(new TrophyItem(block, wallblock, TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity())) {
+		return makeBlockItem(new TrophyItem(block, wallblock, defaultBuilder().rarity(TwilightForestMod.getRarity())) {
 //			@Override
 //			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 //				consumer.accept(new IItemRenderProperties() {
@@ -402,7 +409,7 @@ public class TFBlockItems {
 	}
 
 	private static <T extends Block, E extends BlockEntity> Item wearableBlock(T block, BlockEntityType<E> tileentity) {
-		return makeBlockItem(new WearableItem(block, TFItems.defaultBuilder()) {
+		return makeBlockItem(new WearableItem(block, defaultBuilder()) {
 //			@Override
 //			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 //				consumer.accept(new IItemRenderProperties() {
@@ -415,12 +422,13 @@ public class TFBlockItems {
 		}, block);
 	}
 
+
 	private static <B extends Block> Item tallBlock(B block) {
-		return makeBlockItem(new DoubleHighBlockItem(block, TFItems.defaultBuilder()), block);
+		return makeBlockItem(new DoubleHighBlockItem(block, defaultBuilder()), block);
 	}
 
 	private static <B extends Block, W extends Block> Item signBlock(B block, W wallblock) {
-		return makeBlockItem(new SignItem(TFItems.defaultBuilder().stacksTo(16), block, wallblock), block);
+		return makeBlockItem(new SignItem(defaultBuilder().stacksTo(16), block, wallblock), block);
 	}
 
 	private static Item makeBlockItem(Item blockitem, Block block) {

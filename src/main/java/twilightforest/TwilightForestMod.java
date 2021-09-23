@@ -2,12 +2,16 @@ package twilightforest;
 
 import com.chocohead.mm.api.ClassTinkerers;
 import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -23,6 +27,7 @@ import twilightforest.compat.TFCompat;
 import twilightforest.compat.clothConfig.TFConfigCommon;
 import twilightforest.compat.clothConfig.TFConfig;
 import twilightforest.entity.TFEntities;
+import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.tileentity.TFTileEntities;
@@ -46,6 +51,8 @@ public class TwilightForestMod implements ModInitializer {
 
 	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRuleRegistry.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true)); //Putting it in UPDATES since other world stuff is here
 
+	public static CreativeModeTab creativeTab = FabricItemGroupBuilder.build(new ResourceLocation(TwilightForestMod.ID, TwilightForestMod.ID), () -> new ItemStack(TFBlocks.twilight_portal_miniature_structure));
+
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
 	private static final Rarity rarity = ClassTinkerers.getEnum(Rarity.class, "TWILIGHT");
@@ -53,22 +60,33 @@ public class TwilightForestMod implements ModInitializer {
 	public static TFConfigCommon COMMON_CONFIG;
 
 	public static void commonConfigReload(){
-		COMMON_CONFIG = AutoConfig.getConfigHolder(TFConfig.tfConfigCommon.getClass()).getConfig();
+		COMMON_CONFIG = AutoConfig.getConfigHolder(TFConfig.class).getConfig().tfConfigCommon;
 	}
 
 
 	public void run() {
 		// FIXME: safeRunWhenOn is being real jank for some reason, look into it
 		//noinspection Convert2Lambda,Anonymous2MethodRef
+		AutoConfig.register(TFConfig.class, PartitioningSerializer.wrap(Toml4jConfigSerializerExtended::new));
+		//AutoConfig.register(TFConfigCommon.class, Toml4jConfigSerializerExtended::new);
 
-		AutoConfig.register(TFConfigCommon.class, Toml4jConfigSerializerExtended::new);
 		commonConfigReload();
 
 		//Move this to event class as this is the event in case the player changes anything within cloth config
-		AutoConfig.getConfigHolder(TFConfigCommon.class).registerLoadListener((manager, newData) -> {
-			commonConfigReload();
+		AutoConfig.getConfigHolder(TFConfig.class).registerLoadListener((manager, newData) -> {
+			COMMON_CONFIG = newData.tfConfigCommon;
+			//COMMON_CONFIG = AutoConfig.getConfigHolder(newData.getClass()).getConfig();
+			LOGGER.debug("Test: The TFConfigCommon has be reload after a load event!");
 			return InteractionResult.SUCCESS;
 		});
+
+		AutoConfig.getConfigHolder(TFConfig.class).registerSaveListener((manager, newData) -> {
+			COMMON_CONFIG = newData.tfConfigCommon;
+			LOGGER.debug("Test: The TFConfigCommon has be reload after a save event!");
+			//COMMON_CONFIG = AutoConfig.getConfigHolder(newData.getClass()).getConfig();
+			return InteractionResult.SUCCESS;
+		});
+
 
 		//This is trash
 		/*
@@ -158,6 +176,7 @@ public class TwilightForestMod implements ModInitializer {
 		TFEntities.registerEntities();
 		TFEntities.addEntityAttributes();
 		TFEntities.registerSpawnEggs();
+		TFItems.init();
 		TFEventListener.registerFabricEvents();
 
 		if (TwilightForestMod.COMMON_CONFIG.compat) {
