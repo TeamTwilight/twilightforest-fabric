@@ -26,7 +26,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import com.google.common.collect.Sets;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
@@ -409,7 +409,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.naga_scale)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader")), TFItems.naga_scale))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.naga_scale))
 										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:naga");
 										})))))
@@ -417,7 +417,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.naga_scale)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.naga_scale)))));
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader_bag_twilight")), TFItems.naga_scale)))));
 
 		add(TFEntities.lich,
 				LootTable.lootTable()
@@ -456,7 +456,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Items.GOLD_NUGGET)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader")), Items.GOLD_NUGGET))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), Items.GOLD_NUGGET))
 										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:lich");
 										})))))
@@ -464,7 +464,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Items.GOLD_NUGGET)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), Items.GOLD_NUGGET)))));
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader_bag_twilight")), Items.GOLD_NUGGET)))));
 
 		add(TFEntities.minoshroom,
 				LootTable.lootTable()
@@ -480,7 +480,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.meef_stroganoff)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader")), TFItems.meef_stroganoff))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.meef_stroganoff))
 										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:minoshroom");
 										})))))
@@ -488,7 +488,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.meef_stroganoff)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.meef_stroganoff)))));
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader_bag_twilight")), TFItems.meef_stroganoff)))));
 
 		add(TFEntities.hydra,
 				LootTable.lootTable()
@@ -509,7 +509,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.fiery_blood)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader")), TFItems.fiery_blood))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.fiery_blood))
 										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:hydra");
 										})))))
@@ -517,7 +517,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.fiery_blood)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.fiery_blood)))));
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader_bag_twilight")), TFItems.fiery_blood)))));
 
 		add(TFEntities.yeti_alpha,
 				LootTable.lootTable()
@@ -538,7 +538,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.ice_bomb)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader")), TFItems.ice_bomb))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.ice_bomb))
 										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:alpha_yeti");
 										})))))
@@ -546,7 +546,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.ice_bomb)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.ice_bomb)))));
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader_bag_twilight")), TFItems.ice_bomb)))));
 
 		add(TFEntities.snow_queen,
 				LootTable.lootTable()
@@ -570,7 +570,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.ice_bomb)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader")), TFItems.ice_bomb))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.ice_bomb))
 										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
 											nbt.putString("shader_name", "twilightforest:snow_queen");
 										})))))
@@ -578,7 +578,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.ice_bomb)
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.ice_bomb)))));
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader_bag_twilight")), TFItems.ice_bomb)))));
 
 		add(TFTreasure.QUESTING_RAM_REWARDS,
 				LootTable.lootTable()

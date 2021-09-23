@@ -4,11 +4,11 @@ import net.minecraft.resources.ResourceLocation;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 public class HydraNeckEntity extends HydraPartEntity {
 
-	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("hydra_neck");
+	public static final ResourceLocation RENDERER = TFConstants.prefix("hydra_neck");
 
 	public final HydraHeadEntity head;
 

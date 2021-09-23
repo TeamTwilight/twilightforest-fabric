@@ -1,35 +1,19 @@
 package twilightforest.compat.modMenu;
 
-import com.google.common.collect.Lists;
-import com.mojang.blaze3d.platform.InputConstants;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
-import me.shedaniel.autoconfig.util.Utils;
 import me.shedaniel.clothconfig2.api.*;
-import me.shedaniel.clothconfig2.gui.entries.MultiElementListEntry;
-import me.shedaniel.clothconfig2.gui.entries.NestedListListEntry;
-import me.shedaniel.clothconfig2.impl.builders.DropdownMenuBuilder;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
-import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
-import net.minecraft.core.Registry;
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantments;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-@Config(name = TwilightForestMod.ID)
+@Config(name = TFConstants.ID)
 public class TFModMenuFabric implements ConfigData {
-    private static final String config = TwilightForestMod.ID + ".config.";
+    private static final String config = TFConstants.ID + ".config.";
 
     private final static TranslatableComponent toolTip(String string){
         return new TranslatableComponent(config + string + ".tooltip");
@@ -258,7 +242,7 @@ public class TFModMenuFabric implements ConfigData {
 
         }
 
-        builder.setDefaultBackgroundTexture(new ResourceLocation(TwilightForestMod.ID, "textures/block/maze_stone_brick.png"));
+        builder.setDefaultBackgroundTexture(new ResourceLocation(TFConstants.ID, "textures/block/maze_stone_brick.png"));
 
         return builder;
 

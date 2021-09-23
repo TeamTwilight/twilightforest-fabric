@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.StructureFeatur
 import net.minecraft.server.level.ServerLevel;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.world.components.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.world.components.structures.darktower.DarkTowerPieces;
 import twilightforest.world.components.structures.finalcastle.FinalCastlePieces;
@@ -95,22 +95,22 @@ public class TFStructures {
 		new TrollCavePieces();
 		new FinalCastlePieces();
 
-		register(HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TwilightForestMod.prefix("hedge_maze"), 1, 2);
-		register(QUEST_GROVE, CONFIGURED_QUEST_GROVE, TwilightForestMod.prefix("quest_grove"), 1, 2);
-		register(MUSHROOM_TOWER, CONFIGURED_MUSHROOM_TOWER, TwilightForestMod.prefix("mushroom_tower"), 1, 2);
-		register(HOLLOW_HILL_SMALL, CONFIGURED_HOLLOW_HILL_SMALL, TwilightForestMod.prefix("hollow_hill_small"), 1, 2);
-		register(HOLLOW_HILL_MEDIUM, CONFIGURED_HOLLOW_HILL_MEDIUM, TwilightForestMod.prefix("hollow_hill_medium"), 1, 2);
-		register(HOLLOW_HILL_LARGE, CONFIGURED_HOLLOW_HILL_LARGE, TwilightForestMod.prefix("hollow_hill_large"), 1, 2);
-		register(NAGA_COURTYARD, CONFIGURED_NAGA_COURTYARD, TwilightForestMod.prefix("courtyard"), 1, 2);
-		register(LICH_TOWER, CONFIGURED_LICH_TOWER, TwilightForestMod.prefix("lich_tower"), 1, 2);
-		register(LABYRINTH, CONFIGURED_LABYRINTH, TwilightForestMod.prefix("labyrinth"), 1, 2);
-		register(HYDRA_LAIR, CONFIGURED_HYDRA_LAIR, TwilightForestMod.prefix("hydra_lair"), 1, 2);
-		register(KNIGHT_STRONGHOLD, CONFIGURED_KNIGHT_STRONGHOLD, TwilightForestMod.prefix("knight_stronghold"), 1, 2);
-		register(DARK_TOWER, CONFIGURED_DARK_TOWER, TwilightForestMod.prefix("dark_tower"), 1, 2);
-		register(YETI_CAVE, CONFIGURED_YETI_CAVE, TwilightForestMod.prefix("yeti_cave"), 1, 2);
-		register(AURORA_PALACE, CONFIGURED_AURORA_PALACE, TwilightForestMod.prefix("aurora_palace"), 1, 2);
-		register(TROLL_CAVE, CONFIGURED_TROLL_CAVE, TwilightForestMod.prefix("troll_cave"), 1, 2);
-		register(FINAL_CASTLE, CONFIGURED_FINAL_CASTLE, TwilightForestMod.prefix("final_castle"), 1, 2);
+		register(HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TFConstants.prefix("hedge_maze"), 1, 2);
+		register(QUEST_GROVE, CONFIGURED_QUEST_GROVE, TFConstants.prefix("quest_grove"), 1, 2);
+		register(MUSHROOM_TOWER, CONFIGURED_MUSHROOM_TOWER, TFConstants.prefix("mushroom_tower"), 1, 2);
+		register(HOLLOW_HILL_SMALL, CONFIGURED_HOLLOW_HILL_SMALL, TFConstants.prefix("hollow_hill_small"), 1, 2);
+		register(HOLLOW_HILL_MEDIUM, CONFIGURED_HOLLOW_HILL_MEDIUM, TFConstants.prefix("hollow_hill_medium"), 1, 2);
+		register(HOLLOW_HILL_LARGE, CONFIGURED_HOLLOW_HILL_LARGE, TFConstants.prefix("hollow_hill_large"), 1, 2);
+		register(NAGA_COURTYARD, CONFIGURED_NAGA_COURTYARD, TFConstants.prefix("courtyard"), 1, 2);
+		register(LICH_TOWER, CONFIGURED_LICH_TOWER, TFConstants.prefix("lich_tower"), 1, 2);
+		register(LABYRINTH, CONFIGURED_LABYRINTH, TFConstants.prefix("labyrinth"), 1, 2);
+		register(HYDRA_LAIR, CONFIGURED_HYDRA_LAIR, TFConstants.prefix("hydra_lair"), 1, 2);
+		register(KNIGHT_STRONGHOLD, CONFIGURED_KNIGHT_STRONGHOLD, TFConstants.prefix("knight_stronghold"), 1, 2);
+		register(DARK_TOWER, CONFIGURED_DARK_TOWER, TFConstants.prefix("dark_tower"), 1, 2);
+		register(YETI_CAVE, CONFIGURED_YETI_CAVE, TFConstants.prefix("yeti_cave"), 1, 2);
+		register(AURORA_PALACE, CONFIGURED_AURORA_PALACE, TFConstants.prefix("aurora_palace"), 1, 2);
+		register(TROLL_CAVE, CONFIGURED_TROLL_CAVE, TFConstants.prefix("troll_cave"), 1, 2);
+		register(FINAL_CASTLE, CONFIGURED_FINAL_CASTLE, TFConstants.prefix("final_castle"), 1, 2);
 	}
 
 	private static void register(StructureFeature<?> structure, ConfiguredStructureFeature<?, ?> config, ResourceLocation name, int min, int max) {

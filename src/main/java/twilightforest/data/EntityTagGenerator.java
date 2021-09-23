@@ -7,11 +7,11 @@ import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.EntityType;
 
 import net.fabricmc.fabric.api.tag.TagFactory;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.entity.TFEntities;
 
 public class EntityTagGenerator extends EntityTypeTagsProvider {
-    public static final Tag.Named<EntityType<?>> BOSSES = TagFactory.ENTITY_TYPE.create(TwilightForestMod.prefix("bosses"));
+    public static final Tag.Named<EntityType<?>> BOSSES = TagFactory.ENTITY_TYPE.create(TFConstants.prefix("bosses"));
 
     public EntityTagGenerator(DataGenerator dataGenerator) {
         super(dataGenerator);

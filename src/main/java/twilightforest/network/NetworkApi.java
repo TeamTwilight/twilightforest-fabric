@@ -1,11 +1,9 @@
 package twilightforest.network;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import org.apache.logging.log4j.util.TriConsumer;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
+
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import net.minecraft.network.FriendlyByteBuf;
 
@@ -40,7 +38,7 @@ public class NetworkApi {
         }
 
         public void add() {
-            ClientPlayNetworking.registerGlobalReceiver(TwilightForestMod.prefix("channel"), handler);
+            ClientPlayNetworking.registerGlobalReceiver(TFConstants.prefix("channel"), handler);
         }
     }
 }

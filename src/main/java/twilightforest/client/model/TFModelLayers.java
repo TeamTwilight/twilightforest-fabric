@@ -1,11 +1,9 @@
 package twilightforest.client.model;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.resources.ResourceLocation;
 
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 public class TFModelLayers {
 
@@ -114,7 +112,7 @@ public class TFModelLayers {
 	}
 
 	private static ModelLayerLocation register(String p_171301_, String p_171302_) {
-		return new ModelLayerLocation(new ResourceLocation(TwilightForestMod.ID, p_171301_), p_171302_);
+		return new ModelLayerLocation(new ResourceLocation(TFConstants.ID, p_171301_), p_171302_);
 	}
 
 	public static void init() {}

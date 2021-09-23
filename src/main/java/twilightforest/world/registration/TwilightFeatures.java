@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.world.components.feature.trees.treeplacers.*;
 
 import java.util.ArrayList;
@@ -31,21 +31,21 @@ public final class TwilightFeatures {
     private static final List<FoliagePlacerType<?>> FOLIAGE_PLACER_TYPES = new ArrayList<>();
     private static final List<TreeDecoratorType<?>> TREE_DECORATOR_TYPES = new ArrayList<>();
 
-    public static final TrunkPlacerType<BranchingTrunkPlacer> TRUNK_BRANCHING = registerTrunk(TwilightForestMod.prefix("branching_trunk_placer"), BranchingTrunkPlacer.CODEC);
-    public static final TrunkPlacerType<TrunkRiser> TRUNK_RISER = registerTrunk(TwilightForestMod.prefix("trunk_mover_upper"), TrunkRiser.CODEC);
+    public static final TrunkPlacerType<BranchingTrunkPlacer> TRUNK_BRANCHING = registerTrunk(TFConstants.prefix("branching_trunk_placer"), BranchingTrunkPlacer.CODEC);
+    public static final TrunkPlacerType<TrunkRiser> TRUNK_RISER = registerTrunk(TFConstants.prefix("trunk_mover_upper"), TrunkRiser.CODEC);
 
-    public static final FoliagePlacerType<LeafSpheroidFoliagePlacer> FOLIAGE_SPHEROID = registerFoliage(TwilightForestMod.prefix("spheroid_foliage_placer"), LeafSpheroidFoliagePlacer.CODEC);
+    public static final FoliagePlacerType<LeafSpheroidFoliagePlacer> FOLIAGE_SPHEROID = registerFoliage(TFConstants.prefix("spheroid_foliage_placer"), LeafSpheroidFoliagePlacer.CODEC);
 
-    public static final TreeDecoratorType<TreeCorePlacer> CORE_PLACER = registerTreeFeature(TwilightForestMod.prefix("core_placer"), TreeCorePlacer.CODEC);
-    public static final TreeDecoratorType<TrunkSideDecorator> TRUNKSIDE_DECORATOR = registerTreeFeature(TwilightForestMod.prefix("trunkside_decorator"), TrunkSideDecorator.CODEC);
-    public static final TreeDecoratorType<TreeRootsDecorator> TREE_ROOTS = registerTreeFeature(TwilightForestMod.prefix("tree_roots"), TreeRootsDecorator.CODEC);
-    public static final TreeDecoratorType<DangleFromTreeDecorator> DANGLING_DECORATOR = registerTreeFeature(TwilightForestMod.prefix("dangle_from_tree_decorator"), DangleFromTreeDecorator.CODEC);
+    public static final TreeDecoratorType<TreeCorePlacer> CORE_PLACER = registerTreeFeature(TFConstants.prefix("core_placer"), TreeCorePlacer.CODEC);
+    public static final TreeDecoratorType<TrunkSideDecorator> TRUNKSIDE_DECORATOR = registerTreeFeature(TFConstants.prefix("trunkside_decorator"), TrunkSideDecorator.CODEC);
+    public static final TreeDecoratorType<TreeRootsDecorator> TREE_ROOTS = registerTreeFeature(TFConstants.prefix("tree_roots"), TreeRootsDecorator.CODEC);
+    public static final TreeDecoratorType<DangleFromTreeDecorator> DANGLING_DECORATOR = registerTreeFeature(TFConstants.prefix("dangle_from_tree_decorator"), DangleFromTreeDecorator.CODEC);
 
     public static final FeatureDecorator<NoneDecoratorConfiguration> PLACEMENT_NOTFSTRUCTURE = new OutOfStructureFilter(NoneDecoratorConfiguration.CODEC);
     public static final FeatureDecorator<ChunkBlanketingDecorator.ChunkBlanketingConfig> PLACEMENT_CHUNK_BLANKETING = new ChunkBlanketingDecorator(ChunkBlanketingDecorator.ChunkBlanketingConfig.CODEC);
 
     public static final ConfiguredDecorator<?> CONFIGURED_PLACEMENT_NOTFSTRUCTURE = PLACEMENT_NOTFSTRUCTURE.configured(NoneDecoratorConfiguration.INSTANCE);
-    public static final ConfiguredDecorator<?> CONFIGURED_THORNLANDS_BLANKETING = PLACEMENT_CHUNK_BLANKETING.configured(new ChunkBlanketingDecorator.ChunkBlanketingConfig(0.7f, Heightmap.Types.OCEAN_FLOOR_WG, Optional.of(TwilightForestMod.prefix("thornlands"))));
+    public static final ConfiguredDecorator<?> CONFIGURED_THORNLANDS_BLANKETING = PLACEMENT_CHUNK_BLANKETING.configured(new ChunkBlanketingDecorator.ChunkBlanketingConfig(0.7f, Heightmap.Types.OCEAN_FLOOR_WG, Optional.of(TFConstants.prefix("thornlands"))));
 
     private static <P extends FoliagePlacer> FoliagePlacerType<P> registerFoliage(ResourceLocation name, Codec<P> codec) {
         FoliagePlacerType<P> type = new FoliagePlacerType<>(codec);
@@ -72,7 +72,7 @@ public final class TwilightFeatures {
     }
 
     public static void registerPlacementConfigs() {
-        Registry.register(Registry.DECORATOR, TwilightForestMod.prefix("nostructure"), PLACEMENT_NOTFSTRUCTURE);
-        Registry.register(Registry.DECORATOR, TwilightForestMod.prefix("chunk_blanketing"), PLACEMENT_CHUNK_BLANKETING);
+        Registry.register(Registry.DECORATOR, TFConstants.prefix("nostructure"), PLACEMENT_NOTFSTRUCTURE);
+        Registry.register(Registry.DECORATOR, TFConstants.prefix("chunk_blanketing"), PLACEMENT_CHUNK_BLANKETING);
     }
 }

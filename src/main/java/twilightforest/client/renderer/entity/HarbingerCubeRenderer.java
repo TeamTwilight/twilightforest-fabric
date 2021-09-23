@@ -2,17 +2,16 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HarbingerCubeModel;
 import twilightforest.entity.HarbingerCubeEntity;
 
 public class HarbingerCubeRenderer<T extends HarbingerCubeEntity> extends MobRenderer<T, HarbingerCubeModel<T>> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("apocalypse2.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("apocalypse2.png");
 
 	public HarbingerCubeRenderer(EntityRendererProvider.Context manager) {
 		super(manager, new HarbingerCubeModel<>(manager.bakeLayer(TFModelLayers.HARBINGER_CUBE)), 1.0F);

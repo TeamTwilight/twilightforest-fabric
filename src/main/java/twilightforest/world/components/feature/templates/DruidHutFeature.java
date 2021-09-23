@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.components.processors.CobblePlankSwizzler;
@@ -117,9 +117,9 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
     }
 
     private enum HutType {
-        REGULAR    (TwilightForestMod.prefix("feature/druid_hut/druid_hut"       )),
-        SIDEWAYS   (TwilightForestMod.prefix("feature/druid_hut/druid_sideways"  )),
-        DOUBLE_DECK(TwilightForestMod.prefix("feature/druid_hut/druid_doubledeck"));
+        REGULAR    (TFConstants.prefix("feature/druid_hut/druid_hut"       )),
+        SIDEWAYS   (TFConstants.prefix("feature/druid_hut/druid_sideways"  )),
+        DOUBLE_DECK(TFConstants.prefix("feature/druid_hut/druid_doubledeck"));
 
         private final ResourceLocation resourceLocation;
 
@@ -129,9 +129,9 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
     }
 
     private enum BasementType {
-        STUDY  (TwilightForestMod.prefix("feature/druid_hut/basement_study"  ), TwilightForestMod.prefix("feature/druid_hut/basement_study_trap"  )),
-        SHELVES(TwilightForestMod.prefix("feature/druid_hut/basement_shelves"), TwilightForestMod.prefix("feature/druid_hut/basement_shelves_trap")),
-        GALLERY(TwilightForestMod.prefix("feature/druid_hut/basement_gallery"), TwilightForestMod.prefix("feature/druid_hut/basement_gallery_trap"));
+        STUDY  (TFConstants.prefix("feature/druid_hut/basement_study"  ), TFConstants.prefix("feature/druid_hut/basement_study_trap"  )),
+        SHELVES(TFConstants.prefix("feature/druid_hut/basement_shelves"), TFConstants.prefix("feature/druid_hut/basement_shelves_trap")),
+        GALLERY(TFConstants.prefix("feature/druid_hut/basement_gallery"), TFConstants.prefix("feature/druid_hut/basement_gallery_trap"));
 
         private final ResourceLocation resourceLocation;
         private final ResourceLocation resourceLocationTrap;

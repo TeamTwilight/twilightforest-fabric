@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.entity.PartEntity;
 import twilightforest.extensions.IEntityEx;
 
@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 
-	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("noop");
+	public static final ResourceLocation RENDERER = TFConstants.prefix("noop");
 
 	protected EntityDimensions realSize;
 

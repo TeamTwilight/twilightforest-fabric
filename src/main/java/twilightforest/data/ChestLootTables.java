@@ -16,7 +16,7 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
@@ -564,7 +564,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(TFItems.carminite)
                                         .when(ModExists.builder("immersiveengineering"))
-                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader")), TFItems.knightmetal_ingot))
+                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.knightmetal_ingot))
                                         .apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
                                             nbt.putString("shader_name", "twilightforest:knight_phantom");
                                         })))))
@@ -572,7 +572,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(TFItems.carminite)
                                         .when(ModExists.builder("immersiveengineering"))
-                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.knightmetal_ingot)))));
+                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader_bag_twilight")), TFItems.knightmetal_ingot)))));
 
         register.accept(TFTreasure.darktower_cache.lootTable,
                 LootTable.lootTable()
@@ -651,7 +651,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(TFItems.carminite)
                                         .when(ModExists.builder("immersiveengineering"))
-                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader")), TFItems.carminite))
+                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.carminite))
                                         .apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
                                             nbt.putString("shader_name", "twilightforest:ur-ghast");
                                         })))))
@@ -659,7 +659,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(TFItems.carminite)
                                         .when(ModExists.builder("immersiveengineering"))
-                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.carminite)))));
+                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader_bag_twilight")), TFItems.carminite)))));
 
         register.accept(TFTreasure.aurora_cache.lootTable,
                 LootTable.lootTable()

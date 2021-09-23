@@ -5,19 +5,18 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CicadaModel;
 import twilightforest.entity.projectile.CicadaShotEntity;
 
 public class CicadaShotRenderer extends EntityRenderer<CicadaShotEntity> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("cicada-model.png");
 	private final CicadaModel cicadaModel;
 
 	public CicadaShotRenderer(EntityRendererProvider.Context manager) {

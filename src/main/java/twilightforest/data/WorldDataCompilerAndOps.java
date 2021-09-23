@@ -5,7 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.mojang.serialization.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -195,7 +196,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends RegistryWriteOps<F
 
         // five freaking locations to check... Let's see if we won a prize
         if (instanceKey.isPresent()) {
-            if (TwilightForestMod.ID.equals(instanceKey.get().getNamespace())) // This avoids generating anything that belongs to Minecraft
+            if (TFConstants.ID.equals(instanceKey.get().getNamespace())) // This avoids generating anything that belongs to Minecraft
                 serialize(registryKey, instanceKey.get(), resource, codec);
 
             return ResourceLocation.CODEC.encode(instanceKey.get(), this.delegate, dynamic);

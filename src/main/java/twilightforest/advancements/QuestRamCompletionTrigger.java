@@ -11,16 +11,14 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.advancements.CriterionTrigger.Listener;
-
 public class QuestRamCompletionTrigger implements CriterionTrigger<QuestRamCompletionTrigger.Instance> {
 
-    public static final ResourceLocation ID = TwilightForestMod.prefix("complete_quest_ram");
+    public static final ResourceLocation ID = TFConstants.prefix("complete_quest_ram");
     private final Map<PlayerAdvancements, QuestRamCompletionTrigger.Listeners> listeners = Maps.newHashMap();
 
     @Override

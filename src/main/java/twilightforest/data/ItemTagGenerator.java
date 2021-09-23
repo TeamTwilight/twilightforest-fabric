@@ -11,31 +11,31 @@ import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
 
 import net.fabricmc.fabric.api.tag.TagFactory;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
 public class ItemTagGenerator extends ItemTagsProvider {
-	public static final Tag.Named<Item> TWILIGHT_OAK_LOGS = TagFactory.ITEM.create(TwilightForestMod.prefix("twilight_oak_logs"));
-	public static final Tag.Named<Item> CANOPY_LOGS = TagFactory.ITEM.create(TwilightForestMod.prefix("canopy_logs"));
-	public static final Tag.Named<Item> MANGROVE_LOGS = TagFactory.ITEM.create(TwilightForestMod.prefix("mangrove_logs"));
-	public static final Tag.Named<Item> DARKWOOD_LOGS = TagFactory.ITEM.create(TwilightForestMod.prefix("darkwood_logs"));
-	public static final Tag.Named<Item> TIME_LOGS = TagFactory.ITEM.create(TwilightForestMod.prefix("timewood_logs"));
-	public static final Tag.Named<Item> TRANSFORMATION_LOGS = TagFactory.ITEM.create(TwilightForestMod.prefix("transwood_logs"));
-	public static final Tag.Named<Item> MINING_LOGS = TagFactory.ITEM.create(TwilightForestMod.prefix("mining_logs"));
-	public static final Tag.Named<Item> SORTING_LOGS = TagFactory.ITEM.create(TwilightForestMod.prefix("sortwood_logs"));
+	public static final Tag.Named<Item> TWILIGHT_OAK_LOGS = TagFactory.ITEM.create(TFConstants.prefix("twilight_oak_logs"));
+	public static final Tag.Named<Item> CANOPY_LOGS = TagFactory.ITEM.create(TFConstants.prefix("canopy_logs"));
+	public static final Tag.Named<Item> MANGROVE_LOGS = TagFactory.ITEM.create(TFConstants.prefix("mangrove_logs"));
+	public static final Tag.Named<Item> DARKWOOD_LOGS = TagFactory.ITEM.create(TFConstants.prefix("darkwood_logs"));
+	public static final Tag.Named<Item> TIME_LOGS = TagFactory.ITEM.create(TFConstants.prefix("timewood_logs"));
+	public static final Tag.Named<Item> TRANSFORMATION_LOGS = TagFactory.ITEM.create(TFConstants.prefix("transwood_logs"));
+	public static final Tag.Named<Item> MINING_LOGS = TagFactory.ITEM.create(TFConstants.prefix("mining_logs"));
+	public static final Tag.Named<Item> SORTING_LOGS = TagFactory.ITEM.create(TFConstants.prefix("sortwood_logs"));
 
-	public static final Tag.Named<Item> TWILIGHT_LOGS = TagFactory.ITEM.create(TwilightForestMod.prefix("logs"));
-	public static final Tag.Named<Item> TF_FENCES = TagFactory.ITEM.create(TwilightForestMod.prefix("fences"));
-	public static final Tag.Named<Item> TF_FENCE_GATES = TagFactory.ITEM.create(TwilightForestMod.prefix("fence_gates"));
+	public static final Tag.Named<Item> TWILIGHT_LOGS = TagFactory.ITEM.create(TFConstants.prefix("logs"));
+	public static final Tag.Named<Item> TF_FENCES = TagFactory.ITEM.create(TFConstants.prefix("fences"));
+	public static final Tag.Named<Item> TF_FENCE_GATES = TagFactory.ITEM.create(TFConstants.prefix("fence_gates"));
 
 	public static final Tag.Named<Item> PAPER = TagFactory.ITEM.create(new ResourceLocation("c:paper"));
 
-	public static final Tag.Named<Item> TOWERWOOD = TagFactory.ITEM.create(TwilightForestMod.prefix("towerwood"));
+	public static final Tag.Named<Item> TOWERWOOD = TagFactory.ITEM.create(TFConstants.prefix("towerwood"));
 
-	public static final Tag.Named<Item> FIERY_VIAL = TagFactory.ITEM.create(TwilightForestMod.prefix("fiery_vial"));
+	public static final Tag.Named<Item> FIERY_VIAL = TagFactory.ITEM.create(TFConstants.prefix("fiery_vial"));
 
-	public static final Tag.Named<Item> ARCTIC_FUR = TagFactory.ITEM.create(TwilightForestMod.prefix("arctic_fur"));
+	public static final Tag.Named<Item> ARCTIC_FUR = TagFactory.ITEM.create(TFConstants.prefix("arctic_fur"));
 	public static final Tag.Named<Item> CARMINITE_GEMS = TagFactory.ITEM.create(new ResourceLocation("c:carminite_gems"));
 	public static final Tag.Named<Item> FIERY_INGOTS = TagFactory.ITEM.create(new ResourceLocation("c:ingots/fiery"));
 	public static final Tag.Named<Item> IRONWOOD_INGOTS = TagFactory.ITEM.create(new ResourceLocation("c:ironwood_ingots"));
@@ -54,12 +54,12 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	public static final Tag.Named<Item> ORES_IRONWOOD = TagFactory.ITEM.create(new ResourceLocation("c:ironwood_ores"));
 	public static final Tag.Named<Item> ORES_KNIGHTMETAL = TagFactory.ITEM.create(new ResourceLocation("c:knightmetal_ores"));
 
-	public static final Tag.Named<Item> PORTAL_ACTIVATOR = TagFactory.ITEM.create(TwilightForestMod.prefix("portal/activator"));
+	public static final Tag.Named<Item> PORTAL_ACTIVATOR = TagFactory.ITEM.create(TFConstants.prefix("portal/activator"));
 
-	public static final Tag.Named<Item> WIP = TagFactory.ITEM.create(TwilightForestMod.prefix("wip"));
-	public static final Tag.Named<Item> NYI = TagFactory.ITEM.create(TwilightForestMod.prefix("nyi"));
+	public static final Tag.Named<Item> WIP = TagFactory.ITEM.create(TFConstants.prefix("wip"));
+	public static final Tag.Named<Item> NYI = TagFactory.ITEM.create(TFConstants.prefix("nyi"));
 
-	public static final Tag.Named<Item> KOBOLD_PACIFICATION_BREADS = TagFactory.ITEM.create(TwilightForestMod.prefix("kobold_pacification_breads"));
+	public static final Tag.Named<Item> KOBOLD_PACIFICATION_BREADS = TagFactory.ITEM.create(TFConstants.prefix("kobold_pacification_breads"));
 
 	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider) {
 		super(generator, blockprovider);

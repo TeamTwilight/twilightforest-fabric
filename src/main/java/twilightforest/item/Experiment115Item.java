@@ -8,7 +8,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 
-import static twilightforest.TwilightForestMod.prefix;
+import static twilightforest.TFConstants.prefix;
 
 public class Experiment115Item extends BlockItem {
 	public static final ResourceLocation THINK = prefix("think");

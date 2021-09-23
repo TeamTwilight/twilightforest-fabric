@@ -3,7 +3,6 @@ package twilightforest.client.renderer.tileentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -11,13 +10,11 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import org.lwjgl.opengl.GL11;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.FireflyModel;
@@ -28,10 +25,10 @@ import javax.annotation.Nullable;
 public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyTileEntity> {
 
 	private final FireflyModel fireflyModel;
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("firefly-tiny.png");
 	//private static final RenderType GLOW_LAYER;
 	static {
-		RenderStateShard.TransparencyStateShard transparencyState = new RenderStateShard.TransparencyStateShard(TwilightForestMod.ID + ":firefly_glow", () -> {
+		RenderStateShard.TransparencyStateShard transparencyState = new RenderStateShard.TransparencyStateShard(TFConstants.ID + ":firefly_glow", () -> {
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		}, () -> {

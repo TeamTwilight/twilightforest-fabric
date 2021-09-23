@@ -2,12 +2,11 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 public class TFBipedRenderer<T extends Mob, M extends HumanoidModel<T>> extends HumanoidMobRenderer<T, M> {
 
@@ -19,7 +18,7 @@ public class TFBipedRenderer<T extends Mob, M extends HumanoidModel<T>> extends 
 		if (textureName.startsWith("textures")) {
 			textureLoc = new ResourceLocation(textureName);
 		} else {
-			textureLoc = TwilightForestMod.getModelTexture(textureName);
+			textureLoc = TFConstants.getModelTexture(textureName);
 		}
 	}
 

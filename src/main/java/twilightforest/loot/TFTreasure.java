@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.loot.conditions.IsMinion;
 import twilightforest.loot.conditions.ModExists;
 import twilightforest.loot.functions.Enchant;
@@ -84,7 +84,7 @@ public class TFTreasure {
 	public final ResourceLocation lootTable;
 
 	private TFTreasure(String path) {
-		lootTable = TwilightForestMod.prefix(String.format("structures/%s", path));
+		lootTable = TFConstants.prefix(String.format("structures/%s", path));
 	}
 
 	public static void init() {
@@ -121,15 +121,15 @@ public class TFTreasure {
 	}
 
 	private static LootItemFunctionType registerFunction(String name, LootItemFunctionType function) {
-		return Registry.register(Registry.LOOT_FUNCTION_TYPE, TwilightForestMod.prefix(name), function); //ILootFunction registry
+		return Registry.register(Registry.LOOT_FUNCTION_TYPE, TFConstants.prefix(name), function); //ILootFunction registry
 	}
 
 	private static LootItemConditionType registerCondition(String name, LootItemConditionType condition) {
-		return Registry.register(Registry.LOOT_CONDITION_TYPE, TwilightForestMod.prefix(name), condition); //ILootCondition registry
+		return Registry.register(Registry.LOOT_CONDITION_TYPE, TFConstants.prefix(name), condition); //ILootCondition registry
 	}
 
 	private static ResourceLocation register(String id) {
-		return register(TwilightForestMod.prefix(id));
+		return register(TFConstants.prefix(id));
 	}
 
 	private static ResourceLocation register(ResourceLocation id) {

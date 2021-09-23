@@ -8,13 +8,13 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.SlimeOuterLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.entity.MazeSlimeEntity;
 
 public class MazeSlimeRenderer extends MobRenderer<MazeSlimeEntity, SlimeModel<MazeSlimeEntity>> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mazeslime.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("mazeslime.png");
 
 	public MazeSlimeRenderer(EntityRendererProvider.Context manager, float shadowSize) {
 		super(manager, new SlimeModel<>(manager.bakeLayer(TFModelLayers.MAZE_SLIME)), shadowSize);

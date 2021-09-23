@@ -142,7 +142,7 @@ public class TFMagicMapData extends MapItemSavedData {
 
 		@Environment(EnvType.CLIENT)
 		public static class RenderContext {
-			private static final RenderType MAP_ICONS = RenderType.text(TwilightForestMod.prefix("textures/gui/mapicons.png"));
+			private static final RenderType MAP_ICONS = RenderType.text(TFConstants.prefix("textures/gui/mapicons.png"));
 			public static PoseStack stack;
 			public static MultiBufferSource buffer;
 			public static int light;

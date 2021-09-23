@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.block.BanisterBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeaturePlacers;
@@ -94,7 +94,7 @@ public enum StructureWoodVariant implements StringRepresentable {
 
 		if (blockRegName == null) return stateIn;
 
-		if (shape == WoodShapes.INVALID || !("minecraft".equals(blockRegName.getNamespace()) || TwilightForestMod.ID.equals(blockRegName.getNamespace()))) {
+		if (shape == WoodShapes.INVALID || !("minecraft".equals(blockRegName.getNamespace()) || TFConstants.ID.equals(blockRegName.getNamespace()))) {
 			return stateIn; // Block not recognized
 		}
 

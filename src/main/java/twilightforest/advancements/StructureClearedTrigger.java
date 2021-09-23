@@ -11,18 +11,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.advancements.CriterionTrigger.Listener;
-
 public class StructureClearedTrigger implements CriterionTrigger<StructureClearedTrigger.Instance> {
 
-	public static final ResourceLocation ID = TwilightForestMod.prefix("structure_cleared");
+	public static final ResourceLocation ID = TFConstants.prefix("structure_cleared");
 	private final Map<PlayerAdvancements, StructureClearedTrigger.Listeners> listeners = Maps.newHashMap();
 
 	@Override

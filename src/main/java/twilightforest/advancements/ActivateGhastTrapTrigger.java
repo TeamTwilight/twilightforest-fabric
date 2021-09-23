@@ -11,17 +11,15 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.advancements.CriterionTrigger.Listener;
-
 //can we move this to the block class itself rather than having this?
 public class ActivateGhastTrapTrigger implements CriterionTrigger<ActivateGhastTrapTrigger.Instance> {
 
-    public static final ResourceLocation ID = TwilightForestMod.prefix("activate_ghast_trap");
+    public static final ResourceLocation ID = TFConstants.prefix("activate_ghast_trap");
     private final Map<PlayerAdvancements, ActivateGhastTrapTrigger.Listeners> listeners = Maps.newHashMap();
 
     @Override

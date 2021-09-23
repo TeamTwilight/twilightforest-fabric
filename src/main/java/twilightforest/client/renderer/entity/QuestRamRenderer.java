@@ -5,20 +5,19 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.entity.QuestRamModel;
 import twilightforest.entity.passive.QuestRamEntity;
 
 public class QuestRamRenderer extends MobRenderer<QuestRamEntity, QuestRamModel> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("questram.png");
-	private static final ResourceLocation textureLocLines = TwilightForestMod.getModelTexture("questram_lines.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("questram.png");
+	private static final ResourceLocation textureLocLines = TFConstants.getModelTexture("questram_lines.png");
 
 	public QuestRamRenderer(EntityRendererProvider.Context manager, QuestRamModel model) {
 		super(manager, model, 1.0F);

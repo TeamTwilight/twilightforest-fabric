@@ -25,8 +25,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
+import twilightforest.TFConstants;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -175,7 +175,7 @@ public class BrittleFlaskItem extends Item {
 		if(timesUsed >= 4 && drinker instanceof ServerPlayer player && drinker.isAlive() && lastUsedPotion.equals(Registry.POTION.getKey(Potions.STRONG_HARMING).toString()) && advancementWindow) {
 			PlayerAdvancements advancements = player.getAdvancements();
 			ServerAdvancementManager manager = ((ServerLevel) player.getCommandSenderWorld()).getServer().getAdvancements();
-			Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("full_mettle_alchemist"));
+			Advancement advancement = manager.getAdvancement(TFConstants.prefix("full_mettle_alchemist"));
 			if (advancement != null) {
 				advancements.award(advancement, "drink_4_harming");
 			}

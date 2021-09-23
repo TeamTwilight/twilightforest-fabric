@@ -6,18 +6,17 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraMortarModel;
 import twilightforest.entity.boss.HydraMortarHead;
 
 public class HydraMortarRenderer extends EntityRenderer<HydraMortarHead> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydramortar.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("hydramortar.png");
 	private final HydraMortarModel mortarModel;
 
 	public HydraMortarRenderer(EntityRendererProvider.Context manager) {

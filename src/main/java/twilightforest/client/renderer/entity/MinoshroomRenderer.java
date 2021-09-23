@@ -7,21 +7,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.entity.MinoshroomModel;
 import twilightforest.entity.boss.MinoshroomEntity;
 
 //old renderer had the head mushroom in a different spot - line is commented out
 public class MinoshroomRenderer extends HumanoidMobRenderer<MinoshroomEntity, MinoshroomModel> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("minoshroomtaur.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("minoshroomtaur.png");
 
 	public MinoshroomRenderer(EntityRendererProvider.Context manager, MinoshroomModel model, float shadowSize) {
 		super(manager, model, shadowSize);

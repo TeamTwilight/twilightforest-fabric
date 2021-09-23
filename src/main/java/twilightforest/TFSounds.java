@@ -262,7 +262,7 @@ public final class TFSounds {
 	public static final SoundEvent MUSIC = createEvent("music.bg");
 
 	private static SoundEvent createEvent(String sound) {
-		ResourceLocation name = TwilightForestMod.prefix(sound);
+		ResourceLocation name = TFConstants.prefix(sound);
 		return Registry.register(Registry.SOUND_EVENT, name, new SoundEvent(name));
 	}
 

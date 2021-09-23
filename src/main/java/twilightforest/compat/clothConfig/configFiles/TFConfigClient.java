@@ -1,4 +1,4 @@
-package twilightforest.compat.clothConfig;
+package twilightforest.compat.clothConfig.configFiles;
 
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;

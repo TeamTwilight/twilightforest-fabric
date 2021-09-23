@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Block;
+import twilightforest.TFConstants;
 import twilightforest.world.registration.TFStructures;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
@@ -61,7 +62,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 				TFBlocks.twilight_portal_miniature_structure,
 				new TranslatableComponent("itemGroup.twilightforest"),
 				new TranslatableComponent("advancement.twilightforest.root.desc"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/block/mazestone_large_brick.png"),
+				new ResourceLocation(TFConstants.ID, "textures/block/mazestone_large_brick.png"),
 				FrameType.TASK,
 				true, false, false)
 				.requirements(RequirementsStrategy.OR)
@@ -487,7 +488,7 @@ public class AdvancementGenerator implements Consumer<Consumer<Advancement>> {
 						new TranslatableComponent("advancement.twilightforest.glass_sword.desc"),
 						null, FrameType.CHALLENGE, true, true, true)
 				.addCriterion("broken_sword", ItemDurabilityTrigger.TriggerInstance.changedDurability(ItemPredicate.Builder.item().of(TFItems.glass_sword).build(), MinMaxBounds.Ints.exactly(-1)))
-				.rewards(AdvancementRewards.Builder.experience(42).addLootTable(TwilightForestMod.prefix("glass_sword")))
+				.rewards(AdvancementRewards.Builder.experience(42).addLootTable(TFConstants.prefix("glass_sword")))
 				.save(consumer, "twilightforest:break_glass_sword");
 
 		this.addDendrologistBlock(Advancement.Builder.advancement().parent(root)

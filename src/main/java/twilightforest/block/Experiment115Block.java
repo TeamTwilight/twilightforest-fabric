@@ -34,7 +34,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.item.TFItems;
 
 import java.util.Random;
@@ -93,7 +93,7 @@ public class Experiment115Block extends Block {
 					//fallback if the advancement criteria doesnt work since its inconsistent
 					PlayerAdvancements advancements = ((ServerPlayer) player).getAdvancements();
 					ServerAdvancementManager manager = ((ServerLevel)player.getCommandSenderWorld()).getServer().getAdvancements();
-					Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("experiment_115_self_replenishing"));
+					Advancement advancement = manager.getAdvancement(TFConstants.prefix("experiment_115_self_replenishing"));
 					if(advancement != null) {
 						advancements.award(advancement, "place_complete_e115");
 					}

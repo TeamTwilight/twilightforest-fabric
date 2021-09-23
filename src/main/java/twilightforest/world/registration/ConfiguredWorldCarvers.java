@@ -1,6 +1,6 @@
 package twilightforest.world.registration;
 
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.world.components.TFCavesCarver;
 
 import net.minecraft.core.Registry;
@@ -19,8 +19,8 @@ public class ConfiguredWorldCarvers {
 	public static final TFCavesCarver HIGHLANDCAVES = new TFCavesCarver(CaveCarverConfiguration.CODEC, true);
 
 	public static void register() {
-		Registry.register(Registry.CARVER, TwilightForestMod.prefix("tf_caves"), TFCAVES);
-		Registry.register(Registry.CARVER, TwilightForestMod.prefix("highland_caves"), HIGHLANDCAVES);
+		Registry.register(Registry.CARVER, TFConstants.prefix("tf_caves"), TFCAVES);
+		Registry.register(Registry.CARVER, TFConstants.prefix("highland_caves"), HIGHLANDCAVES);
 	}
 	
 
@@ -28,7 +28,7 @@ public class ConfiguredWorldCarvers {
 	public static final ConfiguredWorldCarver<CaveCarverConfiguration> HIGHLANDCAVES_CONFIGURED = HIGHLANDCAVES.configured(new CaveCarverConfiguration(0.1F, BiasedToBottomHeight.of(VerticalAnchor.aboveBottom(5), VerticalAnchor.absolute(65), 48), ConstantFloat.of(0.75F), VerticalAnchor.bottom(), false, CarverDebugSettings.of(false, Blocks.GLASS.defaultBlockState(), Blocks.BLUE_STAINED_GLASS.defaultBlockState(), Blocks.RED_STAINED_GLASS.defaultBlockState(), Blocks.RED_WOOL.defaultBlockState()), ConstantFloat.of(1.0F), ConstantFloat.of(1.0F), ConstantFloat.of(-0.7F)));
 
 	public static void registerConfigurations(Registry<ConfiguredWorldCarver<?>> registry) {
-		Registry.register(registry, TwilightForestMod.prefix("tf_caves"), ConfiguredWorldCarvers.TFCAVES_CONFIGURED);
-		Registry.register(registry, TwilightForestMod.prefix("highland_caves"), ConfiguredWorldCarvers.HIGHLANDCAVES_CONFIGURED);
+		Registry.register(registry, TFConstants.prefix("tf_caves"), ConfiguredWorldCarvers.TFCAVES_CONFIGURED);
+		Registry.register(registry, TFConstants.prefix("highland_caves"), ConfiguredWorldCarvers.HIGHLANDCAVES_CONFIGURED);
 	}
 }

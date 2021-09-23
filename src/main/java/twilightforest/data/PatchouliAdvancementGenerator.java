@@ -5,13 +5,10 @@ import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
-import twilightforest.TwilightForestMod;
-import twilightforest.advancements.ArmorInventoryChangedTrigger;
+import twilightforest.TFConstants;
 import twilightforest.advancements.HasAdvancementTrigger;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -19,7 +16,6 @@ import twilightforest.item.TFItems;
 import twilightforest.world.registration.TFStructures;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
-import java.util.Locale;
 import java.util.function.Consumer;
 
 public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancement>> {
@@ -31,14 +27,14 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 
 		//biomes
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_forest", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/twilight_forest")))
-				.addCriterion("has_firefly", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/firefly_forest")))
-				.addCriterion("has_clearing", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/twilight_clearing")))
-				.addCriterion("has_savannah", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/oak_savannah")))
-				.addCriterion("has_dense", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/dense_twilight_forest")))
-				.addCriterion("has_mush", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/mushroom_forest")))
-				.addCriterion("has_dense_mush", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/dense_mushroom_forest")))
-				.addCriterion("has_lake", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/twilight_lake")))
+				.addCriterion("has_forest", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/twilight_forest")))
+				.addCriterion("has_firefly", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/firefly_forest")))
+				.addCriterion("has_clearing", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/twilight_clearing")))
+				.addCriterion("has_savannah", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/oak_savannah")))
+				.addCriterion("has_dense", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/dense_twilight_forest")))
+				.addCriterion("has_mush", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/mushroom_forest")))
+				.addCriterion("has_dense_mush", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/dense_mushroom_forest")))
+				.addCriterion("has_lake", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/twilight_lake")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/general_biomes");
 
@@ -131,66 +127,66 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/entities/goblin_knight");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_bighorn", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/bighorn_sheep")))
-				.addCriterion("has_bunny", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/bunny")))
-				.addCriterion("has_deer", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/deer")))
-				.addCriterion("has_raven", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/raven")))
-				.addCriterion("has_squirrel", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/squirrel")))
-				.addCriterion("has_boar", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/wild_boar")))
-				.addCriterion("has_penguin", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/penguin")))
+				.addCriterion("has_bighorn", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/bighorn_sheep")))
+				.addCriterion("has_bunny", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/bunny")))
+				.addCriterion("has_deer", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/deer")))
+				.addCriterion("has_raven", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/raven")))
+				.addCriterion("has_squirrel", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/squirrel")))
+				.addCriterion("has_boar", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/wild_boar")))
+				.addCriterion("has_penguin", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/penguin")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/entities/animals");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_hedge", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/hedge_spider")))
-				.addCriterion("has_swarm", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/swarm_spider")))
-				.addCriterion("has_slime", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/slime_beetle")))
-				.addCriterion("has_fire", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/fire_beetle")))
-				.addCriterion("has_pinch", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/pinch_beetle")))
-				.addCriterion("has_mosquito", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/mosquito_swarm")))
-				.addCriterion("has_king", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/king_spider")))
-				.addCriterion("has_termite", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/tower_termite")))
-				.addCriterion("has_broodling", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/tower_broodling")))
+				.addCriterion("has_hedge", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/hedge_spider")))
+				.addCriterion("has_swarm", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/swarm_spider")))
+				.addCriterion("has_slime", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/slime_beetle")))
+				.addCriterion("has_fire", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/fire_beetle")))
+				.addCriterion("has_pinch", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/pinch_beetle")))
+				.addCriterion("has_mosquito", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/mosquito_swarm")))
+				.addCriterion("has_king", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/king_spider")))
+				.addCriterion("has_termite", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/tower_termite")))
+				.addCriterion("has_broodling", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/tower_broodling")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/entities/arthopods");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_ghastling", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/mini_ghast")))
-				.addCriterion("has_ghastguard", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/tower_ghast")))
+				.addCriterion("has_ghastling", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/mini_ghast")))
+				.addCriterion("has_ghastguard", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/tower_ghast")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/entities/ghasts");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_armored", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/armored_giant")))
-				.addCriterion("has_miner", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/giant_miner")))
+				.addCriterion("has_armored", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/armored_giant")))
+				.addCriterion("has_miner", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/giant_miner")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/entities/giants");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_redcap", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/redcap")))
-				.addCriterion("has_sapper", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/redcap_sapper")))
-				.addCriterion("has_blockchain", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/blockchain_goblin")))
-				.addCriterion("has_knight", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/goblin_knight")))
+				.addCriterion("has_redcap", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/redcap")))
+				.addCriterion("has_sapper", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/redcap_sapper")))
+				.addCriterion("has_blockchain", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/blockchain_goblin")))
+				.addCriterion("has_knight", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/goblin_knight")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/entities/goblins");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_stable", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/stable_ice_core")))
-				.addCriterion("has_unstable", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/unstable_ice_core")))
+				.addCriterion("has_stable", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/stable_ice_core")))
+				.addCriterion("has_unstable", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/unstable_ice_core")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/entities/ice_cores");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_druid", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/skeleton_druid")))
-				.addCriterion("has_wraith", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/wraith")))
-				.addCriterion("has_guardian", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/snow_gurdian")))
+				.addCriterion("has_druid", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/skeleton_druid")))
+				.addCriterion("has_wraith", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/wraith")))
+				.addCriterion("has_guardian", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/snow_gurdian")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/entities/undead");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_hostile", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/hostile_wolf")))
-				.addCriterion("has_mist", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/mist_wolf")))
-				.addCriterion("has_winter", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/entities/winter_wolf")))
+				.addCriterion("has_hostile", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/hostile_wolf")))
+				.addCriterion("has_mist", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/mist_wolf")))
+				.addCriterion("has_winter", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/entities/winter_wolf")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/entities/wolves");
 
@@ -220,9 +216,9 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/major_landmarks/troll_cave");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_smol", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/major_landmarks/hollow_hill_small")))
-				.addCriterion("has_med", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/major_landmarks/hollow_hill_medium")))
-				.addCriterion("has_large", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/major_landmarks/hollow_hill_large")))
+				.addCriterion("has_smol", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/major_landmarks/hollow_hill_small")))
+				.addCriterion("has_med", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/major_landmarks/hollow_hill_medium")))
+				.addCriterion("has_large", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/major_landmarks/hollow_hill_large")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/major_landmarks/hollow_hills");
 
@@ -236,21 +232,21 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/arctic_armor_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_ironwood", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/ironwood_armor_set")))
-				.addCriterion("has_naga", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/naga_armor_set")))
-				.addCriterion("has_steeleaf", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/steeleaf_armor_set")))
-				.addCriterion("has_fiery", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/fiery_armor_set")))
-				.addCriterion("has_knightmetal", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/knightmetal_armor_set")))
-				.addCriterion("has_arctic", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/arctic_armor_set")))
-				.addCriterion("has_yeti", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/yeti_armor_set")))
+				.addCriterion("has_ironwood", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/ironwood_armor_set")))
+				.addCriterion("has_naga", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/naga_armor_set")))
+				.addCriterion("has_steeleaf", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/steeleaf_armor_set")))
+				.addCriterion("has_fiery", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/fiery_armor_set")))
+				.addCriterion("has_knightmetal", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/knightmetal_armor_set")))
+				.addCriterion("has_arctic", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/arctic_armor_set")))
+				.addCriterion("has_yeti", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/yeti_armor_set")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/armors");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_triple", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/triple_bow")))
-				.addCriterion("has_ice", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/ice_bow")))
-				.addCriterion("has_seeker", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/seeker_bow")))
-				.addCriterion("has_ender", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/ender_bow")))
+				.addCriterion("has_triple", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/triple_bow")))
+				.addCriterion("has_ice", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/ice_bow")))
+				.addCriterion("has_seeker", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/seeker_bow")))
+				.addCriterion("has_ender", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/ender_bow")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/bows");
 
@@ -274,14 +270,14 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/charm_of_life");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_keeping", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/charm_of_keeping")))
-				.addCriterion("has_life", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/charm_of_life")))
+				.addCriterion("has_keeping", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/charm_of_keeping")))
+				.addCriterion("has_life", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/charm_of_life")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/charms");
 
 		Advancement.Builder.advancement().parent(root)
 				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.crumble_horn))
-				.addCriterion("used", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/crumble_horn_used")))
+				.addCriterion("used", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/crumble_horn_used")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/crumble_horn");
 
@@ -335,7 +331,7 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 
 		Advancement.Builder.advancement().parent(root)
 				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.fire_jet))
-				.addCriterion("in_swamp", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/fire_swamp")))
+				.addCriterion("in_swamp", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/fire_swamp")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/fire_jet");
 
@@ -424,7 +420,7 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 
 		Advancement.Builder.advancement().parent(root)
 				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.magic_beans))
-				.addCriterion("used", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treaures/magic_beanstalk")))
+				.addCriterion("used", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treaures/magic_beanstalk")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/magic_beans");
 
@@ -441,17 +437,17 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/magic_map");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_time", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/tree_of_time")))
-				.addCriterion("has_trans", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/tree_of_transformation")))
-				.addCriterion("has_mine", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/tree_of_mining")))
-				.addCriterion("has_sort", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/tree_of_sorting")))
+				.addCriterion("has_time", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/tree_of_time")))
+				.addCriterion("has_trans", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/tree_of_transformation")))
+				.addCriterion("has_mine", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/tree_of_mining")))
+				.addCriterion("has_sort", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/tree_of_sorting")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/magic_trees");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_magic", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/magic_map")))
-				.addCriterion("has_maze", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/maze_map")))
-				.addCriterion("has_ore", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/ore_map")))
+				.addCriterion("has_magic", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/magic_map")))
+				.addCriterion("has_maze", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/maze_map")))
+				.addCriterion("has_ore", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/ore_map")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/maps");
 
@@ -478,8 +474,8 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/minotaur_axe_gold");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_diamond", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/minotaur_axe_diamond")))
-				.addCriterion("has_gold", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/minotaur_axe_gold")))
+				.addCriterion("has_diamond", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/minotaur_axe_diamond")))
+				.addCriterion("has_gold", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/minotaur_axe_gold")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/minotaur_axes");
 
@@ -508,10 +504,10 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/phantom_armor_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_twilight", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/twilight_scepter")))
-				.addCriterion("has_lifedrain", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/lifedrain_scepter")))
-				.addCriterion("has_zombie", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/zombie_scepter")))
-				.addCriterion("has_shield", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/shield_scepter")))
+				.addCriterion("has_twilight", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/twilight_scepter")))
+				.addCriterion("has_lifedrain", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/lifedrain_scepter")))
+				.addCriterion("has_zombie", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/zombie_scepter")))
+				.addCriterion("has_shield", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/shield_scepter")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/scepters");
 
@@ -527,7 +523,7 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 
 		Advancement.Builder.advancement().parent(root)
 				.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.smoker))
-				.addCriterion("in_swamp", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/fire_swamp")))
+				.addCriterion("in_swamp", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/fire_swamp")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/smoking_block");
 
@@ -551,13 +547,13 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/steeleaf_tool_set");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_ironwood", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/ironwood_tool_set")))
-				.addCriterion("has_steeleaf", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/steeleaf_tool_set")))
-				.addCriterion("has_fiery", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/fiery_tool_set")))
-				.addCriterion("has_knightmetal", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/knightmetal_tool_set")))
-				.addCriterion("has_ice", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/ice_sword")))
-				.addCriterion("has_glass", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/glass_sword")))
-				.addCriterion("has_giant", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/giant_tool_set")))
+				.addCriterion("has_ironwood", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/ironwood_tool_set")))
+				.addCriterion("has_steeleaf", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/steeleaf_tool_set")))
+				.addCriterion("has_fiery", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/fiery_tool_set")))
+				.addCriterion("has_knightmetal", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/knightmetal_tool_set")))
+				.addCriterion("has_ice", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/ice_sword")))
+				.addCriterion("has_glass", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/glass_sword")))
+				.addCriterion("has_giant", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/giant_tool_set")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/tools");
 
@@ -598,15 +594,15 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/triple_bow");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("pedestal", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("progress_trophy_pedestal")))
-				.addCriterion("naga", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("progress_naga")))
-				.addCriterion("lich", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("progress_lich")))
-				.addCriterion("minoshroom", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("progress_labyrinth")))
-				.addCriterion("hydra", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("progress_hydra")))
-				.addCriterion("knights", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("progress_knights")))
-				.addCriterion("ghast", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("progress_ur_ghast")))
-				.addCriterion("yeti", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("progress_yeti")))
-				.addCriterion("queen", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("progress_glacier")))
+				.addCriterion("pedestal", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("progress_trophy_pedestal")))
+				.addCriterion("naga", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("progress_naga")))
+				.addCriterion("lich", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("progress_lich")))
+				.addCriterion("minoshroom", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("progress_labyrinth")))
+				.addCriterion("hydra", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("progress_hydra")))
+				.addCriterion("knights", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("progress_knights")))
+				.addCriterion("ghast", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("progress_ur_ghast")))
+				.addCriterion("yeti", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("progress_yeti")))
+				.addCriterion("queen", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("progress_glacier")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/trophies");
 
@@ -640,11 +636,11 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 				.save(consumer, "twilightforest:alt/treasures/zombie_scepter");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("hydra_chop", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/foods/hydra_chop")))
-				.addCriterion("maze_wafer", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/foods/maze_wafer")))
-				.addCriterion("meef", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/foods/meef")))
-				.addCriterion("venison", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/foods/venison")))
-				.addCriterion("e115", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/treasures/foods/experiment_115")))
+				.addCriterion("hydra_chop", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/foods/hydra_chop")))
+				.addCriterion("maze_wafer", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/foods/maze_wafer")))
+				.addCriterion("meef", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/foods/meef")))
+				.addCriterion("venison", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/foods/venison")))
+				.addCriterion("e115", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/treasures/foods/experiment_115")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/foods/any");
 
@@ -704,19 +700,19 @@ public class PatchouliAdvancementGenerator implements Consumer<Consumer<Advancem
 	private void minorKeyBiomes(Consumer<Advancement> consumer, Advancement root) {
 		Advancement.Builder.advancement().parent(root)
 				.addCriterion("in_biome", LocationTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.DARK_FOREST)))
-				.addCriterion("has_other", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/dark_forest_center")))
+				.addCriterion("has_other", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/dark_forest_center")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/dark_forest");
 
 		Advancement.Builder.advancement().parent(root)
 				.addCriterion("in_biome", LocationTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.SWAMP)))
-				.addCriterion("has_other", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/fire_swamp")))
+				.addCriterion("has_other", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/fire_swamp")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/swamp");
 
 		Advancement.Builder.advancement().parent(root)
 				.addCriterion("in_biome", LocationTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.SNOWY_FOREST)))
-				.addCriterion("has_other", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TwilightForestMod.prefix("alt/biomes/twilight_glacier")))
+				.addCriterion("has_other", new HasAdvancementTrigger.Instance(EntityPredicate.Composite.ANY, TFConstants.prefix("alt/biomes/twilight_glacier")))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/snowy_forest");
 	}

@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -12,20 +11,16 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.world.components.processors.BoxCuttingProcessor;
-import twilightforest.world.components.structures.TwilightFeature;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 import twilightforest.world.registration.TFFeature;
 
@@ -37,7 +32,7 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
     }
 
     public TowerFoyer(StructureManager structureManager, BlockPos startPosition) {
-        super(LichTowerPieces.TOWER_FOYER, 0, structureManager, TwilightForestMod.prefix("lich_tower/foyer"), LichTowerUtil.makeSettings(Rotation.NONE), startPosition);
+        super(LichTowerPieces.TOWER_FOYER, 0, structureManager, TFConstants.prefix("lich_tower/foyer"), LichTowerUtil.makeSettings(Rotation.NONE), startPosition);
     }
 
     @Override

@@ -2,18 +2,12 @@ package twilightforest.client;
 
 import com.google.common.collect.Maps;
 import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
-import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
-import me.shedaniel.autoconfig.util.Utils;
-import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
@@ -23,11 +17,9 @@ import net.minecraft.core.BlockSource;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArmorItem;
@@ -35,18 +27,17 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import shadow.cloth.autoconfig.serializer.Toml4jConfigSerializerExtended;
 import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
+import twilightforest.TFConstants;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.TFLayerDefinitions;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.providers.*;
-import twilightforest.compat.clothConfig.TFConfigClient;
-import twilightforest.compat.clothConfig.configEntry.ExtendedConfigEntry;
-import twilightforest.compat.clothConfig.TFConfig;
+import twilightforest.compat.clothConfig.TFClientConfigEvent;
+import twilightforest.compat.clothConfig.configFiles.TFConfig;
+import twilightforest.compat.clothConfig.configFiles.TFConfigClient;
 import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
@@ -59,126 +50,32 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.tileentity.TFTileEntities;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
 
 @Environment(EnvType.CLIENT)
 public class TFClientSetup implements ClientModInitializer {
 
 	public static boolean optifinePresent = false;
+    protected static boolean optifineWarningShown = false;
 
 	public static TFConfigClient CLIENT_CONFIG;
-    public static TFConfig CLIENT_CONFIGTest;
+
+    public static void clientConfigInit(){
+        CLIENT_CONFIG = AutoConfig.getConfigHolder(TFConfig.class).getConfig().tfConfigClient;
+    }
 
     @Environment(EnvType.CLIENT)
 	@Override
 	public void onInitializeClient() {
-        clientSetup();
-	}
-
-	public static class ForgeEvents {
-
-		private static boolean optifineWarningShown = false;
-
-		public static void showOptifineWarning(Screen screen) {
-			if (optifinePresent && !optifineWarningShown && !TFClientSetup.CLIENT_CONFIG.optifine && screen instanceof TitleScreen) {
-				optifineWarningShown = true;
-				Minecraft.getInstance().setScreen(new OptifineWarningScreen(screen));
-			}
-		}
-
-	}
-
-	public static void clientConfigReload(){
-        //CLIENT_CONFIG = AutoConfig.getConfigHolder(TFConfigClient.class).getConfig();
-        CLIENT_CONFIG = AutoConfig.getConfigHolder(TFConfig.class).getConfig().tfConfigClient;
-        //TFConfig test = AutoConfig.getConfigHolder(TFConfig.class).getConfig();
-
-    }
-
-    public static void registerCustomAnnotations(){
-        GuiRegistry registry = AutoConfig.getGuiRegistry(TFConfig.class);
-        ConfigEntryBuilder ENTRY_BUILDER = ConfigEntryBuilder.create();
-
-        registry.registerAnnotationProvider(
-                (i13n, field, config, defaults, guiProvider) -> {
-                    ExtendedConfigEntry.BoundedFloat bounds
-                            = field.getAnnotation(ExtendedConfigEntry.BoundedFloat.class);
-
-                    return Collections.singletonList(
-                            ENTRY_BUILDER.startFloatField(
-                                            new TranslatableComponent(i13n),
-                                            Utils.getUnsafely(field, config, 0f)
-
-                                    )
-                                    .setMax(bounds.max())
-                                    .setMin(bounds.min())
-                                    .setDefaultValue(() -> Utils.getUnsafely(field, defaults))
-                                    .setSaveConsumer(newValue -> Utils.setUnsafely(field, config, newValue))
-                                    .build()
-                    );
-                },
-                field -> field.getType() == float.class || field.getType() == Float.class,
-                ExtendedConfigEntry.BoundedFloat.class
-        );
-
-        registry.registerAnnotationProvider(
-                (i13n, field, config, defaults, guiProvider) -> {
-                    ExtendedConfigEntry.BoundedDouble bounds
-                            = field.getAnnotation(ExtendedConfigEntry.BoundedDouble.class);
-
-                    return Collections.singletonList(
-                            ENTRY_BUILDER.startDoubleField(
-                                            new TranslatableComponent(i13n),
-                                            Utils.getUnsafely(field, config, 0f)
-
-                                    )
-                                    .setMax(bounds.max())
-                                    .setMin(bounds.min())
-                                    .setDefaultValue(() -> Utils.getUnsafely(field, defaults))
-                                    .setSaveConsumer(newValue -> Utils.setUnsafely(field, config, newValue))
-                                    .build()
-                    );
-                },
-                field -> field.getType() == double.class || field.getType() == Double.class,
-                ExtendedConfigEntry.BoundedDouble.class
-        );
-
-
-
-    }
-
-	//TODO: Clean this shit up
-    public static void clientSetup() {
-        //AutoConfig.register(TFConfigClient.class, Toml4jConfigSerializerExtended::new);
-        //AutoConfig.register(TFConfig.class, PartitioningSerializer.wrap(Toml4jConfigSerializerExtended::new));
-
-        registerCustomAnnotations();
-        clientConfigReload();
-
-        //Move this to event class as this is the event in case the player changes anything within cloth config
-        AutoConfig.getConfigHolder(TFConfig.class).registerLoadListener((manager, newData) -> {
-            CLIENT_CONFIG = newData.tfConfigClient;
-            //CLIENT_CONFIG = AutoConfig.getConfigHolder(newData.tfConfigClient.getClass()).getConfig();
-            return InteractionResult.SUCCESS;
-        });
-
-        AutoConfig.getConfigHolder(TFConfig.class).registerSaveListener((manager, newData) -> {
-            CLIENT_CONFIG = newData.tfConfigClient;
-            //CLIENT_CONFIG = AutoConfig.getConfigHolder(newData.tfConfigClient.getClass()).getConfig();
-            return InteractionResult.SUCCESS;
-        });
-
-
-
-
+        TFClientConfigEvent.init();
 
         TFPacketHandler.CHANNEL.initClient();
         TFLayerDefinitions.registerLayers();
         TFModelLayers.init();
-        TFClientEvents.ModBusEvents.registerFabricEvents();
-        TFClientEvents.ModBusEvents.registerModels();
+        TFClientEvents.registerFabricEvents();
+        TFClientEvents.registerModels();
         TFEntityRenderers.registerEntityRenderer();
         TFParticleType.registerFactories();
+        //TODO: Double Checl that Shaders are even working
         //ShaderManager.initShaders();
         ScreenEvents.BEFORE_INIT.register(((client, screen, scaledWidth, scaledHeight) -> LoadingScreenListener.onOpenGui(screen)));
         //twilightforest.client.TFClientSetup.addLegacyPack();
@@ -202,7 +99,7 @@ public class TFClientSetup implements ClientModInitializer {
 
 
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
-        DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
+        DimensionSpecialEffects.EFFECTS.put(TFConstants.prefix("renderer"), renderInfo);
 
         Minecraft.getInstance().execute(() -> {
         	Sheets.SIGN_MATERIALS.put(TFBlocks.TWILIGHT_OAK, Sheets.createSignMaterial(TFBlocks.TWILIGHT_OAK));
@@ -329,12 +226,12 @@ public class TFClientSetup implements ClientModInitializer {
         Minecraft.getInstance().getResourcePackRepository().sources.add(
                 (consumer, iFactory) -> consumer.accept(
                         Pack.create(
-                                TwilightForestMod.prefix("classic_textures").toString(),
+                                TFConstants.prefix("classic_textures").toString(),
                                 false,
                                 () -> new TwilightLegacyPack(
                                         FabricLoader
                                                 .getInstance()
-                                                .getModContainer(TwilightForestMod.ID)
+                                                .getModContainer(TFConstants.ID)
                                                 .get()
                                 ),
                                 iFactory,

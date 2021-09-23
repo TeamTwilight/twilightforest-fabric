@@ -19,7 +19,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
@@ -33,7 +33,7 @@ public class TFWeatherRenderer {
 	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
 
-	private static final ResourceLocation SPARKLES_TEXTURE = TwilightForestMod.getEnvTexture("sparkles.png");
+	private static final ResourceLocation SPARKLES_TEXTURE = TFConstants.getEnvTexture("sparkles.png");
 
 	private final float[] rainxs = new float[1024];
 	private final float[] rainzs = new float[1024];
@@ -518,7 +518,7 @@ public class TFWeatherRenderer {
 		BIG_RAIN("bigrain.png");
 
 		RenderType(String textureName) {
-			this.textureLocation = TwilightForestMod.getEnvTexture(textureName);
+			this.textureLocation = TFConstants.getEnvTexture(textureName);
 		}
 
 		private final ResourceLocation textureLocation;

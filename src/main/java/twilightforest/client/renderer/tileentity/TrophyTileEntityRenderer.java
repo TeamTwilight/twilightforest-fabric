@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.block.TrophyBlock;
 import twilightforest.block.TrophyWallBlock;
@@ -32,17 +32,17 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 
 	private final Map<BossVariant, GenericTrophyModel> trophies;
 
-	private static final ResourceLocation textureLocHydra = TwilightForestMod.getModelTexture("hydra4.png");
-	private static final ResourceLocation textureLocNaga = TwilightForestMod.getModelTexture("nagahead.png");
-	private static final ResourceLocation textureLocLich = TwilightForestMod.getModelTexture("twilightlich64.png");
-	private static final ResourceLocation textureLocUrGhast = TwilightForestMod.getModelTexture("towerboss.png");
-	private static final ResourceLocation textureLocSnowQueen = TwilightForestMod.getModelTexture("snowqueen.png");
-	private static final ResourceLocation textureLocMinoshroom = TwilightForestMod.getModelTexture("minoshroomtaur.png");
-	private static final ResourceLocation textureLocKnightPhantom = TwilightForestMod.getModelTexture("phantomskeleton.png");
-	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
-	private static final ResourceLocation textureLocYeti = TwilightForestMod.getModelTexture("yetialpha.png");
-	private static final ResourceLocation textureLocQuestRam = TwilightForestMod.getModelTexture("questram.png");
-	private static final ResourceLocation textureLocQuestRamLines = TwilightForestMod.getModelTexture("questram_lines.png");
+	private static final ResourceLocation textureLocHydra = TFConstants.getModelTexture("hydra4.png");
+	private static final ResourceLocation textureLocNaga = TFConstants.getModelTexture("nagahead.png");
+	private static final ResourceLocation textureLocLich = TFConstants.getModelTexture("twilightlich64.png");
+	private static final ResourceLocation textureLocUrGhast = TFConstants.getModelTexture("towerboss.png");
+	private static final ResourceLocation textureLocSnowQueen = TFConstants.getModelTexture("snowqueen.png");
+	private static final ResourceLocation textureLocMinoshroom = TFConstants.getModelTexture("minoshroomtaur.png");
+	private static final ResourceLocation textureLocKnightPhantom = TFConstants.getModelTexture("phantomskeleton.png");
+	private static final ResourceLocation textureLocKnightPhantomArmor = TFConstants.getArmorTexture("phantom_1.png");
+	private static final ResourceLocation textureLocYeti = TFConstants.getModelTexture("yetialpha.png");
+	private static final ResourceLocation textureLocQuestRam = TFConstants.getModelTexture("questram.png");
+	private static final ResourceLocation textureLocQuestRamLines = TFConstants.getModelTexture("questram_lines.png");
 
 	public TrophyTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
 		this.trophies = createTrophyRenderers(renderer.getModelSet());

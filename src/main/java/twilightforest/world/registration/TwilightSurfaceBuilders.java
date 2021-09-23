@@ -2,7 +2,7 @@ package twilightforest.world.registration;
 
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.world.components.surfacebuilders.FillingSurfaceBuilder;
 import twilightforest.world.components.surfacebuilders.GlacierSurfaceBuilder;
 import twilightforest.world.components.surfacebuilders.HighlandsSurfaceBuilder;
@@ -16,8 +16,8 @@ public class TwilightSurfaceBuilders {
 	public static final HighlandsSurfaceBuilder HIGHLANDS = new HighlandsSurfaceBuilder(SurfaceBuilderBaseConfiguration.CODEC);
 
 	public static void register() {
-		Registry.register(Registry.SURFACE_BUILDER, TwilightForestMod.prefix("plateau"), DEADROCK_FILLING);
-		Registry.register(Registry.SURFACE_BUILDER, TwilightForestMod.prefix("glacier"), GLACIER);
-		Registry.register(Registry.SURFACE_BUILDER, TwilightForestMod.prefix("highlands"), HIGHLANDS);
+		Registry.register(Registry.SURFACE_BUILDER, TFConstants.prefix("plateau"), DEADROCK_FILLING);
+		Registry.register(Registry.SURFACE_BUILDER, TFConstants.prefix("glacier"), GLACIER);
+		Registry.register(Registry.SURFACE_BUILDER, TFConstants.prefix("highlands"), HIGHLANDS);
 	}
 }

@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.Entity;
@@ -14,15 +14,6 @@ import net.minecraft.world.item.enchantment.Enchantments;
 public class NagaArmorItem extends ArmorItem {
 	protected NagaArmorItem(ArmorMaterial materialIn, EquipmentSlot equipmentSlotIn, Properties props) {
 		super(materialIn, equipmentSlotIn, props);
-	}
-
-	//@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
-		if (slot == EquipmentSlot.LEGS) {
-			return TwilightForestMod.ARMOR_DIR + "naga_scale_2.png";
-		} else {
-			return TwilightForestMod.ARMOR_DIR + "naga_scale_1.png";
-		}
 	}
 
 	@Override

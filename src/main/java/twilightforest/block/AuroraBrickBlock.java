@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.util.PlayerHelper;
 
 public class AuroraBrickBlock extends Block {
@@ -23,7 +23,7 @@ public class AuroraBrickBlock extends Block {
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
-		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("progress_glacier")) ? 0.1F : super.getDestroyProgress(state, player, getter, pos);
+		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TFConstants.prefix("progress_glacier")) ? 0.1F : super.getDestroyProgress(state, player, getter, pos);
 	}
 
 	private static float getFractalNoise(int iteration, float size, BlockPos pos) {

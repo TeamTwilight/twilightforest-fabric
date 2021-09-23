@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.Entity;
@@ -18,7 +17,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import com.mojang.math.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.BlockChainGoblinModel;
 import twilightforest.client.model.entity.ChainModel;
@@ -27,7 +26,7 @@ import twilightforest.entity.BlockChainGoblinEntity;
 
 public class BlockChainGoblinRenderer<T extends BlockChainGoblinEntity, M extends BlockChainGoblinModel<T>> extends HumanoidMobRenderer<T, M> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("blockgoblin.png");
 
 	private final Model model;
 	private final Model chainModel;

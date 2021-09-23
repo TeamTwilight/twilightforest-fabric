@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
 import org.apache.commons.lang3.ArrayUtils;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.entity.boss.LichEntity;
@@ -26,7 +26,7 @@ import java.util.Random;
 
 public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
-	public static final ModelResourceLocation LOC = new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "shield"), "inventory");
+	public static final ModelResourceLocation LOC = new ModelResourceLocation(new ResourceLocation(TFConstants.ID, "shield"), "inventory");
 	private static final Direction[] DIRS = ArrayUtils.add(Direction.values(), null);
 	private static final Random RAND = new Random();
 

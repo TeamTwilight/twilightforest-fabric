@@ -5,7 +5,7 @@ import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.transfer.TransferHandlerRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.block.TFBlocks;
 
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +29,6 @@ public class JEI implements REIClientPlugin {
 
     @Override
     public String getPluginProviderName() {
-        return TwilightForestMod.prefix("jei_plugin").toString();
+        return TFConstants.prefix("jei_plugin").toString();
     }
 }

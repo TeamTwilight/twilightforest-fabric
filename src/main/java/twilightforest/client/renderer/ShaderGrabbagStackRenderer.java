@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.lwjgl.opengl.GL11;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.TFClientEvents;
 import twilightforest.client.TFClientSetup;
 import twilightforest.client.shader.ShaderManager;
@@ -35,7 +35,7 @@ public class ShaderGrabbagStackRenderer implements BlockEntityRenderer<ShaderGra
         }
     }
 
-    public static ItemStack stack = new ItemStack(Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")));
+    public static ItemStack stack = new ItemStack(Registry.ITEM.get(TFConstants.prefix("shader_bag_twilight")));
     private final ItemTransforms.TransformType transform = ItemTransforms.TransformType.NONE;
 
     public ShaderGrabbagStackRenderer(BlockEntityRendererProvider.Context renderer) {
@@ -47,9 +47,9 @@ public class ShaderGrabbagStackRenderer implements BlockEntityRenderer<ShaderGra
         ms.pushPose(); // Stack + 1
         GlStateManager._disableCull();
 
-        ModelResourceLocation silver_back = new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory");
-        ModelResourceLocation shaderCase = new ModelResourceLocation(TwilightForestMod.prefix("shader"), "inventory");
-        ResourceLocation bg = TwilightForestMod.prefix("textures/items/star_burst_mask.png");
+        ModelResourceLocation silver_back = new ModelResourceLocation(TFConstants.prefix("trophy_minor"), "inventory");
+        ModelResourceLocation shaderCase = new ModelResourceLocation(TFConstants.prefix("shader"), "inventory");
+        ResourceLocation bg = TFConstants.prefix("textures/items/star_burst_mask.png");
 
         BakedModel modelBack = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(silver_back);
         BakedModel modelCase = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(shaderCase);

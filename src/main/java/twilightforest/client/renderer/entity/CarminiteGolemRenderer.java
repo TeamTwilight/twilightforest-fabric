@@ -2,17 +2,16 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.entity.CarminiteGolemModel;
 import twilightforest.entity.CarminiteGolemEntity;
 
 public class CarminiteGolemRenderer<T extends CarminiteGolemEntity, M extends CarminiteGolemModel<T>> extends MobRenderer<T, M> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("carminitegolem.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("carminitegolem.png");
 
 	public CarminiteGolemRenderer(EntityRendererProvider.Context manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);

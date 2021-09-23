@@ -5,20 +5,19 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CubeOfAnnihilationModel;
 import twilightforest.entity.RovingCubeEntity;
 
 public class RovingCubeRenderer<T extends RovingCubeEntity> extends EntityRenderer<T> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("cubeofannihilation.png");
 	private final Model model;
 
 	public RovingCubeRenderer(EntityRendererProvider.Context manager) {

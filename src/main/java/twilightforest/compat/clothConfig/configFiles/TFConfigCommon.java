@@ -1,24 +1,23 @@
-package twilightforest.compat.clothConfig;
+package twilightforest.compat.clothConfig.configFiles;
 
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import shadow.cloth.clothconfig.com.moandjiezana.toml.TomlComment;
+import twilightforest.TFConstants;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.TFGenCaveStalactite;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
 @Config(name = "twilightforest-common")
-@Config.Gui.Background(TwilightForestMod.ID + ":textures/block/maze_stone_brick.png")
+@Config.Gui.Background(TFConstants.ID + ":textures/block/maze_stone_brick.png")
 //@Config.Gui.CategoryBackground(category = "common", background = TwilightForestMod.ID + ":textures/block/maze_stone_brick.png")
 public class TFConfigCommon implements ConfigData {
     //private static final String config = TwilightForestMod.ID + ".config.";

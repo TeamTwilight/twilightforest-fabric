@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.FeaturePlacers;
@@ -29,7 +29,7 @@ public class QuestGroveComponent extends TemplateStructurePiece implements Twili
 	}
 
 	public QuestGroveComponent(StructureManager structureManager, Random random, BlockPos templatePosition) {
-		this(structureManager, TwilightForestMod.prefix("quest_grove"), makeSettings(random), templatePosition);
+		this(structureManager, TFConstants.prefix("quest_grove"), makeSettings(random), templatePosition);
 	}
 
 	public QuestGroveComponent(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings structurePlaceSettings, BlockPos templatePosition) {

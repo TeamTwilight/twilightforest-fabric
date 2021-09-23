@@ -8,11 +8,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
@@ -22,7 +21,7 @@ import javax.annotation.Nullable;
 
 public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormTileEntity> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("moonworm.png");
 	private final MoonwormModel moonwormModel;
 
 	public MoonwormTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {

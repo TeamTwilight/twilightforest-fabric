@@ -5,11 +5,11 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 public class WinterWolfRenderer extends WolfRenderer {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("winterwolf.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("winterwolf.png");
 
 	public WinterWolfRenderer(EntityRendererProvider.Context manager) {
 		super(manager);

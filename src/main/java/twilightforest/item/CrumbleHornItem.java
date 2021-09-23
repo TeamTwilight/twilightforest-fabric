@@ -2,8 +2,8 @@ package twilightforest.item;
 
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import org.apache.commons.lang3.tuple.Pair;
+import twilightforest.TFConstants;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.extensions.IItem;
 import twilightforest.util.WorldUtil;
@@ -215,7 +215,7 @@ public class CrumbleHornItem extends Item implements IItem {
 			//fallback if the other part doesnt work since its inconsistent
 			PlayerAdvancements advancements = ((ServerPlayer) player).getAdvancements();
 			ServerAdvancementManager manager = ((ServerLevel) player.getCommandSenderWorld()).getServer().getAdvancements();
-			Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("alt/treasures/crumble_horn_used"));
+			Advancement advancement = manager.getAdvancement(TFConstants.prefix("alt/treasures/crumble_horn_used"));
 			if (advancement != null) {
 				advancements.award(advancement, "used");
 			}

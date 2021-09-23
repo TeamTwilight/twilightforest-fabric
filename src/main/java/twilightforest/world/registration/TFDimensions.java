@@ -1,13 +1,8 @@
 package twilightforest.world.registration;
 
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.dimension.LevelStem;
 
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.world.components.TFBiomeDistributor;
 import twilightforest.world.components.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
@@ -17,10 +12,10 @@ public class TFDimensions {
 	//public static final RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
 
 	public static void init() {
-		Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("smart_distribution"), TFBiomeDistributor.TF_CODEC);
+		Registry.register(Registry.BIOME_SOURCE, TFConstants.prefix("smart_distribution"), TFBiomeDistributor.TF_CODEC);
 		// TODO legacy
-		Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("grid"), TFBiomeProvider.TF_CODEC);
+		Registry.register(Registry.BIOME_SOURCE, TFConstants.prefix("grid"), TFBiomeProvider.TF_CODEC);
 
-		Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
+		Registry.register(Registry.CHUNK_GENERATOR, TFConstants.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
 	}
 }

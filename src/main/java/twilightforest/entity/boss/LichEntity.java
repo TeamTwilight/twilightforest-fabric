@@ -29,9 +29,9 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
+import twilightforest.TFConstants;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.SwarmSpiderEntity;
 import twilightforest.entity.TFEntities;
@@ -57,7 +57,7 @@ import net.minecraft.world.entity.monster.Zombie;
 
 public class LichEntity extends Monster {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/lich");
+	public static final ResourceLocation LOOT_TABLE = TFConstants.prefix("entities/lich");
 	//TODO: Think these could be EntityType?
 	private static final Set<Class<? extends Entity>> POPPABLE = ImmutableSet.of(Skeleton.class, Zombie.class, EnderMan.class, Spider.class, Creeper.class, SwarmSpiderEntity.class);
 

@@ -14,14 +14,14 @@ import net.minecraft.core.BlockPos;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.entity.TFPartEntity;
 
 import java.util.List;
 
 public class NagaSegmentEntity extends TFPartEntity<NagaEntity> {
 
-	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("naga_segment");
+	public static final ResourceLocation RENDERER = TFConstants.prefix("naga_segment");
 
 
 	private int deathCounter;

@@ -8,39 +8,25 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
 import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.tileentity.KeepsakeCasketTileEntity;
-
-import java.util.Locale;
 
 /**
  * Keepsake Casket Model - MCVinnyq
@@ -122,7 +108,7 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBl
             f1 = 1.0F - f1;
             f1 = 1.0F - f1 * f1 * f1;
 
-            ResourceLocation CASKET = TwilightForestMod.getModelTexture("casket/keepsake_casket_" + damage + ".png");
+            ResourceLocation CASKET = TFConstants.getModelTexture("casket/keepsake_casket_" + damage + ".png");
             this.renderModels(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(CASKET)), this.lid, this.base, f1, combinedLightIn, combinedOverlayIn);
             matrixStackIn.popPose();
         }

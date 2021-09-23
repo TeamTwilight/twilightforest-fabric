@@ -4,15 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.entity.SnowQueenModel;
 import twilightforest.entity.boss.SnowQueenEntity;
 
 public class SnowQueenRenderer extends HumanoidMobRenderer<SnowQueenEntity, SnowQueenModel> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("snowqueen.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("snowqueen.png");
 
 	public SnowQueenRenderer(EntityRendererProvider.Context manager, SnowQueenModel model) {
 		super(manager, model, 0.625F);

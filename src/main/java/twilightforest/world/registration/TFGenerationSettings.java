@@ -1,6 +1,5 @@
 package twilightforest.world.registration;
 
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.server.level.ServerLevel;
+import twilightforest.TFConstants;
 import twilightforest.TwilightForestMod;
 import twilightforest.potions.TFPotions;
 import twilightforest.util.WorldUtil;
@@ -42,15 +42,15 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 	static {
 		// TODO make this data-driven
-		registerBiomeAdvancementRestriction(BiomeKeys.DARK_FOREST, TwilightForestMod.prefix("progress_lich"));
-		registerBiomeAdvancementRestriction(BiomeKeys.DARK_FOREST_CENTER, TwilightForestMod.prefix("progress_knights"));
-		registerBiomeAdvancementRestriction(BiomeKeys.FINAL_PLATEAU, TwilightForestMod.prefix("progress_troll"));
-		registerBiomeAdvancementRestriction(BiomeKeys.FIRE_SWAMP, TwilightForestMod.prefix("progress_labyrinth"));
-		registerBiomeAdvancementRestriction(BiomeKeys.GLACIER, TwilightForestMod.prefix("progress_yeti"));
-		registerBiomeAdvancementRestriction(BiomeKeys.HIGHLANDS, TwilightForestMod.prefix("progress_merge"));
-		registerBiomeAdvancementRestriction(BiomeKeys.SNOWY_FOREST, TwilightForestMod.prefix("progress_lich"));
-		registerBiomeAdvancementRestriction(BiomeKeys.SWAMP, TwilightForestMod.prefix("progress_lich"));
-		registerBiomeAdvancementRestriction(BiomeKeys.THORNLANDS, TwilightForestMod.prefix("progress_troll"));
+		registerBiomeAdvancementRestriction(BiomeKeys.DARK_FOREST, TFConstants.prefix("progress_lich"));
+		registerBiomeAdvancementRestriction(BiomeKeys.DARK_FOREST_CENTER, TFConstants.prefix("progress_knights"));
+		registerBiomeAdvancementRestriction(BiomeKeys.FINAL_PLATEAU, TFConstants.prefix("progress_troll"));
+		registerBiomeAdvancementRestriction(BiomeKeys.FIRE_SWAMP, TFConstants.prefix("progress_labyrinth"));
+		registerBiomeAdvancementRestriction(BiomeKeys.GLACIER, TFConstants.prefix("progress_yeti"));
+		registerBiomeAdvancementRestriction(BiomeKeys.HIGHLANDS, TFConstants.prefix("progress_merge"));
+		registerBiomeAdvancementRestriction(BiomeKeys.SNOWY_FOREST, TFConstants.prefix("progress_lich"));
+		registerBiomeAdvancementRestriction(BiomeKeys.SWAMP, TFConstants.prefix("progress_lich"));
+		registerBiomeAdvancementRestriction(BiomeKeys.THORNLANDS, TFConstants.prefix("progress_troll"));
 
 		registerBiomeProgressionEnforcement(BiomeKeys.DARK_FOREST, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {

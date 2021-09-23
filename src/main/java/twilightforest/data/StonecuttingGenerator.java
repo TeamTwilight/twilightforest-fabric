@@ -25,7 +25,7 @@ import java.nio.file.Path;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static twilightforest.TwilightForestMod.prefix;
+import static twilightforest.TFConstants.prefix;
 
 public class StonecuttingGenerator extends RecipeProvider {
 	public StonecuttingGenerator(DataGenerator generator) {

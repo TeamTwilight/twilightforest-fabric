@@ -22,6 +22,6 @@ public class ModelManagerMixin {
 
     @Inject(method = "apply", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
     public void onModelLoad(ModelBakery modelBakery, ResourceManager resourceManager, ProfilerFiller profilerFiller, CallbackInfo ci) {
-        TFClientEvents.ModBusEvents.modelBake(this.bakedRegistry);
+        TFClientEvents.modelBake(this.bakedRegistry);
     }
 }

@@ -37,6 +37,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.apache.commons.lang3.mutable.MutableInt;
+import twilightforest.TFConstants;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
@@ -107,7 +108,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 					if (!TFTeleporter.isSafeAround(world, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
-							player.displayClientMessage(new TranslatableComponent(TwilightForestMod.ID + ".twilight_portal.unsafe"), true);
+							player.displayClientMessage(new TranslatableComponent(TFConstants.ID + ".twilight_portal.unsafe"), true);
 						}
 						return false;
 					}

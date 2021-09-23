@@ -1,18 +1,17 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.entity.TinyBirdModel;
 import twilightforest.entity.passive.TinyBirdEntity;
 
 public class TinyBirdRenderer extends BirdRenderer<TinyBirdEntity, TinyBirdModel> {
 
-	private static final ResourceLocation textureLocSparrow  = TwilightForestMod.getModelTexture("tinybirdbrown.png");
-	private static final ResourceLocation textureLocFinch    = TwilightForestMod.getModelTexture("tinybirdgold.png");
-	private static final ResourceLocation textureLocCardinal = TwilightForestMod.getModelTexture("tinybirdred.png");
-	private static final ResourceLocation textureLocBluebird = TwilightForestMod.getModelTexture("tinybirdblue.png");
+	private static final ResourceLocation textureLocSparrow  = TFConstants.getModelTexture("tinybirdbrown.png");
+	private static final ResourceLocation textureLocFinch    = TFConstants.getModelTexture("tinybirdgold.png");
+	private static final ResourceLocation textureLocCardinal = TFConstants.getModelTexture("tinybirdred.png");
+	private static final ResourceLocation textureLocBluebird = TFConstants.getModelTexture("tinybirdblue.png");
 
 	public TinyBirdRenderer(EntityRendererProvider.Context manager, TinyBirdModel model, float shadowSize) {
 		super(manager, model, shadowSize, "");

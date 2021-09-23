@@ -11,15 +11,15 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import twilightforest.TFConstants;
 import twilightforest.world.registration.TFFeature;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
 
 import java.util.Random;
 
 public class NagaCourtyardPathComponent extends TFStructureComponentTemplate {
 
-    private static final ResourceLocation PATH = new ResourceLocation(TwilightForestMod.ID, "courtyard/pathway");
+    private static final ResourceLocation PATH = new ResourceLocation(TFConstants.ID, "courtyard/pathway");
 
     public NagaCourtyardPathComponent(ServerLevel level, CompoundTag nbt) {
         super(level, NagaCourtyardPieces.TFNCPa, nbt);

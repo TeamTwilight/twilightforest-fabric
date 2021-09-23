@@ -3,7 +3,7 @@ package twilightforest.compat;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfig;
-import twilightforest.compat.clothConfig.TFConfig;
+import twilightforest.compat.clothConfig.configFiles.TFConfig;
 
 public class TFModMenu implements ModMenuApi {
     @Override

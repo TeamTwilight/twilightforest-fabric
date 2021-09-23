@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.world.components.processors.BoxCuttingProcessor;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 import twilightforest.world.registration.TFFeature;
@@ -32,7 +32,7 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     }
 
     public CentralTowerSegment(StructureManager structureManager, Rotation rotation, BoxCuttingProcessor sideTowerStarts, BlockPos startPosition) {
-        this(structureManager, TwilightForestMod.prefix("lich_tower/central_tower"), LichTowerUtil.makeSettings(rotation).addProcessor(sideTowerStarts), startPosition);
+        this(structureManager, TFConstants.prefix("lich_tower/central_tower"), LichTowerUtil.makeSettings(rotation).addProcessor(sideTowerStarts), startPosition);
     }
 
     private CentralTowerSegment(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {

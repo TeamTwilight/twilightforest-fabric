@@ -6,15 +6,15 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.world.components.processors.StoneBricksTemplateProcessor;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
 public class GroveRuinsFeature extends TemplateFeature<NoneFeatureConfiguration> {
-    private static final ResourceLocation PILLAR = TwilightForestMod.prefix("feature/ruins/grove_pillar");
-    private static final ResourceLocation ARCH = TwilightForestMod.prefix("feature/ruins/grove_arch");
+    private static final ResourceLocation PILLAR = TFConstants.prefix("feature/ruins/grove_pillar");
+    private static final ResourceLocation ARCH = TFConstants.prefix("feature/ruins/grove_arch");
 
     public GroveRuinsFeature(Codec<NoneFeatureConfiguration> config) {
         super(config);

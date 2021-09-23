@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 import twilightforest.world.registration.TFFeature;
 
@@ -29,7 +29,7 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     }
 
     private CentralTowerAttachment(StructureManager structureManager, Rotation rotation, String name, BlockPos startPosition, int width) {
-        this(structureManager, TwilightForestMod.prefix("lich_tower/attachments/central/" + name), LichTowerUtil.makeSettings(rotation), startPosition.relative(rotation.rotate(Direction.EAST), -(width - 5 >> 1)), width);
+        this(structureManager, TFConstants.prefix("lich_tower/attachments/central/" + name), LichTowerUtil.makeSettings(rotation), startPosition.relative(rotation.rotate(Direction.EAST), -(width - 5 >> 1)), width);
     }
 
     private CentralTowerAttachment(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int width) {

@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nonnull;
@@ -52,7 +52,7 @@ public class MagicBeansItem extends Item {
 					//fallback if the other part doesnt work since its inconsistent
 					PlayerAdvancements advancements = ((ServerPlayer) player).getAdvancements();
 					ServerAdvancementManager manager = ((ServerLevel)player.getCommandSenderWorld()).getServer().getAdvancements();
-					Advancement advancement = manager.getAdvancement(TwilightForestMod.prefix("beanstalk"));
+					Advancement advancement = manager.getAdvancement(TFConstants.prefix("beanstalk"));
 					if(advancement != null) {
 						advancements.award(advancement, "use_beans");
 					}

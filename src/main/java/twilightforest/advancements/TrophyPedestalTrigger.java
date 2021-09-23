@@ -11,16 +11,14 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.advancements.CriterionTrigger.Listener;
-
 public class TrophyPedestalTrigger implements CriterionTrigger<TrophyPedestalTrigger.Instance> {
 
-    public static final ResourceLocation ID = TwilightForestMod.prefix("placed_on_trophy_pedestal");
+    public static final ResourceLocation ID = TFConstants.prefix("placed_on_trophy_pedestal");
     private final Map<PlayerAdvancements, TrophyPedestalTrigger.Listeners> listeners = Maps.newHashMap();
 
     @Override

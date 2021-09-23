@@ -3,16 +3,15 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 public class MistWolfRenderer extends WolfRenderer {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mistwolf.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("mistwolf.png");
 
 	public MistWolfRenderer(EntityRendererProvider.Context manager) {
 		super(manager);

@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import twilightforest.TFConstants;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.inventory.UncraftingContainer;
@@ -23,7 +24,7 @@ import twilightforest.network.TFPacketHandler;
 
 public class UncraftingGui extends AbstractContainerScreen<UncraftingContainer> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
+	private static final ResourceLocation textureLoc = TFConstants.getGuiTexture("guigoblintinkering.png");
 
 	public UncraftingGui(UncraftingContainer container, Inventory player, Component name) {
 		super(container, player, name);

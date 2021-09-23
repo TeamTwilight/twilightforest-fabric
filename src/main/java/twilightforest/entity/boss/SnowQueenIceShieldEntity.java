@@ -6,13 +6,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import twilightforest.TFConstants;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPartEntity;
 
 public class SnowQueenIceShieldEntity extends TFPartEntity<SnowQueenEntity> {
 
-	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("snowqueen_iceshield");
+	public static final ResourceLocation RENDERER = TFConstants.prefix("snowqueen_iceshield");
 
     public SnowQueenIceShieldEntity(SnowQueenEntity parent) {
         super(parent);

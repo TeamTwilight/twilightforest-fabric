@@ -29,7 +29,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import org.apache.commons.lang3.tuple.Pair;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.entity.WraithEntity;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -42,8 +42,8 @@ import java.util.List;
 import java.util.Random;
 
 public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
-	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("feature/graveyard/graveyard");
-	private static final ResourceLocation TRAP = TwilightForestMod.prefix("feature/graveyard/grave_trap");
+	private static final ResourceLocation GRAVEYARD = TFConstants.prefix("feature/graveyard/graveyard");
+	private static final ResourceLocation TRAP = TFConstants.prefix("feature/graveyard/grave_trap");
 	private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.DIRT, Material.GRASS, Material.LEAVES, Material.WOOD, Material.PLANT, Material.STONE);
 
 	public GraveyardFeature(Codec<NoneFeatureConfiguration> config) {
@@ -234,11 +234,11 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 
 	private enum GraveType {
 
-		Full(TwilightForestMod.prefix("feature/graveyard/grave_full")),
+		Full(TFConstants.prefix("feature/graveyard/grave_full")),
 
-		Upper(TwilightForestMod.prefix("feature/graveyard/grave_upper")),
+		Upper(TFConstants.prefix("feature/graveyard/grave_upper")),
 
-		Lower(TwilightForestMod.prefix("feature/graveyard/grave_lower"));
+		Lower(TFConstants.prefix("feature/graveyard/grave_lower"));
 
 		private static final GraveType[] VALUES = values();
 		private final ResourceLocation RL;

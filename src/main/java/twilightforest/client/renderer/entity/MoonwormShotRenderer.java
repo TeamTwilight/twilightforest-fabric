@@ -5,19 +5,18 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
 import twilightforest.entity.projectile.MoonwormShotEntity;
 
 public class MoonwormShotRenderer extends EntityRenderer<MoonwormShotEntity> {
 
-	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
+	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("moonworm.png");
 	private final MoonwormModel wormModel;
 
 	public MoonwormShotRenderer(EntityRendererProvider.Context manager) {

@@ -22,8 +22,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
+import twilightforest.TFConstants;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.util.PlayerHelper;
@@ -102,7 +102,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	private void warnIneligiblePlayers(Level world, BlockPos pos) {
 		for (Player player : world.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
 			if (!isPlayerEligible(player)) {
-				player.displayClientMessage(new TranslatableComponent(TwilightForestMod.ID + ".trophy_pedestal.ineligible"), true);
+				player.displayClientMessage(new TranslatableComponent(TFConstants.ID + ".trophy_pedestal.ineligible"), true);
 			}
 		}
 	}
@@ -115,7 +115,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	}
 
 	private boolean isPlayerEligible(Player player) {
-		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("progress_lich"));
+		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TFConstants.prefix("progress_lich"));
 	}
 
 	private void doPedestalEffect(Level world, BlockPos pos, BlockState state) {

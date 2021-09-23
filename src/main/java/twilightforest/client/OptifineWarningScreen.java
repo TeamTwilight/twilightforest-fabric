@@ -8,7 +8,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.*;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFConstants;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -19,17 +19,17 @@ public class OptifineWarningScreen extends Screen {
 	private int ticksUntilEnable = 20 * 10;
 	private MultiLineLabel message = MultiLineLabel.EMPTY;
 	private MultiLineLabel suggestions = MultiLineLabel.EMPTY;
-	private static final Component text = new TranslatableComponent(TwilightForestMod.ID + ".gui.optifine.message");
+	private static final Component text = new TranslatableComponent(TFConstants.ID + ".gui.optifine.message");
 	private static final MutableComponent url;
 	private final List<Button> exitButton = Lists.newArrayList();
 
 	static {
-		(url = new TranslatableComponent(TwilightForestMod.ID + ".gui.optifine.suggestions"))
+		(url = new TranslatableComponent(TFConstants.ID + ".gui.optifine.suggestions"))
 				.withStyle(style -> style.withColor(ChatFormatting.GREEN).withUnderlined(true).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://gist.github.com/alkyaly/02830c560d15256855bc529e1e232e88")));
 	}
 
 	protected OptifineWarningScreen(Screen screen) {
-		super(new TranslatableComponent(TwilightForestMod.ID + ".gui.optifine.title"));
+		super(new TranslatableComponent(TFConstants.ID + ".gui.optifine.title"));
 		this.lastScreen = screen;
 	}
 
