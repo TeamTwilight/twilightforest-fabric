@@ -37,7 +37,7 @@ public class MapRendererMixin {
     @Inject(method = "draw", at = @At(value = "INVOKE", target = "Ljava/lang/Iterable;iterator()Ljava/util/Iterator;"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
     public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, boolean bl, int pPackedLight, CallbackInfo ci, int j, int k, float f, Matrix4f matrix4f, VertexConsumer consumer, int l) {
         for(MapDecoration mapdecoration : this.data.getDecorations()) {
-            TwilightForestMod.LOGGER.info(mapdecoration.getName().getString());
+            //TwilightForestMod.LOGGER.info(mapdecoration.getName().getString());
             if (!bl || mapdecoration.renderOnFrame()) {
                 if (((IMapDecorationEx)mapdecoration).render(l)) { l++; continue; }
                 poseStack.pushPose();

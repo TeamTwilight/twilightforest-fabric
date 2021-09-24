@@ -27,6 +27,7 @@ import twilightforest.network.MazeMapPacket;
 import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 // FIXME: Map does not display data. Investigate
@@ -52,7 +53,8 @@ public class MazeMapItem extends MapItem implements IMapItemEx {
 
 	@Nullable
 	public static TFMazeMapData getData(ItemStack stack, Level world) {
-		return TFMazeMapData.getMazeMapData(world, getMapName(getMapId(stack)));
+		Integer mapId = getMapId(stack);
+		return mapId != null ? TFMazeMapData.getMazeMapData(world, getMapName(mapId)) : null;
 	}
 
 	@Nullable
