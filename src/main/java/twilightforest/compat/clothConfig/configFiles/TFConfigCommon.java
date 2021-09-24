@@ -18,9 +18,64 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Config(name = "twilightforest-common")
 @Config.Gui.Background(TFConstants.ID + ":textures/block/maze_stone_brick.png")
-//@Config.Gui.CategoryBackground(category = "common", background = TwilightForestMod.ID + ":textures/block/maze_stone_brick.png")
 public class TFConfigCommon implements ConfigData {
-    //private static final String config = TwilightForestMod.ID + ".config.";
+
+    @ConfigEntry.Category("common")
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.RequiresRestart
+    @TomlComment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.")
+    public boolean doCompat = true;
+
+    @ConfigEntry.Category("common")
+    @ConfigEntry.Gui.Tooltip
+    @TomlComment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld. (domain:regname).")
+    public String originDimension = "minecraft:overworld";
+
+    @ConfigEntry.Category("common")
+    @ConfigEntry.Gui.Tooltip
+    @TomlComment("Allow portals to the Twilight Forest to be made outside of the 'origin' dimension. May be considered an exploit.")
+    public boolean allowPortalsInOtherDimensions = false;
+
+    @ConfigEntry.Category("common")
+    @ConfigEntry.Gui.Tooltip
+    @TomlComment("Allow portals only for admins (Operators). This severely reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
+    public boolean adminOnlyPortals = false;
+
+    @ConfigEntry.Category("common")
+    @ConfigEntry.Gui.Tooltip
+    @TomlComment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.")
+    public boolean disablePortalCreation = false;
+
+    @ConfigEntry.Category("common")
+    @ConfigEntry.Gui.Tooltip
+    @TomlComment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
+            "\nNote that enabling this also reduces the rate at which portal formation checks are performed.")
+    public boolean checkPortalDestination = false;
+
+    @ConfigEntry.Category("common")
+    @ConfigEntry.Gui.Tooltip
+    @TomlComment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")
+    public boolean portalLightning = false;
+
+    @ConfigEntry.Category("common")
+    @ConfigEntry.Gui.Tooltip
+    @TomlComment("If false, the return portal will require the activation item.")
+    public boolean shouldReturnPortalBeUsable = true;
+
+    @ConfigEntry.Category("common")
+    @ConfigEntry.Gui.Tooltip
+    @TomlComment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
+    public boolean disableUncrafting = false;
+
+    @ConfigEntry.Category("common")
+    @ConfigEntry.Gui.Tooltip
+    @TomlComment("If true, Keepsake Caskets that are spawned when a player dies will not be accessible by other players. Use this if you dont want people taking from other people's death caskets. NOTE: server operators will still be able to open locked caskets.")
+    public boolean uuid_locking = false;
+
+    @ConfigEntry.Category("common")
+    @ConfigEntry.Gui.Tooltip
+    @TomlComment("If true, disables the ability to make Skull Candles by right clicking a vanilla skull with a candle. Turn this on if you're having mod conflict issues for some reason.")
+    public boolean skull_candles = false;
 
     @ConfigEntry.Category("common")
     @ConfigEntry.Gui.CollapsibleObject
@@ -138,63 +193,6 @@ public class TFConfigCommon implements ConfigData {
         }
 
     }
-
-    @ConfigEntry.Category("common")
-    @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Gui.RequiresRestart
-    @TomlComment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.")
-    public boolean doCompat = true;
-
-    @ConfigEntry.Category("common")
-    @ConfigEntry.Gui.Tooltip
-    @TomlComment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld. (domain:regname).")
-    public String originDimension = "minecraft:overworld";
-
-    @ConfigEntry.Category("common")
-    @ConfigEntry.Gui.Tooltip
-    @TomlComment("Allow portals to the Twilight Forest to be made outside of the 'origin' dimension. May be considered an exploit.")
-    public boolean allowPortalsInOtherDimensions = false;
-
-    @ConfigEntry.Category("common")
-    @ConfigEntry.Gui.Tooltip
-    @TomlComment("Allow portals only for admins (Operators). This severely reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
-    public boolean adminOnlyPortals = false;
-
-    @ConfigEntry.Category("common")
-    @ConfigEntry.Gui.Tooltip
-    @TomlComment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.")
-    public boolean disablePortalCreation = false;
-
-    @ConfigEntry.Category("common")
-    @ConfigEntry.Gui.Tooltip
-    @TomlComment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
-            "\nNote that enabling this also reduces the rate at which portal formation checks are performed.")
-    public boolean checkPortalDestination = false;
-
-    @ConfigEntry.Category("common")
-    @ConfigEntry.Gui.Tooltip
-    @TomlComment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")
-    public boolean portalLightning = false;
-
-    @ConfigEntry.Category("common")
-    @ConfigEntry.Gui.Tooltip
-    @TomlComment("If false, the return portal will require the activation item.")
-    public boolean shouldReturnPortalBeUsable = true;
-
-    @ConfigEntry.Category("common")
-    @ConfigEntry.Gui.Tooltip
-    @TomlComment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
-    public boolean disableUncrafting = false;
-
-    @ConfigEntry.Category("common")
-    @ConfigEntry.Gui.Tooltip
-    @TomlComment("If true, Keepsake Caskets that are spawned when a player dies will not be accessible by other players. Use this if you dont want people taking from other people's death caskets. NOTE: server operators will still be able to open locked caskets.")
-    public boolean uuid_locking = false;
-
-    @ConfigEntry.Category("common")
-    @ConfigEntry.Gui.Tooltip
-    @TomlComment("If true, disables the ability to make Skull Candles by right clicking a vanilla skull with a candle. Turn this on if you're having mod conflict issues for some reason.")
-    public boolean skull_candles = false;
 
     @ConfigEntry.Category("common")
     @ConfigEntry.Gui.CollapsibleObject
