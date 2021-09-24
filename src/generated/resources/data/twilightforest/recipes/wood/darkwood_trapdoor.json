@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "twilightforest:dark_planks"
+    }
+  },
+  "result": {
+    "item": "twilightforest:dark_trapdoor",
+    "count": 6
+  }
+}
