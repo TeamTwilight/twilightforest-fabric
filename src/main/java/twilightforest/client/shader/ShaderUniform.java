@@ -4,6 +4,7 @@ import org.lwjgl.opengl.ARBShaderObjects;
 
 import java.util.function.IntSupplier;
 
+//TODO: DELETE IN THE FUTURE AS IE DOSN'T EXIST FOR FABRIC... YET
 public abstract class ShaderUniform {
 
     protected final String name;

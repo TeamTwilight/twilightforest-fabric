@@ -28,6 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
+import twilightforest.ASMHooks;
 import twilightforest.TFConstants;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
@@ -35,6 +36,7 @@ import twilightforest.client.model.TFLayerDefinitions;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.providers.*;
+import twilightforest.client.renderer.ShaderGrabbagStackRenderer;
 import twilightforest.compat.clothConfig.TFClientConfigEvent;
 import twilightforest.compat.clothConfig.configFiles.TFConfig;
 import twilightforest.compat.clothConfig.configFiles.TFConfigClient;
@@ -55,6 +57,7 @@ import java.lang.reflect.Field;
 public class TFClientSetup implements ClientModInitializer {
 
 	public static boolean optifinePresent = false;
+
     protected static boolean optifineWarningShown = false;
 
 	public static TFConfigClient CLIENT_CONFIG;
@@ -68,6 +71,8 @@ public class TFClientSetup implements ClientModInitializer {
 	public void onInitializeClient() {
         TFClientConfigEvent.init();
 
+        ASMHooks.registerMultipartEvents();
+
         TFPacketHandler.CHANNEL.initClient();
         TFLayerDefinitions.registerLayers();
         TFModelLayers.init();
@@ -75,19 +80,16 @@ public class TFClientSetup implements ClientModInitializer {
         TFClientEvents.registerModels();
         TFEntityRenderers.registerEntityRenderer();
         TFParticleType.registerFactories();
-        //TODO: Double Checl that Shaders are even working
+        //TODO: REMOVE REMOVE REMOVE
         //ShaderManager.initShaders();
         ScreenEvents.BEFORE_INIT.register(((client, screen, scaledWidth, scaledHeight) -> LoadingScreenListener.onOpenGui(screen)));
+        //TODO: Currently only work's in Dev Environment
         //twilightforest.client.TFClientSetup.addLegacyPack();
-        System.out.println(FabricLoader.getInstance().isModLoaded("optifabric")+ ": Optifine loaded?");
+
+        System.out.println(FabricLoader.getInstance().isModLoaded("optifabric") + ": Optifine loaded?");
         if(FabricLoader.getInstance().isModLoaded("optifabric"))
             optifinePresent = true;
-//		try {
-//			Class.forName("net.optifine.Config");
-//			optifinePresent = true;
-//		} catch (ClassNotFoundException e) {
-//			optifinePresent = false;
-//		}
+
 		TFItems.addItemModelProperties();
         RenderLayerRegistration.init();
         armorRegistry();

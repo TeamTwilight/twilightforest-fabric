@@ -71,7 +71,6 @@ public class TwilightForestMod implements ModInitializer {
 
 		clothConfigSetup();
 
-		ASMHooks.registerMultipartEvents();
 		registerCommands();
 
 		//TFPotions.POTIONS.register(modbus);
@@ -148,7 +147,6 @@ public class TwilightForestMod implements ModInitializer {
 			}
 		}
 
-		//twilightforest.TFConfig.build();
 		TFGenCaveStalactite.loadStalactites();
 
 		WoodType.register(TFBlocks.TWILIGHT_OAK);

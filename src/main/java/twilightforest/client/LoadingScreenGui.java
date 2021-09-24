@@ -17,6 +17,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.TFConstants;
 import twilightforest.compat.clothConfig.configFiles.TFConfigClient;
+import twilightforest.item.TFItems;
 
 import java.util.Random;
 
@@ -97,6 +98,7 @@ public class LoadingScreenGui extends Screen {
 	private void assignContent() {
 		backgroundTheme = BackgroundThemes.values()[random.nextInt(BackgroundThemes.values().length)];
 		item = Registry.ITEM.get(new ResourceLocation(LOADING_SCREEN.loadingIconStacks.get(random.nextInt(LOADING_SCREEN.loadingIconStacks.size())))).getDefaultInstance();
+
 		seed = random.nextLong();
 	}
 
