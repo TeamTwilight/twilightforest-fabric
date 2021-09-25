@@ -42,11 +42,19 @@
     "twilight.mixins.shadow.json"
   ],
   "accessWidener": "twilight.aw",
+  "breaks": {
+    "boats-and-beeps": "*"
+  },
   "depends": {
     "fabricloader": ">=0.11.3",
     "fabric": "*",
     "minecraft": "1.17.x",
-    "java": ">=16"
+    "java": ">=16",
+    "cloth-config2": ">=5.0.37",
+    "cloth-api": ">=2.0.54"
+  },
+  "suggests": {
+    "modmenu": ">=2.0.2"
   },
   "custom": {
     "cardinal-components": [

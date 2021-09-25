@@ -2,6 +2,7 @@ package twilightforest.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Group;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -24,6 +25,7 @@ public class PlayerMixin {
         if (!TFEventListener.entityHurts((LivingEntity) (Object) this, damageSrc))
             ci.cancel();
     }
+
 
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     public void onAttack(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
