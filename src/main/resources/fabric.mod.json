@@ -42,6 +42,9 @@
     "twilight.mixins.shadow.json"
   ],
   "accessWidener": "twilight.aw",
+  "breaks": {
+    "boats-and-beeps": "*"
+  },
   "depends": {
     "fabricloader": ">=0.11.3",
     "fabric": "*",
