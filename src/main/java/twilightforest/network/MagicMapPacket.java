@@ -1,5 +1,6 @@
 package twilightforest.network;
 
+import com.mojang.authlib.minecraft.client.MinecraftClient;
 import twilightforest.TFMagicMapData;
 import twilightforest.item.MagicMapItem;
 import java.util.LinkedHashMap;
@@ -34,7 +35,9 @@ public class MagicMapPacket extends ISimplePacket {
 
 	@Override
 	public void onMessage(Player playerEntity) {
-		Handler.onMessage(this);
+		Minecraft.getInstance().execute(() -> {
+			Handler.onMessage(this);
+		});
 	}
 
 	public static class Handler {
