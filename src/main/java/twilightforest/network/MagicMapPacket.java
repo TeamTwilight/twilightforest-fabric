@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import twilightforest.TFMagicMapData;
 import twilightforest.item.MagicMapItem;
 import java.util.LinkedHashMap;
