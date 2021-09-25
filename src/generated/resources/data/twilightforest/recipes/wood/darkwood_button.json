@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:dark_planks"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:dark_button"
+  }
+}

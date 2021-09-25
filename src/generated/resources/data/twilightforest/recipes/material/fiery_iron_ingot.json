@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:iron_ingot"
+  },
+  "addition": {
+    "tag": "twilightforest:fiery_vial"
+  },
+  "result": {
+    "item": "twilightforest:fiery_ingot"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "twilightforest:castle_brick_worn"
+    }
+  },
+  "result": {
+    "item": "twilightforest:castle_stairs_worn",
+    "count": 8
+  }
+}
