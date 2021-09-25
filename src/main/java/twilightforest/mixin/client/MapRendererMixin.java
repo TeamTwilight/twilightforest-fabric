@@ -29,16 +29,11 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 public class MapRendererMixin {
     @Shadow private MapItemSavedData data;
 
-    @Inject(method = "draw", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/MapRenderer$MapInstance;updateTexture()V"))
-    public void hookMapRenderData(PoseStack poseStack, MultiBufferSource multiBufferSource, boolean bl, int light, CallbackInfo ci) {
-        ASMHooks.mapRenderContext(poseStack, multiBufferSource, light);
-    }
-
     @Inject(method = "draw", at = @At(value = "INVOKE", target = "Ljava/lang/Iterable;iterator()Ljava/util/Iterator;"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
     public void render(PoseStack poseStack, MultiBufferSource multiBufferSource, boolean bl, int pPackedLight, CallbackInfo ci, int j, int k, float f, Matrix4f matrix4f, VertexConsumer consumer, int l) {
         for(MapDecoration mapdecoration : this.data.getDecorations()) {
-            //TwilightForestMod.LOGGER.info(mapdecoration.getName().getString());
             if (!bl || mapdecoration.renderOnFrame()) {
+                ASMHooks.mapRenderContext(poseStack, multiBufferSource, pPackedLight);
                 if (((IMapDecorationEx)mapdecoration).render(l)) { l++; continue; }
                 poseStack.pushPose();
                 poseStack.translate(0.0F + (float)mapdecoration.getX() / 2.0F + 64.0F, 0.0F + (float)mapdecoration.getY() / 2.0F + 64.0F, -0.02F);
@@ -70,7 +65,6 @@ public class MapRendererMixin {
                     font.drawInBatch(component, 0.0F, 0.0F, -1, false, poseStack.last().pose(), multiBufferSource, false, Integer.MIN_VALUE, pPackedLight);
                     poseStack.popPose();
                 }
-
                 ++l;
             }
         }
