@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -27,6 +28,7 @@ import twilightforest.network.MazeMapPacket;
 import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 // FIXME: Map does not display data. Investigate
@@ -52,7 +54,8 @@ public class MazeMapItem extends MapItem implements IMapItemEx {
 
 	@Nullable
 	public static TFMazeMapData getData(ItemStack stack, Level world) {
-		return TFMazeMapData.getMazeMapData(world, getMapName(getMapId(stack)));
+		Integer mapId = getMapId(stack);
+		return mapId != null ? TFMazeMapData.getMazeMapData(world, getMapName(mapId)) : null;
 	}
 
 	@Nullable
@@ -72,7 +75,7 @@ public class MazeMapItem extends MapItem implements IMapItemEx {
 //		TFMazeMapData mapdata = new TFMazeMapData(getMapName(i));
 		TFMazeMapData mapdata = new TFMazeMapData(x, z, (byte)scale, trackingPosition, unlimitedTracking, false, dimension);
 		mapdata.calculateMapCenter(world, x, y, z/*, scale*/); // call our own map center calculation
-		TFMazeMapData.registerMazeMapData(world, mapdata, ""); // call our own register method
+		TFMazeMapData.registerMazeMapData(world, mapdata, getMapName(i)); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
 		return mapdata;
 	}
@@ -250,10 +253,13 @@ public class MazeMapItem extends MapItem implements IMapItemEx {
 	@Override
 	@Nullable
 	public Packet<?> getUpdatePacket(ItemStack stack, Level worldIn, Player player) {
-		Packet<?> p = super.getUpdatePacket(stack, worldIn, player);
-		if (p instanceof ClientboundMapItemDataPacket) {
-			return new MazeMapPacket((ClientboundMapItemDataPacket) p);
-		} else {
+		Integer id = getMapId(stack);
+		TFMazeMapData mapdata = getCustomMapData(stack, worldIn);
+		Packet<?> p = id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
+		if(p instanceof ClientboundMapItemDataPacket) {
+			TFPacketHandler.CHANNEL.send((ServerPlayer) player, new MazeMapPacket((ClientboundMapItemDataPacket) p));
+			return null;
+		}else{
 			return p;
 		}
 	}

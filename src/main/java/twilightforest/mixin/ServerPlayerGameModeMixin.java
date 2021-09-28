@@ -1,13 +1,15 @@
 package twilightforest.mixin;
 
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import net.minecraft.world.level.block.Block;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import twilightforest.block.ThornsBlock;
+import twilightforest.extensions.IBlockMethods;
 import twilightforest.extensions.IBlockStateEx;
 
 import net.minecraft.core.BlockPos;
@@ -22,22 +24,23 @@ public class ServerPlayerGameModeMixin {
 
     @Shadow @Final protected ServerPlayer player;
 
-    @Redirect(method = "destroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;removeBlock(Lnet/minecraft/core/BlockPos;Z)Z"))
-    public boolean destroyBlockHook(ServerLevel level, BlockPos pos, boolean isMoving) {
-        return removeBlock(pos, isMoving);
-    }
-
-    @Inject(method = "destroyBlock", at = @At(value = "RETURN", ordinal = 3))
-    public void hookBreak(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        removeBlock(pos, false);
+    @Inject(method = "destroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;removeBlock(Lnet/minecraft/core/BlockPos;Z)Z"), cancellable = true)
+    private void serverDestroyBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        ThornsBlock blockThorn = this.level.getBlockState(pos).getBlock() instanceof ThornsBlock blockThorny? blockThorny : null;
+        if(blockThorn != null){
+            cir.setReturnValue(removeBlock(pos, blockThorn, false));
+            cir.cancel();
+        }
     }
 
     @Unique
-    private boolean removeBlock(BlockPos p_180235_1_, boolean canHarvest) {
-        BlockState state = this.level.getBlockState(p_180235_1_);
-        boolean removed = ((IBlockStateEx)state).removedByPlayer(this.level, p_180235_1_, this.player, canHarvest, this.level.getFluidState(p_180235_1_));
+    private boolean removeBlock(BlockPos pos, ThornsBlock block, boolean canHarvest) {
+        BlockState state = this.level.getBlockState(pos);
+        boolean removed =  block.removedByPlayer(state, this.level, pos, this.player, canHarvest, this.level.getFluidState(pos));
         if (removed)
-            state.getBlock().destroy(this.level, p_180235_1_, state);
+            block.destroy(this.level, pos, state);
         return removed;
     }
+
+
 }

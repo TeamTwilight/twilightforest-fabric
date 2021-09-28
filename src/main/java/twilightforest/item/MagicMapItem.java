@@ -8,6 +8,7 @@ import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -253,6 +254,11 @@ public class MagicMapItem extends MapItem implements IMapItemEx {
 		Integer id = getMapId(stack);
 		TFMagicMapData mapdata = getCustomMapData(stack, world);
 		Packet<?> p = id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
-		return p instanceof ClientboundMapItemDataPacket ? new MagicMapPacket(mapdata, (ClientboundMapItemDataPacket) p) : p;
+		if(p instanceof ClientboundMapItemDataPacket) {
+			TFPacketHandler.CHANNEL.send((ServerPlayer) player, new MagicMapPacket(mapdata, (ClientboundMapItemDataPacket) p));
+			return null;
+		}else{
+			return p;
+		}
 	}
 }

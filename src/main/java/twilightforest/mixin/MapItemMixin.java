@@ -18,25 +18,25 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 @Mixin(MapItem.class)
 public abstract class MapItemMixin implements IMapItemEx {
+
     @Shadow
     @Nullable
-    public static Integer getMapId(ItemStack itemStack) {
-        return null;
+    public static Integer getMapId(ItemStack stack) {
+        throw new AssertionError();
     }
 
     @Shadow
     @Nullable
-    public static MapItemSavedData getSavedData(@Nullable Integer integer, Level level) {
-        return null;
+    public static MapItemSavedData getSavedData(@Nullable Integer mapId, Level level) {
+        throw new AssertionError();
     }
 
     @Inject(method = "getSavedData(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;)Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;", at = @At("HEAD"), cancellable = true)
     private static void injectCustomMapData(ItemStack itemStack, Level level, CallbackInfoReturnable<MapItemSavedData> cir) {
-//        Item map = itemStack.getItem();
-//        if(map instanceof MapItem) {
-//            cir.setReturnValue(ASMHooks.renderMapData(((IMapItemEx)map).getCustomMapData(itemStack, level), itemStack, level));
-//        }
-//        cir.setReturnValue(null);
+        Item map = itemStack.getItem();
+        if(map instanceof MapItem) {
+            cir.setReturnValue(ASMHooks.renderMapData(((IMapItemEx)map).getCustomMapData(itemStack, level), itemStack, level));
+        }
     }
 
     @Override

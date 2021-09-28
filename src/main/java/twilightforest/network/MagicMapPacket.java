@@ -34,7 +34,9 @@ public class MagicMapPacket extends ISimplePacket {
 
 	@Override
 	public void onMessage(Player playerEntity) {
-		Handler.onMessage(this);
+		Minecraft.getInstance().execute(() -> {
+			Handler.onMessage(this);
+		});
 	}
 
 	public static class Handler {
