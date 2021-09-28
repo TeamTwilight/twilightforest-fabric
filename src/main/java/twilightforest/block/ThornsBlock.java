@@ -85,6 +85,8 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		}
 	}
 
+
+
 	@Override
 	@Deprecated
 	public PushReaction getPistonPushReaction(BlockState state) {

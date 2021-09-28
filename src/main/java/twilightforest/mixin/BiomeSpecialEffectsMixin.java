@@ -47,8 +47,6 @@ public abstract class BiomeSpecialEffectsMixin {
     }
 
     {
-
-
         // add new value
         init("ENCHANTED_FOREST",values().length + 1, TFConstants.prefix("enchanted_forest").toString());
         init("SWAMP", values().length + 2, TFConstants.prefix("swamp").toString());
