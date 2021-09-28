@@ -37,7 +37,7 @@ public class FancyWellFeature extends TemplateFeature<NoneFeatureConfiguration> 
 
     @Override
     protected void modifySettings(StructurePlaceSettings settings, Random random) {
-        settings.addProcessor(new CobblePlankSwizzler(0.0F, random.nextInt(), random.nextInt(), random.nextInt()));
+        settings.addProcessor(new CobblePlankSwizzler(0.0F, random));
     }
 
     @Override

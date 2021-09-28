@@ -6,9 +6,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
-import twilightforest.entity.boss.MinoshroomEntity;
+import twilightforest.entity.boss.Minoshroom;
 
-public class MinoshroomLegacyModel extends HumanoidModel<MinoshroomEntity> {
+public class MinoshroomLegacyModel extends HumanoidModel<Minoshroom> {
 
 	ModelPart leg1;
 	ModelPart leg2;
@@ -114,7 +114,7 @@ public class MinoshroomLegacyModel extends HumanoidModel<MinoshroomEntity> {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setupAnim(MinoshroomEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Minoshroom entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// copied from ModelBiped
 
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);

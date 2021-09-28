@@ -2,6 +2,8 @@ package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -17,14 +19,22 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoubleBlockCombiner;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.LidBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.TFConstants;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.tileentity.KeepsakeCasketTileEntity;
 
@@ -34,7 +44,7 @@ import twilightforest.tileentity.KeepsakeCasketTileEntity;
  */
 //Most of the other stuff is derived from ChestTileEntityRenderer
 @Environment(EnvType.CLIENT)
-public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
+public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
     public ModelPart base;
     public ModelPart lid;
 
@@ -81,29 +91,16 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketTileEntity & LidBl
         BlockState blockstate = flag ? tileEntityIn.getBlockState() : TFBlocks.keepsake_casket.defaultBlockState();
         Block block = blockstate.getBlock();
         if (block instanceof KeepsakeCasketBlock) {
-            //BlockLoggingEnum type = blockstate.getValue(BlockLoggingEnum.MULTILOGGED);
             int damage = blockstate.getValue(KeepsakeCasketBlock.BREAKAGE);
-            //boolean solid = type.getBlock() != Blocks.AIR && type.getFluid() == Fluids.EMPTY;
-            float facing = blockstate.getValue(HorizontalDirectionalBlock.FACING).toYRot();
-
-            /*if(solid) {
-                matrixStackIn.pushPose();
-                matrixStackIn.translate(0.5D, 0.5D, 0.5D);
-                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-facing));
-                matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
-                ResourceLocation BLOCK = TwilightForestMod.prefix("block/casket_" + Registry.BLOCK.getKey(type.getBlock()).getPath().toLowerCase(Locale.ROOT));
-                BakedModel blockrender = Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(BLOCK.toString()));
-                BlockRenderDispatcher render = Minecraft.getInstance().getBlockRenderer();
-                render.getModelRenderer().tesselateBlock(world, blockrender, type.getBlock().defaultBlockState(), tileEntityIn.getBlockPos(), matrixStackIn, bufferIn.getBuffer(RenderType.translucent()), false, world.random, Mth.getSeed(BlockPos.ZERO), OverlayTexture.NO_OVERLAY);
-                matrixStackIn.popPose();
-            }*/
+            Direction facing = blockstate.getValue(HorizontalDirectionalBlock.FACING);
 
             matrixStackIn.pushPose();
-            matrixStackIn.scale(-1, -1, -1);
-            matrixStackIn.translate(-0.5D, 0.0D, -0.5D);
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-facing));
 
-            DoubleBlockCombiner.NeighborCombineResult<? extends KeepsakeCasketTileEntity> icallbackwrapper = DoubleBlockCombiner.Combiner::acceptNone;
+            matrixStackIn.translate(0.5, 0.0, 0.5);
+            matrixStackIn.mulPose(facing.getRotation());
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+
+            DoubleBlockCombiner.NeighborCombineResult<? extends KeepsakeCasketBlockEntity> icallbackwrapper = DoubleBlockCombiner.Combiner::acceptNone;
             float f1 = icallbackwrapper.apply(KeepsakeCasketBlock.getLidRotationCallback(tileEntityIn)).get(partialTicks);
             f1 = 1.0F - f1;
             f1 = 1.0F - f1 * f1 * f1;

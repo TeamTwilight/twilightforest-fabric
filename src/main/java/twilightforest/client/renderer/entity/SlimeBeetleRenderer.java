@@ -13,9 +13,9 @@ import net.minecraft.resources.ResourceLocation;
 import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.SlimeBeetleModel;
-import twilightforest.entity.SlimeBeetleEntity;
+import twilightforest.entity.monster.SlimeBeetle;
 
-public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetleEntity, SlimeBeetleModel> {
+public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetle, SlimeBeetleModel> {
 
 	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("slimebeetle.png");
 
@@ -25,26 +25,26 @@ public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetleEntity, SlimeBee
 	}
 
 	@Override
-	public void render(SlimeBeetleEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+	public void render(SlimeBeetle entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
 		if(this.model.riding) matrixStackIn.translate(0, -0.5F, 0);
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(SlimeBeetleEntity entity) {
+	public ResourceLocation getTextureLocation(SlimeBeetle entity) {
 		return textureLoc;
 	}
 
-	static class LayerInner extends RenderLayer<SlimeBeetleEntity, SlimeBeetleModel> {
+	static class LayerInner extends RenderLayer<SlimeBeetle, SlimeBeetleModel> {
 		private final SlimeBeetleModel innerModel;
 
-		public LayerInner(RenderLayerParent<SlimeBeetleEntity, SlimeBeetleModel> renderer, EntityRendererProvider.Context manager) {
+		public LayerInner(RenderLayerParent<SlimeBeetle, SlimeBeetleModel> renderer, EntityRendererProvider.Context manager) {
 			super(renderer);
 			innerModel =  new SlimeBeetleModel(manager.bakeLayer(TFModelLayers.SLIME_BEETLE), true);
 		}
 
 		@Override
-		public void render(PoseStack ms, MultiBufferSource buffers, int light, SlimeBeetleEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+		public void render(PoseStack ms, MultiBufferSource buffers, int light, SlimeBeetle entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			if (!entity.isInvisible()) {
 				innerModel.copyPropertiesTo(getParentModel());
 				innerModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);

@@ -6,7 +6,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import twilightforest.TFConstants;
 import twilightforest.world.components.feature.*;
-import twilightforest.world.components.feature.config.CaveStalactiteConfig;
+import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 import twilightforest.world.components.feature.templates.*;
 import twilightforest.world.components.feature.trees.*;
@@ -23,9 +23,9 @@ public class TFBiomeFeatures {
 			new TFGenBigMushgloom(NoneFeatureConfiguration.CODEC));
 	//public static final Feature<TFTreeFeatureConfig>> CANOPY_OAK = Registry.register(Registry.FEATURE, TwilightForestMod.ID+ ":canopy_oak",
 	//		new TFGenCanopyOak(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final Feature<CaveStalactiteConfig> CAVE_STALACTITE = Registry.register(Registry.FEATURE, TFConstants.ID+ ":cave_stalactite",
-			new TFGenCaveStalactite(CaveStalactiteConfig.caveStalactiteCodec));
-	public static final Feature<TreeConfiguration> DARK_CANOPY_TREE = Registry.register(Registry.FEATURE, TFConstants.ID+ ":dark_canopy_tree",
+	public static final Feature<SpikeConfig> CAVE_STALACTITE = Registry.register(Registry.FEATURE, TFConstants.ID+ ":block_spike",
+			new BlockSpikeFeature(SpikeConfig.CODEC));
+	public static final <Feature<TreeConfiguration> DARK_CANOPY_TREE = Registry.register(Registry.FEATURE, TFConstants.ID+ ":dark_canopy_tree",
 			new TFGenDarkCanopyTree(TreeConfiguration.CODEC));
 	public static final Feature<NoneFeatureConfiguration> DRUID_HUT = Registry.register(Registry.FEATURE, TFConstants.ID+ ":druid_hut",
 			new DruidHutFeature(NoneFeatureConfiguration.CODEC));
@@ -59,8 +59,6 @@ public class TFBiomeFeatures {
 			new TFGenMonolith(NoneFeatureConfiguration.CODEC));
 	public static final Feature<DiskConfiguration> MYCELIUM_BLOB = Registry.register(Registry.FEATURE, TFConstants.ID+ ":mycelium_blob",
 			new BaseDiskFeature(DiskConfiguration.CODEC));
-	public static final Feature<CaveStalactiteConfig> OUTSIDE_STALAGMITE = Registry.register(Registry.FEATURE, TFConstants.ID+ ":outside_stalagmite",
-			new TFGenOutsideStalagmite(CaveStalactiteConfig.caveStalactiteCodec));
 	public static final Feature<NoneFeatureConfiguration> PLANT_ROOTS = Registry.register(Registry.FEATURE, TFConstants.ID+ ":plant_roots",
 			new TFGenPlantRoots(NoneFeatureConfiguration.CODEC));
 	public static final Feature<NoneFeatureConfiguration> STONE_CIRCLE = Registry.register(Registry.FEATURE, TFConstants.ID+ ":stone_circle",

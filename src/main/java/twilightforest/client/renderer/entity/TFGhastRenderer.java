@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TFConstants;
 import twilightforest.client.model.entity.TFGhastModel;
-import twilightforest.entity.CarminiteGhastguardEntity;
+import twilightforest.entity.monster.CarminiteGhastguard;
 
-public class TFGhastRenderer<T extends CarminiteGhastguardEntity, M extends TFGhastModel<T>> extends MobRenderer<T, M> {
+public class TFGhastRenderer<T extends CarminiteGhastguard, M extends TFGhastModel<T>> extends MobRenderer<T, M> {
 
 	private static final ResourceLocation textureLocClosed = TFConstants.getModelTexture("towerghast.png");
 	private static final ResourceLocation textureLocOpen = TFConstants.getModelTexture("towerghast_openeyes.png");

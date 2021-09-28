@@ -10,9 +10,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.UpperGoblinKnightEntity;
+import twilightforest.entity.monster.UpperGoblinKnight;
 
-public class UpperGoblinKnightLegacyModel extends HumanoidModel<UpperGoblinKnightEntity> {
+public class UpperGoblinKnightLegacyModel extends HumanoidModel<UpperGoblinKnight> {
 
 	public ModelPart breastplate;
 
@@ -116,7 +116,7 @@ public class UpperGoblinKnightLegacyModel extends HumanoidModel<UpperGoblinKnigh
 	}
 
 	@Override
-	public void setupAnim(UpperGoblinKnightEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(UpperGoblinKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		boolean hasShield = entity.hasShield();
 
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);

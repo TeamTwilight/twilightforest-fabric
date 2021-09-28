@@ -1,8 +1,12 @@
 package twilightforest.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
@@ -14,6 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -29,6 +34,7 @@ import twilightforest.world.registration.biomes.BiomeKeys;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
@@ -260,5 +266,25 @@ public class MagicMapItem extends MapItem implements IMapItemEx {
 		}else{
 			return p;
 		}
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+		Integer integer = getMapId(stack);
+		TFMagicMapData mapitemsaveddata = pLevel == null ? null : getData(stack, pLevel);
+		if (pFlag.isAdvanced()) {
+			if (mapitemsaveddata != null) {
+				pTooltip.add((new TranslatableComponent("filled_map.id", integer)).withStyle(ChatFormatting.GRAY));
+				pTooltip.add((new TranslatableComponent("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
+				pTooltip.add((new TranslatableComponent("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
+			} else {
+				pTooltip.add((new TranslatableComponent("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
+			}
+		} else {
+			if (integer != null) {
+				pTooltip.add((new TextComponent("#" + integer)).withStyle(ChatFormatting.GRAY));
+			}
+		}
+
 	}
 }

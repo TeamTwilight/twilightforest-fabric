@@ -22,13 +22,13 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.enums.BossVariant;
-import twilightforest.tileentity.TrophyTileEntity;
+import twilightforest.block.entity.TrophyBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 
 //Legacy lines are commented out and labeled
-public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileEntity> {
+public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
 
 	private final Map<BossVariant, GenericTrophyModel> trophies;
 
@@ -64,7 +64,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyTileE
 
 	public static ItemStack stack = new ItemStack(TFBlocks.naga_trophy);
 	@Override
-	public void render(TrophyTileEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(TrophyBlockEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		float f = tileEntityIn.getAnimationProgress(partialTicks);
 		BlockState blockstate = tileEntityIn.getBlockState();
 		boolean flag = blockstate.getBlock() instanceof TrophyWallBlock;

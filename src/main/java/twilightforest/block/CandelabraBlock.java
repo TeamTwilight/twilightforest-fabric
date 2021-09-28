@@ -73,7 +73,7 @@ public class CandelabraBlock extends HorizontalDirectionalBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction clickDirection = context.getClickedFace();
-        boolean onBottomBlock = clickDirection == Direction.DOWN;
+        boolean onBottomBlock = clickDirection == Direction.UP;
         Direction[] placements = context.getNearestLookingDirections();
         BlockPos placePos = context.getClickedPos();
         Level level = context.getLevel();

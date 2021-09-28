@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "twilightforest:huge_waterlily"
+    }
+  ],
+  "result": {
+    "item": "minecraft:magenta_dye"
+  }
+}

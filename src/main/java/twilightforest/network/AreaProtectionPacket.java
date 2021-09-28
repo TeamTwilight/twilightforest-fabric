@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.ProtectionBoxEntity;
+import twilightforest.entity.ProtectionBox;
 
 public class AreaProtectionPacket extends ISimplePacket {
 
@@ -70,8 +70,8 @@ public class AreaProtectionPacket extends ISimplePacket {
 		static void addProtectionBox(ClientLevel world, BoundingBox sbb) {
 
 			for (Entity entity : world.entitiesForRendering()) {
-				if (entity instanceof ProtectionBoxEntity) {
-					ProtectionBoxEntity protectionBox = (ProtectionBoxEntity) entity;
+				if (entity instanceof ProtectionBox) {
+					ProtectionBox protectionBox = (ProtectionBox) entity;
 					if (protectionBox.lifeTime > 0 && protectionBox.matches(sbb)) {
 						protectionBox.resetLifetime();
 						return;
@@ -79,7 +79,7 @@ public class AreaProtectionPacket extends ISimplePacket {
 				}
 			}
 
-			world.addFreshEntity(new ProtectionBoxEntity(world, sbb));
+			world.addFreshEntity(new ProtectionBox(world, sbb));
 		}
 	}
 }

@@ -30,6 +30,9 @@
         "item": "twilightforest:castle_pillar_encased_tile"
       },
       {
+        "item": "twilightforest:castle_pillar_bold"
+      },
+      {
         "item": "twilightforest:castle_pillar_bold_tile"
       }
     ]

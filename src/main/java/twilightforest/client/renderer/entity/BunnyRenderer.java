@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TFConstants;
 import twilightforest.client.model.entity.BunnyModel;
-import twilightforest.entity.passive.BunnyEntity;
+import twilightforest.entity.passive.DwarfRabbit;
 
-public class BunnyRenderer extends MobRenderer<BunnyEntity, BunnyModel> {
+public class BunnyRenderer extends MobRenderer<DwarfRabbit, BunnyModel> {
 
 	private final ResourceLocation textureLocDutch = TFConstants.getModelTexture("bunnydutch.png");
 	private final ResourceLocation textureLocWhite = TFConstants.getModelTexture("bunnywhite.png");
@@ -18,7 +18,7 @@ public class BunnyRenderer extends MobRenderer<BunnyEntity, BunnyModel> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(BunnyEntity entity) {
+	public ResourceLocation getTextureLocation(DwarfRabbit entity) {
 		switch (entity.getBunnyType()) {
 			default:
 			case 0:

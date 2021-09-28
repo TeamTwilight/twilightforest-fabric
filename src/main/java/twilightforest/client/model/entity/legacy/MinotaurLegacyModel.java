@@ -5,9 +5,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.MinotaurEntity;
+import twilightforest.entity.monster.Minotaur;
 
-public class MinotaurLegacyModel extends HumanoidModel<MinotaurEntity> {
+public class MinotaurLegacyModel extends HumanoidModel<Minotaur> {
 
 	public MinotaurLegacyModel(ModelPart root) {
 		super(root);

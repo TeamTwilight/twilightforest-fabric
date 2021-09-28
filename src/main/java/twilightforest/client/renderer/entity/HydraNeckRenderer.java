@@ -8,10 +8,10 @@ import com.mojang.math.Vector3f;
 import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraNeckModel;
-import twilightforest.entity.boss.HydraNeckEntity;
+import twilightforest.entity.boss.HydraNeck;
 import twilightforest.entity.boss.HydraHeadContainer;
 
-public class HydraNeckRenderer extends TFPartRenderer<HydraNeckEntity, HydraNeckModel> {
+public class HydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeckModel> {
 
 	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("hydra4.png");
 
@@ -21,7 +21,7 @@ public class HydraNeckRenderer extends TFPartRenderer<HydraNeckEntity, HydraNeck
 	}
 
 	@Override
-	public void render(HydraNeckEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int light) {
+	public void render(HydraNeck entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int light) {
 		HydraHeadContainer headCon = HydraHeadRenderer.getHeadObject(entityIn.head);
 		if (headCon != null)
 			if (headCon.shouldRenderHead()) {
@@ -39,7 +39,7 @@ public class HydraNeckRenderer extends TFPartRenderer<HydraNeckEntity, HydraNeck
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(HydraNeckEntity entity) {
+	public ResourceLocation getTextureLocation(HydraNeck entity) {
 		return textureLoc;
 	}
 }

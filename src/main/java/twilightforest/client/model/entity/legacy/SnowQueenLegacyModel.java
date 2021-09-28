@@ -5,10 +5,10 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.boss.SnowQueenEntity;
-import twilightforest.entity.boss.SnowQueenEntity.Phase;
+import twilightforest.entity.boss.SnowQueen;
+import twilightforest.entity.boss.SnowQueen.Phase;
 
-public class SnowQueenLegacyModel extends HumanoidModel<SnowQueenEntity> {
+public class SnowQueenLegacyModel extends HumanoidModel<SnowQueen> {
 
 	public SnowQueenLegacyModel(ModelPart root) {
 		super(root);
@@ -108,7 +108,7 @@ public class SnowQueenLegacyModel extends HumanoidModel<SnowQueenEntity> {
 	}
 
 	@Override
-	public void setupAnim(SnowQueenEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(SnowQueen entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		// in beam phase, arms forwards

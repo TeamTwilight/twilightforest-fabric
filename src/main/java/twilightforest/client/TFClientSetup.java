@@ -49,7 +49,7 @@ import twilightforest.entity.projectile.TwilightWandBoltEntity;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.TFBlockEntities;
 
 import java.lang.reflect.Field;
 
@@ -95,8 +95,8 @@ public class TFClientSetup implements ClientModInitializer {
         armorRegistry();
 
         //MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
-        TFTileEntities.registerTileEntityRenders();
-        TFTileEntities.registerTileEntitysItemRenders();
+		TFBlockEntities.registerTileEntityRenders();
+		TFBlockEntities.registerTileEntitysItemRenders();
         TFContainers.renderScreens();
 
 

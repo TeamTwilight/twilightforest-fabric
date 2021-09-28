@@ -8,14 +8,14 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.entity.MinotaurEntity;
+import twilightforest.entity.monster.Minotaur;
 
 /**
  * ModelMinotaur - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @Environment(EnvType.CLIENT)
-public class MinotaurModel extends HumanoidModel<MinotaurEntity> {
+public class MinotaurModel extends HumanoidModel<Minotaur> {
 
     public MinotaurModel(ModelPart root) {
         super(root);

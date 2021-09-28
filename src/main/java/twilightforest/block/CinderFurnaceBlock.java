@@ -32,6 +32,13 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.block.entity.CinderFurnaceBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 public class CinderFurnaceBlock extends BaseEntityBlock {
 
@@ -62,13 +69,13 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CinderFurnaceTileEntity(pos, state);
+		return new CinderFurnaceBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.CINDER_FURNACE, CinderFurnaceTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.CINDER_FURNACE, CinderFurnaceBlockEntity::tick);
 	}
 
 	@Override
@@ -82,8 +89,8 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	@Override
 	@Deprecated
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-		if (!world.isClientSide && world.getBlockEntity(pos) instanceof CinderFurnaceTileEntity) {
-			player.openMenu((CinderFurnaceTileEntity) world.getBlockEntity(pos));
+		if (!world.isClientSide && world.getBlockEntity(pos) instanceof CinderFurnaceBlockEntity) {
+			player.openMenu((CinderFurnaceBlockEntity) world.getBlockEntity(pos));
 		}
 
 		return InteractionResult.PASS;
@@ -109,8 +116,8 @@ public class CinderFurnaceBlock extends BaseEntityBlock {
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
 			BlockEntity tileentity = worldIn.getBlockEntity(pos);
-			if (tileentity instanceof CinderFurnaceTileEntity) {
-				Containers.dropContents(worldIn, pos, (CinderFurnaceTileEntity)tileentity);
+			if (tileentity instanceof CinderFurnaceBlockEntity) {
+				Containers.dropContents(worldIn, pos, (CinderFurnaceBlockEntity)tileentity);
 				worldIn.updateNeighbourForOutputSignal(pos, this);
 			}
 

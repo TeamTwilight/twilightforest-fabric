@@ -12,9 +12,9 @@ import com.mojang.math.Vector3f;
 import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CicadaModel;
-import twilightforest.entity.projectile.CicadaShotEntity;
+import twilightforest.entity.projectile.CicadaShot;
 
-public class CicadaShotRenderer extends EntityRenderer<CicadaShotEntity> {
+public class CicadaShotRenderer extends EntityRenderer<CicadaShot> {
 
 	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("cicada-model.png");
 	private final CicadaModel cicadaModel;
@@ -27,7 +27,7 @@ public class CicadaShotRenderer extends EntityRenderer<CicadaShotEntity> {
 	}
 
 	@Override
-	public void render(CicadaShotEntity entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(CicadaShot entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		stack.pushPose();
 		stack.translate(0.0, 0.5, 0.0);
 		stack.scale(-1f, -1f, -1f);
@@ -42,7 +42,7 @@ public class CicadaShotRenderer extends EntityRenderer<CicadaShotEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CicadaShotEntity entity) {
+	public ResourceLocation getTextureLocation(CicadaShot entity) {
 		return textureLoc;
 	}
 }

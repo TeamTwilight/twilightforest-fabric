@@ -8,22 +8,25 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TFConstants;
 import twilightforest.block.BanisterBlock;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.ArrayUtil;
 import twilightforest.util.FeaturePlacers;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.function.Supplier;
 
 public enum StructureWoodVariant implements StringRepresentable {
-
 	OAK(Blocks.OAK_PLANKS, Blocks.OAK_STAIRS, Blocks.OAK_SLAB, Blocks.OAK_BUTTON, Blocks.OAK_FENCE, Blocks.OAK_FENCE_GATE, Blocks.OAK_PRESSURE_PLATE, TFBlocks.oak_banister),
 	SPRUCE(Blocks.SPRUCE_PLANKS, Blocks.SPRUCE_STAIRS, Blocks.SPRUCE_SLAB, Blocks.SPRUCE_BUTTON, Blocks.SPRUCE_FENCE, Blocks.SPRUCE_FENCE_GATE, Blocks.SPRUCE_PRESSURE_PLATE, TFBlocks.spruce_banister),
 	BIRCH(Blocks.BIRCH_PLANKS, Blocks.BIRCH_STAIRS, Blocks.BIRCH_SLAB, Blocks.BIRCH_BUTTON, Blocks.BIRCH_FENCE, Blocks.BIRCH_FENCE_GATE, Blocks.BIRCH_PRESSURE_PLATE, TFBlocks.birch_banister),
 	JUNGLE(Blocks.JUNGLE_PLANKS, Blocks.JUNGLE_STAIRS, Blocks.JUNGLE_SLAB, Blocks.JUNGLE_BUTTON, Blocks.JUNGLE_FENCE, Blocks.JUNGLE_FENCE_GATE, Blocks.JUNGLE_PRESSURE_PLATE, TFBlocks.jungle_banister),
 	ACACIA(Blocks.ACACIA_PLANKS, Blocks.ACACIA_STAIRS, Blocks.ACACIA_SLAB, Blocks.ACACIA_BUTTON, Blocks.ACACIA_FENCE, Blocks.ACACIA_FENCE_GATE, Blocks.ACACIA_PRESSURE_PLATE, TFBlocks.acacia_banister),
 	DARK_OAK(Blocks.DARK_OAK_PLANKS, Blocks.DARK_OAK_STAIRS, Blocks.DARK_OAK_SLAB, Blocks.DARK_OAK_BUTTON, Blocks.DARK_OAK_FENCE, Blocks.DARK_OAK_FENCE_GATE, Blocks.DARK_OAK_PRESSURE_PLATE, TFBlocks.dark_oak_banister),
+	CRIMSON(Blocks.CRIMSON_PLANKS, Blocks.CRIMSON_STAIRS, Blocks.CRIMSON_SLAB, Blocks.CRIMSON_BUTTON, Blocks.CRIMSON_FENCE, Blocks.CRIMSON_FENCE_GATE, Blocks.CRIMSON_PRESSURE_PLATE, TFBlocks.crimson_banister.get()),
+	WARPED(Blocks.WARPED_PLANKS, Blocks.WARPED_STAIRS, Blocks.WARPED_SLAB, Blocks.WARPED_BUTTON, Blocks.WARPED_FENCE, Blocks.WARPED_FENCE_GATE, Blocks.WARPED_PRESSURE_PLATE, TFBlocks.warped_banister.get()),
 
 	TWILIGHT_OAK(TFBlocks.twilight_oak_planks, TFBlocks.twilight_oak_stairs, TFBlocks.twilight_oak_slab, TFBlocks.twilight_oak_button, TFBlocks.twilight_oak_fence, TFBlocks.twilight_oak_gate, TFBlocks.twilight_oak_plate, TFBlocks.twilight_oak_banister),
 	CANOPY(TFBlocks.canopy_planks, TFBlocks.canopy_stairs, TFBlocks.canopy_slab, TFBlocks.canopy_button, TFBlocks.canopy_fence, TFBlocks.canopy_gate, TFBlocks.canopy_plate, TFBlocks.canopy_banister),
@@ -35,6 +38,10 @@ public enum StructureWoodVariant implements StringRepresentable {
 	SORT(TFBlocks.sort_planks, TFBlocks.sort_stairs, TFBlocks.sort_slab, TFBlocks.sort_button, TFBlocks.sort_fence, TFBlocks.sort_gate, TFBlocks.sort_plate, TFBlocks.sort_banister);
 
 	private final List<Block> blocks;
+	private static final StructureWoodVariant[] COMMON = new StructureWoodVariant[] { SPRUCE, CANOPY };
+	private static final StructureWoodVariant[] UNCOMMON = new StructureWoodVariant[] { OAK, DARK_OAK, TWILIGHT_OAK };
+	private static final StructureWoodVariant[] RARE = new StructureWoodVariant[] { BIRCH, JUNGLE, MANGROVE };
+	private static final StructureWoodVariant[] TREASURE = new StructureWoodVariant[] { TIME, TRANS, MINE, SORT };
 
 	StructureWoodVariant(Supplier<Block> planks, Supplier<StairBlock> stairs, Supplier<Block> slab, Supplier<Block> button, Supplier<Block> fence, Supplier<Block> gate, Supplier<Block> plate, Supplier<BanisterBlock> banister) {
 		this(planks.get(), stairs.get(), slab.get(), button.get(), fence.get(), gate.get(), plate.get(), banister.get());
@@ -52,9 +59,28 @@ public enum StructureWoodVariant implements StringRepresentable {
 		this.blocks = Arrays.asList(this.planks, this.stairs, this.slab, this.button, this.fence, this.gate, this.plate, this.banister);
 	}
 
+	// Since this is worldgen code, this solution would take the least amount of hits on RNG
+	public static StructureWoodVariant getRandomWeighted(Random random) {
+		int randomVal = random.nextInt() & Integer.MAX_VALUE;
+
+		if ((randomVal & 0b1) == 0) {
+			return ArrayUtil.wrapped(COMMON, randomVal >> 1);
+		}
+
+		if ((randomVal & 0b10) == 0) {
+			return ArrayUtil.wrapped(UNCOMMON, randomVal >> 2);
+		}
+
+		if ((randomVal & 0b1100) != 0) {
+			return ArrayUtil.wrapped(RARE, randomVal >> 4);
+		}
+
+		return ArrayUtil.wrapped(TREASURE, randomVal >> 4);
+	}
+
 	@Override
 	public String getSerializedName() {
-		return name().toLowerCase(Locale.ROOT);
+		return this.name().toLowerCase(Locale.ROOT);
 	}
 
 	private final Block planks;

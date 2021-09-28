@@ -19,6 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -57,9 +59,9 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.enchantment.TFEnchantment;
-import twilightforest.entity.CharmEffectEntity;
+import twilightforest.entity.CharmEffect;
 import twilightforest.entity.IHostileMount;
-import twilightforest.entity.KoboldEntity;
+import twilightforest.entity.monster.Kobold;
 import twilightforest.entity.TFEntities;
 
 import twilightforest.enums.BlockLoggingEnum;
@@ -67,7 +69,7 @@ import twilightforest.item.PhantomArmorItem;
 import twilightforest.item.TFItems;
 import twilightforest.network.*;
 import twilightforest.potions.TFPotions;
-import twilightforest.tileentity.KeepsakeCasketTileEntity;
+import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
@@ -284,14 +286,18 @@ public class TFEventListener {
 	}
 
 	private static void makeFloorSkull(Level world, BlockPos pos, Item item, Block newBlock) {
+		world.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		world.setBlockAndUpdate(pos, newBlock.defaultBlockState()
+				.setValue(AbstractSkullCandleBlock.LIT, false)
 				.setValue(AbstractSkullCandleBlock.CANDLES, 1)
 				.setValue(AbstractSkullCandleBlock.COLOR, AbstractSkullCandleBlock.candleToCandleColor(item))
 				.setValue(SkullCandleBlock.ROTATION, world.getBlockState(pos).getValue(SkullBlock.ROTATION)));
 	}
 
 	private static void makeWallSkull(Level world, BlockPos pos, Item item, Block newBlock) {
+		world.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		world.setBlockAndUpdate(pos, newBlock.defaultBlockState()
+				.setValue(AbstractSkullCandleBlock.LIT, false)
 				.setValue(AbstractSkullCandleBlock.CANDLES, 1)
 				.setValue(AbstractSkullCandleBlock.COLOR, AbstractSkullCandleBlock.candleToCandleColor(item))
 				.setValue(WallSkullCandleBlock.FACING, world.getBlockState(pos).getValue(WallSkullBlock.FACING)));
@@ -340,8 +346,8 @@ public class TFEventListener {
 			if (world.setBlockAndUpdate(immutablePos, TFBlocks.keepsake_casket.defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType())).setValue(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage))) {
 				BlockEntity te = world.getBlockEntity(immutablePos);
 
-				if (te instanceof KeepsakeCasketTileEntity) {
-					KeepsakeCasketTileEntity casket = (KeepsakeCasketTileEntity) te;
+				if (te instanceof KeepsakeCasketBlockEntity) {
+					KeepsakeCasketBlockEntity casket = (KeepsakeCasketBlockEntity) te;
 
 					if (TwilightForestMod.COMMON_CONFIG.uuid_locking) {
 						//make it so only the player who died can open the chest if our config allows us
@@ -396,12 +402,12 @@ public class TFEventListener {
 	public static boolean onCasketBreak(Block block, Player player, BlockEntity te) {
 		UUID checker;
 		if(block == TFBlocks.keepsake_casket) {
-			if(te instanceof KeepsakeCasketTileEntity) {
-				KeepsakeCasketTileEntity casket = (KeepsakeCasketTileEntity) te;
+			if(te instanceof KeepsakeCasketBlockEntity) {
+				KeepsakeCasketBlockEntity casket = (KeepsakeCasketBlockEntity) te;
 				checker = casket.playeruuid;
 			} else checker = null;
 			if(checker != null) {
-				if (!((KeepsakeCasketTileEntity) te).isEmpty()) {
+				if (!((KeepsakeCasketBlockEntity) te).isEmpty()) {
 					if(!player.hasPermissions(3) || !player.getGameProfile().getId().equals(checker)) {
 						return false;
 						//event.setCanceled(true);
@@ -431,10 +437,10 @@ public class TFEventListener {
 			}
 
 			// spawn effect thingers
-			CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1 : TFItems.charm_of_life_2);
+			CharmEffect effect = new CharmEffect(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1 : TFItems.charm_of_life_2);
 			player.level.addFreshEntity(effect);
 
-			CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1 : TFItems.charm_of_life_2);
+			CharmEffect effect2 = new CharmEffect(TFEntities.charm_effect, player.level, player, charm1 ? TFItems.charm_of_life_1 : TFItems.charm_of_life_2);
 			effect2.offset = (float) Math.PI;
 			player.level.addFreshEntity(effect2);
 
@@ -592,10 +598,10 @@ public class TFEventListener {
 
 			// spawn effect thingers
 			if (!keepInventory.getSelected().isEmpty()) {
-				CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
+				CharmEffect effect = new CharmEffect(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
 				player.level.addFreshEntity(effect);
 
-				CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
+				CharmEffect effect2 = new CharmEffect(TFEntities.charm_effect, player.level, player, keepInventory.getSelected().getItem());
 				effect2.offset = (float) Math.PI;
 				player.level.addFreshEntity(effect2);
 
@@ -800,7 +806,7 @@ public class TFEventListener {
 		if(!(entity instanceof LivingEntity)) return true;
 		LivingEntity living = (LivingEntity) entity;
 		// cancel attacks in protected areas
-		if (!living.level.isClientSide && living instanceof Enemy && source.getEntity() instanceof Player && !(living instanceof KoboldEntity)
+		if (!living.level.isClientSide && living instanceof Enemy && source.getEntity() instanceof Player && !(living instanceof Kobold)
 				&& isAreaProtected(living.level, (Player) source.getEntity(), new BlockPos(living.blockPosition()))) {
 
 			//event.setCanceled(true);

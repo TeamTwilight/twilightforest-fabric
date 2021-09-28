@@ -99,7 +99,7 @@ public class BuilderBlock extends BaseEntityBlock {
 	}
 
 	private void letsBuild(Level world, BlockPos pos) {
-		CarminiteBuilderTileEntity tileEntity = (CarminiteBuilderTileEntity) world.getBlockEntity(pos);
+		CarminiteBuilderBlockEntity tileEntity = (CarminiteBuilderBlockEntity) world.getBlockEntity(pos);
 
 		if (tileEntity != null && !tileEntity.makingBlocks) {
 			tileEntity.startBuilding();
@@ -177,12 +177,12 @@ public class BuilderBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CarminiteBuilderTileEntity(pos, state);
+		return new CarminiteBuilderBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.TOWER_BUILDER, CarminiteBuilderTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.TOWER_BUILDER, CarminiteBuilderBlockEntity::tick);
 	}
 }

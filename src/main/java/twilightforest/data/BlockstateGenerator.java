@@ -7,6 +7,9 @@
 //import net.minecraft.resources.ResourceLocation;
 //import net.minecraft.world.level.block.*;
 //import net.minecraft.world.level.block.state.properties.*;
+//import net.minecraftforge.client.model.generators.*;
+//import net.minecraftforge.common.data.ExistingFileHelper;
+//import net.minecraftforge.fmllegacy.RegistryObject;
 //import twilightforest.TwilightForestMod;
 //import twilightforest.block.*;
 //import twilightforest.enums.BlockLoggingEnum;
@@ -173,9 +176,7 @@
 //		simpleBlock(TFBlocks.uberous_soil.get(), models().withExistingParent(TFBlocks.uberous_soil.getId().getPath(), prefix("block/util/cube_all_2_layer"))
 //						.texture("all", blockTexture(TFBlocks.uberous_soil.get()))
 //						.texture("all2", prefix("block/" + TFBlocks.uberous_soil.getId().getPath() + "_glow")));
-//		simpleBlock(TFBlocks.huge_stalk.get(), models().cubeColumn(TFBlocks.huge_stalk.getId().getPath(),
-//						prefix("block/" + TFBlocks.huge_stalk.getId().getPath()),
-//						prefix("block/" + TFBlocks.huge_stalk.getId().getPath() + "_top")));
+//		axisBlock(TFBlocks.huge_stalk.get(), prefix("block/huge_stalk"), prefix("block/huge_stalk_top"));
 //		perFaceBlock(TFBlocks.huge_mushgloom.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_gloom_cap"));
 //		perFaceBlock(TFBlocks.huge_mushgloom_stem.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_mushgloom_stem"));
 //		simpleBlock(TFBlocks.trollvidr.get(), models().cross(TFBlocks.trollvidr.getId().getPath(), blockTexture(TFBlocks.trollvidr.get())));

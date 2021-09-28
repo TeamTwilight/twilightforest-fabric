@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TFConstants;
 import twilightforest.client.model.entity.HydraModel;
-import twilightforest.entity.boss.HydraEntity;
+import twilightforest.entity.boss.Hydra;
 
-public class HydraRenderer extends MobRenderer<HydraEntity, HydraModel> {
+public class HydraRenderer extends MobRenderer<Hydra, HydraModel> {
 
 	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("hydra4.png");
 
@@ -16,12 +16,12 @@ public class HydraRenderer extends MobRenderer<HydraEntity, HydraModel> {
 	}
 
 	@Override
-	protected float getFlipDegrees(HydraEntity entity) {
+	protected float getFlipDegrees(Hydra entity) {
 		return 0F;
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(HydraEntity entity) {
+	public ResourceLocation getTextureLocation(Hydra entity) {
 		return textureLoc;
 	}
 }

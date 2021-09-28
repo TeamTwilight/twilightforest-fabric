@@ -3,8 +3,8 @@ package twilightforest.enums;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import twilightforest.tileentity.TFTileEntities;
-import twilightforest.tileentity.spawner.BossSpawnerTileEntity;
+import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.block.entity.spawner.BossSpawnerBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
@@ -24,11 +24,11 @@ public enum BossVariant implements StringRepresentable, SkullBlock.Type {
 	FINAL_BOSS    (TrophyType.GOLD    , () -> TFTileEntities.FINAL_BOSS_SPAWNER);
 
 	private final TrophyType trophyType;
-	private final Supplier<BlockEntityType<? extends BossSpawnerTileEntity<?>>> blockEntityType;
+	private final Supplier<BlockEntityType<? extends BossSpawnerBlockEntity<?>>> blockEntityType;
 
 	public static final BossVariant[] VARIANTS = values();
 
-	BossVariant(TrophyType trophyType, @Nullable Supplier<BlockEntityType<? extends BossSpawnerTileEntity<?>>> blockEntityType) {
+	BossVariant(TrophyType trophyType, @Nullable Supplier<BlockEntityType<? extends BossSpawnerBlockEntity<?>>> blockEntityType) {
 		this.trophyType = trophyType;
 		this.blockEntityType = blockEntityType;
 	}
@@ -44,7 +44,7 @@ public enum BossVariant implements StringRepresentable, SkullBlock.Type {
 
 
 	@Nullable
-	public BlockEntityType<? extends BossSpawnerTileEntity<?>> getType() {
+	public BlockEntityType<? extends BossSpawnerBlockEntity<?>> getType() {
 		return blockEntityType != null ? blockEntityType.get() : null;
 	}
 

@@ -44,7 +44,7 @@
   "spawn_costs": {},
   "player_spawn_friendly": false,
   "precipitation": "rain",
-  "temperature": 0.3,
+  "temperature": 1.0,
   "downfall": 0.2,
   "category": "mesa",
   "depth": 5.25

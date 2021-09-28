@@ -99,8 +99,8 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 		// stone stalactites!
 		for (int i = 0; i < 128; i++) {
-			BlockPos.MutableBlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), this.height, dest.getZ(), sbb);
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generateBlockSpike(world, STONE_STALACTITE, dest.atY(this.height), sbb);
 		}
 
 		return true;

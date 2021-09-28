@@ -53,6 +53,9 @@ public final class TFSounds {
 	public static final SoundEvent DEER_DEATH = createEvent("entity.twilightforest.deer.death");
 	public static final SoundEvent DEER_HURT = createEvent("entity.twilightforest.deer.hurt");
 	public static final SoundEvent DEER_IDLE = createEvent("entity.twilightforest.deer.idle");
+	public static final SoundEvent DWARF_DEATH = createEvent("entity.twilightforest.dwarf_rabbit.death");
+	public static final SoundEvent DWARF_HURT = createEvent("entity.twilightforest.dwarf_rabbit.hurt");
+	public static final SoundEvent DWARF_IDLE = createEvent("entity.twilightforest.dwarf_rabbit.idle");
 	public static final SoundEvent DOOR_ACTIVATED = createEvent("block.twilightforest.door.activate");
 	public static final SoundEvent DOOR_REAPPEAR = createEvent("block.twilightforest.door.reappear");
 	public static final SoundEvent DOOR_VANISH = createEvent("block.twilightforest.door.vanish");
@@ -279,6 +282,7 @@ public final class TFSounds {
 //				CHARM_KEEP, CHARM_LIFE,
 //				CICADA,
 //				DEER_DEATH, DEER_HURT, DEER_IDLE,
+//				DWARF_DEATH, DWARF_HURT, DWARF_IDLE,
 //				DOOR_ACTIVATED, DOOR_REAPPEAR, DOOR_VANISH,
 //				FAN_WOOSH,
 //				FIRE_BEETLE_DEATH, FIRE_BEETLE_HURT, FIRE_BEETLE_SHOOT, FIRE_BEETLE_STEP,

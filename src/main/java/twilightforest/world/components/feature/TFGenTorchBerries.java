@@ -8,6 +8,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.block.TFPlantBlock;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.TorchberryPlantBlock;
 
 import java.util.Random;
 
@@ -28,7 +29,7 @@ public class TFGenTorchBerries extends Feature<NoneFeatureConfiguration> {
 
 		for (; pos.getY() > 5; pos = pos.below()) {
 			if (world.isEmptyBlock(pos) && TFPlantBlock.canPlaceRootAt(world, pos) && random.nextInt(6) > 0) {
-				world.setBlock(pos, TFBlocks.torchberry_plant.defaultBlockState(), 16 | 2);
+				world.setBlock(pos, TFBlocks.torchberry_plant.defaultBlockState().setValue(TorchberryPlantBlock.HAS_BERRIES, true), 16 | 2);
 			} else {
 				pos = new BlockPos(
 						copyX + random.nextInt(4) - random.nextInt(4),

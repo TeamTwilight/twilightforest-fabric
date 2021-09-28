@@ -8,9 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ProtectionBoxModel;
-import twilightforest.entity.ProtectionBoxEntity;
+import twilightforest.entity.ProtectionBox;
 
-public class ProtectionBoxRenderer<T extends ProtectionBoxEntity> extends EntityRenderer<T> {
+public class ProtectionBoxRenderer<T extends ProtectionBox> extends EntityRenderer<T> {
 
 	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("protectionbox.png");
 	private final ProtectionBoxModel<T> boxModel;

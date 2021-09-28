@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.enums.BossVariant;
-import twilightforest.tileentity.spawner.BossSpawnerTileEntity;
+import twilightforest.block.entity.spawner.BossSpawnerBlockEntity;
 
 import javax.annotation.Nullable;
 
@@ -39,7 +39,7 @@ public class BossSpawnerBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> type) {
-		return createTickerHelper(type, boss.getType(), BossSpawnerTileEntity::tick);
+		return createTickerHelper(type, boss.getType(), BossSpawnerBlockEntity::tick);
 	}
 
 //	@Override

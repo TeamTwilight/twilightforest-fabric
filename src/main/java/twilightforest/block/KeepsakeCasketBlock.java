@@ -22,6 +22,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.*;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -46,6 +52,16 @@ import net.minecraft.world.level.material.*;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFSounds;
+import twilightforest.enums.BlockLoggingEnum;
+import twilightforest.item.TFItems;
+import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+
+import javax.annotation.Nullable;
+import java.util.Optional;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable, IBlockMethods {
@@ -90,13 +106,13 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new KeepsakeCasketTileEntity(pos, state);
+		return new KeepsakeCasketBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.KEEPSAKE_CASKET, KeepsakeCasketTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.KEEPSAKE_CASKET, KeepsakeCasketBlockEntity::tick);
 	}
 
 	@Override
@@ -149,8 +165,8 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
 		if (!worldIn.isClientSide && !player.isCreative() && worldIn.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
 			BlockEntity tile = worldIn.getBlockEntity(pos);
-			if (tile instanceof KeepsakeCasketTileEntity) {
-				KeepsakeCasketTileEntity casket = (KeepsakeCasketTileEntity) tile;
+			if (tile instanceof KeepsakeCasketBlockEntity) {
+				KeepsakeCasketBlockEntity casket = (KeepsakeCasketBlockEntity) tile;
 				ItemStack stack = new ItemStack(this);
 				String nameCheck = new TextComponent(casket.name + "'s " + casket.getDisplayName()).getString();
 				ItemEntity itementity = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
@@ -189,8 +205,8 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 		}
 		if (stack.hasCustomHoverName()) {
 			BlockEntity tileentity = worldIn.getBlockEntity(pos);
-			if (tileentity instanceof KeepsakeCasketTileEntity) {
-				((KeepsakeCasketTileEntity) tileentity).setCustomName(stack.getHoverName());
+			if (tileentity instanceof KeepsakeCasketBlockEntity) {
+				((KeepsakeCasketBlockEntity) tileentity).setCustomName(stack.getHoverName());
 			}
 		}
 	}
@@ -266,15 +282,15 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 
 	//[VanillCopy] of ChestBlock.getLidRotationCallback, uses TileEntityKeepsakeCasket instead
 	@Environment(EnvType.CLIENT)
-	public static DoubleBlockCombiner.Combiner<KeepsakeCasketTileEntity, Float2FloatFunction> getLidRotationCallback(final LidBlockEntity lid) {
-		return new DoubleBlockCombiner.Combiner<KeepsakeCasketTileEntity, Float2FloatFunction>() {
-			public Float2FloatFunction acceptDouble(KeepsakeCasketTileEntity p_225539_1_, KeepsakeCasketTileEntity p_225539_2_) {
+	public static DoubleBlockCombiner.Combiner<KeepsakeCasketBlockEntity, Float2FloatFunction> getLidRotationCallback(final LidBlockEntity lid) {
+		return new DoubleBlockCombiner.Combiner<KeepsakeCasketBlockEntity, Float2FloatFunction>() {
+			public Float2FloatFunction acceptDouble(KeepsakeCasketBlockEntity p_225539_1_, KeepsakeCasketBlockEntity p_225539_2_) {
 				return (angle) -> {
 					return Math.max(p_225539_1_.getOpenNess(angle), p_225539_2_.getOpenNess(angle));
 				};
 			}
 
-			public Float2FloatFunction acceptSingle(KeepsakeCasketTileEntity p_225538_1_) {
+			public Float2FloatFunction acceptSingle(KeepsakeCasketBlockEntity p_225538_1_) {
 				return p_225538_1_::getOpenNess;
 			}
 

@@ -30,7 +30,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TFConstants;
-import twilightforest.entity.WraithEntity;
+import twilightforest.entity.monster.Wraith;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.components.processors.RandomizedTemplateProcessor;
@@ -204,7 +204,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 							TFTreasure.graveyard.generateChestContents(world, placement.offset(chestloc));
 							world.setBlock(placement.offset(chestloc).below(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
 						}
-						WraithEntity wraith = new WraithEntity(TFEntities.wraith, world.getLevel());
+						Wraith wraith = new Wraith(TFEntities.wraith, world.getLevel());
 						wraith.setPos(placement.getX(), placement.getY(), placement.getZ());
 						world.addFreshEntity(wraith);
 					}

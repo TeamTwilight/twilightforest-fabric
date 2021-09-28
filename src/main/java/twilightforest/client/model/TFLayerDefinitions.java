@@ -5,7 +5,9 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityModelLayerRegistry;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
+import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.model.tileentity.*;
+import twilightforest.client.model.tileentity.legacy.*;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
 
 import net.minecraft.client.model.*;
@@ -38,6 +40,12 @@ public class TFLayerDefinitions {
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.QUEST_RAM_TROPHY, QuestRamTrophyModel::createHead);
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.SNOW_QUEEN_TROPHY, SnowQueenTrophyModel::createHead);
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.UR_GHAST_TROPHY, UrGhastTrophyModel::createHead);
+
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_HYDRA_TROPHY, HydraTrophyLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_MINOSHROOM_TROPHY, MinoshroomTrophyLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_QUEST_RAM_TROPHY, QuestRamTrophyLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_SNOW_QUEEN_TROPHY, SnowQueenTrophyLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_UR_GHAST_TROPHY, UrGhastTrophyLegacyModel::create);
 
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.ADHERENT, AdherentModel::create);
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.ALPHA_YETI, AlphaYetiModel::create);
@@ -88,6 +96,8 @@ public class TFLayerDefinitions {
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.QUEST_RAM, QuestRamModel::create);
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.RAVEN, RavenModel::create);
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.REDCAP, RedcapModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.25F), 0.7F), 64, 32));
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.REDCAP_ARMOR_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(0.65F), 0.7F), 64, 32));
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.RISING_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.ROVING_CUBE, CubeOfAnnihilationModel::create);
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.SKELETON_DRUID, SkeletonDruidModel::create);
@@ -109,8 +119,30 @@ public class TFLayerDefinitions {
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.WRAITH, WraithModel::create);
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.YETI, YetiModel::create);
 
-		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.REDCAP_ARMOR_INNER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0.7F), 64, 32));
-		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.REDCAP_ARMOR_OUTER, () -> LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0.7F), 64, 32));
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_BIGHORN_SHEEP, BighornLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_BLOCKCHAIN_GOBLIN, BlockChainGoblinLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_BOAR, BoarLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_DEER, DeerLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_FIRE_BEETLE, FireBeetleLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_HELMET_CRAB, HelmetCrabLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_HYDRA, HydraLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_HYDRA_HEAD, HydraHeadLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_HYDRA_NECK, HydraNeckLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_KOBOLD, KoboldLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_LOWER_GOBLIN_KNIGHT, LowerGoblinKnightLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_MINOSHROOM, MinoshroomLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_MINOTAUR, MinotaurLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_NAGA, NagaLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_PINCH_BEETLE, PinchBeetleLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_QUEST_RAM, QuestRamLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_RAVEN, RavenLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_REDCAP, RedcapLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_SLIME_BEETLE, SlimeBeetleLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_SNOW_QUEEN, SnowQueenLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_SQUIRREL, SquirrelLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_TINY_BIRD, TinyBirdLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_UPPER_GOBLIN_KNIGHT, UpperGoblinKnightLegacyModel::create);
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.LEGACY_UR_GHAST, UrGhastLegacyModel::create);
 
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CICADA, CicadaModel::create);
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.FIREFLY, FireflyModel::create);

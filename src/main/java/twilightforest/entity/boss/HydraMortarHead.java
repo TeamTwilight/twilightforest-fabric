@@ -33,7 +33,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 		super(type, world);
 	}
 
-	public HydraMortarHead(EntityType<? extends HydraMortarHead> type, Level world, HydraHeadEntity head) {
+	public HydraMortarHead(EntityType<? extends HydraMortarHead> type, Level world, HydraHead head) {
 		super(type, head.getParent(), world);
 
 		Vec3 vector = head.getLookAngle();
@@ -96,7 +96,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 	}
 
 	private boolean isPartOfHydra(Entity entity) {
-		return (getOwner() instanceof HydraEntity && entity instanceof HydraPartEntity && ((HydraPartEntity) entity).getParent() == getOwner());
+		return (getOwner() instanceof Hydra && entity instanceof HydraPart && ((HydraPart) entity).getParent() == getOwner());
 	}
 
 	@Override

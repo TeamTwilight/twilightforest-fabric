@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.trollcave;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -9,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -16,6 +18,7 @@ import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.HugeMushroomUtil;
@@ -24,6 +27,8 @@ import twilightforest.util.RotationUtil;
 import java.util.Random;
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
+	protected static final SpikeConfig STONE_STALACTITE_SMALL = new SpikeConfig(new SimpleStateProvider(Blocks.STONE.defaultBlockState()), UniformInt.of(5, 5), UniformInt.of(2, 3), true);
+	protected static final SpikeConfig STONE_STALAGMITE_SMALL = new SpikeConfig(new SimpleStateProvider(Blocks.STONE.defaultBlockState()), UniformInt.of(2, 4), UniformInt.of(2, 3), false);
 
 	protected boolean[] openingTowards = {false, false, true, false};
 
@@ -89,12 +94,12 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		// stone stalactites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), this.height, dest.getZ(), sbb);
+			generateBlockSpike(world, STONE_STALACTITE_SMALL, dest.atY(this.height), sbb);
 		}
 		// stone stalagmites!
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, generator, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), this.height, dest.getZ(), sbb);
+			generateBlockSpike(world, STONE_STALAGMITE_SMALL, dest.atY(0), sbb);
 		}
 
 		// possible treasure

@@ -64,6 +64,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.TORCH).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.MUSHROOM_STEW).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.MILK_BUCKET).setWeight(75))
+								.add(LootItem.lootTableItem(Items.SWEET_BERRIES).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 7))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.MELON_SEEDS).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))).setWeight(75)))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(2))

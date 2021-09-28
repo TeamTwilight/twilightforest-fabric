@@ -15,7 +15,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TFSounds;
-import twilightforest.entity.ChainBlockEntity;
+import twilightforest.entity.ChainBlock;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.TwilightItemTier;
 
@@ -47,7 +47,7 @@ public class ChainBlockItem extends DiggerItem {
 		player.playSound(TFSounds.BLOCKCHAIN_FIRED, 1.0F, 1.0F / (world.random.nextFloat() * 0.4F + 1.2F));
 
 		if (!world.isClientSide) {
-			ChainBlockEntity launchedBlock = new ChainBlockEntity(TFEntities.chain_block, world, player, hand);
+			ChainBlock launchedBlock = new ChainBlock(TFEntities.chain_block, world, player, hand);
 			world.addFreshEntity(launchedBlock);
 			setThrownEntity(stack, launchedBlock);
 
@@ -68,13 +68,13 @@ public class ChainBlockItem extends DiggerItem {
 	}
 
 	@Nullable
-	private static ChainBlockEntity getThrownEntity(Level world, ItemStack stack) {
+	private static ChainBlock getThrownEntity(Level world, ItemStack stack) {
 		if (world instanceof ServerLevel) {
 			UUID id = getThrownUuid(stack);
 			if (id != null) {
 				Entity e = ((ServerLevel) world).getEntity(id);
-				if (e instanceof ChainBlockEntity) {
-					return (ChainBlockEntity) e;
+				if (e instanceof ChainBlock) {
+					return (ChainBlock) e;
 				}
 			}
 		}
@@ -82,7 +82,7 @@ public class ChainBlockItem extends DiggerItem {
 		return null;
 	}
 
-	private static void setThrownEntity(ItemStack stack, ChainBlockEntity cube) {
+	private static void setThrownEntity(ItemStack stack, ChainBlock cube) {
 		if (!stack.hasTag()) {
 			stack.setTag(new CompoundTag());
 		}

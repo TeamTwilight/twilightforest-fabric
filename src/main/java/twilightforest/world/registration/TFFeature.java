@@ -28,6 +28,7 @@ import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFConstants;
+import twilightforest.entity.monster.Kobold;
 import twilightforest.world.components.structures.lichtowerrevamp.TowerFoyer;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.entity.*;
@@ -66,7 +67,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 2, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 3, y - 2, z - 3);
 		}
 	};
 	public static final TFFeature MEDIUM_HILL = new TFFeature( 2, "medium_hollow_hill", true, true ) {
@@ -87,7 +88,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 5, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 7, y - 5, z - 7);
 		}
 	};
 	public static final TFFeature LARGE_HILL = new TFFeature( 3, "large_hollow_hill", true, true ) {
@@ -109,7 +110,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 5, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 11, y - 5, z - 11);
 		}
 	};
 	public static final TFFeature HEDGE_MAZE = new TFFeature( 2, "hedge_maze", true ) {
@@ -121,7 +122,7 @@ public class TFFeature {
 			return new HedgeMazeComponent(this, 0, x + 1, y + 1, z + 1);
 		}
 	};
-	public static final TFFeature QUEST_GROVE  = new TFFeature( 1, "quest_grove" , true  ) {
+	public static final TFFeature QUEST_GROVE = new TFFeature( 1, "quest_grove" , true  ) {
 		{
 			this.enableTerrainAlterations();
 		}
@@ -149,6 +150,8 @@ public class TFFeature {
 					.addMonster(EntityType.ENDERMAN, 1, 1, 4)
 					.addMonster(TFEntities.death_tome, 10, 4, 4)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
+
+			this.adjustToTerrain = true;
 		}
 
 		@Override
@@ -163,10 +166,10 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return rand.nextBoolean() ? new TowerMainComponent(this, rand, 0, x, y, z) : new TowerFoyer(structureManager, new BlockPos(x, y + 1, z));
+			return rand.nextBoolean() ? new TowerMainComponent(this, rand, 0, x, y, z) : new TowerFoyer(structureManager, new BlockPos(x, y - 3, z));
 		}
 	};
-	public static final TFFeature HYDRA_LAIR     = new TFFeature( 2, "hydra_lair"    , true, true, TFConstants.prefix("progress_labyrinth") ) {
+	public static final TFFeature HYDRA_LAIR = new TFFeature( 2, "hydra_lair"    , true, true, TFConstants.prefix("progress_labyrinth") ) {
 		{
 			this.enableTerrainAlterations();
 		}
@@ -234,6 +237,8 @@ public class TFFeature {
 					.addMonster(1, TFEntities.tower_ghast, 10, 1, 4)
 					// aquarium squids (only in aquariums between y = 35 and y = 64. :/
 					.addWaterCreature(EntityType.SQUID, 10, 4, 4);
+
+			this.adjustToTerrain = true;
 		}
 
 		@Override
@@ -285,7 +290,7 @@ public class TFFeature {
 			return GenerationStep.Decoration.UNDERGROUND_STRUCTURES;
 		}
 	};
-	public static final TFFeature YETI_CAVE  = new TFFeature( 2, "yeti_lairs", true, true, TFConstants.prefix("progress_lich") ) {
+	public static final TFFeature YETI_CAVE = new TFFeature( 2, "yeti_lairs", true, true, TFConstants.prefix("progress_lich") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -390,6 +395,8 @@ public class TFFeature {
 		{
 			// FIXME Incomplete
 			this.disableStructure();
+
+			this.adjustToTerrain = true;
 		}
 
 		@Override
@@ -405,7 +412,7 @@ public class TFFeature {
 	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFFeature>()
 		.put(BiomeKeys.DARK_FOREST.location(), KNIGHT_STRONGHOLD)
 		.put(BiomeKeys.DARK_FOREST_CENTER.location(), DARK_TOWER)
-		.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
+		//.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
 		.put(BiomeKeys.ENCHANTED_FOREST.location(), QUEST_GROVE)
 		.put(BiomeKeys.FINAL_PLATEAU.location(), FINAL_CASTLE)
 		.put(BiomeKeys.FIRE_SWAMP.location(), HYDRA_LAIR)
@@ -431,6 +438,7 @@ public class TFFeature {
 	public boolean requiresTerraforming; // TODO Terraforming Type? Envelopment vs Flattening maybe?
 	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
+	protected boolean adjustToTerrain;
 	// Seeing this is only used by maps, we could make it a hash of the structure's string name instead
 	public final int id;
 
@@ -462,6 +470,7 @@ public class TFFeature {
 		this.ambientCreatureList = new ArrayList<>();
 		this.waterCreatureList = new ArrayList<>();
 		this.hasProtectionAura = true;
+		this.adjustToTerrain = false;
 
 		if(!name.equals("hydra_lair")) ambientCreatureList.add(new MobSpawnSettings.SpawnerData(EntityType.BAT, 10, 8, 8));
 
@@ -482,7 +491,11 @@ public class TFFeature {
 		return maxSize;
 	}
 
-//	@Nullable
+	public boolean shouldAdjustToTerrain() {
+		return this.adjustToTerrain;
+	}
+
+	//	@Nullable
 //	public MapGenTFMajorFeature createFeatureGenerator() {
 //		return this.shouldHaveFeatureGenerator ? new MapGenTFMajorFeature(this) : null;
 //	}
@@ -929,7 +942,7 @@ public class TFFeature {
 		int dz = world.random.nextInt(16) - world.random.nextInt(16);
 
 		// make our hint monster
-		KoboldEntity hinty = new KoboldEntity(TFEntities.kobold, world);
+		Kobold hinty = new Kobold(TFEntities.kobold, world);
 		hinty.moveTo(pos.offset(dx, dy, dz), 0f, 0f);
 
 		// check if the bounding box is clear

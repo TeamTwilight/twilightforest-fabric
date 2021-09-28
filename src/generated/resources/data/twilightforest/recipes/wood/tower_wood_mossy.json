@@ -4,9 +4,14 @@
     {
       "item": "twilightforest:tower_wood"
     },
-    {
-      "item": "minecraft:vine"
-    }
+    [
+      {
+        "item": "minecraft:vine"
+      },
+      {
+        "item": "minecraft:moss_block"
+      }
+    ]
   ],
   "result": {
     "item": "twilightforest:tower_wood_mossy"

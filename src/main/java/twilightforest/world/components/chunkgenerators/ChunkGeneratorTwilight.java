@@ -231,7 +231,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		// raise the hill
 		int groundHeight = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, movingPos.getX(), movingPos.getZ());
 		float noiseRaw = (float) (this.surfaceNoiseGetter.getSurfaceNoiseValue(movingPos.getX() / 64f, movingPos.getZ() / 64f, 1.0f, 256) * 32f);
-		float totalHeightRaw = groundHeight * 0.5f + this.getSeaLevel() * 0.5f + hillHeight + noiseRaw;
+		float totalHeightRaw = groundHeight * 0.75f + this.getSeaLevel() * 0.25f + hillHeight + noiseRaw;
 		int totalHeight = (int) (((int) totalHeightRaw >> 1) * 0.375f + totalHeightRaw * 0.625f);
 
 		for (int y = groundHeight; y <= totalHeight; y++) {
@@ -239,7 +239,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		}
 
 		// add the hollow part. Also turn water into stone below that
-		int hollow = (int) hillHeight - 4 - nearFeature.size;
+		int hollow = Math.min((int) hillHeight - 4 - nearFeature.size, totalHeight - 3);
 
 		// hydra lair has a piece missing
 		if (nearFeature == TFFeature.HYDRA_LAIR) {
@@ -249,10 +249,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			int mheight = (int) (Mth.cos(mdist / (hdiam / 1.5f) * Mth.PI) * (hdiam / 1.5f));
 
 			hollow = Math.max(mheight - 4, hollow);
-		}
-
-		if (hollow < 0) {
-			hollow = 0;
 		}
 
 		// hollow out the hollow parts

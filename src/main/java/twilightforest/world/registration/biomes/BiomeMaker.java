@@ -57,8 +57,8 @@ public final class BiomeMaker extends BiomeHelper {
 						.biomeCategory(Biome.BiomeCategory.PLAINS)
 						.temperature(0.8F)
 						.downfall(0.4F)
-						.depth(0.0625f)
-						.scale(0.05F)
+						.depth(0.005f)
+						.scale(0.005F)
 						.build()
 		);
 
@@ -67,8 +67,8 @@ public final class BiomeMaker extends BiomeHelper {
 						.biomeCategory(Biome.BiomeCategory.SAVANNA)
 						.temperature(0.9F)
 						.downfall(0)
-						.depth(0.1f)
-						.scale(0.2F)
+						.depth(0.05f)
+						.scale(0.1F)
 						.build()
 		);
 	}
@@ -85,7 +85,7 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()), defaultMobSpawning().setPlayerCanSpawn(), denseMushroomForestGen())
 						.temperature(0.8F)
 						.downfall(1)
-						.depth(0.0625f)
+						.depth(0.05f)
 						.scale(0.05F)
 						.build()
 		);
@@ -96,13 +96,13 @@ public final class BiomeMaker extends BiomeHelper {
 				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0xC45123).foliageColorOverride(0xFF8501).waterColor(0xFA9111),  spookSpawning(), spookyForestGen())
 						.temperature(0.5F)
 						.downfall(1)
-						.depth(0.0625f)
 						.scale(0.05F)
 						.build()
 		);
 
 		biomes.put(BiomeKeys.ENCHANTED_FOREST,
 				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).foliageColorOverride(0x00FFFF).grassColorOverride(0x00FFFF).grassColorModifier(BiomeSpecialEffects.GrassColorModifier.DARK_FOREST/*BiomeGrassColors.ENCHANTED_FOREST*/), defaultMobSpawning(), enchantedForestGen())
+						.precipitation(Biome.Precipitation.NONE)
 						.build()
 		);
 
@@ -129,40 +129,41 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void swampBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SWAMP,
-				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).grassColorOverride(0x5C694E).foliageColorOverride(0x496137).waterColor(0xE0FFAE).grassColorModifier(BiomeSpecialEffects.GrassColorModifier.SWAMP/*BiomeGrassColors.SWAMP*/), swampSpawning(), swampGen())
+				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x5C694E).foliageColorOverride(0x496137).waterColor(0xE0FFAE).grassColorModifier(BiomeSpecialEffects.GrassColorModifier.SWAMP/*BiomeGrassColors.SWAMP*/), swampSpawning(), swampGen())
 						.biomeCategory(Biome.BiomeCategory.SWAMP)
 						.temperature(0.8F)
 						.downfall(0.9F)
 						.depth(-0.125f)
-						.scale(0.25F)
+						.scale(0.15F)
 						.build()
 		);
 
 		biomes.put(BiomeKeys.FIRE_SWAMP,
 				biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().grassColorOverride(0x572E23).foliageColorOverride(0x64260F).waterColor(0x6C2C2C)), new MobSpawnSettings.Builder(), fireSwampGen())
 						.biomeCategory(Biome.BiomeCategory.SWAMP)
+						.precipitation(Biome.Precipitation.NONE)
 						.temperature(1)
 						.downfall(0.4F)
-						.depth(0.05f)
-						.scale(0.2F)
+						.depth(0.025f)
+						.scale(0.05F)
 						.build()
 		);
 	}
 
 	private static void darkForestBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.DARK_FOREST,
-				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()).grassColorOverride(0x4B6754).foliageColorOverride(0x3B5E3F).grassColorModifier(BiomeSpecialEffects.GrassColorModifier.DARK_FOREST/*BiomeGrassColors.DARK_FOREST*/), darkForestSpawning(), darkForestGen())
+				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x4B6754).foliageColorOverride(0x3B5E3F).grassColorModifier(BiomeSpecialEffects.GrassColorModifier.DARK_FOREST/*BiomeGrassColors.DARK_FOREST*/), darkForestSpawning(), darkForestGen())
 						.temperature(0.7F)
 						.downfall(0.8F)
-						.depth(0.0625f)
-						.scale(0.05F)
+						.depth(0.025f)
+						.scale(0.025F)
 						.build()
 		);
 
 		biomes.put(BiomeKeys.DARK_FOREST_CENTER, // FIXME: colors
 				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0x667540).foliageColorOverride(0xF9821E).grassColorModifier(BiomeSpecialEffects.GrassColorModifier.DARK_FOREST/*BiomeGrassColors.DARK_FOREST_CENTER*/), new MobSpawnSettings.Builder(), darkForestCenterGen())
-						.depth(0.0625f)
-						.scale(0.05F)
+						.depth(0.025f)
+						.scale(0.025F)
 						.build()
 		);
 	}
@@ -173,8 +174,8 @@ public final class BiomeMaker extends BiomeHelper {
 						.precipitation(Biome.Precipitation.SNOW)
 						.temperature(0.09F)
 						.downfall(0.9F)
-						.depth(0.1f)
-						.scale(0.2F)
+						.depth(0.05f)
+						.scale(0.15F)
 						.build()
 		);
 
@@ -190,7 +191,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void highlandsBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.HIGHLANDS,
-				biomeWithDefaults(fireflyParticles(defaultAmbientBuilder()), defaultMobSpawning(), highlandsGen())
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), highlandsGen())
 						.biomeCategory(Biome.BiomeCategory.MESA)
 						.temperature(0.4F)
 						.downfall(0.7F)
@@ -212,7 +213,7 @@ public final class BiomeMaker extends BiomeHelper {
 		biomes.put(BiomeKeys.FINAL_PLATEAU,
 				biomeWithDefaults(defaultAmbientBuilder(), ravenSpawning(), plateauGen())
 						.biomeCategory(Biome.BiomeCategory.MESA)
-						.temperature(0.3F)
+						.temperature(1.0F)
 						.downfall(0.2F)
 						.depth(5.25f)
 						.scale(0.025F)

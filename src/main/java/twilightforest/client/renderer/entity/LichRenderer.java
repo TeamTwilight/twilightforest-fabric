@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TFConstants;
 import twilightforest.client.model.entity.LichModel;
-import twilightforest.entity.boss.LichEntity;
+import twilightforest.entity.boss.Lich;
 
-public class LichRenderer extends HumanoidMobRenderer<LichEntity, LichModel> {
+public class LichRenderer extends HumanoidMobRenderer<Lich, LichModel> {
 
 	private static final ResourceLocation LICH_TEXTURE = TFConstants.getModelTexture("twilightlich64.png");
 
@@ -17,7 +17,7 @@ public class LichRenderer extends HumanoidMobRenderer<LichEntity, LichModel> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(LichEntity entity) {
+	public ResourceLocation getTextureLocation(Lich entity) {
 		return LICH_TEXTURE;
 	}
 }

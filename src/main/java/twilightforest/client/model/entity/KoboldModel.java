@@ -7,14 +7,14 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.entity.KoboldEntity;
+import twilightforest.entity.monster.Kobold;
 
 /**
  * ModelKobold - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @Environment(EnvType.CLIENT)
-public class KoboldModel extends HumanoidModel<KoboldEntity> {
+public class KoboldModel extends HumanoidModel<Kobold> {
 
     public ModelPart mouth;
 
@@ -83,13 +83,13 @@ public class KoboldModel extends HumanoidModel<KoboldEntity> {
     }
 
     @Override
-    public void prepareMobModel(KoboldEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+    public void prepareMobModel(Kobold entity, float limbSwing, float limbSwingAmount, float partialTicks) {
         // check if entity is jumping
         this.isJumping = entity.getDeltaMovement().y() > 0;
     }
 
     @Override
-    public void setupAnim(KoboldEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(Kobold entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
         this.head.xRot = headPitch / (180F / (float) Math.PI);
 

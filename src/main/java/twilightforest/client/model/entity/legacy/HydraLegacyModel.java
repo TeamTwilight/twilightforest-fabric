@@ -13,10 +13,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.boss.HydraEntity;
-import twilightforest.entity.boss.HydraPartEntity;
+import twilightforest.entity.boss.Hydra;
+import twilightforest.entity.boss.HydraPart;
 
-public class HydraLegacyModel extends HierarchicalModel<HydraEntity> {
+public class HydraLegacyModel extends HierarchicalModel<Hydra> {
 	//fields
 	ModelPart root;
 	ModelPart leg1;
@@ -213,7 +213,7 @@ public class HydraLegacyModel extends HierarchicalModel<HydraEntity> {
 	}
 
 	@Override
-	public void setupAnim(HydraEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Hydra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		//super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
 		leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
@@ -223,7 +223,7 @@ public class HydraLegacyModel extends HierarchicalModel<HydraEntity> {
 		leg2.yRot = 0.0F;
 	}
 
-    public float getRotationY(HydraEntity hydra, HydraPartEntity whichHead, float time) {
+    public float getRotationY(Hydra hydra, HydraPart whichHead, float time) {
 
 		float yawOffset = hydra.yBodyRotO + (hydra.yBodyRot - hydra.yBodyRotO) * time;
 		float yaw = whichHead.yRotO + (whichHead.yRot - whichHead.yRotO) * time;
@@ -231,7 +231,7 @@ public class HydraLegacyModel extends HierarchicalModel<HydraEntity> {
 		return (yaw - yawOffset) / 57.29578F;
 	}
 
-	public float getRotationX(HydraEntity hydra, HydraPartEntity whichHead, float time) {
+	public float getRotationX(Hydra hydra, HydraPart whichHead, float time) {
 
 		return (whichHead.xRotO + (whichHead.xRot - whichHead.xRotO) * time) / 57.29578F;
 	}

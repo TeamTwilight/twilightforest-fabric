@@ -2,7 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.BowItem;
-import twilightforest.entity.projectile.SeekerArrowEntity;
+import twilightforest.entity.projectile.SeekerArrow;
 import twilightforest.extensions.IBowItemEx;
 
 public class SeekerBowItem extends BowItem implements IBowItemEx {
@@ -13,6 +13,6 @@ public class SeekerBowItem extends BowItem implements IBowItemEx {
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow) {
-		return new SeekerArrowEntity(arrow.level, arrow.getOwner());
+		return new SeekerArrow(arrow.level, arrow.getOwner());
 	}
 }
