@@ -24,7 +24,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-@Debug(export = true)
+
+
 @Mixin(ItemInHandRenderer.class)
 public abstract class ItemInHandRendererMixin {
 

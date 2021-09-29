@@ -77,4 +77,6 @@ public class FogHandler {
 		return Minecraft.getInstance().level != null && Minecraft.getInstance().player != null &&
 				Objects.equals(Minecraft.getInstance().level.getBiomeName(Minecraft.getInstance().player.blockPosition()), Optional.of(BiomeKeys.SPOOKY_FOREST));
 	}
+
+
 }

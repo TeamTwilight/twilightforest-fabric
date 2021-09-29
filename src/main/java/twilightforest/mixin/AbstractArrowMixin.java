@@ -1,25 +1,31 @@
 package twilightforest.mixin;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.phys.HitResult;
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.events.ProjectileHitEvent;
 
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.phys.HitResult;
-
+@Debug(export = true)
 @Mixin(AbstractArrow.class)
 public class AbstractArrowMixin {
-    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/AbstractArrow;onHit(Lnet/minecraft/world/phys/HitResult;)V"))
-    public void onHitEvent(AbstractArrow abstractArrow, HitResult result) {
-        ProjectileHitEvent.PROJECTILE_HIT_EVENT.invoker().onHit(abstractArrow, result);
-        try {
-            //Use reflection to avoid using a aw
-            Projectile.class.getDeclaredMethod(FabricLoader.getInstance().isDevelopmentEnvironment() ? "onHit" : "method_7488", HitResult.class).invoke(abstractArrow, result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+    @Unique
+    private HitResult result;
+
+    @ModifyVariable(method = "tick", at = @At(value = "STORE"), ordinal = 0)
+    public HitResult saveHitResult(HitResult result){
+        this.result = result;
+        return result;
+    }
+
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/AbstractArrow;onHit(Lnet/minecraft/world/phys/HitResult;)V"))
+    public void onHitEvent(CallbackInfo ci) {
+        ProjectileHitEvent.PROJECTILE_HIT_EVENT.invoker().onHit((AbstractArrow) (Object) this, result);
     }
 }

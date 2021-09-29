@@ -34,9 +34,6 @@ import net.minecraft.world.phys.Vec3;
 
 @Mixin(EntityRenderDispatcher.class)
 public abstract class EntityRenderDispatcherMixin {
-
-
-
     @Shadow public abstract <T extends Entity> EntityRenderer<? super T> getRenderer(T entity);
 
     @Shadow private Map<EntityType<?>, EntityRenderer<?>> renderers;
@@ -124,11 +121,6 @@ public abstract class EntityRenderDispatcherMixin {
     public void nonAsmCursedness(ResourceManager resourceManager, CallbackInfo ci, EntityRendererProvider.Context context) {
         ASMHooks.bakeMultipartRenders(context);
     }
-
-
-
-
-
 
 //    @Inject(method = "getRenderer", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
 //    public <T extends Entity> void getMultipartRenderer(T entity, CallbackInfoReturnable<EntityRenderer<? super T>> cir) {
