@@ -25,6 +25,7 @@ accessible method net/minecraft/client/renderer/blockentity/BlockEntityRenderers
 accessible field net/minecraft/world/level/newbiome/layer/Layer area Lnet/minecraft/world/level/newbiome/area/LazyArea;
 accessible method net/minecraft/world/inventory/MenuType <init> (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;)V
 mutable field net/minecraft/world/item/AxeItem STRIPPABLES Ljava/util/Map;
+accessible method net/minecraft/world/item/RecordItem <init> (ILnet/minecraft/sounds/SoundEvent;Lnet/minecraft/world/item/Item$Properties;)V
 accessible field net/minecraft/client/renderer/DimensionSpecialEffects EFFECTS Lit/unimi/dsi/fastutil/objects/Object2ObjectMap;
 accessible field net/minecraft/world/entity/Entity portalTime I
 accessible method net/minecraft/world/level/block/WoodButtonBlock <init> (Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
@@ -47,6 +48,7 @@ mutable field net/minecraft/world/level/levelgen/StructureSettings DEFAULTS Lcom
 accessible field net/minecraft/world/level/levelgen/flat/FlatLevelGeneratorSettings STRUCTURE_FEATURES Ljava/util/Map;
 accessible field net/minecraft/world/level/levelgen/StructureSettings structureConfig Ljava/util/Map;
 mutable field net/minecraft/world/level/levelgen/StructureSettings structureConfig Ljava/util/Map;
+mutable field net/minecraft/world/level/levelgen/feature/StructureFeature NOISE_AFFECTING_FEATURES Ljava/util/List;
 accessible method net/minecraft/world/inventory/MenuType$MenuSupplier create (ILnet/minecraft/world/entity/player/Inventory;)Lnet/minecraft/world/inventory/AbstractContainerMenu;
 accessible method net/minecraft/world/damagesource/DamageSource setIsFire ()Lnet/minecraft/world/damagesource/DamageSource;
 accessible field net/minecraft/world/entity/item/FallingBlockEntity fallDamagePerDistance F

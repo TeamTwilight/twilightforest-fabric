@@ -35,12 +35,13 @@ public class BiomeGrassColors {
 		return color;
 	}
 
+	/*
 	public static final GrassColorModifier ENCHANTED_FOREST = make("enchanted_forest", (x, z, color) -> {
 		return (color & 0xFFFF00) + getEnchantedColor((int) x, (int) z); //TODO
 	});
 
 	//TODO: PORT???
-	/*
+
 	// FIXME Flat color, resolve
 	public static final GrassColorModifier SWAMP = make("swamp", (x, z, color) -> ((GrassColor.get(0.8F, 0.9F) & 0xFEFEFE) + 0x4E0E4E) / 2);
 	// FIXME Flat color, resolve
@@ -54,6 +55,14 @@ public class BiomeGrassColors {
 		return blendColors(0xC45123, 0xB1C423, noise > 0.60D ? noise * 0.1D : noise);
 	});
 
+	private static GrassColorModifier make(String name, GrassColorModifier.ColorModifier delegate) {
+		name = TwilightForestMod.prefix(name).toString();
+
+		return GrassColorModifier.create(name, name, delegate);
+	}
+	 */
+
+
 	public static int blendColors(int a, int b, double ratio) {
 		int mask1 = 0x00FF00FF;
 		int mask2 = 0xFF00FF00;
@@ -65,11 +74,5 @@ public class BiomeGrassColors {
 				| (((((a & mask2) * f1) + ((b & mask2) * f2)) >> 8) & mask2);
 	}
 
-	private static GrassColorModifier make(String name, GrassColorModifier.ColorModifier delegate) {
-		name = TwilightForestMod.prefix(name).toString();
 
-		return GrassColorModifier.create(name, name, delegate);
-	}
-
-	 */
 }

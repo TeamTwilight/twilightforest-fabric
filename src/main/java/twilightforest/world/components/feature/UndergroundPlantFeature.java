@@ -36,7 +36,7 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 					world.setBlock(pos, ctx.config().state, 16 | 2);
 				} else if (isTrollber && TrollRootBlock.canPlaceRootBelow(world, pos.above())) {
 					if (random.nextInt(10) == 0) {
-						world.setBlock(pos, TFBlocks.unripe_trollber.get().defaultBlockState(), 16 | 2);
+						world.setBlock(pos, TFBlocks.unripe_trollber.defaultBlockState(), 16 | 2);
 					} else {
 						world.setBlock(pos, ctx.config().state, 16 | 2);
 					}

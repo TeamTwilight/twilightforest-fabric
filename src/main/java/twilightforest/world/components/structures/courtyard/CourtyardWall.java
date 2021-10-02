@@ -10,6 +10,7 @@ import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import twilightforest.TFConstants;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.MossyCobbleTemplateProcessor;
 import twilightforest.world.components.structures.TwilightDoubleTemplateStructurePiece;
@@ -31,9 +32,9 @@ public class CourtyardWall extends TwilightDoubleTemplateStructurePiece {
         super(NagaCourtyardPieces.TFNCWl,
                 i,
                 structureManager,
-                new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall"),
+                new ResourceLocation(TFConstants.ID, "courtyard/courtyard_wall"),
                 LichTowerUtil.makeSettings(rotation).addProcessor(CourtyardMain.WALL_PROCESSOR).addProcessor(CourtyardMain.WALL_INTEGRITY_PROCESSOR).addProcessor(BlockIgnoreProcessor.AIR),
-                new ResourceLocation(TwilightForestMod.ID, "courtyard/courtyard_wall_decayed"),
+                new ResourceLocation(TFConstants.ID, "courtyard/courtyard_wall_decayed"),
                 LichTowerUtil.makeSettings(rotation).addProcessor(MossyCobbleTemplateProcessor.INSTANCE).addProcessor(CourtyardMain.WALL_DECAY_PROCESSOR),
                 new BlockPos(x, y, z)
         );

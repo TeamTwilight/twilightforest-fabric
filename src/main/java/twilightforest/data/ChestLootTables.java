@@ -87,9 +87,9 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.GOLDEN_CARROT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.CAKE).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.OAK_BOAT).setWeight(25))
-                                .add(LootItem.lootTableItem(TFBlocks.hollow_oak_sapling.get().asItem()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.music_disc_home.get()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.music_disc_radiance.get()).setWeight(25))));
+                                .add(LootItem.lootTableItem(TFBlocks.hollow_oak_sapling.asItem()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_home).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_radiance).setWeight(25))));
 
         register.accept(TFTreasure.foundation_basement.lootTable,
                 LootTable.lootTable()
@@ -118,13 +118,13 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 //rare loot
                                 .add(LootItem.lootTableItem(Items.GLISTERING_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.MAP).setWeight(75))
-                                .add(LootItem.lootTableItem(TFItems.charm_of_keeping_1.get()).setWeight(75))
+                                .add(LootItem.lootTableItem(TFItems.charm_of_keeping_1).setWeight(75))
                                 //ultrarare loot
                                 .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.GOLDEN_CARROT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.OAK_BOAT).setWeight(25))
-                                .add(LootItem.lootTableItem(TFBlocks.hollow_oak_sapling.get().asItem()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.music_disc_thread.get()).setWeight(25))));
+                                .add(LootItem.lootTableItem(TFBlocks.hollow_oak_sapling.asItem()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_thread).setWeight(25))));
 
         register.accept(TFTreasure.well.lootTable,
                 LootTable.lootTable()
@@ -145,7 +145,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.INK_SAC).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                                 .add(LootItem.lootTableItem(Items.WATER_BUCKET))
                                 .add(LootItem.lootTableItem(Items.BOWL))
-                                .add(LootItem.lootTableItem(TFItems.ironwood_raw.get()))
+                                .add(LootItem.lootTableItem(TFItems.ironwood_raw))
                                 .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                                 .add(LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                                 .add(LootItem.lootTableItem(Items.COPPER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))))
@@ -171,7 +171,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
 								//uncommon loot
 								.add(LootItem.lootTableItem(Items.BUCKET))
 								.add(LootItem.lootTableItem(Items.WATER_BUCKET))
-								.add(LootItem.lootTableItem(TFItems.ironwood_raw.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 7))))
+								.add(LootItem.lootTableItem(TFItems.ironwood_raw).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 7))))
 								.add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))))
 								.add(LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
 								.add(LootItem.lootTableItem(Items.COPPER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 8)))))
@@ -181,11 +181,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
 								.add(LootItem.lootTableItem(Items.EMERALD).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 9))).setWeight(75))
 								.add(LootItem.lootTableItem(Items.DIAMOND).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))).setWeight(75))
 								.add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 9))).setWeight(75))
-								.add(LootItem.lootTableItem(TFItems.charm_of_life_1.get()).setWeight(75))
+								.add(LootItem.lootTableItem(TFItems.charm_of_life_1).setWeight(75))
 								//ultrarare loot
-								.add(LootItem.lootTableItem(TFItems.charm_of_keeping_2.get()).setWeight(25))
-								.add(LootItem.lootTableItem(TFItems.transformation_powder.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))).setWeight(25))
-								.add(LootItem.lootTableItem(TFItems.music_disc_steps.get()).setWeight(25))));
+								.add(LootItem.lootTableItem(TFItems.charm_of_keeping_2).setWeight(25))
+								.add(LootItem.lootTableItem(TFItems.transformation_powder).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))).setWeight(25))
+								.add(LootItem.lootTableItem(TFItems.music_disc_steps).setWeight(25))));
 
         register.accept(TFTreasure.hedgemaze.lootTable,
                 LootTable.lootTable()
@@ -220,7 +220,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.MUSHROOM_STEW).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.DIAMOND_HOE).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.music_disc_motion.get()).setWeight(25))));
+                                .add(LootItem.lootTableItem(TFItems.music_disc_motion).setWeight(25))));
 
         register.accept(TFTreasure.tree_cache.lootTable,
                 LootTable.lootTable()
@@ -252,12 +252,12 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.charm_of_keeping_1).setWeight(75))
                                 .add(LootItem.lootTableItem(TFItems.charm_of_life_1).setWeight(75))
                                 //ultrarare loot
-                                .add(LootItem.lootTableItem(TFBlocks.hollow_oak_sapling.get().asItem()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFBlocks.time_sapling.get().asItem()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFBlocks.transformation_sapling.get().asItem()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFBlocks.mining_sapling.get().asItem()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFBlocks.sorting_sapling.get().asItem()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.music_disc_superstitious.get()).setWeight(25))));
+                                .add(LootItem.lootTableItem(TFBlocks.hollow_oak_sapling.asItem()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFBlocks.time_sapling.asItem()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFBlocks.transformation_sapling.asItem()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFBlocks.mining_sapling.asItem()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFBlocks.sorting_sapling.asItem()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_superstitious).setWeight(25))));
 
         register.accept(TFTreasure.graveyard.lootTable,
                 LootTable.lootTable()
@@ -305,9 +305,9 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.IRON_PICKAXE).setWeight(75))
                                 //ultrarare loot
                                 .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.transformation_powder.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.steeleaf_ingot.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.music_disc_findings.get()).setWeight(25))));
+                                .add(LootItem.lootTableItem(TFItems.transformation_powder).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.steeleaf_ingot).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_findings).setWeight(25))));
 
         register.accept(TFTreasure.hill2.lootTable,
                 LootTable.lootTable()
@@ -336,9 +336,9 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 //ultrarare loot
                                 .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.EMERALD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.peacock_fan.get()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.charm_of_life_1.get()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.music_disc_wayfarer.get()).setWeight(25))));
+                                .add(LootItem.lootTableItem(TFItems.peacock_fan).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.charm_of_life_1).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_wayfarer).setWeight(25))));
 
         register.accept(TFTreasure.hill3.lootTable,
                 LootTable.lootTable()
@@ -367,11 +367,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.naga_scale).setWeight(75))
                                 //ultrarare loot
                                 .add(LootItem.lootTableItem(Items.DIAMOND).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.moonworm_queen.get()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.charm_of_life_1.get()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.charm_of_keeping_1.get()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFBlocks.mangrove_sapling.get().asItem()).setWeight(25))
-                                .add(LootItem.lootTableItem(TFItems.music_disc_maker.get()).setWeight(25))));
+                                .add(LootItem.lootTableItem(TFItems.moonworm_queen).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.charm_of_life_1).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.charm_of_keeping_1).setWeight(25))
+                                .add(LootItem.lootTableItem(TFBlocks.mangrove_sapling.asItem()).setWeight(25))
+                                .add(LootItem.lootTableItem(TFItems.music_disc_maker).setWeight(25))));
 
         register.accept(TFTreasure.quest_grove.lootTable,
                 LootTable.lootTable()

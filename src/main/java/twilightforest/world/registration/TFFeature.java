@@ -495,36 +495,6 @@ public class TFFeature {
 //		return this.shouldHaveFeatureGenerator ? new MapGenTFMajorFeature(this) : null;
 //	}
 
-	/**
-	 * doesn't require modid
-	 */
-	public static TFFeature getFeatureByName(String name) {
-		for (TFFeature feature : VALUES) {
-			if (feature.name.equalsIgnoreCase(name)) {
-				return feature;
-			}
-		}
-		return NOTHING;
-	}
-
-	/**
-	 * modid sensitive
-	 */
-	public static TFFeature getFeatureByName(ResourceLocation name) {
-		if (name.getNamespace().equalsIgnoreCase(TFConstants.ID)) {
-			return getFeatureByName(name.getPath());
-		}
-		return NOTHING;
-	}
-
-	public static TFFeature getFeatureByID(int id) {
-		return id < VALUES.length ? VALUES[id] : NOTHING;
-	}
-
-	public static int getFeatureID(int mapX, int mapZ, WorldGenLevel world) {
-		return getFeatureAt(mapX, mapZ, world).id;
-	}
-
 	public static TFFeature getFeatureAt(int regionX, int regionZ, WorldGenLevel world) {
 		return generateFeature(regionX >> 4, regionZ >> 4, world);
 	}

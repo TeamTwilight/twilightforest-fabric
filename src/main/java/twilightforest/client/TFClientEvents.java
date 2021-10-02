@@ -92,7 +92,8 @@ public class TFClientEvents {
 	/**
 	 * Stop the game from rendering the mount health for unfriendly creatures
 	 */
-	//TODO: IS THIS NEEDED????
+	//TODO: PORT
+	/*
 	public static void preOverlay(RenderGameOverlayEvent.PreLayer event) {
 		if (event.getOverlay() == ForgeIngameGui.MOUNT_HEALTH_ELEMENT) {
 			if (TFEventListener.isRidingUnfriendly(Minecraft.getInstance().player)) {
@@ -100,6 +101,7 @@ public class TFClientEvents {
 			}
 		}
 	}
+	 */
 
 	/**
 	 * Render effects in first-person perspective

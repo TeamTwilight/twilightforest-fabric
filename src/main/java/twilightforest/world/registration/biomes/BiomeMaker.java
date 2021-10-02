@@ -93,7 +93,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void rareBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SPOOKY_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0xC45123).foliageColorOverride(0xFF8501).waterColor(0xFA9111).grassColorModifier(BiomeGrassColors.SPOOKY_FOREST),  spookSpawning(), spookyForestGen())
+				biomeWithDefaults(defaultAmbientBuilder().grassColorOverride(0xC45123).foliageColorOverride(0xFF8501).waterColor(0xFA9111)/*.grassColorModifier(BiomeGrassColors.SPOOKY_FOREST)*/,  spookSpawning(), spookyForestGen())
 						.temperature(0.5F)
 						.downfall(1)
 						.scale(0.05F)

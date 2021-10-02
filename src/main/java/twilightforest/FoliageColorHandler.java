@@ -1,8 +1,10 @@
 package twilightforest;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
@@ -17,7 +19,8 @@ public final class FoliageColorHandler {
 	public static int get(int o, Biome biome, double x, double z) {
 		Handler handler = HANDLES.get(biome);
 		if (handler == null) {
-			handler = Handler.REGISTRY.getOrDefault(biome.getRegistryName(), Handler.DEFAULT);
+			//TODO: Confirm this is working
+			handler = Handler.REGISTRY.getOrDefault(biome.toString(), Handler.DEFAULT);
 			HANDLES.put(biome, handler);
 		}
 		return handler.apply(o, x, z);

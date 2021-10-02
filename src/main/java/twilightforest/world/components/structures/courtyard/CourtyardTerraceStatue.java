@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import twilightforest.TFConstants;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerUtil;
@@ -20,7 +21,7 @@ public class CourtyardTerraceStatue extends TwilightTemplateStructurePiece {
     }
 
     public CourtyardTerraceStatue(int i, int x, int y, int z, Rotation rotation, StructureManager structureManager) {
-        super(NagaCourtyardPieces.TFNCSt, i, structureManager, TwilightForestMod.prefix("terrace_statue/terrace_fire"), LichTowerUtil.makeSettings(rotation).addProcessor(CourtyardMain.TERRACE_PROCESSOR), new BlockPos(x, y, z));
+        super(NagaCourtyardPieces.TFNCSt, i, structureManager, TFConstants.prefix("terrace_statue/terrace_fire"), LichTowerUtil.makeSettings(rotation).addProcessor(CourtyardMain.TERRACE_PROCESSOR), new BlockPos(x, y, z));
     }
 
     @Override
