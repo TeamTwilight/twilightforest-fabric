@@ -9,6 +9,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 @Mixin(BoundingBox.class)
 public class BoundingBoxMixin {
+    //TODO: Is this really needed or should exist
     @Redirect(method = "<init>(IIIIII)V", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;)V"))
     public void shush(Logger logger, String message) {}
 }

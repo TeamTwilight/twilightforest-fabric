@@ -27,7 +27,8 @@
     "BowItemMixin",
     "BlockStateMixin",
     "ServerPlayerGameModeMixin",
-    "BushBlockMixin"
+    "BushBlockMixin",
+    "FireBlockMixin"
   ],
   "client": [
     "client.BlockColorsMixin",

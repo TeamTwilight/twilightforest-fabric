@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.events.ProjectileHitEvent;
 
-@Debug(export = true)
 @Mixin(AbstractArrow.class)
 public class AbstractArrowMixin {
 

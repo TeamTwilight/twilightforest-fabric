@@ -61,9 +61,9 @@ public abstract class ItemInHandRendererMixin {
             } else {
                 this.renderOneHandedMap(matrixStack, buffer, combinedLight, equippedProgress, humanoidArm, swingProgress, stack);
             }
-        }
 
-        matrixStack.popPose();
-        ci.cancel();
+            matrixStack.popPose();
+            ci.cancel();
+        }
     }
 }

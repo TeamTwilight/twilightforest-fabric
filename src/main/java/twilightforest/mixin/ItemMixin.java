@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 @Mixin(Item.class)
 public class ItemMixin implements IItem {
+
     @Override
     public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
 
