@@ -30,6 +30,7 @@ public class TFParticleType {
 	public static final SimpleParticleType HUGE_SMOKE = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":huge_smoke", FabricParticleTypes.simple(false));
 	public static final SimpleParticleType FIREFLY = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":firefly", FabricParticleTypes.simple(false));
 	public static final SimpleParticleType WANDERING_FIREFLY = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":wandering_firefly", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType JAR_WANDERING_FIREFLY = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":jar_wandering_firefly", FabricParticleTypes.simple(false));
 	public static final ParticleType<PinnedFireflyData> FIREFLY_PINNED = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":firefly_pinned", new ParticleType<PinnedFireflyData>(false, new PinnedFireflyData.Deserializer()) {
 		@Override
 		public Codec<PinnedFireflyData> codec() {
@@ -60,6 +61,7 @@ public class TFParticleType {
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.HUGE_SMOKE, SmokeScaleParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.FIREFLY, FireflyParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.WANDERING_FIREFLY, WanderingFireflyParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.JAR_WANDERING_FIREFLY, WanderingFireflyParticle.FromJarFactory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.FIREFLY_PINNED, PinnedFireflyParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.FALLEN_LEAF, LeafParticle.Factory::new);
 	}

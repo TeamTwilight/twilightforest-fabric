@@ -1,5 +1,4 @@
 {
-  "scale": 0.2,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -63,20 +62,20 @@
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
-      "twilightforest:grass_placer",
-      "twilightforest:fire_jet",
-      "twilightforest:smoker",
-      "minecraft:patch_sugar_cane_swamp",
-      "minecraft:vines",
-      "minecraft:brown_mushroom_swamp",
-      "twilightforest:tree/swampy_oak_trees",
-      "twilightforest:tree/hollow_placer",
       "twilightforest:stone_circle",
       "twilightforest:outside_stalagmite",
       "twilightforest:monolith",
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
-      "twilightforest:small_log"
+      "twilightforest:small_log",
+      "twilightforest:tree/swampy_oak_trees",
+      "twilightforest:tree/hollow_placer",
+      "twilightforest:grass_placer",
+      "twilightforest:fire_jet",
+      "twilightforest:smoker",
+      "minecraft:patch_sugar_cane_swamp",
+      "minecraft:vines",
+      "minecraft:brown_mushroom_swamp"
     ]
   ],
   "starts": [
@@ -93,9 +92,11 @@
   },
   "spawn_costs": {},
   "player_spawn_friendly": false,
-  "precipitation": "rain",
+  "forge:registry_name": "twilightforest:fire_swamp",
+  "precipitation": "none",
   "temperature": 1.0,
   "downfall": 0.4,
   "category": "swamp",
-  "depth": 0.05
+  "depth": 0.025,
+  "scale": 0.05
 }

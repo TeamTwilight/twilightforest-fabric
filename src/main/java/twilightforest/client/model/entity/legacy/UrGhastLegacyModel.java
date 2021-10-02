@@ -9,11 +9,9 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.TFGhastModel;
-import twilightforest.entity.boss.UrGhastEntity;
+import twilightforest.entity.boss.UrGhast;
 
-import java.util.Random;
-
-public class UrGhastLegacyModel extends TFGhastModel<UrGhastEntity> {
+public class UrGhastLegacyModel extends TFGhastModel<UrGhast> {
 
 	private final ModelPart[][] tentacles = new ModelPart[9][3];
 
@@ -90,7 +88,7 @@ public class UrGhastLegacyModel extends TFGhastModel<UrGhastEntity> {
 	}
 
 	@Override
-	public void setupAnim(UrGhastEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(UrGhast entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		// wave tentacles

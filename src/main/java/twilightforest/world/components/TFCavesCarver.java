@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import twilightforest.block.TFBlocks;
 
@@ -32,7 +33,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	public TFCavesCarver(Codec<CaveCarverConfiguration> codec, boolean isHighlands) {
 		super(codec);
-		this.liquids = ImmutableSet.of();
+		this.liquids = ImmutableSet.of(Fluids.WATER, Fluids.LAVA);
 		this.isHighlands = isHighlands;
 	}
 
@@ -100,7 +101,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 					if (areaAround.is(FluidTags.WATER) || areaAboveAround.is(FluidTags.WATER) || aboveSurface.is(FluidTags.WATER)) {
 						return false;
 					} else {
-						if (rand.nextInt(10) == 0 && access.getBlockState(pos).is(Blocks.CAVE_AIR) && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
+						if (rand.nextInt(10) == 0 && access.getBlockState(pos).isAir() && access.getBlockState(pos.relative(facing)).is(BlockTags.BASE_STONE_OVERWORLD) && this.isHighlands) {
 							access.setBlockState(pos.relative(facing), TFBlocks.trollsteinn.defaultBlockState(), false);
 						}
 						access.setBlockState(pos, CAVE_AIR, false);

@@ -29,7 +29,7 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 
 	public TorchberryPlantBlock(PlantVariant plant, Properties props) {
 		super(plant, props);
-		registerDefaultState(getStateDefinition().any().setValue(HAS_BERRIES, true));
+		registerDefaultState(getStateDefinition().any().setValue(HAS_BERRIES, false));
 	}
 
 	@Override

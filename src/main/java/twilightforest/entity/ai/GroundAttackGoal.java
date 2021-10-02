@@ -8,24 +8,22 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.phys.AABB;
-import twilightforest.entity.boss.MinoshroomEntity;
+import twilightforest.entity.boss.Minoshroom;
 
 import java.util.EnumSet;
 import java.util.List;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class GroundAttackGoal extends Goal {
 	private static final double MIN_RANGE_SQ = 2.0D;
 	private static final double MAX_RANGE_SQ = 48.0D;
 	private static final int FREQ = 24;
 
-	private MinoshroomEntity attacker;
+	private Minoshroom attacker;
 	private LivingEntity attackTarget;
 
 	private int attackTick;
 
-	public GroundAttackGoal(MinoshroomEntity entityTFMinoshroom) {
+	public GroundAttackGoal(Minoshroom entityTFMinoshroom) {
 		this.attacker = entityTFMinoshroom;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}

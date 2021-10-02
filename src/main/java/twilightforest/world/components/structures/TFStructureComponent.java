@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.nbt.CompoundTag;
@@ -27,11 +28,14 @@ import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.ColorUtil;
 
-@Deprecated // We keep rehashing Vanillacopies, we should be adding TwilightFeature to the StructurePiece class we use
+@Deprecated
+// We keep rehashing Vanillacopies and they'll keep breaking between ports, we should be adding TwilightFeature to the
+//  StructurePiece classes we actually use. This class will take quite a while to dismantle
 public abstract class TFStructureComponent extends StructurePiece implements TwilightFeature {
 
 	public TFStructureDecorator deco = null;
 	public int spawnListIndex = 0;
+	@Deprecated // Serves no purpose
 	private TFFeature feature = TFFeature.NOTHING;
 	private static final Set<Block> BLOCKS_NEEDING_POSTPROCESSING = ImmutableSet.<Block>builder()
 			.add(Blocks.NETHER_BRICK_FENCE)
@@ -90,6 +94,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 		this.feature = feature;
 	}
 
+	@Deprecated
 	@Override
 	public TFFeature getFeatureType() {
 		return feature;
@@ -198,5 +203,10 @@ public abstract class TFStructureComponent extends StructurePiece implements Twi
 	 */
 	public boolean isComponentProtected() {
 		return true;
+	}
+
+	@Override
+	public NoiseEffect getNoiseEffect() {
+		return NoiseEffect.NONE;
 	}
 }

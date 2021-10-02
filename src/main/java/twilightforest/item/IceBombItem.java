@@ -9,9 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
 import twilightforest.TFSounds;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.boss.IceBombEntity;
-
-import net.minecraft.world.item.Item.Properties;
+import twilightforest.entity.projectile.IceBomb;
 
 public class IceBombItem extends Item {
 
@@ -27,7 +25,7 @@ public class IceBombItem extends Item {
 			if (!player.getAbilities().instabuild) {
 				player.getItemInHand(hand).shrink(1);
 			}
-			IceBombEntity ice = new IceBombEntity(TFEntities.thrown_ice, world, player);
+			IceBomb ice = new IceBomb(TFEntities.thrown_ice, world, player);
 			ice.shootFromRotation(player, player.getXRot(), player.getYRot(), -20.0F, 0.75F, 1.0F);
 			world.addFreshEntity(ice);
 		}

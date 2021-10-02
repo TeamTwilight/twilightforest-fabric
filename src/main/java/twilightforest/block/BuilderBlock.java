@@ -3,14 +3,6 @@ package twilightforest.block;
 import com.mojang.math.Vector3f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
-import twilightforest.enums.TowerDeviceVariant;
-import twilightforest.tileentity.CarminiteBuilderTileEntity;
-import twilightforest.tileentity.TFTileEntities;
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -26,6 +18,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import twilightforest.TFSounds;
+import twilightforest.block.entity.CarminiteBuilderBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.enums.TowerDeviceVariant;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BuilderBlock extends BaseEntityBlock {
 
@@ -99,7 +98,7 @@ public class BuilderBlock extends BaseEntityBlock {
 	}
 
 	private void letsBuild(Level world, BlockPos pos) {
-		CarminiteBuilderTileEntity tileEntity = (CarminiteBuilderTileEntity) world.getBlockEntity(pos);
+		CarminiteBuilderBlockEntity tileEntity = (CarminiteBuilderBlockEntity) world.getBlockEntity(pos);
 
 		if (tileEntity != null && !tileEntity.makingBlocks) {
 			tileEntity.startBuilding();
@@ -177,12 +176,12 @@ public class BuilderBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CarminiteBuilderTileEntity(pos, state);
+		return new CarminiteBuilderBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFTileEntities.TOWER_BUILDER, CarminiteBuilderTileEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.TOWER_BUILDER, CarminiteBuilderBlockEntity::tick);
 	}
 }

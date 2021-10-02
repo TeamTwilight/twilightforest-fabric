@@ -20,11 +20,14 @@ public abstract class BiomeHelper {
     public static BiomeGenerationSettings.Builder twilightForestGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 		commonFeatures(biome);
+
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DENSE_CANOPY_TREES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DENSE_TREES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_TREES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.JUNGLE_BUSH);
 		addForestVegetation(biome);
-		addCanopyTrees(biome);
-		addTwilightOakTrees(biome);
-		addTwilightOakTrees(biome);
 		addHollowOakTrees(biome);
+
 		addDefaultStructures(biome);
 		
 		return biome;
@@ -33,11 +36,13 @@ public abstract class BiomeHelper {
 	public static BiomeGenerationSettings.Builder denseForestGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 		commonFeatures(biome);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.JUNGLE_BUSH);
+
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_TREES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
 		addForestVegetation(biome);
 		addCanopyTrees(biome);
-		addTwilightOakTrees(biome);
 		addHollowOakTrees(biome);
+
 		addDefaultStructures(biome);
 		
 		return biome;
@@ -47,16 +52,17 @@ public abstract class BiomeHelper {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 
 		commonFeatures(biome);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIREFLY_FOREST_TREES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_TREES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
+		addHollowOakTrees(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.LAMPPOST);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MUSHGLOOM_CLUSTER);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.PATCH_PUMPKIN);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.FOREST_FLOWER_VEGETATION_COMMON);
-
 		addForestVegetation(biome);
-		addFireflyCanopyTrees(biome);
-		addTwilightOakTrees(biome);
-		addHollowOakTrees(biome);
+
 		addDefaultStructures(biome);
 
 		return biome;
@@ -77,9 +83,10 @@ public abstract class BiomeHelper {
 	public static BiomeGenerationSettings.Builder oakSavannaGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 		commonFeatures(biome);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SAVANNAH_OAK_TREES);
+		addHollowOakTrees(biome);
 
 		addForestVegetation(biome);
-		addRareOakTrees(biome);
 		addDefaultStructures(biome);
 
 		return biome;
@@ -88,20 +95,23 @@ public abstract class BiomeHelper {
 	public static BiomeGenerationSettings.Builder enchantedForestGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder().addStructureStart(TFStructures.CONFIGURED_QUEST_GROVE);
 		commonFeatures(biome);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.ENCHANTED_FOREST_TREES);
+		addCanopyTrees(biome);
+		addHollowOakTrees(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIDDLEHEAD);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.VINES);
-
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.GRASS_PLACER);
 		addForestVegetation(biome);
-		addRainbowOaks(biome);
-		addCanopyTrees(biome);
-		addHollowOakTrees(biome);
 
 		return biome;
 	}
 	
 	public static BiomeGenerationSettings.Builder spookyForestGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
+
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DEAD_CANOPY_TREES);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.PUMPKIN_LAMPPOST);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.GRASS_PLACER);
@@ -112,8 +122,7 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.PATCH_DEAD_BUSH);
 		
 		biome.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.GRAVEYARD);
-		addDeadCanopyTrees(biome);
-		addTwilightOakTrees(biome);
+		addDefaultStructures(biome);
 		
 		return biome;
 	}
@@ -124,12 +133,13 @@ public abstract class BiomeHelper {
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MYCELIUM_BLOB);
 
-		addForestVegetation(biome);
-		addTwilightOakTrees(biome);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_TREES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
 		addHollowOakTrees(biome);
 		addCanopyTrees(biome);
 		addCanopyMushrooms(biome, false);
 		addDefaultStructures(biome);
+		addForestVegetation(biome);
 
 		return biome;
 	}
@@ -140,11 +150,12 @@ public abstract class BiomeHelper {
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MYCELIUM_BLOB);
 
-		addForestVegetation(biome);
-		addTwilightOakTrees(biome);
-		addHollowOakTrees(biome);
-		addCanopyTrees(biome);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_TREES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
 		addCanopyMushrooms(biome, true);
+		addCanopyTrees(biome);
+		addHollowOakTrees(biome);
+		addForestVegetation(biome);
 
 		return biome;
 	}
@@ -160,7 +171,7 @@ public abstract class BiomeHelper {
 				.surfaceBuilder(ConfiguredSurfaceBuilders.CONFIGURED_PLATEAU);
 
 		commonFeaturesWithoutBuildings(biome);
-		addThorns(biome);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.THORNS);
 		
 		return biome;
 	}
@@ -172,11 +183,7 @@ public abstract class BiomeHelper {
 
 		commonFeatures(biome);
 
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.MEGA_SPRUCE);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MEGA_SPRUCE_TREES);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.SPRUCE);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.MEGA_SPRUCE);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.SPRUCE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.HIGHLANDS_TREES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.FOREST_ROCK);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.PATCH_GRASS_TAIGA);
 
@@ -205,15 +212,15 @@ public abstract class BiomeHelper {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder()
 				.addStructureStart(TFStructures.CONFIGURED_LABYRINTH);
 		commonFeatures(biome);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MANGROVE_TREES);
+		addSwampTrees(biome);
+		addHollowOakTrees(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.PATCH_SUGAR_CANE_SWAMP);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.VINES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.PATCH_DEAD_BUSH);
 
 		addForestVegetation(biome);
-		addMangroveTrees(biome);
-		addSwampTrees(biome);
-		addHollowOakTrees(biome);
 		lilypads(biome);
 		
 		return biome;
@@ -223,6 +230,10 @@ public abstract class BiomeHelper {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder()
 				.addStructureStart(TFStructures.CONFIGURED_HYDRA_LAIR);
 
+		commonFeaturesWithoutBuildings(biome);
+		addSwampTrees(biome);
+		addHollowOakTrees(biome);
+
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.GRASS_PLACER);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIRE_JET);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SMOKER);
@@ -230,10 +241,6 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.PATCH_SUGAR_CANE_SWAMP);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.VINES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.BROWN_MUSHROOM_SWAMP);
-
-		addSwampTrees(biome);
-		addHollowOakTrees(biome);
-		commonFeaturesWithoutBuildings(biome);
 		
 		return biome;
 	}
@@ -242,16 +249,8 @@ public abstract class BiomeHelper {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
                 .surfaceBuilder(SurfaceBuilders.GRASS)
 				.addStructureStart(TFStructures.CONFIGURED_KNIGHT_STRONGHOLD);
-		
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_GRASS);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FERNS);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_MUSHGLOOMS);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_MUSHROOMS);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_PUMPKINS);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_DEAD_BUSHES);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.BUSH_DARK_FOREST_TREES);
-		
-		addDarkwoodTrees(biome);
+
+		addDarkForestVegetation(biome);
 		addCaves(biome);
 		
 		return biome;
@@ -262,13 +261,7 @@ public abstract class BiomeHelper {
                 .surfaceBuilder(SurfaceBuilders.GRASS)
 				.addStructureStart(TFStructures.CONFIGURED_DARK_TOWER);
 
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_GRASS);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FERNS);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_MUSHGLOOMS);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_DEAD_BUSHES);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.BUSH_DARK_FOREST_TREES);
-		
-		addDarkwoodTrees(biome);
+		addDarkForestVegetation(biome);
 		addCaves(biome);
 		
 		return biome;
@@ -279,11 +272,11 @@ public abstract class BiomeHelper {
 				.surfaceBuilder(ConfiguredSurfaceBuilders.CONFIGURED_SNOW)
 				.addStructureStart(TFStructures.CONFIGURED_YETI_CAVE);
 
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SNOWY_FOREST_TREES);
+		biome.addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, ConfiguredFeatures.SNOW_UNDER_TREES);
+
 		biome.addFeature(GenerationStep.Decoration.LAKES, Features.LAKE_WATER);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SMALL_LOG);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SNOW_SPRUCE_SNOWY);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MEGA_SPRUCE_TREES);
-		biome.addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, ConfiguredFeatures.SNOW_UNDER_TREES);
 
 		BiomeDefaultFeatures.addDefaultOres(biome);
 		BiomeDefaultFeatures.addSurfaceFreezing(biome);
@@ -305,20 +298,18 @@ public abstract class BiomeHelper {
         biome.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ConfiguredFeatures.WOOD_ROOTS_SPREAD);
 	}
 
-    public static BiomeGenerationSettings.Builder addDefaultStructures(BiomeGenerationSettings.Builder biome) {
-    	return biome.
-				addStructureStart(TFStructures.CONFIGURED_HEDGE_MAZE).
-				addStructureStart(TFStructures.CONFIGURED_HOLLOW_HILL_SMALL).
-				addStructureStart(TFStructures.CONFIGURED_HOLLOW_HILL_MEDIUM).
-				addStructureStart(TFStructures.CONFIGURED_HOLLOW_HILL_LARGE).
-				addStructureStart(TFStructures.CONFIGURED_NAGA_COURTYARD).
-				addStructureStart(TFStructures.CONFIGURED_LICH_TOWER);
+    public static void addDefaultStructures(BiomeGenerationSettings.Builder biome) {
+    	biome.addStructureStart(TFStructures.CONFIGURED_HEDGE_MAZE);
+		biome.addStructureStart(TFStructures.CONFIGURED_HOLLOW_HILL_SMALL);
+		biome.addStructureStart(TFStructures.CONFIGURED_HOLLOW_HILL_MEDIUM);
+		biome.addStructureStart(TFStructures.CONFIGURED_HOLLOW_HILL_LARGE);
+		biome.addStructureStart(TFStructures.CONFIGURED_NAGA_COURTYARD);
+		biome.addStructureStart(TFStructures.CONFIGURED_LICH_TOWER);
 	}
 
 	public static void commonFeatures(BiomeGenerationSettings.Builder biome) {
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DRUID_HUT);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FANCY_WELL);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SIMPLE_WELL);
+		biome.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.DRUID_HUT);
+		biome.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.WELL_PLACER);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.GROVE_RUINS);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FOUNDATION);
 
@@ -345,16 +336,19 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FLOWER_PLACER);
 	}
 
+	public static void addDarkForestVegetation(BiomeGenerationSettings.Builder biome) {
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FOREST_TREES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_GRASS);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FERNS);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_MUSHGLOOMS);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_DEAD_BUSHES);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_PUMPKINS);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_MUSHROOMS);
+	}
+
     //Canopies, trees, and anything resembling a forest thing
     public static void addCanopyTrees(BiomeGenerationSettings.Builder biome) {
         biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREES);
-	}
-    public static void addFireflyCanopyTrees(BiomeGenerationSettings.Builder biome) {
-        biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIREFLY_CANOPY_TREE_MIX);
-	}
-
-    public static void addDeadCanopyTrees(BiomeGenerationSettings.Builder biome) {
-        biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DEAD_CANOPY_TREES);
 	}
 
     public static void addCanopyMushrooms(BiomeGenerationSettings.Builder biome, boolean dense) {
@@ -368,37 +362,8 @@ public abstract class BiomeHelper {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, dense ? ConfiguredFeatures.BIG_MUSHGLOOM : ConfiguredFeatures.MUSHGLOOM_CLUSTER);
 	}
 
-    public static void addRainbowOaks(BiomeGenerationSettings.Builder biome) {
-        biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RAINBOW_OAK_TREES);
-        biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.LARGE_RAINBOW_OAK_TREES);
-	}
-
-    public static void addMangroveTrees(BiomeGenerationSettings.Builder biome) {
-        biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MANGROVE_TREES);
-	}
-
-    public static void addDarkwoodTrees(BiomeGenerationSettings.Builder biome) {
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREES);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.BUSH_DARK_FOREST_TREES);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.OAK_DARK_FOREST_TREES);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.BIRCH_DARK_FOREST_TREES);
-	}
-
-	public static void addTwilightOakTrees(BiomeGenerationSettings.Builder biome) {
-        biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_OAK);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_BIRCH);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.TWILIGHT_OAK_TREES);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_OAK);
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.VANILLA_TF_BIRCH);
-	}
-    
     public static void addHollowOakTrees(BiomeGenerationSettings.Builder biome) {
         biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.HOLLOW_TREE_PLACER);
-	}
-    
-    public static void addRareOakTrees(BiomeGenerationSettings.Builder biome) {
-        biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.OAK_TREES_SPARSE);
 	}
 
 	public static void addSwampTrees(BiomeGenerationSettings.Builder biome) {
@@ -422,7 +387,7 @@ public abstract class BiomeHelper {
 	}
 
 	public static BiomeSpecialEffects.Builder fireflyParticles(BiomeSpecialEffects.Builder builder) {
-		builder.ambientParticle(new AmbientParticleSettings(TFParticleType.WANDERING_FIREFLY, 0.0005f));
+		builder.ambientParticle(new AmbientParticleSettings(TFParticleType.WANDERING_FIREFLY, 0.00025f));
 		return builder;
 	}
 
@@ -438,10 +403,6 @@ public abstract class BiomeHelper {
 		biome.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.HIGHLANDCAVES_CONFIGURED);
 		biome.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, ConfiguredFeatures.TROLL_ROOTS);
 		BiomeDefaultFeatures.addDefaultOres(biome);
-	}
-
-	public static void addThorns(BiomeGenerationSettings.Builder biome) {
-		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.THORNS);
 	}
 
 	//Special mob spawns. EntityClassification.MONSTER is forced underground, so use CREATURE for above ground spawns.
@@ -571,8 +532,8 @@ public abstract class BiomeHelper {
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
                 .biomeCategory(Biome.BiomeCategory.FOREST)
-                .depth(0.05f)
-                .scale(0.1f)
+                .depth(0.025f)
+                .scale(0.05f)
                 .temperature(0.5F)
                 .downfall(0.5F)
                 .specialEffects(biomeAmbience.build())

@@ -8,15 +8,23 @@
               "config": {
                 "feature": {
                   "config": {
-                    "max_length": 5,
-                    "min_height": 10,
-                    "hanging": false,
                     "state": {
-                      "Name": "minecraft:stone"
+                      "state": {
+                        "Name": "minecraft:stone"
+                      },
+                      "type": "minecraft:simple_state_provider"
                     },
-                    "size_factor": 3.0
+                    "length_bounds": {
+                      "type": "minecraft:uniform",
+                      "value": {
+                        "min_inclusive": 5,
+                        "max_inclusive": 10
+                      }
+                    },
+                    "tip_clearance": 0,
+                    "hanging": false
                   },
-                  "type": "twilightforest:outside_stalagmite"
+                  "type": "twilightforest:block_spike"
                 },
                 "decorator": {
                   "config": {},

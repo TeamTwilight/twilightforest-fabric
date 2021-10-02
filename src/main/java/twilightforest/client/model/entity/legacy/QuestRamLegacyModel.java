@@ -18,11 +18,11 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.util.Mth;
-import twilightforest.entity.passive.QuestRamEntity;
+import twilightforest.entity.passive.QuestRam;
 
 import java.util.Arrays;
 
-public class QuestRamLegacyModel extends HierarchicalModel<QuestRamEntity> {
+public class QuestRamLegacyModel extends HierarchicalModel<QuestRam> {
 	//root
 	public ModelPart root;
 	//fields
@@ -161,7 +161,7 @@ public class QuestRamLegacyModel extends HierarchicalModel<QuestRamEntity> {
 	}
 
 	@Override
-	public void setupAnim(QuestRamEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(QuestRam entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 
@@ -178,7 +178,7 @@ public class QuestRamLegacyModel extends HierarchicalModel<QuestRamEntity> {
 	}
 
 	@Override
-	public void prepareMobModel(QuestRamEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void prepareMobModel(QuestRam entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 
 		// how many colors should we display?
 		int count = entity.countColorsSet();

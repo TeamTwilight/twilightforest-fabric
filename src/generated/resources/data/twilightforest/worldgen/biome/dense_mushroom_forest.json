@@ -1,5 +1,4 @@
 {
-  "scale": 0.05,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -17,7 +16,7 @@
       "options": {
         "type": "twilightforest:wandering_firefly"
       },
-      "probability": 5.0E-4
+      "probability": 2.5E-4
     },
     "sky_color": 2105930,
     "fog_color": 12648408,
@@ -35,7 +34,10 @@
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer"
+    ],
     [],
     [
       "minecraft:disk_clay",
@@ -59,9 +61,6 @@
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
-      "twilightforest:druid_hut",
-      "twilightforest:fancy_well",
-      "twilightforest:simple_well",
       "twilightforest:grove_ruins",
       "twilightforest:foundation",
       "twilightforest:stone_circle",
@@ -71,23 +70,19 @@
       "twilightforest:hollow_log",
       "twilightforest:small_log",
       "twilightforest:mycelium_blob",
-      "twilightforest:forest_grass_placer",
-      "twilightforest:flower_placer",
+      "twilightforest:tree/vanilla_tf_trees",
       "twilightforest:tree/twilight_oak_trees",
-      "twilightforest:tree/vanilla/vanilla_tf_oak",
-      "twilightforest:tree/vanilla/vanilla_tf_birch",
-      "twilightforest:tree/twilight_oak_trees",
-      "twilightforest:tree/vanilla/vanilla_tf_oak",
-      "twilightforest:tree/vanilla/vanilla_tf_birch",
-      "twilightforest:tree/hollow_placer",
-      "twilightforest:tree/canopy_trees",
       "minecraft:brown_mushroom_normal",
       "minecraft:red_mushroom_normal",
       "minecraft:brown_mushroom_taiga",
       "minecraft:red_mushroom_taiga",
       "twilightforest:tree/vanilla/vanilla_tf_big_mush",
       "twilightforest:mushroom/canopy_mushrooms_dense",
-      "twilightforest:big_mushgloom"
+      "twilightforest:big_mushgloom",
+      "twilightforest:tree/canopy_trees",
+      "twilightforest:tree/hollow_placer",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer"
     ]
   ],
   "starts": [
@@ -208,9 +203,11 @@
   },
   "spawn_costs": {},
   "player_spawn_friendly": true,
+  "forge:registry_name": "twilightforest:dense_mushroom_forest",
   "precipitation": "rain",
   "temperature": 0.8,
   "downfall": 1.0,
   "category": "forest",
-  "depth": 0.0625
+  "depth": 0.05,
+  "scale": 0.05
 }

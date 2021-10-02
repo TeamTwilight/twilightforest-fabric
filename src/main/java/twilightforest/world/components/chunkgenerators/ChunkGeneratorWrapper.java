@@ -41,6 +41,7 @@ public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
         this.delegate.applyCarvers(seed, biomeManager, chunkAccess, carving);
     }
 
+    // Runtime will not care about public -> protected overrides, only compiletime will
     // I'd rather cut our losses than to attempt delegating this method because reflection would likely end up being
     // worse than accepting the potential problems of not delegating this method
     //@Override

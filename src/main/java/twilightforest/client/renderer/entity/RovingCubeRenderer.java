@@ -13,9 +13,9 @@ import com.mojang.math.Vector3f;
 import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CubeOfAnnihilationModel;
-import twilightforest.entity.RovingCubeEntity;
+import twilightforest.entity.RovingCube;
 
-public class RovingCubeRenderer<T extends RovingCubeEntity> extends EntityRenderer<T> {
+public class RovingCubeRenderer<T extends RovingCube> extends EntityRenderer<T> {
 
 	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("cubeofannihilation.png");
 	private final Model model;

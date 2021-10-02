@@ -37,22 +37,24 @@ public class PhantomArmorItem extends ArmorItem {
 	}
 
 	//TODO: PORT
-//	@Override
-//	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-//		return !CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS.contains(enchantment);
-//	}
-//
-//	@Override
-//	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-//		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
-//
-//		for (Enchantment ench : enchants.keySet()) {
-//			if (CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS.contains(ench)) {
-//				return false;
-//			}
-//		}
-//		return super.isBookEnchantable(stack, book);
-//	}
+	/*
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return !CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS.contains(enchantment);
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
+
+		for (Enchantment ench : enchants.keySet()) {
+			if (CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS.contains(ench)) {
+				return false;
+			}
+		}
+		return super.isBookEnchantable(stack, book);
+	}
+	 */
 
 	@Override
 	@Environment(EnvType.CLIENT)

@@ -6,9 +6,9 @@ import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import twilightforest.entity.passive.DeerEntity;
+import twilightforest.entity.passive.Deer;
 
-public class DeerLegacyModel extends QuadrupedModel<DeerEntity> {
+public class DeerLegacyModel extends QuadrupedModel<Deer> {
 
 	public DeerLegacyModel(ModelPart root) {
 		super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 10);

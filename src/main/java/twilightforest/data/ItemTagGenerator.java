@@ -61,6 +61,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 	public static final Tag.Named<Item> KOBOLD_PACIFICATION_BREADS = TagFactory.ITEM.create(TFConstants.prefix("kobold_pacification_breads"));
 
+	public static final Tag.Named<Item> TF_MUSIC_DISCS = TagFactory.ITEM.create(TFConstants.prefix("tf_music_discs"));
+
 	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider) {
 		super(generator, blockprovider);
 	}
@@ -192,5 +194,18 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		);
 
 		tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
+
+		tag(TF_MUSIC_DISCS).add(
+				TFItems.music_disc_findings,
+				TFItems.music_disc_home,
+				TFItems.music_disc_maker,
+				TFItems.music_disc_motion,
+				TFItems.music_disc_radiance,
+				TFItems.music_disc_steps,
+				TFItems.music_disc_superstitious,
+				TFItems.music_disc_thread,
+				TFItems.music_disc_wayfarer);
+
+		tag(ItemTags.MUSIC_DISCS).addTag(TF_MUSIC_DISCS);
 	}
 }

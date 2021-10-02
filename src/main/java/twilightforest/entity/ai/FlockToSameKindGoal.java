@@ -6,7 +6,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.data.ItemTagGenerator;
-import twilightforest.entity.KoboldEntity;
+import twilightforest.entity.monster.Kobold;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class FlockToSameKindGoal extends Goal {
 	@Override
 	public boolean canUse() {
 
-		if(flockCreature instanceof KoboldEntity kobold && kobold.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
+		if(flockCreature instanceof Kobold kobold && kobold.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
 			return false;
 		}
 

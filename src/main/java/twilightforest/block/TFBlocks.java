@@ -69,11 +69,11 @@ public class TFBlocks {
 	public static final Block firefly_jar                = Registry.register(Registry.BLOCK, TFConstants.ID + ":firefly_jar", new JarBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(0.3F, 0.0F).sound(SoundType.WOOD).lightLevel((state) -> 15).noOcclusion()));
 	public static final Block firefly_spawner            = Registry.register(Registry.BLOCK, TFConstants.ID + ":firefly_particle_spawner", new FireflySpawnerBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(1.0F, 0.0F).sound(SoundType.GLASS).lightLevel((state) -> 15).noOcclusion()));
 	public static final Block cicada_jar                 = Registry.register(Registry.BLOCK, TFConstants.ID + ":cicada_jar", new JarBlock(BlockBehaviour.Properties.of(Material.GLASS).strength(0.3F, 0.0F).sound(SoundType.WOOD).noOcclusion().randomTicks()));
-	public static final Block moss_patch                 = Registry.register(Registry.BLOCK, TFConstants.ID + ":moss_patch", new TFPlantBlock(PlantVariant.MOSSPATCH, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.GRASS).noCollission().noOcclusion()));
+	public static final Block moss_patch                 = Registry.register(Registry.BLOCK, TFConstants.ID + ":moss_patch", new TFPlantBlock(PlantVariant.MOSSPATCH, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.MOSS).noCollission().noOcclusion()));
 	public static final Block mayapple                   = Registry.register(Registry.BLOCK, TFConstants.ID + ":mayapple", new TFPlantBlock(PlantVariant.MAYAPPLE, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.GRASS).noCollission().noOcclusion()));
 	public static final Block clover_patch               = Registry.register(Registry.BLOCK, TFConstants.ID + ":clover_patch", new TFPlantBlock(PlantVariant.CLOVERPATCH, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.GRASS).noCollission().noOcclusion()));
 	public static final Block fiddlehead                 = Registry.register(Registry.BLOCK, TFConstants.ID + ":fiddlehead", new TFPlantBlock(PlantVariant.FIDDLEHEAD, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.GRASS).noCollission().noOcclusion()));
-	public static final Block mushgloom                  = Registry.register(Registry.BLOCK, TFConstants.ID + ":mushgloom", new TFPlantBlock(PlantVariant.MUSHGLOOM, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.GRASS).noCollission().noOcclusion().lightLevel((state) -> 3)));
+	public static final Block mushgloom                  = Registry.register(Registry.BLOCK, TFConstants.ID + ":mushgloom", new TFPlantBlock(PlantVariant.MUSHGLOOM, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.FUNGUS).noCollission().noOcclusion().lightLevel((state) -> 3)));
 	public static final Block torchberry_plant           = Registry.register(Registry.BLOCK, TFConstants.ID + ":torchberry_plant", new TorchberryPlantBlock(PlantVariant.TORCHBERRY, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.HANGING_ROOTS).noCollission().noOcclusion().lightLevel((state) -> (state.getValue(TorchberryPlantBlock.HAS_BERRIES) ? 8 : 0))));
 	public static final Block root_strand                = Registry.register(Registry.BLOCK, TFConstants.ID + ":root_strand", new TFPlantBlock(PlantVariant.ROOT_STRAND, BlockBehaviour.Properties.of(Material.PLANT).strength(0.0F).sound(SoundType.HANGING_ROOTS).noCollission().noOcclusion()));
 	public static final Block fallen_leaves              = Registry.register(Registry.BLOCK, TFConstants.ID + ":fallen_leaves", new TFPlantBlock(PlantVariant.FALLEN_LEAVES, BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.0F).sound(SoundType.AZALEA_LEAVES).noCollission().noOcclusion()));
@@ -229,13 +229,13 @@ public class TFBlocks {
 	public static final Block castle_door_blue            = Registry.register(Registry.BLOCK, TFConstants.ID + ":castle_door_blue", new CastleDoorBlock(BlockBehaviour.Properties.of(Material.STONE, (state) -> state.getValue(CastleDoorBlock.VANISHED) ? MaterialColor.NONE : MaterialColor.COLOR_CYAN).requiresCorrectToolForDrops().strength(100.0F, 35.0F)));
 	public static final Block experiment_115              = Registry.register(Registry.BLOCK, TFConstants.ID + ":experiment_115", new Experiment115Block());
 	public static final Block twilight_portal_miniature_structure = Registry.register(Registry.BLOCK, TFConstants.ID + ":twilight_portal_miniature_structure", new MiniatureStructureBlock());
-//	public static final Block hedge_maze_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":hedge_maze_miniature_structure", new BlockTFMiniatureStructure());
+	//	public static final Block hedge_maze_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":hedge_maze_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block hollow_hill_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":hollow_hill_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block quest_grove_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":quest_grove_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block mushroom_tower_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":mushroom_tower_miniature_structure", new BlockTFMiniatureStructure());
 	public static final Block naga_courtyard_miniature_structure = Registry.register(Registry.BLOCK, TFConstants.ID + ":naga_courtyard_miniature_structure", new MiniatureStructureBlock());
 	public static final Block lich_tower_miniature_structure = Registry.register(Registry.BLOCK, TFConstants.ID + ":lich_tower_miniature_structure", new MiniatureStructureBlock());
-//	public static final Block minotaur_labyrinth_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":minotaur_labyrinth_miniature_structure", new BlockTFMiniatureStructure());
+	//	public static final Block minotaur_labyrinth_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":minotaur_labyrinth_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block hydra_lair_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":hydra_lair_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block goblin_stronghold_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":goblin_stronghold_miniature_structure", new BlockTFMiniatureStructure());
 //	public static final Block dark_tower_miniature_structure = Registry.register(Registry.BLOCK, TwilightForestMod.ID + ":dark_tower_miniature_structure", new BlockTFMiniatureStructure());
@@ -418,7 +418,7 @@ public class TFBlocks {
 	public static final StandingSignBlock sort_sign         = Registry.register(Registry.BLOCK, TFConstants.ID + ":sort_sign", new TFSignBlock(BlockBehaviour.Properties.copy(sort_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), SORTING));
 	public static final WallSignBlock sort_wall_sign        = Registry.register(Registry.BLOCK, TFConstants.ID + ":sort_wall_sign", new TFWallSignBlock(BlockBehaviour.Properties.copy(sort_planks).strength(3.0F).sound(SoundType.WOOD).noOcclusion().noCollission(), SORTING));
 	public static final BanisterBlock sort_banister         = Registry.register(Registry.BLOCK, TFConstants.ID + ":sort_banister", new BanisterBlock(BlockBehaviour.Properties.copy(sort_planks)));
-	
+
 	public static void registerItemblocks() {
 		TFBlockItems.registerBlockItems();
 		TFCompat.initCompatItems();

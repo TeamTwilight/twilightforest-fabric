@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import shadow.cloth.clothconfig.com.moandjiezana.toml.TomlComment;
 import twilightforest.TFConstants;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.feature.TFGenCaveStalactite;
+import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,7 +169,7 @@ public class TFConfigCommon implements ConfigData {
                 if (!block.isPresent()) return false;
 
                 try {
-                    TFGenCaveStalactite.registerStalactite(tier, block.get().defaultBlockState(),
+                    BlockSpikeFeature.registerStalactite(tier, block.get().defaultBlockState(),
                             Float.parseFloat(split[1]),
                             Integer.parseInt(split[2]),
                             Integer.parseInt(split[3]),

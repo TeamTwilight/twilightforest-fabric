@@ -39,7 +39,7 @@ public class SimpleWellFeature extends TemplateFeature<NoneFeatureConfiguration>
 
     @Override
     protected void modifySettings(StructurePlaceSettings settings, Random random) {
-        settings.addProcessor(new CobblePlankSwizzler(0.0F, random.nextInt(), random.nextInt(), random.nextInt()));
+        settings.addProcessor(new CobblePlankSwizzler(0.0F, random));
     }
 
     @Override
@@ -79,7 +79,7 @@ public class SimpleWellFeature extends TemplateFeature<NoneFeatureConfiguration>
             default  -> rotation.rotate(mirror.mirror(Direction.NORTH));
         };
 
-        TFTreasure.basement.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), 16 | 2);
+        TFTreasure.well.generateLootContainer(world, blockPos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, dir), 16 | 2);
 
         if (random.nextBoolean()) return;
 

@@ -35,7 +35,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.tileentity.SkullCandleTileEntity;
+import twilightforest.block.entity.SkullCandleBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
@@ -68,7 +68,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-		return new SkullCandleTileEntity(blockPos, blockState);
+		return new SkullCandleBlockEntity(blockPos, blockState);
 	}
 
 	//input one of the enum names to convert it into a candle block
@@ -140,6 +140,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 				&& state.getValue(CANDLES) < 4 && !player.isShiftKeyDown()) {
 
 			level.setBlockAndUpdate(pos, state.setValue(CANDLES, state.getValue(CANDLES) + 1));
+			level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
 			return InteractionResult.sidedSuccess(level.isClientSide);
 

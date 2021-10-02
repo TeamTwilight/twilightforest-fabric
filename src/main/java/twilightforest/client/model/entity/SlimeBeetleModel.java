@@ -12,16 +12,14 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.entity.SlimeBeetleEntity;
-
-import javax.annotation.Nullable;
+import twilightforest.entity.monster.SlimeBeetle;
 
 /**
  * ModelSlimeBeetle - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @Environment(EnvType.CLIENT)
-public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetleEntity> {
+public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
     public ModelPart root, head;
     public ModelPart rightLeg1, rightLeg2, rightLeg3;
     public ModelPart leftLeg1, leftLeg2, leftLeg3;
@@ -159,7 +157,7 @@ public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetleEntity> {
     }
 
     @Override
-    public void setupAnim(SlimeBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(SlimeBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
         this.head.xRot = headPitch / (180F / (float) Math.PI);
 

@@ -90,6 +90,20 @@ public class TFClientEvents {
 	}
 
 	/**
+	 * Stop the game from rendering the mount health for unfriendly creatures
+	 */
+	//TODO: PORT
+	/*
+	public static void preOverlay(RenderGameOverlayEvent.PreLayer event) {
+		if (event.getOverlay() == ForgeIngameGui.MOUNT_HEALTH_ELEMENT) {
+			if (TFEventListener.isRidingUnfriendly(Minecraft.getInstance().player)) {
+				event.setCanceled(true);
+			}
+		}
+	}
+	 */
+
+	/**
 	 * Render effects in first-person perspective
 	 */
 	public static void renderWorldLast(float partialTicks) {
@@ -240,21 +254,4 @@ public class TFClientEvents {
 		new GradientNode(0.5f, 0xFF_AA_AA_AA), // AAAAAAaaaaaaaaaaa
 		new GradientNode(1.0f, 0xFF_FF_FF_FF)
 	};*/
-
-
-
-
-
-	/**
-	 * Stop the game from rendering the mount health for unfriendly creatures
-	 */
-//	@SubscribeEvent
-//	public static void preOverlay(RenderGameOverlayEvent.Pre event) {
-//		if (event.getType() == RenderGameOverlayEvent.ElementType.LAYER) {
-//			if (TFEventListener.isRidingUnfriendly(Minecraft.getInstance().player)) {
-//				event.setCanceled(true);
-//			}
-//		}
-//	}
-
 }

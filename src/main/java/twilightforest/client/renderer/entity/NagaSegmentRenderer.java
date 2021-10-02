@@ -8,10 +8,10 @@ import com.mojang.math.Vector3f;
 import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NagaModel;
-import twilightforest.entity.boss.NagaSegmentEntity;
+import twilightforest.entity.boss.NagaSegment;
 
 //FIXME legacy: scaling was commented out since textures are bigger now
-public class NagaSegmentRenderer<T extends NagaSegmentEntity> extends TFPartRenderer<T, NagaModel<T>> {
+public class NagaSegmentRenderer<T extends NagaSegment> extends TFPartRenderer<T, NagaModel<T>> {
 	private static final ResourceLocation part_TextureLoc = TFConstants.getModelTexture("nagasegment.png");
 
 	public NagaSegmentRenderer(EntityRendererProvider.Context m) {

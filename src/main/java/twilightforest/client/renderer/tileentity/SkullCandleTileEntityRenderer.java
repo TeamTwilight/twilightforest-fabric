@@ -24,13 +24,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.WallSkullCandleBlock;
-import twilightforest.tileentity.SkullCandleTileEntity;
+import twilightforest.block.entity.SkullCandleBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 
 //[VanillaCopy] of SkullBlockRenderer, but add le candel
-public class SkullCandleTileEntityRenderer<T extends SkullCandleTileEntity> implements BlockEntityRenderer<T> {
+public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> implements BlockEntityRenderer<T> {
 
 	private final Map<SkullBlock.Type, SkullModelBase> modelByType;
 
@@ -57,7 +57,7 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleTileEntity> impl
 	}
 
 	@Override
-	public void render(SkullCandleTileEntity tile, float ticks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+	public void render(SkullCandleBlockEntity tile, float ticks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		BlockState state = tile.getBlockState();
 		boolean flag = state.getBlock() instanceof WallSkullCandleBlock;
 		Direction dir = flag ? state.getValue(WallSkullCandleBlock.FACING) : null;

@@ -24,7 +24,7 @@ import java.util.UUID;
 
 public class TransformPowderItem extends Item {
 
-	private final Map<EntityType<?>, EntityType<?>> transformMap = new HashMap<>();
+	public static final Map<EntityType<?>, EntityType<?>> transformMap = new HashMap<>();
 
 	protected TransformPowderItem(Properties props) {
 		super(props);
@@ -42,9 +42,11 @@ public class TransformPowderItem extends Item {
 		addTwoWayTransformation(TFEntities.penguin,        EntityType.CHICKEN);
 		addTwoWayTransformation(TFEntities.hedge_spider,   EntityType.SPIDER);
 		addTwoWayTransformation(TFEntities.swarm_spider,   EntityType.CAVE_SPIDER);
-		addTwoWayTransformation(TFEntities.wraith,         EntityType.BLAZE);
-		addTwoWayTransformation(TFEntities.redcap,         EntityType.VILLAGER);
+		addTwoWayTransformation(TFEntities.wraith,         EntityType.VEX);
 		addTwoWayTransformation(TFEntities.skeleton_druid, EntityType.WITCH);
+		addTwoWayTransformation(TFEntities.tower_ghast,    EntityType.GHAST);
+		addTwoWayTransformation(TFEntities.tower_termite,  EntityType.SILVERFISH);
+		addTwoWayTransformation(TFEntities.maze_slime,     EntityType.SLIME);
 	}
 
 	private void addTwoWayTransformation(EntityType<?> from, EntityType<?> to) {
@@ -69,9 +71,8 @@ public class TransformPowderItem extends Item {
 		}
 
 		newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
-		if (newEntity instanceof Mob && target.level instanceof ServerLevelAccessor) {
-			ServerLevelAccessor world = (ServerLevelAccessor) target.level;
-			((Mob) newEntity).finalizeSpawn(world, target.level.getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
+		if (newEntity instanceof Mob mob && target.level instanceof ServerLevelAccessor world) {
+			mob.finalizeSpawn(world, target.level.getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
 		}
 
 		try { // try copying what can be copied

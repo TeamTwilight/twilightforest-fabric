@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.ArmoredGiantEntity;
-import twilightforest.entity.GiantMinerEntity;
+import twilightforest.entity.monster.ArmoredGiant;
+import twilightforest.entity.monster.GiantMiner;
 import twilightforest.entity.TFEntities;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
@@ -97,7 +97,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 			if (sbb.isInside(pos)) {
 				this.minerPlaced = true;
 
-				GiantMinerEntity miner = new GiantMinerEntity(TFEntities.giant_miner, world.getLevel());
+				GiantMiner miner = new GiantMiner(TFEntities.giant_miner, world.getLevel());
 				miner.setPos(bx, by, bz);
 				miner.setPersistenceRequired();
 				miner.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
@@ -114,7 +114,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 			if (sbb.isInside(pos)) {
 				this.warriorPlaced = true;
 
-				ArmoredGiantEntity warrior = new ArmoredGiantEntity(TFEntities.armored_giant, world.getLevel());
+				ArmoredGiant warrior = new ArmoredGiant(TFEntities.armored_giant, world.getLevel());
 				warrior.setPos(bx, by, bz);
 				warrior.setPersistenceRequired();
 				warrior.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);

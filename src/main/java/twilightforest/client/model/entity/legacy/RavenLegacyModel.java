@@ -14,9 +14,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.passive.RavenEntity;
+import twilightforest.entity.passive.Raven;
 
-public class RavenLegacyModel extends HierarchicalModel<RavenEntity> {
+public class RavenLegacyModel extends HierarchicalModel<Raven> {
 	ModelPart root;
 	//fields
 	ModelPart head;
@@ -94,7 +94,7 @@ public class RavenLegacyModel extends HierarchicalModel<RavenEntity> {
 	}
 
 	@Override
-	public void setupAnim(RavenEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Raven entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		head.xRot = headPitch / (180F / (float) Math.PI);
 		head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		head.zRot = netHeadYaw > 5 ? -0.2617994F : 0;

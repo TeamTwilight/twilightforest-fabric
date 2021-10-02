@@ -14,7 +14,6 @@
 //import net.minecraft.world.item.crafting.Ingredient;
 //import net.minecraft.world.level.ItemLike;
 //import net.minecraft.world.level.block.Block;
-//import net.minecraft.world.level.block.Blocks;
 //import net.minecraftforge.common.Tags;
 //import net.minecraftforge.common.crafting.CompoundIngredient;
 //import net.minecraftforge.common.crafting.NBTIngredient;
@@ -83,13 +82,13 @@
 //				.save(consumer, TwilightForestMod.prefix(name));
 //	}
 //
-//	protected final void castleBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike... ingredients) {
+//	protected final void castleBlock(Consumer<FinishedRecipe> consumer, Supplier<? extends Block> result, ItemLike... ingredients) {
 //		ShapedRecipeBuilder.shaped(result.get(), 4)
 //				.pattern("##")
 //				.pattern("##")
 //				.define('#', Ingredient.of(ingredients))
-//				.unlockedBy("has_item", has(criteria.get()))
-//				.save(consumer, locCastle(name));
+//				.unlockedBy("has_castle_brick", has(TFBlocks.castle_brick.get()))
+//				.save(consumer, locCastle(result.get().getRegistryName().getPath()));
 //	}
 //
 //	protected final void stairsBlock(Consumer<FinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike... ingredients) {
@@ -108,16 +107,6 @@
 //				.pattern(" ##")
 //				.pattern("  #")
 //				.define('#', Ingredient.of(ingredients))
-//				.unlockedBy("has_item", has(criteria.get()))
-//				.save(consumer, loc);
-//	}
-//
-//	protected final void reverseStairsBlock(Consumer<FinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike ingredient) {
-//		ShapelessRecipeBuilder.shapeless(result.get(),  3)
-//				.requires(ingredient)
-//				.requires(ingredient)
-//				.requires(ingredient)
-//				.requires(ingredient)
 //				.unlockedBy("has_item", has(criteria.get()))
 //				.save(consumer, loc);
 //	}
@@ -279,7 +268,7 @@
 //	}
 //
 //	protected final void trapdoorBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
-//		ShapedRecipeBuilder.shaped(result.get(), 6)
+//		ShapedRecipeBuilder.shaped(result.get(), 2)
 //				.pattern("###")
 //				.pattern("###")
 //				.define('#', material.get())

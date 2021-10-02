@@ -191,7 +191,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 25,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -207,23 +207,28 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 25,
           "name": "twilightforest:moonworm_queen"
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 25,
           "name": "twilightforest:charm_of_life_1"
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 25,
           "name": "twilightforest:charm_of_keeping_1"
         },
         {
           "type": "minecraft:item",
           "weight": 25,
           "name": "twilightforest:mangrove_sapling"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "name": "twilightforest:music_disc_maker"
         }
       ]
     }

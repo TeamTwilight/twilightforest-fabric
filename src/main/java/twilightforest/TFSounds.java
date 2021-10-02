@@ -53,6 +53,9 @@ public final class TFSounds {
 	public static final SoundEvent DEER_DEATH = createEvent("entity.twilightforest.deer.death");
 	public static final SoundEvent DEER_HURT = createEvent("entity.twilightforest.deer.hurt");
 	public static final SoundEvent DEER_IDLE = createEvent("entity.twilightforest.deer.idle");
+	public static final SoundEvent DWARF_DEATH = createEvent("entity.twilightforest.dwarf_rabbit.death");
+	public static final SoundEvent DWARF_HURT = createEvent("entity.twilightforest.dwarf_rabbit.hurt");
+	public static final SoundEvent DWARF_IDLE = createEvent("entity.twilightforest.dwarf_rabbit.idle");
 	public static final SoundEvent DOOR_ACTIVATED = createEvent("block.twilightforest.door.activate");
 	public static final SoundEvent DOOR_REAPPEAR = createEvent("block.twilightforest.door.reappear");
 	public static final SoundEvent DOOR_VANISH = createEvent("block.twilightforest.door.vanish");
@@ -261,6 +264,16 @@ public final class TFSounds {
 
 	public static final SoundEvent MUSIC = createEvent("music.bg");
 
+	public static final SoundEvent MUSIC_DISC_RADIANCE = createEvent("music_disc.twilightforest.radiance");
+	public static final SoundEvent MUSIC_DISC_STEPS = createEvent("music_disc.twilightforest.steps");
+	public static final SoundEvent MUSIC_DISC_SUPERSTITIOUS = createEvent("music_disc.twilightforest.superstitious");
+	public static final SoundEvent MUSIC_DISC_HOME = createEvent("music_disc.twilightforest.home");
+	public static final SoundEvent MUSIC_DISC_WAYFARER = createEvent("music_disc.twilightforest.wayfarer");
+	public static final SoundEvent MUSIC_DISC_FINDINGS = createEvent("music_disc.twilightforest.findings");
+	public static final SoundEvent MUSIC_DISC_MAKER = createEvent("music_disc.twilightforest.maker");
+	public static final SoundEvent MUSIC_DISC_THREAD = createEvent("music_disc.twilightforest.thread");
+	public static final SoundEvent MUSIC_DISC_MOTION = createEvent("music_disc.twilightforest.motion");
+
 	private static SoundEvent createEvent(String sound) {
 		ResourceLocation name = TFConstants.prefix(sound);
 		return Registry.register(Registry.SOUND_EVENT, name, new SoundEvent(name));
@@ -279,6 +292,7 @@ public final class TFSounds {
 //				CHARM_KEEP, CHARM_LIFE,
 //				CICADA,
 //				DEER_DEATH, DEER_HURT, DEER_IDLE,
+//				DWARF_DEATH, DWARF_HURT, DWARF_IDLE,
 //				DOOR_ACTIVATED, DOOR_REAPPEAR, DOOR_VANISH,
 //				FAN_WOOSH,
 //				FIRE_BEETLE_DEATH, FIRE_BEETLE_HURT, FIRE_BEETLE_SHOOT, FIRE_BEETLE_STEP,

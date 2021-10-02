@@ -7,9 +7,9 @@ import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import twilightforest.TFConstants;
 import twilightforest.client.model.entity.CarminiteGolemModel;
-import twilightforest.entity.CarminiteGolemEntity;
+import twilightforest.entity.monster.CarminiteGolem;
 
-public class CarminiteGolemRenderer<T extends CarminiteGolemEntity, M extends CarminiteGolemModel<T>> extends MobRenderer<T, M> {
+public class CarminiteGolemRenderer<T extends CarminiteGolem, M extends CarminiteGolemModel<T>> extends MobRenderer<T, M> {
 
 	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("carminitegolem.png");
 

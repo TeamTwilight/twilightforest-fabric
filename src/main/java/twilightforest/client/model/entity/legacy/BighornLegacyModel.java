@@ -4,9 +4,9 @@ import net.minecraft.client.model.SheepModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import twilightforest.entity.passive.BighornEntity;
+import twilightforest.entity.passive.Bighorn;
 
-public class BighornLegacyModel<T extends BighornEntity> extends SheepModel<T> {
+public class BighornLegacyModel<T extends Bighorn> extends SheepModel<T> {
 
 	public BighornLegacyModel(ModelPart root) {
 		super(root);

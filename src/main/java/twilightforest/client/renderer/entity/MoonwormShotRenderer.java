@@ -12,9 +12,9 @@ import com.mojang.math.Vector3f;
 import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
-import twilightforest.entity.projectile.MoonwormShotEntity;
+import twilightforest.entity.projectile.MoonwormShot;
 
-public class MoonwormShotRenderer extends EntityRenderer<MoonwormShotEntity> {
+public class MoonwormShotRenderer extends EntityRenderer<MoonwormShot> {
 
 	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("moonworm.png");
 	private final MoonwormModel wormModel;
@@ -27,7 +27,7 @@ public class MoonwormShotRenderer extends EntityRenderer<MoonwormShotEntity> {
 	}
 
 	@Override
-	public void render(MoonwormShotEntity entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(MoonwormShot entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		stack.pushPose();
 		stack.translate(0.0, 0.5, 0.0);
 		stack.scale(-1f, -1f, -1f);
@@ -42,7 +42,7 @@ public class MoonwormShotRenderer extends EntityRenderer<MoonwormShotEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(MoonwormShotEntity entity) {
+	public ResourceLocation getTextureLocation(MoonwormShot entity) {
 		return textureLoc;
 	}
 }

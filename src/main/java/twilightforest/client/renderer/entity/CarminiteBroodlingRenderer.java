@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TFConstants;
-import twilightforest.entity.TowerBroodlingEntity;
+import twilightforest.entity.monster.TowerBroodling;
 
-public class CarminiteBroodlingRenderer<T extends TowerBroodlingEntity> extends SpiderRenderer<T> {
+public class CarminiteBroodlingRenderer<T extends TowerBroodling> extends SpiderRenderer<T> {
 
 	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("towerbroodling.png");
 

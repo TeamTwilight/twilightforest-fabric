@@ -25,6 +25,7 @@ accessible method net/minecraft/client/renderer/blockentity/BlockEntityRenderers
 accessible field net/minecraft/world/level/newbiome/layer/Layer area Lnet/minecraft/world/level/newbiome/area/LazyArea;
 accessible method net/minecraft/world/inventory/MenuType <init> (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;)V
 mutable field net/minecraft/world/item/AxeItem STRIPPABLES Ljava/util/Map;
+accessible method net/minecraft/world/item/RecordItem <init> (ILnet/minecraft/sounds/SoundEvent;Lnet/minecraft/world/item/Item$Properties;)V
 accessible field net/minecraft/client/renderer/DimensionSpecialEffects EFFECTS Lit/unimi/dsi/fastutil/objects/Object2ObjectMap;
 accessible field net/minecraft/world/entity/Entity portalTime I
 accessible method net/minecraft/world/level/block/WoodButtonBlock <init> (Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
@@ -47,6 +48,7 @@ mutable field net/minecraft/world/level/levelgen/StructureSettings DEFAULTS Lcom
 accessible field net/minecraft/world/level/levelgen/flat/FlatLevelGeneratorSettings STRUCTURE_FEATURES Ljava/util/Map;
 accessible field net/minecraft/world/level/levelgen/StructureSettings structureConfig Ljava/util/Map;
 mutable field net/minecraft/world/level/levelgen/StructureSettings structureConfig Ljava/util/Map;
+mutable field net/minecraft/world/level/levelgen/feature/StructureFeature NOISE_AFFECTING_FEATURES Ljava/util/List;
 accessible method net/minecraft/world/inventory/MenuType$MenuSupplier create (ILnet/minecraft/world/entity/player/Inventory;)Lnet/minecraft/world/inventory/AbstractContainerMenu;
 accessible method net/minecraft/world/damagesource/DamageSource setIsFire ()Lnet/minecraft/world/damagesource/DamageSource;
 accessible field net/minecraft/world/entity/item/FallingBlockEntity fallDamagePerDistance F
@@ -133,6 +135,7 @@ accessible method net/minecraft/data/loot/BlockLoot createSingleItemTableWithSil
 accessible method net/minecraft/data/loot/BlockLoot add (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/level/storage/loot/LootTable$Builder;)V
 extendable method net/minecraft/data/loot/BlockLoot add (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/level/storage/loot/LootTable$Builder;)V
 accessible field net/minecraft/data/loot/BlockLoot HAS_SILK_TOUCH Lnet/minecraft/world/level/storage/loot/predicates/LootItemCondition$Builder;
+accessible field net/minecraft/data/loot/BlockLoot HAS_SHEARS Lnet/minecraft/world/level/storage/loot/predicates/LootItemCondition$Builder;
 accessible field net/minecraft/data/loot/BlockLoot HAS_NO_SHEARS_OR_SILK_TOUCH Lnet/minecraft/world/level/storage/loot/predicates/LootItemCondition$Builder;
 accessible field net/minecraft/data/loot/EntityLoot ENTITY_ON_FIRE Lnet/minecraft/advancements/critereon/EntityPredicate$Builder;
 accessible method net/minecraft/data/loot/EntityLoot add (Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/storage/loot/LootTable$Builder;)V
@@ -151,6 +154,7 @@ accessible method net/minecraft/data/recipes/RecipeProvider saveRecipe (Lnet/min
 accessible method net/minecraft/data/recipes/RecipeProvider saveAdvancement (Lnet/minecraft/data/HashCache;Lcom/google/gson/JsonObject;Ljava/nio/file/Path;)V
 accessible class net/minecraft/tags/StaticTagHelper$Wrapper
 accessible field net/minecraft/tags/StaticTagHelper$Wrapper tag Lnet/minecraft/tags/Tag;
+accessible method net/minecraft/tags/FluidTags bind (Ljava/lang/String;)Lnet/minecraft/tags/Tag$Named;
 accessible field net/minecraft/world/entity/monster/Slime wasOnGround Z
 accessible method net/minecraft/data/loot/BlockLoot createSilkTouchDispatchTable (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/level/storage/loot/entries/LootPoolEntryContainer$Builder;)Lnet/minecraft/world/level/storage/loot/LootTable$Builder;
 accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator defaultBlock Lnet/minecraft/world/level/block/state/BlockState;

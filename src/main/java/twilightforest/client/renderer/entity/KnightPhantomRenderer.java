@@ -9,9 +9,9 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TFConstants;
 import twilightforest.client.model.entity.KnightPhantomModel;
-import twilightforest.entity.boss.KnightPhantomEntity;
+import twilightforest.entity.boss.KnightPhantom;
 
-public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantomEntity, KnightPhantomModel> {
+public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, KnightPhantomModel> {
 
 	private static final ResourceLocation PHANTOM_TEXTURE = TFConstants.getModelTexture("phantomskeleton.png");
 
@@ -22,12 +22,12 @@ public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantomEnti
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(KnightPhantomEntity entity) {
+	public ResourceLocation getTextureLocation(KnightPhantom entity) {
 		return PHANTOM_TEXTURE;
 	}
 
 	@Override
-	protected void scale(KnightPhantomEntity entity, PoseStack stack, float partialTicks) {
+	protected void scale(KnightPhantom entity, PoseStack stack, float partialTicks) {
 		float scale = entity.isChargingAtPlayer() ? 1.8F : 1.2F;
 		stack.scale(scale, scale, scale);
 	}

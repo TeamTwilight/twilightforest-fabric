@@ -4,9 +4,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TFConstants;
 import twilightforest.client.model.entity.TinyBirdModel;
-import twilightforest.entity.passive.TinyBirdEntity;
+import twilightforest.entity.passive.TinyBird;
 
-public class TinyBirdRenderer extends BirdRenderer<TinyBirdEntity, TinyBirdModel> {
+public class TinyBirdRenderer extends BirdRenderer<TinyBird, TinyBirdModel> {
 
 	private static final ResourceLocation textureLocSparrow  = TFConstants.getModelTexture("tinybirdbrown.png");
 	private static final ResourceLocation textureLocFinch    = TFConstants.getModelTexture("tinybirdgold.png");
@@ -18,7 +18,7 @@ public class TinyBirdRenderer extends BirdRenderer<TinyBirdEntity, TinyBirdModel
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(TinyBirdEntity entity) {
+	public ResourceLocation getTextureLocation(TinyBird entity) {
 		switch (entity.getBirdType()) {
 			default:
 			case 0:

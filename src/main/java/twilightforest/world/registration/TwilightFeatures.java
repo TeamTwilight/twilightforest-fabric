@@ -25,6 +25,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import twilightforest.world.components.placements.ChunkBlanketingDecorator;
+import twilightforest.world.components.placements.ChunkCenterDecorator;
 import twilightforest.world.components.placements.OutOfStructureFilter;
 
 public final class TwilightFeatures {
@@ -42,9 +43,11 @@ public final class TwilightFeatures {
     public static final TreeDecoratorType<DangleFromTreeDecorator> DANGLING_DECORATOR = registerTreeFeature(TFConstants.prefix("dangle_from_tree_decorator"), DangleFromTreeDecorator.CODEC);
 
     public static final FeatureDecorator<NoneDecoratorConfiguration> PLACEMENT_NOTFSTRUCTURE = new OutOfStructureFilter(NoneDecoratorConfiguration.CODEC);
+    public static final FeatureDecorator<NoneDecoratorConfiguration> CHUNK_CENTERER = new ChunkCenterDecorator(NoneDecoratorConfiguration.CODEC);
     public static final FeatureDecorator<ChunkBlanketingDecorator.ChunkBlanketingConfig> PLACEMENT_CHUNK_BLANKETING = new ChunkBlanketingDecorator(ChunkBlanketingDecorator.ChunkBlanketingConfig.CODEC);
 
     public static final ConfiguredDecorator<?> CONFIGURED_PLACEMENT_NOTFSTRUCTURE = PLACEMENT_NOTFSTRUCTURE.configured(NoneDecoratorConfiguration.INSTANCE);
+    public static final ConfiguredDecorator<?> CONFIGURED_CHUNK_CENTERER = CHUNK_CENTERER.configured(NoneDecoratorConfiguration.INSTANCE);
     public static final ConfiguredDecorator<?> CONFIGURED_THORNLANDS_BLANKETING = PLACEMENT_CHUNK_BLANKETING.configured(new ChunkBlanketingDecorator.ChunkBlanketingConfig(0.7f, Heightmap.Types.OCEAN_FLOOR_WG, Optional.of(TFConstants.prefix("thornlands"))));
 
     private static <P extends FoliagePlacer> FoliagePlacerType<P> registerFoliage(ResourceLocation name, Codec<P> codec) {
@@ -73,6 +76,7 @@ public final class TwilightFeatures {
 
     public static void registerPlacementConfigs() {
         Registry.register(Registry.DECORATOR, TFConstants.prefix("nostructure"), PLACEMENT_NOTFSTRUCTURE);
+        Registry.register(Registry.DECORATOR, TFConstants.prefix("chunk_centerer"), CHUNK_CENTERER);
         Registry.register(Registry.DECORATOR, TFConstants.prefix("chunk_blanketing"), PLACEMENT_CHUNK_BLANKETING);
     }
 }

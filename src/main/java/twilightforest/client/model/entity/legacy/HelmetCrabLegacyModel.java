@@ -14,12 +14,12 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.HelmetCrabEntity;
+import twilightforest.entity.monster.HelmetCrab;
 
 /**
  * Helmet crab model, based partially on some of the spider code
  */
-public class HelmetCrabLegacyModel extends HierarchicalModel<HelmetCrabEntity> {
+public class HelmetCrabLegacyModel extends HierarchicalModel<HelmetCrab> {
 	//fields
 	ModelPart root, body, rightArm;
 	ModelPart leg1, leg2, leg3, leg4, leg5;
@@ -138,7 +138,7 @@ public class HelmetCrabLegacyModel extends HierarchicalModel<HelmetCrabEntity> {
 	}
 
 	@Override
-	public void setupAnim(HelmetCrabEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(HelmetCrab entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
 		//leg3 -> leg1, leg4 -> leg2, leg5 -> leg3, leg6 -> leg4, leg8 -> leg5
 		this.body.yRot = netHeadYaw / (180F / (float) Math.PI);

@@ -195,6 +195,11 @@
           "type": "minecraft:item",
           "weight": 25,
           "name": "twilightforest:charm_of_life_1"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "name": "twilightforest:music_disc_wayfarer"
         }
       ]
     }
