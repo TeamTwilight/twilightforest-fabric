@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -58,14 +59,8 @@ public class HostileWolf extends Wolf implements Enemy {
 		this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal<>(this, true));
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends HostileWolf> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
-		// are we near a hedge maze?
-		int chunkX = Mth.floor(pos.getX()) >> 4;
-		int chunkZ = Mth.floor(pos.getZ()) >> 4;
-		return (TFFeature.getNearestFeature(chunkX, chunkZ, world.getLevel()) == TFFeature.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(world, pos, random));
-				/*&& world.checkNoEntityCollision(this)
-				&& world.getCollisionBoxes(this, getBoundingBox()).size() == 0
-				&& !world.containsAnyLiquid(getBoundingBox());*/
+	public static boolean getCanSpawnHere(EntityType<? extends HostileWolf> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, Random pRandom) {
+		return pLevel.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(pLevel, pPos, pRandom) && checkMobSpawnRules(pType, pLevel, pReason, pPos, pRandom);
 	}
 
 	@Override

@@ -30,11 +30,14 @@ public class TFTreasure {
 	public static final TFTreasure hill2 = new TFTreasure("hill_2");
 	public static final TFTreasure hill3 = new TFTreasure("hill_3");
 	public static final TFTreasure hedgemaze = new TFTreasure("hedge_maze");
+	public static final TFTreasure fancy_well = new TFTreasure("fancy_well");
+	public static final TFTreasure well = new TFTreasure("well");
 	public static final TFTreasure labyrinth_room = new TFTreasure("labyrinth_room");
 	public static final TFTreasure labyrinth_deadend = new TFTreasure("labyrinth_dead_end");
 	public static final TFTreasure tower_room = new TFTreasure("tower_room");
 	public static final TFTreasure tower_library = new TFTreasure("tower_library");
 	public static final TFTreasure basement = new TFTreasure("basement");
+	public static final TFTreasure foundation_basement = new TFTreasure("foundation_basement");
 	public static final TFTreasure labyrinth_vault = new TFTreasure("labyrinth_vault");
 	public static final TFTreasure darktower_cache = new TFTreasure("darktower_cache");
 	public static final TFTreasure darktower_key = new TFTreasure("darktower_key");

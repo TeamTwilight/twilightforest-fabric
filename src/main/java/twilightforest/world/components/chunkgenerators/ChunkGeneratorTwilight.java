@@ -110,7 +110,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					this.raiseHills(primer, chunk, nearFeature, hdiam, xInChunk, zInChunk, featureDX, featureDZ, hheight);
 				}
 			}
-		} else if (TFFeature.isTheseFeatures(nearFeature, TFFeature.HEDGE_MAZE, TFFeature.NAGA_COURTYARD, TFFeature.QUEST_GROVE)) {
+		} else if (nearFeature == TFFeature.HEDGE_MAZE) {
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
 				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
 					int featureDX = xInChunk - relativeFeatureX;

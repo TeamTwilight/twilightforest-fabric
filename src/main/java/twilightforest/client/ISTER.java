@@ -1,8 +1,10 @@
 package twilightforest.client;
 
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.SkullModelBase;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +23,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import twilightforest.TFConstants;
@@ -64,10 +65,16 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					ModelResourceLocation back = new ModelResourceLocation(TFConstants.prefix(((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()), "inventory");
 					BakedModel modelBack = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(back);
 
+					Lighting.setupForFlatItems();
+					MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
 					ms.pushPose();
+					Lighting.setupForFlatItems();
 					ms.translate(0.5F, 0.5F, -1.5F);
-					Minecraft.getInstance().getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemTransforms.TransformType.GUI, false, ms, buffers, 240, overlay, modelBack /*ForgeHooksClient.handleCameraTransforms(ms, modelBack, camera, false)*/);
+					Minecraft.getInstance().getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemTransforms.TransformType.GUI, false, ms, buffers, 15728880, OverlayTexture.NO_OVERLAY, modelBack/*ForgeHooksClient.handleCameraTransforms(ms, modelBack, camera, false)*/);
+					//OLD : Minecraft.getInstance().getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemTransforms.TransformType.GUI, false, ms, buffers, 240, overlay, modelBack /*ForgeHooksClient.handleCameraTransforms(ms, modelBack, camera, false)*/);
 					ms.popPose();
+					bufferSource.endBatch();
+					Lighting.setupFor3DItems();
 
 					ms.pushPose();
 					ms.translate(0.5F, 0.5F, 0.5F);
@@ -78,11 +85,11 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					ms.translate(0.0F, 0.25F, 0.0F);
 					if(((AbstractTrophyBlock) block).getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
 					if(((AbstractTrophyBlock) block).getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
-					TrophyTileEntityRenderer.render((Direction) null, 180.0F, trophy, variant, 0.0F, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, 0.0F, ms, buffers, light, camera);
 					ms.popPose();
 
 				} else {
-					TrophyTileEntityRenderer.render((Direction) null, 180.0F, trophy, variant, 0.0F, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, 0.0F, ms, buffers, light, camera);
 				}
 			} else if (block instanceof KeepsakeCasketBlock) {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.keepsake_casket.defaultBlockState()), ms, buffers, light, overlay);

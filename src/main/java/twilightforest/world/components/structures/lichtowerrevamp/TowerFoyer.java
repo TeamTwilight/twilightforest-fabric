@@ -28,11 +28,11 @@ import java.util.*;
 
 public final class TowerFoyer extends TwilightTemplateStructurePiece {
     public TowerFoyer(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerPieces.TOWER_FOYER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
+        super(LichTowerRevampPieces.TOWER_FOYER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
     }
 
     public TowerFoyer(StructureManager structureManager, BlockPos startPosition) {
-        super(LichTowerPieces.TOWER_FOYER, 0, structureManager, TFConstants.prefix("lich_tower/foyer"), LichTowerUtil.makeSettings(Rotation.NONE), startPosition);
+        super(LichTowerRevampPieces.TOWER_FOYER, 0, structureManager, TFConstants.prefix("lich_tower/foyer"), LichTowerUtil.makeSettings(Rotation.NONE), startPosition);
     }
 
     @Override

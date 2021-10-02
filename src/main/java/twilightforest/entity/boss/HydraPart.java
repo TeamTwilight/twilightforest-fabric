@@ -1,16 +1,20 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.TFPart;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-
 public abstract class HydraPart extends TFPart<Hydra> {
+
+	private static final EntityDataAccessor<Boolean> DATA_SIZEACTIVE = SynchedEntityData.defineId(HydraPart.class, EntityDataSerializers.BOOLEAN);
 
 	final float maxHealth = 1000F;
 	float health = maxHealth;
@@ -24,6 +28,18 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	@Override
 	protected void defineSynchedData() {
 		fireImmune();
+		entityData.define(DATA_SIZEACTIVE, true);
+	}
+
+	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
+		super.onSyncedDataUpdated(pKey);
+		if (pKey == DATA_SIZEACTIVE) {
+			if (entityData.get(DATA_SIZEACTIVE))
+				activate();
+			else
+				deactivate();
+		}
 	}
 
 	// [VanillaCopy] from MobEntity
@@ -96,11 +112,11 @@ public abstract class HydraPart extends TFPart<Hydra> {
 
 	public void activate() {
 		dimensions = cacheSize;
-		refreshDimensions();
+		entityData.set(DATA_SIZEACTIVE, true);
 	}
 
 	public void deactivate() {
 		dimensions = EntityDimensions.scalable(0, 0);
-		refreshDimensions();
+		entityData.set(DATA_SIZEACTIVE, false);
 	}
 }

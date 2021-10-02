@@ -264,6 +264,16 @@ public final class TFSounds {
 
 	public static final SoundEvent MUSIC = createEvent("music.bg");
 
+	public static final SoundEvent MUSIC_DISC_RADIANCE = createEvent("music_disc.twilightforest.radiance");
+	public static final SoundEvent MUSIC_DISC_STEPS = createEvent("music_disc.twilightforest.steps");
+	public static final SoundEvent MUSIC_DISC_SUPERSTITIOUS = createEvent("music_disc.twilightforest.superstitious");
+	public static final SoundEvent MUSIC_DISC_HOME = createEvent("music_disc.twilightforest.home");
+	public static final SoundEvent MUSIC_DISC_WAYFARER = createEvent("music_disc.twilightforest.wayfarer");
+	public static final SoundEvent MUSIC_DISC_FINDINGS = createEvent("music_disc.twilightforest.findings");
+	public static final SoundEvent MUSIC_DISC_MAKER = createEvent("music_disc.twilightforest.maker");
+	public static final SoundEvent MUSIC_DISC_THREAD = createEvent("music_disc.twilightforest.thread");
+	public static final SoundEvent MUSIC_DISC_MOTION = createEvent("music_disc.twilightforest.motion");
+
 	private static SoundEvent createEvent(String sound) {
 		ResourceLocation name = TFConstants.prefix(sound);
 		return Registry.register(Registry.SOUND_EVENT, name, new SoundEvent(name));

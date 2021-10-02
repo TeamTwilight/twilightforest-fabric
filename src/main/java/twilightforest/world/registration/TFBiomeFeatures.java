@@ -59,19 +59,17 @@ public class TFBiomeFeatures {
 			new TFGenMonolith(NoneFeatureConfiguration.CODEC));
 	public static final Feature<DiskConfiguration> MYCELIUM_BLOB = Registry.register(Registry.FEATURE, TFConstants.ID+ ":mycelium_blob",
 			new BaseDiskFeature(DiskConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> PLANT_ROOTS = Registry.register(Registry.FEATURE, TFConstants.ID+ ":plant_roots",
-			new TFGenPlantRoots(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> STONE_CIRCLE = Registry.register(Registry.FEATURE, TFConstants.ID+ ":stone_circle",
+	public static final Feature<BlockStateConfiguration> UNDERGROUND_PLANTS = Registry.register(Registry.FEATURE, TFConstants.ID+ "underground_plants",
+			new UndergroundPlantFeature(BlockStateConfiguration.CODEC, false));
+	public static final Feature<BlockStateConfiguration> TROLL_VINES = Registry.register(Registry.FEATURE, TFConstants.ID+ "troll_vines",
+			new UndergroundPlantFeature(BlockStateConfiguration.CODEC, true));
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> STONE_CIRCLE = Registry.register(Registry.FEATURE, TFConstants.ID+ "stone_circle",
 			new StoneCircleFeature(NoneFeatureConfiguration.CODEC));
 	public static final Feature<NoneFeatureConfiguration> THORNS = Registry.register(Registry.FEATURE, TFConstants.ID+ ":thorns",
 			new TFGenThorns(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> TORCH_BERRIES = Registry.register(Registry.FEATURE, TFConstants.ID+ ":torch_berries",
-			new TFGenTorchBerries(NoneFeatureConfiguration.CODEC));
-	public static final Feature<TFTreeFeatureConfig> TREE_OF_TIME = Registry.register(Registry.FEATURE, TFConstants.ID+ ":tree_of_time",
+	public static final Feature<TFTreeFeatureConfig> TREE_OF_TIME = Registry.register(Registry.FEATURE, TFConstants.ID+ "tree_of_time",
 			new TFGenTreeOfTime(TFTreeFeatureConfig.codecTFTreeConfig));
-	public static final Feature<NoneFeatureConfiguration> TROLL_ROOTS = Registry.register(Registry.FEATURE, TFConstants.ID+ ":troll_roots",
-			new TFGenTrollRoots(NoneFeatureConfiguration.CODEC));
-	public static final Feature<NoneFeatureConfiguration> WEBS = Registry.register(Registry.FEATURE, TFConstants.ID+ ":webs",
+	public static final Feature<NoneFeatureConfiguration> WEBS = Registry.register(Registry.FEATURE, TFConstants.ID+ "webs",
 			new TFGenWebs(NoneFeatureConfiguration.CODEC));
 	public static final Feature<NoneFeatureConfiguration> SIMPLE_WELL = Registry.register(Registry.FEATURE, TFConstants.ID+ ":simple_well",
 			new SimpleWellFeature(NoneFeatureConfiguration.CODEC));

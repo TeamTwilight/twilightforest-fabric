@@ -1,11 +1,16 @@
 package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.Difficulty;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.TFEntities;
@@ -16,12 +21,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
 
 /**
  * This class holds the state data for a single hydra head
@@ -332,28 +331,37 @@ public class HydraHeadContainer {
 		// adjust for difficulty
 		setDifficultyVariables();
 
-		if (headEntity != null) {
+		// only actually do these things on the server
+		if (!hydra.level.isClientSide) {
 			// make sure this is set up
-			if(isActive() && headEntity.dimensions.width > 0)
+			if (isActive() && headEntity.dimensions.width == 0) {
 				headEntity.activate();
-			else if(!isActive() && headEntity.dimensions.width != 0)
-				headEntity.deactivate();
-
-			// only actually do these things on the server
-			if (!hydra.level.isClientSide) {
-				advanceRespawnCounter();
-				advanceHeadState();
-				setHeadPosition();
-				setHeadFacing();
-				executeAttacks();
-				playSounds();
-			} else {
-				clientAnimateHeadDeath();
-				addMouthParticles();
+				necka.activate();
+				neckb.activate();
+				neckc.activate();
+				neckd.activate();
+				necke.activate();
 			}
-
-			setNeckPosition();
+			else if (!isActive() && headEntity.dimensions.width > 0) {
+				headEntity.deactivate();
+				necka.deactivate();
+				neckb.deactivate();
+				neckc.deactivate();
+				neckd.deactivate();
+				necke.deactivate();
+			}
+			advanceRespawnCounter();
+			advanceHeadState();
+			setHeadPosition();
+			setHeadFacing();
+			executeAttacks();
+			playSounds();
+		} else {
+			clientAnimateHeadDeath();
+			addMouthParticles();
 		}
+
+		setNeckPosition();
 	}
 
 	public boolean canRespawn() {

@@ -4,6 +4,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import twilightforest.block.TFBlocks;
+import twilightforest.block.TorchberryPlantBlock;
 
 public final class BlockConstants {
     //Blockstates
@@ -74,6 +75,9 @@ public final class BlockConstants {
     public static final BlockState PODZOL = Blocks.PODZOL.defaultBlockState();
     public static final BlockState COARSE_DIRT = Blocks.COARSE_DIRT.defaultBlockState();
     public static final BlockState FIREFLY_JAR = TFBlocks.firefly_jar.defaultBlockState();
+    public static final BlockState TROLLVIDR = TFBlocks.trollvidr.defaultBlockState();
+    public static final BlockState TORCHBERRIES = TFBlocks.torchberry_plant.defaultBlockState().setValue(TorchberryPlantBlock.HAS_BERRIES, true);
+    public static final BlockState ROOT_STRAND = TFBlocks.root_strand.defaultBlockState();
     public static final BlockState PUMPKIN = Blocks.PUMPKIN.defaultBlockState();
     public static final BlockState DEAD_BUSH = Blocks.DEAD_BUSH.defaultBlockState();
     public static final BlockState BROWN_MUSHROOM = Blocks.BROWN_MUSHROOM.defaultBlockState();

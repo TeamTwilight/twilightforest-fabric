@@ -24,7 +24,7 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     private final int length = 2; // Determines how far out the piece should gen
 
     public CentralTowerAttachment(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerPieces.CENTRAL_TO_SIDE_TOWER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
+        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
         this.width = compoundTag.getInt("width");
     }
 
@@ -33,7 +33,7 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     }
 
     private CentralTowerAttachment(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int width) {
-        super(LichTowerPieces.CENTRAL_TO_SIDE_TOWER, 0, structureManager, templateLocation, placeSettings, startPosition);
+        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, 0, structureManager, templateLocation, placeSettings, startPosition);
         this.width = width;
     }
 
@@ -88,7 +88,7 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     }
 
     @Override
-    protected void handleDataMarker(String pFunction, BlockPos pPos, ServerLevelAccessor pLevel, Random pRandom, BoundingBox pSbb) {
+    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, Random random, BoundingBox boundingBox) {
 
     }
 

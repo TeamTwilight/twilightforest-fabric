@@ -236,6 +236,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropWhenSilkTouch(TFBlocks.empty_bookshelf);
 		//registerDropSelfLootTable(TFBlocks.lapis_block);
 		add(TFBlocks.keepsake_casket, casketInfo(TFBlocks.keepsake_casket));
+		dropSelf(TFBlocks.candelabra);
 		dropPottedContents(TFBlocks.potted_twilight_oak_sapling);
 		dropPottedContents(TFBlocks.potted_canopy_sapling);
 		dropPottedContents(TFBlocks.potted_mangrove_sapling);
@@ -252,6 +253,15 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropPottedContents(TFBlocks.potted_thorn);
 		dropPottedContents(TFBlocks.potted_green_thorn);
 		dropPottedContents(TFBlocks.potted_dead_thorn);
+
+		dropSelf(TFBlocks.oak_banister);
+		dropSelf(TFBlocks.spruce_banister);
+		dropSelf(TFBlocks.birch_banister);
+		dropSelf(TFBlocks.jungle_banister);
+		dropSelf(TFBlocks.acacia_banister);
+		dropSelf(TFBlocks.dark_oak_banister);
+		dropSelf(TFBlocks.crimson_banister);
+		dropSelf(TFBlocks.warped_banister);
 
 		dropSelf(TFBlocks.oak_log);
 		dropSelf(TFBlocks.stripped_oak_log);
@@ -273,6 +283,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.twilight_oak_trapdoor);
 		add(TFBlocks.twilight_oak_sign, createSingleItemTable(TFBlocks.twilight_oak_sign.asItem()));
 		add(TFBlocks.twilight_wall_sign, createSingleItemTable(TFBlocks.twilight_oak_sign.asItem()));
+		dropSelf(TFBlocks.twilight_oak_banister);
 
 		dropSelf(TFBlocks.canopy_log);
 		dropSelf(TFBlocks.stripped_canopy_log);
@@ -292,6 +303,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		add(TFBlocks.canopy_sign, createSingleItemTable(TFBlocks.canopy_sign.asItem()));
 		add(TFBlocks.canopy_wall_sign, createSingleItemTable(TFBlocks.canopy_sign.asItem()));
 		add(TFBlocks.canopy_bookshelf, createSingleItemTableWithSilkTouch(TFBlocks.canopy_bookshelf, Items.BOOK, ConstantValue.exactly(3.0F)));
+		dropSelf(TFBlocks.canopy_banister);
 
 		dropSelf(TFBlocks.mangrove_log);
 		dropSelf(TFBlocks.stripped_mangrove_log);
@@ -310,6 +322,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.mangrove_trapdoor);
 		add(TFBlocks.mangrove_sign, createSingleItemTable(TFBlocks.mangrove_sign.asItem()));
 		add(TFBlocks.mangrove_wall_sign, createSingleItemTable(TFBlocks.mangrove_sign.asItem()));
+		dropSelf(TFBlocks.mangrove_banister);
 
 		dropSelf(TFBlocks.dark_log);
 		dropSelf(TFBlocks.stripped_dark_log);
@@ -329,6 +342,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.dark_trapdoor);
 		add(TFBlocks.darkwood_sign, createSingleItemTable(TFBlocks.darkwood_sign.asItem()));
 		add(TFBlocks.darkwood_wall_sign, createSingleItemTable(TFBlocks.darkwood_sign.asItem()));
+		dropSelf(TFBlocks.darkwood_banister);
 
 		dropSelf(TFBlocks.time_log);
 		dropSelf(TFBlocks.stripped_time_log);
@@ -348,6 +362,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.time_trapdoor);
 		add(TFBlocks.time_sign, createSingleItemTable(TFBlocks.time_sign.asItem()));
 		add(TFBlocks.time_wall_sign, createSingleItemTable(TFBlocks.time_sign.asItem()));
+		dropSelf(TFBlocks.time_banister);
 
 		dropSelf(TFBlocks.transformation_log);
 		dropSelf(TFBlocks.stripped_transformation_log);
@@ -367,6 +382,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.trans_trapdoor);
 		add(TFBlocks.trans_sign, createSingleItemTable(TFBlocks.trans_sign.asItem()));
 		add(TFBlocks.trans_wall_sign, createSingleItemTable(TFBlocks.trans_sign.asItem()));
+		dropSelf(TFBlocks.trans_banister);
 
 		dropSelf(TFBlocks.mining_log);
 		dropSelf(TFBlocks.stripped_mining_log);
@@ -386,6 +402,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.mine_trapdoor);
 		add(TFBlocks.mine_sign, createSingleItemTable(TFBlocks.mine_sign.asItem()));
 		add(TFBlocks.mine_wall_sign, createSingleItemTable(TFBlocks.mine_sign.asItem()));
+		dropSelf(TFBlocks.mine_banister);
 
 		dropSelf(TFBlocks.sorting_log);
 		dropSelf(TFBlocks.stripped_sorting_log);
@@ -405,7 +422,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		dropSelf(TFBlocks.sort_trapdoor);
 		add(TFBlocks.sort_sign, createSingleItemTable(TFBlocks.sort_sign.asItem()));
 		add(TFBlocks.sort_wall_sign, createSingleItemTable(TFBlocks.sort_sign.asItem()));
-
+		dropSelf(TFBlocks.sort_banister);
 
 	}
 

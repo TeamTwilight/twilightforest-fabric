@@ -49,7 +49,7 @@ public final class SideTowerRoom extends TwilightTemplateStructurePiece {
     private final Rotation externalRotation;
 
     public SideTowerRoom(ServerLevel serverLevel, CompoundTag compoundTag) {
-        super(LichTowerPieces.SIDE_TOWER_ROOM, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
+        super(LichTowerRevampPieces.SIDE_TOWER_ROOM, compoundTag, serverLevel, LichTowerUtil.readSettings(compoundTag));
         this.squareDiameter = compoundTag.getInt("square_diameter");
         this.externalRotation = LichTowerUtil.boundedArrayAccess(compoundTag.getInt("ext_rotation"), Rotation.values());
     }
@@ -66,7 +66,7 @@ public final class SideTowerRoom extends TwilightTemplateStructurePiece {
     }
 
     private SideTowerRoom(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int squareDiameter, Rotation externalRotation) {
-        super(LichTowerPieces.SIDE_TOWER_ROOM, 0, structureManager, templateLocation, placeSettings, startPosition);
+        super(LichTowerRevampPieces.SIDE_TOWER_ROOM, 0, structureManager, templateLocation, placeSettings, startPosition);
         this.squareDiameter = squareDiameter;
         this.externalRotation = externalRotation;
     }

@@ -276,7 +276,8 @@ public class TFEventListener {
 							else makeFloorSkull(world, pos, stack.getItem(), TFBlocks.creeper_skull_candle);
 						}
 					}
-					if(!player.getAbilities().instabuild) stack.shrink(1);
+					if(!event.getPlayer().getAbilities().instabuild) stack.shrink(1);
+					//event.getPlayer().swing(event.getHand());
 					//this is to prevent anything from being placed afterwords
 					return InteractionResult.FAIL;
 				}
