@@ -25,7 +25,7 @@ public class TFBiomeFeatures {
 	//		new TFGenCanopyOak(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final Feature<SpikeConfig> CAVE_STALACTITE = Registry.register(Registry.FEATURE, TFConstants.ID+ ":block_spike",
 			new BlockSpikeFeature(SpikeConfig.CODEC));
-	public static final <Feature<TreeConfiguration> DARK_CANOPY_TREE = Registry.register(Registry.FEATURE, TFConstants.ID+ ":dark_canopy_tree",
+	public static final Feature<TreeConfiguration> DARK_CANOPY_TREE = Registry.register(Registry.FEATURE, TFConstants.ID+ ":dark_canopy_tree",
 			new TFGenDarkCanopyTree(TreeConfiguration.CODEC));
 	public static final Feature<NoneFeatureConfiguration> DRUID_HUT = Registry.register(Registry.FEATURE, TFConstants.ID+ ":druid_hut",
 			new DruidHutFeature(NoneFeatureConfiguration.CODEC));

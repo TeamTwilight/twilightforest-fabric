@@ -595,13 +595,13 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Blocks.COAL_BLOCK.asItem())
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), Blocks.COAL_BLOCK.asItem()))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), Blocks.COAL_BLOCK.asItem()))
 										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:questing_ram"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Blocks.COAL_BLOCK.asItem())
 										.when(ModExists.builder("immersiveengineering"))
-										.apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), Blocks.COAL_BLOCK.asItem())))));
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader_bag_twilight")), Blocks.COAL_BLOCK.asItem())))));
 	}
 
 	private CompoundTag serializeNBT(ItemStack stack)

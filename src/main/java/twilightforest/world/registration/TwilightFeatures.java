@@ -76,7 +76,7 @@ public final class TwilightFeatures {
 
     public static void registerPlacementConfigs() {
         Registry.register(Registry.DECORATOR, TFConstants.prefix("nostructure"), PLACEMENT_NOTFSTRUCTURE);
-        Registry.register(Registry.DECORATOR, TwilightForestMod.prefix("chunk_centerer"), CHUNK_CENTERER);
+        Registry.register(Registry.DECORATOR, TFConstants.prefix("chunk_centerer"), CHUNK_CENTERER);
         Registry.register(Registry.DECORATOR, TFConstants.prefix("chunk_blanketing"), PLACEMENT_CHUNK_BLANKETING);
     }
 }

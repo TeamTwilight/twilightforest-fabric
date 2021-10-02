@@ -3,14 +3,6 @@ package twilightforest.block;
 import com.mojang.math.Vector3f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
-import twilightforest.enums.TowerDeviceVariant;
-import twilightforest.tileentity.CarminiteBuilderTileEntity;
-import twilightforest.tileentity.TFTileEntities;
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -26,6 +18,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import twilightforest.TFSounds;
+import twilightforest.block.entity.CarminiteBuilderBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.enums.TowerDeviceVariant;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BuilderBlock extends BaseEntityBlock {
 

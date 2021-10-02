@@ -5,8 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Mob;
@@ -31,7 +29,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolActions;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.enums.BanisterShape;
 
@@ -93,7 +90,8 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
     }
 
     @Nullable
-    @Override
+    //@Override
+    //TODO: PORT
     public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
         return BlockPathTypes.BLOCKED;
     }

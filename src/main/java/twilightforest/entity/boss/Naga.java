@@ -44,7 +44,7 @@ import net.minecraft.world.phys.Vec3;
 
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.PartEntity;
-import twilightforest.entity.TFPartEntity;
+import twilightforest.entity.TFPart;
 import twilightforest.extensions.IEntityEx;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;

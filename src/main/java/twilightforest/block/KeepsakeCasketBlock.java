@@ -3,17 +3,6 @@ package twilightforest.block;
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.world.level.Explosion;
-import twilightforest.TFSounds;
-import twilightforest.enums.BlockLoggingEnum;
-import twilightforest.extensions.IBlockMethods;
-import twilightforest.item.TFItems;
-import twilightforest.tileentity.KeepsakeCasketTileEntity;
-import twilightforest.tileentity.TFTileEntities;
-import java.util.Optional;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -22,12 +11,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.*;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +18,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -52,17 +36,16 @@ import net.minecraft.world.level.material.*;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.TFSounds;
-import twilightforest.enums.BlockLoggingEnum;
-import twilightforest.item.TFItems;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.enums.BlockLoggingEnum;
+import twilightforest.extensions.IBlockMethods;
+import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable, IBlockMethods {
 

@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.entity.boss.UrGhast;
 import twilightforest.entity.projectile.ITFProjectile;
 
 public class UrGhastFireball extends LargeFireball implements ITFProjectile {

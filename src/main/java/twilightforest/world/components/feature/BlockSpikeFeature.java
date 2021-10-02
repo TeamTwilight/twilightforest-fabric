@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import twilightforest.IMCHandler;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.config.SpikeConfig;
 
@@ -186,8 +185,8 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
         mediumHillStalactites.clear();
         largeHillStalactites.clear();
 
-        TFConfig.COMMON_CONFIG.DIMENSION.hollowHillStalactites.load();
-        if (TFConfig.COMMON_CONFIG.DIMENSION.hollowHillStalactites.useConfigOnly.get()) {
+        TwilightForestMod.COMMON_CONFIG.dimension.hollowHillStalactites.load();
+        if (TwilightForestMod.COMMON_CONFIG.dimension.hollowHillStalactites.useConfigOnly) {
             if (smallHillStalactites.isEmpty()) {
                 TwilightForestMod.LOGGER.info("Not all hollow hills are populated with the config, adding fallback");
                 registerStalactite(1, Blocks.STONE.defaultBlockState(), 0.7F, 8, 1, 1);

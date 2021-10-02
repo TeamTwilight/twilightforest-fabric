@@ -10,7 +10,7 @@ import twilightforest.block.entity.TFBlockEntities;
 public class FinalBossSpawnerBlockEntity extends BossSpawnerBlockEntity<PlateauBoss> {
 
 	public FinalBossSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.FINAL_BOSS_SPAWNER.get(), TFEntities.plateau_boss, pos, state);
+		super(TFBlockEntities.FINAL_BOSS_SPAWNER, TFEntities.plateau_boss, pos, state);
 	}
 
 	//no spawning for you

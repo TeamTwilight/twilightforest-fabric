@@ -2,12 +2,6 @@ package twilightforest.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.tileentity.CinderFurnaceTileEntity;
-import twilightforest.tileentity.TFTileEntities;
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
@@ -32,8 +26,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.entity.CinderFurnaceBlockEntity;
 import twilightforest.block.entity.TFBlockEntities;
 

@@ -29,7 +29,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
 
 import twilightforest.client.model.entity.PartEntity;
-import twilightforest.entity.TFPartEntity;
+import twilightforest.entity.TFPart;
+import twilightforest.entity.monster.IceCrystal;
 import twilightforest.extensions.IEntityEx;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFSounds;

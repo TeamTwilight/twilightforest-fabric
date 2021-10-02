@@ -17,20 +17,20 @@ public class TFParticleType {
 
 	//public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, TwilightForestMod.ID);
 
-	public static final SimpleParticleType> LARGE_FLAME = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":large_flame", new SimpleParticleType(false));
-	public static final SimpleParticleType> LEAF_RUNE = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":leaf_rune", new SimpleParticleType(false));
-	public static final SimpleParticleType> BOSS_TEAR = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":boss_tear", new SimpleParticleType(false));
-	public static final SimpleParticleType> GHAST_TRAP = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":ghast_trap", new SimpleParticleType(false));
-	public static final SimpleParticleType> PROTECTION = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":protection", new SimpleParticleType(true));
-	public static final SimpleParticleType> SNOW = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":snow", new SimpleParticleType(false));
-	public static final SimpleParticleType> SNOW_WARNING = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":snow_warning", new SimpleParticleType(false));
-	public static final SimpleParticleType> SNOW_GUARDIAN = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":snow_guardian", new SimpleParticleType(false));
-	public static final SimpleParticleType> ICE_BEAM = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":ice_beam", new SimpleParticleType(false));
-	public static final SimpleParticleType> ANNIHILATE = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":annihilate", new SimpleParticleType(false));
-	public static final SimpleParticleType> HUGE_SMOKE = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":huge_smoke", new SimpleParticleType(false));
-	public static final SimpleParticleType> FIREFLY = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":firefly", new SimpleParticleType(false));
-	public static final SimpleParticleType> WANDERING_FIREFLY = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":wandering_firefly", new SimpleParticleType(false));
-	public static final SimpleParticleType> JAR_WANDERING_FIREFLY = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":jar_wandering_firefly", new SimpleParticleType(false));
+	public static final SimpleParticleType LARGE_FLAME = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":large_flame", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType LEAF_RUNE = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":leaf_rune", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType BOSS_TEAR = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":boss_tear", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType GHAST_TRAP = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":ghast_trap", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType PROTECTION = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":protection", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType SNOW = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":snow", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType SNOW_WARNING = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":snow_warning", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType SNOW_GUARDIAN = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":snow_guardian", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType ICE_BEAM = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":ice_beam", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType ANNIHILATE = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":annihilate", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType HUGE_SMOKE = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":huge_smoke", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType FIREFLY = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":firefly", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType WANDERING_FIREFLY = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":wandering_firefly", FabricParticleTypes.simple(false));
+	public static final SimpleParticleType JAR_WANDERING_FIREFLY = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":jar_wandering_firefly", FabricParticleTypes.simple(false));
 	public static final ParticleType<PinnedFireflyData> FIREFLY_PINNED = Registry.register(Registry.PARTICLE_TYPE, TFConstants.ID + ":firefly_pinned", new ParticleType<PinnedFireflyData>(false, new PinnedFireflyData.Deserializer()) {
 		@Override
 		public Codec<PinnedFireflyData> codec() {
@@ -46,6 +46,8 @@ public class TFParticleType {
 
 	public static void init() {}
 
+	@Environment(EnvType.CLIENT)
+	public static void registerFactories() {
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.LARGE_FLAME, LargeFlameParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.LEAF_RUNE, LeafRuneParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.BOSS_TEAR, new GhastTearParticle.Factory());

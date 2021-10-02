@@ -444,7 +444,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 	}
 
 	protected static LootTable.Builder torchberryPlant(Block pBlock) {
-		LootItemCondition.Builder HAS_SHEARS = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.data.loot.BlockLoot.class, null, "f_124064_");
+		LootItemCondition.Builder HAS_SHEARS = BlockLoot.HAS_SHEARS;
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(pBlock).when(HAS_SHEARS)))

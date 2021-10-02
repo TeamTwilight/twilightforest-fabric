@@ -254,7 +254,7 @@ public class TFGenDarkCanopyTree extends Feature<TreeConfiguration> {
 	}
 
 	public static boolean isAirOrLeaves(LevelSimulatedReader pLevel, BlockPos pPos) {
-		return pLevel.isStateAtPosition(pPos, (p_67266_) -> p_67266_.isAir() || p_67266_.is(BlockTags.LEAVES) || p_67266_.is(TFBlocks.hardened_dark_leaves.get()));
+		return pLevel.isStateAtPosition(pPos, (p_67266_) -> p_67266_.isAir() || p_67266_.is(BlockTags.LEAVES) || p_67266_.is(TFBlocks.hardened_dark_leaves));
 	}
 
 	private static boolean isReplaceablePlant(LevelSimulatedReader pLevel, BlockPos pPos) {

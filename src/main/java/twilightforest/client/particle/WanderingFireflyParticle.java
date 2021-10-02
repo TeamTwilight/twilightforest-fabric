@@ -91,7 +91,7 @@ public class WanderingFireflyParticle extends TextureSheetParticle {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static class FromJarFactory implements ParticleProvider<SimpleParticleType> {
 		private final SpriteSet spriteSet;
 

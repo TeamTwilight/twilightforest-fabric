@@ -9,7 +9,7 @@ import twilightforest.block.entity.TFBlockEntities;
 public class HydraSpawnerBlockEntity extends BossSpawnerBlockEntity<Hydra> {
 
 	public HydraSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.HYDRA_SPAWNER.get(), TFEntities.hydra, pos, state);
+		super(TFBlockEntities.HYDRA_SPAWNER, TFEntities.hydra, pos, state);
 	}
 
 	@Override
