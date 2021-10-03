@@ -31,12 +31,14 @@ import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
 import twilightforest.ASMHooks;
 import twilightforest.TFConstants;
 import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.client.model.TFLayerDefinitions;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.providers.*;
+import twilightforest.client.shader.ShaderManager;
 import twilightforest.compat.clothConfig.TFClientConfigEvent;
 import twilightforest.compat.clothConfig.configFiles.TFConfig;
 import twilightforest.compat.clothConfig.configFiles.TFConfigClient;
@@ -68,70 +70,37 @@ public class TFClientSetup implements ClientModInitializer {
     @Environment(EnvType.CLIENT)
 	@Override
 	public void onInitializeClient() {
-        TFClientConfigEvent.init();
-
-        ASMHooks.registerMultipartEvents();
-
-        TFPacketHandler.CHANNEL.initClient();
-        TFLayerDefinitions.registerLayers();
-        TFModelLayers.init();
-        TFClientEvents.registerFabricEvents();
-        TFClientEvents.registerModels();
-        TFEntityRenderers.registerEntityRenderer();
-        TFParticleType.registerFactories();
-        //TODO: REMOVE REMOVE REMOVE
-        //ShaderManager.initShaders();
-        ScreenEvents.BEFORE_INIT.register(((client, screen, scaledWidth, scaledHeight) -> LoadingScreenListener.onOpenGui(screen)));
-        //TODO: Currently only work's in Dev Environment
-        //twilightforest.client.TFClientSetup.addLegacyPack();
-
-        System.out.println(FabricLoader.getInstance().isModLoaded("optifabric") + ": Optifine loaded?");
+        TwilightForestMod.LOGGER.debug(FabricLoader.getInstance().isModLoaded("optifabric") + ": Optifine loaded?");
         if(FabricLoader.getInstance().isModLoaded("optifabric"))
             optifinePresent = true;
 
+        FabricClientEvents();
+        FabricRenderingCalls();
+        //TODO: Currently only work's in Dev Environment
+        //twilightforest.client.TFClientSetup.addLegacyPack();
 		TFItems.addItemModelProperties();
-        RenderLayerRegistration.init();
-        armorRegistry();
 
-        //MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
+        ScreenEvents.BEFORE_INIT.register(((client, screen, scaledWidth, scaledHeight) -> LoadingScreenListener.onOpenGui(screen))); //MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
+        RenderLayerRegistration.init();
 		TFBlockEntities.registerTileEntityRenders();
-		TFBlockEntities.registerTileEntitysItemRenders();
         TFContainers.renderScreens();
 
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
         DimensionSpecialEffects.EFFECTS.put(TFConstants.prefix("renderer"), renderInfo);
 
+        Minecraft.getInstance().execute(() -> {
+            Sheets.SIGN_MATERIALS.put(TFBlocks.TWILIGHT_OAK, Sheets.createSignMaterial(TFBlocks.TWILIGHT_OAK));
+            Sheets.SIGN_MATERIALS.put(TFBlocks.CANOPY, Sheets.createSignMaterial(TFBlocks.CANOPY));
+            Sheets.SIGN_MATERIALS.put(TFBlocks.MANGROVE, Sheets.createSignMaterial(TFBlocks.MANGROVE));
+            Sheets.SIGN_MATERIALS.put(TFBlocks.DARKWOOD, Sheets.createSignMaterial(TFBlocks.DARKWOOD));
+            Sheets.SIGN_MATERIALS.put(TFBlocks.TIMEWOOD, Sheets.createSignMaterial(TFBlocks.TIMEWOOD));
+            Sheets.SIGN_MATERIALS.put(TFBlocks.TRANSFORMATION, Sheets.createSignMaterial(TFBlocks.TRANSFORMATION));
+            Sheets.SIGN_MATERIALS.put(TFBlocks.MINING, Sheets.createSignMaterial(TFBlocks.MINING));
+            Sheets.SIGN_MATERIALS.put(TFBlocks.SORTING, Sheets.createSignMaterial(TFBlocks.SORTING));
+        });
+
+        armorRegistry();
     }
-
-    @Environment(EnvType.CLIENT)
-    public static void armorRegistry() {
-        ArcticArmorProvider arcticArmorProvider = new ArcticArmorProvider();
-        ArmorRenderingRegistry.registerModel(arcticArmorProvider, TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
-        ArmorRenderingRegistry.registerTexture(arcticArmorProvider, TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
-
-        FieryArmorProvider fieryArmorProvider = new FieryArmorProvider();
-        ArmorRenderingRegistry.registerModel(fieryArmorProvider, TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
-        ArmorRenderingRegistry.registerTexture(fieryArmorProvider, TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
-
-        KnightArmorProvider knightArmorProvider = new KnightArmorProvider();
-        ArmorRenderingRegistry.registerModel(knightArmorProvider, TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
-        ArmorRenderingRegistry.registerTexture(knightArmorProvider, TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
-
-        PhantomArmorProvider phantomArmorProvider = new PhantomArmorProvider();
-        ArmorRenderingRegistry.registerModel(phantomArmorProvider, TFItems.phantom_helmet, TFItems.phantom_chestplate);
-        ArmorRenderingRegistry.registerTexture(phantomArmorProvider, TFItems.phantom_helmet, TFItems.phantom_chestplate);
-
-        YetiArmorProvider yetiArmorProvider = new YetiArmorProvider();
-        ArmorRenderingRegistry.registerModel( yetiArmorProvider, TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
-        ArmorRenderingRegistry.registerTexture(yetiArmorProvider, TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
-
-        ArmorRenderingRegistry.registerTexture(new NagaArmorProvider(), TFItems.naga_chestplate, TFItems.naga_leggings);
-
-        ArmorRenderingRegistry.registerTexture(new IronwoodArmorProvider(), TFItems.ironwood_boots, TFItems.ironwood_leggings, TFItems.ironwood_chestplate, TFItems.ironwood_helmet);
-
-        ArmorRenderingRegistry.registerTexture(new SteeleafArmorProvider(), TFItems.steeleaf_boots, TFItems.steeleaf_leggings, TFItems.steeleaf_chestplate, TFItems.steeleaf_helmet);
-    }
-
 
     public static void addLegacyPack() {
         //noinspection ConstantConditions
@@ -188,4 +157,50 @@ public class TFClientSetup implements ClientModInitializer {
 //		renderer.addLayer(new ShieldLayer<>(renderer));
 //		renderer.addLayer(new IceLayer<>(renderer));
 	}
+
+    @Environment(EnvType.CLIENT)
+    public static void armorRegistry() {
+        ArcticArmorProvider arcticArmorProvider = new ArcticArmorProvider();
+        ArmorRenderingRegistry.registerModel(arcticArmorProvider, TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
+        ArmorRenderingRegistry.registerTexture(arcticArmorProvider, TFItems.arctic_boots, TFItems.arctic_leggings, TFItems.arctic_chestplate, TFItems.arctic_helmet);
+
+        FieryArmorProvider fieryArmorProvider = new FieryArmorProvider();
+        ArmorRenderingRegistry.registerModel(fieryArmorProvider, TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
+        ArmorRenderingRegistry.registerTexture(fieryArmorProvider, TFItems.fiery_boots, TFItems.fiery_leggings, TFItems.fiery_chestplate, TFItems.fiery_helmet);
+
+        KnightArmorProvider knightArmorProvider = new KnightArmorProvider();
+        ArmorRenderingRegistry.registerModel(knightArmorProvider, TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
+        ArmorRenderingRegistry.registerTexture(knightArmorProvider, TFItems.knightmetal_boots, TFItems.knightmetal_leggings, TFItems.knightmetal_chestplate, TFItems.knightmetal_helmet);
+
+        PhantomArmorProvider phantomArmorProvider = new PhantomArmorProvider();
+        ArmorRenderingRegistry.registerModel(phantomArmorProvider, TFItems.phantom_helmet, TFItems.phantom_chestplate);
+        ArmorRenderingRegistry.registerTexture(phantomArmorProvider, TFItems.phantom_helmet, TFItems.phantom_chestplate);
+
+        YetiArmorProvider yetiArmorProvider = new YetiArmorProvider();
+        ArmorRenderingRegistry.registerModel( yetiArmorProvider, TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
+        ArmorRenderingRegistry.registerTexture(yetiArmorProvider, TFItems.yeti_boots, TFItems.yeti_leggings, TFItems.yeti_chestplate, TFItems.yeti_helmet);
+
+        ArmorRenderingRegistry.registerTexture(new NagaArmorProvider(), TFItems.naga_chestplate, TFItems.naga_leggings);
+
+        ArmorRenderingRegistry.registerTexture(new IronwoodArmorProvider(), TFItems.ironwood_boots, TFItems.ironwood_leggings, TFItems.ironwood_chestplate, TFItems.ironwood_helmet);
+
+        ArmorRenderingRegistry.registerTexture(new SteeleafArmorProvider(), TFItems.steeleaf_boots, TFItems.steeleaf_leggings, TFItems.steeleaf_chestplate, TFItems.steeleaf_helmet);
+    }
+
+    private static void FabricClientEvents(){
+        TFClientConfigEvent.init();
+
+        ASMHooks.registerMultipartEvents();
+        TFPacketHandler.CHANNEL.initClient();
+    }
+
+    private static void FabricRenderingCalls(){
+        TFClientEvents.registerFabricEvents();
+        TFLayerDefinitions.registerLayers();
+        TFModelLayers.init();
+        TFClientEvents.registerModels();
+        TFEntityRenderers.registerEntityRenderer();
+        TFParticleType.registerFactories();
+    }
+
 }

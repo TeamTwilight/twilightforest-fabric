@@ -88,4 +88,6 @@ public class BiomeKeys {
 //		BiomeDictionary.addTypes(THORNLANDS, TWILIGHT, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND);
 //		BiomeDictionary.addTypes(FINAL_PLATEAU, TWILIGHT, BiomeDictionary.Type.MESA, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND);
 	}
+
+	public static void init(){}
 }

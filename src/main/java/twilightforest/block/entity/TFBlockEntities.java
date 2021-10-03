@@ -105,6 +105,7 @@ public class TFBlockEntities {
 		BlockEntityRendererRegistry.INSTANCE.register(KEEPSAKE_CASKET, CasketTileEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(SKULL_CANDLE, SkullCandleTileEntityRenderer::new);
 
+		registerTileEntitysItemRenders();
 	}
 
 	public static void registerTileEntitysItemRenders(){
@@ -142,9 +143,5 @@ public class TFBlockEntities {
 		BuiltinItemRendererRegistry.INSTANCE.register(TFBlocks.keepsake_casket, (itemStack, transform, stack, source, light, overlay) -> {
 			new ISTER(Registry.BLOCK_ENTITY_TYPE.getKey(TFBlockEntities.KEEPSAKE_CASKET)).renderByItem(itemStack, transform, stack, source, light, overlay);
 		});
-
-
-
-
 	}
 }
