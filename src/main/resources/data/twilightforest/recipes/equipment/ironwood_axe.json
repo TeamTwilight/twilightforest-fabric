@@ -12,7 +12,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "tag": "c:ironwood_ingot"
+      "tag": "c:ironwood_ingots"
     },
     "X": {
       "item": "minecraft:stick"
