@@ -18,11 +18,12 @@ import twilightforest.TFSounds;
 import twilightforest.entity.ChainBlock;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.TwilightItemTier;
+import twilightforest.extensions.IItemEx;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class ChainBlockItem extends DiggerItem {
+public class ChainBlockItem extends DiggerItem implements IItemEx {
 
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
@@ -99,7 +100,7 @@ public class ChainBlockItem extends DiggerItem {
 		return UseAnim.BLOCK;
 	}
 
-	//@Override
+	@Override
 	public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
 		return true;
 	}

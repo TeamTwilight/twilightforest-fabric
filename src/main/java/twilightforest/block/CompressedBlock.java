@@ -68,7 +68,6 @@ public class CompressedBlock extends Block implements IBlockMethods {
 		}
 	}
 
-	//TODO: PORT
 	@Override
 	public boolean isFireSource(BlockState state, LevelReader world, BlockPos pos, Direction side) {
 		return this == TFBlocks.fiery_block;

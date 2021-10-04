@@ -24,16 +24,6 @@ public class ArcticArmorItem extends DyeableArmorItem {
 		super(armorMaterial, armorType, props);
 	}
 
-	//TODO: PORT
-	/*@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, @Nullable String layer) {
-		if (slot == EquipmentSlot.LEGS) {
-			return TwilightForestMod.ARMOR_DIR + "arcticarmor_2" + (layer == null ? "_dyed" : "_overlay") + ".png";
-		} else {
-			return TwilightForestMod.ARMOR_DIR + "arcticarmor_1" + (layer == null ? "_dyed" : "_overlay") + ".png";
-		}
-	}*/
-
 	@Override
 	public boolean hasCustomColor(ItemStack stack) {
 		CompoundTag CompoundNBT = stack.getTag();

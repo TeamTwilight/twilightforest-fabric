@@ -1,5 +1,6 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.block.RenderShape;
@@ -12,6 +13,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import twilightforest.entity.projectile.FallingIce;
 
 import java.util.Random;
@@ -38,13 +41,9 @@ public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 				stack.translate(-0.5D, 0.0D, -0.5D);
 				stack.scale(3, 3, 3); // TF - scale 3
 				BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
-				//TODO: PORT
-//				for (net.minecraft.client.renderer.RenderType type : net.minecraft.client.renderer.RenderType.chunkBufferLayers()) {
-//					if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
-//						net.minecraftforge.client.ForgeHooksClient.setRenderLayer(type);
-//						blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(entity.getStartPos()), OverlayTexture.NO_OVERLAY);
-//					}
-//				}
+				for (net.minecraft.client.renderer.RenderType type : net.minecraft.client.renderer.RenderType.chunkBufferLayers()) {
+					blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(entity.getStartPos()), OverlayTexture.NO_OVERLAY);
+				}
 //				net.minecraftforge.client.ForgeHooksClient.setRenderLayer(null);
 				stack.popPose();
 				super.render(entity, entityYaw, partialTicks, stack, buffer, light);

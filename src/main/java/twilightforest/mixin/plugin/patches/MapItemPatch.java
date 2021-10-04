@@ -32,7 +32,7 @@ public class MapItemPatch implements Patch {
                                 Opcodes.INVOKESTATIC,
                                 "twilightforest/ASMHooks",
                                 "renderMapData",
-                                "(Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;)Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;",
+                                FabricLoader.getInstance().isDevelopmentEnvironment() ? "(Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;)Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;" : "(Lnet/minecraft/class_22;Lnet/minecraft/class_1799;Lnet/minecraft/world/level/Level;)Lnet/minecraft/class_22",
                                 false
                         )
                 )
@@ -56,8 +56,6 @@ public class MapItemPatch implements Patch {
 
     @Override
     public String getMethodDesc() {
-        if(FabricLoader.getInstance().isDevelopmentEnvironment())
-            return "(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V";
-        return "(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Ljava/util/List;Lnet/minecraft/class_1836;)V";
+        return Patch.remapMethodDesc("(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Ljava/util/List;Lnet/minecraft/class_1836;)V");
     }
 }

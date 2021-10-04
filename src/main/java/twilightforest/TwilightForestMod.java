@@ -47,6 +47,7 @@ import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
+import twilightforest.mixin.plugin.patches.Patch;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.feature.BlockSpikeFeature;
@@ -67,10 +68,7 @@ public class TwilightForestMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		TwilightForestMod();
-		LOGGER.info("Portal Lighting: "+ TwilightForestMod.COMMON_CONFIG.portalLightning);
 		init();
-		TwilightForestMod.LOGGER.info("RUNNING OK");
-
 	}
 
 	public void TwilightForestMod() {

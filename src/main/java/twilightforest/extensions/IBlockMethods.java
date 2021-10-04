@@ -14,6 +14,7 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.WitherSkull;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.GlazedTerracottaBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.HitResult;
 
 import javax.annotation.Nullable;
 
@@ -161,5 +163,13 @@ public interface IBlockMethods {
     {
         ((Block) this).playerWillDestroy(world, pos, state, player);
         return world.setBlock(pos, fluid.createLegacyBlock(), world.isClientSide ? 11 : 3);
+    }
+
+    default ItemStack getPickBlock(BlockState state) {
+        return null;
+    }
+
+    default ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+        return null;
     }
 }
