@@ -12,7 +12,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "tag": "forge:ingots/ironwood"
+      "tag": "c:ironwood_ingot"
     }
   }
 }
