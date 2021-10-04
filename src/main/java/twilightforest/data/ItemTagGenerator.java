@@ -37,7 +37,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 	public static final Tag.Named<Item> ARCTIC_FUR = TagFactory.ITEM.create(TFConstants.prefix("arctic_fur"));
 	public static final Tag.Named<Item> CARMINITE_GEMS = TagFactory.ITEM.create(new ResourceLocation("c:carminite_gems"));
-	public static final Tag.Named<Item> FIERY_INGOTS = TagFactory.ITEM.create(new ResourceLocation("c:ingots/fiery"));
+	public static final Tag.Named<Item> FIERY_INGOTS = TagFactory.ITEM.create(new ResourceLocation("c:fiery_ingots"));
 	public static final Tag.Named<Item> IRONWOOD_INGOTS = TagFactory.ITEM.create(new ResourceLocation("c:ironwood_ingots"));
 	public static final Tag.Named<Item> KNIGHTMETAL_INGOTS = TagFactory.ITEM.create(new ResourceLocation("c:knightmetal_ingots"));
 	public static final Tag.Named<Item> STEELEAF_INGOTS = TagFactory.ITEM.create(new ResourceLocation("c:steeleaf_ingots"));
