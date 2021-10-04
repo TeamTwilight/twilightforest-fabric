@@ -10,7 +10,7 @@
       "item": "twilightforest:dark_planks"
     },
     "-": {
-      "tag": "forge:rods/wooden"
+      "item": "minecraft:stick"
     }
   },
   "result": {

@@ -160,3 +160,9 @@ accessible method net/minecraft/data/loot/BlockLoot createSilkTouchDispatchTable
 accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator defaultBlock Lnet/minecraft/world/level/block/state/BlockState;
 accessible field net/minecraft/world/level/chunk/ChunkGenerator strongholdSeed J
 accessible field net/minecraft/client/resources/ClientPackSource BUILT_IN Lnet/minecraft/server/packs/metadata/pack/PackMetadataSection;
+extendable class net/minecraft/world/item/crafting/Ingredient
+accessible method net/minecraft/world/item/crafting/Ingredient <init> (Ljava/util/stream/Stream;)V
+accessible class net/minecraft/world/item/crafting/Ingredient$Value
+accessible method net/minecraft/world/item/crafting/Ingredient$ItemValue <init> (Lnet/minecraft/world/item/ItemStack;)V
+accessible method net/minecraft/data/recipes/RecipeProvider has (Lnet/minecraft/tags/Tag;)Lnet/minecraft/advancements/critereon/InventoryChangeTrigger$TriggerInstance;
+accessible method net/minecraft/data/recipes/RecipeProvider has (Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/advancements/critereon/InventoryChangeTrigger$TriggerInstance;

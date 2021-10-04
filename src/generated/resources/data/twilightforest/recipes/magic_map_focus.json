@@ -8,7 +8,7 @@
       "item": "twilightforest:torchberries"
     },
     {
-      "tag": "forge:dusts/glowstone"
+      "item": "minecraft:glowstone_dust"
     }
   ],
   "result": {
