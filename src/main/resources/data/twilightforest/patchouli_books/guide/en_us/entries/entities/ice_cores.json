@@ -1,7 +1,7 @@
 {
   "name": "Ice Cores",
   "icon": "twilightforest:stable_ice_core_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/ice_cores",
   "sortnum": 7120,
   "pages": [

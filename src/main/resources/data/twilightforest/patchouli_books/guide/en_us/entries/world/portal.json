@@ -1,7 +1,7 @@
 {
   "name": "Building a Portal",
   "icon": "twilightforest:twilight_portal_miniature_structure",
-  "category": "world",
+  "category": "twilightforest:world",
   "sortnum": -1010,
   "pages": [
     {

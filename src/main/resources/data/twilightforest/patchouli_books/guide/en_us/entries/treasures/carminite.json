@@ -1,7 +1,7 @@
 {
   "name": "Carminite",
   "icon": "twilightforest:carminite",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6110,
   "pages": [

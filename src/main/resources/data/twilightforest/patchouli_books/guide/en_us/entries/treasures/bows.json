@@ -1,7 +1,7 @@
 {
   "name": "Bows",
   "icon": "twilightforest:seeker_bow",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/bows",
   "sortnum": 1100,
   "pages": [

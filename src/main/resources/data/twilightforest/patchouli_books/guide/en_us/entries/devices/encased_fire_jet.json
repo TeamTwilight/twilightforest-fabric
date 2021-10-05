@@ -1,7 +1,7 @@
 {
   "name": "Encased Fire Jet",
   "icon": "twilightforest:encased_fire_jet",
-  "category": "devices",
+  "category": "twilightforest:devices",
   "advancement": "twilightforest:alt/treasures/encased_fire_jet",
   "sortnum": 5060,
   "pages": [

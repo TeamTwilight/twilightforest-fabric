@@ -1,7 +1,7 @@
 {
   "name": "Smoking Block",
   "icon": "twilightforest:smoker",
-  "category": "devices",
+  "category": "twilightforest:devices",
   "advancement": "twilightforest:alt/treasures/smoking_block",
   "sortnum": 5050,
   "pages": [

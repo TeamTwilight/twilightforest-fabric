@@ -1,7 +1,7 @@
 {
   "name": "Mazebreaker",
   "icon": "twilightforest:mazebreaker_pickaxe",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/mazebreaker_pickaxe",
   "sortnum": 5030,
   "pages": [

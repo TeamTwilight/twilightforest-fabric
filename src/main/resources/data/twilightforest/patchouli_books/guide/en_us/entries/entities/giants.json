@@ -1,7 +1,7 @@
 {
   "name": "Giants",
   "icon": "twilightforest:giant_miner_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/giants",
   "sortnum": 8110,
   "pages": [

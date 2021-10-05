@@ -1,7 +1,7 @@
 {
   "name": "Alpha Yeti",
   "icon": "twilightforest:yeti_helmet",
-  "category": "bosses",
+  "category": "twilightforest:bosses",
   "advancement": "twilightforest:alt/entities/yeti_alpha",
   "sortnum": 7030,
   "pages": [

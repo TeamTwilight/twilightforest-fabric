@@ -1,7 +1,7 @@
 {
   "name": "Minotaur",
   "icon": "twilightforest:minotaur_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/minotaur",
   "sortnum": 5020,
   "pages": [

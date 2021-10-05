@@ -1,7 +1,7 @@
 {
   "name": "Knight Stronghold",
   "icon": "twilightforest:twilight_portal_miniature_structure",
-  "category": "major_landmarks",
+  "category": "twilightforest:major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/knight_stronghold",
   "sortnum": 6010,
   "pages": [

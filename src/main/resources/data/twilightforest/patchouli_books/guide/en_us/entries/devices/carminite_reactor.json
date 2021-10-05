@@ -1,7 +1,7 @@
 {
   "name": "Carminite Reactor",
   "icon": "twilightforest:carminite_reactor",
-  "category": "devices",
+  "category": "twilightforest:devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6260,
   "pages": [

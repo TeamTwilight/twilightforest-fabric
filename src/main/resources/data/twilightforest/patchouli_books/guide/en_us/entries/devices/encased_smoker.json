@@ -1,7 +1,7 @@
 {
   "name": "Encased Smoker",
   "icon": "twilightforest:encased_smoker",
-  "category": "devices",
+  "category": "twilightforest:devices",
   "advancement": "twilightforest:alt/treasures/encased_smoker",
   "sortnum": 5060,
   "pages": [

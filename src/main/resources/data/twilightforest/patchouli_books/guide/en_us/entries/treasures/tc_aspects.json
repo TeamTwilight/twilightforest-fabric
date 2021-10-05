@@ -1,7 +1,7 @@
 {
   "name": "[TC6] Aspects",
   "icon": "thaumcraft:jar_normal:0{Aspects:[{amount:250,key:\"praecantatio\"}]}",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "flag": "mod:thaumcraft",
   "advancement": "twilightforest:alt/compat/tc_aspects",
   "sortnum": 1200,

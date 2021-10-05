@@ -1,7 +1,7 @@
 {
   "name": "Knight Phantoms",
   "icon": "twilightforest:knight_phantom_trophy",
-  "category": "bosses",
+  "category": "twilightforest:bosses",
   "advancement": "twilightforest:alt/entities/knight_phantom",
   "sortnum": 6020,
   "pages": [

@@ -1,7 +1,7 @@
 {
   "name": "Troll",
   "icon": "twilightforest:troll_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/troll",
   "sortnum": 8020,
   "pages": [
