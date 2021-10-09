@@ -1,7 +1,9 @@
 package twilightforest.mixin;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.datafix.fixes.ChunkPalettedStorageFix;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -44,7 +46,7 @@ public class FireBlockMixin {
     public boolean isFireBlock(boolean bl) {
 
         if(this.currentLevel.getBlockState(currentPos.below()).getBlock() instanceof CompressedBlock block){
-            return block.isFireSource();
+            return block.isFireSource(this.currentLevel.getBlockState(currentPos.below()), this.currentLevel, currentPos, null); //Direction dosn't matter
         }
         else{
             return bl;
