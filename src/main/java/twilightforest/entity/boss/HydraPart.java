@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import me.shedaniel.cloth.mixin.client.events.MixinClientPlayNetworkHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -7,6 +8,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.boss.EnderDragonPart;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -76,7 +79,7 @@ public abstract class HydraPart extends TFPart<Hydra> {
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		return getParent() != null && getParent().attackEntityFromPart(this, source, amount);
+		return getParent() != null && getParent().attackEntityFromPart(this, source, 25);
 	}
 
 	@Override

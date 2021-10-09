@@ -624,7 +624,7 @@ public class Hydra extends Mob implements Enemy, IEntityEx {
 			this.ticksSinceDamaged = 0;
 		}
 
-		return tookDamage;
+			return tookDamage;
 	}
 
 	private double calculateRange(DamageSource damagesource) {

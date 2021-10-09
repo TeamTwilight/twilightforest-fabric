@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(MultiPlayerGameMode.class)
+@Debug(export = true)
 public class MultiPlayerGameModeMixin {
     @Shadow @Final private Minecraft minecraft;
 

@@ -16,7 +16,7 @@ public class TwilightForestMixinPlugin implements IMixinConfigPlugin {
     public void onLoad(String mixinPackage) {
         patches = new ArrayList<>();
         patches.add(new LevelPatch());
-        patches.add(new ServerLevelPatch());
+        //patches.add(new ServerLevelPatch());
         patches.add(new ServerLevelPatchStart());
         patches.add(new ServerLevelPatchEnd());
 //        patches.add(new ServerLevelEntitycallbackPatch());

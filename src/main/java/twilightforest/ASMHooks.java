@@ -33,6 +33,7 @@ import twilightforest.client.TFClientSetup;
 import twilightforest.client.model.entity.PartEntity;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.TFPart;
+import twilightforest.entity.boss.Hydra;
 import twilightforest.extensions.IEntityEx;
 import twilightforest.item.TFItems;
 import twilightforest.network.TFPacketHandler;
@@ -170,6 +171,10 @@ public class ASMHooks {
 	 * [BEFORE ARETURN]
 	 */
 	public static synchronized List<Entity> multipartHitbox(List<Entity> list, Level world, @Nullable Entity entityIn, AABB boundingBox, @Nullable Predicate<? super Entity> predicate) {
+		if(entityIn instanceof Hydra){
+			TwilightForestMod.LOGGER.debug("Weee hydra was found!!!!");
+		}
+
 		synchronized (cache) {
 			List<TFPart<?>> parts = cache.get(world);
 			if(parts != null) {
