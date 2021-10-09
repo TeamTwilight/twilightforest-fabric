@@ -1,7 +1,7 @@
 {
   "name": "Hydra Lair",
   "icon": "twilightforest:twilight_portal_miniature_structure",
-  "category": "major_landmarks",
+  "category": "twilightforest:major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/hydra_lair",
   "sortnum": 5100,
   "pages": [

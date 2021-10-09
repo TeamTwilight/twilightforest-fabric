@@ -36,6 +36,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.extensions.IBlockMethods;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
@@ -44,7 +45,7 @@ import java.util.Random;
 import java.util.function.ToIntFunction;
 
 //The nastiest mash-up of AbstractSkullBlock and AbstractCandleBlock you will ever see. Oh yeah, some things in here are mine too. I dont copy everything.
-public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
+public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implements IBlockMethods {
 
 	private final SkullBlock.Type type;
 
@@ -117,8 +118,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 		super.playerDestroy(world, player, pos, state, entity, stack);
 	}
 
-	//TODO: Port
-	//@Override
+	@Override
 	public ItemStack getPickBlock(BlockState state) {
 		ItemStack newStack = new ItemStack(this);
 		CompoundTag tag = new CompoundTag();

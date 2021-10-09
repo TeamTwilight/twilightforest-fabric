@@ -8,7 +8,7 @@
       "item": "minecraft:raw_iron"
     },
     {
-      "tag": "forge:nuggets/gold"
+      "item": "minecraft:gold_nugget"
     }
   ],
   "result": {

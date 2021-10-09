@@ -1,7 +1,7 @@
 {
   "name": "Fiery Blood and Tears",
   "icon": "twilightforest:fiery_blood",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/fiery_blood_tears",
   "sortnum": 5120,
   "pages": [

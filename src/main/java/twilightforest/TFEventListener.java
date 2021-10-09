@@ -121,7 +121,6 @@ public class TFEventListener {
 //		}
 //	}
 
-	///TODO: Hook
 	public static void onCrafting(ItemStack itemStack, Player player, Container inv) {
 		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
 		//TODO: Can this be an Ingredient?
@@ -129,9 +128,6 @@ public class TFEventListener {
 			player.getInventory().add(new ItemStack(Blocks.OAK_PLANKS, 64));
 			player.getInventory().add(new ItemStack(Blocks.OAK_PLANKS, 64));
 			player.getInventory().add(new ItemStack(Blocks.OAK_PLANKS, 64));
-//			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.OAK_PLANKS, 64));
-//			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.OAK_PLANKS, 64));
-//			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Blocks.OAK_PLANKS, 64));
 		}
 	}
 

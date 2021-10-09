@@ -1,7 +1,7 @@
 {
   "name": "Enchanted Forest",
   "icon": "twilightforest:rainboak_sapling",
-  "category": "biomes",
+  "category": "twilightforest:biomes",
   "advancement": "twilightforest:alt/biomes/enchanted_forest",
   "sortnum": 2200,
   "pages": [

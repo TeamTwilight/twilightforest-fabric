@@ -1,4 +1,5 @@
 {
+  "scale": 0.15,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -12,7 +13,7 @@
       "max_delay": 12000,
       "replace_current_music": true
     },
-    "grass_color_modifier": "twilightforest:swamp",
+    "grass_color_modifier": "swamp",
     "sky_color": 2105930,
     "foliage_color": 4809015,
     "grass_color": 6056270,
@@ -113,11 +114,9 @@
   },
   "spawn_costs": {},
   "player_spawn_friendly": false,
-  "forge:registry_name": "twilightforest:swamp",
   "precipitation": "rain",
   "temperature": 0.8,
   "downfall": 0.9,
   "category": "swamp",
-  "depth": -0.125,
-  "scale": 0.15
+  "depth": -0.125
 }

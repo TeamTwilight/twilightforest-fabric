@@ -1,7 +1,7 @@
 {
   "name": "[TCon] Tools",
   "icon": "tconstruct:large_plate{Material:\"fierymetal\"}",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "flag": "mod:tconstruct",
   "advancement": "twilightforest:alt/compat/tconstruct",
   "sortnum": 1200,

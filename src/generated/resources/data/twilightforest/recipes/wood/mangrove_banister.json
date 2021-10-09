@@ -9,7 +9,7 @@
       "item": "twilightforest:mangrove_slab"
     },
     "|": {
-      "tag": "forge:rods/wooden"
+      "item": "minecraft:stick"
     }
   },
   "result": {

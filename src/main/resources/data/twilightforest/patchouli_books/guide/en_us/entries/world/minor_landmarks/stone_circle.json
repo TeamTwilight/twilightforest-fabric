@@ -1,7 +1,7 @@
 {
   "name": "Stone Circle",
   "icon": "minecraft:mossy_cobblestone",
-  "category": "minor_landmarks",
+  "category": "twilightforest:minor_landmarks",
   "advancement": "twilightforest:alt/biomes/general_biomes",
   "sortnum": 2100,
   "pages": [

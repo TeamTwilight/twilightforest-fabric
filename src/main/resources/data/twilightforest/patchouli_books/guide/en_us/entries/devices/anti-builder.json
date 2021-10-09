@@ -1,7 +1,7 @@
 {
   "name": "Anti-builder",
   "icon": "twilightforest:antibuilder",
-  "category": "devices",
+  "category": "twilightforest:devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6240,
   "pages": [

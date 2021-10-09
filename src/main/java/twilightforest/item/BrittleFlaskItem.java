@@ -27,11 +27,12 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import twilightforest.TFConstants;
 import twilightforest.TFSounds;
+import twilightforest.extensions.IItemEx;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BrittleFlaskItem extends Item {
+public class BrittleFlaskItem extends Item implements IItemEx {
 
 	private static String lastUsedPotion;
 	private static int timesUsed;
@@ -52,13 +53,12 @@ public class BrittleFlaskItem extends Item {
 		return stack;
 	}
 
-	//TODO: PORT
-	//@Override
+	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 		return stack.getOrCreateTag().contains("Potion");
 	}
 
-	//@Override
+	@Override
 	public int getRGBDurabilityForDisplay(ItemStack stack) {
 		return PotionUtils.getColor(stack);
 	}
@@ -208,8 +208,7 @@ public class BrittleFlaskItem extends Item {
 		if(!stack.getOrCreateTag().getBoolean("Refillable")) tooltip.add(new TranslatableComponent("item.twilightforest.flask_no_refill").withStyle(ChatFormatting.RED));
 	}
 
-	//TODO: PORT
-	//@Override
+	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 		return Math.abs((double)stack.getOrCreateTag().getInt("Uses") - 4) / 4;
 	}

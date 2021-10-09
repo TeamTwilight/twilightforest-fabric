@@ -7,10 +7,10 @@
   ],
   "key": {
     "#": {
-      "tag": "forge:ingots/fiery"
+      "tag": "c:fiery_ingots"
     },
     "X": {
-      "tag": "forge:rods/blaze"
+      "item": "minecraft:blaze_rod"
     }
   },
   "result": {

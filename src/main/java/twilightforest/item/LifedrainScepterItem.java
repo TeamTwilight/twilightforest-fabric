@@ -35,9 +35,9 @@ import java.util.List;
 import java.util.Optional;
 
 import twilightforest.entity.boss.AlphaYeti;
-import twilightforest.extensions.IItem;
+import twilightforest.extensions.IItemEx;
 
-public class LifedrainScepterItem extends Item implements IItem {
+public class LifedrainScepterItem extends Item implements IItemEx {
 
 	protected LifedrainScepterItem(Properties props) {
 		super(props);
@@ -60,8 +60,7 @@ public class LifedrainScepterItem extends Item implements IItem {
 		return false;
 	}
 
-	//TODO: PORT
-	//@Override
+	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		return false;
 	}

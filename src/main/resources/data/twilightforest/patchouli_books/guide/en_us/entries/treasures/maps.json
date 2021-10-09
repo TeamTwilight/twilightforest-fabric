@@ -1,7 +1,7 @@
 {
   "name": "Maps",
   "icon": "twilightforest:magic_map",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/maps",
   "sortnum": 1100,
   "pages": [

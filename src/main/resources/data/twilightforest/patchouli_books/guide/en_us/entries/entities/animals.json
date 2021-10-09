@@ -1,7 +1,7 @@
 {
   "name": "Animals",
   "icon": "twilightforest:wild_boar_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/animals",
   "sortnum": 1100,
   "pages": [

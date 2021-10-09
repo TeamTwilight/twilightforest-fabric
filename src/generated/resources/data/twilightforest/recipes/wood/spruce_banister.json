@@ -9,7 +9,7 @@
       "item": "minecraft:spruce_slab"
     },
     "|": {
-      "tag": "forge:rods/wooden"
+      "item": "minecraft:stick"
     }
   },
   "result": {

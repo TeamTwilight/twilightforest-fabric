@@ -77,7 +77,7 @@ public class TFClientSetup implements ClientModInitializer {
         FabricClientEvents();
         FabricRenderingCalls();
         //TODO: Currently only work's in Dev Environment
-        //twilightforest.client.TFClientSetup.addLegacyPack();
+        twilightforest.client.TFClientSetup.addLegacyPack();
 		TFItems.addItemModelProperties();
 
         ScreenEvents.BEFORE_INIT.register(((client, screen, scaledWidth, scaledHeight) -> LoadingScreenListener.onOpenGui(screen))); //MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());

@@ -1,4 +1,5 @@
 {
+  "scale": 0.05,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -12,7 +13,7 @@
       "max_delay": 12000,
       "replace_current_music": true
     },
-    "grass_color_modifier": "twilightforest:enchanted_forest",
+    "grass_color_modifier": "dark_forest",
     "particle": {
       "options": {
         "type": "twilightforest:wandering_firefly"
@@ -200,11 +201,9 @@
   },
   "spawn_costs": {},
   "player_spawn_friendly": false,
-  "forge:registry_name": "twilightforest:enchanted_forest",
   "precipitation": "none",
   "temperature": 0.5,
   "downfall": 0.5,
   "category": "forest",
-  "depth": 0.025,
-  "scale": 0.05
+  "depth": 0.025
 }

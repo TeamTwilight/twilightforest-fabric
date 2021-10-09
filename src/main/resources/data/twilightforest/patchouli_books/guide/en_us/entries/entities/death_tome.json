@@ -1,7 +1,7 @@
 {
   "name": "Death Tome",
   "icon": "twilightforest:death_tome_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/death_tome",
   "sortnum": 4010,
   "pages": [

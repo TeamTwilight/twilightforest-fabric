@@ -1,7 +1,7 @@
 {
   "name": "Highlands",
   "icon": "twilightforest:uberous_soil",
-  "category": "biomes",
+  "category": "twilightforest:biomes",
   "advancement": "twilightforest:alt/biomes/twilight_highlands",
   "sortnum": 8000,
   "pages": [

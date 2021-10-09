@@ -1,7 +1,7 @@
 {
   "name": "Lich",
   "icon": "twilightforest:lich_trophy",
-  "category": "bosses",
+  "category": "twilightforest:bosses",
   "advancement": "twilightforest:alt/entities/lich",
   "sortnum": 4020,
   "pages": [

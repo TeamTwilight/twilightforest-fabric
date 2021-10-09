@@ -1,7 +1,7 @@
 {
   "name": "Phantom Armor",
   "icon": "twilightforest:phantom_helmet",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/phantom_armor_set",
   "sortnum": 6030,
   "pages": [

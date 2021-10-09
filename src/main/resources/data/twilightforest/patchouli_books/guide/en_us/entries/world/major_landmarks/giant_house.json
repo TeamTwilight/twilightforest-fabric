@@ -1,7 +1,7 @@
 {
   "name": "Giant House",
   "icon": "twilightforest:twilight_portal_miniature_structure",
-  "category": "major_landmarks",
+  "category": "twilightforest:major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/giant_cloud",
   "sortnum": 8100,
   "pages": [

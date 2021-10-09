@@ -21,13 +21,14 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.entity.TFEntities;
+import twilightforest.extensions.IItemEx;
 import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ZombieWandItem extends Item {
+public class ZombieWandItem extends Item implements IItemEx {
 
 	protected ZombieWandItem(Properties props) {
 		super(props);
@@ -68,11 +69,10 @@ public class ZombieWandItem extends Item {
 		return false;
 	}
 
-	//TODO: PORT
-//	@Override
-//	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-//		return false;
-//	}
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
+	}
 
 	@Override
 	@Environment(EnvType.CLIENT)

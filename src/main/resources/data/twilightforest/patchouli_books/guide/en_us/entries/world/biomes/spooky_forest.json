@@ -1,7 +1,7 @@
 {
   "name": "Spooky Forest",
   "icon": "minecraft:cobweb",
-  "category": "biomes",
+  "category": "twilightforest:biomes",
   "advancement": "twilightforest:alt/biomes/spooky_forest",
   "sortnum": 2200,
   "pages": [

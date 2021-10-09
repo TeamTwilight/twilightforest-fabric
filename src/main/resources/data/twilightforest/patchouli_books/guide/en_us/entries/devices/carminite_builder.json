@@ -1,7 +1,7 @@
 {
   "name": "Carminite Builder",
   "icon": "twilightforest:carminite_builder",
-  "category": "devices",
+  "category": "twilightforest:devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6230,
   "pages": [

@@ -1,7 +1,7 @@
 {
   "name": "Snow Forest",
   "icon": "minecraft:snow_block",
-  "category": "biomes",
+  "category": "twilightforest:biomes",
   "advancement": "twilightforest:alt/biomes/snowy_forest",
   "sortnum": 7000,
   "pages": [

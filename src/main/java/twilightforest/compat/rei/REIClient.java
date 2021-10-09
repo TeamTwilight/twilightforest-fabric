@@ -1,29 +1,20 @@
 package twilightforest.compat.rei;
 
-import me.shedaniel.rei.api.client.ClientHelper;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
-import me.shedaniel.rei.api.client.registry.transfer.TransferHandler;
+import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
 import me.shedaniel.rei.api.client.registry.transfer.TransferHandlerRegistry;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.display.Display;
-import me.shedaniel.rei.api.common.display.SimpleGridMenuDisplay;
+import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.TFConstants;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.compat.rei.common.REIServer;
-import twilightforest.inventory.UncraftingContainer;
 
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.CraftingMenu;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.inventory.RecipeBookMenu;
+import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
 
 public class REIClient implements REIClientPlugin {
     @Override
@@ -32,8 +23,14 @@ public class REIClient implements REIClientPlugin {
     }
 
     @Override
-    public void registerTransferHandlers(TransferHandlerRegistry registry) {
-
+    public void registerEntries(EntryRegistry registry) {
+        if(FabricLoader.getInstance().isModLoaded("patchouli")) {
+            ItemStack book = new ItemStack(Registry.ITEM.get(new ResourceLocation("patchouli:guide_book")));
+            CompoundTag bookId = new CompoundTag();
+            bookId.putString("patchouli:book", "twilightforest:guide");
+            book.setTag(bookId);
+            registry.addEntries(EntryStacks.of(book));
+        }
     }
 
     @Override

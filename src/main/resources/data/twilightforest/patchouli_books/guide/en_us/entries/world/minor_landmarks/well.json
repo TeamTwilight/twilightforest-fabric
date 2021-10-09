@@ -1,7 +1,7 @@
 {
   "name": "Well",
   "icon": "minecraft:water_bucket",
-  "category": "minor_landmarks",
+  "category": "twilightforest:minor_landmarks",
   "advancement": "twilightforest:alt/biomes/general_biomes",
   "sortnum": 2100,
   "pages": [

@@ -5,7 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TFConstants;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
-import twilightforest.extensions.IItem;
+import twilightforest.extensions.IItemEx;
 import twilightforest.util.WorldUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,11 +33,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class CrumbleHornItem extends Item implements IItem {
+public class CrumbleHornItem extends Item implements IItemEx {
 
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;

@@ -13,7 +13,6 @@ import java.util.Collections;
 
 public class DataGenerators {
 	public static int gatherData() {
-		TwilightForestMod.LOGGER.info("BEGIN GEN");
 		DataGenerator generator = new DataGenerator(Paths.get("../src/generated/resources"), Collections.emptyList());
 
 		generator.addProvider(new AdvancementProvider(generator));
@@ -27,7 +26,7 @@ public class DataGenerators {
 		//generator.addProvider(new CustomTagGenerator.EnchantmentTagGenerator(generator));
 		generator.addProvider(new LootGenerator(generator));
 		generator.addProvider(new StonecuttingGenerator(generator));
-		//generator.addProvider(new CraftingGenerator(generator));
+		generator.addProvider(new CraftingGenerator(generator));
 		generator.addProvider(new TwilightWorldDataCompiler(generator));
 		try {
 			generator.run();
