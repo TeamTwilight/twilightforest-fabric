@@ -1,7 +1,7 @@
 {
   "name": "Hollow Stump",
   "icon": "twilightforest:twilight_oak_log",
-  "category": "minor_landmarks",
+  "category": "twilightforest:minor_landmarks",
   "advancement": "twilightforest:alt/biomes/general_biomes",
   "sortnum": 2100,
   "pages": [

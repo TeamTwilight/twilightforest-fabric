@@ -4,7 +4,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.world.level.LightLayer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -14,8 +16,9 @@ import java.util.Random;
 public class WanderingFireflyParticle extends TextureSheetParticle {
 
 	private final int halfLife;
+	private final boolean fromJar;
 
-	public WanderingFireflyParticle(ClientLevel level, double posX, double posY, double posZ, float movementX, float movementY, float movementZ, double additionalX, double additionalY, double additionalZ, SpriteSet set) {
+	public WanderingFireflyParticle(ClientLevel level, double posX, double posY, double posZ, float movementX, float movementY, float movementZ, double additionalX, double additionalY, double additionalZ, SpriteSet set, boolean fromJar) {
 		super(level, posX, posY, posZ, 0.0D, 0.0D, 0.0D);
 		this.xd *= movementX;
 		this.yd *= movementY;
@@ -33,6 +36,16 @@ public class WanderingFireflyParticle extends TextureSheetParticle {
 		this.halfLife = lifetime / 2;
 		this.speedUpWhenYMotionIsBlocked = true;
 		this.hasPhysics = true;
+		this.fromJar = fromJar;
+	}
+
+	@Override
+	public void tick() {
+
+		if(!fromJar && this.level.getBrightness(LightLayer.SKY, new BlockPos(this.x, this.y, this.z)) < 1) {
+			this.remove();
+		}
+		super.tick();
 	}
 
 	@Override
@@ -74,7 +87,25 @@ public class WanderingFireflyParticle extends TextureSheetParticle {
 			double speedX = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;
 			double speedY = (double)rand.nextFloat() * -0.25D * (double)rand.nextFloat() * 0.1D;
 			double speedZ = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;
-			return new WanderingFireflyParticle(world, x, y, z, 0.1F, 0.1F, 0.1F, speedX, speedY, speedZ, this.spriteSet);
+			return new WanderingFireflyParticle(world, x, y, z, 0.1F, 0.1F, 0.1F, speedX, speedY, speedZ, this.spriteSet, false);
+		}
+	}
+
+	@Environment(EnvType.CLIENT)
+	public static class FromJarFactory implements ParticleProvider<SimpleParticleType> {
+		private final SpriteSet spriteSet;
+
+		public FromJarFactory(SpriteSet sprite) {
+			this.spriteSet = sprite;
+		}
+
+		@Override
+		public Particle createParticle(SimpleParticleType type, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			Random rand = world.random;
+			double speedX = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;
+			double speedY = (double)rand.nextFloat() * -0.25D * (double)rand.nextFloat() * 0.1D;
+			double speedZ = (double)rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double)rand.nextFloat() * 0.1D;
+			return new WanderingFireflyParticle(world, x, y, z, 0.1F, 0.1F, 0.1F, speedX, speedY, speedZ, this.spriteSet, true);
 		}
 	}
 }

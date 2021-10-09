@@ -7,13 +7,13 @@
   ],
   "key": {
     "6": {
-      "tag": "forge:gems/carminite"
+      "tag": "c:carminite_gems"
     },
     "#": {
       "item": "twilightforest:tower_wood_encased"
     },
     "%": {
-      "tag": "forge:ores/redstone"
+      "item": "minecraft:redstone_ore"
     }
   },
   "result": {

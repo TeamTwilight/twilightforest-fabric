@@ -2,112 +2,46 @@
   "config": {
     "feature": {
       "config": {
-        "features": [
-          {
-            "feature": {
-              "config": {
+        "feature": {
+          "config": {
+            "features": [
+              {
                 "feature": "twilightforest:mushroom/base/brown_canopy_mushroom",
-                "decorator": {
-                  "config": {
-                    "outer": {
-                      "config": {
-                        "count": 2,
-                        "extra_chance": 0.4,
-                        "extra_count": 2
-                      },
-                      "type": "minecraft:count_extra"
-                    },
-                    "inner": {
-                      "config": {
-                        "outer": {
-                          "config": {
-                            "outer": {
-                              "config": {},
-                              "type": "minecraft:square"
-                            },
-                            "inner": {
-                              "config": {
-                                "outer": {
-                                  "config": {
-                                    "max_water_depth": 0
-                                  },
-                                  "type": "minecraft:water_depth_threshold"
-                                },
-                                "inner": {
-                                  "config": {
-                                    "heightmap": "OCEAN_FLOOR"
-                                  },
-                                  "type": "minecraft:heightmap"
-                                }
-                              },
-                              "type": "minecraft:decorated"
-                            }
-                          },
-                          "type": "minecraft:decorated"
-                        },
-                        "inner": {
-                          "config": {},
-                          "type": "twilightforest:nostructure"
-                        }
-                      },
-                      "type": "minecraft:decorated"
-                    }
-                  },
-                  "type": "minecraft:decorated"
-                }
+                "chance": 0.675
               },
-              "type": "minecraft:decorated"
-            },
-            "chance": 0.675
-          },
-          {
-            "feature": {
-              "config": {
+              {
                 "feature": "twilightforest:mushroom/base/red_canopy_mushroom",
-                "decorator": {
+                "chance": 0.225
+              }
+            ],
+            "default": {
+              "config": {},
+              "type": "minecraft:no_op"
+            }
+          },
+          "type": "minecraft:random_selector"
+        },
+        "decorator": {
+          "config": {
+            "outer": {
+              "config": {
+                "outer": {
+                  "config": {},
+                  "type": "minecraft:square"
+                },
+                "inner": {
                   "config": {
                     "outer": {
                       "config": {
-                        "count": 2,
-                        "extra_chance": 0.4,
-                        "extra_count": 2
+                        "max_water_depth": 0
                       },
-                      "type": "minecraft:count_extra"
+                      "type": "minecraft:water_depth_threshold"
                     },
                     "inner": {
                       "config": {
-                        "outer": {
-                          "config": {
-                            "outer": {
-                              "config": {},
-                              "type": "minecraft:square"
-                            },
-                            "inner": {
-                              "config": {
-                                "outer": {
-                                  "config": {
-                                    "max_water_depth": 0
-                                  },
-                                  "type": "minecraft:water_depth_threshold"
-                                },
-                                "inner": {
-                                  "config": {
-                                    "heightmap": "OCEAN_FLOOR"
-                                  },
-                                  "type": "minecraft:heightmap"
-                                }
-                              },
-                              "type": "minecraft:decorated"
-                            }
-                          },
-                          "type": "minecraft:decorated"
-                        },
-                        "inner": {
-                          "config": {},
-                          "type": "twilightforest:nostructure"
-                        }
+                        "heightmap": "OCEAN_FLOOR"
                       },
-                      "type": "minecraft:decorated"
+                      "type": "minecraft:heightmap"
                     }
                   },
                   "type": "minecraft:decorated"
@@ -115,15 +49,15 @@
               },
               "type": "minecraft:decorated"
             },
-            "chance": 0.225
-          }
-        ],
-        "default": {
-          "config": {},
-          "type": "minecraft:no_op"
+            "inner": {
+              "config": {},
+              "type": "twilightforest:nostructure"
+            }
+          },
+          "type": "minecraft:decorated"
         }
       },
-      "type": "minecraft:random_selector"
+      "type": "minecraft:decorated"
     },
     "decorator": {
       "config": {

@@ -1,5 +1,6 @@
 package twilightforest.util;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.core.Vec3i;
 
@@ -27,5 +28,29 @@ public class StructureBoundingBoxUtils {
 						Math.min(box1.maxX(), box2.maxX()),
 						Math.min(box1.maxY(), box2.maxY()),
 						Math.min(box1.maxZ(), box2.maxZ()));
+	}
+
+	public static CompoundTag boundingBoxToNBT(BoundingBox box) {
+		CompoundTag tag = new CompoundTag();
+
+		tag.putInt("minX", box.minX());
+		tag.putInt("minY", box.minY());
+		tag.putInt("minZ", box.minZ());
+		tag.putInt("maxX", box.maxX());
+		tag.putInt("maxY", box.maxY());
+		tag.putInt("maxZ", box.maxZ());
+
+		return tag;
+	}
+
+	public static BoundingBox NBTToBoundingBox(CompoundTag nbt) {
+		return new BoundingBox(
+				nbt.getInt("minX"),
+				nbt.getInt("minY"),
+				nbt.getInt("minZ"),
+				nbt.getInt("maxX"),
+				nbt.getInt("maxY"),
+				nbt.getInt("maxZ")
+		);
 	}
 }

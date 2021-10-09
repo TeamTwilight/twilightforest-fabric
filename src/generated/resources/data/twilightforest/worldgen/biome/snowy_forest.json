@@ -1,5 +1,5 @@
 {
-  "scale": 0.2,
+  "scale": 0.15,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -54,9 +54,8 @@
       "twilightforest:torch_berries"
     ],
     [
-      "twilightforest:small_log",
-      "twilightforest:snow_spruce_snowy",
-      "twilightforest:tree/mega_spruce_no_podzol"
+      "twilightforest:tree/snowy_forest_trees",
+      "twilightforest:small_log"
     ],
     [
       "twilightforest:snow_under_trees",
@@ -94,5 +93,5 @@
   "temperature": 0.09,
   "downfall": 0.9,
   "category": "forest",
-  "depth": 0.1
+  "depth": 0.05
 }

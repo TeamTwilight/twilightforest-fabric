@@ -1,5 +1,5 @@
 {
-  "scale": 0.05,
+  "scale": 0.005,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -29,7 +29,10 @@
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer"
+    ],
     [],
     [
       "minecraft:disk_clay",
@@ -53,9 +56,6 @@
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
-      "twilightforest:druid_hut",
-      "twilightforest:fancy_well",
-      "twilightforest:simple_well",
       "twilightforest:grove_ruins",
       "twilightforest:foundation",
       "twilightforest:stone_circle",
@@ -196,5 +196,5 @@
   "temperature": 0.8,
   "downfall": 0.4,
   "category": "plains",
-  "depth": 0.0625
+  "depth": 0.005
 }

@@ -1,0 +1,12 @@
+{
+  "target_group": "twilightforest.twilightforest",
+  "tabs": [],
+  "buttons": [
+    {
+      "link": "https://discord.com/invite/6v3z26B",
+      "name": "discord",
+      "texture_u": 48,
+      "texture_v": 0
+    }
+  ]
+}

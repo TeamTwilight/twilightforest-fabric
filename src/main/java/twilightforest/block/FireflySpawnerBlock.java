@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -18,6 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock{
@@ -63,9 +66,10 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock{
 		return super.use(state, level, pos, player, hand, hitResult);
 	}
 
+	@Nonnull
 	@Override
 	public ParticleType<?> getParticlesToSpawn() {
-		return TFParticleType.WANDERING_FIREFLY;
+		return TFParticleType.JAR_WANDERING_FIREFLY;
 	}
 
 	@Override

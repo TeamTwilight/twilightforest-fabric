@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.function.IntConsumer;
 
-//TODO: DELETE IN THE FUTURE AS IE DOSN'T EXIST FOR FABRIC... YET
 public final class ShaderManager {
 
     private static ReloadableResourceManager shaderReloadListener;

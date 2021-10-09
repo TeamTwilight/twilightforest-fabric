@@ -1,7 +1,7 @@
 {
   "name": "Scepters",
   "icon": "twilightforest:twilight_scepter",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/scepters",
   "sortnum": 4030,
   "pages": [

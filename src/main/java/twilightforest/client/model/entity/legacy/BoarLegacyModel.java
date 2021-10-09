@@ -4,9 +4,9 @@ import net.minecraft.client.model.PigModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import twilightforest.entity.passive.BoarEntity;
+import twilightforest.entity.passive.Boar;
 
-public class BoarLegacyModel<T extends BoarEntity> extends PigModel<T> {
+public class BoarLegacyModel<T extends Boar> extends PigModel<T> {
 
 	public BoarLegacyModel(ModelPart root) {
 		super(root);

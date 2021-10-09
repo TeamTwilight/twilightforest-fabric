@@ -8,9 +8,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.TrollEntity;
+import twilightforest.entity.monster.Troll;
 
-public class TrollModel extends HumanoidModel<TrollEntity> {
+public class TrollModel extends HumanoidModel<Troll> {
 
 	public ModelPart nose;
 
@@ -64,7 +64,7 @@ public class TrollModel extends HumanoidModel<TrollEntity> {
 	}
 
 	@Override
-	public void setupAnim(TrollEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Troll entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 		this.hat.yRot = this.head.yRot;
@@ -109,7 +109,7 @@ public class TrollModel extends HumanoidModel<TrollEntity> {
 	}
 
 	@Override
-	public void prepareMobModel(TrollEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void prepareMobModel(Troll entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		if (entity.getTarget() != null) {
 			this.rightArm.xRot += Math.PI;
 			this.leftArm.xRot += Math.PI;

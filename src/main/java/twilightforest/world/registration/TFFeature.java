@@ -28,11 +28,12 @@ import net.minecraft.world.level.levelgen.feature.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import twilightforest.TFConstants;
+import twilightforest.entity.monster.Kobold;
 import twilightforest.world.components.structures.lichtowerrevamp.TowerFoyer;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.entity.*;
 import twilightforest.world.components.structures.*;
-import twilightforest.world.components.structures.courtyard.NagaCourtyardMainComponent;
+import twilightforest.world.components.structures.courtyard.CourtyardMain;
 import twilightforest.world.components.structures.darktower.DarkTowerMainComponent;
 import twilightforest.world.components.structures.finalcastle.FinalCastleMainComponent;
 import twilightforest.world.components.structures.icetower.IceTowerMainComponent;
@@ -66,7 +67,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 2, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 3, y - 2, z - 3);
 		}
 	};
 	public static final TFFeature MEDIUM_HILL = new TFFeature( 2, "medium_hollow_hill", true, true ) {
@@ -87,7 +88,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 5, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 7, y - 5, z - 7);
 		}
 	};
 	public static final TFFeature LARGE_HILL = new TFFeature( 3, "large_hollow_hill", true, true ) {
@@ -109,7 +110,7 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 5, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x - 11, y - 5, z - 11);
 		}
 	};
 	public static final TFFeature HEDGE_MAZE = new TFFeature( 2, "hedge_maze", true ) {
@@ -121,24 +122,28 @@ public class TFFeature {
 			return new HedgeMazeComponent(this, 0, x + 1, y + 1, z + 1);
 		}
 	};
-	public static final TFFeature QUEST_GROVE  = new TFFeature( 1, "quest_grove" , true  ) {
+	public static final TFFeature QUEST_GROVE = new TFFeature( 1, "quest_grove" , true ) {
 		{
 			this.enableTerrainAlterations();
+
+			this.adjustToTerrainHeight = true;
 		}
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new QuestGroveComponent(structureManager, rand, new BlockPos(x, y, z));
+			return new QuestGroveComponent(structureManager, rand, new BlockPos(x + 14, y, z + 14));
 		}
 
 	};
 	public static final TFFeature NAGA_COURTYARD = new TFFeature( 3, "naga_courtyard", true ) {
 		{
 			this.enableTerrainAlterations();
+
+			this.adjustToTerrainHeight = true;
 		}
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return new NagaCourtyardMainComponent(this, rand, 0, x + 1, y + 1, z + 1);
+			return new CourtyardMain(this, rand, 0, x + 1, y + 1, z + 1, structureManager);
 		}
 	};
 	public static final TFFeature LICH_TOWER = new TFFeature( 1, "lich_tower", true, TFConstants.prefix("progress_naga") ) {
@@ -149,6 +154,8 @@ public class TFFeature {
 					.addMonster(EntityType.ENDERMAN, 1, 1, 4)
 					.addMonster(TFEntities.death_tome, 10, 4, 4)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
+
+			this.adjustToTerrainHeight = true;
 		}
 
 		@Override
@@ -163,10 +170,10 @@ public class TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, int x, int y, int z) {
-			return rand.nextBoolean() ? new TowerMainComponent(this, rand, 0, x, y, z) : new TowerFoyer(structureManager, new BlockPos(x, y + 1, z));
+			return rand.nextBoolean() ? new TowerMainComponent(this, rand, 0, x, y, z) : new TowerFoyer(structureManager, new BlockPos(x, y - 3, z));
 		}
 	};
-	public static final TFFeature HYDRA_LAIR     = new TFFeature( 2, "hydra_lair"    , true, true, TFConstants.prefix("progress_labyrinth") ) {
+	public static final TFFeature HYDRA_LAIR = new TFFeature( 2, "hydra_lair"    , true, true, TFConstants.prefix("progress_labyrinth") ) {
 		{
 			this.enableTerrainAlterations();
 		}
@@ -234,6 +241,8 @@ public class TFFeature {
 					.addMonster(1, TFEntities.tower_ghast, 10, 1, 4)
 					// aquarium squids (only in aquariums between y = 35 and y = 64. :/
 					.addWaterCreature(EntityType.SQUID, 10, 4, 4);
+
+			this.adjustToTerrainHeight = true;
 		}
 
 		@Override
@@ -285,7 +294,7 @@ public class TFFeature {
 			return GenerationStep.Decoration.UNDERGROUND_STRUCTURES;
 		}
 	};
-	public static final TFFeature YETI_CAVE  = new TFFeature( 2, "yeti_lairs", true, true, TFConstants.prefix("progress_lich") ) {
+	public static final TFFeature YETI_CAVE = new TFFeature( 2, "yeti_lairs", true, true, TFConstants.prefix("progress_lich") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -390,6 +399,8 @@ public class TFFeature {
 		{
 			// FIXME Incomplete
 			this.disableStructure();
+
+			this.adjustToTerrainHeight = true;
 		}
 
 		@Override
@@ -405,7 +416,7 @@ public class TFFeature {
 	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFFeature>()
 		.put(BiomeKeys.DARK_FOREST.location(), KNIGHT_STRONGHOLD)
 		.put(BiomeKeys.DARK_FOREST_CENTER.location(), DARK_TOWER)
-		.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
+		//.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
 		.put(BiomeKeys.ENCHANTED_FOREST.location(), QUEST_GROVE)
 		.put(BiomeKeys.FINAL_PLATEAU.location(), FINAL_CASTLE)
 		.put(BiomeKeys.FIRE_SWAMP.location(), HYDRA_LAIR)
@@ -431,8 +442,9 @@ public class TFFeature {
 	public boolean requiresTerraforming; // TODO Terraforming Type? Envelopment vs Flattening maybe?
 	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
-	// Seeing this is only used by maps, we could make it a hash of the structure's string name instead
-	public final int id;
+	protected boolean adjustToTerrainHeight;
+
+	private static int count;
 
 	private List<List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists;
 	private List<MobSpawnSettings.SpawnerData> ambientCreatureList;
@@ -441,12 +453,6 @@ public class TFFeature {
 	private long lastSpawnedHintMonsterTime;
 
 	private static final String BOOK_AUTHOR = "A Forgotten Explorer";
-
-	private static final TFFeature[] VALUES = new TFFeature[] { NOTHING, HEDGE_MAZE, SMALL_HILL, MEDIUM_HILL, LARGE_HILL, QUEST_GROVE, NAGA_COURTYARD, LICH_TOWER, LABYRINTH, HYDRA_LAIR, KNIGHT_STRONGHOLD, DARK_TOWER, YETI_CAVE, ICE_TOWER, TROLL_CAVE, FINAL_CASTLE, MUSHROOM_TOWER };
-
-	private static final int maxSize = Arrays.stream(VALUES).mapToInt(v -> v.size).max().orElse(0);
-
-	private static int accumulator = 0;
 
 	TFFeature(int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
 		this(size, name, featureGenerator, false, requiredAdvancements);
@@ -462,6 +468,7 @@ public class TFFeature {
 		this.ambientCreatureList = new ArrayList<>();
 		this.waterCreatureList = new ArrayList<>();
 		this.hasProtectionAura = true;
+		this.adjustToTerrainHeight = false;
 
 		if(!name.equals("hydra_lair")) ambientCreatureList.add(new MobSpawnSettings.SpawnerData(EntityType.BAT, 10, 8, 8));
 
@@ -469,53 +476,24 @@ public class TFFeature {
 
 		this.centerBounds = centerBounds;
 
-		this.id = accumulator++;
+		count++;
+
 	}
 
 	static void init() {}
 
-	public static int getCount() {
-		return VALUES.length;
-	}
-
 	public static int getMaxSize() {
-		return maxSize;
+		return count;
 	}
 
-//	@Nullable
+	public boolean shouldAdjustToTerrain() {
+		return this.adjustToTerrainHeight;
+	}
+
+	//	@Nullable
 //	public MapGenTFMajorFeature createFeatureGenerator() {
 //		return this.shouldHaveFeatureGenerator ? new MapGenTFMajorFeature(this) : null;
 //	}
-
-	/**
-	 * doesn't require modid
-	 */
-	public static TFFeature getFeatureByName(String name) {
-		for (TFFeature feature : VALUES) {
-			if (feature.name.equalsIgnoreCase(name)) {
-				return feature;
-			}
-		}
-		return NOTHING;
-	}
-
-	/**
-	 * modid sensitive
-	 */
-	public static TFFeature getFeatureByName(ResourceLocation name) {
-		if (name.getNamespace().equalsIgnoreCase(TFConstants.ID)) {
-			return getFeatureByName(name.getPath());
-		}
-		return NOTHING;
-	}
-
-	public static TFFeature getFeatureByID(int id) {
-		return id < VALUES.length ? VALUES[id] : NOTHING;
-	}
-
-	public static int getFeatureID(int mapX, int mapZ, WorldGenLevel world) {
-		return getFeatureAt(mapX, mapZ, world).id;
-	}
 
 	public static TFFeature getFeatureAt(int regionX, int regionZ, WorldGenLevel world) {
 		return generateFeature(regionX >> 4, regionZ >> 4, world);
@@ -689,6 +667,7 @@ public class TFFeature {
 	 */
 	public static TFFeature getNearestFeature(int cx, int cz, WorldGenLevel world, @Nullable IntPair center) {
 
+		int maxSize = getMaxSize();
 		int diam = maxSize * 2 + 1;
 		TFFeature[] features = new TFFeature[diam * diam];
 
@@ -929,7 +908,7 @@ public class TFFeature {
 		int dz = world.random.nextInt(16) - world.random.nextInt(16);
 
 		// make our hint monster
-		KoboldEntity hinty = new KoboldEntity(TFEntities.kobold, world);
+		Kobold hinty = new Kobold(TFEntities.kobold, world);
 		hinty.moveTo(pos.offset(dx, dy, dz), 0f, 0f);
 
 		// check if the bounding box is clear
@@ -986,26 +965,26 @@ public class TFFeature {
 		return Registry.register(Registry.STRUCTURE_PIECE, TFConstants.prefix(name.toLowerCase(Locale.ROOT)), piece);
 	}
 
-	public final BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, @Nullable Direction dir) {
+	public final BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir) {
 		if(centerBounds) {
-			x += (maxX + minX) / 4;
-			y += (maxY + minY) / 4;
-			z += (maxZ + minZ) / 4;
+			x += (spanX + minX) / 4;
+			y += (spanY + minY) / 4;
+			z += (spanZ + minZ) / 4;
 		}
 		switch (dir) {
 
 			case SOUTH: // '\0'
 			default:
-				return new BoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
+				return new BoundingBox(x + minX, y + minY, z + minZ, x + spanX + minX, y + spanY + minY, z + spanZ + minZ);
 
 			case WEST: // '\001'
-				return new BoundingBox(x - maxZ + minZ, y + minY, z + minX, x + minZ, y + maxY + minY, z + maxX + minX);
+				return new BoundingBox(x - spanZ + minZ, y + minY, z + minX, x + minZ, y + spanY + minY, z + spanX + minX);
 
 			case NORTH: // '\002'
-				return new BoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
+				return new BoundingBox(x - spanX - minX, y + minY, z - spanZ - minZ, x - minX, y + spanY + minY, z - minZ);
 
 			case EAST: // '\003'
-				return new BoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z + minX);
+				return new BoundingBox(x + minZ, y + minY, z - spanX, x + spanZ + minZ, y + spanY + minY, z + minX);
 		}
 	}
 

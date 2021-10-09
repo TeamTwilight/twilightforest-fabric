@@ -21,10 +21,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import twilightforest.TFConstants;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
+import twilightforest.extensions.IItemEx;
 import twilightforest.util.FeatureLogic;
 
 import javax.annotation.Nonnull;
@@ -33,12 +36,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class OreMagnetItem extends Item {
+public class OreMagnetItem extends Item implements IItemEx {
 
 	private static final float WIGGLE = 10F;
 
 	protected OreMagnetItem(Properties props) {
 		super(props);
+		buildOreMagnetCache();
 	}
 
 	@Nonnull
@@ -87,7 +91,7 @@ public class OreMagnetItem extends Item {
 		}
 	}
 
-//	@Override
+	@Override
 	public float getXpRepairRatio(ItemStack stack) {
 		return 0.1f;
 	}
@@ -271,16 +275,12 @@ public class OreMagnetItem extends Item {
 		cacheNeedsBuild = false;
 	}
 
-	//TODO: PORT
-//	@SubscribeEvent
-//	public static void buildOreMagnetCache(AddReloadListenerEvent event) {
-//		event.addListener((stage, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor) -> {
-//			if (!cacheNeedsBuild) {
-//				ORE_TO_BLOCK_REPLACEMENTS.clear();
-//				cacheNeedsBuild = true;
-//			}
-//
-//			return stage.wait(null).thenRun(() -> {}); // Nothing to do here
-//		});
-//	}
+	public static void buildOreMagnetCache() {
+		ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, serverResourceManager) -> {
+			if (!cacheNeedsBuild) {
+				ORE_TO_BLOCK_REPLACEMENTS.clear();
+				cacheNeedsBuild = true;
+			}
+		});
+	}
 }

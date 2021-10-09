@@ -6,8 +6,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.TntBlock;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.RedcapEntity;
+import twilightforest.entity.monster.Redcap;
+import twilightforest.mixin.TntBlockAccessor;
 
 import java.util.EnumSet;
 
@@ -17,7 +19,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 	private int delay;
 	private BlockPos tntPos = null;
 
-	public RedcapLightTNTGoal(RedcapEntity hostEntity, float speed) {
+	public RedcapLightTNTGoal(Redcap hostEntity, float speed) {
 		super(hostEntity);
 		this.pursueSpeed = speed;
 		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
@@ -68,8 +70,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 		if (this.redcap.distanceToSqr(Vec3.atLowerCornerOf(tntPos)) < 2.4D * 2.4D) {
 			redcap.playAmbientSound();
 
-			//TODO: PORT
-			//Blocks.TNT.catchFire(Blocks.TNT.defaultBlockState(), redcap.level, tntPos, Direction.UP, redcap);
+			TntBlockAccessor.explode(redcap.level, tntPos, redcap);
 			redcap.swing(InteractionHand.MAIN_HAND);
 			redcap.level.setBlock(tntPos, Blocks.AIR.defaultBlockState(), 2);
 			this.redcap.getNavigation().stop();

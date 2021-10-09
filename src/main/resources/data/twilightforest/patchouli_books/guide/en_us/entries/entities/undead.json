@@ -1,7 +1,7 @@
 {
   "name": "Undead",
   "icon": "twilightforest:skeleton_druid_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/undead",
   "sortnum": 2100,
   "pages": [

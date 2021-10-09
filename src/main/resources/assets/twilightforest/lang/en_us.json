@@ -1,6 +1,7 @@
 {
   "itemGroup.twilightforest": "Twilight Forest",
   "itemGroup.twilightforest.twilightforest": "Twilight Forest",
+  "itemGroup.twilightforest.twilightforest.button.discord": "Twilight Forest Discord",
 
   // ADVANCEMENTS
   "advancement.twilightforest.root.desc": "Enter the mysterious magical woodlands: the Twilight Forest.",
@@ -298,7 +299,7 @@
   "block.twilightforest.deadrock_cracked": "Cracked Deadrock",
   "block.twilightforest.deadrock": "Deadrock",
   "block.twilightforest.dark_leaves": "Darkwood Leaves",
-  "block.twilightforest.hardened_dark_leaves": "Dark Forest Canopy Leaves",
+  "block.twilightforest.hardened_dark_leaves": "Thick Darkwood Leaves",
   "block.twilightforest.auroralized_glass": "Auroralized Glass",
   "block.twilightforest.aurora_pillar": "Aurora Pillar",
   "block.twilightforest.aurora_slab": "Aurora Slab",
@@ -433,6 +434,7 @@
   "block.twilightforest.dark_oak_banister": "Dark Oak Banister",
   "block.twilightforest.crimson_banister": "Crimson Banister",
   "block.twilightforest.warped_banister": "Warped Banister",
+  "block.twilightforest.banister.cycle": "Right click with an axe to cycle",
 
   "block.twilightforest.canopy_planks": "Canopy Planks",
   "block.twilightforest.canopy_stairs": "Canopy Stairs",
@@ -677,6 +679,25 @@
   "item.twilightforest.cube_talisman": "Talisman of the Cube",
   "item.twilightforest.cube_of_annihilation": "Cube of Annihilation",
   "item.twilightforest.moon_dial": "Moon Dial",
+
+  "item.twilightforest.music_disc_radiance": "Music Disc",
+  "item.twilightforest.music_disc_radiance.desc": "Rotch Gwylt - Radiance",
+  "item.twilightforest.music_disc_steps": "Music Disc",
+  "item.twilightforest.music_disc_steps.desc": "Rotch Gwylt - Steps",
+  "item.twilightforest.music_disc_superstitious": "Music Disc",
+  "item.twilightforest.music_disc_superstitious.desc": "Rotch Gwylt - Superstitious",
+  "item.twilightforest.music_disc_home": "Music Disc",
+  "item.twilightforest.music_disc_home.desc": "MrCompost - Home",
+  "item.twilightforest.music_disc_wayfarer": "Music Disc",
+  "item.twilightforest.music_disc_wayfarer.desc": "MrCompost - Wayfarer",
+  "item.twilightforest.music_disc_findings": "Music Disc",
+  "item.twilightforest.music_disc_findings.desc": "MrCompost - Findings",
+  "item.twilightforest.music_disc_maker": "Music Disc",
+  "item.twilightforest.music_disc_maker.desc": "MrCompost - Maker",
+  "item.twilightforest.music_disc_thread": "Music Disc",
+  "item.twilightforest.music_disc_thread.desc": "MrCompost - Thread",
+  "item.twilightforest.music_disc_motion": "Music Disc",
+  "item.twilightforest.music_disc_motion.desc": "MrCompost - Motion",
 
   "item.twilightforest.naga_banner_pattern": "Banner Pattern",
   "item.twilightforest.naga_banner_pattern.desc": "Naga Scales",
@@ -1038,6 +1059,9 @@
   "subtitles.twilightforest.entity.deer.death": "Deer dies",
   "subtitles.twilightforest.entity.deer.hurt": "Deer hurts",
   "subtitles.twilightforest.entity.deer.idle": "Deer moos",
+  "subtitles.twilightforest.entity.dwarf_rabbit.death": "Dwarf Rabbit dies",
+  "subtitles.twilightforest.entity.dwarf_rabbit.hurt": "Dwarf Rabbit hurts",
+  "subtitles.twilightforest.entity.dwarf_rabbit.idle": "Dwarf Rabbit squeaks",
   "subtitles.twilightforest.entity.druid.ambient": "Skeleton Druid rattles",
   "subtitles.twilightforest.entity.druid.death": "Skeleton Druid dies",
   "subtitles.twilightforest.entity.druid.hurt": "Skeleton Druid hurts",
@@ -1305,6 +1329,8 @@
 
   "twilightforest.loading.title.enter": "Whisking you off to the Twilight Forest...",
   "twilightforest.loading.title.leave": "Whisking you from the Twilight Forest...",
+
+  "twilightforest.ui.magicmap.fail": "The Magic faltered. Perhaps it doesn't work here?",
 
   // Config
 

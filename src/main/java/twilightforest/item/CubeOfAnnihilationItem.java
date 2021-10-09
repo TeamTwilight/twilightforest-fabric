@@ -9,19 +9,18 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import twilightforest.entity.CubeOfAnnihilationEntity;
+import twilightforest.entity.CubeOfAnnihilation;
 import twilightforest.entity.TFEntities;
+import twilightforest.extensions.IItemEx;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
-
-import net.minecraft.world.item.Item.Properties;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 
-public class CubeOfAnnihilationItem extends Item {
+public class CubeOfAnnihilationItem extends Item implements IItemEx {
 
 	private static final String THROWN_UUID_KEY = "cubeEntity";
 
@@ -44,7 +43,7 @@ public class CubeOfAnnihilationItem extends Item {
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
 		if (!world.isClientSide) {
-			CubeOfAnnihilationEntity launchedCube = new CubeOfAnnihilationEntity(TFEntities.cube_of_annihilation, world, player);
+			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.cube_of_annihilation, world, player);
 			world.addFreshEntity(launchedCube);
 			setThrownEntity(stack, launchedCube);
 		}
@@ -63,13 +62,13 @@ public class CubeOfAnnihilationItem extends Item {
 	}
 
 	@Nullable
-	private static CubeOfAnnihilationEntity getThrownEntity(Level world, ItemStack stack) {
+	private static CubeOfAnnihilation getThrownEntity(Level world, ItemStack stack) {
 		if (world instanceof ServerLevel) {
 			UUID id = getThrownUuid(stack);
 			if (id != null) {
 				Entity e = ((ServerLevel) world).getEntity(id);
-				if (e instanceof CubeOfAnnihilationEntity) {
-					return (CubeOfAnnihilationEntity) e;
+				if (e instanceof CubeOfAnnihilation) {
+					return (CubeOfAnnihilation) e;
 				}
 			}
 		}
@@ -77,7 +76,7 @@ public class CubeOfAnnihilationItem extends Item {
 		return null;
 	}
 
-	private static void setThrownEntity(ItemStack stack, CubeOfAnnihilationEntity cube) {
+	private static void setThrownEntity(ItemStack stack, CubeOfAnnihilation cube) {
 		if (!stack.hasTag()) {
 			stack.setTag(new CompoundTag());
 		}
@@ -94,9 +93,8 @@ public class CubeOfAnnihilationItem extends Item {
 		return UseAnim.BLOCK;
 	}
 
-	////TODO: PORT
-//	@Override
-//	public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
-//		return true;
-//	}
+	@Override
+	public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
+		return true;
+	}
 }

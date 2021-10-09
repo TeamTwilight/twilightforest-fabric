@@ -1,7 +1,7 @@
 {
   "name": "Lich Tower",
   "icon": "twilightforest:lich_tower_miniature_structure",
-  "category": "major_landmarks",
+  "category": "twilightforest:major_landmarks",
   "advancement": "twilightforest:alt/major_landmarks/lich_tower",
   "sortnum": 4000,
   "pages": [

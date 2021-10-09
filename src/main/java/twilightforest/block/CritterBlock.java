@@ -32,7 +32,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.TFSounds;
-import twilightforest.entity.projectile.MoonwormShotEntity;
+import twilightforest.entity.projectile.MoonwormShot;
 
 import javax.annotation.Nullable;
 
@@ -150,7 +150,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	@Override
 	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
-		if ((entityIn instanceof Projectile && !(entityIn instanceof MoonwormShotEntity)) || entityIn instanceof FallingBlockEntity) {
+		if ((entityIn instanceof Projectile && !(entityIn instanceof MoonwormShot)) || entityIn instanceof FallingBlockEntity) {
 			worldIn.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 			worldIn.playSound(null, pos, TFSounds.BUG_SQUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
 			ItemEntity squish = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), this.getSquishResult());

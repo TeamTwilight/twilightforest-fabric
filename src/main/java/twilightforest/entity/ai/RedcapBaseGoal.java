@@ -7,13 +7,13 @@ import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import twilightforest.entity.RedcapEntity;
+import twilightforest.entity.monster.Redcap;
 
 public abstract class RedcapBaseGoal extends Goal {
 
-	protected final RedcapEntity redcap;
+	protected final Redcap redcap;
 
-	protected RedcapBaseGoal(RedcapEntity entity) {
+	protected RedcapBaseGoal(Redcap entity) {
 		this.redcap = entity;
 	}
 

@@ -53,15 +53,10 @@ public class HugeWaterLilyItem extends WaterLilyBlockItem {
 				Material material = blockstate.getMaterial();
 				FluidState ifluidstate = world.getFluidState(blockpos);
 				if ((ifluidstate.getType() == Fluids.WATER || material == Material.ICE) && world.isEmptyBlock(blockpos1)) {
-
-					//TODO: PORT
-					if(true) {
-						throw new RuntimeException("PORT");
-					}
 					// special case for handling block placement with water lilies
-//					net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.create(world.dimension(), world, blockpos1);
-//					// TF - getBlock() instead of hardcoded lilypad
-//					world.setBlock(blockpos1, getBlock().defaultBlockState(), 11);
+					//net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.create(world.dimension(), world, blockpos1);
+					// TF - getBlock() instead of hardcoded lilypad
+					world.setBlock(blockpos1, getBlock().defaultBlockState(), 11);
 //					if (net.minecraftforge.event.ForgeEventFactory.onBlockPlace(player, blocksnapshot, net.minecraft.core.Direction.UP)) {
 //						blocksnapshot.restore(true, false);
 //						return InteractionResultHolder.fail(itemstack);

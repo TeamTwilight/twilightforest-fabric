@@ -1,7 +1,7 @@
 {
   "name": "Ghasts",
   "icon": "twilightforest:mini_ghast_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/ghasts",
   "sortnum": 6110,
   "pages": [

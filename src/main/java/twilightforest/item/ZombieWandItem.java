@@ -19,15 +19,16 @@ import net.minecraft.world.phys.HitResult;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.entity.LoyalZombieEntity;
+import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.entity.TFEntities;
+import twilightforest.extensions.IItemEx;
 import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ZombieWandItem extends Item {
+public class ZombieWandItem extends Item implements IItemEx {
 
 	protected ZombieWandItem(Properties props) {
 		super(props);
@@ -48,7 +49,7 @@ public class ZombieWandItem extends Item {
 			BlockHitResult blockray = EntityUtil.rayTrace(player, 20.0);
 
 			if (blockray.getType() != HitResult.Type.MISS) {
-				LoyalZombieEntity zombie = TFEntities.loyal_zombie.create(world);
+				LoyalZombie zombie = TFEntities.loyal_zombie.create(world);
 				Direction face = blockray.getDirection();
 				zombie.absMoveTo(blockray.getBlockPos().getX() + 0.5F + face.getStepX(), blockray.getBlockPos().getY() + face.getStepY(), blockray.getBlockPos().getZ() + 0.5F + face.getStepZ(), 1.0F, 1.0F);
 				zombie.setTame(true);
@@ -68,11 +69,10 @@ public class ZombieWandItem extends Item {
 		return false;
 	}
 
-	//TODO: PORT
-//	@Override
-//	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-//		return false;
-//	}
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return false;
+	}
 
 	@Override
 	@Environment(EnvType.CLIENT)

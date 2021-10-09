@@ -1,7 +1,7 @@
 {
   "name": "Uncrafting Table",
   "icon": "twilightforest:uncrafting_table",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/uncrafting_table",
   "sortnum": 2100,
   "pages": [

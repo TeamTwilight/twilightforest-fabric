@@ -29,6 +29,8 @@
     "ServerPlayerGameModeMixin",
     "BushBlockMixin",
     "FireBlockMixin"
+    "TntBlockAccessor",
+    "ResultSlotMixin"
   ],
   "client": [
     "client.BlockColorsMixin",

@@ -1,7 +1,7 @@
 {
   "name": "Ur-Ghast",
   "icon": "twilightforest:ur_ghast_trophy",
-  "category": "bosses",
+  "category": "twilightforest:bosses",
   "advancement": "twilightforest:alt/entities/ur_ghast",
   "sortnum": 6120,
   "pages": [

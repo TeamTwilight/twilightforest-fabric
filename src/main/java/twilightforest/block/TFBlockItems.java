@@ -7,9 +7,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import twilightforest.TFConstants;
 import twilightforest.item.*;
-import twilightforest.tileentity.TFTileEntities;
+import twilightforest.block.entity.TFBlockEntities;
 
 import static twilightforest.TwilightForestMod.creativeTab;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 public class TFBlockItems {
 
@@ -76,7 +78,7 @@ public class TFBlockItems {
 //				consumer.accept(new IItemRenderProperties() {
 //					@Override
 //					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-//						return new ISTER(TFTileEntities.KEEPSAKE_CASKET.getId());
+//						return new ISTER(TFBlockEntities.KEEPSAKE_CASKET.getId());
 //					}
 //				});
 //			}
@@ -201,9 +203,9 @@ public class TFBlockItems {
 		blockItem(TFBlocks.torchberry_plant);
 		blockItem(TFBlocks.root_strand);
 		blockItem(TFBlocks.fallen_leaves);
-		wearableBlock(TFBlocks.firefly, TFTileEntities.FIREFLY);
-		wearableBlock(TFBlocks.cicada, TFTileEntities.CICADA);
-		wearableBlock(TFBlocks.moonworm, TFTileEntities.MOONWORM);
+		wearableBlock(TFBlocks.firefly, TFBlockEntities.FIREFLY);
+		wearableBlock(TFBlocks.cicada, TFBlockEntities.CICADA);
+		wearableBlock(TFBlocks.moonworm, TFBlockEntities.MOONWORM);
 		blockItem(TFBlocks.firefly_jar);
 		blockItem(TFBlocks.firefly_spawner);
 		blockItem(TFBlocks.cicada_jar);
@@ -383,7 +385,7 @@ public class TFBlockItems {
 //				consumer.accept(new IItemRenderProperties() {
 //					@Override
 //					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-//						return new ISTER(TFTileEntities.SKULL_CANDLE.getId());
+//						return new ISTER(TFBlockEntities.SKULL_CANDLE.getId());
 //					}
 //				});
 //			}
@@ -401,7 +403,7 @@ public class TFBlockItems {
 //				consumer.accept(new IItemRenderProperties() {
 //					@Override
 //					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-//						return new ISTER(TFTileEntities.TROPHY.getId());
+//						return new ISTER(TFBlockEntities.TROPHY.getId());
 //					}
 //				});
 //			}

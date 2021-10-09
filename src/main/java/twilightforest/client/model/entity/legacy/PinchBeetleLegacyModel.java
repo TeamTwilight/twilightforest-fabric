@@ -13,9 +13,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.PinchBeetleEntity;
+import twilightforest.entity.monster.PinchBeetle;
 
-public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetleEntity> {
+public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetle> {
 
 	ModelPart root;
 	ModelPart head;
@@ -183,7 +183,7 @@ public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetleEntity>
 	}
 
 	@Override
-	public void setupAnim(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(PinchBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 
@@ -230,7 +230,7 @@ public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetleEntity>
 	}
 
 	@Override
-	public void prepareMobModel(PinchBeetleEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void prepareMobModel(PinchBeetle entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		if (entity.isVehicle()) {
 			// open jaws
 			this.jaw1a.yRot = 2.96705972839036F;

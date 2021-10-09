@@ -1,7 +1,7 @@
 {
   "name": "Stalagmite",
   "icon": "minecraft:coal_ore",
-  "category": "minor_landmarks",
+  "category": "twilightforest:minor_landmarks",
   "advancement": "twilightforest:alt/biomes/general_biomes",
   "sortnum": 2100,
   "pages": [

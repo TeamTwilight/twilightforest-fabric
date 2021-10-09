@@ -1,7 +1,7 @@
 {
   "name": "Moon Dial",
   "icon": "twilightforest:moon_dial",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/moon_dial",
   "sortnum": 2101,
   "pages": [

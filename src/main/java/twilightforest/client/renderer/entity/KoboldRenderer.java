@@ -4,20 +4,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.HumanoidArm;
 import com.mojang.math.Vector3f;
 import twilightforest.client.model.entity.KoboldModel;
-import twilightforest.entity.KoboldEntity;
+import twilightforest.entity.monster.Kobold;
 
-public class KoboldRenderer extends TFBipedRenderer<KoboldEntity, KoboldModel> {
+public class KoboldRenderer extends TFBipedRenderer<Kobold, KoboldModel> {
 
 	public KoboldRenderer(EntityRendererProvider.Context manager, KoboldModel modelBiped, float shadowSize, String textureName) {
 		super(manager, modelBiped, shadowSize, textureName);
@@ -29,13 +26,13 @@ public class KoboldRenderer extends TFBipedRenderer<KoboldEntity, KoboldModel> {
 	/**
 	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.ItemInHandLayer} with additional transforms
 	 */
-	private static class HeldItemLayer extends RenderLayer<KoboldEntity, KoboldModel> {
-		public HeldItemLayer(RenderLayerParent<KoboldEntity, KoboldModel> renderer) {
+	private static class HeldItemLayer extends RenderLayer<Kobold, KoboldModel> {
+		public HeldItemLayer(RenderLayerParent<Kobold, KoboldModel> renderer) {
 			super(renderer);
 		}
 
 		@Override
-		public void render(PoseStack ms, MultiBufferSource buffers, int light, KoboldEntity living, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+		public void render(PoseStack ms, MultiBufferSource buffers, int light, Kobold living, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			boolean flag = living.getMainArm() == HumanoidArm.RIGHT;
 			ItemStack itemstack = flag ? living.getOffhandItem() : living.getMainHandItem();
 			ItemStack itemstack1 = flag ? living.getMainHandItem() : living.getOffhandItem();

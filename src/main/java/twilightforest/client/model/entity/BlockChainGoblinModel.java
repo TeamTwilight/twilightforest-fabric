@@ -7,14 +7,14 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.entity.BlockChainGoblinEntity;
+import twilightforest.entity.monster.BlockChainGoblin;
 
 /**
  * ModelMaceGoblin - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @Environment(EnvType.CLIENT)
-public class BlockChainGoblinModel<T extends BlockChainGoblinEntity> extends HumanoidModel<T> {
+public class BlockChainGoblinModel<T extends BlockChainGoblin> extends HumanoidModel<T> {
     private final ModelPart block;
 
     public BlockChainGoblinModel(ModelPart root) {

@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-import twilightforest.extensions.IItem;
 import twilightforest.item.TFItems;
 
 public class LiverootBlock extends Block {

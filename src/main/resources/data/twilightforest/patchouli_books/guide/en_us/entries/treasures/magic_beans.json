@@ -1,7 +1,7 @@
 {
   "name": "Magic Beans",
   "icon": "twilightforest:magic_beans",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/magic_beans",
   "sortnum": 8020,
   "pages": [

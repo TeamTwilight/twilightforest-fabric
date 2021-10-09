@@ -10,12 +10,12 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.entity.CarminiteGhastguardEntity;
+import twilightforest.entity.monster.CarminiteGhastguard;
 
 import java.util.Random;
 
 @Environment(EnvType.CLIENT)
-public class TFGhastModel<T extends CarminiteGhastguardEntity> extends HierarchicalModel<T> {
+public class TFGhastModel<T extends CarminiteGhastguard> extends HierarchicalModel<T> {
 	protected final static int tentacleCount = 9;
 	private final ModelPart root, body;
 	private final ModelPart[] tentacles = new ModelPart[tentacleCount];

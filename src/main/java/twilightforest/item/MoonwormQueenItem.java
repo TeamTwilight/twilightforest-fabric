@@ -27,7 +27,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.projectile.MoonwormShotEntity;
+import twilightforest.entity.projectile.MoonwormShot;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -86,7 +86,7 @@ public class MoonwormQueenItem extends Item {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
 		if (!world.isClientSide && useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
-			boolean fired = world.addFreshEntity(new MoonwormShotEntity(TFEntities.moonworm_shot, world, living));
+			boolean fired = world.addFreshEntity(new MoonwormShot(TFEntities.moonworm_shot, world, living));
 
 			if (fired) {
 				stack.hurtAndBreak(2, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));

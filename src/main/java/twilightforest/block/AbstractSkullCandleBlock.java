@@ -35,7 +35,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.tileentity.SkullCandleTileEntity;
+import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.extensions.IBlockMethods;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
@@ -44,7 +45,7 @@ import java.util.Random;
 import java.util.function.ToIntFunction;
 
 //The nastiest mash-up of AbstractSkullBlock and AbstractCandleBlock you will ever see. Oh yeah, some things in here are mine too. I dont copy everything.
-public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
+public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implements IBlockMethods {
 
 	private final SkullBlock.Type type;
 
@@ -68,7 +69,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-		return new SkullCandleTileEntity(blockPos, blockState);
+		return new SkullCandleBlockEntity(blockPos, blockState);
 	}
 
 	//input one of the enum names to convert it into a candle block
@@ -117,8 +118,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 		super.playerDestroy(world, player, pos, state, entity, stack);
 	}
 
-	//TODO: Port
-	//@Override
+	@Override
 	public ItemStack getPickBlock(BlockState state) {
 		ItemStack newStack = new ItemStack(this);
 		CompoundTag tag = new CompoundTag();
@@ -140,6 +140,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock {
 				&& state.getValue(CANDLES) < 4 && !player.isShiftKeyDown()) {
 
 			level.setBlockAndUpdate(pos, state.setValue(CANDLES, state.getValue(CANDLES) + 1));
+			level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
 			return InteractionResult.sidedSuccess(level.isClientSide);
 

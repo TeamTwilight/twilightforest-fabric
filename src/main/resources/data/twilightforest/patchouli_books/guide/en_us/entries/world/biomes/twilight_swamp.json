@@ -1,7 +1,7 @@
 {
   "name": "Swamp",
   "icon": "twilightforest:canopy_sapling",
-  "category": "biomes",
+  "category": "twilightforest:biomes",
   "advancement": "twilightforest:alt/biomes/twilight_swamp",
   "sortnum": 5000,
   "pages": [

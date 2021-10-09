@@ -11,7 +11,7 @@
       "tag": "twilightforest:fiery_vial"
     },
     {
-      "tag": "forge:rods/blaze"
+      "item": "minecraft:blaze_rod"
     }
   ],
   "result": {

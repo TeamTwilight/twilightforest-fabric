@@ -5,9 +5,9 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.BlockChainGoblinEntity;
+import twilightforest.entity.monster.BlockChainGoblin;
 
-public class BlockChainGoblinLegacyModel<T extends BlockChainGoblinEntity> extends HumanoidModel<T> {
+public class BlockChainGoblinLegacyModel<T extends BlockChainGoblin> extends HumanoidModel<T> {
 
 	ModelPart block;
 

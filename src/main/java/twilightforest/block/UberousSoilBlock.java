@@ -4,16 +4,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 
@@ -23,7 +21,8 @@ import twilightforest.item.TFItems;
 import java.util.Random;
 
 public class UberousSoilBlock extends Block implements BonemealableBlock, IBlockMethods {
-	protected UberousSoilBlock(Properties props) {
+
+	public UberousSoilBlock(Properties props) {
 		super(props);
 	}
 
@@ -44,24 +43,15 @@ public class UberousSoilBlock extends Block implements BonemealableBlock, IBlock
 			world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
 		}
 
-		// todo should probably use IGrowable and loop until it can't grow anymore
-		if (above.getBlock() instanceof IPlantable) {
-			IPlantable plant = (IPlantable) above.getBlock();
-			// revert to farmland or grass
-			if (plant.getPlantType(world, pos.above()) == IPlantable.PlantType.CROP) {
-				world.setBlockAndUpdate(pos, Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 2));
-			} else if (plant.getPlantType(world, pos.above()) == IPlantable.PlantType.PLAINS) {
-				world.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
-			} else {
-				world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
-			}
+		if (above.getBlock() instanceof BonemealableBlock) {
 			// apply bonemeal
-			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-			BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
-			// green sparkles
+			// I wanted to make a while loop that checks if the block above can be bonemealed or not and iterate the growing process until fully grown,
+			// but putting isValidBonemealTarget in a while loop freezes the server. This will do for now I guess
+			for(int i = 0; i < 15; i++) BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), world, pos.above());
 			world.levelEvent(2005, pos.above(), 0);
+			if(above.getBlock() instanceof CropBlock || above.getBlock() instanceof StemBlock) {
+				world.setBlockAndUpdate(pos, Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, 7));
+			}
 		}
 	}
 
@@ -80,8 +70,32 @@ public class UberousSoilBlock extends Block implements BonemealableBlock, IBlock
 	}
 
 	@Override
+	//check each side of the block, as well as above and below each of those positions for valid spots
 	public boolean isValidBonemealTarget(BlockGetter world, BlockPos pos, BlockState state, boolean isClient) {
-		return true;
+		for (Direction dir : Direction.values()) {
+			if (dir != Direction.UP && dir != Direction.DOWN) {
+				BlockState blockAt = world.getBlockState(pos.relative(dir));
+				if (
+						!world.getBlockState(pos.relative(dir).above()).getMaterial().isSolid() &&
+								(blockAt.is(BlockTags.DIRT) || blockAt.is(Blocks.FARMLAND)) &&
+								!blockAt.is(TFBlocks.uberous_soil)) {
+					return true;
+
+				} else if (
+						!world.getBlockState(pos.relative(dir).above().above()).getMaterial().isSolid() &&
+								(world.getBlockState(pos.relative(dir).above()).is(BlockTags.DIRT) || world.getBlockState(pos.relative(dir).above()).is(Blocks.FARMLAND)) &&
+								!world.getBlockState(pos.relative(dir).above()).is(TFBlocks.uberous_soil)) {
+					return true;
+
+				} else if (
+						!world.getBlockState(pos.relative(dir)).getMaterial().isSolid() &&
+								(world.getBlockState(pos.relative(dir).below()).is(BlockTags.DIRT) || world.getBlockState(pos.relative(dir).below()).is(Blocks.FARMLAND)) &&
+								!world.getBlockState(pos.relative(dir).below()).is(TFBlocks.uberous_soil)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -90,12 +104,35 @@ public class UberousSoilBlock extends Block implements BonemealableBlock, IBlock
 	}
 
 	@Override
+	//check each side of the block, as well as above and below each of those positions to check for a place to put a block
+	//the above and below checks allow the patch to jump to a new y level, makes spreading easier
 	public void performBonemeal(ServerLevel world, Random rand, BlockPos pos, BlockState state) {
-		pos = pos.relative(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
+		for(Direction dir: Direction.values()) {
+			if(dir != Direction.UP && dir != Direction.DOWN) {
+				BlockState blockAt = world.getBlockState(pos.relative(dir));
+				if (
+						!world.getBlockState(pos.relative(dir).above()).getMaterial().isSolid() &&
+						(blockAt.is(BlockTags.DIRT) || blockAt.is(Blocks.FARMLAND)) &&
+						!blockAt.is(TFBlocks.uberous_soil)) {
 
-		Block blockAt = world.getBlockState(pos).getBlock();
-		if (world.isEmptyBlock(pos.above()) && (blockAt == Blocks.DIRT || blockAt == Blocks.GRASS_BLOCK || blockAt == Blocks.FARMLAND)) {
-			world.setBlockAndUpdate(pos, this.defaultBlockState());
+					world.setBlockAndUpdate(pos.relative(dir), this.defaultBlockState());
+					break;
+				} else if (
+						!world.getBlockState(pos.relative(dir).above().above()).getMaterial().isSolid() &&
+						(world.getBlockState(pos.relative(dir).above()).is(BlockTags.DIRT) || world.getBlockState(pos.relative(dir).above()).is(Blocks.FARMLAND)) &&
+						!world.getBlockState(pos.relative(dir).above()).is(TFBlocks.uberous_soil)) {
+
+					world.setBlockAndUpdate(pos.relative(dir).above(), this.defaultBlockState());
+					break;
+				} else if (
+						!world.getBlockState(pos.relative(dir)).getMaterial().isSolid() &&
+						(world.getBlockState(pos.relative(dir).below()).is(BlockTags.DIRT) || world.getBlockState(pos.relative(dir).below()).is(Blocks.FARMLAND)) &&
+						!world.getBlockState(pos.relative(dir).below()).is(TFBlocks.uberous_soil)) {
+
+					world.setBlockAndUpdate(pos.relative(dir).below(), this.defaultBlockState());
+					break;
+				}
+			}
 		}
 	}
 }

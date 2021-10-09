@@ -35,7 +35,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
 
     @Override
     protected void modifySettings(StructurePlaceSettings settings, Random random) {
-        settings.addProcessor(new CobblePlankSwizzler(0.0F, random.nextInt(), random.nextInt(), random.nextInt()));
+        settings.addProcessor(new CobblePlankSwizzler(0.0F, random));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
 
             placementPos = placementPos.below(12).relative(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-            template.placeInWorld(world, placementPos, placementPos, placementSettings.clearProcessors().addProcessor(new CobblePlankSwizzler(0.0F, random.nextInt(14), random.nextInt(14), random.nextInt(14))), random, 20);
+            template.placeInWorld(world, placementPos, placementPos, placementSettings.clearProcessors().addProcessor(new CobblePlankSwizzler(0.0F, random)), random, 20);
 
             for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
                 if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA)

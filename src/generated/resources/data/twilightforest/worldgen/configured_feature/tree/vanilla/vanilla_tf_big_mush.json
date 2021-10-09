@@ -18,9 +18,18 @@
     },
     "decorator": {
       "config": {
-        "heightmap": "WORLD_SURFACE_WG"
+        "outer": {
+          "config": {},
+          "type": "minecraft:square"
+        },
+        "inner": {
+          "config": {
+            "heightmap": "MOTION_BLOCKING"
+          },
+          "type": "minecraft:heightmap"
+        }
       },
-      "type": "minecraft:heightmap"
+      "type": "minecraft:decorated"
     }
   },
   "type": "minecraft:decorated"

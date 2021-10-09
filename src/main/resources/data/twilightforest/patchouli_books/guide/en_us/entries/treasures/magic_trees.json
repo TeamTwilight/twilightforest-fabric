@@ -4,7 +4,7 @@
 
   "name": "Magical Trees",
   "icon": "twilightforest:time_sapling",
-  "category": "treasures",
+  "category": "twilightforest:treasures",
   "advancement": "twilightforest:alt/treasures/magic_trees",
   "sortnum": 2100,
   "pages": [

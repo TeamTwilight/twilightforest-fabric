@@ -9,7 +9,7 @@
       "item": "minecraft:dark_oak_slab"
     },
     "|": {
-      "tag": "forge:rods/wooden"
+      "item": "minecraft:stick"
     }
   },
   "result": {

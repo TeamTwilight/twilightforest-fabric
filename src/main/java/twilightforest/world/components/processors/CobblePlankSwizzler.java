@@ -11,13 +11,14 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.enums.StructureWoodVariant;
+import twilightforest.util.ArrayUtil;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class CobblePlankSwizzler extends RandomizedTemplateProcessor {
+public final class CobblePlankSwizzler extends RandomizedTemplateProcessor {
     private final StructureWoodVariant OAK_SWIZZLE;
     private final StructureWoodVariant SPRUCE_SWIZZLE;
     private final StructureWoodVariant BIRCH_SWIZZLE;
@@ -29,13 +30,18 @@ public class CobblePlankSwizzler extends RandomizedTemplateProcessor {
             Codec.intRange(0, StructureWoodVariant.values().length).fieldOf("birch_to_type").orElse(2).forGetter((obj) -> obj.BIRCH_SWIZZLE.ordinal())
     ).apply(instance, CobblePlankSwizzler::new));
 
-
-    public CobblePlankSwizzler(float integrity, int oakSwizzle, int spruceSwizzle, int birchSwizzle) {
+    private CobblePlankSwizzler(float integrity, int oakSwizzle, int spruceSwizzle, int birchSwizzle) {
         super(integrity);
-        int limit = StructureWoodVariant.values().length;
-        this.OAK_SWIZZLE = StructureWoodVariant.values()[Math.floorMod(oakSwizzle, limit)];
-        this.SPRUCE_SWIZZLE = StructureWoodVariant.values()[Math.floorMod(spruceSwizzle, limit)];
-        this.BIRCH_SWIZZLE = StructureWoodVariant.values()[Math.floorMod(birchSwizzle, limit)];
+        this.OAK_SWIZZLE = ArrayUtil.wrapped(StructureWoodVariant.values(), oakSwizzle);
+        this.SPRUCE_SWIZZLE = ArrayUtil.wrapped(StructureWoodVariant.values(), spruceSwizzle);
+        this.BIRCH_SWIZZLE = ArrayUtil.wrapped(StructureWoodVariant.values(), birchSwizzle);
+    }
+
+    public CobblePlankSwizzler(float integrity, Random random) {
+        super(integrity);
+        this.OAK_SWIZZLE = StructureWoodVariant.getRandomWeighted(random);
+        this.SPRUCE_SWIZZLE = StructureWoodVariant.getRandomWeighted(random);
+        this.BIRCH_SWIZZLE = StructureWoodVariant.getRandomWeighted(random);
     }
 
     @Override

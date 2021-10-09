@@ -6,17 +6,14 @@
 
 package twilightforest.client.model.entity.legacy;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.HierarchicalModel;
-import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
-import twilightforest.entity.passive.SquirrelEntity;
+import twilightforest.entity.passive.Squirrel;
 
-public class SquirrelLegacyModel extends QuadrupedModel<SquirrelEntity> {
+public class SquirrelLegacyModel extends QuadrupedModel<Squirrel> {
 	//fields
 	ModelPart tail;
 	ModelPart fluff1;
@@ -93,7 +90,7 @@ public class SquirrelLegacyModel extends QuadrupedModel<SquirrelEntity> {
 	}
 
 	@Override
-	public void setupAnim(SquirrelEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(Squirrel entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;

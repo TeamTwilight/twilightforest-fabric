@@ -1,7 +1,7 @@
 {
   "name": "Wolves",
   "icon": "twilightforest:hostile_wolf_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/wolves",
   "sortnum": 2100,
   "pages": [

@@ -17,9 +17,9 @@ import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
-import twilightforest.entity.ChainBlockEntity;
+import twilightforest.entity.ChainBlock;
 
-public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
+public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 
 	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("blockgoblin.png");
 	private final Model model;
@@ -32,7 +32,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
 	}
 
 	@Override
-	public void render(ChainBlockEntity chainBlock, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void render(ChainBlock chainBlock, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		super.render(chainBlock, yaw, partialTicks, stack, buffer, light);
 
 		stack.pushPose();
@@ -77,7 +77,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlockEntity> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(ChainBlockEntity entity) {
+	public ResourceLocation getTextureLocation(ChainBlock entity) {
 		return textureLoc;
 	}
 }

@@ -83,8 +83,7 @@ public class MagicBeansItem extends Item {
 		int nextLeafY = minY + 10 + world.random.nextInt(20);
 
 		// make stalk
-		boolean isClear = true;
-		for (int dy = minY; dy < maxY && isClear; dy++) {
+		for (int dy = minY; dy < maxY; dy++) {
 			// make radius a little wavy
 			radius = 5F + Mth.sin((dy + yOffset) * rScale) * 2.5F;
 
@@ -109,7 +108,7 @@ public class MagicBeansItem extends Item {
 			for (int dx = minX; dx < maxX; dx++) {
 				for (int dz = minZ; dz < maxZ; dz++) {
 					if ((dx - cx) * (dx - cx) + (dz - cz) * (dz - cz) < stalkThickness * stalkThickness) {
-						isClear &= this.tryToPlaceStalk(world, new BlockPos(dx, dy, dz));
+						this.tryToPlaceStalk(world, new BlockPos(dx, dy, dz));
 					}
 				}
 			}
@@ -152,20 +151,17 @@ public class MagicBeansItem extends Item {
 	/**
 	 * Place the stalk block only if the destination is clear.  Return false if blocked.
 	 */
-	private boolean tryToPlaceStalk(Level world, BlockPos pos) {
+	private void tryToPlaceStalk(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.isAir() || state.getMaterial().isReplaceable() || (state.isAir() || state.is(BlockTags.LEAVES)) || BlockTags.LEAVES.contains(state.getBlock()) || state.getBlock().equals(TFBlocks.fluffy_cloud)) {
 			world.setBlockAndUpdate(pos, TFBlocks.huge_stalk.defaultBlockState());
-			if(pos.getY() > 150) {
-				for(int i = 0; i < 7; i++) {
-					if(world.getBlockState(pos.relative(Direction.UP, i)).equals(TFBlocks.wispy_cloud.defaultBlockState()) || world.getBlockState(pos.relative(Direction.UP, i)).equals(TFBlocks.fluffy_cloud.defaultBlockState())) {
-							world.setBlockAndUpdate(pos.relative(Direction.UP, i), Blocks.AIR.defaultBlockState());
+			if (pos.getY() > 150) {
+				for (int i = 0; i < 7; i++) {
+					if (world.getBlockState(pos.relative(Direction.UP, i)).equals(TFBlocks.wispy_cloud.defaultBlockState()) || world.getBlockState(pos.relative(Direction.UP, i)).equals(TFBlocks.fluffy_cloud.defaultBlockState())) {
+						world.setBlockAndUpdate(pos.relative(Direction.UP, i), Blocks.AIR.defaultBlockState());
 					}
 				}
 			}
-			return true;
-		} else {
-			return false;
 		}
 	}
 

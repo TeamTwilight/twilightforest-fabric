@@ -410,9 +410,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(TFItems.naga_scale)
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.naga_scale))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:naga");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:naga"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.naga_scale)
@@ -457,9 +455,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(Items.GOLD_NUGGET)
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), Items.GOLD_NUGGET))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:lich");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:lich"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Items.GOLD_NUGGET)
@@ -481,9 +477,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(TFItems.meef_stroganoff)
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.meef_stroganoff))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:minoshroom");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:minoshroom"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.meef_stroganoff)
@@ -510,9 +504,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(TFItems.fiery_blood)
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.fiery_blood))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:hydra");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:hydra"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.fiery_blood)
@@ -539,9 +531,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(TFItems.ice_bomb)
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.ice_bomb))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:alpha_yeti");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:alpha_yeti"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.ice_bomb)
@@ -571,9 +561,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 								.add(LootItem.lootTableItem(TFItems.ice_bomb)
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), TFItems.ice_bomb))
-										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> {
-											nbt.putString("shader_name", "twilightforest:snow_queen");
-										})))))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:snow_queen"))))))
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFItems.ice_bomb)
@@ -602,7 +590,18 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 											items.add(serializeNBT(new ItemStack(Blocks.EMERALD_BLOCK)));
 
 											nbt.put("Items", items);
-										}))))));
+										})))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(Blocks.COAL_BLOCK.asItem())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader")), Blocks.COAL_BLOCK.asItem()))
+										.apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:questing_ram"))))))
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(Blocks.COAL_BLOCK.asItem())
+										.when(ModExists.builder("immersiveengineering"))
+										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TFConstants.prefix("shader_bag_twilight")), Blocks.COAL_BLOCK.asItem())))));
 	}
 
 	private CompoundTag serializeNBT(ItemStack stack)

@@ -1,7 +1,7 @@
 {
   "name": "Ghast Trap",
   "icon": "twilightforest:ghast_trap",
-  "category": "devices",
+  "category": "twilightforest:devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6250,
   "pages": [

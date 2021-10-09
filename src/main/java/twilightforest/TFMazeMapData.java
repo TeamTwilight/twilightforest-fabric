@@ -3,7 +3,6 @@ package twilightforest;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
@@ -11,13 +10,11 @@ import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 public class TFMazeMapData extends MapItemSavedData {
-	private static final Map<Level, Map<String, TFMazeMapData>> CLIENT_DATA = new WeakHashMap<>();
+	private static final Map<String, TFMazeMapData> CLIENT_DATA = new HashMap<>();
 
 	public int yCenter;
 
@@ -67,7 +64,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Nullable
 	public static TFMazeMapData getMazeMapData(Level world, String name) {
 		if (world.isClientSide) {
-			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
+			return CLIENT_DATA.get(name);
 		} else {
 			return world.getServer().overworld().getDataStorage().get(TFMazeMapData::load, name);
 		}
@@ -76,7 +73,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMazeMapData(Level world, TFMazeMapData data, String id) {
 		if (world.isClientSide) {
-			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(id, data);
+			CLIENT_DATA.put(id, data);
 		} else {
 			world.getServer().overworld().getDataStorage().set(id, data);
 		}

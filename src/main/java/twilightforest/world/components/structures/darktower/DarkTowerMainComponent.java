@@ -319,7 +319,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	protected void addThreeQuarterFloors(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random decoRNG, BoundingBox sbb, int bottom, int top) {
 
 		int spacing = 5;
-		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY() + bottom) % 4];
+		Rotation rotation = RotationUtil.ROTATIONS[Math.abs((this.boundingBox.minY() + bottom) % 4)];
 		if (bottom == 0) {
 			makeLargeStairsUp(world, sbb, rotation, 0);
 			rotation = rotation.getRotated(Rotation.COUNTERCLOCKWISE_90);

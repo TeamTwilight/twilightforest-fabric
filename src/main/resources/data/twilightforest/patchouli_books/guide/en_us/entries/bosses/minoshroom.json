@@ -1,7 +1,7 @@
 {
   "name": "Minoshroom",
   "icon": "twilightforest:minoshroom_trophy",
-  "category": "bosses",
+  "category": "twilightforest:bosses",
   "advancement": "twilightforest:alt/entities/minoshroom",
   "sortnum": 5040,
   "pages": [

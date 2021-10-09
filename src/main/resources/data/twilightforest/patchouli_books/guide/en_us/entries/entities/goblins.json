@@ -1,7 +1,7 @@
 {
   "name": "Goblins",
   "icon": "twilightforest:blockchain_goblin_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/goblins",
   "sortnum": 2100,
   "pages": [

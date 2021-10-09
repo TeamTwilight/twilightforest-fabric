@@ -36,6 +36,9 @@
   "entity.twilightforest.druid.hurt": { "subtitle": "subtitles.twilightforest.entity.druid.hurt", "sounds": [  "mob/skeleton/hurt1", "mob/skeleton/hurt2", "mob/skeleton/hurt3", "mob/skeleton/hurt4" ] },
   "entity.twilightforest.druid.shoot": { "subtitle": "subtitles.twilightforest.entity.druid.shoot", "sounds": [ "mob/ghast/fireball4" ] },
   "entity.twilightforest.druid.step": { "subtitle": "subtitles.block.generic.footsteps", "sounds": [ "mob/skeleton/step1", "mob/skeleton/step2", "mob/skeleton/step3", "mob/skeleton/step4" ] },
+  "entity.twilightforest.dwarf_rabbit.death": { "subtitle": "subtitles.twilightforest.entity.dwarf_rabbit.death", "sounds": [{ "name": "mob/rabbit/bunnymurder", "volume": 0.5 }]},
+  "entity.twilightforest.dwarf_rabbit.hurt": { "subtitle": "subtitles.twilightforest.entity.dwarf_rabbit.hurt", "sounds": [ { "name": "mob/rabbit/hurt1", "volume": 0.5 }, { "name": "mob/rabbit/hurt2", "volume": 0.5 }, { "name": "mob/rabbit/hurt3", "volume": 0.5 }, { "name": "mob/rabbit/hurt4", "volume": 0.5 }]},
+  "entity.twilightforest.dwarf_rabbit.idle": { "subtitle": "subtitles.twilightforest.entity.dwarf_rabbit.idle", "sounds": [{ "name": "mob/rabbit/idle1", "volume": 0.25 }, { "name": "mob/rabbit/idle2", "volume": 0.25 }, { "name": "mob/rabbit/idle3", "volume": 0.25 }, { "name": "mob/rabbit/idle4", "volume": 0.25 }]},
   "entity.twilightforest.firebeetle.ambient": { "subtitle": "subtitles.twilightforest.entity.firebeetle.ambient", "sounds": [ "mob/spider/say1", "mob/spider/say2", "mob/spider/say3", "mob/spider/say4" ] },
   "entity.twilightforest.firebeetle.death": { "subtitle": "subtitles.twilightforest.entity.firebeetle.death", "sounds": [ "mob/spider/death" ] },
   "entity.twilightforest.firebeetle.hurt": { "subtitle": "subtitles.twilightforest.entity.firebeetle.hurt", "sounds": [  "mob/spider/say1", "mob/spider/say2", "mob/spider/say3", "mob/spider/say4" ] },
@@ -251,15 +254,25 @@
   "block.twilightforest.casket.locked": { "subtitle": "subtitles.twilightforest.block.casket.locked", "sounds": [ "block/wooden_door/close", "block/wooden_door/open" ] },
   "block.twilightforest.casket.repair": { "subtitle": "subtitles.twilightforest.block.casket.repair", "sounds": [ "twilightforest:random/casket/repair" ] },
 
+  "music_disc.twilightforest.radiance": {  "sounds": [{ "name": "twilightforest:music/radiance", "stream": true }]},
+  "music_disc.twilightforest.steps": {  "sounds": [{ "name": "twilightforest:music/steps", "stream": true }]},
+  "music_disc.twilightforest.superstitious": {  "sounds": [{ "name": "twilightforest:music/superstitious", "stream": true }]},
+  "music_disc.twilightforest.home": {  "sounds": [{ "name": "twilightforest:music/home", "stream": true }]},
+  "music_disc.twilightforest.wayfarer": {  "sounds": [{ "name": "twilightforest:music/wayfarer", "stream": true }]},
+  "music_disc.twilightforest.findings": {  "sounds": [{ "name": "twilightforest:music/findings", "stream": true }]},
+  "music_disc.twilightforest.maker": {  "sounds": [{ "name": "twilightforest:music/maker", "stream": true }]},
+  "music_disc.twilightforest.thread": {  "sounds": [{ "name": "twilightforest:music/thread", "stream": true }]},
+  "music_disc.twilightforest.motion": {  "sounds": [{ "name": "twilightforest:music/motion", "stream": true }]},
+
   "music.bg": { "sounds": [
-	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.25 },
-	{ "name": "twilightforest:music/steps", "stream": true, "volume": 0.25 },
-	{ "name": "twilightforest:music/radiance", "stream": true, "volume": 0.25 },
-	{ "name": "twilightforest:music/ambient1", "stream": true },
-	{ "name": "twilightforest:music/ambient2", "stream": true },
-	{ "name": "twilightforest:music/ambient3", "stream": true },
-	{ "name": "twilightforest:music/ambient4", "stream": true },
-	{ "name": "twilightforest:music/ambient5", "stream": true },
-	{ "name": "twilightforest:music/ambient6", "stream": true }
+	{ "name": "twilightforest:music/superstitious", "stream": true, "volume": 0.5 },
+	{ "name": "twilightforest:music/steps", "stream": true, "volume": 0.5 },
+	{ "name": "twilightforest:music/radiance", "stream": true, "volume": 0.5 },
+	{ "name": "twilightforest:music/home", "stream": true, "volume": 0.5 },
+	{ "name": "twilightforest:music/wayfarer", "stream": true, "volume": 0.5 },
+	{ "name": "twilightforest:music/findings", "stream": true, "volume": 0.5 },
+	{ "name": "twilightforest:music/maker", "stream": true, "volume": 0.5 },
+	{ "name": "twilightforest:music/thread", "stream": true, "volume": 0.5 },
+	{ "name": "twilightforest:music/motion", "stream": true, "volume": 0.5 }
   ] }
 }

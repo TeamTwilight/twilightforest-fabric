@@ -1,7 +1,7 @@
 {
   "name": "Kobold",
   "icon": "twilightforest:kobold_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/kobold",
   "sortnum": 2100,
   "pages": [

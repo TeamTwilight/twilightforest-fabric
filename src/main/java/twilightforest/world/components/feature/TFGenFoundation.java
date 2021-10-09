@@ -68,7 +68,7 @@ public class TFGenFoundation extends Feature<NoneFeatureConfiguration> {
 			// make chest
 			int cx = rand.nextInt(sx - 1) + 1;
 			int cz = rand.nextInt(sz - 1) + 1;
-			TFTreasure.basement.generateChest(world, pos.offset(cx, -4, cz), Direction.NORTH, false);
+			TFTreasure.foundation_basement.generateChest(world, pos.offset(cx, -4, cz), Direction.NORTH, false);
 
 		}
 

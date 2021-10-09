@@ -1,7 +1,7 @@
 {
   "name": "Reappearing Block",
   "icon": "twilightforest:reappearing_block",
-  "category": "devices",
+  "category": "twilightforest:devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6200,
   "pages": [

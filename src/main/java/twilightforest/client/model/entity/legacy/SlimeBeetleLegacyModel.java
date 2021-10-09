@@ -15,9 +15,9 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.SlimeBeetleEntity;
+import twilightforest.entity.monster.SlimeBeetle;
 
-public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetleEntity> {
+public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetle> {
 	public ModelPart root;
 	public ModelPart head;
 	public ModelPart legFL;
@@ -160,7 +160,7 @@ public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetleEntity>
 	}
 
 	@Override
-	public void setupAnim(SlimeBeetleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(SlimeBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
 		this.head.xRot = headPitch / (180F / (float) Math.PI);
 

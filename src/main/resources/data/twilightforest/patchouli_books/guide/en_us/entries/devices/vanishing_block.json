@@ -1,7 +1,7 @@
 {
   "name": "Vanishing Block",
   "icon": "twilightforest:vanishing_block",
-  "category": "devices",
+  "category": "twilightforest:devices",
   "advancement": "twilightforest:alt/treasures/carminite",
   "sortnum": 6210,
   "pages": [

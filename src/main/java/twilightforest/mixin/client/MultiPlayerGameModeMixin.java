@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.block.ThornsBlock;
 
 @Mixin(MultiPlayerGameMode.class)
+@Debug(export = true)
 public class MultiPlayerGameModeMixin {
     @Shadow @Final private Minecraft minecraft;
 

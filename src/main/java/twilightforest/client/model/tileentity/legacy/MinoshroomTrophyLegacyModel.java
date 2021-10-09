@@ -17,7 +17,7 @@ public class MinoshroomTrophyLegacyModel extends GenericTrophyModel {
 		this.head = part.getChild("head");
 	}
 
-	public LayerDefinition create() {
+	public static LayerDefinition create() {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition partRoot = mesh.getRoot();
 

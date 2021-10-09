@@ -7,8 +7,12 @@
             "feature": {
               "config": {
                 "feature": {
-                  "config": {},
-                  "type": "twilightforest:plant_roots"
+                  "config": {
+                    "state": {
+                      "Name": "twilightforest:root_strand"
+                    }
+                  },
+                  "type": "twilightforest:underground_plants"
                 },
                 "decorator": {
                   "config": {},

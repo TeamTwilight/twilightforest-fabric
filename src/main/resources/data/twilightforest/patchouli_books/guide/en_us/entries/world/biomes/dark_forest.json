@@ -1,7 +1,7 @@
 {
   "name": "Dark Forest",
   "icon": "twilightforest:darkwood_sapling",
-  "category": "biomes",
+  "category": "twilightforest:biomes",
   "advancement": "twilightforest:alt/biomes/dark_forest",
   "sortnum": 6000,
   "pages": [

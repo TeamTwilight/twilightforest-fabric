@@ -7,9 +7,9 @@ import net.minecraft.resources.ResourceLocation;
 import twilightforest.TFConstants;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HarbingerCubeModel;
-import twilightforest.entity.HarbingerCubeEntity;
+import twilightforest.entity.monster.HarbingerCube;
 
-public class HarbingerCubeRenderer<T extends HarbingerCubeEntity> extends MobRenderer<T, HarbingerCubeModel<T>> {
+public class HarbingerCubeRenderer<T extends HarbingerCube> extends MobRenderer<T, HarbingerCubeModel<T>> {
 
 	private static final ResourceLocation textureLoc = TFConstants.getModelTexture("apocalypse2.png");
 
@@ -18,7 +18,7 @@ public class HarbingerCubeRenderer<T extends HarbingerCubeEntity> extends MobRen
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(HarbingerCubeEntity entity) {
+	public ResourceLocation getTextureLocation(HarbingerCube entity) {
 		return textureLoc;
 	}
 

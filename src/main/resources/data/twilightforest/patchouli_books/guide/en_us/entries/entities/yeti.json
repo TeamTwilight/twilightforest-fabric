@@ -1,7 +1,7 @@
 {
   "name": "Yeti",
   "icon": "twilightforest:yeti_spawn_egg",
-  "category": "entities",
+  "category": "twilightforest:entities",
   "advancement": "twilightforest:alt/entities/yeti",
   "sortnum": 7020,
   "pages": [

@@ -1,6 +1,9 @@
 package twilightforest.block;
 
 import com.mojang.math.Vector3f;
+
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
@@ -82,16 +85,15 @@ public class VanishingBlock extends Block implements IBlockMethods {
 		return InteractionResult.PASS;
 	}
 
-	//TODO: PORT
-//	@Override
-//	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
-//		return !state.getValue(ACTIVE) ? 6000F : super.getExplosionResistance(state, world, pos, explosion);
-//	}
-//
-//	@Override
-//	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
-//		return !state.getValue(ACTIVE) ? !areBlocksLocked(world, pos) : super.canEntityDestroy(state, world, pos, entity);
-//	}
+	@Override
+	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
+		return !state.getValue(ACTIVE) ? 6000F : IBlockMethods.super.getExplosionResistance(state, world, pos, explosion);
+	}
+
+	@Override
+	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
+		return !state.getValue(ACTIVE) ? !areBlocksLocked(world, pos) : IBlockMethods.super.canEntityDestroy(state, world, pos, entity);
+	}
 
 	private static boolean areBlocksLocked(BlockGetter world, BlockPos start) {
 		int limit = 512;
