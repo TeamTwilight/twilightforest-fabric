@@ -79,7 +79,7 @@ public abstract class HydraPart extends TFPart<Hydra> {
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		return getParent() != null && getParent().attackEntityFromPart(this, source, 25);
+		return getParent() != null && getParent().attackEntityFromPart(this, source, amount);
 	}
 
 	@Override
