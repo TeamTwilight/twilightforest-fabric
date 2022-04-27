@@ -3,12 +3,12 @@ package twilightforest.loot.conditions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.util.GsonHelper;
-import net.minecraftforge.fml.ModList;
 import twilightforest.loot.TFTreasure;
 
 // Loot condition for checking if a mod exists.
@@ -18,7 +18,7 @@ public class ModExists implements LootItemCondition {
     private final String modID;
 
     public ModExists(String modID) {
-        this.exists = ModList.get().isLoaded(modID);
+        this.exists = FabricLoader.getInstance().isModLoaded(modID);
         this.modID = modID;
     }
 

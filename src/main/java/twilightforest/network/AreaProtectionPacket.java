@@ -1,18 +1,20 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.S2CPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraftforge.network.NetworkEvent;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ProtectionBox;
 
-import java.util.function.Supplier;
+import java.util.concurrent.Executor;
 
-public class AreaProtectionPacket {
+public class AreaProtectionPacket implements S2CPacket {
 
 	private final BoundingBox sbb;
 	private final BlockPos pos;
@@ -40,10 +42,15 @@ public class AreaProtectionPacket {
 		buf.writeLong(pos.asLong());
 	}
 
+	@Override
+	public void handle(Minecraft client, ClientPacketListener handler, SimpleChannel.ResponseTarget responseTarget) {
+		Handler.onMessage(this, client);
+	}
+
 	public static class Handler {
 
-		public static boolean onMessage(AreaProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(AreaProtectionPacket message, Executor executor) {
+			executor.execute(new Runnable() {
 				@Override
 				public void run() {
 

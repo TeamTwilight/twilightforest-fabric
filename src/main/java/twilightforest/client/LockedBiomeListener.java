@@ -5,31 +5,24 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
 public class LockedBiomeListener {
 
 	private static boolean shownToast = false;
 	private static int timeUntilToast = 60;
 
-	@SubscribeEvent
-	public static void clientTick(TickEvent.ClientTickEvent event) {
-		Player player = Minecraft.getInstance().player;
+	public static void clientTick(Minecraft client) {
+		Player player = client.player;
 		if (player == null || !(player.level instanceof ClientLevel world))
 			return;
 
 		//attempt to send a biome locked toast if our player is in a locked biome, only every 5 ticks
-		if(world.isClientSide && event.phase == TickEvent.Phase.END && player.tickCount % 5 == 0
+		if(world.isClientSide && player.tickCount % 5 == 0
 				&& TFGenerationSettings.isProgressionEnforced(world)
 				&& !player.isCreative() && !player.isSpectator() && !TFConfig.CLIENT_CONFIG.disableLockedBiomeToasts.get()) {
 			if (!TFGenerationSettings.isBiomeSafeFor(world.getBiome(player.blockPosition()).value(), player)) {

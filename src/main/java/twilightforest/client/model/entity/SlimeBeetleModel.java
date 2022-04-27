@@ -12,8 +12,8 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.entity.monster.SlimeBeetle;
 
 import java.util.stream.Collectors;
@@ -23,7 +23,7 @@ import java.util.stream.Stream;
  * ModelSlimeBeetle - MCVinnyq
  * Created using Tabula 8.0.0
  */
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
     public ModelPart root, head;
     public ModelPart rightLeg1, rightLeg2, rightLeg3;

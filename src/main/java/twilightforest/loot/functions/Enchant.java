@@ -14,8 +14,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IRegistryDelegate;
 import twilightforest.loot.TFTreasure;
 
 import java.util.HashMap;
@@ -24,9 +22,9 @@ import java.util.Map;
 // Similar to EnchantRandomly but applies everything and with exact levels
 public class Enchant extends LootItemConditionalFunction {
 
-	private final Map<IRegistryDelegate<Enchantment>, Short> enchantments;
+	private final Map<Enchantment, Short> enchantments;
 
-	protected Enchant(LootItemCondition[] conditions, Map<IRegistryDelegate<Enchantment>, Short> enchantments) {
+	protected Enchant(LootItemCondition[] conditions, Map<Enchantment, Short> enchantments) {
 		super(conditions);
 		this.enchantments = enchantments;
 	}
@@ -38,7 +36,7 @@ public class Enchant extends LootItemConditionalFunction {
 
 	@Override
 	public ItemStack run(ItemStack stack, LootContext context) {
-		for (Map.Entry<IRegistryDelegate<Enchantment>, Short> e : enchantments.entrySet()) {
+		for (Map.Entry<Enchantment, Short> e : enchantments.entrySet()) {
 			if (stack.getItem() == Items.ENCHANTED_BOOK) {
 				EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(e.getKey().get(), e.getValue()));
 			} else {
@@ -53,14 +51,14 @@ public class Enchant extends LootItemConditionalFunction {
 	}
 
 	public static class Builder extends LootItemConditionalFunction.Builder<Enchant.Builder> {
-		private final Map<IRegistryDelegate<Enchantment>, Short> enchants = Maps.newHashMap();
+		private final Map<Enchantment, Short> enchants = Maps.newHashMap();
 
 		protected Enchant.Builder getThis() {
 			return this;
 		}
 
 		public Enchant.Builder apply(Enchantment p_216077_1_, Integer p_216077_2_) {
-			this.enchants.put(p_216077_1_.delegate, p_216077_2_.shortValue());
+			this.enchants.put(p_216077_1_, p_216077_2_.shortValue());
 			return this;
 		}
 

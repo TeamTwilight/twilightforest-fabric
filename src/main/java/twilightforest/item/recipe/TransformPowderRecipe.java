@@ -1,6 +1,7 @@
 package twilightforest.item.recipe;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -11,8 +12,6 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
@@ -71,12 +70,12 @@ public class TransformPowderRecipe implements Recipe<Container> {
 		return TFRecipes.TRANSFORM_POWDER_RECIPE.get();
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<TransformPowderRecipe> {
+	public static class Serializer implements RecipeSerializer<TransformPowderRecipe> {
 
 		@Override
 		public TransformPowderRecipe fromJson(ResourceLocation id, JsonObject object) {
-			EntityType<?> input = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
-			EntityType<?> output = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
+			EntityType<?> input = Registry.ENTITY_TYPE.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
+			EntityType<?> output = Registry.ENTITY_TYPE.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
 			if(input != null && output != null) {
 				return new TransformPowderRecipe(id, input, output);
 			}
@@ -86,15 +85,15 @@ public class TransformPowderRecipe implements Recipe<Container> {
 		@Nullable
 		@Override
 		public TransformPowderRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
-			EntityType<?> input = buffer.readRegistryIdUnsafe(ForgeRegistries.ENTITIES);
-			EntityType<?> output = buffer.readRegistryIdUnsafe(ForgeRegistries.ENTITIES);
+			EntityType<?> input = Registry.ENTITY_TYPE.get(buffer.readResourceLocation());
+			EntityType<?> output = Registry.ENTITY_TYPE.get(buffer.readResourceLocation());
 			return new TransformPowderRecipe(id, input, output);
 		}
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, TransformPowderRecipe recipe) {
-			buffer.writeRegistryIdUnsafe(ForgeRegistries.ENTITIES, recipe.input);
-			buffer.writeRegistryIdUnsafe(ForgeRegistries.ENTITIES, recipe.result);
+			buffer.writeResourceLocation(Registry.ENTITY_TYPE.getKey(recipe.input));
+			buffer.writeResourceLocation(Registry.ENTITY_TYPE.getKey(recipe.result));
 		}
 	}
 }

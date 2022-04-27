@@ -34,7 +34,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFStats;
@@ -105,7 +104,7 @@ public class Experiment115Block extends Block {
 				}
 				player.playSound(SoundEvents.ITEM_PICKUP, 0.5F, 1.0F);
 				if (!player.isCreative())
-					ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115.get()));
+					player.getInventory().placeItemBackInInventory(new ItemStack(TFItems.EXPERIMENT_115.get()));
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
 		}

@@ -14,12 +14,12 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.ColorUtil;
@@ -76,7 +76,7 @@ public class UnstableIceCore extends BaseIceMob {
 		if (this.deathTime == 60) // delay until 3 seconds
 		{
 			if (!level.isClientSide) {
-				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(level, this);
+				boolean mobGriefing = level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
 				this.level.explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, mobGriefing ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.DESTROY);
 
 				if (mobGriefing) {

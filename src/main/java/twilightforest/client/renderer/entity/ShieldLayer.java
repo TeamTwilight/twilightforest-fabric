@@ -16,7 +16,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
-import net.minecraftforge.client.model.data.EmptyModelData;
 import org.apache.commons.lang3.ArrayUtils;
 import twilightforest.TwilightForestMod;
 import twilightforest.capabilities.CapabilityList;
@@ -73,7 +72,7 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 				Minecraft.getInstance().getItemRenderer().renderQuadList(
 						stack,
 						buffer.getBuffer(Sheets.translucentCullBlockSheet()),
-						model.getQuads(null, dir, RAND, EmptyModelData.INSTANCE),
+						model.getQuads(null, dir, RAND),
 						ItemStack.EMPTY,
 						0xF000F0,
 						OverlayTexture.NO_OVERLAY

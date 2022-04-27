@@ -1,30 +1,31 @@
 package twilightforest.compat;
 
+import dev.emi.trinkets.TrinketsMain;
+import dev.emi.trinkets.api.SlotReference;
+import dev.emi.trinkets.api.Trinket;
+import dev.emi.trinkets.api.TrinketsApi;
+import dev.emi.trinkets.api.client.TrinketRendererRegistry;
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+import net.minecraft.core.Registry;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.InterModComms;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
-import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
-import top.theillusivec4.curios.api.type.capability.ICurio;
-import top.theillusivec4.curios.common.capability.CurioItemCapability;
+import twilightforest.block.CritterBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.compat.curios.CharmOfKeepingRenderer;
 import twilightforest.compat.curios.CharmOfLife1NecklaceRenderer;
 import twilightforest.compat.curios.CharmOfLife2NecklaceRenderer;
 import twilightforest.compat.curios.CurioHeadRenderer;
+import twilightforest.item.CuriosCharmItem;
 import twilightforest.item.TFItems;
-
-import javax.annotation.Nonnull;
+import twilightforest.item.TrophyItem;
 
 public class CuriosCompat extends TFCompat {
 
 	public CuriosCompat() {
-		super(CuriosApi.MODID);
+		super(TrinketsMain.MOD_ID);
 	}
 
 	@Override
@@ -39,59 +40,55 @@ public class CuriosCompat extends TFCompat {
 
 	@Override
 	protected void postInit() {
-
+		RegistryEntryAddedCallback.event(Registry.ITEM).register((rawId, id, object) -> {
+			if(object instanceof BlockItem blockItem && blockItem.getBlock() instanceof CritterBlock)
+				CuriosCompat.setupCuriosCapability(object);
+			if (object instanceof TrophyItem)
+				CuriosCompat.setupCuriosCapability(object);
+			if (object instanceof CuriosCharmItem)
+				CuriosCompat.setupCuriosCapability(object);
+		});
 	}
 
 	@Override
 	protected void handleIMCs() {
-		InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().build());
-		InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HEAD.getMessageBuilder().build());
+//		InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().build());
+//		InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HEAD.getMessageBuilder().build());
 	}
 
 	@Override
-	protected void initItems(RegistryEvent.Register<Item> evt) {
+	protected void initItems() {
 
 	}
 
-	public static ICapabilityProvider setupCuriosCapability(ItemStack stack) {
-		return CurioItemCapability.createProvider(new ICurio() {
-					@Override
-					public ItemStack getStack() {
-						return stack;
-					}
-
-					@Nonnull
-					@Override
-					public SoundInfo getEquipSound(top.theillusivec4.curios.api.SlotContext slotContext) {
-						return new SoundInfo(SoundEvents.ARMOR_EQUIP_GENERIC, 1.0F, 1.0F);
-					}
-
-					@Override
-					public boolean canEquipFromUse(top.theillusivec4.curios.api.SlotContext slotContext) {
-						return true;
-					}
-				});
+	public static void setupCuriosCapability(Item item) {
+		TrinketsApi.registerTrinket(item, new Trinket() {
+			@Override
+			public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
+				entity.playSound(SoundEvents.ARMOR_EQUIP_GENERIC, 1.0F, 1.0F);
+			}
+		});
 	}
 
 	public static void registerCurioRenderers() {
-		CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_1.get(), CharmOfLife1NecklaceRenderer::new);
-		CuriosRendererRegistry.register(TFItems.CHARM_OF_LIFE_2.get(), CharmOfLife2NecklaceRenderer::new);
-		CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_1.get(), CharmOfKeepingRenderer::new);
-		CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_2.get(), CharmOfKeepingRenderer::new);
-		CuriosRendererRegistry.register(TFItems.CHARM_OF_KEEPING_3.get(), CharmOfKeepingRenderer::new);
+		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_LIFE_1.get(), new CharmOfLife1NecklaceRenderer()::render);
+		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_LIFE_2.get(), new CharmOfLife2NecklaceRenderer()::render);
+		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_KEEPING_1.get(), new CharmOfKeepingRenderer()::render);
+		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_KEEPING_2.get(), new CharmOfKeepingRenderer()::render);
+		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_KEEPING_3.get(), new CharmOfKeepingRenderer()::render);
 
-		CuriosRendererRegistry.register(TFBlocks.NAGA_TROPHY.get().asItem(), CurioHeadRenderer::new);
-		CuriosRendererRegistry.register(TFBlocks.LICH_TROPHY.get().asItem(), CurioHeadRenderer::new);
-		CuriosRendererRegistry.register(TFBlocks.MINOSHROOM_TROPHY.get().asItem(), CurioHeadRenderer::new);
-		CuriosRendererRegistry.register(TFBlocks.HYDRA_TROPHY.get().asItem(), CurioHeadRenderer::new);
-		CuriosRendererRegistry.register(TFBlocks.KNIGHT_PHANTOM_TROPHY.get().asItem(), CurioHeadRenderer::new);
-		CuriosRendererRegistry.register(TFBlocks.UR_GHAST_TROPHY.get().asItem(), CurioHeadRenderer::new);
-		CuriosRendererRegistry.register(TFBlocks.ALPHA_YETI_TROPHY.get().asItem(), CurioHeadRenderer::new);
-		CuriosRendererRegistry.register(TFBlocks.SNOW_QUEEN_TROPHY.get().asItem(), CurioHeadRenderer::new);
-		CuriosRendererRegistry.register(TFBlocks.QUEST_RAM_TROPHY.get().asItem(), CurioHeadRenderer::new);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.NAGA_TROPHY.get().asItem(), CurioHeadRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.LICH_TROPHY.get().asItem(), CurioHeadRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.MINOSHROOM_TROPHY.get().asItem(), CurioHeadRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.HYDRA_TROPHY.get().asItem(), CurioHeadRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.KNIGHT_PHANTOM_TROPHY.get().asItem(), CurioHeadRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.UR_GHAST_TROPHY.get().asItem(), CurioHeadRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.ALPHA_YETI_TROPHY.get().asItem(), CurioHeadRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.SNOW_QUEEN_TROPHY.get().asItem(), CurioHeadRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.QUEST_RAM_TROPHY.get().asItem(), CurioHeadRenderer::render);
 
-		CuriosRendererRegistry.register(TFBlocks.CICADA.get().asItem(), CurioHeadRenderer::new);
-		CuriosRendererRegistry.register(TFBlocks.FIREFLY.get().asItem(), CurioHeadRenderer::new);
-		CuriosRendererRegistry.register(TFBlocks.MOONWORM.get().asItem(), CurioHeadRenderer::new);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.CICADA.get().asItem(), CurioHeadRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.FIREFLY.get().asItem(), CurioHeadRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFBlocks.MOONWORM.get().asItem(), CurioHeadRenderer::render);
 	}
 }

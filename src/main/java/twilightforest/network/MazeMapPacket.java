@@ -1,20 +1,22 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.S2CPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapRenderer;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
-import net.minecraftforge.network.NetworkEvent;
 import twilightforest.TFMazeMapData;
 import twilightforest.item.MazeMapItem;
 
-import java.util.function.Supplier;
+import java.util.concurrent.Executor;
 
 /**
  * Vanilla's SPacketMaps handler looks for and loads the vanilla MapData instances.
  * We rewrap the packet here in order to load our own MapData instances properly.
  */
-public class MazeMapPacket {
+public class MazeMapPacket implements S2CPacket {
 
 	private final ClientboundMapItemDataPacket inner;
 
@@ -30,9 +32,14 @@ public class MazeMapPacket {
 		inner.write(buf);
 	}
 
+	@Override
+	public void handle(Minecraft client, ClientPacketListener handler, SimpleChannel.ResponseTarget responseTarget) {
+		Handler.onMessage(this, client);
+	}
+
 	public static class Handler {
-		public static boolean onMessage(MazeMapPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(MazeMapPacket message, Executor ctx) {
+			ctx.execute(new Runnable() {
 				@Override
 				public void run() {
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas

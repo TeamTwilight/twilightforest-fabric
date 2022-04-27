@@ -1,5 +1,6 @@
 package twilightforest.util;
 
+import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -11,8 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
@@ -28,9 +27,9 @@ public class EntityUtil {
 	public static boolean canDestroyBlock(Level world, BlockPos pos, BlockState state, Entity entity) {
 		float hardness = state.getDestroySpeed(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.isAir()
-				&& state.getBlock().canEntityDestroy(state, world, pos, entity)
+//				&& state.getBlock().canEntityDestroy(state, world, pos, entity) TODO: PORT
 				&& (/* rude type limit */!(entity instanceof LivingEntity)
-				|| ForgeEventFactory.onEntityDestroyBlock((LivingEntity) entity, pos, state));
+				/*|| ForgeEventFactory.onEntityDestroyBlock((LivingEntity) entity, pos, state)*/);
 	}
 
 	/**
@@ -48,7 +47,7 @@ public class EntityUtil {
 	}
 
 	public static BlockHitResult rayTrace(Player player, @Nullable DoubleUnaryOperator modifier) {
-		double range = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
+		double range = player.getAttribute(ReachEntityAttributes.REACH).getValue();
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}
 

@@ -1,7 +1,10 @@
 package twilightforest.block;
 
 import com.mojang.authlib.GameProfile;
+import io.github.fabricators_of_create.porting_lib.block.LightEmissiveBlock;
+import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -30,14 +33,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock {
+public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock implements LightEmissiveBlock, BlockPickInteractionAware {
 
 	private final SkullBlock.Type type;
 	private int candleCount;
@@ -91,7 +93,7 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock {
 	//input one of the enum names to convert it into a candle block
 	public static Block candleColorToCandle(String candleName) {
 		if(!candleName.equals(CandleColors.PLAIN.getSerializedName())) {
-			return Objects.requireNonNull(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(candleName + "_candle")));
+			return Objects.requireNonNull(Registry.BLOCK.get(new ResourceLocation(candleName + "_candle")));
 		}
 		return Blocks.CANDLE;
 	}
@@ -99,7 +101,7 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock {
 	//inverse of above
 	public static CandleColors candleToCandleColor(Item candle) {
 		if(!(candle == Blocks.CANDLE.asItem())) {
-			return CandleColors.valueOf(candle.getRegistryName().getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
+			return CandleColors.valueOf(Registry.ITEM.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
 		}
 		return CandleColors.PLAIN;
 	}
@@ -169,7 +171,7 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+	public ItemStack getPickedStack(BlockState state, BlockGetter world, BlockPos pos, @Nullable Player player, @Nullable HitResult result) {
 		ItemStack newStack = new ItemStack(this);
 		CompoundTag tag = new CompoundTag();
 		if(world.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {

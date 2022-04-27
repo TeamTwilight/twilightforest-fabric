@@ -26,8 +26,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CastleBlock;
 import twilightforest.entity.TFEntities;
@@ -47,20 +45,6 @@ import java.util.List;
 import java.util.Random;
 
 public class TowerWingComponent extends TFStructureComponentOld {
-
-	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-	private static final Method HangingEntity_updateFacingWithBoundingBox = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "m_6022_", Direction.class);
-	private static final MethodHandle handle_HangingEntity_updateFacingWithBoundingBox;
-
-	static {
-		MethodHandle tmp_handle_HangingEntity_updateFacingWithBoundingBox = null;
-		try {
-			tmp_handle_HangingEntity_updateFacingWithBoundingBox = LOOKUP.unreflect(HangingEntity_updateFacingWithBoundingBox);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		handle_HangingEntity_updateFacingWithBoundingBox = tmp_handle_HangingEntity_updateFacingWithBoundingBox;
-	}
 
 	public TowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(LichTowerPieces.TFLTWin, nbt);

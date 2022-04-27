@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.extensions.EntityExtensions;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,14 +9,11 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.world.phys.HitResult;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class EnderBowItem extends BowItem {
 	private static final String KEY = "twilightforest:ender";
 
@@ -23,14 +21,12 @@ public class EnderBowItem extends BowItem {
 		super(props);
 	}
 
-	@SubscribeEvent
-	public static void onHit(ProjectileImpactEvent evt) {
-		Projectile arrow = evt.getProjectile();
+	public static boolean onHit(Projectile arrow, HitResult hitResult) {
 		if (arrow.getOwner() instanceof Player player
-						&& evt.getRayTraceResult() instanceof EntityHitResult
-						&& ((EntityHitResult) evt.getRayTraceResult()).getEntity() instanceof LivingEntity living) {
+						&& hitResult instanceof EntityHitResult
+						&& ((EntityHitResult) hitResult).getEntity() instanceof LivingEntity living) {
 
-			if (arrow.getPersistentData().contains(KEY)) {
+			if (((EntityExtensions)arrow).getExtraCustomData().contains(KEY)) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
 				float sourceYaw = player.getYRot(), sourcePitch = player.getXRot();
 				@Nullable Entity playerVehicle = player.getVehicle();
@@ -56,6 +52,7 @@ public class EnderBowItem extends BowItem {
 				living.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
 			}
 		}
+		return false;
 	}
 
 	@Override

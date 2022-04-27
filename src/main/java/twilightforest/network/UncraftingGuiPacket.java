@@ -1,14 +1,17 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.C2SPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraftforge.network.NetworkEvent;
 import twilightforest.inventory.UncraftingContainer;
 
-import java.util.function.Supplier;
+import java.util.concurrent.Executor;
 
-public class UncraftingGuiPacket {
+public class UncraftingGuiPacket implements C2SPacket {
     private final int type;
 
     public UncraftingGuiPacket(int type) {
@@ -23,13 +26,16 @@ public class UncraftingGuiPacket {
         buf.writeInt(type);
     }
 
+    @Override
+    public void handle(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, SimpleChannel.ResponseTarget responseTarget) {
+        Handler.onMessage(this, server, player);
+    }
+
     public static class Handler {
 
         @SuppressWarnings("Convert2Lambda")
-        public static boolean onMessage(UncraftingGuiPacket message, Supplier<NetworkEvent.Context> ctx) {
-            ServerPlayer player = ctx.get().getSender();
-
-            ctx.get().enqueueWork(new Runnable() {
+        public static boolean onMessage(UncraftingGuiPacket message, Executor ctx, ServerPlayer player) {
+            ctx.execute(new Runnable() {
                 @Override
                 public void run() {
                     AbstractContainerMenu container = player.containerMenu;

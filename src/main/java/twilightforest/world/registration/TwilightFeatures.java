@@ -1,14 +1,13 @@
 package twilightforest.world.registration;
 
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.trees.treeplacers.*;
 import twilightforest.world.components.placements.ChunkBlanketingModifier;
@@ -21,10 +20,10 @@ public final class TwilightFeatures {
 
     public static long seed;
 
-    public static final DeferredRegister<FoliagePlacerType<?>> FOLIAGE_PLACERS = DeferredRegister.create(ForgeRegistries.FOLIAGE_PLACER_TYPES, TwilightForestMod.ID);
-    public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATORS = DeferredRegister.create(ForgeRegistries.TREE_DECORATOR_TYPES, TwilightForestMod.ID);
-    public static final DeferredRegister<PlacementModifierType<?>> PLACEMENT_MODIFIERS = DeferredRegister.create(Registry.PLACEMENT_MODIFIER_REGISTRY, TwilightForestMod.ID);
-    public static final DeferredRegister<TrunkPlacerType<?>> TRUNK_PLACERS = DeferredRegister.create(Registry.TRUNK_PLACER_TYPE_REGISTRY, TwilightForestMod.ID);
+    public static final LazyRegistrar<FoliagePlacerType<?>> FOLIAGE_PLACERS = LazyRegistrar.create(Registry.FOLIAGE_PLACER_TYPES, TwilightForestMod.ID);
+    public static final LazyRegistrar<TreeDecoratorType<?>> TREE_DECORATORS = LazyRegistrar.create(Registry.TREE_DECORATOR_TYPES, TwilightForestMod.ID);
+    public static final LazyRegistrar<PlacementModifierType<?>> PLACEMENT_MODIFIERS = LazyRegistrar.create(Registry.PLACEMENT_MODIFIERS, TwilightForestMod.ID);
+    public static final LazyRegistrar<TrunkPlacerType<?>> TRUNK_PLACERS = LazyRegistrar.create(Registry.TRUNK_PLACER_TYPES, TwilightForestMod.ID);
 
     public static final RegistryObject<TrunkPlacerType<BranchingTrunkPlacer>> TRUNK_BRANCHING = TRUNK_PLACERS.register("branching_trunk_placer", () -> new TrunkPlacerType<>(BranchingTrunkPlacer.CODEC));
     public static final RegistryObject<TrunkPlacerType<TrunkRiser>> TRUNK_RISER = TRUNK_PLACERS.register("trunk_mover_upper", () -> new TrunkPlacerType<>(TrunkRiser.CODEC));

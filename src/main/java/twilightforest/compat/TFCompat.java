@@ -1,8 +1,7 @@
 package twilightforest.compat;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.ModList;
 import twilightforest.TwilightForestMod;
 
 import java.util.*;
@@ -15,7 +14,7 @@ public abstract class TFCompat {
     public static Set<TFCompat> modules = new HashSet<>();
 
     static {
-        classes.put("immersiveengineering", IECompat.class);
+//        classes.put("immersiveengineering", IECompat.class);
         classes.put("curios", CuriosCompat.class);
     }
 
@@ -25,7 +24,7 @@ public abstract class TFCompat {
 
     public static void preInitCompat() {
         for (Map.Entry<String, Class<? extends TFCompat>> entry : classes.entrySet()) {
-            if (ModList.get().isLoaded(entry.getKey())) {
+            if (FabricLoader.getInstance().isModLoaded(entry.getKey())) {
                 try {
                     TFCompat compat = entry.getValue().newInstance();
                     modules.add(compat);
@@ -60,11 +59,11 @@ public abstract class TFCompat {
         }
     }
 
-    public static void initCompatItems(RegistryEvent.Register<Item> evt) {
+    public static void initCompatItems() {
         for (TFCompat compat : modules) {
             if (compat.isActivated) {
                 try {
-                    compat.initItems(evt);
+                    compat.initItems();
                 } catch (Exception e) {
                     compat.isActivated = false;
                     TwilightForestMod.LOGGER.error("Had a {} error loading {} compatibility in initializing items!", e.getLocalizedMessage(), compat.modName);
@@ -111,7 +110,7 @@ public abstract class TFCompat {
 
     protected abstract void handleIMCs();
 
-    protected abstract void initItems(RegistryEvent.Register<Item> evt);
+    protected abstract void initItems();
 
     public final String modName;
 

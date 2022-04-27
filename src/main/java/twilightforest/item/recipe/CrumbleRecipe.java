@@ -1,6 +1,7 @@
 package twilightforest.item.recipe;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -13,8 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
@@ -73,12 +72,12 @@ public class CrumbleRecipe implements Recipe<Container> {
 		return TFRecipes.CRUMBLE_RECIPE.get();
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<CrumbleRecipe> {
+	public static class Serializer implements RecipeSerializer<CrumbleRecipe> {
 
 		@Override
 		public CrumbleRecipe fromJson(ResourceLocation id, JsonObject object) {
-			Block input = ForgeRegistries.BLOCKS.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
-			Block output = ForgeRegistries.BLOCKS.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
+			Block input = Registry.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
+			Block output = Registry.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
 			if(input != null && output != null) {
 				return new CrumbleRecipe(id, input.defaultBlockState(), output.defaultBlockState());
 			}
@@ -88,15 +87,15 @@ public class CrumbleRecipe implements Recipe<Container> {
 		@Nullable
 		@Override
 		public CrumbleRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
-			Block input = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS);
-			Block output = buffer.readRegistryIdUnsafe(ForgeRegistries.BLOCKS);
+			Block input = Registry.BLOCK.get(buffer.readResourceLocation());
+			Block output = Registry.BLOCK.get(buffer.readResourceLocation());
 			return new CrumbleRecipe(id, input.defaultBlockState(), output.defaultBlockState());
 		}
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, CrumbleRecipe recipe) {
-			buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.input.getBlock());
-			buffer.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.result.getBlock());
+			buffer.writeResourceLocation(Registry.BLOCK.getKey(recipe.input.getBlock()));
+			buffer.writeResourceLocation(Registry.BLOCK.getKey(recipe.result.getBlock()));
 		}
 	}
 }

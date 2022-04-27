@@ -1,6 +1,7 @@
 package twilightforest.client.model;
 
 import com.mojang.math.Vector3f;
+import io.github.fabricators_of_create.porting_lib.model.SimpleModelState;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -8,7 +9,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.client.model.SimpleModelState;
 import twilightforest.block.PatchBlock;
 
 import javax.annotation.Nullable;
@@ -209,6 +209,11 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
     @Override
     public TextureAtlasSprite getParticleIcon() {
         return this.texture;
+    }
+
+    @Override
+    public ItemTransforms getTransforms() {
+        return ItemTransforms.NO_TRANSFORMS;
     }
 
     @Override

@@ -1,13 +1,13 @@
 package twilightforest.client;
 
 import com.mojang.datafixers.util.Pair;
+import io.github.fabricators_of_create.porting_lib.model.IModelConfiguration;
+import io.github.fabricators_of_create.porting_lib.model.IModelGeometry;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.client.model.IModelConfiguration;
-import net.minecraftforge.client.model.geometry.IModelGeometry;
 import twilightforest.client.model.PatchModel;
 
 import java.util.Collection;

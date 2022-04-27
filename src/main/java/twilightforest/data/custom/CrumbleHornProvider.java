@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -12,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import oshi.util.tuples.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.recipe.TFRecipes;
@@ -49,8 +49,8 @@ public abstract class CrumbleHornProvider implements DataProvider {
 		this.registerTransforms();
 		this.builders.forEach((name, transform) -> {
 			List<String> list = builders.keySet().stream()
-					.filter(s -> ForgeRegistries.BLOCKS.containsKey(transform.getA().getBlock().getRegistryName()))
-					.filter(s -> ForgeRegistries.BLOCKS.containsKey(transform.getB().getBlock().getRegistryName()))
+					.filter(s -> Registry.BLOCK.containsKey(Registry.BLOCK.getKey(transform.getA().getBlock())))
+					.filter(s -> Registry.BLOCK.containsKey(Registry.BLOCK.getKey(transform.getB().getBlock())))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
 					.collect(Collectors.toList());
@@ -106,9 +106,9 @@ public abstract class CrumbleHornProvider implements DataProvider {
 	private JsonObject serializeToJson(BlockState transformFrom, BlockState transformTo) {
 		JsonObject jsonobject = new JsonObject();
 
-		jsonobject.addProperty("type", TFRecipes.CRUMBLE_SERIALIZER.get().getRegistryName().toString());
-		jsonobject.addProperty("from", ForgeRegistries.BLOCKS.getKey(transformFrom.getBlock()).toString());
-		jsonobject.addProperty("to", ForgeRegistries.BLOCKS.getKey(transformTo.getBlock()).toString());
+		jsonobject.addProperty("type", Registry.RECIPE_SERIALIZER.getKey(TFRecipes.CRUMBLE_SERIALIZER.get()).toString());
+		jsonobject.addProperty("from", Registry.BLOCK.getKey(transformFrom.getBlock()).toString());
+		jsonobject.addProperty("to", Registry.BLOCK.getKey(transformTo.getBlock()).toString());
 		return jsonobject;
 	}
 
@@ -119,10 +119,10 @@ public abstract class CrumbleHornProvider implements DataProvider {
 
 	//helper methods
 	public void addTransform(Block from, Block to) {
-		builders.put(from.getRegistryName().getPath() + "_to_" + to.getRegistryName().getPath(), new Pair<>(from.defaultBlockState(), to.defaultBlockState()));
+		builders.put(Registry.BLOCK.getKey(from).getPath() + "_to_" + Registry.BLOCK.getKey(to).getPath(), new Pair<>(from.defaultBlockState(), to.defaultBlockState()));
 	}
 
 	public void addDissolve(Block dissolveBlock) {
-		builders.put("dissolve_" + dissolveBlock.getRegistryName().getPath(), new Pair<>(dissolveBlock.defaultBlockState(), Blocks.AIR.defaultBlockState()));
+		builders.put("dissolve_" + Registry.BLOCK.getKey(dissolveBlock).getPath(), new Pair<>(dissolveBlock.defaultBlockState(), Blocks.AIR.defaultBlockState()));
 	}
 }

@@ -3,9 +3,9 @@ package twilightforest.client;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.mojang.realmsclient.util.JsonUtils;
+import io.github.fabricators_of_create.porting_lib.model.IModelLoader;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraftforge.client.model.IModelLoader;
 
 public final class PatchModelLoader implements IModelLoader<UnbakedPatchModel> {
     public static final PatchModelLoader INSTANCE = new PatchModelLoader();

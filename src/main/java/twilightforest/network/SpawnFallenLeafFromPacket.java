@@ -1,19 +1,21 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.S2CPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkEvent;
 import twilightforest.client.particle.data.LeafParticleData;
 
 import java.util.Random;
-import java.util.function.Supplier;
+import java.util.concurrent.Executor;
 
-public class SpawnFallenLeafFromPacket {
+public class SpawnFallenLeafFromPacket implements S2CPacket {
 
 	private final BlockPos pos;
 	private final Vec3 motion;
@@ -35,9 +37,14 @@ public class SpawnFallenLeafFromPacket {
 		buf.writeDouble(motion.z);
 	}
 
+	@Override
+	public void handle(Minecraft client, ClientPacketListener handler, SimpleChannel.ResponseTarget responseTarget) {
+		Handler.onMessage(this, client);
+	}
+
 	public static class Handler {
-		public static boolean onMessage(SpawnFallenLeafFromPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(SpawnFallenLeafFromPacket message, Executor ctx) {
+			ctx.execute(new Runnable() {
 				@Override
 				public void run() {
 					Random rand = new Random();

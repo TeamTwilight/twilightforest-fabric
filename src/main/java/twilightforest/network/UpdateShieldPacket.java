@@ -1,16 +1,18 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.S2CPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.network.NetworkEvent;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 
-import java.util.function.Supplier;
+import java.util.concurrent.Executor;
 
-public class UpdateShieldPacket {
+public class UpdateShieldPacket implements S2CPacket {
 
 	private final int entityID;
 	private final int temporaryShields;
@@ -38,15 +40,20 @@ public class UpdateShieldPacket {
 		buf.writeInt(permanentShields);
 	}
 
+	@Override
+	public void handle(Minecraft client, ClientPacketListener handler, SimpleChannel.ResponseTarget responseTarget) {
+		Handler.onMessage(this, client);
+	}
+
 	public static class Handler {
 
-		public static boolean onMessage(UpdateShieldPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(UpdateShieldPacket message, Executor ctx) {
+			ctx.execute(new Runnable() {
 				@Override
 				public void run() {
 					Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
 					if (entity instanceof LivingEntity) {
-						entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
+						CapabilityList.SHIELDS.maybeGet(entity).ifPresent(cap -> {
 							cap.setShields(message.temporaryShields, true);
 							cap.setShields(message.permanentShields, false);
 						});

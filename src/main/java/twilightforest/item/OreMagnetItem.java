@@ -1,11 +1,16 @@
 package twilightforest.item;
 
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,9 +27,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -32,9 +34,10 @@ import twilightforest.util.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class OreMagnetItem extends Item {
 
 	private static final float WIGGLE = 10F;
@@ -53,7 +56,7 @@ public class OreMagnetItem extends Item {
 		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
 
 		for (Enchantment ench : enchants.keySet()) {
-			if (Objects.equals(ench.getRegistryName(), Enchantments.UNBREAKING.getRegistryName())) {
+			if (Objects.equals(Registry.ENCHANTMENT.getKey(ench), Registry.ENCHANTMENT.getKey(Enchantments.UNBREAKING))) {
 				return super.isBookEnchantable(stack, book);
 			}
 		}
@@ -306,15 +309,21 @@ public class OreMagnetItem extends Item {
 		cacheNeedsBuild = false;
 	}
 
-	@SubscribeEvent
-	public static void buildOreMagnetCache(AddReloadListenerEvent event) {
-		event.addListener((stage, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor) -> {
-			if (!cacheNeedsBuild) {
-				ORE_TO_BLOCK_REPLACEMENTS.clear();
-				cacheNeedsBuild = true;
+	public static void buildOreMagnetCache() {
+		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new IdentifiableResourceReloadListener() {
+			@Override
+			public ResourceLocation getFabricId() {
+				return new ResourceLocation(TwilightForestMod.ID, "ore_magnet");
 			}
+			@Override
+			public CompletableFuture<Void> reload(PreparationBarrier stage, ResourceManager resourceManager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor) {
+				if (!cacheNeedsBuild) {
+					ORE_TO_BLOCK_REPLACEMENTS.clear();
+					cacheNeedsBuild = true;
+				}
 
-			return stage.wait(null).thenRun(() -> {}); // Nothing to do here
+				return stage.wait(null).thenRun(() -> {}); // Nothing to do here
+			}
 		});
 	}
 }

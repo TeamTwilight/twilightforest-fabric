@@ -2,6 +2,8 @@ package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -21,8 +23,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.TFMagicMapData;
 import twilightforest.network.MagicMapPacket;
@@ -141,7 +141,7 @@ public class MagicMapItem extends MapItem {
 						// make streams more visible
 						Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
 						Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
-						biome = overBiome != null && BiomeKeys.STREAM.location().equals(overBiome.getRegistryName()) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(downBiome.getRegistryName()) ? downBiome : biome;
+						biome = overBiome != null && BiomeKeys.STREAM.location().equals(world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(overBiome)) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(downBiome)) ? downBiome : biome;
 
 						MapColorBrightness colorBrightness = this.getMapColorPerBiome(world, biome);
 
@@ -181,7 +181,7 @@ public class MagicMapItem extends MapItem {
 		}
 		if(biome == null)
 			return new MapColorBrightness(MaterialColor.COLOR_BLACK);
-		ResourceLocation key = biome.getRegistryName();
+		ResourceLocation key = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
 		MapColorBrightness color = BIOME_COLORS.get(key);
 		if (color != null) {
 			return color;
@@ -222,7 +222,7 @@ public class MagicMapItem extends MapItem {
 			setupBiomeColors();
 		}
 
-		MapColorBrightness c = BIOME_COLORS.get(ForgeRegistries.BIOMES.getKey(biome));
+		MapColorBrightness c = BIOME_COLORS.get(BuiltinRegistries.BIOME.getKey(biome));
 
 		return c != null ? getMapColor(c) : 0xFF000000;
 	}

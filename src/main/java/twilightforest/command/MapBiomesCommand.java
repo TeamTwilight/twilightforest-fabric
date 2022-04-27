@@ -7,13 +7,14 @@ package twilightforest.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import twilightforest.item.MagicMapItem;
 
 import javax.imageio.ImageIO;
@@ -67,7 +68,7 @@ public class MapBiomesCommand {
     }
 
     private static int execute(CommandContext<CommandSourceStack> source) {
-        if (FMLEnvironment.dist.isDedicatedServer())
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
             return -1;
 
         init();

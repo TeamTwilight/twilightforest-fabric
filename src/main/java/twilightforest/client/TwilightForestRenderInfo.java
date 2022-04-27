@@ -1,9 +1,8 @@
 package twilightforest.client;
 
+import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.ISkyRenderHandler;
-import net.minecraftforge.client.IWeatherRenderHandler;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 
@@ -13,11 +12,13 @@ import net.minecraft.client.renderer.DimensionSpecialEffects.SkyType;
 
 public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
-    private ISkyRenderHandler skyRenderer;
-    private IWeatherRenderHandler weatherRenderer;
+    private DimensionRenderingRegistry.SkyRenderer skyRenderer;
+    private DimensionRenderingRegistry.WeatherRenderer weatherRenderer;
 
     public TwilightForestRenderInfo(float cloudHeight, boolean placebo, SkyType fogType, boolean brightenLightMap, boolean entityLightingBottomsLit) {
         super(cloudHeight, placebo, fogType, brightenLightMap, entityLightingBottomsLit);
+        DimensionRenderingRegistry.registerSkyRenderer(null, getSkyRenderHandler());
+        DimensionRenderingRegistry.registerWeatherRenderer(null, getWeatherRenderHandler());
     }
 
     // { red, green, blue, interpolation from white } DO NOT INLINE VARIABLE it avoids spamming array creation each render tick
@@ -66,16 +67,14 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
     }
 
     @Nullable
-    @Override
-    public ISkyRenderHandler getSkyRenderHandler() {
+    public DimensionRenderingRegistry.SkyRenderer getSkyRenderHandler() {
         if (skyRenderer == null)
             skyRenderer = new TFSkyRenderer();
         return skyRenderer;
     }
 
     @Nullable
-    @Override
-    public IWeatherRenderHandler getWeatherRenderHandler() {
+    public DimensionRenderingRegistry.WeatherRenderer getWeatherRenderHandler() {
         if (weatherRenderer == null)
             weatherRenderer = new TFWeatherRenderer();
         return weatherRenderer;

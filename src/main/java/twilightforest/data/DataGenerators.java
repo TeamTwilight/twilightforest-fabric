@@ -1,25 +1,20 @@
 package twilightforest.data;
 
-import net.minecraft.data.DataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
-import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
 import twilightforest.data.tags.*;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class DataGenerators {
-	@SubscribeEvent
-	public static void gatherData(GatherDataEvent evt) {
-		DataGenerator generator = evt.getGenerator();
+public class DataGenerators implements DataGeneratorEntrypoint {
+	@Override
+	public void onInitializeDataGenerator(FabricDataGenerator generator) {
 		ExistingFileHelper helper = evt.getExistingFileHelper();
 
 		generator.addProvider(new AdvancementGenerator(generator, helper));
-		generator.addProvider(new PatchouliAdvancementGenerator(generator, helper));
+		generator.addProvider(new PatchouliAdvancementGenerator(generator));
 		generator.addProvider(new BlockstateGenerator(generator, helper));
 		generator.addProvider(new ItemModelGenerator(generator, helper));
 		generator.addProvider(new BiomeTagGenerator(generator, helper));

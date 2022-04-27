@@ -63,9 +63,13 @@ public class BiomeGrassColors {
 				| (((((a & mask2) * f1) + ((b & mask2) * f2)) >> 8) & mask2);
 	}
 
-	private static GrassColorModifier make(String name, GrassColorModifier.ColorModifier delegate) {
+	private static GrassColorModifier make(String name, /*GrassColorModifier.ColorModifier*/Temp delegate) {
 		name = TwilightForestMod.prefix(name).toString();
 
-		return GrassColorModifier.create(name, name, delegate);
+		return null;//GrassColorModifier.create(name, name, delegate);
+	}
+
+	public interface Temp { // TODO: PORT
+		Object handle(int x, int z, int color);
 	}
 }

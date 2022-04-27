@@ -22,8 +22,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
@@ -79,7 +79,7 @@ public class JarBlock extends Block {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
 		if(this == TFBlocks.FIREFLY_JAR.get()) {
 			for (int i = 0; i < 2; i++) {

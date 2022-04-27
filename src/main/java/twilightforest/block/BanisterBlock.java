@@ -1,16 +1,21 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -31,14 +36,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolActions;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enums.BanisterShape;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock, CustomPathNodeTypeBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<BanisterShape> SHAPE = EnumProperty.create("shape", BanisterShape.class);
     public static final BooleanProperty EXTENDED = BooleanProperty.create("extended");
@@ -112,7 +116,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         ItemStack held = player.getItemInHand(hand);
 
-        if (held.canPerformAction(ToolActions.AXE_WAX_OFF)) {
+        if (held.getItem() instanceof AxeItem || held.is(TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "axe")))) {
             BlockState newState = state.cycle(SHAPE);
 
             // If we reach BanisterShape.TALL it means we went a full cycle, so we'll also cycle the extension

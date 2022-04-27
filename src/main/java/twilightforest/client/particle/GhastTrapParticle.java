@@ -1,13 +1,14 @@
 package twilightforest.client.particle;
 
+import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteProvider;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class GhastTrapParticle extends TextureSheetParticle {
 
 	private final float reddustParticleScale;
@@ -68,11 +69,11 @@ public class GhastTrapParticle extends TextureSheetParticle {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static class Factory implements ParticleProvider<SimpleParticleType> {
 		private final SpriteSet spriteSet;
 
-		public Factory(SpriteSet sprite) {
+		public Factory(FabricSpriteProvider sprite) {
 			this.spriteSet = sprite;
 		}
 

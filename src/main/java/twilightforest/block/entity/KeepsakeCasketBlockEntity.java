@@ -19,10 +19,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.EmptyHandler;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 
@@ -30,7 +28,7 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 //used a fair bit of chest logic in this for the lid
-@OnlyIn(value = Dist.CLIENT, _interface = LidBlockEntity.class)
+@Environment(value = EnvType.CLIENT)
 public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity implements LidBlockEntity {
     private static final int limit = 9 * 5;
     public NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
@@ -182,16 +180,10 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
         }
     }
 
-    @Override
-    protected IItemHandler createUnSidedHandler() {
-        return new EmptyHandler();
-    }
-
     //remove stored player when chest is broken
     @Override
     public void setRemoved() {
         playeruuid = null;
-        this.invalidateCaps();
         super.setRemoved();
     }
 
@@ -214,7 +206,7 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     @Override
     public float getOpenNess(float partialTicks) {
         return Mth.lerp(partialTicks, this.prevLidAngle, this.lidAngle);

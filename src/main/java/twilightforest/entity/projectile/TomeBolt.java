@@ -14,11 +14,11 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.util.TFDamageSources;
 
-@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
+@Environment(value = EnvType.CLIENT)
 public class TomeBolt extends TFThrowable implements ItemSupplier {
 
 	public TomeBolt(EntityType<? extends TomeBolt> type, Level world, LivingEntity thrower) {
@@ -49,7 +49,7 @@ public class TomeBolt extends TFThrowable implements ItemSupplier {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {

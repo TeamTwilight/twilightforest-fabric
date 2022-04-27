@@ -1,10 +1,10 @@
 package twilightforest.world.registration;
 
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.*;
 import twilightforest.world.components.feature.config.HollowLogConfig;
@@ -20,7 +20,7 @@ import twilightforest.world.components.feature.trees.growers.SnowUnderTrees;
 
 public class TFBiomeFeatures {
 
-	public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, TwilightForestMod.ID);
+	public static final LazyRegistrar<Feature<?>> FEATURES = LazyRegistrar.create(Registry.FEATURE, TwilightForestMod.ID);
 	
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () ->
 			new TFGenBigMushgloom(NoneFeatureConfiguration.CODEC));

@@ -4,6 +4,8 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSyntaxException;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -12,7 +14,6 @@ import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.util.GsonHelper;
-import net.minecraftforge.fml.ModList;
 import twilightforest.loot.TFTreasure;
 
 // Loot condition for checking that if a mod exists, then swap original item with its deserialized item.
@@ -64,7 +65,7 @@ public class ModItemSwap extends LootItemConditionalFunction {
         }
 
         public LootItemFunction build() {
-            return new ModItemSwap(this.getConditions(), item, oldItem, ModList.get().isLoaded(idtocheck));
+            return new ModItemSwap(this.getConditions(), item, oldItem, FabricLoader.getInstance().isModLoaded(idtocheck));
         }
     }
 
@@ -73,10 +74,10 @@ public class ModItemSwap extends LootItemConditionalFunction {
 		@Override
 		public void serialize(JsonObject object, ModItemSwap function, JsonSerializationContext serializationContext) {
 			if (function.success)
-				object.addProperty("item", function.item.getRegistryName().toString());
+				object.addProperty("item", Registry.ITEM.getKey(function.item).toString());
 			else
-				object.addProperty("default", function.item.getRegistryName().toString());
-			object.addProperty("default", function.oldItem.getRegistryName().toString());
+				object.addProperty("default", Registry.ITEM.getKey(function.item).toString());
+			object.addProperty("default", Registry.ITEM.getKey(function.oldItem).toString());
 		}
 
 		@Override

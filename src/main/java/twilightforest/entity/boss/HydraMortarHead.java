@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -17,8 +18,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.network.NetworkHooks;
 import twilightforest.TwilightForestMod;
 
 public class HydraMortarHead extends ThrowableProjectile {
@@ -174,6 +173,6 @@ public class HydraMortarHead extends ThrowableProjectile {
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+		return new ClientboundAddEntityPacket(this);
 	}
 }

@@ -1,7 +1,10 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.S2CPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -9,11 +12,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
+import java.util.concurrent.Executor;
 
-public class ChangeBiomePacket {
+public class ChangeBiomePacket implements S2CPacket {
 	private final BlockPos pos;
 	private final ResourceLocation biomeId;
 
@@ -33,10 +35,15 @@ public class ChangeBiomePacket {
 		buf.writeResourceLocation(biomeId);
 	}
 
+	@Override
+	public void handle(Minecraft client, ClientPacketListener handler, SimpleChannel.ResponseTarget responseTarget) {
+		Handler.onMessage(this, client);
+	}
+
 	public static class Handler {
 
-		public static boolean onMessage(ChangeBiomePacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(ChangeBiomePacket message, Executor ctx) {
+			ctx.execute(new Runnable() {
 				@Override
 				public void run() {
 					final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2;

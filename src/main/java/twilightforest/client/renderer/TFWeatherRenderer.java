@@ -2,6 +2,8 @@ package twilightforest.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.renderer.GameRenderer;
@@ -19,7 +21,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.client.IWeatherRenderHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.registration.biomes.BiomeKeys;
@@ -29,7 +30,7 @@ import java.util.Random;
 /**
  * Copypasta of EntityRenderer.renderRainSnow() hacked to include progression environmental effects
  */
-public class TFWeatherRenderer implements IWeatherRenderHandler {
+public class TFWeatherRenderer implements DimensionRenderingRegistry.WeatherRenderer {
 
 	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
@@ -62,9 +63,9 @@ public class TFWeatherRenderer implements IWeatherRenderHandler {
 
 	//Helpful tip: x, y, and z relate to the looking entity's position.
 	@Override
-	public void render(int ticks, float partialTicks, ClientLevel world, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
+	public void render(WorldRenderContext context) {
 		// do normal weather rendering
-		renderNormalWeather(lightmap, world, mc, partialTicks, xIn, yIn, zIn);
+		renderNormalWeather(context.lightmapTextureManager(), context.world(), context.gameRenderer().getMinecraft(), context.tickDelta(), context, yIn, zIn);
 
 		if (TFGenerationSettings.isProgressionEnforced(world) && !mc.player.isCreative() && !mc.player.isSpectator()) {
 			// locked biome weather effects

@@ -16,9 +16,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.crafting.IShapedRecipe;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -26,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("NullableProblems")
-public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<CraftingContainer> {
+public class UncraftingRecipe extends ShapedRecipe implements IUncraftingRecipe {
     private final ResourceLocation recipeID;
     private final int cost;
     private final int width;
@@ -36,6 +35,7 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
     private final NonNullList<Ingredient> resultItems;
 
     public UncraftingRecipe(ResourceLocation recipeID, int cost, int width, int height, Ingredient ingredient, int count, NonNullList<Ingredient> resultItems) {
+        super(recipeID, "", width, height, resultItems, null);
         this.recipeID = recipeID;
         this.cost = cost;
         this.width = width;
@@ -90,12 +90,12 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
     }
 
     @Override
-    public int getRecipeWidth() {
+    public int getWidth() {
         return this.width;
     }
 
     @Override
-    public int getRecipeHeight() {
+    public int getHeight() {
         return this.height;
     }
 
@@ -113,7 +113,7 @@ public class UncraftingRecipe implements IUncraftingRecipe, IShapedRecipe<Crafti
         return this.count;
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<UncraftingRecipe> {
+    public static class Serializer implements RecipeSerializer<UncraftingRecipe> {
         /**
          * This is mostly vanilla's shaped recipe serializer, with some changes made to make it work with the slightly different recipe type.
          * The recipe json has inputs for "cost", which determines how many levels the recipe will cost.

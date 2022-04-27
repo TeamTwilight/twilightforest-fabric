@@ -1,5 +1,6 @@
 package twilightforest.client.particle;
 
+import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.Particle;
@@ -21,7 +22,7 @@ public class ProtectionParticle extends SuspendedTownParticle {
 	public static class Factory implements ParticleProvider<SimpleParticleType> {
 		private final SpriteSet spriteSet;
 
-		public Factory(SpriteSet spriteSet) {
+		public Factory(FabricSpriteProvider spriteSet) {
 			this.spriteSet = spriteSet;
 		}
 

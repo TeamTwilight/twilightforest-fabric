@@ -1,5 +1,16 @@
 package twilightforest.client;
 
+import io.github.fabricators_of_create.porting_lib.event.ModelsBakedCallback;
+import io.github.fabricators_of_create.porting_lib.event.RenderTickStartCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.TextureStitchCallback;
+import io.github.fabricators_of_create.porting_lib.model.ModelLoaderRegistry;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -9,32 +20,19 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.client.resources.model.*;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IWeatherRenderHandler;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.model.ForgeModelBakery;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
@@ -44,111 +42,116 @@ import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
-import twilightforest.compat.IECompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.TFItems;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
-@OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class TFClientEvents {
 
-	@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+	public static void init() {
+		ModBusEvents.registerModels();
+		WorldRenderEvents.LAST.register(TFClientEvents::renderWorldLast);
+		ModelsBakedCallback.EVENT.register(ModBusEvents::modelBake);
+		TextureStitchCallback.PRE.register(ModBusEvents::texStitch);
+		RenderTickStartCallback.EVENT.register(TFClientEvents::renderTick);
+		ClientTickEvents.END_CLIENT_TICK.register(TFClientEvents::clientTick);
+		ItemTooltipCallback.EVENT.register(TFClientEvents::tooltipEvent);
+	}
+
 	public static class ModBusEvents {
-		@SubscribeEvent
-		public static void registerLoaders(ModelRegistryEvent event) {
+		public static void registerLoaders() {
 			ModelLoaderRegistry.registerLoader(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
 		}
 
 		@Deprecated // tterrag said this would become deprecated soon in favor of above method
-		@SubscribeEvent
-		public static void modelBake(ModelBakeEvent event) {
+		public static void modelBake(ModelManager manager, Map<ResourceLocation, BakedModel> models, ModelBakery loader) {
 			// TODO Unhardcode, into using Model Deserializers and load from JSON instead
-			fullbrightItem(event, TFItems.FIERY_INGOT);
-			fullbrightItem(event, TFItems.FIERY_BOOTS);
-			fullbrightItem(event, TFItems.FIERY_CHESTPLATE);
-			fullbrightItem(event, TFItems.FIERY_HELMET);
-			fullbrightItem(event, TFItems.FIERY_LEGGINGS);
-			fullbrightItem(event, TFItems.FIERY_PICKAXE);
-			fullbrightItem(event, TFItems.FIERY_SWORD);
+			fullbrightItem(models, TFItems.FIERY_INGOT);
+			fullbrightItem(models, TFItems.FIERY_BOOTS);
+			fullbrightItem(models, TFItems.FIERY_CHESTPLATE);
+			fullbrightItem(models, TFItems.FIERY_HELMET);
+			fullbrightItem(models, TFItems.FIERY_LEGGINGS);
+			fullbrightItem(models, TFItems.FIERY_PICKAXE);
+			fullbrightItem(models, TFItems.FIERY_SWORD);
 
-			fullbrightBlock(event, TFBlocks.FIERY_BLOCK);
+			fullbrightBlock(models, TFBlocks.FIERY_BLOCK);
 
-			tintedFullbrightBlock(event, TFBlocks.PINK_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
-			tintedFullbrightBlock(event, TFBlocks.BLUE_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
-			tintedFullbrightBlock(event, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
-			tintedFullbrightBlock(event, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			tintedFullbrightBlock(models, TFBlocks.PINK_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			tintedFullbrightBlock(models, TFBlocks.BLUE_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			tintedFullbrightBlock(models, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
+			tintedFullbrightBlock(models, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 
-			if(ModList.get().isLoaded("immersiveengineering")) {
-				IECompat.registerShaderModels(event);
+			if(FabricLoader.getInstance().isModLoaded("immersiveengineering")) {
+//				IECompat.registerShaderModels(models);
 			}
 		}
 
-		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
-			fullbrightItem(event, item, f -> f);
+		private static void fullbrightItem(Map<ResourceLocation, BakedModel> models, RegistryObject<Item> item) {
+			fullbrightItem(models, item, f -> f);
 		}
 
-		private static void fullbrightItem(ModelBakeEvent event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
-			fullbright(event, Objects.requireNonNull(item.getId()), "inventory", process);
+		private static void fullbrightItem(Map<ResourceLocation, BakedModel> models, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
+			fullbright(models, Objects.requireNonNull(item.getId()), "inventory", process);
 		}
 
-		private static void fullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block) {
-			fullbrightBlock(event, block, f -> f);
+		private static void fullbrightBlock(Map<ResourceLocation, BakedModel> models, RegistryObject<Block> block) {
+			fullbrightBlock(models, block, f -> f);
 		}
 
-		private static void fullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
-			fullbright(event, Objects.requireNonNull(block.getId()), "inventory", process);
-			fullbright(event, Objects.requireNonNull(block.getId()), "", process);
+		private static void fullbrightBlock(Map<ResourceLocation, BakedModel> models, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
+			fullbright(models, Objects.requireNonNull(block.getId()), "inventory", process);
+			fullbright(models, Objects.requireNonNull(block.getId()), "", process);
 		}
 
-		private static void fullbright(ModelBakeEvent event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
+		private static void fullbright(Map<ResourceLocation, BakedModel> models, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
 			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			event.getModelRegistry().put(mrl, process.apply(new FullbrightBakedModel(event.getModelRegistry().get(mrl))));
+			models.put(mrl, process.apply(new FullbrightBakedModel(models.get(mrl))));
 		}
 
-		private static void tintedFullbrightItem(ModelBakeEvent event, RegistryObject<Item> item) {
-			tintedFullbrightItem(event, item, f -> f);
+		private static void tintedFullbrightItem(Map<ResourceLocation, BakedModel> models, RegistryObject<Item> item) {
+			tintedFullbrightItem(models, item, f -> f);
 		}
 
-		private static void tintedFullbrightItem(ModelBakeEvent event, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
-			tintedFullbright(event, Objects.requireNonNull(item.getId()), "inventory", process);
+		private static void tintedFullbrightItem(Map<ResourceLocation, BakedModel> models, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
+			tintedFullbright(models, Objects.requireNonNull(item.getId()), "inventory", process);
 		}
 
-		private static void tintedFullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block) {
-			tintedFullbrightBlock(event, block, f -> f);
+		private static void tintedFullbrightBlock(Map<ResourceLocation, BakedModel> models, RegistryObject<Block> block) {
+			tintedFullbrightBlock(models, block, f -> f);
 		}
 
-		private static void tintedFullbrightBlock(ModelBakeEvent event, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
-			tintedFullbright(event, Objects.requireNonNull(block.getId()), "inventory", process);
-			tintedFullbright(event, Objects.requireNonNull(block.getId()), "", process);
+		private static void tintedFullbrightBlock(Map<ResourceLocation, BakedModel> models, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
+			tintedFullbright(models, Objects.requireNonNull(block.getId()), "inventory", process);
+			tintedFullbright(models, Objects.requireNonNull(block.getId()), "", process);
 		}
 
-		private static void tintedFullbright(ModelBakeEvent event, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
+		private static void tintedFullbright(Map<ResourceLocation, BakedModel> models, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
 			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			event.getModelRegistry().put(mrl, process.apply(new TintIndexAwareFullbrightBakedModel(event.getModelRegistry().get(mrl))));
+			models.put(mrl, process.apply(new TintIndexAwareFullbrightBakedModel(models.get(mrl))));
 		}
 
-		@SubscribeEvent
-		public static void texStitch(TextureStitchEvent.Pre evt) {
-			TextureAtlas map = evt.getAtlas();
-
+		public static void texStitch(TextureAtlas map, Consumer<ResourceLocation> spriteAdder) {
 			if (Sheets.CHEST_SHEET.equals(map.location()))
 				TwilightChestRenderer.MATERIALS.values().stream()
 						.flatMap(e -> e.values().stream())
 						.map(Material::texture)
-						.forEach(evt::addSprite);
+						.forEach(spriteAdder::accept);
 
 			if (Sheets.BANNER_SHEET.equals(map.location()) || Sheets.SHIELD_SHEET.equals(map.location())) {
 				for (BannerPattern pattern : BannerPattern.values()) {
 					if (pattern.getFilename().startsWith(TwilightForestMod.ID)) {
-						evt.addSprite(pattern.location(Sheets.BANNER_SHEET.equals(map.location())));
+						spriteAdder.accept(pattern.location(Sheets.BANNER_SHEET.equals(map.location())));
 					}
 				}
 			}
 
-			evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
+			spriteAdder.accept(TwilightForestMod.prefix("block/mosspatch"));
 
 		//FIXME bring back if you can get GradientMappedTexture working
 		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
@@ -203,36 +206,34 @@ public class TFClientEvents {
 		new GradientNode(1.0f, 0xFF_FF_FF_FF)
 	};*/
 
-		@SubscribeEvent
-		public static void registerModels(ModelRegistryEvent event) {
-			ForgeModelBakery.addSpecialModel(ShieldLayer.LOC);
-			ForgeModelBakery.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
-			ForgeModelBakery.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
-			ForgeModelBakery.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
+		public static void registerModels() {
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(ShieldLayer.LOC));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory")));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory")));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory")));
 
-			ForgeModelBakery.addSpecialModel(TwilightForestMod.prefix("block/casket_obsidian"));
-			ForgeModelBakery.addSpecialModel(TwilightForestMod.prefix("block/casket_stone"));
-			ForgeModelBakery.addSpecialModel(TwilightForestMod.prefix("block/casket_basalt"));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(TwilightForestMod.prefix("block/casket_obsidian")));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(TwilightForestMod.prefix("block/casket_stone")));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(TwilightForestMod.prefix("block/casket_basalt")));
 		}
 	}
 
 	/**
 	 * Stop the game from rendering the mount health for unfriendly creatures
 	 */
-	@SubscribeEvent
-	public static void preOverlay(RenderGameOverlayEvent.PreLayer event) {
-		if (event.getOverlay() == ForgeIngameGui.MOUNT_HEALTH_ELEMENT) {
-			if (TFEventListener.isRidingUnfriendly(Minecraft.getInstance().player)) {
-				event.setCanceled(true);
-			}
-		}
-	}
+//	@SubscribeEvent TODO: PORT
+//	public static void preOverlay(RenderGameOverlayEvent.PreLayer event) {
+//		if (event.getOverlay() == ForgeIngameGui.MOUNT_HEALTH_ELEMENT) {
+//			if (TFEventListener.isRidingUnfriendly(Minecraft.getInstance().player)) {
+//				event.setCanceled(true);
+//			}
+//		}
+//	}
 
 	/**
 	 * Render effects in first-person perspective
 	 */
-	@SubscribeEvent
-	public static void renderWorldLast(RenderLevelLastEvent event) {
+	public static void renderWorldLast(WorldRenderContext context) {
 
 		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
@@ -245,7 +246,7 @@ public class TFClientEvents {
 			if (renderer instanceof LivingEntityRenderer<?,?>) {
 				for (RenderEffect effect : RenderEffect.VALUES) {
 					if (effect.shouldRender((LivingEntity) entity, true)) {
-						effect.render((LivingEntity) entity, ((LivingEntityRenderer<?,?>) renderer).getModel(), 0.0, 0.0, 0.0, event.getPartialTick(), true);
+						effect.render((LivingEntity) entity, ((LivingEntityRenderer<?,?>) renderer).getModel(), 0.0, 0.0, 0.0, context.tickDelta(), true);
 					}
 				}
 			}
@@ -255,30 +256,25 @@ public class TFClientEvents {
 	/**
 	 * On the tick, we kill the vignette
 	 */
-	@SubscribeEvent
-	public static void renderTick(TickEvent.RenderTickEvent event) {
-		if (event.phase == TickEvent.Phase.START) {
-			Minecraft minecraft = Minecraft.getInstance();
+	public static void renderTick() {
+		Minecraft minecraft = Minecraft.getInstance();
 
-			// only fire if we're in the twilight forest
-			if (minecraft.level != null && "twilightforest".equals(minecraft.level.dimension().location().getNamespace())) {
-				// vignette
-				if (minecraft.gui != null) {
-					minecraft.gui.vignetteBrightness = 0.0F;
-				}
-			}//*/
+		// only fire if we're in the twilight forest
+		if (minecraft.level != null && "twilightforest".equals(minecraft.level.dimension().location().getNamespace())) {
+			// vignette
+			if (minecraft.gui != null) {
+				minecraft.gui.vignetteBrightness = 0.0F;
+			}
+		}//*/
 
-			if (minecraft.player != null && TFEventListener.isRidingUnfriendly(minecraft.player)) {
-				if (minecraft.gui != null) {
-					minecraft.gui.setOverlayMessage(TextComponent.EMPTY, false);
-				}
+		if (minecraft.player != null && TFEventListener.isRidingUnfriendly(minecraft.player)) {
+			if (minecraft.gui != null) {
+				minecraft.gui.setOverlayMessage(TextComponent.EMPTY, false);
 			}
 		}
 	}
 
-	@SubscribeEvent
-	public static void clientTick(TickEvent.ClientTickEvent event) {
-		if (event.phase != TickEvent.Phase.END) return;
+	public static void clientTick(Minecraft client) {
 		time++;
 
 		Minecraft mc = Minecraft.getInstance();
@@ -294,8 +290,8 @@ public class TFClientEvents {
 		DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
 
 		// add weather box if needed
-		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo) {
-			IWeatherRenderHandler weatherRenderer = info.getWeatherRenderHandler();
+		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo tf) {
+			DimensionRenderingRegistry.WeatherRenderer weatherRenderer = tf.getWeatherRenderHandler();
 			if (weatherRenderer instanceof TFWeatherRenderer)
 				((TFWeatherRenderer) weatherRenderer).tick();
 		}
@@ -305,10 +301,7 @@ public class TFClientEvents {
 	private static final MutableComponent WIP_TEXT_1 = new TranslatableComponent("twilightforest.misc.wip1").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 	private static final MutableComponent NYI_TEXT = new TranslatableComponent("twilightforest.misc.nyi").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
 
-	@SubscribeEvent
-	public static void tooltipEvent(ItemTooltipEvent event) {
-		ItemStack item = event.getItemStack();
-
+	public static void tooltipEvent(ItemStack item, TooltipFlag context, List<Component> lines) {
 		/*
 			There's some kinda crash here where the "Tag % used before it was bound" crash happens from
 			StaticTagHelper$Wrapper.resolve() because the tag wrapped is null. I assume this crash happens because
@@ -330,10 +323,10 @@ public class TFClientEvents {
 		if(!item.is(ItemTagGenerator.WIP) && !item.is(ItemTagGenerator.NYI)) return;
 
 		if (item.is(ItemTagGenerator.WIP)) {
-			event.getToolTip().add(WIP_TEXT_0);
-			event.getToolTip().add(WIP_TEXT_1);
+			lines.add(WIP_TEXT_0);
+			lines.add(WIP_TEXT_1);
 		} else {
-			event.getToolTip().add(NYI_TEXT);
+			lines.add(NYI_TEXT);
 		}
 	}
 

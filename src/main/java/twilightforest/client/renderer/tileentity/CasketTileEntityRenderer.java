@@ -21,8 +21,8 @@ import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.TFBlocks;
@@ -34,7 +34,7 @@ import twilightforest.client.model.TFModelLayers;
  * Created using Tabula 8.0.0
  */
 //Most of the other stuff is derived from ChestTileEntityRenderer
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
     public ModelPart base;
     public ModelPart lid;

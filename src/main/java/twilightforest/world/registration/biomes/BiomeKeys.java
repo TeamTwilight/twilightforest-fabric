@@ -1,18 +1,18 @@
 package twilightforest.world.registration.biomes;
 
+import io.github.fabricators_of_create.porting_lib.biome.BiomeDictionary;
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 
 public class BiomeKeys {
-	public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, TwilightForestMod.ID);
+	public static final LazyRegistrar<Biome> BIOMES = LazyRegistrar.create(BuiltinRegistries.BIOME, TwilightForestMod.ID);
 
 	public static final ResourceKey<Biome> FOREST = makeKey("forest");
 	public static final ResourceKey<Biome> DENSE_FOREST = makeKey("dense_forest");

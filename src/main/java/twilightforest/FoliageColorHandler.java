@@ -1,5 +1,6 @@
 package twilightforest;
 
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.biome.Biome;
@@ -17,7 +18,7 @@ public final class FoliageColorHandler {
 	public static int get(int o, Biome biome, double x, double z) {
 		Handler handler = HANDLES.get(biome);
 		if (handler == null) {
-			handler = Handler.REGISTRY.getOrDefault(biome.getRegistryName(), Handler.DEFAULT);
+			handler = Handler.REGISTRY.getOrDefault(BuiltinRegistries.BIOME.getKey(biome), Handler.DEFAULT);
 			HANDLES.put(biome, handler);
 		}
 		return handler.apply(o, x, z);

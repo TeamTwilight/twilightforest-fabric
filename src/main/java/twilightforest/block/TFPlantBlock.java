@@ -1,5 +1,8 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.util.IPlantable;
+import io.github.fabricators_of_create.porting_lib.util.PlantType;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -11,14 +14,14 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.common.PlantType;
 
 import java.util.Random;
 
-public abstract class TFPlantBlock extends BushBlock implements BonemealableBlock {
+public abstract class TFPlantBlock extends BushBlock implements BonemealableBlock, IPlantable, FlammableBlockRegistry {
 
 	protected TFPlantBlock(BlockBehaviour.Properties props) {
 		super(props);
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
 	}
 
 	@Override
@@ -58,13 +61,11 @@ public abstract class TFPlantBlock extends BushBlock implements BonemealableBloc
 	@Override
 	public void performBonemeal(ServerLevel pLevel, Random pRandom, BlockPos pPos, BlockState pState) { }
 
-	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFlammability() {
 		return 100;
 	}
 
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFireSpreadSpeed() {
 		return 60;
 	}
 }

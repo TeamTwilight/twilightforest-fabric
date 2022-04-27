@@ -1,5 +1,6 @@
 package twilightforest.data;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.*;
@@ -9,7 +10,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.HasAdvancementTrigger;
 import twilightforest.block.TFBlocks;
@@ -21,12 +21,12 @@ import twilightforest.world.registration.biomes.BiomeKeys;
 import java.util.function.Consumer;
 
 public class PatchouliAdvancementGenerator extends AdvancementProvider {
-	public PatchouliAdvancementGenerator(DataGenerator generatorIn, ExistingFileHelper fileHelperIn) {
-		super(generatorIn, fileHelperIn);
+	public PatchouliAdvancementGenerator(FabricDataGenerator generatorIn) {
+		super(generatorIn);
 	}
 
-	@Override
-	protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
+//	@Override TODO: PORT
+	protected void registerAdvancements(Consumer<Advancement> consumer) {
 		Advancement root = Advancement.Builder.advancement()
 				.addCriterion("hidden", new ImpossibleTrigger.TriggerInstance())
 				.save(consumer, "twilightforest:alt/root");

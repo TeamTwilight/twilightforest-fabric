@@ -1,19 +1,17 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.fml.event.config.ModConfigEvent;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.fml.config.ModConfig;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.*;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFConfig {
 
 	public static Common COMMON_CONFIG;
@@ -422,9 +420,9 @@ public class TFConfig {
 
 	private static final String config = TwilightForestMod.ID + ".config.";
 
-	@SubscribeEvent // FIXME Not Firing
-	public static void onConfigChanged(ModConfigEvent.Reloading event) {
-		if (event.getConfig().getModId().equals(TwilightForestMod.ID)) {
+	// FIXME Not Firing
+	public static void onConfigChanged(ModConfig config) {
+		if (config.getModId().equals(TwilightForestMod.ID)) {
 			COMMON_CONFIG.portalLockingAdvancement = new ResourceLocation(TFConfig.COMMON_CONFIG.portalAdvancementLock.get());
 
 			build();
@@ -448,19 +446,19 @@ public class TFConfig {
 
 	private static Optional<ItemStack> parseItemStack(String string) {
 		ResourceLocation id = ResourceLocation.tryParse(string);
-		if (id == null || !ForgeRegistries.ITEMS.containsKey(id)) {
+		if (id == null || !Registry.ITEM.containsKey(id)) {
 			return Optional.empty();
 		} else {
-			return Optional.of(new ItemStack(ForgeRegistries.ITEMS.getValue(id)));
+			return Optional.of(new ItemStack(Registry.ITEM.get(id)));
 		}
 	}
 
 	private static Optional<Block> parseBlock(String string) {
 		ResourceLocation id = ResourceLocation.tryParse(string);
-		if (id == null || !ForgeRegistries.BLOCKS.containsKey(id)) {
+		if (id == null || !Registry.BLOCK.containsKey(id)) {
 			return Optional.empty();
 		} else {
-			return Optional.ofNullable(ForgeRegistries.BLOCKS.getValue(id));
+			return Optional.ofNullable(Registry.BLOCK.get(id));
 		}
 	}
 }

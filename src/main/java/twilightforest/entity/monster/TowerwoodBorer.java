@@ -14,9 +14,9 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 
@@ -124,7 +124,7 @@ public class TowerwoodBorer extends Monster {
 			} else {
 				Random random = this.mob.getRandom();
 
-				if (random.nextInt(10) == 0 && ForgeEventFactory.getMobGriefingEvent(this.mob.level, this.mob)) {
+				if (random.nextInt(10) == 0 && this.mob.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 					this.facing = Direction.getRandom(random);
 					BlockPos blockpos = (new BlockPos(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ())).relative(this.facing);
 					BlockState iblockstate = this.mob.level.getBlockState(blockpos);
@@ -218,7 +218,7 @@ public class TowerwoodBorer extends Monster {
 
 							// TF - Change block check
 							if (iblockstate == TFBlocks.INFESTED_TOWERWOOD.get().defaultBlockState()) {
-								if (ForgeEventFactory.getMobGriefingEvent(world, this.silverfish)) {
+								if (world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 									world.destroyBlock(blockpos1, true);
 								} else {
 									// TF - reset to normal tower wood

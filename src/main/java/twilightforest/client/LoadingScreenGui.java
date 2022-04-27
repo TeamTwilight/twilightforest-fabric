@@ -17,8 +17,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
@@ -27,7 +27,7 @@ import java.util.Random;
 //retired loading screen, see https://twitter.com/Drullkus/status/928466334744064000 for a video example.
 //1.16+ load times have gotten a lot better, and you cant really see this screen anymore.
 //it also breaks in one way or another every update, so we're gonna retire it until we find another use for it.
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class LoadingScreenGui extends Screen {
 
 	private boolean isEntering;

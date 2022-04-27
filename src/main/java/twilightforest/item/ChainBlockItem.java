@@ -1,5 +1,8 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.util.ShieldBlockItem;
+import io.github.fabricators_of_create.porting_lib.util.TierSortingRegistry;
+import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -15,7 +18,6 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.TierSortingRegistry;
 import twilightforest.TFSounds;
 import twilightforest.entity.ChainBlock;
 import twilightforest.entity.TFEntities;
@@ -24,7 +26,7 @@ import twilightforest.util.TwilightItemTier;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class ChainBlockItem extends DiggerItem {
+public class ChainBlockItem extends DiggerItem implements FabricItem, ShieldBlockItem {
 
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
@@ -107,11 +109,11 @@ public class ChainBlockItem extends DiggerItem {
 	}
 
 	@Override
-	public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
+	public boolean isSuitableFor(ItemStack stack, BlockState state) {
 		if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
 				|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
 			return TierSortingRegistry.isCorrectTierForDrops(Tiers.IRON, state);
-		return super.isCorrectToolForDrops(stack, state);
+		return super.isSuitableFor(stack, state);
 	}
 
 	/*@Override

@@ -1,5 +1,6 @@
 package twilightforest;
 
+import io.github.fabricators_of_create.porting_lib.event.PlayerTickEvents;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.Vec3i;
@@ -13,10 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.TFPortalBlock;
@@ -37,18 +34,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFTickHandler {
+	public static void init() {
+		PlayerTickEvents.END.register(TFTickHandler::playerTick);
+	}
 
-	@SubscribeEvent
-	public static void playerTick(TickEvent.PlayerTickEvent event) {
-		Player eventPlayer = event.player;
-
+	public static void playerTick(Player eventPlayer) {
 		if (!(eventPlayer instanceof ServerPlayer player)) return;
 		if (!(player.level instanceof ServerLevel world)) return;
 
 		// check for portal creation, at least if it's not disabled
-		if (!TFConfig.COMMON_CONFIG.disablePortalCreation.get() && event.phase == TickEvent.Phase.END && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
+		if (!TFConfig.COMMON_CONFIG.disablePortalCreation.get() && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
 			if (TFConfig.COMMON_CONFIG.adminOnlyPortals.get()) {
 				if (world.getServer().getProfilePermissions(player.getGameProfile()) != 0) {
@@ -62,17 +58,17 @@ public class TFTickHandler {
 		}
 
 		//tick every second for the advancement trigger bit of the flask
-		if(event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0) {
+		if(player.tickCount % 20 == 0) {
 			BrittleFlaskItem.ticker();
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (event.phase == TickEvent.Phase.END && player.tickCount % 20 == 0 && TFGenerationSettings.isProgressionEnforced(world) && TFGenerationSettings.usesTwilightChunkGenerator(world) && !player.isCreative() && !player.isSpectator()) {
+		if (player.tickCount % 20 == 0 && TFGenerationSettings.isProgressionEnforced(world) && TFGenerationSettings.usesTwilightChunkGenerator(world) && !player.isCreative() && !player.isSpectator()) {
 			TFGenerationSettings.enforceBiomeProgression(player, world);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (event.phase == TickEvent.Phase.END && player.tickCount % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
+		if (player.tickCount % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
 			if (TFGenerationSettings.usesTwilightChunkGenerator(world)) {
 				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);

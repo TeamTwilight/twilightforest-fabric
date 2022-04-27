@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import net.minecraft.Util;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -17,7 +18,6 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.enchantment.TFEnchantments;
@@ -682,13 +682,13 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_INGOT.get())
                                         .when(ModExists.builder("immersiveengineering"))
-                                        .apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.KNIGHTMETAL_INGOT.get()))
+                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader")), TFItems.KNIGHTMETAL_INGOT.get()))
                                         .apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:knight_phantom"))))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(TFItems.KNIGHTMETAL_INGOT.get())
                                         .when(ModExists.builder("immersiveengineering"))
-                                        .apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.KNIGHTMETAL_INGOT.get())))));
+                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.KNIGHTMETAL_INGOT.get())))));
 
         register.accept(TFTreasure.DARKTOWER_CACHE.lootTable,
                 LootTable.lootTable()
@@ -768,13 +768,13 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(TFItems.CARMINITE.get())
                                         .when(ModExists.builder("immersiveengineering"))
-                                        .apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.CARMINITE.get()))
+                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader")), TFItems.CARMINITE.get()))
                                         .apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("shader_name", "twilightforest:ur-ghast"))))))
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(TFItems.CARMINITE.get())
                                         .when(ModExists.builder("immersiveengineering"))
-                                        .apply(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.CARMINITE.get())))));
+                                        .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.CARMINITE.get())))));
 
         register.accept(TFTreasure.AURORA_CACHE.lootTable,
                 LootTable.lootTable()

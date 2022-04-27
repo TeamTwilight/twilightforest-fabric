@@ -1,15 +1,15 @@
 package twilightforest.util;
 
 
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
 
 public class TFStats {
 
-	public static final DeferredRegister<ResourceLocation> STATS = DeferredRegister.create(Registry.CUSTOM_STAT_REGISTRY, TwilightForestMod.ID);
+	public static final LazyRegistrar<ResourceLocation> STATS = LazyRegistrar.create(Registry.CUSTOM_STAT, TwilightForestMod.ID);
 
 	public static final RegistryObject<ResourceLocation> BUGS_SQUISHED = makeTFStat("bugs_squished");
 	public static final RegistryObject<ResourceLocation> UNCRAFTING_TABLE_INTERACTIONS = makeTFStat("uncrafting_table_interactions");

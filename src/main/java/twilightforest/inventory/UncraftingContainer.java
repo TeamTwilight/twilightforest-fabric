@@ -11,11 +11,11 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.crafting.IShapedRecipe;
 import twilightforest.TFConfig;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -120,10 +120,10 @@ public class UncraftingContainer extends AbstractContainerMenu {
 				customCost = recipe instanceof UncraftingRecipe ? ((UncraftingRecipe) recipe).getCost() : -1;
 				ItemStack[] recipeItems = getIngredients(recipe);
 
-				if (recipe instanceof IShapedRecipe<?> rec) {
+				if (recipe instanceof ShapedRecipe rec) {
 
-					int recipeWidth = rec.getRecipeWidth();
-					int recipeHeight = rec.getRecipeHeight();
+					int recipeWidth = rec.getWidth();
+					int recipeHeight = rec.getHeight();
 
 					// set uncrafting grid
 					for (int invY = 0; invY < recipeHeight; invY++) {

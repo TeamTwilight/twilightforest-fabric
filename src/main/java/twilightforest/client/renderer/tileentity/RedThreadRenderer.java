@@ -13,8 +13,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.model.data.EmptyModelData;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.RedThreadBlockEntity;
 import twilightforest.client.TFShaders;
@@ -76,10 +74,7 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 
 					thread.getBlockState().getSeed(thread.getBlockPos()),
 
-					OverlayTexture.NO_OVERLAY,
-
-					EmptyModelData.INSTANCE
-
+					OverlayTexture.NO_OVERLAY
 			);
 		else
 			blockrenderdispatcher.getModelRenderer().renderModel(

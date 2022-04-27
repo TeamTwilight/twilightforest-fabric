@@ -1,20 +1,22 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.S2CPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapRenderer;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
-import net.minecraftforge.network.NetworkEvent;
 import twilightforest.TFMagicMapData;
 import twilightforest.item.MagicMapItem;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.concurrent.Executor;
 
 // Rewraps vanilla SPacketMaps to properly expose our custom decorations
-public class MagicMapPacket {
+public class MagicMapPacket implements S2CPacket {
 	private final byte[] featureData;
 	private final ClientboundMapItemDataPacket inner;
 
@@ -33,9 +35,14 @@ public class MagicMapPacket {
 		inner.write(buf);
 	}
 
+	@Override
+	public void handle(Minecraft client, ClientPacketListener handler, SimpleChannel.ResponseTarget responseTarget) {
+		Handler.onMessage(this, client);
+	}
+
 	public static class Handler {
-		public static boolean onMessage(MagicMapPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
+		public static boolean onMessage(MagicMapPacket message, Executor ctx) {
+			ctx.execute(new Runnable() {
 				@Override
 				public void run() {
 					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas

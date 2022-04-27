@@ -1,15 +1,17 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.S2CPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
 import twilightforest.client.MissingAdvancementToast;
 
-import java.util.function.Supplier;
+import java.util.concurrent.Executor;
 
-public class MissingAdvancementToastPacket {
+public class MissingAdvancementToastPacket implements S2CPacket {
     private final Component title;
     private final ItemStack icon;
 
@@ -28,8 +30,8 @@ public class MissingAdvancementToastPacket {
         buf.writeItem(this.icon);
     }
 
-    public static boolean handle(MissingAdvancementToastPacket packet, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(new Runnable() {
+    public static boolean handle(MissingAdvancementToastPacket packet, Executor ctx) {
+        ctx.execute(new Runnable() {
             @Override
             public void run() {
                 Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title, packet.icon));
@@ -37,5 +39,10 @@ public class MissingAdvancementToastPacket {
         });
 
         return true;
+    }
+
+    @Override
+    public void handle(Minecraft client, ClientPacketListener handler, SimpleChannel.ResponseTarget responseTarget) {
+        handle(this, client);
     }
 }

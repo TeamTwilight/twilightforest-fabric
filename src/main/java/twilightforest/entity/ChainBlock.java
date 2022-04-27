@@ -1,8 +1,10 @@
 package twilightforest.entity;
 
+import io.github.fabricators_of_create.porting_lib.entity.ExtraSpawnDataEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,11 +23,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.network.NetworkHooks;
 import twilightforest.TFSounds;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.monster.BlockChainGoblin;
@@ -33,7 +30,7 @@ import twilightforest.item.TFItems;
 import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
 
-public class ChainBlock extends ThrowableProjectile implements IEntityAdditionalSpawnData {
+public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEntity {
 
 	private int MAX_SMASH;
 	private static final int MAX_CHAIN = 16;
@@ -314,6 +311,6 @@ public class ChainBlock extends ThrowableProjectile implements IEntityAdditional
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+		return new ClientboundAddEntityPacket(this);
 	}
 }

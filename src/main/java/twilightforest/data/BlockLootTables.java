@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
@@ -23,7 +24,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import twilightforest.block.*;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.item.TFItems;
@@ -38,12 +38,12 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 	private static final float[] RARE_SAPLING_DROP_RATES = new float[]{0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F};
 
 	@Override
-	protected void add(Block block, LootTable.Builder builder) {
+	public void add(Block block, LootTable.Builder builder) {
 		super.add(block, builder);
 		knownBlocks.add(block);
 	}
 
-	@Override
+//	@Override TODO: PORT
 	protected void addTables() {
 		registerEmpty(TFBlocks.EXPERIMENT_115.get());
 		dropSelf(TFBlocks.TOWERWOOD.get());
@@ -469,7 +469,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 	}
 
 	private LootTable.Builder hollowLog(Block log) {
-		LootItemCondition.Builder HAS_SILK_TOUCH = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.data.loot.BlockLoot.class, null, "f_124062_");
+		LootItemCondition.Builder HAS_SILK_TOUCH = BlockLoot.HAS_SILK_TOUCH;
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(log.asItem()).when(HAS_SILK_TOUCH).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE)))))
@@ -524,7 +524,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 	}
 
 	protected static LootTable.Builder torchberryPlant(Block pBlock) {
-		LootItemCondition.Builder HAS_SHEARS = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.data.loot.BlockLoot.class, null, "f_124064_");
+		LootItemCondition.Builder HAS_SHEARS = BlockLoot.HAS_SHEARS;
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(pBlock).when(HAS_SHEARS)))
@@ -565,7 +565,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 	}
 
 	private static LootTable.Builder dropWithoutSilk(Block block) {
-		LootItemCondition.Builder HAS_SILK_TOUCH = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.data.loot.BlockLoot.class, null, "f_124062_");
+		LootItemCondition.Builder HAS_SILK_TOUCH = BlockLoot.HAS_SILK_TOUCH;
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(HAS_SILK_TOUCH.invert()).add(LootItem.lootTableItem(block)));
 	}
 
@@ -573,7 +573,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLoot {
 		add(b, LootTable.lootTable());
 	}
 
-	@Override
+//	@Override
 	protected Iterable<Block> getKnownBlocks() {
 		// todo 1.15 once all blockitems are ported, change this to all TF blocks, so an error will be thrown if we're missing any tables
 		return knownBlocks;

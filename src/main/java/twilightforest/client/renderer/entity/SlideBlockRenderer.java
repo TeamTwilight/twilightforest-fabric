@@ -18,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.ForgeHooksClient;
 import twilightforest.entity.SlideBlock;
 
 import java.util.Random;
@@ -59,12 +58,10 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 
 					BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
 					for (RenderType type : RenderType.chunkBufferLayers()) {
-						if (ItemBlockRenderTypes.canRenderInLayer(blockstate, type)) {
-							ForgeHooksClient.setRenderType(type);
+						if (ItemBlockRenderTypes.getChunkRenderType(blockstate) == type) {
 							blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(blockpos), OverlayTexture.NO_OVERLAY);
 						}
 					}
-					ForgeHooksClient.setRenderType(null);
 
 					stack.popPose();
 					super.render(entity, yaw, partialTicks, stack, buffer, light);

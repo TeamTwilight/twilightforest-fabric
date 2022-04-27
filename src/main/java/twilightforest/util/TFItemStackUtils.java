@@ -1,12 +1,12 @@
 package twilightforest.util;
 
+import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.NonNullList;
-import net.minecraftforge.items.CapabilityItemHandler;
 import twilightforest.TwilightForestMod;
 
 import java.util.Collections;
@@ -17,24 +17,23 @@ public class TFItemStackUtils {
 	public static int damage = 0;
 
 	@Deprecated
-	public static boolean consumeInventoryItem(LivingEntity living, final Predicate<ItemStack> matcher, final int count) {
+	public static boolean consumeInventoryItem(Player living, final Predicate<ItemStack> matcher, final int count) {
 		TwilightForestMod.LOGGER.warn("consumeInventoryItem accessed! Forge requires the player to be alive before we can access this cap. This cap is most likely being accessed for an Afterdeath Charm!");
 
-		return living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inv -> {
-			int innerCount = count;
-			boolean consumedSome = false;
+		PlayerInventoryStorage inv = PlayerInventoryStorage.of(living);
+		int innerCount = count;
+		boolean consumedSome = false;
 
-			for (int i = 0; i < inv.getSlots() && innerCount > 0; i++) {
-				ItemStack stack = inv.getStackInSlot(i);
-				if (matcher.test(stack)) {
-					ItemStack consumed = inv.extractItem(i, innerCount, false);
-					innerCount -= consumed.getCount();
-					consumedSome = true;
-				}
+		for (int i = 0; i < inv.getSlots().size() && innerCount > 0; i++) {
+			ItemStack stack = new ItemStack(inv.getSlot(i).getResource().getItem(), inv.getSlot(i).getAmount());
+			if (matcher.test(stack)) {
+				ItemStack consumed = inv.extract(i, innerCount, false);
+				innerCount -= consumed.getCount();
+				consumedSome = true;
 			}
+		}
 
-			return consumedSome;
-		}).orElse(false);
+		return consumedSome;
 	}
 
 	public static boolean consumeInventoryItem(final Player player, final Item item) {

@@ -1,245 +1,188 @@
-// For those who want the bleeding edge
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net/' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-    }
-}
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'maven-publish'
-apply plugin: 'eclipse'
-apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
-
-///////////////////////////////////////////////////
-// IDE Settings
-///////////////////////////////////////////////////
-idea {
-    project {
-        languageLevel = '17' // Not sure this is proper or even needed anymore, verify it
-    }
+plugins {
+    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'io.github.juuxel.loom-quiltflower' version '1.+'
+    id 'org.quiltmc.quilt-mappings-on-loom' version '4.+'
+    id 'maven-publish'
 }
 
-///////////////////////////////////////////////////
-// ForgeGradle
-///////////////////////////////////////////////////
-version = (hasProperty("CIRevision") ? CIRevision : mod_version)
-group = group_name
-archivesBaseName = "${mod_id}-${minecraft_version}"
+loom {
+    accessWidenerPath = file("src/main/resources/twilightforest.accesswidener")
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation" << "-Werror"
-
-minecraft {
-    mappings channel: "official", version: "1.18.2"
-    // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data
-    //mappings channel: 'parchment', version: '2021.10.31-1.17.1'
-
-    //version = minecraft_version + "-" + forge_version // grab latest forge
-    //makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    //replace '@mod_version@', version
-    //replace '@mod_id@', mod_id
-    //replace '@ci_build@', hasProperty("CIRevision") ? 'true' : 'false'
-
-    //replaceIn 'TwilightForestMod.java'
-    //replace '@VERSION@', project.version
-
-    runs {
-        client {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-            property 'fml.earlyprogresswindow', 'false'
-            property 'mixin.env.disableRefMap', 'true'
-
-            mods {
-                twilightforest {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.disableRefMap', 'true'
-
-            mods {
-                twilightforest {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-
-            properties 'fml.earlyprogresswindow': 'false'
-            property 'mixin.env.disableRefMap', 'true'
-
-            mods {
-                twilightforest {
-                    source sourceSets.main
-                }
-            }
-            args '--mod', 'twilightforest', '--all',
-                    '--existing', '"' + file('src/main/resources/') + '"',
-                    '--existing', '"' + file('src/generated/resources/') + '"',
-                    '--output', '"' + file('src/generated/resources/') + '"'
-        }
-    }
-}
+archivesBaseName = "${project.mod_id}-fabric-${minecraft_version}"
+version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
+group = project.group_name
 
 sourceSets.main.resources {
     srcDir 'src/generated/resources'
 }
 
-/*
-processResources {
-    //replaceIn 'assets/twilightforest/patchouli_books/guide/book.json'
-    //replace '@EDITION@', project.version
-
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        //include '.info'
-        //include '.properties'
-        include 'assets/twilightforest/patchouli_books/guide/book.json'
-
-        // replace version and mcversion
-        expand ([
-                'version':project.version,
-                'mcversion':project.minecraft.version,
-                'forge_version': forge_version,
-                'mod_version': mod_version,
-                'minecraft_version': minecraft_version,
-                'edition': (project.version - (mod_version + '.')),
-                's': '$'
-        ])
-    }
-
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-        exclude 'assets/twilightforest/patchouli_books/guide/book.json'
-    }
-}*/
-
-compileJava {
-    options.encoding = 'UTF-8'
-}
-
-processResources {
-    filesMatching("META-INF/mods.toml") {
-        expand([
-                'version': "${project.version}"
-        ])
-    }
-}
-
-jar {
-    classifier = 'universal'
-    manifest {
-        attributes(["Specification-Title"     : "Twilight Forest",
-                    "Specification-Vendor"    : "TeamTwilight",
-                    "Specification-Version"   : "${version}",
-                    "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : "${version}",
-                    "Implementation-Vendor"   : "TeamTwilight",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
-    }
-}
-
 repositories {
+    maven { url = "https://cursemaven.com" }
+    maven { url = "https://maven.shedaniel.me/" }
+    maven { url = uri("https://storage.googleapis.com/devan-maven/") }
+    maven { url = "https://maven.terraformersmc.com/releases/" }
+    maven { url "https://nexus.resourcefulbees.com/repository/maven-public/" }
+    maven { url 'https://jitpack.io' }
+    maven { url = "https://mvn.devos.one/releases/" }
+    maven { url = "https://mvn.devos.one/snapshots/" }
     maven {
-        name 'progwm\'s Maven' // JEI + Mantle + TCon
-        url 'https://dvs1.progwml6.com/files/maven'
+        name = 'Ladysnake Mods'
+        url = 'https://ladysnake.jfrog.io/artifactory/mods'
     }
     maven {
-        name 'tterrag\'s Maven' // CTM
-        url 'https://maven.tterrag.com/'
+        name = "Ladysnake Libs"
+        url = "https://ladysnake.jfrog.io/artifactory/mods"
     }
     maven {
-        name 'Jared\'s Maven' // Immersive Engineering + Patchouli
-        url 'https://maven.blamejared.com/'
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
     }
     maven {
-        name 'theillusivec4\'s Maven' //Curios
-        url 'https://maven.theillusivec4.top/'
+        url 'https://repo.maven.apache.org/maven2'
+        name 'Maven Central'
     }
-    //maven {
-    //    name 'player\'s Maven' // Forestry
-    //    url 'http://maven.ic2.player.to/'
-    //}
+    maven {
+        name = "BuildCraft"
+        url = "https://mod-buildcraft.com/maven"
+    }
+    maven {
+        name = "ParchmentMC"
+        url = "https://maven.parchmentmc.net/"
+    }
+    maven {
+        url = "https://maven.jamieswhiteshirt.com/libs-release"
+        content {
+            includeGroup("com.jamieswhiteshirt")
+        }
+    }
 }
 
 dependencies {
-    // progwml6
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
-    //implementation fg.deobf("slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}")
-    //implementation fg.deobf("slimeknights:TConstruct:${minecraft_version}-${tcon_version}")
+    mappings loom.layered() {
+        it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:1.18.1-rc3+build.4:v2")) // https://maven.quiltmc.org/#browse/browse:release
+        it.parchment("org.parchmentmc.data:parchment-1.18.1:BLEEDING-20211212.174449-1@zip") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
+        it.officialMojangMappings {
+            setNameSyntheticMembers(true)
+        }
+    }
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    //Dev Environment Only
+    modCompileOnly ("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    modRuntimeOnly ("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    modImplementation("dev.architectury:architectury-fabric:${project.architectury_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 
-    // tterrag
-    implementation fg.deobf("team.chisel.ctm:CTM:${ctm_version}")
+    implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
-    // blamejared
-    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${immersive_engineering_version}")
-    implementation fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    implementation(include("com.electronwill.night-config:core:3.6.5"))
+    implementation(include("com.electronwill.night-config:toml:3.6.5"))
+    modImplementation(include("io.github.fabricators_of_create:Porting-Lib:${project.port_lib_version}+${project.minecraft_version}.${project.port_lib_hash}"))
+    //modImplementation "com.telepathicgrunt:Blame-Fabric:1.17-4.2.0-fabric"
+//    modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'
 
-    // theillusivec4
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
+    modImplementation(include("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"))
+    modImplementation(include("curse.maven:forge-config-api-port-fabric-547434:${project.config_api_version}"))
 
-    // player
-    //deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"
+    modImplementation("curse.maven:irisshaders-fabric-455508:3605379")
+    modImplementation "org.anarres:jcpp:1.4.14"
 
-    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    modApi ("com.terraformersmc:modmenu:3.0.0") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    //include modImplementation("net.devtech:arrp:0.+")
+
+    //Compiled Jar Side
+    modApi ("me.shedaniel.cloth.api:cloth-api:${project.cloth_api_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    include ("me.shedaniel.cloth.api:cloth-api:${project.cloth_api_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    modApi(include("me.shedaniel.cloth:basic-math:0.6.0")) {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:4.0.1"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:4.0.1"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:4.0.1"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:4.0.1"
+
+    include 'com.github.Chocohead:Fabric-ASM:v2.3'
+    modImplementation 'com.github.AlphaMode:FabricExtendibleEnum:1.18-SNAPSHOT'
+    modImplementation(include("me.alphamode:ForgeTags:2.1"))
+    modImplementation "dev.emi:trinkets:${trinkets_version}"
+//    modImplementation(include('com.github.alkyaly:js-coremods-fabric:1.0.0'))
 }
 
-jar.finalizedBy('reobfJar')
+loom {
+    runs {
+        datagen {
+            client()
 
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+            vmArg "-Dfabric-api.datagen.modid=twilightforest"
+
+            property "twilightforest.data.existingData", file("src/main/resources").absolutePath
+
+            runDir "build/datagen"
+        }
+    }
+}
+assemble.dependsOn runDatagen
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+
+    it.options.release = 17
+}
+
+java {
+    withSourcesJar()
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archivesBaseName}"}
+    }
+}
+
+// configure the maven publication
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            afterEvaluate {
-                artifact project.jar
-                artifact project.sourceJar
-            }
-            setGroupId 'teamtwilight'
-            setArtifactId project.mod_id
+            from components.java
         }
     }
-    repositories {
-        maven {
-            //url "file:///${project.projectDir}/mcmodsrepo"
-            url "https://modmaven.dev:443/artifactory/local-releases"
-            credentials {
-                username System.getenv('ARTIFACTORY_USER')
-                password System.getenv('ARTIFACTORY_PASS')
-            }
-        }
-    }
-}
 
-task sourceJar(type: Jar, dependsOn: 'classes') {
-    from sourceSets.main.allSource
-    classifier = 'sources'
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+        // Notice: This block does NOT have the same function as the block in the top level.
+        // The repositories here will be used for publishing your artifact, not for
+        // retrieving dependencies.
+    }
 }

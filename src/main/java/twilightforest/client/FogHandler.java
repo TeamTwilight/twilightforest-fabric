@@ -1,25 +1,20 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import io.github.fabricators_of_create.porting_lib.event.FogEvents;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
 public class FogHandler {
 
 	private static final float[] spoopColors = new float[3];
 	private static float spoopColor = 0F;
 	private static float spoopFog = 1F;
 
-	@SubscribeEvent
-	public static void fogColors(EntityViewRenderEvent.FogColors event) {
+	public static void fogColors(FogEvents.ColorData event, float partialTicks) {
 		boolean flag = isSpooky();
 		if (flag || spoopColor > 0F) {
 			final float[] realColors = {event.getRed(), event.getGreen(), event.getBlue()};
@@ -30,7 +25,7 @@ public class FogHandler {
 				final boolean inverse = real > spoop;
 				spoopColors[i] = real == spoop ? spoop : Mth.clampedLerp(inverse ? spoop : real, inverse ? real : spoop, spoopColor);
 			}
-			float shift = (float) (0.01F * event.getPartialTicks());
+			float shift = (float) (0.01F * partialTicks);
 			if (flag)
 				spoopColor += shift;
 			else
@@ -42,13 +37,12 @@ public class FogHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void fog(EntityViewRenderEvent.RenderFogEvent event) {
+	public static void fog(FogRenderer.FogMode type, Camera info, float partial, float distance) {
 		boolean flag = isSpooky();
 		if (flag || spoopFog < 1F) {
 			float f = 48F;
-			f = f >= event.getFarPlaneDistance() ? event.getFarPlaneDistance() : Mth.clampedLerp(f, event.getFarPlaneDistance(), spoopFog);
-			float shift = (float) (0.001F * event.getPartialTicks());
+			f = f >= distance ? distance : Mth.clampedLerp(f, distance, spoopFog);
+			float shift = (float) (0.001F * partial);
 			if (flag)
 				spoopFog -= shift;
 			else
@@ -58,7 +52,7 @@ public class FogHandler {
 			//FIXME: These two are commented out as they do not exist in the main game. While this might mean they aren't needed, look at this if there is a problem
 //			RenderSystem.fogMode(GlStateManager.FogMode.LINEAR);
 
-			if (event.getMode() == FogRenderer.FogMode.FOG_SKY) {
+			if (type == FogRenderer.FogMode.FOG_SKY) {
 				RenderSystem.setShaderFogStart(0.0F);
 				RenderSystem.setShaderFogEnd(f);
 			} else {
@@ -73,5 +67,10 @@ public class FogHandler {
 	private static boolean isSpooky() {
 		return Minecraft.getInstance().level != null && Minecraft.getInstance().player != null &&
 				Minecraft.getInstance().level.getBiome(Minecraft.getInstance().player.blockPosition()).is(BiomeKeys.SPOOKY_FOREST);
+	}
+
+	public static void init() {
+		FogEvents.SET_COLOR.register(FogHandler::fogColors);
+		FogEvents.RENDER_FOG.register(FogHandler::fog);
 	}
 }

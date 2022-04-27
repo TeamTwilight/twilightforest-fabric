@@ -1,52 +1,19 @@
 package twilightforest.capabilities;
 
-import net.minecraft.world.entity.Entity;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
+import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
+import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraftforge.common.capabilities.*;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.capabilities.shield.ShieldCapabilityHandler;
 
-import javax.annotation.Nonnull;
+public class CapabilityList implements EntityComponentInitializer {
 
-public class CapabilityList {
+	public static final ComponentKey<IShieldCapability> SHIELDS = ComponentRegistry.getOrCreate(IShieldCapability.ID, IShieldCapability.class);
 
-	public static final Capability<IShieldCapability> SHIELDS = CapabilityManager.get(new CapabilityToken<>(){});
-
-	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-		event.register(IShieldCapability.class);
-	}
-
-	public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> e) {
-		if (e.getObject() instanceof LivingEntity) {
-			e.addCapability(IShieldCapability.ID, new ICapabilitySerializable<CompoundTag>() {
-
-				final LazyOptional<IShieldCapability> inst = LazyOptional.of(() -> {
-					ShieldCapabilityHandler i = new ShieldCapabilityHandler();
-					i.setEntity((LivingEntity) e.getObject());
-					return i;
-				});
-
-				@Nonnull
-				@Override
-				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) {
-					return SHIELDS.orEmpty(capability, inst.cast());
-				}
-
-				@Override
-				public CompoundTag serializeNBT() {
-					return inst.orElseThrow(NullPointerException::new).serializeNBT();
-				}
-
-				@Override
-				public void deserializeNBT(CompoundTag nbt) {
-					inst.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
-				}
-			});
-		}
+	@Override
+	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
+		registry.registerFor(LivingEntity.class, SHIELDS, ShieldCapabilityHandler::new);
 	}
 }

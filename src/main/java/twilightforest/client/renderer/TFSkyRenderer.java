@@ -3,25 +3,27 @@ package twilightforest.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.multiplayer.ClientLevel;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexBuffer;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import com.mojang.math.Vector3f;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.ISkyRenderHandler;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import java.util.Random;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tesselator;
 
-@OnlyIn(Dist.CLIENT)
-public class TFSkyRenderer implements ISkyRenderHandler {
+@Environment(EnvType.CLIENT)
+public class TFSkyRenderer implements DimensionRenderingRegistry.SkyRenderer {
 
 	private VertexBuffer starVBO;
 	private final VertexFormat vertexBufferFormat = DefaultVertexFormat.POSITION;
@@ -32,12 +34,15 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 
 	// [VanillaCopy] RenderGlobal.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void render(int ticks, float partialTicks, PoseStack ms, ClientLevel world, Minecraft mc) {
-		LevelRenderer rg = mc.levelRenderer;
+	@Environment(EnvType.CLIENT)
+	public void render(WorldRenderContext context) {
+		PoseStack ms = context.matrixStack();
+		ClientLevel world = context.world();
+		float partialTicks = context.tickDelta();
+		LevelRenderer rg = context.worldRenderer();
 
 		RenderSystem.disableTexture();
-		Vec3 vec3d = world.getSkyColor(mc.gameRenderer.getMainCamera().getPosition(), partialTicks);
+		Vec3 vec3d = context.world().getSkyColor(Minecraft.getInstance().gameRenderer.getMainCamera().getPosition(), context.tickDelta());
 		float f = (float) vec3d.x;
 		float f1 = (float) vec3d.y;
 		float f2 = (float) vec3d.z;
@@ -86,7 +91,7 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		RenderSystem.disableBlend();
 		ms.popPose();
 		RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
-		double d0 = mc.player.getEyePosition(partialTicks).y + (world.getSeaLevel() - 10);
+		double d0 = Minecraft.getInstance().player.getEyePosition(partialTicks).y + (world.getSeaLevel() - 10);
 
 		if (d0 < 0.0D) {
 			ms.pushPose();

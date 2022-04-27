@@ -4,13 +4,13 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import oshi.util.tuples.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.recipe.TFRecipes;
@@ -46,8 +46,8 @@ public abstract class TransformationPowderProvider implements DataProvider {
 		this.registerTransforms();
 		this.builders.forEach((name, transform) -> {
 			List<String> list = builders.keySet().stream()
-					.filter(s -> ForgeRegistries.ENTITIES.containsKey(transform.getA().getRegistryName()))
-					.filter(s -> ForgeRegistries.ENTITIES.containsKey(transform.getB().getRegistryName()))
+					.filter(s -> Registry.ENTITY_TYPE.containsKey(Registry.ENTITY_TYPE.getKey(transform.getA())))
+					.filter(s -> Registry.ENTITY_TYPE.containsKey(Registry.ENTITY_TYPE.getKey(transform.getB())))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
 					.collect(Collectors.toList());
@@ -103,9 +103,9 @@ public abstract class TransformationPowderProvider implements DataProvider {
 	private JsonObject serializeToJson(EntityType<?> transformFrom, EntityType<?> transformTo) {
 		JsonObject jsonobject = new JsonObject();
 
-		jsonobject.addProperty("type", TFRecipes.TRANSFORMATION_SERIALIZER.get().getRegistryName().toString());
-		jsonobject.addProperty("from", ForgeRegistries.ENTITIES.getKey(transformFrom).toString());
-		jsonobject.addProperty("to", ForgeRegistries.ENTITIES.getKey(transformTo).toString());
+		jsonobject.addProperty("type", Registry.RECIPE_SERIALIZER.getKey(TFRecipes.TRANSFORMATION_SERIALIZER.get()).toString());
+		jsonobject.addProperty("from", Registry.ENTITY_TYPE.getKey(transformFrom).toString());
+		jsonobject.addProperty("to", Registry.ENTITY_TYPE.getKey(transformTo).toString());
 		return jsonobject;
 	}
 
@@ -116,11 +116,11 @@ public abstract class TransformationPowderProvider implements DataProvider {
 
 	//helper methods
 	public void addSingleTransform(EntityType<?> from, EntityType<?> to) {
-		builders.put(from.getRegistryName().getPath() + "_to_" + to.getRegistryName().getPath(), new Pair<>(from, to));
+		builders.put(Registry.ENTITY_TYPE.getKey(from).getPath() + "_to_" + Registry.ENTITY_TYPE.getKey(to).getPath(), new Pair<>(from, to));
 	}
 
 	public void addTwoWayTransform(EntityType<?> from, EntityType<?> to) {
-		builders.put(from.getRegistryName().getPath() + "_to_" + to.getRegistryName().getPath(), new Pair<>(from, to));
-		builders.put(to.getRegistryName().getPath() + "_to_" + from.getRegistryName().getPath(), new Pair<>(to, from));
+		builders.put(Registry.ENTITY_TYPE.getKey(from).getPath() + "_to_" + Registry.ENTITY_TYPE.getKey(to).getPath(), new Pair<>(from, to));
+		builders.put(Registry.ENTITY_TYPE.getKey(to).getPath() + "_to_" + Registry.ENTITY_TYPE.getKey(from).getPath(), new Pair<>(to, from));
 	}
 }
