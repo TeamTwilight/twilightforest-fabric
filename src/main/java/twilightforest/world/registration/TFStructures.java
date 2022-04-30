@@ -1,5 +1,8 @@
 package twilightforest.world.registration;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.TwilightForestMod;
@@ -67,8 +70,7 @@ public class TFStructures {
 
 	}
 
-	private static void register(StructureFeature<?> structure, ConfiguredStructureFeature<?, ?> config, ResourceLocation name, int min, int max) {
-		Registry.register(Registry.STRUCTURE_FEATURE, name, structure);
-		Registry.register(BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE, new ResourceLocation(name.getNamespace(), "configured_".concat(name.getPath())), config);
+	private static void register(StructureFeature<?> structure, String name) {
+		Registry.register(Registry.STRUCTURE_FEATURE, TwilightForestMod.prefix(name), structure);
 	}
 }

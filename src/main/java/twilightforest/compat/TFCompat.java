@@ -46,11 +46,11 @@ public abstract class TFCompat {
         }
     }
 
-    public static void initCompat(FMLCommonSetupEvent event) {
+    public static void initCompat() {
         for (TFCompat compat : modules) {
             if (compat.isActivated) {
                 try {
-                    compat.init(event);
+                    compat.init();
                 } catch (Exception e) {
                     compat.isActivated = false;
                     TwilightForestMod.LOGGER.error("Had a {} error loading {} compatibility in init!", e.getLocalizedMessage(), compat.modName);
@@ -105,7 +105,7 @@ public abstract class TFCompat {
 
     protected abstract boolean preInit();
 
-    protected abstract void init(FMLCommonSetupEvent event);
+    protected abstract void init();
 
     protected abstract void postInit();
 

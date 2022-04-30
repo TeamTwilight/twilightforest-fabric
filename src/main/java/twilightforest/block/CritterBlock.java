@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -40,7 +41,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fml.ModList;
 import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.tags.EntityTagGenerator;
@@ -188,7 +188,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, getter, tooltip, flag);
-		if(ModList.get().isLoaded("undergarden")) {
+		if(FabricLoader.getInstance().isModLoaded("undergarden")) {
 			tooltip.add((new TranslatableComponent("tooltip.pebble")).withStyle(ChatFormatting.GRAY));
 		}
 	}

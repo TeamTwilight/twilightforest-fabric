@@ -34,7 +34,7 @@ public class CuriosCompat extends TFCompat {
 	}
 
 	@Override
-	protected void init(FMLCommonSetupEvent event) {
+	protected void init() {
 	}
 
 	@Override
@@ -69,20 +69,20 @@ public class CuriosCompat extends TFCompat {
 	}
 
 	//if we have any curios and die with a charm of keeping on us, keep our curios instead of dropping them
-	public static void keepCurios(DropRulesEvent event) {
-		if (event.getEntityLiving() instanceof Player player) {
-			CompoundTag playerData = TFEventListener.getPlayerData(player);
-			if (!player.level.isClientSide() && playerData.contains(TFEventListener.CHARM_INV_TAG) && !playerData.getList(TFEventListener.CHARM_INV_TAG, 10).isEmpty()) {
-				//Keep all Curios items
-				CuriosApi.getCuriosHelper().getEquippedCurios(player).ifPresent(modifiable -> {
-					for (int i = 0; i < modifiable.getSlots(); ++i) {
-						int finalI = i;
-						event.addOverride(stack -> stack == modifiable.getStackInSlot(finalI), ICurio.DropRule.ALWAYS_KEEP);
-					}
-				});
-			}
-		}
-	}
+//	public static void keepCurios(DropRulesEvent event) { TODO: PORT
+//		if (event.getEntityLiving() instanceof Player player) {
+//			CompoundTag playerData = TFEventListener.getPlayerData(player);
+//			if (!player.level.isClientSide() && playerData.contains(TFEventListener.CHARM_INV_TAG) && !playerData.getList(TFEventListener.CHARM_INV_TAG, 10).isEmpty()) {
+//				//Keep all Curios items
+//				CuriosApi.getCuriosHelper().getEquippedCurios(player).ifPresent(modifiable -> {
+//					for (int i = 0; i < modifiable.getSlots(); ++i) {
+//						int finalI = i;
+//						event.addOverride(stack -> stack == modifiable.getStackInSlot(finalI), ICurio.DropRule.ALWAYS_KEEP);
+//					}
+//				});
+//			}
+//		}
+//	}
 
 	public static void registerCurioRenderers() {
 		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_LIFE_1.get(), new CharmOfLife1NecklaceRenderer()::render);

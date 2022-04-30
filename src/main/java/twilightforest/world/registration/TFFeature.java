@@ -938,7 +938,7 @@ public class TFFeature {
 		int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
 		int y = shouldAdjustToTerrain() ? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7) : context.chunkGenerator().getSeaLevel();
 		Holder<Biome> holder = context.chunkGenerator().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z));
-		if (this != generateFeature(chunkPos.x, chunkPos.z, holder.value(), context.seed()))
+		if (this != generateFeature(chunkPos.x, chunkPos.z, holder.value(), context.seed(), context.registryAccess()))
 			return Optional.empty();
 		return Optional.ofNullable(this.provideFirstPiece(context.structureManager(), context.chunkGenerator(), new Random(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z));
 	}

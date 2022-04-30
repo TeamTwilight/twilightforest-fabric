@@ -215,4 +215,6 @@ public final class TFConfiguredFeatures {
 	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String name, F feature, FC featureConfiguration) {
 		return BuiltinRegistries.registerExact(BuiltinRegistries.CONFIGURED_FEATURE, TwilightForestMod.prefix(name).toString(), new ConfiguredFeature<>(feature, featureConfiguration));
 	}
+
+	public static void init() {}
 }

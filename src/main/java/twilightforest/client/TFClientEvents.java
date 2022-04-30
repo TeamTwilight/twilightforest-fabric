@@ -80,11 +80,11 @@ public class TFClientEvents {
 			fullbrightItem(models, TFItems.FIERY_PICKAXE);
 			fullbrightItem(models, TFItems.FIERY_SWORD);
 
-			fullbrightItem(event, TFItems.RED_THREAD);
+			fullbrightItem(models, TFItems.RED_THREAD);
 
 			fullbrightBlock(models, TFBlocks.FIERY_BLOCK);
 
-			if(!ModList.get().isLoaded("ctm")) {
+			if(!FabricLoader.getInstance().isModLoaded("ctm")) {
 				tintedFullbrightBlock(models, TFBlocks.PINK_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 				tintedFullbrightBlock(models, TFBlocks.BLUE_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);
 				tintedFullbrightBlock(models, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, FullbrightBakedModel::disableCache);

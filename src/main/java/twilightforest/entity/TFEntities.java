@@ -6,6 +6,7 @@ import io.github.fabricators_of_create.porting_lib.util.LazySpawnEggItem;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SilverfishModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -33,7 +34,6 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.legacy.*;
-import twilightforest.compat.UndergardenCompat;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
 import twilightforest.entity.passive.*;
@@ -398,8 +398,8 @@ public class TFEntities {
 		EntityRendererRegistry.register(SEEKER_ARROW.get(), DefaultArrowRenderer::new);
 		EntityRendererRegistry.register(ICE_ARROW.get(), DefaultArrowRenderer::new);
 
-		if(ModList.get().isLoaded("undergarden")) {
-			UndergardenCompat.registerSlingshotRenders(event);
+		if(FabricLoader.getInstance().isModLoaded("undergarden")) {
+//			UndergardenCompat.registerSlingshotRenders();
 		}
 	}
 

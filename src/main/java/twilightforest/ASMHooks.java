@@ -7,9 +7,11 @@ import com.mojang.math.Matrix4f;
 import com.mojang.serialization.Dynamic;
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
+import io.github.fabricators_of_create.porting_lib.event.ClientWorldEvents;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -39,7 +41,6 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.AABB;
 import net.fabricmc.api.EnvType;
-import net.minecraftforge.event.world.WorldEvent;
 import net.fabricmc.api.Environment;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.TFPart;
@@ -154,11 +155,12 @@ public class ASMHooks {
 							.toList());
 					return list;
 				});
-				if (cache.get(event.getWorld()).isEmpty())
-					cache.remove(event.getWorld());
+				if (cache.get(entityWorld).isEmpty())
+					cache.remove(entityWorld);
 			}
 		}));
-		bus.addListener((Consumer<WorldEvent.Unload>) event -> cache.remove(event.getWorld()));
+		ServerWorldEvents.UNLOAD.register((server, world) -> cache.remove(world));
+		ClientWorldEvents.UNLOAD.register((client, world) -> cache.remove(world));
 	}
 
 	/**

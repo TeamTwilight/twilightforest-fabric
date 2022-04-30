@@ -47,7 +47,6 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.CuriosCompat;
 import twilightforest.compat.TFCompat;
-import twilightforest.compat.UndergardenCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
@@ -67,6 +66,9 @@ import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.registration.*;
 import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.world.registration.features.TFConfiguredFeatures;
+import twilightforest.world.registration.features.TFConfiguredStructures;
+import twilightforest.world.registration.features.TFPlacedFeatures;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -130,17 +132,20 @@ public class TwilightForestMod implements ModInitializer {
 		TFEntities.init();
 
 		if(FabricLoader.getInstance().isModLoaded("undergarden")) {
-			UndergardenCompat.ENTITIES.register(modbus);
+//			UndergardenCompat.ENTITIES.register();
 		}
 
 		this.sendIMCs();
 		TFStructures.register();
 
 		if(FabricLoader.getInstance().isModLoaded("curios")) {
-			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+//			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
 		}
 		ConfiguredWorldCarvers.register();
-
+		TFConfiguredStructures.init();
+		TFConfiguredFeatures.init();
+		TFPlacedFeatures.init();
+		TFStructureProcessors.init();
 
 
 		// Poke these so they exist when we need them FIXME this is probably terrible design
@@ -215,7 +220,7 @@ public class TwilightForestMod implements ModInitializer {
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				TFCompat.initCompat(evt);
+				TFCompat.initCompat();
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading init compatibility!");

@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import com.mojang.authlib.GameProfile;
+import dev.emi.trinkets.api.TrinketsApi;
 import io.github.fabricators_of_create.porting_lib.event.*;
 import io.github.fabricators_of_create.porting_lib.event.common.AdvancementCallback;
 import io.github.fabricators_of_create.porting_lib.event.common.ItemAttributeModifierCallback;
@@ -356,7 +357,7 @@ public class TFEventListener {
 
 	private static boolean hasCharmCurio(Item item, Player player) {
 		if(FabricLoader.getInstance().isModLoaded("curios")) {
-			ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item, player).map(ImmutableTriple::getRight).orElse(ItemStack.EMPTY);
+			ItemStack stack = TrinketsApi.TRINKET_COMPONENT.maybeGet(player).get().getEquipped(item).get(0).getB();
 
 			if (!stack.isEmpty()) {
 				stack.shrink(1);

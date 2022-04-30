@@ -152,4 +152,6 @@ public class TFPlacedFeatures {
 	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<PlacedFeature> register(String name, Holder<? extends ConfiguredFeature<?, ?>> feature, List<PlacementModifier> placements) {
 		return BuiltinRegistries.registerExact(BuiltinRegistries.PLACED_FEATURE, TwilightForestMod.prefix(name).toString(), new PlacedFeature(Holder.hackyErase(feature), List.copyOf(placements)));
 	}
+
+	public static void init() {}
 }

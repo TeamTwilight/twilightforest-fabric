@@ -10,7 +10,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
-import twilightforest.compat.UndergardenCompat;
 import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
@@ -113,9 +112,9 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
 
         tag(DONT_KILL_BUGS).add(TFEntities.CICADA_SHOT.get(), TFEntities.MOONWORM_SHOT.get())
                 //these ones have to be optional. They aren't registered unless undergarden is actually installed.
-                .addOptional(UndergardenCompat.CICADA_SLINGSHOT.get().getRegistryName())
+                /*.addOptional(UndergardenCompat.CICADA_SLINGSHOT.get().getRegistryName())
                 .addOptional(UndergardenCompat.FIREFLY_SLINGSHOT.get().getRegistryName())
-                .addOptional(UndergardenCompat.MOONWORM_SLINGSHOT.get().getRegistryName());
+                .addOptional(UndergardenCompat.MOONWORM_SLINGSHOT.get().getRegistryName())*/;
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation rl) {

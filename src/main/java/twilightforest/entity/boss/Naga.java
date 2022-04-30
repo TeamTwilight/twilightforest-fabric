@@ -46,6 +46,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFPart;
