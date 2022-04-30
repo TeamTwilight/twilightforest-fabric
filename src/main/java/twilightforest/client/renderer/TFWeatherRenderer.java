@@ -30,7 +30,7 @@ import java.util.Random;
 /**
  * Copypasta of EntityRenderer.renderRainSnow() hacked to include progression environmental effects
  */
-public class TFWeatherRenderer implements DimensionRenderingRegistry.WeatherRenderer {
+public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRenderer*/ {
 
 	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
@@ -62,10 +62,10 @@ public class TFWeatherRenderer implements DimensionRenderingRegistry.WeatherRend
 	}
 
 	//Helpful tip: x, y, and z relate to the looking entity's position.
-	@Override
-	public void render(WorldRenderContext context) {
+//	@Override
+	public void render(int ticks, float partialTicks, ClientLevel world, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
 		// do normal weather rendering
-		renderNormalWeather(context.lightmapTextureManager(), context.world(), context.gameRenderer().getMinecraft(), context.tickDelta(), context, yIn, zIn);
+		renderNormalWeather(lightmap, world, mc, partialTicks, xIn, yIn, zIn);
 
 		if (TFGenerationSettings.isProgressionEnforced(world) && !mc.player.isCreative() && !mc.player.isSpectator()) {
 			// locked biome weather effects

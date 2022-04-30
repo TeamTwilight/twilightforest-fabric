@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.level.ItemLike;
 import twilightforest.TwilightForestMod;
 
 import java.util.Collections;
@@ -25,11 +26,11 @@ public class TFItemStackUtils {
 		boolean consumedSome = false;
 
 		for (int i = 0; i < inv.getSlots().size() && innerCount > 0; i++) {
-			ItemStack stack = new ItemStack(inv.getSlot(i).getResource().getItem(), inv.getSlot(i).getAmount());
+			ItemStack stack = new ItemStack(inv.getSlot(i).getResource().getItem(), (int) inv.getSlot(i).getAmount());
 			if (matcher.test(stack)) {
-				ItemStack consumed = inv.extract(i, innerCount, false);
-				innerCount -= consumed.getCount();
-				consumedSome = true;
+//				ItemStack consumed = inv.extract(i, innerCount, false); TODO: PORT
+//				innerCount -= consumed.getCount();
+//				consumedSome = true;
 			}
 		}
 

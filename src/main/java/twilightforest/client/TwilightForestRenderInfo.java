@@ -76,7 +76,7 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
     @Nullable
     public DimensionRenderingRegistry.WeatherRenderer getWeatherRenderHandler() {
         if (weatherRenderer == null)
-            weatherRenderer = new TFWeatherRenderer();
+            weatherRenderer = null;//new TFWeatherRenderer();
         return weatherRenderer;
     }
 }

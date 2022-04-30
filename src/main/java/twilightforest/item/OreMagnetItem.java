@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
+import io.github.fabricators_of_create.porting_lib.util.XpRepairItem;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.core.BlockPos;
@@ -39,7 +40,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
-public class OreMagnetItem extends Item implements EnchantableItem {
+public class OreMagnetItem extends Item implements EnchantableItem, XpRepairItem {
 
 	private static final float WIGGLE = 10F;
 

@@ -6,6 +6,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.TntBlock;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.monster.Redcap;
 
@@ -68,7 +69,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 		if (this.redcap.distanceToSqr(Vec3.atLowerCornerOf(tntPos)) < 2.4D * 2.4D) {
 			redcap.playAmbientSound();
 
-			Blocks.TNT.onCaughtFire(Blocks.TNT.defaultBlockState(), redcap.level, tntPos, Direction.UP, redcap);
+			((TntBlock)Blocks.TNT).explode(redcap.level, tntPos);
 			redcap.swing(InteractionHand.MAIN_HAND);
 			redcap.level.setBlock(tntPos, Blocks.AIR.defaultBlockState(), 2);
 			this.redcap.getNavigation().stop();

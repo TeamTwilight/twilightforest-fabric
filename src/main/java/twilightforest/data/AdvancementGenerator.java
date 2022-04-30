@@ -57,7 +57,7 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 	}
 
 	@Override
-	protected void generateAdvancement(Consumer<Advancement> consumer) {
+	public void generateAdvancement(Consumer<Advancement> consumer) {
 		Advancement root = Advancement.Builder.advancement().display(
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(),
 				new TranslatableComponent("itemGroup.twilightforest"),

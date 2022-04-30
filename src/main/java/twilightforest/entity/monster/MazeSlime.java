@@ -84,6 +84,32 @@ public class MazeSlime extends Slime {
 	}
 
 	@Override
+	public void tick() {
+		this.squish += (this.targetSquish - this.squish) * 0.5F;
+		this.oSquish = this.squish;
+		super.tick();
+		if (this.onGround && !this.wasOnGround) {
+			int i = this.getSize();
+
+			if (spawnCustomParticles()) i = 0; // don't spawn particles if it's handled by the implementation itself
+			for(int j = 0; j < i * 8; ++j) {
+				float f = this.random.nextFloat() * ((float)Math.PI * 2F);
+				float f1 = this.random.nextFloat() * 0.5F + 0.5F;
+				float f2 = Mth.sin(f) * (float)i * 0.5F * f1;
+				float f3 = Mth.cos(f) * (float)i * 0.5F * f1;
+				this.level.addParticle(this.getParticleType(), this.getX() + (double)f2, this.getY(), this.getZ() + (double)f3, 0.0D, 0.0D, 0.0D);
+			}
+
+			this.playSound(this.getSquishSound(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+			this.targetSquish = -0.5F;
+		} else if (!this.onGround && this.wasOnGround) {
+			this.targetSquish = 1.0F;
+		}
+
+		this.wasOnGround = this.onGround;
+		this.decreaseSquish();
+	}
+
 	protected boolean spawnCustomParticles() {
 		// [VanillaCopy] from super tick with own particles
 		int i = getSize();

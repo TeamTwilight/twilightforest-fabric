@@ -89,7 +89,6 @@ public class TwilightForestMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ModConfigEvent.RELOADING.register(TFConfig::onConfigChanged);
 		{
 			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
 			ModLoadingContext.registerConfig(ID, ModConfig.Type.COMMON, specPair.getRight());
@@ -100,6 +99,7 @@ public class TwilightForestMod implements ModInitializer {
 			ModLoadingContext.registerConfig(ID, ModConfig.Type.CLIENT, specPair.getRight());
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
+		ModConfigEvent.RELOADING.register(TFConfig::onConfigChanged);
 
 		ASMHooks.registerMultipartEvents();
 		CommandRegistrationCallback.EVENT.register(this::registerCommands);

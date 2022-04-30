@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
+import io.github.fabricators_of_create.porting_lib.util.PlayerDestroyBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +26,7 @@ import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 
-public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
+public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, CustomPathNodeTypeBlock, PlayerDestroyBlock {
 
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -75,7 +77,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 			}
 			return false;
 		} else {
-			return super.onDestroyedByPlayer(state, world, pos, player, willHarvest, fluid);
+			return PlayerDestroyBlock.super.onDestroyedByPlayer(state, world, pos, player, willHarvest, fluid);
 		}
 	}
 

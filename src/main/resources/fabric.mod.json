@@ -20,9 +20,6 @@
   "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
-    "modmenu": [
-      "twilightforest.compat.TFModMenu"
-    ],
     "client": [
       "twilightforest.client.TFClientSetup"
     ],
@@ -30,32 +27,22 @@
       "twilightforest.TwilightForestMod"
 
     ],
-    "mm:early_risers": [
-      "twilightforest.api.mixin.plugin.TFEarlyRiser"
-    ],
     "cardinal-components": [
       "twilightforest.capabilities.CapabilityList"
-    ],
-    "rei": [
-      "twilightforest.compat.rei.REIClient",
-      "twilightforest.compat.rei.common.REIServer"
     ]
   },
   "mixins": [
-    "twilightforest.mixins.json",
-    "twilight.mixins.shadow.json"
+    "twilight.mixins.json"
   ],
   "accessWidener": "twilightforest.accesswidener",
   "breaks": {
     "boats-and-beeps": "*"
   },
   "depends": {
-    "fabricloader": ">=0.11.3",
+    "fabricloader": ">=0.13.3",
     "fabric": "*",
-    "minecraft": "1.17.x",
-    "java": ">=16",
-    "cloth-config2": ">=5.0.37",
-    "cloth-api": ">=2.0.54"
+    "minecraft": "1.18.x",
+    "java": ">=17"
   },
   "suggests": {
     "modmenu": ">=2.0.2"

@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.util.FireSourceBlock;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFDamageSources;
 
-public class FieryBlock extends Block {
+public class FieryBlock extends Block implements FireSourceBlock {
 	public FieryBlock(Properties properties) {
 		super(properties);
 	}

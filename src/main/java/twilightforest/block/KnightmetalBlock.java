@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,7 +36,7 @@ import twilightforest.util.TFDamageSources;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
+public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock, CustomPathNodeTypeBlock {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("block.knightmetal.tooltip").withStyle(ChatFormatting.GRAY);
 
 	private static final VoxelShape SHAPE = Shapes.create(new AABB(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F));

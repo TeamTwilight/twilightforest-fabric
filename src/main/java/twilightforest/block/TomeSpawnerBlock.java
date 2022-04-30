@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.util.CaughtFireBlock;
+import io.github.fabricators_of_create.porting_lib.util.EnchantableBounusBlock;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +32,7 @@ import twilightforest.block.entity.TomeSpawnerBlockEntity;
 
 import javax.annotation.Nullable;
 
-public class TomeSpawnerBlock extends BaseEntityBlock {
+public class TomeSpawnerBlock extends BaseEntityBlock implements CaughtFireBlock, EnchantableBounusBlock {
 
 	public static IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, 10);
 	public static BooleanProperty SPAWNER = BooleanProperty.create("spawner");
@@ -54,7 +56,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 			}
 			world.destroyBlock(pos, false);
 		}
-		super.onCaughtFire(state, world, pos, face, igniter);
+		CaughtFireBlock.super.onCaughtFire(state, world, pos, face, igniter);
 	}
 
 	@Override

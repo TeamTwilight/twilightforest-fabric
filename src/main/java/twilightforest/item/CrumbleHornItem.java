@@ -1,6 +1,10 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.block.HarvestableBlock;
 import io.github.fabricators_of_create.porting_lib.item.ReequipAnimationItem;
+import io.github.fabricators_of_create.porting_lib.util.ContinueUsingItem;
+import io.github.fabricators_of_create.porting_lib.util.UsingTickItem;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.PlayerAdvancements;
@@ -31,7 +35,7 @@ import twilightforest.util.WorldUtil;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class CrumbleHornItem extends Item implements ReequipAnimationItem {
+public class CrumbleHornItem extends Item implements ReequipAnimationItem, ContinueUsingItem, UsingTickItem {
 
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
@@ -116,7 +120,7 @@ public class CrumbleHornItem extends Item implements ReequipAnimationItem {
 		if (state.isAir()) return false;
 
 		if(living instanceof Player) {
-			if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, (Player)living))) return false;
+			if (!PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(world, (Player)living, pos, state, null)) return false;
 		}
 
 		if(world instanceof ServerLevel level) {
@@ -125,7 +129,7 @@ public class CrumbleHornItem extends Item implements ReequipAnimationItem {
 				if(recipe.getResult().is(Blocks.AIR)) {
 					if (recipe.getInput().is(block) && world.random.nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {
 						if (living instanceof Player) {
-							if (block.canHarvestBlock(state, world, pos, (Player) living)) {
+							if ((block instanceof HarvestableBlock harvestableBlock && harvestableBlock.canHarvestBlock(state, world, pos, (Player) living)) || ((Player) living).hasCorrectToolForDrops(state)) {
 								world.removeBlock(pos, false);
 								block.playerDestroy(world, (Player) living, pos, state, world.getBlockEntity(pos), ItemStack.EMPTY);
 								world.levelEvent(2001, pos, Block.getId(state));

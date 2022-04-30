@@ -1,5 +1,6 @@
 package twilightforest.data;
 
+import io.github.fabricators_of_create.porting_lib.util.NBTSerializable;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -610,14 +611,14 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 											ListTag items = new ListTag();
 
 											// Do NOT overstuff the bag.
-											items.add(new ItemStack(TFBlocks.QUEST_RAM_TROPHY.get()).serializeNBT());
-											items.add(new ItemStack(Blocks.COAL_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.IRON_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.COPPER_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.LAPIS_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.GOLD_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.DIAMOND_BLOCK).serializeNBT());
-											items.add(new ItemStack(Blocks.EMERALD_BLOCK).serializeNBT());
+											items.add(((NBTSerializable) (Object) new ItemStack(TFBlocks.QUEST_RAM_TROPHY.get())).serializeNBT());
+											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.COAL_BLOCK)).serializeNBT());
+											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.IRON_BLOCK)).serializeNBT());
+											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.COPPER_BLOCK)).serializeNBT());
+											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.LAPIS_BLOCK)).serializeNBT());
+											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.GOLD_BLOCK)).serializeNBT());
+											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.DIAMOND_BLOCK)).serializeNBT());
+											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.EMERALD_BLOCK)).serializeNBT());
 
 											nbt.put("Items", items);
 										})))))
@@ -649,7 +650,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(wool))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootTableReference.lootTableReference(EntityType.SHEEP.getDefaultLootTable())));
 	}
 
-	@Override
+//	@Override
 	public Set<EntityType<?>> getKnownEntities() {
 		return knownEntities;
 	}

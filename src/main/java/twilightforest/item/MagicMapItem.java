@@ -253,7 +253,7 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 		Integer id = getMapId(stack);
 		TFMagicMapData mapdata = getCustomMapData(stack, world);
 		Packet<?> p = id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
-		return p instanceof ClientboundMapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(mapdata, (ClientboundMapItemDataPacket) p), NetworkDirection.PLAY_TO_CLIENT) : p;
+		return p instanceof ClientboundMapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(mapdata, (ClientboundMapItemDataPacket) p)) : p;
 	}
 
 	@Override

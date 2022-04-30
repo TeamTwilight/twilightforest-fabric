@@ -42,11 +42,11 @@ public class HollowLogItem extends BlockItem {
         pBlockToItemMap.put(this.climbable, pItem);
     }
 
-    @Override
-    public void removeFromBlockToItemMap(Map<Block, Item> blockToItemMap, Item itemIn) {
-        super.removeFromBlockToItemMap(blockToItemMap, itemIn);
-        blockToItemMap.remove(this.horizontalLog);
-        blockToItemMap.remove(this.verticalLog);
-        blockToItemMap.remove(this.climbable);
-    }
+//    @Override TODO: PORT
+//    public void removeFromBlockToItemMap(Map<Block, Item> blockToItemMap, Item itemIn) {
+//        super.removeFromBlockToItemMap(blockToItemMap, itemIn);
+//        blockToItemMap.remove(this.horizontalLog);
+//        blockToItemMap.remove(this.verticalLog);
+//        blockToItemMap.remove(this.climbable);
+//    }
 }
