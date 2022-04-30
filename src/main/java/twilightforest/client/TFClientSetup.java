@@ -50,7 +50,7 @@ public class TFClientSetup implements ClientModInitializer {
 		FogHandler.init();
 		TFParticleType.registerFactories();
 		ClientTickEvents.END_CLIENT_TICK.register(LockedBiomeListener::clientTick);
-		EntityAddedLayerCallback.EVENT.register(TFClientSetup::attachRenderLayers);
+//		EntityAddedLayerCallback.EVENT.register(TFClientSetup::attachRenderLayers);
 	}
 
 	public static class FabricEvents {

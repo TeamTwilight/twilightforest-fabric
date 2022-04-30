@@ -9,7 +9,7 @@
       "item": "twilightforest:twilight_oak_slab"
     },
     "|": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "result": {

@@ -10,7 +10,7 @@
       "item": "twilightforest:sorting_planks"
     },
     "C": {
-      "tag": "forge:chests/wooden"
+      "tag": "c:chests/wooden"
     }
   },
   "result": {

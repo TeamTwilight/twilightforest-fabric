@@ -10,7 +10,7 @@
       "item": "twilightforest:transformation_planks"
     },
     "-": {
-      "tag": "forge:rods/wooden"
+      "tag": "c:rods/wooden"
     }
   },
   "result": {

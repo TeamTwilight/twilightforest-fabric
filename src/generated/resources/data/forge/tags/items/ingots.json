@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#forge:ingots/ironwood",
-    "#forge:ingots/fiery",
-    "#forge:ingots/knightmetal",
-    "#forge:ingots/steeleaf"
-  ]
-}

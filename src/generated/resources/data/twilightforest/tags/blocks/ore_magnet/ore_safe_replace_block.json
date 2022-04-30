@@ -2,14 +2,14 @@
   "replace": false,
   "values": [
     "#minecraft:dirt",
-    "#forge:gravel",
-    "#forge:sand",
+    "#c:gravel",
+    "#c:sand",
     "#minecraft:nylium",
     "#minecraft:base_stone_overworld",
     "#minecraft:base_stone_nether",
-    "#forge:end_stones",
+    "#c:end_stones",
     "#minecraft:deepslate_ore_replaceables",
     "#minecraft:stone_ore_replaceables",
-    "#forge:ore_bearing_ground/root"
+    "#c:ore_bearing_ground/root"
   ]
 }

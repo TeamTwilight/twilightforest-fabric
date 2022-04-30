@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:storage_blocks/arctic_fur"
+            "tag": "c:storage_blocks/arctic_fur"
           }
         ]
       }
