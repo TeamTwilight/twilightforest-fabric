@@ -16,6 +16,7 @@ public abstract class TFCompat {
     static {
 //        classes.put("immersiveengineering", IECompat.class);
         classes.put("curios", CuriosCompat.class);
+//        classes.put("undergarden", UndergardenCompat.class);
     }
 
     protected TFCompat(String modName) {
@@ -45,11 +46,11 @@ public abstract class TFCompat {
         }
     }
 
-    public static void initCompat() {
+    public static void initCompat(FMLCommonSetupEvent event) {
         for (TFCompat compat : modules) {
             if (compat.isActivated) {
                 try {
-                    compat.init();
+                    compat.init(event);
                 } catch (Exception e) {
                     compat.isActivated = false;
                     TwilightForestMod.LOGGER.error("Had a {} error loading {} compatibility in init!", e.getLocalizedMessage(), compat.modName);
@@ -104,7 +105,7 @@ public abstract class TFCompat {
 
     protected abstract boolean preInit();
 
-    protected abstract void init();
+    protected abstract void init(FMLCommonSetupEvent event);
 
     protected abstract void postInit();
 

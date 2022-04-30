@@ -60,7 +60,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 		biomes.forEach((rl, biome) -> biomeRegistry.register(ResourceKey.create(Registry.BIOME_REGISTRY, rl), biome, Lifecycle.experimental()));
 
 		StreamSupport.stream(RegistryAccess.knownRegistries().spliterator(), false)
-				.filter(r -> BuiltinRegistries.ACCESS.ownedRegistry(r.key()).isPresent() && !r.key().equals(Registry.BIOME_REGISTRY))
+				.filter(r -> registryaccess.ownedRegistry(r.key()).isPresent() && !r.key().equals(Registry.BIOME_REGISTRY))
 				.forEach((data) -> dumpRegistryCap(cache, path, registryaccess, dynamicops, data));
 
 		LOGGER.info("Dumping real BIOME_REGISTRY");

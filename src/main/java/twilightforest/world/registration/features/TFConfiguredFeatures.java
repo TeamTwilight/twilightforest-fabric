@@ -88,6 +88,15 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<OreConfiguration,?>> SMALL_DIORITE = register("small_diorite", Feature.ORE, new OreConfiguration(OreFeatures.NATURAL_STONE, Blocks.DIORITE.defaultBlockState(), 16));
 	public static final Holder<ConfiguredFeature<OreConfiguration,?>> SMALL_ANDESITE = register("small_andesite", Feature.ORE, new OreConfiguration(OreFeatures.NATURAL_STONE, Blocks.ANDESITE.defaultBlockState(), 16));
 
+	//Ores! Lets keep pre 1.18 ore rates :)
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_COAL_ORE = register("legacy_coal_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.COAL_ORE.defaultBlockState(), 17));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_IRON_ORE = register("legacy_iron_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.IRON_ORE.defaultBlockState(), 9));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_GOLD_ORE = register("legacy_gold_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.GOLD_ORE.defaultBlockState(), 9));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_REDSTONE_ORE = register("legacy_redstone_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.REDSTONE_ORE.defaultBlockState(), 8));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_DIAMOND_ORE = register("legacy_diamond_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.DIAMOND_ORE.defaultBlockState(), 8));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_LAPIS_ORE = register("legacy_lapis_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.LAPIS_ORE.defaultBlockState(), 7));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEGACY_COPPER_ORE = register("legacy_copper_ore", Feature.ORE, new OreConfiguration(OreFeatures.STONE_ORE_REPLACEABLES, Blocks.COPPER_ORE.defaultBlockState(), 10));
+
 	//Dark Forest needs special placements, so here we go
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> DARK_MUSHGLOOMS = register("dark_mushglooms", TFBiomeFeatures.DARK_FOREST_PLACER.get(), FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.MUSHGLOOM.get())), List.of(Blocks.GRASS_BLOCK), 50));
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> DARK_PUMPKINS = register("dark_pumpkins", TFBiomeFeatures.DARK_FOREST_PLACER.get(), FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(Blocks.PUMPKIN)), List.of(Blocks.GRASS_BLOCK), 50));

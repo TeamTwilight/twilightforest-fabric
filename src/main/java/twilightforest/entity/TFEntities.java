@@ -33,6 +33,7 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.legacy.*;
+import twilightforest.compat.UndergardenCompat;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
 import twilightforest.entity.passive.*;
@@ -243,7 +244,7 @@ public class TFEntities {
 
 		//EntitySpawnPlacementRegistry.register(CASTLE_GUARDIAN, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
 	}
-	
+
 	public static void addEntityAttributes() {
 		FabricDefaultAttributeRegistry.register(BOAR.get(), Pig.createAttributes());
 		FabricDefaultAttributeRegistry.register(BIGHORN_SHEEP.get(), Sheep.createAttributes());
@@ -396,6 +397,10 @@ public class TFEntities {
 		EntityRendererRegistry.register(SLIDER.get(), SlideBlockRenderer::new);
 		EntityRendererRegistry.register(SEEKER_ARROW.get(), DefaultArrowRenderer::new);
 		EntityRendererRegistry.register(ICE_ARROW.get(), DefaultArrowRenderer::new);
+
+		if(ModList.get().isLoaded("undergarden")) {
+			UndergardenCompat.registerSlingshotRenders(event);
+		}
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -417,7 +422,7 @@ public class TFEntities {
 		}
 
 	}
-	
+
 	public static void init() {
 		registerEntities();
 		addEntityAttributes();

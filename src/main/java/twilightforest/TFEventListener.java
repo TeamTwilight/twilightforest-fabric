@@ -133,6 +133,7 @@ public class TFEventListener {
 		AdvancementCallback.EVENT.register(TFEventListener::onAdvancementGet);
 	}
 
+	public static final String CHARM_INV_TAG = "TFCharmInventory";
 	private static final ImmutableSet<String> SHIELD_DAMAGE_BLACKLIST = ImmutableSet.of(
 			"inWall", "cramming", "drown", "starve", "fall", "flyIntoWall", "outOfWorld", "fallingBlock"
 	);
@@ -355,12 +356,12 @@ public class TFEventListener {
 
 	private static boolean hasCharmCurio(Item item, Player player) {
 		if(FabricLoader.getInstance().isModLoaded("curios")) {
-//			ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item, player).map(ImmutableTriple::getRight).orElse(ItemStack.EMPTY);
-//
-//			if (!stack.isEmpty()) {
-//				stack.shrink(1);
-//				return true;
-//			}
+			ItemStack stack = CuriosApi.getCuriosHelper().findEquippedCurio(item, player).map(ImmutableTriple::getRight).orElse(ItemStack.EMPTY);
+
+			if (!stack.isEmpty()) {
+				stack.shrink(1);
+				return true;
+			}
 		}
 
 		return false;
@@ -512,31 +513,15 @@ public class TFEventListener {
 
 		return false;
 	}
-	
+
 	private static final String PERSISTED_NBT_TAG = "PlayerPersisted";
 
-	private static CompoundTag getPlayerData(Player player) {
+	public static CompoundTag getPlayerData(Player player) {
 		if (!((EntityExtensions)player).getExtraCustomData().contains(PERSISTED_NBT_TAG)) {
 			((EntityExtensions)player).getExtraCustomData().put(PERSISTED_NBT_TAG, new CompoundTag());
 		}
 		return ((EntityExtensions)player).getExtraCustomData().getCompound(PERSISTED_NBT_TAG);
 	}
-
-	//if we have any curios and die with a charm of keeping on us, keep our curios instead of dropping them
-//	@SubscribeEvent
-//	public static void keepCurios(DropRulesEvent event) {
-//		if (event.getEntityLiving() instanceof Player player) {
-//			CompoundTag playerData = getPlayerData(player);
-//			if (!player.level.isClientSide && playerData.contains("TfCharmInventory")) { //Keep all Curios items
-//				CuriosApi.getCuriosHelper().getEquippedCurios(player).ifPresent(modifiable -> {
-//					for (int i = 0; i < modifiable.getSlots(); ++i) {
-//						int finalI = i;
-//						event.addOverride(stack -> stack == modifiable.getStackInSlot(finalI), ICurio.DropRule.ALWAYS_KEEP);
-//					}
-//				});
-//			}
-//		}
-//	}
 
 	//stores the charm that was used for the effect later
 	private static ItemStack charmUsed;
@@ -604,7 +589,7 @@ public class TFEventListener {
 		//take our fake inventory and save it to the persistent player data.
 		//by saving it there we can guarantee we will always get all of our items back, even if the player logs out and back in.
 		keepInventory.save(tagList);
-		getPlayerData(player).put("TfCharmInventory", tagList);
+		getPlayerData(player).put(CHARM_INV_TAG, tagList);
 	}
 
 	//transfers a list of items to another
@@ -635,10 +620,11 @@ public class TFEventListener {
 
 		//check if our tag is in the persistent player data. If so, copy that inventory over to our own. Cloud storage at its finest!
 		CompoundTag playerData = getPlayerData(player);
-		if (!player.level.isClientSide && playerData.contains("TfCharmInventory")) {
-			ListTag tagList = playerData.getList("TfCharmInventory", 10);
+		if (!player.level.isClientSide && playerData.contains(CHARM_INV_TAG)) {
+			ListTag tagList = playerData.getList(CHARM_INV_TAG, 10);
 			player.getInventory().load(tagList);
-			getPlayerData(player).remove("TfCharmInventory");
+			getPlayerData(player).getList(CHARM_INV_TAG, 10).clear();
+			getPlayerData(player).remove(CHARM_INV_TAG);
 		}
 
 		// spawn effect thingers

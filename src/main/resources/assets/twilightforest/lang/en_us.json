@@ -1102,6 +1102,10 @@
   "entity.twilightforest.slider": "Moving Slide Trap",
   "entity.twilightforest.protection_box": "Progression Protection Box",
 
+  "entity.twilightforest.cicada_slingshot": "Cicada",
+  "entity.twilightforest.firefly_slingshot": "Firefly",
+  "entity.twilightforest.moonworm_slingshot": "Moonworm",
+
   // Subtitles
   "subtitles.twilightforest.entity.acid_rain": "Acid Rain scalds player",
   "subtitles.twilightforest.entity.alphayeti.alert": "Alpha Yeti targets player",

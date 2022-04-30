@@ -790,7 +790,7 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	}
 
 	@Override
-	protected boolean updateInWaterStateAndDoFluidPushing() {
+	public boolean isPushedByFluid() {
 		return false;
 	}
 

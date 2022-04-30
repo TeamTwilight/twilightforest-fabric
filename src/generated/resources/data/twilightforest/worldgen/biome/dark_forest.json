@@ -10,22 +10,13 @@
     [],
     [],
     [
-      "minecraft:ore_coal_upper",
-      "minecraft:ore_coal_lower",
-      "minecraft:ore_iron_upper",
-      "minecraft:ore_iron_middle",
-      "minecraft:ore_iron_small",
-      "minecraft:ore_gold",
-      "minecraft:ore_gold_lower",
-      "minecraft:ore_redstone",
-      "minecraft:ore_redstone_lower",
-      "minecraft:ore_diamond",
-      "minecraft:ore_diamond_large",
-      "minecraft:ore_diamond_buried",
-      "minecraft:ore_lapis",
-      "minecraft:ore_lapis_buried",
-      "minecraft:ore_copper",
-      "minecraft:underwater_magma"
+      "twilightforest:legacy_coal_ore",
+      "twilightforest:legacy_iron_ore",
+      "twilightforest:legacy_gold_ore",
+      "twilightforest:legacy_redstone_ore",
+      "twilightforest:legacy_diamond_ore",
+      "twilightforest:legacy_lapis_ore",
+      "twilightforest:legacy_copper_ore"
     ],
     [
       "twilightforest:plant_roots",
@@ -41,9 +32,7 @@
       "twilightforest:dark_mushglooms",
       "twilightforest:dark_dead_bushes",
       "twilightforest:dark_pumpkins",
-      "twilightforest:dark_mushrooms",
-      "twilightforest:forest_grass_placer",
-      "twilightforest:flower_placer"
+      "twilightforest:dark_mushrooms"
     ]
   ],
   "spawners": {

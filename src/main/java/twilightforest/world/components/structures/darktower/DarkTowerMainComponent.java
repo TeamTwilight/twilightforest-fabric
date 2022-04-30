@@ -25,8 +25,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -157,8 +157,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			// count how many size 9 towers we have hanging off us
 			ArrayList<DarkTowerWingComponent> possibleKeyTowers = new ArrayList<DarkTowerWingComponent>();
 
-			if (list instanceof StructureStart start) {
-				for (StructurePiece piece : start.getPieces()) {
+			if (list instanceof StructurePiecesBuilder start) {
+				for (StructurePiece piece : start.pieces) {
 					if (piece instanceof DarkTowerWingComponent wing && wing.size == 9 && wing.getGenDepth() == this.getGenDepth()) {
 						possibleKeyTowers.add(wing);
 					}

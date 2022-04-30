@@ -55,12 +55,12 @@ public class TFPlacedFeatures {
 	public static final Holder<PlacedFeature> PLACED_WEBS = register("webs", TFConfiguredFeatures.WEBS, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, InSquarePlacement.spread(), CountPlacement.of(60), BiomeFilter.biome()).build());
 	public static final Holder<PlacedFeature> PLACED_WOOD_ROOTS_SPREAD = register("wood_roots", TFConfiguredFeatures.WOOD_ROOTS_SPREAD, tfFeatureCheckArea(OutOfStructureFilter.checkUnderground(), 40, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(0))).build());
 	public static final Holder<PlacedFeature> PLACED_SNOW_UNDER_TREES = register("snow_under_trees", TFConfiguredFeatures.SNOW_UNDER_TREES, ImmutableList.<PlacementModifier>builder().add(BiomeFilter.biome()).build());
-	public static final Holder<PlacedFeature> PLACED_TF_OAK_FALLEN_LOG = register("tf_oak_fallen_log", TFConfiguredFeatures.TF_OAK_FALLEN_LOG, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build());
-	public static final Holder<PlacedFeature> PLACED_CANOPY_FALLEN_LOG = register("canopy_fallen_log", TFConfiguredFeatures.CANOPY_FALLEN_LOG, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build());
-	public static final Holder<PlacedFeature> PLACED_MANGROVE_FALLEN_LOG = register("mangrove_fallen_log", TFConfiguredFeatures.MANGROVE_FALLEN_LOG, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build());
-	public static final Holder<PlacedFeature> PLACED_OAK_FALLEN_LOG = register("oak_fallen_log", TFConfiguredFeatures.OAK_FALLEN_LOG, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build());
-	public static final Holder<PlacedFeature> PLACED_SPRUCE_FALLEN_LOG = register("spruce_fallen_log", TFConfiguredFeatures.SPRUCE_FALLEN_LOG, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build());
-	public static final Holder<PlacedFeature> PLACED_BIRCH_FALLEN_LOG = register("birch_fallen_log", TFConfiguredFeatures.BIRCH_FALLEN_LOG, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_TF_OAK_FALLEN_LOG = register("tf_oak_fallen_log", TFConfiguredFeatures.TF_OAK_FALLEN_LOG, hollowLog(OutOfStructureFilter.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_CANOPY_FALLEN_LOG = register("canopy_fallen_log", TFConfiguredFeatures.CANOPY_FALLEN_LOG, hollowLog(OutOfStructureFilter.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_MANGROVE_FALLEN_LOG = register("mangrove_fallen_log", TFConfiguredFeatures.MANGROVE_FALLEN_LOG, hollowLog(OutOfStructureFilter.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_OAK_FALLEN_LOG = register("oak_fallen_log", TFConfiguredFeatures.OAK_FALLEN_LOG, hollowLog(OutOfStructureFilter.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_SPRUCE_FALLEN_LOG = register("spruce_fallen_log", TFConfiguredFeatures.SPRUCE_FALLEN_LOG, hollowLog(OutOfStructureFilter.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_BIRCH_FALLEN_LOG = register("birch_fallen_log", TFConfiguredFeatures.BIRCH_FALLEN_LOG, hollowLog(OutOfStructureFilter.checkSurface(), 40).build());
 	public static final Holder<PlacedFeature> PLACED_SMALL_GRANITE = register("small_granite", TFConfiguredFeatures.SMALL_GRANITE, ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(60), InSquarePlacement.spread(), CountPlacement.of(5)).build());
 	public static final Holder<PlacedFeature> PLACED_SMALL_DIORITE = register("small_diorite", TFConfiguredFeatures.SMALL_DIORITE, ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(60), InSquarePlacement.spread(), CountPlacement.of(5)).build());
 	public static final Holder<PlacedFeature> PLACED_SMALL_ANDESITE = register("small_andesite", TFConfiguredFeatures.SMALL_ANDESITE, ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(60), InSquarePlacement.spread(), CountPlacement.of(5)).build());
@@ -71,6 +71,15 @@ public class TFPlacedFeatures {
 	public static final Holder<PlacedFeature> PLACED_DARK_MUSHROOMS = register("dark_mushrooms", TFConfiguredFeatures.DARK_MUSHROOMS, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build());
 	public static final Holder<PlacedFeature> PLACED_DARK_DEAD_BUSHES = register("dark_dead_bushes", TFConfiguredFeatures.DARK_DEAD_BUSHES, ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(15), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build());
 
+	//Ores!
+	public static final Holder<PlacedFeature> PLACED_LEGACY_COAL_ORE = register("legacy_coal_ore", TFConfiguredFeatures.LEGACY_COAL_ORE, ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(127)), InSquarePlacement.spread(), CountPlacement.of(20)).build());
+	public static final Holder<PlacedFeature> PLACED_LEGACY_IRON_ORE = register("legacy_iron_ore", TFConfiguredFeatures.LEGACY_IRON_ORE, ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(63)), InSquarePlacement.spread(), CountPlacement.of(20)).build());
+	public static final Holder<PlacedFeature> PLACED_LEGACY_GOLD_ORE = register("legacy_gold_ore", TFConfiguredFeatures.LEGACY_GOLD_ORE, ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(31)), InSquarePlacement.spread(), CountPlacement.of(2)).build());
+	public static final Holder<PlacedFeature> PLACED_LEGACY_REDSTONE_ORE = register("legacy_redstone_ore", TFConfiguredFeatures.LEGACY_REDSTONE_ORE, ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(15)), InSquarePlacement.spread(), CountPlacement.of(8)).build());
+	public static final Holder<PlacedFeature> PLACED_LEGACY_DIAMOND_ORE = register("legacy_diamond_ore", TFConfiguredFeatures.LEGACY_DIAMOND_ORE, ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(15))).build());
+	public static final Holder<PlacedFeature> PLACED_LEGACY_LAPIS_ORE = register("legacy_lapis_ore", TFConfiguredFeatures.LEGACY_LAPIS_ORE, ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.triangle(VerticalAnchor.absolute(0), VerticalAnchor.absolute(30)), InSquarePlacement.spread()).build());
+	public static final Holder<PlacedFeature> PLACED_LEGACY_COPPER_ORE = register("legacy_copper_ore", TFConfiguredFeatures.LEGACY_COPPER_ORE, ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.triangle(VerticalAnchor.absolute(0), VerticalAnchor.absolute(96)), InSquarePlacement.spread(), CountPlacement.of(6)).build());
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!! WARNING!!!! DUE TO CLASSLOAD ISSUES THESE ***MUST***, ABSOLUTELY MUST!!!! BE HERE, DO NOT FUCKING MOVE THIS !!!!!!!!!!!!!!!!!!!!!!!
 	//random selector stuff
 	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> WELL_PLACER = TFConfiguredFeatures.register("well_placer", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(TFPlacedFeatures.PLACED_FANCY_WELL, 0.07F)), TFPlacedFeatures.PLACED_SIMPLE_WELL));
@@ -80,7 +89,7 @@ public class TFPlacedFeatures {
 
 	public static final Holder<PlacedFeature> PLACED_WELL_PLACER = register("well_placer", WELL_PLACER, tfFeatureCheckArea(OutOfStructureFilter.checkBoth(), 80).build());
 	public static final Holder<PlacedFeature> PLACED_LAMPPOST_PLACER = register("lamppost_placer", LAMPPOST_PLACER, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 2).build());
-	public static final Holder<PlacedFeature> PLACED_DEFAULT_FALLEN_LOGS = register("default_fallen_logs", DEFAULT_FALLEN_LOGS, tfFeatureCheckArea(OutOfStructureFilter.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_DEFAULT_FALLEN_LOGS = register("default_fallen_logs", DEFAULT_FALLEN_LOGS, hollowLog(OutOfStructureFilter.checkSurface(), 40).build());
 
 	public static final Holder<PlacedFeature> PLACED_GRASS_PLACER = register("grass_placer", TFConfiguredFeatures.GRASS_PLACER, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, CountPlacement.of(30), InSquarePlacement.spread(), RarityFilter.onAverageOnceEvery(3)).build());
 	public static final Holder<PlacedFeature> PLACED_FOREST_GRASS_PLACER = register("forest_grass_placer", TFConfiguredFeatures.FOREST_GRASS_PLACER, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, CountPlacement.of(30), InSquarePlacement.spread(), RarityFilter.onAverageOnceEvery(3)).build());
@@ -134,6 +143,10 @@ public class TFPlacedFeatures {
 
 	private static ImmutableList.Builder<PlacementModifier> tfFeatureCheckArea(OutOfStructureFilter filter, int rarity, PlacementModifier... extra) {
 		return ImmutableList.<PlacementModifier>builder().add(extra).add(filter, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
+	}
+
+	private static ImmutableList.Builder<PlacementModifier> hollowLog(OutOfStructureFilter filter, int rarity) {
+		return ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, filter);
 	}
 
 	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<PlacedFeature> register(String name, Holder<? extends ConfiguredFeature<?, ?>> feature, List<PlacementModifier> placements) {

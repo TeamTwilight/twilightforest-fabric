@@ -45,7 +45,9 @@ import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.CuriosCompat;
 import twilightforest.compat.TFCompat;
+import twilightforest.compat.UndergardenCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
@@ -127,10 +129,19 @@ public class TwilightForestMod implements ModInitializer {
 		TFBlocks.registerItemblocks();
 		TFEntities.init();
 
-		ConfiguredWorldCarvers.register();
+		if(FabricLoader.getInstance().isModLoaded("undergarden")) {
+			UndergardenCompat.ENTITIES.register(modbus);
+		}
 
 		this.sendIMCs();
 		TFStructures.register();
+
+		if(FabricLoader.getInstance().isModLoaded("curios")) {
+			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+		}
+		ConfiguredWorldCarvers.register();
+
+
 
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new BiomeGrassColors();
@@ -204,7 +215,7 @@ public class TwilightForestMod implements ModInitializer {
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				TFCompat.initCompat();
+				TFCompat.initCompat(evt);
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading init compatibility!");

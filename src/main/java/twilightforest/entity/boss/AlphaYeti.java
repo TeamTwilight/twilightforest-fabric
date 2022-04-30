@@ -449,7 +449,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	}
 
 	@Override
-	protected boolean updateInWaterStateAndDoFluidPushing() {
+	public boolean isPushedByFluid() {
 		return false;
 	}
 
