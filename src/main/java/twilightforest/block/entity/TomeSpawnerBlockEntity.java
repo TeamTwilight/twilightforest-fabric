@@ -50,7 +50,7 @@ public class TomeSpawnerBlockEntity extends BlockEntity {
 			}
 
 			if (te.tomesLeft <= 0) {
-				te.invalidateCaps();
+//				te.invalidateCaps();
 				level.setBlockAndUpdate(pos, TFBlocks.EMPTY_CANOPY_BOOKSHELF.get().defaultBlockState());
 			} else {
 				level.setBlockAndUpdate(pos, state.setValue(TomeSpawnerBlock.BOOK_STAGES, te.tomesLeft));

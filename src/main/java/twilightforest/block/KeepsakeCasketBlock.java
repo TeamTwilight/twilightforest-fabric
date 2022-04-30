@@ -76,7 +76,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	private static final VoxelShape SOLID_Z = Shapes.or(SOLID, TOPPER_Z);
 
 	protected KeepsakeCasketBlock() {
-		super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).noOcclusion().requiresCorrectToolForDrops().strength(50.0F, 1200.0F).sound(SoundType.NETHERITE_BLOCK));
+		super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).noOcclusion().requiresCorrectToolForDrops().strength(50.0F, 1200.0F).sound(SoundType.NETHERITE_BLOCK).explosionResistance(1000000000F));
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(BREAKAGE, 0));
 	}
 
@@ -119,11 +119,6 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 
 			super.onRemove(state, worldIn, pos, newState, isMoving);
 		}
-	}
-
-	@Override
-	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
-		return 1000000000F;
 	}
 
 	@Override

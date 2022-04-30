@@ -3,6 +3,7 @@ package twilightforest.data;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
@@ -453,8 +454,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ResourceLocation side = prefix("block/nagastone_pillar_side" + suffix);
 		ResourceLocation end = prefix("block/nagastone_pillar_end" + suffix);
 		ResourceLocation alt = prefix("block/nagastone_pillar_side" + suffix + "_alt");
-		ModelFile model = models().cubeColumn(b.getRegistryName().getPath(), side, end);
-		ModelFile reversed = models().cubeColumn(b.getRegistryName().getPath() + "_reversed", alt, end);
+		ModelFile model = models().cubeColumn(Registry.BLOCK.getKey(b).getPath(), side, end);
+		ModelFile reversed = models().cubeColumn(Registry.BLOCK.getKey(b).getPath() + "_reversed", alt, end);
 		getVariantBuilder(b).forAllStates(state -> {
 			int rotX = 0, rotY = 0;
 			switch (state.getValue(RotatedPillarBlock.AXIS)) {
@@ -481,15 +482,15 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ResourceLocation leftTex = prefix("block/etched_nagastone_left" + suffix);
 
 		// todo 1.15 cleanup make this more "logical" with rotations, etc. instead of just reproducing what was in the old blockstate json
-		ModelFile down = models().cubeColumn(b.getRegistryName().getPath(), downTex, stoneTiles);
-		ModelFile up = models().cubeColumn(b.getRegistryName().getPath() + "_up", upTex, stoneTiles);
-		ModelFile north = models().cube(b.getRegistryName().getPath() + "_north", upTex, upTex, stoneTiles, stoneTiles, rightTex, leftTex)
+		ModelFile down = models().cubeColumn(Registry.BLOCK.getKey(b).getPath(), downTex, stoneTiles);
+		ModelFile up = models().cubeColumn(Registry.BLOCK.getKey(b).getPath() + "_up", upTex, stoneTiles);
+		ModelFile north = models().cube(Registry.BLOCK.getKey(b).getPath() + "_north", upTex, upTex, stoneTiles, stoneTiles, rightTex, leftTex)
 						.texture("particle", "#down");
-		ModelFile south = models().cube(b.getRegistryName().getPath() + "_south", downTex, downTex, stoneTiles, stoneTiles, leftTex, rightTex)
+		ModelFile south = models().cube(Registry.BLOCK.getKey(b).getPath() + "_south", downTex, downTex, stoneTiles, stoneTiles, leftTex, rightTex)
 						.texture("particle", "#down");
-		ModelFile west = models().cube(b.getRegistryName().getPath() + "_west", leftTex, rightTex, rightTex, leftTex, stoneTiles, stoneTiles)
+		ModelFile west = models().cube(Registry.BLOCK.getKey(b).getPath() + "_west", leftTex, rightTex, rightTex, leftTex, stoneTiles, stoneTiles)
 						.texture("particle", "#down");
-		ModelFile east = models().cube(b.getRegistryName().getPath() + "_east", rightTex, leftTex, leftTex, rightTex, stoneTiles, stoneTiles)
+		ModelFile east = models().cube(Registry.BLOCK.getKey(b).getPath() + "_east", rightTex, leftTex, leftTex, rightTex, stoneTiles, stoneTiles)
 						.texture("particle", "#down");
 
 		getVariantBuilder(b).partialState()
@@ -509,7 +510,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 	private void casketStuff() {
 		var builder = getVariantBuilder(TFBlocks.KEEPSAKE_CASKET.get());
 
-		var empty = models().getBuilder(TFBlocks.KEEPSAKE_CASKET.get().getRegistryName().getPath()).parent(new ModelFile.UncheckedModelFile("builtin/entity")).texture("particle", "minecraft:block/netherite_block");
+		var empty = models().getBuilder(Registry.BLOCK.getKey(TFBlocks.KEEPSAKE_CASKET.get()).getPath()).parent(new ModelFile.UncheckedModelFile("builtin/entity")).texture("particle", "minecraft:block/netherite_block");
 		var obsidian = models().withExistingParent("casket_obsidian", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/obsidian")).texture("side", new ResourceLocation("block/obsidian"));
 		var stone = models().withExistingParent("casket_stone", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/stone")).texture("side", new ResourceLocation("block/stone"));
 		var basalt = models().withExistingParent("casket_basalt", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/basalt_top")).texture("side", new ResourceLocation("block/basalt_side"));
@@ -693,9 +694,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void magicLogCore(Block b) {
-		ResourceLocation topTex = prefix("block/" + b.getRegistryName().getPath().replace("_core", "_top"));
-		ModelFile off = models().cubeColumn(b.getRegistryName().getPath(), blockTexture(b), topTex);
-		ModelFile on = models().cubeColumn(b.getRegistryName().getPath() + "_on", prefix("block/" + b.getRegistryName().getPath() + "_on"), topTex);
+		ResourceLocation topTex = prefix("block/" + Registry.BLOCK.getKey(b).getPath().replace("_core", "_top"));
+		ModelFile off = models().cubeColumn(Registry.BLOCK.getKey(b).getPath(), blockTexture(b), topTex);
+		ModelFile on = models().cubeColumn(Registry.BLOCK.getKey(b).getPath() + "_on", prefix("block/" + Registry.BLOCK.getKey(b).getPath() + "_on"), topTex);
 		getVariantBuilder(b).forAllStates(s -> {
 			ModelFile f = s.getValue(SpecialMagicLogBlock.ACTIVE) ? on : off;
 			Direction.Axis axis = s.getValue(RotatedPillarBlock.AXIS);
@@ -707,16 +708,16 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void rotationallyCorrectColumn(Block b) {
-		ResourceLocation side = prefix("block/" + b.getRegistryName().getPath() + "_side");
-		ResourceLocation end = prefix("block/" + b.getRegistryName().getPath() + "_end");
-		ConfiguredModel yModel = new ConfiguredModel(models().cubeColumn(b.getRegistryName().getPath(), side, end));
+		ResourceLocation side = prefix("block/" + Registry.BLOCK.getKey(b).getPath() + "_side");
+		ResourceLocation end = prefix("block/" + Registry.BLOCK.getKey(b).getPath() + "_end");
+		ConfiguredModel yModel = new ConfiguredModel(models().cubeColumn(Registry.BLOCK.getKey(b).getPath(), side, end));
 		ConfiguredModel xModel = ConfiguredModel.builder()
-						.modelFile(models().withExistingParent(b.getRegistryName().getPath() + "_x", prefix("block/util/cube_column_rotationally_correct_x"))
+						.modelFile(models().withExistingParent(Registry.BLOCK.getKey(b).getPath() + "_x", prefix("block/util/cube_column_rotationally_correct_x"))
 										.texture("side", side).texture("end", end))
 						.rotationX(90).rotationY(90)
 						.buildLast();
 		ConfiguredModel zModel = ConfiguredModel.builder()
-						.modelFile(models().withExistingParent(b.getRegistryName().getPath() + "_z", prefix("block/util/cube_column_rotationally_correct_z"))
+						.modelFile(models().withExistingParent(Registry.BLOCK.getKey(b).getPath() + "_z", prefix("block/util/cube_column_rotationally_correct_z"))
 										.texture("side", side).texture("end", end))
 						.rotationX(90)
 						.buildLast();
@@ -728,7 +729,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 	private void castleDoor(Block b) {
 		ModelFile overlay = models().getExistingFile(prefix("block/castle_door_overlay"));
-		ModelFile main = models().cubeAll(b.getRegistryName().getPath(), prefix("block/castle_door"));
+		ModelFile main = models().cubeAll(Registry.BLOCK.getKey(b).getPath(), prefix("block/castle_door"));
 		getMultipartBuilder(b)
 						.part().modelFile(overlay).addModel().end()
 						.part().modelFile(main).addModel().condition(CastleDoorBlock.VANISHED, false).end();
@@ -749,13 +750,13 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void builtinEntity(Block b, String particle) {
-		simpleBlock(b, models().getBuilder(b.getRegistryName().getPath())
+		simpleBlock(b, models().getBuilder(Registry.BLOCK.getKey(b).getPath())
 						.parent(new ModelFile.UncheckedModelFile("builtin/entity"))
 						.texture("particle", particle));
 	}
 
 	private void simpleBlockExisting(Block b) {
-		simpleBlock(b, new ConfiguredModel(models().getExistingFile(prefix(b.getRegistryName().getPath()))));
+		simpleBlock(b, new ConfiguredModel(models().getExistingFile(prefix(Registry.BLOCK.getKey(b).getPath()))));
 	}
 
 	/**
@@ -763,7 +764,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 	 * The single generated model has the given parent and can be customized.
 	 */
 	private void singleBlockBoilerPlate(Block b, String parent, Consumer<BlockModelBuilder> modelCustomizer) {
-		BlockModelBuilder bModel = models().withExistingParent(b.getRegistryName().getPath(), parent);
+		BlockModelBuilder bModel = models().withExistingParent(Registry.BLOCK.getKey(b).getPath(), parent);
 		modelCustomizer.accept(bModel);
 		simpleBlock(b, bModel);
 	}
@@ -779,8 +780,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 	private void tintedAndFlipped(Block b) {
 		simpleBlock(b, ConfiguredModel.builder()
-						.modelFile(cubeAllTinted(b.getRegistryName().getPath(), b.getRegistryName().getPath())).nextModel()
-						.modelFile(cubeAllTinted(b.getRegistryName().getPath() + "_flipped", b.getRegistryName().getPath(), true)).build()
+						.modelFile(cubeAllTinted(Registry.BLOCK.getKey(b).getPath(), Registry.BLOCK.getKey(b).getPath())).nextModel()
+						.modelFile(cubeAllTinted(Registry.BLOCK.getKey(b).getPath() + "_flipped", Registry.BLOCK.getKey(b).getPath(), true)).build()
 		);
 	}
 
@@ -792,8 +793,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ResourceLocation sSideTex = blockTexture(slog);
 		axisBlock(swood, sSideTex, sSideTex);
 
-		ResourceLocation saplingTex = prefix("block/" + sapling.getRegistryName().getPath());
-		simpleBlock(sapling, models().cross(sapling.getRegistryName().getPath(), saplingTex));
+		ResourceLocation saplingTex = prefix("block/" + Registry.BLOCK.getKey(sapling).getPath());
+		simpleBlock(sapling, models().cross(Registry.BLOCK.getKey(sapling).getPath(), saplingTex));
 	}
 
 	private void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor, BanisterBlock banister) {
@@ -803,17 +804,17 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ResourceLocation tex2 = prefix("block/wood/" + plankTexName + "_2");
 		ResourceLocation tex3 = prefix("block/wood/" + plankTexName + "_3");
 		ConfiguredModel[] plankModels = ConfiguredModel.builder()
-						.weight(10).modelFile(models().cubeAll(plank.getRegistryName().getPath(), tex0)).nextModel()
-						.weight(10).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_1", tex1)).nextModel()
-						.weight(1).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_2", tex2)).nextModel()
-						.weight(1).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_3", tex3)).build();
+						.weight(10).modelFile(models().cubeAll(Registry.BLOCK.getKey(plank).getPath(), tex0)).nextModel()
+						.weight(10).modelFile(models().cubeAll(Registry.BLOCK.getKey(plank).getPath() + "_1", tex1)).nextModel()
+						.weight(1).modelFile(models().cubeAll(Registry.BLOCK.getKey(plank).getPath() + "_2", tex2)).nextModel()
+						.weight(1).modelFile(models().cubeAll(Registry.BLOCK.getKey(plank).getPath() + "_3", tex3)).build();
 		simpleBlock(plank, plankModels);
 
 		ConfiguredModel[] bottomSlabModels = ConfiguredModel.builder()
-						.weight(10).modelFile(models().slab(slab.getRegistryName().getPath(), tex0, tex0, tex0)).nextModel()
-						.weight(10).modelFile(models().slab(slab.getRegistryName().getPath() + "_1", tex1, tex1, tex1)).nextModel()
-						.weight(1).modelFile(models().slab(slab.getRegistryName().getPath() + "_2", tex2, tex2, tex2)).nextModel()
-						.weight(1).modelFile(models().slab(slab.getRegistryName().getPath() + "_3", tex3, tex3, tex3)).build();
+						.weight(10).modelFile(models().slab(Registry.BLOCK.getKey(slab).getPath(), tex0, tex0, tex0)).nextModel()
+						.weight(10).modelFile(models().slab(Registry.BLOCK.getKey(slab).getPath() + "_1", tex1, tex1, tex1)).nextModel()
+						.weight(1).modelFile(models().slab(Registry.BLOCK.getKey(slab).getPath() + "_2", tex2, tex2, tex2)).nextModel()
+						.weight(1).modelFile(models().slab(Registry.BLOCK.getKey(slab).getPath() + "_3", tex3, tex3, tex3)).build();
 		ConfiguredModel[] topSlabModels = ConfiguredModel.builder()
 						.weight(10).uvLock(true).rotationX(180).modelFile(bottomSlabModels[0].model).nextModel()
 						.weight(10).uvLock(true).rotationX(180).modelFile(bottomSlabModels[1].model).nextModel()
@@ -839,22 +840,22 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
 		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
 
-		ModelFile gate0 = models().fenceGate(gate.getRegistryName().getPath(), tex0);
-		ModelFile gate1 = models().fenceGate(gate.getRegistryName().getPath() + "_1", tex1);
-		ModelFile gate2 = models().fenceGate(gate.getRegistryName().getPath() + "_2", tex2);
-		ModelFile gate3 = models().fenceGate(gate.getRegistryName().getPath() + "_3", tex3);
-		ModelFile open0 = models().fenceGateOpen(gate.getRegistryName().getPath() + "_open", tex0);
-		ModelFile open1 = models().fenceGateOpen(gate.getRegistryName().getPath() + "_open_1", tex1);
-		ModelFile open2 = models().fenceGateOpen(gate.getRegistryName().getPath() + "_open_2", tex2);
-		ModelFile open3 = models().fenceGateOpen(gate.getRegistryName().getPath() + "_open_3", tex3);
-		ModelFile wall0 = models().fenceGateWall(gate.getRegistryName().getPath() + "_wall", tex0);
-		ModelFile wall1 = models().fenceGateWall(gate.getRegistryName().getPath() + "_wall_1", tex1);
-		ModelFile wall2 = models().fenceGateWall(gate.getRegistryName().getPath() + "_wall_2", tex2);
-		ModelFile wall3 = models().fenceGateWall(gate.getRegistryName().getPath() + "_wall_3", tex3);
-		ModelFile wallOpen0 = models().fenceGateWallOpen(gate.getRegistryName().getPath() + "_wall_open", tex0);
-		ModelFile wallOpen1 = models().fenceGateWallOpen(gate.getRegistryName().getPath() + "_wall_open_1", tex1);
-		ModelFile wallOpen2 = models().fenceGateWallOpen(gate.getRegistryName().getPath() + "_wall_open_2", tex2);
-		ModelFile wallOpen3 = models().fenceGateWallOpen(gate.getRegistryName().getPath() + "_wall_open_3", tex3);
+		ModelFile gate0 = models().fenceGate(Registry.BLOCK.getKey(gate).getPath(), tex0);
+		ModelFile gate1 = models().fenceGate(Registry.BLOCK.getKey(gate).getPath() + "_1", tex1);
+		ModelFile gate2 = models().fenceGate(Registry.BLOCK.getKey(gate).getPath() + "_2", tex2);
+		ModelFile gate3 = models().fenceGate(Registry.BLOCK.getKey(gate).getPath() + "_3", tex3);
+		ModelFile open0 = models().fenceGateOpen(Registry.BLOCK.getKey(gate).getPath() + "_open", tex0);
+		ModelFile open1 = models().fenceGateOpen(Registry.BLOCK.getKey(gate).getPath() + "_open_1", tex1);
+		ModelFile open2 = models().fenceGateOpen(Registry.BLOCK.getKey(gate).getPath() + "_open_2", tex2);
+		ModelFile open3 = models().fenceGateOpen(Registry.BLOCK.getKey(gate).getPath() + "_open_3", tex3);
+		ModelFile wall0 = models().fenceGateWall(Registry.BLOCK.getKey(gate).getPath() + "_wall", tex0);
+		ModelFile wall1 = models().fenceGateWall(Registry.BLOCK.getKey(gate).getPath() + "_wall_1", tex1);
+		ModelFile wall2 = models().fenceGateWall(Registry.BLOCK.getKey(gate).getPath() + "_wall_2", tex2);
+		ModelFile wall3 = models().fenceGateWall(Registry.BLOCK.getKey(gate).getPath() + "_wall_3", tex3);
+		ModelFile wallOpen0 = models().fenceGateWallOpen(Registry.BLOCK.getKey(gate).getPath() + "_wall_open", tex0);
+		ModelFile wallOpen1 = models().fenceGateWallOpen(Registry.BLOCK.getKey(gate).getPath() + "_wall_open_1", tex1);
+		ModelFile wallOpen2 = models().fenceGateWallOpen(Registry.BLOCK.getKey(gate).getPath() + "_wall_open_2", tex2);
+		ModelFile wallOpen3 = models().fenceGateWallOpen(Registry.BLOCK.getKey(gate).getPath() + "_wall_open_3", tex3);
 
 		// [VanillaCopy] super.fenceGateBlock except with more models
 		getVariantBuilder(gate).forAllStatesExcept(state -> {
@@ -900,14 +901,14 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
 		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
 
-		ModelFile post0 = models().fencePost(fence.getRegistryName().getPath() + "_post", tex0);
-		ModelFile post1 = models().fencePost(fence.getRegistryName().getPath() + "_post_1", tex1);
-		ModelFile post2 = models().fencePost(fence.getRegistryName().getPath() + "_post_2", tex2);
-		ModelFile post3 = models().fencePost(fence.getRegistryName().getPath() + "_post_3", tex3);
-		ModelFile side0 = models().fenceSide(fence.getRegistryName().getPath() + "_side", tex0);
-		ModelFile side1 = models().fenceSide(fence.getRegistryName().getPath() + "_side_1", tex1);
-		ModelFile side2 = models().fenceSide(fence.getRegistryName().getPath() + "_side_2", tex2);
-		ModelFile side3 = models().fenceSide(fence.getRegistryName().getPath() + "_side_3", tex3);
+		ModelFile post0 = models().fencePost(Registry.BLOCK.getKey(fence).getPath() + "_post", tex0);
+		ModelFile post1 = models().fencePost(Registry.BLOCK.getKey(fence).getPath() + "_post_1", tex1);
+		ModelFile post2 = models().fencePost(Registry.BLOCK.getKey(fence).getPath() + "_post_2", tex2);
+		ModelFile post3 = models().fencePost(Registry.BLOCK.getKey(fence).getPath() + "_post_3", tex3);
+		ModelFile side0 = models().fenceSide(Registry.BLOCK.getKey(fence).getPath() + "_side", tex0);
+		ModelFile side1 = models().fenceSide(Registry.BLOCK.getKey(fence).getPath() + "_side_1", tex1);
+		ModelFile side2 = models().fenceSide(Registry.BLOCK.getKey(fence).getPath() + "_side_2", tex2);
+		ModelFile side3 = models().fenceSide(Registry.BLOCK.getKey(fence).getPath() + "_side_3", tex3);
 
 		// [VanillaCopy] super.fourWayBlock, but with more models
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(fence).part()
@@ -934,15 +935,15 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
 		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
 		ConfiguredModel[] unpressed = ConfiguredModel.builder()
-						.weight(10).modelFile(models().withExistingParent(plate.getRegistryName().getPath(), "pressure_plate_up").texture("texture", tex0)).nextModel()
-						.weight(10).modelFile(models().withExistingParent(plate.getRegistryName().getPath() + "_1", "pressure_plate_up").texture("texture", tex1)).nextModel()
-						.weight(1).modelFile(models().withExistingParent(plate.getRegistryName().getPath() + "_2", "pressure_plate_up").texture("texture", tex2)).nextModel()
-						.weight(1).modelFile(models().withExistingParent(plate.getRegistryName().getPath() + "_3", "pressure_plate_up").texture("texture", tex3)).build();
+						.weight(10).modelFile(models().withExistingParent(Registry.BLOCK.getKey(plate).getPath(), "pressure_plate_up").texture("texture", tex0)).nextModel()
+						.weight(10).modelFile(models().withExistingParent(Registry.BLOCK.getKey(plate).getPath() + "_1", "pressure_plate_up").texture("texture", tex1)).nextModel()
+						.weight(1).modelFile(models().withExistingParent(Registry.BLOCK.getKey(plate).getPath() + "_2", "pressure_plate_up").texture("texture", tex2)).nextModel()
+						.weight(1).modelFile(models().withExistingParent(Registry.BLOCK.getKey(plate).getPath() + "_3", "pressure_plate_up").texture("texture", tex3)).build();
 		ConfiguredModel[] pressed = ConfiguredModel.builder()
-						.weight(10).modelFile(models().withExistingParent(plate.getRegistryName().getPath() + "_down", "pressure_plate_down").texture("texture", tex0)).nextModel()
-						.weight(10).modelFile(models().withExistingParent(plate.getRegistryName().getPath() + "_down_1", "pressure_plate_down").texture("texture", tex1)).nextModel()
-						.weight(1).modelFile(models().withExistingParent(plate.getRegistryName().getPath() + "_down_2", "pressure_plate_down").texture("texture", tex2)).nextModel()
-						.weight(1).modelFile(models().withExistingParent(plate.getRegistryName().getPath() + "_down_3", "pressure_plate_down").texture("texture", tex3)).build();
+						.weight(10).modelFile(models().withExistingParent(Registry.BLOCK.getKey(plate).getPath() + "_down", "pressure_plate_down").texture("texture", tex0)).nextModel()
+						.weight(10).modelFile(models().withExistingParent(Registry.BLOCK.getKey(plate).getPath() + "_down_1", "pressure_plate_down").texture("texture", tex1)).nextModel()
+						.weight(1).modelFile(models().withExistingParent(Registry.BLOCK.getKey(plate).getPath() + "_down_2", "pressure_plate_down").texture("texture", tex2)).nextModel()
+						.weight(1).modelFile(models().withExistingParent(Registry.BLOCK.getKey(plate).getPath() + "_down_3", "pressure_plate_down").texture("texture", tex3)).build();
 
 		getVariantBuilder(plate).partialState().with(PressurePlateBlock.POWERED, false).setModels(unpressed);
 		getVariantBuilder(plate).partialState().with(PressurePlateBlock.POWERED, true).setModels(pressed);
@@ -953,14 +954,14 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ResourceLocation tex1 = prefix("block/wood/" + texName + "_1");
 		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
 		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
-		ModelFile unpressed0 = models().withExistingParent(button.getRegistryName().getPath(), "button").texture("texture", tex0);
-		ModelFile pressed0 = models().withExistingParent(button.getRegistryName().getPath() + "_pressed", "button_pressed").texture("texture", tex0);
-		ModelFile unpressed1 = models().withExistingParent(button.getRegistryName().getPath() + "_1", "button").texture("texture", tex1);
-		ModelFile pressed1 = models().withExistingParent(button.getRegistryName().getPath() + "_pressed_1", "button_pressed").texture("texture", tex1);
-		ModelFile unpressed2 = models().withExistingParent(button.getRegistryName().getPath() + "_2", "button").texture("texture", tex2);
-		ModelFile pressed2 = models().withExistingParent(button.getRegistryName().getPath() + "_pressed_2", "button_pressed").texture("texture", tex2);
-		ModelFile unpressed3 = models().withExistingParent(button.getRegistryName().getPath() + "_3", "button").texture("texture", tex3);
-		ModelFile pressed3 = models().withExistingParent(button.getRegistryName().getPath() + "_pressed_3", "button_pressed").texture("texture", tex3);
+		ModelFile unpressed0 = models().withExistingParent(Registry.BLOCK.getKey(button).getPath(), "button").texture("texture", tex0);
+		ModelFile pressed0 = models().withExistingParent(Registry.BLOCK.getKey(button).getPath() + "_pressed", "button_pressed").texture("texture", tex0);
+		ModelFile unpressed1 = models().withExistingParent(Registry.BLOCK.getKey(button).getPath() + "_1", "button").texture("texture", tex1);
+		ModelFile pressed1 = models().withExistingParent(Registry.BLOCK.getKey(button).getPath() + "_pressed_1", "button_pressed").texture("texture", tex1);
+		ModelFile unpressed2 = models().withExistingParent(Registry.BLOCK.getKey(button).getPath() + "_2", "button").texture("texture", tex2);
+		ModelFile pressed2 = models().withExistingParent(Registry.BLOCK.getKey(button).getPath() + "_pressed_2", "button_pressed").texture("texture", tex2);
+		ModelFile unpressed3 = models().withExistingParent(Registry.BLOCK.getKey(button).getPath() + "_3", "button").texture("texture", tex3);
+		ModelFile pressed3 = models().withExistingParent(Registry.BLOCK.getKey(button).getPath() + "_pressed_3", "button_pressed").texture("texture", tex3);
 
 		getVariantBuilder(button).forAllStates(state -> {
 			ModelFile model0 = state.getValue(ButtonBlock.POWERED) ? pressed0 : unpressed0;
@@ -1004,18 +1005,18 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ResourceLocation tex1 = prefix("block/wood/" + texName + "_1");
 		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
 		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
-		ModelFile main0 = models().stairs(block.getRegistryName().getPath(), tex0, tex0, tex0);
-		ModelFile main1 = models().stairs(block.getRegistryName().getPath() + "_1", tex1, tex1, tex1);
-		ModelFile main2 = models().stairs(block.getRegistryName().getPath() + "_2", tex2, tex2, tex2);
-		ModelFile main3 = models().stairs(block.getRegistryName().getPath() + "_3", tex3, tex3, tex3);
-		ModelFile inner0 = models().stairsInner(block.getRegistryName().getPath() + "_inner", tex0, tex0, tex0);
-		ModelFile inner1 = models().stairsInner(block.getRegistryName().getPath() + "_inner_1", tex1, tex1, tex1);
-		ModelFile inner2 = models().stairsInner(block.getRegistryName().getPath() + "_inner_2", tex2, tex2, tex2);
-		ModelFile inner3 = models().stairsInner(block.getRegistryName().getPath() + "_inner_3", tex3, tex3, tex3);
-		ModelFile outer0 = models().stairsOuter(block.getRegistryName().getPath() + "_outer", tex0, tex0, tex0);
-		ModelFile outer1 = models().stairsOuter(block.getRegistryName().getPath() + "_outer_1", tex1, tex1, tex1);
-		ModelFile outer2 = models().stairsOuter(block.getRegistryName().getPath() + "_outer_2", tex2, tex2, tex2);
-		ModelFile outer3 = models().stairsOuter(block.getRegistryName().getPath() + "_outer_3", tex3, tex3, tex3);
+		ModelFile main0 = models().stairs(Registry.BLOCK.getKey(block).getPath(), tex0, tex0, tex0);
+		ModelFile main1 = models().stairs(Registry.BLOCK.getKey(block).getPath() + "_1", tex1, tex1, tex1);
+		ModelFile main2 = models().stairs(Registry.BLOCK.getKey(block).getPath() + "_2", tex2, tex2, tex2);
+		ModelFile main3 = models().stairs(Registry.BLOCK.getKey(block).getPath() + "_3", tex3, tex3, tex3);
+		ModelFile inner0 = models().stairsInner(Registry.BLOCK.getKey(block).getPath() + "_inner", tex0, tex0, tex0);
+		ModelFile inner1 = models().stairsInner(Registry.BLOCK.getKey(block).getPath() + "_inner_1", tex1, tex1, tex1);
+		ModelFile inner2 = models().stairsInner(Registry.BLOCK.getKey(block).getPath() + "_inner_2", tex2, tex2, tex2);
+		ModelFile inner3 = models().stairsInner(Registry.BLOCK.getKey(block).getPath() + "_inner_3", tex3, tex3, tex3);
+		ModelFile outer0 = models().stairsOuter(Registry.BLOCK.getKey(block).getPath() + "_outer", tex0, tex0, tex0);
+		ModelFile outer1 = models().stairsOuter(Registry.BLOCK.getKey(block).getPath() + "_outer_1", tex1, tex1, tex1);
+		ModelFile outer2 = models().stairsOuter(Registry.BLOCK.getKey(block).getPath() + "_outer_2", tex2, tex2, tex2);
+		ModelFile outer3 = models().stairsOuter(Registry.BLOCK.getKey(block).getPath() + "_outer_3", tex3, tex3, tex3);
 		// [VanillaCopy] super.stairsBlock, but multiple files returned each time
 		getVariantBuilder(block)
 						.forAllStatesExcept(state -> {
@@ -1065,7 +1066,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 			int yRot = (int) facing.toYRot();
 			String extended = state.getValue(BanisterBlock.EXTENDED) ? "_extended" : "";
 			String variant = state.getValue(BanisterBlock.SHAPE).getSerializedName() + extended;
-			String newModelName = banister.getRegistryName().getPath() + "_" + variant;
+			String newModelName = Registry.BLOCK.getKey(banister).getPath() + "_" + variant;
 
 			ConfiguredModel[] tall = ConfiguredModel.builder()
 					.weight(10).modelFile(models().withExistingParent(newModelName, TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex0)).rotationY(yRot).nextModel()
@@ -1087,7 +1088,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 			String variant = state.getValue(BanisterBlock.SHAPE).getSerializedName() + extended;
 
 			ConfiguredModel[] tall = ConfiguredModel.builder()
-					.modelFile(models().withExistingParent(banister.getRegistryName().getPath() + "_" + variant, TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex0)).rotationY(yRot).build();
+					.modelFile(models().withExistingParent(Registry.BLOCK.getKey(banister).getPath() + "_" + variant, TwilightForestMod.prefix("banister_" + variant)).texture("texture", tex0)).rotationY(yRot).build();
 
 			return tall;
 		}, BanisterBlock.WATERLOGGED);
@@ -1498,7 +1499,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void lilyPad(Block b) {
-		String baseName = b.getRegistryName().getPath();
+		String baseName = Registry.BLOCK.getKey(b).getPath();
 		ResourceLocation parent = prefix("block/huge_lily_pad");
 		ModelFile[] models = new ModelFile[4];
 		for (int i = 0; i < models.length; i++) {
@@ -1630,9 +1631,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void perFaceBlock(Block b, ResourceLocation inside, ResourceLocation outside) {
-		ModelFile modelInside = models().withExistingParent(b.getRegistryName().getPath() + "_inside", new ResourceLocation("block/template_single_face"))
+		ModelFile modelInside = models().withExistingParent(Registry.BLOCK.getKey(b).getPath() + "_inside", new ResourceLocation("block/template_single_face"))
 						.texture("texture", inside);
-		ModelFile modelOutside = models().withExistingParent(b.getRegistryName().getPath() + "_outside", new ResourceLocation("block/template_single_face"))
+		ModelFile modelOutside = models().withExistingParent(Registry.BLOCK.getKey(b).getPath() + "_outside", new ResourceLocation("block/template_single_face"))
 						.texture("texture", outside);
 		getMultipartBuilder(b).part().modelFile(modelInside).addModel().condition(HugeMushroomBlock.NORTH, false).end();
 		getMultipartBuilder(b).part().modelFile(modelOutside).addModel().condition(HugeMushroomBlock.NORTH, true).end();
@@ -1649,9 +1650,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void hollowLogs(Block originalLog, Block strippedLog, RegistryObject<HollowLogHorizontal> horizontalHollowLog, RegistryObject<HollowLogVertical> verticalHollowLog, RegistryObject<HollowLogClimbable> climbableHollowLog, ModelFile emptyLog, ModelFile mossLog, ModelFile grassLog, ModelFile snowLog, ModelFile hollowLog, ModelFile vineLog, ModelFile ladderLog) {
-		ResourceLocation top = new ResourceLocation("block/" + originalLog.getRegistryName().getPath() + "_top");
-		ResourceLocation side = new ResourceLocation("block/" + originalLog.getRegistryName().getPath());
-		ResourceLocation inner = new ResourceLocation("block/" + strippedLog.getRegistryName().getPath());
+		ResourceLocation top = new ResourceLocation("block/" + Registry.BLOCK.getKey(originalLog).getPath() + "_top");
+		ResourceLocation side = new ResourceLocation("block/" + Registry.BLOCK.getKey(originalLog).getPath());
+		ResourceLocation inner = new ResourceLocation("block/" + Registry.BLOCK.getKey(strippedLog).getPath());
 
 		this.getVariantBuilder(horizontalHollowLog.get()).forAllStates(state -> ConfiguredModel.builder().modelFile((switch (state.getValue(HollowLogHorizontal.VARIANT)) {
 			case MOSS -> models().getBuilder(horizontalHollowLog.getId().getPath() + "_moss").parent(mossLog);

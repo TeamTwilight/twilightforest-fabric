@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.tags.ToolTags;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -9,6 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -57,6 +60,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
         this.vertical = vertical;
 
         this.registerDefaultState(this.stateDefinition.any().setValue(VARIANT, HollowLogVariants.Climbable.VINE).setValue(FACING, Direction.NORTH));
+        FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
     }
 
     @Override
@@ -118,7 +122,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 
         ItemStack stack = player.getItemInHand(hand);
 
-        if (stack.canPerformAction(ToolActions.SHEARS_HARVEST)) {
+        if (stack.getItem() instanceof ShearsItem || stack.is(ToolTags.SHEARS)) {
             HollowLogVariants.Climbable variant = state.getValue(VARIANT);
             level.setBlock(pos, this.vertical.get().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, variant == HollowLogVariants.Climbable.LADDER_WATERLOGGED), 3);
             level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -141,13 +145,11 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
         return (0.124 <= vec.x && vec.x <= 0.876) && (0.124 <= vec.z && vec.z <= 0.876);
     }
 
-    @Override
-    public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+    public int getFlammability() {
         return 5;
     }
 
-    @Override
-    public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+    public int getFireSpreadSpeed() {
         return 5;
     }
 }

@@ -1,12 +1,14 @@
 package twilightforest.client.renderer.tileentity;
 
 import com.google.common.collect.ImmutableMap;
+import io.github.fabricators_of_create.porting_lib.util.MaterialChest;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -16,7 +18,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class TwilightChestRenderer<T extends TwilightChestEntity> extends ChestRenderer<T> {
+public class TwilightChestRenderer<T extends TwilightChestEntity> extends ChestRenderer<T> implements MaterialChest {
     public static final Map<Block, EnumMap<ChestType, Material>> MATERIALS;
 
     static {
@@ -41,14 +43,14 @@ public class TwilightChestRenderer<T extends TwilightChestEntity> extends ChestR
     }
 
     @Override
-    protected Material getMaterial(T blockEntity, ChestType chestType) {
+    public Material getMaterial(BlockEntity blockEntity, ChestType chestType) {
         EnumMap<ChestType, Material> b = MATERIALS.get(blockEntity.getBlockState().getBlock());
 
-        if (b == null) return super.getMaterial(blockEntity, chestType);
+        if (b == null) return null;
 
         Material material = b.get(chestType);
 
-        return material != null ? material : super.getMaterial(blockEntity, chestType);
+        return material;
     }
 
     private static EnumMap<ChestType, Material> chestMaterial(String type) {

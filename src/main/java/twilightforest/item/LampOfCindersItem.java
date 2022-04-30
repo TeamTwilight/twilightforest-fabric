@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -24,7 +25,7 @@ import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nonnull;
 
-public class LampOfCindersItem extends Item {
+public class LampOfCindersItem extends Item implements EnchantableItem {
 	private static final int FIRING_TIME = 12;
 
 	LampOfCindersItem(Properties props) {
@@ -95,7 +96,7 @@ public class LampOfCindersItem extends Item {
 	public void releaseUsing(ItemStack stack, Level world, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
-		if (useTime > FIRING_TIME && (stack.getDamageValue() + 1) < this.getMaxDamage(stack)) {
+		if (useTime > FIRING_TIME && (stack.getDamageValue() + 1) < this.getMaxDamage(/*stack*/)) {
 			doBurnEffect(world, living);
 		}
 	}

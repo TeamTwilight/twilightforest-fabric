@@ -1,5 +1,8 @@
 package twilightforest.data;
 
+import me.alphamode.forgetags.Tags;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
@@ -17,12 +20,12 @@ import twilightforest.item.recipe.UncraftingEnabledCondition;
 import java.util.function.Consumer;
 
 public class CraftingGenerator extends CraftingDataHelper {
-	public CraftingGenerator(DataGenerator generator) {
+	public CraftingGenerator(FabricDataGenerator generator) {
 		super(generator);
 	}
 
 	@Override
-	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+	public void generateRecipes(Consumer<FinishedRecipe> consumer) {
 		// The Recipe Builder currently doesn't support enchantment-resulting recipes, those must be manually created.
 		blockCompressionRecipes(consumer);
 		equipmentRecipes(consumer);
@@ -129,17 +132,17 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_item", has(TFItems.TORCHBERRIES.get()))
 				.save(consumer, TwilightForestMod.prefix("berry_torch"));
 
-		ConditionalRecipe.builder()
-				.addCondition(new UncraftingEnabledCondition())
-				.addRecipe(ShapedRecipeBuilder.shaped(TFBlocks.UNCRAFTING_TABLE.get())
-						.pattern("###")
-						.pattern("#X#")
-						.pattern("###")
-						.define('#', Blocks.CRAFTING_TABLE)
-						.define('X', TFItems.MAZE_MAP_FOCUS.get())
-						.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get()))
-						::save)
-				.build(consumer, TwilightForestMod.prefix("uncrafting_table"));
+//		ConditionalRecipe.builder() TODO: PORT
+//				.addCondition(new UncraftingEnabledCondition())
+//				.addRecipe(ShapedRecipeBuilder.shaped(TFBlocks.UNCRAFTING_TABLE.get())
+//						.pattern("###")
+//						.pattern("#X#")
+//						.pattern("###")
+//						.define('#', Blocks.CRAFTING_TABLE)
+//						.define('X', TFItems.MAZE_MAP_FOCUS.get())
+//						.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get()))
+//						::save)
+//				.build(consumer, TwilightForestMod.prefix("uncrafting_table"));
 
 		// Patchouli books would also go here, except they also must craft-result with NBT data.
 
@@ -336,17 +339,17 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ShapelessRecipeBuilder.shapeless(Blocks.COBBLESTONE, 64)
 				.requires(TFBlocks.GIANT_COBBLESTONE.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_COBBLESTONE.getId().getPath() + "_to_" + Blocks.COBBLESTONE.asItem().getRegistryName().getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_COBBLESTONE.getId().getPath() + "_to_" + Registry.ITEM.getKey(Blocks.COBBLESTONE.asItem()).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(Blocks.OAK_PLANKS, 64)
 				.requires(TFBlocks.GIANT_LOG.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_LOG.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + Blocks.OAK_PLANKS.asItem().getRegistryName().getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + Registry.ITEM.getKey(Blocks.OAK_PLANKS.asItem()).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(Blocks.OAK_LEAVES, 64)
 				.requires(TFBlocks.GIANT_LEAVES.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_LEAVES.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + Blocks.OAK_LEAVES.asItem().getRegistryName().getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + Registry.ITEM.getKey(Blocks.OAK_LEAVES.asItem()).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.BLOCK_AND_CHAIN.get())
 				.requires(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL)
@@ -721,14 +724,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), 2)
 				.requires(Ingredient.of(Tags.Items.RODS_BLAZE))
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
-				.save(consumer, locEquip("fiery_" + Items.IRON_SWORD.getRegistryName().getPath()));
+				.save(consumer, locEquip("fiery_" + Registry.ITEM.getKey(Items.IRON_SWORD).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.FIERY_PICKAXE.get())
 				.requires(Items.IRON_PICKAXE)
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), 3)
 				.requires(Ingredient.of(Tags.Items.RODS_BLAZE), 2)
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
-				.save(consumer, locEquip("fiery_" + Items.IRON_PICKAXE.getRegistryName().getPath()));
+				.save(consumer, locEquip("fiery_" + Registry.ITEM.getKey(Items.IRON_PICKAXE).getPath()));
 	}
 
 	private void cookingRecipes(Consumer<FinishedRecipe> consumer, String processName, SimpleCookingSerializer<?> process, int smeltingTime) {

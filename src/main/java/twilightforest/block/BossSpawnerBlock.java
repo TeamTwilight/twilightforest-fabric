@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.util.EntityDestroyBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
@@ -19,7 +20,7 @@ import twilightforest.block.entity.spawner.BossSpawnerBlockEntity;
 
 import javax.annotation.Nullable;
 
-public class BossSpawnerBlock extends BaseEntityBlock {
+public class BossSpawnerBlock extends BaseEntityBlock implements EntityDestroyBlock {
 	private static final VoxelShape CHUNGUS = Block.box(-4, -4, -4, 20, 20, 20);
 	private final BossVariant boss;
 

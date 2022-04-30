@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.util.EntityDestroyBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -17,7 +18,7 @@ import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nullable;
 
-public class StrongholdShieldBlock extends DirectionalBlock {
+public class StrongholdShieldBlock extends DirectionalBlock implements EntityDestroyBlock {
 
 	public StrongholdShieldBlock(BlockBehaviour.Properties props) {
 		super(props);

@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
@@ -590,10 +592,10 @@ public class TFFeature {
 
 		// what biome is at the center of the chunk?
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8)).value();
-		return generateFeature(chunkX, chunkZ, biomeAt, world.getSeed());
+		return generateFeature(chunkX, chunkZ, biomeAt, world.getSeed(), world.registryAccess());
 	}
 
-	public static TFFeature generateFeature(int chunkX, int chunkZ, Biome biome, long seed) {
+	public static TFFeature generateFeature(int chunkX, int chunkZ, Biome biome, long seed, RegistryAccess registryAccess) {
 		// Remove block comment start-marker to enable debug
 		/*if (true) {
 			return LICH_TOWER;
@@ -604,7 +606,7 @@ public class TFFeature {
 		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// does the biome have a feature?
-		TFFeature biomeFeature = BIOME_FEATURES.get(biome.getRegistryName());
+		TFFeature biomeFeature = BIOME_FEATURES.get(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
 		if(biomeFeature != null)
 			return biomeFeature;
 

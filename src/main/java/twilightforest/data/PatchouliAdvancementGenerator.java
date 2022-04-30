@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.resources.ResourceKey;
@@ -694,7 +695,7 @@ public class PatchouliAdvancementGenerator extends AdvancementProvider {
 				.addCriterion("summon", SummonedEntityTrigger.TriggerInstance.summonedEntity(EntityPredicate.Builder.entity().of(entity)))
 				.addCriterion("tame", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(entity).build()))
 				.requirements(RequirementsStrategy.OR)
-				.save(consumer, "twilightforest:alt/entities/" + entity.getRegistryName().getPath());
+				.save(consumer, "twilightforest:alt/entities/" + Registry.ENTITY_TYPE.getKey(entity).getPath());
 	}
 
 	private void landmarkAdvancement(ResourceKey<ConfiguredStructureFeature<?, ?>> structure, Consumer<Advancement> consumer, Advancement root) {

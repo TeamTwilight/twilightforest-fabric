@@ -2,6 +2,7 @@ package twilightforest.world.registration;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.util.CubicSpline;
 import net.minecraft.world.level.biome.TerrainShaper;
 import net.minecraft.world.level.block.Blocks;
@@ -12,7 +13,7 @@ import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 public class TFNoiseGenerationSettings {
 
-	public static final LazyRegistrar<NoiseGeneratorSettings> NOISE_GENERATORS = LazyRegistrar.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.ID);
+	public static final LazyRegistrar<NoiseGeneratorSettings> NOISE_GENERATORS = LazyRegistrar.create(BuiltinRegistries.NOISE_GENERATOR_SETTINGS, TwilightForestMod.ID);
 
 	public static final RegistryObject<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = NOISE_GENERATORS.register("twilight_noise_gen", TFNoiseGenerationSettings::tfDefault);
 	public static final RegistryObject<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = NOISE_GENERATORS.register("skylight_noise_gen", TFNoiseGenerationSettings::skylight);

@@ -37,7 +37,7 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 	private int getShieldCount(T entity) {
 		return entity instanceof Lich
 						? ((Lich) entity).getShieldStrength()
-						: entity.getCapability(CapabilityList.SHIELDS).map(IShieldCapability::shieldsLeft).orElse(0);
+						: CapabilityList.SHIELDS.maybeGet(entity).map(IShieldCapability::shieldsLeft).orElse(0);
 	}
 
 	private void renderShields(PoseStack stack, MultiBufferSource buffer, T entity, float partialTicks) {

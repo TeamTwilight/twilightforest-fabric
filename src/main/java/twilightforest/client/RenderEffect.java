@@ -15,7 +15,7 @@ public enum RenderEffect {
 		@Override
 		public boolean shouldRender(LivingEntity entity, boolean firstPerson) {
 			if (entity instanceof Lich) return false;
-			return entity.getCapability(CapabilityList.SHIELDS).map(c -> c.shieldsLeft() > 0).orElse(false);
+			return CapabilityList.SHIELDS.maybeGet(entity).map(c -> c.shieldsLeft() > 0).orElse(false);
 		}
 
 		@Override

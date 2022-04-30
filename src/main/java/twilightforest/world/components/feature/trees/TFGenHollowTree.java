@@ -1,6 +1,8 @@
 package twilightforest.world.components.feature.trees;
 
 import com.mojang.serialization.Codec;
+import io.github.fabricators_of_create.porting_lib.extensions.BlockExtensions;
+import io.github.fabricators_of_create.porting_lib.util.IPlantable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
@@ -80,7 +82,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.HOLLOW_OAK_SAPLING.get())) {
+		if (!((BlockExtensions)state.getBlock()).canSustainPlant(state, world, pos.below(), Direction.UP, (IPlantable) TFBlocks.HOLLOW_OAK_SAPLING.get())) {
 			return false;
 		}
 

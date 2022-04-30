@@ -2,6 +2,8 @@ package twilightforest.world.components.feature.trees;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import io.github.fabricators_of_create.porting_lib.extensions.BlockExtensions;
+import io.github.fabricators_of_create.porting_lib.util.IPlantable;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,7 +46,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.below());
-		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.CANOPY_SAPLING.get())) {
+		if (!((BlockExtensions)state.getBlock()).canSustainPlant(state, world, pos.below(), Direction.UP, (IPlantable) TFBlocks.CANOPY_SAPLING.get())) {
 			return false;
 		}
 

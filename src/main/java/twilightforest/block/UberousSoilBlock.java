@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.extensions.BlockExtensions;
 import io.github.fabricators_of_create.porting_lib.util.IPlantable;
 import io.github.fabricators_of_create.porting_lib.util.PlantType;
 import net.minecraft.core.BlockPos;
@@ -24,7 +25,7 @@ import twilightforest.item.TFItems;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class UberousSoilBlock extends Block implements BonemealableBlock {
+public class UberousSoilBlock extends Block implements BonemealableBlock, BlockExtensions {
 
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 15.0D, 16.0D);
 

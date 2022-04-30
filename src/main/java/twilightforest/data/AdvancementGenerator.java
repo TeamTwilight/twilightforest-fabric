@@ -1,5 +1,7 @@
 package twilightforest.data;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.FrameType;
@@ -32,7 +34,7 @@ import twilightforest.world.registration.TFStructures;
 
 import java.util.function.Consumer;
 
-public class AdvancementGenerator extends AdvancementProvider {
+public class AdvancementGenerator extends FabricAdvancementProvider {
 
 	private static final EntityType<?>[] TF_KILLABLE = new EntityType<?>[]{TFEntities.ADHERENT.get(), TFEntities.ARMORED_GIANT.get(), TFEntities.BIGHORN_SHEEP.get(), TFEntities.BLOCKCHAIN_GOBLIN.get(), TFEntities.DWARF_RABBIT.get(), TFEntities.DEATH_TOME.get(), TFEntities.DEER.get(), TFEntities.FIRE_BEETLE.get(), TFEntities.GIANT_MINER.get(), TFEntities.LOWER_GOBLIN_KNIGHT.get(), TFEntities.UPPER_GOBLIN_KNIGHT.get(), TFEntities.HARBINGER_CUBE.get(), TFEntities.HEDGE_SPIDER.get(), TFEntities.HELMET_CRAB.get(), TFEntities.HOSTILE_WOLF.get(), TFEntities.HYDRA.get(), TFEntities.KING_SPIDER.get(), TFEntities.KNIGHT_PHANTOM.get(), TFEntities.KOBOLD.get(), TFEntities.LICH.get(), TFEntities.LICH_MINION.get(), TFEntities.MAZE_SLIME.get(), TFEntities.CARMINITE_GHASTLING.get(), TFEntities.MINOSHROOM.get(), TFEntities.MINOTAUR.get(), TFEntities.MIST_WOLF.get(), TFEntities.MOSQUITO_SWARM.get(), TFEntities.NAGA.get(), TFEntities.PENGUIN.get(), TFEntities.PINCH_BEETLE.get(), TFEntities.PLATEAU_BOSS.get(), TFEntities.QUEST_RAM.get(), TFEntities.RAVEN.get(), TFEntities.REDCAP.get(), TFEntities.REDCAP_SAPPER.get(), TFEntities.SKELETON_DRUID.get(), TFEntities.SLIME_BEETLE.get(), TFEntities.SNOW_GUARDIAN.get(), TFEntities.SNOW_QUEEN.get(), TFEntities.SQUIRREL.get(), TFEntities.STABLE_ICE_CORE.get(), TFEntities.SWARM_SPIDER.get(), TFEntities.TINY_BIRD.get(), TFEntities.CARMINITE_BROODLING.get(), TFEntities.CARMINITE_GHASTGUARD.get(), TFEntities.CARMINITE_GOLEM.get(), TFEntities.TOWERWOOD_BORER.get(), TFEntities.TROLL.get(), TFEntities.UNSTABLE_ICE_CORE.get(), TFEntities.UR_GHAST.get(), TFEntities.BOAR.get(), TFEntities.WINTER_WOLF.get(), TFEntities.WRAITH.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get()};
 	//man this is a pain
@@ -50,12 +52,12 @@ public class AdvancementGenerator extends AdvancementProvider {
 			TFBlocks.TWILIGHT_OAK_BANISTER.get(), TFBlocks.CANOPY_BANISTER.get(), TFBlocks.MANGROVE_BANISTER.get(), TFBlocks.DARKWOOD_BANISTER.get(), TFBlocks.TIME_BANISTER.get(), TFBlocks.TRANSFORMATION_BANISTER.get(), TFBlocks.MINING_BANISTER.get(), TFBlocks.SORTING_BANISTER.get()
 	};
 
-	public AdvancementGenerator(DataGenerator generatorIn, ExistingFileHelper fileHelperIn) {
-		super(generatorIn, fileHelperIn);
+	public AdvancementGenerator(FabricDataGenerator generatorIn, ExistingFileHelper fileHelperIn) {
+		super(generatorIn);
 	}
 
 	@Override
-	protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
+	protected void generateAdvancement(Consumer<Advancement> consumer) {
 		Advancement root = Advancement.Builder.advancement().display(
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(),
 				new TranslatableComponent("itemGroup.twilightforest"),
@@ -539,7 +541,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 		ItemStack itemstack = new ItemStack(TFItems.GREATER_FLASK.get());
 		CompoundTag compoundtag = itemstack.getOrCreateTag();
 		compoundtag.putInt("Uses", 4);
-		compoundtag.putString("Potion", Potions.STRONG_HARMING.getRegistryName().toString());
+		compoundtag.putString("Potion", Registry.POTION.getKey(Potions.STRONG_HARMING).toString());
 		return itemstack;
 	}
 
@@ -566,7 +568,7 @@ public class AdvancementGenerator extends AdvancementProvider {
 
 	private Advancement.Builder addDendrologistBlock(Advancement.Builder builder) {
 		for (Block dendrologistBlock : DENDROLOGIST_BLOCKS) {
-			builder.addCriterion(dendrologistBlock.getRegistryName().getPath(), InventoryChangeTrigger.TriggerInstance.hasItems(dendrologistBlock));
+			builder.addCriterion(Registry.BLOCK.getKey(dendrologistBlock).getPath(), InventoryChangeTrigger.TriggerInstance.hasItems(dendrologistBlock));
 		}
 		return builder;
 	}

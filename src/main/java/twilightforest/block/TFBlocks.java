@@ -263,14 +263,14 @@ public class TFBlocks {
 	public static final RegistryObject<BanisterBlock> CRIMSON_BANISTER = BLOCKS.register("crimson_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_PLANKS)));
 	public static final RegistryObject<BanisterBlock> WARPED_BANISTER = BLOCKS.register("warped_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(Blocks.WARPED_PLANKS)));
 
-	public static final WoodType TWILIGHT_OAK = WoodType.create(TwilightForestMod.prefix("twilight_oak").toString());
-	public static final WoodType CANOPY = WoodType.create(TwilightForestMod.prefix("canopy").toString());
-	public static final WoodType MANGROVE = WoodType.create(TwilightForestMod.prefix("mangrove").toString());
-	public static final WoodType DARKWOOD = WoodType.create(TwilightForestMod.prefix("darkwood").toString());
-	public static final WoodType TIMEWOOD = WoodType.create(TwilightForestMod.prefix("timewood").toString());
-	public static final WoodType TRANSFORMATION = WoodType.create(TwilightForestMod.prefix("transformation").toString());
-	public static final WoodType MINING = WoodType.create(TwilightForestMod.prefix("mining").toString());
-	public static final WoodType SORTING = WoodType.create(TwilightForestMod.prefix("sorting").toString());
+	public static final WoodType TWILIGHT_OAK = WoodType.register(new WoodType(TwilightForestMod.prefix("twilight_oak").toString()));
+	public static final WoodType CANOPY = WoodType.register(new WoodType(TwilightForestMod.prefix("canopy").toString()));
+	public static final WoodType MANGROVE = WoodType.register(new WoodType(TwilightForestMod.prefix("mangrove").toString()));
+	public static final WoodType DARKWOOD = WoodType.register(new WoodType(TwilightForestMod.prefix("darkwood").toString()));
+	public static final WoodType TIMEWOOD = WoodType.register(new WoodType(TwilightForestMod.prefix("timewood").toString()));
+	public static final WoodType TRANSFORMATION = WoodType.register(new WoodType(TwilightForestMod.prefix("transformation").toString()));
+	public static final WoodType MINING = WoodType.register(new WoodType(TwilightForestMod.prefix("mining").toString()));
+	public static final WoodType SORTING = WoodType.register(new WoodType(TwilightForestMod.prefix("sorting").toString()));
 
 	public static final BlockBehaviour.Properties TWILIGHT_OAK_LOG_PROPS = logProperties(MaterialColor.WOOD, MaterialColor.PODZOL).strength(2.0F).sound(SoundType.WOOD);
 	public static final BlockBehaviour.Properties CANOPY_LOG_PROPS = logProperties(MaterialColor.PODZOL, MaterialColor.COLOR_BROWN).strength(2.0F).sound(SoundType.WOOD);
@@ -671,21 +671,22 @@ public class TFBlocks {
 	public static void tfPots() {
 		FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
 
-		pot.addPlant(TWILIGHT_OAK_SAPLING.getId(), POTTED_TWILIGHT_OAK_SAPLING);
-		pot.addPlant(CANOPY_SAPLING.getId(), POTTED_CANOPY_SAPLING);
-		pot.addPlant(MANGROVE_SAPLING.getId(), POTTED_MANGROVE_SAPLING);
-		pot.addPlant(DARKWOOD_SAPLING.getId(), POTTED_DARKWOOD_SAPLING);
-		pot.addPlant(HOLLOW_OAK_SAPLING.getId(), POTTED_HOLLOW_OAK_SAPLING);
-		pot.addPlant(RAINBOW_OAK_SAPLING.getId(), POTTED_RAINBOW_OAK_SAPLING);
-		pot.addPlant(TIME_SAPLING.getId(), POTTED_TIME_SAPLING);
-		pot.addPlant(TRANSFORMATION_SAPLING.getId(), POTTED_TRANSFORMATION_SAPLING);
-		pot.addPlant(MINING_SAPLING.getId(), POTTED_MINING_SAPLING);
-		pot.addPlant(SORTING_SAPLING.getId(), POTTED_SORTING_SAPLING);
-		pot.addPlant(MAYAPPLE.getId(), POTTED_MAYAPPLE);
-		pot.addPlant(FIDDLEHEAD.getId(), POTTED_FIDDLEHEAD);
-		pot.addPlant(MUSHGLOOM.getId(), POTTED_MUSHGLOOM);
-		pot.addPlant(BROWN_THORNS.getId(), POTTED_THORN);
-		pot.addPlant(GREEN_THORNS.getId(), POTTED_GREEN_THORN);
-		pot.addPlant(BURNT_THORNS.getId(), POTTED_DEAD_THORN);
+		// TODO: PORT
+//		pot.addPlant(TWILIGHT_OAK_SAPLING.getId(), POTTED_TWILIGHT_OAK_SAPLING);
+//		pot.addPlant(CANOPY_SAPLING.getId(), POTTED_CANOPY_SAPLING);
+//		pot.addPlant(MANGROVE_SAPLING.getId(), POTTED_MANGROVE_SAPLING);
+//		pot.addPlant(DARKWOOD_SAPLING.getId(), POTTED_DARKWOOD_SAPLING);
+//		pot.addPlant(HOLLOW_OAK_SAPLING.getId(), POTTED_HOLLOW_OAK_SAPLING);
+//		pot.addPlant(RAINBOW_OAK_SAPLING.getId(), POTTED_RAINBOW_OAK_SAPLING);
+//		pot.addPlant(TIME_SAPLING.getId(), POTTED_TIME_SAPLING);
+//		pot.addPlant(TRANSFORMATION_SAPLING.getId(), POTTED_TRANSFORMATION_SAPLING);
+//		pot.addPlant(MINING_SAPLING.getId(), POTTED_MINING_SAPLING);
+//		pot.addPlant(SORTING_SAPLING.getId(), POTTED_SORTING_SAPLING);
+//		pot.addPlant(MAYAPPLE.getId(), POTTED_MAYAPPLE);
+//		pot.addPlant(FIDDLEHEAD.getId(), POTTED_FIDDLEHEAD);
+//		pot.addPlant(MUSHGLOOM.getId(), POTTED_MUSHGLOOM);
+//		pot.addPlant(BROWN_THORNS.getId(), POTTED_THORN);
+//		pot.addPlant(GREEN_THORNS.getId(), POTTED_GREEN_THORN);
+//		pot.addPlant(BURNT_THORNS.getId(), POTTED_DEAD_THORN);
 	}
 }

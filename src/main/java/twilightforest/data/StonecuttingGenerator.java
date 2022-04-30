@@ -1,6 +1,9 @@
 package twilightforest.data;
 
 import com.google.gson.JsonObject;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -18,13 +21,13 @@ import java.util.function.Consumer;
 
 import static twilightforest.TwilightForestMod.prefix;
 
-public class StonecuttingGenerator extends RecipeProvider {
-	public StonecuttingGenerator(DataGenerator generator) {
+public class StonecuttingGenerator extends FabricRecipeProvider {
+	public StonecuttingGenerator(FabricDataGenerator generator) {
 		super(generator);
 	}
 
 	@Override
-	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+	protected void generateRecipes(Consumer<FinishedRecipe> consumer) {
 		consumer.accept(stonecutting(TFBlocks.CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));
 		consumer.accept(stonecutting(TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));
 		consumer.accept(stonecutting(TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));
@@ -129,7 +132,7 @@ public class StonecuttingGenerator extends RecipeProvider {
 	}
 
 	private static ResourceLocation getIdFor(Item input, Item output) {
-		String path = String.format("stonecutting/%s/%s", input.getRegistryName().getPath(), output.getRegistryName().getPath());
+		String path = String.format("stonecutting/%s/%s", Registry.ITEM.getKey(input).getPath(), Registry.ITEM.getKey(output).getPath());
 		return prefix(path);
 	}
 

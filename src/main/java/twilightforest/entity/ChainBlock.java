@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import io.github.fabricators_of_create.porting_lib.entity.ExtraSpawnDataEntity;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
@@ -199,12 +200,12 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 			Block block = state.getBlock();
 
 			// TODO: The "explosion" parameter can't actually be null
-			if (!state.isAir() && block.getExplosionResistance(state, level, pos, null) < (15F + (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.BLOCK_STRENGTH.get(), stack) * 20F))
-					&& state.getDestroySpeed(level, pos) >= 0 && block.canEntityDestroy(state, level, pos, this)) {
+			if (!state.isAir() && block.getExplosionResistance(/*state, level, pos, null*/) < (15F + (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.BLOCK_STRENGTH.get(), stack) * 20F))
+					&& state.getDestroySpeed(level, pos) >= 0 /*&& block.canEntityDestroy(state, level, pos, this) TODO: PORT*/) {
 
 				if (getOwner() instanceof Player player) {
-					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player))) {
-						if (ForgeEventFactory.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(getHand()).isCorrectToolForDrops(state))) {
+					if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(level, player, pos, state, null)) {
+						if (!state.requiresCorrectToolForDrops() || player.getItemInHand(getHand()).isCorrectToolForDrops(state)) {
 							block.playerDestroy(level, player, pos, state, level.getBlockEntity(pos), player.getItemInHand(getHand()));
 
 							level.destroyBlock(pos, false);

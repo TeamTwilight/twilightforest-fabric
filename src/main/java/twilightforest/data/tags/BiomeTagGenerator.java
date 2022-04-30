@@ -1,5 +1,6 @@
 package twilightforest.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BiomeTagsProvider;
@@ -28,8 +29,8 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 	public static final TagKey<Biome> VALID_TROLL_CAVE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_troll_cave_biomes"));
 	public static final TagKey<Biome> VALID_FINAL_CASTLE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_final_castle_biomes"));
 
-	public BiomeTagGenerator(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, TwilightForestMod.ID, helper);
+	public BiomeTagGenerator(FabricDataGenerator generator, ExistingFileHelper helper) {
+		super(generator);
 	}
 
 	@Override

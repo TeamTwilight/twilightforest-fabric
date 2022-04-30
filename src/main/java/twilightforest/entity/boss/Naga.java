@@ -1,6 +1,8 @@
 package twilightforest.entity.boss;
 
+import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
+import me.pepperbell.simplenetworking.S2CPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -37,6 +39,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -59,7 +62,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-public class Naga extends Monster {
+public class Naga extends Monster implements MultiPartEntity {
 
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
@@ -214,7 +217,7 @@ public class Naga extends Monster {
 
 		@Override
 		public boolean canUse() {
-			return /*taskOwner.getAttackTarget() != null &&*/ taskOwner.horizontalCollision && ForgeEventFactory.getMobGriefingEvent(taskOwner.level, taskOwner);
+			return /*taskOwner.getAttackTarget() != null &&*/ taskOwner.horizontalCollision && taskOwner.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
 		}
 
 		@Override
@@ -394,7 +397,7 @@ public class Naga extends Monster {
 
 		super.aiStep();
 
-		if (level.isClientSide || !ForgeEventFactory.getMobGriefingEvent(level, this)) return;
+		if (level.isClientSide || !level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) return;
 
 		AABB bb = this.getBoundingBox();
 
@@ -554,7 +557,7 @@ public class Naga extends Monster {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!ForgeEventFactory.getMobGriefingEvent(level, this)) return;
+		if (!level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) return;
 
 		int floor = (int) getBoundingBox().minY;
 		int targetY = (int) getTarget().getBoundingBox().minY;
@@ -668,7 +671,7 @@ public class Naga extends Monster {
 			toAttack.push(motion.x * 1.25D, 0.5D, motion.z * 1.25D);
 			this.setDeltaMovement(motion.x * -1.5D, motion.y + 0.5D, motion.z * -1.5D);
 			if (toAttack instanceof ServerPlayer)
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) toAttack), new ThrowPlayerPacket((float) toAttack.getDeltaMovement().x(), (float) toAttack.getDeltaMovement().y(), (float) toAttack.getDeltaMovement().z()));
+				TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket((float) toAttack.getDeltaMovement().x(), (float) toAttack.getDeltaMovement().y(), (float) toAttack.getDeltaMovement().z()), (ServerPlayer) toAttack);
 			hurt(DamageSource.GENERIC, 4F);
 			level.playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.level.random.nextFloat() * 0.4F);
 			movementAI.doDaze();

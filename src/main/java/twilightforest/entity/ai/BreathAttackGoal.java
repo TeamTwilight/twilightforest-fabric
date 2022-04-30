@@ -1,5 +1,6 @@
 package twilightforest.entity.ai;
 
+import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -119,8 +120,8 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 		List<Entity> possibleList = this.entityHost.level.getEntities(this.entityHost, this.entityHost.getBoundingBox().move(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).inflate(var9, var9, var9));
 		double hitDist = 0;
 
-		if(entityHost.isMultipartEntity())
-		possibleList.removeAll(Arrays.asList(Objects.requireNonNull(entityHost.getParts())));
+		if(entityHost instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity())
+		possibleList.removeAll(Arrays.asList(Objects.requireNonNull(partEntity.getParts())));
 
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.isPickable() && possibleEntity != this.entityHost && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(possibleEntity)) {

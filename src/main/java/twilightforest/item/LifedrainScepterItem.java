@@ -1,5 +1,7 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.item.ReequipAnimationItem;
+import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -33,7 +35,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class LifedrainScepterItem extends Item {
+public class LifedrainScepterItem extends Item implements EnchantableItem, ReequipAnimationItem {
 
 	protected LifedrainScepterItem(Properties props) {
 		super(props);
@@ -123,7 +125,7 @@ public class LifedrainScepterItem extends Item {
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
 		Level level = living.level;
 
-		if (stack.getDamageValue() == this.getMaxDamage(stack)) {
+		if (stack.getDamageValue() == this.getMaxDamage(/*stack*/)) {
 			// do not use
 			living.stopUsingItem();
 			return;

@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -37,6 +38,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 	protected TomeSpawnerBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(getStateDefinition().any().setValue(BOOK_STAGES, 10).setValue(SPAWNER, true));
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
 	}
 
 	@Override
@@ -101,13 +103,11 @@ public class TomeSpawnerBlock extends BaseEntityBlock {
 		return state.getValue(SPAWNER) ? createTickerHelper(type, TFBlockEntities.TOME_SPAWNER.get(), TomeSpawnerBlockEntity::tick) : null;
 	}
 
-	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFlammability() {
 		return 20;
 	}
 
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFireSpreadSpeed() {
 		return 30;
 	}
 }

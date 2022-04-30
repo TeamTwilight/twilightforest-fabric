@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
@@ -152,7 +153,7 @@ public class PeacockFanItem extends Item {
 		BlockState state = world.getBlockState(pos);
 		if (state.getBlock() instanceof FlowerBlock) {
 			if (world.random.nextInt(3) == 0) {
-				if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
+				if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(world, player, pos, state, null)) {
 					world.destroyBlock(pos, true);
 					cost++;
 				}

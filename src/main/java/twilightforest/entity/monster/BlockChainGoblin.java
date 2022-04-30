@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -39,7 +40,7 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
-public class BlockChainGoblin extends Monster {
+public class BlockChainGoblin extends Monster implements MultiPartEntity {
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
 	private static final AttributeModifier MODIFIER = new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION);
 

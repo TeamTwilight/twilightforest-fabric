@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.util.ArmorTextureItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -10,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import twilightforest.TwilightForestMod;
 
-public class NagaArmorItem extends ArmorItem {
+public class NagaArmorItem extends ArmorItem implements ArmorTextureItem {
 	protected NagaArmorItem(ArmorMaterial materialIn, EquipmentSlot equipmentSlotIn, Properties props) {
 		super(materialIn, equipmentSlotIn, props);
 	}

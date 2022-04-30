@@ -28,14 +28,14 @@ public class LootGenerator extends LootTableProvider {
 					Pair.of(EntityLootTables::new, LootContextParamSets.ENTITY)
 	);
 
-	@Override
+//	@Override
 	protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
 		// [VanillaCopy] super, but remove call that checks that all vanilla tables are accounted for, because we aren't vanilla.
 		// Except validation issues occur when attempting to generate loot tables from other loot tables (see: EntityLootTables)
 		//map.forEach((id, builder) -> LootTableManager.validate(validationtracker, id, builder));
 	}
 
-	@Override
+//	@Override
 	protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
 		return tables;
 	}

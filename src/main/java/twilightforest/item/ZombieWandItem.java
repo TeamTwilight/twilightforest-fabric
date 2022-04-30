@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -26,7 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ZombieWandItem extends Item {
+public class ZombieWandItem extends Item implements EnchantableItem {
 
 	protected ZombieWandItem(Properties props) {
 		super(props);

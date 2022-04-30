@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.util.ValidSpawnBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -13,7 +14,7 @@ import twilightforest.block.entity.RedThreadBlockEntity;
 
 import javax.annotation.Nullable;
 
-public class RedThreadBlock extends MultifaceBlock implements EntityBlock {
+public class RedThreadBlock extends MultifaceBlock implements EntityBlock , ValidSpawnBlock {
 	public RedThreadBlock(Properties properties) {
 		super(properties);
 	}

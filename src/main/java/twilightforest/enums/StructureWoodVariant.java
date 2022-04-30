@@ -1,5 +1,6 @@
 package twilightforest.enums;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.*;
@@ -115,7 +116,7 @@ public enum StructureWoodVariant implements StringRepresentable {
 		Block block = stateIn.getBlock();
 		WoodShapes shape = getWoodShapeFromBlock(block);
 
-		ResourceLocation blockRegName = block.getRegistryName();
+		ResourceLocation blockRegName = Registry.BLOCK.getKey(block);
 
 		if (blockRegName == null) return stateIn;
 

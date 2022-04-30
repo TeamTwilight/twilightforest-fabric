@@ -5,13 +5,13 @@ import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.LazySpawnEggItem;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SilverfishModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
@@ -23,17 +23,11 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.NaturalSpawner;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.material.Material;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
@@ -55,20 +49,20 @@ public class TFEntities {
 	public static final LazyRegistrar<Item> SPAWN_EGGS = LazyRegistrar.create(Registry.ITEM, TwilightForestMod.ID);
 
 
-	public static final SpawnPlacements.Type ON_ICE = SpawnPlacements.Type.create("TF_ON_ICE", (world, pos, entityType) -> {
+	public static final SpawnPlacements.Type ON_ICE = SpawnPlacements.Type.ON_GROUND;/*SpawnPlacements.Type.create("TF_ON_ICE", (world, pos, entityType) -> {
 		BlockState state = world.getBlockState(pos.below());
 		Block block = state.getBlock();
 		Material material = state.getMaterial();
 		BlockPos up = pos.above();
 		return (material == Material.ICE || material == Material.ICE_SOLID) && block != Blocks.BEDROCK && block != Blocks.BARRIER && NaturalSpawner.isValidEmptySpawnBlock(world, pos, world.getBlockState(pos), world.getFluidState(pos), entityType) && NaturalSpawner.isValidEmptySpawnBlock(world, up, world.getBlockState(up), world.getFluidState(up), entityType);
-	});
+	});*/
 
-	public static final SpawnPlacements.Type CLOUDS = SpawnPlacements.Type.create("CLOUD_DWELLERS", (world, pos, entityType) -> {
+	public static final SpawnPlacements.Type CLOUDS = SpawnPlacements.Type.ON_GROUND;/*SpawnPlacements.Type.create("CLOUD_DWELLERS", (world, pos, entityType) -> {
 		BlockState state = world.getBlockState(pos.below());
 		Block block = state.getBlock();
 		BlockPos up = pos.above();
 		return (block == TFBlocks.WISPY_CLOUD.get() || block == TFBlocks.FLUFFY_CLOUD.get()) && block != Blocks.BEDROCK && block != Blocks.BARRIER && NaturalSpawner.isValidEmptySpawnBlock(world, pos, world.getBlockState(pos), world.getFluidState(pos), entityType) && NaturalSpawner.isValidEmptySpawnBlock(world, up, world.getBlockState(up), world.getFluidState(up), entityType);
-	});
+	});*/
 
 	public static final RegistryObject<EntityType<Adherent>> ADHERENT = make(TFEntityNames.ADHERENT, Adherent::new, MobCategory.MONSTER, 0.8F, 2.2F, 0x0a0000, 0x00008b);
 	public static final RegistryObject<EntityType<AlphaYeti>> ALPHA_YETI = make(TFEntityNames.ALPHA_YETI, AlphaYeti::new, MobCategory.MONSTER, 3.8F, 5.0F, true, 0xcdcdcd, 0x29486e);
@@ -123,7 +117,7 @@ public class TFEntities {
 	public static final RegistryObject<EntityType<Penguin>> PENGUIN = make(TFEntityNames.PENGUIN, Penguin::new, MobCategory.CREATURE, 0.5F, 0.9F, 0x12151b, 0xf9edd2);
 	public static final RegistryObject<EntityType<PinchBeetle>> PINCH_BEETLE = make(TFEntityNames.PINCH_BEETLE, PinchBeetle::new, MobCategory.MONSTER, 1.2F, 0.5F, 0xbc9327, 0x241609);
 	public static final RegistryObject<EntityType<PlateauBoss>> PLATEAU_BOSS = make(TFEntityNames.PLATEAU_BOSS, PlateauBoss::new, MobCategory.MONSTER, 1F, 1F, true, 0, 0);
-	public static final RegistryObject<EntityType<ProtectionBox>> PROTECTION_BOX = build(TFEntityNames.PROTECTION_BOX, makeCastedBuilder(ProtectionBox.class, ProtectionBox::new, 0, 0, 80, 3).noSave().noSummon(), true);
+	public static final RegistryObject<EntityType<ProtectionBox>> PROTECTION_BOX = build(TFEntityNames.PROTECTION_BOX, makeCastedBuilder(ProtectionBox.class, ProtectionBox::new, 0, 0, 80, 3).disableSaving().disableSummon(), true);
 	public static final RegistryObject<EntityType<QuestRam>> QUEST_RAM = make(TFEntityNames.QUEST_RAM, QuestRam::new, MobCategory.CREATURE, 1.25F, 2.9F, 0xfefeee, 0x33aadd);
 	public static final RegistryObject<EntityType<Raven>> RAVEN = make(TFEntityNames.RAVEN, Raven::new, MobCategory.CREATURE, 0.3F, 0.5F, 0x000011, 0x222233);
 	public static final RegistryObject<EntityType<Redcap>> REDCAP = make(TFEntityNames.REDCAP, Redcap::new, MobCategory.MONSTER, 0.9F, 1.4F, 0x3b3a6c, 0xab1e14);
@@ -162,30 +156,30 @@ public class TFEntities {
 		return build(id, makeBuilder(factory, classification, width, height, 80, 3), fireproof, primary, secondary);
 	}
 
-	private static <E extends Entity> RegistryObject<EntityType<E>> build(ResourceLocation id, EntityType.Builder<E> builder, boolean fireProof) {
+	private static <E extends Entity> RegistryObject<EntityType<E>> build(ResourceLocation id, FabricEntityTypeBuilder<E> builder, boolean fireProof) {
 		return build(id, builder, fireProof, 0, 0);
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <E extends Entity> RegistryObject<EntityType<E>> build(ResourceLocation id, EntityType.Builder<E> builder, boolean fireproof, int primary, int secondary) {
+	private static <E extends Entity> RegistryObject<EntityType<E>> build(ResourceLocation id, FabricEntityTypeBuilder<E> builder, boolean fireproof, int primary, int secondary) {
 		if(fireproof) builder.fireImmune();
-		RegistryObject<EntityType<E>> ret = ENTITIES.register(id.getPath(), () -> builder.build(id.toString()));
+		RegistryObject<EntityType<E>> ret = ENTITIES.register(id.getPath(), () -> builder.build());
 		if(primary != 0 && secondary != 0) {
 			SPAWN_EGGS.register(id.getPath() + "_spawn_egg", () -> new LazySpawnEggItem(() -> (EntityType<? extends Mob>) ret.get(), primary, secondary, TFItems.defaultBuilder()));
 		}
 		return ret;
 	}
 
-	private static <E extends Entity> EntityType.Builder<E> makeCastedBuilder(@SuppressWarnings("unused") Class<E> cast, EntityType.EntityFactory<E> factory, float width, float height, int range, int interval) {
+	private static <E extends Entity> FabricEntityTypeBuilder<E> makeCastedBuilder(@SuppressWarnings("unused") Class<E> cast, EntityType.EntityFactory<E> factory, float width, float height, int range, int interval) {
 		return makeBuilder(factory, MobCategory.MISC, width, height, range, interval);
 	}
 
-	private static <E extends Entity> EntityType.Builder<E> makeBuilder(EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int range, int interval) {
-		return EntityType.Builder.of(factory, classification).
-				sized(width, height).
-				setTrackingRange(range).
-				setUpdateInterval(interval).
-				setShouldReceiveVelocityUpdates(true);
+	private static <E extends Entity> FabricEntityTypeBuilder<E> makeBuilder(EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int range, int interval) {
+		return FabricEntityTypeBuilder.create(classification, factory).
+				dimensions(EntityDimensions.fixed(width, height)).
+				trackRangeChunks(range).
+				trackedUpdateRate(interval).
+				forceTrackedVelocityUpdates(true);
 	}
 
 	public static void registerEntities() {

@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -43,7 +44,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Hydra extends Mob implements Enemy {
+public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 100;
@@ -562,7 +563,7 @@ public class Hydra extends Mob implements Enemy {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (ForgeEventFactory.getMobGriefingEvent(level, this)) {
+		if (level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(level, pos, this)) {
 					level.destroyBlock(pos, false);
@@ -764,7 +765,7 @@ public class Hydra extends Mob implements Enemy {
 		if (this.deathTime == 200) {
 			if (!this.level.isClientSide && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
 				int i = this.getExperienceReward(this.lastHurtByPlayer);
-				i = ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, i);
+				//i = ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, i); TODO: EVENT
 				while (i > 0) {
 					int j = ExperienceOrb.getExperienceValue(i);
 					i -= j;

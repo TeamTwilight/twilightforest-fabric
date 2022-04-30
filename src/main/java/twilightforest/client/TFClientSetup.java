@@ -103,17 +103,17 @@ public class TFClientSetup implements ClientModInitializer {
             registerWoodType(TFBlocks.MINING);
             registerWoodType(TFBlocks.SORTING);
 
-			if(FabricLoader.get().isLoaded("curios")) {
+			if(FabricLoader.getInstance().isModLoaded("curios")) {
 				CuriosCompat.registerCurioRenderers();
 			}
 //        });
-       
+
     }
 
 	@SuppressWarnings("unchecked")
 	public static void attachRenderLayers(final Map<EntityType<?>, EntityRenderer<?>> renderers, final Map<String, EntityRenderer<? extends Player>> skins) {
-		skins.forEach(renderer -> {
-			LivingEntityRenderer<Player, EntityModel<Player>> skin = skins.get(renderer);
+		skins.forEach((id, renderer) -> {
+			LivingEntityRenderer<Player, EntityModel<Player>> skin = (LivingEntityRenderer<Player, EntityModel<Player>>) skins.get(renderer);
 			attachRenderLayers(Objects.requireNonNull(skin));
 		});
 		renderers.values().stream().

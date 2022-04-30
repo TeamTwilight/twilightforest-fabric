@@ -2,6 +2,7 @@ package twilightforest.loot.functions;
 
 import com.google.common.collect.Maps;
 import com.google.gson.*;
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.EnchantedBookItem;
@@ -38,9 +39,9 @@ public class Enchant extends LootItemConditionalFunction {
 	public ItemStack run(ItemStack stack, LootContext context) {
 		for (Map.Entry<Enchantment, Short> e : enchantments.entrySet()) {
 			if (stack.getItem() == Items.ENCHANTED_BOOK) {
-				EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(e.getKey().get(), e.getValue()));
+				EnchantedBookItem.addEnchantment(stack, new EnchantmentInstance(e.getKey(), e.getValue()));
 			} else {
-				stack.enchant(e.getKey().get(), e.getValue());
+				stack.enchant(e.getKey(), e.getValue());
 			}
 		}
 		return stack;
@@ -74,8 +75,8 @@ public class Enchant extends LootItemConditionalFunction {
 			if (!function.enchantments.isEmpty()) {
 				JsonObject obj = new JsonObject();
 
-				for (Map.Entry<IRegistryDelegate<Enchantment>, Short> e : function.enchantments.entrySet()) {
-					obj.addProperty(e.getKey().get().getRegistryName().toString(), e.getValue());
+				for (Map.Entry<Enchantment, Short> e : function.enchantments.entrySet()) {
+					obj.addProperty(Registry.ENCHANTMENT.getKey(e.getKey()).toString(), e.getValue());
 				}
 
 				object.add("enchantments", obj);
@@ -84,27 +85,27 @@ public class Enchant extends LootItemConditionalFunction {
 
 		@Override
 		public Enchant deserialize(JsonObject object, JsonDeserializationContext ctx, LootItemCondition[] conditions) {
-			Map<IRegistryDelegate<Enchantment>, Short> enchantments = new HashMap<>();
+			Map<Enchantment, Short> enchantments = new HashMap<>();
 
 			if (object.has("enchantments")) {
 				JsonObject enchantObj = GsonHelper.getAsJsonObject(object, "enchantments");
 
 				for (Map.Entry<String, JsonElement> e : enchantObj.entrySet()) {
 					ResourceLocation id = new ResourceLocation(e.getKey());
-					if (!ForgeRegistries.ENCHANTMENTS.containsKey(id)) {
+					if (!Registry.ENCHANTMENT.containsKey(id)) {
 						throw new JsonSyntaxException("Can't find enchantment " + e.getKey());
 					}
 
-					Enchantment ench = ForgeRegistries.ENCHANTMENTS.getValue(id);
+					Enchantment ench = Registry.ENCHANTMENT.get(id);
 					short lvl = e.getValue().getAsShort();
 
-					for (IRegistryDelegate<Enchantment> other : enchantments.keySet()) {
-						if (!ench.isCompatibleWith(other.get())) {
-							throw new JsonParseException(String.format("Enchantments %s and %s conflict", ench.getRegistryName(), other.get().getRegistryName()));
+					for (Enchantment other : enchantments.keySet()) {
+						if (!ench.isCompatibleWith(other)) {
+							throw new JsonParseException(String.format("Enchantments %s and %s conflict", Registry.ENCHANTMENT.getKey(ench), Registry.ENCHANTMENT.getKey(other)));
 						}
 					}
 
-					enchantments.put(ench.delegate, lvl);
+					enchantments.put(ench, lvl);
 				}
 			}
 

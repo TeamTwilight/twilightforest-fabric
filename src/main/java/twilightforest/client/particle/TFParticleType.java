@@ -52,22 +52,22 @@ public class TFParticleType {
 	public static void registerFactories() {
 		ParticleEngine particles = Minecraft.getInstance().particleEngine;
 
-		ParticleFactoryRegistry.register(TFParticleType.LARGE_FLAME.get(), LargeFlameParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.LEAF_RUNE.get(), LeafRuneParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.BOSS_TEAR.get(), new GhastTearParticle.Factory());
-		ParticleFactoryRegistry.register(TFParticleType.GHAST_TRAP.get(), GhastTrapParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.PROTECTION.get(), ProtectionParticle.Factory::new); //probably not a good idea, but worth a shot
-		ParticleFactoryRegistry.register(TFParticleType.SNOW.get(), SnowParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.SNOW_GUARDIAN.get(), SnowGuardianParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.SNOW_WARNING.get(), SnowWarningParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.ICE_BEAM.get(), IceBeamParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.FIREFLY.get(), FireflyParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.WANDERING_FIREFLY.get(), WanderingFireflyParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.JAR_WANDERING_FIREFLY.get(), WanderingFireflyParticle.FromJarFactory::new);
-		ParticleFactoryRegistry.register(TFParticleType.FIREFLY_PINNED.get(), PinnedFireflyParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.FALLEN_LEAF.get(), LeafParticle.Factory::new);
-		ParticleFactoryRegistry.register(TFParticleType.OMINOUS_FLAME.get(), FlameParticle.SmallFlameProvider::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.LARGE_FLAME.get(), LargeFlameParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.LEAF_RUNE.get(), LeafRuneParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.BOSS_TEAR.get(), new GhastTearParticle.Factory());
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.GHAST_TRAP.get(), GhastTrapParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.PROTECTION.get(), ProtectionParticle.Factory::new); //probably not a good idea, but worth a shot
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.SNOW.get(), SnowParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.SNOW_GUARDIAN.get(), SnowGuardianParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.SNOW_WARNING.get(), SnowWarningParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.ICE_BEAM.get(), IceBeamParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.FIREFLY.get(), FireflyParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.WANDERING_FIREFLY.get(), WanderingFireflyParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.JAR_WANDERING_FIREFLY.get(), WanderingFireflyParticle.FromJarFactory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.FIREFLY_PINNED.get(), PinnedFireflyParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.FALLEN_LEAF.get(), LeafParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.OMINOUS_FLAME.get(), FlameParticle.SmallFlameProvider::new);
 	}
 }

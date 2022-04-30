@@ -15,7 +15,7 @@ public class TFPacketHandler {
 		CHANNEL.registerS2CPacket(ChangeBiomePacket.class, id++);
 		CHANNEL.registerS2CPacket(EnforceProgressionStatusPacket.class, id++);
 		CHANNEL.registerS2CPacket(StructureProtectionPacket.class, id++);
-		CHANNEL.messageBuilder(StructureProtectionClearPacket.class, id++).encoder(StructureProtectionClearPacket::encode).decoder(StructureProtectionClearPacket::new).consumer(StructureProtectionClearPacket.Handler::onMessage).add();
+		CHANNEL.registerS2CPacket(StructureProtectionClearPacket.class, id++);
 		CHANNEL.registerS2CPacket(ThrowPlayerPacket.class, id++);
 		CHANNEL.registerS2CPacket(MagicMapPacket.class, id++);
 		CHANNEL.registerS2CPacket(MazeMapPacket.class, id++);

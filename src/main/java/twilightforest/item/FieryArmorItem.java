@@ -70,7 +70,7 @@ public class FieryArmorItem extends ArmorItem {
 				ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.FIERY_ARMOR_INNER : TFModelLayers.FIERY_ARMOR_OUTER);
 				armorModel = new FieryArmorModel(root);
 			}
-			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, getArmorTexture(itemStack, entityLiving, armorSlot, ""));
+//			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, getArmorTexture(itemStack, entityLiving, armorSlot, "")); TODO: PORT
 		}
 	}
 }

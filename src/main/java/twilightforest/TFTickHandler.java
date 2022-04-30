@@ -80,14 +80,14 @@ public class TFTickHandler {
 	}
 
 	private static void sendStructureProtectionPacket(Level world, Player player, BoundingBox sbb) {
-		if (player instanceof ServerPlayer) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new StructureProtectionPacket(sbb));
+		if (player instanceof ServerPlayer serverPlayer) {
+			TFPacketHandler.CHANNEL.sendToClient(new StructureProtectionPacket(sbb), serverPlayer);
 		}
 	}
 
 	private static void sendAllClearPacket(Level world, Player player) {
-		if (player instanceof ServerPlayer) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new StructureProtectionClearPacket());
+		if (player instanceof ServerPlayer serverPlayer) {
+			TFPacketHandler.CHANNEL.sendToClient(new StructureProtectionClearPacket(), serverPlayer);
 		}
 	}
 
@@ -144,7 +144,7 @@ public class TFTickHandler {
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.getDisplay();
-						TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), info == null ? new MissingAdvancementToastPacket(new TranslatableComponent(".ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+						TFPacketHandler.CHANNEL.sendToClient(info == null ? new MissingAdvancementToastPacket(new TranslatableComponent(".ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()), player);
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}

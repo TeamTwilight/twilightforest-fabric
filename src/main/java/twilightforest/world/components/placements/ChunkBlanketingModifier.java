@@ -3,6 +3,7 @@ package twilightforest.world.components.placements;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
@@ -55,7 +56,7 @@ public class ChunkBlanketingModifier extends PlacementModifier {
                 BlockPos pos = new BlockPos(chunkOriginX + xInChunk, context.getHeight(heightmap, chunkOriginX + xInChunk, chunkOriginZ + zInChunk), chunkOriginZ + zInChunk);
 
                 if (biomeRLOptional.isPresent()) {
-                    if (biomeRLOptional.get().equals(context.getLevel().getBiome(pos).value().getRegistryName())) {
+                    if (biomeRLOptional.get().equals(BuiltinRegistries.BIOME.getKey(context.getLevel().getBiome(pos).value()))) {
                         coordinates.add(pos);
                     }
                 } else {

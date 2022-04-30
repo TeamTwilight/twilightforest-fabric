@@ -153,6 +153,7 @@ public class TwilightForestMod implements ModInitializer {
 		registerLootModifiers();
 		ItemEvents.init();
 		AddPackFindersCallback.EVENT.register(TwilightForestMod::addClassicPack);
+		TFTickHandler.init();
 		init();
 	}
 

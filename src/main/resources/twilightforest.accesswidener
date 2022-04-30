@@ -178,3 +178,21 @@ accessible class net/minecraft/client/renderer/RenderStateShard$TextureStateShar
 accessible field net/minecraft/world/level/biome/Biome TEMPERATURE_NOISE Lnet/minecraft/world/level/levelgen/synth/PerlinSimplexNoise;
 accessible field net/minecraft/world/entity/Mob targetSelector Lnet/minecraft/world/entity/ai/goal/GoalSelector;
 extendable class net/minecraft/world/level/levelgen/structure/StructureStart
+accessible method net/minecraft/world/entity/item/FallingBlockEntity <init> (Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/level/block/state/BlockState;)V
+accessible field net/minecraft/world/level/levelgen/structure/templatesystem/BlockRotProcessor integrity F
+accessible field net/minecraft/world/level/levelgen/synth/BlendedNoise mainNoise Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;
+accessible field net/minecraft/world/level/levelgen/synth/BlendedNoise minLimitNoise Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;
+accessible field net/minecraft/world/level/levelgen/synth/BlendedNoise maxLimitNoise Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;
+accessible field net/minecraft/world/level/chunk/ChunkGenerator ringPlacementSeed J
+accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator sampler Lnet/minecraft/world/level/biome/Climate$Sampler;
+accessible method net/minecraft/world/level/levelgen/NoiseRouterData noNewCaves (Lnet/minecraft/world/level/levelgen/NoiseSettings;)Lnet/minecraft/world/level/levelgen/NoiseRouterWithOnlyNoises;
+accessible method net/minecraft/server/level/ChunkMap generator ()Lnet/minecraft/world/level/chunk/ChunkGenerator;
+accessible method net/minecraft/world/entity/decoration/HangingEntity setDirection (Lnet/minecraft/core/Direction;)V
+accessible method net/minecraft/world/damagesource/DamageSource damageHelmet ()Lnet/minecraft/world/damagesource/DamageSource;
+accessible field net/minecraft/client/renderer/item/ItemProperties PROPERTIES Ljava/util/Map;
+accessible method net/minecraft/world/level/block/FlowerPotBlock isEmpty ()Z
+accessible field net/minecraft/client/resources/model/ModelBakery UNREFERENCED_TEXTURES Ljava/util/Set;
+accessible method net/minecraft/world/level/block/ComposterBlock add (FLnet/minecraft/world/level/ItemLike;)V
+accessible method net/minecraft/world/level/block/FireBlock setFlammable (Lnet/minecraft/world/level/block/Block;II)V
+accessible method net/minecraft/world/item/crafting/Ingredient fromValues (Ljava/util/stream/Stream;)Lnet/minecraft/world/item/crafting/Ingredient;
+accessible field net/minecraft/world/item/crafting/Ingredient values [Lnet/minecraft/world/item/crafting/Ingredient$Value;

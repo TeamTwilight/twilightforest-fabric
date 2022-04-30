@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.block.LightEmissiveBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
@@ -32,7 +33,7 @@ import twilightforest.block.entity.TFBlockEntities;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class CinderFurnaceBlock extends BaseEntityBlock {
+public class CinderFurnaceBlock extends BaseEntityBlock implements LightEmissiveBlock {
 
 	public static final BooleanProperty LIT = BooleanProperty.create("lit");
 	private static final DirectionProperty FACING = TFHorizontalBlock.FACING;

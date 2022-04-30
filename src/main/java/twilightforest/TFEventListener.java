@@ -12,6 +12,7 @@ import io.github.fabricators_of_create.porting_lib.event.common.MountEntityCallb
 import io.github.fabricators_of_create.porting_lib.extensions.EntityExtensions;
 import io.github.fabricators_of_create.porting_lib.loot.GlobalLootModifierSerializer;
 import io.github.fabricators_of_create.porting_lib.loot.LootModifier;
+import me.pepperbell.simplenetworking.S2CPacket;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
@@ -798,7 +799,7 @@ public class TFEventListener {
 	}
 
 	private static void sendAreaProtectionPacket(Level world, BlockPos pos, BoundingBox sbb) {
-		TFPacketHandler.CHANNEL.sendToClientsAround(new AreaProtectionPacket(sbb, pos), world, pos, 64);
+		TFPacketHandler.CHANNEL.sendToClientsAround(new AreaProtectionPacket(sbb, pos), (ServerLevel) world, pos, 64);
 	}
 
 	public static boolean livingAttack(LivingEntity living, DamageSource source, float amount) {

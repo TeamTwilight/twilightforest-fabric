@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import net.fabricmc.fabric.impl.item.ItemExtensions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.ItemSupplier;
@@ -76,7 +77,7 @@ public class SlimeProjectile extends TFThrowable implements ItemSupplier {
 				//damage armor pieces
 				if(target instanceof Player) {
 					for(ItemStack stack : target.getArmorSlots())
-						stack.hurtAndBreak(random.nextInt(1), ((Player)target), (user) -> user.broadcastBreakEvent(stack.getEquipmentSlot()));
+						stack.hurtAndBreak(random.nextInt(1), ((Player)target), (user) -> user.broadcastBreakEvent(((ItemExtensions) stack.getItem()).fabric_getEquipmentSlotProvider().getPreferredEquipmentSlot(stack)));
 				}
 			}
 		}

@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.lichtower;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -1795,11 +1796,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			// initialize a painting object
 			Motive art = getPaintingOfSize(rand, minSize);
 			Painting painting = new Painting(EntityType.PAINTING, world.getLevel());
-			try {
-				handle_HangingEntity_updateFacingWithBoundingBox.invoke(painting, direction);
-			} catch (Throwable throwable) {
-				throwable.printStackTrace();
-			}
+			painting.setDirection(direction);
 			painting.motive = art;
 			painting.setPos(pCoords.getX(), pCoords.getY(), pCoords.getZ()); // this is done to refresh the bounding box after changing the art
 
@@ -1817,7 +1814,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	protected Motive getPaintingOfSize(Random rand, int minSize) {
 		ArrayList<Motive> valid = new ArrayList<>();
 
-		for (Motive art : ForgeRegistries.PAINTING_TYPES) {
+		for (Motive art : Registry.MOTIVE) {
 			if (art.getWidth() >= minSize || art.getHeight() >= minSize) {
 				valid.add(art);
 			}

@@ -96,7 +96,7 @@ public class FallingIce extends FallingBlockEntity {
 			this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, stateId), dx, dy, dz, 0, 0, 0);
 		}
 
-		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.defaultBlockState(), level, blockPosition(), null).getBreakSound(), 3F, 0.5F);
+		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.defaultBlockState()/*, level, blockPosition(), null*/).getBreakSound(), 3F, 0.5F);
 		return false;
 	}
 

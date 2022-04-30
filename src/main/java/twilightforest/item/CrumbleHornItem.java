@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.item.ReequipAnimationItem;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.PlayerAdvancements;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -29,7 +31,7 @@ import twilightforest.util.WorldUtil;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class CrumbleHornItem extends Item {
+public class CrumbleHornItem extends Item implements ReequipAnimationItem {
 
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
@@ -130,7 +132,7 @@ public class CrumbleHornItem extends Item {
 								postTrigger(living);
 								flag.set(true);
 							}
-						} else if (ForgeEventFactory.getMobGriefingEvent(world, living)) {
+						} else if (world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 							world.destroyBlock(pos, true);
 							postTrigger(living);
 							flag.set(true);

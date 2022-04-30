@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.util.CustomMapItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -37,7 +38,7 @@ import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 
-public class MagicMapItem extends MapItem {
+public class MagicMapItem extends MapItem implements CustomMapItem {
 
 	public static final String STR_ID = "magicmap";
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
@@ -75,7 +76,7 @@ public class MagicMapItem extends MapItem {
 
 	@Nullable
 	@Override
-	protected TFMagicMapData getCustomMapData(ItemStack stack, Level world) {
+	public TFMagicMapData getCustomMapData(ItemStack stack, Level world) {
 		TFMagicMapData mapdata = getData(stack, world);
 		if (mapdata == null && !world.isClientSide) {
 			mapdata = MagicMapItem.createMapData(stack, world, world.getLevelData().getXSpawn(), world.getLevelData().getZSpawn(), 3, false, false, world.dimension());

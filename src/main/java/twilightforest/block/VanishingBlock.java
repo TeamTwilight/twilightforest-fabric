@@ -1,6 +1,8 @@
 package twilightforest.block;
 
 import com.mojang.math.Vector3f;
+import io.github.fabricators_of_create.porting_lib.util.EntityDestroyBlock;
+import io.github.fabricators_of_create.porting_lib.util.ExplosionResistanceBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -37,7 +39,7 @@ import java.util.*;
  * @see ReappearingBlock , It is only separated from this class because vanilla does
  * not like having blockstate properties be conditionally registered.
  */
-public class VanishingBlock extends Block {
+public class VanishingBlock extends Block implements EntityDestroyBlock, ExplosionResistanceBlock {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 	public static final BooleanProperty VANISHED = BooleanProperty.create("vanished");
 	private static final VoxelShape VANISHED_SHAPE = box(6, 6, 6, 10, 10, 10);
@@ -84,12 +86,12 @@ public class VanishingBlock extends Block {
 
 	@Override
 	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
-		return !state.getValue(ACTIVE) ? 6000F : super.getExplosionResistance(state, world, pos, explosion);
+		return !state.getValue(ACTIVE) ? 6000F : ExplosionResistanceBlock.super.getExplosionResistance(state, world, pos, explosion);
 	}
 
 	@Override
 	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
-		return !state.getValue(ACTIVE) ? !areBlocksLocked(world, pos) : super.canEntityDestroy(state, world, pos, entity);
+		return !state.getValue(ACTIVE) ? !areBlocksLocked(world, pos) : EntityDestroyBlock.super.canEntityDestroy(state, world, pos, entity);
 	}
 
 	private static boolean areBlocksLocked(BlockGetter world, BlockPos start) {

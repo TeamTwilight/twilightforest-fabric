@@ -41,15 +41,12 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 	public void render(T thread, float ticks, PoseStack ms, MultiBufferSource source, int light, int overlay) {
 		BlockRenderDispatcher blockrenderdispatcher = Minecraft.getInstance().getBlockRenderer();
 		if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFItems.RED_THREAD.get())) {
-			ForgeHooksClient.setRenderType(GLOW);
 			render(GLOW, blockrenderdispatcher, thread, ms, source, false);
 		} else {
-			RenderType.chunkBufferLayers().stream().filter(type -> ItemBlockRenderTypes.canRenderInLayer(thread.getBlockState(), type)).forEach(type -> {
-				ForgeHooksClient.setRenderType(type);
+			RenderType.chunkBufferLayers().stream().filter(type -> ItemBlockRenderTypes.getChunkRenderType(thread.getBlockState()) == type).forEach(type -> {
 				render(type, blockrenderdispatcher, thread, ms, source, true);
 			});
 		}
-		ForgeHooksClient.setRenderType(null);
 	}
 
 	private void render(RenderType type, BlockRenderDispatcher blockrenderdispatcher, T thread, PoseStack ms, MultiBufferSource source, boolean light) {
@@ -91,9 +88,7 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 
 					0xF000F0,
 
-					OverlayTexture.NO_OVERLAY,
-
-					EmptyModelData.INSTANCE
+					OverlayTexture.NO_OVERLAY
 
 			);
 	}

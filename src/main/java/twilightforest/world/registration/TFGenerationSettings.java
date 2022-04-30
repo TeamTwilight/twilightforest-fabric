@@ -136,7 +136,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		Biome currentBiome = world.getBiome(player.blockPosition()).value();
 		if (isBiomeSafeFor(currentBiome, player))
 			return;
-		BiConsumer<Player, Level> exec = BIOME_PROGRESSION_ENFORCEMENT.get(currentBiome.getRegistryName());
+		BiConsumer<Player, Level> exec = BIOME_PROGRESSION_ENFORCEMENT.get(world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(currentBiome));
 		if (exec != null)
 			exec.accept(player, world);
 	}
@@ -174,7 +174,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
-		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.level.isClientSide() ? entity.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome) : biome.getRegistryName());
+		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.level.isClientSide() ? entity.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome) : BuiltinRegistries.BIOME.getKey(biome));
 		if (advancements != null && entity instanceof Player)
 			return PlayerHelper.doesPlayerHaveRequiredAdvancements((Player) entity, advancements);
 		return true;

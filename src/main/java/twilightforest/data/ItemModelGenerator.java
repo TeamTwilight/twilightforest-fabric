@@ -27,8 +27,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 	@Override
 	protected void registerModels() {
 		for (Item i : Registry.ITEM) {
-			if (i instanceof SpawnEggItem && i.getRegistryName().getNamespace().equals(TwilightForestMod.ID)) {
-				getBuilder(i.getRegistryName().getPath())
+			if (i instanceof SpawnEggItem && Registry.ITEM.getKey(i).getNamespace().equals(TwilightForestMod.ID)) {
+				getBuilder(Registry.ITEM.getKey(i).getPath())
 								.parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
 			}
 		}
@@ -703,23 +703,23 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void woodenButton(Block button, String variant) {
-		getBuilder(button.getRegistryName().getPath())
+		getBuilder(Registry.BLOCK.getKey(button).getPath())
 						.parent(getExistingFile(mcLoc("block/button_inventory")))
 						.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void woodenFence(Block fence, String variant) {
-		getBuilder(fence.getRegistryName().getPath())
+		getBuilder(Registry.BLOCK.getKey(fence).getPath())
 						.parent(getExistingFile(mcLoc("block/fence_inventory")))
 						.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void hollowLog(RegistryObject<HollowLogHorizontal> hollowLog) {
-		getBuilder(hollowLog.get().asItem().getRegistryName().getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath()), this.existingFileHelper));
+		getBuilder(Registry.ITEM.getKey(hollowLog.get().asItem()).getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath()), this.existingFileHelper));
 	}
 
 	private void toBlock(Block b) {
-		toBlockModel(b, b.getRegistryName().getPath());
+		toBlockModel(b, Registry.BLOCK.getKey(b).getPath());
 	}
 
 	private void toBlockModel(Block b, String model) {
@@ -727,7 +727,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void toBlockModel(Block b, ResourceLocation model) {
-		withExistingParent(b.getRegistryName().getPath(), model);
+		withExistingParent(Registry.BLOCK.getKey(b).getPath(), model);
 	}
 
 	@Override

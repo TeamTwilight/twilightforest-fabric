@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
+import io.github.fabricators_of_create.porting_lib.util.LevelUtil;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,7 +46,7 @@ public class TFGenHugeLilyPad extends Feature<NoneFeatureConfiguration> {
 					random.nextInt(8) - random.nextInt(8)
 			);
 
-			if (shouldPlacePadAt(world, dPos) && world.isAreaLoaded(dPos, 1)) {
+			if (shouldPlacePadAt(world, dPos) && LevelUtil.isAreaLoaded(world, dPos, 1)) {
 				final Direction horizontal = Direction.from2DDataValue(random.nextInt(4));
 				final BlockState lilypad = TFBlocks.HUGE_LILY_PAD.get().defaultBlockState().setValue(FACING, horizontal);
 

@@ -30,7 +30,7 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instan
 	private static Block deserializeBug(JsonObject object) {
 		if (object.has("bug")) {
 			ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(object, "bug"));
-			return ForgeRegistries.BLOCKS.getValue(resourcelocation);
+			return Registry.BLOCK.get(resourcelocation);
 		} else {
 			return null;
 		}

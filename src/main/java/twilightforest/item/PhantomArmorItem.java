@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
 import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.ChatFormatting;
@@ -36,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class PhantomArmorItem extends ArmorItem {
+public class PhantomArmorItem extends ArmorItem implements EnchantableItem {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.phantom_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public PhantomArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
@@ -51,7 +52,7 @@ public class PhantomArmorItem extends ArmorItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(enchantment)) && super.canApplyAtEnchantingTable(stack, enchantment);
+		return !Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(enchantment)) && EnchantableItem.super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class PhantomArmorItem extends ArmorItem {
 				return false;
 			}
 		}
-		return super.isBookEnchantable(stack, book);
+		return EnchantableItem.super.isBookEnchantable(stack, book);
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class PhantomArmorItem extends ArmorItem {
 				ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.PHANTOM_ARMOR_INNER : TFModelLayers.PHANTOM_ARMOR_OUTER);
 				armorModel = new TFArmorModel(root);
 			}
-			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, getArmorTexture(itemStack, entityLiving, armorSlot, ""));
+//			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, getArmorTexture(itemStack, entityLiving, armorSlot, "")); TODO: PORT
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.core.BlockPos;
@@ -38,7 +39,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
-public class OreMagnetItem extends Item {
+public class OreMagnetItem extends Item implements EnchantableItem {
 
 	private static final float WIGGLE = 10F;
 
@@ -57,7 +58,7 @@ public class OreMagnetItem extends Item {
 
 		for (Enchantment ench : enchants.keySet()) {
 			if (Objects.equals(Registry.ENCHANTMENT.getKey(ench), Registry.ENCHANTMENT.getKey(Enchantments.UNBREAKING))) {
-				return super.isBookEnchantable(stack, book);
+				return EnchantableItem.super.isBookEnchantable(stack, book);
 			}
 		}
 		return false;

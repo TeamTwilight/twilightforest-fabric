@@ -106,7 +106,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 
 	private void sendUpdatePacket() {
 		if (host instanceof ServerPlayer)
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> host), new UpdateShieldPacket(host, this));
+			TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateShieldPacket(host, this), host);
 	}
 
 	@Override

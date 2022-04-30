@@ -36,7 +36,7 @@ public final class CourtyardTerraceTemplateProcessor extends StructureProcessor 
 
     @Nullable
     @Override
-    public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldinfo, StructureTemplate.StructureBlockInfo newInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+    public StructureTemplate.StructureBlockInfo processBlock(LevelReader world, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldinfo, StructureTemplate.StructureBlockInfo newInfo, StructurePlaceSettings settings) {
         BlockState newState = newInfo.state;
 
         if (newState.getBlock() == Blocks.SANDSTONE_SLAB) {

@@ -1,5 +1,6 @@
 package twilightforest.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.TagsProvider;
@@ -18,8 +19,8 @@ public class CustomTagGenerator {
 
 		public static final TagKey<Enchantment> PHANTOM_ARMOR_BANNED_ENCHANTS = TagKey.create(Registry.ENCHANTMENT_REGISTRY, TwilightForestMod.prefix("phantom_armor_banned_enchants"));
 
-		public EnchantmentTagGenerator(DataGenerator generatorIn, @Nullable ExistingFileHelper existingFileHelper) {
-			super(generatorIn, Registry.ENCHANTMENT, TwilightForestMod.ID, existingFileHelper);
+		public EnchantmentTagGenerator(FabricDataGenerator generatorIn, @Nullable ExistingFileHelper existingFileHelper) {
+			super(generatorIn, Registry.ENCHANTMENT);
 		}
 
 		@Override

@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
+import io.github.fabricators_of_create.porting_lib.util.CustomMapItem;
 import me.alphamode.forgetags.Tags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
@@ -30,7 +31,7 @@ import javax.annotation.Nullable;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 
-public class MazeMapItem extends MapItem {
+public class MazeMapItem extends MapItem implements CustomMapItem {
 
 	public static final String STR_ID = "mazemap";
 	private static final int YSEARCH = 3;
@@ -56,7 +57,7 @@ public class MazeMapItem extends MapItem {
 
 	@Nullable
 	@Override
-	protected TFMazeMapData getCustomMapData(ItemStack stack, Level world) {
+	public TFMazeMapData getCustomMapData(ItemStack stack, Level world) {
 		TFMazeMapData mapdata = getData(stack, world);
 		if (mapdata == null && !world.isClientSide) {
 			mapdata = MazeMapItem.createMapData(stack, world, world.getLevelData().getXSpawn(), world.getLevelData().getZSpawn(), 0, false, false, world.dimension(), world.getLevelData().getYSpawn());

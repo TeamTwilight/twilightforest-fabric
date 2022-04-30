@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.util.ShieldBlockItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +19,7 @@ import twilightforest.entity.TFEntities;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class CubeOfAnnihilationItem extends Item {
+public class CubeOfAnnihilationItem extends Item implements ShieldBlockItem {
 
 	private static final String THROWN_UUID_KEY = "cubeEntity";
 

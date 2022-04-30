@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import io.github.fabricators_of_create.porting_lib.extensions.EntityExtensions;
+import io.github.fabricators_of_create.porting_lib.util.CustomArrowItem;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,7 +15,7 @@ import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
-public class EnderBowItem extends BowItem {
+public class EnderBowItem extends BowItem implements CustomArrowItem {
 	private static final String KEY = "twilightforest:ender";
 
 	public EnderBowItem(Properties props) {
@@ -57,7 +58,7 @@ public class EnderBowItem extends BowItem {
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow) {
-		arrow.getPersistentData().putBoolean(KEY, true);
+		((EntityExtensions)arrow).getExtraCustomData().putBoolean(KEY, true);
 		return arrow;
 	}
 }

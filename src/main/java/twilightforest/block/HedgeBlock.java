@@ -1,7 +1,8 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -29,7 +30,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class HedgeBlock extends Block {
+public class HedgeBlock extends Block implements CustomPathNodeTypeBlock {
 
 	private static final VoxelShape HEDGE_BB = Shapes.create(new AABB(0, 0, 0, 1, 0.9375, 1));
 
@@ -37,6 +38,7 @@ public class HedgeBlock extends Block {
 
 	protected HedgeBlock(BlockBehaviour.Properties props) {
 		super(props);
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
 	}
 
 	@Override
@@ -105,13 +107,11 @@ public class HedgeBlock extends Block {
 		return !(entity instanceof Spider || entity instanceof ItemEntity || entity.isIgnoringBlockTriggers());
 	}
 
-	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFlammability() {
 		return 0;
 	}
 
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+	public int getFireSpreadSpeed() {
 		return 0;
 	}
 }

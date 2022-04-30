@@ -25,6 +25,8 @@ import java.util.Random;
 
 public class FallenLeavesBlock extends TFPlantBlock {
 
+	protected Random RANDOM = new Random();
+
 	private static final VoxelShape FALLEN_LEAVES_SHAPE = box(0, 0, 0, 16, 1, 16);
 
 	public FallenLeavesBlock(Properties props) {
@@ -86,7 +88,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 						(world.random.nextFloat() * -0.5F) * entityIn.getDeltaMovement().z()
 				);
 			} else if (world instanceof ServerLevel)
-				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entityIn), new SpawnFallenLeafFromPacket(pos, entityIn.getDeltaMovement()));
+				TFPacketHandler.CHANNEL.sendToClientsTracking(new SpawnFallenLeafFromPacket(pos, entityIn.getDeltaMovement()), entityIn);
 		}
 	}
 }

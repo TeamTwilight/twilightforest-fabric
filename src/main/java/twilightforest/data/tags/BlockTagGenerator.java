@@ -1,6 +1,8 @@
 package twilightforest.data.tags;
 
 import com.google.common.collect.ImmutableSet;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -18,61 +20,61 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public class BlockTagGenerator extends BlockTagsProvider {
-	public static final TagKey<Block> TOWERWOOD = BlockTags.create(TwilightForestMod.prefix("towerwood"));
+	public static final TagKey<Block> TOWERWOOD = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("towerwood"));
 
-	public static final TagKey<Block> TWILIGHT_OAK_LOGS = BlockTags.create(TwilightForestMod.prefix("twilight_oak_logs"));
-	public static final TagKey<Block> CANOPY_LOGS = BlockTags.create(TwilightForestMod.prefix("canopy_logs"));
-	public static final TagKey<Block> MANGROVE_LOGS = BlockTags.create(TwilightForestMod.prefix("mangrove_logs"));
-	public static final TagKey<Block> DARKWOOD_LOGS = BlockTags.create(TwilightForestMod.prefix("darkwood_logs"));
-	public static final TagKey<Block> TIME_LOGS = BlockTags.create(TwilightForestMod.prefix("timewood_logs"));
-	public static final TagKey<Block> TRANSFORMATION_LOGS = BlockTags.create(TwilightForestMod.prefix("transwood_logs"));
-	public static final TagKey<Block> MINING_LOGS = BlockTags.create(TwilightForestMod.prefix("mining_logs"));
-	public static final TagKey<Block> SORTING_LOGS = BlockTags.create(TwilightForestMod.prefix("sortwood_logs"));
+	public static final TagKey<Block> TWILIGHT_OAK_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("twilight_oak_logs"));
+	public static final TagKey<Block> CANOPY_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("canopy_logs"));
+	public static final TagKey<Block> MANGROVE_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("mangrove_logs"));
+	public static final TagKey<Block> DARKWOOD_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("darkwood_logs"));
+	public static final TagKey<Block> TIME_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("timewood_logs"));
+	public static final TagKey<Block> TRANSFORMATION_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("transwood_logs"));
+	public static final TagKey<Block> MINING_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("mining_logs"));
+	public static final TagKey<Block> SORTING_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("sortwood_logs"));
 
-	public static final TagKey<Block> TF_LOGS = BlockTags.create(TwilightForestMod.prefix("logs"));
-	public static final TagKey<Block> TF_FENCES = BlockTags.create(TwilightForestMod.prefix("fences"));
-	public static final TagKey<Block> TF_FENCE_GATES = BlockTags.create(TwilightForestMod.prefix("fence_gates"));
-	public static final TagKey<Block> BANISTERS = BlockTags.create(TwilightForestMod.prefix("banisters"));
-	public static final TagKey<Block> HOLLOW_LOGS_HORIZONTAL = BlockTags.create(TwilightForestMod.prefix("hollow_logs_horizontal"));
-	public static final TagKey<Block> HOLLOW_LOGS_VERTICAL = BlockTags.create(TwilightForestMod.prefix("hollow_logs_vertical"));
-	public static final TagKey<Block> HOLLOW_LOGS_CLIMBABLE = BlockTags.create(TwilightForestMod.prefix("hollow_logs_climbable"));
-	public static final TagKey<Block> HOLLOW_LOGS = BlockTags.create(TwilightForestMod.prefix("hollow_logs"));
+	public static final TagKey<Block> TF_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("logs"));
+	public static final TagKey<Block> TF_FENCES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("fences"));
+	public static final TagKey<Block> TF_FENCE_GATES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("fence_gates"));
+	public static final TagKey<Block> BANISTERS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("banisters"));
+	public static final TagKey<Block> HOLLOW_LOGS_HORIZONTAL = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("hollow_logs_horizontal"));
+	public static final TagKey<Block> HOLLOW_LOGS_VERTICAL = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("hollow_logs_vertical"));
+	public static final TagKey<Block> HOLLOW_LOGS_CLIMBABLE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("hollow_logs_climbable"));
+	public static final TagKey<Block> HOLLOW_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("hollow_logs"));
 
-	public static final TagKey<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.create(TwilightForestMod.prefix("storage_blocks/arctic_fur"));
-	public static final TagKey<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.create(TwilightForestMod.prefix("storage_blocks/carminite"));
-	public static final TagKey<Block> STORAGE_BLOCKS_FIERY = BlockTags.create(TwilightForestMod.prefix("storage_blocks/fiery"));
-	public static final TagKey<Block> STORAGE_BLOCKS_IRONWOOD = BlockTags.create(TwilightForestMod.prefix("storage_blocks/ironwood"));
-	public static final TagKey<Block> STORAGE_BLOCKS_KNIGHTMETAL = BlockTags.create(TwilightForestMod.prefix("storage_blocks/knightmetal"));
-	public static final TagKey<Block> STORAGE_BLOCKS_STEELEAF = BlockTags.create(TwilightForestMod.prefix("storage_blocks/steeleaf"));
+	public static final TagKey<Block> STORAGE_BLOCKS_ARCTIC_FUR = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("storage_blocks/arctic_fur"));
+	public static final TagKey<Block> STORAGE_BLOCKS_CARMINITE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("storage_blocks/carminite"));
+	public static final TagKey<Block> STORAGE_BLOCKS_FIERY = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("storage_blocks/fiery"));
+	public static final TagKey<Block> STORAGE_BLOCKS_IRONWOOD = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("storage_blocks/ironwood"));
+	public static final TagKey<Block> STORAGE_BLOCKS_KNIGHTMETAL = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("storage_blocks/knightmetal"));
+	public static final TagKey<Block> STORAGE_BLOCKS_STEELEAF = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("storage_blocks/steeleaf"));
 
-	public static final TagKey<Block> ORES_IRONWOOD = BlockTags.create(TwilightForestMod.prefix("ores/ironwood"));
-	public static final TagKey<Block> ORES_KNIGHTMETAL = BlockTags.create(TwilightForestMod.prefix("ores/knightmetal"));
+	public static final TagKey<Block> ORES_IRONWOOD = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("ores/ironwood"));
+	public static final TagKey<Block> ORES_KNIGHTMETAL = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("ores/knightmetal"));
 
-	public static final TagKey<Block> PORTAL_EDGE = BlockTags.create(TwilightForestMod.prefix("portal/edge"));
-	public static final TagKey<Block> PORTAL_POOL = BlockTags.create(TwilightForestMod.prefix("portal/fluid"));
-	public static final TagKey<Block> PORTAL_DECO = BlockTags.create(TwilightForestMod.prefix("portal/decoration"));
+	public static final TagKey<Block> PORTAL_EDGE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("portal/edge"));
+	public static final TagKey<Block> PORTAL_POOL = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("portal/fluid"));
+	public static final TagKey<Block> PORTAL_DECO = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("portal/decoration"));
 
-	public static final TagKey<Block> DARK_TOWER_ALLOWED_POTS = BlockTags.create(TwilightForestMod.prefix("dark_tower_allowed_pots"));
-	public static final TagKey<Block> TROPHIES = BlockTags.create(TwilightForestMod.prefix("trophies"));
-	public static final TagKey<Block> FIRE_JET_FUEL = BlockTags.create(TwilightForestMod.prefix("fire_jet_fuel"));
-	public static final TagKey<Block> ICE_BOMB_REPLACEABLES = BlockTags.create(TwilightForestMod.prefix("ice_bomb_replaceables"));
+	public static final TagKey<Block> DARK_TOWER_ALLOWED_POTS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("dark_tower_allowed_pots"));
+	public static final TagKey<Block> TROPHIES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("trophies"));
+	public static final TagKey<Block> FIRE_JET_FUEL = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("fire_jet_fuel"));
+	public static final TagKey<Block> ICE_BOMB_REPLACEABLES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("ice_bomb_replaceables"));
 
-	public static final TagKey<Block> COMMON_PROTECTIONS = BlockTags.create(TwilightForestMod.prefix("common_protections"));
-	public static final TagKey<Block> ANNIHILATION_INCLUSIONS = BlockTags.create(TwilightForestMod.prefix("annihilation_inclusions"));
-	public static final TagKey<Block> ANTIBUILDER_IGNORES = BlockTags.create(TwilightForestMod.prefix("antibuilder_ignores"));
-	public static final TagKey<Block> CARMINITE_REACTOR_IMMUNE = BlockTags.create(TwilightForestMod.prefix("carminite_reactor_immune"));
-	public static final TagKey<Block> CARMINITE_REACTOR_ORES = BlockTags.create(TwilightForestMod.prefix("carminite_reactor_ores"));
-	public static final TagKey<Block> STRUCTURE_BANNED_INTERACTIONS = BlockTags.create(TwilightForestMod.prefix("structure_banned_interactions"));
+	public static final TagKey<Block> COMMON_PROTECTIONS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("common_protections"));
+	public static final TagKey<Block> ANNIHILATION_INCLUSIONS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("annihilation_inclusions"));
+	public static final TagKey<Block> ANTIBUILDER_IGNORES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("antibuilder_ignores"));
+	public static final TagKey<Block> CARMINITE_REACTOR_IMMUNE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("carminite_reactor_immune"));
+	public static final TagKey<Block> CARMINITE_REACTOR_ORES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("carminite_reactor_ores"));
+	public static final TagKey<Block> STRUCTURE_BANNED_INTERACTIONS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("structure_banned_interactions"));
 
-	public static final TagKey<Block> WORLDGEN_REPLACEABLES = BlockTags.create(TwilightForestMod.prefix("worldgen_replaceables"));
+	public static final TagKey<Block> WORLDGEN_REPLACEABLES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("worldgen_replaceables"));
 
-	public static final TagKey<Block> ORE_MAGNET_SAFE_REPLACE_BLOCK = BlockTags.create(TwilightForestMod.prefix("ore_magnet/ore_safe_replace_block"));
-	public static final TagKey<Block> ORE_MAGNET_IGNORE = BlockTags.create(TwilightForestMod.prefix("ore_magnet/ignored_ores"));
-	public static final TagKey<Block> ROOT_GROUND = BlockTags.create(new ResourceLocation("forge", "ore_bearing_ground/root"));
-	public static final TagKey<Block> ROOT_ORES = BlockTags.create(new ResourceLocation("forge", "ores_in_ground/root"));
+	public static final TagKey<Block> ORE_MAGNET_SAFE_REPLACE_BLOCK = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("ore_magnet/ore_safe_replace_block"));
+	public static final TagKey<Block> ORE_MAGNET_IGNORE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("ore_magnet/ignored_ores"));
+	public static final TagKey<Block> ROOT_GROUND = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "ore_bearing_ground/root"));
+	public static final TagKey<Block> ROOT_ORES = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "ores_in_ground/root"));
 
-	public BlockTagGenerator(DataGenerator generator, ExistingFileHelper exFileHelper) {
-		super(generator, TwilightForestMod.ID, exFileHelper);
+	public BlockTagGenerator(FabricDataGenerator generator, ExistingFileHelper exFileHelper) {
+		super(generator);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -96,12 +98,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				.add(TFBlocks.SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.SORTING_WOOD.get(), TFBlocks.STRIPPED_SORTING_WOOD.get());
 
 		tag(TF_LOGS)
-				.addTags(TWILIGHT_OAK_LOGS, CANOPY_LOGS, MANGROVE_LOGS, DARKWOOD_LOGS, TIME_LOGS, TRANSFORMATION_LOGS, MINING_LOGS, SORTING_LOGS);
+				.addTag(TWILIGHT_OAK_LOGS).addTag(CANOPY_LOGS).addTag(MANGROVE_LOGS).addTag(DARKWOOD_LOGS).addTag(TIME_LOGS).addTag(TRANSFORMATION_LOGS).addTag(MINING_LOGS).addTag(SORTING_LOGS);
 		tag(BlockTags.LOGS)
 				.addTag(TF_LOGS);
 
 		tag(BlockTags.LOGS_THAT_BURN)
-				.addTags(TWILIGHT_OAK_LOGS, CANOPY_LOGS, MANGROVE_LOGS, TIME_LOGS, TRANSFORMATION_LOGS, MINING_LOGS, SORTING_LOGS);
+				.addTag(TWILIGHT_OAK_LOGS).addTag(CANOPY_LOGS).addTag(MANGROVE_LOGS).addTag(TIME_LOGS).addTag(TRANSFORMATION_LOGS).addTag(MINING_LOGS).addTag(SORTING_LOGS);
 
 		tag(BlockTags.SAPLINGS)
 				.add(TFBlocks.TWILIGHT_OAK_SAPLING.get(), TFBlocks.CANOPY_SAPLING.get(), TFBlocks.MANGROVE_SAPLING.get(), TFBlocks.DARKWOOD_SAPLING.get())
@@ -256,7 +258,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get()
 		);
 
-		tag(HOLLOW_LOGS).addTags(HOLLOW_LOGS_HORIZONTAL, HOLLOW_LOGS_VERTICAL, HOLLOW_LOGS_CLIMBABLE);
+		tag(HOLLOW_LOGS).addTag(HOLLOW_LOGS_HORIZONTAL).addTag(HOLLOW_LOGS_VERTICAL).addTag(HOLLOW_LOGS_CLIMBABLE);
 
 		tag(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.FIERY_BLOCK.get());
 		tag(BlockTags.PORTALS).add(TFBlocks.TWILIGHT_PORTAL.get());
@@ -282,28 +284,28 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.KNIGHTMETAL_BLOCK.get());
 		tag(STORAGE_BLOCKS_STEELEAF).add(TFBlocks.STEELEAF_BLOCK.get());
 
-		tag(BlockTags.BEACON_BASE_BLOCKS).addTags(
-				STORAGE_BLOCKS_ARCTIC_FUR,
-				STORAGE_BLOCKS_CARMINITE,
-				STORAGE_BLOCKS_FIERY,
-				STORAGE_BLOCKS_IRONWOOD,
-				STORAGE_BLOCKS_KNIGHTMETAL,
+		tag(BlockTags.BEACON_BASE_BLOCKS).addTag(
+				STORAGE_BLOCKS_ARCTIC_FUR).addTag(
+				STORAGE_BLOCKS_CARMINITE).addTag(
+				STORAGE_BLOCKS_FIERY).addTag(
+				STORAGE_BLOCKS_IRONWOOD).addTag(
+				STORAGE_BLOCKS_KNIGHTMETAL).addTag(
 				STORAGE_BLOCKS_STEELEAF
 		);
 
-		tag(Tags.Blocks.STORAGE_BLOCKS).addTags(STORAGE_BLOCKS_ARCTIC_FUR, STORAGE_BLOCKS_CARMINITE, STORAGE_BLOCKS_FIERY, STORAGE_BLOCKS_IRONWOOD, STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_STEELEAF);
+		tag(Tags.Blocks.STORAGE_BLOCKS).addTag(STORAGE_BLOCKS_ARCTIC_FUR).addTag(STORAGE_BLOCKS_CARMINITE).addTag(STORAGE_BLOCKS_FIERY).addTag(STORAGE_BLOCKS_IRONWOOD).addTag(STORAGE_BLOCKS_KNIGHTMETAL).addTag(STORAGE_BLOCKS_STEELEAF);
 
-		tag(Tags.Blocks.ORES).addTags(ORES_IRONWOOD, ORES_KNIGHTMETAL);
+		tag(Tags.Blocks.ORES).addTag(ORES_IRONWOOD).addTag(ORES_KNIGHTMETAL);
 		tag(ORES_IRONWOOD); // Intentionally blank
 		tag(ORES_KNIGHTMETAL); // Intentionally blank
 
 		tag(BlockTags.DIRT).add(TFBlocks.UBEROUS_SOIL.get());
-		tag(PORTAL_EDGE).addTags(BlockTags.DIRT);
+		tag(PORTAL_EDGE).addTag(BlockTags.DIRT);
 		// So yes, we could do fluid tags for the portal pool but the problem is that we're -replacing- the block, effectively replacing what would be waterlogged, with the portal block
 		// In the future if we can "portal log" blocks then we can re-explore doing it as a fluid
 		tag(PORTAL_POOL).add(Blocks.WATER);
 		tag(PORTAL_DECO)
-				.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
+				.addTag(BlockTags.FLOWERS).addTag(BlockTags.LEAVES).addTag(BlockTags.SAPLINGS).addTag(BlockTags.CROPS)
 				.add(Blocks.BAMBOO)
 				.add(getAllMinecraftOrTwilightBlocks(b -> (b.material == Material.PLANT || b.material == Material.REPLACEABLE_PLANT || b.material == Material.LEAVES) && !plants.contains(b)));
 
@@ -404,19 +406,19 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		);
 
 		tag(STRUCTURE_BANNED_INTERACTIONS)
-				.addTags(BlockTags.BUTTONS, Tags.Blocks.CHESTS).add(Blocks.LEVER)
+				.addTag(BlockTags.BUTTONS).addTag(Tags.Blocks.CHESTS).add(Blocks.LEVER)
 				.add(TFBlocks.ANTIBUILDER.get());
 
-		tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTags(
-				BlockTags.DIRT,
-				Tags.Blocks.GRAVEL,
-				Tags.Blocks.SAND,
-				BlockTags.NYLIUM,
-				BlockTags.BASE_STONE_OVERWORLD,
-				BlockTags.BASE_STONE_NETHER,
-				Tags.Blocks.END_STONES,
-				BlockTags.DEEPSLATE_ORE_REPLACEABLES,
-				BlockTags.STONE_ORE_REPLACEABLES,
+		tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTag(
+				BlockTags.DIRT).addTag(
+				Tags.Blocks.GRAVEL).addTag(
+				Tags.Blocks.SAND).addTag(
+				BlockTags.NYLIUM).addTag(
+				BlockTags.BASE_STONE_OVERWORLD).addTag(
+				BlockTags.BASE_STONE_NETHER).addTag(
+				Tags.Blocks.END_STONES).addTag(
+				BlockTags.DEEPSLATE_ORE_REPLACEABLES).addTag(
+				BlockTags.STONE_ORE_REPLACEABLES).addTag(
 				ROOT_GROUND
 		);
 
@@ -431,7 +433,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 		tag(BlockTags.FEATURES_CANNOT_REPLACE).addTag(COMMON_PROTECTIONS).add(TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get());
 		// For anything that permits replacement during Worldgen
-		tag(WORLDGEN_REPLACEABLES).addTags(BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.REPLACEABLE_PLANTS);
+		tag(WORLDGEN_REPLACEABLES).addTag(BlockTags.LUSH_GROUND_REPLACEABLE).addTag(BlockTags.REPLACEABLE_PLANTS);
 
 		tag(BlockTags.REPLACEABLE_PLANTS).add(
 				TFBlocks.MAYAPPLE.get(),
@@ -443,7 +445,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.CLOVER_PATCH.get(),
 				TFBlocks.FALLEN_LEAVES.get());
 
-		tag(BlockTags.MINEABLE_WITH_AXE).addTags(BANISTERS, HOLLOW_LOGS).add(
+		tag(BlockTags.MINEABLE_WITH_AXE).addTag(BANISTERS).addTag(HOLLOW_LOGS).add(
 				TFBlocks.HEDGE.get(),
 				TFBlocks.ROOT_BLOCK.get(),
 				TFBlocks.LIVEROOT_BLOCK.get(),
@@ -603,8 +605,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	}
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {
-		return ForgeRegistries.BLOCKS.getValues().stream()
-				.filter(b -> b.getRegistryName() != null && (b.getRegistryName().getNamespace().equals(TwilightForestMod.ID) || b.getRegistryName().getNamespace().equals("minecraft")) && predicate.test(b))
+		return Registry.BLOCK.stream()
+				.filter(b -> Registry.BLOCK.getKey(b) != null && (Registry.BLOCK.getKey(b).getNamespace().equals(TwilightForestMod.ID) || Registry.BLOCK.getKey(b).getNamespace().equals("minecraft")) && predicate.test(b))
 				.toArray(Block[]::new);
 	}
 

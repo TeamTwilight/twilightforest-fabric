@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -47,6 +48,7 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
         this.climbable = climbable;
 
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
+        FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
     }
 
     @Override
@@ -117,13 +119,11 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
         return (0.124 <= vec.x && vec.x <= 0.876) && (0.124 <= vec.z && vec.z <= 0.876);
     }
 
-    @Override
-    public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+    public int getFlammability() {
         return 5;
     }
 
-    @Override
-    public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+    public int getFireSpreadSpeed() {
         return 5;
     }
 }

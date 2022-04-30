@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import io.github.fabricators_of_create.porting_lib.extensions.EntityExtensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -39,7 +40,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-public class Yeti extends Monster implements IHostileMount {
+public class Yeti extends Monster implements IHostileMount, EntityExtensions {
 
 	private static final EntityDataAccessor<Boolean> ANGER_FLAG = SynchedEntityData.defineId(Yeti.class, EntityDataSerializers.BOOLEAN);
 	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, AttributeModifier.Operation.ADDITION);

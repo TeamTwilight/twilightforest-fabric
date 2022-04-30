@@ -31,7 +31,7 @@ public class TripleBowItem extends BowItem {
 			ItemStack itemstack = entityplayer.getProjectile(stack);
 
 			int i = this.getUseDuration(stack) - timeLeft;
-			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !itemstack.isEmpty() || flag);
+//			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !itemstack.isEmpty() || flag); // TODO: EVENT
 			if (i < 0) return;
 
 			if (!itemstack.isEmpty() || flag) {
@@ -41,7 +41,7 @@ public class TripleBowItem extends BowItem {
 
 				float f = getPowerForTime(i);
 				if (!(f < 0.1D)) {
-					boolean flag1 = entityplayer.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
+					boolean flag1 = entityplayer.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem && isInfinite(itemstack, stack, entityplayer));
 					if (!worldIn.isClientSide) {
 						ArrowItem arrowitem = (ArrowItem)(itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
 						AbstractArrow entityarrow = arrowitem.createArrow(worldIn, itemstack, entityplayer);
@@ -111,5 +111,10 @@ public class TripleBowItem extends BowItem {
 				}
 			}
 		}
+	}
+
+	public static boolean isInfinite(ItemStack stack, ItemStack bow, net.minecraft.world.entity.player.Player player) {
+		int enchant = net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(net.minecraft.world.item.enchantment.Enchantments.INFINITY_ARROWS, bow);
+		return enchant > 0;
 	}
 }

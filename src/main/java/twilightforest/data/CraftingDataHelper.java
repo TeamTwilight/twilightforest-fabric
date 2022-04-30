@@ -3,8 +3,12 @@ package twilightforest.data;
 import com.google.common.collect.ImmutableList;
 import io.github.fabricators_of_create.porting_lib.crafting.CompoundIngredient;
 import io.github.fabricators_of_create.porting_lib.crafting.NBTIngredient;
+import me.alphamode.forgetags.Tags;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -25,12 +29,15 @@ import twilightforest.block.TwilightChest;
 import twilightforest.data.tags.ItemTagGenerator;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public abstract class CraftingDataHelper extends RecipeProvider {
-	public CraftingDataHelper(DataGenerator generator) {
+import static net.minecraft.world.item.crafting.Ingredient.fromValues;
+
+public abstract class CraftingDataHelper extends FabricRecipeProvider {
+	public CraftingDataHelper(FabricDataGenerator generator) {
 		super(generator);
 	}
 
@@ -75,7 +82,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 
 		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
 		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
-		return Ingredient.merge(ingredientList);
+		return fromValues(ingredientList.stream().flatMap(i -> Arrays.stream(i.values)));
 	}
 
 	protected final void charmRecipe(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Item> item) {
@@ -91,7 +98,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.pattern("##")
 				.define('#', Ingredient.of(ingredients))
 				.unlockedBy("has_castle_brick", has(TFBlocks.CASTLE_BRICK.get()))
-				.save(consumer, locCastle(result.get().getRegistryName().getPath()));
+				.save(consumer, locCastle(Registry.BLOCK.getKey(result.get()).getPath()));
 	}
 
 	protected final void stairsBlock(Consumer<FinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike... ingredients) {
@@ -338,7 +345,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.requires(armor)
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), vials)
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
-				.save(consumer, locEquip("fiery_" + armor.getRegistryName().getPath()));
+				.save(consumer, locEquip("fiery_" + Registry.ITEM.getKey(armor).getPath()));
 	}
 
 	protected final ResourceLocation locCastle(String name) {
@@ -355,9 +362,5 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 
 	protected final ResourceLocation locWood(String name) {
 		return TwilightForestMod.prefix("wood/" + name);
-	}
-
-	protected static InventoryChangeTrigger.TriggerInstance has(TagKey<Item> p_206407_) {
-		return inventoryTrigger(ItemPredicate.Builder.item().of(p_206407_).build());
 	}
 }

@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.util.EntityDestroyBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
@@ -24,7 +25,7 @@ import net.fabricmc.api.Environment;
 
 import javax.annotation.Nullable;
 
-public class ForceFieldBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
+public class ForceFieldBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, EntityDestroyBlock {
 
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 

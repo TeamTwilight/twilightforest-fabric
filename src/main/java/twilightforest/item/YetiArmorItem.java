@@ -85,7 +85,7 @@ public class YetiArmorItem extends ArmorItem {
 				ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.YETI_ARMOR_INNER : TFModelLayers.YETI_ARMOR_OUTER);
 				armorModel = new YetiArmorModel(armorSlot, root);
 			}
-			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, getArmorTexture(itemStack, entityLiving, armorSlot, ""));
+//			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, getArmorTexture(itemStack, entityLiving, armorSlot, "")); TODO: PORT
 		}
 	}
 }

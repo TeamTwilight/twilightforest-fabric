@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -111,7 +112,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 
 	private void detonate() {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
-		boolean flag = ForgeEventFactory.getMobGriefingEvent(level, this);
+		boolean flag = level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
 		Explosion.BlockInteraction flag1 = flag ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.NONE;
 		this.level.explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, flag1);
 

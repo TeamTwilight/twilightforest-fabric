@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import com.mojang.authlib.GameProfile;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -25,8 +26,8 @@ import java.util.List;
 
 public class SkullCandleItem extends StandingAndWallBlockItem {
 
-	public SkullCandleItem(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall, Properties properties) {
-		super(floor, wall, properties);
+	public SkullCandleItem(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall, FabricItemSettings properties) {
+		super(floor, wall, properties.equipmentSlot(SkullCandleItem::getEquipmentSlot));
 	}
 
 	@Override
@@ -82,14 +83,7 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 
 	}
 
-	@Override
-	public boolean canEquip(ItemStack stack, EquipmentSlot armorType, Entity entity) {
-		return armorType == EquipmentSlot.HEAD;
-	}
-
-	@Override
-	@Nullable
-	public EquipmentSlot getEquipmentSlot(ItemStack stack) {
+	public static EquipmentSlot getEquipmentSlot(ItemStack stack) {
 		return EquipmentSlot.HEAD;
 	}
 

@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.tags.ToolTags;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -10,6 +12,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -49,6 +53,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
         super(props);
 
         this.registerDefaultState(this.stateDefinition.any().setValue(HORIZONTAL_AXIS, Direction.Axis.X).setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY));
+        FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
     }
 
     @Override
@@ -151,7 +156,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
                 return InteractionResult.CONSUME;
             }
-        } else if (stack.canPerformAction(ToolActions.SHOVEL_DIG)) {
+        } else if (stack.is(ToolTags.SHOVELS) || stack.getItem() instanceof ShovelItem) {
             if (variant == HollowLogVariants.Horizontal.SNOW) {
                 level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), 3);
                 level.playSound(null, pos, SoundEvents.SNOW_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -164,7 +169,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
                 return InteractionResult.CONSUME;
             }
-        } else if (stack.canPerformAction(ToolActions.SHEARS_HARVEST)) {
+        } else if (stack.is(ToolTags.SHEARS) || stack.getItem() instanceof ShearsItem) {
             if (variant == HollowLogVariants.Horizontal.MOSS || variant == HollowLogVariants.Horizontal.MOSS_AND_GRASS) {
                 level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), 3);
                 level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -205,13 +210,11 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
         };
     }
 
-    @Override
-    public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+    public int getFlammability() {
         return 5;
     }
 
-    @Override
-    public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+    public int getFireSpreadSpeed() {
         return 5;
     }
 }

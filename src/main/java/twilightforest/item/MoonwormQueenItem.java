@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +35,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class MoonwormQueenItem extends Item {
+public class MoonwormQueenItem extends Item implements EnchantableItem {
 
 	protected static final int FIRING_TIME = 12;
 
@@ -60,7 +61,7 @@ public class MoonwormQueenItem extends Item {
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (stack.getDamageValue() + 1 >= this.getMaxDamage(stack)) {
+		if (stack.getDamageValue() + 1 >= this.getMaxDamage(/*stack*/)) {
 			return InteractionResultHolder.fail(stack);
 		} else {
 			player.startUsingItem(hand);
@@ -85,7 +86,7 @@ public class MoonwormQueenItem extends Item {
 
 		if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && worldIn.isUnobstructed(TFBlocks.MOONWORM.get().defaultBlockState(), pos, CollisionContext.empty())) {
 			if (this.tryPlace(blockItemUseContext).shouldSwing()) {
-				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
+				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos)/*, worldIn, pos, player*/);
 				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				// TF - damage stack instead of shrinking
 				player.stopUsingItem();
@@ -155,7 +156,7 @@ public class MoonwormQueenItem extends Item {
 						}
 					}
 
-					SoundType soundtype = blockstate1.getSoundType(world, blockpos, context.getPlayer());
+					SoundType soundtype = blockstate1.getSoundType(/*world, blockpos, context.getPlayer()*/);
 					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, Objects.requireNonNull(context.getPlayer())), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 					if (playerentity == null || !playerentity.getAbilities().instabuild) {
 						itemstack.hurt(1, world.random, null);
@@ -168,7 +169,7 @@ public class MoonwormQueenItem extends Item {
 	}
 
 	protected SoundEvent getPlaceSound(BlockState state, Level world, BlockPos pos, Player entity) {
-		return state.getSoundType(world, pos, entity).getPlaceSound();
+		return state.getSoundType(/*world, pos, entity*/).getPlaceSound();
 	}
 
 	@Nullable

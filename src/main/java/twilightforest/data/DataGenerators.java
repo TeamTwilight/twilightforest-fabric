@@ -11,7 +11,7 @@ import twilightforest.data.tags.*;
 public class DataGenerators implements DataGeneratorEntrypoint {
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator generator) {
-		ExistingFileHelper helper = evt.getExistingFileHelper();
+		ExistingFileHelper helper = null;//evt.getExistingFileHelper();
 
 		generator.addProvider(new AdvancementGenerator(generator, helper));
 		generator.addProvider(new PatchouliAdvancementGenerator(generator));

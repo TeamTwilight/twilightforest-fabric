@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import io.github.fabricators_of_create.porting_lib.extensions.MapDecorationExtensions;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -135,7 +136,7 @@ public class TFMagicMapData extends MapItemSavedData {
 		}
 	}
 
-	public static class TFMapDecoration extends MapDecoration {
+	public static class TFMapDecoration extends MapDecoration implements MapDecorationExtensions {
 
 		private static final Int2ObjectArrayMap<TFFeature> ICONS = new Int2ObjectArrayMap<>(){{
 			defaultReturnValue(TFFeature.NOTHING);

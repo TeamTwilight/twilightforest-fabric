@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
@@ -25,7 +26,7 @@ import twilightforest.block.entity.TFBlockEntities;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class FireJetBlock extends BaseEntityBlock {
+public class FireJetBlock extends BaseEntityBlock implements CustomPathNodeTypeBlock {
 
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 

@@ -1,5 +1,6 @@
 package twilightforest.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
@@ -19,8 +20,8 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
     public static final TagKey<EntityType<?>> LIFEDRAIN_DROPS_NO_FLESH = create(TwilightForestMod.prefix("lifedrain_drops_no_flesh"));
     public static final TagKey<EntityType<?>> RIDES_OBSTRUCT_SNATCHING = create(TwilightForestMod.prefix("rides_obstruct_snatching"));
 
-    public EntityTagGenerator(DataGenerator dataGenerator, @Nullable ExistingFileHelper existingFileHelper) {
-        super(dataGenerator, TwilightForestMod.ID, existingFileHelper);
+    public EntityTagGenerator(FabricDataGenerator dataGenerator, @Nullable ExistingFileHelper existingFileHelper) {
+        super(dataGenerator);
     }
 
     @Override

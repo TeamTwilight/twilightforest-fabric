@@ -28,12 +28,12 @@ public class ShieldCommand {
     }
 
     private static int add(Entity e, int num, boolean temporary) {
-        e.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> cap.addShields(num, temporary));
+        CapabilityList.SHIELDS.maybeGet(e).ifPresent(cap -> cap.addShields(num, temporary));
         return Command.SINGLE_SUCCESS;
     }
 
     private static int set(Entity e, int num, boolean temporary) {
-        e.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> cap.setShields(num, temporary));
+        CapabilityList.SHIELDS.maybeGet(e).ifPresent(cap -> cap.setShields(num, temporary));
         return Command.SINGLE_SUCCESS;
     }
 }

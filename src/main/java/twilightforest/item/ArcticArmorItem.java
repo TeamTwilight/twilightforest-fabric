@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.fabricators_of_create.porting_lib.util.ArmorTextureItem;
 import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.ChatFormatting;
@@ -29,7 +30,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
+public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, ArmorTextureItem {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public ArcticArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
@@ -37,7 +38,8 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> this::initializeClient);
 	}
 
-	public static String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, @Nullable String layer) {
+	@Override
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, @Nullable String layer) {
 		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "arcticarmor_2" + (layer == null ? "_dyed" : "_overlay") + ".png";
 		} else {
@@ -141,7 +143,7 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 				ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.ARCTIC_ARMOR_INNER : TFModelLayers.ARCTIC_ARMOR_OUTER);
 				armorModel = new TFArmorModel(root);
 			}
-			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, getArmorTexture(itemStack, entityLiving, armorSlot, null));
+//			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, getArmorTexture(itemStack, entityLiving, armorSlot, null)); TODO: PORT
 		}
 	}
 }
