@@ -63,7 +63,7 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.levelgen.WorldGenSettings#WorldGenSettings(long, boolean, boolean, MappedRegistry, Optional)}<br>
+	 * {@link net.minecraft.world.level.levelgen.WorldGenSettings#WorldGenSettings(long, boolean, boolean, net.minecraft.core.Registry, Optional)}<br>
 	 * [BEFORE FIRST PUTFIELD]
 	 */
 	public static long seed(long seed) {
@@ -131,110 +131,6 @@ public class ASMHooks {
 		return music;
 	}
 
-	private static final WeakHashMap<LevelAccessor, List<TFPart<?>>> cache = new WeakHashMap<>();
-	private static final Int2ObjectMap<TFPart<?>> multiparts = new Int2ObjectOpenHashMap<>();
-
-	// This only works on the client side in 1.17...
-	public static void registerMultipartEvents() {
-		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-			if(entity instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity())
-			synchronized (cache) {
-				cache.computeIfAbsent(world, (w) -> new ArrayList<>());
-				cache.get(world).addAll(Arrays.stream(Objects.requireNonNull(partEntity.getParts())).
-						filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj)
-						.toList());
-
-			}
-		});
-		ClientEntityEvents.ENTITY_UNLOAD.register(((entity, entityWorld) -> {
-			if(entity instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity())
-			synchronized (cache) {
-				cache.computeIfPresent(entityWorld, (world, list) -> {
-					list.removeAll(Arrays.stream(Objects.requireNonNull(partEntity.getParts())).
-							filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj)
-							.toList());
-					return list;
-				});
-				if (cache.get(entityWorld).isEmpty())
-					cache.remove(entityWorld);
-			}
-		}));
-		ServerWorldEvents.UNLOAD.register((server, world) -> cache.remove(world));
-		ClientWorldEvents.UNLOAD.register((client, world) -> cache.remove(world));
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerLevel.EntityCallbacks#onTrackingStart(Entity)}<br>
-	 * [FIRST INST]
-	 */
-	public static void trackingStart(Entity entity) {
-		if (entity instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity()) {
-			List<TFPart<?>> list = Arrays.stream(Objects.requireNonNull(partEntity.getParts())).
-					filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj).
-					collect(Collectors.toList());
-			list.forEach(part -> multiparts.put(part.getId(), part));
-			synchronized (cache) {
-				cache.computeIfAbsent(entity.level, (w) -> new ArrayList<>());
-				cache.get(entity.level).addAll(list);
-			}
-		}
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerLevel.EntityCallbacks#onTrackingEnd(Entity)}<br>
-	 * [FIRST INST]
-	 */
-	public static void trackingEnd(Entity entity) {
-		if (entity instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity()) {
-			List<TFPart<?>> list = Arrays.stream(Objects.requireNonNull(partEntity.getParts())).
-					filter(TFPart.class::isInstance).map(obj -> (TFPart<?>) obj).
-					collect(Collectors.toList());
-			list.forEach(part -> multiparts.remove(part.getId()));
-			synchronized (cache) {
-				cache.computeIfPresent(entity.level, (world, parts) -> {
-					parts.removeAll(list);
-					return parts;
-				});
-				if (cache.get(entity.level).isEmpty())
-					cache.remove(entity.level);
-			}
-		}
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.Level#getEntities(Entity, AABB, Predicate)}<br>
-	 * [BEFORE ARETURN]
-	 */
-	public static synchronized List<Entity> multipartHitbox(List<Entity> list, Level world, @Nullable Entity entityIn, AABB boundingBox, @Nullable Predicate<? super Entity> predicate) {
-		synchronized (cache) {
-			List<TFPart<?>> parts = cache.get(world);
-			if(parts != null) {
-				for (TFPart<?> part : parts) {
-					if (part != entityIn &&
-
-							part.getBoundingBox().intersects(boundingBox) &&
-
-							(predicate == null || predicate.test(part)) &&
-
-							!list.contains(part))
-						list.add(part);
-				}
-			}
-			return list;
-		}
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.server.level.ServerLevel#getEntityOrPart(int)}<br>
-	 * [BEFORE ARETURN]
-	 */
-	public static Entity multipartFromID(@Nullable Entity o, int id) {
-		return o == null ? multiparts.get(id) : o;
-	}
 
 	/**
 	 * Injection Point:<br>
@@ -288,15 +184,6 @@ public class ASMHooks {
 			}
 		});
 		return list;
-	}
-
-	/**
-	 * Injection Point:<br>
-	 * {@link net.minecraft.client.Minecraft#doLoadLevel(String, RegistryAccess.RegistryHolder, Function, Function4, boolean, Minecraft.ExperimentalDialogType, boolean)}<br>
-	 * [AFTER ALL ALOAD 6]
-	 */
-	public static Minecraft.ExperimentalDialogType dragons(Minecraft.ExperimentalDialogType type) {
-		return TFConfig.CLIENT_CONFIG.disableHereBeDragons.get() ? Minecraft.ExperimentalDialogType.NONE : type;
 	}
 
 	/**

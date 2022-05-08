@@ -10,6 +10,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
@@ -37,6 +38,7 @@ import twilightforest.world.components.chunkgenerators.warp.TFNoiseInterpolator;
 import twilightforest.world.components.chunkgenerators.warp.TFTerrainWarp;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.TFFeature;
+import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.registration.TwilightFeatures;
 import twilightforest.world.registration.biomes.BiomeKeys;
 
@@ -356,6 +358,42 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		//noinspection OptionalIsPresent
 		if (this.darkForestCanopyHeight.isPresent())
 			this.addDarkForestCanopy(world, chunk, this.darkForestCanopyHeight.get());
+
+		addGlaciers(world, chunk);
+	}
+
+	private void addGlaciers(WorldGenRegion primer, ChunkAccess chunk) {
+
+		BlockState glacierBase = Blocks.GRAVEL.defaultBlockState();
+		BlockState glacierMain = Blocks.PACKED_ICE.defaultBlockState();
+		BlockState glacierTop = Blocks.ICE.defaultBlockState();
+
+		for (int z = 0; z < 16; z++) {
+			for (int x = 0; x < 16; x++) {
+				Optional<ResourceKey<Biome>> biome = primer.getBiome(primer.getCenter().getWorldPosition().offset(x, 0, z)).unwrapKey();
+				if (biome.isEmpty() || !BiomeKeys.GLACIER.location().equals(biome.get().location())) continue;
+
+				// find the (current) top block
+				int gBase = -1;
+				for (int y = 127; y >= 0; y--) {
+					Block currentBlock = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).getBlock();
+					if (currentBlock == Blocks.STONE) {
+						gBase = y + 1;
+						primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), glacierBase, 3);
+						break;
+					}
+				}
+
+				// raise the glacier from that top block
+				int gHeight = 32;
+				int gTop = Math.min(gBase + gHeight, 127);
+
+				for (int y = gBase; y < gTop; y++) {
+					primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), glacierMain, 3);
+				}
+				primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), gTop), glacierTop, 3);
+			}
+		}
 	}
 
 	@Override
@@ -390,6 +428,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					this.raiseHills(primer, chunk, nearFeature, hdiam, xInChunk, zInChunk, featureDX, featureDZ, hheight);
 				}
 			}
+		} else if (nearFeature == TFFeature.HEDGE_MAZE || nearFeature == TFFeature.NAGA_COURTYARD || nearFeature == TFFeature.QUEST_GROVE) {
+			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
+				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
+					int featureDX = xInChunk - relativeFeatureX;
+					int featureDZ = zInChunk - relativeFeatureZ;
+					flattenTerrainForFeature(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
+				}
+			}
 		} else if (nearFeature == TFFeature.YETI_CAVE) {
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
 				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
@@ -405,6 +451,56 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		}
 
 		// done!
+	}
+
+	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
+
+		float squishFactor = 0f;
+		int mazeHeight = TFGenerationSettings.SEALEVEL + 1;
+		final int FEATURE_BOUNDARY = (nearFeature.size * 2 + 1) * 8 - 8;
+
+		if (dx <= -FEATURE_BOUNDARY) {
+			squishFactor = (-dx - FEATURE_BOUNDARY) / 8.0f;
+		} else if (dx >= FEATURE_BOUNDARY) {
+			squishFactor = (dx - FEATURE_BOUNDARY) / 8.0f;
+		}
+
+		if (dz <= -FEATURE_BOUNDARY) {
+			squishFactor = Math.max(squishFactor, (-dz - FEATURE_BOUNDARY) / 8.0f);
+		} else if (dz >= FEATURE_BOUNDARY) {
+			squishFactor = Math.max(squishFactor, (dz - FEATURE_BOUNDARY) / 8.0f);
+		}
+
+		if (squishFactor > 0f) {
+			// blend the old terrain height to arena height
+			for (int y = 0; y <= 127; y++) {
+				Block currentTerrain = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).getBlock();
+				// we're still in ground
+				if (currentTerrain != Blocks.STONE) {
+					// we found the lowest chunk of earth
+					mazeHeight += ((y - mazeHeight) * squishFactor);
+					break;
+				}
+			}
+		}
+
+		// sets the ground level to the maze height
+		for (int y = 0; y < mazeHeight; y++) {
+			Block b = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).getBlock();
+			if (b == Blocks.AIR || b == Blocks.WATER) {
+				primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), Blocks.STONE.defaultBlockState(), 3);
+			}
+		}
+		for (int y = mazeHeight; y <= 127; y++) {
+			Block b = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).getBlock();
+			if (b != Blocks.AIR && b != Blocks.WATER) {
+				primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), Blocks.AIR.defaultBlockState(), 3);
+			}
+		}
+	}
+
+	protected final BlockPos withY(BlockPos old, int y) {
+		return new BlockPos(old.getX(), y, old.getZ());
 	}
 
 	//TODO: Parameter "nearFeature" is unused. Remove?

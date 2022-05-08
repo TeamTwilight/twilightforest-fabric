@@ -105,7 +105,6 @@ public class TwilightForestMod implements ModInitializer {
 		}
 		ModConfigEvent.RELOADING.register(TFConfig::onConfigChanged);
 
-		ASMHooks.registerMultipartEvents();
 		CommandRegistrationCallback.EVENT.register(this::registerCommands);
 
 		BiomeKeys.BIOMES.register();

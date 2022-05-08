@@ -75,10 +75,9 @@ public class TFBiomeProvider extends BiomeSource {
 	public TFBiomeProvider(long seed, Registry<Biome> registryIn, List<Pair<TerrainPoint, Holder<Biome>>> list, float offset, float factor) {
 		super(BIOMES
 				.stream()
-				.map(ResourceKey::location)
-				.map(registryIn::getOptional)
+				.map(registryIn::getHolder)
 				.filter(Optional::isPresent)
-				.map(opt -> Holder.direct(opt.get()))
+				.map(Optional::get)
 		);
 
 		this.seed = seed;
@@ -175,12 +174,12 @@ public class TFBiomeProvider extends BiomeSource {
  		System.out.println("breakpoint");*/
 		return new Layer(areaFactory) {
 			@Override
-			public Holder<Biome> get(Registry<Biome> p_242936_1_, int p_242936_2_, int p_242936_3_) {
+			public Holder<Biome> get(Registry<Biome> registry, int p_242936_2_, int p_242936_3_) {
 				int i = this.area.get(p_242936_2_, p_242936_3_);
-				Holder<Biome> biome = Holder.direct(registry.byId(i));
-				if (biome == null)
+				Optional<Holder<Biome>> biome = registry.getHolder(i);
+				if (biome.isEmpty())
 					throw new IllegalStateException("Unknown biome id emitted by layers: " + i);
-				return biome;
+				return biome.get();
 			}
 		};
 	}

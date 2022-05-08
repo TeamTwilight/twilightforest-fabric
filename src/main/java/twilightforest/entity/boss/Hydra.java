@@ -563,7 +563,7 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+		if (deathTime > 0 && level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(level, pos, this)) {
 					level.destroyBlock(pos, false);

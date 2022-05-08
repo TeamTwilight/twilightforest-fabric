@@ -434,7 +434,7 @@ public class TFFeature {
 		.put(BiomeKeys.HIGHLANDS.location(), TROLL_CAVE)
 		.put(BiomeKeys.SNOWY_FOREST.location(), YETI_CAVE)
 		.put(BiomeKeys.SWAMP.location(), LABYRINTH)
-		//.put(BiomeKeys.LAKE.location(), QUEST_ISLAND)
+		.put(BiomeKeys.LAKE.location(), QUEST_ISLAND)
 		.build();
 
 	//IStructurePieceTypes that can be referred to
