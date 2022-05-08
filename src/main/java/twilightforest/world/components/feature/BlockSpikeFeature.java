@@ -47,7 +47,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
         for (int i = 0; i < length; i++) {
             clearedLength = i;
 
-            if (FeatureLogic.isReplaceable(level.getBlockState(movingPos))) break;
+            if (FeatureLogic.worldGenReplaceable(level.getBlockState(movingPos))) break;
 
             movingPos.move(0, dY, 0);
         }
@@ -61,7 +61,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
         for (int i = 0; i < remainingScanLength; i++) {
             finalLength = clearedLength + i;
 
-            if (!FeatureLogic.isReplaceable(level.getBlockState(movingPos))) break;
+            if (!FeatureLogic.worldGenReplaceable(level.getBlockState(movingPos))) break;
 
             movingPos.move(0, dY, 0);
         }
@@ -91,7 +91,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
                 for (int i = 0; i < spikeLength; i++) {
                     BlockPos placement = startPos.offset(dx, i * dY, dz);
 
-                    if (FeatureLogic.isReplaceable(level.getBlockState(placement)) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 1))
+                    if (FeatureLogic.worldGenReplaceable(level.getBlockState(placement)) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 1))
                         level.setBlock(placement, blockState.getState(random, placement), 3);
                 }
             }
