@@ -22,12 +22,12 @@ steps:
       echo "##vso[task.setvariable variable=PATH]${loc}/bin:$(PATH)"
     displayName: Set JAVA_HOME Variable
 
-  #- task: Cache@2
-  #  inputs:
-  #    key: 'gradle | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/twilightforest.accesswidener'
-  #    restoreKeys: gradle
-  #    path: $(GRADLE_USER_HOME)
-  #  displayName: Gradle build cache
+  - task: Cache@2
+    inputs:
+      key: 'gradle | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/twilightforest.accesswidener'
+      restoreKeys: gradle
+      path: $(GRADLE_USER_HOME)
+    displayName: Gradle build cache
 
   - bash: |
       while IFS= read -r line; do
