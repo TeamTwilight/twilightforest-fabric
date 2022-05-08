@@ -4,12 +4,16 @@
   "priority": 951,
   "package": "twilightforest.mixin.client",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "twilightforest.mixin.TFMixinPlugin",
   "client": [
-    "SheetsMixin",
-    "ModelLayersMixin"
+    "ModelLayersMixin",
+    "SheetsMixin"
   ],
   "injectors": {
     "defaultRequire": 1,
     "maxShiftBy": 999999
-  }
+  },
+  "mixins": [
+    "MapRendererMapInstanceMixin"
+  ]
 }
