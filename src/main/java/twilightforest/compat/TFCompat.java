@@ -15,7 +15,7 @@ public abstract class TFCompat {
 
     static {
 //        classes.put("immersiveengineering", IECompat.class);
-        classes.put("curios", CuriosCompat.class);
+        classes.put("trinkets", CuriosCompat.class);
 //        classes.put("undergarden", UndergardenCompat.class);
     }
 

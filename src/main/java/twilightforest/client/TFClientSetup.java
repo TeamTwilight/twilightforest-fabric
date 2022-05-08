@@ -2,6 +2,7 @@ package twilightforest.client;
 
 import io.github.fabricators_of_create.porting_lib.event.client.EntityAddedLayerCallback;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -50,6 +51,7 @@ public class TFClientSetup implements ClientModInitializer {
 		FogHandler.init();
 		TFParticleType.registerFactories();
 		ClientTickEvents.END_CLIENT_TICK.register(LockedBiomeListener::clientTick);
+		clientSetup();
 //		EntityAddedLayerCallback.EVENT.register(TFClientSetup::attachRenderLayers);
 	}
 
@@ -83,8 +85,10 @@ public class TFClientSetup implements ClientModInitializer {
         TFBlockEntities.registerTileEntityRenders();
         TFContainers.renderScreens();
 
-        TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
-        DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
+		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+			TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
+			DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
+		});
 
 		for(BannerPattern pattern : BannerPattern.values()) {
 			if(pattern.getFilename().startsWith(TwilightForestMod.ID)) {
@@ -103,8 +107,8 @@ public class TFClientSetup implements ClientModInitializer {
             registerWoodType(TFBlocks.MINING);
             registerWoodType(TFBlocks.SORTING);
 
-			if(FabricLoader.getInstance().isModLoaded("curios")) {
-				CuriosCompat.registerCurioRenderers();
+			if(FabricLoader.getInstance().isModLoaded("trinkets")) {
+				ClientLifecycleEvents.CLIENT_STARTED.register(CuriosCompat::registerCurioRenderers);
 			}
 //        });
 

@@ -2,7 +2,11 @@ package twilightforest.client;
 
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.TFConfig;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 
@@ -17,8 +21,8 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
     public TwilightForestRenderInfo(float cloudHeight, boolean placebo, SkyType fogType, boolean brightenLightMap, boolean entityLightingBottomsLit) {
         super(cloudHeight, placebo, fogType, brightenLightMap, entityLightingBottomsLit);
-        DimensionRenderingRegistry.registerSkyRenderer(null, getSkyRenderHandler());
-        DimensionRenderingRegistry.registerWeatherRenderer(null, getWeatherRenderHandler());
+        DimensionRenderingRegistry.registerSkyRenderer(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())), getSkyRenderHandler());
+//        DimensionRenderingRegistry.registerWeatherRenderer(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())), getWeatherRenderHandler());
     }
 
     // { red, green, blue, interpolation from white } DO NOT INLINE VARIABLE it avoids spamming array creation each render tick
