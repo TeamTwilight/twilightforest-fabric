@@ -1,28 +1,52 @@
 package twilightforest.client;
 
-import com.google.gson.JsonDeserializationContext;
+import com.google.common.base.Charsets;
 import com.google.gson.JsonObject;
 import com.mojang.realmsclient.util.JsonUtils;
-import io.github.fabricators_of_create.porting_lib.model.IModelLoader;
+import io.github.fabricators_of_create.porting_lib.mixin.client.accessor.BlockModelAccessor;
+import net.fabricmc.fabric.api.client.model.ModelProviderContext;
+import net.fabricmc.fabric.api.client.model.ModelResourceProvider;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.Resource;
+import twilightforest.TwilightForestMod;
 
-public final class PatchModelLoader implements IModelLoader<UnbakedPatchModel> {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public final class PatchModelLoader implements ModelResourceProvider {
     public static final PatchModelLoader INSTANCE = new PatchModelLoader();
 
     private PatchModelLoader() {
     }
 
     @Override
-    public UnbakedPatchModel read(JsonDeserializationContext deserializationContext, JsonObject modelContents) {
-        if (!modelContents.has("texture"))
-            throw new RuntimeException("Patch model missing value for 'texture'.");
+    public UnbakedModel loadModelResource(ResourceLocation resourceId, ModelProviderContext context) {
+        if(!resourceId.getNamespace().equals(TwilightForestMod.ID))
+            return null;
+        JsonObject modelContents = BlockModelAccessor.port_lib$GSON().fromJson(getModelJson(resourceId), JsonObject.class);
+        if(modelContents.has("loader")) {
+            if(!modelContents.get("loader").getAsString().equals("twilightforest:patch"))
+                return null;
+            if (!modelContents.has("texture"))
+                throw new RuntimeException("Patch model missing value for 'texture'.");
 
-        return new UnbakedPatchModel(new ResourceLocation(modelContents.get("texture").getAsString()), JsonUtils.getBooleanOr("shaggify", modelContents, false));
+            return new UnbakedPatchModel(new ResourceLocation(modelContents.get("texture").getAsString()), JsonUtils.getBooleanOr("shaggify", modelContents, false));
+        }
+
+        return null;
     }
 
-    @Override
-    public void onResourceManagerReload(ResourceManager pResourceManager) {
-        // No need to do anything here
+    static BufferedReader getModelJson(ResourceLocation location) {
+        ResourceLocation file = new ResourceLocation(location.getNamespace(), "models/" + location.getPath() + ".json");
+        Resource resource = null;
+        try {
+            resource = Minecraft.getInstance().getResourceManager().getResource(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new BufferedReader(new InputStreamReader(resource.getInputStream(), Charsets.UTF_8));
     }
 }

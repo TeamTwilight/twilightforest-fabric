@@ -56,6 +56,7 @@ public class TFClientEvents {
 
 	public static void init() {
 		ModBusEvents.registerModels();
+		ModBusEvents.registerLoaders();
 		WorldRenderEvents.LAST.register(TFClientEvents::renderWorldLast);
 		ModelsBakedCallback.EVENT.register(ModBusEvents::modelBake);
 		TextureStitchCallback.PRE.register(ModBusEvents::texStitch);
@@ -66,7 +67,7 @@ public class TFClientEvents {
 
 	public static class ModBusEvents {
 		public static void registerLoaders() {
-			ModelLoaderRegistry.registerLoader(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
+			ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> PatchModelLoader.INSTANCE);
 		}
 
 		@Deprecated // tterrag said this would become deprecated soon in favor of above method
