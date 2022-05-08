@@ -1,7 +1,7 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.fabricators_of_create.porting_lib.event.FogEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.FogEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.FogRenderer;

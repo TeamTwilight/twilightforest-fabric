@@ -243,6 +243,6 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 		Integer id = getMapId(stack);
 		TFMazeMapData mapdata = getCustomMapData(stack, worldIn);
 		Packet<?> p = id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
-		return p instanceof ClientboundMapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MazeMapPacket((ClientboundMapItemDataPacket) p)) : p;
+		return p instanceof ClientboundMapItemDataPacket ? TFPacketHandler.CHANNEL.createVanillaPacket(new MazeMapPacket((ClientboundMapItemDataPacket) p)) : p;
 	}
 }

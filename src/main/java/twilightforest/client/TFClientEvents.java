@@ -1,7 +1,7 @@
 package twilightforest.client;
 
-import io.github.fabricators_of_create.porting_lib.event.ModelsBakedCallback;
-import io.github.fabricators_of_create.porting_lib.event.RenderTickStartCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.ModelsBakedCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.RenderTickStartCallback;
 import io.github.fabricators_of_create.porting_lib.event.client.TextureStitchCallback;
 import io.github.fabricators_of_create.porting_lib.model.ModelLoaderRegistry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;

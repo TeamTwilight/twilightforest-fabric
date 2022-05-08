@@ -1,7 +1,7 @@
 package twilightforest;
 
-import io.github.fabricators_of_create.porting_lib.event.LivingEntityEvents;
-import io.github.fabricators_of_create.porting_lib.event.ProjectileImpactCallback;
+import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
+import io.github.fabricators_of_create.porting_lib.event.common.ProjectileImpactCallback;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;

@@ -7,7 +7,6 @@ import com.mojang.math.Matrix4f;
 import com.mojang.serialization.Dynamic;
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
-import io.github.fabricators_of_create.porting_lib.event.ClientWorldEvents;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;

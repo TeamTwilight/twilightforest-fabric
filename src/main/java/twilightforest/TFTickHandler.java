@@ -1,6 +1,6 @@
 package twilightforest;
 
-import io.github.fabricators_of_create.porting_lib.event.PlayerTickEvents;
+import io.github.fabricators_of_create.porting_lib.event.common.PlayerTickEvents;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.Vec3i;

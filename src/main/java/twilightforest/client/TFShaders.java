@@ -1,7 +1,7 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import io.github.fabricators_of_create.porting_lib.event.RegisterShadersCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.RegisterShadersCallback;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;

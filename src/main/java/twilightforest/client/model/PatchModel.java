@@ -1,7 +1,9 @@
 package twilightforest.client.model;
 
 import com.mojang.math.Vector3f;
+import io.github.fabricators_of_create.porting_lib.extensions.Vector3fExtensions;
 import io.github.fabricators_of_create.porting_lib.model.SimpleModelState;
+import io.github.fabricators_of_create.porting_lib.util.MixinHelper;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -68,14 +70,13 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            MAX.setX(MIN.x());
             MIN.add(-1, 0, num0);
             if (MAX.z() - ((num1 + num2 + num3)) > MIN.z()) {
                 // draw two blobs
-                MAX.setZ(MIN.z() + num1);
+                MixinHelper.<Vector3fExtensions>cast(MAX).setZ(MIN.z() + num1);
                 this.quadsFromAABB(list);
-                MAX.setZ(originalMaxZ - num2);
-                MIN.setZ(MAX.z() - num3);
+                MixinHelper.<Vector3fExtensions>cast(MAX).setZ(originalMaxZ - num2);
+                MixinHelper.<Vector3fExtensions>cast(MIN).setZ(MAX.z() - num3);
                 this.quadsFromAABB(list);
             } else {
                 //draw one blob
@@ -97,15 +98,15 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            MIN.setX(MAX.x());
+            MixinHelper.<Vector3fExtensions>cast(MIN).setX(MAX.x());
             MAX.add(1, 0, 0);
             MIN.add(0, 0, num0);
             if (MAX.z() - ((num1 +num2 + num3)) > MIN.z()) {
                 // draw two blobs
-                MAX.setZ(MIN.z() + num1);
+                MixinHelper.<Vector3fExtensions>cast(MAX).setZ(MIN.z() + num1);
                 this.quadsFromAABB(list);
-                MAX.setZ(originalMaxZ - num2);
-                MIN.setZ(MAX.z() - num3);
+                MixinHelper.<Vector3fExtensions>cast(MAX).setZ(originalMaxZ - num2);
+                MixinHelper.<Vector3fExtensions>cast(MIN).setZ(MAX.z() - num3);
                 this.quadsFromAABB(list);
             } else {
                 //draw one blob
@@ -126,12 +127,12 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            MAX.setZ(MIN.z());
+            MixinHelper.<Vector3fExtensions>cast(MAX).setZ(MIN.z());
             MIN.add(num0, 0, -1F);
-            MAX.setX(MIN.x() + num1);
+            MixinHelper.<Vector3fExtensions>cast(MAX).setX(MIN.x() + num1);
             this.quadsFromAABB(list);
-            MAX.setX(originalMaxX - num2);
-            MIN.setX(MAX.x() - num3);
+            MixinHelper.<Vector3fExtensions>cast(MAX).setX(originalMaxX - num2);
+            MixinHelper.<Vector3fExtensions>cast(MIN).setX(MAX.x() - num3);
             this.quadsFromAABB(list);
             // reset render bounds
             this.setVectors(bb);
@@ -147,13 +148,13 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            MIN.setZ(MAX.z());
+            MixinHelper.<Vector3fExtensions>cast(MIN).setZ(MAX.z());
             MAX.add(0, 0, 1F);
             MIN.add(num0, 0, 0);
-            MAX.setX(MIN.x() + num1);
+            MixinHelper.<Vector3fExtensions>cast(MAX).setX(MIN.x() + num1);
             this.quadsFromAABB(list);
-            MAX.setX(originalMaxX - num2);
-            MIN.setX(MAX.x() - num3);
+            MixinHelper.<Vector3fExtensions>cast(MAX).setX(originalMaxX - num2);
+            MixinHelper.<Vector3fExtensions>cast(MIN).setX(MAX.x() - num3);
             this.quadsFromAABB(list);
             // reset render bounds
             this.setVectors(bb);
