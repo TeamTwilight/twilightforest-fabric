@@ -27,6 +27,9 @@
       "twilightforest.TwilightForestMod"
 
     ],
+    "mm:early_risers": [
+      "twilightforest.asm.TFASM"
+    ],
     "cardinal-components": [
       "twilightforest.capabilities.CapabilityList"
     ]

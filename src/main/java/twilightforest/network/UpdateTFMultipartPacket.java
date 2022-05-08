@@ -55,7 +55,7 @@ public class UpdateTFMultipartPacket implements S2CPacket {
 
 	public static class Handler {
 		public static boolean onMessage(UpdateTFMultipartPacket message, Executor ctx) {
-			ctx.execute(new Runnable() {
+			/*ctx.execute(*/new Runnable() {
 				@Override
 				public void run() {
 					Level world = Minecraft.getInstance().level;
@@ -79,7 +79,7 @@ public class UpdateTFMultipartPacket implements S2CPacket {
 						}
 					}
 				}
-			});
+			}.run();
 			return true;
 		}
 	}
