@@ -6,7 +6,7 @@
 pool:
   vmImage: 'ubuntu-20.04'
 
-container: adoptopenjdk/openjdk16:latest
+container: openjdk:17-alpine
 
 variables:
   revision: $[counter('release-number', 0)]
@@ -16,8 +16,8 @@ variables:
 steps:
 
   - bash: |
-      loc="/opt/java/openjdk"
-      echo "##vso[task.setvariable variable=JAVA_HOME_16_X64]${loc}"
+      loc="/opt/openjdk-17"
+      echo "##vso[task.setvariable variable=JAVA_HOME_17_X64]${loc}"
       echo "##vso[task.setvariable variable=JAVA_HOME]${loc}"
       echo "##vso[task.setvariable variable=PATH]${loc}/bin:$(PATH)"
     displayName: Set JAVA_HOME Variable
