@@ -70,8 +70,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 	public static final TagKey<Block> ORE_MAGNET_SAFE_REPLACE_BLOCK = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("ore_magnet/ore_safe_replace_block"));
 	public static final TagKey<Block> ORE_MAGNET_IGNORE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("ore_magnet/ignored_ores"));
-	public static final TagKey<Block> ROOT_GROUND = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "ore_bearing_ground/root"));
-	public static final TagKey<Block> ROOT_ORES = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", "ores_in_ground/root"));
+	public static final TagKey<Block> ROOT_GROUND = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "ore_bearing_ground/root"));
+	public static final TagKey<Block> ROOT_ORES = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "ores_in_ground/root"));
 
 	public BlockTagGenerator(FabricDataGenerator generator, ExistingFileHelper exFileHelper) {
 		super(generator);

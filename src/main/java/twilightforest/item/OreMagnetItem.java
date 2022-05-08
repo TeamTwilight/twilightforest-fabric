@@ -261,7 +261,7 @@ public class OreMagnetItem extends Item implements EnchantableItem, XpRepairItem
 		TwilightForestMod.LOGGER.info("GENERATING ORE TO BLOCK MAPPING");
 
 		//collect all tags
-		for (TagKey<Block> tag : Registry.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("forge")).collect(Collectors.toList())) {
+		for (TagKey<Block> tag : Registry.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).collect(Collectors.toList())) {
 			//check if the tag is a valid ore tag
 			if (tag.location().getPath().contains("ores_in_ground/")) {
 				//grab the part after the slash for use later
