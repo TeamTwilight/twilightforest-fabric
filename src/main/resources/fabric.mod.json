@@ -37,6 +37,10 @@
   "mixins": [
     "twilight.mixins.json"
   ],
+  "provides": [
+    "com_electronwill_night-config_core",
+    "com_electronwill_night-config_toml"
+  ],
   "accessWidener": "twilightforest.accesswidener",
   "breaks": {
     "boats-and-beeps": "*"
