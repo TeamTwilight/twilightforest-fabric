@@ -2,6 +2,7 @@
   //If something is commented out, it means it hasn't been translated yet.
 
   "itemGroup.twilightforest": "Twilight Forest",
+  "itemGroup.twilightforest.twilightforest": "Twilight Forest",
 
   "_comment": "ADVANCEMENTS",
   "advancement.twilightforest.root.desc": "Entrer dans le bois magique et mystérieux qu'est la Twilight Forest.",
