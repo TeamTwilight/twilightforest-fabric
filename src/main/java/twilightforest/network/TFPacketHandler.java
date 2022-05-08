@@ -1,6 +1,8 @@
 package twilightforest.network;
 
+import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
 import me.pepperbell.simplenetworking.SimpleChannel;
+import net.fabricmc.api.EnvType;
 import twilightforest.TwilightForestMod;
 
 public class TFPacketHandler {
@@ -10,6 +12,8 @@ public class TFPacketHandler {
 
 	@SuppressWarnings("UnusedAssignment")
 	public static void init() {
+		CHANNEL.initServerListener();
+		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> CHANNEL::initClientListener);
 		int id = 0;
 		CHANNEL.registerS2CPacket(AreaProtectionPacket.class, id++);
 		CHANNEL.registerS2CPacket(ChangeBiomePacket.class, id++);

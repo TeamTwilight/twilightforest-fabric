@@ -90,7 +90,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("twilightforest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12), true), true), Lifecycle.experimental());
+		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("twilightforest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12), true)/*, true*/), Lifecycle.experimental());
 		return writableregistry;
 	}
 
