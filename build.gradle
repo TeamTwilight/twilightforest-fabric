@@ -109,7 +109,7 @@ dependencies {
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}"
 
     include 'com.github.Chocohead:Fabric-ASM:v2.3'
-    modImplementation 'com.github.AlphaMode:FabricExtendibleEnum:1.18-SNAPSHOT'
+    modImplementation(include("com.github.AlphaMode:FabricExtendibleEnum:1.18-SNAPSHOT"))
     modImplementation(include("me.alphamode:ForgeTags:2.1"))
     modImplementation "dev.emi:trinkets:${trinkets_version}"
 //    modImplementation(include('com.github.alkyaly:js-coremods-fabric:1.0.0'))
