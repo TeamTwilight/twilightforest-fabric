@@ -24,7 +24,7 @@ steps:
 
   - task: Cache@2
     inputs:
-      key: 'gradle | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/twilight.aw'
+      key: 'gradle | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/twilight.accesswidener'
       restoreKeys: gradle
       path: $(GRADLE_USER_HOME)
     displayName: Gradle build cache
@@ -126,7 +126,7 @@ steps:
       }"
       json=$(echo ${json} | tr -d '\n' | sed 's/    //g')
       echo "##vso[task.setvariable variable=DiscordMessage]${json}"
-      echo "${json}"
+      echo "${DiscordChannelID}"
     displayName: Format discord message
     condition: always()
     env:
