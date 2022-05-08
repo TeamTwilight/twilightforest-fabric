@@ -126,6 +126,7 @@ steps:
       }"
       json=$(echo ${json} | tr -d '\n' | sed 's/    //g')
       echo "##vso[task.setvariable variable=DiscordMessage]${json}"
+      echo "${json}"
     displayName: Format discord message
     condition: always()
     env:
