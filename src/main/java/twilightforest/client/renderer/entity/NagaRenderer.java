@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,6 +16,7 @@ import twilightforest.entity.boss.Naga;
 
 //added charging texture for new renderer
 //FIXME legacy: scaling was commented out since textures are bigger now
+@Environment(EnvType.CLIENT)
 public class NagaRenderer<M extends NagaModel<Naga>> extends MobRenderer<Naga, M> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("nagahead.png");

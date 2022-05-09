@@ -16,7 +16,6 @@ import net.fabricmc.api.Environment;
 import twilightforest.entity.boss.Lich;
 import twilightforest.util.TFDamageSources;
 
-@Environment(value = EnvType.CLIENT)
 public class LichBomb extends TFThrowable implements ItemSupplier {
 
 	public LichBomb(EntityType<? extends LichBomb> type, Level world) {

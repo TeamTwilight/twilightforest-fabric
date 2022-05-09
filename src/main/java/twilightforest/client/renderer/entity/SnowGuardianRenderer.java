@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
@@ -10,6 +12,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NoopModel;
 import twilightforest.entity.monster.SnowGuardian;
 
+@Environment(EnvType.CLIENT)
 public class SnowGuardianRenderer extends TFBipedRenderer<SnowGuardian, NoopModel<SnowGuardian>> {
 
 	public SnowGuardianRenderer(EntityRendererProvider.Context manager, NoopModel<SnowGuardian> model) {

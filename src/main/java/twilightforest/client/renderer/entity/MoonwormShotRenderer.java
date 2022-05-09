@@ -2,6 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,6 +16,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
 import twilightforest.entity.projectile.MoonwormShot;
 
+@Environment(EnvType.CLIENT)
 public class MoonwormShotRenderer extends EntityRenderer<MoonwormShot> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");

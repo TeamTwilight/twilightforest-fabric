@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -13,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
 import twilightforest.entity.projectile.ThrownWep;
 
+@Environment(EnvType.CLIENT)
 public class ThrownWepRenderer extends EntityRenderer<ThrownWep> {
 
 	public ThrownWepRenderer(EntityRendererProvider.Context manager) {

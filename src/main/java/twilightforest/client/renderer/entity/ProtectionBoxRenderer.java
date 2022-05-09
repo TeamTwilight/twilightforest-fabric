@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -10,6 +12,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ProtectionBoxModel;
 import twilightforest.entity.ProtectionBox;
 
+@Environment(EnvType.CLIENT)
 public class ProtectionBoxRenderer<T extends ProtectionBox> extends EntityRenderer<T> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("protectionbox.png");

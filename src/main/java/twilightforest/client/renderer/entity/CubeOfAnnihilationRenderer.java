@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -14,6 +16,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CubeOfAnnihilationModel;
 import twilightforest.entity.CubeOfAnnihilation;
 
+@Environment(EnvType.CLIENT)
 public class CubeOfAnnihilationRenderer extends EntityRenderer<CubeOfAnnihilation> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");

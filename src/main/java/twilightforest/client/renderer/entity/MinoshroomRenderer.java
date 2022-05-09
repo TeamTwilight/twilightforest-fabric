@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
@@ -18,6 +20,7 @@ import twilightforest.client.model.entity.MinoshroomModel;
 import twilightforest.entity.boss.Minoshroom;
 
 //old renderer had the head mushroom in a different spot - line is commented out
+@Environment(EnvType.CLIENT)
 public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, MinoshroomModel> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("minoshroomtaur.png");

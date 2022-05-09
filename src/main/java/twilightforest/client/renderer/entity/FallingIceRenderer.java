@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,6 +20,7 @@ import twilightforest.entity.projectile.FallingIce;
 
 import java.util.Random;
 
+@Environment(EnvType.CLIENT)
 public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 	public FallingIceRenderer(EntityRendererProvider.Context renderManagerIn) {
 		super(renderManagerIn);

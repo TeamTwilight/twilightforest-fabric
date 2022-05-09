@@ -1,5 +1,7 @@
 package twilightforest.client.renderer.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
@@ -10,6 +12,7 @@ import twilightforest.entity.monster.Wraith;
 
 import javax.annotation.Nullable;
 
+@Environment(EnvType.CLIENT)
 public class WraithRenderer extends HumanoidMobRenderer<Wraith, WraithModel> {
 
 	private static final ResourceLocation textureWraith = TwilightForestMod.getModelTexture("ghost.png");

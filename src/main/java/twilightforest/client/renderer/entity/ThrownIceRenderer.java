@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,6 +23,7 @@ import java.util.Random;
 /**
  * [VanillaCopy] of {@link net.minecraft.client.renderer.entity.FallingBlockRenderer} because of generic type restrictions
   */
+@Environment(EnvType.CLIENT)
 public class ThrownIceRenderer extends EntityRenderer<IceBomb> {
 
 	public ThrownIceRenderer(EntityRendererProvider.Context manager) {

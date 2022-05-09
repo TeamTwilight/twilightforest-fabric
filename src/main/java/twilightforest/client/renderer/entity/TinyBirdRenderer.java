@@ -1,11 +1,14 @@
 package twilightforest.client.renderer.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.TinyBirdModel;
 import twilightforest.entity.passive.TinyBird;
 
+@Environment(EnvType.CLIENT)
 public class TinyBirdRenderer extends BirdRenderer<TinyBird, TinyBirdModel> {
 
 	private static final ResourceLocation textureLocSparrow  = TwilightForestMod.getModelTexture("tinybirdbrown.png");

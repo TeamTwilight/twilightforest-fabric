@@ -1,12 +1,15 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.AdherentModel;
 import twilightforest.entity.monster.Adherent;
 
+@Environment(EnvType.CLIENT)
 public class AdherentRenderer extends TFBipedRenderer<Adherent, AdherentModel> {
 	public AdherentRenderer(EntityRendererProvider.Context manager) {
 		super(manager, new AdherentModel(manager.bakeLayer(TFModelLayers.ADHERENT)), 0.625F, "adherent.png");

@@ -1,5 +1,7 @@
 package twilightforest.client.renderer.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.model.EntityModel;
@@ -8,6 +10,7 @@ import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.passive.Bird;
 
+@Environment(EnvType.CLIENT)
 public class BirdRenderer<T extends Bird, M extends EntityModel<T>> extends MobRenderer<T, M> {
 
 	private final ResourceLocation textureLoc;

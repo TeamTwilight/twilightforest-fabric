@@ -23,9 +23,6 @@ import net.fabricmc.api.Environment;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-@Environment(
-				value = EnvType.CLIENT
-)
 public class CharmEffect extends Entity implements ItemSupplier {
 	private static final EntityDataAccessor<Integer> DATA_OWNER = SynchedEntityData.defineId(CharmEffect.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<ItemStack> DATA_ITEMID = SynchedEntityData.defineId(CharmEffect.class, EntityDataSerializers.ITEM_STACK);

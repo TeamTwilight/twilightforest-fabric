@@ -1,12 +1,15 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.KingSpider;
 
+@Environment(EnvType.CLIENT)
 public class KingSpiderRenderer extends SpiderRenderer<KingSpider> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("kingspider.png");

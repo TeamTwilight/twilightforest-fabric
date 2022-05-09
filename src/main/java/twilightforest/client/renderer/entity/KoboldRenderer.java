@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,6 +16,7 @@ import com.mojang.math.Vector3f;
 import twilightforest.client.model.entity.KoboldModel;
 import twilightforest.entity.monster.Kobold;
 
+@Environment(EnvType.CLIENT)
 public class KoboldRenderer extends TFBipedRenderer<Kobold, KoboldModel> {
 
 	public KoboldRenderer(EntityRendererProvider.Context manager, KoboldModel modelBiped, float shadowSize, String textureName) {

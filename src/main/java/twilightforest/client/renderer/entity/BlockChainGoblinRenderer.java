@@ -2,6 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -24,6 +26,7 @@ import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
 import twilightforest.entity.monster.BlockChainGoblin;
 
+@Environment(EnvType.CLIENT)
 public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends BlockChainGoblinModel<T>> extends HumanoidMobRenderer<T, M> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");

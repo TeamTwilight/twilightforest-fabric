@@ -2,6 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,6 +16,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.QuestRamModel;
 import twilightforest.entity.passive.QuestRam;
 
+@Environment(EnvType.CLIENT)
 public class QuestRamRenderer extends MobRenderer<QuestRam, QuestRamModel> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("questram.png");

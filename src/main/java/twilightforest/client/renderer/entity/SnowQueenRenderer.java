@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
@@ -9,6 +11,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.SnowQueenModel;
 import twilightforest.entity.boss.SnowQueen;
 
+@Environment(EnvType.CLIENT)
 public class SnowQueenRenderer extends HumanoidMobRenderer<SnowQueen, SnowQueenModel> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("snowqueen.png");

@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +16,7 @@ import twilightforest.entity.boss.HydraHeadContainer;
 
 import javax.annotation.Nullable;
 
+@Environment(EnvType.CLIENT)
 public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadModel> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");

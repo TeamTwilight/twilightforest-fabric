@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-@Environment(value = EnvType.CLIENT)
 public class SlimeProjectile extends TFThrowable implements ItemSupplier {
 
 	public SlimeProjectile(EntityType<? extends SlimeProjectile> type, Level world) {

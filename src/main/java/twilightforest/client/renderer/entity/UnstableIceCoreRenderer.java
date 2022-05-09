@@ -1,12 +1,15 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
 import twilightforest.client.model.entity.UnstableIceCoreModel;
 import twilightforest.entity.monster.UnstableIceCore;
 
+@Environment(EnvType.CLIENT)
 public class UnstableIceCoreRenderer<T extends UnstableIceCore, M extends UnstableIceCoreModel<T>> extends TFGenericMobRenderer<T, M> {
 
 	public UnstableIceCoreRenderer(EntityRendererProvider.Context manager, M model) {

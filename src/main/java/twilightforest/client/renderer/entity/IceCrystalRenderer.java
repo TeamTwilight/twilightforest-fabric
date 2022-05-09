@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +12,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.IceCrystalModel;
 import twilightforest.entity.monster.IceCrystal;
 
+@Environment(EnvType.CLIENT)
 public class IceCrystalRenderer extends MobRenderer<IceCrystal, IceCrystalModel> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("icecrystal.png");

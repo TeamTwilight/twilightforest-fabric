@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -11,6 +13,7 @@ import twilightforest.client.model.entity.NagaModel;
 import twilightforest.entity.boss.NagaSegment;
 
 //FIXME legacy: scaling was commented out since textures are bigger now
+@Environment(EnvType.CLIENT)
 public class NagaSegmentRenderer<T extends NagaSegment> extends TFPartRenderer<T, NagaModel<T>> {
 	private static final ResourceLocation part_TextureLoc = TwilightForestMod.getModelTexture("nagasegment.png");
 

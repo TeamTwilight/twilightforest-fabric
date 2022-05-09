@@ -2,6 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,6 +24,7 @@ import twilightforest.entity.SlideBlock;
 
 import java.util.Random;
 
+@Environment(EnvType.CLIENT)
 public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 
 	public SlideBlockRenderer(EntityRendererProvider.Context manager) {

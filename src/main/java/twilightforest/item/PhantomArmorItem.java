@@ -73,10 +73,12 @@ public class PhantomArmorItem extends ArmorItem implements EnchantableItem {
 		tooltip.add(TOOLTIP);
 	}
 
+	@Environment(EnvType.CLIENT)
 	public void initializeClient() {
 		ArmorRenderer.register(ArmorRender.INSTANCE, this);
 	}
 
+	@Environment(EnvType.CLIENT)
 	private static final class ArmorRender implements ArmorRenderer {
 		private static final ArmorRender INSTANCE = new ArmorRender();
 

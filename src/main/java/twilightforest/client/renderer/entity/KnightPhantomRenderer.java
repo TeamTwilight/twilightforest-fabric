@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
@@ -11,6 +13,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.KnightPhantomModel;
 import twilightforest.entity.boss.KnightPhantom;
 
+@Environment(EnvType.CLIENT)
 public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, KnightPhantomModel> {
 
 	private static final ResourceLocation PHANTOM_TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");

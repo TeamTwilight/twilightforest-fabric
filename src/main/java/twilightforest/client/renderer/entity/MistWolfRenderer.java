@@ -2,12 +2,15 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.HostileWolf;
 
+@Environment(EnvType.CLIENT)
 public class MistWolfRenderer extends HostileWolfRenderer {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mistwolf.png");

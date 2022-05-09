@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,6 +21,7 @@ import twilightforest.entity.boss.SnowQueenIceShield;
 
 import java.util.Random;
 
+@Environment(EnvType.CLIENT)
 public class SnowQueenIceShieldLayer<T extends SnowQueenIceShield> extends EntityRenderer<T> {
 	public SnowQueenIceShieldLayer(EntityRendererProvider.Context renderManager) {
 		super(renderManager);

@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,6 +17,7 @@ import twilightforest.potions.FrostedEffect;
 
 import java.util.Random;
 
+@Environment(EnvType.CLIENT)
 public class IceLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 	private final Random random = new Random();
 

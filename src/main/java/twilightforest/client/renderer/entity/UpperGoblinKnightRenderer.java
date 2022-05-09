@@ -1,11 +1,14 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import com.mojang.math.Vector3f;
 import twilightforest.client.model.entity.UpperGoblinKnightModel;
 import twilightforest.entity.monster.UpperGoblinKnight;
 
+@Environment(EnvType.CLIENT)
 public class UpperGoblinKnightRenderer extends TFBipedRenderer<UpperGoblinKnight, UpperGoblinKnightModel> {
 	public UpperGoblinKnightRenderer(EntityRendererProvider.Context manager, UpperGoblinKnightModel model, float shadowSize) {
 		super(manager, model, shadowSize, "doublegoblin.png");

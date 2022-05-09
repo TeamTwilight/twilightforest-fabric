@@ -1,5 +1,7 @@
 package twilightforest.client.renderer.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.SheepRenderer;
@@ -10,6 +12,7 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
+@Environment(EnvType.CLIENT)
 public class BighornRenderer extends SheepRenderer {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("bighorn.png");

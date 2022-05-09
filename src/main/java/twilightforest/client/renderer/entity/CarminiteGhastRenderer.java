@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import twilightforest.client.model.entity.TFGhastModel;
 import twilightforest.entity.monster.CarminiteGhastguard;
@@ -8,6 +10,7 @@ import twilightforest.entity.monster.CarminiteGhastguard;
 /**
  * This is a copy of the RenderGhast class that changes the model
  */
+@Environment(EnvType.CLIENT)
 public class CarminiteGhastRenderer<T extends CarminiteGhastguard, M extends TFGhastModel<T>> extends TFGhastRenderer<T, M> {
 
 	private float ghastScale = 8.0F;

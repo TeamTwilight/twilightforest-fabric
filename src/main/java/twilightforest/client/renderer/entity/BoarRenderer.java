@@ -1,5 +1,7 @@
 package twilightforest.client.renderer.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +11,7 @@ import twilightforest.client.model.entity.BoarModel;
 import twilightforest.entity.passive.Boar;
 
 //old renderer used to use PigModel, had to change it because of the texture size change
+@Environment(EnvType.CLIENT)
 public class BoarRenderer extends MobRenderer<Boar, BoarModel<Boar>> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("wildboar.png");

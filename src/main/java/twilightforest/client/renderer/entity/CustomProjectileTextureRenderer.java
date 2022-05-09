@@ -5,6 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -17,6 +19,7 @@ import twilightforest.entity.projectile.TFThrowable;
  * This renderer serves as a way to render item textures on a projectile without needing an actual item registered for it.
  * Consider using {@link net.minecraft.client.renderer.entity.ThrownItemRenderer} if your projectile is an existing item already.
  */
+@Environment(EnvType.CLIENT)
 public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable> {
 
 	private final ResourceLocation TEXTURE;
