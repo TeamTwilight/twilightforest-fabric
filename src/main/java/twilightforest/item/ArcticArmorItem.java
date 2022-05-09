@@ -1,7 +1,6 @@
 package twilightforest.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.github.fabricators_of_create.porting_lib.util.ArmorTextureItem;
 import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.ChatFormatting;
@@ -15,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,12 +25,12 @@ import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
+import twilightforest.client.renderer.TFArmorRenderer;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Consumer;
 
-public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, ArmorTextureItem {
+public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public ArcticArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
@@ -38,8 +38,7 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, Ar
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> this::initializeClient);
 	}
 
-	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, @Nullable String layer) {
+	public static String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, @Nullable String layer) {
 		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "arcticarmor_2" + (layer == null ? "_dyed" : "_overlay") + ".png";
 		} else {
@@ -139,13 +138,17 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, Ar
 		private TFArmorModel armorModel;
 
 		@Override
-		public void render(PoseStack matrices, MultiBufferSource vertexConsumers, ItemStack itemStack, LivingEntity entityLiving, EquipmentSlot armorSlot, int light, HumanoidModel<LivingEntity> _default) {
+		public void render(PoseStack matrices, MultiBufferSource vertexConsumers, ItemStack itemStack, LivingEntity entityLiving, EquipmentSlot armorSlot, int light, HumanoidModel<LivingEntity> parentModel) {
 			if(armorModel == null) {
 				EntityModelSet models = Minecraft.getInstance().getEntityModels();
 				ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.ARCTIC_ARMOR_INNER : TFModelLayers.ARCTIC_ARMOR_OUTER);
 				armorModel = new TFArmorModel(root);
 			}
-//			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, getArmorTexture(itemStack, entityLiving, armorSlot, null)); TODO: PORT
+			parentModel.copyPropertiesTo(armorModel);
+			TFArmorRenderer.setPartVisibility(armorModel, armorSlot);
+			int color = ((DyeableLeatherItem)itemStack.getItem()).getColor(itemStack);
+			TFArmorRenderer.renderArmorPart(matrices, vertexConsumers, light, itemStack, armorModel, new ResourceLocation(getArmorTexture(itemStack, entityLiving, armorSlot, null)), color);
+			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, new ResourceLocation(getArmorTexture(itemStack, entityLiving, armorSlot, "overlay")));
 		}
 	}
 }
