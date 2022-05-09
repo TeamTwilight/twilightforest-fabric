@@ -85,7 +85,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 				int[] dest = getValidOpening(rand, dir);
 
-				if (this.getGenDepth() == 4 && (parent instanceof IceTowerMainComponent) && !((IceTowerMainComponent) parent).hasBossWing) {
+				if (/*this.getGenDepth() == 4 && */(parent instanceof IceTowerMainComponent) && !((IceTowerMainComponent) parent).hasBossWing) {
 					boolean hasBoss = makeBossTowerWing(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], 15, 41, dir);
 					((IceTowerMainComponent) parent).hasBossWing = hasBoss;
 				} else {

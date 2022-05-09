@@ -70,11 +70,14 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
 
         if (finalLength < lengthMinimum) return false;
 
-        return makeSpike(level, startPos, blockState, finalLength, dY, random);
+        return makeSpike(level, startPos, blockState, finalLength, dY, random, hang);
     }
 
-    private static boolean makeSpike(WorldGenLevel level, BlockPos startPos, BlockStateProvider blockState, int length, int dY, Random random) {
+    private static boolean makeSpike(WorldGenLevel level, BlockPos startPos, BlockStateProvider blockState, int length, int dY, Random random, boolean hang) {
         int diameter = (int) (length / 4.5F); // diameter of the base
+
+        //only place spikes on solid ground, not on the tops of trees
+        if (!level.getBlockState(startPos.below()).getMaterial().isSolid() && !hang) return false;
 
         // let's see...
         for (int dx = -diameter; dx <= diameter; dx++) {
