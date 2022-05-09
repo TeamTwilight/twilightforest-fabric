@@ -67,6 +67,7 @@ dependencies {
     }
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    include(modImplementation(fabricApi.module("fabric-data-generation-api-v1", project.fabric_version))) // include datagen api
     //Dev Environment Only
     modCompileOnly ("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") {
         exclude(group: "net.fabricmc.fabric-api")
@@ -81,8 +82,8 @@ dependencies {
     implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
-    implementation(include("com.electronwill.night-config:core:3.6.5"))
-    implementation(include("com.electronwill.night-config:toml:3.6.5"))
+    implementation(include("com.electronwill.night-config:core:3.6.3"))
+    implementation(include("com.electronwill.night-config:toml:3.6.3"))
     modImplementation(include("io.github.fabricators_of_create:Porting-Lib:${project.port_lib_version}+${project.minecraft_version}.${project.port_lib_hash}"))
     //modImplementation "com.telepathicgrunt:Blame-Fabric:1.17-4.2.0-fabric"
 //    modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'
@@ -108,7 +109,7 @@ dependencies {
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}"
 
-    include 'com.github.Chocohead:Fabric-ASM:v2.3'
+    modImplementation(include('com.github.Chocohead:Fabric-ASM:v2.3'))
     modImplementation(include("com.github.AlphaMode:FabricExtendibleEnum:1.18-SNAPSHOT"))
     modImplementation(include("me.alphamode:ForgeTags:2.1"))
     modImplementation "dev.emi:trinkets:${trinkets_version}"

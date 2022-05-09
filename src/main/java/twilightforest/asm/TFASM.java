@@ -182,6 +182,7 @@ public class TFASM implements Runnable {
         // maprendercontext.js
         // ItemInHandRenderer
         String itemStackClass = resolver.mapClassName("intermediary", "net.minecraft.class_1799").replace('.', '/');
+        String itemInHandRendererClass = resolver.mapClassName("intermediary", "net.minecraft.class_759").replace('.', '/');
         ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_759"), classNode -> {
             classNode.methods.forEach(methodNode -> {
                 if (!methodNode.name.equals(FabricLoader.getInstance().isDevelopmentEnvironment() ? "renderArmWithItem" : "method_3228"))
@@ -248,7 +249,7 @@ public class TFASM implements Runnable {
                         ASM.listOf(
                                 new VarInsnNode(Opcodes.ALOAD, 4),
                                 new VarInsnNode(Opcodes.ALOAD, 0),
-                                new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/renderer/ItemInHandRenderer", FabricLoader.getInstance().isDevelopmentEnvironment() ? "minecraft" : "field_4050", "L" + minecraftClass +";"),
+                                new FieldInsnNode(Opcodes.GETFIELD, itemInHandRendererClass, FabricLoader.getInstance().isDevelopmentEnvironment() ? "minecraft" : "field_4050", "L" + minecraftClass +";"),
                                 new FieldInsnNode(Opcodes.GETFIELD, minecraftClass, FabricLoader.getInstance().isDevelopmentEnvironment() ? "level" : "field_1687", "L" + clientLevelName + ";"),
                                 new MethodInsnNode(
                                         Opcodes.INVOKESTATIC,
