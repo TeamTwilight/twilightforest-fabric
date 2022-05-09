@@ -299,6 +299,116 @@ public class TFASM implements Runnable {
                 );
             });
         });
+        // mount.js
+        // LocalPlayer
+        String inputField = FabricLoader.getInstance().isDevelopmentEnvironment() ? "input" : "field_3913";
+        String inputClass = resolver.mapClassName("intermediary", "net.minecraft.class_744").replace('.', '/');
+        String shiftKeyDownField = FabricLoader.getInstance().isDevelopmentEnvironment() ? "shiftKeyDown" : "field_3903";
+        String localPlayerClass = resolver.mapClassName("intermediary", "net.minecraft.class_746").replace('.', '/');
+        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_746"), classNode -> {
+            classNode.methods.forEach(methodNode -> {
+                if (!methodNode.name.equals(FabricLoader.getInstance().isDevelopmentEnvironment() ? "rideTick" : "method_5842"))
+                    return;
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insert(
+                        ASM.findFirstInstruction(methodNode, Opcodes.INVOKESPECIAL),
+                        ASM.listOf(
+                                new VarInsnNode(Opcodes.ALOAD, 0),
+                                new FieldInsnNode(
+                                        Opcodes.GETFIELD,
+                                        localPlayerClass,
+                                        inputField, // input
+                                        "L" + inputClass + ";"
+                                ),
+                                new VarInsnNode(Opcodes.ALOAD, 0),
+                                new FieldInsnNode(
+                                        Opcodes.GETFIELD,
+                                        localPlayerClass,
+                                        inputField, // input
+                                        "L" + inputClass + ";"
+                                ),
+                                new FieldInsnNode(
+                                        Opcodes.GETFIELD,
+                                        inputClass,
+                                        shiftKeyDownField, // shiftKeyDown
+                                        "Z"
+                                ),
+                                new VarInsnNode(Opcodes.ALOAD, 0),
+                                new MethodInsnNode(
+                                        Opcodes.INVOKEVIRTUAL,
+                                        resolver.mapClassName("intermediary", "net.minecraft.class_1657").replace('.', '/'),
+                                        FabricLoader.getInstance().isDevelopmentEnvironment() ? "wantsToStopRiding" : "method_21824", // wantsToStopRiding
+                                        "()Z",
+                                        false
+                                ),
+                                new VarInsnNode(Opcodes.ALOAD, 0),
+                                new MethodInsnNode(
+                                        Opcodes.INVOKEVIRTUAL,
+                                        entityClass,
+                                        FabricLoader.getInstance().isDevelopmentEnvironment() ? "isPassenger" : "method_5765", // isPassenger
+                                        "()Z",
+                                        false
+                                ),
+                                new MethodInsnNode(
+                                        Opcodes.INVOKESTATIC,
+                                        "twilightforest/ASMHooks",
+                                        "mountFix",
+                                        "(ZZZ)Z",
+                                        false
+                                ),
+                                new FieldInsnNode(
+                                        Opcodes.PUTFIELD,
+                                        inputClass,
+                                        shiftKeyDownField, // shiftKeyDown
+                                        "Z"
+                                )
+                        )
+                );
+            });
+        });
+        // seed.js
+        // WorldGenSettings
+        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_5285"), classNode -> {
+            classNode.methods.forEach(methodNode -> {
+                if ((!methodNode.name.equals("<init>")))
+                    return;
+                if (!methodNode.desc.contains("Optional")) // instead of checking the whole desc we just see if it contains a Optional :troll:
+                    return;
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insertBefore(
+                        ASM.findFirstInstruction(methodNode, Opcodes.PUTFIELD),
+                        ASM.listOf(
+                                new MethodInsnNode(
+                                        Opcodes.INVOKESTATIC,
+                                        "twilightforest/ASMHooks",
+                                        "seed",
+                                        "(J)J",
+                                        false
+                                )
+                        )
+                );
+            });
+        });
+        // LevelStorageSource
+        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_32"), classNode -> {
+            classNode.methods.forEach(methodNode -> {
+                if (!methodNode.name.equals(FabricLoader.getInstance().isDevelopmentEnvironment() ? "readWorldGenSettings" : "method_29010"))
+                    return;
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insertBefore(
+                        ASM.findFirstInstruction(methodNode, Opcodes.ASTORE),
+                        ASM.listOf(
+                                new MethodInsnNode(
+                                        Opcodes.INVOKESTATIC,
+                                        "twilightforest/ASMHooks",
+                                        "seed",
+                                        "(Lcom/mojang/serialization/Dynamic;)Lcom/mojang/serialization/Dynamic;",
+                                        false
+                                )
+                        )
+                );
+            });
+        });
     }
 
     public boolean equate(Object a, Object b) {
