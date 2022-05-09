@@ -2,8 +2,6 @@ package twilightforest.block;
 
 import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
@@ -13,11 +11,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.TFBlockEntities;
-import twilightforest.client.ISTER;
 import twilightforest.item.*;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class TFBlockItems {
 
@@ -79,7 +75,7 @@ public class TFBlockItems {
 		blockItem(TFBlocks.TWISTED_STONE);
 		blockItem(TFBlocks.TWISTED_STONE_PILLAR);
 		Item keepsake = makeBlockItem(new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), TFItems.defaultBuilder().fireResistant()), TFBlocks.KEEPSAKE_CASKET);
-		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> BuiltinItemRendererRegistry.INSTANCE.register(keepsake, new ISTER(TFBlockEntities.KEEPSAKE_CASKET.getId())));
+		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> ISTERItemRegistry.register(keepsake, TFBlockEntities.KEEPSAKE_CASKET.getId()));
 		blockItem(TFBlocks.CANDELABRA);
 		blockItem(TFBlocks.BOLD_STONE_PILLAR);
 		blockItem(TFBlocks.DEATH_TOME_SPAWNER);
@@ -409,7 +405,7 @@ public class TFBlockItems {
 
 	private static <B extends AbstractSkullCandleBlock> Item skullCandleItem(RegistryObject<B> floor, RegistryObject<B> wall) {
 		Item item = makeBlockItem(new SkullCandleItem(floor.get(), wall.get(), TFItems.defaultBuilder().rarity(Rarity.UNCOMMON)), floor);
-		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> BuiltinItemRendererRegistry.INSTANCE.register(item, new ISTER(TFBlockEntities.SKULL_CANDLE.getId())));
+		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> ISTERItemRegistry.register(item, TFBlockEntities.SKULL_CANDLE.getId()));
 		return item;
 	}
 
@@ -419,13 +415,13 @@ public class TFBlockItems {
 
 	private static <B extends Block, W extends Block> Item trophyBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
 		Item item = makeBlockItem(new TrophyItem(block.get(), wallblock.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity())), block);
-		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> BuiltinItemRendererRegistry.INSTANCE.register(item, new ISTER(TFBlockEntities.TROPHY.getId())));
+		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> ISTERItemRegistry.register(item, TFBlockEntities.TROPHY.getId()));
 		return item;
 	}
 
 	private static <T extends Block, E extends BlockEntity> Item wearableBlock(RegistryObject<T> block, RegistryObject<BlockEntityType<E>> tileentity) {
 		Item item = makeBlockItem(new WearableItem(block.get(), TFItems.defaultBuilder()), block);
-		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> BuiltinItemRendererRegistry.INSTANCE.register(item, new ISTER(tileentity.getId())));
+		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> ISTERItemRegistry.register(item, tileentity.getId()));
 		return item;
 	}
 
@@ -443,6 +439,6 @@ public class TFBlockItems {
 
 	private static void makeBEWLRItem(RegistryObject<? extends Block> block, ResourceLocation rl) {
 		Item item = makeBlockItem(new BlockItem(block.get(), TFItems.defaultBuilder()), block);
-		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> BuiltinItemRendererRegistry.INSTANCE.register(item, new ISTER(rl)));
+		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> ISTERItemRegistry.register(item, rl));
 	}
 }
