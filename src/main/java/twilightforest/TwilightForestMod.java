@@ -116,7 +116,7 @@ public class TwilightForestMod implements ModInitializer {
 		//TFPotions.POTIONS.register(modbus);
 		TFEntities.SPAWN_EGGS.register();
 		TFStats.STATS.register();
-		TFStructureProcessors.STRUCTURE_PROCESSORS.register(modbus);
+		TFStructureProcessors.STRUCTURE_PROCESSORS.register();
 		TwilightFeatures.TREE_DECORATORS.register();
 		TwilightFeatures.TRUNK_PLACERS.register();
 		TFBlocks.registerItemblocks();
