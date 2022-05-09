@@ -35,7 +35,7 @@ public class StructureProtectionClearPacket implements S2CPacket {
 
 				// add weather box if needed
 				if (info instanceof TwilightForestRenderInfo tfInfo) {
-					WeatherRenderer weatherRenderer = tfInfo.getWeatherRenderHandler();
+					TFWeatherRenderer weatherRenderer = tfInfo.getWeatherRenderHandler();
 
 					if (weatherRenderer instanceof TFWeatherRenderer) {
 						((TFWeatherRenderer) weatherRenderer).setProtectedBox(null);

@@ -296,7 +296,7 @@ public class TFClientEvents {
 
 		// add weather box if needed
 		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo tf) {
-			DimensionRenderingRegistry.WeatherRenderer weatherRenderer = tf.getWeatherRenderHandler();
+			TFWeatherRenderer weatherRenderer = tf.getWeatherRenderHandler();
 			if (weatherRenderer instanceof TFWeatherRenderer)
 				((TFWeatherRenderer) weatherRenderer).tick();
 		}

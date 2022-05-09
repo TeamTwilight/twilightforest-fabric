@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.DimensionSpecialEffects.SkyType;
 public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
     private DimensionRenderingRegistry.SkyRenderer skyRenderer;
-    private DimensionRenderingRegistry.WeatherRenderer weatherRenderer;
+    private TFWeatherRenderer weatherRenderer;
 
     public TwilightForestRenderInfo(float cloudHeight, boolean placebo, SkyType fogType, boolean brightenLightMap, boolean entityLightingBottomsLit) {
         super(cloudHeight, placebo, fogType, brightenLightMap, entityLightingBottomsLit);
@@ -78,9 +78,9 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
     }
 
     @Nullable
-    public DimensionRenderingRegistry.WeatherRenderer getWeatherRenderHandler() {
+    public TFWeatherRenderer getWeatherRenderHandler() {
         if (weatherRenderer == null)
-            weatherRenderer = null;//new TFWeatherRenderer();
+            weatherRenderer = new TFWeatherRenderer();
         return weatherRenderer;
     }
 }
