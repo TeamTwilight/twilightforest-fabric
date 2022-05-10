@@ -22,6 +22,7 @@ sourceSets.main.resources {
 }
 
 repositories {
+    mavenLocal()
     maven { url = "https://cursemaven.com" }
     maven { url = "https://maven.shedaniel.me/" }
     maven { url = uri("https://storage.googleapis.com/devan-maven/") }
