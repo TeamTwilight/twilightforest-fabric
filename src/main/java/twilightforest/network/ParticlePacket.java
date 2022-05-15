@@ -1,20 +1,23 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.S2CPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class ParticlePacket {
+public class ParticlePacket implements S2CPacket {
     private final List<QueuedParticle> queuedParticles = new ArrayList<>();
 
     public ParticlePacket() { }
@@ -33,6 +36,7 @@ public class ParticlePacket {
     }
 
     @SuppressWarnings("deprecation")
+    @Override
     public void encode(FriendlyByteBuf buf) {
         buf.writeInt(this.queuedParticles.size());
         for (QueuedParticle queuedParticle : this.queuedParticles) {
@@ -59,16 +63,14 @@ public class ParticlePacket {
 
     private record QueuedParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2, double y2, double z2) { }
 
-    public static class Handler {
-        public static boolean onMessage(ParticlePacket message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> {
-                ClientLevel level = Minecraft.getInstance().level;
-                if (level == null) return;
-                for (QueuedParticle queuedParticle : message.queuedParticles) {
-                    level.addParticle(queuedParticle.particleOptions, queuedParticle.b, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
-                }
-            });
-            return true;
-        }
+    @Override
+    public void handle(Minecraft client, ClientPacketListener listener, PacketSender responseSender, SimpleChannel channel) {
+        client.execute(() -> {
+            ClientLevel level = Minecraft.getInstance().level;
+            if (level == null) return;
+            for (QueuedParticle queuedParticle : queuedParticles) {
+                level.addParticle(queuedParticle.particleOptions, queuedParticle.b, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
+            }
+        });
     }
 }

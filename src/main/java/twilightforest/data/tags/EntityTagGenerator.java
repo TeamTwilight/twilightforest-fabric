@@ -2,17 +2,13 @@ package twilightforest.data.tags;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
-
-import javax.annotation.Nullable;
 
 public class EntityTagGenerator extends EntityTypeTagsProvider {
     public static final TagKey<EntityType<?>> BOSSES = create(TwilightForestMod.prefix("bosses"));
@@ -21,7 +17,7 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
     public static final TagKey<EntityType<?>> RIDES_OBSTRUCT_SNATCHING = create(TwilightForestMod.prefix("rides_obstruct_snatching"));
     public static final TagKey<EntityType<?>> DONT_KILL_BUGS = create(TwilightForestMod.prefix("dont_kill_bugs"));
 
-    public EntityTagGenerator(FabricDataGenerator dataGenerator, @Nullable ExistingFileHelper existingFileHelper) {
+    public EntityTagGenerator(FabricDataGenerator dataGenerator) {
         super(dataGenerator);
     }
 

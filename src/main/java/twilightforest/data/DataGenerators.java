@@ -19,13 +19,13 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		generator.addProvider(new PatchouliAdvancementGenerator(generator));
 		generator.addProvider(new BlockstateGenerator(generator, helper));
 		generator.addProvider(new ItemModelGenerator(generator, helper));
-		generator.addProvider(new BiomeTagGenerator(generator, helper));
+		generator.addProvider(new BiomeTagGenerator(generator));
 		BlockTagsProvider blocktags = new BlockTagGenerator(generator, helper);
 		generator.addProvider(blocktags);
-		generator.addProvider(new FluidTagGenerator(generator, helper));
-		generator.addProvider(new ItemTagGenerator(generator, blocktags, helper));
-		generator.addProvider(new EntityTagGenerator(generator, helper));
-		generator.addProvider(new CustomTagGenerator.EnchantmentTagGenerator(generator, helper));
+		generator.addProvider(new FluidTagGenerator(generator));
+		generator.addProvider(new ItemTagGenerator(generator, blocktags));
+		generator.addProvider(new EntityTagGenerator(generator));
+		generator.addProvider(new CustomTagGenerator.EnchantmentTagGenerator(generator));
 		generator.addProvider(new LootGenerator(generator));
 		generator.addProvider(new StonecuttingGenerator(generator));
 		generator.addProvider(new CraftingGenerator(generator));

@@ -1,8 +1,8 @@
 package twilightforest.data.tags;
 
+import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -11,8 +11,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import me.alphamode.forgetags.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
@@ -69,7 +67,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	private static final TagKey<Item> CHARM = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("curios", "charm"));
 	private static final TagKey<Item> HEAD = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("curios", "head"));
 
-	public ItemTagGenerator(FabricDataGenerator generator, BlockTagsProvider blockprovider, ExistingFileHelper exFileHelper) {
+	public ItemTagGenerator(FabricDataGenerator generator, BlockTagsProvider blockprovider) {
 		super(generator, blockprovider);
 	}
 
