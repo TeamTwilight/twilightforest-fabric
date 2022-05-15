@@ -28,5 +28,6 @@ public class TFPacketHandler {
 		CHANNEL.registerS2CPacket(UpdateTFMultipartPacket.class, id++);
 		CHANNEL.registerS2CPacket(SpawnFallenLeafFromPacket.class, id++);
 		CHANNEL.registerS2CPacket(MissingAdvancementToastPacket.class, id++);
+		CHANNEL.messageBuilder(ParticlePacket.class, id++).encoder(ParticlePacket::encode).decoder(ParticlePacket::new).consumer(ParticlePacket.Handler::onMessage).add();
 	}
 }
