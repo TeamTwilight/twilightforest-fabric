@@ -133,7 +133,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 		DamageSource src = new IndirectEntityDamageSource("onFire", this, getOwner()).setIsFire().setProjectile();
 
 		for (Entity nearby : this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
-			if (!nearby.fireImmune() && nearby.hurt(src, DIRECT_DAMAGE)) {
+			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(src, DIRECT_DAMAGE)) {
 				nearby.setSecondsOnFire(BURN_FACTOR);
 			}
 		}
