@@ -14,56 +14,59 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class ParticlePacket implements S2CPacket {
-    private final List<QueuedParticle> queuedParticles = new ArrayList<>();
+	private final List<QueuedParticle> queuedParticles = new ArrayList<>();
 
-    public ParticlePacket() { }
+	public ParticlePacket() {}
 
-    @SuppressWarnings("deprecation")
-    public ParticlePacket(FriendlyByteBuf buf) {
-        int size = buf.readInt();
-        for (int i = 0; i < size; i++) {
-            ParticleOptions particleOptions = this.readParticle(Objects.requireNonNull(Registry.PARTICLE_TYPE.byId(buf.readInt())), buf);
-            this.queuedParticles.add(new QueuedParticle(particleOptions, buf.readBoolean(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble()));
-        }
-    }
+	@SuppressWarnings("deprecation")
+	public ParticlePacket(FriendlyByteBuf buf) {
+		int size = buf.readInt();
+		for (int i = 0; i < size; i++) {
+			ParticleType<?> type = Registry.PARTICLE_TYPE.byId(buf.readInt());
+			if (type == null)
+				break; // Fail silently and end execution entirely. Due to Type serialization we now have completely unknown data in the pipeline without any way to safely read it all
+			this.queuedParticles.add(new QueuedParticle(readParticle(type, buf), buf.readBoolean(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble()));
+		}
+	}
 
-    private <T extends ParticleOptions> T readParticle(ParticleType<T> particleType, FriendlyByteBuf buf) {
-        return particleType.getDeserializer().fromNetwork(particleType, buf);
-    }
+	private <T extends ParticleOptions> T readParticle(ParticleType<T> particleType, FriendlyByteBuf buf) {
+		return particleType.getDeserializer().fromNetwork(particleType, buf);
+	}
 
-    @SuppressWarnings("deprecation")
-    @Override
+	@SuppressWarnings("deprecation")
+	@Override
     public void encode(FriendlyByteBuf buf) {
         buf.writeInt(this.queuedParticles.size());
         for (QueuedParticle queuedParticle : this.queuedParticles) {
             int d = Registry.PARTICLE_TYPE.getId(queuedParticle.particleOptions.getType());
             buf.writeInt(d);
-            buf.writeBoolean(queuedParticle.b);
-            buf.writeDouble(queuedParticle.x);
-            buf.writeDouble(queuedParticle.y);
-            buf.writeDouble(queuedParticle.z);
-            buf.writeDouble(queuedParticle.x2);
-            buf.writeDouble(queuedParticle.y2);
-            buf.writeDouble(queuedParticle.z2);
             queuedParticle.particleOptions.writeToNetwork(buf);
-        }
-    }
+			buf.writeBoolean(queuedParticle.b);
+			buf.writeDouble(queuedParticle.x);
+			buf.writeDouble(queuedParticle.y);
+			buf.writeDouble(queuedParticle.z);
+			buf.writeDouble(queuedParticle.x2);
+			buf.writeDouble(queuedParticle.y2);
+			buf.writeDouble(queuedParticle.z2);
+		}
+	}
 
-    public void queueParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2, double y2, double z2) {
-        this.queuedParticles.add(new QueuedParticle(particleOptions, b, x, y, z, x2, y2, z2));
-    }
+	public void queueParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2, double y2, double z2) {
+		this.queuedParticles.add(new QueuedParticle(particleOptions, b, x, y, z, x2, y2, z2));
+	}
 
-    public void queueParticle(ParticleOptions particleOptions, boolean b, Vec3 vec3, double x2, double y2, double z2) {
-        this.queuedParticles.add(new QueuedParticle(particleOptions, b, vec3.x, vec3.y, vec3.z, x2, y2, z2));
-    }
+	public void queueParticle(ParticleOptions particleOptions, boolean b, Vec3 vec3, double x2, double y2, double z2) {
+		this.queuedParticles.add(new QueuedParticle(particleOptions, b, vec3.x, vec3.y, vec3.z, x2, y2, z2));
+	}
 
-    private record QueuedParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2, double y2, double z2) { }
+	private record QueuedParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2,
+								  double y2, double z2) {
+	}
 
-    @Override
+	@Override
     public void handle(Minecraft client, ClientPacketListener listener, PacketSender responseSender, SimpleChannel channel) {
         client.execute(() -> {
             ClientLevel level = Minecraft.getInstance().level;

@@ -21,6 +21,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -86,6 +87,8 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 
 		this.fireImmune();
 		this.xpReward = 317;
+		this.moveControl = new FlyingMoveControl(this, 10, true);
+		setNoGravity(true);
 	}
 
 	@Override
@@ -198,6 +201,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 
 	@Override
 	public void tick() {
+		setDeltaMovement(getDeltaMovement().x, getDeltaMovement().y - 0.05D, getDeltaMovement().z);
 		super.tick();
 
 		for (int i = 0; i < this.iceArray.length; i++) {
@@ -407,13 +411,13 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 			double attemptZ;
 			if (getRestrictCenter() != BlockPos.ZERO) {
 				BlockPos home = getRestrictCenter();
-				attemptX = home.getX() + random.nextGaussian() * 7D;
+				attemptX = home.getX() + random.nextGaussian() * 3D;
 				attemptY = home.getY() + random.nextGaussian() * 2D;
-				attemptZ = home.getZ() + random.nextGaussian() * 7D;
+				attemptZ = home.getZ() + random.nextGaussian() * 3D;
 			} else {
-				attemptX = targetedEntity.getX() + random.nextGaussian() * 16D;
+				attemptX = targetedEntity.getX() + random.nextGaussian() * 6D;
 				attemptY = targetedEntity.getY() + random.nextGaussian() * 8D;
-				attemptZ = targetedEntity.getZ() + random.nextGaussian() * 16D;
+				attemptZ = targetedEntity.getZ() + random.nextGaussian() * 6D;
 			}
 			if (minion.randomTeleport(attemptX, attemptY, attemptZ, true)) {
 				break;

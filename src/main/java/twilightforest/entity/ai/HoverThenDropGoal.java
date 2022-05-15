@@ -98,7 +98,7 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueen> {
 			double velZ = offsetZ / distanceDesired * 0.05D;
 
 			// gravity offset
-			velY += 0.05F;
+			velY += 0.05D;
 
 			this.attacker.push(velX, velY, velZ);
 

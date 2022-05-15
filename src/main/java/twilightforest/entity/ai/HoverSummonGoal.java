@@ -63,7 +63,7 @@ public class HoverSummonGoal extends HoverBaseGoal<SnowQueen> {
 		LivingEntity target = this.attacker.getTarget();
 
 		// are we there yet?
-		if (this.attacker.distanceToSqr(hoverPosX, hoverPosY, hoverPosZ) <= 1.0F) {
+		if (this.attacker.distanceToSqr(hoverPosX, hoverPosY, hoverPosZ) <= 3.0F) {
 			this.checkAndSummon();
 
 			this.makeNewHoverSpot(target);
@@ -84,7 +84,7 @@ public class HoverSummonGoal extends HoverBaseGoal<SnowQueen> {
 		double velZ = offsetZ / distanceDesired * 0.05D;
 
 		// gravity offset
-		velY += 0.05F;
+		velY += 0.05D;
 
 		this.attacker.push(velX, velY, velZ);
 
