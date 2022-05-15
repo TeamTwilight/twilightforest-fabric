@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.util.EnchantableBounusBlock;
+import io.github.fabricators_of_create.porting_lib.enchant.EnchantmentBonusBlock;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,7 +9,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BookshelfBlock extends Block implements EnchantableBounusBlock {
+public class BookshelfBlock extends Block implements EnchantmentBonusBlock {
 
 	public BookshelfBlock(Properties properties) {
 		super(properties);

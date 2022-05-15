@@ -1,7 +1,7 @@
 package twilightforest.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.ChatFormatting;
@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class PhantomArmorItem extends ArmorItem implements EnchantableItem {
+public class PhantomArmorItem extends ArmorItem implements CustomEnchantingBehaviorItem {
 	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.phantom_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public PhantomArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
@@ -54,7 +54,7 @@ public class PhantomArmorItem extends ArmorItem implements EnchantableItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(enchantment)) && EnchantableItem.super.canApplyAtEnchantingTable(stack, enchantment);
+		return !Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(enchantment)) && CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class PhantomArmorItem extends ArmorItem implements EnchantableItem {
 				return false;
 			}
 		}
-		return EnchantableItem.super.isBookEnchantable(stack, book);
+		return CustomEnchantingBehaviorItem.super.isBookEnchantable(stack, book);
 	}
 
 	@Override

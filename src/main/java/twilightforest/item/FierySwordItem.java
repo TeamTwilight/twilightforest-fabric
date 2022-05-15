@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class FierySwordItem extends SwordItem implements EnchantableItem {
+public class FierySwordItem extends SwordItem implements CustomEnchantingBehaviorItem {
 
 	public FierySwordItem(Tier toolMaterial, Properties props) {
 		super(toolMaterial, 3, -2.4F, props);

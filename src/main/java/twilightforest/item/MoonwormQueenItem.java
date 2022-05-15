@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -35,7 +35,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class MoonwormQueenItem extends Item implements EnchantableItem {
+public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorItem {
 
 	protected static final int FIRING_TIME = 12;
 

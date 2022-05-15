@@ -2,7 +2,7 @@ package twilightforest.item;
 
 import io.github.fabricators_of_create.porting_lib.item.ReequipAnimationItem;
 import io.github.fabricators_of_create.porting_lib.util.ContinueUsingItem;
-import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import io.github.fabricators_of_create.porting_lib.util.UsingTickItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -37,7 +37,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class LifedrainScepterItem extends Item implements EnchantableItem, ReequipAnimationItem, ContinueUsingItem, UsingTickItem {
+public class LifedrainScepterItem extends Item implements CustomEnchantingBehaviorItem, ReequipAnimationItem, ContinueUsingItem, UsingTickItem {
 
 	protected LifedrainScepterItem(Properties props) {
 		super(props);

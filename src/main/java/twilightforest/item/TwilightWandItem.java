@@ -1,6 +1,7 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingTableBehaviorEnchantment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +22,7 @@ import twilightforest.entity.projectile.TwilightWandBolt;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class TwilightWandItem extends Item implements EnchantableItem {
+public class TwilightWandItem extends Item implements CustomEnchantingBehaviorItem {
 
 	protected TwilightWandItem(Properties props) {
 		super(props);

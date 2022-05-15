@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,7 +25,7 @@ import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nonnull;
 
-public class LampOfCindersItem extends Item implements EnchantableItem {
+public class LampOfCindersItem extends Item implements CustomEnchantingBehaviorItem {
 	private static final int FIRING_TIME = 12;
 
 	LampOfCindersItem(Properties props) {

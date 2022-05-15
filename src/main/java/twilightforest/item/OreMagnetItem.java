@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import io.github.fabricators_of_create.porting_lib.util.XpRepairItem;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -40,7 +40,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
-public class OreMagnetItem extends Item implements EnchantableItem, XpRepairItem {
+public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem, XpRepairItem {
 
 	private static final float WIGGLE = 10F;
 
@@ -59,7 +59,7 @@ public class OreMagnetItem extends Item implements EnchantableItem, XpRepairItem
 
 		for (Enchantment ench : enchants.keySet()) {
 			if (Objects.equals(Registry.ENCHANTMENT.getKey(ench), Registry.ENCHANTMENT.getKey(Enchantments.UNBREAKING))) {
-				return EnchantableItem.super.isBookEnchantable(stack, book);
+				return CustomEnchantingBehaviorItem.super.isBookEnchantable(stack, book);
 			}
 		}
 		return false;

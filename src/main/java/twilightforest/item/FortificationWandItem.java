@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +23,7 @@ import java.util.List;
 
 import net.minecraft.world.item.Item.Properties;
 
-public class FortificationWandItem extends Item implements EnchantableItem {
+public class FortificationWandItem extends Item implements CustomEnchantingBehaviorItem {
 
 	protected FortificationWandItem(Properties props) {
 		super(props);
