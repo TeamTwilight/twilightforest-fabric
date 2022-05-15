@@ -38,6 +38,8 @@ import twilightforest.block.TFBlocks;
 import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.CuriosCompat;
+import twilightforest.compat.TConCompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.enchantment.TFEnchantments;
@@ -122,15 +124,21 @@ public class TwilightForestMod implements ModInitializer {
 		TFBlocks.registerItemblocks();
 		TFEntities.init();
 
-		if(FabricLoader.getInstance().isModLoaded("undergarden")) {
+		if(FabricLoader.getInstance().isModLoaded(TFCompat.UNDERGARDEN_ID)) {
 //			UndergardenCompat.ENTITIES.register();
 		}
 
-		this.sendIMCs();
-		TFStructures.register();
+		if(ModList.get().isLoaded(TFCompat.TCON_ID)) {
+			TConCompat.FLUIDS.register(modbus);
+			TConCompat.MODIFIERS.register(modbus);
+		}
 
-		if(FabricLoader.getInstance().isModLoaded("curios")) {
-//			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+		modbus.addListener(this::sendIMCs);
+		modbus.addListener(CapabilityList::registerCapabilities);
+		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
+		modbus.addGenericListener(StructureFeature.class, TFStructures::register);
+		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
 		}
 		ConfiguredWorldCarvers.register();
 		TFConfiguredFeatures.init();

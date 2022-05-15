@@ -24,6 +24,7 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.CicadaBlockEntity;
 import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.compat.TFCompat;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -63,7 +64,7 @@ public class CicadaBlock extends CritterBlock {
 	public void appendHoverText(ItemStack stack, BlockGetter getter, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, getter, tooltip, flag);
 
-		if (FabricLoader.getInstance().isModLoaded("immersiveengineering")) {
+		if (FabricLoader.getInstance().isModLoaded(TFCompat.IE_ID)) {
 			tooltip.add(TOOLTIP);
 		}
 	}

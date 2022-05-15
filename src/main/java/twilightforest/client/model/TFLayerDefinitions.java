@@ -17,6 +17,7 @@ import twilightforest.client.model.item.CharmOfLife2NecklaceModel;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.client.model.tileentity.legacy.*;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
+import twilightforest.compat.TFCompat;
 
 public class TFLayerDefinitions {
 
@@ -155,7 +156,7 @@ public class TFLayerDefinitions {
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.KEEPSAKE_CASKET, CasketTileEntityRenderer::create);
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.MOONWORM, MoonwormModel::create);
 
-		if(FabricLoader.getInstance().isModLoaded("trinkets")) {
+		if(FabricLoader.getInstance().isModLoaded(TFCompat.CURIOS_ID)) {
 			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_LIFE_1, CharmOfLife1NecklaceModel::create);
 			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_LIFE_2, CharmOfLife2NecklaceModel::create);
 			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_KEEPING, CharmOfKeepingModel::create);

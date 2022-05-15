@@ -1,10 +1,6 @@
 //package twilightforest.compat;
 //
-//import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
-//import net.fabricmc.api.EnvType;
-//import net.fabricmc.api.Environment;
 //import net.minecraft.core.BlockPos;
-//import net.minecraft.core.Registry;
 //import net.minecraft.world.entity.EntityType;
 //import net.minecraft.world.entity.MobCategory;
 //import net.minecraft.world.entity.player.Player;
@@ -35,14 +31,14 @@
 //
 //public class UndergardenCompat extends TFCompat {
 //
-//	public static final LazyRegistrar<EntityType<?>> ENTITIES = LazyRegistrar.create(Registry.ENTITY_TYPE, TwilightForestMod.ID);
+//	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, TwilightForestMod.ID);
 //
 //	public static final RegistryObject<EntityType<CicadaSlingshotProjectile>> CICADA_SLINGSHOT = ENTITIES.register("cicada_slingshot", () -> EntityType.Builder.<CicadaSlingshotProjectile>of(CicadaSlingshotProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("twilightforest:cicada_slingshot"));
 //	public static final RegistryObject<EntityType<FireflySlingshotProjectile>> FIREFLY_SLINGSHOT = ENTITIES.register("firefly_slingshot", () -> EntityType.Builder.<FireflySlingshotProjectile>of(FireflySlingshotProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("twilightforest:firefly_slingshot"));
 //	public static final RegistryObject<EntityType<MoonwormSlingshotProjectile>> MOONWORM_SLINGSHOT = ENTITIES.register("moonworm_slingshot", () -> EntityType.Builder.<MoonwormSlingshotProjectile>of(MoonwormSlingshotProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("twilightforest:moonworm_slingshot"));
 //
 //	protected UndergardenCompat() {
-//		super("undergarden");
+//		super("The Undergarden");
 //	}
 //
 //	@Override
@@ -51,7 +47,7 @@
 //	}
 //
 //	@Override
-//	protected void init() {
+//	protected void init(FMLCommonSetupEvent event) {
 //		event.enqueueWork(() -> {
 //			SlingshotItem.registerAmmo(TFBlocks.CICADA.get().asItem(), new AbstractSlingshotAmmoBehavior() {
 //				@Override
@@ -87,12 +83,12 @@
 //	}
 //
 //	@Override
-//	protected void initItems() {
+//	protected void initItems(RegistryEvent.Register<Item> evt) {
 //
 //	}
 //
-//	@Environment(EnvType.CLIENT)
-//	public static void registerSlingshotRenders() {
+//	@OnlyIn(Dist.CLIENT)
+//	public static void registerSlingshotRenders(EntityRenderersEvent.RegisterRenderers event) {
 //		event.registerEntityRenderer(CICADA_SLINGSHOT.get(), ctx -> new BugProjectileRenderer(ctx, new CicadaModel(ctx.bakeLayer(TFModelLayers.CICADA)), TwilightForestMod.getModelTexture("cicada-model.png")));
 //		event.registerEntityRenderer(FIREFLY_SLINGSHOT.get(), ctx -> new BugProjectileRenderer(ctx, new FireflyModel(ctx.bakeLayer(TFModelLayers.FIREFLY)), TwilightForestMod.getModelTexture("firefly-tiny.png")));
 //		event.registerEntityRenderer(MOONWORM_SLINGSHOT.get(), ctx -> new BugProjectileRenderer(ctx, new MoonwormModel(ctx.bakeLayer(TFModelLayers.MOONWORM)), TwilightForestMod.getModelTexture("moonworm.png")));

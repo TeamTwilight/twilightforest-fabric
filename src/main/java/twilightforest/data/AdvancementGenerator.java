@@ -156,7 +156,7 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 						new TranslatableComponent("advancement.twilightforest.progress_knights"),
 						new TranslatableComponent("advancement.twilightforest.progress_knights.desc"),
 						null, FrameType.GOAL, true, true, false)
-				.addCriterion("knight", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.KNIGHT_PHANTOM.get())))
+				.addCriterion("all_knights", KillAllPhantomsTrigger.Instance.killThemAll())
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.KNIGHT_PHANTOM_TROPHY.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.Instance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.KNIGHT_PHANTOM.get())))
 				.addCriterion("previous_progression", HasAdvancementTrigger.Instance.hasAdvancement(trophy_pedestal.getId()))
@@ -209,8 +209,7 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 						TFBlocks.SNOW_QUEEN_TROPHY.get(),
 						new TranslatableComponent("advancement.twilightforest.progress_glacier"),
 						new TranslatableComponent("advancement.twilightforest.progress_glacier.desc",
-								new TranslatableComponent(TFEntities.SNOW_QUEEN.get().getDescriptionId()),
-								new TranslatableComponent("structure.aurora_palace")),
+								new TranslatableComponent(TFEntities.SNOW_QUEEN.get().getDescriptionId())),
 						null, FrameType.GOAL, true, true, false)
 				.addCriterion("queen", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.SNOW_QUEEN.get())))
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.SNOW_QUEEN_TROPHY.get()))
@@ -353,8 +352,7 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 						Items.IRON_BOOTS,
 						new TranslatableComponent("advancement.twilightforest.hill1"),
 						new TranslatableComponent("advancement.twilightforest.hill1.desc",
-								new TranslatableComponent(TFEntities.REDCAP.get().getDescriptionId()),
-								new TranslatableComponent("structure.small_hollow_hill")),
+								new TranslatableComponent(TFEntities.REDCAP.get().getDescriptionId())),
 						null, FrameType.TASK, true, true, false)
 				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_SMALL.unwrapKey().orElseThrow()))))
 				.save(consumer, "twilightforest:hill1");
@@ -363,8 +361,7 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 						TFItems.IRONWOOD_PICKAXE.get(),
 						new TranslatableComponent("advancement.twilightforest.hill2"),
 						new TranslatableComponent("advancement.twilightforest.hill2.desc",
-								new TranslatableComponent(TFEntities.REDCAP_SAPPER.get().getDescriptionId()),
-								new TranslatableComponent("structure.medium_hollow_hill")),
+								new TranslatableComponent(TFEntities.REDCAP_SAPPER.get().getDescriptionId())),
 						null, FrameType.TASK, true, true, false)
 				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP_SAPPER.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_MEDIUM.unwrapKey().orElseThrow()))))
 				.save(consumer, "twilightforest:hill2");
@@ -373,8 +370,7 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 						Items.GLOWSTONE_DUST,
 						new TranslatableComponent("advancement.twilightforest.hill3"),
 						new TranslatableComponent("advancement.twilightforest.hill3.desc",
-								new TranslatableComponent(TFEntities.WRAITH.get().getDescriptionId()),
-								new TranslatableComponent("structure.large_hollow_hill")),
+								new TranslatableComponent(TFEntities.WRAITH.get().getDescriptionId())),
 						null, FrameType.TASK, true, true, false)
 				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.WRAITH.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_LARGE.unwrapKey().orElseThrow()))))
 				.save(consumer, "twilightforest:hill3");
@@ -382,8 +378,7 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 		Advancement.Builder.advancement().parent(root).display(
 						TFBlocks.HEDGE.get(),
 						new TranslatableComponent("advancement.twilightforest.hedge"),
-						new TranslatableComponent("advancement.twilightforest.hedge.desc",
-								new TranslatableComponent("structure.hedge_maze")),
+						new TranslatableComponent("advancement.twilightforest.hedge.desc"),
 						null, FrameType.TASK, true, true, false)
 				.addCriterion("hedge_spider", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.HEDGE_SPIDER.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HEDGE_MAZE.unwrapKey().orElseThrow()))))
 				.addCriterion("swarm_spider", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.SWARM_SPIDER.get()).located(LocationPredicate.inFeature(TFConfiguredStructures.CONFIGURED_HEDGE_MAZE.unwrapKey().orElseThrow()))))

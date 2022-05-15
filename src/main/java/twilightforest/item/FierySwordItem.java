@@ -13,6 +13,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,6 +23,8 @@ import net.minecraft.world.phys.EntityHitResult;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class FierySwordItem extends SwordItem {
 
@@ -28,17 +33,34 @@ public class FierySwordItem extends SwordItem {
 	}
 
 	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return enchantment != Enchantments.FIRE_ASPECT && super.canApplyAtEnchantingTable(stack, enchantment);
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
+
+		for (Enchantment ench : enchants.keySet()) {
+			if (Objects.equals(ench.getRegistryName(), Enchantments.FIRE_ASPECT.getRegistryName())) {
+				return false;
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hurtEnemy(stack, target, attacker);
 
-		if (result && !target.level.isClientSide && !target.fireImmune()) {
+		if (result && !target.getLevel().isClientSide() && !target.fireImmune()) {
 			target.setSecondsOnFire(15);
 		} else {
 			for (int var1 = 0; var1 < 20; ++var1) {
-				double px = target.getX() + target.level.random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				double py = target.getY() + target.level.random.nextFloat() * target.getBbHeight();
-				double pz = target.getZ() + target.level.random.nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
-				target.level.addParticle(ParticleTypes.FLAME, px, py, pz, 0.02, 0.02, 0.02);
+				double px = target.getX() + target.getLevel().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
+				double py = target.getY() + target.getLevel().getRandom().nextFloat() * target.getBbHeight();
+				double pz = target.getZ() + target.getLevel().getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
+				target.getLevel().addParticle(ParticleTypes.FLAME, px, py, pz, 0.02, 0.02, 0.02);
 			}
 		}
 
@@ -47,7 +69,7 @@ public class FierySwordItem extends SwordItem {
 
 	//we have to set the entity on fire early in order to actually cook the food
 	public static InteractionResult setFireBeforeDeath(Player player, Level world, InteractionHand hand, Entity entity, @Nullable EntityHitResult hitResult) {
-		if(entity instanceof LivingEntity living && living.getMainHandItem().is(TFItems.FIERY_SWORD.get())) {
+		if(entity instanceof LivingEntity living && living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) && !event.getEntityLiving().fireImmune()) {
 			living.setSecondsOnFire(1);
 		}
 		return InteractionResult.PASS;
@@ -55,8 +77,8 @@ public class FierySwordItem extends SwordItem {
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltip, flags);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
 		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
 	}
 }

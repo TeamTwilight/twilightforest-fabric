@@ -48,7 +48,7 @@
 //public class IECompat extends TFCompat {
 //
 //    public IECompat() {
-//        super("immersiveengineering");
+//        super("Immersive Engineering");
 //    }
 //
 //    @Override

@@ -32,7 +32,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.StringUtils;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 
@@ -63,8 +62,6 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock im
 	public SkullBlock.Type getType() {
 		return type;
 	}
-
-	protected abstract Iterable<Vec3> getParticleOffsets(BlockState state, Level level, BlockPos pos);
 
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {

@@ -31,5 +31,9 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 
 		generator.addProvider(new CrumbleHornGenerator(generator, helper));
 		generator.addProvider(new TransformationPowderGenerator(generator, helper));
+
+		if(ModList.get().isLoaded(TFCompat.TCON_ID)) {
+			TConCompat.tConDatagen(evt);
+		}
 	}
 }

@@ -26,7 +26,7 @@ import twilightforest.item.TrophyItem;
 public class CuriosCompat extends TFCompat {
 
 	public CuriosCompat() {
-		super(TrinketsMain.MOD_ID);
+		super("Curios");
 	}
 
 	@Override

@@ -110,6 +110,7 @@ public final class TFSounds {
 	public static final SoundEvent HYDRA_HURT = createEvent("entity.twilightforest.hydra.hurt");
 	public static final SoundEvent HYDRA_ROAR = createEvent("entity.twilightforest.hydra.roar");
 	public static final SoundEvent HYDRA_SHOOT = createEvent("entity.twilightforest.hydra.shoot");
+	public static final SoundEvent HYDRA_SHOOT_FIRE = createEvent("entity.twilightforest.hydra.shoot_fire");
 	public static final SoundEvent HYDRA_WARN = createEvent("entity.twilightforest.hydra.warn");
 	public static final SoundEvent ICEBOMB_FIRED = createEvent("item.twilightforest.icebomb.fired");
 	public static final SoundEvent ICE_CORE_AMBIENT = createEvent("entity.twilightforest.ice.noise");
@@ -150,6 +151,7 @@ public final class TFSounds {
 	public static final SoundEvent MAZE_SLIME_HURT_SMALL = createEvent("entity.twilightforest.mazeslimesmall.hurt");
 	public static final SoundEvent MAZE_SLIME_SQUISH = createEvent("entity.twilightforest.mazeslime.squish");
 	public static final SoundEvent MAZE_SLIME_SQUISH_SMALL = createEvent("entity.twilightforest.mazeslimesmall.squish");
+	public static final SoundEvent METAL_SHIELD_SHATTERS = createEvent("item.twilightforest.knightmetal_shield.shatter");
 	public static final SoundEvent MINION_AMBIENT = createEvent("entity.twilightforest.minion.ambient");
 	public static final SoundEvent MINION_DEATH = createEvent("entity.twilightforest.minion.death");
 	public static final SoundEvent MINION_HURT = createEvent("entity.twilightforest.minion.hurt");
@@ -233,6 +235,7 @@ public final class TFSounds {
 	public static final SoundEvent TINYBIRD_CHIRP = createEvent("entity.twilightforest.tinybird.chirp");
 	public static final SoundEvent TINYBIRD_HURT = createEvent("entity.twilightforest.tinybird.hurt");
 	public static final SoundEvent TINYBIRD_SONG = createEvent("entity.twilightforest.tinybird.song");
+	public static final SoundEvent TINYBIRD_TAKEOFF = createEvent("entity.twilightforest.tinybird.takeoff");
 	public static final SoundEvent TOME_DEATH = createEvent("entity.twilightforest.tome.death");
 	public static final SoundEvent TOME_HURT = createEvent("entity.twilightforest.tome.hurt");
 	public static final SoundEvent TOME_AMBIENT = createEvent("entity.twilightforest.tome.ambient");
@@ -251,6 +254,7 @@ public final class TFSounds {
 	public static final SoundEvent WINTER_WOLF_AMBIENT = createEvent("entity.twilightforest.winterwolf.ambient");
 	public static final SoundEvent WINTER_WOLF_SHOOT = createEvent("entity.twilightforest.winterwolf.shoot");
 	public static final SoundEvent WINTER_WOLF_TARGET = createEvent("entity.twilightforest.winterwolf.target");
+	public static final SoundEvent WOOD_SHIELD_SHATTERS = createEvent("item.twilightforest.shield.shatter");
 	public static final SoundEvent WRAITH_AMBIENT = createEvent("entity.twilightforest.wraith.ambient");
 	public static final SoundEvent WRAITH_DEATH = createEvent("entity.twilightforest.wraith.death");
 	public static final SoundEvent WRAITH_HURT = createEvent("entity.twilightforest.wraith.hurt");

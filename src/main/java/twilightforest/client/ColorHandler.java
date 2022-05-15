@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.Blocks;
 import twilightforest.block.AuroraBrickBlock;
 import twilightforest.block.HollowLogClimbable;
 import twilightforest.block.TFBlocks;
+import twilightforest.compat.IECompat;
+import twilightforest.compat.TFCompat;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.item.ArcticArmorItem;
 import twilightforest.item.TFItems;
@@ -19,7 +21,7 @@ import twilightforest.item.TFItems;
 import java.awt.*;
 
 public final class ColorHandler {
-	
+
 	public static void registerBlockColors() {
 
 		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.AURORA_BLOCK.get());
@@ -392,7 +394,7 @@ public final class ColorHandler {
 				tintIndex > 0 ? -1 : PotionUtils.getColor(stack),
 				TFItems.BRITTLE_FLASK.get(), TFItems.GREATER_FLASK.get());
 
-		if (FabricLoader.getInstance().isModLoaded("immersiveengineering")) {
+		if (FabricLoader.getInstance().isModLoaded(TFCompat.IE_ID)) {
 //			IECompat.registerShaderColors();
 		}
 	}

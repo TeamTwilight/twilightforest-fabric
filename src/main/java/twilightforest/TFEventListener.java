@@ -49,6 +49,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -70,6 +71,7 @@ import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
+import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.CharmEffect;
@@ -168,24 +170,17 @@ public class TFEventListener {
 		}
 	}
 
-	public static void onCrafting(Player player, ItemStack itemStack, Container container) {
-		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
-		//TODO: Can this be an Ingredient?
-		if (itemStack.getItem() == Item.byBlock(Blocks.OAK_PLANKS) && itemStack.getCount() == 64 && doesCraftMatrixHaveGiantLog(container)) {
-			player.getInventory().placeItemBackInInventory(new ItemStack(Blocks.OAK_PLANKS, 64));
-			player.getInventory().placeItemBackInInventory(new ItemStack(Blocks.OAK_PLANKS, 64));
-			player.getInventory().placeItemBackInInventory(new ItemStack(Blocks.OAK_PLANKS, 64));
-		}
-	}
+	@SubscribeEvent
+	public static void onCrafting(PlayerEvent.ItemCraftedEvent event) {
+		ItemStack itemStack = event.getCrafting();
 
-	private static boolean doesCraftMatrixHaveGiantLog(Container inv) {
-		Item giantLogItem = Item.byBlock(TFBlocks.GIANT_LOG.get());
-		for (int i = 0; i < inv.getContainerSize(); i++) {
-			if (inv.getItem(i).getItem() == giantLogItem) {
-				return true;
-			}
+		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
+		if (itemStack.is(Items.OAK_PLANKS) && itemStack.getCount() == 64 && event.getInventory().countItem(TFBlocks.GIANT_LOG.get().asItem()) > 0) {
+			Player player = event.getPlayer();
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
+			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
 		}
-		return false;
 	}
 
 	/**
@@ -352,7 +347,7 @@ public class TFEventListener {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if(FabricLoader.getInstance().isModLoaded("curios")) {
+		if(FabricLoader.getInstance().isModLoaded(TFCompat.CURIOS_ID)) {
 			ItemStack stack = TrinketsApi.TRINKET_COMPONENT.maybeGet(player).get().getEquipped(item).get(0).getB();
 
 			if (!stack.isEmpty()) {
@@ -598,14 +593,23 @@ public class TFEventListener {
 	}
 
 	public static void onPlayerRespawn(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
-//		if (event.isEndConquered()) {
-//			updateCapabilities((ServerPlayer) event.getPlayer(), event.getPlayer());
+//		if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
+		if (event.isEndConquered()) {
+//			updateCapabilities(serverPlayer, serverPlayer);
 //		} else {
 			if(casketExpiration) {
-				newPlayer.sendMessage(new TranslatableComponent("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED), newPlayer.getUUID());
+				serverPlayer.sendMessage(new TranslatableComponent("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED), serverPlayer.getUUID());
 			}
-			returnStoredItems(newPlayer);
-//		}
+			returnStoredItems(serverPlayer);
+		}
+
+		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && serverPlayer.getRespawnPosition() == null) {
+			CompoundTag tagCompound = serverPlayer.getPersistentData();
+			CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
+			playerData.putBoolean(NBT_TAG_TWILIGHT, false); // set to false so that the method works
+			tagCompound.put(Player.PERSISTED_NBT_TAG, playerData); // commit
+			banishNewbieToTwilightZone(serverPlayer);
+		}
 	}
 
 	/**
@@ -767,8 +771,13 @@ public class TFEventListener {
 							return false;
 
 						// send protection packet
-						BoundingBox bb = structure.getBoundingBox();//new MutableBoundingBox(pos, pos.add(16, 16, 16)); // todo 1.15 get from structure
-						sendAreaProtectionPacket(world, pos, bb);
+						List<BoundingBox> boxes = new ArrayList<>();
+						structure.getPieces().forEach(piece -> {
+							if (piece.getBoundingBox().isInside(pos))
+								boxes.add(piece.getBoundingBox());
+						});
+
+						sendAreaProtectionPacket(world, pos, boxes);
 
 						// send a hint monster?
 						nearbyFeature.trySpawnHintMonster(world, player, pos);
@@ -781,7 +790,7 @@ public class TFEventListener {
 		return false;
 	}
 
-	private static void sendAreaProtectionPacket(Level world, BlockPos pos, BoundingBox sbb) {
+	private static void sendAreaProtectionPacket(Level world, BlockPos pos, List<BoundingBox> sbb) {
 		TFPacketHandler.CHANNEL.sendToClientsAround(new AreaProtectionPacket(sbb, pos), (ServerLevel) world, pos, 64);
 	}
 

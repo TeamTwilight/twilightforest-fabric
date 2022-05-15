@@ -37,7 +37,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.legacy.*;
 import twilightforest.compat.CuriosCompat;
-import twilightforest.entity.TFEntities;
+import twilightforest.compat.TFCompat;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
 
@@ -119,8 +119,8 @@ public class TFClientSetup implements ClientModInitializer {
             registerWoodType(TFBlocks.MINING);
             registerWoodType(TFBlocks.SORTING);
 
-			if(FabricLoader.getInstance().isModLoaded("trinkets")) {
-				ClientLifecycleEvents.CLIENT_STARTED.register(CuriosCompat::registerCurioRenderers);
+			if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+				CuriosCompat.registerCurioRenderers();
 			}
 //        });
 
