@@ -7,11 +7,11 @@
     }
   ],
   "fluid": {
-    "tag": "forge:molten_knightmetal",
+    "tag": "c:molten_knightmetal",
     "amount": 810
   },
   "result": {
-    "tag": "forge:storage_blocks/knightmetal"
+    "tag": "c:storage_blocks/knightmetal"
   },
   "cooling_time": 171
 }

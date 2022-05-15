@@ -170,16 +170,12 @@ public class TFEventListener {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onCrafting(PlayerEvent.ItemCraftedEvent event) {
-		ItemStack itemStack = event.getCrafting();
-
+	public static void onCrafting(Player player, ItemStack itemStack, Container inventory) {
 		// if we've crafted 64 planks from a giant log, sneak 192 more planks into the player's inventory or drop them nearby
-		if (itemStack.is(Items.OAK_PLANKS) && itemStack.getCount() == 64 && event.getInventory().countItem(TFBlocks.GIANT_LOG.get().asItem()) > 0) {
-			Player player = event.getPlayer();
-			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
-			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
-			ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(Items.OAK_PLANKS, 64));
+		if (itemStack.is(Items.OAK_PLANKS) && itemStack.getCount() == 64 && inventory.countItem(TFBlocks.GIANT_LOG.get().asItem()) > 0) {
+			player.getInventory().placeItemBackInInventory(new ItemStack(Items.OAK_PLANKS, 64));
+			player.getInventory().placeItemBackInInventory(new ItemStack(Items.OAK_PLANKS, 64));
+			player.getInventory().placeItemBackInInventory(new ItemStack(Items.OAK_PLANKS, 64));
 		}
 	}
 
@@ -594,21 +590,21 @@ public class TFEventListener {
 
 	public static void onPlayerRespawn(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
 //		if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
-		if (event.isEndConquered()) {
+//		if (event.isEndConquered()) {
 //			updateCapabilities(serverPlayer, serverPlayer);
 //		} else {
 			if(casketExpiration) {
-				serverPlayer.sendMessage(new TranslatableComponent("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED), serverPlayer.getUUID());
+				newPlayer.sendMessage(new TranslatableComponent("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED), newPlayer.getUUID());
 			}
-			returnStoredItems(serverPlayer);
-		}
+			returnStoredItems(newPlayer);
+//		}
 
-		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && serverPlayer.getRespawnPosition() == null) {
-			CompoundTag tagCompound = serverPlayer.getPersistentData();
-			CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
+		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && newPlayer.getRespawnPosition() == null) {
+			CompoundTag tagCompound = ((EntityExtensions)newPlayer).getExtraCustomData();
+			CompoundTag playerData = tagCompound.getCompound("PlayerPersisted");
 			playerData.putBoolean(NBT_TAG_TWILIGHT, false); // set to false so that the method works
-			tagCompound.put(Player.PERSISTED_NBT_TAG, playerData); // commit
-			banishNewbieToTwilightZone(serverPlayer);
+			tagCompound.put("PlayerPersisted", playerData); // commit
+			banishNewbieToTwilightZone(newPlayer);
 		}
 	}
 

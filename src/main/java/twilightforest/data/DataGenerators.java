@@ -2,8 +2,10 @@ package twilightforest.data;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import twilightforest.compat.TFCompat;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
 import twilightforest.data.tags.*;
@@ -32,8 +34,8 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		generator.addProvider(new CrumbleHornGenerator(generator, helper));
 		generator.addProvider(new TransformationPowderGenerator(generator, helper));
 
-		if(ModList.get().isLoaded(TFCompat.TCON_ID)) {
-			TConCompat.tConDatagen(evt);
+		if(FabricLoader.getInstance().isModLoaded(TFCompat.TCON_ID)) {
+//			TConCompat.tConDatagen(evt);
 		}
 	}
 }

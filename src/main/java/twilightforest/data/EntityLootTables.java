@@ -1,6 +1,6 @@
 package twilightforest.data;
 
-import io.github.fabricators_of_create.porting_lib.util.NBTSerializable;
+import io.github.fabricators_of_create.porting_lib.util.INBTSerializable;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -611,14 +611,14 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 											ListTag items = new ListTag();
 
 											// Do NOT overstuff the bag.
-											items.add(((NBTSerializable) (Object) new ItemStack(TFBlocks.QUEST_RAM_TROPHY.get())).serializeNBT());
-											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.COAL_BLOCK)).serializeNBT());
-											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.IRON_BLOCK)).serializeNBT());
-											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.COPPER_BLOCK)).serializeNBT());
-											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.LAPIS_BLOCK)).serializeNBT());
-											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.GOLD_BLOCK)).serializeNBT());
-											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.DIAMOND_BLOCK)).serializeNBT());
-											items.add(((NBTSerializable) (Object) new ItemStack(Blocks.EMERALD_BLOCK)).serializeNBT());
+											items.add(((INBTSerializable) (Object) new ItemStack(TFBlocks.QUEST_RAM_TROPHY.get())).serializeNBT());
+											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.COAL_BLOCK)).serializeNBT());
+											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.IRON_BLOCK)).serializeNBT());
+											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.COPPER_BLOCK)).serializeNBT());
+											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.LAPIS_BLOCK)).serializeNBT());
+											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.GOLD_BLOCK)).serializeNBT());
+											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.DIAMOND_BLOCK)).serializeNBT());
+											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.EMERALD_BLOCK)).serializeNBT());
 
 											nbt.put("Items", items);
 										})))))

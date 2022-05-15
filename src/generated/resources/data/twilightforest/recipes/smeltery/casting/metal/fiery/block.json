@@ -7,11 +7,11 @@
     }
   ],
   "fluid": {
-    "tag": "forge:molten_fiery",
+    "tag": "c:molten_fiery",
     "amount": 810
   },
   "result": {
-    "tag": "forge:storage_blocks/fiery"
+    "tag": "c:storage_blocks/fiery"
   },
   "cooling_time": 171
 }

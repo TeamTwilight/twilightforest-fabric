@@ -7,7 +7,7 @@
     }
   ],
   "ingredient": {
-    "tag": "forge:storage_blocks/knightmetal"
+    "tag": "c:storage_blocks/knightmetal"
   },
   "result": {
     "fluid": "twilightforest:molten_knightmetal",

@@ -3,7 +3,7 @@
   "conditions": [
     {
       "value": {
-        "tag": "forge:coins/fiery",
+        "tag": "c:coins/fiery",
         "type": "forge:tag_empty"
       },
       "type": "forge:not"
@@ -14,7 +14,7 @@
     }
   ],
   "ingredient": {
-    "tag": "forge:coins/fiery"
+    "tag": "c:coins/fiery"
   },
   "result": {
     "fluid": "twilightforest:molten_fiery",

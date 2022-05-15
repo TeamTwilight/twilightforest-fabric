@@ -1,5 +1,6 @@
 package twilightforest.client;
 
+import io.github.fabricators_of_create.porting_lib.event.client.FOVModifierCallback;
 import io.github.fabricators_of_create.porting_lib.event.client.ModelsBakedCallback;
 import io.github.fabricators_of_create.porting_lib.event.client.RenderTickStartCallback;
 import io.github.fabricators_of_create.porting_lib.event.client.TextureStitchCallback;
@@ -12,10 +13,12 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -25,6 +28,7 @@ import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -42,7 +46,6 @@ import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
-import twilightforest.compat.IECompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.*;
@@ -65,6 +68,7 @@ public class TFClientEvents {
 		RenderTickStartCallback.EVENT.register(TFClientEvents::renderTick);
 		ClientTickEvents.END_CLIENT_TICK.register(TFClientEvents::clientTick);
 		ItemTooltipCallback.EVENT.register(TFClientEvents::tooltipEvent);
+		FOVModifierCallback.PARTIAL_FOV.register(TFClientEvents::FOVUpdate);
 	}
 
 	public static class ModBusEvents {
@@ -348,15 +352,15 @@ public class TFClientEvents {
 	/**
 	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
 	 */
-	@SubscribeEvent
-	public static void FOVUpdate(EntityViewRenderEvent.FieldOfView event) {
-		if (event.getCamera().getEntity() instanceof LivingEntity living && living.isUsingItem()) {
+	public static double FOVUpdate(GameRenderer renderer, Camera camera, double partialTick, double fov) {
+		if (camera.getEntity() instanceof LivingEntity living && living.isUsingItem()) {
 			Item useItem = living.getUseItem().getItem();
 			if (useItem instanceof TripleBowItem || useItem instanceof EnderBowItem || useItem instanceof IceBowItem || useItem instanceof SeekerBowItem) {
-				float f = (living.getTicksUsingItem() + (float)event.getPartialTicks()) / 20F;
+				float f = (living.getTicksUsingItem() + (float)partialTick) / 20F;
 				f = f > 1.0F ? 1.0F : f * f;
-				event.setFOV(event.getFOV() * (1.0F - f * 0.15F));
+				return fov * (1.0F - f * 0.15F);
 			}
 		}
+		return fov;
 	}
 }

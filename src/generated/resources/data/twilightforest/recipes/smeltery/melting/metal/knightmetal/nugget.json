@@ -7,7 +7,7 @@
     }
   ],
   "ingredient": {
-    "tag": "forge:nuggets/knightmetal"
+    "tag": "c:nuggets/knightmetal"
   },
   "result": {
     "fluid": "twilightforest:molten_knightmetal",

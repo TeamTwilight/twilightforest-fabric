@@ -3,7 +3,7 @@
   "conditions": [
     {
       "value": {
-        "tag": "forge:rods/knightmetal",
+        "tag": "c:rods/knightmetal",
         "type": "forge:tag_empty"
       },
       "type": "forge:not"
@@ -14,7 +14,7 @@
     }
   ],
   "ingredient": {
-    "tag": "forge:rods/knightmetal"
+    "tag": "c:rods/knightmetal"
   },
   "result": {
     "fluid": "twilightforest:molten_knightmetal",

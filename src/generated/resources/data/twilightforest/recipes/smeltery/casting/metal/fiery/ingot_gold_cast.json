@@ -10,11 +10,11 @@
     "tag": "tconstruct:casts/multi_use/ingot"
   },
   "fluid": {
-    "tag": "forge:molten_fiery",
+    "tag": "c:molten_fiery",
     "amount": 90
   },
   "result": {
-    "tag": "forge:ingots/fiery"
+    "tag": "c:ingots/fiery"
   },
   "cooling_time": 57
 }

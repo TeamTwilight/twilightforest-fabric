@@ -66,7 +66,7 @@ public class TFStructureStart<C extends FeatureConfiguration> extends StructureS
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureFeatureManager structureManager, MobCategory classification, BlockPos pos) {
 		for (ConfiguredStructureFeature<?, ?> structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).stream()
 				.filter(feature -> {
-					ResourceLocation location = feature.feature.getRegistryName();
+					ResourceLocation location = Registry.STRUCTURE_FEATURE.getKey(feature.feature);
 					return location != null && TwilightForestMod.ID.equals(location.getNamespace());
 				}).toList()) {
 			StructureStart start = structureManager.getStructureAt(pos, structure);

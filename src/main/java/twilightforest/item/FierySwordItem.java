@@ -1,6 +1,8 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.util.EnchantableItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -26,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class FierySwordItem extends SwordItem {
+public class FierySwordItem extends SwordItem implements EnchantableItem {
 
 	public FierySwordItem(Tier toolMaterial, Properties props) {
 		super(toolMaterial, 3, -2.4F, props);
@@ -34,7 +36,7 @@ public class FierySwordItem extends SwordItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return enchantment != Enchantments.FIRE_ASPECT && super.canApplyAtEnchantingTable(stack, enchantment);
+		return enchantment != Enchantments.FIRE_ASPECT;
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class FierySwordItem extends SwordItem {
 		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
 
 		for (Enchantment ench : enchants.keySet()) {
-			if (Objects.equals(ench.getRegistryName(), Enchantments.FIRE_ASPECT.getRegistryName())) {
+			if (Objects.equals(Registry.ENCHANTMENT.getKey(ench), Registry.ENCHANTMENT.getKey(Enchantments.FIRE_ASPECT))) {
 				return false;
 			}
 		}
@@ -69,7 +71,7 @@ public class FierySwordItem extends SwordItem {
 
 	//we have to set the entity on fire early in order to actually cook the food
 	public static InteractionResult setFireBeforeDeath(Player player, Level world, InteractionHand hand, Entity entity, @Nullable EntityHitResult hitResult) {
-		if(entity instanceof LivingEntity living && living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) && !event.getEntityLiving().fireImmune()) {
+		if(entity instanceof LivingEntity living && living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) && !living.fireImmune()) {
 			living.setSecondsOnFire(1);
 		}
 		return InteractionResult.PASS;

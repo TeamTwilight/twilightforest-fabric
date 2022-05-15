@@ -3,7 +3,7 @@
   "conditions": [
     {
       "value": {
-        "tag": "forge:gears/knightmetal",
+        "tag": "c:gears/knightmetal",
         "type": "forge:tag_empty"
       },
       "type": "forge:not"
@@ -14,7 +14,7 @@
     }
   ],
   "ingredient": {
-    "tag": "forge:gears/knightmetal"
+    "tag": "c:gears/knightmetal"
   },
   "result": {
     "fluid": "twilightforest:molten_knightmetal",

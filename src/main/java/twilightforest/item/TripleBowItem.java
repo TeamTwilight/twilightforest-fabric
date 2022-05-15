@@ -36,7 +36,7 @@ public class TripleBowItem extends BowItem {
 
 				float f = getPowerForTime(i);
 				if (f >= 0.1D) {
-					boolean flag1 = player.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem arrowItem && arrowItem.isInfinite(itemstack, stack, player));
+					boolean flag1 = player.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem arrowItem && isInfinite(itemstack, stack, player));
 					if (!worldIn.isClientSide) {
 						ArrowItem arrowItem = itemstack.getItem() instanceof ArrowItem arrow ? arrow : (ArrowItem)Items.ARROW;
 						for (int j = -1; j < 2; j++) {

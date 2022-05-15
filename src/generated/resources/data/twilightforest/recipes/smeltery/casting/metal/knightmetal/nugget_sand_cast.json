@@ -11,11 +11,11 @@
   },
   "cast_consumed": true,
   "fluid": {
-    "tag": "forge:molten_knightmetal",
+    "tag": "c:molten_knightmetal",
     "amount": 10
   },
   "result": {
-    "tag": "forge:nuggets/knightmetal"
+    "tag": "c:nuggets/knightmetal"
   },
   "cooling_time": 19
 }

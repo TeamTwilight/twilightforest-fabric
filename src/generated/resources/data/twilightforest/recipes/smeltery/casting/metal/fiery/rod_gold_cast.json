@@ -3,7 +3,7 @@
   "conditions": [
     {
       "value": {
-        "tag": "forge:rods/fiery",
+        "tag": "c:rods/fiery",
         "type": "forge:tag_empty"
       },
       "type": "forge:not"
@@ -17,11 +17,11 @@
     "tag": "tconstruct:casts/multi_use/rod"
   },
   "fluid": {
-    "tag": "forge:molten_fiery",
+    "tag": "c:molten_fiery",
     "amount": 45
   },
   "result": {
-    "tag": "forge:rods/fiery"
+    "tag": "c:rods/fiery"
   },
   "cooling_time": 40
 }

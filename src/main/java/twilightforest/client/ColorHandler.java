@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.Blocks;
 import twilightforest.block.AuroraBrickBlock;
 import twilightforest.block.HollowLogClimbable;
 import twilightforest.block.TFBlocks;
-import twilightforest.compat.IECompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.item.ArcticArmorItem;

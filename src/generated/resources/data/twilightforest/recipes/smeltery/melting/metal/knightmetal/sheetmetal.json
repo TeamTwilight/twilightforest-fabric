@@ -3,7 +3,7 @@
   "conditions": [
     {
       "value": {
-        "tag": "forge:sheetmetals/knightmetal",
+        "tag": "c:sheetmetals/knightmetal",
         "type": "forge:tag_empty"
       },
       "type": "forge:not"
@@ -14,7 +14,7 @@
     }
   ],
   "ingredient": {
-    "tag": "forge:sheetmetals/knightmetal"
+    "tag": "c:sheetmetals/knightmetal"
   },
   "result": {
     "fluid": "twilightforest:molten_knightmetal",

@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import io.github.fabricators_of_create.porting_lib.entity.ExtraSpawnDataEntity;
+import io.github.fabricators_of_create.porting_lib.util.EntityDestroyBlock;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -9,14 +10,19 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -201,8 +207,8 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 			Block block = state.getBlock();
 
 			// TODO: The "explosion" parameter can't actually be null
-			if (!state.isAir() && block.getExplosionResistance(state, level, pos, null) < (15F + (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.BLOCK_STRENGTH.get(), stack) * 20F))
-					&& state.getDestroySpeed(level, pos) >= 0 && block.canEntityDestroy(state, level, pos, this) && !(block instanceof MazestoneBlock)) {
+			if (!state.isAir() && block.getExplosionResistance() < (15F + (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.BLOCK_STRENGTH.get(), stack) * 20F))
+					&& state.getDestroySpeed(level, pos) >= 0 && canDestroy(state, level, pos, this) && !(block instanceof MazestoneBlock)) {
 
 				if (getOwner() instanceof Player player) {
 					if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(level, player, pos, state, null)) {
@@ -216,6 +222,21 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 				}
 			}
 		}
+	}
+
+	public boolean canDestroy(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
+		if (state.getBlock() instanceof EntityDestroyBlock destroyBlock)
+			return destroyBlock.canEntityDestroy(state, level, pos, entity);
+		if (entity instanceof EnderDragon) {
+			return !state.getBlock().defaultBlockState().is(BlockTags.DRAGON_IMMUNE);
+		}
+		else if ((entity instanceof WitherBoss) ||
+				(entity instanceof WitherSkull))
+		{
+			return state.isAir() || WitherBoss.canDestroy(state);
+		}
+
+		return true;
 	}
 
 	@Override

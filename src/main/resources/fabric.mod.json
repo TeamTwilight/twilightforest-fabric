@@ -32,6 +32,9 @@
     ],
     "cardinal-components": [
       "twilightforest.capabilities.CapabilityList"
+    ],
+    "rei": [
+      "twilightforest.compat.REI"
     ]
   },
   "mixins": [

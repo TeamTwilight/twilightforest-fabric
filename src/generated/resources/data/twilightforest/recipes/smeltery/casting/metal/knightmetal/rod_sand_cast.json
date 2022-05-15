@@ -3,7 +3,7 @@
   "conditions": [
     {
       "value": {
-        "tag": "forge:rods/knightmetal",
+        "tag": "c:rods/knightmetal",
         "type": "forge:tag_empty"
       },
       "type": "forge:not"
@@ -18,11 +18,11 @@
   },
   "cast_consumed": true,
   "fluid": {
-    "tag": "forge:molten_knightmetal",
+    "tag": "c:molten_knightmetal",
     "amount": 45
   },
   "result": {
-    "tag": "forge:rods/knightmetal"
+    "tag": "c:rods/knightmetal"
   },
   "cooling_time": 40
 }

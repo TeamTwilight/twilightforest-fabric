@@ -1,13 +1,13 @@
 {
   "type": "tconstruct:material",
-  "conditions": [
-    {
-      "modid": "tconstruct",
-      "type": "forge:mod_loaded"
-    }
-  ],
+  "fabric:load_conditions": [{
+    "condition": "fabric:all_mods_loaded",
+    "values": [
+      "tconstruct"
+    ]
+  }],
   "ingredient": {
-    "tag": "forge:ingots/knightmetal"
+    "tag": "c:ingots/knightmetal"
   },
   "value": 1,
   "needed": 1,

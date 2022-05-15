@@ -20,9 +20,9 @@ public abstract class TFCompat {
 
     static {
         classes.put(CURIOS_ID, CuriosCompat.class);
-        classes.put(IE_ID, IECompat.class);
-        classes.put(TCON_ID, TConCompat.class);
-        classes.put(UNDERGARDEN_ID, UndergardenCompat.class);
+//        classes.put(IE_ID, IECompat.class);
+//        classes.put(TCON_ID, TConCompat.class);
+//        classes.put(UNDERGARDEN_ID, UndergardenCompat.class);
     }
 
     protected TFCompat(String modName) {

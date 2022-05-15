@@ -7,7 +7,7 @@
     }
   ],
   "ingredient": {
-    "tag": "forge:storage_blocks/fiery"
+    "tag": "c:storage_blocks/fiery"
   },
   "result": {
     "fluid": "twilightforest:molten_fiery",

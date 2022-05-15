@@ -3,7 +3,7 @@
   "conditions": [
     {
       "value": {
-        "tag": "forge:gears/fiery",
+        "tag": "c:gears/fiery",
         "type": "forge:tag_empty"
       },
       "type": "forge:not"
@@ -18,11 +18,11 @@
   },
   "cast_consumed": true,
   "fluid": {
-    "tag": "forge:molten_fiery",
+    "tag": "c:molten_fiery",
     "amount": 360
   },
   "result": {
-    "tag": "forge:gears/fiery"
+    "tag": "c:gears/fiery"
   },
   "cooling_time": 114
 }
