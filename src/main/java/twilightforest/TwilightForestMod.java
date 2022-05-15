@@ -1,17 +1,16 @@
 package twilightforest;
 
+import com.chocohead.mm.api.ClassTinkerers;
 import com.google.common.collect.Maps;
 import com.mojang.brigadier.CommandDispatcher;
 import io.github.fabricators_of_create.porting_lib.event.common.AddPackFindersCallback;
 import io.github.fabricators_of_create.porting_lib.loot.LootModifierManager;
 import io.github.fabricators_of_create.porting_lib.util.PathResourcePack;
-import net.alphamode.enums.EnumUtil;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -81,7 +80,7 @@ public class TwilightForestMod implements ModInitializer {
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	private static final Rarity rarity = EnumUtil.createRarity("TWILIGHT", ChatFormatting.DARK_GREEN);
+	private static final Rarity rarity = ClassTinkerers.getEnum(Rarity.class, "TWILIGHT");
 
 	@Override
 	public void onInitialize() {

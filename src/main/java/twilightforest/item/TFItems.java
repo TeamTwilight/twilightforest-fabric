@@ -1,8 +1,8 @@
 package twilightforest.item;
 
+import com.chocohead.mm.api.ClassTinkerers;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
-import net.alphamode.enums.EnumUtil;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -175,15 +175,15 @@ public class TFItems {
 	public static final RegistryObject<Item> MUSIC_DISC_THREAD = ITEMS.register("music_disc_thread", () -> new RecordItem(15, TFSounds.MUSIC_DISC_THREAD, unstackable().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> MUSIC_DISC_MOTION = ITEMS.register("music_disc_motion", () -> new RecordItem(15, TFSounds.MUSIC_DISC_MOTION, unstackable().rarity(Rarity.RARE)));
 
-	public static final RegistryObject<Item> NAGA_BANNER_PATTERN = ITEMS.register("naga_banner_pattern", () -> new BannerPatternItem(EnumUtil.createBannerPattern("TWILIGHTFOREST_NAGA", "twilightforest_naga", "tfn", true), unstackable().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> LICH_BANNER_PATTERN = ITEMS.register("lich_banner_pattern", () -> new BannerPatternItem(EnumUtil.createBannerPattern("TWILIGHTFOREST_LICH", "twilightforest_lich", "tfl", true), unstackable().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> MINOSHROOM_BANNER_PATTERN = ITEMS.register("minoshroom_banner_pattern", () -> new BannerPatternItem(EnumUtil.createBannerPattern("TWILIGHTFOREST_MINOSHROOM", "twilightforest_minoshroom", "tfm", true), unstackable().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> HYDRA_BANNER_PATTERN = ITEMS.register("hydra_banner_pattern", () -> new BannerPatternItem(EnumUtil.createBannerPattern("TWILIGHTFOREST_HYDRA", "twilightforest_hydra", "tfh", true), unstackable().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> KNIGHT_PHANTOM_BANNER_PATTERN = ITEMS.register("knight_phantom_banner_pattern", () -> new BannerPatternItem(EnumUtil.createBannerPattern("TWILIGHTFOREST_PHANTOMS", "twilightforest_phantoms", "tfp", true), unstackable().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> UR_GHAST_BANNER_PATTERN = ITEMS.register("ur_ghast_banner_pattern", () -> new BannerPatternItem(EnumUtil.createBannerPattern("TWILIGHTFOREST_UR_GHAST", "twilightforest_ur_ghast", "tfg", true), unstackable().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> ALPHA_YETI_BANNER_PATTERN = ITEMS.register("alpha_yeti_banner_pattern", () -> new BannerPatternItem(EnumUtil.createBannerPattern("TWILIGHTFOREST_ALPHA_YETI", "twilightforest_alpha_yeti", "tfy", true), unstackable().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> SNOW_QUEEN_BANNER_PATTERN = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(EnumUtil.createBannerPattern("TWILIGHTFOREST_SNOW_QUEEN", "twilightforest_snow_queen", "tfq", true), unstackable().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> QUEST_RAM_BANNER_PATTERN = ITEMS.register("quest_ram_banner_pattern", () -> new BannerPatternItem(EnumUtil.createBannerPattern("TWILIGHTFOREST_QUEST_RAM", "twilightforest_quest_ram", "tfr", true), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> NAGA_BANNER_PATTERN = ITEMS.register("naga_banner_pattern", () -> new BannerPatternItem(ClassTinkerers.getEnum(BannerPattern.class, "TWILIGHTFOREST_NAGA"), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> LICH_BANNER_PATTERN = ITEMS.register("lich_banner_pattern", () -> new BannerPatternItem(ClassTinkerers.getEnum(BannerPattern.class, "TWILIGHTFOREST_LICH"), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> MINOSHROOM_BANNER_PATTERN = ITEMS.register("minoshroom_banner_pattern", () -> new BannerPatternItem(ClassTinkerers.getEnum(BannerPattern.class, "TWILIGHTFOREST_MINOSHROOM"), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> HYDRA_BANNER_PATTERN = ITEMS.register("hydra_banner_pattern", () -> new BannerPatternItem(ClassTinkerers.getEnum(BannerPattern.class, "TWILIGHTFOREST_HYDRA"), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> KNIGHT_PHANTOM_BANNER_PATTERN = ITEMS.register("knight_phantom_banner_pattern", () -> new BannerPatternItem(ClassTinkerers.getEnum(BannerPattern.class, "TWILIGHTFOREST_PHANTOMS"), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> UR_GHAST_BANNER_PATTERN = ITEMS.register("ur_ghast_banner_pattern", () -> new BannerPatternItem(ClassTinkerers.getEnum(BannerPattern.class, "TWILIGHTFOREST_UR_GHAST"), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> ALPHA_YETI_BANNER_PATTERN = ITEMS.register("alpha_yeti_banner_pattern", () -> new BannerPatternItem(ClassTinkerers.getEnum(BannerPattern.class, "TWILIGHTFOREST_ALPHA_YETI"), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> SNOW_QUEEN_BANNER_PATTERN = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(ClassTinkerers.getEnum(BannerPattern.class, "TWILIGHTFOREST_SNOW_QUEEN"), unstackable().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> QUEST_RAM_BANNER_PATTERN = ITEMS.register("quest_ram_banner_pattern", () -> new BannerPatternItem(ClassTinkerers.getEnum(BannerPattern.class, "TWILIGHTFOREST_QUEST_RAM"), unstackable().rarity(TwilightForestMod.getRarity())));
 
 	public static CreativeModeTab creativeTab = FabricItemGroupBuilder.build(TwilightForestMod.prefix(TwilightForestMod.ID), () -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()));
 

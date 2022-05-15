@@ -4,6 +4,8 @@ import com.chocohead.mm.api.ClassTinkerers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.MappingResolver;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.item.Rarity;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
@@ -11,6 +13,18 @@ public class TFASM implements Runnable {
     @Override
     public void run() {
         MappingResolver resolver = FabricLoader.getInstance().getMappingResolver();
+        ClassTinkerers.enumBuilder(resolver.mapClassName("intermediary", "net.minecraft.class_1814"), "L"+resolver.mapClassName("intermediary", "net.minecraft.class_124")+";").addEnum("TWILIGHT", ChatFormatting.DARK_GREEN).build();
+        ClassTinkerers.enumBuilder(resolver.mapClassName("intermediary", "net.minecraft.class_2582"), String.class, String.class, boolean.class)
+                .addEnum("TWILIGHTFOREST_NAGA", "twilightforest_naga", "tfn", true)
+                .addEnum("TWILIGHTFOREST_LICH", "twilightforest_lich", "tfl", true)
+                .addEnum("TWILIGHTFOREST_MINOSHROOM", "twilightforest_minoshroom", "tfm", true)
+                .addEnum("TWILIGHTFOREST_HYDRA", "twilightforest_hydra", "tfh", true)
+                .addEnum("TWILIGHTFOREST_PHANTOMS", "twilightforest_phantoms", "tfp", true)
+                .addEnum("TWILIGHTFOREST_UR_GHAST", "twilightforest_ur_ghast", "tfg", true)
+                .addEnum("TWILIGHTFOREST_ALPHA_YETI", "twilightforest_alpha_yeti", "tfy", true)
+                .addEnum("TWILIGHTFOREST_SNOW_QUEEN", "twilightforest_snow_queen", "tfq", true)
+                .addEnum("TWILIGHTFOREST_QUEST_RAM", "twilightforest_quest_ram", "tfr", true)
+                .build();
         // foliage.js
         String biomeClass = resolver.mapClassName("intermediary","net.minecraft.class_1959").replace('.', '/');
         ClassTinkerers.addTransformation(resolver.mapClassName("intermediary","net.minecraft.class_1163"), classNode -> {
