@@ -15,8 +15,6 @@ import twilightforest.client.model.entity.NagaModel;
 import twilightforest.entity.boss.Naga;
 
 //added charging texture for new renderer
-//FIXME legacy: scaling was commented out since textures are bigger now
-@Environment(EnvType.CLIENT)
 public class NagaRenderer<M extends NagaModel<Naga>> extends MobRenderer<Naga, M> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("nagahead.png");
@@ -35,14 +33,6 @@ public class NagaRenderer<M extends NagaModel<Naga>> extends MobRenderer<Naga, M
 			Minecraft.getInstance().level.addParticle(ParticleTypes.CRIT, pos.x, pos.y, pos.z, 0, 0, 0);
 		}
 	}
-
-//	@Override
-//	protected void preRenderCallback(EntityTFNaga entity, MatrixStack stack, float p_225620_3_) {
-//		super.preRenderCallback(entity, stack, p_225620_3_);
-//		//make size adjustment
-//		stack.translate(0.0F, 1.75F, 0.0F);
-//		stack.scale(2.0F, 2.0F, 2.0F);
-//	}
 
 	@Override
 	public ResourceLocation getTextureLocation(Naga entity) {

@@ -15,7 +15,6 @@ import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Optional;
 
-//FIXME bring back once conquer flag is in place
 public class ConquerCommand {
 	private static final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(new TranslatableComponent("commands.tffeature.structure.required"));
 
@@ -34,12 +33,11 @@ public class ConquerCommand {
 		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(source.getLevel());
 
 		BlockPos pos = new BlockPos(source.getPosition());
-		if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
+		if (chunkGenerator != null) {
 			Optional<TFStructureStart<?>> struct = TFGenerationSettings.locateTFStructureInRange(source.getLevel(), pos, 0).map(s -> (TFStructureStart<?>) s);
 			if(struct.isEmpty())
 				throw NOT_IN_STRUCTURE.create();
 			struct.ifPresent(structure -> {
-				//source.sendSuccess(new TranslatableComponent("This command currently isnt working as the structure conquered flag has not been reimplemented yet.").withStyle(ChatFormatting.RED), false);
 				source.sendSuccess(new TranslatableComponent("commands.tffeature.structure.conquer.update", structure.isConquered(), flag), true);
 				structure.setConquered(flag);
 			});

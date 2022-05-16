@@ -18,7 +18,6 @@ import twilightforest.entity.passive.DwarfRabbit;
 
 public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
 	public BunnyModel(ModelPart root) {
-		// FIXME if the baby model looks weird, you're gonna want to tweak these values
 		super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 24);
 	}
 
@@ -33,13 +32,6 @@ public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
 						.addBox(-1F, -2F, 3F, 2, 2, 2)
 						.mirror(),
 				PartPose.offset(0F, 21F, 0F));
-
-		// FIXME If the tail is broken, then use this
-		/*partRoot.addOrReplaceChild("tail", CubeListBuilder.create()
-						.texOffs(0, 18)
-						.addBox(-1F, -1F, 0F, 2, 2, 2)
-						.mirror(),
-				PartPose.offset(0F, 20F, 3F));*/
 
 		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
 						.texOffs(0, 16)

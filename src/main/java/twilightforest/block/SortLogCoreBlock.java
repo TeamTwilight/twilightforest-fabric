@@ -1,18 +1,20 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.CompoundContainer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
+import twilightforest.client.particle.TFParticleType;
+import twilightforest.network.ParticlePacket;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
@@ -20,166 +22,75 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		super(props);
 	}
 
-	/**
-	 * The sorting tree finds two chests nearby and then attempts to sort a random item.
-	 */
 	@Override
+	@SuppressWarnings("ConstantConditions") //Pretty sure this error is a non-issue
 	void performTreeEffect(Level world, BlockPos pos, Random rand) {
-		// find all the chests nearby
-		List<Container> chests = new ArrayList<>();
-		int itemCount = 0;
+		Map<Container, BlockPos> inputChests = new HashMap<>();
+		Map<Container, BlockPos> outputChests = new HashMap<>();
 
-		for (BlockPos iterPos : WorldUtil.getAllAround(pos, 16)) {
+		for (BlockPos blockPos : WorldUtil.getAllAround(pos, 16)) {
+			if (!blockPos.equals(pos) && world.getBlockState(blockPos).getBlock() instanceof ChestBlock chestBlock) {
+				Container chest = ChestBlock.getContainer(chestBlock, world.getBlockState(blockPos), world, blockPos, true);
+				BlockPos newPos = new BlockPos(blockPos.getX(), blockPos.getY(), blockPos.getZ()); //It has to be a new blockPos, won't work properly otherwise
 
-			Container chestInventory = null, teInventory = null;
-
-			Block block = world.getBlockState(iterPos).getBlock();
-			if (block instanceof ChestBlock) {
-				chestInventory = ChestBlock.getContainer((ChestBlock) block, block.defaultBlockState(), world, iterPos, true);
-			}
-
-			BlockEntity te = world.getBlockEntity(iterPos);
-			if (te instanceof Container && !te.isRemoved()) {
-				teInventory = (Container) te;
-			}
-
-			// make sure we haven't counted this chest
-			if (chestInventory != null && teInventory != null && !checkIfChestsContains(chests, teInventory)) {
-
-				boolean empty = true;
-				// count items
-				for (int i = 0; i < chestInventory.getContainerSize(); i++) {
-					if (!chestInventory.getItem(i).isEmpty()) {
-						empty = false;
-						itemCount++;
-					}
-				}
-
-				// only add non-empty chests
-				if (!empty) {
-					chests.add(chestInventory);
-				}
+				if (newPos.closerThan(pos, 2)) inputChests.put(chest, newPos);
+				else outputChests.put(chest, newPos);
 			}
 		}
 
-		// find a random item in one of the chests
-		ItemStack beingSorted = ItemStack.EMPTY;
-		int sortedChestNum = -1;
-		int sortedSlotNum = -1;
+		if (outputChests.isEmpty()) return; //Just so we don't iterate through input chests for no reason if there's nothing to sort into
+		for (Container inputChest : inputChests.keySet()) {
+			for (int i = 0; i < inputChest.getContainerSize(); i++) {
+				ItemStack inputStack = inputChest.getItem(i);
+				if (!inputStack.isEmpty()) {
+					boolean transferred = false;
 
-		if (itemCount == 0) return;
+					List<Container> outputChestsSorted = outputChests.keySet().stream().filter(container -> {
+						int count = container.countItem(inputStack.getItem());
+						return count > 0 && count < container.getContainerSize() * inputStack.getMaxStackSize();
+					}).sorted(Comparator.comparingInt(container -> Integer.MAX_VALUE - container.countItem(inputStack.getItem()))).toList(); //Sort outputs by how many copies of the item they have
 
-		int itemNumber = rand.nextInt(itemCount);
-		int currentNumber = 0;
-
-		for (int i = 0; i < chests.size(); i++) {
-			Container chest = chests.get(i);
-			for (int slotNum = 0; slotNum < chest.getContainerSize(); slotNum++) {
-				ItemStack currentItem = chest.getItem(slotNum);
-
-				if (!currentItem.isEmpty()) {
-					if (currentNumber++ == itemNumber) {
-						beingSorted = currentItem;
-						sortedChestNum = i;
-						sortedSlotNum = slotNum;
-					}
-				}
-			}
-		}
-
-		if (beingSorted.isEmpty()) return;
-
-		int matchChestNum = -1;
-		int matchCount = 0;
-
-		// decide where to put it, if anywhere
-		for (int chestNum = 0; chestNum < chests.size(); chestNum++) {
-			Container chest = chests.get(chestNum);
-			int currentChestMatches = 0;
-
-			for (int slotNum = 0; slotNum < chest.getContainerSize(); slotNum++) {
-
-				ItemStack currentItem = chest.getItem(slotNum);
-				if (!currentItem.isEmpty() && isSortingMatch(beingSorted, currentItem)) {
-					currentChestMatches += currentItem.getCount();
-				}
-			}
-
-			if (currentChestMatches > matchCount) {
-				matchCount = currentChestMatches;
-				matchChestNum = chestNum;
-			}
-		}
-
-		// soooo, did we find a better match?
-		if (matchChestNum >= 0 && matchChestNum != sortedChestNum) {
-			Container moveChest = chests.get(matchChestNum);
-			Container oldChest = chests.get(sortedChestNum);
-
-			// is there an empty inventory slot in the new chest?
-			int moveSlot = getEmptySlotIn(moveChest);
-
-			if (moveSlot >= 0) {
-				// remove old item
-				oldChest.setItem(sortedSlotNum, ItemStack.EMPTY);
-
-				// add new item
-				moveChest.setItem(moveSlot, beingSorted);
-			}
-		}
-
-		// if the stack is not full, combine items from other stacks
-		if (beingSorted.getCount() < beingSorted.getMaxStackSize()) {
-			for (Container chest : chests) {
-				for (int slotNum = 0; slotNum < chest.getContainerSize(); slotNum++) {
-					ItemStack currentItem = chest.getItem(slotNum);
-
-					if (!currentItem.isEmpty() && currentItem != beingSorted && beingSorted.sameItem(currentItem)) {
-						if (currentItem.getTag() != null && beingSorted.getTag() != null) {
-							if (beingSorted.getTag().equals(currentItem.getTag())) {
-								if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount())) {
-									chest.setItem(slotNum, ItemStack.EMPTY);
-									beingSorted.grow(currentItem.getCount());
-									currentItem.setCount(0);
-								}
+					for (Container outputChest : outputChestsSorted) {
+						int firstEmptyStack = -1;
+						for (int j = 0; j < outputChest.getContainerSize(); j++) {
+							ItemStack outputStack = outputChest.getItem(j);
+							if (outputStack.isEmpty() && firstEmptyStack == -1) {
+								firstEmptyStack = j; //We reference the index of the first empty slot, in case there is no stacks that aren't at max size
+							} else if (outputStack.is(inputStack.getItem()) && outputStack.getCount() < outputStack.getMaxStackSize()) {
+								outputStack.grow(1);
+								inputStack.shrink(1);
+								firstEmptyStack = -1;
+								transferred = true;
+								break;
 							}
 						}
+						if (firstEmptyStack != -1) { //If there weren't any non-full stacks, we transfer to an empty space instead
+							ItemStack newStack = inputStack.copy();
+							newStack.setCount(1);
+							outputChest.setItem(firstEmptyStack, newStack);
+							inputStack.shrink(1);
+							transferred = true;
+						}
+						if (transferred) { //This is just particle math, we send a particle packet to every player in range
+							Vec3 xyz = Vec3.upFromBottomCenterOf(outputChests.get(outputChest), 1.9D);
+							Vec3 diff = Vec3.upFromBottomCenterOf(inputChests.get(inputChest), 1.9D).subtract(xyz);
+
+							for (ServerPlayer serverplayer : ((ServerLevel)world).players()) {
+								if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
+									ParticlePacket particlePacket = new ParticlePacket();
+									double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
+									double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
+									double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
+									particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
+									TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
+								}
+							}
+							break;
+						}
 					}
+					if (transferred) break;
 				}
 			}
 		}
-	}
-
-	/**
-	 * Is the chest we're testing part of our chest list already?
-	 */
-	private boolean checkIfChestsContains(List<Container> chests, Container testChest) {
-		for (Container chest : chests) {
-			if (chest == testChest) {
-				return true;
-			}
-
-			if (chest instanceof CompoundContainer && ((CompoundContainer) chest).contains(testChest)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean isSortingMatch(ItemStack beingSorted, ItemStack currentItem) {
-		return beingSorted.getItem().getItemCategory() == currentItem.getItem().getItemCategory();
-	}
-
-	/**
-	 * @return an empty slot number in the chest, or -1 if the chest is full
-	 */
-	private int getEmptySlotIn(Container chest) {
-		for (int i = 0; i < chest.getContainerSize(); i++) {
-			if (chest.getItem(i).isEmpty()) {
-				return i;
-			}
-		}
-
-		return -1;
 	}
 }

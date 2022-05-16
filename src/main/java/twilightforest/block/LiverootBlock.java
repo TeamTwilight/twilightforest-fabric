@@ -30,6 +30,7 @@ public class LiverootBlock extends Block {
 			level.addFreshEntity(liveroot);
 			level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
 			player.getItemInHand(hand).hurtAndBreak(1, player, evt -> evt.broadcastBreakEvent(hand));
+			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return super.use(state, level, pos, player, hand, hitResult);
 	}

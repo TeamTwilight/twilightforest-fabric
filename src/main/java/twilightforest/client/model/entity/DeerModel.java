@@ -88,7 +88,6 @@ public class DeerModel extends QuadrupedModel<Deer> {
 
     @Override
     public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
-        // FIXME Is this code duplicated from supermethod with any changes?
         if (this.young) {
             stack.pushPose();
             stack.scale(0.75F, 0.75F, 0.75F);

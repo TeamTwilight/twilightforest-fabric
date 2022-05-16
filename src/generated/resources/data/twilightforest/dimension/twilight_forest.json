@@ -61,14 +61,14 @@
           },
           {
             "parameters": {
-              "depth": -1.75,
+              "depth": -1.65,
               "scale": 0.25
             },
             "biome": "twilightforest:stream"
           },
           {
             "parameters": {
-              "depth": -1.95,
+              "depth": -1.97,
               "scale": 0.0
             },
             "biome": "twilightforest:lake"
@@ -103,14 +103,14 @@
           },
           {
             "parameters": {
-              "depth": -0.125,
+              "depth": -0.9,
               "scale": 0.15
             },
             "biome": "twilightforest:swamp"
           },
           {
             "parameters": {
-              "depth": 0.025,
+              "depth": -0.2,
               "scale": 0.05
             },
             "biome": "twilightforest:fire_swamp"
@@ -145,14 +145,14 @@
           },
           {
             "parameters": {
-              "depth": 4.75,
+              "depth": 3.0,
               "scale": 0.25
             },
             "biome": "twilightforest:highlands"
           },
           {
             "parameters": {
-              "depth": 8.0,
+              "depth": 7.0,
               "scale": 0.1
             },
             "biome": "twilightforest:thornlands"

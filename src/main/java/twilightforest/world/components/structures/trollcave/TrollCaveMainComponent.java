@@ -59,7 +59,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.setOrientation(Direction.SOUTH); // DEPTH_AVERAGE
 
 		// adjust y
-		y += 10;
+		//y += 10;
 
 		this.size = 30;
 		this.height = 20;
@@ -174,7 +174,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		if (direction == Rotation.NONE || direction == Rotation.CLOCKWISE_180) {
 			int rx = direction == Rotation.NONE ? size - 1 : 0;
 			int rz = offset + rand.nextInt(wLength);
-			int ry = (rand.nextInt(offset) - rand.nextInt(offset));
+			int ry = 0;
 
 			return new BlockPos(rx, ry, rz);
 		}
@@ -246,7 +246,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		int dx = getWorldX(x, z);
 		int dz = getWorldZ(x, z);
 
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, WorldUtil.getSeaLevel(Objects.requireNonNull(WorldUtil.getChunkGenerator(world))) + 25, dz);
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, WorldUtil.getSeaLevel(Objects.requireNonNull(WorldUtil.getChunkGenerator(world))) + 15, dz);
 
 		for(int i = 0; i < 15; i++) {
 			pos.move(0, 1, 0);
