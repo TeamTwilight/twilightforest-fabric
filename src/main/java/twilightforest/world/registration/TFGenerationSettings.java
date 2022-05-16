@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.fabricmc.api.EnvType;
@@ -147,15 +148,18 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		}
 	}
 
-	// FIXME Why are these three here - Can we get this from the World's DimensionType itself? Document here why not, if unable
-	@Deprecated // Used in places where we can't access the sea level
+	@Deprecated // Used in places where we can't access the sea level FIXME Resolve
 	public static final int SEALEVEL = 0;
+
+	public static final ResourceLocation DIMENSION = TwilightForestMod.prefix("twilight_forest");
+	public static final ResourceKey<LevelStem> WORLDGEN_KEY = ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, DIMENSION);
+	public static final ResourceKey<Level> DIMENSION_KEY = ResourceKey.create(Registry.DIMENSION_REGISTRY, DIMENSION);
 
 	// Checks if the world is linked by the default Twilight Portal.
 	// If you want to check if the world is a Twilight world, use usesTwilightChunkGenerator instead
 	// Only use this method if you need to know if a world is a destination for portals!
 	public static boolean isTwilightPortalDestination(Level world) {
-		return world.dimension().location().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get());
+		return DIMENSION.equals(world.dimension().location());
 	}
 
 	// Checks if the world is a qualified Twilight world by checking against its namespace or if it's a portal destination

@@ -42,11 +42,6 @@ public class TFConfig {
 						worldRestart().
 						comment("If true, giant Twilight Oaks will also spawn in void worlds").
 						define("skylightOaks", true);
-				DIMENSION.portalDestinationID = builder.
-						translation(config + "portal_destination_id").
-						worldRestart().
-						comment("Marked dimension ID for Twilight Portals and some other Twilight mod logic as well").
-						define("portalDestinationID", "twilightforest:twilightforest");
 				builder.pop().
 						comment("""
 								Defines custom stalactites generated in hollow hills.
@@ -200,10 +195,6 @@ public class TFConfig {
 			public ForgeConfigSpec.BooleanValue portalForNewPlayerSpawn;
 			public ForgeConfigSpec.BooleanValue skylightForest;
 			public ForgeConfigSpec.BooleanValue skylightOaks;
-
-			// Find a different way to validate if a world is passible as a "Twilight Forest" instead of hardcoding Dim ID (Instanceof check for example) before strictly using this
-			// Reason this is needed is so users can reconfig portals to use Skylight Forest or a Void Forest or another dimension entirely
-			public ForgeConfigSpec.ConfigValue<String> portalDestinationID;
 
 			public HollowHillStalactites hollowHillStalactites = new HollowHillStalactites();
 

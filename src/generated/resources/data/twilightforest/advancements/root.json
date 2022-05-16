@@ -20,7 +20,7 @@
       "trigger": "minecraft:location",
       "conditions": {
         "location": {
-          "dimension": "twilightforest:twilightforest"
+          "dimension": "twilightforest:twilight_forest"
         }
       }
     },

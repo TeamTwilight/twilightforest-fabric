@@ -30,6 +30,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
 import twilightforest.util.TFStats;
+import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.registration.features.TFConfiguredStructures;
 
 import java.util.function.Consumer;
@@ -68,9 +69,7 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 				.requirements(RequirementsStrategy.OR)
 				.addCriterion("in_tf",
 						LocationTrigger.TriggerInstance.located(
-								LocationPredicate.inDimension(
-										ResourceKey.create(Registry.DIMENSION_REGISTRY,
-												new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())))))
+								LocationPredicate.inDimension(TFGenerationSettings.DIMENSION_KEY)))
 				.addCriterion("make_portal",
 						MakePortalTrigger.Instance.makePortal())
 				.save(consumer, "twilightforest:root");
@@ -553,10 +552,7 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 		for (EntityType<?> entity : TF_KILLABLE) {
 			builder.addCriterion(EntityType.getKey(entity).getPath(),
 					KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(entity)
-							.located(
-									LocationPredicate.inDimension(
-											ResourceKey.create(Registry.DIMENSION_REGISTRY,
-													new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get()))))));
+							.located(LocationPredicate.inDimension(TFGenerationSettings.DIMENSION_KEY))));
 		}
 		return builder;
 	}

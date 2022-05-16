@@ -29,6 +29,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.chunkgenerators.warp.TerrainPoint;
+import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.registration.TFNoiseGenerationSettings;
 import twilightforest.world.registration.biomes.BiomeKeys;
 import twilightforest.world.registration.biomes.BiomeMaker;
@@ -90,7 +91,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("twilightforest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12), true)/*, true*/), Lifecycle.experimental());
+		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12), true)/*, true*/), Lifecycle.experimental());
 		return writableregistry;
 	}
 
