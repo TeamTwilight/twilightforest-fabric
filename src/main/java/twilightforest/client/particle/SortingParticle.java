@@ -1,14 +1,15 @@
 package twilightforest.client.particle;
 
+import io.github.fabricators_of_create.porting_lib.extensions.ParticleExtensions;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
-public class SortingParticle extends TextureSheetParticle {
+@Environment(EnvType.CLIENT)
+public class SortingParticle extends TextureSheetParticle implements ParticleExtensions {
     private final double xStart;
     private final double yStart;
     private final double zStart;
@@ -75,7 +76,7 @@ public class SortingParticle extends TextureSheetParticle {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static class Factory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprite;
 

@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
@@ -82,7 +81,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 									double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
 									double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
 									particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
-									TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), particlePacket);
+									TFPacketHandler.CHANNEL.sendToClient(particlePacket, serverplayer);
 								}
 							}
 							break;

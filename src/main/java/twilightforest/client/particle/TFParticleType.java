@@ -70,6 +70,6 @@ public class TFParticleType {
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.FIREFLY_PINNED.get(), PinnedFireflyParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.FALLEN_LEAF.get(), LeafParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.OMINOUS_FLAME.get(), FlameParticle.SmallFlameProvider::new);
-		particles.register(TFParticleType.SORTING_PARTICLE.get(), SortingParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.SORTING_PARTICLE.get(), SortingParticle.Factory::new);
 	}
 }
