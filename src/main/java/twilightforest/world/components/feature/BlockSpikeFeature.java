@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.material.Material;
 import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -77,7 +78,8 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
         int diameter = (int) (length / 4.5F); // diameter of the base
 
         //only place spikes on solid ground, not on the tops of trees
-        if (!level.getBlockState(startPos.below()).getMaterial().isSolid() && !hang) return false;
+        Material material = level.getBlockState(startPos.below()).getMaterial();
+        if (!hang && (!material.isSolidBlocking() || !material.isSolid())) return false;
 
         // let's see...
         for (int dx = -diameter; dx <= diameter; dx++) {

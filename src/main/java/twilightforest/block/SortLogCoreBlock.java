@@ -55,7 +55,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 							ItemStack outputStack = outputChest.getItem(j);
 							if (outputStack.isEmpty() && firstEmptyStack == -1) {
 								firstEmptyStack = j; //We reference the index of the first empty slot, in case there is no stacks that aren't at max size
-							} else if (outputStack.is(inputStack.getItem()) && outputStack.getCount() < outputStack.getMaxStackSize()) {
+							} else if (ItemStack.isSameItemSameTags(inputStack, outputStack) && outputStack.getCount() < outputStack.getMaxStackSize()) {
 								outputStack.grow(1);
 								inputStack.shrink(1);
 								firstEmptyStack = -1;

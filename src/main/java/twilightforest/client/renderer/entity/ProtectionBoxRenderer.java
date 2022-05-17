@@ -44,7 +44,7 @@ public class ProtectionBoxRenderer<T extends ProtectionBox> extends EntityRender
 
 		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.energySwirl(getTextureLocation(entity), (-t * 0.15F) % 1.0F, -t * 0.10F % 1.0F));
 		boxModel.prepareMobModel(entity, 0, 0, 0);
-		boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha); // FIXME: transparency doesn't work
+		boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, alpha, alpha, alpha, alpha);
 	}
 
 	@Override
