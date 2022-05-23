@@ -68,7 +68,7 @@ public class KnightPhantomTrophyModel extends GenericTrophyModel {
 	@Override
 	public void setRotations(float x, float y, float z) {
 		this.head.yRot = y * ((float) Math.PI / 180F);
-		this.head.xRot = x * ((float) Math.PI / 180F);
+		this.head.xRot = z * ((float) Math.PI / 180F);
 		this.helmet.xRot = this.head.xRot;
 		this.helmet.yRot = this.head.yRot;
 	}

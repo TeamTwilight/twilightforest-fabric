@@ -286,6 +286,7 @@ public class TFClientEvents {
 	}
 
 	public static void clientTick(Minecraft client) {
+		if (Minecraft.getInstance().isPaused()) return;
 		time++;
 
 		Minecraft mc = Minecraft.getInstance();

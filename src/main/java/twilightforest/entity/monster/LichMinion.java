@@ -87,7 +87,7 @@ public class LichMinion extends Zombie {
 
 				// animate our new linkage!
 				if(!level.isClientSide) {
-					master.makeBlackMagicTrail(this.eyeBlockPosition(), master.eyeBlockPosition());
+					master.makeMagicTrail(this.eyeBlockPosition(), master.eyeBlockPosition(), 0.0F, 0.0F, 0.0F);
 				}
 
 				// become angry at our masters target

@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -9,14 +10,18 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.Vec3;
@@ -26,18 +31,20 @@ import twilightforest.entity.projectile.TomeBolt;
 import twilightforest.loot.TFTreasure;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class DeathTome extends Monster implements RangedAttackMob {
 
 	public DeathTome(EntityType<? extends DeathTome> type, Level world) {
 		super(type, world);
+		this.moveControl = new FlyingMoveControl(this, 10, false);
 	}
 
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1, 100, 5));
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomFlyingGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -48,7 +55,21 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		return Monster.createMonsterAttributes()
 				.add(Attributes.MAX_HEALTH, 30.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.25D)
-				.add(Attributes.ATTACK_DAMAGE, 4);
+				.add(Attributes.FLYING_SPEED, 0.6D)
+				.add(Attributes.ATTACK_DAMAGE, 4.0D);
+	}
+
+	@Override
+	protected PathNavigation createNavigation(Level level) {
+		FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level) {
+			public boolean isStableDestination(BlockPos pos) {
+				return !this.level.getBlockState(pos.below()).isAir();
+			}
+		};
+		flyingpathnavigation.setCanOpenDoors(false);
+		flyingpathnavigation.setCanFloat(false);
+		flyingpathnavigation.setCanPassDoors(true);
+		return flyingpathnavigation;
 	}
 
 	@Override
@@ -56,19 +77,25 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		super.aiStep();
 
 		Vec3 vel = this.getDeltaMovement();
-		if (!this.onGround && vel.y < 0.0D) {
+		if (!this.isOnGround() && vel.y() < 0.0D) {
 			this.setDeltaMovement(vel.multiply(1.0D, 0.6D, 1.0D));
 		}
 
 		for (int i = 0; i < 1; ++i) {
-			this.level.addParticle(ParticleTypes.ENCHANT, this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.random.nextDouble() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(),
+			this.getLevel().addParticle(ParticleTypes.ENCHANT, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(),
 					0, 0.5, 0);
 		}
 	}
 
 	@Override
-	public boolean causeFallDamage(float p_147187_, float p_147188_, DamageSource p_147189_) {
+	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
 		return false;
+	}
+
+	@Override
+	protected void checkFallDamage(double dist, boolean damage, BlockState state, BlockPos pos) {
+		this.fallDistance = 0.0F;
+		super.checkFallDamage(dist, damage, state, pos);
 	}
 
 	@Override
@@ -78,11 +105,11 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		}
 
 		if (super.hurt(src, damage)) {
-			if(damage > 0) {
-				if (!level.isClientSide) {
+			if (damage > 0) {
+				if (!this.getLevel().isClientSide()) {
 					LootContext ctx = createLootContext(true, src).create(LootContextParamSets.ENTITY);
 
-					level.getServer().getLootTables().get(TFTreasure.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+					Objects.requireNonNull(this.getLevel().getServer()).getLootTables().get(TFTreasure.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
 				}
 			}
 			return true;
@@ -92,7 +119,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 
@@ -103,7 +130,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound(DamageSource source) {
 		return TFSounds.TOME_HURT;
 	}
 
@@ -116,10 +143,10 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		ThrowableProjectile projectile = new TomeBolt(TFEntities.TOME_BOLT.get(), this.level, this);
 		double tx = target.getX() - this.getX();
-		double ty = target.getY() + target.getEyeHeight() - 1.100000023841858D - projectile.getY();
+		double ty = target.getY() + target.getEyeHeight() - 1.1D - projectile.getY();
 		double tz = target.getZ() - this.getZ();
 		float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.2F;
 		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
-		this.level.addFreshEntity(projectile);
+		this.getLevel().addFreshEntity(projectile);
 	}
 }

@@ -35,6 +35,9 @@
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
+      "twilightforest:tree/hollow_oak",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer",
       "twilightforest:grove_ruins",
       "twilightforest:foundation",
       "twilightforest:stone_circle",
@@ -45,11 +48,8 @@
       "twilightforest:tree/selector/dense_canopy_trees",
       "twilightforest:tree/dense_tree",
       "twilightforest:tree/selector/vanilla_trees",
-      "twilightforest:default_fallen_logs",
       "minecraft:jungle_bush",
-      "twilightforest:forest_grass_placer",
-      "twilightforest:flower_placer",
-      "twilightforest:tree/hollow_oak"
+      "twilightforest:default_fallen_logs"
     ]
   ],
   "spawners": {

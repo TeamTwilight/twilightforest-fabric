@@ -6,7 +6,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -61,7 +63,7 @@ public class Kobold extends Monster {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(PANICKED, false);
+		this.entityData.define(PANICKED, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -87,15 +89,15 @@ public class Kobold extends Monster {
 	}
 
 	public boolean isPanicked() {
-		return entityData.get(PANICKED);
+		return this.entityData.get(PANICKED);
 	}
 
 	public void setPanicked(boolean flag) {
-		entityData.set(PANICKED, flag);
+		this.entityData.set(PANICKED, flag);
 	}
 
 	@Override
-	public SoundEvent getEatingSound(ItemStack pItemStack) {
+	public SoundEvent getEatingSound(ItemStack stack) {
 		return TFSounds.KOBOLD_MUNCH;
 	}
 
@@ -103,16 +105,16 @@ public class Kobold extends Monster {
 	public void aiStep() {
 		super.aiStep();
 
-		if (level.isClientSide && isPanicked()) {
+		if (this.getLevel().isClientSide() && this.isPanicked()) {
 			for (int i = 0; i < 2; i++) {
-				this.level.addParticle(ParticleTypes.SPLASH, this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.5, this.getY() + this.getEyeHeight(), this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.5, 0, 0, 0);
+				this.getLevel().addParticle(ParticleTypes.SPLASH, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.5, this.getY() + this.getEyeHeight(), this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.5, 0, 0, 0);
 			}
 		}
 
 		//bread munching
-		if (!this.level.isClientSide && this.isAlive() && this.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
+		if (!this.getLevel().isClientSide() && this.isAlive() && this.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
 			++this.lastEatenBreadTicks;
-			if(this.eatingTime > 0) this.eatingTime--;
+			if (this.eatingTime > 0) this.eatingTime--;
 			ItemStack itemstack = this.getItemBySlot(EquipmentSlot.MAINHAND);
 			if (this.canEat(itemstack)) {
 				if (this.eatingTime <= 0) {
@@ -122,9 +124,9 @@ public class Kobold extends Monster {
 					}
 				}
 				//every 3 seconds chew some bread
-				if (this.lastEatenBreadTicks > 60 && this.random.nextFloat() < 0.1F) {
+				if (this.lastEatenBreadTicks > 60 && this.getRandom().nextFloat() < 0.1F) {
 					this.playSound(this.getEatingSound(itemstack), 0.75F, 0.9F);
-					this.level.broadcastEntityEvent(this, (byte)45);
+					this.getLevel().broadcastEntityEvent(this, (byte) 45);
 					this.lastEatenBreadTicks = 0;
 				}
 			}
@@ -136,15 +138,29 @@ public class Kobold extends Monster {
 		if (pId == 45) {
 			ItemStack itemstack = this.getItemBySlot(EquipmentSlot.MAINHAND);
 			if (!itemstack.isEmpty()) {
-				for(int i = 0; i < 8; ++i) {
-					Vec3 vec3 = (new Vec3(0.0D, Math.random() * 0.1D + 0.1D, 0.0D)).xRot(-this.getXRot() * ((float)Math.PI / 180F)).yRot(-this.getYRot() * ((float)Math.PI / 180F));
-					this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemstack), this.getX(), this.getEyeY(), this.getZ(), vec3.x, vec3.y + 0.05D, vec3.z);
-				}
+				this.spawnItemParticles(itemstack, 8);
 			}
 		} else {
 			super.handleEntityEvent(pId);
 		}
 
+	}
+
+	private void spawnItemParticles(ItemStack stack, int amount) {
+		for (int i = 0; i < amount; ++i) {
+			Vec3 vec3 = new Vec3((this.getRandom().nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+			vec3 = vec3.xRot(-this.getXRot() * Mth.DEG_TO_RAD);
+			vec3 = vec3.yRot(-this.getYHeadRot() * Mth.DEG_TO_RAD);
+			double d0 = -this.getRandom().nextFloat() * 0.6D - 0.3D;
+			Vec3 vec31 = new Vec3((this.getRandom().nextFloat() - 0.5D) * 0.3D, d0, 0.6D);
+			vec31 = vec31.xRot(-this.getXRot() * Mth.DEG_TO_RAD);
+			vec31 = vec31.yRot(-this.getYHeadRot() * Mth.DEG_TO_RAD);
+			vec31 = vec31.add(this.getX(), this.getEyeY(), this.getZ());
+			if (this.getLevel() instanceof ServerLevel server)
+				server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), vec31.x(), vec31.y(), vec31.z(), 1, vec3.x(), vec3.y() + 0.05D, vec3.z(), 0.0D);
+			else
+				this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), vec31.x(), vec31.y(), vec31.z(), vec3.x(), vec3.y() + 0.05D, vec3.z());
+		}
 	}
 
 	private boolean canEat(ItemStack stack) {
@@ -181,24 +197,30 @@ public class Kobold extends Monster {
 			this.take(item, itemstack.getCount());
 			item.discard();
 			this.lastEatenBreadTicks = 1;
-			eatingTime = difficultyTime() + random.nextInt(600);
+			this.eatingTime = this.difficultyTime() + this.getRandom().nextInt(600);
 			this.setTarget(null);
 		}
 	}
 
 	//change the timer based on difficulty
 	private int difficultyTime() {
-		switch (level.getDifficulty()) {
-			case EASY -> { return 400; }
-			case NORMAL -> { return 200; }
-			case HARD -> { return 100; }
+		switch (this.getLevel().getDifficulty()) {
+			case EASY -> {
+				return 400;
+			}
+			case NORMAL -> {
+				return 200;
+			}
+			case HARD -> {
+				return 100;
+			}
 		}
 		return 200;
 	}
 
 	private void dropItemStack(ItemStack stack) {
-		ItemEntity itementity = new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), stack);
-		this.level.addFreshEntity(itementity);
+		ItemEntity itementity = new ItemEntity(this.getLevel(), this.getX(), this.getY(), this.getZ(), stack);
+		this.getLevel().addFreshEntity(itementity);
 	}
 
 	@Override
@@ -229,7 +251,7 @@ public class Kobold extends Monster {
 
 		@Override
 		public boolean canUse() {
-			if(mob.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
+			if (this.mob.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
 				return false;
 			}
 			return super.canUse();
@@ -252,14 +274,14 @@ public class Kobold extends Monster {
 
 		@Override
 		public boolean canUse() {
-			if (!mob.useItem.isEmpty()) {
+			if (!this.mob.getUseItem().isEmpty()) {
 				return false;
-			} else if (!mob.isPanicked()){
-				if(mob.getRandom().nextInt(10) != 0) {
+			} else if (!this.mob.isPanicked()) {
+				if (this.mob.getRandom().nextInt(10) != 0) {
 					return false;
 				} else {
-					List<ItemEntity> list = mob.level.getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), ALLOWED_ITEMS);
-					return !list.isEmpty() && mob.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
+					List<ItemEntity> list = this.mob.getLevel().getEntitiesOfClass(ItemEntity.class, this.mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), ALLOWED_ITEMS);
+					return !list.isEmpty() && this.mob.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
 				}
 			} else {
 				return false;
@@ -268,19 +290,19 @@ public class Kobold extends Monster {
 
 		@Override
 		public void tick() {
-			List<ItemEntity> list = mob.level.getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), ALLOWED_ITEMS);
-			ItemStack itemstack = mob.getItemBySlot(EquipmentSlot.MAINHAND);
+			List<ItemEntity> list = this.mob.getLevel().getEntitiesOfClass(ItemEntity.class, this.mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), ALLOWED_ITEMS);
+			ItemStack itemstack = this.mob.getItemBySlot(EquipmentSlot.MAINHAND);
 			if (itemstack.isEmpty() && !list.isEmpty()) {
-				mob.getNavigation().moveTo(list.get(0), 1.2F);
-				mob.getLookControl().setLookAt(list.get(0).getX(), list.get(0).getY(), list.get(0).getZ());
+				this.mob.getNavigation().moveTo(list.get(0), 1.2F);
+				this.mob.getLookControl().setLookAt(list.get(0).getX(), list.get(0).getY(), list.get(0).getZ());
 			}
 		}
 
 		@Override
 		public void start() {
-			List<ItemEntity> list = mob.level.getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), ALLOWED_ITEMS);
+			List<ItemEntity> list = this.mob.getLevel().getEntitiesOfClass(ItemEntity.class, this.mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), ALLOWED_ITEMS);
 			if (!list.isEmpty()) {
-				mob.getNavigation().moveTo(list.get(0), 1.2F);
+				this.mob.getNavigation().moveTo(list.get(0), 1.2F);
 			}
 		}
 	}
@@ -294,7 +316,7 @@ public class Kobold extends Monster {
 
 		@Override
 		public boolean canUse() {
-			if (mob.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
+			if (this.mob.getItemBySlot(EquipmentSlot.MAINHAND).is(ItemTagGenerator.KOBOLD_PACIFICATION_BREADS)) {
 				return super.canUse();
 			}
 			return false;

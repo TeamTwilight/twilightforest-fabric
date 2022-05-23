@@ -61,6 +61,9 @@ public class TFDamageSources {
     public static DamageSource snowballFight(Entity source, LivingEntity mob) {
         return new IndirectEntityDamageSource(tfSource("snowballFight"), source, mob).setProjectile(); //ice core
     }
+    public static DamageSource lifedrain(Entity source, LivingEntity mob) {
+        return new IndirectEntityDamageSource(tfSource("lifedrain"), source, mob).setProjectile().bypassArmor().setMagic();
+    }
 
     public static String tfSource(String name) {
         return "twilightforest." + name;

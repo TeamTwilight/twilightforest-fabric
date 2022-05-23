@@ -35,6 +35,8 @@
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_sugar_cane",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer",
       "twilightforest:grove_ruins",
       "twilightforest:foundation",
       "twilightforest:stone_circle",
@@ -42,7 +44,8 @@
       "twilightforest:monolith",
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
-      "minecraft:flower_forest_flowers"
+      "minecraft:flower_forest_flowers",
+      "twilightforest:default_fallen_logs"
     ]
   ],
   "spawners": {

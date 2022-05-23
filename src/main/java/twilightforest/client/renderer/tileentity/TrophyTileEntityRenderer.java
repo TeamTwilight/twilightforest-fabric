@@ -3,6 +3,7 @@ package twilightforest.client.renderer.tileentity;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -91,7 +92,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 		BooleanSupplier legacy = () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_legacy_resources");
 		matrixStackIn.pushPose();
 		if (directionIn == null || variant == BossVariant.UR_GHAST) {
-			matrixStackIn.translate(0.5D, 0.0D, 0.5D);
+			matrixStackIn.translate(0.5D, 0.01D, 0.5D);
 		} else {
 			matrixStackIn.translate(0.5F - directionIn.getStepX() * 0.249F, 0.25D, 0.5F - directionIn.getStepZ() * 0.249F);
 		}
@@ -99,18 +100,18 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 		switch (variant) {
 			case HYDRA -> {
 				matrixStackIn.scale(0.25F, 0.25F, 0.25F);
-				matrixStackIn.translate(legacy.getAsBoolean() ? 1.0F : 0.0F, legacy.getAsBoolean() ? -1.15F : -1.0F, 0.0F);
 				if (camera == ItemTransforms.TransformType.GUI) {
 					trophy.openMouthForTrophy(0.35F);
 				}
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
+				matrixStackIn.translate(legacy.getAsBoolean() ? 1.0F : 0.0F, legacy.getAsBoolean() ? -1.15F : -1.0F, 0.0F);
 				VertexConsumer hydraVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocHydra));
 				trophy.renderToBuffer(matrixStackIn, hydraVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
 			case NAGA -> {
 				matrixStackIn.scale(0.5f, 0.5f, 0.5f);
-				matrixStackIn.translate(0F, .25F, 0F);
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
+				matrixStackIn.translate(0F, .25F, 0F);
 				VertexConsumer nagaVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocNaga));
 				trophy.renderToBuffer(matrixStackIn, nagaVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
@@ -127,20 +128,20 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 				trophy.renderToBuffer(matrixStackIn, ghastVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
 			case SNOW_QUEEN -> {
-				matrixStackIn.translate(0.0F, legacy.getAsBoolean() ? 0.25F : 0.0F, 0.0F);
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
+				matrixStackIn.translate(0.0F, legacy.getAsBoolean() ? 0.25F : 0.0F, 0.0F);
 				VertexConsumer waifuVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocSnowQueen));
 				trophy.renderToBuffer(matrixStackIn, waifuVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
 			case MINOSHROOM -> {
-				matrixStackIn.translate(0.0F, legacy.getAsBoolean() ? 0.12F : 0.065F,  legacy.getAsBoolean() ? 0.56F : 0.0F);
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
+				matrixStackIn.translate(0.0F, legacy.getAsBoolean() ? 0.12F : 0.065F,  legacy.getAsBoolean() ? 0.56F : 0.0F);
 				VertexConsumer minoVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocMinoshroom));
 				trophy.renderToBuffer(matrixStackIn, minoVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}
 			case KNIGHT_PHANTOM -> {
-				matrixStackIn.translate(0.0F, 0.25F, 0.0F);
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
+				matrixStackIn.translate(0.0F, 0.25F, 0.0F);
 				VertexConsumer phantomVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocKnightPhantom));
 				trophy.renderToBuffer(matrixStackIn, phantomVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 				matrixStackIn.scale(1.1F, 1.1F, 1.1F);
@@ -151,8 +152,8 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 			}
 			case ALPHA_YETI -> {
 				matrixStackIn.scale(0.2F, 0.2F, 0.2F);
-				matrixStackIn.translate(0.0F, -1.5F, 0.0F);
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);
+				matrixStackIn.translate(0.0F, -1.5F, 0.0F);
 				VertexConsumer yetiVertex = buffer.getBuffer(RenderType.entityCutoutNoCull(textureLocYeti));
 				trophy.renderToBuffer(matrixStackIn, yetiVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			}

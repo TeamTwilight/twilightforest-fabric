@@ -1,5 +1,6 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -11,6 +12,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import twilightforest.TFSounds;
 import twilightforest.entity.boss.Lich;
 import twilightforest.entity.monster.LichMinion;
+import twilightforest.entity.projectile.LichBolt;
+import twilightforest.entity.projectile.LichBomb;
 import twilightforest.item.TFItems;
 
 import java.util.EnumSet;
@@ -20,69 +23,65 @@ public class LichMinionsGoal extends Goal {
 	private final Lich lich;
 
 	public LichMinionsGoal(Lich boss) {
-		lich = boss;
-		setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		this.lich = boss;
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override
 	public boolean canUse() {
-		return lich.getPhase() == 2 && !lich.isShadowClone();
+		return this.lich.getPhase() == 2 && !this.lich.isShadowClone();
 	}
 
 	@Override
 	public void start() {
-		lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.ZOMBIE_SCEPTER.get()));
+		this.lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.ZOMBIE_SCEPTER.get()));
 	}
 
 	@Override
 	public void tick() {
-		LivingEntity targetedEntity = lich.getTarget();
+		LivingEntity targetedEntity = this.lich.getTarget();
 		if (targetedEntity == null)
 			return;
-		float dist = lich.distanceTo(targetedEntity);
+		float dist = this.lich.distanceTo(targetedEntity);
 		// spawn minions every so often
-		if (lich.getAttackCooldown() % 15 == 0) {
-			checkAndSpawnMinions();
+		if (this.lich.getAttackCooldown() % 15 == 0) {
+			this.checkAndSpawnMinions();
 		}
 
-		if (lich.getAttackCooldown() == 0) {
+		if (this.lich.getAttackCooldown() == 0) {
 			if (dist < 2.0F) {
 				// melee attack
-				lich.doHurtTarget(targetedEntity);
-				lich.setAttackCooldown(20);
-			} else if (dist < 20F && lich.getSensing().hasLineOfSight(targetedEntity)) {
-				if (lich.getNextAttackType() == 0) {
-					lich.launchBoltAt();
+				this.lich.doHurtTarget(targetedEntity);
+				this.lich.setAttackCooldown(20);
+			} else if (dist < 20F && this.lich.getSensing().hasLineOfSight(targetedEntity)) {
+				if (this.lich.getNextAttackType() == 0) {
+					this.lich.launchProjectileAt(new LichBolt(this.lich.getLevel(), this.lich));
 				} else {
-					lich.launchBombAt();
+					this.lich.launchProjectileAt(new LichBomb(this.lich.getLevel(), this.lich));
 				}
 
-				if (lich.getRandom().nextInt(2) > 0) {
-					lich.setNextAttackType(0);
-				} else {
-					lich.setNextAttackType(1);
-				}
-				lich.setAttackCooldown(60);
+				this.lich.swing(InteractionHand.MAIN_HAND);
+				this.lich.setNextAttackType(this.lich.getRandom().nextBoolean() ? 0 : 1);
+				this.lich.setAttackCooldown(60);
 			} else {
 				// if not, teleport around
-				lich.teleportToSightOfEntity(targetedEntity);
-				lich.setAttackCooldown(20);
+				this.lich.teleportToSightOfEntity(targetedEntity);
+				this.lich.setAttackCooldown(20);
 
 			}
 		}
 	}
 
 	private void checkAndSpawnMinions() {
-		if (!lich.level.isClientSide && lich.getMinionsToSummon() > 0) {
-			int minions = lich.countMyMinions();
+		if (!this.lich.getLevel().isClientSide() && this.lich.getMinionsToSummon() > 0) {
+			int minions = this.lich.countMyMinions();
 
 			// if not, spawn one!
 			if (minions < Lich.MAX_ACTIVE_MINIONS) {
-				spawnMinionAt();
-				lich.setMinionsToSummon(lich.getMinionsToSummon() - 1);
+				this.spawnMinionAt();
+				this.lich.setMinionsToSummon(this.lich.getMinionsToSummon() - 1);
 			}
 		}
-		// if there's no minions left to summon, we should move into phase 3 naturally
 	}
 
 	private void spawnMinionAt() {
@@ -90,20 +89,21 @@ public class LichMinionsGoal extends Goal {
 		LivingEntity targetedEntity = lich.getTarget();
 		Vec3 minionSpot = lich.findVecInLOSOf(targetedEntity);
 
-		if (minionSpot != null && lich.level instanceof ServerLevelAccessor) {
+		if (minionSpot != null && this.lich.getLevel() instanceof ServerLevelAccessor accessor) {
 			// put a clone there
-			LichMinion minion = new LichMinion(lich.level, lich);
+			LichMinion minion = new LichMinion(this.lich.getLevel(), this.lich);
 			minion.setPos(minionSpot.x, minionSpot.y, minionSpot.z);
-			minion.finalizeSpawn((ServerLevelAccessor) lich.level, lich.level.getCurrentDifficultyAt(new BlockPos(minionSpot)), MobSpawnType.MOB_SUMMONED, null, null);
-			lich.level.addFreshEntity(minion);
+			minion.finalizeSpawn(accessor, this.lich.getLevel().getCurrentDifficultyAt(new BlockPos(minionSpot)), MobSpawnType.MOB_SUMMONED, null, null);
+			this.lich.getLevel().addFreshEntity(minion);
 
 			minion.setTarget(targetedEntity);
 
 			minion.spawnAnim();
-			minion.playSound(TFSounds.MINION_SUMMON, 1.0F, ((lich.getRandom().nextFloat() - lich.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			minion.playSound(TFSounds.MINION_SUMMON, 1.0F, ((this.lich.getRandom().nextFloat() - this.lich.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
+			this.lich.swing(InteractionHand.MAIN_HAND);
 			// make sparkles leading to it
-			lich.makeBlackMagicTrail(lich.eyeBlockPosition(), minion.eyeBlockPosition());
+			this.lich.makeMagicTrail(this.lich.eyeBlockPosition(), minion.eyeBlockPosition(), 0.0F, 0.0F, 0.0F);
 		}
 	}
 

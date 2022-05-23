@@ -90,7 +90,7 @@ public class SnowQueenTrophyLegacyModel extends GenericTrophyModel {
 	@Override
 	public void setRotations(float x, float y, float z) {
 		this.head.yRot = y * ((float) Math.PI / 180F);
-		this.head.xRot = x * ((float) Math.PI / 180F);
+		this.head.xRot = z * ((float) Math.PI / 180F);
 	}
 	
 	@Override

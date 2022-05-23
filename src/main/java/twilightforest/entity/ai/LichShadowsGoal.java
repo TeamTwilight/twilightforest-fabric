@@ -1,5 +1,6 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -7,6 +8,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.boss.Lich;
+import twilightforest.entity.projectile.LichBolt;
+import twilightforest.entity.projectile.LichBomb;
 import twilightforest.item.TFItems;
 
 import java.util.EnumSet;
@@ -16,95 +19,97 @@ public class LichShadowsGoal extends Goal {
 	private final Lich lich;
 
 	public LichShadowsGoal(Lich boss) {
-		lich = boss;
-		setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
+		this.lich = boss;
+		this.setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
 	}
 
 	@Override
 	public boolean canUse() {
-		return lich.getPhase() == 1;
+		return this.lich.getPhase() == 1;
 	}
 
 	@Override
 	public void start() {
-		lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.TWILIGHT_SCEPTER.get()));
+		this.lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.TWILIGHT_SCEPTER.get()));
 	}
 
 	@Override
 	public void stop() {
-		despawnClones();
+		this.despawnClones();
 	}
 
 	@Override
 	public void tick() {
-		if (lich.isShadowClone())
-			checkForMaster();
-		LivingEntity targetedEntity = lich.getTarget();
+		if (this.lich.isShadowClone())
+			this.checkForMaster();
+		LivingEntity targetedEntity = this.lich.getTarget();
 		if (targetedEntity == null)
 			return;
-		float dist = lich.distanceTo(targetedEntity);
+		float dist = this.lich.distanceTo(targetedEntity);
 
-		if (lich.getAttackCooldown() == 60) {
-			lich.teleportToSightOfEntity(targetedEntity);
+		if (this.lich.getAttackCooldown() == 60) {
+			this.lich.teleportToSightOfEntity(targetedEntity);
 
-			if (!lich.isShadowClone()) {
-				checkAndSpawnClones();
+			if (!this.lich.isShadowClone()) {
+				this.checkAndSpawnClones();
 			}
 		}
 
-		if (lich.getSensing().hasLineOfSight(targetedEntity) && lich.getAttackCooldown() == 0 && dist < 20F) {
-			if (lich.getNextAttackType() == 0) {
-				lich.launchBoltAt();
+		if (this.lich.getSensing().hasLineOfSight(targetedEntity) && this.lich.getAttackCooldown() == 0 && dist < 20F) {
+			if (this.lich.getNextAttackType() == 0) {
+				this.lich.launchProjectileAt(new LichBolt(this.lich.getLevel(), this.lich));
 			} else {
-				lich.launchBombAt();
+				this.lich.launchProjectileAt(new LichBomb(this.lich.getLevel(), this.lich));
 			}
 
-			if (lich.getRandom().nextInt(3) > 0) {
-				lich.setNextAttackType(0);
+			this.lich.swing(InteractionHand.MAIN_HAND);
+
+			if (this.lich.getRandom().nextInt(3) > 0) {
+				this.lich.setNextAttackType(0);
 			} else {
-				lich.setNextAttackType(1);
+				this.lich.setNextAttackType(1);
 			}
-			lich.setAttackCooldown(100);
+			this.lich.setAttackCooldown(100);
 		}
 	}
 
 	private void checkForMaster() {
-		if (lich.getMasterLich() == null) {
-			findNewMaster();
+		if (this.lich.getMasterLich() == null) {
+			this.findNewMaster();
 		}
-		if (!lich.level.isClientSide && (lich.getMasterLich() == null || !lich.getMasterLich().isAlive())) {
-			lich.discard();
+		if (!this.lich.getLevel().isClientSide() && (this.lich.getMasterLich() == null || !this.lich.getMasterLich().isAlive())) {
+			this.lich.discard();
 		}
 	}
 
 	private void checkAndSpawnClones() {
 		// if not, spawn one!
-		if (lich.countMyClones() < Lich.MAX_SHADOW_CLONES)
-			spawnShadowClone();
+		if (this.lich.countMyClones() < Lich.MAX_SHADOW_CLONES)
+			this.spawnShadowClone();
 	}
 
 	private void spawnShadowClone() {
-		LivingEntity targetedEntity = lich.getTarget();
+		LivingEntity targetedEntity = this.lich.getTarget();
 
 		// find a good spot
-		Vec3 cloneSpot = lich.findVecInLOSOf(targetedEntity);
+		Vec3 cloneSpot = this.lich.findVecInLOSOf(targetedEntity);
 
 		if (cloneSpot != null) {
 			// put a clone there
-			Lich newClone = new Lich(lich.level, lich);
+			Lich newClone = new Lich(this.lich.getLevel(), this.lich);
 			newClone.setPos(cloneSpot.x, cloneSpot.y, cloneSpot.z);
-			lich.level.addFreshEntity(newClone);
+			this.lich.getLevel().addFreshEntity(newClone);
 
 			newClone.setTarget(targetedEntity);
-			newClone.setAttackCooldown(60 + lich.getRandom().nextInt(3) - lich.getRandom().nextInt(3));
+			newClone.setAttackCooldown(60 + this.lich.getRandom().nextInt(3) - this.lich.getRandom().nextInt(3));
 
 			// make sparkles leading to it
-			lich.makeTeleportTrail(lich.getX(), lich.getY(), lich.getZ(), cloneSpot.x, cloneSpot.y, cloneSpot.z);
+			this.lich.makeTeleportTrail(this.lich.getX(), this.lich.getY(), this.lich.getZ(), cloneSpot.x, cloneSpot.y, cloneSpot.z);
 		}
 	}
 
 	private void despawnClones() {
-		for (Lich nearbyLich : lich.getNearbyLiches()) {
+		for (Lich nearbyLich : this.lich.getNearbyLiches()) {
 			if (nearbyLich.isShadowClone()) {
 				nearbyLich.remove(Entity.RemovalReason.DISCARDED);
 			}
@@ -113,14 +118,14 @@ public class LichShadowsGoal extends Goal {
 
 	private void findNewMaster() {
 
-		for (Lich nearbyLich : lich.getNearbyLiches()) {
-			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewClone(lich)) {
-				lich.setMaster(nearbyLich);
+		for (Lich nearbyLich : this.lich.getNearbyLiches()) {
+			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewClone(this.lich)) {
+				this.lich.setMaster(nearbyLich);
 
 				// animate our new linkage!
-				lich.makeTeleportTrail(lich.getX(), lich.getY(), lich.getZ(), nearbyLich.getX(), nearbyLich.getY(), nearbyLich.getZ());
+				this.lich.makeTeleportTrail(this.lich.getX(), this.lich.getY(), this.lich.getZ(), nearbyLich.getX(), nearbyLich.getY(), nearbyLich.getZ());
 
-				lich.setTarget(nearbyLich.getTarget());
+				this.lich.setTarget(nearbyLich.getTarget());
 				break;
 			}
 		}

@@ -137,6 +137,7 @@ public final class TFSounds {
 	public static final SoundEvent LICH_CLONE_HURT = createEvent("entity.twilightforest.lichclone.hurt");
 	public static final SoundEvent LICH_DEATH = createEvent("entity.twilightforest.lich.death");
 	public static final SoundEvent LICH_HURT = createEvent("entity.twilightforest.lich.hurt");
+	public static final SoundEvent LICH_POP_MOB = createEvent("entity.twilightforest.lich.pop_mob");
 	public static final SoundEvent LICH_SHOOT = createEvent("entity.twilightforest.lich.shoot");
 	public static final SoundEvent LICH_TELEPORT = createEvent("entity.twilightforest.lich.teleport");
 	public static final SoundEvent LOCKED_VANISHING_BLOCK = createEvent("block.twilightforest.vanish.locked");
@@ -144,6 +145,7 @@ public final class TFSounds {
 	public static final SoundEvent LOYAL_ZOMBIE_DEATH = createEvent("entity.twilightforest.loyalzombie.death");
 	public static final SoundEvent LOYAL_ZOMBIE_HURT = createEvent("entity.twilightforest.loyalzombie.hurt");
 	public static final SoundEvent LOYAL_ZOMBIE_STEP = createEvent("entity.twilightforest.loyalzombie.step");
+	public static final SoundEvent LOYAL_ZOMBIE_SUMMON = createEvent("entity.twilightforest.loyalzombie.summon");
 	public static final SoundEvent MAGNET_GRAB = createEvent("item.twilightforest.magnet.grab");
 	public static final SoundEvent MAZE_SLIME_DEATH = createEvent("entity.twilightforest.mazeslime.death");
 	public static final SoundEvent MAZE_SLIME_DEATH_SMALL = createEvent("entity.twilightforest.mazeslimesmall.death");

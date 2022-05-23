@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -16,8 +17,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -26,6 +31,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -34,19 +40,20 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.ai.AlwaysWatchTargetGoal;
-import twilightforest.entity.ai.LichMinionsGoal;
-import twilightforest.entity.ai.LichPopMobsGoal;
-import twilightforest.entity.ai.LichShadowsGoal;
+import twilightforest.entity.ai.*;
 import twilightforest.entity.monster.LichMinion;
-import twilightforest.entity.projectile.LichBolt;
-import twilightforest.entity.projectile.LichBomb;
+import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
+import twilightforest.network.ParticlePacket;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.util.EntityUtil;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
 
@@ -57,10 +64,10 @@ import java.util.Objects;
 
 public class Lich extends Monster {
 
-	private static final EntityDataAccessor<Boolean> DATA_ISCLONE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Byte> DATA_SHIELDSTRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<Byte> DATA_MINIONSLEFT = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<Byte> DATA_ATTACKTYPE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Integer> SHIELD_STRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> MINIONS_LEFT = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> ATTACK_TYPE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 
 	public static final int MAX_SHADOW_CLONES = 2;
 	public static final int INITIAL_SHIELD_STRENGTH = 6;
@@ -68,9 +75,11 @@ public class Lich extends Monster {
 	public static final int INITIAL_MINIONS_TO_SUMMON = 9;
 	public static final int MAX_HEALTH = 100;
 
+	@Nullable
 	private Lich masterLich;
 	private int attackCooldown;
 	private int popCooldown;
+	private int heldScepterTime;
 	private int spawnTime;
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.YELLOW, BossEvent.BossBarOverlay.NOTCHED_6);
 	private final List<ServerPlayer> hurtBy = new ArrayList<>();
@@ -78,43 +87,32 @@ public class Lich extends Monster {
 	public Lich(EntityType<? extends Lich> type, Level world) {
 		super(type, world);
 
-		setShadowClone(false);
+		this.setShadowClone(false);
 		this.masterLich = null;
-		this.fireImmune();
 		this.xpReward = 217;
 	}
 
-	public Lich(Level world, Lich otherLich) {
-		this(TFEntities.LICH.get(), world);
+	public Lich(Level level, Lich otherLich) {
+		this(TFEntities.LICH.get(), level);
 
-		setShadowClone(true);
+		this.setShadowClone(true);
 		this.masterLich = otherLich;
 	}
 
-	public Lich getMasterLich(){
-		return masterLich;
-	}
-
-	public int getAttackCooldown() {
-		return attackCooldown;
-	}
-
-	public void setAttackCooldown(int cooldown) {
-		attackCooldown = cooldown;
-	}
-
-	public int getPopCooldown() {
-		return popCooldown;
-	}
-
-	public void setPopCooldown(int cooldown) {
-		popCooldown = cooldown;
+	public static AttributeSupplier.Builder registerAttributes() {
+		return Monster.createMonsterAttributes()
+				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
+				.add(Attributes.ATTACK_DAMAGE, 3.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.45D); // Same speed as an angry enderman
 	}
 
 	@Override
-	public void setCustomName(@Nullable Component name) {
-		super.setCustomName(name);
-		this.bossInfo.setName(this.getDisplayName());
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(IS_CLONE, false);
+		this.entityData.define(SHIELD_STRENGTH, INITIAL_SHIELD_STRENGTH);
+		this.entityData.define(MINIONS_LEFT, INITIAL_MINIONS_TO_SUMMON);
+		this.entityData.define(ATTACK_TYPE, 0);
 	}
 
 	@Override
@@ -122,6 +120,7 @@ public class Lich extends Monster {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new AlwaysWatchTargetGoal(this));
 		this.goalSelector.addGoal(1, new LichPopMobsGoal(this));
+		this.goalSelector.addGoal(1, new LichAbsorbMinionsGoal(this));
 		this.goalSelector.addGoal(2, new LichShadowsGoal(this));
 		this.goalSelector.addGoal(3, new LichMinionsGoal(this));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.75D, true) {
@@ -133,7 +132,7 @@ public class Lich extends Monster {
 			@Override
 			public void start() {
 				super.start();
-				setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_SWORD));
+				this.mob.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.GOLDEN_SWORD));
 			}
 		});
 
@@ -150,19 +149,28 @@ public class Lich extends Monster {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(DATA_ISCLONE, false);
-		entityData.define(DATA_SHIELDSTRENGTH, (byte) INITIAL_SHIELD_STRENGTH);
-		entityData.define(DATA_MINIONSLEFT, (byte) INITIAL_MINIONS_TO_SUMMON);
-		entityData.define(DATA_ATTACKTYPE, (byte) 0);
+	public void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
+		compound.putBoolean("ShadowClone", this.isShadowClone());
+		compound.putInt("ShieldStrength", this.getShieldStrength());
+		compound.putInt("MinionsToSummon", this.getMinionsToSummon());
 	}
 
-	public static AttributeSupplier.Builder registerAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.add(Attributes.ATTACK_DAMAGE, 3.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.45000001788139344D); // Same speed as an angry enderman
+	@Override
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
+		this.setShadowClone(compound.getBoolean("ShadowClone"));
+		this.setShieldStrength(compound.getInt("ShieldStrength"));
+		this.setMinionsToSummon(compound.getInt("MinionsToSummon"));
+		if (this.hasCustomName()) {
+			this.bossInfo.setName(this.getDisplayName());
+		}
+	}
+
+	@Override
+	public void setCustomName(@Nullable Component name) {
+		super.setCustomName(name);
+		this.bossInfo.setName(this.getDisplayName());
 	}
 
 	@Override
@@ -178,62 +186,24 @@ public class Lich extends Monster {
 	}
 
 	@Override
-	public boolean removeWhenFarAway(double p_213397_1_) {
-		return false;
-	}
-
-	@Override
-	public void checkDespawn() {
-		if (level.getDifficulty() == Difficulty.PEACEFUL && !isShadowClone()) {
-			if (hasRestriction()) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState());
-			}
-			discard();
-		} else {
-			super.checkDespawn();
-		}
-	}
-
-	/**
-	 * What phase of the fight are we on?
-	 * <p>
-	 * 1 - reflecting bolts, shield up
-	 * 2 - summoning minions
-	 * 3 - melee
-	 */
-	public int getPhase() {
-		if (isShadowClone() || getShieldStrength() > 0) {
-			return 1;
-		} else if (getMinionsToSummon() > 0 || countMyMinions() > 0) {
-			return 2;
-		} else {
-			return 3;
-		}
-	}
-
-	public void setExtinguishTimer() {
-		spawnTime = 20;
-	}
-
-	@Override
 	public void aiStep() {
 		// determine the hand position
-		float angle = ((yBodyRot * 3.141593F) / 180F);
+		float angle = ((this.yBodyRot * Mth.PI) / 180F);
 
-		double dx = getX() + (Mth.cos(angle) * 0.65);
-		double dy = getY() + (getBbHeight() * 0.94);
-		double dz = getZ() + (Mth.sin(angle) * 0.65);
+		double dx = this.getX() + (Mth.cos(angle) * 0.65);
+		double dy = this.getY() + (this.getBbHeight() * 0.94);
+		double dz = this.getZ() + (Mth.sin(angle) * 0.65);
 
 
 		// add particles!
 
 		// how many particles do we want to add?!
-		int factor = (80 - attackCooldown) / 10;
-		int particles = factor > 0 ? random.nextInt(factor) : 1;
+		int factor = (80 - this.getAttackCooldown()) / 10;
+		int particles = factor > 0 ? this.getRandom().nextInt(factor) : 1;
 
 
 		for (int j1 = 0; j1 < particles; j1++) {
-			float sparkle = 1.0F - (attackCooldown + 1.0F) / 60.0F;
+			float sparkle = 1.0F - (this.getAttackCooldown() + 1.0F) / 60.0F;
 			sparkle *= sparkle;
 
 			float red = 0.37F * sparkle;
@@ -247,26 +217,26 @@ public class Lich extends Monster {
 				blu = 0.00F * sparkle;
 			}
 
-			level.addParticle(ParticleTypes.ENTITY_EFFECT, dx + (random.nextGaussian() * 0.025), dy + (random.nextGaussian() * 0.025), dz + (random.nextGaussian() * 0.025), red, grn, blu);
+			this.getLevel().addParticle(ParticleTypes.ENTITY_EFFECT, dx + (this.getRandom().nextGaussian() * 0.025), dy + (this.getRandom().nextGaussian() * 0.025), dz + (this.getRandom().nextGaussian() * 0.025), red, grn, blu);
 		}
 
 		if (this.getPhase() == 3)
-			level.addParticle(ParticleTypes.ANGRY_VILLAGER,
-				this.getX() + this.random.nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
-				this.getY() + 1.0D + this.random.nextFloat() * this.getBbHeight(),
-				this.getZ() + this.random.nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
-				this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
+			this.getLevel().addParticle(ParticleTypes.ANGRY_VILLAGER,
+					this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
+					this.getY() + 1.0D + this.getRandom().nextFloat() * this.getBbHeight(),
+					this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
+					this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
 
-		if (!level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			if (this.getPhase() == 1) {
-				bossInfo.setProgress((float) (getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
+				this.bossInfo.setProgress((float) (this.getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
 			} else {
-				bossInfo.setOverlay(BossEvent.BossBarOverlay.PROGRESS);
-				bossInfo.setProgress(getHealth() / getMaxHealth());
+				this.bossInfo.setOverlay(BossEvent.BossBarOverlay.PROGRESS);
+				this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 				if (this.getPhase() == 2)
-					bossInfo.setColor(BossEvent.BossBarColor.PURPLE);
+					this.bossInfo.setColor(BossEvent.BossBarColor.PURPLE);
 				else
-					bossInfo.setColor(BossEvent.BossBarColor.RED);
+					this.bossInfo.setColor(BossEvent.BossBarColor.RED);
 			}
 		}
 
@@ -274,14 +244,44 @@ public class Lich extends Monster {
 	}
 
 	@Override
-	public boolean hurt(DamageSource src, float damage) {
-		// if we're in a wall, teleport for gosh sakes
-		if ("inWall".equals(src.getMsgId()) && getTarget() != null) {
-			teleportToSightOfEntity(getTarget());
+	protected void customServerAiStep() {
+		super.customServerAiStep();
+
+		if (this.getAttackCooldown() > 0 && this.spawnTime <= 0) {
+			this.attackCooldown--;
 		}
 
-		if (isShadowClone() && src != DamageSource.OUT_OF_WORLD) {
-			playSound(TFSounds.LICH_CLONE_HURT, 1.0F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+		if (this.getPopCooldown() > 0 && this.getHealth() < this.getMaxHealth() && this.getScepterTimeLeft() <= 0) {
+			this.popCooldown--;
+		}
+
+		if (this.getScepterTimeLeft() == 0 && this.getPopCooldown() < 30 && this.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.LIFEDRAIN_SCEPTER.get())) {
+			this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(this.getPhase() == 2 ? TFItems.ZOMBIE_SCEPTER.get() : Items.GOLDEN_SWORD));
+		}
+
+		if (this.getScepterTimeLeft() > 0) {
+			this.heldScepterTime--;
+		}
+
+		if (this.getTarget() != null) {
+			if (this.spawnTime > 0 && this.hasLineOfSight(this.getTarget())) {
+				this.spawnTime--;
+				if (this.spawnTime <= 0) {
+					this.extinguishNearbyCandles();
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean hurt(DamageSource src, float damage) {
+		// if we're in a wall, teleport for gosh sakes
+		if (src == DamageSource.IN_WALL && this.getTarget() != null) {
+			teleportToSightOfEntity(this.getTarget());
+		}
+
+		if (this.isShadowClone() && src != DamageSource.OUT_OF_WORLD) {
+			this.playSound(TFSounds.LICH_CLONE_HURT, 1.0F, this.getVoicePitch() * 2.0F);
 			return false;
 		}
 
@@ -291,17 +291,17 @@ public class Lich extends Monster {
 		}
 
 		// if our shield is up, ignore any damage that can be blocked.
-		if (src != DamageSource.OUT_OF_WORLD && getShieldStrength() > 0) {
+		if (src != DamageSource.OUT_OF_WORLD && this.getShieldStrength() > 0) {
 			if (src.isMagic() && damage > 2) {
 				// reduce shield for magic damage greater than 1 heart
-				if (getShieldStrength() > 0) {
-					setShieldStrength(getShieldStrength() - 1);
-					playSound(TFSounds.SHIELD_BREAK, 1.0F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+				if (this.getShieldStrength() > 0) {
+					this.setShieldStrength(this.getShieldStrength() - 1);
+					this.playSound(TFSounds.SHIELD_BREAK, 1.0F, this.getVoicePitch() * 2.0F);
 				}
 			} else {
-				playSound(TFSounds.SHIELD_BREAK, 1.0F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-				if (src.getEntity() instanceof LivingEntity) {
-					setLastHurtByMob((LivingEntity) src.getEntity());
+				this.playSound(TFSounds.SHIELD_BREAK, 1.0F, this.getVoicePitch() * 2.0F);
+				if (src.getEntity() instanceof LivingEntity living) {
+					this.setLastHurtByMob(living);
 				}
 			}
 
@@ -309,12 +309,12 @@ public class Lich extends Monster {
 		}
 
 		if (super.hurt(src, damage)) {
-			if (this.getPhase() < 3 || random.nextInt(4) == 0) {
+			if (this.getRandom().nextInt(this.getPhase() == 3 ? 6 : 3) == 0) {
 				this.teleportToSightOfEntity(this.getTarget());
 			}
 
-			if(src.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
-				hurtBy.add(player);
+			if (src.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
+				this.hurtBy.add(player);
 			}
 
 			return true;
@@ -324,91 +324,62 @@ public class Lich extends Monster {
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
-
-		if (attackCooldown > 0 && spawnTime <= 0) {
-			attackCooldown--;
-		}
-
-		if (popCooldown > 0) {
-			popCooldown--;
-		}
-
-		if(this.getTarget() != null) {
-			if (spawnTime > 0 && hasLineOfSight(getTarget())) {
-				spawnTime--;
-				if (spawnTime <= 0) {
-					extinguishNearbyCandles();
-				}
+	public void die(DamageSource cause) {
+		super.die(cause);
+		// mark the tower as defeated
+		if (!this.getLevel().isClientSide() && !this.isShadowClone()) {
+			TFGenerationSettings.markStructureConquered(this.getLevel(), this.blockPosition(), TFFeature.LICH_TOWER);
+			for (ServerPlayer player : this.hurtBy) {
+				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
+
+			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 
-	private void extinguishNearbyCandles() {
-		AABB box = this.getBoundingBox().inflate(10.0D);
-		for(BlockPos pos : BlockPos.betweenClosed(Mth.floor(box.minX), Mth.floor(box.minY), Mth.floor(box.minZ), Mth.floor(box.maxX), Mth.floor(box.maxY), Mth.floor(box.maxZ))) {
-			if(level.getBlockState(pos).getBlock() instanceof AbstractCandleBlock && level.getBlockState(pos).getValue(BlockStateProperties.LIT)) {
-				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(BlockStateProperties.LIT, false));
-				level.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 1.0F);
-			} else if(level.getBlockState(pos).getBlock() instanceof AbstractLightableBlock && level.getBlockState(pos).getValue(AbstractLightableBlock.LIGHTING) == AbstractLightableBlock.Lighting.NORMAL) {
-				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(AbstractLightableBlock.LIGHTING, AbstractLightableBlock.Lighting.OMINOUS));
-				level.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 0.75F);
+	@Override
+	public void checkDespawn() {
+		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL && !this.isShadowClone()) {
+			if (this.hasRestriction()) {
+				this.getLevel().setBlockAndUpdate(getRestrictCenter(), TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState());
 			}
+			this.discard();
+		} else {
+			super.checkDespawn();
 		}
 	}
 
-	public void launchBoltAt() {
-		float bodyFacingAngle = ((yBodyRot * 3.141593F) / 180F);
-		double sx = getX() + (Mth.cos(bodyFacingAngle) * 0.65);
-		double sy = getY() + (getBbHeight() * 0.82);
-		double sz = getZ() + (Mth.sin(bodyFacingAngle) * 0.65);
+	//-----------------------------------------//
+	//    PROJECTILES, CLONES, AND MINIONS     //
+	//-----------------------------------------//
 
-		double tx = Objects.requireNonNull(getTarget()).getX() - sx;
-		double ty = (getTarget().getBoundingBox().minY + getTarget().getBbHeight() / 2.0F) - (getY() + getBbHeight() / 2.0F);
-		double tz = getTarget().getZ() - sz;
+	public void launchProjectileAt(ThrowableProjectile projectile) {
+		float bodyFacingAngle = ((this.yBodyRot * Mth.PI) / 180F);
+		double sx = getX() + (Mth.cos(bodyFacingAngle) * 0.65D);
+		double sy = getY() + (this.getBbHeight() * 0.82D);
+		double sz = getZ() + (Mth.sin(bodyFacingAngle) * 0.65D);
 
-		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+		double tx = Objects.requireNonNull(this.getTarget()).getX() - sx;
+		double ty = (this.getTarget().getBoundingBox().minY + this.getTarget().getBbHeight() / 2.0F) - (this.getY() + this.getBbHeight() / 2.0F);
+		double tz = this.getTarget().getZ() - sz;
 
-		LichBolt projectile = new LichBolt(TFEntities.LICH_BOLT.get(), level, this);
+		this.playSound(TFSounds.LICH_SHOOT, this.getSoundVolume(), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
+
 		projectile.moveTo(sx, sy, sz, getYRot(), getXRot());
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 
-		level.addFreshEntity(projectile);
-	}
-
-	public void launchBombAt() {
-		float bodyFacingAngle = ((yBodyRot * 3.141593F) / 180F);
-		double sx = getX() + (Mth.cos(bodyFacingAngle) * 0.65);
-		double sy = getY() + (getBbHeight() * 0.82);
-		double sz = getZ() + (Mth.sin(bodyFacingAngle) * 0.65);
-
-		double tx = Objects.requireNonNull(getTarget()).getX() - sx;
-		double ty = (getTarget().getBoundingBox().minY + getTarget().getBbHeight() / 2.0F) - (getY() + getBbHeight() / 2.0F);
-		double tz = getTarget().getZ() - sz;
-
-		playSound(TFSounds.LICH_SHOOT, getSoundVolume(), (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-
-		LichBomb projectile = new LichBomb(TFEntities.LICH_BOMB.get(), level, this);
-		projectile.moveTo(sx, sy, sz, getYRot(), getXRot());
-		projectile.shoot(tx, ty, tz, 0.35F, 1.0F);
-
-		level.addFreshEntity(projectile);
+		this.getLevel().addFreshEntity(projectile);
 	}
 
 	public boolean wantsNewClone(Lich clone) {
-		return clone.isShadowClone() && countMyClones() < Lich.MAX_SHADOW_CLONES;
-	}
-
-	public void setMaster(Lich lich) {
-		masterLich = lich;
+		return clone.isShadowClone() && this.countMyClones() < Lich.MAX_SHADOW_CLONES;
 	}
 
 	public int countMyClones() {
 		// check if there are enough clones.  we check a 32x16x32 area
 		int count = 0;
 
-		for (Lich nearbyLich : getNearbyLiches()) {
+		for (Lich nearbyLich : this.getNearbyLiches()) {
 			if (nearbyLich.isShadowClone() && nearbyLich.getMasterLich() == this) {
 				count++;
 			}
@@ -418,7 +389,7 @@ public class Lich extends Monster {
 	}
 
 	public List<? extends Lich> getNearbyLiches() {
-		return level.getEntitiesOfClass(getClass(), new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D));
+		return this.getLevel().getEntitiesOfClass(getClass(), new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D));
 	}
 
 	public boolean wantsNewMinion() {
@@ -426,25 +397,29 @@ public class Lich extends Monster {
 	}
 
 	public int countMyMinions() {
-		return (int) level.getEntitiesOfClass(LichMinion.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D))
+		return (int) this.getLevel().getEntitiesOfClass(LichMinion.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D))
 				.stream()
 				.filter(m -> m.master == this)
 				.count();
 	}
 
+	//-----------------------------------------//
+	//              TELEPORTATION              //
+	//-----------------------------------------//
+
 	public void teleportToSightOfEntity(@Nullable Entity entity) {
-		Vec3 dest = findVecInLOSOf(entity);
+		Vec3 dest = this.findVecInLOSOf(entity);
 		double srcX = getX();
 		double srcY = getY();
 		double srcZ = getZ();
 
 		if (dest != null && entity != null) {
-			teleportToNoChecks(dest.x, dest.y, dest.z);
-			this.getLookControl().setLookAt(entity, 100F, 100F);
+			this.teleportToNoChecks(dest.x(), dest.y(), dest.z());
+			this.getLookControl().setLookAt(entity, 100.0F, 100.0F);
 			this.yBodyRot = this.getYRot();
 
 			if (!this.getSensing().hasLineOfSight(entity)) {
-				teleportToNoChecks(srcX, srcY, srcZ);
+				this.teleportToNoChecks(srcX, srcY, srcZ);
 			}
 		}
 	}
@@ -456,20 +431,20 @@ public class Lich extends Monster {
 	@Nullable
 	public Vec3 findVecInLOSOf(@Nullable Entity targetEntity) {
 		if (targetEntity == null) return null;
-		double origX = getX();
-		double origY = getY();
-		double origZ = getZ();
+		double origX = this.getX();
+		double origY = this.getY();
+		double origZ = this.getZ();
 
 		int tries = 100;
 		for (int i = 0; i < tries; i++) {
 			// we abuse LivingEntity.attemptTeleport, which does all the collision/ground checking for us, then teleport back to our original spot
-			double tx = targetEntity.getX() + random.nextGaussian() * 16D;
+			double tx = targetEntity.getX() + this.getRandom().nextGaussian() * 16D;
 			double ty = targetEntity.getY();
-			double tz = targetEntity.getZ() + random.nextGaussian() * 16D;
+			double tz = targetEntity.getZ() + this.getRandom().nextGaussian() * 16D;
 
-			boolean destClear = randomTeleport(tx, ty, tz, true);
-			boolean canSeeTargetAtDest = hasLineOfSight(targetEntity); // Don't use senses cache because we're in a temporary position
-			teleportTo(origX, origY, origZ);
+			boolean destClear = this.randomTeleport(tx, ty, tz, true);
+			boolean canSeeTargetAtDest = this.hasLineOfSight(targetEntity); // Don't use senses cache because we're in a temporary position
+			this.teleportTo(origX, origY, origZ);
 
 			if (destClear && canSeeTargetAtDest) {
 				return new Vec3(tx, ty, tz);
@@ -484,97 +459,173 @@ public class Lich extends Monster {
 	 */
 	private void teleportToNoChecks(double destX, double destY, double destZ) {
 		// save original position
-		double srcX = getX();
-		double srcY = getY();
-		double srcZ = getZ();
+		double srcX = this.getX();
+		double srcY = this.getY();
+		double srcZ = this.getZ();
 
 		// change position
-		teleportTo(destX, destY, destZ);
+		this.teleportTo(destX, destY, destZ);
 
-		makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
-		this.level.playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT, this.getSoundSource(), 1.0F, 1.0F);
+		this.makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
+		this.getLevel().playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT, this.getSoundSource(), 1.0F, 1.0F);
 		this.playSound(TFSounds.LICH_TELEPORT, 1.0F, 1.0F);
 
 		// sometimes we need to do this
 		this.jumping = false;
 	}
 
+	//-----------------------------------------//
+	//                PARTICLES                //
+	//-----------------------------------------//
+
 	public void makeTeleportTrail(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
 		// make particle trail
 		int particles = 128;
 		for (int i = 0; i < particles; i++) {
 			double trailFactor = i / (particles - 1.0D);
-			float f = (random.nextFloat() - 0.5F) * 0.2F;
-			float f1 = (random.nextFloat() - 0.5F) * 0.2F;
-			float f2 = (random.nextFloat() - 0.5F) * 0.2F;
-			double tx = srcX + (destX - srcX) * trailFactor + (random.nextDouble() - 0.5D) * getBbWidth() * 2D;
-			double ty = srcY + (destY - srcY) * trailFactor + random.nextDouble() * getBbHeight();
-			double tz = srcZ + (destZ - srcZ) * trailFactor + (random.nextDouble() - 0.5D) * getBbWidth() * 2D;
-			level.addParticle(ParticleTypes.EFFECT, tx, ty, tz, f, f1, f2);
+			float f = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
+			float f1 = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
+			float f2 = (this.getRandom().nextFloat() - 0.5F) * 0.2F;
+			double tx = srcX + (destX - srcX) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
+			double ty = srcY + (destY - srcY) * trailFactor + this.getRandom().nextDouble() * this.getBbHeight();
+			double tz = srcZ + (destZ - srcZ) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
+			this.getLevel().addParticle(ParticleTypes.EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
 
-	public void makeRedMagicTrail(BlockPos source, BlockPos target) {
+	public void makeMagicTrail(BlockPos source, BlockPos target, float red, float green, float blue) {
 		int particles = 60;
-		for (int i = 0; i < particles; i++) {
-			double trailFactor = i / (particles - 1.0D);
-			float f = 1.0F;
-			float f1 = 0.5F;
-			float f2 = 0.5F;
-			double tx = source.getX() + (target.getX() - source.getX()) * trailFactor + random.nextGaussian() * 0.005;
-			double ty = source.getY() + (target.getY() - source.getY()) * trailFactor + random.nextGaussian() * 0.005;
-			double tz = source.getZ() + (target.getZ() - source.getZ()) * trailFactor + random.nextGaussian() * 0.005;
-			level.addParticle(ParticleTypes.ENTITY_EFFECT, tx, ty, tz, f, f1, f2);
+		if (!this.getLevel().isClientSide()) {
+			for (ServerPlayer serverplayer : ((ServerLevel) this.getLevel()).players()) {
+				if (serverplayer.distanceToSqr(Vec3.atCenterOf(source)) < 4096.0D) {
+					ParticlePacket packet = new ParticlePacket();
+
+					for (int i = 0; i < particles; i++) {
+						double trailFactor = i / (particles - 1.0D);
+						double tx = source.getX() + (target.getX() - source.getX()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
+						double ty = source.getY() + 0.2D + (target.getY() - source.getY()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
+						double tz = source.getZ() + (target.getZ() - source.getZ()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
+						packet.queueParticle(ParticleTypes.ENTITY_EFFECT, false, tx, ty, tz, red, green, blue);
+					}
+
+					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), packet);
+				}
+			}
 		}
 	}
 
-	public void makeBlackMagicTrail(BlockPos source, BlockPos target) {
-		// make particle trail
-		int particles = 60;
-		for (int i = 0; i < particles; i++) {
-			double trailFactor = i / (particles - 1.0D);
-			float f = 0.2F;
-			float f1 = 0.2F;
-			float f2 = 0.2F;
-			double tx = source.getX() + (target.getX() - source.getX()) * trailFactor + random.nextGaussian() * 0.005;
-			double ty = source.getY() + (target.getY() - source.getY()) * trailFactor + random.nextGaussian() * 0.005;
-			double tz = source.getZ() + (target.getZ() - source.getZ()) * trailFactor + random.nextGaussian() * 0.005;
-			level.addParticle(ParticleTypes.ENTITY_EFFECT, tx, ty, tz, f, f1, f2);
+	private void extinguishNearbyCandles() {
+		for (BlockPos pos : WorldUtil.getAllAround(this.blockPosition(), 10)) {
+			if (level.getBlockState(pos).getBlock() instanceof AbstractCandleBlock && level.getBlockState(pos).getValue(BlockStateProperties.LIT)) {
+				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(BlockStateProperties.LIT, false));
+				level.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 1.0F);
+			} else if (level.getBlockState(pos).getBlock() instanceof AbstractLightableBlock && level.getBlockState(pos).getValue(AbstractLightableBlock.LIGHTING) == AbstractLightableBlock.Lighting.NORMAL) {
+				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(AbstractLightableBlock.LIGHTING, AbstractLightableBlock.Lighting.OMINOUS));
+				level.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 0.75F);
+			}
 		}
+	}
+
+	//-----------------------------------------//
+	//       METHOD GETTERS AND SETTERS        //
+	//-----------------------------------------//
+
+	public void setExtinguishTimer() {
+		this.spawnTime = 20;
+	}
+
+	/**
+	 * What phase of the fight are we on?
+	 * <p>
+	 * 1 - reflecting bolts, shield up
+	 * 2 - summoning minions
+	 * 3 - melee
+	 */
+	public int getPhase() {
+		if (this.isShadowClone() || this.getShieldStrength() > 0) {
+			return 1;
+		} else if (this.getMinionsToSummon() > 0 || this.countMyMinions() > 0) {
+			return 2;
+		} else {
+			return 3;
+		}
+	}
+
+	@Nullable
+	public Lich getMasterLich() {
+		return this.masterLich;
+	}
+
+	public void setMaster(Lich lich) {
+		this.masterLich = lich;
+	}
+
+	public int getAttackCooldown() {
+		return this.attackCooldown;
+	}
+
+	public void setAttackCooldown(int cooldown) {
+		this.attackCooldown = cooldown;
+	}
+
+	public int getPopCooldown() {
+		return this.popCooldown;
+	}
+
+	public void setPopCooldown(int cooldown) {
+		this.popCooldown = cooldown;
+	}
+
+	public int getScepterTimeLeft() {
+		return this.heldScepterTime;
+	}
+
+	public void setScepterTime() {
+		this.heldScepterTime = 20 + this.getRandom().nextInt(20);
+		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(TFItems.LIFEDRAIN_SCEPTER.get()));
+	}
+
+	public void resetScepterTime() {
+		this.heldScepterTime = 0;
 	}
 
 	public boolean isShadowClone() {
-		return entityData.get(DATA_ISCLONE);
+		return this.entityData.get(IS_CLONE);
 	}
 
 	public void setShadowClone(boolean shadowClone) {
-		bossInfo.setVisible(!shadowClone);
-		entityData.set(DATA_ISCLONE, shadowClone);
+		this.bossInfo.setVisible(!shadowClone);
+		this.entityData.set(IS_CLONE, shadowClone);
 	}
 
-	public byte getShieldStrength() {
-		return entityData.get(DATA_SHIELDSTRENGTH);
+	public int getShieldStrength() {
+		return this.entityData.get(SHIELD_STRENGTH);
 	}
 
 	public void setShieldStrength(int shieldStrength) {
-		entityData.set(DATA_SHIELDSTRENGTH, (byte) shieldStrength);
+		this.entityData.set(SHIELD_STRENGTH, shieldStrength);
 	}
 
-	public byte getMinionsToSummon() {
-		return entityData.get(DATA_MINIONSLEFT);
+	public int getMinionsToSummon() {
+		return this.entityData.get(MINIONS_LEFT);
 	}
 
 	public void setMinionsToSummon(int minionsToSummon) {
-		entityData.set(DATA_MINIONSLEFT, (byte) minionsToSummon);
+		this.entityData.set(MINIONS_LEFT, minionsToSummon);
 	}
 
-	public byte getNextAttackType() {
-		return entityData.get(DATA_ATTACKTYPE);
+	public int getNextAttackType() {
+		return this.entityData.get(ATTACK_TYPE);
 	}
 
 	public void setNextAttackType(int attackType) {
-		entityData.set(DATA_ATTACKTYPE, (byte) attackType);
+		this.entityData.set(ATTACK_TYPE, attackType);
 	}
+
+
+	//-----------------------------------------//
+	//                OVERRIDES                //
+	//-----------------------------------------//
 
 	@Override
 	protected SoundEvent getAmbientSound() {
@@ -593,45 +644,23 @@ public class Lich extends Monster {
 
 	@Override
 	public ResourceLocation getDefaultLootTable() {
-		return !isShadowClone() ? super.getDefaultLootTable() : null;
+		return !this.isShadowClone() ? super.getDefaultLootTable() : null;
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-		compound.putBoolean("ShadowClone", isShadowClone());
-		compound.putByte("ShieldStrength", getShieldStrength());
-		compound.putByte("MinionsToSummon", getMinionsToSummon());
-	}
-
-	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-		setShadowClone(compound.getBoolean("ShadowClone"));
-		setShieldStrength(compound.getByte("ShieldStrength"));
-		setMinionsToSummon(compound.getByte("MinionsToSummon"));
-		if (this.hasCustomName()) {
-			this.bossInfo.setName(this.getDisplayName());
-		}
-	}
-
-	@Override
-	public void die(DamageSource cause) {
-		super.die(cause);
-		// mark the tower as defeated
-		if (!level.isClientSide && !this.isShadowClone()) {
-			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.LICH_TOWER);
-			for(ServerPlayer player : hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
-			}
-
-			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), new BlockPos(this.position()));
-		}
+	public boolean removeWhenFarAway(double dist) {
+		return false;
 	}
 
 	@Override
 	protected boolean shouldDropLoot() {
 		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
+		return false;
+	}
+
+	//as funny as left handed liches are, it would be better if it always holds its scepter/sword in the correct hand
+	@Override
+	public boolean isLeftHanded() {
 		return false;
 	}
 
@@ -641,7 +670,7 @@ public class Lich extends Monster {
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 

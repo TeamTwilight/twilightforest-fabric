@@ -1,11 +1,17 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import twilightforest.TFSounds;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.boss.Lich;
+import twilightforest.item.LifedrainScepterItem;
 import twilightforest.util.EntityUtil;
+
+import java.util.EnumSet;
 
 public class LichPopMobsGoal extends Goal {
 
@@ -13,6 +19,7 @@ public class LichPopMobsGoal extends Goal {
 
 	public LichPopMobsGoal(Lich lich) {
 		this.lich = lich;
+		this.setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
 	}
 
 	@Override
@@ -21,36 +28,48 @@ public class LichPopMobsGoal extends Goal {
 	}
 
 	@Override
+	public void start() {
+		super.start();
+		this.lich.setScepterTime();
+	}
+
+	@Override
+	public void stop() {
+		super.stop();
+		this.lich.resetScepterTime();
+	}
+
+	@Override
 	public boolean canUse() {
 		return !this.lich.isShadowClone() &&
 				this.lich.getHealth() < this.lich.getMaxHealth() &&
 				this.lich.getPopCooldown() == 0 &&
-				!this.lich.level.getEntitiesOfClass(Mob.class,
+				!this.lich.getLevel().getEntitiesOfClass(Mob.class,
 						this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D),
-						e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES)).isEmpty();
+						e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES) && this.lich.hasLineOfSight(e)).isEmpty();
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		for (Mob mob : lich.level.getEntitiesOfClass(Mob.class, this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D), e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES))) {
+		if (this.lich.getScepterTimeLeft() > 0) return;
+		for (Mob mob : this.lich.getLevel().getEntitiesOfClass(Mob.class, this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D), e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES))) {
 			if (this.lich.getSensing().hasLineOfSight(mob)) {
-				if(!lich.level.isClientSide) {
-					mob.spawnAnim();
+				if (!this.lich.getLevel().isClientSide()) {
 					mob.discard();
+					//rain particles
+					LifedrainScepterItem.animateTargetShatter((ServerLevel) this.lich.getLevel(), mob);
 					// play death sound
-					this.lich.level.playSound(null, mob.blockPosition(), EntityUtil.getDeathSound(mob), SoundSource.HOSTILE, 1.0F, mob.getVoicePitch());
-
+					this.lich.getLevel().playSound(null, mob.blockPosition(), EntityUtil.getDeathSound(mob), SoundSource.HOSTILE, 1.0F, mob.getVoicePitch());
+					//funny pop sound
+					this.lich.playSound(TFSounds.LICH_POP_MOB, 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
+					mob.playSound(TFSounds.LICH_POP_MOB, 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
 					// make trail so it's clear that we did it
-					//TODO goal tick methods are only fired server side.
-					//changing this to use sendParticles instead causes them to be either rainbow or black. We need pink.
-					this.lich.makeRedMagicTrail(mob.eyeBlockPosition(), this.lich.eyeBlockPosition());
-
+					this.lich.makeMagicTrail(mob.eyeBlockPosition(), this.lich.eyeBlockPosition(), 1.0F, 0.5F, 0.5F);
 					//heal a little health
 					this.lich.heal(2.0F);
-
-					this.lich.setPopCooldown(60);
-
+					this.lich.swing(InteractionHand.MAIN_HAND);
+					this.lich.setPopCooldown(40);
 					break;
 				}
 			}

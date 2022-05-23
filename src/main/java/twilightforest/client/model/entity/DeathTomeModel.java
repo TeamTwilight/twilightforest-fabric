@@ -127,7 +127,7 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
         float flipLeft = 0.6f;
 
         // hoveriness
-        this.book.setPos(0, 4 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
+        this.book.setPos(0, 8 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
 
         // book openness
         float openAngle = (Mth.sin(bounce * 0.4F) * 0.3F + 1.25F) * open;

@@ -36,6 +36,7 @@ import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.entity.projectile.UrGhastFireball;
 import twilightforest.loot.TFTreasure;
+import twilightforest.util.EntityUtil;
 import twilightforest.util.TFDamageSources;
 import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -633,7 +634,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 			return new BlockPos(ax, ay + 2, az);
 		} else {
-			return new BlockPos(this.blockPosition());
+			return EntityUtil.bossChestLocation(this);
 		}
 	}
 

@@ -19,7 +19,10 @@
       "twilightforest:legacy_redstone_ore",
       "twilightforest:legacy_diamond_ore",
       "twilightforest:legacy_lapis_ore",
-      "twilightforest:legacy_copper_ore"
+      "twilightforest:legacy_copper_ore",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite"
     ],
     [
       "twilightforest:troll_roots"

@@ -15,11 +15,12 @@ import java.util.List;
 
 public class GroundAttackGoal extends Goal {
 	private static final double MIN_RANGE_SQ = 2.0D;
-	private static final double MAX_RANGE_SQ = 48.0D;
+	private static final double MAX_RANGE_SQ = 9.0D;
 	private static final int FREQ = 24;
 
 	private final Minoshroom attacker;
 	private LivingEntity attackTarget;
+	private int cooldown;
 
 	private int attackTick;
 
@@ -32,7 +33,7 @@ public class GroundAttackGoal extends Goal {
 	public boolean canUse() {
 		this.attackTarget = this.attacker.getTarget();
 
-		if (this.attackTarget == null) {
+		if (cooldown-- > 0 || this.attackTarget == null) {
 			return false;
 		} else {
 			double distance = this.attacker.distanceToSqr(this.attackTarget);
@@ -55,6 +56,7 @@ public class GroundAttackGoal extends Goal {
 
 	@Override
 	public void start() {
+		cooldown = (20 * 10) + attacker.getRandom().nextInt(20 * 10); // 10 - 20 second cooldown
 		attackTick = 30 + attacker.getRandom().nextInt(30);
 		attacker.setMaxCharge(attackTick);
 		attacker.setGroundAttackCharge(true);

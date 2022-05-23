@@ -26,25 +26,6 @@ public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyBlo
 
 	private final FireflyModel fireflyModel;
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
-	//private static final RenderType GLOW_LAYER;
-	static {
-		RenderStateShard.TransparencyStateShard transparencyState = new RenderStateShard.TransparencyStateShard(TwilightForestMod.ID + ":firefly_glow", () -> {
-			RenderSystem.enableBlend();
-			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		}, () -> {
-			RenderSystem.disableBlend();
-			RenderSystem.defaultBlendFunc();
-		});
-		//RenderStateShard.AlphaStateShard noAlphaTest = new RenderStateShard.AlphaStateShard(0);
-
-		// [VanillaCopy] RenderState constants
-		//RenderStateShard.DiffuseLightingStateShard enableDiffuse = new RenderStateShard.DiffuseLightingStateShard(true);
-		//RenderStateShard.CullStateShard disableCull = new RenderStateShard.CullStateShard(false);
-		//RenderStateShard.LightmapStateShard enableLightmap = new RenderStateShard.LightmapStateShard(true);
-
-		//RenderType.CompositeState rendertype$state = RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(textureLoc, false, false)).setTransparencyState(transparencyState)/*FIXME .setDiffuseLightingState(enableDiffuse).setAlphaState(noAlphaTest)*/.setCullState(disableCull).setLightmapState(enableLightmap).createCompositeState(false);
-		//GLOW_LAYER = RenderType.create(TwilightForestMod.ID + ":firefly_glow", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, true, true, rendertype$state);
-	}
 
 	public FireflyTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
 		this.fireflyModel = new FireflyModel(renderer.bakeLayer(TFModelLayers.FIREFLY));
@@ -70,8 +51,8 @@ public class FireflyTileEntityRenderer implements BlockEntityRenderer<FireflyBlo
 		VertexConsumer builder = buffer.getBuffer(RenderType.entityCutout(textureLoc));
 		fireflyModel.renderToBuffer(ms, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
-		//builder = buffer.getBuffer(GLOW_LAYER);
-		//fireflyModel.glow.render(ms, builder, 0xF000F0, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, glow);
+		builder = buffer.getBuffer(RenderType.entityTranslucent(textureLoc));
+		fireflyModel.glow.render(ms, builder, 0xF000F0, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, glow);
 
 		ms.popPose();
 		ms.popPose();

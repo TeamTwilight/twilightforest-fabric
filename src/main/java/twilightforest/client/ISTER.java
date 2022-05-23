@@ -101,11 +101,11 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 					ms.translate(0.0F, 0.25F, 0.0F);
 					if(((AbstractTrophyBlock) block).getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
 					if(((AbstractTrophyBlock) block).getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, 0.0F, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, TFClientEvents.time + Minecraft.getInstance().getDeltaFrameTime(), ms, buffers, light, camera);
 					ms.popPose();
 
 				} else {
-					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, 0.0F, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render(null, 180.0F, trophy, variant, TFClientEvents.time + Minecraft.getInstance().getDeltaFrameTime(), ms, buffers, light, camera);
 				}
 			} else if (block instanceof KeepsakeCasketBlock) {
 				Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(this.keepsakeCasketBlockEntity, ms, buffers, light, overlay);
