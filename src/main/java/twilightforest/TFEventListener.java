@@ -15,7 +15,10 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.item.v1.ModifyItemAttributeModifiersCallback;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
@@ -27,8 +30,10 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
@@ -121,11 +126,11 @@ public class TFEventListener {
 		UseBlockCallback.EVENT.register(TFEventListener::onPlayerRightClick);
 		PlayerBlockBreakEvents.BEFORE.register(TFEventListener::onCasketBreak);
 		PlayerBlockBreakEvents.BEFORE.register(TFEventListener::breakBlock);
-		ServerPlayerCreationCallback.EVENT.register(TFEventListener::playerLogsIn);
+		ServerPlayConnectionEvents.JOIN.register(TFEventListener::playerLogsIn);
 		ServerPlayerEvents.AFTER_RESPAWN.register(TFEventListener::onPlayerRespawn);
 		ServerPlayerEvents.ALLOW_DEATH.register(TFEventListener::applyDeathItems);
 		ProjectileImpactCallback.EVENT.register(TFEventListener::throwableParry);
-		ItemAttributeModifierCallback.EVENT.register(TFEventListener::addReach);
+		ModifyItemAttributeModifiersCallback.EVENT.register(TFEventListener::addReach);
 		EntityTrackingEvents.START_TRACKING.register(TFEventListener::onStartTracking);
 		MountEntityCallback.EVENT.register(TFEventListener::preventMountDismount);
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(TFEventListener::playerPortals);
@@ -458,12 +463,12 @@ public class TFEventListener {
 			if(checker != null) {
 				if (!((KeepsakeCasketBlockEntity) te).isEmpty()) {
 					if(!player.hasPermissions(3) || !player.getGameProfile().getId().equals(checker)) {
-						return true;
+						return false;
 					}
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 
 	private static boolean charmOfLife(Player player) {
@@ -813,7 +818,8 @@ public class TFEventListener {
 	/**
 	 * When player logs in, report conflict status, set enforced_progression rule
 	 */
-	public static void playerLogsIn(ServerPlayer player) {
+	public static void playerLogsIn(ServerGamePacketListenerImpl handler, PacketSender sender, MinecraftServer server) {
+		ServerPlayer player = handler.getPlayer();
 		sendEnforcedProgressionStatus(player, TFGenerationSettings.isProgressionEnforced(player.level));
 		updateCapabilities(player, player);
 		banishNewbieToTwilightZone(player);
