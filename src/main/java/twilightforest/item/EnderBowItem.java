@@ -24,7 +24,7 @@ public class EnderBowItem extends BowItem implements CustomArrowItem {
 
 	public static boolean onHit(Projectile arrow, HitResult hitResult) {
 		if (arrow.getOwner() instanceof Player player
-						&& evt.getRayTraceResult() instanceof EntityHitResult result
+						&& hitResult instanceof EntityHitResult result
 						&& result.getEntity() instanceof LivingEntity living
 						&& arrow.getOwner() != result.getEntity()) {
 

@@ -9,10 +9,12 @@ import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import twilightforest.TFConfig;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.UncraftingGui;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -40,10 +42,19 @@ public class REI implements REIClientPlugin {
 //    @Override
 //    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 //        IIngredientManager ingredientManager = jeiRuntime.getIngredientManager();
-//        ShaderRegistry.rarityWeightMap.keySet().forEach((rarity) ->
-//                ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(
-//                        ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + rarity)).getDefaultInstance()
-//                )));
+//
+//        if(FabricLoader.getInstance().isModLoaded(TFCompat.IE_ID)) {
+//            ShaderRegistry.rarityWeightMap.keySet().forEach((rarity) ->
+//                    ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(
+//                            ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + rarity)).getDefaultInstance()
+//                    )));
+//
+//            for (ShaderRegistry.ShaderRegistryEntry entry : IEShaderRegister.getAllTwilightShaders()) {
+//                ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")));
+//                ItemNBTHelper.putString(stack, "shader_name", entry.getName().toString());
+//                ingredientManager.addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(stack));
+//            }
+//        }
 //    }
 
     @Override

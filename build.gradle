@@ -85,7 +85,7 @@ dependencies {
 
     implementation(include("com.electronwill.night-config:core:3.6.3"))
     implementation(include("com.electronwill.night-config:toml:3.6.3"))
-    modImplementation(include("io.github.fabricators_of_create:Porting-Lib:${project.port_lib_version}+${project.minecraft_version}.${project.port_lib_hash}"))
+    modImplementation(include("io.github.fabricators_of_create:Porting-Lib:${project.port_lib_version}+${project.minecraft_version}-dev.${project.port_lib_hash}"))
     //modImplementation "com.telepathicgrunt:Blame-Fabric:1.17-4.2.0-fabric"
 //    modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'
 
