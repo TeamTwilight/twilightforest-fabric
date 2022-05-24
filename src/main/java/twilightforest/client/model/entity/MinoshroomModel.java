@@ -1,10 +1,12 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.util.Mth;
 import net.fabricmc.api.EnvType;
@@ -104,59 +106,40 @@ public class MinoshroomModel extends HumanoidModel<Minoshroom> {
     @Override
     public void setupAnim(Minoshroom entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         // copied from HumanoidModel
-
         this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
         this.head.xRot = headPitch / (180F / (float) Math.PI);
-        this.hat.yRot = this.head.yRot;
-        this.hat.xRot = this.head.xRot;
+        this.hat.copyFrom(this.head);
 
-        this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
-        this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
-        this.rightArm.zRot = 0.0F;
-        this.leftArm.zRot = 0.0F;
+		this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 2.0F * limbSwingAmount * 0.5F;
+		this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+		this.rightArm.zRot = 0.0F;
+		this.leftArm.zRot = 0.0F;
 
-        this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        this.rightLeg.yRot = 0.0F;
-        this.leftLeg.yRot = 0.0F;
+		this.rightArm.yRot = 0.0F;
+		this.leftArm.yRot = 0.0F;
+		boolean rightHanded = entity.getMainArm() == HumanoidArm.RIGHT;
+		if (entity.isUsingItem()) {
+			boolean useHand = entity.getUsedItemHand() == InteractionHand.MAIN_HAND;
+			if (useHand == rightHanded) {
+				this.poseRightArm(entity);
+			} else {
+				this.poseLeftArm(entity);
+			}
+		} else {
+			boolean bothHands = rightHanded ? this.leftArmPose.isTwoHanded() : this.rightArmPose.isTwoHanded();
+			if (rightHanded != bothHands) {
+				this.poseLeftArm(entity);
+				this.poseRightArm(entity);
+			} else {
+				this.poseRightArm(entity);
+				this.poseLeftArm(entity);
+			}
+		}
 
-        if (this.leftArmPose != ArmPose.EMPTY) {
-            this.leftArm.xRot = this.leftArm.xRot * 0.5F - ((float) Math.PI / 10F);
-        }
-
-        if (this.rightArmPose != ArmPose.EMPTY) {
-            this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float) Math.PI / 10F);
-        }
-
-
-        this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-        this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-        this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-        this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
-
-        float var7 = 0.0F;
-        float var8 = 0.0F;
-
-        if (this.leftArmPose == ArmPose.BOW_AND_ARROW) {
-            this.leftArm.zRot = 0.0F;
-            this.leftArm.yRot = 0.1F - var7 * 0.6F + this.head.yRot + 0.4F;
-            this.leftArm.xRot = -((float) Math.PI / 2F) + this.head.xRot;
-            this.leftArm.xRot -= var7 * 1.2F - var8 * 0.4F;
-            this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-            this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
-        }
-
-        if (this.rightArmPose == ArmPose.BOW_AND_ARROW) {
-            this.rightArm.zRot = 0.0F;
-            this.rightArm.yRot = -(0.1F - var7 * 0.6F) + this.head.yRot;
-            this.rightArm.xRot = -((float) Math.PI / 2F) + this.head.xRot;
-            this.rightArm.xRot -= var7 * 1.2F - var8 * 0.4F;
-            this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-            this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-        }
+		this.setupAttackAnimation(entity, ageInTicks);
+		AnimationUtils.bobArms(this.leftArm, this.rightArm, ageInTicks);
 
         // copied from QuadrepedModel
-        this.cowTorso.xRot = ((float) Math.PI / 2F);
         this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
         this.leftBackLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;

@@ -35,6 +35,13 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 			return false;
 		}
 
+		// Start with roots first, so they don't fail placement because they intersect the trunk shell first
+		// 3-5 roots at the bottom
+		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 1, 0, 12, 0.75D, 3, 5, 3, false, config);
+
+		// several more taproots
+		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 1, 2, 18, 0.9D, 3, 5, 3, false, config);
+
 		// make a tree!
 
 		// build the trunk
@@ -42,12 +49,6 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 
 		// build the crown
 		buildTinyCrown(world, trunkPlacer, leavesPlacer, random, pos, diameter, height, config);
-
-		// 3-5 roots at the bottom
-		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 1, 0, 12, 0.75D, 3, 5, 3, false, config);
-
-		// several more taproots
-		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 1, 2, 18, 0.9D, 3, 5, 3, false, config);
 
 		// add clock block
 		world.setBlock(pos.offset(-1, 2, 0), TFBlocks.TIME_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), 3);

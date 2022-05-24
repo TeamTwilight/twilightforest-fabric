@@ -3,6 +3,7 @@ package twilightforest.world.components.feature;
 import com.mojang.serialization.Codec;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.BlockPos;
@@ -42,7 +43,7 @@ public class TFGenBigMushgloom extends Feature<NoneFeatureConfiguration> {
 
 		// generate!
 		for (int dy = 0; dy < height - 2; dy++) {
-			world.setBlock(pos.above(dy), TFBlocks.HUGE_MUSHGLOOM_STEM.get().defaultBlockState(), 3);
+			world.setBlock(pos.above(dy), TFBlocks.HUGE_MUSHGLOOM_STEM.get().defaultBlockState().setValue(HugeMushroomBlock.UP, false).setValue(HugeMushroomBlock.DOWN, false), 3);
 		}
 
 		makeMushroomCap(world, pos.above(height - 2));

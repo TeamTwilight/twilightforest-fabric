@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import twilightforest.block.TFBlocks;
@@ -209,7 +210,7 @@ public final class FeaturePlacers {
 
     // [VanillaCopy] TrunkPlacer.placeLog - Swapped TreeConfiguration for BlockStateProvider
     // If possible, use TrunkPlacer.placeLog instead
-    public static boolean placeIfValidTreePos(LevelAccessor world, BiConsumer<BlockPos, BlockState> placer, Random random, BlockPos pos, BlockStateProvider config) {
+    public static boolean placeIfValidTreePos(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, Random random, BlockPos pos, BlockStateProvider config) {
         if (TreeFeature.validTreePos(world, pos)) {
             placer.accept(pos, config.getState(random, pos));
             return true;
@@ -218,7 +219,7 @@ public final class FeaturePlacers {
         }
     }
 
-    public static boolean placeIfValidRootPos(LevelAccessor world, BiConsumer<BlockPos, BlockState> placer, Random random, BlockPos pos, BlockStateProvider config) {
+    public static boolean placeIfValidRootPos(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, Random random, BlockPos pos, BlockStateProvider config) {
         if (FeatureLogic.canRootGrowIn(world, pos)) {
             placer.accept(pos, config.getState(random, pos));
             return true;
@@ -266,5 +267,41 @@ public final class FeaturePlacers {
     public static <T extends Comparable<T>> BlockState transferStateKey(BlockState stateIn, BlockState stateOut, Property<T> property) {
         if(!stateIn.hasProperty(property) || !stateOut.hasProperty(property)) return stateOut;
         return stateOut.setValue(property, stateIn.getValue(property));
+    }
+
+    public static void traceRoot(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockStateProvider dirtRoot, Iterable<BlockPos> posTracer) {
+        // Trace block positions and stop tracing too far into open air
+        for (BlockPos rootPos : posTracer) {
+            if (worldReader.isStateAtPosition(rootPos, FeatureLogic.ROOT_SHOULD_SKIP))
+                continue; // Ignore pos if this block should be checked (root, or one of the protected block IDs)
+
+            // If the block/position cannot be replaced or is detached from ground-mass, stop
+            if (!FeaturePlacers.placeIfValidRootPos(worldReader, worldPlacer, random, rootPos, dirtRoot))
+                return;
+        }
+    }
+
+    public static void traceExposedRoot(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockStateProvider exposedRoot, BlockStateProvider dirtRoot, Iterable<BlockPos> posTracer) {
+        // Trace block positions and alternate the root tracing once "underground"
+        for (BlockPos exposedPos : posTracer) {
+            if (worldReader.isStateAtPosition(exposedPos, FeatureLogic.ROOT_SHOULD_SKIP))
+                continue;
+
+            // Is the position considered underground?
+            if (!FeatureLogic.hasEmptyHorizontalNeighbor(worldReader, exposedPos)) {
+                // Retry placement at position as underground root. If successful, continue the tracing as regular root
+                if (FeaturePlacers.placeIfValidRootPos(worldReader, worldPlacer, random, exposedPos, dirtRoot))
+                    traceRoot(worldReader, worldPlacer, random, dirtRoot, posTracer);
+                // Now the outer loop can end. Goodbye!
+                return;
+            } else { // Not underground
+                // Check if the position is not replaceable
+                if (!worldReader.isStateAtPosition(exposedPos, FeatureLogic::worldGenReplaceable))
+                    return; // Root must stop
+
+                // Good to go!
+                worldPlacer.accept(exposedPos, exposedRoot.getState(random, exposedPos));
+            }
+        }
     }
 }

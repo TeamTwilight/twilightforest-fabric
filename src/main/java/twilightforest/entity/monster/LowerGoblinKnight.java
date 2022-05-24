@@ -43,7 +43,15 @@ public class LowerGoblinKnight extends Monster {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new RiderSpearAttackGoal(this));
 		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false) {
+			@Override
+			public boolean canUse() {
+				if (mob.isVehicle() && this.mob.getPassengers().get(0) instanceof UpperGoblinKnight knight && knight.heavySpearTimer > 0) {
+					return false;
+				}
+				return super.canUse();
+			}
+		});
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -61,23 +69,23 @@ public class LowerGoblinKnight extends Monster {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(ARMOR, false);
+		this.entityData.define(ARMOR, false);
 	}
 
 	public boolean hasArmor() {
-		return entityData.get(ARMOR);
+		return this.entityData.get(ARMOR);
 	}
 
 	private void setHasArmor(boolean flag) {
-		entityData.set(ARMOR, flag);
+		this.entityData.set(ARMOR, flag);
 
-		if (!level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			if (flag) {
-				if (!getAttribute(Attributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
-					getAttribute(Attributes.ARMOR).addTransientModifier(ARMOR_MODIFIER);
+				if (!this.getAttribute(Attributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
+					this.getAttribute(Attributes.ARMOR).addTransientModifier(ARMOR_MODIFIER);
 				}
 			} else {
-				getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER);
+				this.getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER);
 			}
 		}
 	}
@@ -96,15 +104,15 @@ public class LowerGoblinKnight extends Monster {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag dataTag) {
-		livingData = super.finalizeSpawn(worldIn, difficulty, reason, livingData, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
 
 		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.level);
 		upper.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-		upper.finalizeSpawn(worldIn, difficulty, MobSpawnType.NATURAL, livingData, dataTag);
+		upper.finalizeSpawn(accessor, difficulty, MobSpawnType.NATURAL, data, tag);
 		upper.startRiding(this);
 
-		return livingData;
+		return data;
 	}
 
 	@Override
@@ -113,21 +121,9 @@ public class LowerGoblinKnight extends Monster {
 	}
 
 	@Override
-	public void customServerAiStep() {
-		if (isVehicle() && getPassengers().get(0) instanceof LivingEntity && this.getTarget() == null) {
-			this.setTarget(((Mob) this.getPassengers().get(0)).getTarget());
-		}
-		if(getTarget() instanceof Player && ((Player)getTarget()).getAbilities().invulnerable) {
-			this.setTarget(null);
-		}
-		super.customServerAiStep();
-	}
-
-	@Override
 	public boolean doHurtTarget(Entity entity) {
-
-		if (isVehicle() && getPassengers().get(0) instanceof LivingEntity) {
-			return ((LivingEntity) this.getPassengers().get(0)).doHurtTarget(entity);
+		if (this.isVehicle() && this.getPassengers().get(0) instanceof LivingEntity living) {
+			return living.doHurtTarget(entity);
 		} else {
 			return super.doHurtTarget(entity);
 		}
@@ -174,8 +170,8 @@ public class LowerGoblinKnight extends Monster {
 			// shield?
 			UpperGoblinKnight upper = null;
 
-			if (isVehicle() && getPassengers().get(0) instanceof UpperGoblinKnight) {
-				upper = (UpperGoblinKnight) this.getPassengers().get(0);
+			if (this.isVehicle() && this.getPassengers().get(0) instanceof UpperGoblinKnight goblin) {
+				upper = goblin;
 			}
 
 			if (upper != null && upper.hasShield() && difference > 150 && difference < 230) {
@@ -186,11 +182,21 @@ public class LowerGoblinKnight extends Monster {
 
 			// break armor?
 			if (this.hasArmor() && (difference > 300 || difference < 60)) {
-				breakArmor();
+				this.breakArmor();
 			}
 		}
 
 		return super.hurt(source, amount);
+	}
+
+	@Override
+	public void positionRider(Entity entity) {
+		super.positionRider(entity);
+		if(entity instanceof UpperGoblinKnight goblin) {
+			goblin.setYBodyRot(this.getYRot());
+			goblin.setYHeadRot(this.getYRot());
+			goblin.setYRot(this.getYRot());
+		}
 	}
 
 	@Override
@@ -207,7 +213,7 @@ public class LowerGoblinKnight extends Monster {
 	}
 
 	private void breakArmor() {
-		level.broadcastEntityEvent(this, (byte) 5);
+		this.getLevel().broadcastEntityEvent(this, (byte) 5);
 		this.setHasArmor(false);
 	}
 }

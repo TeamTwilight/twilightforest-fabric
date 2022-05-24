@@ -1,43 +1,37 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.ITFCharger;
+import twilightforest.entity.boss.Minoshroom;
 import twilightforest.util.EntityUtil;
 
 import java.util.EnumSet;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class ChargeAttackGoal extends Goal {
 
 	private static final double MIN_RANGE_SQ = 16.0D;
 	private static final double MAX_RANGE_SQ = 64.0D;
-	private static final int FREQ = 1;
+	private static final int FREQ = 10;
 
 	private final PathfinderMob charger;
 	private LivingEntity chargeTarget;
-	private double chargeX;
-	private double chargeY;
-	private double chargeZ;
+	private Vec3 chargePos;
 
 	protected float speed;
-
 	private final boolean canBreak;
-
 	private int windup;
-
 	private boolean hasAttacked;
 
-	public ChargeAttackGoal(PathfinderMob entityLiving, float f, boolean canBreak) {
-		this.charger = entityLiving;
+	public ChargeAttackGoal(PathfinderMob mob, float f, boolean canBreak) {
+		this.charger = mob;
 		this.speed = f;
 		this.canBreak = canBreak;
 		this.windup = 0;
@@ -53,24 +47,23 @@ public class ChargeAttackGoal extends Goal {
 			return false;
 		} else {
 			double distance = this.charger.distanceToSqr(this.chargeTarget);
-			if (distance < MIN_RANGE_SQ || distance > MAX_RANGE_SQ) {
+			//minoshroom will charge when the target is further away than the normal minotaur
+			double minoshroomBonus = this.charger instanceof Minoshroom ? 9.0D : 0.0D;
+			if (distance < MIN_RANGE_SQ + minoshroomBonus || distance > MAX_RANGE_SQ + minoshroomBonus) {
 				return false;
 			} else if (!this.charger.isOnGround()) {
 				return false;
 			} else {
-				Vec3 chargePos = findChargePoint(charger, chargeTarget, 2.1);
+				Vec3 chargePos = findChargePoint(charger, chargeTarget);
 				boolean canSeeTargetFromDest = charger.getSensing().hasLineOfSight(chargeTarget);
 				if (!canSeeTargetFromDest) {
 					return false;
 				} else {
-					chargeX = chargePos.x;
-					chargeY = chargePos.y;
-					chargeZ = chargePos.z;
+					this.chargePos = chargePos;
 
 					return this.charger.getRandom().nextInt(FREQ) == 0;
 				}
 			}
-
 		}
 	}
 
@@ -82,30 +75,30 @@ public class ChargeAttackGoal extends Goal {
 
 	@Override
 	public boolean canContinueToUse() {
-		return windup > 0 || !this.charger.getNavigation().isDone();
+		return this.windup > 0 || !this.charger.getNavigation().isDone();
 	}
 
 	@Override
 	public void tick() {
 		// look where we're going
-		this.charger.getLookControl().setLookAt(chargeX, chargeY - 1, chargeZ, 10.0F, this.charger.getMaxHeadXRot());
+		this.charger.getLookControl().setLookAt(this.chargePos.x(), this.chargePos.y() - 1, this.chargePos.z(), 10.0F, this.charger.getMaxHeadXRot());
 
-		if (windup > 0) {
-			if (--windup == 0) {
+		if (this.windup > 0) {
+			if (--this.windup == 0) {
 				// actually charge!
 
-				this.charger.getNavigation().moveTo(chargeX, chargeY, chargeZ, this.speed);
+				this.charger.getNavigation().moveTo(this.chargePos.x(), this.chargePos.y(), this.chargePos.z(), this.speed);
 			} else {
 				this.charger.animationSpeed += 0.8;
 
-				if (this.charger instanceof ITFCharger) {
-					((ITFCharger) charger).setCharging(true);
+				if (this.charger instanceof ITFCharger chargeMob) {
+					chargeMob.setCharging(true);
 				}
 			}
-		} else if (canBreak) {
-			if (!charger.level.isClientSide && charger.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+		} else if (this.canBreak) {
+			if (!this.charger.getLevel().isClientSide() && ForgeEventFactory.getMobGriefingEvent(this.charger.getLevel(), this.charger)) {
 
-				AABB bb = charger.getBoundingBox();
+				AABB bb = this.charger.getBoundingBox();
 				int minx = Mth.floor(bb.minX - 0.75D);
 				int miny = Mth.floor(bb.minY + 0.0D);
 				int minz = Mth.floor(bb.minZ - 0.75D);
@@ -116,10 +109,10 @@ public class ChargeAttackGoal extends Goal {
 				BlockPos min = new BlockPos(minx, miny, minz);
 				BlockPos max = new BlockPos(maxx, maxy, maxz);
 
-				if (charger.level.hasChunksAt(min, max)) {
+				if (this.charger.getLevel().hasChunksAt(min, max)) {
 					for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
-						if (EntityUtil.canDestroyBlock(charger.level, pos, charger) && charger.level.getBlockEntity(pos) == null) {
-							charger.level.destroyBlock(pos, true);
+						if (EntityUtil.canDestroyBlock(this.charger.getLevel(), pos, this.charger) && this.charger.getLevel().getBlockEntity(pos) == null) {
+							this.charger.getLevel().destroyBlock(pos, true);
 						}
 					}
 				}
@@ -127,7 +120,7 @@ public class ChargeAttackGoal extends Goal {
 		}
 
 		// attack the target when we get in range
-		double rangeSq = this.charger.getBbWidth() * 2.1F * this.charger.getBbWidth() * 2.1F;
+		double rangeSq = this.charger instanceof Minoshroom ? 5.0D : this.charger.getBbWidth() * 2.0F * this.charger.getBbWidth() * 2.0F + this.chargeTarget.getBbWidth();
 
 		if (this.charger.distanceToSqr(this.chargeTarget.getX(), this.chargeTarget.getBoundingBox().minY, this.chargeTarget.getZ()) <= rangeSq) {
 			if (!this.hasAttacked) {
@@ -135,7 +128,6 @@ public class ChargeAttackGoal extends Goal {
 				this.charger.doHurtTarget(this.chargeTarget);
 			}
 		}
-
 	}
 
 	@Override
@@ -145,8 +137,8 @@ public class ChargeAttackGoal extends Goal {
 		this.hasAttacked = false;
 		this.charger.setSprinting(false);
 
-		if (this.charger instanceof ITFCharger) {
-			((ITFCharger) charger).setCharging(false);
+		if (this.charger instanceof ITFCharger chargeMob) {
+			chargeMob.setCharging(false);
 		}
 	}
 
@@ -154,7 +146,7 @@ public class ChargeAttackGoal extends Goal {
 	/**
 	 * Finds a point that is overshoot blocks "beyond" the target from our position.
 	 */
-	protected Vec3 findChargePoint(Entity attacker, Entity target, double overshoot) {
+	protected Vec3 findChargePoint(Entity attacker, Entity target) {
 
 		// compute angle
 		double vecx = target.getX() - attacker.getX();
@@ -162,6 +154,7 @@ public class ChargeAttackGoal extends Goal {
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
 		double distance = Mth.sqrt((float) (vecx * vecx + vecz * vecz));
+		double overshoot = 2.1D;
 
 		// figure out where we're headed from the target angle
 		double dx = Mth.cos(rangle) * (distance + overshoot);
@@ -170,6 +163,4 @@ public class ChargeAttackGoal extends Goal {
 		// add that to the target entity's position, and we have our destination
 		return new Vec3(attacker.getX() + dx, target.getY(), attacker.getZ() + dz);
 	}
-
-
 }

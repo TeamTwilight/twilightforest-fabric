@@ -32,10 +32,15 @@ public class FullbrightBakedModel implements BakedModel {
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
-		return cache ? cachedQuads.computeIfAbsent(side, (face) -> {
-			List<BakedQuad> quads = delegate.getQuads(state, side, rand);
-			return getQuads(face, quads);
-		}) : getQuads(side, delegate.getQuads(state, side, rand));
+		if (cache) {
+			List<BakedQuad> quads = cachedQuads.get(side);
+			if (quads == null) {
+				quads = getQuads(side, delegate.getQuads(state, side, rand));
+				cachedQuads.put(side, quads);
+			}
+			return quads; // computeIfAbsent has issues, don't use it
+		}
+		return getQuads(side, delegate.getQuads(state, side, rand));
 	}
 
 	protected List<BakedQuad> getQuads(@Nullable Direction face, List<BakedQuad> quads) {

@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,7 +44,14 @@ public class Minotaur extends Monster implements ITFCharger {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(2, new ChargeAttackGoal(this, 1.5F, this instanceof Minoshroom));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false) {
+			//normally, the minoshroom attack reach is 9.5. It can hit you from nearly 2 blocks away!
+			//lowering this to make the fight a bit more fair and more doable hitless with melee
+			@Override
+			protected double getAttackReachSqr(LivingEntity entity) {
+				return this.mob instanceof Minoshroom ? 5.0D : super.getAttackReachSqr(entity);
+			}
+		});
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -59,13 +68,13 @@ public class Minotaur extends Monster implements ITFCharger {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(CHARGING, false);
+		this.entityData.define(CHARGING, false);
 	}
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag dataTag) {
-		SpawnGroupData data = super.finalizeSpawn(worldIn, difficulty, reason, livingdata, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
 		this.populateDefaultEquipmentSlots(difficulty);
 		this.populateDefaultEquipmentEnchantments(difficulty);
 		return data;
@@ -73,12 +82,9 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	@Override
 	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
-		int random = this.random.nextInt(10);
-
+		int random = this.getRandom().nextInt(10);
 		float additionalDiff = difficulty.getEffectiveDifficulty() + 1;
-
 		int result = (int) (random / additionalDiff);
-
 		if (result == 0)
 			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GOLDEN_MINOTAUR_AXE.get()));
 		else
@@ -87,32 +93,62 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	@Override
 	public boolean isCharging() {
-		return entityData.get(CHARGING);
+		return this.entityData.get(CHARGING);
 	}
 
 	@Override
 	public void setCharging(boolean flag) {
-		entityData.set(CHARGING, flag);
+		this.entityData.set(CHARGING, flag);
 	}
 
-	@Override
+	//[VanillaCopy] of Mob.doHurtTarget, edits noted
 	public boolean doHurtTarget(Entity entity) {
-		entity.hurt(TFDamageSources.axing(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		boolean success = super.doHurtTarget(entity);
-		if (success && this.isCharging()) {
-			entity.hurt(TFDamageSources.axing(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-			entity.push(0, 0.4, 0);
-			playSound(TFSounds.MINOTAUR_ATTACK, 1.0F, 1.0F);
+		float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		if (entity instanceof LivingEntity living) {
+			f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), living.getMobType());
+			f1 += (float)EnchantmentHelper.getKnockbackBonus(this);
 		}
 
-		return success;
+		int i = EnchantmentHelper.getFireAspect(this);
+		if (i > 0) {
+			entity.setSecondsOnFire(i * 4);
+		}
+
+		//TF: change damage source to minotaur one
+		boolean flag = entity.hurt(TFDamageSources.axing(this), f);
+		if (flag) {
+			if (f1 > 0.0F && entity instanceof LivingEntity living) {
+				living.knockback(f1 * 0.5F, Mth.sin(this.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(this.getYRot() * Mth.DEG_TO_RAD));
+				this.setDeltaMovement(this.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
+			}
+
+			//TF: check if we're charging. If we are, throw the player upwards and play a sound
+			if (this.isCharging()) {
+				entity.push(this.getDirection().getStepX(), 0.35D, this.getDirection().getStepZ());
+				this.playSound(this.getChargeSound(), 1.0F, 1.0F);
+			}
+
+			if (entity instanceof Player player) {
+				this.maybeDisableShield(player, this.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
+			}
+
+			this.doEnchantDamageEffects(this, entity);
+			this.setLastHurtMob(entity);
+		}
+
+		return flag;
+	}
+
+	protected SoundEvent getChargeSound() {
+		return TFSounds.MINOTAUR_ATTACK;
 	}
 
 	@Override
 	public void aiStep() {
 		super.aiStep();
 
-		if (isCharging()) {
+		if (this.isCharging()) {
 			this.animationSpeed += 0.6;
 		}
 	}
@@ -139,7 +175,6 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	@Override
 	public float getVoicePitch() {
-		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.7F;
+		return (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 0.7F;
 	}
-
 }

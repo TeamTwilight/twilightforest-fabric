@@ -86,6 +86,13 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			return false;
 		}
 
+		// Start with roots first, so they don't fail placement because they intersect the trunk shell first
+		// 3-5 roots at the bottom
+		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 3, 2, 6, 0.75D, 3, 5, 3, false, config);
+
+		// several more taproots
+		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 1, 2, 8, 0.9D, 3, 5, 3, false, config);
+
 		// make a tree!
 
 		// build the trunk
@@ -117,12 +124,6 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			double branchRotation = random.nextDouble();
 			makeSmallBranch(world, trunkPlacer, leavesPlacer, random, pos, diameter, branchHeight, 4, branchRotation, 0.35D, true, config);
 		}
-
-		// 3-5 roots at the bottom
-		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 3, 2, 6, 0.75D, 3, 5, 3, false, config);
-
-		// several more taproots
-		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, diameter, 1, 2, 8, 0.9D, 3, 5, 3, false, config);
 
 		return true;
 	}
@@ -324,21 +325,11 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	/**
 	 * Make a root
 	 */
-	protected void makeRoot(LevelAccessor world, Random random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, TFTreeFeatureConfig config) {
+	protected void makeRoot(LevelAccessor worldReader, Random random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, TFTreeFeatureConfig config) {
 		BlockPos src = FeatureLogic.translate(pos.above(branchHeight), diameter, angle, 0.5);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
-		boolean stillAboveGround = true;
-		for (BlockPos coord : new VoxelBresenhamIterator(src, dest)) {
-			if (stillAboveGround && FeatureUtil.hasAirAround(world, coord)) {
-				world.setBlock(coord, config.branchProvider.getState(random, coord), 3);
-				world.setBlock(coord.below(), config.branchProvider.getState(random, coord.below()), 3);
-			} else {
-				world.setBlock(coord, config.rootsProvider.getState(random, coord), 3);
-				world.setBlock(coord.below(), config.rootsProvider.getState(random, coord.below()), 3);
-				stillAboveGround = false;
-			}
-		}
+		FeaturePlacers.traceExposedRoot(worldReader, (checkedPos, state) -> worldReader.setBlock(checkedPos, state, 3), random, config.branchProvider, config.rootsProvider, new VoxelBresenhamIterator(src, dest));
 	}
 
 	/**

@@ -18,7 +18,7 @@ public class MinoshroomSpawnerBlockEntity extends BossSpawnerBlockEntity<Minoshr
 	@Override
 	public boolean anyPlayerInRange() {
 		Player closestPlayer = level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange(), false);
-		return closestPlayer != null && closestPlayer.getY() > worldPosition.getY() - 4;
+		return closestPlayer != null && closestPlayer.getY() < worldPosition.getY() + 4;
 	}
 
 	@Override

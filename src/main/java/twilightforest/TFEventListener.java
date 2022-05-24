@@ -654,7 +654,7 @@ public class TFEventListener {
 	public static volatile boolean allowDismount = false;
 
 	public static InteractionResult preventMountDismount(Entity mounted, Entity mounting, boolean isMounting) {
-		if (!mounted.level.isClientSide() && !isMounting && mounted.isAlive() && mounting instanceof LivingEntity living && isRidingUnfriendly(living) && !allowDismount)
+		if (!mounted.level.isClientSide() && !isMounting && mounted.isAlive() && mounting instanceof LivingEntity living && living.isAlive() && isRidingUnfriendly(living) && !allowDismount)
 			return InteractionResult.FAIL;
 		return InteractionResult.PASS;
 	}

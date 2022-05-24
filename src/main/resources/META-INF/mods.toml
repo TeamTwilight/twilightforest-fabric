@@ -11,7 +11,7 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest" #o
 updateJSONURL="https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.17.x/update.json"
 logoFile="twilightforest_logo.png" #optional
 credits="By Benimatic (Ben Mazur)" #optional
-authors="Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus, Andromander, GizmoTheMoonPig" #optional
+authors="Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus, Andromander, GizmoTheMoonPig, Jodlodi" #optional
 description='''
 An enchanted forest dimension.
 '''

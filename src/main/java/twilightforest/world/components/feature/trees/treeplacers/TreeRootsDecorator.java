@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import twilightforest.util.FeatureLogic;
+import twilightforest.util.FeaturePlacers;
 import twilightforest.util.VoxelBresenhamIterator;
 import twilightforest.world.registration.TwilightFeatures;
 
@@ -88,43 +89,16 @@ public class TreeRootsDecorator extends TreeDecorator {
 
         if (this.hasSurfaceRoots) {
             for (int i = 0; i < numBranches; i++) {
-                buildRootExposed(worldReader, worldPlacer, random, startPos, offset, i, this.length, this.surfaceBlock, this.rootBlock);
+                BlockPos dest = FeatureLogic.translate(startPos.below(i + 2), this.length, 0.3 * i + (double) offset, 0.8);
+
+                FeaturePlacers.traceExposedRoot(worldReader, worldPlacer, random, this.surfaceBlock, this.rootBlock, new VoxelBresenhamIterator(startPos.below(), dest));
             }
         } else {
             for (int i = 0; i < numBranches; i++) {
-                buildRoot(worldReader, worldPlacer, random, startPos, offset, i, this.length, this.rootBlock);
+                BlockPos dest = FeatureLogic.translate(startPos.below(i + 2), this.length, 0.3 * i + (double) offset, 0.8);
+
+                FeaturePlacers.traceRoot(worldReader, worldPlacer, random, this.rootBlock, new VoxelBresenhamIterator(startPos.below(), dest));
             }
-        }
-    }
-
-    protected void buildRootExposed(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos pos, double offset, int iteration, int length, BlockStateProvider airRoot, BlockStateProvider dirtRoot) {
-        BlockPos dest = FeatureLogic.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
-
-        // go through block by block and stop drawing when we head too far into open air
-        boolean stillAboveGround = true;
-        for (BlockPos coord : new VoxelBresenhamIterator(pos.below(), dest)) {
-            if (stillAboveGround && FeatureLogic.hasEmptyNeighbor(worldReader, coord)) {
-                if (worldReader.isStateAtPosition(coord, FeatureLogic::worldGenReplaceable)) {
-                    worldPlacer.accept(coord, airRoot.getState(random, coord));
-                } else if (!worldReader.isStateAtPosition(coord, FeatureLogic.SHOULD_SKIP)) break;
-            } else {
-                stillAboveGround = false;
-                if (FeatureLogic.canRootGrowIn(worldReader, coord)) {
-                    worldPlacer.accept(coord, dirtRoot.getState(random, coord));
-                } else if (!worldReader.isStateAtPosition(coord, FeatureLogic.SHOULD_SKIP)) break;
-            }
-        }
-    }
-
-    // Shortcircuited version of above function
-    protected void buildRoot(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, BlockPos pos, double offset, int iteration, int length, BlockStateProvider dirtRoot) {
-        BlockPos dest = FeatureLogic.translate(pos.below(iteration + 2), length, 0.3 * iteration + offset, 0.8);
-
-        // go through block by block and stop drawing when we head too far into open air
-        for (BlockPos coord : new VoxelBresenhamIterator(pos.below(), dest)) {
-            if (FeatureLogic.canRootGrowIn(world, coord)) {
-                worldPlacer.accept(coord, dirtRoot.getState(random, coord));
-            } else if (!world.isStateAtPosition(coord, FeatureLogic.SHOULD_SKIP)) break;
         }
     }
 }

@@ -264,28 +264,4 @@ public class TreeConfigurations {
     )
             .decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS))
             .build();
-
-    // TODO Smarter "foilage placer" for mushrooms that actually set the mushroom block states properly
-    public static final TreeConfiguration MUSHROOM_BROWN = new TreeConfiguration.TreeConfigurationBuilder(
-            BlockStateProvider.simple(Blocks.MUSHROOM_STEM),
-            new BranchingTrunkPlacer(12, 5, 5, 6, new BranchesConfig(3, 1, 9, 1, 0.3, 0.2), true),
-            BlockStateProvider.simple(Blocks.BROWN_MUSHROOM_BLOCK),
-            new LeafSpheroidFoliagePlacer(4.25f, 0f, ConstantInt.of(1), 1, 0, 0f, 0),
-            new TwoLayersFeatureSize(11, 1, canopyDistancing)
-    )
-            .decorators(ImmutableList.of(TreeDecorators.FIREFLY))
-            .ignoreVines()
-            .build();
-
-    public static final TreeConfiguration MUSHROOM_RED = new TreeConfiguration.TreeConfigurationBuilder(
-            BlockStateProvider.simple(Blocks.MUSHROOM_STEM),
-            new BranchingTrunkPlacer(12, 5, 5, 6, new BranchesConfig(3, 1, 9, 1, 0.3, 0.2), true),
-            BlockStateProvider.simple(Blocks.RED_MUSHROOM_BLOCK),
-            new LeafSpheroidFoliagePlacer(4.25f, 1.75f, ConstantInt.of(1), 0, 0, -0.45f, 0),
-            new TwoLayersFeatureSize(11, 1, canopyDistancing)
-    )
-            .decorators(ImmutableList.of(TreeDecorators.FIREFLY))
-            .ignoreVines()
-            .build();
-
 }

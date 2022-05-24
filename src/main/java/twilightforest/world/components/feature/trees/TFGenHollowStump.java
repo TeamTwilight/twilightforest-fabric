@@ -31,13 +31,14 @@ public class TFGenHollowStump extends TFGenHollowTree {
 			return false;
 		}
 
-		buildTrunk(world, trunkPlacer, decorationPlacer, random, pos, radius, 6, config);
-
+		// Start with roots first, so they don't fail placement because they intersect the trunk shell first
 		// 3-5 roots at the bottom
 		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 3, 2, 6, 0.75D, 3, 5, 3, false, config);
 
 		// several more taproots
 		buildBranchRing(world, trunkPlacer, leavesPlacer, random, pos, radius, 1, 2, 8, 0.9D, 3, 5, 3, false, config);
+
+		buildTrunk(world, trunkPlacer, decorationPlacer, random, pos, radius, 6, config);
 
 		return true;
 	}

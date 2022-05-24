@@ -26,10 +26,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -248,17 +246,6 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 		}
 
 		return flag;
-	}
-
-	private void maybeDisableShield(Player p_21425_, ItemStack p_21426_, ItemStack p_21427_) {
-		if (!p_21426_.isEmpty() && !p_21427_.isEmpty() && p_21426_.getItem() instanceof AxeItem && p_21427_.is(Items.SHIELD)) {
-			float f = 0.25F + (float)EnchantmentHelper.getBlockEfficiency(this) * 0.05F;
-			if (this.random.nextFloat() < f) {
-				p_21425_.getCooldowns().addCooldown(Items.SHIELD, 100);
-				this.level.broadcastEntityEvent(p_21425_, (byte)30);
-			}
-		}
-
 	}
 
 	@Override

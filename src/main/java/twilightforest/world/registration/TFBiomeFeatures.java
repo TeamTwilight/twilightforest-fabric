@@ -7,10 +7,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.*;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.*;
-import twilightforest.world.components.feature.config.HollowLogConfig;
-import twilightforest.world.components.feature.config.SpikeConfig;
-import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
-import twilightforest.world.components.feature.config.ThornsConfig;
+import twilightforest.world.components.feature.config.*;
 import twilightforest.world.components.feature.templates.*;
 import twilightforest.world.components.feature.trees.*;
 import twilightforest.world.components.feature.trees.growers.SnowTreePlacer;
@@ -24,6 +21,10 @@ public class TFBiomeFeatures {
 	
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () ->
 			new TFGenBigMushgloom(NoneFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<HugeMushroomFeatureConfiguration>> CANOPY_BROWN_MUSHROOM = FEATURES.register("canopy_brown_mushroom", () ->
+			new TFGenCanopyMushroomBrown(HugeMushroomFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<HugeMushroomFeatureConfiguration>> CANOPY_RED_MUSHROOM = FEATURES.register("canopy_red_mushroom", () ->
+			new TFGenCanopyMushroomRed(HugeMushroomFeatureConfiguration.CODEC));
 	//public static final RegistryObject<Feature<TFTreeFeatureConfig>> CANOPY_OAK = FEATURES.register("canopy_oak", () ->
 	//		new TFGenCanopyOak(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<SpikeConfig>> CAVE_STALACTITE = FEATURES.register("block_spike", () ->
@@ -80,8 +81,8 @@ public class TFBiomeFeatures {
 			new SimpleWellFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FANCY_WELL = FEATURES.register("fancy_well", () ->
 			new FancyWellFeature(NoneFeatureConfiguration.CODEC));
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WOOD_ROOTS = FEATURES.register("wood_roots", () ->
-			new TFGenWoodRoots(NoneFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<RootConfig>> WOOD_ROOTS = FEATURES.register("wood_roots", () ->
+			new TFGenWoodRoots(RootConfig.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SNOW_UNDER_TREES = FEATURES.register("snow_under_trees", () ->
 			new SnowUnderTrees(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<TreeConfiguration>> SNOW_TREE = FEATURES.register("anywhere_tree", () ->

@@ -2,18 +2,15 @@ package twilightforest.block.entity.spawner;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.server.level.ServerLevel;
-
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity {
@@ -57,7 +54,7 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 		// create creature
 		T myCreature = makeMyCreature();
 
-		myCreature.moveTo(worldPosition, world.getLevel().random.nextFloat() * 360F, 0.0F);
+		myCreature.moveTo(worldPosition.below(), world.getLevel().random.nextFloat() * 360F, 0.0F);
 		myCreature.finalizeSpawn(world, world.getCurrentDifficultyAt(worldPosition), MobSpawnType.SPAWNER, null, null);
 
 		// set creature's home to this

@@ -438,7 +438,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> CANOPY_FENCE = BLOCKS.register("canopy_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get())));
 	public static final RegistryObject<Block> CANOPY_GATE = BLOCKS.register("canopy_fence_gate", () -> new FenceGateBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get())));
 	public static final RegistryObject<Block> CANOPY_PLATE = BLOCKS.register("canopy_pressure_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, BlockBehaviour.Properties.copy(CANOPY_PLANKS.get()).noCollission().strength(0.5F)));
-	public static final RegistryObject<DoorBlock> CANOPY_DOOR = BLOCKS.register("canopy_door", () -> new DoorBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.PODZOL).strength(3.0F).noOcclusion()));
+	public static final RegistryObject<DoorBlock> CANOPY_DOOR = BLOCKS.register("canopy_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get()).strength(3.0F).noOcclusion()));
 	public static final RegistryObject<TrapDoorBlock> CANOPY_TRAPDOOR = BLOCKS.register("canopy_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.SAND).strength(3.0F).sound(SoundType.WOOD).noOcclusion()));
 	public static final RegistryObject<StandingSignBlock> CANOPY_SIGN = BLOCKS.register("canopy_sign", () -> new TFSignBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get()).strength(1.0F).noOcclusion().noCollission(), CANOPY));
 	public static final RegistryObject<WallSignBlock> CANOPY_WALL_SIGN = BLOCKS.register("canopy_wall_sign", () -> new TFWallSignBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get()).strength(1.0F).noOcclusion().noCollission(), CANOPY));
