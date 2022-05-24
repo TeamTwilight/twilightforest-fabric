@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.MobAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -130,7 +131,7 @@ public class Minotaur extends Monster implements ITFCharger {
 			}
 
 			if (entity instanceof Player player) {
-				this.maybeDisableShield(player, this.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
+				((MobAccessor)this).port_lib$maybeDisableShield(player, this.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
 			}
 
 			this.doEnchantDamageEffects(this, entity);

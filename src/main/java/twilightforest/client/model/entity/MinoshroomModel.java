@@ -1,6 +1,7 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
+import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.HumanoidModelAccessor;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -121,18 +122,18 @@ public class MinoshroomModel extends HumanoidModel<Minoshroom> {
 		if (entity.isUsingItem()) {
 			boolean useHand = entity.getUsedItemHand() == InteractionHand.MAIN_HAND;
 			if (useHand == rightHanded) {
-				this.poseRightArm(entity);
+				((HumanoidModelAccessor)this).port_lib$poseRightArm(entity);
 			} else {
-				this.poseLeftArm(entity);
+				((HumanoidModelAccessor)this).port_lib$poseLeftArm(entity);
 			}
 		} else {
 			boolean bothHands = rightHanded ? this.leftArmPose.isTwoHanded() : this.rightArmPose.isTwoHanded();
 			if (rightHanded != bothHands) {
-				this.poseLeftArm(entity);
-				this.poseRightArm(entity);
+				((HumanoidModelAccessor)this).port_lib$poseLeftArm(entity);
+				((HumanoidModelAccessor)this).port_lib$poseRightArm(entity);
 			} else {
-				this.poseRightArm(entity);
-				this.poseLeftArm(entity);
+				((HumanoidModelAccessor)this).port_lib$poseRightArm(entity);
+				((HumanoidModelAccessor)this).port_lib$poseLeftArm(entity);
 			}
 		}
 

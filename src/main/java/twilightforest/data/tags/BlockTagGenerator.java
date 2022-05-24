@@ -436,7 +436,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		// For anything that permits replacement during Worldgen
 		tag(WORLDGEN_REPLACEABLES).addTag(BlockTags.LUSH_GROUND_REPLACEABLE).addTag(BlockTags.REPLACEABLE_PLANTS);
 
-		tag(ROOT_TRACE_SKIP).addTags(BlockTags.FEATURES_CANNOT_REPLACE).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get());
+		tag(ROOT_TRACE_SKIP).addTag(BlockTags.FEATURES_CANNOT_REPLACE).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get());
 
 		tag(BlockTags.REPLACEABLE_PLANTS).add(
 				TFBlocks.MAYAPPLE.get(),
