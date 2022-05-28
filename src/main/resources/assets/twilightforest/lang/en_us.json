@@ -1610,6 +1610,9 @@
   "twilightforest.book.unknown.2": "something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.",
 
   // Fluid
+  "block.twilightforest.molten_fiery_fluid": "Molten Fiery",
+  "block.twilightforest.molten_knightmetal_fluid": "Molten Knightmetal",
+  "block.twilightforest.fiery_essence_fluid": "Fiery Essence",
   "fluid.twilightforest.molten_fiery": "Molten Fiery",
   "fluid.twilightforest.molten_knightmetal": "Molten Knightmetal",
   "fluid.twilightforest.fiery_essence": "Fiery Essence",

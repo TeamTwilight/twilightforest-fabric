@@ -2,57 +2,165 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "has_hedge": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/hedge_spider"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/hedge_spider": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_swarm": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/swarm_spider"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/swarm_spider": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_slime": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/slime_beetle"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/slime_beetle": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_fire": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/fire_beetle"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/fire_beetle": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_pinch": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/pinch_beetle"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/pinch_beetle": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_mosquito": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/mosquito_swarm"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/mosquito_swarm": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_king": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/king_spider"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/king_spider": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_termite": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/tower_termite"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/tower_termite": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_broodling": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/tower_broodling"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/tower_broodling": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     }
   },

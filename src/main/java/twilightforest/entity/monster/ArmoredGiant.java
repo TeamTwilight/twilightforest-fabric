@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.Level;
+import twilightforest.item.TFItems;
 
 public class ArmoredGiant extends GiantMiner {
 
@@ -16,7 +17,7 @@ public class ArmoredGiant extends GiantMiner {
 	@Override
 	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
 		super.populateDefaultEquipmentSlots(difficulty);
-		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GIANT_SWORD.get()));
 		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
 		this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.IRON_CHESTPLATE));
 		this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.IRON_LEGGINGS));

@@ -147,20 +147,7 @@ public abstract class TFGenCanopyMushroom extends AbstractHugeMushroomFeature {
 
     @Override
     public boolean place(FeaturePlaceContext<HugeMushroomFeatureConfiguration> context) {
-        WorldGenLevel worldgenlevel = context.level();
-        BlockPos blockpos = context.origin();
-        Random random = context.random();
-        this.bugsLeft = Math.max(0, random.nextInt(10) - 4) / 2; //Weird math, I know, but I like the odds (and weird math, sue me)
-
-        HugeMushroomFeatureConfiguration hugemushroomfeatureconfiguration = context.config();
-        int height = this.getTreeHeight(random);
-        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
-        if (!this.isValidPosition(worldgenlevel, blockpos, height, mutableBlockPos, hugemushroomfeatureconfiguration)) {
-            return false;
-        } else {
-            this.makeCap(worldgenlevel, random, blockpos, height, mutableBlockPos, hugemushroomfeatureconfiguration);
-            this.placeTrunk(worldgenlevel, random, blockpos, hugemushroomfeatureconfiguration, height, mutableBlockPos);
-            return true;
-        }
+        this.bugsLeft = Math.max(0, context.random().nextInt(10) - 4) / 2; //Weird math, I know, but I like the odds (and weird math, sue me)
+        return super.place(context);
     }
 }

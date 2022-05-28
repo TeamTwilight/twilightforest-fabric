@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +23,9 @@ import twilightforest.compat.curios.CurioHeadRenderer;
 import twilightforest.item.CuriosCharmItem;
 import twilightforest.item.TFItems;
 import twilightforest.item.TrophyItem;
+
+import twilightforest.item.TrophyItem;
+import java.util.Optional;
 
 public class CuriosCompat extends TFCompat {
 
@@ -105,5 +109,21 @@ public class CuriosCompat extends TFCompat {
 		TrinketRendererRegistry.registerRenderer(TFBlocks.CICADA.get().asItem(), CurioHeadRenderer::render);
 		TrinketRendererRegistry.registerRenderer(TFBlocks.FIREFLY.get().asItem(), CurioHeadRenderer::render);
 		TrinketRendererRegistry.registerRenderer(TFBlocks.MOONWORM.get().asItem(), CurioHeadRenderer::render);
+
+		CuriosRendererRegistry.register(TFBlocks.CREEPER_SKULL_CANDLE.get().asItem(), CurioHeadRenderer::new);
+		CuriosRendererRegistry.register(TFBlocks.PLAYER_SKULL_CANDLE.get().asItem(), CurioHeadRenderer::new);
+		CuriosRendererRegistry.register(TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(), CurioHeadRenderer::new);
+		CuriosRendererRegistry.register(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(), CurioHeadRenderer::new);
+		CuriosRendererRegistry.register(TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem(), CurioHeadRenderer::new);
+	}
+
+	public static boolean isTrophyCurioEquipped(LivingEntity entity) {
+		Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(entity, stack -> stack.getItem() instanceof TrophyItem);
+		return slot.isPresent() && slot.get().slotContext().visible();
+	}
+
+	public static boolean isSkullCurioEquipped(LivingEntity entity) {
+		Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(entity, stack -> stack.getItem() instanceof SkullCandleItem);
+		return slot.isPresent() && slot.get().slotContext().visible();
 	}
 }

@@ -2,51 +2,147 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "has_forest": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/biomes/twilight_forest"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/biomes/twilight_forest": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_firefly": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/biomes/firefly_forest"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/biomes/firefly_forest": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_clearing": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/biomes/twilight_clearing"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/biomes/twilight_clearing": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_savannah": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/biomes/oak_savannah"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/biomes/oak_savannah": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_dense": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/biomes/dense_twilight_forest"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/biomes/dense_twilight_forest": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_mush": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/biomes/mushroom_forest"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/biomes/mushroom_forest": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_dense_mush": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/biomes/dense_mushroom_forest"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/biomes/dense_mushroom_forest": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_lake": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/biomes/twilight_lake"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/biomes/twilight_lake": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     }
   },

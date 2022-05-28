@@ -45,10 +45,9 @@
       "twilightforest:monolith",
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
-      "twilightforest:tree/selector/dense_canopy_trees",
-      "twilightforest:tree/dense_tree",
       "twilightforest:tree/selector/vanilla_trees",
-      "minecraft:jungle_bush",
+      "twilightforest:tree/twilight_oak_tree",
+      "twilightforest:tree/selector/canopy_trees",
       "twilightforest:default_fallen_logs"
     ]
   ],

@@ -15,11 +15,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.ModList;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.compat.CuriosCompat;
+import twilightforest.compat.TFCompat;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -85,6 +89,15 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 
 	public static EquipmentSlot getEquipmentSlot(ItemStack stack) {
 		return EquipmentSlot.HEAD;
+	}
+
+	@Nullable
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+			CuriosCompat.setupCuriosCapability(stack);
+		}
+		return super.initCapabilities(stack, nbt);
 	}
 
 	@Override

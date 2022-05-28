@@ -12,11 +12,11 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import twilightforest.block.TFBlocks;
+import twilightforest.item.TFItems;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
@@ -69,7 +69,7 @@ public class GiantMiner extends Monster {
 
 	@Override
 	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
-		setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.STONE_PICKAXE));
+		setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GIANT_PICKAXE.get()));
 	}
 
 	@Override

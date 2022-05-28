@@ -229,12 +229,22 @@ public class TreeConfigurations {
     )
             .build();
 
-    public static final TFTreeFeatureConfig DENSE_OAK = new TFTreeFeatureConfig.Builder(
+    public static final TFTreeFeatureConfig FOREST_CANOPY_OAK = new TFTreeFeatureConfig.Builder(
             BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()),
             BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.get()),
             BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.get()),
             BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.get())
     )
+            .minHeight(24)
+            .build();
+
+    public static final TFTreeFeatureConfig SAVANNAH_CANOPY_OAK = new TFTreeFeatureConfig.Builder(
+            BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()),
+            BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.get()),
+            BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.get()),
+            BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.get())
+    )
+            .minHeight(16)
             .build();
 
     public static final TFTreeFeatureConfig HOLLOW_TREE = new TFTreeFeatureConfig.Builder(

@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -25,7 +26,7 @@ import java.util.Random;
 
 public class TowerwoodBorer extends Monster {
 
-	private AISummonSilverfish summonSilverfish;
+	private SummonBorersGoal summonBorers;
 
 	public TowerwoodBorer(EntityType<? extends TowerwoodBorer> type, Level world) {
 		super(type, world);
@@ -34,12 +35,11 @@ public class TowerwoodBorer extends Monster {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(2, this.summonSilverfish = new AISummonSilverfish(this));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
-		this.goalSelector.addGoal(4, new AIHideInStone(this));
-		this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+		this.goalSelector.addGoal(1, new ClimbOnTopOfPowderSnowGoal(this, this.level));
+		this.goalSelector.addGoal(3, this.summonBorers = new SummonBorersGoal(this));
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(5, new HideInTowerwoodGoal(this));
+		this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
@@ -49,6 +49,11 @@ public class TowerwoodBorer extends Monster {
 				.add(Attributes.MOVEMENT_SPEED, 0.27D)
 				.add(Attributes.ATTACK_DAMAGE, 5.0D)
 				.add(Attributes.FOLLOW_RANGE, 8.0D);
+	}
+
+	@Override
+	protected Entity.MovementEmission getMovementEmission() {
+		return Entity.MovementEmission.EVENTS;
 	}
 
 	@Override
@@ -71,14 +76,14 @@ public class TowerwoodBorer extends Monster {
 		return TFSounds.TERMITE_DEATH;
 	}
 
-	// [VanillaCopy] EntitySilverfish.attackEntityFrom
+	// [VanillaCopy] Silverfish.hurt
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		if (this.isInvulnerableTo(source)) {
 			return false;
 		} else {
-			if ((source instanceof EntityDamageSource || source == DamageSource.MAGIC) && this.summonSilverfish != null) {
-				this.summonSilverfish.notifyHurt();
+			if ((source instanceof EntityDamageSource || source == DamageSource.MAGIC) && this.summonBorers != null) {
+				this.summonBorers.notifyHurt();
 			}
 
 			return super.hurt(source, amount);
@@ -101,20 +106,17 @@ public class TowerwoodBorer extends Monster {
 		return MobType.ARTHROPOD;
 	}
 
-	// [VanillaCopy] EntitySilverfish$AIHideInStone. Changes noted
-	private static class AIHideInStone extends RandomStrollGoal {
+	// [VanillaCopy] Silverfish.SilverfishMergeWithStoneGoal. Changes noted
+	private static class HideInTowerwoodGoal extends RandomStrollGoal {
 
 		private Direction facing;
 		private boolean doMerge;
 
-		public AIHideInStone(TowerwoodBorer silverfishIn) {
-			super(silverfishIn, 1.0D, 10);
+		public HideInTowerwoodGoal(TowerwoodBorer borer) {
+			super(borer, 1.0D, 10);
 			this.setFlags(EnumSet.of(Flag.MOVE));
 		}
 
-		/**
-		 * Returns whether the EntityAIBase should begin execution.
-		 */
 		@Override
 		public boolean canUse() {
 			if (this.mob.getTarget() != null) {
@@ -124,13 +126,13 @@ public class TowerwoodBorer extends Monster {
 			} else {
 				Random random = this.mob.getRandom();
 
-				if (random.nextInt(10) == 0 && this.mob.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+				if (random.nextInt(10) == 0 && ForgeEventFactory.getMobGriefingEvent(this.mob.getLevel(), this.mob)) {
 					this.facing = Direction.getRandom(random);
 					BlockPos blockpos = (new BlockPos(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ())).relative(this.facing);
-					BlockState iblockstate = this.mob.level.getBlockState(blockpos);
+					BlockState state = this.mob.getLevel().getBlockState(blockpos);
 
 					// TF - Change block check
-					if (iblockstate == TFBlocks.TOWERWOOD.get().defaultBlockState()) {
+					if (state.is(TFBlocks.TOWERWOOD.get())) {
 						this.doMerge = true;
 						return true;
 					}
@@ -141,30 +143,25 @@ public class TowerwoodBorer extends Monster {
 			}
 		}
 
-		/**
-		 * Returns whether an in-progress EntityAIBase should continue executing
-		 */
 		@Override
 		public boolean canContinueToUse() {
 			return !this.doMerge && super.canContinueToUse();
 		}
 
-		/**
-		 * Execute a one shot task or start executing a continuous task
-		 */
 		@Override
 		public void start() {
 			if (!this.doMerge) {
 				super.start();
 			} else {
-				Level world = this.mob.level;
+				Level level = this.mob.getLevel();
 				BlockPos blockpos = (new BlockPos(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ())).relative(this.facing);
-				BlockState iblockstate = world.getBlockState(blockpos);
+				BlockState state = level.getBlockState(blockpos);
 
 				// TF - Change block check
-				if (iblockstate == TFBlocks.TOWERWOOD.get().defaultBlockState()) {
+				// TF - add a random chance to dig. This should prevent them from instantly digging away
+				if (state.is(TFBlocks.TOWERWOOD.get()) && this.mob.getRandom().nextInt(5) == 0) {
 					// TF - Change block type
-					world.setBlock(blockpos, TFBlocks.INFESTED_TOWERWOOD.get().defaultBlockState(), 3);
+					level.setBlock(blockpos, TFBlocks.INFESTED_TOWERWOOD.get().defaultBlockState(), 3);
 					this.mob.spawnAnim();
 					this.mob.discard();
 				}
@@ -172,14 +169,14 @@ public class TowerwoodBorer extends Monster {
 		}
 	}
 
-	// [VanillaCopy] of EntitySilverfish$AISummonSilverfish. Changes noted
-	private static class AISummonSilverfish extends Goal {
+	// [VanillaCopy] of Silverfish.SilverfishWakeUpFriendsGoal. Changes noted
+	private static class SummonBorersGoal extends Goal {
 
-		private final TowerwoodBorer silverfish; // TF - type change
+		private final TowerwoodBorer borer; // TF - type change
 		private int lookForFriends;
 
-		public AISummonSilverfish(TowerwoodBorer silverfishIn) {
-			this.silverfish = silverfishIn;
+		public SummonBorersGoal(TowerwoodBorer borer) {
+			this.borer = borer;
 		}
 
 		public void notifyHurt() {
@@ -188,41 +185,35 @@ public class TowerwoodBorer extends Monster {
 			}
 		}
 
-		/**
-		 * Returns whether the EntityAIBase should begin execution.
-		 */
 		@Override
 		public boolean canUse() {
 			return this.lookForFriends > 0;
 		}
 
-		/**
-		 * Updates the task
-		 */
 		@Override
 		public void tick() {
 			--this.lookForFriends;
 
 			if (this.lookForFriends <= 0) {
 
-				Level world = this.silverfish.level;
-				Random random = this.silverfish.getRandom();
-				BlockPos blockpos = new BlockPos(this.silverfish.blockPosition());
+				Level world = this.borer.getLevel();
+				Random random = this.borer.getRandom();
+				BlockPos pos = new BlockPos(this.borer.blockPosition());
 
-				for (int i = 0; i <= 5 && i >= -5; i = i <= 0 ? 1 - i : -i) {
-					for (int j = 0; j <= 10 && j >= -10; j = j <= 0 ? 1 - j : -j) {
-						for (int k = 0; k <= 10 && k >= -10; k = k <= 0 ? 1 - k : -k) {
+				for (int i = 0; i <= 5 && i >= -5; i = (i <= 0 ? 1 : 0) - i) {
+					for (int j = 0; j <= 10 && j >= -10; j = (j <= 0 ? 1 : 0) - j) {
+						for (int k = 0; k <= 10 && k >= -10; k = (k <= 0 ? 1 : 0) - k) {
 
-							BlockPos blockpos1 = blockpos.offset(j, i, k);
-							BlockState iblockstate = world.getBlockState(blockpos1);
+							BlockPos offsetPos = pos.offset(j, i, k);
+							BlockState state = world.getBlockState(offsetPos);
 
 							// TF - Change block check
-							if (iblockstate == TFBlocks.INFESTED_TOWERWOOD.get().defaultBlockState()) {
-								if (world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
-									world.destroyBlock(blockpos1, true);
+							if (state.is(TFBlocks.INFESTED_TOWERWOOD.get())) {
+								if (ForgeEventFactory.getMobGriefingEvent(world, this.borer)) {
+									world.destroyBlock(offsetPos, true);
 								} else {
 									// TF - reset to normal tower wood
-									world.setBlock(blockpos1, TFBlocks.TOWERWOOD.get().defaultBlockState(), 3);
+									world.setBlock(offsetPos, TFBlocks.TOWERWOOD.get().defaultBlockState(), 3);
 								}
 
 								if (random.nextBoolean()) {

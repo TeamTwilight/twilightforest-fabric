@@ -2,27 +2,75 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "has_twilight": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/treasures/twilight_scepter"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/treasures/twilight_scepter": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_lifedrain": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/treasures/lifedrain_scepter"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/treasures/lifedrain_scepter": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_zombie": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/treasures/zombie_scepter"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/treasures/zombie_scepter": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_shield": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/treasures/shield_scepter"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/treasures/shield_scepter": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     }
   },

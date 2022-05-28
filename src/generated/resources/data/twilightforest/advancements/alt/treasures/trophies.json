@@ -2,57 +2,165 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "pedestal": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:progress_trophy_pedestal"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:progress_trophy_pedestal": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "naga": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:progress_naga"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:progress_naga": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "lich": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:progress_lich"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:progress_lich": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "minoshroom": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:progress_labyrinth"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:progress_labyrinth": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "hydra": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:progress_hydra"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:progress_hydra": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "knights": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:progress_knights"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:progress_knights": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "ghast": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:progress_ur_ghast"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:progress_ur_ghast": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "yeti": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:progress_yeti"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:progress_yeti": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "queen": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:progress_glacier"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:progress_glacier": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     }
   },

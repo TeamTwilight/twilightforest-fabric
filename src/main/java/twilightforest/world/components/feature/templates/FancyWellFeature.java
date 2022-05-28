@@ -67,7 +67,6 @@ public class FancyWellFeature extends TemplateFeature<NoneFeatureConfiguration> 
 
         world.removeBlock(info.pos, false);
 
-        if (random.nextBoolean()) TFTreasure.FANCY_WELL.generateLootContainer(world, info.pos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2);
-        else world.setBlock(info.pos, random.nextBoolean() ? Blocks.COBBLESTONE.defaultBlockState() : Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 16 | 2);
+        TFTreasure.FANCY_WELL.generateLootContainer(world, info.pos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2);
     }
 }

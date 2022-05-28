@@ -25,8 +25,6 @@ import net.minecraft.world.phys.EntityHitResult;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class FierySwordItem extends SwordItem implements CustomEnchantingBehaviorItem {
 
@@ -41,14 +39,7 @@ public class FierySwordItem extends SwordItem implements CustomEnchantingBehavio
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
-
-		for (Enchantment ench : enchants.keySet()) {
-			if (Objects.equals(Registry.ENCHANTMENT.getKey(ench), Registry.ENCHANTMENT.getKey(Enchantments.FIRE_ASPECT))) {
-				return false;
-			}
-		}
-		return false;
+		return !EnchantmentHelper.getEnchantments(book).containsKey(Enchantments.FIRE_ASPECT) && super.isBookEnchantable(stack, book);
 	}
 
 	@Override

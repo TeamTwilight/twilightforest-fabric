@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,25 +18,22 @@ import net.fabricmc.api.Environment;
 import java.util.Map;
 import java.util.Random;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class TrollsteinnBlock extends Block {
-
-	private static final BooleanProperty DOWN_LIT  = BooleanProperty.create("down");
-	private static final BooleanProperty UP_LIT    = BooleanProperty.create("up");
+	private static final BooleanProperty DOWN_LIT = BooleanProperty.create("down");
+	private static final BooleanProperty UP_LIT = BooleanProperty.create("up");
 	private static final BooleanProperty NORTH_LIT = BooleanProperty.create("north");
 	private static final BooleanProperty SOUTH_LIT = BooleanProperty.create("south");
-	private static final BooleanProperty WEST_LIT  = BooleanProperty.create("west");
-	private static final BooleanProperty EAST_LIT  = BooleanProperty.create("east");
+	private static final BooleanProperty WEST_LIT = BooleanProperty.create("west");
+	private static final BooleanProperty EAST_LIT = BooleanProperty.create("east");
 	private static final Map<Direction, BooleanProperty> PROPERTY_MAP = ImmutableMap.<Direction, BooleanProperty>builder()
-					.put(Direction.DOWN, DOWN_LIT)
-					.put(Direction.UP, UP_LIT)
-					.put(Direction.NORTH, NORTH_LIT)
-					.put(Direction.SOUTH, SOUTH_LIT)
-					.put(Direction.WEST, WEST_LIT)
-					.put(Direction.EAST, EAST_LIT).build();
+			.put(Direction.DOWN, DOWN_LIT)
+			.put(Direction.UP, UP_LIT)
+			.put(Direction.NORTH, NORTH_LIT)
+			.put(Direction.SOUTH, SOUTH_LIT)
+			.put(Direction.WEST, WEST_LIT)
+			.put(Direction.EAST, EAST_LIT).build();
 
-	private static final int LIGHT_THRESHHOLD = 7;
+	private static final int LIGHT_THRESHOLD = 7;
 
 	public TrollsteinnBlock(Properties props) {
 		super(props);
@@ -55,9 +51,22 @@ public class TrollsteinnBlock extends Block {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction dirToNeighbor, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
-		boolean lit = world.getMaxLocalRawBrightness(neighborPos) > LIGHT_THRESHHOLD;
-		return state.setValue(PROPERTY_MAP.get(dirToNeighbor), lit);
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+		BlockState newState = state;
+		for (Direction direction : Direction.values()) newState = newState.setValue(PROPERTY_MAP.get(direction), level.getMaxLocalRawBrightness(pos.relative(direction)) > LIGHT_THRESHOLD);
+		if (!newState.equals(state)) level.setBlockAndUpdate(pos, newState);
+	}
+
+	@Override
+	public boolean hasAnalogOutputSignal(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+		int peak = 0;
+		for (Direction direction : Direction.values()) peak = Math.max(level.getMaxLocalRawBrightness(pos.relative(direction)), peak);
+		return peak;
 	}
 
 	@Override
@@ -65,7 +74,7 @@ public class TrollsteinnBlock extends Block {
 		BlockState ret = defaultBlockState();
 		for (Map.Entry<Direction, BooleanProperty> e : PROPERTY_MAP.entrySet()) {
 			int light = ctx.getLevel().getMaxLocalRawBrightness(ctx.getClickedPos().relative(e.getKey()));
-			ret = ret.setValue(e.getValue(), light > LIGHT_THRESHHOLD);
+			ret = ret.setValue(e.getValue(), light > LIGHT_THRESHOLD);
 		}
 		return ret;
 	}
@@ -73,42 +82,40 @@ public class TrollsteinnBlock extends Block {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
-		if (rand.nextInt(2) == 0) {
-			this.sparkle(world, pos);
-		}
+		if (rand.nextInt(2) == 0) this.sparkle(world, pos);
 	}
 
 	// [VanillaCopy] Based on BlockRedstoneOre.spawnParticles
 	private void sparkle(Level world, BlockPos pos) {
 		Random random = world.random;
-		int threshhold = LIGHT_THRESHHOLD;
+		int threshold = LIGHT_THRESHOLD;
 
 		for (Direction side : Direction.values()) {
 			double rx = pos.getX() + random.nextFloat();
 			double ry = pos.getY() + random.nextFloat();
 			double rz = pos.getZ() + random.nextFloat();
 
-			if (side == Direction.DOWN && !world.getBlockState(pos.below()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.below()) <= threshhold) {
+			if (side == Direction.DOWN && !world.getBlockState(pos.below()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.below()) <= threshold) {
 				ry = pos.getY() - 0.0625D;
 			}
 
-			if (side == Direction.UP && !world.getBlockState(pos.above()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.above()) <= threshhold) {
+			if (side == Direction.UP && !world.getBlockState(pos.above()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.above()) <= threshold) {
 				ry = pos.getY() + 0.0625D + 1.0D;
 			}
 
-			if (side == Direction.NORTH && !world.getBlockState(pos.north()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.north()) <= threshhold) {
+			if (side == Direction.NORTH && !world.getBlockState(pos.north()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.north()) <= threshold) {
 				rz = pos.getZ() - 0.0625D;
 			}
 
-			if (side == Direction.SOUTH && !world.getBlockState(pos.south()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.south()) <= threshhold) {
+			if (side == Direction.SOUTH && !world.getBlockState(pos.south()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.south()) <= threshold) {
 				rz = pos.getZ() + 0.0625D + 1.0D;
 			}
 
-			if (side == Direction.WEST && !world.getBlockState(pos.west()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.west()) <= threshhold) {
+			if (side == Direction.WEST && !world.getBlockState(pos.west()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.west()) <= threshold) {
 				rx = pos.getX() - 0.0625D;
 			}
 
-			if (side == Direction.EAST && !world.getBlockState(pos.east()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.east()) <= threshhold) {
+			if (side == Direction.EAST && !world.getBlockState(pos.east()).isSolidRender(world, pos) && world.getMaxLocalRawBrightness(pos.east()) <= threshold) {
 				rx = pos.getX() + 0.0625D + 1.0D;
 			}
 

@@ -17,6 +17,8 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
+import net.minecraft.client.model.HeadedModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.Sheets;
@@ -27,6 +29,7 @@ import net.minecraft.client.resources.model.*;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -46,6 +49,7 @@ import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
+import twilightforest.compat.CuriosCompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.*;
@@ -363,5 +367,25 @@ public class TFClientEvents {
 			}
 		}
 		return fov;
+	}
+
+	@SubscribeEvent
+	public static void unrenderHeadWithTrophies(RenderLivingEvent<?, ?> event) {
+		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
+		boolean visible = !(stack.getItem() instanceof TrophyItem) && !(stack.getItem() instanceof SkullCandleItem) && !areCuriosEquipped(event.getEntity());
+
+		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
+			headedModel.getHead().visible = visible;
+			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
+				humanoidModel.hat.visible = visible;
+			}
+		}
+	}
+
+	private static boolean areCuriosEquipped(LivingEntity entity) {
+		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
+		}
+		return false;
 	}
 }

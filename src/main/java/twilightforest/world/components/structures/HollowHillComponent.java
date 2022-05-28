@@ -58,7 +58,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		this.hdiam = (hillSize * 2 + 1) * 16;
 
 		// can we determine the size here?
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / 2, radius * 2, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / (hillSize == 1 ? 2 : hillSize - 1), radius * 2, Direction.SOUTH);
 	}
 
 	@Override
@@ -121,13 +121,13 @@ public class HollowHillComponent extends TFStructureComponentOld {
 //		}
 //
 //		for (int i = 1; i < this.boundingBox.maxX() - this.boundingBox.minX(); i++) {
-//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), i, 30, 0, Rotation.NONE, sbb);
-//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), i, 30, this.boundingBox.maxZ() - this.boundingBox.minZ(), Rotation.NONE, sbb);
+//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), i, this.boundingBox.maxY(), 0, Rotation.NONE, sbb);
+//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), i, this.boundingBox.maxY(), this.boundingBox.maxZ() - this.boundingBox.minZ(), Rotation.NONE, sbb);
 //		}
 //
 //		for (int i = 1; i < this.boundingBox.maxZ() - this.boundingBox.minZ(); i++) {
-//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), 0, 30, i, Rotation.NONE, sbb);
-//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), this.boundingBox.maxX() - this.boundingBox.minX(), 30, i, Rotation.NONE, sbb);
+//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), 0, this.boundingBox.maxY(), i, Rotation.NONE, sbb);
+//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), this.boundingBox.maxX() - this.boundingBox.minX(), this.boundingBox.maxY(), i, Rotation.NONE, sbb);
 //		}
 	}
 

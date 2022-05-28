@@ -605,6 +605,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.FIRE_JET.get(),
 				TFBlocks.UBEROUS_SOIL.get()
 		);
+
+		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(TFBlocks.UBEROUS_SOIL.get());
 	}
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {

@@ -238,6 +238,11 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				TFBlocks.QUEST_RAM_TROPHY.get().asItem(),
 				TFBlocks.CICADA.get().asItem(),
 				TFBlocks.FIREFLY.get().asItem(),
-				TFBlocks.MOONWORM.get().asItem());
+				TFBlocks.MOONWORM.get().asItem(),
+				TFBlocks.CREEPER_SKULL_CANDLE.get().asItem(),
+				TFBlocks.PLAYER_SKULL_CANDLE.get().asItem(),
+				TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(),
+				TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(),
+				TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem());
 	}
 }

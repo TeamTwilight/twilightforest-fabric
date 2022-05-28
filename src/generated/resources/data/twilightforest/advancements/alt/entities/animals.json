@@ -2,45 +2,129 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "has_bighorn": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/bighorn_sheep"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/bighorn_sheep": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_bunny": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/bunny"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/bunny": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_deer": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/deer"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/deer": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_raven": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/raven"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/raven": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_squirrel": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/squirrel"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/squirrel": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_boar": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/wild_boar"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/wild_boar": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_penguin": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/penguin"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/penguin": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     }
   },

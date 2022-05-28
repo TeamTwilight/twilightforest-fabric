@@ -15,9 +15,6 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "rewards": {
-    "function": "twilightforest:give_3_shields"
-  },
   "criteria": {
     "all_knights": {
       "trigger": "twilightforest:kill_all_phantoms",
@@ -50,9 +47,21 @@
       }
     },
     "previous_progression": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:progress_trophy_pedestal"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:progress_trophy_pedestal": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     }
   },

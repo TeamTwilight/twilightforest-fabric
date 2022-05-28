@@ -6,6 +6,7 @@ import io.github.fabricators_of_create.porting_lib.extensions.BlockExtensions;
 import io.github.fabricators_of_create.porting_lib.util.IPlantable;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
@@ -16,10 +17,12 @@ import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiConsumer;
 
+@ParametersAreNonnullByDefault
 public class TFGenCanopyOak extends TFGenCanopyTree {
 
 	private final List<BlockPos> leaves = Lists.newArrayList();
@@ -33,7 +36,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		// determine a height
 		int treeHeight = config.minHeight;
 		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
-			treeHeight += random.nextInt(5);
+			treeHeight += random.nextInt(treeHeight / 2);
 
 			if (random.nextInt(config.chanceAddFiveSecond) == 0) {
 				treeHeight += random.nextInt(5);
@@ -107,6 +110,20 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 0), config.trunkProvider);
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 1), config.trunkProvider);
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 1), config.trunkProvider);
+		}
+
+		if (rand.nextInt(3) == 0) {
+			Direction direction = Direction.getRandom(rand);
+			Direction.Axis axis = direction.getAxis();
+			if (axis != Direction.Axis.Y) {
+				BlockPos.MutableBlockPos bugPos = new BlockPos.MutableBlockPos();
+				bugPos.set(pos.offset(direction == Direction.EAST ? 1 : 0, rand.nextInt(treeHeight) / 2 + 10, direction == Direction.SOUTH ? 1 : 0));
+				bugPos.move(direction).move(axis == Direction.Axis.Z ? rand.nextInt(2) : 0, 0, axis == Direction.Axis.X ? rand.nextInt(2) : 0);
+				if (!world.getBlockState(bugPos).isSolidRender(world, bugPos)) {
+					BlockState bugState = TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, direction);
+					this.setBlock(world, bugPos, bugState);
+				}
+			}
 		}
 
 		this.leaves.add(pos.offset(0, treeHeight, 0));

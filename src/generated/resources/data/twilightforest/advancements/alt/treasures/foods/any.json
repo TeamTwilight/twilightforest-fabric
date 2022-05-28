@@ -2,33 +2,93 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "hydra_chop": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/treasures/foods/hydra_chop"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/treasures/foods/hydra_chop": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "maze_wafer": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/treasures/foods/maze_wafer"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/treasures/foods/maze_wafer": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "meef": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/treasures/foods/meef"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/treasures/foods/meef": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "venison": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/treasures/foods/venison"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/treasures/foods/venison": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "e115": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/treasures/foods/experiment_115"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/treasures/foods/experiment_115": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     }
   },

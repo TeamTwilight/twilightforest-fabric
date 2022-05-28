@@ -223,6 +223,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.TWILIGHT_OAK_SIGN.getId().getPath(), prefix("items/" + TFBlocks.TWILIGHT_OAK_SIGN.getId().getPath()));
 		withExistingParent(TFBlocks.TWILIGHT_OAK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_twilight_oak_0");
 		generated(TFBlocks.TWILIGHT_OAK_DOOR.getId().getPath(), prefix("items/" + TFBlocks.TWILIGHT_OAK_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.TWILIGHT_OAK_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_twilight_oak_0"));
 
 		toBlock(TFBlocks.CANOPY_LOG.get());
 		toBlock(TFBlocks.STRIPPED_CANOPY_LOG.get());
@@ -241,6 +242,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.CANOPY_SIGN.getId().getPath(), prefix("items/" + TFBlocks.CANOPY_SIGN.getId().getPath()));
 		withExistingParent(TFBlocks.CANOPY_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_canopy_0");
 		generated(TFBlocks.CANOPY_DOOR.getId().getPath(), prefix("items/" + TFBlocks.CANOPY_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.CANOPY_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_canopy_0"));
 
 		toBlock(TFBlocks.MANGROVE_LOG.get());
 		toBlock(TFBlocks.STRIPPED_MANGROVE_LOG.get());
@@ -259,6 +261,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.MANGROVE_SIGN.getId().getPath(), prefix("items/" + TFBlocks.MANGROVE_SIGN.getId().getPath()));
 		withExistingParent(TFBlocks.MANGROVE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_mangrove_0");
 		generated(TFBlocks.MANGROVE_DOOR.getId().getPath(), prefix("items/" + TFBlocks.MANGROVE_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.MANGROVE_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mangrove_0"));
 
 		toBlock(TFBlocks.DARK_LOG.get());
 		toBlock(TFBlocks.STRIPPED_DARK_LOG.get());
@@ -278,6 +281,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		withExistingParent(TFBlocks.DARKWOOD_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_darkwood_0");
 		generated(TFBlocks.DARK_DOOR.getId().getPath(), prefix("items/" + TFBlocks.DARK_DOOR.getId().getPath()));
 		generated(TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath()));
+		withExistingParent(TFBlocks.DARKWOOD_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_darkwood_0"));
 		
 		toBlock(TFBlocks.TIME_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TIME_LOG.get());
@@ -297,6 +301,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.TIME_SIGN.getId().getPath(), prefix("items/" + TFBlocks.TIME_SIGN.getId().getPath()));
 		withExistingParent(TFBlocks.TIME_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_time_0");
 		generated(TFBlocks.TIME_DOOR.getId().getPath(), prefix("items/" + TFBlocks.TIME_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.TIME_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_time_0"));
 
 		toBlock(TFBlocks.TRANSFORMATION_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
@@ -316,6 +321,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.TRANSFORMATION_SIGN.getId().getPath(), prefix("items/" + TFBlocks.TRANSFORMATION_SIGN.getId().getPath()));
 		withExistingParent(TFBlocks.TRANSFORMATION_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_trans_0");
 		generated(TFBlocks.TRANSFORMATION_DOOR.getId().getPath(), prefix("items/" + TFBlocks.TRANSFORMATION_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.TRANSFORMATION_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_trans_0"));
 
 		toBlock(TFBlocks.MINING_LOG.get());
 		toBlock(TFBlocks.STRIPPED_MINING_LOG.get());
@@ -335,6 +341,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.MINING_SIGN.getId().getPath(), prefix("items/" + TFBlocks.MINING_SIGN.getId().getPath()));
 		withExistingParent(TFBlocks.MINING_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_mine_0");
 		generated(TFBlocks.MINING_DOOR.getId().getPath(), prefix("items/" + TFBlocks.MINING_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.MINING_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mine_0"));
 
 		toBlock(TFBlocks.SORTING_LOG.get());
 		toBlock(TFBlocks.STRIPPED_SORTING_LOG.get());
@@ -354,6 +361,22 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.SORTING_SIGN.getId().getPath(), prefix("items/" + TFBlocks.SORTING_SIGN.getId().getPath()));
 		withExistingParent(TFBlocks.SORTING_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_sort_0");
 		generated(TFBlocks.SORTING_DOOR.getId().getPath(), prefix("items/" + TFBlocks.SORTING_DOOR.getId().getPath()));
+		withExistingParent(TFBlocks.SORTING_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_sort_0"));
+
+		withExistingParent(TFBlocks.NAGA_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFBlocks.LICH_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFBlocks.MINOSHROOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFBlocks.HYDRA_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFBlocks.KNIGHT_PHANTOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		//ur-ghast and alpha yeti need special transforms
+		withExistingParent(TFBlocks.SNOW_QUEEN_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFBlocks.QUEST_RAM_TROPHY.getId().toString(), prefix("item/template_trophy"));
+
+		withExistingParent(TFBlocks.CREEPER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFBlocks.PLAYER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFBlocks.SKELETON_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFBlocks.WITHER_SKELE_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFBlocks.ZOMBIE_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
 
 		hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL);
 		hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL);

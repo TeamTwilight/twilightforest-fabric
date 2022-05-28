@@ -2,15 +2,39 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "has_ghastling": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/mini_ghast"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/mini_ghast": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_ghastguard": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/tower_ghast"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/tower_ghast": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     }
   },

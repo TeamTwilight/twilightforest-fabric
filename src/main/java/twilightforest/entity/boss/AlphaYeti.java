@@ -40,7 +40,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.ai.StayNearHomeGoal;
 import twilightforest.entity.ai.ThrowRiderGoal;
 import twilightforest.entity.ai.YetiRampageGoal;
 import twilightforest.entity.ai.YetiTiredGoal;
@@ -74,7 +73,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new YetiTiredGoal(this, 100));
-		this.goalSelector.addGoal(2, new StayNearHomeGoal(this, 2.0F));
+		this.goalSelector.addGoal(2, new MoveTowardsRestrictionGoal(this, 1.5F));
 		this.goalSelector.addGoal(3, new YetiRampageGoal(this, 10, 180));
 		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.0D, 40, 40, 40.0F) {
 			@Override

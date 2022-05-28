@@ -1,33 +1,13 @@
 {
-  "parent": "builtin/entity",
+  "parent": "twilightforest:item/template_trophy",
   "textures": {
     "particle": "block/soul_sand"
   },
   "display": {
     "head": {
       "rotation": [ 180, 0, 180 ],
-      "translation": [ 0, 22, 0 ],
-      "scale":[ 1.85, 1.85, 1.85 ]
-    },
-    "fixed": {
-      "rotation": [ 0, 180, 0 ],
-      "translation": [ 0, 13, 0],
-      "scale":[ 1, 1, 1 ]
-    },
-    "ground": {
-      "rotation": [ 0, 0, 0 ],
-      "translation": [ 0, 13, 0 ],
-      "scale": [ 0.5, 0.5, 0.5 ]
-    },
-    "thirdperson_righthand": {
-      "rotation": [ 45, 135, 0 ],
-      "translation": [ 0, 5, 5 ],
-      "scale": [ 0.5, 0.5, 0.5 ]
-    },
-    "firstperson_righthand": {
-      "rotation": [ 0, 0, 0 ],
-      "translation": [ 0, 10, 0 ],
-      "scale": [ 1, 1, 1 ]
+      "translation": [ 0, 18, 0 ],
+      "scale":[ 1.6, 1.6, 1.6 ]
     }
   }
 }

@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.material.Material;
 import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -78,8 +77,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
         int diameter = (int) (length / 4.5F); // diameter of the base
 
         //only place spikes on solid ground, not on the tops of trees
-        Material material = level.getBlockState(startPos.below()).getMaterial();
-        if (!hang && (!material.isSolidBlocking() || !material.isSolid())) return false;
+        if (!hang && !FeatureLogic.worldGenReplaceable(level.getBlockState(startPos.below()))) return false;
 
         // let's see...
         for (int dx = -diameter; dx <= diameter; dx++) {
@@ -93,7 +91,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
                 if (dist <= 0) spikeLength = length;
                 else spikeLength = random.nextInt((int) (length / (dist + 0.25F)));
 
-                for (int i = 0; i < spikeLength; i++) {
+                for (int i = -1; i < spikeLength; i++) {
                     BlockPos placement = startPos.offset(dx, i * dY, dz);
 
                     if (FeatureLogic.worldGenReplaceable(level.getBlockState(placement)) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 1))

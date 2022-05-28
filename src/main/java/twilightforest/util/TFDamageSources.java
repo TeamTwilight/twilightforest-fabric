@@ -6,6 +6,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 
+import javax.annotation.Nullable;
+
 public class TFDamageSources {
     public static final DamageSource GHAST_TEAR = new DamageSource(tfSource("ghastTear")); //ur-ghast
     public static final DamageSource HYDRA_BITE = new DamageSource(tfSource("hydraBite")); //hydra
@@ -46,7 +48,7 @@ public class TFDamageSources {
     public static DamageSource frozen(Entity source, LivingEntity mob) {
         return new IndirectEntityDamageSource(tfSource("frozen"), source, mob); //ice bomb
     }
-    public static DamageSource spiked(Entity source, LivingEntity mob) {
+    public static DamageSource spiked(Entity source, @Nullable Entity mob) {
         return new IndirectEntityDamageSource(tfSource("spiked"), source, mob); //block and chain
     }
     public static DamageSource leafBrain(Entity source, LivingEntity mob) {

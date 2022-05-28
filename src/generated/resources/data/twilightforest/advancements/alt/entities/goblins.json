@@ -2,27 +2,75 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "has_redcap": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/redcap"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/redcap": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_sapper": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/redcap_sapper"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/redcap_sapper": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_blockchain": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/blockchain_goblin"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/blockchain_goblin": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     },
     "has_knight": {
-      "trigger": "twilightforest:has_advancement",
+      "trigger": "minecraft:tick",
       "conditions": {
-        "advancement": "twilightforest:alt/entities/goblin_knight"
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "advancements": {
+                  "twilightforest:alt/entities/goblin_knight": true
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ]
       }
     }
   },

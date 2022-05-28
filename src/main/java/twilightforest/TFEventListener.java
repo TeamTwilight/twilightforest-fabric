@@ -348,11 +348,11 @@ public class TFEventListener {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if(FabricLoader.getInstance().isModLoaded(TFCompat.CURIOS_ID)) {
-			ItemStack stack = TrinketsApi.TRINKET_COMPONENT.maybeGet(player).get().getEquipped(item).get(0).getB();
+		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
 
-			if (!stack.isEmpty()) {
-				stack.shrink(1);
+			if (slot.isPresent()) {
+				slot.get().stack().shrink(1);
 				return true;
 			}
 		}
@@ -868,13 +868,6 @@ public class TFEventListener {
 		tagCompound.put(PERSISTED_NBT_TAG, playerData); // commit
 
 		if (shouldBanishPlayer) TFPortalBlock.attemptSendEntity(player, true, TFConfig.COMMON_CONFIG.DIMENSION.portalForNewPlayerSpawn.get()); // See ya hate to be ya
-	}
-
-	// Advancement Trigger
-	public static void onAdvancementGet(Player player, Advancement advancement) {
-		if (player instanceof ServerPlayer) {
-			TFAdvancements.ADVANCEMENT_UNLOCKED.trigger((ServerPlayer) player, advancement);
-		}
 	}
 
 	public static void armorChanged(LivingEntity living, EquipmentSlot slot, @Nonnull ItemStack from, @Nonnull ItemStack to) {
