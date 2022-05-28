@@ -24,7 +24,9 @@ sourceSets.main.resources {
 repositories {
     mavenLocal()
     maven { url = "https://cursemaven.com" }
+    maven { url = "https://api.modrinth.com/maven" }
     maven { url = "https://maven.shedaniel.me/" }
+    maven { url = "https://maven.wispforest.io" } // TOP
     maven { url = uri("https://storage.googleapis.com/devan-maven/") }
     maven { url = "https://maven.terraformersmc.com/releases/" }
     maven { url "https://nexus.resourcefulbees.com/repository/maven-public/" }
@@ -91,6 +93,8 @@ dependencies {
 
     modImplementation(include("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"))
     modImplementation(include("curse.maven:forge-config-api-port-fabric-547434:${project.config_api_version}"))
+
+    modImplementation("slimeknights.tconstruct:TConstruct:${minecraft_version}-${tcon_version}")
 
 //     modImplementation("curse.maven:irisshaders-fabric-455508:3605379")
 //     modImplementation "org.anarres:jcpp:1.4.14"

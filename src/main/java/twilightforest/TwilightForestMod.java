@@ -38,6 +38,7 @@ import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.CuriosCompat;
+import twilightforest.compat.TConCompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.enchantment.TFEnchantments;
@@ -127,8 +128,8 @@ public class TwilightForestMod implements ModInitializer {
 		}
 
 		if(FabricLoader.getInstance().isModLoaded(TFCompat.TCON_ID)) {
-//			TConCompat.FLUIDS.register();
-//			TConCompat.MODIFIERS.register();
+			TConCompat.FLUIDS.register();
+			TConCompat.MODIFIERS.register();
 		}
 
 		TFStructures.register();
