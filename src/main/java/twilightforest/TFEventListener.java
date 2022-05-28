@@ -5,9 +5,12 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonObject;
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import com.mojang.authlib.GameProfile;
+import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketsApi;
-import io.github.fabricators_of_create.porting_lib.event.common.*;
-import io.github.fabricators_of_create.porting_lib.extensions.EntityExtensions;
+import io.github.fabricators_of_create.porting_lib.event.common.ItemCraftedCallback;
+import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
+import io.github.fabricators_of_create.porting_lib.event.common.MountEntityCallback;
+import io.github.fabricators_of_create.porting_lib.event.common.ProjectileImpactCallback;
 import io.github.fabricators_of_create.porting_lib.loot.GlobalLootModifierSerializer;
 import io.github.fabricators_of_create.porting_lib.loot.LootModifier;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
@@ -21,7 +24,6 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
@@ -37,6 +39,7 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -134,7 +137,6 @@ public class TFEventListener {
 		EntityTrackingEvents.START_TRACKING.register(TFEventListener::onStartTracking);
 		MountEntityCallback.EVENT.register(TFEventListener::preventMountDismount);
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(TFEventListener::playerPortals);
-		AdvancementCallback.EVENT.register(TFEventListener::onAdvancementGet);
 	}
 
 	public static final String CHARM_INV_TAG = "TFCharmInventory";
@@ -348,11 +350,11 @@ public class TFEventListener {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if(ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
+		if(FabricLoader.getInstance().isModLoaded(TFCompat.CURIOS_ID)) {
+			Tuple<SlotReference, ItemStack> slot = player.getComponent(TrinketsApi.TRINKET_COMPONENT).getEquipped(stack -> stack.is(item)).get(0);
 
-			if (slot.isPresent()) {
-				slot.get().stack().shrink(1);
+			if (!slot.getB().isEmpty()) {
+				slot.getB().shrink(1);
 				return true;
 			}
 		}
@@ -510,10 +512,10 @@ public class TFEventListener {
 	private static final String PERSISTED_NBT_TAG = "PlayerPersisted";
 
 	public static CompoundTag getPlayerData(Player player) {
-		if (!((EntityExtensions)player).getExtraCustomData().contains(PERSISTED_NBT_TAG)) {
-			((EntityExtensions)player).getExtraCustomData().put(PERSISTED_NBT_TAG, new CompoundTag());
+		if (!player.getExtraCustomData().contains(PERSISTED_NBT_TAG)) {
+			player.getExtraCustomData().put(PERSISTED_NBT_TAG, new CompoundTag());
 		}
-		return ((EntityExtensions)player).getExtraCustomData().getCompound(PERSISTED_NBT_TAG);
+		return player.getExtraCustomData().getCompound(PERSISTED_NBT_TAG);
 	}
 
 	//stores the charm that was used for the effect later
@@ -605,7 +607,7 @@ public class TFEventListener {
 //		}
 
 		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && newPlayer.getRespawnPosition() == null) {
-			CompoundTag tagCompound = ((EntityExtensions)newPlayer).getExtraCustomData();
+			CompoundTag tagCompound = newPlayer.getExtraCustomData();
 			CompoundTag playerData = tagCompound.getCompound("PlayerPersisted");
 			playerData.putBoolean(NBT_TAG_TWILIGHT, false); // set to false so that the method works
 			tagCompound.put("PlayerPersisted", playerData); // commit
@@ -858,7 +860,7 @@ public class TFEventListener {
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
 
 	private static void banishNewbieToTwilightZone(Player player) {
-		CompoundTag tagCompound = ((EntityExtensions)player).getExtraCustomData();
+		CompoundTag tagCompound = player.getExtraCustomData();
 		CompoundTag playerData = tagCompound.getCompound(PERSISTED_NBT_TAG);
 
 		// getBoolean returns false, if false or didn't exist

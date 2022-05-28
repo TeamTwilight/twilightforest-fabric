@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class CurioHeadRenderer {
 
-	public static void render(ItemStack stack, SlotReference slotContext, EntityModel<? extends LivingEntity> contextModel, PoseStack matrixStack, MultiBufferSource buffer, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitchh) {
+	public static void render(ItemStack stack, SlotReference slotContext, EntityModel<? extends LivingEntity> contextModel, PoseStack matrixStack, MultiBufferSource buffer, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
 		if(contextModel instanceof HeadedModel headModel) {
 			matrixStack.pushPose();
 			headModel.getHead().translateAndRotate(matrixStack);

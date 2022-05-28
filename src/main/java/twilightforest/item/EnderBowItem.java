@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.extensions.EntityExtensions;
 import io.github.fabricators_of_create.porting_lib.util.CustomArrowItem;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
@@ -28,7 +26,7 @@ public class EnderBowItem extends BowItem implements CustomArrowItem {
 						&& result.getEntity() instanceof LivingEntity living
 						&& arrow.getOwner() != result.getEntity()) {
 
-			if (((EntityExtensions)arrow).getExtraCustomData().contains(KEY)) {
+			if (arrow.getExtraCustomData().contains(KEY)) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
 				float sourceYaw = player.getYRot(), sourcePitch = player.getXRot();
 				@Nullable Entity playerVehicle = player.getVehicle();
@@ -59,7 +57,7 @@ public class EnderBowItem extends BowItem implements CustomArrowItem {
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow) {
-		((EntityExtensions)arrow).getExtraCustomData().putBoolean(KEY, true);
+		arrow.getExtraCustomData().putBoolean(KEY, true);
 		return arrow;
 	}
 }

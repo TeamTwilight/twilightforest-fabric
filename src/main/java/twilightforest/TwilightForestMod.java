@@ -3,6 +3,7 @@ package twilightforest;
 import com.chocohead.mm.api.ClassTinkerers;
 import com.google.common.collect.Maps;
 import com.mojang.brigadier.CommandDispatcher;
+import dev.emi.trinkets.api.event.TrinketDropCallback;
 import io.github.fabricators_of_create.porting_lib.event.common.AddPackFindersCallback;
 import io.github.fabricators_of_create.porting_lib.loot.LootModifierManager;
 import io.github.fabricators_of_create.porting_lib.util.PathResourcePack;
@@ -134,7 +135,7 @@ public class TwilightForestMod implements ModInitializer {
 
 		TFStructures.register();
 		if(FabricLoader.getInstance().isModLoaded(TFCompat.CURIOS_ID)) {
-//			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+			TrinketDropCallback.EVENT.register(CuriosCompat::keepCurios);
 		}
 		ConfiguredWorldCarvers.register();
 		TFConfiguredFeatures.init();

@@ -126,7 +126,7 @@ public class TowerwoodBorer extends Monster {
 			} else {
 				Random random = this.mob.getRandom();
 
-				if (random.nextInt(10) == 0 && ForgeEventFactory.getMobGriefingEvent(this.mob.getLevel(), this.mob)) {
+				if (random.nextInt(10) == 0 && this.mob.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 					this.facing = Direction.getRandom(random);
 					BlockPos blockpos = (new BlockPos(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ())).relative(this.facing);
 					BlockState state = this.mob.getLevel().getBlockState(blockpos);
@@ -209,7 +209,7 @@ public class TowerwoodBorer extends Monster {
 
 							// TF - Change block check
 							if (state.is(TFBlocks.INFESTED_TOWERWOOD.get())) {
-								if (ForgeEventFactory.getMobGriefingEvent(world, this.borer)) {
+								if (world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 									world.destroyBlock(offsetPos, true);
 								} else {
 									// TF - reset to normal tower wood

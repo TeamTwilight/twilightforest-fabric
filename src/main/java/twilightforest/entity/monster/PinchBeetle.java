@@ -1,6 +1,5 @@
 package twilightforest.entity.monster;
 
-import io.github.fabricators_of_create.porting_lib.extensions.EntityExtensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,7 +23,7 @@ import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.ChargeAttackGoal;
 import twilightforest.util.TFDamageSources;
 
-public class PinchBeetle extends Monster implements IHostileMount, EntityExtensions {
+public class PinchBeetle extends Monster implements IHostileMount {
 
 	public PinchBeetle(EntityType<? extends PinchBeetle> type, Level world) {
 		super(type, world);

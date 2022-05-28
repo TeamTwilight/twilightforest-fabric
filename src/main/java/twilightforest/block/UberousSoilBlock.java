@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.extensions.BlockExtensions;
 import io.github.fabricators_of_create.porting_lib.util.IPlantable;
 import io.github.fabricators_of_create.porting_lib.util.PlantType;
 import net.minecraft.core.BlockPos;
@@ -21,10 +20,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.PlantType;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
@@ -33,7 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class UberousSoilBlock extends Block implements BonemealableBlock, BlockExtensions {
+public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 15.0D, 16.0D);
 
@@ -99,10 +94,9 @@ public class UberousSoilBlock extends Block implements BonemealableBlock, BlockE
 
 			if (world instanceof ServerLevel serverLevel) {
 				MinecraftServer server = serverLevel.getServer();
-				FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(serverLevel);
 				server.tell(new TickTask(server.getTickCount(), () -> {
 					//We need to use a tick task so that plants that grow into tall variants don't just break upon growth
-					for (int i = 0; i < 15; i++) BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, fakePlayer);
+					for (int i = 0; i < 15; i++) BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos);
 				}));
 			}
 

@@ -7,6 +7,7 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.nbt.CompoundTag;

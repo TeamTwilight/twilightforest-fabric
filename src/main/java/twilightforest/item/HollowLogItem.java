@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.extensions.BlockItemExtensions;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -14,7 +13,7 @@ import twilightforest.block.HollowLogVertical;
 import javax.annotation.Nullable;
 import java.util.Map;
 
-public class HollowLogItem extends BlockItem implements BlockItemExtensions {
+public class HollowLogItem extends BlockItem {
     private final HollowLogHorizontal horizontalLog;
     private final HollowLogVertical verticalLog;
     private final HollowLogClimbable climbable;
@@ -45,7 +44,7 @@ public class HollowLogItem extends BlockItem implements BlockItemExtensions {
 
     @Override
     public void removeFromBlockToItemMap(Map<Block, Item> blockToItemMap, Item itemIn) {
-        BlockItemExtensions.super.removeFromBlockToItemMap(blockToItemMap, itemIn);
+        super.removeFromBlockToItemMap(blockToItemMap, itemIn);
         blockToItemMap.remove(this.horizontalLog);
         blockToItemMap.remove(this.verticalLog);
         blockToItemMap.remove(this.climbable);

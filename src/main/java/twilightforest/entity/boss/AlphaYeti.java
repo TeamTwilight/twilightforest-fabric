@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import io.github.fabricators_of_create.porting_lib.extensions.EntityExtensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -55,7 +54,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount, EntityExtensions {
+public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount {
 
 	private static final EntityDataAccessor<Byte> RAMPAGE_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> TIRED_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BYTE);

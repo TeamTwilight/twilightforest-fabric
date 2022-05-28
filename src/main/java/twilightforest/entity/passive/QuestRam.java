@@ -34,7 +34,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.ai.QuestRamEatWoolGoal;
@@ -234,7 +233,7 @@ public class QuestRam extends Animal {
 								red, green, blue);
 					}
 
-					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverplayer), packet);
+					TFPacketHandler.CHANNEL.sendToClient(packet, serverplayer);
 				}
 			}
 		}

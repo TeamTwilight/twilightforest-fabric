@@ -1,5 +1,6 @@
 package twilightforest.data;
 
+import me.alphamode.forgetags.Tags;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -574,15 +575,15 @@ public class BlockLootTables extends BlockLoot {
 	}
 
 	//[VanillaCopy] of a few different methods from BlockLoot. These are here just so we can use the modded shears thing
-	protected static LootTable.Builder createShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
+	public static LootTable.Builder createShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
 		return createSelfDropDispatchTable(block, HAS_SHEARS, builder);
 	}
 
-	protected static LootTable.Builder createSilkTouchOrShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
+	public static LootTable.Builder createSilkTouchOrShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
 		return createSelfDropDispatchTable(block, HAS_SHEARS_OR_SILK_TOUCH, builder);
 	}
 
-	protected static LootTable.Builder createShearsOnlyDrop(ItemLike p_124287_) {
+	public static LootTable.Builder createShearsOnlyDrop(ItemLike p_124287_) {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).when(HAS_SHEARS).add(LootItem.lootTableItem(p_124287_)));
 	}
 

@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import io.github.fabricators_of_create.porting_lib.entity.ExtraSpawnDataEntity;
+import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import io.github.fabricators_of_create.porting_lib.util.EntityDestroyBlock;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
@@ -30,12 +31,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.network.NetworkHooks;
 import twilightforest.TFSounds;
 import twilightforest.block.MazestoneBlock;
 import twilightforest.enchantment.TFEnchantments;

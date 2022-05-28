@@ -1,9 +1,7 @@
 package twilightforest.client;
 
-import io.github.fabricators_of_create.porting_lib.event.client.FOVModifierCallback;
-import io.github.fabricators_of_create.porting_lib.event.client.ModelsBakedCallback;
-import io.github.fabricators_of_create.porting_lib.event.client.RenderTickStartCallback;
-import io.github.fabricators_of_create.porting_lib.event.client.TextureStitchCallback;
+import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.fabricators_of_create.porting_lib.event.client.*;
 import io.github.fabricators_of_create.porting_lib.model.ModelLoaderRegistry;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -21,6 +19,7 @@ import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -73,6 +72,11 @@ public class TFClientEvents {
 		ClientTickEvents.END_CLIENT_TICK.register(TFClientEvents::clientTick);
 		ItemTooltipCallback.EVENT.register(TFClientEvents::tooltipEvent);
 		FOVModifierCallback.PARTIAL_FOV.register(TFClientEvents::FOVUpdate);
+		LivingEntityRenderEvents.PRE.register((entity, renderer, partialRenderTick, matrixStack, buffers, light) -> {
+			TFClientEvents.unrenderHeadWithTrophies(entity, renderer, partialRenderTick, matrixStack, buffers, light);
+			return false;
+		});
+		LivingEntityRenderEvents.POST.register(TFClientEvents::unrenderHeadWithTrophies);
 	}
 
 	public static class ModBusEvents {
@@ -369,21 +373,20 @@ public class TFClientEvents {
 		return fov;
 	}
 
-	@SubscribeEvent
-	public static void unrenderHeadWithTrophies(RenderLivingEvent<?, ?> event) {
-		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
-		boolean visible = !(stack.getItem() instanceof TrophyItem) && !(stack.getItem() instanceof SkullCandleItem) && !areCuriosEquipped(event.getEntity());
+	public static void unrenderHeadWithTrophies(LivingEntity entity, LivingEntityRenderer<?, ?> renderer, float partialRenderTick, PoseStack matrixStack, MultiBufferSource buffers, int light) {
+		ItemStack stack = entity.getItemBySlot(EquipmentSlot.HEAD);
+		boolean visible = !(stack.getItem() instanceof TrophyItem) && !(stack.getItem() instanceof SkullCandleItem) && !areCuriosEquipped(entity);
 
-		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
+		if (renderer.getModel() instanceof HeadedModel headedModel) {
 			headedModel.getHead().visible = visible;
-			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
+			if (renderer.getModel() instanceof HumanoidModel<?> humanoidModel) {
 				humanoidModel.hat.visible = visible;
 			}
 		}
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
+		if (FabricLoader.getInstance().isModLoaded(TFCompat.CURIOS_ID)) {
 			return CuriosCompat.isTrophyCurioEquipped(entity) || CuriosCompat.isSkullCurioEquipped(entity);
 		}
 		return false;

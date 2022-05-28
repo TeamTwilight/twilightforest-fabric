@@ -39,7 +39,7 @@ public class FierySwordItem extends SwordItem implements CustomEnchantingBehavio
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return !EnchantmentHelper.getEnchantments(book).containsKey(Enchantments.FIRE_ASPECT) && super.isBookEnchantable(stack, book);
+		return !EnchantmentHelper.getEnchantments(book).containsKey(Enchantments.FIRE_ASPECT) && CustomEnchantingBehaviorItem.super.isBookEnchantable(stack, book);
 	}
 
 	@Override

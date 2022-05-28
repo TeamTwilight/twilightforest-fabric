@@ -1,6 +1,5 @@
 package twilightforest.client.particle;
 
-import io.github.fabricators_of_create.porting_lib.extensions.ParticleExtensions;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -9,7 +8,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
-public class SortingParticle extends TextureSheetParticle implements ParticleExtensions {
+public class SortingParticle extends TextureSheetParticle {
     private final double xStart;
     private final double yStart;
     private final double zStart;

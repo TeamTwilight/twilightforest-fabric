@@ -4,9 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import io.github.fabricators_of_create.porting_lib.extensions.MapDecorationExtensions;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.nbt.CompoundTag;
@@ -16,17 +17,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.world.registration.TFFeature;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class TFMagicMapData extends MapItemSavedData {
 	private static final Map<String, TFMagicMapData> CLIENT_DATA = new HashMap<>();
@@ -136,7 +130,7 @@ public class TFMagicMapData extends MapItemSavedData {
 		}
 	}
 
-	public static class TFMapDecoration extends MapDecoration implements MapDecorationExtensions {
+	public static class TFMapDecoration extends MapDecoration {
 
 		private static final Int2ObjectArrayMap<TFFeature> ICONS = new Int2ObjectArrayMap<>(){{
 			defaultReturnValue(TFFeature.NOTHING);

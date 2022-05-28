@@ -1,7 +1,7 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.extensions.EntityExtensions;
-import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
@@ -38,8 +38,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
@@ -49,8 +47,8 @@ import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.NoReturnTeleporter;
-import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.world.TFTeleporter;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -275,7 +273,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if(serverWorld == null)
 			return;
 
-		((EntityExtensions)entity).changeDimension(serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
+		entity.changeDimension(serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
 
 		if (destination == TFGenerationSettings.DIMENSION_KEY && entity instanceof ServerPlayer && forcedEntry) {
 			ServerPlayer playerMP = (ServerPlayer) entity;

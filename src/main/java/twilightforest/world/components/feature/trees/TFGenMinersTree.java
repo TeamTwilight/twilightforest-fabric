@@ -1,14 +1,12 @@
 package twilightforest.world.components.feature.trees;
 
 import com.mojang.serialization.Codec;
-import io.github.fabricators_of_create.porting_lib.extensions.BlockExtensions;
-import io.github.fabricators_of_create.porting_lib.util.IPlantable;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
@@ -31,7 +29,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// check soil
 		BlockState state = world.getBlockState(pos.below());
-		if (!((BlockExtensions)state.getBlock()).canSustainPlant(state, world, pos.below(), Direction.UP, (IPlantable) TFBlocks.MINING_SAPLING.get())) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.below(), Direction.UP, TFBlocks.MINING_SAPLING.get())) {
 			return false;
 		}
 
