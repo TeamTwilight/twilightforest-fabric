@@ -18,6 +18,21 @@ Alternatively, grab your experimental builds from our [Discord](https://discord.
 ## Community
 We have a [Discord channel](https://discord.gg/6v3z26B)!
 
+## Maven
+https://modmaven.dev/teamtwilight/twilightforest/
+
+```
+repositories {
+    maven {
+        url = "https://modmaven.dev/"
+    }
+}
+
+dependencies {
+    implementation fg.deobf("teamtwilight:twilightforest:{version}:universal")
+}
+```
+
 ## YourKit
 ![](https://www.yourkit.com/images/yklogo.png)
 
