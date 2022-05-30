@@ -172,3 +172,5 @@ accessible method net/minecraft/world/item/crafting/Ingredient fromValues (Ljava
 accessible field net/minecraft/world/item/crafting/Ingredient values [Lnet/minecraft/world/item/crafting/Ingredient$Value;
 accessible method net/minecraft/world/level/biome/Biome getTemperature (Lnet/minecraft/core/BlockPos;)F
 accessible field net/minecraft/world/level/levelgen/structure/pieces/StructurePiecesBuilder pieces Ljava/util/List;
+extendable class net/minecraft/world/item/enchantment/EnchantmentCategory
+extendable class net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier

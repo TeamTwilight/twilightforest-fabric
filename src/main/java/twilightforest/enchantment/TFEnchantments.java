@@ -1,5 +1,6 @@
 package twilightforest.enchantment;
 
+import com.chocohead.mm.api.ClassTinkerers;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.Registry;
@@ -18,5 +19,5 @@ public class TFEnchantments {
 	public static final RegistryObject<Enchantment> BLOCK_STRENGTH = ENCHANTMENTS.register("block_strength", () -> new BlockStrengthEnchantment(Enchantment.Rarity.RARE));
 	public static final RegistryObject<Enchantment> DESTRUCTION = ENCHANTMENTS.register("destruction", () -> new DestructionEnchantment(Enchantment.Rarity.RARE));
 
-	public static final EnchantmentCategory BLOCK_AND_CHAIN = EnchantmentCategory.ARMOR;// TODO: PORT EnchantmentCategory.create("twilightforest_block_and_chain", item -> item instanceof ChainBlockItem);
+	public static final EnchantmentCategory BLOCK_AND_CHAIN = ClassTinkerers.getEnum(EnchantmentCategory.class, "twilightforest_block_and_chain");
 }

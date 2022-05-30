@@ -5,14 +5,27 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.MappingResolver;
 import net.minecraft.ChatFormatting;
-import net.minecraft.world.item.Rarity;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
+import java.util.Locale;
+
 public class TFASM implements Runnable {
+    
+    public String prefix(String name) {
+        return "twilightforest:" + name.toLowerCase(Locale.ROOT);
+    }
+    
     @Override
     public void run() {
         MappingResolver resolver = FabricLoader.getInstance().getMappingResolver();
+        ClassTinkerers.enumBuilder(resolver.mapClassName("intermediary", "net.minecraft.class_1886")).addEnumSubclass("twilightforest_block_and_chain", "twilightforest.asm.EnchantmentCategoryBlockAndChain").build();
+        String grassColorClass = resolver.mapClassName("intermediary", "net.minecraft.class_4763$class_5486");
+        ClassTinkerers.enumBuilder(grassColorClass, String.class).addEnumSubclass(prefix("enchanted_forest"), "twilightforest.asm.GrassColorModifierEnchantedForest", prefix("enchanted_forest"))
+            .addEnumSubclass(prefix("swamp"), "twilightforest.asm.GrassColorModifierSwamp", prefix("swamp"))
+            .addEnumSubclass(prefix("dark_forest"), "twilightforest.asm.GrassColorModifierDarkForest", prefix("dark_forest"))
+            .addEnumSubclass(prefix("dark_forest_center"), "twilightforest.asm.GrassColorModifierDarkForestCenter", prefix("dark_forest_center"))
+            .addEnumSubclass(prefix("spooky_forest"), "twilightforest.asm.GrassColorModifierSpookyForest", prefix("spooky_forest")).build();
         ClassTinkerers.enumBuilder(resolver.mapClassName("intermediary", "net.minecraft.class_1814"), "L"+resolver.mapClassName("intermediary", "net.minecraft.class_124")+";").addEnum("TWILIGHT", ChatFormatting.DARK_GREEN).build();
         ClassTinkerers.enumBuilder(resolver.mapClassName("intermediary", "net.minecraft.class_2582"), String.class, String.class, boolean.class)
                 .addEnum("TWILIGHTFOREST_NAGA", "twilightforest_naga", "tfn", true)
