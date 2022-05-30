@@ -19,14 +19,16 @@ import twilightforest.item.CuriosCharmItem;
 
 public class CharmOfKeepingRenderer implements TrinketRenderer {
 
-	private final CharmOfKeepingModel model;
+	private CharmOfKeepingModel model;
 
 	public CharmOfKeepingRenderer() {
-		this.model = new CharmOfKeepingModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.CHARM_OF_KEEPING));
+//		this.model = new CharmOfKeepingModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.CHARM_OF_KEEPING));
 	}
 
 	@Override
 	public void render(ItemStack stack, SlotReference slotContext, EntityModel<? extends LivingEntity> contextModel, PoseStack ms, MultiBufferSource buffer, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
+		if (model == null)
+			this.model = new CharmOfKeepingModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.CHARM_OF_KEEPING));
 		CuriosCharmItem charm = (CuriosCharmItem) stack.getItem();
 		TrinketRenderer.followBodyRotations(slotContext.inventory().getComponent().getEntity(), this.model);
 		VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(TwilightForestMod.getModelTexture("curios/" + Registry.ITEM.getKey(charm).getPath() + ".png")));

@@ -1,7 +1,6 @@
 package twilightforest.compat;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.world.item.Item;
 import twilightforest.TwilightForestMod;
 
 import java.util.*;
@@ -10,7 +9,7 @@ import java.util.*;
 //It works the same as it used to, but all the content for each mod should be in its own class.
 public abstract class TFCompat {
 
-    public static final String CURIOS_ID = "curios";
+    public static final String TRINKETS_ID = "trinkets";
     public static final String IE_ID = "immersiveengineering";
     public static final String TCON_ID = "tconstruct";
     public static final String UNDERGARDEN_ID = "undergarden";
@@ -19,7 +18,7 @@ public abstract class TFCompat {
     public static Set<TFCompat> modules = new HashSet<>();
 
     static {
-        classes.put(CURIOS_ID, CuriosCompat.class);
+        classes.put(TRINKETS_ID, TrinketsCompat.class);
 //        classes.put(IE_ID, IECompat.class);
         classes.put(TCON_ID, TConCompat.class);
 //        classes.put(UNDERGARDEN_ID, UndergardenCompat.class);

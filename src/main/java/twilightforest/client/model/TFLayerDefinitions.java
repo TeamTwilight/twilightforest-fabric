@@ -6,8 +6,6 @@ import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.fabricmc.api.EnvType;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
@@ -156,7 +154,7 @@ public class TFLayerDefinitions {
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.KEEPSAKE_CASKET, CasketTileEntityRenderer::create);
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.MOONWORM, MoonwormModel::create);
 
-		if(FabricLoader.getInstance().isModLoaded(TFCompat.CURIOS_ID)) {
+		if(FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
 			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_LIFE_1, CharmOfLife1NecklaceModel::create);
 			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_LIFE_2, CharmOfLife2NecklaceModel::create);
 			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_KEEPING, CharmOfKeepingModel::create);

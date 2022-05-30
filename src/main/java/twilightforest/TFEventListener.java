@@ -350,7 +350,7 @@ public class TFEventListener {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if(FabricLoader.getInstance().isModLoaded(TFCompat.CURIOS_ID)) {
+		if(FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
 			Tuple<SlotReference, ItemStack> slot = player.getComponent(TrinketsApi.TRINKET_COMPONENT).getEquipped(stack -> stack.is(item)).get(0);
 
 			if (!slot.getB().isEmpty()) {
@@ -603,7 +603,7 @@ public class TFEventListener {
 			if(casketExpiration) {
 				newPlayer.sendMessage(new TranslatableComponent("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED), newPlayer.getUUID());
 			}
-			returnStoredItems(newPlayer);
+			returnStoredItems(oldPlayer, newPlayer);
 //		}
 
 		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && newPlayer.getRespawnPosition() == null) {
@@ -618,12 +618,12 @@ public class TFEventListener {
 	/**
 	 * Maybe we kept some stuff for the player!
 	 */
-	private static void returnStoredItems(Player player) {
+	private static void returnStoredItems(Player oldPlayer, Player player) {
 
 		TwilightForestMod.LOGGER.debug("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUUID());
 
 		//check if our tag is in the persistent player data. If so, copy that inventory over to our own. Cloud storage at its finest!
-		CompoundTag playerData = getPlayerData(player);
+		CompoundTag playerData = getPlayerData(oldPlayer);
 		if (!player.level.isClientSide && playerData.contains(CHARM_INV_TAG)) {
 			ListTag tagList = playerData.getList(CHARM_INV_TAG, 10);
 			player.getInventory().load(tagList);

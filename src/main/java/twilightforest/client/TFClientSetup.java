@@ -1,6 +1,5 @@
 package twilightforest.client;
 
-import io.github.fabricators_of_create.porting_lib.event.client.EntityAddedLayerCallback;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -36,13 +35,12 @@ import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.legacy.*;
-import twilightforest.compat.CuriosCompat;
+import twilightforest.compat.TrinketsCompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
@@ -120,8 +118,8 @@ public class TFClientSetup implements ClientModInitializer {
             registerWoodType(TFBlocks.MINING);
             registerWoodType(TFBlocks.SORTING);
 
-			if(FabricLoader.getInstance().isModLoaded(TFCompat.CURIOS_ID)) {
-				ClientLifecycleEvents.CLIENT_STARTED.register(CuriosCompat::registerCurioRenderers);
+			if(FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
+				ClientLifecycleEvents.CLIENT_STARTED.register(TrinketsCompat::registerCurioRenderers);
 			}
 //        });
 

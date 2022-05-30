@@ -38,7 +38,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.CuriosCompat;
+import twilightforest.compat.TrinketsCompat;
 import twilightforest.compat.TConCompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -134,8 +134,8 @@ public class TwilightForestMod implements ModInitializer {
 		}
 
 		TFStructures.register();
-		if(FabricLoader.getInstance().isModLoaded(TFCompat.CURIOS_ID)) {
-			TrinketDropCallback.EVENT.register(CuriosCompat::keepCurios);
+		if(FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
+			TrinketDropCallback.EVENT.register(TrinketsCompat::keepCurios);
 		}
 		ConfiguredWorldCarvers.register();
 		TFConfiguredFeatures.init();

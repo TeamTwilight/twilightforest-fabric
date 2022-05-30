@@ -1,6 +1,5 @@
 package twilightforest.compat;
 
-import dev.emi.trinkets.TrinketsMain;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.Trinket;
 import dev.emi.trinkets.api.TrinketEnums;
@@ -11,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -24,15 +22,15 @@ import twilightforest.compat.curios.CharmOfKeepingRenderer;
 import twilightforest.compat.curios.CharmOfLife1NecklaceRenderer;
 import twilightforest.compat.curios.CharmOfLife2NecklaceRenderer;
 import twilightforest.compat.curios.CurioHeadRenderer;
-import twilightforest.item.*;
-
+import twilightforest.item.CuriosCharmItem;
+import twilightforest.item.SkullCandleItem;
+import twilightforest.item.TFItems;
 import twilightforest.item.TrophyItem;
-import java.util.Optional;
 
-public class CuriosCompat extends TFCompat {
+public class TrinketsCompat extends TFCompat {
 
-	public CuriosCompat() {
-		super("Curios");
+	public TrinketsCompat() {
+		super("Trinkets");
 	}
 
 	@Override
@@ -48,13 +46,13 @@ public class CuriosCompat extends TFCompat {
 	protected void postInit() {
 		RegistryEntryAddedCallback.event(Registry.ITEM).register((rawId, id, object) -> {
 			if(object instanceof BlockItem blockItem && blockItem.getBlock() instanceof CritterBlock)
-				CuriosCompat.setupCuriosCapability(object);
+				TrinketsCompat.setupCuriosCapability(object);
 			if (object instanceof TrophyItem)
-				CuriosCompat.setupCuriosCapability(object);
+				TrinketsCompat.setupCuriosCapability(object);
 			if (object instanceof CuriosCharmItem)
-				CuriosCompat.setupCuriosCapability(object);
+				TrinketsCompat.setupCuriosCapability(object);
 			if (object instanceof SkullCandleItem)
-				CuriosCompat.setupCuriosCapability(object);
+				TrinketsCompat.setupCuriosCapability(object);
 		});
 	}
 
