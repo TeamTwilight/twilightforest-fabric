@@ -130,10 +130,9 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 						null, FrameType.GOAL, true, true, false)
 				.addCriterion("kill_hydra", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.HYDRA.get())))
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.HYDRA_TROPHY.get()))
-				.addCriterion("blood", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_BLOOD.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.Instance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.HYDRA.get())))
 				.addCriterion("stroganoff", this.advancementTrigger(minoshroom))
-				.requirements(new CountRequirementsStrategy(4, 1))
+				.requirements(new CountRequirementsStrategy(3, 1))
 				.save(consumer, "twilightforest:progress_hydra");
 
 		Advancement trophy_pedestal = Advancement.Builder.advancement().parent(lich).display(
@@ -177,10 +176,9 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 						null, FrameType.GOAL, true, true, false)
 				.addCriterion("ghast", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.UR_GHAST.get())))
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.UR_GHAST_TROPHY.get()))
-				.addCriterion("tear", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FIERY_TEARS.get()))
 				.addCriterion("was_in_fight", HurtBossTrigger.Instance.hurtBoss(EntityPredicate.Builder.entity().of(TFEntities.UR_GHAST.get())))
 				.addCriterion("previous_progression", this.advancementTrigger(knights))
-				.requirements(new CountRequirementsStrategy(4, 1))
+				.requirements(new CountRequirementsStrategy(3, 1))
 				.save(consumer, "twilightforest:progress_ur_ghast");
 
 		Advancement yeti = Advancement.Builder.advancement().parent(lich).display(

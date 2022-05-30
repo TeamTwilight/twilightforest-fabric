@@ -47,18 +47,6 @@
         ]
       }
     },
-    "tear": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:fiery_tears"
-            ]
-          }
-        ]
-      }
-    },
     "was_in_fight": {
       "trigger": "twilightforest:hurt_boss",
       "conditions": {
@@ -96,7 +84,6 @@
     [
       "ghast",
       "trophy",
-      "tear",
       "was_in_fight"
     ],
     [

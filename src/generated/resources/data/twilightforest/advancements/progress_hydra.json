@@ -47,18 +47,6 @@
         ]
       }
     },
-    "blood": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:fiery_blood"
-            ]
-          }
-        ]
-      }
-    },
     "was_in_fight": {
       "trigger": "twilightforest:hurt_boss",
       "conditions": {
@@ -96,7 +84,6 @@
     [
       "kill_hydra",
       "trophy",
-      "blood",
       "was_in_fight"
     ],
     [
