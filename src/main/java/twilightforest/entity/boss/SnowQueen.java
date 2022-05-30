@@ -112,6 +112,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
 				.add(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
+				.add(Attributes.FLYING_SPEED, 0.23000000417232513D)
 				.add(Attributes.ATTACK_DAMAGE, 7.0D)
 				.add(Attributes.FOLLOW_RANGE, 40.0D)
 				.add(Attributes.MAX_HEALTH, 200.0D);

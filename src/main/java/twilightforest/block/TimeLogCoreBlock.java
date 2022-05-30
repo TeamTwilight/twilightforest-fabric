@@ -41,7 +41,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 			if (entity != null) {
 				BlockEntityTicker<BlockEntity> ticker = state.getTicker(world, (BlockEntityType<BlockEntity>) entity.getType());
 				if (ticker != null)
-					ticker.tick(world, pos, state, entity);
+					ticker.tick(world, dPos, state, entity);
 			}
 		}
 	}

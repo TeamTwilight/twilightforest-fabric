@@ -17,7 +17,7 @@
       }
     ],
     "ignore_vines": true,
-    "force_dirt": false,
+    "force_dirt": true,
     "dirt_provider": {
       "state": {
         "Name": "minecraft:dirt"

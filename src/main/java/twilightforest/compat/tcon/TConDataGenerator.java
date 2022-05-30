@@ -203,20 +203,20 @@ public class TConDataGenerator {
 		@Override
 		protected void addMaterialStats() {
 			addMaterialStats(TConCompat.FIERY,
-					new HeadMaterialStats(720, 7.2F, Tiers.DIAMOND, 6.6F),
+					new HeadMaterialStats(720, 6.5F, Tiers.DIAMOND, 3.0F),
 					ExtraMaterialStats.DEFAULT,
 					HandleMaterialStats.DEFAULT);
 
 			addMaterialStats(TConCompat.KNIGHTMETAL,
-					new HeadMaterialStats(900, 7.0F, Tiers.NETHERITE, 6.0F),
+					new HeadMaterialStats(900, 6.0F, Tiers.NETHERITE, 2.5F),
 					ExtraMaterialStats.DEFAULT,
 					HandleMaterialStats.DEFAULT);
 
 			addMaterialStats(TConCompat.NAGASCALE,
-					new HeadMaterialStats(460, 8.9F, Tiers.STONE, 4.3F));
+					new HeadMaterialStats(460, 9.0F, Tiers.STONE, 2.0F));
 
 			addMaterialStats(TConCompat.STEELEAF,
-					new HeadMaterialStats(180, 7.0F, Tiers.IRON, 6.0F),
+					new HeadMaterialStats(180, 6.0F, Tiers.IRON, 2.5F),
 					ExtraMaterialStats.DEFAULT,
 					HandleMaterialStats.DEFAULT);
 		}

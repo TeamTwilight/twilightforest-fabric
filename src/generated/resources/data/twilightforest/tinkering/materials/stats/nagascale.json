@@ -2,9 +2,9 @@
   "stats": {
     "tconstruct:head": {
       "durability": 460,
-      "miningSpeed": 8.9,
+      "miningSpeed": 9.0,
       "harvestTier": "minecraft:stone",
-      "attack": 4.3
+      "attack": 2.0
     }
   }
 }
