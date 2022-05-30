@@ -351,10 +351,10 @@ public class TFEventListener {
 
 	private static boolean hasCharmCurio(Item item, Player player) {
 		if(FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
-			Tuple<SlotReference, ItemStack> slot = player.getComponent(TrinketsApi.TRINKET_COMPONENT).getEquipped(stack -> stack.is(item)).get(0);
+			List<Tuple<SlotReference, ItemStack>> slots = player.getComponent(TrinketsApi.TRINKET_COMPONENT).getEquipped(stack -> stack.is(item));
 
-			if (!slot.getB().isEmpty()) {
-				slot.getB().shrink(1);
+			if (!slots.isEmpty() && !slots.get(0).getB().isEmpty()) {
+				slots.get(0).getB().shrink(1);
 				return true;
 			}
 		}
@@ -375,7 +375,7 @@ public class TFEventListener {
 			// Then let's store the rest of their stuff in the casket
 			keepsakeCasket(player);
 		}
-		return false;
+		return true;
 	}
 
 	private static boolean casketExpiration = false;
