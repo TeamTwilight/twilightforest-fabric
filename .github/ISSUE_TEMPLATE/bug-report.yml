@@ -4,11 +4,18 @@ labels: [bug]
 body:
   - type: input
     attributes:
-      label: Forge Version
-      description: What version of Forge are you running? This can be found on the installation jar you have downloaded, in the Mod Options menu, or the profile's version. Please note "latest" is NOT a version. *If you are reporting a bug that exists only on the Fabric port, please report it **[here](https://github.com/TeamTwilight/twilightforest-fabric/issues)** instead.*
-      placeholder: "Example: 36.2.0"
+      label: Fabric Loader Version
+      description: What version of Fabric Loader are you running? This can be found on the installation jar you have downloaded, in the Mod Options menu, or the profile's version. Please note "latest" is NOT a version. *If you are reporting a bug that also exists on the Forge version, please report it **[here](https://github.com/TeamTwilight/twilightforest/issues)** instead.*
+      placeholder: "Example: 0.14.6"
     validations:
       required: true
+  - type: input
+      attributes:
+        label: Fabric API Version
+        description: What version of Fabric API are you running? This can be found on the installation jar you have downloaded, in the Mod Options menu, or the profile's version. Please note "latest" is NOT a version.*
+        placeholder: "Example: 0.53.3+1.18.2"
+      validations:
+        required: true
   - type: input
     attributes:
       label: Twilight Forest Version
@@ -58,5 +65,7 @@ body:
           required: true
         - label: I have confirmed the details provided in this report are concise as possible and does not contained vague information (ie. Versions are properly recorded, answers to questions are clear).
           required: true
+        - label: I have confirmed this does not happen on the forge version (If it does please report to **[here](https://github.com/TeamTwilight/twilightforest/issues)** instead).
+            required: true
         - label: I have confirmed this issue is unique and has not been reported already.
           required: true
