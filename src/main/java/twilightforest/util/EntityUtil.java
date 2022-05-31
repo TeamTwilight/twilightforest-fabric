@@ -40,10 +40,9 @@ public class EntityUtil {
 
 	public static boolean canDestroyBlock(Level world, BlockPos pos, BlockState state, Entity entity) {
 		float hardness = state.getDestroySpeed(world, pos);
+		/* rude type limit */
 		return hardness >= 0f && hardness < 50f && !state.isAir()
-				&& canEntityDestroyBlock(state, world, pos, entity)
-				&& (/* rude type limit */!(entity instanceof LivingEntity)
-				/*|| ForgeEventFactory.onEntityDestroyBlock((LivingEntity) entity, pos, state)*/);
+				&& canEntityDestroyBlock(state, world, pos, entity);
 	}
 
 	public static boolean canEntityDestroyBlock(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
