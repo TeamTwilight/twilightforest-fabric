@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -55,7 +56,7 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 	}
 
 	@Override
-	protected Iterable<Vec3> getParticleOffsets(BlockState state, Level level, BlockPos pos) {
+	protected Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor level, BlockPos pos) {
 		if(level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			return PARTICLE_OFFSETS.get(sc.candleAmount);
 		}

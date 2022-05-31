@@ -1,6 +1,9 @@
 {
   "config": {
     "state": {
+      "Properties": {
+        "waterlogged": "false"
+      },
       "Name": "twilightforest:firefly_jar"
     }
   },

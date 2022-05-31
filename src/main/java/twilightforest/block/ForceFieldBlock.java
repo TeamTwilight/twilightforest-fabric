@@ -9,10 +9,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -166,90 +163,15 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, En
 	}
 
 	@Nullable
-	@Override//I'm sorry
+	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		Level level = context.getLevel();
-		BlockPos pos = context.getClickedPos();
-		BlockState thisState = this.defaultBlockState().setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
-
-		Direction clickedFace = context.getClickedFace();
-		BooleanProperty clickedProperty = PipeBlock.PROPERTY_BY_DIRECTION.get(clickedFace);
-
-		Direction firstFace = clickedFace.getOpposite();
-		BooleanProperty firstProperty = PipeBlock.PROPERTY_BY_DIRECTION.get(firstFace);
-
-		List<Direction> directionList = Arrays.stream(context.getNearestLookingDirections()).filter(direction -> direction.getAxis() != firstFace.getAxis()).toList();
-
-		Direction forward = directionList.get(0);
-		BooleanProperty forwardProperty = PipeBlock.PROPERTY_BY_DIRECTION.get(forward);
-		boolean canForward = this.canConnectTo(level, pos, forward);
-
-		Direction backwards = forward.getOpposite();
-		BooleanProperty backwardsProperty = PipeBlock.PROPERTY_BY_DIRECTION.get(backwards);
-		boolean canBackwards = this.canConnectTo(level, pos, backwards);
-
-		Direction closest = directionList.stream().filter(direction -> direction.getAxis() != forward.getAxis()).toList().get(0);
-		BooleanProperty closestProperty = PipeBlock.PROPERTY_BY_DIRECTION.get(closest);
-		boolean canClosest = this.canConnectTo(level, pos, closest);
-
-		Direction furthest = closest.getOpposite();
-		BooleanProperty furthestProperty = PipeBlock.PROPERTY_BY_DIRECTION.get(furthest);
-		boolean canFurthest = this.canConnectTo(level, pos, furthest);
-
-		thisState = thisState.setValue(firstProperty, true);
-
-		boolean crouching = context.isSecondaryUseActive();
-
-		BlockState otherState = level.getBlockState(pos.relative(firstFace));
-		if (otherState.getBlock() instanceof ForceFieldBlock) {
-			if (otherState.getValue(clickedProperty)) {
-				if (otherState.getValue(closestProperty) && otherState.getValue(furthestProperty)) {
-					return thisState.setValue(closestProperty, true).setValue(furthestProperty, true).setValue(clickedProperty, !crouching).setValue(forwardProperty, crouching);
-				}
-				if (otherState.getValue(forwardProperty) && otherState.getValue(backwardsProperty)) {
-					return thisState.setValue(forwardProperty, true).setValue(backwardsProperty, true).setValue(clickedProperty, !crouching).setValue(closestProperty, crouching);
-				}
-
-				for (Direction direction : directionList) {
-					BooleanProperty booleanProperty = PipeBlock.PROPERTY_BY_DIRECTION.get(direction);
-					if (otherState.getValue(booleanProperty)) thisState = thisState.setValue(booleanProperty, true);
-				}
-
-				BlockState oppositeState = level.getBlockState(pos.relative(clickedFace));
-
-				if (!crouching || (oppositeState.getBlock() instanceof ForceFieldBlock && oppositeState.getValue(firstProperty))) {
-					thisState = thisState.setValue(clickedProperty, true);
-				}
-				return thisState;
-			} else {
-				if (checkProperties(otherState, closestProperty, furthestProperty, forwardProperty, backwardsProperty)) {
-					return otherState.setValue(WATERLOGGED, thisState.getValue(WATERLOGGED));
-				}
-				return otherState.setValue(clickedProperty, !otherState.getValue(clickedProperty)).setValue(firstProperty, !otherState.getValue(firstProperty)).setValue(WATERLOGGED, thisState.getValue(WATERLOGGED));
-			}
-		} else {
-			if (canForward || canBackwards) {
-				if (canBackwards) {
-					thisState = thisState.setValue(forwardProperty, true);
-					thisState = thisState.setValue(backwardsProperty, true);
-					thisState = thisState.setValue(clickedProperty, true);
-					return thisState;
-				}
-
-				if (canClosest && !canFurthest && crouching) return thisState.setValue(closestProperty, true).setValue(forwardProperty, true);
-
-				return thisState.setValue(closestProperty, true).setValue(furthestProperty, true).setValue(clickedProperty, !crouching).setValue(forwardProperty, crouching);
-			} else if (canClosest || canFurthest) {
-				thisState = thisState.setValue(closestProperty, true);
-				thisState = thisState.setValue(furthestProperty, true);
-				thisState = thisState.setValue(clickedProperty, !crouching);
-				thisState = thisState.setValue(forwardProperty, crouching);
-				return thisState;
-			}
-
-			return thisState.setValue(clickedProperty, true);
-		}
-
+		return this.defaultBlockState()
+				.setValue(DOWN, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.DOWN))
+				.setValue(UP, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.UP))
+				.setValue(NORTH, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.NORTH))
+				.setValue(EAST, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.EAST))
+				.setValue(SOUTH, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.SOUTH))
+				.setValue(WEST, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.WEST));
 	}
 
 	@Override

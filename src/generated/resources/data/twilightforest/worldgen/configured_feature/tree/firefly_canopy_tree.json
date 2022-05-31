@@ -88,12 +88,18 @@
           "entries": [
             {
               "data": {
+                "Properties": {
+                  "waterlogged": "false"
+                },
                 "Name": "twilightforest:firefly_jar"
               },
               "weight": 10
             },
             {
               "data": {
+                "Properties": {
+                  "waterlogged": "false"
+                },
                 "Name": "twilightforest:cicada_jar"
               },
               "weight": 1

@@ -43,7 +43,7 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 			extinguish(player, state, level, pos);
 			return InteractionResult.sidedSuccess(level.isClientSide);
 
-		} else if (state.getValue(LIGHTING) == Lighting.NONE){
+		} else if (this.canBeLit(state)) {
 			if(player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)) {
 				setLit(level, state, pos, true);
 				level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -72,7 +72,7 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 		return state.getValue(LIGHTING) == Lighting.NONE;
 	}
 
-	protected abstract Iterable<Vec3> getParticleOffsets(BlockState state, Level level, BlockPos pos);
+	protected abstract Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor level, BlockPos pos);
 
 	// Original methods used Vec3 but here we can avoid creation of extraneous vectors
 	protected static void addParticlesAndSound(Level level, BlockPos pos, double xFraction, double yFraction, double zFraction, Random rand, boolean ominous) {
@@ -104,7 +104,7 @@ public abstract class AbstractLightableBlock extends BaseEntityBlock {
 		level.addParticle(ominous ? TFParticleType.OMINOUS_FLAME.get() : ParticleTypes.SMALL_FLAME, vec.x, vec.y, vec.z, 0.0D, 0.0D, 0.0D);
 	}
 
-	public static void extinguish(@Nullable Player player, BlockState state, Level accessor, BlockPos pos) {
+	public static void extinguish(@Nullable Player player, BlockState state, LevelAccessor accessor, BlockPos pos) {
 		setLit(accessor, state, pos, false);
 
 		if(state.getBlock() instanceof AbstractLightableBlock abstractLightableBlock) {
