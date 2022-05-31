@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "#pane"
+  },
+  "elements": [
+    {
+      "from": [
+        7,
+        9,
+        7
+      ],
+      "to": [
+        9,
+        16,
+        9
+      ],
+      "shade": false,
+      "faces": {
+        "west": {
+          "texture": "#pane",
+          "uv": [
+            7.0,
+            9.0,
+            9.0,
+            16.0
+          ]
+        }
+      }
+    }
+  ]
+}

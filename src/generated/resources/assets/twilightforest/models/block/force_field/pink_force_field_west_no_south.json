@@ -1,0 +1,6 @@
+{
+  "parent": "twilightforest:block/force_field/force_field_west_no_south",
+  "textures": {
+    "pane": "twilightforest:block/pink_force_field"
+  }
+}
