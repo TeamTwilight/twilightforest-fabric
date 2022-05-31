@@ -8,6 +8,7 @@ import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -283,7 +284,12 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, 24, 1, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
 		this.generateBox(world, sbb, 12, 1, 24, 24, 10, 24, fieldBlock, fieldBlock, false);
 
-		this.generateBox(world, sbb, 12, 10, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
+		fieldBlock = fieldBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.X);
+		this.generateBox(world, sbb, 13, 10, 12, 23, 10, 24, fieldBlock, fieldBlock, false);
+
+		fieldBlock = fieldBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.Z);
+		this.generateBox(world, sbb, 12, 10, 12, 12, 10, 24, fieldBlock, fieldBlock, false);
+		this.generateBox(world, sbb, 24, 10, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
 
 		// doors in dungeon force field
 		this.generateBox(world, sbb, 17, 1, 12, 19, 4, 12, TFBlocks.PINK_CASTLE_DOOR.get().defaultBlockState(), AIR, false);

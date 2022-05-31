@@ -1,23 +1,29 @@
 package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.block.ForceFieldBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.registration.TFFeature;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
+@ParametersAreNonnullByDefault
 public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 
 	@SuppressWarnings("unused")
@@ -44,13 +50,20 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		BlockState state = TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState();
+
 		// walls
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
-			this.fillBlocksRotated(world, sbb, 0, 0, 0, 0, 10, 20, deco.fenceState, rotation);
+			this.fillBlocksRotated(world, sbb, 0, 0, 0, 0, 10, 20, state, rotation);
 		}
 
 		// roof
-		this.generateBox(world, sbb, 0, 11, 0, 20, 11, 20, deco.fenceState, deco.fenceState, false);
+		state = state.setValue(BlockStateProperties.AXIS, Direction.Axis.X);
+		this.generateBox(world, sbb, 1, 11, 0, 19, 11, 20, state, state, false);
+
+		state = state.setValue(BlockStateProperties.AXIS, Direction.Axis.Z);
+		this.generateBox(world, sbb, 0, 11, 0, 0, 11, 20, state, state, false);
+		this.generateBox(world, sbb, 20, 11, 0, 20, 11, 20, state, state, false);
 
 		//this.placeSignAtCurrentPosition(world, 10, 0, 10, sbb, "Final Boss Here", "You win!", "discord.gg/6v3z26B");
 

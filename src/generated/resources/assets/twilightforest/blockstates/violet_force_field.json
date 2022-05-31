@@ -120,6 +120,11 @@
             "down": "true",
             "west": "true",
             "south": "false"
+          },
+          {
+            "down": "true",
+            "west": "true",
+            "axis": "y|x"
           }
         ]
       },
@@ -139,7 +144,13 @@
             "down": "true",
             "west": "true",
             "north": "true",
-            "south": "true"
+            "south": "true",
+            "axis": "z"
+          },
+          {
+            "down": "true",
+            "west": "true",
+            "axis": "z"
           }
         ]
       },
@@ -159,7 +170,13 @@
             "down": "true",
             "west": "true",
             "north": "true",
-            "south": "true"
+            "south": "true",
+            "axis": "z"
+          },
+          {
+            "down": "true",
+            "west": "true",
+            "axis": "z"
           }
         ]
       },
@@ -180,6 +197,11 @@
             "down": "true",
             "east": "true",
             "south": "false"
+          },
+          {
+            "down": "true",
+            "east": "true",
+            "axis": "y|x"
           }
         ]
       },
@@ -199,7 +221,13 @@
             "down": "true",
             "east": "true",
             "north": "true",
-            "south": "true"
+            "south": "true",
+            "axis": "z"
+          },
+          {
+            "down": "true",
+            "east": "true",
+            "axis": "z"
           }
         ]
       },
@@ -219,7 +247,13 @@
             "down": "true",
             "east": "true",
             "north": "true",
-            "south": "true"
+            "south": "true",
+            "axis": "z"
+          },
+          {
+            "down": "true",
+            "east": "true",
+            "axis": "z"
           }
         ]
       },
@@ -240,6 +274,11 @@
             "down": "true",
             "north": "true",
             "east": "false"
+          },
+          {
+            "down": "true",
+            "north": "true",
+            "axis": "y|z"
           }
         ]
       },
@@ -259,7 +298,13 @@
             "down": "true",
             "north": "true",
             "west": "true",
-            "east": "true"
+            "east": "true",
+            "axis": "x"
+          },
+          {
+            "down": "true",
+            "north": "true",
+            "axis": "x"
           }
         ]
       },
@@ -279,7 +324,13 @@
             "down": "true",
             "north": "true",
             "west": "true",
-            "east": "true"
+            "east": "true",
+            "axis": "x"
+          },
+          {
+            "down": "true",
+            "north": "true",
+            "axis": "x"
           }
         ]
       },
@@ -300,6 +351,11 @@
             "down": "true",
             "south": "true",
             "east": "false"
+          },
+          {
+            "down": "true",
+            "south": "true",
+            "axis": "y|z"
           }
         ]
       },
@@ -319,7 +375,13 @@
             "down": "true",
             "south": "true",
             "west": "true",
-            "east": "true"
+            "east": "true",
+            "axis": "x"
+          },
+          {
+            "down": "true",
+            "south": "true",
+            "axis": "x"
           }
         ]
       },
@@ -339,7 +401,13 @@
             "down": "true",
             "south": "true",
             "west": "true",
-            "east": "true"
+            "east": "true",
+            "axis": "x"
+          },
+          {
+            "down": "true",
+            "south": "true",
+            "axis": "x"
           }
         ]
       },
@@ -360,6 +428,11 @@
             "up": "true",
             "west": "true",
             "south": "false"
+          },
+          {
+            "up": "true",
+            "west": "true",
+            "axis": "y|x"
           }
         ]
       },
@@ -379,7 +452,13 @@
             "up": "true",
             "west": "true",
             "north": "true",
-            "south": "true"
+            "south": "true",
+            "axis": "z"
+          },
+          {
+            "up": "true",
+            "west": "true",
+            "axis": "z"
           }
         ]
       },
@@ -399,7 +478,13 @@
             "up": "true",
             "west": "true",
             "north": "true",
-            "south": "true"
+            "south": "true",
+            "axis": "z"
+          },
+          {
+            "up": "true",
+            "west": "true",
+            "axis": "z"
           }
         ]
       },
@@ -420,6 +505,11 @@
             "up": "true",
             "east": "true",
             "south": "false"
+          },
+          {
+            "up": "true",
+            "east": "true",
+            "axis": "y|x"
           }
         ]
       },
@@ -439,7 +529,13 @@
             "up": "true",
             "east": "true",
             "north": "true",
-            "south": "true"
+            "south": "true",
+            "axis": "z"
+          },
+          {
+            "up": "true",
+            "east": "true",
+            "axis": "z"
           }
         ]
       },
@@ -459,7 +555,13 @@
             "up": "true",
             "east": "true",
             "north": "true",
-            "south": "true"
+            "south": "true",
+            "axis": "z"
+          },
+          {
+            "up": "true",
+            "east": "true",
+            "axis": "z"
           }
         ]
       },
@@ -480,6 +582,11 @@
             "up": "true",
             "north": "true",
             "east": "false"
+          },
+          {
+            "up": "true",
+            "north": "true",
+            "axis": "y|z"
           }
         ]
       },
@@ -499,7 +606,13 @@
             "up": "true",
             "north": "true",
             "west": "true",
-            "east": "true"
+            "east": "true",
+            "axis": "x"
+          },
+          {
+            "up": "true",
+            "north": "true",
+            "axis": "x"
           }
         ]
       },
@@ -519,7 +632,13 @@
             "up": "true",
             "north": "true",
             "west": "true",
-            "east": "true"
+            "east": "true",
+            "axis": "x"
+          },
+          {
+            "up": "true",
+            "north": "true",
+            "axis": "x"
           }
         ]
       },
@@ -540,6 +659,11 @@
             "up": "true",
             "south": "true",
             "east": "false"
+          },
+          {
+            "up": "true",
+            "south": "true",
+            "axis": "y|z"
           }
         ]
       },
@@ -559,7 +683,13 @@
             "up": "true",
             "south": "true",
             "west": "true",
-            "east": "true"
+            "east": "true",
+            "axis": "x"
+          },
+          {
+            "up": "true",
+            "south": "true",
+            "axis": "x"
           }
         ]
       },
@@ -579,7 +709,13 @@
             "up": "true",
             "south": "true",
             "west": "true",
-            "east": "true"
+            "east": "true",
+            "axis": "x"
+          },
+          {
+            "up": "true",
+            "south": "true",
+            "axis": "x"
           }
         ]
       },
@@ -600,6 +736,11 @@
             "north": "true",
             "west": "true",
             "up": "false"
+          },
+          {
+            "north": "true",
+            "west": "true",
+            "axis": "x|z"
           }
         ]
       },
@@ -619,7 +760,13 @@
             "north": "true",
             "west": "true",
             "down": "true",
-            "up": "true"
+            "up": "true",
+            "axis": "y"
+          },
+          {
+            "north": "true",
+            "west": "true",
+            "axis": "y"
           }
         ]
       },
@@ -639,7 +786,13 @@
             "north": "true",
             "west": "true",
             "down": "true",
-            "up": "true"
+            "up": "true",
+            "axis": "y"
+          },
+          {
+            "north": "true",
+            "west": "true",
+            "axis": "y"
           }
         ]
       },
@@ -660,6 +813,11 @@
             "north": "true",
             "east": "true",
             "up": "false"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "axis": "x|z"
           }
         ]
       },
@@ -679,7 +837,13 @@
             "north": "true",
             "east": "true",
             "down": "true",
-            "up": "true"
+            "up": "true",
+            "axis": "y"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "axis": "y"
           }
         ]
       },
@@ -699,7 +863,13 @@
             "north": "true",
             "east": "true",
             "down": "true",
-            "up": "true"
+            "up": "true",
+            "axis": "y"
+          },
+          {
+            "north": "true",
+            "east": "true",
+            "axis": "y"
           }
         ]
       },
@@ -720,6 +890,11 @@
             "south": "true",
             "west": "true",
             "up": "false"
+          },
+          {
+            "south": "true",
+            "west": "true",
+            "axis": "x|z"
           }
         ]
       },
@@ -739,7 +914,13 @@
             "south": "true",
             "west": "true",
             "down": "true",
-            "up": "true"
+            "up": "true",
+            "axis": "y"
+          },
+          {
+            "south": "true",
+            "west": "true",
+            "axis": "y"
           }
         ]
       },
@@ -759,7 +940,13 @@
             "south": "true",
             "west": "true",
             "down": "true",
-            "up": "true"
+            "up": "true",
+            "axis": "y"
+          },
+          {
+            "south": "true",
+            "west": "true",
+            "axis": "y"
           }
         ]
       },
@@ -780,6 +967,11 @@
             "south": "true",
             "east": "true",
             "up": "false"
+          },
+          {
+            "south": "true",
+            "east": "true",
+            "axis": "x|z"
           }
         ]
       },
@@ -799,7 +991,13 @@
             "south": "true",
             "east": "true",
             "down": "true",
-            "up": "true"
+            "up": "true",
+            "axis": "y"
+          },
+          {
+            "south": "true",
+            "east": "true",
+            "axis": "y"
           }
         ]
       },
@@ -819,7 +1017,13 @@
             "south": "true",
             "east": "true",
             "down": "true",
-            "up": "true"
+            "up": "true",
+            "axis": "y"
+          },
+          {
+            "south": "true",
+            "east": "true",
+            "axis": "y"
           }
         ]
       },

@@ -632,7 +632,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 			ModelFile south_no_east_child = models().withExistingParent( blockName + "_south_no_east", south_no_east.getLocation()).texture("pane", textureLocation);
 			ModelFile east_no_south_child = models().withExistingParent( blockName + "_east_no_south", east_no_south.getLocation()).texture("pane", textureLocation);
 
-			getMultipartBuilder(block.get())
+			MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get())
 					.part().modelFile(west_child).uvLock(true).addModel().condition(PipeBlock.WEST, true).end()
 					.part().modelFile(no_west_child).uvLock(true).addModel().condition(PipeBlock.WEST, false).end()
 					.part().modelFile(east_child).uvLock(true).addModel().condition(PipeBlock.EAST, true).end()
@@ -644,151 +644,187 @@ public class BlockstateGenerator extends BlockStateProvider {
 					.part().modelFile(north_child).uvLock(true).addModel().condition(PipeBlock.NORTH, true).end()
 					.part().modelFile(no_north_child).uvLock(true).addModel().condition(PipeBlock.NORTH, false).end()
 					.part().modelFile(south_child).uvLock(true).addModel().condition(PipeBlock.SOUTH, true).end()
-					.part().modelFile(no_south_child).uvLock(true).addModel().condition(PipeBlock.SOUTH, false).end()
+					.part().modelFile(no_south_child).uvLock(true).addModel().condition(PipeBlock.SOUTH, false).end();
 
-					.part().modelFile(down_west_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(down_west_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(PipeBlock.SOUTH, false).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(PipeBlock.SOUTH, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.X).end().end();
 
-					.part().modelFile(down_no_west_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(down_no_west_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
 
-					.part().modelFile(west_no_down_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(west_no_down_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, false).condition(PipeBlock.WEST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
 
-					.part().modelFile(down_east_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(down_east_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(PipeBlock.SOUTH, false).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(PipeBlock.SOUTH, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.X).end().end();
 
-					.part().modelFile(down_no_east_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(down_no_east_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
 
-					.part().modelFile(east_no_down_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(east_no_down_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, false).condition(PipeBlock.EAST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
 
-					.part().modelFile(down_north_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(down_north_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, false).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.Z).end().end();
 
-					.part().modelFile(down_no_north_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(down_no_north_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
 
-					.part().modelFile(north_no_down_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(north_no_down_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, false).condition(PipeBlock.NORTH, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
 
-					.part().modelFile(down_south_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(down_south_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, false).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.Z).end().end();
 
-					.part().modelFile(down_no_south_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(down_no_south_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
 
-					.part().modelFile(south_no_down_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(south_no_down_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.DOWN, false).condition(PipeBlock.SOUTH, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).end().end()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
+					.nestedGroup().condition(PipeBlock.DOWN, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
 
-					.part().modelFile(up_west_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(up_west_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(PipeBlock.SOUTH, false).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(PipeBlock.SOUTH, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.X).end().end();
 
-					.part().modelFile(up_no_west_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(up_no_west_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
 
-					.part().modelFile(west_no_up_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(west_no_up_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, false).condition(PipeBlock.WEST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
 
-					.part().modelFile(up_east_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(up_east_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(PipeBlock.SOUTH, false).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(PipeBlock.SOUTH, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.X).end().end();
 
-					.part().modelFile(up_no_east_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(up_no_east_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
 
-					.part().modelFile(east_no_up_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(east_no_up_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, false).condition(PipeBlock.EAST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Z).end().end();
 
-					.part().modelFile(up_north_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(up_north_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, false).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.Z).end().end();
 
-					.part().modelFile(up_no_north_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(up_no_north_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
 
-					.part().modelFile(north_no_up_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(north_no_up_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, false).condition(PipeBlock.NORTH, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.NORTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
 
-					.part().modelFile(up_south_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(up_south_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, false).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y, Direction.Axis.Z).end().end();
 
-					.part().modelFile(up_no_south_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(up_no_south_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
 
-					.part().modelFile(south_no_up_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(south_no_up_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.UP, false).condition(PipeBlock.SOUTH, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).end().end()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().useOr()
+					.nestedGroup().condition(PipeBlock.UP, true).condition(PipeBlock.SOUTH, true).condition(BlockStateProperties.AXIS, Direction.Axis.X).end().end();
 
-					.part().modelFile(north_west_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(north_west_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.UP, false).end().end()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.UP, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X, Direction.Axis.Z).end().end();
 
-					.part().modelFile(north_no_west_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(north_no_west_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).end().end()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
 
-					.part().modelFile(west_no_north_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(west_no_north_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.NORTH, false).condition(PipeBlock.WEST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).end().end()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
 
-					.part().modelFile(north_east_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(north_east_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.UP, false).end().end()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.UP, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X, Direction.Axis.Z).end().end();
 
-					.part().modelFile(north_no_east_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(north_no_east_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).end().end()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
 
-					.part().modelFile(east_no_north_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(east_no_north_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.NORTH, false).condition(PipeBlock.EAST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).end().end()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
+					.nestedGroup().condition(PipeBlock.NORTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
 
-					.part().modelFile(south_west_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(south_west_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.UP, false).end().end()
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.UP, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X, Direction.Axis.Z).end().end();
 
-					.part().modelFile(south_no_west_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(south_no_west_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).end().end()
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
 
-					.part().modelFile(west_no_south_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(west_no_south_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.SOUTH, false).condition(PipeBlock.WEST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).end().end()
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.WEST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
 
-					.part().modelFile(south_east_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(south_east_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.UP, false).end().end()
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.UP, false).end().useOr()
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.X, Direction.Axis.Z).end().end();
 
-					.part().modelFile(south_no_east_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(south_no_east_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, false).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).end().end()
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
 
-					.part().modelFile(east_no_south_child).uvLock(true).addModel()
+			builder = builder.part().modelFile(east_no_south_child).uvLock(true).addModel()
 					.nestedGroup().condition(PipeBlock.SOUTH, false).condition(PipeBlock.EAST, true).end().useOr()
-					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).end().end();
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(PipeBlock.DOWN, true).condition(PipeBlock.UP, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().useOr()
+					.nestedGroup().condition(PipeBlock.SOUTH, true).condition(PipeBlock.EAST, true).condition(BlockStateProperties.AXIS, Direction.Axis.Y).end().end();
 		}
 	}
 

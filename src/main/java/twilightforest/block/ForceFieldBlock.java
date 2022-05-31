@@ -9,12 +9,16 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -24,11 +28,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.List;
 
 public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, EntityDestroyBlock {
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 	public static final BooleanProperty DOWN = PipeBlock.DOWN;
 	public static final BooleanProperty UP = PipeBlock.UP;
 	public static final BooleanProperty NORTH = PipeBlock.NORTH;
@@ -62,7 +65,7 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, En
 
 	ForceFieldBlock(BlockBehaviour.Properties props) {
 		super(props);
-		this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false)
+		this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(AXIS, Direction.Axis.Y)
 				.setValue(DOWN, false).setValue(UP, false)
 				.setValue(NORTH, false).setValue(SOUTH, false)
 				.setValue(WEST, false).setValue(EAST, false));
@@ -75,7 +78,13 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, En
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext collisionContext) {
+		return this.getVoxelShape(state);
+	}
+
+	private VoxelShape getVoxelShape(BlockState state) {
 		VoxelShape shape = BASE_SHAPE;
+
+		Direction.Axis axis = state.getValue(AXIS);
 
 		boolean down = state.getValue(DOWN);
 		boolean up = state.getValue(UP);
@@ -90,27 +99,27 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, En
 
 		if (down) {
 			shape = Shapes.or(shape, DOWN_SHAPE);
-			if (north && !x) shape = Shapes.or(shape, DOWN_NORTH_SHAPE);
-			if (south && !x) shape = Shapes.or(shape, DOWN_SOUTH_SHAPE);
-			if (west && !z) shape = Shapes.or(shape, DOWN_WEST_SHAPE);
-			if (east && !z) shape = Shapes.or(shape, DOWN_EAST_SHAPE);
+			if (north && (!x || axis != Direction.Axis.X)) shape = Shapes.or(shape, DOWN_NORTH_SHAPE);
+			if (south && (!x || axis != Direction.Axis.X)) shape = Shapes.or(shape, DOWN_SOUTH_SHAPE);
+			if (west && (!z || axis != Direction.Axis.Z)) shape = Shapes.or(shape, DOWN_WEST_SHAPE);
+			if (east && (!z || axis != Direction.Axis.Z)) shape = Shapes.or(shape, DOWN_EAST_SHAPE);
 		}
 		if (up) {
 			shape = Shapes.or(shape, UP_SHAPE);
-			if (north && !x) shape = Shapes.or(shape, UP_NORTH_SHAPE);
-			if (south && !x) shape = Shapes.or(shape, UP_SOUTH_SHAPE);
-			if (west && !z) shape = Shapes.or(shape, UP_WEST_SHAPE);
-			if (east && !z) shape = Shapes.or(shape, UP_EAST_SHAPE);
+			if (north && (!x || axis != Direction.Axis.X)) shape = Shapes.or(shape, UP_NORTH_SHAPE);
+			if (south && (!x || axis != Direction.Axis.X)) shape = Shapes.or(shape, UP_SOUTH_SHAPE);
+			if (west && (!z || axis != Direction.Axis.Z)) shape = Shapes.or(shape, UP_WEST_SHAPE);
+			if (east && (!z || axis != Direction.Axis.Z)) shape = Shapes.or(shape, UP_EAST_SHAPE);
 		}
 		if (north) {
 			shape = Shapes.or(shape, NORTH_SHAPE);
-			if (west && !y) shape = Shapes.or(shape, NORTH_WEST_SHAPE);
-			if (east && !y) shape = Shapes.or(shape, NORTH_EAST_SHAPE);
+			if (west && (!y || axis != Direction.Axis.Y)) shape = Shapes.or(shape, NORTH_WEST_SHAPE);
+			if (east && (!y || axis != Direction.Axis.Y)) shape = Shapes.or(shape, NORTH_EAST_SHAPE);
 		}
 		if (south) {
 			shape = Shapes.or(shape, SOUTH_SHAPE);
-			if (west && !y) shape = Shapes.or(shape, SOUTH_WEST_SHAPE);
-			if (east && !y) shape = Shapes.or(shape, SOUTH_EAST_SHAPE);
+			if (west && (!y || axis != Direction.Axis.Y)) shape = Shapes.or(shape, SOUTH_WEST_SHAPE);
+			if (east && (!y || axis != Direction.Axis.Y)) shape = Shapes.or(shape, SOUTH_EAST_SHAPE);
 		}
 		if (west) shape = Shapes.or(shape, WEST_SHAPE);
 		if (east) shape = Shapes.or(shape, EAST_SHAPE);
@@ -118,17 +127,30 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, En
 		return shape;
 	}
 
-	private static boolean checkProperties(BlockState state, BooleanProperty... booleanProperties) {
-		List<BooleanProperty> propertyList = Arrays.asList(booleanProperties);
-		return PipeBlock.PROPERTY_BY_DIRECTION.values().stream().allMatch(booleanProperty -> (propertyList.contains(booleanProperty) == state.getValue(booleanProperty)));
+	@Environment(EnvType.CLIENT)
+	public boolean skipRendering(BlockState state, BlockState adjacentState, Direction direction) {
+		if (adjacentState.is(this)) {
+			BooleanProperty opposite = PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite());
+			if (adjacentState.getValue(opposite)) {
+				BooleanProperty property = PipeBlock.PROPERTY_BY_DIRECTION.get(direction);
+
+				if (countSides(state.setValue(opposite, false).setValue(property, false)) > countSides(adjacentState.setValue(opposite, false).setValue(property, false))
+						&& state.getValue(AXIS) == direction.getAxis()) return false;
+
+
+				VoxelShape a = this.getVoxelShape(state).getFaceShape(direction);
+				VoxelShape b = this.getVoxelShape(adjacentState).getFaceShape(direction.getOpposite());
+
+				return a.toAabbs().stream().anyMatch(aabb -> b.toAabbs().stream().anyMatch(aabb::equals));//Am I dumb or is this the only way of doing this without checking for every possible scenario?
+			}
+		}
+		return false;
 	}
 
-	@Environment(EnvType.CLIENT)
-	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction direction) {
-		if (adjacentBlockState.is(this)) {
-			if (adjacentBlockState.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()))) return true;
-		}
-		return super.skipRendering(state, adjacentBlockState, direction);
+	private static int countSides(BlockState state) {
+		int count = 0;
+		for (Direction direction : Direction.values()) if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction))) count++;
+		return count;
 	}
 
 	@Override
@@ -151,7 +173,7 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, En
 			for (Direction face : Direction.values()) {
 				if (blockGetter.getBlockState(pos.relative(face)).is(this)) betterConnections++;
 			}
-			if (betterConnections > 3) return false; //Might need to alter this a bit, without this the forcefields in the final castles like to attach to every block
+			if (betterConnections > 3) return false; //Might need to alter this a bit, without this the forcefields in the final castles like to attach to every block, still does a bit in the main room :/
 		}
 
 		return !isExceptionForConnection(state) && solidSide || block instanceof ForceFieldBlock || block instanceof IronBarsBlock || state.is(BlockTags.WALLS);
@@ -165,28 +187,29 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, En
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		BlockPos pos = context.getClickedPos();
+		Level level = context.getLevel();
+		Direction clicked = context.getClickedFace();
+
 		return this.defaultBlockState()
-				.setValue(DOWN, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.DOWN))
-				.setValue(UP, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.UP))
-				.setValue(NORTH, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.NORTH))
-				.setValue(EAST, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.EAST))
-				.setValue(SOUTH, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.SOUTH))
-				.setValue(WEST, this.canConnectTo(context.getLevel(), context.getClickedPos(), Direction.WEST));
+				.setValue(AXIS, context.getClickedFace().getAxis())
+				.setValue(DOWN, clicked != Direction.DOWN ? this.canConnectTo(level, pos, Direction.DOWN) : !context.isSecondaryUseActive())
+				.setValue(UP, clicked != Direction.UP ? this.canConnectTo(level, pos, Direction.UP) : !context.isSecondaryUseActive())
+				.setValue(NORTH, clicked != Direction.NORTH ? this.canConnectTo(level, pos, Direction.NORTH) : !context.isSecondaryUseActive())
+				.setValue(EAST, clicked != Direction.EAST ? this.canConnectTo(level, pos, Direction.EAST) : !context.isSecondaryUseActive())
+				.setValue(SOUTH, clicked != Direction.SOUTH ? this.canConnectTo(level, pos, Direction.SOUTH) : !context.isSecondaryUseActive())
+				.setValue(WEST, clicked != Direction.WEST ? this.canConnectTo(level, pos, Direction.WEST) : !context.isSecondaryUseActive());
 	}
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor levelAccessor, BlockPos pos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
-			levelAccessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
-		}
-
+		if (state.getValue(WATERLOGGED)) levelAccessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
 		return state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), this.canConnectTo(levelAccessor, pos, direction));
 	}
-
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(WATERLOGGED, NORTH, EAST, SOUTH, WEST, UP, DOWN);
+		builder.add(WATERLOGGED, AXIS,  NORTH, EAST, SOUTH, WEST, UP, DOWN);
 	}
 }
