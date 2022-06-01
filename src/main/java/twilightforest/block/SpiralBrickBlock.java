@@ -2,6 +2,9 @@ package twilightforest.block;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,7 +30,7 @@ public class SpiralBrickBlock extends Block {
 
     public SpiralBrickBlock() {
         super(Properties.of(Material.STONE, MaterialColor.STONE).requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE).noOcclusion());
-        this.registerDefaultState(this.stateDefinition.any().setValue(DIAGONAL, Diagonals.TOP_RIGHT).setValue(AXIS_FACING, Direction.Axis.X));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(DIAGONAL, Diagonals.BOTTOM_RIGHT).setValue(AXIS_FACING, Direction.Axis.X));
     }
 
 	@Override
@@ -39,58 +42,36 @@ public class SpiralBrickBlock extends Block {
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		BlockState state = context.getLevel().getBlockState(context.getClickedPos().relative(context.getClickedFace().getOpposite()));
-
-		if (!context.getPlayer().isShiftKeyDown() && context.getLevel().getBlockState(context.getClickedPos().relative(context.getClickedFace().getOpposite())).getBlock() instanceof SpiralBrickBlock) {
-			Direction.Axis axis = state.getValue(AXIS_FACING);
-
-			return super.getStateForPlacement(context)
-					.setValue(AXIS_FACING, axis)
-					.setValue(DIAGONAL, Diagonals.mirror(state.getValue(DIAGONAL), context.getClickedFace().getAxis() == Direction.Axis.X ? Mirror.LEFT_RIGHT : Mirror.FRONT_BACK));
+		if(context.isSecondaryUseActive()) {
+			//if sneaking, place on the y axis with glazed terracotta logic
+			return this.defaultBlockState()
+					.setValue(AXIS_FACING, Direction.Axis.Y)
+					.setValue(DIAGONAL, convertVerticalDirectionToDiagonal(context.getHorizontalDirection()));
+		} else {
+			//otherwise, place on the x and z with stair logic
+			return this.defaultBlockState()
+					.setValue(AXIS_FACING, context.getHorizontalDirection().getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X) //this is insanely jank but for some reason it rotates the wrong way normally. Might be a model issue but im too lazy to fix it, so this works
+					.setValue(DIAGONAL, getHorizontalDiagonalFromPlayerPlacement(context.getPlayer(), context.getHorizontalDirection(), context.getClickLocation().y - (double)context.getClickedPos().getY() > 0.5D));
 		}
-
-		//Direction playerFacing = Direction.getDirectionFromEntityLiving(pos, placer);
-		Direction playerFacing = context.getNearestLookingDirection().getOpposite();
-
-		return super.getStateForPlacement(context)
-				.setValue(AXIS_FACING, playerFacing.getAxis())
-				.setValue(DIAGONAL, getDiagonalFromPlayerPlacement(context.getPlayer(), context.getClickedFace()));
 	}
 
-    private static Diagonals getDiagonalFromPlayerPlacement(LivingEntity placer, Direction facing) {
-        int angleX = (int) ((placer.getXRot() + 180f) / 180f) & 1;
-        int angleY = (int) ((placer.getYRot() + 180f) / 90f) & 3;
-
+	private static Diagonals convertVerticalDirectionToDiagonal(Direction facing) {
 		return switch (facing) {
-			case DOWN, UP -> switch (angleY) {
-				default -> Diagonals.TOP_RIGHT; // NORTH EAST
-				case 1 -> Diagonals.BOTTOM_RIGHT; // SOUTH EAST
-				case 2 -> Diagonals.BOTTOM_LEFT; // SOUTH WEST
-				case 3 -> Diagonals.TOP_LEFT; // NORTH WEST
-			};
+			default -> Diagonals.TOP_RIGHT;
+			case SOUTH -> Diagonals.BOTTOM_LEFT;
+			case EAST -> Diagonals.TOP_LEFT;
+			case WEST -> Diagonals.BOTTOM_RIGHT;
+		};
+	}
 
-                /*
-                NORTH
-                3   0
-
-                2   1
-                */
-
-			case NORTH -> Diagonals.getDiagonalFromUpDownLeftRight(isEast(angleY), angleX < 1);
-			case SOUTH -> Diagonals.getDiagonalFromUpDownLeftRight(!isEast(angleY), angleX < 1);
-			case EAST -> Diagonals.getDiagonalFromUpDownLeftRight(isNorth(angleY), angleX < 1);
-			case WEST -> Diagonals.getDiagonalFromUpDownLeftRight(!isNorth(angleY), angleX < 1);
+    private static Diagonals getHorizontalDiagonalFromPlayerPlacement(LivingEntity placer, Direction facing, boolean upper) {
+		return switch (facing) {
+			case NORTH, EAST -> Diagonals.getDiagonalFromUpDownLeftRight(placer.getDirection() != facing, upper);
+			case SOUTH, WEST -> Diagonals.getDiagonalFromUpDownLeftRight(placer.getDirection() == facing, upper);
+			default -> Diagonals.BOTTOM_RIGHT;
 		};
 
 	}
-
-    private static boolean isNorth(int intIn) {
-        return intIn == 0 || intIn == 3;
-    }
-
-    private static boolean isEast(int intIn) {
-        return intIn == 0 || intIn == 1;
-    }
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
@@ -110,8 +91,8 @@ public class SpiralBrickBlock extends Block {
 
 	@Override
 	@Deprecated
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.setValue(DIAGONAL, Diagonals.mirrorOn(state.getValue(AXIS_FACING), state.getValue(DIAGONAL), mirrorIn));
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.setValue(DIAGONAL, Diagonals.mirrorOn(state.getValue(AXIS_FACING), state.getValue(DIAGONAL), mirror));
 	}
 
 }
