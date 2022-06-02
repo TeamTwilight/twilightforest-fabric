@@ -2,6 +2,7 @@ package twilightforest.data.tags;
 
 import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -15,7 +16,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
-public class ItemTagGenerator extends ItemTagsProvider {
+public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 	public static final TagKey<Item> TWILIGHT_OAK_LOGS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("twilight_oak_logs"));
 	public static final TagKey<Item> CANOPY_LOGS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("canopy_logs"));
 	public static final TagKey<Item> MANGROVE_LOGS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("mangrove_logs"));
@@ -67,12 +68,12 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	private static final TagKey<Item> CHARM = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("curios", "charm"));
 	private static final TagKey<Item> HEAD = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("curios", "head"));
 
-	public ItemTagGenerator(FabricDataGenerator generator, BlockTagsProvider blockprovider) {
+	public ItemTagGenerator(FabricDataGenerator generator, FabricTagProvider.BlockTagProvider blockprovider) {
 		super(generator, blockprovider);
 	}
 
 	@Override
-	protected void addTags() {
+	protected void generateTags() {
 		this.copy(BlockTagGenerator.TWILIGHT_OAK_LOGS, TWILIGHT_OAK_LOGS);
 		this.copy(BlockTagGenerator.CANOPY_LOGS, CANOPY_LOGS);
 		this.copy(BlockTagGenerator.MANGROVE_LOGS, MANGROVE_LOGS);
@@ -158,7 +159,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(ORES_IRONWOOD).add(TFItems.RAW_IRONWOOD.get());
 		tag(ORES_KNIGHTMETAL).add(TFItems.ARMOR_SHARD_CLUSTER.get());
 
-		tag(PORTAL_ACTIVATOR).addTag(Tags.Items.GEMS_DIAMOND);
+		getOrCreateTagBuilder(PORTAL_ACTIVATOR).forceAddTag(Tags.Items.GEMS_DIAMOND);
 
 		tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(
 				TFItems.FIERY_HELMET.get(),

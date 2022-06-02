@@ -1,25 +1,23 @@
 package twilightforest.data.tags;
 
 import com.google.common.collect.ImmutableSet;
+import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
-import me.alphamode.forgetags.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class BlockTagGenerator extends BlockTagsProvider {
+public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 	public static final TagKey<Block> TOWERWOOD = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("towerwood"));
 
 	public static final TagKey<Block> TWILIGHT_OAK_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("twilight_oak_logs"));
@@ -74,13 +72,13 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final TagKey<Block> ROOT_GROUND = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "ore_bearing_ground/root"));
 	public static final TagKey<Block> ROOT_ORES = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "ores_in_ground/root"));
 
-	public BlockTagGenerator(FabricDataGenerator generator, ExistingFileHelper exFileHelper) {
+	public BlockTagGenerator(FabricDataGenerator generator) {
 		super(generator);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void addTags() {
+	protected void generateTags() {
 		tag(TWILIGHT_OAK_LOGS)
 				.add(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get());
 		tag(CANOPY_LOGS)
@@ -305,8 +303,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		// So yes, we could do fluid tags for the portal pool but the problem is that we're -replacing- the block, effectively replacing what would be waterlogged, with the portal block
 		// In the future if we can "portal log" blocks then we can re-explore doing it as a fluid
 		tag(PORTAL_POOL).add(Blocks.WATER);
-		tag(PORTAL_DECO)
-				.addTag(BlockTags.FLOWERS).addTag(BlockTags.LEAVES).addTag(BlockTags.SAPLINGS).addTag(BlockTags.CROPS)
+		getOrCreateTagBuilder(PORTAL_DECO)
+				.forceAddTag(BlockTags.FLOWERS).forceAddTag(BlockTags.LEAVES).forceAddTag(BlockTags.SAPLINGS).forceAddTag(BlockTags.CROPS)
 				.add(Blocks.BAMBOO)
 				.add(getAllMinecraftOrTwilightBlocks(b -> (b.material == Material.PLANT || b.material == Material.REPLACEABLE_PLANT || b.material == Material.LEAVES) && !plants.contains(b)));
 
@@ -336,9 +334,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 		tag(FIRE_JET_FUEL).add(Blocks.LAVA);
 
-		tag(ICE_BOMB_REPLACEABLES)
+		getOrCreateTagBuilder(ICE_BOMB_REPLACEABLES)
 				.add(TFBlocks.MAYAPPLE.get(), TFBlocks.FIDDLEHEAD.get(), Blocks.GRASS, Blocks.TALL_GRASS, Blocks.FERN, Blocks.LARGE_FERN)
-				.addTag(BlockTags.FLOWERS);
+				.forceAddTag(BlockTags.FLOWERS);
 
 		tag(COMMON_PROTECTIONS).add( // For any blocks that absolutely should not be meddled with
 				TFBlocks.NAGA_BOSS_SPAWNER.get(),
@@ -406,24 +404,24 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.FAKE_GOLD.get()
 		);
 
-		tag(STRUCTURE_BANNED_INTERACTIONS)
-				.addTag(BlockTags.BUTTONS).addTag(Tags.Blocks.CHESTS).add(Blocks.LEVER)
+		getOrCreateTagBuilder(STRUCTURE_BANNED_INTERACTIONS)
+				.forceAddTag(BlockTags.BUTTONS).forceAddTag(Tags.Blocks.CHESTS).add(Blocks.LEVER)
 				.add(TFBlocks.ANTIBUILDER.get());
 
-		tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTag(
-				BlockTags.DIRT).addTag(
-				Tags.Blocks.GRAVEL).addTag(
-				Tags.Blocks.SAND).addTag(
-				BlockTags.NYLIUM).addTag(
-				BlockTags.BASE_STONE_OVERWORLD).addTag(
-				BlockTags.BASE_STONE_NETHER).addTag(
-				Tags.Blocks.END_STONES).addTag(
-				BlockTags.DEEPSLATE_ORE_REPLACEABLES).addTag(
-				BlockTags.STONE_ORE_REPLACEABLES).addTag(
+		getOrCreateTagBuilder(ORE_MAGNET_SAFE_REPLACE_BLOCK).forceAddTag(
+				BlockTags.DIRT).forceAddTag(
+				Tags.Blocks.GRAVEL).forceAddTag(
+				Tags.Blocks.SAND).forceAddTag(
+				BlockTags.NYLIUM).forceAddTag(
+				BlockTags.BASE_STONE_OVERWORLD).forceAddTag(
+				BlockTags.BASE_STONE_NETHER).forceAddTag(
+				Tags.Blocks.END_STONES).forceAddTag(
+				BlockTags.DEEPSLATE_ORE_REPLACEABLES).forceAddTag(
+				BlockTags.STONE_ORE_REPLACEABLES).forceAddTag(
 				ROOT_GROUND
 		);
 
-		tag(ORE_MAGNET_IGNORE).addTag(BlockTags.COAL_ORES);
+		getOrCreateTagBuilder(ORE_MAGNET_IGNORE).forceAddTag(BlockTags.COAL_ORES);
 
 		tag(ROOT_GROUND).add(TFBlocks.ROOT_BLOCK.get());
 		tag(ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.get());
@@ -434,7 +432,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 		tag(BlockTags.FEATURES_CANNOT_REPLACE).addTag(COMMON_PROTECTIONS).add(TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get());
 		// For anything that permits replacement during Worldgen
-		tag(WORLDGEN_REPLACEABLES).addTag(BlockTags.LUSH_GROUND_REPLACEABLE).addTag(BlockTags.REPLACEABLE_PLANTS);
+		getOrCreateTagBuilder(WORLDGEN_REPLACEABLES).forceAddTag(BlockTags.LUSH_GROUND_REPLACEABLE).forceAddTag(BlockTags.REPLACEABLE_PLANTS);
 
 		tag(ROOT_TRACE_SKIP).addTag(BlockTags.FEATURES_CANNOT_REPLACE).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get());
 

@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.*;
@@ -23,13 +24,13 @@ import twilightforest.world.registration.features.TFConfiguredStructures;
 
 import java.util.function.Consumer;
 
-public class PatchouliAdvancementGenerator extends AdvancementProvider {
+public class PatchouliAdvancementGenerator extends FabricAdvancementProvider {
 	public PatchouliAdvancementGenerator(FabricDataGenerator generatorIn) {
 		super(generatorIn);
 	}
 
-//	@Override TODO: PORT
-	protected void registerAdvancements(Consumer<Advancement> consumer) {
+	@Override
+	public void generateAdvancement(Consumer<Advancement> consumer) {
 		Advancement root = Advancement.Builder.advancement()
 				.addCriterion("hidden", new ImpossibleTrigger.TriggerInstance())
 				.save(consumer, "twilightforest:alt/root");

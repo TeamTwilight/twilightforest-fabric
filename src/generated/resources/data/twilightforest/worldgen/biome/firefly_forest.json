@@ -1,4 +1,28 @@
 {
+  "effects": {
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "particle": {
+      "options": {
+        "type": "twilightforest:wandering_firefly"
+      },
+      "probability": 0.001
+    },
+    "sky_color": 2105930,
+    "fog_color": 12648408,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
   "carvers": {
     "air": "twilightforest:tf_caves"
   },
@@ -170,33 +194,8 @@
     "misc": []
   },
   "spawn_costs": {},
-  "forge:registry_name": "twilightforest:firefly_forest",
   "precipitation": "rain",
   "temperature": 0.5,
   "downfall": 1.0,
-  "category": "forest",
-  "effects": {
-    "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
-      "block_search_extent": 8,
-      "offset": 2.0
-    },
-    "music": {
-      "sound": "twilightforest:music.bg",
-      "min_delay": 1200,
-      "max_delay": 12000,
-      "replace_current_music": true
-    },
-    "particle": {
-      "options": {
-        "type": "twilightforest:wandering_firefly"
-      },
-      "probability": 0.001
-    },
-    "sky_color": 2105930,
-    "fog_color": 12648408,
-    "water_color": 4159204,
-    "water_fog_color": 329011
-  }
+  "category": "forest"
 }

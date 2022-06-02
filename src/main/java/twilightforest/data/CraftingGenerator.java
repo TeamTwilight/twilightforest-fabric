@@ -1,9 +1,9 @@
 package twilightforest.data;
 
+import io.github.fabricators_of_create.porting_lib.data.ConditionalRecipe;
 import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -132,17 +132,17 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_item", has(TFItems.TORCHBERRIES.get()))
 				.save(consumer, TwilightForestMod.prefix("berry_torch"));
 
-//		ConditionalRecipe.builder() TODO: PORT
-//				.addCondition(new UncraftingEnabledCondition())
-//				.addRecipe(ShapedRecipeBuilder.shaped(TFBlocks.UNCRAFTING_TABLE.get())
-//						.pattern("###")
-//						.pattern("#X#")
-//						.pattern("###")
-//						.define('#', Blocks.CRAFTING_TABLE)
-//						.define('X', TFItems.MAZE_MAP_FOCUS.get())
-//						.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get()))
-//						::save)
-//				.build(consumer, TwilightForestMod.prefix("uncrafting_table"));
+		ConditionalRecipe.builder()
+				.addCondition(new UncraftingEnabledCondition())
+				.addRecipe(ShapedRecipeBuilder.shaped(TFBlocks.UNCRAFTING_TABLE.get())
+						.pattern("###")
+						.pattern("#X#")
+						.pattern("###")
+						.define('#', Blocks.CRAFTING_TABLE)
+						.define('X', TFItems.MAZE_MAP_FOCUS.get())
+						.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get()))
+						::save)
+				.build(consumer, TwilightForestMod.prefix("uncrafting_table"));
 
 		// Patchouli books would also go here, except they also must craft-result with NBT data.
 

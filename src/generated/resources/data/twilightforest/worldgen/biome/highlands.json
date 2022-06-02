@@ -1,4 +1,22 @@
 {
+  "effects": {
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    },
+    "music": {
+      "sound": "twilightforest:music.bg",
+      "min_delay": 1200,
+      "max_delay": 12000,
+      "replace_current_music": true
+    },
+    "sky_color": 2105930,
+    "fog_color": 12648408,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
   "carvers": {
     "air": "twilightforest:highland_caves"
   },
@@ -157,27 +175,8 @@
     "misc": []
   },
   "spawn_costs": {},
-  "forge:registry_name": "twilightforest:highlands",
   "precipitation": "rain",
   "temperature": 0.4,
   "downfall": 0.7,
-  "category": "mesa",
-  "effects": {
-    "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
-      "block_search_extent": 8,
-      "offset": 2.0
-    },
-    "music": {
-      "sound": "twilightforest:music.bg",
-      "min_delay": 1200,
-      "max_delay": 12000,
-      "replace_current_music": true
-    },
-    "sky_color": 2105930,
-    "fog_color": 12648408,
-    "water_color": 4159204,
-    "water_fog_color": 329011
-  }
+  "category": "mesa"
 }

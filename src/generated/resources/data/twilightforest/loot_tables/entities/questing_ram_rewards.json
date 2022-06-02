@@ -42,7 +42,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader",
               "default": "minecraft:coal_block"
             },
             {
@@ -69,7 +68,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader_bag_twilight",
               "default": "minecraft:coal_block"
             }
           ],

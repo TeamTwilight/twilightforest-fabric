@@ -121,7 +121,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader",
               "default": "twilightforest:knightmetal_ingot"
             },
             {
@@ -148,7 +147,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader_bag_twilight",
               "default": "twilightforest:knightmetal_ingot"
             }
           ],

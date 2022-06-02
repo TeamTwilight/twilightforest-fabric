@@ -68,7 +68,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader",
               "default": "twilightforest:carminite"
             },
             {
@@ -95,7 +94,6 @@
           "functions": [
             {
               "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader_bag_twilight",
               "default": "twilightforest:carminite"
             }
           ],

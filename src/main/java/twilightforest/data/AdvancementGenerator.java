@@ -8,8 +8,6 @@ import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +20,6 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
 import twilightforest.block.Experiment115Block;
@@ -53,7 +50,7 @@ public class AdvancementGenerator extends FabricAdvancementProvider {
 			TFBlocks.TWILIGHT_OAK_BANISTER.get(), TFBlocks.CANOPY_BANISTER.get(), TFBlocks.MANGROVE_BANISTER.get(), TFBlocks.DARKWOOD_BANISTER.get(), TFBlocks.TIME_BANISTER.get(), TFBlocks.TRANSFORMATION_BANISTER.get(), TFBlocks.MINING_BANISTER.get(), TFBlocks.SORTING_BANISTER.get()
 	};
 
-	public AdvancementGenerator(FabricDataGenerator generatorIn, ExistingFileHelper fileHelperIn) {
+	public AdvancementGenerator(FabricDataGenerator generatorIn) {
 		super(generatorIn);
 	}
 

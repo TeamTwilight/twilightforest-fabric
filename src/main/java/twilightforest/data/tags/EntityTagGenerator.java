@@ -1,8 +1,8 @@
 package twilightforest.data.tags;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.Registry;
-import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
@@ -10,7 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 
-public class EntityTagGenerator extends EntityTypeTagsProvider {
+public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider {
     public static final TagKey<EntityType<?>> BOSSES = create(TwilightForestMod.prefix("bosses"));
     public static final TagKey<EntityType<?>> LICH_POPPABLES = create(TwilightForestMod.prefix("lich_poppables"));
     public static final TagKey<EntityType<?>> LIFEDRAIN_DROPS_NO_FLESH = create(TwilightForestMod.prefix("lifedrain_drops_no_flesh"));
@@ -22,7 +22,7 @@ public class EntityTagGenerator extends EntityTypeTagsProvider {
     }
 
     @Override
-    protected void addTags() {
+    protected void generateTags() {
         tag(EntityTypeTags.SKELETONS).add(TFEntities.SKELETON_DRUID.get());
         tag(EntityTypeTags.ARROWS).add(TFEntities.ICE_ARROW.get(), TFEntities.SEEKER_ARROW.get());
         tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(TFEntities.FIRE_BEETLE.get());

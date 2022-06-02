@@ -2,9 +2,9 @@
   "type": "forge:conditional",
   "recipes": [
     {
-      "conditions": [
+      "fabric:load_conditions": [
         {
-          "type": "twilightforest:uncrafting_enabled"
+          "condition": "twilightforest:uncrafting_enabled"
         }
       ],
       "recipe": {

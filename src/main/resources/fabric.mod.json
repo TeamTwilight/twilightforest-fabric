@@ -25,7 +25,9 @@
     ],
     "main": [
       "twilightforest.TwilightForestMod"
-
+    ],
+    "fabric-datagen": [
+      "twilightforest.data.DataGenerators"
     ],
     "mm:early_risers": [
       "twilightforest.asm.TFASM"
@@ -44,6 +46,10 @@
   "breaks": {
     "boats-and-beeps": "*"
   },
+  "provides": [
+    "com_electronwill_night-config_core",
+    "com_electronwill_night-config_toml"
+  ],
   "depends": {
     "fabricloader": ">=0.13.3",
     "fabric": "*",
@@ -54,6 +60,10 @@
     "modmenu": ">=2.0.2"
   },
   "custom": {
+    "/* you need to enable this (and move it out of 'custom') if you want to run datagen because yes */ provides": [
+      "com_electronwill_night-config_core",
+      "com_electronwill_night-config_toml"
+    ],
     "cardinal-components": [
       "twilightforest:cap_shield"
     ],

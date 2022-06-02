@@ -176,6 +176,5 @@
     "noise_generation_settings": "twilightforest:twilight_noise_gen",
     "type": "twilightforest:structure_locating_wrapper",
     "use_overworld_seed": true
-  },
-  "forge:use_server_seed": true
+  }
 }

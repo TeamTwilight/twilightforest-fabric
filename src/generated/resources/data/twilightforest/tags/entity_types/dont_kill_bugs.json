@@ -2,18 +2,6 @@
   "replace": false,
   "values": [
     "twilightforest:cicada_shot",
-    "twilightforest:moonworm_shot",
-    {
-      "id": "twilightforest:cicada_slingshot",
-      "required": false
-    },
-    {
-      "id": "twilightforest:firefly_slingshot",
-      "required": false
-    },
-    {
-      "id": "twilightforest:moonworm_slingshot",
-      "required": false
-    }
+    "twilightforest:moonworm_shot"
   ]
 }
