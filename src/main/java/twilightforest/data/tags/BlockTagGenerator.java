@@ -63,6 +63,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 	public static final TagKey<Block> CARMINITE_REACTOR_IMMUNE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("carminite_reactor_immune"));
 	public static final TagKey<Block> CARMINITE_REACTOR_ORES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("carminite_reactor_ores"));
 	public static final TagKey<Block> STRUCTURE_BANNED_INTERACTIONS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("structure_banned_interactions"));
+	public static final TagKey<Block> PROGRESSION_ALLOW_BREAKING = BlockTags.create(TwilightForestMod.prefix("progression_allow_breaking"));
 
 	public static final TagKey<Block> WORLDGEN_REPLACEABLES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("worldgen_replaceables"));
 	public static final TagKey<Block> ROOT_TRACE_SKIP = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("tree_roots_skip"));
@@ -408,16 +409,21 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				.forceAddTag(BlockTags.BUTTONS).forceAddTag(Tags.Blocks.CHESTS).add(Blocks.LEVER)
 				.add(TFBlocks.ANTIBUILDER.get());
 
-		getOrCreateTagBuilder(ORE_MAGNET_SAFE_REPLACE_BLOCK).forceAddTag(
-				BlockTags.DIRT).forceAddTag(
-				Tags.Blocks.GRAVEL).forceAddTag(
-				Tags.Blocks.SAND).forceAddTag(
-				BlockTags.NYLIUM).forceAddTag(
-				BlockTags.BASE_STONE_OVERWORLD).forceAddTag(
-				BlockTags.BASE_STONE_NETHER).forceAddTag(
-				Tags.Blocks.END_STONES).forceAddTag(
-				BlockTags.DEEPSLATE_ORE_REPLACEABLES).forceAddTag(
-				BlockTags.STONE_ORE_REPLACEABLES).forceAddTag(
+		// TODO add more grave mods to this list
+		tag(PROGRESSION_ALLOW_BREAKING)
+				.add(TFBlocks.KEEPSAKE_CASKET.get())
+				.addOptional(new ResourceLocation("gravestone", "gravestone"));
+
+		tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTags(
+				BlockTags.DIRT,
+				Tags.Blocks.GRAVEL,
+				Tags.Blocks.SAND,
+				BlockTags.NYLIUM,
+				BlockTags.BASE_STONE_OVERWORLD,
+				BlockTags.BASE_STONE_NETHER,
+				Tags.Blocks.END_STONES,
+				BlockTags.DEEPSLATE_ORE_REPLACEABLES,
+				BlockTags.STONE_ORE_REPLACEABLES,
 				ROOT_GROUND
 		);
 

@@ -16,6 +16,7 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
     public static final TagKey<EntityType<?>> LIFEDRAIN_DROPS_NO_FLESH = create(TwilightForestMod.prefix("lifedrain_drops_no_flesh"));
     public static final TagKey<EntityType<?>> RIDES_OBSTRUCT_SNATCHING = create(TwilightForestMod.prefix("rides_obstruct_snatching"));
     public static final TagKey<EntityType<?>> DONT_KILL_BUGS = create(TwilightForestMod.prefix("dont_kill_bugs"));
+    public static final TagKey<EntityType<?>> SORTABLE_ENTITIES = create(TwilightForestMod.prefix("sortable_entities"));
 
     public EntityTagGenerator(FabricDataGenerator dataGenerator) {
         super(dataGenerator);
@@ -111,6 +112,14 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
                 /*.addOptional(UndergardenCompat.CICADA_SLINGSHOT.get().getRegistryName())
                 .addOptional(UndergardenCompat.FIREFLY_SLINGSHOT.get().getRegistryName())
                 .addOptional(UndergardenCompat.MOONWORM_SLINGSHOT.get().getRegistryName())*/;
+
+        tag(SORTABLE_ENTITIES).add(
+                EntityType.CHEST_MINECART,
+                EntityType.HOPPER_MINECART,
+                EntityType.LLAMA,
+                EntityType.TRADER_LLAMA,
+                EntityType.DONKEY,
+                EntityType.MULE);
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation rl) {

@@ -742,8 +742,7 @@ public class TFEventListener {
 	}
 
 	private static boolean isBlockProtectedFromBreaking(Level world, BlockPos pos) {
-		// todo improve
-		return !Registry.BLOCK.getKey(world.getBlockState(pos).getBlock()).getPath().contains("grave") || !world.getBlockState(pos).is(TFBlocks.KEEPSAKE_CASKET.get());
+		return !world.getBlockState(pos).is(BlockTagGenerator.PROGRESSION_ALLOW_BREAKING);
 	}
 
 	/**
