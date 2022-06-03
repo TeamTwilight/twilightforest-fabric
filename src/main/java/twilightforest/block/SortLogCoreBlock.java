@@ -1,9 +1,16 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,93 +35,98 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	void performTreeEffect(Level level, BlockPos pos, Random rand) {
-		Map<IItemHandler, Vec3> inputHandlers = new HashMap<>();
-		Map<IItemHandler, Vec3> outputHandlers = new HashMap<>();
+		Map<Storage<ItemVariant>, Vec3> inputHandlers = new HashMap<>();
+		Map<Storage<ItemVariant>, Vec3> outputHandlers = new HashMap<>();
 
 		for (BlockPos blockPos : WorldUtil.getAllAround(pos, 16)) {
 			if (!blockPos.equals(pos)) {
-				BlockEntity blockEntity = level.getBlockEntity(blockPos);
+				Storage<ItemVariant> storage = TransferUtil.getItemStorage(level, blockPos);
 
-				if (blockEntity != null) {
-					blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-						if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
-							inputHandlers.put(iItemHandler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-						} else outputHandlers.put(iItemHandler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-					});
+				if (storage != null) {
+					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
+						inputHandlers.put(storage, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
+					} else outputHandlers.put(storage, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 				}
 			}
 		}
 
-		level.getEntities((Entity)null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity ->
-				entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(iItemHandler ->
-						inputHandlers.put(iItemHandler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D))));
+		// TODO: PORT other entities
+		level.getEntities((Entity)null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
+			if (entity instanceof Player player)
+				inputHandlers.put(PlayerInventoryStorage.of(player), entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+		});
 
 		if (inputHandlers.isEmpty()) return;
 
-		level.getEntities((Entity)null, new AABB(pos).inflate(16), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity ->
-				entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(iItemHandler -> {
-					if (!inputHandlers.containsKey(iItemHandler)) outputHandlers.put(iItemHandler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
-				}));
+		level.getEntities((Entity)null, new AABB(pos).inflate(16), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
+			if (entity instanceof Player player) {
+				Storage<ItemVariant> playerInv = PlayerInventoryStorage.of(player);
+				if (!inputHandlers.containsKey(playerInv))
+					outputHandlers.put(playerInv, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+			}
+		});
 
 		if (outputHandlers.isEmpty()) return;
 
-		for (IItemHandler inputIItemHandler : inputHandlers.keySet()) {
-			for (int i = 0; i < inputIItemHandler.getSlots(); i++) {
-				ItemStack inputStack = inputIItemHandler.extractItem(i, 1, true);
-				if (!inputStack.isEmpty()) {
-					boolean transferred = false;
+		for (Storage<ItemVariant> inputIItemHandler : inputHandlers.keySet()) {
+			try (Transaction t = TransferUtil.getTransaction()) {
+				for (StorageView<ItemVariant> slot : inputIItemHandler.iterable(t)) {
+					long input = TransferUtil.simulateExtractView(slot, slot.getResource(), 1);
+					if (input != 0) {
+						boolean transferred = false;
 
-					Map<Integer, IItemHandler> outputsByCount = new HashMap<>();
+						Map<Integer, Storage<ItemVariant>> outputsByCount = new HashMap<>();
 
-					for (IItemHandler outputIItemHandler : outputHandlers.keySet()) {
-						int count = 0;
-						for (int j = 0; j < outputIItemHandler.getSlots(); j++) {
-							ItemStack stack = outputIItemHandler.getStackInSlot(j);
-							if (stack.is(inputStack.getItem())) count += stack.getCount();
-						}
-						if (count > 0) outputsByCount.put(count, outputIItemHandler);
-					}
-
-					for (Integer count : outputsByCount.keySet().stream().sorted(Comparator.comparingInt(Integer::intValue).reversed()).toList()) {
-						IItemHandler outputIItemHandler = outputsByCount.get(count);
-						int firstProperStack = -1;
-						for (int j = 0; j < outputIItemHandler.getSlots(); j++) {
-							ItemStack outputStack = outputIItemHandler.getStackInSlot(j);
-
-							if (firstProperStack == -1 && outputStack.isEmpty()) {
-								firstProperStack = j; //We reference the index of the first empty slot, in case there is no stacks that aren't at max size
-							} else if (ItemStack.isSameItemSameTags(inputStack, outputStack)
-									&& outputStack.getCount() < outputStack.getMaxStackSize()
-									&& outputStack.getCount() < outputIItemHandler.getSlotLimit(j)) {
-								firstProperStack = j;
-								break;
+						for (Storage<ItemVariant> outputIItemHandler : outputHandlers.keySet()) {
+							int count = 0;
+							for (StorageView<ItemVariant> slotJ : inputIItemHandler.iterable(t)) {
+								if (slotJ.getResource().isOf(slot.getResource().getItem())) count += slotJ.getAmount();
 							}
+							if (count > 0) outputsByCount.put(count, outputIItemHandler);
 						}
-						if (firstProperStack != -1) { //If there weren't any non-full stacks, we transfer to an empty space instead
-							ItemStack newStack = inputIItemHandler.extractItem(i, 1, false);
-							if (!newStack.isEmpty() && outputIItemHandler.insertItem(firstProperStack, newStack, true).isEmpty()) {//TODO Check
-								outputIItemHandler.insertItem(firstProperStack, newStack, false);
-								transferred = true;
 
-								Vec3 xyz = outputHandlers.get(outputIItemHandler);
-								Vec3 diff = inputHandlers.get(inputIItemHandler).subtract(xyz);
+						for (Integer count : outputsByCount.keySet().stream().sorted(Comparator.comparingInt(Integer::intValue).reversed()).toList()) {
+							Storage<ItemVariant> outputIItemHandler = outputsByCount.get(count);
+							ItemVariant firstProperStack = ItemVariant.blank();
+							for (StorageView<ItemVariant> slotJ : inputIItemHandler.iterable(t)) {
+								ItemStack outputStack = slotJ.getResource().toStack((int) slotJ.getAmount());
 
-								for (ServerPlayer serverplayer : ((ServerLevel)level).players()) {//This is just particle math, we send a particle packet to every player in range
-									if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
-										ParticlePacket particlePacket = new ParticlePacket();
-										double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
-										double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
-										double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
-										particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
-										TFPacketHandler.CHANNEL.sendToClient(particlePacket, serverplayer);
-									}
+								if (firstProperStack.isBlank() && outputStack.isEmpty()) {
+									firstProperStack = slotJ.getResource(); //We reference the index of the first empty slot, in case there is no stacks that aren't at max size
+								} else if (ItemStack.isSameItemSameTags(slot.getResource().toStack((int) input), outputStack)
+										&& outputStack.getCount() < outputStack.getMaxStackSize()
+										/*&& outputStack.getCount() < outputIItemHandler.getSlotLimit(j)*/) {
+									firstProperStack = slotJ.getResource();
+									break;
 								}
-								break;
+							}
+							if (firstProperStack != null) { //If there weren't any non-full stacks, we transfer to an empty space instead
+								long newStack = slot.extract(slot.getResource(), 1, t);
+								if (newStack != 0 && outputIItemHandler.simulateInsert(firstProperStack, newStack, t) == 0) {//TODO Check
+									outputIItemHandler.insert(firstProperStack, newStack, t);
+									transferred = true;
+
+									Vec3 xyz = outputHandlers.get(outputIItemHandler);
+									Vec3 diff = inputHandlers.get(inputIItemHandler).subtract(xyz);
+
+									for (ServerPlayer serverplayer : ((ServerLevel) level).players()) {//This is just particle math, we send a particle packet to every player in range
+										if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
+											ParticlePacket particlePacket = new ParticlePacket();
+											double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
+											double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
+											double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
+											particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
+											TFPacketHandler.CHANNEL.sendToClient(particlePacket, serverplayer);
+										}
+									}
+									break;
+								}
 							}
 						}
+						if (transferred) break;
 					}
-					if (transferred) break;
 				}
+				t.commit();
 			}
 		}
 	}

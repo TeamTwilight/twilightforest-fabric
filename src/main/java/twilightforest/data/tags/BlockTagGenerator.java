@@ -63,7 +63,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 	public static final TagKey<Block> CARMINITE_REACTOR_IMMUNE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("carminite_reactor_immune"));
 	public static final TagKey<Block> CARMINITE_REACTOR_ORES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("carminite_reactor_ores"));
 	public static final TagKey<Block> STRUCTURE_BANNED_INTERACTIONS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("structure_banned_interactions"));
-	public static final TagKey<Block> PROGRESSION_ALLOW_BREAKING = BlockTags.create(TwilightForestMod.prefix("progression_allow_breaking"));
+	public static final TagKey<Block> PROGRESSION_ALLOW_BREAKING = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("progression_allow_breaking"));
 
 	public static final TagKey<Block> WORLDGEN_REPLACEABLES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("worldgen_replaceables"));
 	public static final TagKey<Block> ROOT_TRACE_SKIP = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("tree_roots_skip"));
