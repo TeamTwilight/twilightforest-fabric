@@ -43,16 +43,13 @@
     "twilight.mixins.json"
   ],
   "accessWidener": "twilightforest.accesswidener",
-  "breaks": {
-    "boats-and-beeps": "*"
-  },
   "provides": [
     "com_electronwill_night-config_core",
     "com_electronwill_night-config_toml"
   ],
   "depends": {
     "fabricloader": ">=0.13.3",
-    "fabric": "*",
+    "fabric": "0.53.3",
     "minecraft": "1.18.x",
     "java": ">=17"
   },
