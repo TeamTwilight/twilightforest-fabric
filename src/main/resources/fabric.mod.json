@@ -43,10 +43,6 @@
     "twilight.mixins.json"
   ],
   "accessWidener": "twilightforest.accesswidener",
-  "provides": [
-    "com_electronwill_night-config_core",
-    "com_electronwill_night-config_toml"
-  ],
   "depends": {
     "fabricloader": ">=0.13.3",
     "fabric": ">=0.53.3",
