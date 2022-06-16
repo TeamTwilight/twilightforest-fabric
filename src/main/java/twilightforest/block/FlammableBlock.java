@@ -7,6 +7,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 public class FlammableBlock extends Block {
 	public FlammableBlock(int flammability, int spreadSpeed, BlockBehaviour.Properties props) {
 		super(props);
-		FlammableBlockRegistry.getDefaultInstance().add(this, flammability, spreadSpeed);
+		FlammableBlockRegistry.getDefaultInstance().add(this, spreadSpeed, flammability);
 	}
 }
