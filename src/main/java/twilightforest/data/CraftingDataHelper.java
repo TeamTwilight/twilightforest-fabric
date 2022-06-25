@@ -1,6 +1,9 @@
 package twilightforest.data;
 
 import com.google.common.collect.ImmutableList;
+import me.alphamode.forgetags.Tags;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.Util;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -50,7 +53,7 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 	public final PartialNBTIngredient potion(Potion potion) {
 		return PartialNBTIngredient.of(Items.POTION, Util.make(() -> {
 			CompoundTag nbt = new CompoundTag();
-			nbt.putString("Potion", ForgeRegistries.POTIONS.getKey(potion).toString());
+			nbt.putString("Potion", Registry.POTION.getKey(potion).toString());
 			return nbt;
 		}));
 	}

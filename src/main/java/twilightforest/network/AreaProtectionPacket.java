@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ProtectionBox;
 import twilightforest.init.TFParticleType;
 

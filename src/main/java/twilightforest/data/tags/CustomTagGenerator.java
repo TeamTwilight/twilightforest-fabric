@@ -1,22 +1,19 @@
 package twilightforest.data.tags;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.Registry;
-import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBannerPatterns;
-
-import org.jetbrains.annotations.Nullable;
 
 //a place to hold all custom tags, since I imagine we wont have a lot of them
 public class CustomTagGenerator {
 
-	public static class EnchantmentTagGenerator extends TagsProvider<Enchantment> {
+	public static class EnchantmentTagGenerator extends FabricTagProvider<Enchantment> {
 
 		public static final TagKey<Enchantment> PHANTOM_ARMOR_BANNED_ENCHANTS = TagKey.create(Registry.ENCHANTMENT_REGISTRY, TwilightForestMod.prefix("phantom_armor_banned_enchants"));
 
@@ -25,7 +22,7 @@ public class CustomTagGenerator {
 		}
 
 		@Override
-		protected void addTags() {
+		protected void generateTags() {
 			tag(PHANTOM_ARMOR_BANNED_ENCHANTS).add(Enchantments.VANISHING_CURSE, Enchantments.BINDING_CURSE);
 		}
 
@@ -35,7 +32,7 @@ public class CustomTagGenerator {
 		}
 	}
 
-	public static class BannerPatternTagGenerator extends TagsProvider<BannerPattern> {
+	public static class BannerPatternTagGenerator extends FabricTagProvider<BannerPattern> {
 
 		public static final TagKey<BannerPattern> NAGA_BANNER_PATTERN = create("pattern_item/naga");
 		public static final TagKey<BannerPattern> LICH_BANNER_PATTERN = create("pattern_item/lich");
@@ -47,12 +44,12 @@ public class CustomTagGenerator {
 		public static final TagKey<BannerPattern> SNOW_QUEEN_BANNER_PATTERN = create("pattern_item/snow_queen");
 		public static final TagKey<BannerPattern> QUEST_RAM_BANNER_PATTERN = create("pattern_item/quest_ram");
 
-		public BannerPatternTagGenerator(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
-			super(generator, Registry.BANNER_PATTERN, TwilightForestMod.ID, existingFileHelper);
+		public BannerPatternTagGenerator(FabricDataGenerator generator) {
+			super(generator, Registry.BANNER_PATTERN);
 		}
 
 		@Override
-		protected void addTags() {
+		protected void generateTags() {
 			tag(NAGA_BANNER_PATTERN).add(TFBannerPatterns.NAGA.get());
 			tag(LICH_BANNER_PATTERN).add(TFBannerPatterns.LICH.get());
 			tag(MINOSHROOM_BANNER_PATTERN).add(TFBannerPatterns.MINOSHROOM.get());

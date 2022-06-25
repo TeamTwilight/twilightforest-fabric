@@ -13,7 +13,6 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HostileWolfModel;
 import twilightforest.entity.monster.HostileWolf;
 
-@Environment(EnvType.CLIENT)
 public class MistWolfRenderer extends MobRenderer<HostileWolf, HostileWolfModel<HostileWolf>> {
 
 	private static HostileWolf parent; // This is a huge hack

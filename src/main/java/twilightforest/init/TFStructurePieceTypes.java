@@ -1,9 +1,9 @@
 package twilightforest.init;
 
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.*;
 import twilightforest.world.components.structures.courtyard.*;
@@ -11,7 +11,10 @@ import twilightforest.world.components.structures.darktower.*;
 import twilightforest.world.components.structures.finalcastle.*;
 import twilightforest.world.components.structures.icetower.*;
 import twilightforest.world.components.structures.lichtower.*;
-import twilightforest.world.components.structures.lichtowerrevamp.*;
+import twilightforest.world.components.structures.lichtowerrevamp.CentralTowerAttachment;
+import twilightforest.world.components.structures.lichtowerrevamp.CentralTowerSegment;
+import twilightforest.world.components.structures.lichtowerrevamp.SideTowerRoom;
+import twilightforest.world.components.structures.lichtowerrevamp.TowerFoyer;
 import twilightforest.world.components.structures.minotaurmaze.*;
 import twilightforest.world.components.structures.mushroomtower.*;
 import twilightforest.world.components.structures.stronghold.*;
@@ -20,7 +23,7 @@ import twilightforest.world.components.structures.trollcave.*;
 import java.util.Locale;
 
 public class TFStructurePieceTypes {
-    public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, TwilightForestMod.ID);
+    public static final LazyRegistrar<StructurePieceType> STRUCTURE_PIECE_TYPES = LazyRegistrar.create(Registry.STRUCTURE_PIECE, TwilightForestMod.ID);
 
     // Single-Piece Structures
     //IStructurePieceTypes that can be referred to

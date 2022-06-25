@@ -1,5 +1,7 @@
 package twilightforest.entity.projectile;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -20,10 +23,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraftforge.event.ForgeEventFactory;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFEntities;
 import twilightforest.util.EntityUtil;
@@ -67,7 +66,7 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 		BlockPos blockPosHit = result.getBlockPos();
 		Material materialHit = this.getLevel().getBlockState(blockPosHit).getMaterial();
 
-		if (ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this)) {
+		if (this.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 			if (materialHit == Material.GRASS) {
 				ItemStack dummy = new ItemStack(Items.BONE_MEAL, 1);
 				if (BoneMealItem.growCrop(dummy, this.getLevel(), blockPosHit)) {

@@ -24,7 +24,6 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFLandmark;

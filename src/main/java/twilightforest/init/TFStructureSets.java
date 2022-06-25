@@ -1,17 +1,17 @@
 package twilightforest.init;
 
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 
 public class TFStructureSets {
-    public static final DeferredRegister<StructureSet> STRUCTURE_SETS = DeferredRegister.create(Registry.STRUCTURE_SET_REGISTRY, TwilightForestMod.ID);
+    public static final LazyRegistrar<StructureSet> STRUCTURE_SETS = LazyRegistrar.create(BuiltinRegistries.STRUCTURE_SETS, TwilightForestMod.ID);
 
     public static final RegistryObject<StructureSet> HEDGE_MAZE = register(TFStructures.HEDGE_MAZE);
     public static final RegistryObject<StructureSet> QUEST_GROVE = register(TFStructures.QUEST_GROVE);

@@ -174,6 +174,7 @@ accessible method net/minecraft/world/level/biome/Biome getTemperature (Lnet/min
 accessible field net/minecraft/world/level/levelgen/structure/pieces/StructurePiecesBuilder pieces Ljava/util/List;
 extendable class net/minecraft/world/item/enchantment/EnchantmentCategory
 extendable class net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier
+extendable method net/minecraft/data/tags/TagsProvider getName ()Ljava/lang/String;
 accessible field net/minecraft/data/tags/TagsProvider GSON Lcom/google/gson/Gson;
 accessible field net/minecraft/data/tags/TagsProvider builders Ljava/util/Map;
 accessible field net/minecraft/data/tags/TagsProvider LOGGER Lorg/slf4j/Logger;

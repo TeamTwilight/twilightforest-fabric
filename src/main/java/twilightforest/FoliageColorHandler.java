@@ -4,7 +4,6 @@ import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.init.BiomeKeys;
 

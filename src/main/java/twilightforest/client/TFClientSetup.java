@@ -25,15 +25,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.compat.CuriosCompat;
+import twilightforest.client.model.TFLayerDefinitions;
+import twilightforest.client.model.TFModelLayers;
+import twilightforest.client.model.entity.*;
+import twilightforest.client.model.entity.legacy.*;
+import twilightforest.client.renderer.entity.*;
+import twilightforest.client.renderer.entity.legacy.*;
 import twilightforest.compat.TFCompat;
-import twilightforest.entity.TFEntities;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.client.renderer.entity.IceLayer;
-import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.init.TFMenuTypes;
-import twilightforest.init.TFItems;
+import twilightforest.compat.TrinketsCompat;
+import twilightforest.init.*;
 
 import java.util.Map;
 import java.util.Objects;
@@ -111,10 +111,6 @@ public class TFClientSetup implements ClientModInitializer {
 //        });
 
     }
-
-	private static void registerWoodType(WoodType woodType) {
-		Sheets.SIGN_MATERIALS.put(woodType, Sheets.createSignMaterial(woodType));
-	}
 
 	@SuppressWarnings("unchecked")
 	public static void attachRenderLayers(final Map<EntityType<?>, EntityRenderer<?>> renderers, final Map<String, EntityRenderer<? extends Player>> skins) {

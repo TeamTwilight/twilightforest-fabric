@@ -1,35 +1,36 @@
 package twilightforest.data;
 
-import net.minecraft.data.DataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
-import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
 import twilightforest.data.tags.*;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class DataGenerators {
-	@SubscribeEvent
-	public static void gatherData(GatherDataEvent evt) {
-		DataGenerator generator = evt.getGenerator();
-		ExistingFileHelper helper = evt.getExistingFileHelper();
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
 
-		generator.addProvider(true, new AdvancementGenerator(generator, helper));
-		generator.addProvider(true, new PatchouliAdvancementGenerator(generator, helper));
+public class DataGenerators implements DataGeneratorEntrypoint {
+	@Override
+	public void onInitializeDataGenerator(FabricDataGenerator generator) {
+		var existingData = System.getProperty("twilightforest.data.existingData").split(";");
+		ExistingFileHelper helper = new ExistingFileHelper(Arrays.stream(existingData).map(Paths::get).toList(), Collections.emptySet(),
+				true, null, null);
+
+		generator.addProvider(true, new AdvancementGenerator(generator));
+		generator.addProvider(true, new PatchouliAdvancementGenerator(generator));
 		generator.addProvider(true, new BlockstateGenerator(generator, helper));
 		generator.addProvider(true, new ItemModelGenerator(generator, helper));
-		generator.addProvider(true, new BiomeTagGenerator(generator, helper));
-		generator.addProvider(true, new CustomTagGenerator.BannerPatternTagGenerator(generator, helper));
-		BlockTagsProvider blocktags = new BlockTagGenerator(generator, helper);
+		generator.addProvider(true, new BiomeTagGenerator(generator));
+		generator.addProvider(true, new CustomTagGenerator.BannerPatternTagGenerator(generator));
+		BlockTagsProvider blocktags = new BlockTagGenerator(generator);
 		generator.addProvider(true, blocktags);
-		generator.addProvider(true, new FluidTagGenerator(generator, helper));
-		generator.addProvider(true, new ItemTagGenerator(generator, blocktags, helper));
-		generator.addProvider(true, new EntityTagGenerator(generator, helper));
-		generator.addProvider(true, new CustomTagGenerator.EnchantmentTagGenerator(generator, helper));
+		generator.addProvider(true, new FluidTagGenerator(generator));
+		generator.addProvider(true, new ItemTagGenerator(generator, blocktags));
+		generator.addProvider(true, new EntityTagGenerator(generator));
+		generator.addProvider(true, new CustomTagGenerator.EnchantmentTagGenerator(generator));
 		generator.addProvider(true, new LootGenerator(generator));
 		generator.addProvider(true, new StonecuttingGenerator(generator));
 		generator.addProvider(true, new CraftingGenerator(generator));

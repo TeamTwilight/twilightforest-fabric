@@ -1,9 +1,11 @@
 package twilightforest.client;
 
+import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.fabricators_of_create.porting_lib.event.client.FogEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.FogType;
 import twilightforest.TwilightForestMod;
@@ -38,12 +40,12 @@ public class FogHandler {
 		}
 	}
 
-	public static void fog(FogRenderer.FogMode type, Camera info, float partial, float distance) {
+	public static boolean fog(FogRenderer.FogMode mode, FogType type, Camera camera, float partialTick, float renderDistance, float nearDistance, float farDistance, FogShape shape, FogEvents.FogData event) {
 		boolean flag = isSpooky();
 		if (flag || spoopFog < 1F) {
 			float f = 48F;
 			f = f >= event.getFarPlaneDistance() ? event.getFarPlaneDistance() : Mth.clampedLerp(f, event.getFarPlaneDistance(), spoopFog);
-			float shift = (float) (0.001F * event.getPartialTick());
+			float shift = (float) (0.001F * partialTick);
 			if (flag)
 				spoopFog -= shift;
 			else
@@ -52,7 +54,7 @@ public class FogHandler {
 
 			//FIXME getMode now requires a FogType when it used to want a FogMode. Does this work ok?
 			//if (type == FogRenderer.FogMode.FOG_SKY) {
-			if (event.getMode() == FogType.NONE) {
+			if (type == FogType.NONE) {
 				RenderSystem.setShaderFogStart(0.0F);
 				RenderSystem.setShaderFogEnd(f);
 			} else {
@@ -60,6 +62,7 @@ public class FogHandler {
 				RenderSystem.setShaderFogEnd(f);
 			}
 		}
+		return false;
 	}
 
 	private static boolean isSpooky() {

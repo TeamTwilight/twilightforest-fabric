@@ -23,8 +23,7 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.resources.model.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -50,6 +49,7 @@ import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 import twilightforest.compat.CuriosCompat;
 import twilightforest.compat.TFCompat;
+import twilightforest.compat.TrinketsCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFBlocks;
@@ -166,7 +166,7 @@ public class TFClientEvents {
 						.map(Material::texture)
 						.forEach(spriteAdder::accept);
 
-			evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
+			spriteAdder.accept(TwilightForestMod.prefix("block/mosspatch"));
 
 			//FIXME bring back if you can get GradientMappedTexture working
 		/*if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
@@ -334,15 +334,14 @@ public class TFClientEvents {
 	/**
 	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
 	 */
-	@SubscribeEvent
-	public static void FOVUpdate(FOVModifierEvent event) {
-		Player player = event.getPlayer();
+	public static double FOVUpdate(GameRenderer renderer, Camera camera, double partialTick, double fov) {
+		Player player = (Player) camera.getEntity();
 		if (player.isUsingItem()) {
 			Item useItem = player.getUseItem().getItem();
 			if (useItem instanceof TripleBowItem || useItem instanceof EnderBowItem || useItem instanceof IceBowItem || useItem instanceof SeekerBowItem) {
 				float f = player.getTicksUsingItem() / 20.0F;
 				f = f > 1.0F ? 1.0F : f * f;
-				event.setNewFov(event.getFov() * (1.0F - f * 0.15F));
+				return fov * (1.0F - f * 0.15F);
 			}
 		}
 		return fov;
@@ -355,7 +354,7 @@ public class TFClientEvents {
 		if (renderer.getModel() instanceof HeadedModel headedModel) {
 			headedModel.getHead().visible = visible;
 			if (renderer.getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = visible && partShown(event.getEntity());
+				humanoidModel.hat.visible = visible && partShown(entity);
 			}
 		}
 	}

@@ -24,8 +24,6 @@ import twilightforest.network.TFPacketHandler;
 
 public class FallenLeavesBlock extends TFPlantBlock {
 
-	protected Random RANDOM = new Random();
-
 	private static final VoxelShape FALLEN_LEAVES_SHAPE = box(0, 0, 0, 16, 1, 16);
 
 	public FallenLeavesBlock(Properties properties) {
