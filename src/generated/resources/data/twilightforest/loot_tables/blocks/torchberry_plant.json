@@ -2,7 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -17,18 +16,18 @@
           ],
           "name": "twilightforest:torchberry_plant"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "conditions": [
             {
-              "condition": "minecraft:block_state_property",
               "block": "twilightforest:torchberry_plant",
+              "condition": "minecraft:block_state_property",
               "properties": {
                 "has_torchberries": "true"
               }
@@ -36,7 +35,8 @@
           ],
           "name": "twilightforest:torchberries"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

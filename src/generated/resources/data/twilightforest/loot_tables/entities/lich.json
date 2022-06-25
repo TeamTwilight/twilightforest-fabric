@@ -2,7 +2,6 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -21,14 +20,10 @@
           "type": "minecraft:item",
           "name": "twilightforest:fortification_scepter"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": {
-        "type": "minecraft:uniform",
-        "min": 2.0,
-        "max": 4.0
-      },
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -38,8 +33,8 @@
               "function": "minecraft:enchant_with_levels",
               "levels": {
                 "type": "minecraft:uniform",
-                "min": 10.0,
-                "max": 40.0
+                "max": 40.0,
+                "min": 10.0
               },
               "treasure": false
             }
@@ -53,8 +48,8 @@
               "function": "minecraft:enchant_with_levels",
               "levels": {
                 "type": "minecraft:uniform",
-                "min": 10.0,
-                "max": 40.0
+                "max": 40.0,
+                "min": 10.0
               },
               "treasure": false
             }
@@ -68,8 +63,8 @@
               "function": "minecraft:enchant_with_levels",
               "levels": {
                 "type": "minecraft:uniform",
-                "min": 10.0,
-                "max": 40.0
+                "max": 40.0,
+                "min": 10.0
               },
               "treasure": false
             }
@@ -83,8 +78,8 @@
               "function": "minecraft:enchant_with_levels",
               "levels": {
                 "type": "minecraft:uniform",
-                "min": 10.0,
-                "max": 40.0
+                "max": 40.0,
+                "min": 10.0
               },
               "treasure": false
             }
@@ -98,86 +93,90 @@
               "function": "minecraft:enchant_with_levels",
               "levels": {
                 "type": "minecraft:uniform",
-                "min": 10.0,
-                "max": 40.0
+                "max": 40.0,
+                "min": 10.0
               },
               "treasure": false
             }
           ],
           "name": "minecraft:golden_boots"
         }
-      ]
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 4.0,
+        "min": 2.0
+      }
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 4.0
+                "max": 4.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             },
             {
-              "function": "minecraft:looting_enchant",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              }
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:looting_enchant"
             }
           ],
           "name": "minecraft:ender_pearl"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 5.0,
-                "max": 9.0
+                "max": 9.0,
+                "min": 5.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             },
             {
-              "function": "minecraft:looting_enchant",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              }
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:looting_enchant"
             }
           ],
           "name": "minecraft:bone"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "twilightforest:lich_trophy"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -190,9 +189,8 @@
           ],
           "functions": [
             {
-              "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader",
-              "default": "minecraft:gold_nugget"
+              "default": "minecraft:gold_nugget",
+              "function": "twilightforest:item_or_default"
             },
             {
               "function": "minecraft:set_nbt",
@@ -201,10 +199,10 @@
           ],
           "name": "minecraft:gold_nugget"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -217,14 +215,14 @@
           ],
           "functions": [
             {
-              "function": "twilightforest:item_or_default",
-              "item": "twilightforest:shader_bag_twilight",
-              "default": "minecraft:gold_nugget"
+              "default": "minecraft:gold_nugget",
+              "function": "twilightforest:item_or_default"
             }
           ],
           "name": "minecraft:gold_nugget"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

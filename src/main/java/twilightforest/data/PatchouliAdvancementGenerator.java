@@ -3,6 +3,7 @@ package twilightforest.data;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Registry;
@@ -10,17 +11,20 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
-import twilightforest.item.TFItems;
-import twilightforest.world.registration.biomes.BiomeKeys;
-import twilightforest.world.registration.features.TFConfiguredStructures;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFStructures;
+import twilightforest.init.BiomeKeys;
 
 import java.util.function.Consumer;
 
@@ -201,28 +205,32 @@ public class PatchouliAdvancementGenerator extends FabricAdvancementProvider {
 				.save(consumer, "twilightforest:alt/entities/wolves");
 
 		//landmarks
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_DARK_TOWER.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_FINAL_CASTLE.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HEDGE_MAZE.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HYDRA_LAIR.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_AURORA_PALACE.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_KNIGHT_STRONGHOLD.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_LABYRINTH.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_LARGE.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_LICH_TOWER.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_MEDIUM.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_MUSHROOM_TOWER.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_NAGA_COURTYARD.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_QUEST_GROVE.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_HOLLOW_HILL_SMALL.unwrapKey().orElseThrow(), consumer, root);
-		landmarkAdvancement(TFConfiguredStructures.CONFIGURED_YETI_CAVE.unwrapKey().orElseThrow(), consumer, root);
+		landmarkAdvancement(TFStructures.DARK_TOWER, consumer, root);
+		landmarkAdvancement(TFStructures.FINAL_CASTLE, consumer, root);
+		landmarkAdvancement(TFStructures.HEDGE_MAZE, consumer, root);
+		landmarkAdvancement(TFStructures.HYDRA_LAIR, consumer, root);
+		landmarkAdvancement(TFStructures.AURORA_PALACE, consumer, root);
+		landmarkAdvancement(TFStructures.KNIGHT_STRONGHOLD, consumer, root);
+		landmarkAdvancement(TFStructures.LABYRINTH, consumer, root);
+		landmarkAdvancement(TFStructures.HOLLOW_HILL_LARGE, consumer, root);
+		landmarkAdvancement(TFStructures.LICH_TOWER, consumer, root);
+		landmarkAdvancement(TFStructures.HOLLOW_HILL_MEDIUM, consumer, root);
+		landmarkAdvancement(TFStructures.MUSHROOM_TOWER, consumer, root);
+		landmarkAdvancement(TFStructures.NAGA_COURTYARD, consumer, root);
+		landmarkAdvancement(TFStructures.QUEST_GROVE, consumer, root);
+		landmarkAdvancement(TFStructures.HOLLOW_HILL_SMALL, consumer, root);
+		landmarkAdvancement(TFStructures.YETI_CAVE, consumer, root);
+
+		// 		Advancement.Builder.advancement().parent(root)
+		//				.addCriterion("found_structure", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(structure)))
+		//				.save(consumer, "twilightforest:alt/major_landmarks/" + structure.location().getPath());
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setFeature(TFConfiguredStructures.CONFIGURED_TROLL_CAVE.unwrapKey().orElseThrow()).setY(MinMaxBounds.Doubles.atLeast(150)).build()))
+				.addCriterion("found_structure", PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setStructure(TFStructures.cleanKey(TFStructures.TROLL_CAVE)).setY(MinMaxBounds.Doubles.atLeast(150)).build()))
 				.save(consumer, "twilightforest:alt/major_landmarks/giant_cloud");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setFeature(TFConfiguredStructures.CONFIGURED_TROLL_CAVE.unwrapKey().orElseThrow()).setY(MinMaxBounds.Doubles.atMost(50)).build()))
+				.addCriterion("found_structure",PlayerTrigger.TriggerInstance.located(LocationPredicate.Builder.location().setStructure(TFStructures.cleanKey(TFStructures.TROLL_CAVE)).setY(MinMaxBounds.Doubles.atMost(50)).build()))
 				.save(consumer, "twilightforest:alt/major_landmarks/troll_cave");
 
 		Advancement.Builder.advancement().parent(root)
@@ -292,7 +300,7 @@ public class PatchouliAdvancementGenerator extends FabricAdvancementProvider {
 				.save(consumer, "twilightforest:alt/treasures/crumble_horn");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("used", ItemUsedOnBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(TFItems.CRUMBLE_HORN.get())))
+				.addCriterion("used", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location(), ItemPredicate.Builder.item().of(TFItems.CRUMBLE_HORN.get())))
 				.save(consumer, "twilightforest:alt/treasures/crumble_horn_used");
 
 		Advancement.Builder.advancement().parent(root)
@@ -435,7 +443,7 @@ public class PatchouliAdvancementGenerator extends FabricAdvancementProvider {
 				.save(consumer, "twilightforest:alt/treasures/magic_beans");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("has_item", ItemUsedOnBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(TFBlocks.UBEROUS_SOIL.get()).build()), ItemPredicate.Builder.item().of(TFItems.MAGIC_BEANS.get())))
+				.addCriterion("has_item", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(TFBlocks.UBEROUS_SOIL.get()).build()), ItemPredicate.Builder.item().of(TFItems.MAGIC_BEANS.get())))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/treasures/magic_beanstalk");
 
@@ -684,7 +692,7 @@ public class PatchouliAdvancementGenerator extends FabricAdvancementProvider {
 
 	private void makeBiomeAdvancement(String name, ResourceKey<Biome> key, Consumer<Advancement> consumer, Advancement root) {
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("in_biome", LocationTrigger.TriggerInstance.located(LocationPredicate.inBiome(key)))
+				.addCriterion("in_biome", PlayerTrigger.TriggerInstance.located(LocationPredicate.inBiome(key)))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/" + name);
 	}
@@ -701,33 +709,41 @@ public class PatchouliAdvancementGenerator extends FabricAdvancementProvider {
 				.save(consumer, "twilightforest:alt/entities/" + Registry.ENTITY_TYPE.getKey(entity).getPath());
 	}
 
-	private void landmarkAdvancement(ResourceKey<ConfiguredStructureFeature<?, ?>> structure, Consumer<Advancement> consumer, Advancement root) {
+	private void landmarkAdvancement(RegistryObject<? extends Structure> structure, Consumer<Advancement> consumer, Advancement root) {
+		this.landmarkAdvancement(structure.getId().getPath(), LocationPredicate.inStructure(TFStructures.cleanKey(structure)), consumer, root);
+	}
+
+	private void landmarkAdvancement(String name, LocationPredicate locationPredicate, Consumer<Advancement> consumer, Advancement root) {
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("found_structure", LocationTrigger.TriggerInstance.located(LocationPredicate.inFeature(structure)))
-				.save(consumer, "twilightforest:alt/major_landmarks/" + structure.location().getPath());
+				.addCriterion("found_structure", PlayerTrigger.TriggerInstance.located(locationPredicate))
+				.save(consumer, "twilightforest:alt/major_landmarks/" + name);
+	}
+
+	public static LocationPredicate inStructure(ResourceKey<Structure> p_220590_) {
+		return new LocationPredicate(MinMaxBounds.Doubles.ANY, MinMaxBounds.Doubles.ANY, MinMaxBounds.Doubles.ANY, (ResourceKey<Biome>)null, p_220590_, (ResourceKey<Level>)null, (Boolean)null, LightPredicate.ANY, BlockPredicate.ANY, FluidPredicate.ANY);
 	}
 
 	private void minorKeyBiomes(Consumer<Advancement> consumer, Advancement root) {
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("in_biome", LocationTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.DARK_FOREST)))
+				.addCriterion("in_biome", PlayerTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.DARK_FOREST)))
 				.addCriterion("has_other", this.advancementTrigger("alt/biomes/dark_forest_center"))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/dark_forest");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("in_biome", LocationTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.SWAMP)))
+				.addCriterion("in_biome", PlayerTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.SWAMP)))
 				.addCriterion("has_other", this.advancementTrigger("alt/biomes/fire_swamp"))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/swamp");
 
 		Advancement.Builder.advancement().parent(root)
-				.addCriterion("in_biome", LocationTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.SNOWY_FOREST)))
+				.addCriterion("in_biome", PlayerTrigger.TriggerInstance.located(LocationPredicate.inBiome(BiomeKeys.SNOWY_FOREST)))
 				.addCriterion("has_other", this.advancementTrigger("alt/biomes/twilight_glacier"))
 				.requirements(RequirementsStrategy.OR)
 				.save(consumer, "twilightforest:alt/biomes/snowy_forest");
 	}
 
-	private TickTrigger.TriggerInstance advancementTrigger(String name) {
-		return new TickTrigger.TriggerInstance(EntityPredicate.Composite.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().player(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()));
+	private PlayerTrigger.TriggerInstance advancementTrigger(String name) {
+		return new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), EntityPredicate.Composite.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()));
 	}
 }

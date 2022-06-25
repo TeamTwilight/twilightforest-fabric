@@ -10,7 +10,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.WraithModel;
 import twilightforest.entity.monster.Wraith;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
 public class WraithRenderer extends HumanoidMobRenderer<Wraith, WraithModel> {

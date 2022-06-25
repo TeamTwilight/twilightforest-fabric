@@ -12,7 +12,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class SnowQueenTrophyModel extends GenericTrophyModel {
 
-	public ModelPart head;
+	public final ModelPart head;
 	public ModelPart crownFront;
 	public ModelPart crownBack;
 	public ModelPart crownRight;

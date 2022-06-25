@@ -3,32 +3,27 @@ package twilightforest.loot.conditions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.minecraft.world.level.storage.loot.Serializer;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import twilightforest.entity.monster.CarminiteGhastling;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFLoot;
 
 import javax.annotation.Nonnull;
 
-public class IsMinion implements LootItemCondition {
-	private final boolean inverse;
-
-	public IsMinion(boolean inverse) {
-		this.inverse = inverse;
-	}
+public record IsMinion(boolean inverse) implements LootItemCondition {
 
 	@Override
 	public LootItemConditionType getType() {
-		return TFTreasure.IS_MINION;
+		return TFLoot.IS_MINION.get();
 	}
 
 	@Override
 	public boolean test(@Nonnull LootContext context) {
-		return context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof CarminiteGhastling && ((CarminiteGhastling) context.getParamOrNull(LootContextParams.THIS_ENTITY)).isMinion() == !inverse;
+		return context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof CarminiteGhastling ghastling && ghastling.isMinion() == !inverse;
 	}
 
 	public static Builder builder(boolean inverse) {

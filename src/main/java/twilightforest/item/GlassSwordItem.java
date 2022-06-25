@@ -13,18 +13,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 
 public class GlassSwordItem extends SwordItem {
 
-	public GlassSwordItem(Tier toolMaterial, Properties props) {
-		super(toolMaterial, 3, -2.4F, props);
+	public GlassSwordItem(Tier toolMaterial, Properties properties) {
+		super(toolMaterial, 3, -2.4F, properties);
 	}
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK, attacker.getSoundSource(), 1F, 0.5F);
-		target.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.defaultBlockState()), target.getX(), target.getY(), target.getZ(), 1, 1, 1);
+		attacker.getLevel().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.get(), attacker.getSoundSource(), 1F, 0.5F);
+		target.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.defaultBlockState()), target.getX(), target.getY(), target.getZ(), 1, 1, 1);
 		stack.hurtAndBreak(stack.getMaxDamage() + 1, attacker, (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
 		return true;
 	}
@@ -33,7 +33,7 @@ public class GlassSwordItem extends SwordItem {
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
 		super.fillItemCategory(tab, items);
 
-		if (allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack stack = new ItemStack(this);
 			CompoundTag tags = new CompoundTag();
 			tags.putBoolean("Unbreakable", true);

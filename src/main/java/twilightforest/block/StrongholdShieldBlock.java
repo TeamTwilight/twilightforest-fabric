@@ -16,13 +16,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import twilightforest.util.EntityUtil;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class StrongholdShieldBlock extends DirectionalBlock implements EntityDestroyBlock {
 
 	public StrongholdShieldBlock(BlockBehaviour.Properties props) {
 		super(props);
-		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.DOWN));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.DOWN));
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class StrongholdShieldBlock extends DirectionalBlock implements EntityDes
 
 	@Override
 	@Deprecated
-	public float getDestroyProgress(BlockState state, Player player, BlockGetter world, BlockPos pos) {
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
 		BlockHitResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
 
 		Direction hitFace = ray.getDirection();
@@ -50,12 +50,12 @@ public class StrongholdShieldBlock extends DirectionalBlock implements EntityDes
 		if (hitFace == (upOrDown ? upFace : sideFace)) {
 			return player.getDestroySpeed(Blocks.STONE.defaultBlockState()/*, pos*/) / 1.5F / 100F;
 		} else {
-			return super.getDestroyProgress(state, player, world, pos);
+			return super.getDestroyProgress(state, player, getter, pos);
 		}
 	}
 
 	@Override
-	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
+	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
 		return false;
 	}
 }

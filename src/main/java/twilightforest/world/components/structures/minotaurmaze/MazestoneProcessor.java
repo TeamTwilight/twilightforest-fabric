@@ -1,15 +1,16 @@
 package twilightforest.world.components.structures.minotaurmaze;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
-import java.util.Random;
+
 
 public class MazestoneProcessor extends StructurePiece.BlockSelector {
 
 	@Override
-	public void next(Random random, int x, int y, int z, boolean wall) {
+	public void next(RandomSource random, int x, int y, int z, boolean wall) {
 		if (!wall) {
 			this.next = Blocks.AIR.defaultBlockState();
 		} else {

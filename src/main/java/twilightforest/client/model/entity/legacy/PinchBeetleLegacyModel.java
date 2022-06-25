@@ -17,8 +17,8 @@ import twilightforest.entity.monster.PinchBeetle;
 
 public class PinchBeetleLegacyModel extends HierarchicalModel<PinchBeetle> {
 
-	ModelPart root;
-	ModelPart head;
+	final ModelPart root;
+	final ModelPart head;
 	ModelPart leg6;
 	ModelPart leg4;
 	ModelPart leg2;

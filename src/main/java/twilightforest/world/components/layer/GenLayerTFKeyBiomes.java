@@ -6,7 +6,7 @@ import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.area.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 import java.util.Random;
 

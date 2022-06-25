@@ -3,6 +3,7 @@ package twilightforest.entity.passive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -17,9 +18,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import twilightforest.entity.TFEntities;
-
-import java.util.Random;
+import twilightforest.init.TFEntities;
 
 public class Penguin extends Bird {
 	public Penguin(EntityType<? extends Penguin> type, Level world) {
@@ -40,13 +39,13 @@ public class Penguin extends Bird {
 	}
 
 	@Override
-	public Animal getBreedOffspring(ServerLevel world, AgeableMob entityanimal) {
-		return TFEntities.PENGUIN.get().create(world);
+	public Animal getBreedOffspring(ServerLevel level, AgeableMob ageableMob) {
+		return TFEntities.PENGUIN.get().create(level);
 	}
 
 	@Override
 	public boolean isFood(ItemStack stack) {
-		return stack.getItem() == Items.COD;
+		return stack.is(Items.COD);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -55,8 +54,8 @@ public class Penguin extends Bird {
 				.add(Attributes.MOVEMENT_SPEED, 0.2D);
 	}
 
-	public static boolean canSpawn(EntityType<? extends Penguin> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
+	public static boolean canSpawn(EntityType<? extends Penguin> type, LevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource rand) {
 		BlockPos blockpos = pos.below();
-		return Mob.checkMobSpawnRules(type, world, reason, pos, rand) || world.getBlockState(blockpos).is(BlockTags.ICE);
+		return Mob.checkMobSpawnRules(type, accessor, reason, pos, rand) || accessor.getBlockState(blockpos).is(BlockTags.ICE);
 	}
 }

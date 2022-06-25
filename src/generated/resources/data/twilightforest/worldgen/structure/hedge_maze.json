@@ -1,0 +1,28 @@
+{
+  "type": "twilightforest:legacy_landmark",
+  "adjust_structure_elevation": true,
+  "advancements_required": [],
+  "allow_biome_surface_decorations": false,
+  "allow_biome_underground_decorations": true,
+  "ambient_spawns": [],
+  "biomes": "#twilightforest:valid_hedge_maze_biomes",
+  "hint_item": {
+    "Count": 1,
+    "id": "minecraft:written_book",
+    "tag": {
+      "author": "A Forgotten Explorer",
+      "pages": [
+        "{\"translate\":\"twilightforest.book.unknown.1\"}",
+        "{\"translate\":\"twilightforest.book.unknown.2\"}"
+      ],
+      "title": "Notes on the Unexplained"
+    }
+  },
+  "hint_mob": "twilightforest:kobold",
+  "labelled_monster_spawns": {},
+  "legacy_landmark_start": "hedge_maze",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "water_spawns": []
+}

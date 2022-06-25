@@ -1,27 +1,29 @@
 {
+  "type": "twilightforest:mycelium_blob",
   "config": {
-    "state": {
-      "Properties": {
-        "snowy": "false"
-      },
-      "Name": "minecraft:mycelium"
-    },
+    "half_height": 3,
     "radius": {
       "type": "minecraft:uniform",
       "value": {
-        "min_inclusive": 4,
-        "max_inclusive": 6
+        "max_inclusive": 6,
+        "min_inclusive": 4
       }
     },
-    "half_height": 3,
-    "targets": [
-      {
-        "Properties": {
-          "snowy": "false"
-        },
-        "Name": "minecraft:grass_block"
-      }
-    ]
-  },
-  "type": "twilightforest:mycelium_blob"
+    "state_provider": {
+      "fallback": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "minecraft:mycelium",
+          "Properties": {
+            "snowy": "false"
+          }
+        }
+      },
+      "rules": []
+    },
+    "target": {
+      "type": "minecraft:matching_blocks",
+      "blocks": "minecraft:grass_block"
+    }
+  }
 }

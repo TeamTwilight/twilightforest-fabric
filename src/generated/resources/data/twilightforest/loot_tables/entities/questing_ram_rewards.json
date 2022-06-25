@@ -2,17 +2,16 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "twilightforest:crumble_horn"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -25,10 +24,10 @@
           ],
           "name": "minecraft:bundle"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -41,8 +40,8 @@
           ],
           "functions": [
             {
-              "function": "twilightforest:item_or_default",
-              "default": "minecraft:coal_block"
+              "default": "minecraft:coal_block",
+              "function": "twilightforest:item_or_default"
             },
             {
               "function": "minecraft:set_nbt",
@@ -51,10 +50,10 @@
           ],
           "name": "minecraft:coal_block"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -67,13 +66,14 @@
           ],
           "functions": [
             {
-              "function": "twilightforest:item_or_default",
-              "default": "minecraft:coal_block"
+              "default": "minecraft:coal_block",
+              "function": "twilightforest:item_or_default"
             }
           ],
           "name": "minecraft:coal_block"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

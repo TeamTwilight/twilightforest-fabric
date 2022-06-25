@@ -12,12 +12,12 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import twilightforest.TwilightForestMod;
 
 public class NagaArmorItem extends ArmorItem implements ArmorTextureItem {
-	protected NagaArmorItem(ArmorMaterial materialIn, EquipmentSlot equipmentSlotIn, Properties props) {
-		super(materialIn, equipmentSlotIn, props);
+	public NagaArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
+		super(material, slot, properties);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "naga_scale_2.png";
 		} else {
@@ -26,16 +26,16 @@ public class NagaArmorItem extends ArmorItem implements ArmorTextureItem {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
-			switch (this.slot) {
-				case CHEST -> istack.enchant(Enchantments.FIRE_PROTECTION, 3);
-				case LEGS -> istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 3);
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+		if (this.allowedIn(tab)) {
+			ItemStack stack = new ItemStack(this);
+			switch (this.getSlot()) {
+				case CHEST -> stack.enchant(Enchantments.FIRE_PROTECTION, 3);
+				case LEGS -> stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 3);
 				default -> {
 				}
 			}
-			list.add(istack);
+			items.add(stack);
 		}
 	}
 }

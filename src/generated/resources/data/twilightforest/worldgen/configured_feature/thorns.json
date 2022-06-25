@@ -1,9 +1,9 @@
 {
+  "type": "twilightforest:thorns",
   "config": {
-    "max_spread": 7,
+    "chance_leaf_is_rose": 50,
     "chance_of_branch": 3,
     "chance_of_leaf": 3,
-    "chance_leaf_is_rose": 50
-  },
-  "type": "twilightforest:thorns"
+    "max_spread": 7
+  }
 }

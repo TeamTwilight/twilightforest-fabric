@@ -11,15 +11,15 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class TFMagicMapData extends MapItemSavedData {
@@ -74,7 +74,7 @@ public class TFMagicMapData extends MapItemSavedData {
 			int worldX = (coord.getX() << this.scale - 1) + this.x;
 			int worldZ = (coord.getY() << this.scale - 1) + this.z;
 
-			int trueId = TFMapDecoration.ICONS_FLIPPED.getInt(TFFeature.getFeatureAt(worldX, worldZ, (ServerLevel) world));
+			int trueId = TFMapDecoration.ICONS_FLIPPED.getInt(TFLandmark.getFeatureAt(worldX, worldZ, (ServerLevel) world));
 			if (coord.featureId != trueId) {
 				toRemove.add(coord);
 				toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRot()));
@@ -132,26 +132,26 @@ public class TFMagicMapData extends MapItemSavedData {
 
 	public static class TFMapDecoration extends MapDecoration {
 
-		private static final Int2ObjectArrayMap<TFFeature> ICONS = new Int2ObjectArrayMap<>(){{
-			defaultReturnValue(TFFeature.NOTHING);
-			put(0, TFFeature.NOTHING);
-			put(1, TFFeature.SMALL_HILL);
-			put(2, TFFeature.MEDIUM_HILL);
-			put(3, TFFeature.LARGE_HILL);
-			put(4, TFFeature.HEDGE_MAZE);
-			put(5, TFFeature.NAGA_COURTYARD);
-			put(6, TFFeature.LICH_TOWER);
-			put(7, TFFeature.ICE_TOWER);
-			put(9, TFFeature.QUEST_GROVE);
-			put(12, TFFeature.HYDRA_LAIR);
-			put(13, TFFeature.LABYRINTH);
-			put(14, TFFeature.DARK_TOWER);
-			put(15, TFFeature.KNIGHT_STRONGHOLD);
-			put(17, TFFeature.YETI_CAVE);
-			put(18, TFFeature.TROLL_CAVE);
-			put(19, TFFeature.FINAL_CASTLE);
+		private static final Int2ObjectArrayMap<TFLandmark> ICONS = new Int2ObjectArrayMap<>(){{
+			defaultReturnValue(TFLandmark.NOTHING);
+			put(0, TFLandmark.NOTHING);
+			put(1, TFLandmark.SMALL_HILL);
+			put(2, TFLandmark.MEDIUM_HILL);
+			put(3, TFLandmark.LARGE_HILL);
+			put(4, TFLandmark.HEDGE_MAZE);
+			put(5, TFLandmark.NAGA_COURTYARD);
+			put(6, TFLandmark.LICH_TOWER);
+			put(7, TFLandmark.ICE_TOWER);
+			put(9, TFLandmark.QUEST_GROVE);
+			put(12, TFLandmark.HYDRA_LAIR);
+			put(13, TFLandmark.LABYRINTH);
+			put(14, TFLandmark.DARK_TOWER);
+			put(15, TFLandmark.KNIGHT_STRONGHOLD);
+			put(17, TFLandmark.YETI_CAVE);
+			put(18, TFLandmark.TROLL_CAVE);
+			put(19, TFLandmark.FINAL_CASTLE);
 		}};
-		private static final Object2IntArrayMap<TFFeature> ICONS_FLIPPED = new Object2IntArrayMap<>(){{
+		private static final Object2IntArrayMap<TFLandmark> ICONS_FLIPPED = new Object2IntArrayMap<>(){{
 			ICONS.forEach((k, v) -> put(v, k.intValue()));
 		}};
 
@@ -165,12 +165,12 @@ public class TFMagicMapData extends MapItemSavedData {
 
 		final int featureId;
 
-		public TFMapDecoration(TFFeature featureId, byte xIn, byte yIn, byte rotationIn) {
+		public TFMapDecoration(TFLandmark featureId, byte xIn, byte yIn, byte rotationIn) {
 			this(ICONS_FLIPPED.getInt(featureId), xIn, yIn, rotationIn);
 		}
 
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
-			super(Type.TARGET_X, xIn, yIn, rotationIn, new TranslatableComponent("map.magic.text")); //TODO: Shush for now
+			super(Type.TARGET_X, xIn, yIn, rotationIn, Component.translatable("map.magic.text")); //TODO: Shush for now
 			this.featureId = featureId;
 		}
 

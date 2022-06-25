@@ -5,7 +5,7 @@ import net.minecraft.world.level.biome.Biome;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransformer;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 public enum GenLayerTFStream implements CastleTransformer {
 

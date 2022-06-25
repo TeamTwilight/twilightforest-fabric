@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 1,
   "ingredient": {
     "item": "twilightforest:castle_brick"
   },
-  "result": "twilightforest:thick_castle_brick",
-  "count": 1
+  "result": "twilightforest:thick_castle_brick"
 }

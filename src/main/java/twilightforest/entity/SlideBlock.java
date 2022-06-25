@@ -24,8 +24,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -41,8 +41,6 @@ public class SlideBlock extends Entity implements ExtraSpawnDataEntity {
 	public SlideBlock(EntityType<? extends SlideBlock> type, Level world) {
 		super(type, world);
 		this.blocksBuilding = true;
-		//TODO unsure if this is the right name for it
-		this.flyDist = 1F;
 	}
 
 	public SlideBlock(EntityType<? extends SlideBlock> type, Level world, double x, double y, double z, BlockState state) {
@@ -50,7 +48,6 @@ public class SlideBlock extends Entity implements ExtraSpawnDataEntity {
 
 		this.myState = state;
 		this.blocksBuilding = true;
-		this.flyDist = 1F;
 		this.setPos(x, y, z);
 		this.setDeltaMovement(new Vec3(0, 0, 0));
 		this.xo = x;
@@ -73,16 +70,16 @@ public class SlideBlock extends Entity implements ExtraSpawnDataEntity {
 		};
 
 		for (Direction e : toCheck) {
-			if (level.isEmptyBlock(pos.relative(e)) && !level.isEmptyBlock(pos.relative(e.getOpposite()))) {
-				entityData.set(MOVE_DIRECTION, e);
+			if (this.getLevel().isEmptyBlock(pos.relative(e)) && !this.getLevel().isEmptyBlock(pos.relative(e.getOpposite()))) {
+				this.entityData.set(MOVE_DIRECTION, e);
 				return;
 			}
 		}
 
 		// if no wall, travel towards open air
 		for (Direction e : toCheck) {
-			if (level.isEmptyBlock(pos.relative(e))) {
-				entityData.set(MOVE_DIRECTION, e);
+			if (this.getLevel().isEmptyBlock(pos.relative(e))) {
+				this.entityData.set(MOVE_DIRECTION, e);
 				return;
 			}
 		}
@@ -90,7 +87,7 @@ public class SlideBlock extends Entity implements ExtraSpawnDataEntity {
 
 	@Override
 	protected void defineSynchedData() {
-		entityData.define(MOVE_DIRECTION, Direction.DOWN);
+		this.entityData.define(MOVE_DIRECTION, Direction.DOWN);
 	}
 
 	@Override
@@ -115,65 +112,64 @@ public class SlideBlock extends Entity implements ExtraSpawnDataEntity {
 			// start moving after warmup
 			if (this.slideTime > WARMUP_TIME) {
 				final double moveAcceleration = 0.04;
-				Direction moveDirection = entityData.get(MOVE_DIRECTION);
-				setDeltaMovement(this.getDeltaMovement().add(moveDirection.getStepX() * moveAcceleration, moveDirection.getStepY() * moveAcceleration, moveDirection.getStepZ() * moveAcceleration));
+				Direction moveDirection = this.entityData.get(MOVE_DIRECTION);
+				this.setDeltaMovement(this.getDeltaMovement().add(moveDirection.getStepX() * moveAcceleration, moveDirection.getStepY() * moveAcceleration, moveDirection.getStepZ() * moveAcceleration));
 				this.move(MoverType.SELF, new Vec3(this.getDeltaMovement().x(), this.getDeltaMovement().y(), this.getDeltaMovement().z()));
 			}
 			this.getDeltaMovement().multiply(0.98, 0.98, 0.98);
 
-			if (!this.level.isClientSide) {
+			if (!this.getLevel().isClientSide()) {
 				if (this.slideTime % 5 == 0) {
-					playSound(TFSounds.SLIDER, 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
+					this.playSound(TFSounds.SLIDER.get(), 1.0F, 0.9F + (this.random.nextFloat() * 0.4F));
 				}
 
 				BlockPos pos = new BlockPos(this.blockPosition());
 
 				if (this.slideTime == 1) {
-					if (this.level.getBlockState(pos) != this.myState) {
+					if (this.getLevel().getBlockState(pos) != this.myState) {
 						this.discard();
 						return;
 					}
 
-					this.level.removeBlock(pos, false);
+					this.getLevel().removeBlock(pos, false);
 				}
 
 				if (this.slideTime == WARMUP_TIME + 40) {
 					this.setDeltaMovement(new Vec3(0, 0, 0));
 
-					entityData.set(MOVE_DIRECTION, entityData.get(MOVE_DIRECTION).getOpposite());
+					this.entityData.set(MOVE_DIRECTION, entityData.get(MOVE_DIRECTION).getOpposite());
 				}
 
 				if (this.verticalCollision || this.horizontalCollision) {
-					this.setDeltaMovement(this.getDeltaMovement().multiply(0.699999988079071D, 0.699999988079071D, 0.699999988079071D));
+					this.setDeltaMovement(this.getDeltaMovement().multiply(0.7D, 0.7D, 0.7D));
 
 					this.discard();
 
-					if (this.level.isUnobstructed(myState, pos, CollisionContext.empty())) {
-						level.setBlockAndUpdate(pos, myState);
+					if (this.getLevel().isUnobstructed(this.myState, pos, CollisionContext.empty())) {
+						this.getLevel().setBlockAndUpdate(pos, this.myState);
 					} else {
-						// TODO: This and the below item might not be correctly reflecting the state
-						this.spawnAtLocation(new ItemStack(myState.getBlock()), 0.0F);
+						this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
 					}
-				} else if (this.slideTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || this.slideTime > 600) {
+				} else if (this.slideTime > 100 && (pos.getY() < this.getLevel().getMinBuildHeight() + 1 || pos.getY() > this.getLevel().getMaxBuildHeight()) || this.slideTime > 600) {
 					this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
 					this.discard();
 				}
 
 				// push things out and damage them
-				this.damageKnockbackEntities(this.level.getEntities(this, this.getBoundingBox()));
+				this.damageKnockbackEntities(this.getLevel().getEntities(this, this.getBoundingBox()));
 			}
 		}
 	}
 
 	private void damageKnockbackEntities(List<Entity> entities) {
 		for (Entity entity : entities) {
-			if (entity instanceof LivingEntity) {
-				entity.hurt(TFDamageSources.SLIDER, 5);
+			if (entity instanceof LivingEntity living) {
+				living.hurt(TFDamageSources.SLIDER, 5.0F);
 
-				double kx = (this.getX() - entity.getX()) * 2.0;
-				double kz = (this.getZ() - entity.getZ()) * 2.0;
+				double kx = (this.getX() - entity.getX()) * 2.0D;
+				double kz = (this.getZ() - entity.getZ()) * 2.0D;
 
-				((LivingEntity) entity).knockback(2, kx, kz);
+				living.knockback(2.0F, kx, kz);
 			}
 		}
 	}
@@ -187,23 +183,23 @@ public class SlideBlock extends Entity implements ExtraSpawnDataEntity {
 	@Override
 	protected void readAdditionalSaveData(@Nonnull CompoundTag compound) {
 		this.slideTime = compound.getInt("Time");
-		entityData.set(MOVE_DIRECTION, Direction.from3DDataValue(compound.getByte("Direction")));
+		this.entityData.set(MOVE_DIRECTION, Direction.from3DDataValue(compound.getByte("Direction")));
 	}
 
 	@Override
 	protected void addAdditionalSaveData(@Nonnull CompoundTag compound) {
 		compound.putInt("Time", this.slideTime);
-		compound.putByte("Direction", (byte) entityData.get(MOVE_DIRECTION).get3DDataValue());
+		compound.putByte("Direction", (byte) this.entityData.get(MOVE_DIRECTION).get3DDataValue());
 	}
 
 	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
-		buffer.writeInt(Block.getId(myState));
+		buffer.writeInt(Block.getId(this.myState));
 	}
 
 	@Override
 	public void readSpawnData(FriendlyByteBuf additionalData) {
-		myState = Block.stateById(additionalData.readInt());
+		this.myState = Block.stateById(additionalData.readInt());
 	}
 
 	@Override
@@ -227,6 +223,6 @@ public class SlideBlock extends Entity implements ExtraSpawnDataEntity {
 	}
 
 	public BlockState getBlockState() {
-		return myState;
+		return this.myState;
 	}
 }

@@ -1,42 +1,41 @@
 {
   "parent": "twilightforest:experiment_115",
-  "display": {
-    "icon": {
-      "item": "twilightforest:experiment_115",
-      "nbt": "{full:{full:1}}"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.experiment_115_2"
-    },
-    "description": {
-      "translate": "advancement.twilightforest.experiment_115_2.desc"
-    },
-    "frame": "challenge",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": true
-  },
   "criteria": {
     "place_complete_e115": {
-      "trigger": "minecraft:item_used_on_block",
       "conditions": {
+        "item": {
+          "items": [
+            "minecraft:redstone"
+          ]
+        },
         "location": {
           "block": {
             "blocks": [
               "twilightforest:experiment_115"
             ],
             "state": {
-              "omnomnom": "0",
-              "regenerate": "false"
+              "regenerate": "true"
             }
           }
-        },
-        "item": {
-          "items": [
-            "minecraft:redstone"
-          ]
         }
-      }
+      },
+      "trigger": "minecraft:item_used_on_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.twilightforest.experiment_115_2.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "item": "twilightforest:experiment_115",
+      "nbt": "{full:{full:1}}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.experiment_115_2"
     }
   },
   "requirements": [

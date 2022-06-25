@@ -23,8 +23,8 @@ public class UpdateTFMultipartPacket implements S2CPacket {
 	private Entity entity;
 
 	public UpdateTFMultipartPacket(FriendlyByteBuf buf) {
-		id = buf.readInt();
-		buffer = buf;
+		this.id = buf.readInt();
+		this.buffer = buf;
 	}
 
 	public UpdateTFMultipartPacket(Entity entity) {
@@ -32,13 +32,12 @@ public class UpdateTFMultipartPacket implements S2CPacket {
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(entity.getId());
-		PartEntity<?>[] parts = ((MultiPartEntity)entity).getParts();
+		buf.writeInt(this.entity.getId());
+		PartEntity<?>[] parts = ((MultiPartEntity)this.entity).getParts();
 		// We assume the client and server part arrays are identical, else everything will crash and burn. Don't even bother handling it.
 		if (parts != null) {
 			for (PartEntity<?> part : parts) {
-				if (part instanceof TFPart) {
-					TFPart<?> tfPart = (TFPart<?>) part;
+				if (part instanceof TFPart<?> tfPart) {
 					tfPart.writeData(buf);
 					boolean dirty = tfPart.getEntityData().isDirty();
 					buf.writeBoolean(dirty);
@@ -55,32 +54,26 @@ public class UpdateTFMultipartPacket implements S2CPacket {
 	}
 
 	public static class Handler {
-		public static boolean onMessage(UpdateTFMultipartPacket message, Executor ctx) {
-			/*ctx.execute(*/new Runnable() {
-				@Override
-				public void run() {
-					Level world = Minecraft.getInstance().level;
-					if (world == null)
-						return;
-					Entity ent = world.getEntity(message.id);
-					if (ent != null && ent instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity()) {
-						PartEntity<?>[] parts = partEntity.getParts();
-						if (parts == null)
-							return;
-						for (PartEntity<?> part : parts) {
-							if (part instanceof TFPart) {
-								TFPart<?> tfPart = (TFPart<?>) part;
-								tfPart.readData(message.buffer);
-								if (message.buffer.readBoolean()) {
-									List<SynchedEntityData.DataItem<?>> data = SynchedEntityData.unpack(message.buffer);
-									if (data != null)
-										tfPart.getEntityData().assignValues(data);
-								}
+		public static boolean onMessage(UpdateTFMultipartPacket message, Minecraft client) {
+				Level world = Minecraft.getInstance().level;
+				if (world == null)
+					return false;
+				Entity ent = world.getEntity(message.id);
+				if (ent != null && ent instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity()) {
+					PartEntity<?>[] parts = partEntity.getParts();
+					if (parts == null)
+						return false;
+					for (PartEntity<?> part : parts) {
+						if (part instanceof TFPart<?> tfPart) {
+							tfPart.readData(message.buffer);
+							if (message.buffer.readBoolean()) {
+								List<SynchedEntityData.DataItem<?>> data = SynchedEntityData.unpack(message.buffer);
+								if (data != null)
+									tfPart.getEntityData().assignValues(data);
 							}
 						}
 					}
 				}
-			}.run();
 			return true;
 		}
 	}

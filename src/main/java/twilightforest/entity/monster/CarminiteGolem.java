@@ -26,7 +26,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 
 public class CarminiteGolem extends Monster {
 
@@ -58,11 +58,11 @@ public class CarminiteGolem extends Monster {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		this.attackTimer = 10;
-		this.level.broadcastEntityEvent(this, (byte) 4);
+		this.getLevel().broadcastEntityEvent(this, (byte) 4);
 		boolean attackSuccess = super.doHurtTarget(entity);
 
 		if (attackSuccess) {
-			entity.push(0, 0.4, 0);
+			entity.push(0.0D, 0.4D, 0.0D);
 		}
 
 		return attackSuccess;
@@ -70,17 +70,17 @@ public class CarminiteGolem extends Monster {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.CARMINITE_GOLEM_HURT;
+		return TFSounds.CARMINITE_GOLEM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.CARMINITE_GOLEM_DEATH;
+		return TFSounds.CARMINITE_GOLEM_DEATH.get();
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(TFSounds.CARMINITE_GOLEM_STEP, 1.0F, 1.0F);
+	protected void playStepSound(BlockPos pos, BlockState state) {
+		this.playSound(TFSounds.CARMINITE_GOLEM_STEP.get(), 1.0F, 1.0F);
 	}
 
 	@Override
@@ -91,21 +91,21 @@ public class CarminiteGolem extends Monster {
 			--this.attackTimer;
 		}
 
-		// [VanillaCopy] last half of EntityIronGolem.onLivingUpdate
-		if (this.getDeltaMovement().x() * this.getDeltaMovement().x() + this.getDeltaMovement().z() * this.getDeltaMovement().z() > 2.500000277905201E-7D && this.random.nextInt(5) == 0) {
+		// [VanillaCopy] last half of IronGolem.aiStep
+		if (this.getDeltaMovement().x() * this.getDeltaMovement().x() + this.getDeltaMovement().z() * this.getDeltaMovement().z() > 2.500000277905201E-7D && this.getRandom().nextInt(5) == 0) {
 			int i = Mth.floor(this.getX());
-			int j = Mth.floor(this.getY() - 0.20000000298023224D);
+			int j = Mth.floor(this.getY() - 0.2D);
 			int k = Mth.floor(this.getZ());
-			BlockState iblockstate = this.level.getBlockState(new BlockPos(i, j, k));
+			BlockState state = this.getLevel().getBlockState(new BlockPos(i, j, k));
 
-			if (iblockstate.getMaterial() != Material.AIR) {
-				this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, iblockstate), this.getX() + (this.random.nextFloat() - 0.5D) * this.getBbWidth(), this.getBoundingBox().minY + 0.1D, this.getZ() + (this.random.nextFloat() - 0.5D) * this.getBbWidth(), 4.0D * (this.random.nextFloat() - 0.5D), 0.5D, (this.random.nextFloat() - 0.5D) * 4.0D);
+			if (state.getMaterial() != Material.AIR) {
+				this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), this.getX() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), this.getBoundingBox().minY + 0.1D, this.getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 4.0D * (this.getRandom().nextFloat() - 0.5D), 0.5D, (this.getRandom().nextFloat() - 0.5D) * 4.0D);
 			}
 		}
 		// End copy
 
-		if (this.random.nextBoolean()) {
-			this.level.addParticle(new DustParticleOptions(new Vector3f(1.0F, 0.0F, 0.0F), 1.0F), this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.random.nextDouble() * this.getBbHeight() - 0.25D, this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(), 0, 0, 0);
+		if (this.getRandom().nextBoolean()) {
+			this.getLevel().addParticle(new DustParticleOptions(new Vector3f(1.0F, 0.0F, 0.0F), 1.0F), this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * this.getBbHeight() - 0.25D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), 0, 0, 0);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class CarminiteGolem extends Monster {
 	public void handleEntityEvent(byte id) {
 		if (id == 4) {
 			this.attackTimer = 10;
-			this.playSound(TFSounds.CARMINITE_GOLEM_ATTACK, 1.0F, 1.0F);
+			this.playSound(TFSounds.CARMINITE_GOLEM_ATTACK.get(), 1.0F, 1.0F);
 		} else {
 			super.handleEntityEvent(id);
 		}
@@ -126,6 +126,6 @@ public class CarminiteGolem extends Monster {
 
 	@Override
 	public int getMaxSpawnClusterSize() {
-		return 16;
+		return 2;
 	}
 }

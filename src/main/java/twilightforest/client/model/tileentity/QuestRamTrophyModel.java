@@ -13,7 +13,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 public class QuestRamTrophyModel extends GenericTrophyModel {
 
 	public ModelPart horns;
-	public ModelPart head;
+	public final ModelPart head;
 	
 	public QuestRamTrophyModel(ModelPart part) {
 		this.head = part.getChild("head");

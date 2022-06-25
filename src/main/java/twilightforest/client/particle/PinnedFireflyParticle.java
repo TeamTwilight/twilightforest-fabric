@@ -7,7 +7,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.Entity;
 import twilightforest.client.particle.data.PinnedFireflyData;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Version of {@link FireflyParticle} where location is pinned to an entity
@@ -15,34 +15,30 @@ import javax.annotation.Nullable;
 public class PinnedFireflyParticle extends FireflyParticle {
 	private final Entity follow;
 
-	public PinnedFireflyParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, Entity e) {
-		super(world, x, y, z, vx, vy, vz);
-		this.follow = e;
+	public PinnedFireflyParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, Entity entity) {
+		super(level, x, y, z, vx, vy, vz);
+		this.follow = entity;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		xo = x;
-		yo = y;
-		zo = z;
-		setPos(follow.getX(), follow.getY(), follow.getZ());
+		this.xo = this.x;
+		this.yo = this.y;
+		this.zo = this.z;
+		this.setPos(this.follow.getX(), this.follow.getY(), this.follow.getZ());
 	}
 
-	public static class Factory implements ParticleProvider<PinnedFireflyData> {
-		private final SpriteSet sprite;
-		public Factory(SpriteSet sprite) {
-			this.sprite = sprite;
-		}
+	public record Factory(SpriteSet sprite) implements ParticleProvider<PinnedFireflyData> {
 
 		@Nullable
 		@Override
-		public Particle createParticle(PinnedFireflyData data, ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
-			Entity e = world.getEntity(data.follow);
+		public Particle createParticle(PinnedFireflyData data, ClientLevel level, double x, double y, double z, double vx, double vy, double vz) {
+			Entity e = level.getEntity(data.follow);
 			if (e == null) {
 				return null;
 			} else {
-				PinnedFireflyParticle ret = new PinnedFireflyParticle(world, x, y, z, vx, vy, vz, e);
+				PinnedFireflyParticle ret = new PinnedFireflyParticle(level, x, y, z, vx, vy, vz, e);
 				ret.pickSprite(sprite);
 				return ret;
 			}

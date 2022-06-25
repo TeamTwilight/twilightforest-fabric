@@ -22,9 +22,10 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDamageSources;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, CustomPathNodeTypeBlock, PlayerDestroyBlock {
 
@@ -32,9 +33,9 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	private static final float THORN_DAMAGE = 4.0F;
 
-	ThornsBlock(Properties props) {
+	public ThornsBlock(Properties props) {
 		super(props, 10);
-		this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -48,36 +49,35 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
+	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return BlockPathTypes.DAMAGE_CACTUS;
 	}
 
 	@Override
-	@Deprecated
-	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		entity.hurt(TFDamageSources.THORNS, THORN_DAMAGE);
 	}
 
 	@Override
-	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
+	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
 
 		if (state.getBlock() instanceof ThornsBlock && state.getValue(AXIS) == Direction.Axis.Y) {
-			entityInside(state, world, pos, entity);
+			entityInside(state, level, pos, entity);
 		}
 
-		super.stepOn(world, pos, state, entity);
+		super.stepOn(level, pos, state, entity);
 	}
 
 	@Override
-	public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
 		if (!player.getAbilities().instabuild) {
-			if (!world.isClientSide) {
+			if (!level.isClientSide()) {
 				// grow more
-				this.doThornBurst(world, pos, state);
+				this.doThornBurst(level, pos, state);
 			}
 			return false;
 		} else {
-			return PlayerDestroyBlock.super.onDestroyedByPlayer(state, world, pos, player, willHarvest, fluid);
+			return PlayerDestroyBlock.super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 		}
 	}
 
@@ -90,39 +90,39 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	/**
 	 * Grow thorns out of both the ends, then maybe in another direction too
 	 */
-	private void doThornBurst(Level world, BlockPos pos, BlockState state) {
+	private void doThornBurst(Level level, BlockPos pos, BlockState state) {
 		switch (state.getValue(AXIS)) {
 			case Y -> {
-				growThorns(world, pos, Direction.UP);
-				growThorns(world, pos, Direction.DOWN);
+				this.growThorns(level, pos, Direction.UP);
+				this.growThorns(level, pos, Direction.DOWN);
 			}
 			case X -> {
-				growThorns(world, pos, Direction.EAST);
-				growThorns(world, pos, Direction.WEST);
+				this.growThorns(level, pos, Direction.EAST);
+				this.growThorns(level, pos, Direction.WEST);
 			}
 			case Z -> {
-				growThorns(world, pos, Direction.NORTH);
-				growThorns(world, pos, Direction.SOUTH);
+				this.growThorns(level, pos, Direction.NORTH);
+				this.growThorns(level, pos, Direction.SOUTH);
 			}
 		}
 
 		// also try three random directions
-		growThorns(world, pos, Direction.getRandom(world.random));
-		growThorns(world, pos, Direction.getRandom(world.random));
-		growThorns(world, pos, Direction.getRandom(world.random));
+		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
+		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
+		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
 	}
 
 	/**
 	 * grow several green thorns in the specified direction
 	 */
-	private void growThorns(Level world, BlockPos pos, Direction dir) {
-		int length = 1 + world.random.nextInt(3);
+	private void growThorns(Level level, BlockPos pos, Direction dir) {
+		int length = 1 + level.getRandom().nextInt(3);
 
 		for (int i = 1; i < length; i++) {
 			BlockPos dPos = pos.relative(dir, i);
 
-			if (world.isEmptyBlock(dPos)) {
-				world.setBlock(dPos, TFBlocks.GREEN_THORNS.get().defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
+			if (level.isEmptyBlock(dPos)) {
+				level.setBlock(dPos, TFBlocks.GREEN_THORNS.get().defaultBlockState().setValue(AXIS, dir.getAxis()), 2);
 			} else {
 				break;
 			}
@@ -139,16 +139,16 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
 		boolean flag = fluidstate.getType() == Fluids.WATER;
-		return super.getStateForPlacement(context).setValue(WATERLOGGED, Boolean.valueOf(flag));
+		return super.getStateForPlacement(context).setValue(WATERLOGGED, flag);
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED)) {
+			accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
 		}
 
-		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
 	}
 
 	@Override

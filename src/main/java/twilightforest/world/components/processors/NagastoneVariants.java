@@ -2,6 +2,7 @@ package twilightforest.world.components.processors;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -9,12 +10,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.FeaturePlacers;
 import twilightforest.world.registration.TFStructureProcessors;
 
-import javax.annotation.Nullable;
-import java.util.Random;
+import org.jetbrains.annotations.Nullable;
 
 public final class NagastoneVariants extends StructureProcessor {
 	public static final NagastoneVariants INSTANCE = new NagastoneVariants();
@@ -25,7 +25,7 @@ public final class NagastoneVariants extends StructureProcessor {
 
 	@Override
 	public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
-		Random random = settings.getRandom(modifiedBlockInfo.pos);
+		RandomSource random = settings.getRandom(modifiedBlockInfo.pos);
 
 		// We use nextBoolean in other processors so this lets us re-seed deterministically
 		random.setSeed(random.nextLong() * 5);

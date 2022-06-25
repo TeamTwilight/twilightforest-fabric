@@ -2,8 +2,8 @@
   "feature": "twilightforest:smoker",
   "placement": [
     {
-      "heightmap": "WORLD_SURFACE_WG",
-      "type": "minecraft:heightmap"
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
     },
     {
       "type": "minecraft:in_square"

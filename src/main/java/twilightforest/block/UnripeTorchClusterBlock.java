@@ -1,26 +1,23 @@
 package twilightforest.block;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-
-import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.init.TFBlocks;
 
 public class UnripeTorchClusterBlock extends TrollRootBlock {
-	private static final int RIPEN_THRESHHOLD = 6;
+	private static final int RIPEN_THRESHOLD = 6;
 
-	protected UnripeTorchClusterBlock(Properties props) {
+	public UnripeTorchClusterBlock(Properties props) {
 		super(props);
 	}
 
 	@Override
-	@Deprecated
-	public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random rand) {
-		if (world.getMaxLocalRawBrightness(pos) >= RIPEN_THRESHHOLD) {
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		if (level.getMaxLocalRawBrightness(pos) >= RIPEN_THRESHOLD) {
 			// ripen!
-			world.setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
+			level.setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
 		}
 	}
 }

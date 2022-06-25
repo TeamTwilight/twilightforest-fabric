@@ -21,7 +21,7 @@ import twilightforest.entity.passive.TinyBird;
 
 public class TinyBirdLegacyModel extends AgeableListModel<TinyBird> {
 	//fields
-	ModelPart head;
+	final ModelPart head;
 	ModelPart body;
 	ModelPart rightarm;
 	ModelPart leftarm;

@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.lichtower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -11,9 +12,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-
-import java.util.Random;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class TowerRoofComponent extends TFStructureComponentOld {
 
@@ -21,7 +21,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	protected int height;
 
 	public TowerRoofComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(LichTowerPieces.TFLTRoo, nbt);
+		this(TFStructurePieceTypes.TFLTRoo.get(), nbt);
 	}
 
 	public TowerRoofComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -30,7 +30,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("roofHeight");
 	}
 
-	public TowerRoofComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+	public TowerRoofComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
 		super(type, feature, i, x, y, z);
 
 		this.spawnListIndex = -1;
@@ -80,7 +80,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel worldIn, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox structureBoundingBoxIn, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel worldIn, StructureManager manager, ChunkGenerator generator, RandomSource randomIn, BoundingBox structureBoundingBoxIn, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 	}
 

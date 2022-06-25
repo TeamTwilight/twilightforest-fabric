@@ -1,87 +1,7 @@
 {
   "parent": "twilightforest:progress_hydra",
-  "display": {
-    "icon": {
-      "item": "twilightforest:fiery_sword",
-      "nbt": "{Damage:0}"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.fiery_set"
-    },
-    "description": {
-      "translate": "advancement.twilightforest.fiery_set.desc"
-    },
-    "frame": "challenge",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "rewards": {
-    "experience": 75
-  },
   "criteria": {
-    "fiery_pick": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:fiery_pickaxe"
-            ]
-          }
-        ]
-      }
-    },
-    "fiery_sword": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:fiery_sword"
-            ]
-          }
-        ]
-      }
-    },
-    "fiery_helmet": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:fiery_helmet"
-            ]
-          }
-        ]
-      }
-    },
-    "fiery_chestplate": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:fiery_chestplate"
-            ]
-          }
-        ]
-      }
-    },
-    "fiery_leggings": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:fiery_leggings"
-            ]
-          }
-        ]
-      }
-    },
     "fiery_boots": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -90,7 +10,84 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "fiery_chestplate": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_chestplate"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "fiery_helmet": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_helmet"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "fiery_leggings": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_leggings"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "fiery_pick": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_pickaxe"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "fiery_sword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fiery_sword"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.twilightforest.fiery_set.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:fiery_sword",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.fiery_set"
     }
   },
   "requirements": [
@@ -104,5 +101,8 @@
       "fiery_leggings",
       "fiery_boots"
     ]
-  ]
+  ],
+  "rewards": {
+    "experience": 75
+  }
 }

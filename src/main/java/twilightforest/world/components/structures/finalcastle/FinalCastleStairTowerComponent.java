@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,21 +14,21 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class FinalCastleStairTowerComponent extends TowerWingComponent {
 
 	public FinalCastleStairTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCStTo, nbt);
+		super(TFStructurePieceTypes.TFFCStTo.get(), nbt);
 	}
 
-	public FinalCastleStairTowerComponent(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(FinalCastlePieces.TFFCStTo, feature, i, x, y, z);
+	public FinalCastleStairTowerComponent(TFLandmark feature, int i, int x, int y, int z, Direction rotation) {
+		super(TFStructurePieceTypes.TFFCStTo.get(), feature, i, x, y, z);
 		this.setOrientation(rotation);
 		this.size = 9;
 		this.height = 51;
@@ -35,7 +36,7 @@ public class FinalCastleStairTowerComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -46,8 +47,8 @@ public class FinalCastleStairTowerComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		generateBox(world, sbb, 0, 0, 0, 8, 49, 8, false, rand, deco.randomBlocks);
 

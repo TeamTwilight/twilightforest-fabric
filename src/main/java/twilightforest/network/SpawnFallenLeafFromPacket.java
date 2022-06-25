@@ -32,10 +32,10 @@ public class SpawnFallenLeafFromPacket implements S2CPacket {
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
-		buf.writeDouble(motion.x);
-		buf.writeDouble(motion.y);
-		buf.writeDouble(motion.z);
+		buf.writeBlockPos(this.pos);
+		buf.writeDouble(this.motion.x);
+		buf.writeDouble(this.motion.y);
+		buf.writeDouble(this.motion.z);
 	}
 
 	@Override
@@ -45,25 +45,22 @@ public class SpawnFallenLeafFromPacket implements S2CPacket {
 
 	public static class Handler {
 		public static boolean onMessage(SpawnFallenLeafFromPacket message, Executor ctx) {
-			ctx.execute(new Runnable() {
-				@Override
-				public void run() {
-					Random rand = new Random();
-					Level world = Minecraft.getInstance().level;
-					int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), world, message.pos, 0);
-					int r = Mth.clamp(((color >> 16) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
-					int g = Mth.clamp(((color >> 8) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
-					int b = Mth.clamp((color & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
-					world.addParticle(new LeafParticleData(r, g, b),
-							message.pos.getX() + world.random.nextFloat(),
-							message.pos.getY(),
-							message.pos.getZ() + world.random.nextFloat(),
+			ctx.execute(() -> {
+				Random rand = new Random();
+				Level world = Minecraft.getInstance().level;
+				int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), world, message.pos, 0);
+				int r = Mth.clamp(((color >> 16) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				int g = Mth.clamp(((color >> 8) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				int b = Mth.clamp((color & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				world.addParticle(new LeafParticleData(r, g, b),
+						message.pos.getX() + world.getRandom().nextFloat(),
+						message.pos.getY(),
+						message.pos.getZ() + world.getRandom().nextFloat(),
 
-							(world.random.nextFloat() * -0.5F) * message.motion.x(),
-							world.random.nextFloat() * 0.5F + 0.25F,
-							(world.random.nextFloat() * -0.5F) * message.motion.z()
-					);
-				}
+						(world.getRandom().nextFloat() * -0.5F) * message.motion.x(),
+						world.getRandom().nextFloat() * 0.5F + 0.25F,
+						(world.getRandom().nextFloat() * -0.5F) * message.motion.z()
+				);
 			});
 			return true;
 		}

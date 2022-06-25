@@ -2,15 +2,15 @@
   "feature": "twilightforest:webs",
   "placement": [
     {
-      "heightmap": "OCEAN_FLOOR",
-      "type": "minecraft:heightmap"
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR"
     },
     {
       "type": "minecraft:in_square"
     },
     {
-      "count": 60,
-      "type": "minecraft:count"
+      "type": "minecraft:count",
+      "count": 60
     },
     {
       "type": "minecraft:biome"

@@ -5,21 +5,23 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.processors.BoxCuttingProcessor;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
+import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 
 public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     static final int SIDE_LENGTH = 30;
@@ -28,19 +30,19 @@ public final class CentralTowerSegment extends TwilightTemplateStructurePiece {
     static final int ATTACHMENT_POINT_RANGE = 13;
 
     public CentralTowerSegment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.CENTRAL_TOWER, compoundTag, ctx, readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
+        super(TFStructurePieceTypes.CENTRAL_TOWER.get(), compoundTag, ctx, readSettings(compoundTag).addProcessor(BoxCuttingProcessor.fromNBT(compoundTag.getList("cutouts", Tag.TAG_COMPOUND))));
     }
 
-    public CentralTowerSegment(StructureManager structureManager, Rotation rotation, BoxCuttingProcessor sideTowerStarts, BlockPos startPosition) {
+    public CentralTowerSegment(StructureTemplateManager structureManager, Rotation rotation, BoxCuttingProcessor sideTowerStarts, BlockPos startPosition) {
         this(structureManager, TwilightForestMod.prefix("lich_tower/central_tower"), makeSettings(rotation).addProcessor(sideTowerStarts), startPosition);
     }
 
-    private CentralTowerSegment(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
-        super(LichTowerRevampPieces.CENTRAL_TOWER, 0, structureManager, templateLocation, placeSettings, startPosition);
+    private CentralTowerSegment(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
+        super(TFStructurePieceTypes.CENTRAL_TOWER.get(), 0, structureManager, templateLocation, placeSettings, startPosition);
     }
 
     @Override
-    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, Random random, BoundingBox boundingBox) {
+    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
 
     }
 

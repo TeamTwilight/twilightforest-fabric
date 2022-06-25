@@ -2,40 +2,42 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "has_keeping": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:alt/treasures/charm_of_keeping": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
+      },
+      "trigger": "minecraft:tick"
     },
     "has_life": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:alt/treasures/charm_of_life": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
+      },
+      "trigger": "minecraft:tick"
     }
   },
   "requirements": [

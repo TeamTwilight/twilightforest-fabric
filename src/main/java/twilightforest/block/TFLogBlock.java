@@ -6,8 +6,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class TFLogBlock extends RotatedPillarBlock {
 
-	protected TFLogBlock(BlockBehaviour.Properties props) {
-		super(props);
+	public TFLogBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
 	}
 

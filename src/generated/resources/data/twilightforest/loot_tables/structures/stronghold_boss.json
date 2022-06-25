@@ -2,7 +2,6 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 4.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -38,10 +37,10 @@
           ],
           "name": "twilightforest:knightmetal_axe"
         }
-      ]
+      ],
+      "rolls": 4.0
     },
     {
-      "rolls": 2.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -66,10 +65,10 @@
           ],
           "name": "twilightforest:phantom_chestplate"
         }
-      ]
+      ],
+      "rolls": 2.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -94,20 +93,20 @@
           ],
           "name": "twilightforest:phantom_chestplate"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "twilightforest:knight_phantom_trophy"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -120,8 +119,8 @@
           ],
           "functions": [
             {
-              "function": "twilightforest:item_or_default",
-              "default": "twilightforest:knightmetal_ingot"
+              "default": "twilightforest:knightmetal_ingot",
+              "function": "twilightforest:item_or_default"
             },
             {
               "function": "minecraft:set_nbt",
@@ -130,10 +129,10 @@
           ],
           "name": "twilightforest:knightmetal_ingot"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -146,13 +145,14 @@
           ],
           "functions": [
             {
-              "function": "twilightforest:item_or_default",
-              "default": "twilightforest:knightmetal_ingot"
+              "default": "twilightforest:knightmetal_ingot",
+              "function": "twilightforest:item_or_default"
             }
           ],
           "name": "twilightforest:knightmetal_ingot"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

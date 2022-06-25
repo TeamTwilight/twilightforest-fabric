@@ -6,29 +6,28 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.enums.FireJetVariant;
 
 public class EncasedFireJetBlock extends FireJetBlock {
 
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
-	protected EncasedFireJetBlock(Properties props) {
-		super(props);
+	public EncasedFireJetBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	@Deprecated
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		FireJetVariant variant = state.getValue(STATE);
-		boolean powered = world.hasNeighborSignal(pos);
+		boolean powered = level.hasNeighborSignal(pos);
 
 		if (variant == FireJetVariant.IDLE && powered) {
-			world.setBlockAndUpdate(pos, state.setValue(STATE, FireJetVariant.POPPING));
-			world.playSound(null, pos, TFSounds.JET_START, SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.setBlockAndUpdate(pos, state.setValue(STATE, FireJetVariant.POPPING));
+			level.playSound(null, pos, TFSounds.JET_START.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 
 		} else if (variant == FireJetVariant.TIMEOUT && !powered) {
-			world.setBlockAndUpdate(pos, state.setValue(STATE, FireJetVariant.IDLE));
+			level.setBlockAndUpdate(pos, state.setValue(STATE, FireJetVariant.IDLE));
 		}
 	}
 }

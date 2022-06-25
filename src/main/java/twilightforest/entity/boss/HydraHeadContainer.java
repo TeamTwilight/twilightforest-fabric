@@ -16,14 +16,14 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFSounds;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
-import twilightforest.util.TFDamageSources;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -148,29 +148,29 @@ public class HydraHeadContainer {
 		this.damageTaken = 0;
 		this.respawnCounter = -1;
 
-		headEntity = new HydraHead(hydra);
-		headEntity.setPos(hydra.getX(), hydra.getY(), hydra.getZ());
+		this.headEntity = new HydraHead(hydra);
+		this.headEntity.setPos(hydra.getX(), hydra.getY(), hydra.getZ());
 
-		necka = new HydraNeck(this.headEntity);
-		neckb = new HydraNeck(this.headEntity);
-		neckc = new HydraNeck(this.headEntity);
-		neckd = new HydraNeck(this.headEntity);
-		necke = new HydraNeck(this.headEntity);
+		this.necka = new HydraNeck(this.headEntity);
+		this.neckb = new HydraNeck(this.headEntity);
+		this.neckc = new HydraNeck(this.headEntity);
+		this.neckd = new HydraNeck(this.headEntity);
+		this.necke = new HydraNeck(this.headEntity);
 
 		// state positions, where is each state positioned?
-		stateNeckLength = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
-		stateXRotations = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
-		stateYRotations = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
-		stateMouthOpen = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
+		this.stateNeckLength = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
+		this.stateXRotations = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
+		this.stateYRotations = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
+		this.stateMouthOpen = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
 
 		for (int i = 0; i < this.hydra.numHeads; i++) {
-			stateNeckLength[i] = new EnumMap<>(State.class);
-			stateXRotations[i] = new EnumMap<>(State.class);
-			stateYRotations[i] = new EnumMap<>(State.class);
-			stateMouthOpen[i] = new EnumMap<>(State.class);
+			this.stateNeckLength[i] = new EnumMap<>(State.class);
+			this.stateXRotations[i] = new EnumMap<>(State.class);
+			this.stateYRotations[i] = new EnumMap<>(State.class);
+			this.stateMouthOpen[i] = new EnumMap<>(State.class);
 		}
 
-		setupStateRotations();
+		this.setupStateRotations();
 
 		if (startActive) {
 			this.prevState = State.IDLE;
@@ -185,130 +185,130 @@ public class HydraHeadContainer {
 			this.ticksNeeded = 20;
 			this.ticksProgress = 20;
 		}
-		setHeadPosition();
-		setNeckPosition();
+		this.setHeadPosition();
+		this.setNeckPosition();
 	}
 
 	protected void setupStateRotations() {
-		setAnimation(0, State.IDLE, 60, 0, 7, 0);
-		setAnimation(1, State.IDLE, 10, 60, 9, 0);
-		setAnimation(2, State.IDLE, 10, -60, 9, 0);
-		setAnimation(3, State.IDLE, 50, 90, 8, 0);
-		setAnimation(4, State.IDLE, 50, -90, 8, 0);
-		setAnimation(5, State.IDLE, -10, 90, 9, 0);
-		setAnimation(6, State.IDLE, -10, -90, 9, 0);
+		this.setAnimation(0, State.IDLE, 60, 0, 7, 0);
+		this.setAnimation(1, State.IDLE, 10, 60, 9, 0);
+		this.setAnimation(2, State.IDLE, 10, -60, 9, 0);
+		this.setAnimation(3, State.IDLE, 50, 90, 8, 0);
+		this.setAnimation(4, State.IDLE, 50, -90, 8, 0);
+		this.setAnimation(5, State.IDLE, -10, 90, 9, 0);
+		this.setAnimation(6, State.IDLE, -10, -90, 9, 0);
 
-		setAnimation(0, State.ATTACK_COOLDOWN, 60, 0, 7, 0);
-		setAnimation(1, State.ATTACK_COOLDOWN, 10, 60, 9, 0);
-		setAnimation(2, State.ATTACK_COOLDOWN, 10, -60, 9, 0);
-		setAnimation(3, State.ATTACK_COOLDOWN, 50, 90, 8, 0);
-		setAnimation(4, State.ATTACK_COOLDOWN, 50, -90, 8, 0);
-		setAnimation(5, State.ATTACK_COOLDOWN, -10, 90, 9, 0);
-		setAnimation(6, State.ATTACK_COOLDOWN, -10, -90, 9, 0);
+		this.setAnimation(0, State.ATTACK_COOLDOWN, 60, 0, 7, 0);
+		this.setAnimation(1, State.ATTACK_COOLDOWN, 10, 60, 9, 0);
+		this.setAnimation(2, State.ATTACK_COOLDOWN, 10, -60, 9, 0);
+		this.setAnimation(3, State.ATTACK_COOLDOWN, 50, 90, 8, 0);
+		this.setAnimation(4, State.ATTACK_COOLDOWN, 50, -90, 8, 0);
+		this.setAnimation(5, State.ATTACK_COOLDOWN, -10, 90, 9, 0);
+		this.setAnimation(6, State.ATTACK_COOLDOWN, -10, -90, 9, 0);
 
-		setAnimation(0, State.FLAME_BEGINNING, 50, 0, 8, 0.75F);
-		setAnimation(1, State.FLAME_BEGINNING, 30, 45, 9, 0.75F);
-		setAnimation(2, State.FLAME_BEGINNING, 30, -45, 9, 0.75F);
-		setAnimation(3, State.FLAME_BEGINNING, 50, 90, 8, 0.75F);
-		setAnimation(4, State.FLAME_BEGINNING, 50, -90, 8, 0.75F);
-		setAnimation(5, State.FLAME_BEGINNING, -10, 90, 9, 0.75F);
-		setAnimation(6, State.FLAME_BEGINNING, -10, -90, 9, 0.75F);
+		this.setAnimation(0, State.FLAME_BEGINNING, 50, 0, 8, 0.75F);
+		this.setAnimation(1, State.FLAME_BEGINNING, 30, 45, 9, 0.75F);
+		this.setAnimation(2, State.FLAME_BEGINNING, 30, -45, 9, 0.75F);
+		this.setAnimation(3, State.FLAME_BEGINNING, 50, 90, 8, 0.75F);
+		this.setAnimation(4, State.FLAME_BEGINNING, 50, -90, 8, 0.75F);
+		this.setAnimation(5, State.FLAME_BEGINNING, -10, 90, 9, 0.75F);
+		this.setAnimation(6, State.FLAME_BEGINNING, -10, -90, 9, 0.75F);
 
-		setAnimation(0, State.FLAMING, 45, 0, 8, 1);
-		setAnimation(1, State.FLAMING, 30, 60, 9, 1);
-		setAnimation(2, State.FLAMING, 30, -60, 9, 1);
-		setAnimation(3, State.FLAMING, 50, 90, 8, 1);
-		setAnimation(4, State.FLAMING, 50, -90, 8, 1);
-		setAnimation(5, State.FLAMING, -10, 90, 9, 1);
-		setAnimation(6, State.FLAMING, -10, -90, 9, 1);
+		this.setAnimation(0, State.FLAMING, 45, 0, 8, 1);
+		this.setAnimation(1, State.FLAMING, 30, 60, 9, 1);
+		this.setAnimation(2, State.FLAMING, 30, -60, 9, 1);
+		this.setAnimation(3, State.FLAMING, 50, 90, 8, 1);
+		this.setAnimation(4, State.FLAMING, 50, -90, 8, 1);
+		this.setAnimation(5, State.FLAMING, -10, 90, 9, 1);
+		this.setAnimation(6, State.FLAMING, -10, -90, 9, 1);
 
-		setAnimation(0, State.FLAME_ENDING, 60, 0, 7, 0);
-		setAnimation(1, State.FLAME_ENDING, 10, 45, 9, 0);
-		setAnimation(2, State.FLAME_ENDING, 10, -45, 9, 0);
-		setAnimation(3, State.FLAME_ENDING, 50, 90, 8, 0);
-		setAnimation(4, State.FLAME_ENDING, 50, -90, 8, 0);
-		setAnimation(5, State.FLAME_ENDING, -10, 90, 9, 0);
-		setAnimation(6, State.FLAME_ENDING, -10, -90, 9, 0);
+		this.setAnimation(0, State.FLAME_ENDING, 60, 0, 7, 0);
+		this.setAnimation(1, State.FLAME_ENDING, 10, 45, 9, 0);
+		this.setAnimation(2, State.FLAME_ENDING, 10, -45, 9, 0);
+		this.setAnimation(3, State.FLAME_ENDING, 50, 90, 8, 0);
+		this.setAnimation(4, State.FLAME_ENDING, 50, -90, 8, 0);
+		this.setAnimation(5, State.FLAME_ENDING, -10, 90, 9, 0);
+		this.setAnimation(6, State.FLAME_ENDING, -10, -90, 9, 0);
 
-		setAnimation(0, State.BITE_BEGINNING, -5, 60, 5, 0.25f);
-		setAnimation(1, State.BITE_BEGINNING, -10, 60, 9, 0.25f);
-		setAnimation(2, State.BITE_BEGINNING, -10, -60, 9, 0.25f);
+		this.setAnimation(0, State.BITE_BEGINNING, -5, 60, 5, 0.25f);
+		this.setAnimation(1, State.BITE_BEGINNING, -10, 60, 9, 0.25f);
+		this.setAnimation(2, State.BITE_BEGINNING, -10, -60, 9, 0.25f);
 
-		setAnimation(0, State.BITE_READY, -5, 60, 5, 1);
-		setAnimation(1, State.BITE_READY, -10, 60, 9, 1);
-		setAnimation(2, State.BITE_READY, -10, -60, 9, 1);
+		this.setAnimation(0, State.BITE_READY, -5, 60, 5, 1);
+		this.setAnimation(1, State.BITE_READY, -10, 60, 9, 1);
+		this.setAnimation(2, State.BITE_READY, -10, -60, 9, 1);
 
-		setAnimation(0, State.BITING, -5, -30, 5, 0.2F);
-		setAnimation(1, State.BITING, -10, -30, 5, 0.2F);
-		setAnimation(2, State.BITING, -10, 30, 5, 0.2F);
+		this.setAnimation(0, State.BITING, -5, -30, 5, 0.2F);
+		this.setAnimation(1, State.BITING, -10, -30, 5, 0.2F);
+		this.setAnimation(2, State.BITING, -10, 30, 5, 0.2F);
 
-		setAnimation(0, State.BITE_ENDING, 60, 0, 7, 0);
-		setAnimation(1, State.BITE_ENDING, -10, 60, 9, 0);
-		setAnimation(2, State.BITE_ENDING, -10, -60, 9, 0);
+		this.setAnimation(0, State.BITE_ENDING, 60, 0, 7, 0);
+		this.setAnimation(1, State.BITE_ENDING, -10, 60, 9, 0);
+		this.setAnimation(2, State.BITE_ENDING, -10, -60, 9, 0);
 
-		setAnimation(0, State.MORTAR_BEGINNING, 50, 0, 8, 0.75F);
-		setAnimation(1, State.MORTAR_BEGINNING, 30, 45, 9, 0.75F);
-		setAnimation(2, State.MORTAR_BEGINNING, 30, -45, 9, 0.75F);
-		setAnimation(3, State.MORTAR_BEGINNING, 50, 90, 8, 0.75F);
-		setAnimation(4, State.MORTAR_BEGINNING, 50, -90, 8, 0.75F);
-		setAnimation(5, State.MORTAR_BEGINNING, -10, 90, 9, 0.75F);
-		setAnimation(6, State.MORTAR_BEGINNING, -10, -90, 9, 0.75F);
+		this.setAnimation(0, State.MORTAR_BEGINNING, 50, 0, 8, 0.75F);
+		this.setAnimation(1, State.MORTAR_BEGINNING, 30, 45, 9, 0.75F);
+		this.setAnimation(2, State.MORTAR_BEGINNING, 30, -45, 9, 0.75F);
+		this.setAnimation(3, State.MORTAR_BEGINNING, 50, 90, 8, 0.75F);
+		this.setAnimation(4, State.MORTAR_BEGINNING, 50, -90, 8, 0.75F);
+		this.setAnimation(5, State.MORTAR_BEGINNING, -10, 90, 9, 0.75F);
+		this.setAnimation(6, State.MORTAR_BEGINNING, -10, -90, 9, 0.75F);
 
-		setAnimation(0, State.MORTAR_SHOOTING, 45, 0, 8, 1);
-		setAnimation(1, State.MORTAR_SHOOTING, 30, 60, 9, 1);
-		setAnimation(2, State.MORTAR_SHOOTING, 30, -60, 9, 1);
-		setAnimation(3, State.MORTAR_SHOOTING, 50, 90, 8, 1);
-		setAnimation(4, State.MORTAR_SHOOTING, 50, -90, 8, 1);
-		setAnimation(5, State.MORTAR_SHOOTING, -10, 90, 9, 1);
-		setAnimation(6, State.MORTAR_SHOOTING, -10, -90, 9, 1);
+		this.setAnimation(0, State.MORTAR_SHOOTING, 45, 0, 8, 1);
+		this.setAnimation(1, State.MORTAR_SHOOTING, 30, 60, 9, 1);
+		this.setAnimation(2, State.MORTAR_SHOOTING, 30, -60, 9, 1);
+		this.setAnimation(3, State.MORTAR_SHOOTING, 50, 90, 8, 1);
+		this.setAnimation(4, State.MORTAR_SHOOTING, 50, -90, 8, 1);
+		this.setAnimation(5, State.MORTAR_SHOOTING, -10, 90, 9, 1);
+		this.setAnimation(6, State.MORTAR_SHOOTING, -10, -90, 9, 1);
 
-		setAnimation(0, State.MORTAR_ENDING, 60, 0, 7, 0);
-		setAnimation(1, State.MORTAR_ENDING, 10, 45, 9, 0);
-		setAnimation(2, State.MORTAR_ENDING, 10, -45, 9, 0);
-		setAnimation(3, State.MORTAR_ENDING, 50, 90, 8, 0);
-		setAnimation(4, State.MORTAR_ENDING, 50, -90, 8, 0);
-		setAnimation(5, State.MORTAR_ENDING, -10, 90, 9, 0);
-		setAnimation(6, State.MORTAR_ENDING, -10, -90, 9, 0);
+		this.setAnimation(0, State.MORTAR_ENDING, 60, 0, 7, 0);
+		this.setAnimation(1, State.MORTAR_ENDING, 10, 45, 9, 0);
+		this.setAnimation(2, State.MORTAR_ENDING, 10, -45, 9, 0);
+		this.setAnimation(3, State.MORTAR_ENDING, 50, 90, 8, 0);
+		this.setAnimation(4, State.MORTAR_ENDING, 50, -90, 8, 0);
+		this.setAnimation(5, State.MORTAR_ENDING, -10, 90, 9, 0);
+		this.setAnimation(6, State.MORTAR_ENDING, -10, -90, 9, 0);
 
-		setAnimation(0, State.DYING, -20, 0, 7, 0);
-		setAnimation(1, State.DYING, -20, 60, 9, 0);
-		setAnimation(2, State.DYING, -20, -60, 9, 0);
-		setAnimation(3, State.DYING, -20, 90, 8, 0);
-		setAnimation(4, State.DYING, -20, -90, 8, 0);
-		setAnimation(5, State.DYING, -10, 90, 9, 0);
-		setAnimation(6, State.DYING, -10, -90, 9, 0);
+		this.setAnimation(0, State.DYING, -20, 0, 7, 0);
+		this.setAnimation(1, State.DYING, -20, 60, 9, 0);
+		this.setAnimation(2, State.DYING, -20, -60, 9, 0);
+		this.setAnimation(3, State.DYING, -20, 90, 8, 0);
+		this.setAnimation(4, State.DYING, -20, -90, 8, 0);
+		this.setAnimation(5, State.DYING, -10, 90, 9, 0);
+		this.setAnimation(6, State.DYING, -10, -90, 9, 0);
 
-		setAnimation(0, State.DEAD, 0, 179, 4, 0);
-		setAnimation(1, State.DEAD, 0, 179, 4, 0);
-		setAnimation(2, State.DEAD, 0, -180, 4, 0);
-		setAnimation(3, State.DEAD, 0, 179, 4, 0);
-		setAnimation(4, State.DEAD, 0, -180, 4, 0);
-		setAnimation(5, State.DEAD, 0, 179, 4, 0);
-		setAnimation(6, State.DEAD, 0, -180, 4, 0);
+		this.setAnimation(0, State.DEAD, 0, 179, 4, 0);
+		this.setAnimation(1, State.DEAD, 0, 179, 4, 0);
+		this.setAnimation(2, State.DEAD, 0, -180, 4, 0);
+		this.setAnimation(3, State.DEAD, 0, 179, 4, 0);
+		this.setAnimation(4, State.DEAD, 0, -180, 4, 0);
+		this.setAnimation(5, State.DEAD, 0, 179, 4, 0);
+		this.setAnimation(6, State.DEAD, 0, -180, 4, 0);
 
-		setAnimation(0, State.BORN, 60, 0, 7, 0);
-		setAnimation(1, State.BORN, 10, 60, 9, 0);
-		setAnimation(2, State.BORN, 10, -60, 9, 0);
-		setAnimation(3, State.BORN, 50, 90, 8, 0);
-		setAnimation(4, State.BORN, 50, -90, 8, 0);
-		setAnimation(5, State.BORN, -10, 90, 9, 0);
-		setAnimation(6, State.BORN, -10, -90, 9, 0);
+		this.setAnimation(0, State.BORN, 60, 0, 7, 0);
+		this.setAnimation(1, State.BORN, 10, 60, 9, 0);
+		this.setAnimation(2, State.BORN, 10, -60, 9, 0);
+		this.setAnimation(3, State.BORN, 50, 90, 8, 0);
+		this.setAnimation(4, State.BORN, 50, -90, 8, 0);
+		this.setAnimation(5, State.BORN, -10, 90, 9, 0);
+		this.setAnimation(6, State.BORN, -10, -90, 9, 0);
 
-		setAnimation(0, State.ROAR_START, 60, 0, 7, 0.25F);
-		setAnimation(1, State.ROAR_START, 10, 60, 9, 0.25F);
-		setAnimation(2, State.ROAR_START, 10, -60, 9, 0.25F);
-		setAnimation(3, State.ROAR_START, 50, 90, 8, 0.25F);
-		setAnimation(4, State.ROAR_START, 50, -90, 8, 0.25F);
-		setAnimation(5, State.ROAR_START, -10, 90, 9, 0.25F);
-		setAnimation(6, State.ROAR_START, -10, -90, 9, 0.25F);
+		this.setAnimation(0, State.ROAR_START, 60, 0, 7, 0.25F);
+		this.setAnimation(1, State.ROAR_START, 10, 60, 9, 0.25F);
+		this.setAnimation(2, State.ROAR_START, 10, -60, 9, 0.25F);
+		this.setAnimation(3, State.ROAR_START, 50, 90, 8, 0.25F);
+		this.setAnimation(4, State.ROAR_START, 50, -90, 8, 0.25F);
+		this.setAnimation(5, State.ROAR_START, -10, 90, 9, 0.25F);
+		this.setAnimation(6, State.ROAR_START, -10, -90, 9, 0.25F);
 
-		setAnimation(0, State.ROAR_RAWR, 60, 0, 9, 1);
-		setAnimation(1, State.ROAR_RAWR, 10, 60, 11, 1);
-		setAnimation(2, State.ROAR_RAWR, 10, -60, 11, 1);
-		setAnimation(3, State.ROAR_RAWR, 50, 90, 10, 1);
-		setAnimation(4, State.ROAR_RAWR, 50, -90, 10, 1);
-		setAnimation(5, State.ROAR_RAWR, -10, 90, 11, 1);
-		setAnimation(6, State.ROAR_RAWR, -10, -90, 11, 1);
+		this.setAnimation(0, State.ROAR_RAWR, 60, 0, 9, 1);
+		this.setAnimation(1, State.ROAR_RAWR, 10, 60, 11, 1);
+		this.setAnimation(2, State.ROAR_RAWR, 10, -60, 11, 1);
+		this.setAnimation(3, State.ROAR_RAWR, 50, 90, 10, 1);
+		this.setAnimation(4, State.ROAR_RAWR, 50, -90, 10, 1);
+		this.setAnimation(5, State.ROAR_RAWR, -10, 90, 11, 1);
+		this.setAnimation(6, State.ROAR_RAWR, -10, -90, 11, 1);
 	}
 
 	private void setAnimation(int head, State state, float xRotation, float yRotation, float neckLength, float mouthOpen) {
@@ -319,7 +319,7 @@ public class HydraHeadContainer {
 	}
 
 	public HydraNeck[] getNeckArray() {
-		return new HydraNeck[]{necka, neckb, neckc, neckd, necke};
+		return new HydraNeck[]{this.necka, this.neckb, this.neckc, this.neckd, this.necke};
 	}
 
 	/**
@@ -327,48 +327,47 @@ public class HydraHeadContainer {
 	 */
 	public void tick() {
 
-		headEntity.tick();
+		this.headEntity.tick();
 		// neck updates
-		necka.tick();
-		neckb.tick();
-		neckc.tick();
-		neckd.tick();
-		necke.tick();
+		this.necka.tick();
+		this.neckb.tick();
+		this.neckc.tick();
+		this.neckd.tick();
+		this.necke.tick();
 
 		// adjust for difficulty
 		setDifficultyVariables();
 
 		// only actually do these things on the server
-		if (!hydra.level.isClientSide) {
+		if (!this.hydra.getLevel().isClientSide()) {
 			// make sure this is set up
-			if (isActive() && headEntity.dimensions.width == 0) {
-				headEntity.activate();
-				necka.activate();
-				neckb.activate();
-				neckc.activate();
-				neckd.activate();
-				necke.activate();
+			if (this.isActive() && this.headEntity.dimensions.width == 0) {
+				this.headEntity.activate();
+				this.necka.activate();
+				this.neckb.activate();
+				this.neckc.activate();
+				this.neckd.activate();
+				this.necke.activate();
+			} else if (!this.isActive() && this.headEntity.dimensions.width > 0) {
+				this.headEntity.deactivate();
+				this.necka.deactivate();
+				this.neckb.deactivate();
+				this.neckc.deactivate();
+				this.neckd.deactivate();
+				this.necke.deactivate();
 			}
-			else if (!isActive() && headEntity.dimensions.width > 0) {
-				headEntity.deactivate();
-				necka.deactivate();
-				neckb.deactivate();
-				neckc.deactivate();
-				neckd.deactivate();
-				necke.deactivate();
-			}
-			advanceRespawnCounter();
-			advanceHeadState();
-			setHeadPosition();
-			setHeadFacing();
-			executeAttacks();
-			playSounds();
+			this.advanceRespawnCounter();
+			this.advanceHeadState();
+			this.setHeadPosition();
+			this.setHeadFacing();
+			this.executeAttacks();
+			this.playSounds();
 		} else {
-			clientAnimateHeadDeath();
-			addMouthParticles();
+			this.clientAnimateHeadDeath();
+			this.addMouthParticles();
 		}
 
-		setNeckPosition();
+		this.setNeckPosition();
 	}
 
 	public boolean canRespawn() {
@@ -376,7 +375,7 @@ public class HydraHeadContainer {
 	}
 
 	private void advanceRespawnCounter() {
-		if (this.currentState == State.DEAD && respawnCounter > -1) {
+		if (this.currentState == State.DEAD && this.respawnCounter > -1) {
 			if (--this.respawnCounter <= 0) {
 				this.setNextState(State.BORN);
 				this.damageTaken = 0;
@@ -388,33 +387,33 @@ public class HydraHeadContainer {
 
 	private void clientAnimateHeadDeath() {
 		// this will start the animation
-		if (headEntity.getState() == State.DYING) {
+		if (this.headEntity.getState() == State.DYING) {
 			// several things, like head visibility animate off this
 			this.headEntity.deathTime++;
 
 			// make explosion particles and stuff
-			if (headEntity.deathTime > 0) {
-				if (headEntity.deathTime < 20) {
-					doExplosionOn(headEntity, true);
-				} else if (headEntity.deathTime < 30) {
-					doExplosionOn(necka, false);
-				} else if (headEntity.deathTime < 40) {
-					doExplosionOn(neckb, false);
-				} else if (headEntity.deathTime < 50) {
-					doExplosionOn(neckc, false);
-				} else if (headEntity.deathTime < 60) {
-					doExplosionOn(neckd, false);
-				} else if (headEntity.deathTime < 70) {
-					doExplosionOn(necke, false);
+			if (this.headEntity.deathTime > 0) {
+				if (this.headEntity.deathTime < 20) {
+					this.doExplosionOn(this.headEntity, true);
+				} else if (this.headEntity.deathTime < 30) {
+					this.doExplosionOn(this.necka, false);
+				} else if (this.headEntity.deathTime < 40) {
+					this.doExplosionOn(this.neckb, false);
+				} else if (this.headEntity.deathTime < 50) {
+					this.doExplosionOn(this.neckc, false);
+				} else if (this.headEntity.deathTime < 60) {
+					this.doExplosionOn(this.neckd, false);
+				} else if (this.headEntity.deathTime < 70) {
+					this.doExplosionOn(this.necke, false);
 				}
 			}
 
 			// turn necks red
-			necka.hurtTime = 20;
-			neckb.hurtTime = 20;
-			neckc.hurtTime = 20;
-			neckd.hurtTime = 20;
-			necke.hurtTime = 20;
+			this.necka.hurtTime = 20;
+			this.neckb.hurtTime = 20;
+			this.neckc.hurtTime = 20;
+			this.neckd.hurtTime = 20;
+			this.necke.hurtTime = 20;
 
 		} else {
 			this.headEntity.deathTime = 0;
@@ -424,22 +423,22 @@ public class HydraHeadContainer {
 
 	private void doExplosionOn(HydraPart part, boolean large) {
 		for (int i = 0; i < 10; ++i) {
-			double vx = part.level.random.nextGaussian() * 0.02D;
-			double vy = part.level.random.nextGaussian() * 0.02D;
-			double vz = part.level.random.nextGaussian() * 0.02D;
-			part.level.addParticle((part.level.random.nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), part.getX() + part.level.random.nextFloat() * part.getBbWidth() * 2.0F - part.getBbWidth(), part.getY() + part.level.random.nextFloat() * part.getBbHeight(), part.getZ() + part.level.random.nextFloat() * part.getBbWidth() * 2.0F - part.getBbWidth(), vx, vy, vz);
+			double vx = part.getLevel().getRandom().nextGaussian() * 0.02D;
+			double vy = part.getLevel().getRandom().nextGaussian() * 0.02D;
+			double vz = part.getLevel().getRandom().nextGaussian() * 0.02D;
+			part.getLevel().addParticle((part.getLevel().getRandom().nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), part.getX() + part.getLevel().getRandom().nextFloat() * part.getBbWidth() * 2.0F - part.getBbWidth(), part.getY() + part.getLevel().getRandom().nextFloat() * part.getBbHeight(), part.getZ() + part.getLevel().getRandom().nextFloat() * part.getBbWidth() * 2.0F - part.getBbWidth(), vx, vy, vz);
 		}
 	}
 
 	private void advanceHeadState() {
 		// check head state
-		if (++ticksProgress >= this.ticksNeeded) {
+		if (++this.ticksProgress >= this.ticksNeeded) {
 			State myNext;
 
 			// advance state
 			if (this.nextState == NEXT_AUTOMATIC) {
 				myNext = State.NEXT_STATE.get(this.currentState);
-				if (myNext != currentState) {
+				if (myNext != this.currentState) {
 					// when returning from a secondary attack, no attack cooldown
 					if (this.isSecondaryAttacking && myNext == State.ATTACK_COOLDOWN) {
 						this.isSecondaryAttacking = false;
@@ -451,71 +450,71 @@ public class HydraHeadContainer {
 				this.nextState = NEXT_AUTOMATIC;
 			}
 
-			this.ticksNeeded = this.ticksProgress = myNext.duration;
+			this.ticksNeeded = myNext.duration;
 			this.ticksProgress = 0;
 
 			this.prevState = this.currentState;
 			this.currentState = myNext;
 		}
 		// set datawatcher so client can properly animate
-		if (headEntity.getState() != this.currentState) {
-			headEntity.setState(this.currentState);
+		if (this.headEntity.getState() != this.currentState) {
+			this.headEntity.setState(this.currentState);
 		}
 	}
 
 	private void setHeadFacing() {
 		if (this.currentState == State.BITE_READY) {
 			// face target within certain constraints
-			this.faceEntity(targetEntity, 5F, hydra.getMaxHeadXRot());
+			this.faceEntity(this.targetEntity, 5.0F, this.hydra.getMaxHeadXRot());
 
 			// head 0 and 1 max yaw
-			float biteMaxYaw = -60;
-			float biteMinYaw = -90;
+			float biteMaxYaw = -60.0F;
+			float biteMinYaw = -90.0F;
 
-			if (headNum == 2) {
+			if (this.headNum == 2) {
 				// head 2 max/min yaw
 				biteMaxYaw = 60;
 				biteMinYaw = 90;
 			}
 
-			float yawOffOffset = Mth.wrapDegrees(headEntity.getYRot() - hydra.yBodyRot);
+			float yawOffOffset = Mth.wrapDegrees(this.headEntity.getYRot() - this.hydra.yBodyRot);
 
 			if (yawOffOffset > biteMaxYaw) {
-				headEntity.setYRot(hydra.yBodyRot + biteMaxYaw);
+				this.headEntity.setYRot(this.hydra.yBodyRot + biteMaxYaw);
 			}
 			if (yawOffOffset < biteMinYaw) {
-				headEntity.setYRot(hydra.yBodyRot + biteMinYaw);
+				this.headEntity.setYRot(this.hydra.yBodyRot + biteMinYaw);
 			}
 
 			// make the target vector be a point off in the distance in the direction we're already facing
 			Vec3 look = this.headEntity.getLookAngle();
 			double distance = 16.0D;
-			this.targetX = headEntity.getX() + look.x * distance;
-			this.targetY = headEntity.getY() + 1.5 + look.y * distance;
-			this.targetZ = headEntity.getZ() + look.z * distance;
+			this.targetX = this.headEntity.getX() + look.x() * distance;
+			this.targetY = this.headEntity.getY() + 1.5 + look.y() * distance;
+			this.targetZ = this.headEntity.getZ() + look.z() * distance;
 
 		} else if (this.currentState == State.BITING || this.currentState == State.BITE_ENDING) {
-			this.faceEntity(targetEntity, 5F, hydra.getMaxHeadXRot());
-			headEntity.setXRot((float) (headEntity.getXRot() + Math.PI / 4));
+			this.faceEntity(this.targetEntity, 5.0F, hydra.getMaxHeadXRot());
+			this.headEntity.setXRot((float) (this.headEntity.getXRot() + Math.PI / 4.0F));
 
 		} else if (this.currentState == State.ROAR_RAWR) {
 			// keep facing target vector, don't move
-			this.faceVec(this.targetX, this.targetY, this.targetZ, 10F, hydra.getMaxHeadXRot());
+			this.faceVec(this.targetX, this.targetY, this.targetZ, 10.0F, this.hydra.getMaxHeadXRot());
 
 		} else if (this.currentState == State.FLAMING || this.currentState == State.FLAME_BEGINNING) {
 			// move flame breath slowly towards the player
-			moveTargetCoordsTowardsTargetEntity(FLAME_BREATH_TRACKING_SPEED);
+			this.moveTargetCoordsTowardsTargetEntity(FLAME_BREATH_TRACKING_SPEED);
 			// face the target coordinates
-			this.faceVec(this.targetX, this.targetY, this.targetZ, 5F, hydra.getMaxHeadXRot());
+			this.faceVec(this.targetX, this.targetY, this.targetZ, 5.0F, this.hydra.getMaxHeadXRot());
 
 		} else {
 			if (this.isActive()) {
 				if (this.targetEntity != null) {
 					// watch the target entity
-					this.faceEntity(targetEntity, 5F, hydra.getMaxHeadXRot());
+					this.faceEntity(this.targetEntity, 5.0F, this.hydra.getMaxHeadXRot());
 				} else {
 					// while idle, look where the body is looking?
-					faceIdle(1.5F, hydra.getMaxHeadXRot());
+					this.faceIdle(1.5F, this.hydra.getMaxHeadXRot());
 				}
 			}
 		}
@@ -527,66 +526,66 @@ public class HydraHeadContainer {
 
 			vect = vect.normalize();
 
-			this.targetX += vect.x * distance;
-			this.targetY += vect.y * distance;
-			this.targetZ += vect.z * distance;
+			this.targetX += vect.x() * distance;
+			this.targetY += vect.y() * distance;
+			this.targetZ += vect.z() * distance;
 		}
 	}
 
 	private void addMouthParticles() {
-		Vec3 vector = headEntity.getLookAngle();
+		Vec3 vector = this.headEntity.getLookAngle();
 
 		double dist = 3.5;
-		double px = headEntity.getX() + vector.x * dist;
-		double py = headEntity.getY() + 1 + vector.y * dist;
-		double pz = headEntity.getZ() + vector.z * dist;
+		double px = this.headEntity.getX() + vector.x() * dist;
+		double py = this.headEntity.getY() + 1.0D + vector.y() * dist;
+		double pz = this.headEntity.getZ() + vector.z() * dist;
 
-		if (headEntity.getState() == State.FLAME_BEGINNING) {
-			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.FLAME, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
-			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+		if (this.headEntity.getState() == State.FLAME_BEGINNING) {
+			this.headEntity.getLevel().addAlwaysVisibleParticle(ParticleTypes.FLAME, px + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, py + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, pz + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, 0, 0, 0);
+			this.headEntity.getLevel().addAlwaysVisibleParticle(ParticleTypes.SMOKE, px + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, py + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, pz + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, 0, 0, 0);
 		}
 
-		if (headEntity.getState() == State.FLAMING) {
-			Vec3 look = headEntity.getLookAngle();
+		if (this.headEntity.getState() == State.FLAMING) {
+			Vec3 look = this.headEntity.getLookAngle();
 			for (int i = 0; i < 5; i++) {
-				double dx = look.x;
-				double dy = look.y;
-				double dz = look.z;
+				double dx = look.x();
+				double dy = look.y();
+				double dz = look.z();
 
-				double spread = 5 + headEntity.level.random.nextDouble() * 2.5;
-				double velocity = 1.0 + headEntity.level.random.nextDouble();
+				double spread = 5.0D + this.headEntity.getLevel().getRandom().nextDouble() * 2.5D;
+				double velocity = 1.0D + this.headEntity.getLevel().getRandom().nextDouble();
 
 				// spread flame
-				dx += headEntity.level.random.nextGaussian() * 0.007499999832361937D * spread;
-				dy += headEntity.level.random.nextGaussian() * 0.007499999832361937D * spread;
-				dz += headEntity.level.random.nextGaussian() * 0.007499999832361937D * spread;
+				dx += this.headEntity.getLevel().getRandom().nextGaussian() * 0.0075D * spread;
+				dy += this.headEntity.getLevel().getRandom().nextGaussian() * 0.0075D * spread;
+				dz += this.headEntity.getLevel().getRandom().nextGaussian() * 0.0075D * spread;
 				dx *= velocity;
 				dy *= velocity;
 				dz *= velocity;
 
-				headEntity.level.addAlwaysVisibleParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
+				this.headEntity.getLevel().addAlwaysVisibleParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
 			}
 		}
 
-		if (headEntity.getState() == State.BITE_BEGINNING || headEntity.getState() == State.BITE_READY) {
-			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.SPLASH, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+		if (this.headEntity.getState() == State.BITE_BEGINNING || this.headEntity.getState() == State.BITE_READY) {
+			this.headEntity.getLevel().addAlwaysVisibleParticle(ParticleTypes.SPLASH, px + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, py + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, pz + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, 0, 0, 0);
 		}
 
-		if (headEntity.getState() == State.MORTAR_BEGINNING) {
-			headEntity.level.addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, px + headEntity.level.random.nextDouble() - 0.5, py + headEntity.level.random.nextDouble() - 0.5, pz + headEntity.level.random.nextDouble() - 0.5, 0, 0, 0);
+		if (this.headEntity.getState() == State.MORTAR_BEGINNING) {
+			this.headEntity.getLevel().addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, px + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, py + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, pz + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, 0, 0, 0);
 		}
 	}
 
 	private void playSounds() {
-		if (headEntity.getState() == State.FLAMING && headEntity.tickCount % 5 == 0) {
+		if (this.headEntity.getState() == State.FLAMING && this.headEntity.tickCount % 5 == 0) {
 			// fire breathing!
-			headEntity.playSound(TFSounds.HYDRA_SHOOT_FIRE, 0.5F + headEntity.level.random.nextFloat(), headEntity.level.random.nextFloat() * 0.7F + 0.3F);
+			this.headEntity.playSound(TFSounds.HYDRA_SHOOT_FIRE.get(), 0.5F + this.headEntity.getLevel().getRandom().nextFloat(), this.headEntity.getLevel().getRandom().nextFloat() * 0.7F + 0.3F);
 		}
-		if (headEntity.getState() == State.ROAR_RAWR) {
-			headEntity.playSound(TFSounds.HYDRA_ROAR, 1.25F, headEntity.level.random.nextFloat() * 0.3F + 0.7F);
+		if (this.headEntity.getState() == State.ROAR_RAWR) {
+			this.headEntity.playSound(TFSounds.HYDRA_ROAR.get(), 1.25F, this.headEntity.getLevel().getRandom().nextFloat() * 0.3F + 0.7F);
 		}
-		if (headEntity.getState() == State.BITE_READY && this.ticksProgress == 60) {
-			headEntity.playSound(TFSounds.HYDRA_WARN, 2.0F, headEntity.level.random.nextFloat() * 0.3F + 0.7F);
+		if (this.headEntity.getState() == State.BITE_READY && this.ticksProgress == 60) {
+			this.headEntity.playSound(TFSounds.HYDRA_WARN.get(), 2.0F, this.headEntity.getLevel().getRandom().nextFloat() * 0.3F + 0.7F);
 		}
 	}
 
@@ -595,38 +594,38 @@ public class HydraHeadContainer {
 		Vec3 vector = null;
 		float neckRotation = 0;
 
-		if (headNum == 0) {
+		if (this.headNum == 0) {
 			vector = new Vec3(0, 3, -1);
 			neckRotation = 0;
 		}
-		if (headNum == 1) {
+		if (this.headNum == 1) {
 			vector = new Vec3(-1, 3, 3);
 			neckRotation = 90;
 		}
-		if (headNum == 2) {
+		if (this.headNum == 2) {
 			vector = new Vec3(1, 3, 3);
 			neckRotation = -90;
 		}
-		if (headNum == 3) {
+		if (this.headNum == 3) {
 			vector = new Vec3(-1, 3, 3);
 			neckRotation = 135;
 		}
-		if (headNum == 4) {
+		if (this.headNum == 4) {
 			vector = new Vec3(1, 3, 3);
 			neckRotation = -135;
 		}
 
-		if (headNum == 5) {
+		if (this.headNum == 5) {
 			vector = new Vec3(-1, 3, 5);
 			neckRotation = 135;
 		}
-		if (headNum == 6) {
+		if (this.headNum == 6) {
 			vector = new Vec3(1, 3, 5);
 			neckRotation = -135;
 		}
 
-		vector = vector.yRot((-(hydra.yBodyRot + neckRotation) * 3.141593F) / 180F);
-		setNeckPosition(hydra.getX() + vector.x, hydra.getY() + vector.y, hydra.getZ() + vector.z, hydra.yBodyRot, 0);
+		vector = vector.yRot((-(this.hydra.yBodyRot + neckRotation) * Mth.PI) / 180.0F);
+		this.setNeckPosition(this.hydra.getX() + vector.x(), this.hydra.getY() + vector.y(), this.hydra.getZ() + vector.z(), this.hydra.yBodyRot);
 	}
 
 	protected void setHeadPosition() {
@@ -639,86 +638,81 @@ public class HydraHeadContainer {
 		// head3 is to the left
 		//setupStateRotations(); // temporary, for debugging
 
-		float neckLength = getCurrentNeckLength();
-		float xRotation = getCurrentHeadXRotation();
-		float yRotation = getCurrentHeadYRotation();
+		float neckLength = this.getCurrentNeckLength();
+		float xRotation = this.getCurrentHeadXRotation();
+		float yRotation = this.getCurrentHeadYRotation();
 
 
-		float periodX = (headNum == 0 || headNum == 3) ? 20F : ((headNum == 1 || headNum == 4) ? 5.0f : 7.0F);
-		float periodY = (headNum == 0 || headNum == 4) ? 10F : ((headNum == 1 || headNum == 6) ? 6.0f : 5.0F);
+		float periodX = (this.headNum == 0 || this.headNum == 3) ? 20F : ((this.headNum == 1 || this.headNum == 4) ? 5.0f : 7.0F);
+		float periodY = (this.headNum == 0 || this.headNum == 4) ? 10F : ((this.headNum == 1 || this.headNum == 6) ? 6.0f : 5.0F);
 
-		float xSwing = Mth.sin(hydra.tickCount / periodX) * 3.0F;
-		float ySwing = Mth.sin(hydra.tickCount / periodY) * 5.0F;
+		float xSwing = Mth.sin(this.hydra.tickCount / periodX) * 3.0F;
+		float ySwing = Mth.sin(this.hydra.tickCount / periodY) * 5.0F;
 
 		if (!this.isActive()) {
 			xSwing = ySwing = 0;
 		}
 
 		vector = new Vec3(0, 0, neckLength); // -53 = 3.3125
-		vector = vector.xRot((xRotation * 3.141593F + xSwing) / 180F);
-		vector = vector.yRot((-(hydra.yBodyRot + yRotation + ySwing) * 3.141593F) / 180F);
+		vector = vector.xRot((xRotation * Mth.PI + xSwing) / 180.0F);
+		vector = vector.yRot((-(this.hydra.yBodyRot + yRotation + ySwing) * Mth.PI) / 180.0F);
 
-		dx = hydra.getX() + vector.x;
-		dy = hydra.getY() + vector.y + 3;
-		dz = hydra.getZ() + vector.z;
+		dx = this.hydra.getX() + vector.x();
+		dy = this.hydra.getY() + vector.y() + 3;
+		dz = this.hydra.getZ() + vector.z();
 
-		headEntity.setPos(dx, dy, dz);
-		headEntity.setMouthOpen(getCurrentMouthOpen());
+		this.headEntity.setPos(dx, dy, dz);
+		this.headEntity.setMouthOpen(getCurrentMouthOpen());
 	}
 
 	private void executeAttacks() {
 		if (this.currentState == State.MORTAR_SHOOTING && this.ticksProgress % 10 == 0) {
+			HydraMortarHead mortar = new HydraMortarHead(TFEntities.HYDRA_MORTAR.get(), this.headEntity.getLevel(), this.headEntity);
 
-			/*if (lookTarget instanceof EntityTFHydraPart || lookTarget instanceof MultiPartEntityPart) {
-				// stop hurting yourself!
-				this.endCurrentAction();
-			} else */{
-				HydraMortarHead mortar = new HydraMortarHead(TFEntities.HYDRA_MORTAR.get(), headEntity.level, headEntity);
-
-				// launch blasting mortars if the player is hiding
-				if (this.targetEntity != null && !headEntity.canEntityBeSeen(this.targetEntity)) {
-					mortar.setToBlasting();
-				}
-
-				headEntity.playSound(TFSounds.HYDRA_SHOOT, 10.0F, (headEntity.getLevel().getRandom().nextFloat() - headEntity.getLevel().getRandom().nextFloat()) * 0.2F + 1.0F);
-				headEntity.level.addFreshEntity(mortar);
+			// launch blasting mortars if the player is hiding
+			if (this.targetEntity != null && !this.headEntity.canEntityBeSeen(this.targetEntity)) {
+				mortar.setToBlasting();
 			}
+
+			this.headEntity.playSound(TFSounds.HYDRA_SHOOT.get(), 10.0F, (this.headEntity.getLevel().getRandom().nextFloat() - this.headEntity.getLevel().getRandom().nextFloat()) * 0.2F + 1.0F);
+			this.headEntity.getLevel().addFreshEntity(mortar);
+
 		}
-		if (headEntity.getState() == State.BITING) {
+		if (this.headEntity.getState() == State.BITING) {
 			// damage nearby things
-			List<Entity> nearbyList = headEntity.level.getEntities(headEntity, headEntity.getBoundingBox().inflate(0.0, 1.0, 0.0));
+			List<Entity> nearbyList = this.headEntity.getLevel().getEntities(this.headEntity, this.headEntity.getBoundingBox().inflate(0.0, 1.0, 0.0));
 
 			for (Entity nearby : nearbyList) {
-				if (nearby instanceof LivingEntity living && nearby != hydra) {
+				if (nearby instanceof LivingEntity living && nearby != this.hydra) {
 					//is a player holding a shield? Let's do some extra stuff!
 					if (nearby instanceof Player player && player.isUsingItem() && player.getUseItem().getItem() instanceof ShieldItem) {
 						if (!player.getCooldowns().isOnCooldown(player.getUseItem().getItem())) {
 							//cause severe damage and play a shatter sound
-							headEntity.level.playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS : TFSounds.METAL_SHIELD_SHATTERS, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
+							this.headEntity.getLevel().playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS.get() : TFSounds.METAL_SHIELD_SHATTERS.get(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
 							player.getUseItem().hurtAndBreak(112, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
 						}
 						//add cooldown and knockback
 						player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
-						TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket(-headEntity.getDirection().getStepX() * 0.5F, 0.15F, -headEntity.getDirection().getStepZ() * 0.5F), (ServerPlayer) player);
+						TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.15F, -this.headEntity.getDirection().getStepZ() * 0.5F), (ServerPlayer) player);
 					}
 
 					// bite it!
 					nearby.hurt(TFDamageSources.HYDRA_BITE, BITE_DAMAGE);
 
 					//knockback!
-					if(living instanceof Player player) {
-						TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket(-headEntity.getDirection().getStepX() * 0.5F, 0.1F, -headEntity.getDirection().getStepZ() * 0.5F), (ServerPlayer) player);
+					if (living instanceof Player player) {
+						TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.1F, -this.headEntity.getDirection().getStepZ() * 0.5F), (ServerPlayer) player);
 					} else {
-						living.knockback(-headEntity.getDirection().getStepX(), 0.1F, -headEntity.getDirection().getStepZ());
+						living.knockback(-this.headEntity.getDirection().getStepX(), 0.1F, -this.headEntity.getDirection().getStepZ());
 					}
 				}
 			}
 		}
 
-		if (headEntity.getState() == State.FLAMING) {
+		if (this.headEntity.getState() == State.FLAMING) {
 			Entity target = getHeadLookTarget();
 
-			if (target != null && target != headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != headEntity.getParent())) {
+			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent())) {
 				if (!target.fireImmune() && target.hurt(TFDamageSources.HYDRA_FIRE, FLAME_DAMAGE)) {
 					target.setSecondsOnFire(FLAME_BURN_FACTOR);
 				}
@@ -727,7 +721,7 @@ public class HydraHeadContainer {
 	}
 
 	private void setDifficultyVariables() {
-		if (this.hydra.level.getDifficulty() != Difficulty.HARD) {
+		if (this.hydra.getLevel().getDifficulty() != Difficulty.HARD) {
 			HydraHeadContainer.FLAME_BREATH_TRACKING_SPEED = 0.04D;
 		} else {
 			// hard mode!
@@ -741,20 +735,20 @@ public class HydraHeadContainer {
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
-		Vec3 srcVec = new Vec3(headEntity.getX(), headEntity.getY() + 1.0, headEntity.getZ());
-		Vec3 lookVec = headEntity.getViewVector(1.0F);
-		BlockHitResult raytrace = headEntity.level.clip(new ClipContext(srcVec, srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range), ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, headEntity));
+		Vec3 srcVec = new Vec3(this.headEntity.getX(), this.headEntity.getY() + 1.0, this.headEntity.getZ());
+		Vec3 lookVec = this.headEntity.getViewVector(1.0F);
+		BlockHitResult raytrace = this.headEntity.getLevel().clip(new ClipContext(srcVec, srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range), ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, this.headEntity));
 		BlockPos hitpos = raytrace != null ? raytrace.getBlockPos() : null;
-		double rx = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getX() - hitpos.getX()));
-		double ry = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getY() - hitpos.getY()));
-		double rz = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getZ() - hitpos.getZ()));
-		Vec3 destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		double rx = hitpos == null ? range : Math.min(range, Math.abs(this.headEntity.getX() - hitpos.getX()));
+		double ry = hitpos == null ? range : Math.min(range, Math.abs(this.headEntity.getY() - hitpos.getY()));
+		double rz = hitpos == null ? range : Math.min(range, Math.abs(this.headEntity.getZ() - hitpos.getZ()));
+		Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
 		float var9 = 3.0F;
-		List<Entity> possibleList = headEntity.level.getEntities(headEntity, headEntity.getBoundingBox().move(lookVec.x * rx, lookVec.y * ry, lookVec.z * rz).inflate(var9, var9, var9));
+		List<Entity> possibleList = this.headEntity.getLevel().getEntities(this.headEntity, this.headEntity.getBoundingBox().move(lookVec.x() * rx, lookVec.y() * ry, lookVec.z() * rz).inflate(var9, var9, var9));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {
-			if (possibleEntity.isPickable() && possibleEntity != headEntity && possibleEntity != necka && possibleEntity != neckb && possibleEntity != neckc) {
+			if (possibleEntity.isPickable() && possibleEntity != this.headEntity && possibleEntity != this.necka && possibleEntity != this.neckb && possibleEntity != this.neckc) {
 				float borderSize = possibleEntity.getPickRadius();
 				AABB collisionBB = possibleEntity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
 				Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
@@ -786,33 +780,33 @@ public class HydraHeadContainer {
 	}
 
 	private float getCurrentNeckLength() {
-		float prevLength = stateNeckLength[this.headNum].get(prevState);
-		float curLength = stateNeckLength[this.headNum].get(currentState);
-		float progress = (float) ticksProgress / (float) ticksNeeded;
+		float prevLength = this.stateNeckLength[this.headNum].get(this.prevState);
+		float curLength = this.stateNeckLength[this.headNum].get(this.currentState);
+		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
 		return Mth.clampedLerp(prevLength, curLength, progress);
 	}
 
 	private float getCurrentHeadXRotation() {
-		float prevRotation = stateXRotations[this.headNum].get(prevState);
-		float currentRotation = stateXRotations[this.headNum].get(currentState);
-		float progress = (float) ticksProgress / (float) ticksNeeded;
+		float prevRotation = this.stateXRotations[this.headNum].get(this.prevState);
+		float currentRotation = this.stateXRotations[this.headNum].get(this.currentState);
+		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
 		return Mth.clampedLerp(prevRotation, currentRotation, progress);
 	}
 
 	private float getCurrentHeadYRotation() {
-		float prevRotation = stateYRotations[this.headNum].get(prevState);
-		float currentRotation = stateYRotations[this.headNum].get(currentState);
-		float progress = (float) ticksProgress / (float) ticksNeeded;
+		float prevRotation = this.stateYRotations[this.headNum].get(this.prevState);
+		float currentRotation = this.stateYRotations[this.headNum].get(this.currentState);
+		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
 		return Mth.clampedLerp(prevRotation, currentRotation, progress);
 	}
 
 	protected float getCurrentMouthOpen() {
-		float prevOpen = stateMouthOpen[this.headNum].get(prevState);
-		float curOpen = stateMouthOpen[this.headNum].get(currentState);
-		float progress = (float) ticksProgress / (float) ticksNeeded;
+		float prevOpen = this.stateMouthOpen[this.headNum].get(this.prevState);
+		float curOpen = this.stateMouthOpen[this.headNum].get(this.currentState);
+		float progress = (float) this.ticksProgress / (float) this.ticksNeeded;
 
 		return Mth.clampedLerp(prevOpen, curOpen, progress);
 	}
@@ -820,84 +814,83 @@ public class HydraHeadContainer {
 	/**
 	 * Sets the four neck positions ranging from the start position to the head position.
 	 */
-	protected void setNeckPosition(double startX, double startY, double startZ, float startYaw, float startPitch) {
+	protected void setNeckPosition(double startX, double startY, double startZ, float startYaw) {
 
-		double endX = headEntity.getX();
-		double endY = headEntity.getY();
-		double endZ = headEntity.getZ();
-		float endYaw = headEntity.getYRot();
-		float endPitch = headEntity.getXRot();
+		double endX = this.headEntity.getX();
+		double endY = this.headEntity.getY();
+		double endZ = this.headEntity.getZ();
+		float endYaw = this.headEntity.getYRot();
+		float endPitch = this.headEntity.getXRot();
 
 		for (; startYaw - endYaw < -180F; endYaw -= 360F) {
 		}
 		for (; startYaw - endYaw >= 180F; endYaw += 360F) {
 		}
-		for (; startPitch - endPitch < -180F; endPitch -= 360F) {
+		for (; 0.0F - endPitch < -180F; endPitch -= 360F) {
 		}
-		for (; startPitch - endPitch >= 180F; endPitch += 360F) {
+		for (; 0.0F - endPitch >= 180F; endPitch += 360F) {
 		}
 
 		// translate the end position back 1 unit
 		if (endPitch > 0) {
 			// if we are looking down, don't raise the first neck position, it looks weird
-			Vec3 vector = new Vec3(0, 0, -1.0).yRot((-endYaw * 3.141593F) / 180F);
-			endX += vector.x;
-			endY += vector.y;
-			endZ += vector.z;
+			Vec3 vector = new Vec3(0.0D, 0.0D, -1.0D).yRot((-endYaw * 3.141593F) / 180.0F);
+			endX += vector.x();
+			endY += vector.y();
+			endZ += vector.z();
 		} else {
 			// but if we are looking up, lower it or it goes through the crest
-			Vec3 vector = headEntity.getLookAngle();
+			Vec3 vector = this.headEntity.getLookAngle();
 			float dist = 1.0f;
 
-			endX -= vector.x * dist;
-			endY -= vector.y * dist;
-			endZ -= vector.z * dist;
+			endX -= vector.x() * dist;
+			endY -= vector.y() * dist;
+			endZ -= vector.z() * dist;
 
 		}
 
 		float factor;
 
 		factor = 0.00F;
-		necka.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		necka.setYRot(endYaw + (startYaw - endYaw) * factor);
-		necka.setXRot(endPitch + (startPitch - endPitch) * factor);
+		this.necka.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
+		this.necka.setYRot(endYaw + (startYaw - endYaw) * factor);
+		this.necka.setXRot(endPitch + ((float) 0 - endPitch) * factor);
 
 		factor = 0.25F;
-		neckb.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		neckb.setYRot(endYaw + (startYaw - endYaw) * factor);
-		neckb.setXRot(endPitch + (startPitch - endPitch) * factor);
+		this.neckb.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
+		this.neckb.setYRot(endYaw + (startYaw - endYaw) * factor);
+		this.neckb.setXRot(endPitch + ((float) 0 - endPitch) * factor);
 
 		factor = 0.50F;
-		neckc.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		neckc.setYRot(endYaw + (startYaw - endYaw) * factor);
-		neckc.setXRot(endPitch + (startPitch - endPitch) * factor);
+		this.neckc.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
+		this.neckc.setYRot(endYaw + (startYaw - endYaw) * factor);
+		this.neckc.setXRot(endPitch + ((float) 0 - endPitch) * factor);
 
 		factor = 0.75F;
-		neckd.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		neckd.setYRot(endYaw + (startYaw - endYaw) * factor);
-		neckd.setXRot(endPitch + (startPitch - endPitch) * factor);
+		this.neckd.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
+		this.neckd.setYRot(endYaw + (startYaw - endYaw) * factor);
+		this.neckd.setXRot(endPitch + ((float) 0 - endPitch) * factor);
 
 		factor = 1.0F;
-		necke.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
-		necke.setYRot(endYaw + (startYaw - endYaw) * factor);
-		necke.setXRot(endPitch + (startPitch - endPitch) * factor);
+		this.necke.setPos(endX + (startX - endX) * factor, endY + (startY - endY) * factor, endZ + (startZ - endZ) * factor);
+		this.necke.setYRot(endYaw + (startYaw - endYaw) * factor);
+		this.necke.setXRot(endPitch + ((float) 0 - endPitch) * factor);
 	}
 
 	private void faceIdle(float yawConstraint, float pitchConstraint) {
-		float angle = (((hydra.getYRot()) * 3.141593F) / 180F);
+		float angle = (((this.hydra.getYRot()) * 3.141593F) / 180F);
 		float distance = 30.0F;
 
-		double dx = hydra.getX() - Mth.sin(angle) * distance;
-		double dy = hydra.getY() + 3.0;
-		double dz = hydra.getZ() + Mth.cos(angle) * distance;
+		double dx = this.hydra.getX() - Mth.sin(angle) * distance;
+		double dy = this.hydra.getY() + 3.0;
+		double dz = this.hydra.getZ() + Mth.cos(angle) * distance;
 
 		faceVec(dx, dy, dz, yawConstraint, pitchConstraint);
 	}
 
 	public void faceEntity(Entity entity, float yawConstraint, float pitchConstraint) {
 		double yTarget;
-		if (entity instanceof LivingEntity) {
-			LivingEntity entityliving = (LivingEntity) entity;
+		if (entity instanceof LivingEntity entityliving) {
 			yTarget = entityliving.getY() + entityliving.getEyeHeight();
 		} else {
 			yTarget = (entity.getBoundingBox().minY + entity.getBoundingBox().maxY) / 2D;
@@ -912,15 +905,15 @@ public class HydraHeadContainer {
 	}
 
 	private void faceVec(double x, double y, double z, float yawConstraint, float pitchConstraint) {
-		double xOffset = x - headEntity.getX();
-		double zOffset = z - headEntity.getZ();
-		double yOffset = (headEntity.getY() + 1.0) - y;
+		double xOffset = x - this.headEntity.getX();
+		double zOffset = z - this.headEntity.getZ();
+		double yOffset = (this.headEntity.getY() + 1.0) - y;
 
 		double distance = Mth.sqrt((float) (xOffset * xOffset + zOffset * zOffset));
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
 		float zdAngle = (float) (-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
-		headEntity.setXRot(-updateRotation(headEntity.getXRot(), zdAngle, pitchConstraint));
-		headEntity.setYRot(updateRotation(headEntity.getYRot(), xyAngle, yawConstraint));
+		this.headEntity.setXRot(-updateRotation(this.headEntity.getXRot(), zdAngle, pitchConstraint));
+		this.headEntity.setYRot(updateRotation(this.headEntity.getYRot(), xyAngle, yawConstraint));
 	}
 
 	private float updateRotation(float current, float intended, float increment) {
@@ -942,14 +935,14 @@ public class HydraHeadContainer {
 	}
 
 	public void setHurtTime(int hurtTime) {
-		if (headEntity != null) {
-			headEntity.hurtTime = hurtTime;
+		if (this.headEntity != null) {
+			this.headEntity.hurtTime = hurtTime;
 		}
-		necka.hurtTime = hurtTime;
-		neckb.hurtTime = hurtTime;
-		neckc.hurtTime = hurtTime;
-		neckd.hurtTime = hurtTime;
-		necke.hurtTime = hurtTime;
+		this.necka.hurtTime = hurtTime;
+		this.neckb.hurtTime = hurtTime;
+		this.neckc.hurtTime = hurtTime;
+		this.neckd.hurtTime = hurtTime;
+		this.necke.hurtTime = hurtTime;
 	}
 
 	/**

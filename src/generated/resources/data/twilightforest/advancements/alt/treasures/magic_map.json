@@ -1,20 +1,7 @@
 {
   "parent": "twilightforest:alt/root",
   "criteria": {
-    "has_focus": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:magic_map_focus"
-            ]
-          }
-        ]
-      }
-    },
     "has_empty": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -23,10 +10,10 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "has_filled": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -35,7 +22,20 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_focus": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:magic_map_focus"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [

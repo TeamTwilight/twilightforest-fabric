@@ -1,10 +1,12 @@
 package twilightforest.client;
 
+import net.minecraft.util.RandomSource;
+
 import java.util.Random;
 
 public class BugModelAnimationHelper {
 
-    private static final Random rand = new Random();
+    private static final RandomSource rand = RandomSource.create();
 
     private static int yawDelay;
     public static int currentYaw;

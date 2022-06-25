@@ -1,27 +1,32 @@
 {
+  "type": "twilightforest:mycelium_blob",
   "config": {
-    "state": {
-      "Properties": {
-        "snowy": "false"
-      },
-      "Name": "minecraft:mycelium"
-    },
+    "half_height": 0,
     "radius": {
       "type": "minecraft:uniform",
       "value": {
-        "min_inclusive": 3,
-        "max_inclusive": 5
+        "max_inclusive": 5,
+        "min_inclusive": 3
       }
     },
-    "half_height": 0,
-    "targets": [
-      {
-        "Name": "minecraft:stone"
+    "state_provider": {
+      "fallback": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "minecraft:mycelium",
+          "Properties": {
+            "snowy": "false"
+          }
+        }
       },
-      {
-        "Name": "twilightforest:deadrock"
-      }
-    ]
-  },
-  "type": "twilightforest:mycelium_blob"
+      "rules": []
+    },
+    "target": {
+      "type": "minecraft:matching_blocks",
+      "blocks": [
+        "minecraft:stone",
+        "twilightforest:deadrock"
+      ]
+    }
+  }
 }

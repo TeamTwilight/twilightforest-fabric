@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.SectionPos;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -21,20 +20,21 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFConfig;
-import twilightforest.TFSounds;
+import net.minecraftforge.registries.ForgeRegistries;
+import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.potions.TFMobEffects;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFMobEffects;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.components.structures.start.LegacyStructureFeature;
+import twilightforest.world.components.structures.start.LegacyLandmark;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,46 +61,46 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		registerBiomeProgressionEnforcement(BiomeKeys.DARK_FOREST, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, false, true));
-				trySpawnHintMonster(player, world, TFFeature.KNIGHT_STRONGHOLD);
+				trySpawnHintMonster(player, world, TFLandmark.KNIGHT_STRONGHOLD);
 			}
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.DARK_FOREST_CENTER, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, false, true));
-				trySpawnHintMonster(player, world, TFFeature.DARK_TOWER);
+				trySpawnHintMonster(player, world, TFLandmark.DARK_TOWER);
 			}
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.FINAL_PLATEAU, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 1.5F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS, SoundSource.PLAYERS, 1.0F, 1.0F);
+				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 				// TODO: change this when there's a book for the castle
-				trySpawnHintMonster(player, world, TFFeature.TROLL_CAVE);
+				trySpawnHintMonster(player, world, TFLandmark.TROLL_CAVE);
 			}
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.FIRE_SWAMP, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
 				player.setSecondsOnFire(8);
 			}
-			trySpawnHintMonster(player, world, TFFeature.HYDRA_LAIR);
+			trySpawnHintMonster(player, world, TFLandmark.HYDRA_LAIR);
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.GLACIER, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 100, 3, false, true));
 			}
-			trySpawnHintMonster(player, world, TFFeature.ICE_TOWER);
+			trySpawnHintMonster(player, world, TFLandmark.ICE_TOWER);
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.HIGHLANDS, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 0.5F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS, SoundSource.PLAYERS, 1.0F, 1.0F);
-				trySpawnHintMonster(player, world, TFFeature.TROLL_CAVE);
+				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+				trySpawnHintMonster(player, world, TFLandmark.TROLL_CAVE);
 			}
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.SNOWY_FOREST, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 100, 2, false, true));
-				trySpawnHintMonster(player, world, TFFeature.YETI_CAVE);
+				trySpawnHintMonster(player, world, TFLandmark.YETI_CAVE);
 			}
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.SWAMP, (player, world) -> {
@@ -111,16 +111,16 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 				player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 100, hungerLevel, false, true));
 
-				trySpawnHintMonster(player, world, TFFeature.LABYRINTH);
+				trySpawnHintMonster(player, world, TFLandmark.LABYRINTH);
 			}
 		});
 		registerBiomeProgressionEnforcement(BiomeKeys.THORNLANDS, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 1.0F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS, SoundSource.PLAYERS, 1.0F, 1.0F);
+				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
 				// hint monster?
-				trySpawnHintMonster(player, world, TFFeature.TROLL_CAVE);
+				trySpawnHintMonster(player, world, TFLandmark.TROLL_CAVE);
 			}
 		});
 	}
@@ -142,7 +142,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 			exec.accept(player, world);
 	}
 
-	private static void trySpawnHintMonster(Player player, Level world, TFFeature feature) {
+	private static void trySpawnHintMonster(Player player, Level world, TFLandmark feature) {
 		if (world.random.nextInt(4) == 0) {
 			feature.trySpawnHintMonster(world, player);
 		}
@@ -178,15 +178,15 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
-		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
+		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.level.isClientSide() ? entity.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome) : ForgeRegistries.BIOMES.getKey(biome));
 		if (advancements != null && entity instanceof Player)
 			return PlayerHelper.doesPlayerHaveRequiredAdvancements((Player) entity, advancements);
 		return true;
 	}
 
-	public static void markStructureConquered(Level world, BlockPos pos, TFFeature feature) {
+	public static void markStructureConquered(Level world, BlockPos pos, TFLandmark feature) {
 		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
-		if (generator != null && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world) == feature) {
+		if (generator != null && TFLandmark.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world) == feature) {
 			locateTFStructureInRange((ServerLevel) world, feature, pos, 0).ifPresent(start -> {
 				if (start instanceof TFStructureStart<?> s)
 					s.setConquered(true);
@@ -195,30 +195,30 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static Optional<StructureStart> locateTFStructureInRange(WorldGenLevel world, BlockPos pos, int range) {
-		TFFeature featureCheck = TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
+		TFLandmark featureCheck = TFLandmark.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
 
 		return locateTFStructureInRange(world, featureCheck, pos, range);
 	}
 
-	public static Optional<StructureStart> locateTFStructureInRange(WorldGenLevel world, TFFeature featureCheck, BlockPos pos, int range) {
+	public static Optional<StructureStart> locateTFStructureInRange(WorldGenLevel world, TFLandmark featureCheck, BlockPos pos, int range) {
 		int cx1 = Mth.floor((pos.getX() - range) >> 4);
 		int cx2 = Mth.ceil((pos.getX() + range) >> 4);
 		int cz1 = Mth.floor((pos.getZ() - range) >> 4);
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
-		for (ConfiguredStructureFeature<?, ?> structureFeature : world.registryAccess().ownedRegistryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).stream().toList()) {
-			if (!(structureFeature.feature instanceof LegacyStructureFeature legacyData))
+		for (Structure structureFeature : world.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream().toList()) {
+			if (!(structureFeature instanceof LegacyLandmark legacyData))
 				continue;
-			TFFeature feature = legacyData.feature;
+			TFLandmark feature = legacyData.feature;
 			if (feature != featureCheck)
 				continue;
 
 			for (int x = cx1; x <= cx2; ++x) {
 				for (int z = cz1; z <= cz2; ++z) {
-					Optional<StructureStart> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_STARTS).getReferencesForFeature(structureFeature).stream().
+					Optional<StructureStart> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_STARTS).getReferencesForStructure(structureFeature).stream().
 							map((longVal) -> SectionPos.of(new ChunkPos(longVal), 0)).map((sectionPos) -> world.
 									hasChunk(sectionPos.x(), sectionPos.z()) ? world.
-									getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS).getStartForFeature(structureFeature) : null).
+									getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS).getStartForStructure(structureFeature) : null).
 							filter((structureStart) -> structureStart != null && structureStart.isValid()).
 							findFirst();
 					if (structure.isPresent())

@@ -3,8 +3,6 @@ package twilightforest.block;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -28,9 +26,9 @@ public class HugeLilyPadBlock extends WaterlilyBlock {
 
 	private boolean isSelfDestructing = false;
 
-	protected HugeLilyPadBlock(Properties props) {
-		super(props);
-		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(PIECE, HugeLilypadPiece.NW));
+	public HugeLilyPadBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(PIECE, HugeLilypadPiece.NW));
 	}
 
 	@Override
@@ -39,32 +37,30 @@ public class HugeLilyPadBlock extends WaterlilyBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return SHAPE;
 	}
 
 	@Override
-	public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+	public VoxelShape getOcclusionShape(BlockState state, BlockGetter getter, BlockPos pos) {
 		return Shapes.empty();
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
-		//TwilightForestMod.LOGGER.info("Destroying giant lilypad at {}, state {}", pos, state);
-
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!this.isSelfDestructing) {
-			this.setGiantBlockToAir(world, pos, state);
+			this.setGiantBlockToAir(level, pos, state);
 		}
 	}
 
-	private void setGiantBlockToAir(Level world, BlockPos pos, BlockState state) {
+	private void setGiantBlockToAir(Level level, BlockPos pos, BlockState state) {
 		// this flag is not threadsafe
 		this.isSelfDestructing = true;
 
 		for (BlockPos check : this.getAllMyBlocks(pos, state)) {
-			BlockState stateThere = world.getBlockState(check);
+			BlockState stateThere = level.getBlockState(check);
 			if (stateThere.getBlock() == this) {
-				world.destroyBlock(check, false);
+				level.destroyBlock(check, false);
 			}
 		}
 

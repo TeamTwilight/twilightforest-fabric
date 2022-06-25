@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.3,
   "ingredient": {
     "item": "twilightforest:raw_meef"
   },
-  "result": "twilightforest:cooked_meef",
-  "experience": 0.3,
-  "cookingtime": 200
+  "result": "twilightforest:cooked_meef"
 }

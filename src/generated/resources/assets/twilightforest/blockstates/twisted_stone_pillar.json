@@ -1,93 +1,93 @@
 {
   "multipart": [
     {
-      "when": {
-        "axis": "x"
-      },
       "apply": {
         "model": "twilightforest:block/pillar_main_x",
+        "uvlock": true,
         "x": 90,
-        "y": 90,
-        "uvlock": true
+        "y": 90
+      },
+      "when": {
+        "axis": "x"
       }
     },
     {
-      "when": {
-        "axis": "x",
-        "east": "false"
-      },
       "apply": {
         "model": "twilightforest:block/pillar_top_x",
         "x": 90,
         "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "east": "false"
       }
     },
     {
-      "when": {
-        "axis": "x",
-        "west": "false"
-      },
       "apply": {
         "model": "twilightforest:block/pillar_bottom_x",
         "x": 90,
         "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "west": "false"
       }
     },
     {
-      "when": {
-        "axis": "y"
-      },
       "apply": {
         "model": "twilightforest:block/pillar_main_y",
         "uvlock": true
+      },
+      "when": {
+        "axis": "y"
       }
     },
     {
+      "apply": {
+        "model": "twilightforest:block/pillar_top_y"
+      },
       "when": {
         "axis": "y",
         "up": "false"
-      },
-      "apply": {
-        "model": "twilightforest:block/pillar_top_y"
       }
     },
     {
+      "apply": {
+        "model": "twilightforest:block/pillar_bottom_y"
+      },
       "when": {
         "axis": "y",
         "down": "false"
-      },
-      "apply": {
-        "model": "twilightforest:block/pillar_bottom_y"
       }
     },
     {
-      "when": {
-        "axis": "z"
-      },
       "apply": {
         "model": "twilightforest:block/pillar_main_z",
-        "x": 90,
-        "uvlock": true
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "axis": "z"
       }
     },
     {
-      "when": {
-        "axis": "z",
-        "north": "false"
-      },
       "apply": {
         "model": "twilightforest:block/pillar_top_z",
         "x": 90
+      },
+      "when": {
+        "axis": "z",
+        "north": "false"
       }
     },
     {
-      "when": {
-        "axis": "z",
-        "south": "false"
-      },
       "apply": {
         "model": "twilightforest:block/pillar_bottom_z",
         "x": 90
+      },
+      "when": {
+        "axis": "z",
+        "south": "false"
       }
     }
   ]

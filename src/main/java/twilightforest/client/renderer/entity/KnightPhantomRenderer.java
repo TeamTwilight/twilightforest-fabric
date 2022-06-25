@@ -18,10 +18,10 @@ public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, Kn
 
 	private static final ResourceLocation PHANTOM_TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
 
-	public KnightPhantomRenderer(EntityRendererProvider.Context manager, KnightPhantomModel model, float shadowSize) {
-		super(manager, model, shadowSize);
-		this.addLayer(new ItemInHandLayer<>(this));
-		this.addLayer(new HumanoidArmorLayer<>(this, new KnightPhantomModel(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new KnightPhantomModel(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
+	public KnightPhantomRenderer(EntityRendererProvider.Context context, KnightPhantomModel model, float shadowSize) {
+		super(context, model, shadowSize);
+		this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()));
+		this.addLayer(new HumanoidArmorLayer<>(this, new KnightPhantomModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new KnightPhantomModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
 	}
 
 	@Override

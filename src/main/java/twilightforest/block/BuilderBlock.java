@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -18,26 +19,26 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
 import twilightforest.block.entity.CarminiteBuilderBlockEntity;
-import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.enums.TowerDeviceVariant;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
-import java.util.Random;
 
 public class BuilderBlock extends BaseEntityBlock {
 
 	public static final EnumProperty<TowerDeviceVariant> STATE = EnumProperty.create("state", TowerDeviceVariant.class);
 
-	public BuilderBlock(Properties props) {
-		super(props);
-		this.registerDefaultState(stateDefinition.any().setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
+	public BuilderBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
 	}
 
 	@Override
-	public RenderShape getRenderShape(BlockState p_49232_) {
+	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
 
@@ -49,58 +50,57 @@ public class BuilderBlock extends BaseEntityBlock {
 
 	@Override
 	@Deprecated
-	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean isMoving) {
-		if (!world.isClientSide && state.getValue(STATE) == TowerDeviceVariant.BUILDER_INACTIVE && world.hasNeighborSignal(pos)) {
-			world.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_ACTIVE));
-			world.playSound(null, pos, TFSounds.BUILDER_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+		if (!level.isClientSide() && state.getValue(STATE) == TowerDeviceVariant.BUILDER_INACTIVE && level.hasNeighborSignal(pos)) {
+			level.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_ACTIVE));
+			level.playSound(null, pos, TFSounds.BUILDER_ON.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 		}
 	}
 
 	@Override
 	@Deprecated
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (world.isClientSide) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		if (level.isClientSide()) {
 			return;
 		}
 
 		TowerDeviceVariant variant = state.getValue(STATE);
 
-		if (variant == TowerDeviceVariant.BUILDER_INACTIVE && world.hasNeighborSignal(pos)) {
-			world.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_ACTIVE));
-			world.playSound(null, pos, TFSounds.BUILDER_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
-			world.scheduleTick(pos, this, 4);
+		if (variant == TowerDeviceVariant.BUILDER_INACTIVE && level.hasNeighborSignal(pos)) {
+			level.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_ACTIVE));
+			level.playSound(null, pos, TFSounds.BUILDER_ON.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.scheduleTick(pos, this, 4);
 		}
 
-		if (variant == TowerDeviceVariant.BUILDER_ACTIVE && !world.hasNeighborSignal(pos)) {
-			world.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
-			world.playSound(null, pos, TFSounds.BUILDER_OFF, SoundSource.BLOCKS, 0.3F, 0.6F);
-			world.scheduleTick(pos, this, 4);
+		if (variant == TowerDeviceVariant.BUILDER_ACTIVE && !level.hasNeighborSignal(pos)) {
+			level.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
+			level.playSound(null, pos, TFSounds.BUILDER_OFF.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.scheduleTick(pos, this, 4);
 		}
 
-		if (variant == TowerDeviceVariant.BUILDER_TIMEOUT && !world.hasNeighborSignal(pos)) {
-			world.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
+		if (variant == TowerDeviceVariant.BUILDER_TIMEOUT && !level.hasNeighborSignal(pos)) {
+			level.setBlockAndUpdate(pos, state.setValue(STATE, TowerDeviceVariant.BUILDER_INACTIVE));
 		}
 	}
 
 	@Override
-	@Deprecated
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		TowerDeviceVariant variant = state.getValue(STATE);
 
-		if (variant == TowerDeviceVariant.BUILDER_ACTIVE && world.hasNeighborSignal(pos)) {
-			this.letsBuild(world, pos);
+		if (variant == TowerDeviceVariant.BUILDER_ACTIVE && level.hasNeighborSignal(pos)) {
+			this.letsBuild(level, pos);
 		}
 
 		if (variant == TowerDeviceVariant.BUILDER_INACTIVE || variant == TowerDeviceVariant.BUILDER_TIMEOUT) {
-			((CarminiteBuilderBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos))).resetStats();
+			((CarminiteBuilderBlockEntity) Objects.requireNonNull(level.getBlockEntity(pos))).resetStats();
 			for (Direction e : Direction.values()) {
-				activateBuiltBlocks(world, pos.relative(e));
+				activateBuiltBlocks(level, pos.relative(e));
 			}
 		}
 	}
 
-	private void letsBuild(Level world, BlockPos pos) {
-		CarminiteBuilderBlockEntity tileEntity = (CarminiteBuilderBlockEntity) world.getBlockEntity(pos);
+	private void letsBuild(Level level, BlockPos pos) {
+		CarminiteBuilderBlockEntity tileEntity = (CarminiteBuilderBlockEntity) level.getBlockEntity(pos);
 
 		if (tileEntity != null && !tileEntity.makingBlocks) {
 			tileEntity.startBuilding();
@@ -109,15 +109,15 @@ public class BuilderBlock extends BaseEntityBlock {
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE) {
-			this.sparkle(world, pos);
+			this.sparkle(level, pos);
 		}
 	}
 
 	// [VanillaCopy] BlockRedstoneOre.spawnParticles. Unchanged.
-	public void sparkle(Level worldIn, BlockPos pos) {
-		Random random = worldIn.random;
+	public void sparkle(Level level, BlockPos pos) {
+		RandomSource random = level.getRandom();
 		double d0 = 0.0625D;
 
 		for (int i = 0; i < 6; ++i) {
@@ -125,27 +125,27 @@ public class BuilderBlock extends BaseEntityBlock {
 			double d2 = pos.getY() + random.nextFloat();
 			double d3 = pos.getZ() + random.nextFloat();
 
-			if (i == 0 && !worldIn.getBlockState(pos.above()).isSolidRender(worldIn, pos)) {
+			if (i == 0 && !level.getBlockState(pos.above()).isSolidRender(level, pos)) {
 				d2 = pos.getY() + d0 + 1.0D;
 			}
 
-			if (i == 1 && !worldIn.getBlockState(pos.below()).isSolidRender(worldIn, pos)) {
+			if (i == 1 && !level.getBlockState(pos.below()).isSolidRender(level, pos)) {
 				d2 = pos.getY() - d0;
 			}
 
-			if (i == 2 && !worldIn.getBlockState(pos.south()).isSolidRender(worldIn, pos)) {
+			if (i == 2 && !level.getBlockState(pos.south()).isSolidRender(level, pos)) {
 				d3 = pos.getZ() + d0 + 1.0D;
 			}
 
-			if (i == 3 && !worldIn.getBlockState(pos.north()).isSolidRender(worldIn, pos)) {
+			if (i == 3 && !level.getBlockState(pos.north()).isSolidRender(level, pos)) {
 				d3 = pos.getZ() - d0;
 			}
 
-			if (i == 4 && !worldIn.getBlockState(pos.east()).isSolidRender(worldIn, pos)) {
+			if (i == 4 && !level.getBlockState(pos.east()).isSolidRender(level, pos)) {
 				d1 = pos.getX() + d0 + 1.0D;
 			}
 
-			if (i == 5 && !worldIn.getBlockState(pos.west()).isSolidRender(worldIn, pos)) {
+			if (i == 5 && !level.getBlockState(pos.west()).isSolidRender(level, pos)) {
 				d1 = pos.getX() - d0;
 			}
 
@@ -153,7 +153,7 @@ public class BuilderBlock extends BaseEntityBlock {
 			float f2 = Math.max(0.0F, 1.0F * 1.0F * 0.7F - 0.5F);
 			float f3 = Math.max(0.0F, 1.0F * 1.0F * 0.6F - 0.7F);
 			if (d1 < pos.getX() || d1 > pos.getX() + 1 || d2 < 0.0D || d2 > pos.getY() + 1 || d3 < pos.getZ() || d3 > pos.getZ() + 1) {
-				worldIn.addParticle(new DustParticleOptions(new Vector3f(f1, f2, f3), 1.0F), d1, d2, d3, 0.0D, 0.0D, 0.0D);
+				level.addParticle(new DustParticleOptions(new Vector3f(f1, f2, f3), 1.0F), d1, d2, d3, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
@@ -161,13 +161,13 @@ public class BuilderBlock extends BaseEntityBlock {
 	/**
 	 * If the targeted block is a vanishing block, activate it
 	 */
-	public static void activateBuiltBlocks(Level world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
+	public static void activateBuiltBlocks(Level level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
 
 		if (state.getBlock() == TFBlocks.BUILT_BLOCK.get() && !state.getValue(TranslucentBuiltBlock.ACTIVE)) {
-			world.setBlockAndUpdate(pos, state.setValue(TranslucentBuiltBlock.ACTIVE, true));
-			world.playSound(null, pos, TFSounds.BUILDER_REPLACE, SoundSource.BLOCKS, 0.3F, 0.6F);
-			world.scheduleTick(pos, state.getBlock(), 10);
+			level.setBlockAndUpdate(pos, state.setValue(TranslucentBuiltBlock.ACTIVE, true));
+			level.playSound(null, pos, TFSounds.BUILDER_REPLACE.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.scheduleTick(pos, state.getBlock(), 10);
 		}
 	}
 

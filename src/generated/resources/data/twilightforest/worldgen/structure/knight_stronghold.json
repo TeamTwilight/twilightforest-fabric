@@ -1,0 +1,84 @@
+{
+  "type": "twilightforest:legacy_landmark",
+  "adjust_structure_elevation": false,
+  "advancements_required": [
+    "twilightforest:progress_trophy_pedestal"
+  ],
+  "allow_biome_surface_decorations": true,
+  "allow_biome_underground_decorations": false,
+  "ambient_spawns": [],
+  "biomes": "#twilightforest:valid_knight_stronghold_biomes",
+  "hint_item": {
+    "Count": 1,
+    "id": "minecraft:written_book",
+    "tag": {
+      "author": "A Forgotten Explorer",
+      "pages": [
+        "{\"translate\":\"twilightforest.book.tfstronghold.1\"}",
+        "{\"translate\":\"twilightforest.book.tfstronghold.2\"}",
+        "{\"translate\":\"twilightforest.book.tfstronghold.3\"}",
+        "{\"translate\":\"twilightforest.book.tfstronghold.4\"}",
+        "{\"translate\":\"twilightforest.book.tfstronghold.5\"}"
+      ],
+      "title": "Notes on a Stronghold"
+    }
+  },
+  "hint_mob": "twilightforest:kobold",
+  "labelled_monster_spawns": {
+    "0": [
+      {
+        "type": "twilightforest:blockchain_goblin",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:lower_goblin_knight",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "twilightforest:helmet_crab",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:slime_beetle",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:redcap_sapper",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 2
+      },
+      {
+        "type": "twilightforest:kobold",
+        "maxCount": 8,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:creeper",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:slime",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 5
+      }
+    ]
+  },
+  "legacy_landmark_start": "knight_stronghold",
+  "spawn_overrides": {},
+  "step": "underground_structures",
+  "terrain_adaptation": "bury",
+  "water_spawns": []
+}

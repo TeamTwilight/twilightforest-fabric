@@ -23,7 +23,7 @@ public class EnforceProgressionStatusPacket implements S2CPacket {
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeBoolean(enforce);
+		buf.writeBoolean(this.enforce);
 	}
 
 	@Override
@@ -34,12 +34,8 @@ public class EnforceProgressionStatusPacket implements S2CPacket {
 	public static class Handler {
 
 		public static boolean onMessage(EnforceProgressionStatusPacket message, Executor ctx) {
-			ctx.execute(new Runnable() {
-				@Override
-				public void run() {
-					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null);
-				}
-			});
+			ctx.execute(() ->
+					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null));
 			return true;
 		}
 	}

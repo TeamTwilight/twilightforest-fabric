@@ -23,10 +23,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
 import twilightforest.entity.IBreathAttacker;
-import twilightforest.entity.ai.BreathAttackGoal;
-import twilightforest.util.TFDamageSources;
+import twilightforest.entity.ai.goal.BreathAttackGoal;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFSounds;
 
 public class FireBeetle extends Monster implements IBreathAttacker {
 
@@ -36,7 +36,6 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 
 	public FireBeetle(EntityType<? extends FireBeetle> type, Level world) {
 		super(type, world);
-		this.fireImmune();
 	}
 
 	@Override
@@ -52,7 +51,7 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(BREATHING, false);
+		this.entityData.define(BREATHING, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -64,27 +63,27 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.FIRE_BEETLE_HURT;
+		return TFSounds.FIRE_BEETLE_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.FIRE_BEETLE_DEATH;
+		return TFSounds.FIRE_BEETLE_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		playSound(TFSounds.FIRE_BEETLE_STEP, 0.15F, 1.0F);
+		playSound(TFSounds.FIRE_BEETLE_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override
 	public boolean isBreathing() {
-		return entityData.get(BREATHING);
+		return this.entityData.get(BREATHING);
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-		entityData.set(BREATHING, flag);
+		this.entityData.set(BREATHING, flag);
 	}
 
 	@Override
@@ -92,43 +91,34 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 		super.aiStep();
 
 		// when breathing fire, spew particles
-		if (isBreathing()) {
+		if (this.isBreathing()) {
 			Vec3 look = this.getLookAngle();
 
 			double dist = 0.9;
-			double px = this.getX() + look.x * dist;
-			double py = this.getY() + 0.25 + look.y * dist;
-			double pz = this.getZ() + look.z * dist;
+			double px = this.getX() + look.x() * dist;
+			double py = this.getY() + 0.25D + look.y() * dist;
+			double pz = this.getZ() + look.z() * dist;
 
 			for (int i = 0; i < 2; i++) {
-				double dx = look.x;
-				double dy = look.y;
-				double dz = look.z;
+				double dx = look.x();
+				double dy = look.y();
+				double dz = look.z();
 
 				double spread = 5 + this.getRandom().nextDouble() * 2.5;
 				double velocity = 0.15 + this.getRandom().nextDouble() * 0.15;
 
 				// spread flame
-				dx += this.getRandom().nextGaussian() * 0.007499999832361937D * spread;
-				dy += this.getRandom().nextGaussian() * 0.007499999832361937D * spread;
-				dz += this.getRandom().nextGaussian() * 0.007499999832361937D * spread;
+				dx += this.getRandom().nextGaussian() * 0.0075D * spread;
+				dy += this.getRandom().nextGaussian() * 0.0075D * spread;
+				dz += this.getRandom().nextGaussian() * 0.0075D * spread;
 				dx *= velocity;
 				dy *= velocity;
 				dz *= velocity;
 
-				level.addParticle(ParticleTypes.FLAME, px, py, pz, dx, dy, dz);
+				this.getLevel().addParticle(ParticleTypes.FLAME, px, py, pz, dx, dy, dz);
 			}
 
-			playSound(TFSounds.FIRE_BEETLE_SHOOT, random.nextFloat() * 0.5F, random.nextFloat() * 0.5F);
-		}
-	}
-
-	@Override
-	public float getBrightness() {
-		if (isBreathing()) {
-			return 15728880;
-		} else {
-			return super.getBrightness();
+			playSound(TFSounds.FIRE_BEETLE_SHOOT.get(), this.getRandom().nextFloat() * 0.5F, this.getRandom().nextFloat() * 0.5F);
 		}
 	}
 
@@ -155,10 +145,10 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entityIn) {
-		if (isBreathing()) {
-			entityIn.hurt(TFDamageSources.scorched(this), BREATH_DAMAGE);
+	public boolean doHurtTarget(Entity entity) {
+		if (this.isBreathing()) {
+			entity.hurt(TFDamageSources.scorched(this), BREATH_DAMAGE);
 		}
-		return super.doHurtTarget(entityIn);
+		return super.doHurtTarget(entity);
 	}
 }

@@ -2,30 +2,31 @@ package twilightforest.world.components.structures.minotaurmaze;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class MazeRoomExitComponent extends MazeRoomComponent {
 
 	public MazeRoomExitComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMRE, nbt);
+		super(TFStructurePieceTypes.TFMMRE.get(), nbt);
 	}
 
-	public MazeRoomExitComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRE, feature, i, rand, x, y, z);
+	public MazeRoomExitComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMRE.get(), feature, i, rand, x, y, z);
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// shaft down

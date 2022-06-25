@@ -10,14 +10,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.entity.MoonwormBlockEntity;
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.init.TFBlockEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class MoonwormBlock extends CritterBlock {
 
-	protected MoonwormBlock(BlockBehaviour.Properties props) {
-		super(props);
+	public MoonwormBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 	}
 
 	@Nullable

@@ -1,77 +1,81 @@
 {
   "parent": "twilightforest:alt/root",
   "criteria": {
-    "has_twilight": {
-      "trigger": "minecraft:tick",
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "advancements": {
-                  "twilightforest:alt/treasures/twilight_scepter": true
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
     "has_lifedrain": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:alt/treasures/lifedrain_scepter": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
-    },
-    "has_zombie": {
-      "trigger": "minecraft:tick",
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "advancements": {
-                  "twilightforest:alt/treasures/zombie_scepter": true
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
+      },
+      "trigger": "minecraft:tick"
     },
     "has_shield": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:alt/treasures/shield_scepter": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
+      },
+      "trigger": "minecraft:tick"
+    },
+    "has_twilight": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:alt/treasures/twilight_scepter": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    },
+    "has_zombie": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:alt/treasures/zombie_scepter": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
     }
   },
   "requirements": [

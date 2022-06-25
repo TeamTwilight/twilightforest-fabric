@@ -2,12 +2,20 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "in_biome": {
-      "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "twilightforest:glacier"
-        }
-      }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "twilightforest:glacier"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
     }
   },
   "requirements": [

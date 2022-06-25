@@ -94,9 +94,9 @@ dependencies {
     modImplementation(include("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"))
     modImplementation(include("curse.maven:forge-config-api-port-fabric-547434:${project.config_api_version}"))
 
-    modCompileOnly("slimeknights.tconstruct:TConstruct:${minecraft_version}-${tcon_version}") {
-        exclude(group: "io.github.fabricators_of_create")
-    }
+//    modCompileOnly("slimeknights.tconstruct:TConstruct:${minecraft_version}-${tcon_version}") {
+//        exclude(group: "io.github.fabricators_of_create")
+//    }
 
 //     modImplementation("curse.maven:irisshaders-fabric-455508:3605379")
 //     modImplementation "org.anarres:jcpp:1.4.14"

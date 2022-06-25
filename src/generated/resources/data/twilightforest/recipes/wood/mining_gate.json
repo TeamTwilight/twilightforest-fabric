@@ -1,9 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "S#S",
-    "S#S"
-  ],
   "key": {
     "#": {
       "item": "twilightforest:mining_planks"
@@ -12,6 +8,10 @@
       "tag": "c:rods/wooden"
     }
   },
+  "pattern": [
+    "S#S",
+    "S#S"
+  ],
   "result": {
     "item": "twilightforest:mining_fence_gate"
   }

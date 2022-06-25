@@ -44,7 +44,7 @@ public class ThrownBlockRenderer extends EntityRenderer<ThrownBlock> {
 				BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
 				for (RenderType type : RenderType.chunkBufferLayers()) {
 					if (ItemBlockRenderTypes.getChunkRenderType(blockstate) == type) {
-						blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, ms, buffers.getBuffer(type), false, new Random(), blockstate.getSeed(BlockPos.ZERO), OverlayTexture.NO_OVERLAY);
+						blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, ms, buffers.getBuffer(type), false, world.random, blockstate.getSeed(BlockPos.ZERO), OverlayTexture.NO_OVERLAY);
 					}
 				}
 				ms.popPose();

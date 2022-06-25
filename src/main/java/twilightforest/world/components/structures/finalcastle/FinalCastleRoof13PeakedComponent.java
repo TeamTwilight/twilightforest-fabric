@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -13,19 +14,19 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class FinalCastleRoof13PeakedComponent extends TFStructureComponentOld {
 
 	public FinalCastleRoof13PeakedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCRo13Pk, nbt);
+		super(TFStructurePieceTypes.TFFCRo13Pk.get(), nbt);
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleRoof13PeakedComponent(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCRo13Pk, feature, i, x, y, z);
+	public FinalCastleRoof13PeakedComponent(TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFFCRo13Pk.get(), feature, i, x, y, z);
 
 		int height = 18;
 
@@ -34,14 +35,14 @@ public class FinalCastleRoof13PeakedComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// peaky roof, loop unrolled as it was getting dumb
 		for (int i = 0; i < 3; i++) {
 			this.generateBox(world, sbb, 1, i, i, 15, i, i, deco.roofState, deco.roofState, false);

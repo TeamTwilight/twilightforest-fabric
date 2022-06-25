@@ -4,10 +4,12 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,15 +18,13 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
 
-import java.util.Random;
-
 public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTemplateStructurePiece {
-    protected ResourceLocation templateOverlayLocation;
+    protected final ResourceLocation templateOverlayLocation;
     protected StructureTemplate templateOverlay;
     protected StructurePlaceSettings placeSettingsOverlay;
 
@@ -36,7 +36,7 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
         this.placeSettingsOverlay = placeSettingsOverlay;
     }
 
-    public TwilightDoubleTemplateStructurePiece(StructurePieceType type, int genDepth, StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, ResourceLocation templateOverlayLocation, StructurePlaceSettings placeSettingsOverlay, BlockPos startPosition) {
+    public TwilightDoubleTemplateStructurePiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, ResourceLocation templateOverlayLocation, StructurePlaceSettings placeSettingsOverlay, BlockPos startPosition) {
         super(type, genDepth, structureManager, templateLocation, placeSettings, startPosition);
 
         this.templateOverlayLocation = templateOverlayLocation;
@@ -52,7 +52,7 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
     }
 
     @Override
-    public void postProcess(WorldGenLevel worldGenLevel, StructureFeatureManager structureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
+    public void postProcess(WorldGenLevel worldGenLevel, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos blockPos) {
         super.postProcess(worldGenLevel, structureManager, chunkGenerator, random, boundingBox, chunkPos, blockPos);
 
         // [VanillaCopy] TemplateStructurePiece.postProcess
@@ -71,18 +71,15 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
             for(StructureTemplate.StructureBlockInfo structureBlockInfo : this.templateOverlay.filterBlocks(this.templatePosition, this.placeSettingsOverlay, Blocks.JIGSAW)) {
                 if (structureBlockInfo.nbt != null) {
                     String s = structureBlockInfo.nbt.getString("final_state");
-                    BlockStateParser blockStateParser = new BlockStateParser(new StringReader(s), false);
                     BlockState blockState = Blocks.AIR.defaultBlockState();
-
                     try {
-                        blockStateParser.parse(true);
-                        BlockState parserState = blockStateParser.getState();
+                        BlockState parserState = BlockStateParser.parseForBlock(Registry.BLOCK, new StringReader(s), false).blockState();
                         if (parserState != null) {
                             blockState = parserState;
                         } else {
                             TwilightForestMod.LOGGER.error("Error while parsing blockstate {} in jigsaw block @ {}", s, structureBlockInfo.pos);
                         }
-                    } catch (CommandSyntaxException commandsyntaxexception) {
+                    } catch (CommandSyntaxException e) {
                         TwilightForestMod.LOGGER.error("Error while parsing blockstate {} in jigsaw block @ {}", s, structureBlockInfo.pos);
                     }
 

@@ -4,6 +4,7 @@ import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -26,9 +27,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.util.EntityUtil;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
-import java.util.Random;
 
 public class HedgeBlock extends Block implements CustomPathNodeTypeBlock {
 
@@ -36,42 +36,42 @@ public class HedgeBlock extends Block implements CustomPathNodeTypeBlock {
 
 	private static final int DAMAGE = 3;
 
-	protected HedgeBlock(BlockBehaviour.Properties props) {
-		super(props);
+	public HedgeBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
 	}
 
 	@Override
 	@Deprecated
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return HEDGE_BB;
 	}
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
-		return entity != null && shouldDamage(entity) ? BlockPathTypes.DANGER_CACTUS : null;
+	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
+		return mob != null && this.shouldDamage(mob) ? BlockPathTypes.DANGER_CACTUS : null;
 	}
 
 	@Override
 	@Deprecated
-	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
-		if (shouldDamage(entity)) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if (this.shouldDamage(entity)) {
 			entity.hurt(DamageSource.CACTUS, DAMAGE);
 		}
 	}
 
 	@Override
-	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-		if (shouldDamage(entity)) {
+	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+		if (this.shouldDamage(entity)) {
 			entity.hurt(DamageSource.CACTUS, DAMAGE);
 		}
 	}
 
 	@Override
-	public void attack(BlockState state, Level world, BlockPos pos, Player player) {
-		if (!world.isClientSide) {
-			world.scheduleTick(pos, this, 10);
+	public void attack(BlockState state, Level level, BlockPos pos, Player player) {
+		if (!level.isClientSide) {
+			level.scheduleTick(pos, this, 10);
 		}
 	}
 
@@ -83,9 +83,9 @@ public class HedgeBlock extends Block implements CustomPathNodeTypeBlock {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		// find players within range
-		List<Player> nearbyPlayers = world.getEntitiesOfClass(Player.class, new AABB(pos).inflate(8.0));
+		List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(8.0));
 
 		for (Player player : nearbyPlayers) {
 			// are they swinging?
@@ -97,7 +97,7 @@ public class HedgeBlock extends Block implements CustomPathNodeTypeBlock {
 					player.hurt(DamageSource.CACTUS, DAMAGE);
 
 					// trigger this again!
-					world.scheduleTick(pos, this, 10);
+					level.scheduleTick(pos, this, 10);
 				}
 			}
 		}

@@ -21,7 +21,11 @@ import twilightforest.entity.boss.Hydra;
 @Environment(EnvType.CLIENT)
 public class HydraModel extends HierarchicalModel<Hydra> {
 
-    public ModelPart root, body, tail, rightLeg, leftLeg;
+    public final ModelPart root;
+	public final ModelPart body;
+	public ModelPart tail;
+	public ModelPart rightLeg;
+	public ModelPart leftLeg;
 
     public HydraModel(ModelPart root) {
         this.root = root;

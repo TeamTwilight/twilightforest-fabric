@@ -4,27 +4,27 @@
     [
       {
         "type": "forge:nbt",
-        "item": "minecraft:potion",
         "count": 1,
+        "item": "minecraft:potion",
         "nbt": "{Potion:\"minecraft:strength\"}"
       },
       {
         "type": "forge:nbt",
-        "item": "minecraft:potion",
         "count": 1,
+        "item": "minecraft:potion",
         "nbt": "{Potion:\"minecraft:strong_strength\"}"
       },
       {
         "type": "forge:nbt",
-        "item": "minecraft:potion",
         "count": 1,
+        "item": "minecraft:potion",
         "nbt": "{Potion:\"minecraft:long_strength\"}"
       }
     ],
     {
       "type": "forge:nbt",
-      "item": "twilightforest:zombie_scepter",
       "count": 1,
+      "item": "twilightforest:zombie_scepter",
       "nbt": "{Damage:9}"
     },
     {

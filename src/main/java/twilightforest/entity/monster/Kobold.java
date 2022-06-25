@@ -24,10 +24,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.entity.ai.FlockToSameKindGoal;
-import twilightforest.entity.ai.PanicOnFlockDeathGoal;
+import twilightforest.entity.ai.goal.FlockToSameKindGoal;
+import twilightforest.entity.ai.goal.PanicOnFlockDeathGoal;
+import twilightforest.init.TFSounds;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -75,17 +75,17 @@ public class Kobold extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.KOBOLD_AMBIENT;
+		return TFSounds.KOBOLD_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.KOBOLD_HURT;
+		return TFSounds.KOBOLD_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.KOBOLD_DEATH;
+		return TFSounds.KOBOLD_DEATH.get();
 	}
 
 	public boolean isPanicked() {
@@ -98,7 +98,7 @@ public class Kobold extends Monster {
 
 	@Override
 	public SoundEvent getEatingSound(ItemStack stack) {
-		return TFSounds.KOBOLD_MUNCH;
+		return TFSounds.KOBOLD_MUNCH.get();
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class Kobold extends Monster {
 			ItemStack itemstack = this.getItemBySlot(EquipmentSlot.MAINHAND);
 			if (this.canEat(itemstack)) {
 				if (this.eatingTime <= 0) {
-					ItemStack itemstack1 = itemstack.finishUsingItem(this.level, this);
+					ItemStack itemstack1 = itemstack.finishUsingItem(this.getLevel(), this);
 					if (!itemstack1.isEmpty()) {
 						this.setItemSlot(EquipmentSlot.MAINHAND, itemstack1);
 					}
@@ -242,7 +242,7 @@ public class Kobold extends Monster {
 		return 1;
 	}
 
-	//we dont want kobolds to attack if theyre pacified
+	//we dont want kobolds to attack if they're pacified
 	private static class KoboldAttackPlayerTarget extends NearestAttackableTargetGoal<Player> {
 
 		public KoboldAttackPlayerTarget(Kobold mob) {

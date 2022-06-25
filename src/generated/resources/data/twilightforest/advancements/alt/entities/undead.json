@@ -2,58 +2,61 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "has_druid": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:alt/entities/skeleton_druid": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
-    },
-    "has_wraith": {
-      "trigger": "minecraft:tick",
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "advancements": {
-                  "twilightforest:alt/entities/wraith": true
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
+      },
+      "trigger": "minecraft:tick"
     },
     "has_guardian": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:alt/entities/snow_guardian": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
+      },
+      "trigger": "minecraft:tick"
+    },
+    "has_wraith": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:alt/entities/wraith": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
     }
   },
   "requirements": [

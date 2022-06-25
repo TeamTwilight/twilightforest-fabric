@@ -16,7 +16,7 @@ import twilightforest.entity.passive.Squirrel;
 @Environment(EnvType.CLIENT)
 public class SquirrelModel extends QuadrupedModel<Squirrel> {
 
-    public ModelPart tail1;
+    public final ModelPart tail1;
     public ModelPart tail2;
 
     public SquirrelModel(ModelPart root) {

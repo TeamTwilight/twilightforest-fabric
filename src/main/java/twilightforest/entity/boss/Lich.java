@@ -40,23 +40,23 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
+import twilightforest.entity.ai.goal.*;
+import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
-import twilightforest.entity.ai.*;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.LichMinion;
-import twilightforest.item.TFItems;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFItems;
+import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -280,7 +280,7 @@ public class Lich extends Monster {
 		}
 
 		if (this.isShadowClone() && src != DamageSource.OUT_OF_WORLD) {
-			this.playSound(TFSounds.LICH_CLONE_HURT, 1.0F, this.getVoicePitch() * 2.0F);
+			this.playSound(TFSounds.LICH_CLONE_HURT.get(), 1.0F, this.getVoicePitch() * 2.0F);
 			return false;
 		}
 
@@ -295,10 +295,10 @@ public class Lich extends Monster {
 				// reduce shield for magic damage greater than 1 heart
 				if (this.getShieldStrength() > 0) {
 					this.setShieldStrength(this.getShieldStrength() - 1);
-					this.playSound(TFSounds.SHIELD_BREAK, 1.0F, this.getVoicePitch() * 2.0F);
+					this.playSound(TFSounds.SHIELD_BREAK.get(), 1.0F, this.getVoicePitch() * 2.0F);
 				}
 			} else {
-				this.playSound(TFSounds.SHIELD_BREAK, 1.0F, this.getVoicePitch() * 2.0F);
+				this.playSound(TFSounds.SHIELD_BREAK.get(), 1.0F, this.getVoicePitch() * 2.0F);
 				if (src.getEntity() instanceof LivingEntity living) {
 					this.setLastHurtByMob(living);
 				}
@@ -327,12 +327,12 @@ public class Lich extends Monster {
 		super.die(cause);
 		// mark the tower as defeated
 		if (!this.getLevel().isClientSide() && !this.isShadowClone()) {
-			TFGenerationSettings.markStructureConquered(this.getLevel(), this.blockPosition(), TFFeature.LICH_TOWER);
+			TFGenerationSettings.markStructureConquered(this.getLevel(), this.blockPosition(), TFLandmark.LICH_TOWER);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 
@@ -362,7 +362,7 @@ public class Lich extends Monster {
 		double ty = (this.getTarget().getBoundingBox().minY + this.getTarget().getBbHeight() / 2.0F) - (this.getY() + this.getBbHeight() / 2.0F);
 		double tz = this.getTarget().getZ() - sz;
 
-		this.playSound(TFSounds.LICH_SHOOT, this.getSoundVolume(), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
+		this.playSound(TFSounds.LICH_SHOOT.get(), this.getSoundVolume(), (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F);
 
 		projectile.moveTo(sx, sy, sz, getYRot(), getXRot());
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
@@ -466,8 +466,8 @@ public class Lich extends Monster {
 		this.teleportTo(destX, destY, destZ);
 
 		this.makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
-		this.getLevel().playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT, this.getSoundSource(), 1.0F, 1.0F);
-		this.playSound(TFSounds.LICH_TELEPORT, 1.0F, 1.0F);
+		this.getLevel().playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT.get(), this.getSoundSource(), 1.0F, 1.0F);
+		this.playSound(TFSounds.LICH_TELEPORT.get(), 1.0F, 1.0F);
 
 		// sometimes we need to do this
 		this.jumping = false;
@@ -492,18 +492,18 @@ public class Lich extends Monster {
 		}
 	}
 
-	public void makeMagicTrail(BlockPos source, BlockPos target, float red, float green, float blue) {
+	public void makeMagicTrail(Vec3 source, Vec3 target, float red, float green, float blue) {
 		int particles = 60;
 		if (!this.getLevel().isClientSide()) {
 			for (ServerPlayer serverplayer : ((ServerLevel) this.getLevel()).players()) {
-				if (serverplayer.distanceToSqr(Vec3.atCenterOf(source)) < 4096.0D) {
+				if (serverplayer.distanceToSqr(source) < 4096.0D) {
 					ParticlePacket packet = new ParticlePacket();
 
 					for (int i = 0; i < particles; i++) {
 						double trailFactor = i / (particles - 1.0D);
-						double tx = source.getX() + (target.getX() - source.getX()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
-						double ty = source.getY() + 0.2D + (target.getY() - source.getY()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
-						double tz = source.getZ() + (target.getZ() - source.getZ()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
+						double tx = source.x() + (target.x() - source.x()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
+						double ty = source.y() + 0.2D + (target.y() - source.y()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
+						double tz = source.z() + (target.z() - source.z()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
 						packet.queueParticle(ParticleTypes.ENTITY_EFFECT, false, tx, ty, tz, red, green, blue);
 					}
 
@@ -628,17 +628,17 @@ public class Lich extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.LICH_AMBIENT;
+		return TFSounds.LICH_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.LICH_HURT;
+		return TFSounds.LICH_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.LICH_DEATH;
+		return TFSounds.LICH_DEATH.get();
 	}
 
 	@Override

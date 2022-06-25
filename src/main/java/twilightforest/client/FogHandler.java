@@ -4,9 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.fabricators_of_create.porting_lib.event.client.FogEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.Mth;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import net.minecraft.world.level.material.FogType;
+import twilightforest.TwilightForestMod;
+import twilightforest.init.BiomeKeys;
 
 public class FogHandler {
 
@@ -41,26 +42,23 @@ public class FogHandler {
 		boolean flag = isSpooky();
 		if (flag || spoopFog < 1F) {
 			float f = 48F;
-			f = f >= distance ? distance : Mth.clampedLerp(f, distance, spoopFog);
-			float shift = (float) (0.001F * partial);
+			f = f >= event.getFarPlaneDistance() ? event.getFarPlaneDistance() : Mth.clampedLerp(f, event.getFarPlaneDistance(), spoopFog);
+			float shift = (float) (0.001F * event.getPartialTick());
 			if (flag)
 				spoopFog -= shift;
 			else
 				spoopFog += shift;
 			spoopFog = Mth.clamp(spoopFog, 0F, 1F);
 
-			//FIXME: These two are commented out as they do not exist in the main game. While this might mean they aren't needed, look at this if there is a problem
-//			RenderSystem.fogMode(GlStateManager.FogMode.LINEAR);
-
-			if (type == FogRenderer.FogMode.FOG_SKY) {
+			//FIXME getMode now requires a FogType when it used to want a FogMode. Does this work ok?
+			//if (type == FogRenderer.FogMode.FOG_SKY) {
+			if (event.getMode() == FogType.NONE) {
 				RenderSystem.setShaderFogStart(0.0F);
 				RenderSystem.setShaderFogEnd(f);
 			} else {
 				RenderSystem.setShaderFogStart(f * 0.75F);
 				RenderSystem.setShaderFogEnd(f);
 			}
-
-//			RenderSystem.setupNvFogDistance();
 		}
 	}
 

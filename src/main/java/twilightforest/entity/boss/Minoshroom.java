@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -27,18 +28,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.ai.GroundAttackGoal;
+import twilightforest.init.TFBlocks;
+import twilightforest.entity.ai.goal.GroundAttackGoal;
 import twilightforest.entity.monster.Minotaur;
-import twilightforest.item.TFItems;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFItems;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,7 +136,7 @@ public class Minoshroom extends Minotaur {
 
 						this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), cx, cy, cz, 0.0D, 0.0D, 0.0D);
 					}
-					groundSmashState = false;
+					this.groundSmashState = false;
 				}
 			}
 		}
@@ -143,27 +144,27 @@ public class Minoshroom extends Minotaur {
 	
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MINOSHROOM_AMBIENT;
+		return TFSounds.MINOSHROOM_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.MINOSHROOM_HURT;
+		return TFSounds.MINOSHROOM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MINOSHROOM_DEATH;
+		return TFSounds.MINOSHROOM_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.MINOSHROOM_STEP, 0.15F, 0.8F);
+		this.playSound(TFSounds.MINOSHROOM_STEP.get(), 0.15F, 0.8F);
 	}
 
 	@Override
 	protected SoundEvent getChargeSound() {
-		return TFSounds.MINOSHROOM_ATTACK;
+		return TFSounds.MINOSHROOM_ATTACK.get();
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -176,15 +177,15 @@ public class Minoshroom extends Minotaur {
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
-		super.populateDefaultEquipmentSlots(difficulty);
+	protected void populateDefaultEquipmentSlots(RandomSource source, DifficultyInstance difficulty) {
+		super.populateDefaultEquipmentSlots(source, difficulty);
 		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.DIAMOND_MINOTAUR_AXE.get()));
 	}
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		if(source.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
-			hurtBy.add(player);
+		if(source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
+			this.hurtBy.add(player);
 		}
 		return super.hurt(source, amount);
 	}
@@ -193,12 +194,12 @@ public class Minoshroom extends Minotaur {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if (!this.getLevel().isClientSide()) {
-			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.LABYRINTH);
-			for(ServerPlayer player : hurtBy) {
+			TFGenerationSettings.markStructureConquered(this.getLevel(), new BlockPos(this.blockPosition()), TFLandmark.LABYRINTH);
+			for(ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 

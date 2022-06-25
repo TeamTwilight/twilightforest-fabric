@@ -22,24 +22,18 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.block.entity.TFBlockEntities;
-import twilightforest.client.model.TFLayerDefinitions;
-import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.entity.*;
-import twilightforest.client.model.entity.legacy.*;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.client.renderer.entity.*;
-import twilightforest.client.renderer.entity.legacy.*;
-import twilightforest.compat.TrinketsCompat;
+import twilightforest.compat.CuriosCompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.TFEntities;
-import twilightforest.inventory.TFContainers;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.client.renderer.entity.IceLayer;
+import twilightforest.client.renderer.entity.ShieldLayer;
+import twilightforest.init.TFMenuTypes;
+import twilightforest.init.TFItems;
 
 import java.util.Map;
 import java.util.Objects;
@@ -94,19 +88,12 @@ public class TFClientSetup implements ClientModInitializer {
 
         RenderLayerRegistration.init();
         TFBlockEntities.registerTileEntityRenders();
-        TFContainers.renderScreens();
+        TFMenuTypes.renderScreens();
 
 		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
 			TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
 			DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
 		});
-
-		for(BannerPattern pattern : BannerPattern.values()) {
-			if(pattern.getFilename().startsWith(TwilightForestMod.ID)) {
-				Sheets.BANNER_MATERIALS.put(pattern, Sheets.createBannerMaterial(pattern));
-				Sheets.SHIELD_MATERIALS.put(pattern, Sheets.createShieldMaterial(pattern));
-			}
-		}
 
 //        evt.enqueueWork(() -> {
             registerWoodType(TFBlocks.TWILIGHT_OAK);
@@ -124,6 +111,10 @@ public class TFClientSetup implements ClientModInitializer {
 //        });
 
     }
+
+	private static void registerWoodType(WoodType woodType) {
+		Sheets.SIGN_MATERIALS.put(woodType, Sheets.createSignMaterial(woodType));
+	}
 
 	@SuppressWarnings("unchecked")
 	public static void attachRenderLayers(final Map<EntityType<?>, EntityRenderer<?>> renderers, final Map<String, EntityRenderer<? extends Player>> skins) {

@@ -18,9 +18,6 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.projectile.FallingIce;
 
-import java.util.Random;
-
-@Environment(EnvType.CLIENT)
 public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 	public FallingIceRenderer(EntityRendererProvider.Context renderManagerIn) {
 		super(renderManagerIn);
@@ -43,7 +40,7 @@ public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 				BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
 				for (net.minecraft.client.renderer.RenderType type : net.minecraft.client.renderer.RenderType.chunkBufferLayers()) {
 					if (ItemBlockRenderTypes.getChunkRenderType(blockstate) == type) {
-						blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, new Random(), blockstate.getSeed(entity.getStartPos()), OverlayTexture.NO_OVERLAY);
+						blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, world.random, blockstate.getSeed(entity.getStartPos()), OverlayTexture.NO_OVERLAY);
 					}
 				}
 				stack.popPose();

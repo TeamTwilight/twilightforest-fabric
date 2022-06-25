@@ -1,16 +1,17 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.fml.event.config.ModConfigEvent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 public class TFConfig {
 
@@ -133,19 +134,19 @@ public class TFConfig {
 						worldRestart().
 						translation(config + "uncrafting_recipes").
 						comment("""
-							If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.
-							To add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.
-							Example: "twilightforest:moonworm_queen" will disable uncrafting the moonworm queen into itself and 3 torchberries.
-							If an item has multiple crafting recipes and you wish to disable them all, add the item to the "twilightforest:banned_uncraftables" item tag.
-							If you have a problematic ingredient, like infested towerwood for example, add the item to the "twilightforest:banned_uncrafting_ingredients" item tag.""").
+								If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.
+								To add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.
+								Example: "twilightforest:moonworm_queen" will disable uncrafting the moonworm queen into itself and 3 torchberries.
+								If an item has multiple crafting recipes and you wish to disable them all, add the item to the "twilightforest:banned_uncraftables" item tag.
+								If you have a problematic ingredient, like infested towerwood for example, add the item to the "twilightforest:banned_uncrafting_ingredients" item tag.""").
 						defineList("disableUncraftingRecipes", new ArrayList<>(), s -> s instanceof String);
 				UNCRAFTING_STUFFS.blacklistedUncraftingModIds = builder.
 						worldRestart().
 						translation(config + "uncrafting_mod_ids").
 						comment("""
-							Here, you can disable all items from certain mods from being uncrafted.
-							Input a valid mod id to disable all uncrafting recipes from that mod.
-							Example: "twilightforest" will disable all uncrafting recipes from this mod.""").
+								Here, you can disable all items from certain mods from being uncrafted.
+								Input a valid mod id to disable all uncrafting recipes from that mod.
+								Example: "twilightforest" will disable all uncrafting recipes from this mod.""").
 						defineList("blacklistedUncraftingModIds", new ArrayList<>(), s -> s instanceof String);
 				UNCRAFTING_STUFFS.flipUncraftingModIdList = builder.
 						worldRestart().
@@ -392,12 +393,9 @@ public class TFConfig {
 			void loadLoadingScreenIcons() {
 				ImmutableList.Builder<ItemStack> iconList = ImmutableList.builder();
 
-				iconList.addAll(IMCHandler.getLoadingIconStacks());
-
 				for (String s : loadingIconStacks.get()) {
 					parseItemStack(s).ifPresent(iconList::add);
 				}
-
 				loadingScreenIcons = iconList.build();
 			}
 		}

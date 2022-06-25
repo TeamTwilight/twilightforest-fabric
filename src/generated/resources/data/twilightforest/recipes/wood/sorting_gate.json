@@ -1,9 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "S#S",
-    "S#S"
-  ],
   "key": {
     "#": {
       "item": "twilightforest:sorting_planks"
@@ -12,6 +8,10 @@
       "tag": "c:rods/wooden"
     }
   },
+  "pattern": [
+    "S#S",
+    "S#S"
+  ],
   "result": {
     "item": "twilightforest:sorting_fence_gate"
   }

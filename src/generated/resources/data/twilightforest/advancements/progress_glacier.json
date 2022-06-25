@@ -1,12 +1,68 @@
 {
   "parent": "twilightforest:progress_yeti",
+  "criteria": {
+    "previous_progression": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:progress_yeti": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    },
+    "queen": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:snow_queen"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "trophy": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:snow_queen_trophy"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "was_in_fight": {
+      "conditions": {
+        "hurt_entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:snow_queen"
+            }
+          }
+        ]
+      },
+      "trigger": "twilightforest:hurt_boss"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:snow_queen_trophy"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.progress_glacier"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.progress_glacier.desc",
       "with": [
@@ -16,68 +72,13 @@
       ]
     },
     "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:snow_queen_trophy"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "queen": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:snow_queen"
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "trophy": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:snow_queen_trophy"
-            ]
-          }
-        ]
-      }
-    },
-    "was_in_fight": {
-      "trigger": "twilightforest:hurt_boss",
-      "conditions": {
-        "hurt_entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:snow_queen"
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "previous_progression": {
-      "trigger": "minecraft:tick",
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "advancements": {
-                  "twilightforest:progress_yeti": true
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
+    "title": {
+      "translate": "advancement.twilightforest.progress_glacier"
     }
   },
   "requirements": [

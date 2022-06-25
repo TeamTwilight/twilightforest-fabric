@@ -13,7 +13,7 @@ import twilightforest.entity.boss.Hydra;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class LegacyHydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadLegacyModel> {
 

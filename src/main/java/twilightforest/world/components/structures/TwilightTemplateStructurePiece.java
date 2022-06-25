@@ -3,42 +3,40 @@ package twilightforest.world.components.structures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.util.ArrayUtil;
 import twilightforest.util.BoundingBoxUtils;
 
-import java.util.Random;
-
 public abstract class TwilightTemplateStructurePiece extends TemplateStructurePiece {
-    protected StructureManager structureManager;
+    protected final StructureTemplateManager structureManager;
     private final BlockPos originalPlacement;
     private final BoundingBox originalBox;
 
     public TwilightTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings rl2SettingsFunction) {
-        super(structurePieceType, compoundTag, ctx.structureManager(), rl -> rl2SettingsFunction);
+        super(structurePieceType, compoundTag, ctx.structureTemplateManager(), rl -> rl2SettingsFunction);
         this.rotation = this.getRotation();
         this.mirror = this.getMirror();
 
-        this.structureManager = ctx.structureManager();
+        this.structureManager = ctx.structureTemplateManager();
 
         this.originalPlacement = this.templatePosition;
         this.originalBox = BoundingBoxUtils.clone(this.boundingBox);
     }
 
-    public TwilightTemplateStructurePiece(StructurePieceType type, int genDepth, StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
+    public TwilightTemplateStructurePiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
         super(type, genDepth, structureManager, templateLocation, templateLocation.toString(), placeSettings, startPosition);
         this.rotation = this.getRotation();
         this.mirror = this.getMirror();
@@ -57,13 +55,8 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
         structureTag.putInt("mirror", this.placeSettings.getMirror().ordinal());
     }
 
-    @Override
-    public NoiseEffect getNoiseEffect() {
-        return NoiseEffect.NONE;
-    }
-
     // This will be required if you want to dig a piece into a noise beard
-    protected void placePieceAdjusted(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos, int dY) {
+    protected void placePieceAdjusted(WorldGenLevel level, StructureManager structureFeatureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox boundingBox, ChunkPos chunkPos, BlockPos pos, int dY) {
         this.templatePosition = this.templatePosition.above(dY);
 
         super.postProcess(level, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos, pos.above(dY));
@@ -89,7 +82,7 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
         return new StructurePlaceSettings().setRotation(rotation).setMirror(mirror).addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
     }
 
-    public static StructurePlaceSettings randomRotation(Random random) {
+    public static StructurePlaceSettings randomRotation(RandomSource random) {
         return makeSettings(Rotation.getRandom(random));
     }
 

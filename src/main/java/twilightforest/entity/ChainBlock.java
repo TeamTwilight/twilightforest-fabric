@@ -35,19 +35,21 @@ import twilightforest.TFSounds;
 import twilightforest.block.MazestoneBlock;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.monster.BlockChainGoblin;
-import twilightforest.item.TFItems;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFEnchantments;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
 public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEntity {
 
-	private int MAX_SMASH;
+	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
 
 	private static final EntityDataAccessor<Boolean> HAND = SynchedEntityData.defineId(ChainBlock.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> IS_FOIL = SynchedEntityData.defineId(ChainBlock.class, EntityDataSerializers.BOOLEAN);
 	private boolean isReturning = false;
-	private boolean ignoreBlocks;
+	private boolean canSmashBlocks;
 	private ItemStack stack;
 	private int blocksSmashed = 0;
 	private double velX;
@@ -64,37 +66,36 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world) {
 		super(type, world);
 
-		chain1 = new Chain(this);
-		chain2 = new Chain(this);
-		chain3 = new Chain(this);
-		chain4 = new Chain(this);
-		chain5 = new Chain(this);
-		partsArray =  new BlockChainGoblin.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
+		this.chain1 = new Chain(this);
+		this.chain2 = new Chain(this);
+		this.chain3 = new Chain(this);
+		this.chain4 = new Chain(this);
+		this.chain5 = new Chain(this);
+		this.partsArray = new BlockChainGoblin.MultipartGenericsAreDumb[]{this.chain1, this.chain2, this.chain3, this.chain4, this.chain5};
 	}
 
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world, LivingEntity thrower, InteractionHand hand, ItemStack stack) {
 		super(type, thrower, world);
 		this.isReturning = false;
-		this.ignoreBlocks = EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.PRESERVATION.get(), stack) > 0;
-		MAX_SMASH = 12 + (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) * 10);
+		this.canSmashBlocks = EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0;
 		this.stack = stack;
 		this.setHand(hand);
-		chain1 = new Chain(this);
-		chain2 = new Chain(this);
-		chain3 = new Chain(this);
-		chain4 = new Chain(this);
-		chain5 = new Chain(this);
-		partsArray =  new BlockChainGoblin.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
-		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0F, 1.5F, 1F);
+		this.chain1 = new Chain(this);
+		this.chain2 = new Chain(this);
+		this.chain3 = new Chain(this);
+		this.chain4 = new Chain(this);
+		this.chain5 = new Chain(this);
+		this.partsArray = new BlockChainGoblin.MultipartGenericsAreDumb[]{this.chain1, this.chain2, this.chain3, this.chain4, this.chain5};
+		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
 		this.entityData.set(IS_FOIL, stack.hasFoil());
 	}
 
 	private void setHand(InteractionHand hand) {
-		entityData.set(HAND, hand == InteractionHand.MAIN_HAND);
+		this.entityData.set(HAND, hand == InteractionHand.MAIN_HAND);
 	}
 
 	public InteractionHand getHand() {
-		return entityData.get(HAND) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+		return this.entityData.get(HAND) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 	}
 
 	public boolean isFoil() {
@@ -125,9 +126,9 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		// only hit living things
-		if (!level.isClientSide && (result.getEntity() instanceof LivingEntity || result.getEntity() instanceof PartEntity<?>) && result.getEntity() != this.getOwner()) {
-			if (result.getEntity().hurt(TFDamageSources.spiked(this, getOwner()), 10)) {
-				playSound(TFSounds.BLOCKCHAIN_HIT, 1.0f, this.random.nextFloat());
+		if (!this.getLevel().isClientSide() && (result.getEntity() instanceof LivingEntity || result.getEntity() instanceof PartEntity<?>) && result.getEntity() != this.getOwner()) {
+			if (result.getEntity().hurt(TFDamageSources.spiked(this, this.getOwner()), 10)) {
+				this.playSound(TFSounds.BLOCKCHAIN_HIT.get(), 1.0f, this.random.nextFloat());
 				// age when we hit a monster so that we go back to the player faster
 				this.tickCount += 60;
 			}
@@ -137,15 +138,15 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		if (!level.isClientSide && !this.level.isEmptyBlock(result.getBlockPos())) {
+		if (!this.getLevel().isClientSide() && !this.getLevel().isEmptyBlock(result.getBlockPos())) {
 
 			if (!this.isReturning) {
-				playSound(TFSounds.BLOCKCHAIN_COLLIDE, 0.125f, this.random.nextFloat());
+				this.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
 			}
 
 			if (this.blocksSmashed < MAX_SMASH) {
-				if (this.level.getBlockState(result.getBlockPos()).getDestroySpeed(level, result.getBlockPos()) < 0.0F ||
-						this.level.getBlockState(result.getBlockPos()).getDestroySpeed(level, result.getBlockPos()) > 0.3F) {
+				if (this.getLevel().getBlockState(result.getBlockPos()).getDestroySpeed(this.getLevel(), result.getBlockPos()) < 0.0F ||
+						this.getLevel().getBlockState(result.getBlockPos()).getDestroySpeed(this.getLevel(), result.getBlockPos()) > 0.3F) {
 					// riccochet
 					double bounce = 0.6;
 					this.velX *= bounce;
@@ -187,9 +188,9 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 					}
 				}
 
-				if(!ignoreBlocks) {
+				if (this.canSmashBlocks) {
 					// demolish some blocks
-					this.affectBlocksInAABB(this.getBoundingBox().inflate(0.5D + (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) * 0.5)));
+					this.affectBlocksInAABB(this.getBoundingBox().inflate(0.5D));
 				}
 			}
 
@@ -204,19 +205,16 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 
 	private void affectBlocksInAABB(AABB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			BlockState state = level.getBlockState(pos);
+			BlockState state = this.getLevel().getBlockState(pos);
 			Block block = state.getBlock();
 
-			// TODO: The "explosion" parameter can't actually be null
-			if (!state.isAir() && block.getExplosionResistance() < (15F + (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.BLOCK_STRENGTH.get(), stack) * 20F))
-					&& state.getDestroySpeed(level, pos) >= 0 && canDestroy(state, level, pos, this) && !(block instanceof MazestoneBlock)) {
-
-				if (getOwner() instanceof Player player) {
+			if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.getLevel(), pos, this)) {
+				if (this.getOwner() instanceof Player player) {
 					if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(level, player, pos, state, null)) {
-						if (!state.requiresCorrectToolForDrops() || player.getItemInHand(getHand()).isCorrectToolForDrops(state)) {
-							block.playerDestroy(level, player, pos, state, level.getBlockEntity(pos), player.getItemInHand(getHand()));
+						if (ForgeEventFactory.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state))) {
+							block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
 
-							level.destroyBlock(pos, false);
+							this.getLevel().destroyBlock(pos, false);
 							this.blocksSmashed++;
 						}
 					}
@@ -244,22 +242,21 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	public void tick() {
 		super.tick();
 
-		if (level.isClientSide) {
-
-			chain1.tick();
-			chain2.tick();
-			chain3.tick();
-			chain4.tick();
-			chain5.tick();
+		if (this.getLevel().isClientSide()) {
+			this.chain1.tick();
+			this.chain2.tick();
+			this.chain3.tick();
+			this.chain4.tick();
+			this.chain5.tick();
 
 			// set chain positions
 			if (this.getOwner() != null) {
 				// interpolate chain position
 				Vec3 handVec = this.getOwner().getLookAngle().yRot(getHand() == InteractionHand.MAIN_HAND ? -0.4F : 0.4F);
 
-				double sx = this.getOwner().getX() + handVec.x;
-				double sy = this.getOwner().getY() + handVec.y - 0.4F + this.getOwner().getEyeHeight();
-				double sz = this.getOwner().getZ() + handVec.z;
+				double sx = this.getOwner().getX() + handVec.x();
+				double sy = this.getOwner().getY() + handVec.y() - 0.4F + this.getOwner().getEyeHeight();
+				double sz = this.getOwner().getZ() + handVec.z();
 
 				double ox = sx - this.getX();
 				double oy = sy - this.getY() - 0.25F;
@@ -272,8 +269,8 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 				this.chain5.setPos(sx - ox * 0.85, sy - oy * 0.85, sz - oz * 0.85);
 			}
 		} else {
-			if (getOwner() == null) {
-				discard();
+			if (this.getOwner() == null) {
+				this.discard();
 			} else {
 				double distToPlayer = this.distanceTo(this.getOwner());
 				// return if far enough away
@@ -294,9 +291,9 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 
 					// separate the return velocity from the normal bouncy velocity
 					this.setDeltaMovement(new Vec3(
-							this.velX * (1.0 - age) + (back.x * 2F * age),
-							this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravity(),
-							this.velZ * (1.0 - age) + (back.z * 2F * age)
+							this.velX * (1.0 - age) + (back.x() * 2F * age),
+							this.velY * (1.0 - age) + (back.y() * 2F * age) - this.getGravity(),
+							this.velZ * (1.0 - age) + (back.z() * 2F * age)
 					));
 				}
 			}
@@ -305,32 +302,32 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 
 	@Override
 	protected void defineSynchedData() {
-		entityData.define(HAND, true);
-		entityData.define(IS_FOIL, false);
+		this.entityData.define(HAND, true);
+		this.entityData.define(IS_FOIL, false);
 	}
 
 	@Override
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower != null && thrower.getUseItem().getItem() == TFItems.BLOCK_AND_CHAIN.get()) {
+		if (thrower != null && thrower.getUseItem().is(TFItems.BLOCK_AND_CHAIN.get())) {
 			thrower.stopUsingItem();
 		}
 	}
 
 	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
-		buffer.writeInt(getOwner() != null ? getOwner().getId() : -1);
-		buffer.writeBoolean(getHand() == InteractionHand.MAIN_HAND);
+		buffer.writeInt(this.getOwner() != null ? this.getOwner().getId() : -1);
+		buffer.writeBoolean(this.getHand() == InteractionHand.MAIN_HAND);
 	}
 
 	@Override
-	public void readSpawnData(FriendlyByteBuf additionalData) {
-		Entity e = level.getEntity(additionalData.readInt());
+	public void readSpawnData(FriendlyByteBuf buf) {
+		Entity e = this.getLevel().getEntity(buf.readInt());
 		if (e instanceof LivingEntity) {
-			setOwner(e);
+			this.setOwner(e);
 		}
-		setHand(additionalData.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
+		this.setHand(buf.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
 	}
 
 	@Override

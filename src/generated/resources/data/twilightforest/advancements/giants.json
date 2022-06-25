@@ -1,13 +1,35 @@
 {
   "parent": "twilightforest:beanstalk",
+  "criteria": {
+    "giant": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:giant_miner"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "pickaxe": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:magic_beans"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:giant_pickaxe",
-      "nbt": "{Damage:0}"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.giants"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.giants.desc",
       "with": [
@@ -20,36 +42,14 @@
       ]
     },
     "frame": "goal",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "giant": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:giant_miner"
-            },
-            "entity": "this"
-          }
-        ]
-      }
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:giant_pickaxe",
+      "nbt": "{Damage:0}"
     },
-    "pickaxe": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:magic_beans"
-            ]
-          }
-        ]
-      }
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.giants"
     }
   },
   "requirements": [

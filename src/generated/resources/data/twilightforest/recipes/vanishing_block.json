@@ -1,23 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:encased_towerwood"
+    },
+    "6": {
+      "tag": "forge:gems/carminite"
+    },
+    "w": {
+      "tag": "twilightforest:towerwood"
+    }
+  },
   "pattern": [
     "#w#",
     "w6w",
     "#w#"
   ],
-  "key": {
-    "w": {
-      "tag": "twilightforest:towerwood"
-    },
-    "#": {
-      "item": "twilightforest:encased_towerwood"
-    },
-    "6": {
-      "tag": "c:gems/carminite"
-    }
-  },
   "result": {
-    "item": "twilightforest:vanishing_block",
-    "count": 8
+    "count": 8,
+    "item": "twilightforest:vanishing_block"
   }
 }

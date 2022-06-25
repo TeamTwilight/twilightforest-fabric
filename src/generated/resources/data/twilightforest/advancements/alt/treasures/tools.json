@@ -1,131 +1,138 @@
 {
   "parent": "twilightforest:alt/root",
   "criteria": {
-    "has_ironwood": {
-      "trigger": "minecraft:tick",
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "advancements": {
-                  "twilightforest:alt/treasures/ironwood_tool_set": true
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "has_steeleaf": {
-      "trigger": "minecraft:tick",
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "advancements": {
-                  "twilightforest:alt/treasures/steeleaf_tool_set": true
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
     "has_fiery": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:alt/treasures/fiery_tool_set": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
-    },
-    "has_knightmetal": {
-      "trigger": "minecraft:tick",
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "advancements": {
-                  "twilightforest:alt/treasures/knightmetal_tool_set": true
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "has_ice": {
-      "trigger": "minecraft:tick",
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "advancements": {
-                  "twilightforest:alt/treasures/ice_sword": true
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "has_glass": {
-      "trigger": "minecraft:tick",
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "advancements": {
-                  "twilightforest:alt/treasures/glass_sword": true
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
+      },
+      "trigger": "minecraft:tick"
     },
     "has_giant": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:alt/treasures/giant_tool_set": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
+      },
+      "trigger": "minecraft:tick"
+    },
+    "has_glass": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:alt/treasures/glass_sword": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    },
+    "has_ice": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:alt/treasures/ice_sword": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    },
+    "has_ironwood": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:alt/treasures/ironwood_tool_set": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    },
+    "has_knightmetal": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:alt/treasures/knightmetal_tool_set": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    },
+    "has_steeleaf": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:alt/treasures/steeleaf_tool_set": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
     }
   },
   "requirements": [

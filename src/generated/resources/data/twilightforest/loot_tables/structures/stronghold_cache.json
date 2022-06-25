@@ -2,20 +2,19 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 4.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:stick"
@@ -24,13 +23,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:coal"
@@ -39,13 +38,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:arrow"
@@ -54,13 +53,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 9.0
+                "max": 9.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "twilightforest:maze_wafer"
@@ -73,21 +72,21 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "max": 2.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:iron_ingot"
         }
-      ]
+      ],
+      "rolls": 4.0
     },
     {
-      "rolls": 2.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -98,13 +97,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 6.0
+                "max": 6.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:iron_ingot"
@@ -113,13 +112,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 6.0
+                "max": 6.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "twilightforest:ironwood_ingot"
@@ -128,13 +127,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 5.0
+                "max": 5.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "twilightforest:firefly"
@@ -147,42 +146,41 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 3.0
+                "max": 3.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "twilightforest:armor_shard"
         }
-      ]
+      ],
+      "rolls": 2.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 8.0
+                "max": 8.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:knightmetal_ingot"
+          "name": "twilightforest:knightmetal_ingot",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
@@ -190,11 +188,11 @@
               "treasure": false
             }
           ],
-          "name": "minecraft:bow"
+          "name": "minecraft:bow",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
@@ -202,11 +200,11 @@
               "treasure": false
             }
           ],
-          "name": "minecraft:iron_sword"
+          "name": "minecraft:iron_sword",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
@@ -214,11 +212,11 @@
               "treasure": false
             }
           ],
-          "name": "twilightforest:ironwood_sword"
+          "name": "twilightforest:ironwood_sword",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
               "function": "minecraft:enchant_with_levels",
@@ -226,139 +224,115 @@
               "treasure": false
             }
           ],
-          "name": "twilightforest:steeleaf_sword"
+          "name": "twilightforest:steeleaf_sword",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:bane_of_arthropods": 4
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:enchanted_book",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:sharpness": 4
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:enchanted_book",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:smite": 4
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:enchanted_book",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:unbreaking": 2
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:enchanted_book",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:protection": 3
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:enchanted_book",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:projectile_protection": 3
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:enchanted_book",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
           "functions": [
             {
-              "function": "minecraft:enchant_randomly",
-              "enchantments": [
-                "twilightforest:preservation"
-              ]
-            }
-          ],
-          "name": "minecraft:book"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 25,
-          "functions": [
-            {
-              "function": "minecraft:enchant_randomly",
               "enchantments": [
                 "twilightforest:destruction"
-              ]
+              ],
+              "function": "minecraft:enchant_randomly"
             }
           ],
-          "name": "minecraft:book"
+          "name": "minecraft:book",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
           "functions": [
             {
-              "function": "minecraft:enchant_randomly",
-              "enchantments": [
-                "twilightforest:block_strength"
-              ]
-            }
-          ],
-          "name": "minecraft:book"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 25,
-          "functions": [
-            {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:feather_falling": 3
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
-          "name": "minecraft:enchanted_book"
+          "name": "minecraft:enchanted_book",
+          "weight": 25
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

@@ -12,7 +12,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 
 //This model doesnt require a legacy as the tongue will only show up in newer versions
 public class NagaTrophyModel extends GenericTrophyModel {
-	public ModelPart head;
+	public final ModelPart head;
 	public ModelPart tongue;
 
 	public NagaTrophyModel(ModelPart part) {

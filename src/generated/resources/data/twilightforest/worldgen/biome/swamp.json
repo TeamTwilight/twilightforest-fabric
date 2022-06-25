@@ -1,27 +1,29 @@
 {
-  "effects": {
-    "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
-      "block_search_extent": 8,
-      "offset": 2.0
-    },
-    "music": {
-      "sound": "twilightforest:music.bg",
-      "min_delay": 1200,
-      "max_delay": 12000,
-      "replace_current_music": true
-    },
-    "grass_color_modifier": "twilightforest:swamp",
-    "sky_color": 2105930,
-    "foliage_color": 4809015,
-    "grass_color": 6056270,
-    "fog_color": 12648408,
-    "water_color": 14745518,
-    "water_fog_color": 329011
-  },
   "carvers": {
     "air": "twilightforest:tf_caves"
+  },
+  "creature_spawn_probability": 0.2,
+  "downfall": 0.9,
+  "effects": {
+    "fog_color": 12648408,
+    "foliage_color": 4809015,
+    "grass_color": 6056270,
+    "grass_color_modifier": "twilightforest:swamp",
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    },
+    "music": {
+      "max_delay": 12000,
+      "min_delay": 1200,
+      "replace_current_music": true,
+      "sound": "twilightforest:music.bg"
+    },
+    "sky_color": 2105930,
+    "water_color": 14745518,
+    "water_fog_color": 329011
   },
   "features": [
     [],
@@ -77,39 +79,36 @@
       "minecraft:patch_waterlily"
     ]
   ],
-  "creature_spawn_probability": 0.2,
+  "precipitation": "rain",
+  "spawn_costs": {},
   "spawners": {
-    "monster": [],
+    "ambient": [],
+    "axolotls": [],
     "creature": [
       {
         "type": "minecraft:creeper",
-        "weight": 10,
+        "maxCount": 4,
         "minCount": 4,
-        "maxCount": 4
+        "weight": 10
       },
       {
         "type": "minecraft:zombie",
-        "weight": 10,
+        "maxCount": 4,
         "minCount": 4,
-        "maxCount": 4
+        "weight": 10
       },
       {
         "type": "twilightforest:mosquito_swarm",
-        "weight": 10,
+        "maxCount": 1,
         "minCount": 1,
-        "maxCount": 1
+        "weight": 10
       }
     ],
-    "ambient": [],
-    "axolotls": [],
+    "misc": [],
+    "monster": [],
     "underground_water_creature": [],
-    "water_creature": [],
     "water_ambient": [],
-    "misc": []
+    "water_creature": []
   },
-  "spawn_costs": {},
-  "precipitation": "rain",
-  "temperature": 0.8,
-  "downfall": 0.9,
-  "category": "swamp"
+  "temperature": 0.8
 }

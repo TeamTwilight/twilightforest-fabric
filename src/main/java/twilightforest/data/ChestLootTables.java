@@ -19,10 +19,10 @@ import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.enchantment.TFEnchantments;
-import twilightforest.item.TFItems;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEnchantments;
+import twilightforest.init.TFItems;
+import twilightforest.loot.TFLootTables;
 import twilightforest.loot.conditions.ModExists;
 import twilightforest.loot.functions.Enchant;
 import twilightforest.loot.functions.ModItemSwap;
@@ -34,7 +34,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
 
     @Override
     public void accept(BiConsumer<ResourceLocation, LootTable.Builder> register) {
-        register.accept(TFTreasure.USELESS_LOOT.lootTable,
+        register.accept(TFLootTables.USELESS_LOOT.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
@@ -49,11 +49,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.FLOWER_POT))
                                 .add(LootItem.lootTableItem(Items.BONE_MEAL))));
 
-        register.accept(TFTreasure.BASEMENT.lootTable,
+        register.accept(TFLootTables.BASEMENT.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.POTION).apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("Potion", "minecraft:water")))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(75))
@@ -93,11 +93,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.MUSIC_DISC_HOME.get()).setWeight(15))
                                 .add(LootItem.lootTableItem(TFItems.MUSIC_DISC_RADIANCE.get()).setWeight(15))));
 
-        register.accept(TFTreasure.FOUNDATION_BASEMENT.lootTable,
+        register.accept(TFLootTables.FOUNDATION_BASEMENT.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.POTION).apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("Potion", "minecraft:water")))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(75))
@@ -128,7 +128,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFBlocks.HOLLOW_OAK_SAPLING.get().asItem()).setWeight(25))
                                 .add(LootItem.lootTableItem(TFItems.MUSIC_DISC_THREAD.get()).setWeight(25))));
 
-        register.accept(TFTreasure.WELL.lootTable,
+        register.accept(TFLootTables.WELL.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
@@ -159,7 +159,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.DIAMOND))
                                 .add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))));
 
-		register.accept(TFTreasure.FANCY_WELL.lootTable,
+		register.accept(TFLootTables.FANCY_WELL.lootTable,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(4))
@@ -189,11 +189,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
 								.add(LootItem.lootTableItem(TFItems.TRANSFORMATION_POWDER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))).setWeight(25))
 								.add(LootItem.lootTableItem(TFItems.MUSIC_DISC_STEPS.get()).setWeight(25))));
 
-        register.accept(TFTreasure.HEDGE_MAZE.lootTable,
+        register.accept(TFLootTables.HEDGE_MAZE.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Blocks.OAK_PLANKS).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
                                 .add(LootItem.lootTableItem(Blocks.BROWN_MUSHROOM).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
@@ -224,11 +224,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.DIAMOND_HOE).setWeight(25))
                                 .add(LootItem.lootTableItem(TFItems.MUSIC_DISC_MOTION.get()).setWeight(15))));
 
-        register.accept(TFTreasure.TREE_CACHE.lootTable,
+        register.accept(TFLootTables.TREE_CACHE.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.POISONOUS_POTATO).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.WHEAT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(75))
@@ -261,7 +261,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFBlocks.SORTING_SAPLING.get().asItem()).setWeight(25))
                                 .add(LootItem.lootTableItem(TFItems.MUSIC_DISC_SUPERSTITIOUS.get()).setWeight(25))));
 
-        register.accept(TFTreasure.GRAVEYARD.lootTable,
+        register.accept(TFLootTables.GRAVEYARD.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
@@ -281,11 +281,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFBlocks.UNCRAFTING_TABLE.get().asItem()))
                                 .add(LootItem.lootTableItem(Items.GOLDEN_APPLE))));
 
-        register.accept(TFTreasure.SMALL_HOLLOW_HILL.lootTable,
+        register.accept(TFLootTables.SMALL_HOLLOW_HILL.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.WHEAT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
@@ -311,11 +311,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).setWeight(25))
                                 .add(LootItem.lootTableItem(TFItems.MUSIC_DISC_FINDINGS.get()).setWeight(25))));
 
-        register.accept(TFTreasure.MEDIUM_HOLLOW_HILL.lootTable,
+        register.accept(TFLootTables.MEDIUM_HOLLOW_HILL.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.CARROT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
@@ -342,11 +342,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.CHARM_OF_LIFE_1.get()).setWeight(25))
                                 .add(LootItem.lootTableItem(TFItems.MUSIC_DISC_WAYFARER.get()).setWeight(25))));
 
-        register.accept(TFTreasure.LARGE_HOLLOW_HILL.lootTable,
+        register.accept(TFLootTables.LARGE_HOLLOW_HILL.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.GOLD_NUGGET).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 9))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.POTATO).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
@@ -375,7 +375,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFBlocks.IRONWOOD_BLOCK.get().asItem()).setWeight(25))
                                 .add(LootItem.lootTableItem(TFItems.MUSIC_DISC_MAKER.get()).setWeight(20))));
 
-        register.accept(TFTreasure.QUEST_GROVE.lootTable,
+        register.accept(TFLootTables.QUEST_GROVE.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
@@ -396,11 +396,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Blocks.RED_WOOL))
                                 .add(LootItem.lootTableItem(Blocks.BLACK_WOOL))));
 
-        register.accept(TFTreasure.TOWER_LIBRARY.lootTable,
+        register.accept(TFLootTables.TOWER_LIBRARY.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.POTION).apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("Potion", "minecraft:water")))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.GLASS_BOTTLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(75))
@@ -437,11 +437,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.ENDER_PEARL).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(25))));
 
-        register.accept(TFTreasure.TOWER_ROOM.lootTable,
+        register.accept(TFLootTables.TOWER_ROOM.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.POTION).apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("Potion", "minecraft:water")))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.GLASS_BOTTLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(75))
@@ -481,11 +481,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.PEACOCK_FEATHER_FAN.get()).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.OBSIDIAN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(25))));
 
-        register.accept(TFTreasure.LABYRINTH_DEAD_END.lootTable,
+        register.accept(TFLootTables.LABYRINTH_DEAD_END.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.COAL).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
@@ -512,7 +512,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
 								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8))))));
 
-        register.accept(TFTreasure.LABYRINTH_ROOM.lootTable,
+        register.accept(TFLootTables.LABYRINTH_ROOM.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
@@ -544,7 +544,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
 								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.FIRE_REACT.get())))
                                 .add(LootItem.lootTableItem(Items.POTION).apply(SetNbtFunction.setTag(Util.make(new CompoundTag(), (nbt) -> nbt.putString("Potion", "minecraft:strong_healing")))))));
 
-        register.accept(TFTreasure.LABYRINTH_VAULT.lootTable,
+        register.accept(TFLootTables.LABYRINTH_VAULT.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
@@ -580,7 +580,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_SWORD.get()).apply(Enchant.builder().apply(Enchantments.BANE_OF_ARTHROPODS, 5).apply(Enchantments.FIRE_ASPECT, 2)))
                                 .add(LootItem.lootTableItem(TFItems.MAZEBREAKER_PICKAXE.get()).apply(Enchant.builder().apply(Enchantments.BLOCK_EFFICIENCY, 4).apply(Enchantments.UNBREAKING, 3).apply(Enchantments.BLOCK_FORTUNE, 2)))));
 
-        register.accept(TFTreasure.STRONGHOLD_CACHE.lootTable,
+        register.accept(TFLootTables.STRONGHOLD_CACHE.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
@@ -615,16 +615,14 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.UNBREAKING, 2)).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.ALL_DAMAGE_PROTECTION, 3)).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.PROJECTILE_PROTECTION, 3)).setWeight(25))
-								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.PRESERVATION.get())).setWeight(25))
 								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.DESTRUCTION.get())).setWeight(25))
-								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.BLOCK_STRENGTH.get())).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.FALL_PROTECTION, 3)).setWeight(25))));
 
-        register.accept(TFTreasure.STRONGHOLD_ROOM.lootTable,
+        register.accept(TFLootTables.STRONGHOLD_ROOM.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.GUNPOWDER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
@@ -652,12 +650,10 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(Items.IRON_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
                                 .add(LootItem.lootTableItem(Items.BOW).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30))))
                                 .add(LootItem.lootTableItem(Items.DIAMOND_SWORD).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(15))))
-								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.PRESERVATION.get())))
 								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.DESTRUCTION.get())))
-								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.BLOCK_STRENGTH.get())))
                                 .add(LootItem.lootTableItem(TFItems.MAZE_MAP_FOCUS.get()))));
 
-        register.accept(TFTreasure.STRONGHOLD_BOSS.lootTable,
+        register.accept(TFLootTables.STRONGHOLD_BOSS.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
@@ -690,11 +686,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                         .when(ModExists.builder("immersiveengineering"))
                                         .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.KNIGHTMETAL_INGOT.get())))));
 
-        register.accept(TFTreasure.DARKTOWER_CACHE.lootTable,
+        register.accept(TFLootTables.DARKTOWER_CACHE.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.CHARCOAL).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
@@ -716,11 +712,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.STEELEAF_INGOT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 8))))
                                 .add(LootItem.lootTableItem(Items.DIAMOND).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))));
 
-        register.accept(TFTreasure.DARKTOWER_KEY.lootTable,
+        register.accept(TFLootTables.DARKTOWER_KEY.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.GUNPOWDER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(75))
@@ -753,7 +749,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .add(LootItem.lootTableItem(TFItems.TOWER_KEY.get()))));
 
 		// Keeping this here for legacy generated chests
-        register.accept(TFTreasure.DARKTOWER_BOSS.lootTable,
+        register.accept(TFLootTables.DARKTOWER_BOSS.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
@@ -776,11 +772,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                         .when(ModExists.builder("immersiveengineering"))
                                         .apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.CARMINITE.get())))));
 
-        register.accept(TFTreasure.AURORA_CACHE.lootTable,
+        register.accept(TFLootTables.AURORA_CACHE.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
-                                .add(LootTableReference.lootTableReference(TFTreasure.USELESS_LOOT.lootTable).setWeight(25))
+                                .add(LootTableReference.lootTableReference(TFLootTables.USELESS_LOOT.lootTable).setWeight(25))
                                 //common loot
                                 .add(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
                                 .add(LootItem.lootTableItem(Items.COAL).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
@@ -812,7 +808,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
 								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.CHILL_AURA.get())).setWeight(25))
                                 .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(Enchant.builder().apply(Enchantments.INFINITY_ARROWS, 1)).setWeight(25))));
 
-        register.accept(TFTreasure.AURORA_ROOM.lootTable,
+        register.accept(TFLootTables.AURORA_ROOM.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
@@ -842,7 +838,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
 								.add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withEnchantment(TFEnchantments.CHILL_AURA.get())))
                                 .add(LootItem.lootTableItem(TFItems.GLASS_SWORD.get()).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20))))));
 
-        register.accept(TFTreasure.TROLL_GARDEN.lootTable,
+        register.accept(TFLootTables.TROLL_GARDEN.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))
@@ -863,7 +859,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 //specialBiomes loot
                                 .add(LootItem.lootTableItem(TFItems.MAGIC_BEANS.get()))));
 
-        register.accept(TFTreasure.TROLL_VAULT.lootTable,
+        register.accept(TFLootTables.TROLL_VAULT.lootTable,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(4))

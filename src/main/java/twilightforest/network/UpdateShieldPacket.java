@@ -20,9 +20,9 @@ public class UpdateShieldPacket implements S2CPacket {
 	private final int permanentShields;
 
 	public UpdateShieldPacket(int id, IShieldCapability cap) {
-		entityID = id;
-		temporaryShields = cap.temporaryShieldsLeft();
-		permanentShields = cap.permanentShieldsLeft();
+		this.entityID = id;
+		this.temporaryShields = cap.temporaryShieldsLeft();
+		this.permanentShields = cap.permanentShieldsLeft();
 	}
 
 	public UpdateShieldPacket(Entity entity, IShieldCapability cap) {
@@ -30,15 +30,15 @@ public class UpdateShieldPacket implements S2CPacket {
 	}
 
 	public UpdateShieldPacket(FriendlyByteBuf buf) {
-		entityID = buf.readInt();
-		temporaryShields = buf.readInt();
-		permanentShields = buf.readInt();
+		this.entityID = buf.readInt();
+		this.temporaryShields = buf.readInt();
+		this.permanentShields = buf.readInt();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(entityID);
-		buf.writeInt(temporaryShields);
-		buf.writeInt(permanentShields);
+		buf.writeInt(this.entityID);
+		buf.writeInt(this.temporaryShields);
+		buf.writeInt(this.permanentShields);
 	}
 
 	@Override
@@ -49,16 +49,13 @@ public class UpdateShieldPacket implements S2CPacket {
 	public static class Handler {
 
 		public static boolean onMessage(UpdateShieldPacket message, Executor ctx) {
-			ctx.execute(new Runnable() {
-				@Override
-				public void run() {
-					Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
-					if (entity instanceof LivingEntity) {
-						CapabilityList.SHIELDS.maybeGet(entity).ifPresent(cap -> {
-							cap.setShields(message.temporaryShields, true);
-							cap.setShields(message.permanentShields, false);
-						});
-					}
+			ctx.execute(() -> {
+				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
+				if (entity instanceof LivingEntity) {
+					CapabilityList.SHIELDS.maybeGet(entity).ifPresent(cap -> {
+						cap.setShields(message.temporaryShields, true);
+						cap.setShields(message.permanentShields, false);
+					});
 				}
 			});
 

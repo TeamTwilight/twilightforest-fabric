@@ -14,18 +14,18 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.Lich;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFEntities;
 
 public class LichBolt extends TFThrowable {
 
-	public LichBolt(EntityType<? extends LichBolt> type, Level world) {
-		super(type, world);
+	public LichBolt(EntityType<? extends LichBolt> type, Level level) {
+		super(type, level);
 	}
 
-	public LichBolt(Level world, LivingEntity owner) {
-		super(TFEntities.LICH_BOLT.get(), world, owner);
+	public LichBolt(Level level, LivingEntity owner) {
+		super(TFEntities.LICH_BOLT.get(), level, owner);
 	}
 
 	@Override
@@ -35,17 +35,11 @@ public class LichBolt extends TFThrowable {
 	}
 
 	private void makeTrail() {
-		for (int i = 0; i < 5; i++) {
-			double dx = getX() + 0.5 * (this.random.nextDouble() - this.random.nextDouble());
-			double dy = getY() + 0.5 * (this.random.nextDouble() - this.random.nextDouble());
-			double dz = getZ() + 0.5 * (this.random.nextDouble() - this.random.nextDouble());
+		double s1 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.17F;
+		double s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;
+		double s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;
 
-			double s1 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.17F;
-			double s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;
-			double s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;
-
-			this.getLevel().addParticle(ParticleTypes.ENTITY_EFFECT, dx, dy, dz, s1, s2, s3);
-		}
+		this.makeTrail(ParticleTypes.ENTITY_EFFECT, s1, s2, s3, 5);
 	}
 
 	@Override

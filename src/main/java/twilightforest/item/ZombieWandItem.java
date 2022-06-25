@@ -4,7 +4,6 @@ import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehav
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,11 +20,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.monster.LoyalZombie;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class ZombieWandItem extends Item implements CustomEnchantingBehaviorItem {
@@ -61,7 +60,7 @@ public class ZombieWandItem extends Item implements CustomEnchantingBehaviorItem
 				level.gameEvent(player, GameEvent.ENTITY_PLACE, new BlockPos(result.getLocation()));
 
 				stack.hurt(1, level.getRandom(), null);
-				zombie.playSound(TFSounds.LOYAL_ZOMBIE_SUMMON, 1.0F, zombie.getVoicePitch());
+				zombie.playSound(TFSounds.LOYAL_ZOMBIE_SUMMON.get(), 1.0F, zombie.getVoicePitch());
 			}
 		}
 
@@ -69,7 +68,7 @@ public class ZombieWandItem extends Item implements CustomEnchantingBehaviorItem
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack pStack) {
+	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
 
@@ -85,8 +84,8 @@ public class ZombieWandItem extends Item implements CustomEnchantingBehaviorItem
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
+		tooltip.add(Component.translatable("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

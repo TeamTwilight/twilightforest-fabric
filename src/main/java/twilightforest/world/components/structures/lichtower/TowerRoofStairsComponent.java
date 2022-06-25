@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.lichtower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
@@ -12,18 +13,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class TowerRoofStairsComponent extends TowerRoofComponent {
 
 	public TowerRoofStairsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTRSt, nbt);
+		super(TFStructurePieceTypes.TFLTRSt.get(), nbt);
 	}
 
-	public TowerRoofStairsComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(LichTowerPieces.TFLTRSt, feature, i, x, y, z);
+	public TowerRoofStairsComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFLTRSt.get(), feature, i, x, y, z);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
 		this.setOrientation(Direction.SOUTH);
@@ -39,7 +40,7 @@ public class TowerRoofStairsComponent extends TowerRoofComponent {
 	 * Makes a pyramid-shaped roof out of stairs
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		BlockState birchSlab = Blocks.BIRCH_SLAB.defaultBlockState();
 		BlockState birchPlanks = Blocks.BIRCH_PLANKS.defaultBlockState();
 

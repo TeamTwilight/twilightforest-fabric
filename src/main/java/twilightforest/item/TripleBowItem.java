@@ -16,19 +16,19 @@ import net.minecraft.world.level.Level;
 
 public class TripleBowItem extends BowItem {
 
-	public TripleBowItem(Properties props) {
-		super(props);
+	public TripleBowItem(Properties properties) {
+		super(properties);
 	}
 
 	// Half [VanillaCopy]: copy of modified super to fire three arrows
 	@Override
-	public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
-		if (entityLiving instanceof Player player) {
-			boolean flag = player.getAbilities().instabuild || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
+	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
+		if (living instanceof Player player) {
+			boolean flag = player.getAbilities().instabuild || EnchantmentHelper.getTagEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
 			ItemStack itemstack = player.getProjectile(stack);
 
 			int i = this.getUseDuration(stack) - timeLeft;
-//			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, player, i, !itemstack.isEmpty() || flag); // TODO: EVENT
+//			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, level, player, i, !itemstack.isEmpty() || flag); // TODO: EVENT
 			if (i < 0) return;
 
 			if (!itemstack.isEmpty() || flag) {
@@ -37,10 +37,10 @@ public class TripleBowItem extends BowItem {
 				float f = getPowerForTime(i);
 				if (f >= 0.1D) {
 					boolean flag1 = player.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem arrowItem && isInfinite(itemstack, stack, player));
-					if (!worldIn.isClientSide) {
-						ArrowItem arrowItem = itemstack.getItem() instanceof ArrowItem arrow ? arrow : (ArrowItem)Items.ARROW;
+					if (!level.isClientSide()) {
+						ArrowItem arrowItem = itemstack.getItem() instanceof ArrowItem arrow ? arrow : (ArrowItem) Items.ARROW;
 						for (int j = -1; j < 2; j++) {
-							AbstractArrow abstractArrow = arrowItem.createArrow(worldIn, itemstack, player);
+							AbstractArrow abstractArrow = arrowItem.createArrow(level, itemstack, player);
 							abstractArrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, f * (3.0F - Math.abs(j)), 1.0F);
 							abstractArrow.setDeltaMovement(abstractArrow.getDeltaMovement().add(0.0D, 0.0075 * 20F * j, 0.0D));
 
@@ -53,22 +53,22 @@ public class TripleBowItem extends BowItem {
 
 							if (f == 1.0F) abstractArrow.setCritArrow(true);
 
-							int p = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+							int p = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
 							if (p > 0) abstractArrow.setBaseDamage(abstractArrow.getBaseDamage() + j * 0.5D + 0.5D);
 
-							int k = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
+							int k = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
 							if (k > 0) abstractArrow.setKnockback(k);
 
-							if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0)
+							if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0)
 								abstractArrow.setSecondsOnFire(100);
 
-							worldIn.addFreshEntity(abstractArrow);
+							level.addFreshEntity(abstractArrow);
 						}
 
 						stack.hurtAndBreak(1, player, (user) -> user.broadcastBreakEvent(player.getUsedItemHand()));
 					}
 
-					worldIn.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (worldIn.random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 					if (!flag1 && !player.getAbilities().instabuild) {
 						itemstack.shrink(1);
 						if (itemstack.isEmpty()) player.getInventory().removeItem(itemstack);

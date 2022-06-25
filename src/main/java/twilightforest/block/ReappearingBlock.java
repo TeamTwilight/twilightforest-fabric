@@ -13,9 +13,9 @@ import net.minecraft.world.level.material.PushReaction;
  */
 public class ReappearingBlock extends VanishingBlock {
 
-	public ReappearingBlock(Properties props) {
-		super(props);
-		this.registerDefaultState(defaultBlockState().setValue(VANISHED, false));
+	public ReappearingBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(VANISHED, false));
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class ReappearingBlock extends VanishingBlock {
 	}
 
 	@Override
-	public PushReaction getPistonPushReaction(BlockState pState) {
+	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.BLOCK;
 	}
 }

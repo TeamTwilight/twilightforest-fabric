@@ -1,49 +1,45 @@
 package twilightforest.data;
 
-import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import twilightforest.compat.TConCompat;
-import twilightforest.compat.TFCompat;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
 import twilightforest.data.tags.*;
 
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class DataGenerators {
+	@SubscribeEvent
+	public static void gatherData(GatherDataEvent evt) {
+		DataGenerator generator = evt.getGenerator();
+		ExistingFileHelper helper = evt.getExistingFileHelper();
 
-public class DataGenerators implements DataGeneratorEntrypoint {
-	@Override
-	public void onInitializeDataGenerator(FabricDataGenerator generator) {
-		var existingData = System.getProperty("twilightforest.data.existingData").split(";");
-		var helper = new ExistingFileHelper(Arrays.stream(existingData).map(Paths::get).toList(), Collections.emptySet(),
-				true, null, null);
+		generator.addProvider(true, new AdvancementGenerator(generator, helper));
+		generator.addProvider(true, new PatchouliAdvancementGenerator(generator, helper));
+		generator.addProvider(true, new BlockstateGenerator(generator, helper));
+		generator.addProvider(true, new ItemModelGenerator(generator, helper));
+		generator.addProvider(true, new BiomeTagGenerator(generator, helper));
+		generator.addProvider(true, new CustomTagGenerator.BannerPatternTagGenerator(generator, helper));
+		BlockTagsProvider blocktags = new BlockTagGenerator(generator, helper);
+		generator.addProvider(true, blocktags);
+		generator.addProvider(true, new FluidTagGenerator(generator, helper));
+		generator.addProvider(true, new ItemTagGenerator(generator, blocktags, helper));
+		generator.addProvider(true, new EntityTagGenerator(generator, helper));
+		generator.addProvider(true, new CustomTagGenerator.EnchantmentTagGenerator(generator, helper));
+		generator.addProvider(true, new LootGenerator(generator));
+		generator.addProvider(true, new StonecuttingGenerator(generator));
+		generator.addProvider(true, new CraftingGenerator(generator));
+		generator.addProvider(true, new WorldGenerator(generator));
 
-		generator.addProvider(new AdvancementGenerator(generator));
-		generator.addProvider(new PatchouliAdvancementGenerator(generator));
-		generator.addProvider(new BlockstateGenerator(generator, helper));
-		generator.addProvider(new ItemModelGenerator(generator, helper));
-		generator.addProvider(new BiomeTagGenerator(generator));
-		FabricTagProvider.BlockTagProvider blocktags = new BlockTagGenerator(generator);
-		generator.addProvider(blocktags);
-		generator.addProvider(new FluidTagGenerator(generator));
-		generator.addProvider(new ItemTagGenerator(generator, blocktags));
-		generator.addProvider(new EntityTagGenerator(generator));
-		generator.addProvider(new CustomTagGenerator.EnchantmentTagGenerator(generator));
-		generator.addProvider(new LootGenerator(generator));
-		generator.addProvider(new StonecuttingGenerator(generator));
-		generator.addProvider(new CraftingGenerator(generator));
-		generator.addProvider(new WorldGenerator(generator));
+		generator.addProvider(true, new CrumbleHornGenerator(generator, helper));
+		generator.addProvider(true, new TransformationPowderGenerator(generator, helper));
 
-		generator.addProvider(new CrumbleHornGenerator(generator, helper));
-		generator.addProvider(new TransformationPowderGenerator(generator, helper));
-
-		if(FabricLoader.getInstance().isModLoaded(TFCompat.TCON_ID)) {
-			TConCompat.tConDatagen(generator);
-		}
+//		if(ModList.get().isLoaded(TFCompat.TCON_ID)) {
+//			TConCompat.tConDatagen(evt);
+//		}
 	}
 }

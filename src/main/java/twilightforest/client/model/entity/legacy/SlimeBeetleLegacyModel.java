@@ -18,8 +18,8 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.monster.SlimeBeetle;
 
 public class SlimeBeetleLegacyModel extends HierarchicalModel<SlimeBeetle> {
-	public ModelPart root;
-	public ModelPart head;
+	public final ModelPart root;
+	public final ModelPart head;
 	public ModelPart legFL;
 	public ModelPart legML;
 	public ModelPart legBL;

@@ -5,21 +5,23 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.ArrayUtil;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
+import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Random;
+
 
 public final class SideTowerRoom extends TwilightTemplateStructurePiece {
     // TODO make more advanced, assign sided configurations of what covers can be used (walls/windows/bridges)
@@ -49,12 +51,12 @@ public final class SideTowerRoom extends TwilightTemplateStructurePiece {
     private final Rotation externalRotation;
 
     public SideTowerRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.SIDE_TOWER_ROOM, compoundTag, ctx, readSettings(compoundTag));
+        super(TFStructurePieceTypes.SIDE_TOWER_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
         this.squareDiameter = compoundTag.getInt("square_diameter");
         this.externalRotation = ArrayUtil.wrapped(Rotation.values(), compoundTag.getInt("ext_rotation"));
     }
 
-    private SideTowerRoom(StructureManager structureManager, Rotation roomRotation, Rotation exteriorRotation, String name, BlockPos startPosition, int squareDiameter) {
+    private SideTowerRoom(StructureTemplateManager structureManager, Rotation roomRotation, Rotation exteriorRotation, String name, BlockPos startPosition, int squareDiameter) {
         this(
                 structureManager,
                 TwilightForestMod.prefix("lich_tower/side_tower_rooms/" + name),
@@ -65,26 +67,26 @@ public final class SideTowerRoom extends TwilightTemplateStructurePiece {
         );
     }
 
-    private SideTowerRoom(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int squareDiameter, Rotation externalRotation) {
-        super(LichTowerRevampPieces.SIDE_TOWER_ROOM, 0, structureManager, templateLocation, placeSettings, startPosition);
+    private SideTowerRoom(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int squareDiameter, Rotation externalRotation) {
+        super(TFStructurePieceTypes.SIDE_TOWER_ROOM.get(), 0, structureManager, templateLocation, placeSettings, startPosition);
         this.squareDiameter = squareDiameter;
         this.externalRotation = externalRotation;
     }
 
-    public static SideTowerRoom smallRoom(StructureManager structureManager, Rotation exteriorRotation, BlockPos startPosition, Random random) {
+    public static SideTowerRoom smallRoom(StructureTemplateManager structureManager, Rotation exteriorRotation, BlockPos startPosition, RandomSource random) {
         return new SideTowerRoom(structureManager, Rotation.getRandom(random), exteriorRotation, "small/" + Util.getRandom(SMALL_ROOMS, random), startPosition, 5);
     }
 
-    public static SideTowerRoom mediumRoom(StructureManager structureManager, Rotation exteriorRotation, BlockPos startPosition, Random random) {
+    public static SideTowerRoom mediumRoom(StructureTemplateManager structureManager, Rotation exteriorRotation, BlockPos startPosition, RandomSource random) {
         return new SideTowerRoom(structureManager, Rotation.getRandom(random), exteriorRotation, "medium/" + Util.getRandom(MEDIUM_ROOMS, random), startPosition, 7);
     }
 
-    public static SideTowerRoom largeRoom(StructureManager structureManager, Rotation exteriorRotation, BlockPos startPosition, Random random) {
+    public static SideTowerRoom largeRoom(StructureTemplateManager structureManager, Rotation exteriorRotation, BlockPos startPosition, RandomSource random) {
         return new SideTowerRoom(structureManager, Rotation.getRandom(random), exteriorRotation, "large/" + Util.getRandom(LARGE_ROOMS, random), startPosition, 9);
     }
 
     @Override
-    public void addChildren(StructurePiece parent, StructurePieceAccessor structureStart, Random random) {
+    public void addChildren(StructurePiece parent, StructurePieceAccessor structureStart, RandomSource random) {
         super.addChildren(parent, structureStart, random);
 
         BlockPos center = this.boundingBox.getCenter();
@@ -95,7 +97,7 @@ public final class SideTowerRoom extends TwilightTemplateStructurePiece {
         this.placeCover(structureStart, center, offset, random, Rotation.CLOCKWISE_90);
     }
 
-    private void placeCover(StructurePieceAccessor structureStart, BlockPos center, BlockPos offset, Random random, Rotation rotation) {
+    private void placeCover(StructurePieceAccessor structureStart, BlockPos center, BlockPos offset, RandomSource random, Rotation rotation) {
         Rotation relativeRotation = this.externalRotation.getRotated(rotation);
 
         BlockPos pos = center.offset(offset.rotate(relativeRotation));
@@ -120,7 +122,7 @@ public final class SideTowerRoom extends TwilightTemplateStructurePiece {
     }
 
     @Override
-    protected void handleDataMarker(String label, BlockPos pPos, ServerLevelAccessor pLevel, Random pRandom, BoundingBox pSbb) {
+	protected void handleDataMarker(String label, BlockPos pPos, ServerLevelAccessor pLevel, RandomSource pRandom, BoundingBox pSbb) {
         // TODO spawner
         // TODO candle
         //  random: regular or skull

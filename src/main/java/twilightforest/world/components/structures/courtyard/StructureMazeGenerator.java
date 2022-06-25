@@ -5,29 +5,28 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.enums.Diagonals;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponent;
-import twilightforest.world.registration.TFFeature;
-
-import java.util.Random;
+import twilightforest.init.TFLandmark;
 
 public abstract class StructureMazeGenerator extends TFStructureComponent {
     protected int[][] maze;
     private final int[][] cornerClipping = new int[4][2];
     private final int widthInCellCount;
     private final int heightInCellCount;
-    private final StructureManager structureManager;
+    private final StructureTemplateManager structureManager;
     protected BoundingBox sizeConstraints;
 
-    public StructureMazeGenerator(StructureManager structureManager, StructurePieceType piece, CompoundTag nbt) {
+    public StructureMazeGenerator(StructureTemplateManager structureManager, StructurePieceType piece, CompoundTag nbt) {
         super(piece, nbt);
 
 		this.widthInCellCount = nbt.getInt("mazeWidth");
@@ -48,7 +47,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
         this.structureManager = structureManager;
     }
 
-    StructureMazeGenerator(StructurePieceType type, TFFeature feature, Random rand, int i, int widthInCellCount, int heightInCellCount, int x, int y, int z, StructureManager structureManager) {
+    StructureMazeGenerator(StructurePieceType type, TFLandmark feature, RandomSource rand, int i, int widthInCellCount, int heightInCellCount, int x, int y, int z, StructureTemplateManager structureManager) {
         super(type, feature, i, x, y, z);
         this.widthInCellCount = widthInCellCount;
         this.heightInCellCount = heightInCellCount;
@@ -60,7 +59,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 
 	// Actually assemble maze
     @Override
-    public void addChildren(StructurePiece structureComponent, StructurePieceAccessor list, Random random) {
+    public void addChildren(StructurePiece structureComponent, StructurePieceAccessor list, RandomSource random) {
 		super.addChildren(structureComponent, list, random);
 		final int offset = 6;
 
@@ -72,7 +71,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private static void generateMaze(int[][] maze, int[][] cornerClippings, Random random, int widthInCellCount, int heightInCellCount, int maximumClipping) {
+    private static void generateMaze(int[][] maze, int[][] cornerClippings, RandomSource random, int widthInCellCount, int heightInCellCount, int maximumClipping) {
         // Trying to keep this optimized for speed I guess
 
         // Generates a connection map for the walls. It modifies the two-dimensional int array, inserting packed binary strings as ints.
@@ -169,7 +168,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
     }
 
     @SuppressWarnings({"fallthrough"})
-    private void processInnerWallsAndFloor(StructurePiece structureComponent, StructurePieceAccessor list, Random random, final int offset, final Rotation[] rotations) {
+    private void processInnerWallsAndFloor(StructurePiece structureComponent, StructurePieceAccessor list, RandomSource random, final int offset, final Rotation[] rotations) {
         for (int x = 0; x < widthInCellCount - 1; x++) {
             for (int y = 0; y < heightInCellCount - 1; y++) {
                 final boolean xCenter = x == (widthInCellCount  / 2) - 1;
@@ -390,7 +389,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
         }
     }
 
-    private void processOuterWalls(StructurePiece structureComponent, StructurePieceAccessor list, Random random, final int offset, final Rotation[] rotations) {
+    private void processOuterWalls(StructurePiece structureComponent, StructurePieceAccessor list, RandomSource random, final int offset, final Rotation[] rotations) {
         // -------- WALLS
         for (Diagonals diagonal : Diagonals.values()) {
             // Walls at corner notches going with X Axis, crossing Z Axis. Sideways.
@@ -609,7 +608,7 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
             this.zOffset = zOffset;
         }
 
-        protected boolean unpackAndTest(int directions) {
+        private boolean unpackAndTest(int directions) {
             return (this.BYTE & directions) == this.BYTE;
         }
 

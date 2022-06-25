@@ -1,84 +1,84 @@
 {
   "multipart": [
     {
-      "when": {
-        "axis": "y"
-      },
       "apply": {
         "model": "twilightforest:block/green_thorns"
+      },
+      "when": {
+        "axis": "y"
       }
     },
     {
-      "when": {
-        "axis": "z"
-      },
       "apply": {
         "model": "twilightforest:block/green_thorns",
         "x": 90
+      },
+      "when": {
+        "axis": "z"
       }
     },
     {
-      "when": {
-        "axis": "x"
-      },
       "apply": {
         "model": "twilightforest:block/green_thorns",
         "x": 90,
         "y": 90
+      },
+      "when": {
+        "axis": "x"
       }
     },
     {
+      "apply": {
+        "model": "twilightforest:block/green_thorns_top",
+        "x": 90
+      },
       "when": {
         "up": "true"
-      },
-      "apply": {
-        "model": "twilightforest:block/green_thorns_top",
-        "x": 90
       }
     },
     {
+      "apply": {
+        "model": "twilightforest:block/green_thorns_bottom",
+        "x": 90
+      },
       "when": {
         "down": "true"
-      },
-      "apply": {
-        "model": "twilightforest:block/green_thorns_bottom",
-        "x": 90
       }
     },
     {
+      "apply": {
+        "model": "twilightforest:block/green_thorns_top",
+        "y": 270
+      },
       "when": {
         "east": "true"
-      },
-      "apply": {
-        "model": "twilightforest:block/green_thorns_top",
-        "y": 270
       }
     },
     {
+      "apply": {
+        "model": "twilightforest:block/green_thorns_bottom",
+        "y": 270
+      },
       "when": {
         "west": "true"
-      },
-      "apply": {
-        "model": "twilightforest:block/green_thorns_bottom",
-        "y": 270
       }
     },
     {
-      "when": {
-        "south": "true"
-      },
       "apply": {
         "model": "twilightforest:block/green_thorns_bottom",
         "y": 180
+      },
+      "when": {
+        "south": "true"
       }
     },
     {
-      "when": {
-        "north": "true"
-      },
       "apply": {
         "model": "twilightforest:block/green_thorns_top",
         "y": 180
+      },
+      "when": {
+        "north": "true"
       }
     }
   ]

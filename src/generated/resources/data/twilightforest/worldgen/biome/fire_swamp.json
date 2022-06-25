@@ -1,16 +1,23 @@
 {
+  "carvers": {
+    "air": "twilightforest:tf_caves"
+  },
+  "downfall": 0.4,
   "effects": {
+    "fog_color": 12648408,
+    "foliage_color": 6563343,
+    "grass_color": 5713443,
     "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
       "block_search_extent": 8,
-      "offset": 2.0
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
     },
     "music": {
-      "sound": "twilightforest:music.bg",
-      "min_delay": 1200,
       "max_delay": 12000,
-      "replace_current_music": true
+      "min_delay": 1200,
+      "replace_current_music": true,
+      "sound": "twilightforest:music.bg"
     },
     "particle": {
       "options": {
@@ -19,14 +26,8 @@
       "probability": 0.1
     },
     "sky_color": 2105930,
-    "foliage_color": 6563343,
-    "grass_color": 5713443,
-    "fog_color": 12648408,
     "water_color": 7089196,
     "water_fog_color": 329011
-  },
-  "carvers": {
-    "air": "twilightforest:tf_caves"
   },
   "features": [
     [],
@@ -75,19 +76,17 @@
       "minecraft:brown_mushroom_swamp"
     ]
   ],
+  "precipitation": "none",
+  "spawn_costs": {},
   "spawners": {
-    "monster": [],
-    "creature": [],
     "ambient": [],
     "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
     "underground_water_creature": [],
-    "water_creature": [],
     "water_ambient": [],
-    "misc": []
+    "water_creature": []
   },
-  "spawn_costs": {},
-  "precipitation": "none",
-  "temperature": 1.0,
-  "downfall": 0.4,
-  "category": "swamp"
+  "temperature": 1.0
 }

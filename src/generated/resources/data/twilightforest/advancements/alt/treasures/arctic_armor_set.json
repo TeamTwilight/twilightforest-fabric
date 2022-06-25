@@ -1,56 +1,7 @@
 {
   "parent": "twilightforest:alt/root",
   "criteria": {
-    "has_ingredient": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:arctic_fur"
-            ]
-          }
-        ]
-      }
-    },
-    "has_helmet": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:arctic_helmet"
-            ]
-          }
-        ]
-      }
-    },
-    "has_chestplate": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:arctic_chestplate"
-            ]
-          }
-        ]
-      }
-    },
-    "has_leggings": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:arctic_leggings"
-            ]
-          }
-        ]
-      }
-    },
     "has_boots": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -59,7 +10,56 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_chestplate": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:arctic_chestplate"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_helmet": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:arctic_helmet"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_ingredient": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:arctic_fur"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_leggings": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:arctic_leggings"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [

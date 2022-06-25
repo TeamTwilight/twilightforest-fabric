@@ -1,54 +1,54 @@
 {
   "parent": "twilightforest:root",
+  "criteria": {
+    "hedge_spider": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:hedge_spider",
+              "location": {
+                "structure": "twilightforest:hedge_maze"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "swarm_spider": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:swarm_spider",
+              "location": {
+                "structure": "twilightforest:hedge_maze"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:hedge"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.hedge"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.hedge.desc"
     },
     "frame": "task",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "hedge_spider": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:hedge_spider",
-              "location": {
-                "feature": "twilightforest:hedge_maze"
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:hedge"
     },
-    "swarm_spider": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:swarm_spider",
-              "location": {
-                "feature": "twilightforest:hedge_maze"
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.hedge"
     }
   },
   "requirements": [

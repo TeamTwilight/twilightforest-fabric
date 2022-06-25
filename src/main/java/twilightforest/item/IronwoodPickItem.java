@@ -9,16 +9,16 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 public class IronwoodPickItem extends PickaxeItem {
 
-	protected IronwoodPickItem(Tier material, Properties props) {
-		super(material, 1, -2.8F, props);
+	public IronwoodPickItem(Tier material, Properties properties) {
+		super(material, 1, -2.8F, properties);
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
-			istack.enchant(Enchantments.BLOCK_EFFICIENCY, 1);
-			list.add(istack);
+		if (this.allowedIn(tab)) {
+			ItemStack stack = new ItemStack(this);
+			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 1);
+			list.add(stack);
 		}
 	}
 }

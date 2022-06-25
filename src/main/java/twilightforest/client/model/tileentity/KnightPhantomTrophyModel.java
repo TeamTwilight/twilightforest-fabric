@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.builders.*;
 
 public class KnightPhantomTrophyModel extends GenericTrophyModel {
 
-	public ModelPart head;
+	public final ModelPart head;
 	public ModelPart helmet;
 	
 	public KnightPhantomTrophyModel(ModelPart part) {

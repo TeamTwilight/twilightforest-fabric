@@ -11,6 +11,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -23,20 +24,22 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import twilightforest.client.model.entity.KoboldModel;
 import twilightforest.entity.monster.GiantMiner;
+import twilightforest.entity.monster.Kobold;
 
 @Environment(EnvType.CLIENT)
 public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, PlayerModel<T>> {
 	private final PlayerModel<T> normalModel;
 	private final PlayerModel<T> slimModel;
 
-	public TFGiantRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new PlayerModel<>(manager.bakeLayer(ModelLayers.PLAYER), false), 1.8F);
+	public TFGiantRenderer(EntityRendererProvider.Context context) {
+		super(context, new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER), false), 1.8F);
 		normalModel = getModel();
-		slimModel = new PlayerModel<>(manager.bakeLayer(ModelLayers.PLAYER_SLIM), true);
+		slimModel = new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER_SLIM), true);
 
-		this.addLayer(new GiantItemInHandLayer<>(this));
-		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
+		this.addLayer(new GiantItemInHandLayer<>(this, context.getItemInHandRenderer()));
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
 	}
 
 	@Override
@@ -70,10 +73,12 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 
 	//[VanillaCopy] of ItemInHandLayer, changes noted
 	public static class GiantItemInHandLayer<T extends LivingEntity, M extends EntityModel<T> & ArmedModel> extends RenderLayer<T, M> {
-		public GiantItemInHandLayer(RenderLayerParent<T, M> parent) {
-			super(parent);
-		}
+		private final ItemInHandRenderer handRenderer;
 
+		public GiantItemInHandLayer(RenderLayerParent<T, M> renderer, ItemInHandRenderer handRenderer) {
+			super(renderer);
+			this.handRenderer = handRenderer;
+		}
 		public void render(PoseStack stack, MultiBufferSource buffer, int light, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			boolean flag = entity.getMainArm() == HumanoidArm.RIGHT;
 			ItemStack itemstack = flag ? entity.getOffhandItem() : entity.getMainHandItem();
@@ -102,7 +107,7 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 				ms.translate((float)(flag ? -1 : 1) / 16.0F, 0.0D, -0.5D);
 				// TF - scale items down to accurately match the actual size it would be in a giant's hand
 				ms.scale(0.25F, 0.25F, 0.25F);
-				Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, stack, type, flag, ms, buffer, light);
+				this.handRenderer.renderItem(entity, stack, type, flag, ms, buffer, light);
 				ms.popPose();
 			}
 		}

@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.GiantTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import twilightforest.block.FireflyBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.block.TFLogBlock;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 import twilightforest.world.components.feature.trees.treeplacers.*;
@@ -51,7 +51,7 @@ public class TreeConfigurations {
             new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),
             new TwoLayersFeatureSize(1, 0, 1)
     )
-            .decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS, LeaveVineDecorator.INSTANCE))
+            .decorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS, new LeaveVineDecorator(0.125F)))
             .build();
 
     private final static int LEAF_SHAG_FACTOR = 24;
@@ -122,7 +122,7 @@ public class TreeConfigurations {
                     new TreeRootsDecorator(3, 1, 12, BlockStateProvider.simple(TFBlocks.MANGROVE_ROOT.get().defaultBlockState()), (new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
                             .add(TFBlocks.ROOT_BLOCK.get().defaultBlockState(), 4)
                             .add(TFBlocks.LIVEROOT_BLOCK.get().defaultBlockState(), 1).build()))),
-                    LeaveVineDecorator.INSTANCE
+                    new LeaveVineDecorator(0.125F)
                     )
             )
             .build();

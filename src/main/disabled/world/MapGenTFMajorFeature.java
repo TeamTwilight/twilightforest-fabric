@@ -20,7 +20,7 @@ import twilightforest.world.components.structures.StructureTFComponent;
 import twilightforest.world.components.structures.start.StructureStartTFFeatureAbstract;
 import twilightforest.util.StructureBoundingBoxUtils;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;

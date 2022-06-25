@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -19,12 +20,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.TFSounds;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-
-import java.util.Random;
 
 public class CastleDoorBlock extends Block {
 
@@ -55,28 +54,24 @@ public class CastleDoorBlock extends Block {
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return state.getValue(VANISHED) ? Shapes.empty() : super.getCollisionShape(state, getter, pos, context);
 	}
 
 	@Override
-	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return state.getValue(VANISHED) ? REAPPEARING_BB : super.getShape(state, getter, pos, context);
 	}
 
 	@Override
-	@Deprecated
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		return onActivation(level, pos, state);
+		return this.onActivation(level, pos, state);
 	}
 
 	@Override
-	@Deprecated
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		if (!(block instanceof CastleDoorBlock) && level.hasNeighborSignal(pos)) {
-			onActivation(level, pos, state);
+			this.onActivation(level, pos, state);
 		}
 	}
 
@@ -90,7 +85,7 @@ public class CastleDoorBlock extends Block {
 		if (state.getValue(VANISHED) || state.getValue(ACTIVE)) return InteractionResult.FAIL;
 
 		if (isBlockLocked(level, pos)) {
-			level.playSound(null, pos, TFSounds.DOOR_ACTIVATED, SoundSource.BLOCKS, 1.0F, 0.3F);
+			level.playSound(null, pos, TFSounds.DOOR_ACTIVATED.get(), SoundSource.BLOCKS, 1.0F, 0.3F);
 			return InteractionResult.PASS;
 		} else {
 			changeToActiveBlock(level, pos, state);
@@ -98,7 +93,7 @@ public class CastleDoorBlock extends Block {
 		}
 	}
 
-	private static void changeToActiveBlock(Level level, BlockPos pos, BlockState originState) {
+	private void changeToActiveBlock(Level level, BlockPos pos, BlockState originState) {
 		if (originState.getBlock() instanceof CastleDoorBlock) {
 			level.setBlockAndUpdate(pos, originState.setValue(ACTIVE, true));
 		}
@@ -115,13 +110,12 @@ public class CastleDoorBlock extends Block {
 	}
 
 	@Override
-	@Deprecated
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (state.getValue(VANISHED)) {
 			if (state.getValue(ACTIVE)) {
 				level.setBlockAndUpdate(pos, state.setValue(VANISHED, false).setValue(ACTIVE, false));
 			} else {
-				changeToActiveBlock(level, pos, state);
+				this.changeToActiveBlock(level, pos, state);
 			}
 			playReappearSound(level, pos);
 		} else {
@@ -129,40 +123,40 @@ public class CastleDoorBlock extends Block {
 				level.setBlockAndUpdate(pos, state.setValue(VANISHED, true).setValue(ACTIVE, false));
 				level.scheduleTick(pos, this, 80);
 
-				playVanishSound(level, pos);
+				this.playVanishSound(level, pos);
 
-				vanishParticles(level, pos);
+				this.vanishParticles(level, pos);
 
 				// activate all adjacent inactive doors
 				for (Direction e : Direction.values()) {
-					checkAndActivateCastleDoor(level, pos.relative(e));
+					this.checkAndActivateCastleDoor(level, pos.relative(e));
 				}
 			}
 		}
 	}
 
-	private static void playVanishSound(Level level, BlockPos pos) {
-		level.playSound(null, pos, TFSounds.DOOR_VANISH, SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.75F);
+	private void playVanishSound(Level level, BlockPos pos) {
+		level.playSound(null, pos, TFSounds.DOOR_VANISH.get(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.75F);
 	}
 
-	private static void playReappearSound(Level level, BlockPos pos) {
-		level.playSound(null, pos, TFSounds.DOOR_REAPPEAR, SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.25F);
+	private void playReappearSound(Level level, BlockPos pos) {
+		level.playSound(null, pos, TFSounds.DOOR_REAPPEAR.get(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.25F);
 	}
 
 	/**
 	 * If the targeted block is a vanishing block, activate it
 	 */
-	public static void checkAndActivateCastleDoor(Level level, BlockPos pos) {
+	public void checkAndActivateCastleDoor(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 
 		if (state.getBlock() instanceof CastleDoorBlock && !state.getValue(VANISHED) && !state.getValue(ACTIVE) && !isBlockLocked(level, pos)) {
-			changeToActiveBlock(level, pos, state);
+			this.changeToActiveBlock(level, pos, state);
 		}
 	}
 
-	private static void vanishParticles(Level level, BlockPos pos) {
-		Random rand = level.getRandom();
-		if(level instanceof ServerLevel) {
+	private void vanishParticles(Level level, BlockPos pos) {
+		RandomSource rand = level.getRandom();
+		if (level instanceof ServerLevel) {
 			for (int dx = 0; dx < 4; ++dx) {
 				for (int dy = 0; dy < 4; ++dy) {
 					for (int dz = 0; dz < 4; ++dz) {
@@ -173,7 +167,7 @@ public class CastleDoorBlock extends Block {
 
 						double speed = rand.nextGaussian() * 0.2D;
 
-						((ServerLevel)level).sendParticles(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
+						((ServerLevel) level).sendParticles(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
 					}
 				}
 			}

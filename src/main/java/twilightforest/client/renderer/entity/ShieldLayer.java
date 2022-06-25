@@ -1,37 +1,31 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import com.mojang.math.Vector3f;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.ArrayUtils;
 import twilightforest.TwilightForestMod;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.entity.boss.Lich;
 
-import java.util.Random;
-
-@Environment(EnvType.CLIENT)
 public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
 	public static final ModelResourceLocation LOC = new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "shield"), "inventory");
 	private static final Direction[] DIRS = ArrayUtils.add(Direction.values(), null);
-	private static final Random RAND = new Random();
 
 	public ShieldLayer(RenderLayerParent<T, M> renderer) {
 		super(renderer);
@@ -71,11 +65,10 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 
 			BakedModel model = Minecraft.getInstance().getModelManager().getModel(LOC);
 			for (Direction dir : DIRS) {
-				RAND.setSeed(42L);
 				Minecraft.getInstance().getItemRenderer().renderQuadList(
 						stack,
 						buffer.getBuffer(Sheets.translucentCullBlockSheet()),
-						model.getQuads(null, dir, RAND),
+						model.getQuads(null, dir, entity.getRandom()),
 						ItemStack.EMPTY,
 						0xF000F0,
 						OverlayTexture.NO_OVERLAY

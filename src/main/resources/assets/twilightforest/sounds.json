@@ -181,7 +181,7 @@
   "entity.twilightforest.tome.death": { "subtitle": "subtitles.twilightforest.entity.tome.death", "sounds": [ "twilightforest:mob/tome/death" ] },
   "entity.twilightforest.tome.hurt": { "subtitle": "subtitles.twilightforest.entity.tome.hurt", "sounds": [ "twilightforest:mob/tome/hurt1", "twilightforest:mob/tome/hurt2", "twilightforest:mob/tome/hurt3" ] },
   "entity.twilightforest.tome.ambient": { "subtitle": "subtitles.twilightforest.entity.tome.ambient", "sounds": [ "twilightforest:mob/tome/idle1", "twilightforest:mob/tome/idle2" ] },
-  "entity.twilightforest.troll.throw_block": { "subtitle": "subtitles.twilightforest.entity.troll.throw_block", "sounds": ["random/bow"] },
+  "entity.twilightforest.troll.throw_rock": { "subtitle": "subtitles.twilightforest.entity.troll.throw_rock", "sounds": ["random/bow"] },
   "entity.twilightforest.urghast.ambient": { "subtitle": "subtitles.twilightforest.entity.urghast.ambient", "sounds": [ "mob/ghast/moan1", "mob/ghast/moan2",  "mob/ghast/moan3", "mob/ghast/moan4", "mob/ghast/moan5", "mob/ghast/moan6", "mob/ghast/moan7" ] },
   "entity.twilightforest.urghast.death": { "subtitle": "subtitles.twilightforest.entity.urghast.death", "sounds": [ "mob/ghast/death" ] },
   "entity.twilightforest.urghast.hurt": { "subtitle": "subtitles.twilightforest.entity.urghast.hurt", "sounds": [  "mob/ghast/scream1", "mob/ghast/scream2", "mob/ghast/scream3", "mob/ghast/scream4", "mob/ghast/scream5" ] },
@@ -214,6 +214,7 @@
   "entity.twilightforest.tome.parrot": { "subtitle": "subtitles.twilightforest.entity.tome.parrot", "sounds": [ { "type": "event", "name": "twilightforest:entity.tome.ambient", "volume": 0.6, "pitch": 1.8 } ] },
   "entity.twilightforest.wraith.parrot": { "subtitle": "subtitles.twilightforest.entity.wraith.parrot", "sounds": [ { "type": "event", "name": "twilightforest:entity.wraith.ambient", "volume": 0.6, "pitch": 1.8 } ] },
 
+  "block.twilightforest.beanstalk.grow": { "subtitle": "subtitles.twilightforest.block.beanstalk.grow", "sounds": [ "twilightforest:random/beanstalk_grow" ] },
   "block.twilightforest.bug.squish": { "subtitle": "subtitles.twilightforest.block.bug.squish", "sounds": ["mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4", "mob/slime/small5"] },
   "block.twilightforest.builder.on": { "subtitle": "subtitles.twilightforest.block.builder.on", "sounds": ["random/click"] },
   "block.twilightforest.builder.off": { "subtitle": "subtitles.twilightforest.block.builder.off", "sounds": ["random/click"] },

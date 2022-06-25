@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "###",
-    "###",
-    " - "
-  ],
   "key": {
     "#": {
       "item": "twilightforest:canopy_planks"
@@ -13,8 +8,13 @@
       "tag": "c:rods/wooden"
     }
   },
+  "pattern": [
+    "###",
+    "###",
+    " - "
+  ],
   "result": {
-    "item": "twilightforest:canopy_sign",
-    "count": 3
+    "count": 3,
+    "item": "twilightforest:canopy_sign"
   }
 }

@@ -8,12 +8,13 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import twilightforest.TFSounds;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFSounds;
 import twilightforest.block.FireJetBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.enums.FireJetVariant;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFDamageSources;
 
 import java.util.List;
 
@@ -28,17 +29,17 @@ public class FireJetBlockEntity extends BlockEntity {
 	public static void tick(Level level, BlockPos pos, BlockState state, FireJetBlockEntity te) {
 		if (state.getBlock() == TFBlocks.FIRE_JET.get() || state.getBlock() == TFBlocks.ENCASED_FIRE_JET.get()) {
 			switch (state.getValue(FireJetBlock.STATE)) {
-				case POPPING -> tickPopping(level, pos, state, te);
-				case FLAME -> tickFlame(level, pos, state, te);
+				case POPPING -> te.tickPopping(level, pos, state, te);
+				case FLAME -> te.tickFlame(level, pos, state, te);
 			}
 		}
 	}
 
-	private static void tickPopping(Level level, BlockPos pos, BlockState state, FireJetBlockEntity te) {
+	private void tickPopping(Level level, BlockPos pos, BlockState state, FireJetBlockEntity te) {
 		if (++te.counter >= 80) {
 			te.counter = 0;
 			// turn to flame
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				if (state.getBlock() == TFBlocks.FIRE_JET.get() || state.getBlock() == TFBlocks.ENCASED_FIRE_JET.get()) {
 					level.setBlockAndUpdate(pos, state.setValue(FireJetBlock.STATE, FireJetVariant.FLAME));
 				} else {
@@ -51,12 +52,12 @@ public class FireJetBlockEntity extends BlockEntity {
 				{
 					level.addParticle(ParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
 				}
-				level.playSound(null, pos, TFSounds.JET_POP, SoundSource.BLOCKS, 0.2F + level.random.nextFloat() * 0.2F, 0.9F + level.random.nextFloat() * 0.15F);
+				level.playSound(null, pos, TFSounds.JET_POP.get(), SoundSource.BLOCKS, 0.2F + level.random.nextFloat() * 0.2F, 0.9F + level.random.nextFloat() * 0.15F);
 			}
 		}
 	}
 
-	private static void tickFlame(Level level, BlockPos pos, BlockState state, FireJetBlockEntity te) {
+	private void tickFlame(Level level, BlockPos pos, BlockState state, FireJetBlockEntity te) {
 		double x = pos.getX();
 		double y = pos.above().getY();
 		double z = pos.getZ();
@@ -64,7 +65,7 @@ public class FireJetBlockEntity extends BlockEntity {
 		if (++te.counter > 60) {
 			te.counter = 0;
 			// idle again
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				if (state.getBlock() == TFBlocks.FIRE_JET.get() || state.getBlock() == TFBlocks.ENCASED_FIRE_JET.get()) {
 					level.setBlockAndUpdate(pos, state.setValue(FireJetBlock.STATE, state.getBlock() == TFBlocks.FIRE_JET.get() ? FireJetVariant.IDLE : FireJetVariant.TIMEOUT));
 				} else {
@@ -73,7 +74,7 @@ public class FireJetBlockEntity extends BlockEntity {
 			}
 		}
 
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			if (te.counter % 2 == 0) {
 				level.addParticle(ParticleTypes.LARGE_SMOKE, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.0D, 0.0D);
 				level.addParticle(TFParticleType.LARGE_FLAME.get(), x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.5D, 0.0D);
@@ -85,15 +86,15 @@ public class FireJetBlockEntity extends BlockEntity {
 
 			// sounds
 			if (te.counter % 4 == 0) {
-				level.playLocalSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_ACTIVE, SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
+				level.playLocalSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_ACTIVE.get(), SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
 
 			} else if (te.counter == 1) {
-				level.playLocalSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_START, SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
+				level.playLocalSound(x + 0.5, y + 0.5, z + 0.5, TFSounds.JET_START.get(), SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
 			}
 		}
 
 		// actual fire effects
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			if (te.counter % 5 == 0) {
 				// find entities in the area of effect
 				List<Entity> entitiesInRange = level.getEntitiesOfClass(Entity.class,

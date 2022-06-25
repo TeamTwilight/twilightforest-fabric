@@ -1,80 +1,7 @@
 {
   "parent": "twilightforest:alt/root",
   "criteria": {
-    "has_shard": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:armor_shard"
-            ]
-          }
-        ]
-      }
-    },
-    "has_raw": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:armor_shard_cluster"
-            ]
-          }
-        ]
-      }
-    },
-    "has_ingot": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:knightmetal_ingot"
-            ]
-          }
-        ]
-      }
-    },
-    "has_helmet": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:knightmetal_helmet"
-            ]
-          }
-        ]
-      }
-    },
-    "has_chestplate": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:knightmetal_chestplate"
-            ]
-          }
-        ]
-      }
-    },
-    "has_leggings": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:knightmetal_leggings"
-            ]
-          }
-        ]
-      }
-    },
     "has_boots": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -83,7 +10,80 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_chestplate": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:knightmetal_chestplate"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_helmet": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:knightmetal_helmet"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:knightmetal_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_leggings": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:knightmetal_leggings"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_raw": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:armor_shard_cluster"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_shard": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:armor_shard"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [

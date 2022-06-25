@@ -1,13 +1,21 @@
 {
   "parent": "twilightforest:progress_labyrinth",
+  "criteria": {
+    "pick": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mazebreaker_pickaxe"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:mazebreaker_pickaxe",
-      "nbt": "{Damage:0}"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.mazebreaker"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.mazebreaker.desc",
       "with": [
@@ -17,30 +25,22 @@
       ]
     },
     "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:mazebreaker_pickaxe",
+      "nbt": "{Damage:0}"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "rewards": {
-    "experience": 50
-  },
-  "criteria": {
-    "pick": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:mazebreaker_pickaxe"
-            ]
-          }
-        ]
-      }
+    "title": {
+      "translate": "advancement.twilightforest.mazebreaker"
     }
   },
   "requirements": [
     [
       "pick"
     ]
-  ]
+  ],
+  "rewards": {
+    "experience": 50
+  }
 }

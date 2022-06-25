@@ -4,8 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -15,18 +16,18 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class TowerRoofMushroomComponent extends TowerRoofComponent {
 
 	public TowerRoofMushroomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MushroomTowerPieces.TFMTRoofMush, nbt);
+		super(TFStructurePieceTypes.TFMTRoofMush.get(), nbt);
 	}
 
-	public TowerRoofMushroomComponent(TFFeature feature, int i, TowerWingComponent wing, float pHang, int x, int y, int z) {
-		super(MushroomTowerPieces.TFMTRoofMush, feature, i, x, y, z);
+	public TowerRoofMushroomComponent(TFLandmark feature, int i, TowerWingComponent wing, float pHang, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMTRoofMush.get(), feature, i, x, y, z);
 		this.height = wing.size;
 		int overhang = (int) (height * pHang);
 		this.size = height + (overhang * 2);
@@ -35,7 +36,7 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -45,7 +46,7 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 	 * Makes a pointy roof out of stuff
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		for (int y = 0; y <= height; y++) {
 

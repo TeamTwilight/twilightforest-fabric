@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -14,12 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
@@ -28,17 +23,17 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
-import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFPart;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFSounds;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -65,7 +60,7 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	private final HydraSmallPart leftLeg;
 	private final HydraSmallPart rightLeg;
 	private final HydraSmallPart tail;
-	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
+	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
 	private float randomYawVelocity = 0f;
 
 	private int ticksSinceDamaged = 0;
@@ -76,26 +71,25 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 		List<HydraPart> parts = new ArrayList<>();
 
-		body = new HydraSmallPart(this, 6F, 6F);
-		leftLeg = new HydraSmallPart(this, 2F, 3F);
-		rightLeg = new HydraSmallPart(this, 2F, 3F);
-		tail = new HydraSmallPart(this, 6.0f, 2.0f);
+		this.body = new HydraSmallPart(this, 6F, 6F);
+		this.leftLeg = new HydraSmallPart(this, 2F, 3F);
+		this.rightLeg = new HydraSmallPart(this, 2F, 3F);
+		this.tail = new HydraSmallPart(this, 6.0f, 2.0f);
 
-		parts.add(body);
-		parts.add(leftLeg);
-		parts.add(rightLeg);
-		parts.add(tail);
+		parts.add(this.body);
+		parts.add(this.leftLeg);
+		parts.add(this.rightLeg);
+		parts.add(this.tail);
 
-		for (int i = 0; i < numHeads; i++) {
-			hc[i] = new HydraHeadContainer(this, i, i < 3);
-			parts.add(hc[i].headEntity);
-			Collections.addAll(parts, hc[i].getNeckArray());
+		for (int i = 0; i < this.numHeads; i++) {
+			this.hc[i] = new HydraHeadContainer(this, i, i < 3);
+			parts.add(this.hc[i].headEntity);
+			Collections.addAll(parts, this.hc[i].getNeckArray());
 		}
 
-		partArray = parts.toArray(new HydraPart[0]);
+		this.partArray = parts.toArray(new HydraPart[0]);
 
 		this.noCulling = true;
-		this.fireImmune();
 		this.xpReward = 511;
 
 	}
@@ -126,8 +120,8 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 	@Override
 	public void checkDespawn() {
-		if (level.getDifficulty() == Difficulty.PEACEFUL) {
-			level.setBlockAndUpdate(blockPosition().offset(0, 2, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
+		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
+			this.getLevel().setBlockAndUpdate(this.blockPosition().offset(0, 2, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
 			discard();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
@@ -141,32 +135,27 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 	// [Vanilla Copy] from LivingEntity. Hydra doesn't like the one from EntityLiving for whatever reason
 	@Override
-	protected float tickHeadTurn(float p_110146_1_, float p_110146_2_)
-	{
+	protected float tickHeadTurn(float p_110146_1_, float p_110146_2_) {
 		float f = Mth.wrapDegrees(p_110146_1_ - this.yBodyRot);
 		this.yBodyRot += f * 0.3F;
 		float f1 = Mth.wrapDegrees(this.getYRot() - this.yBodyRot);
 		boolean flag = f1 < -90.0F || f1 >= 90.0F;
 
-		if (f1 < -75.0F)
-		{
+		if (f1 < -75.0F) {
 			f1 = -75.0F;
 		}
 
-		if (f1 >= 75.0F)
-		{
+		if (f1 >= 75.0F) {
 			f1 = 75.0F;
 		}
 
 		this.yBodyRot = this.getYRot() - f1;
 
-		if (f1 * f1 > 2500.0F)
-		{
+		if (f1 * f1 > 2500.0F) {
 			this.yBodyRot += f1 * 0.2F;
 		}
 
-		if (flag)
-		{
+		if (flag) {
 			p_110146_2_ *= -1.0F;
 		}
 
@@ -175,30 +164,30 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 	@Override
 	public void aiStep() {
-		clearFire();
-		body.tick();
-		leftLeg.tick();
-		rightLeg.tick();
+		this.clearFire();
+		this.body.tick();
+		this.leftLeg.tick();
+		this.rightLeg.tick();
 
 		// update all heads (maybe we should change to only active ones
-		for (int i = 0; i < numHeads; i++) {
-			hc[i].tick();
+		for (int i = 0; i < this.numHeads; i++) {
+			this.hc[i].tick();
 		}
 
 		if (this.hurtTime > 0) {
-			for (int i = 0; i < numHeads; i++) {
-				hc[i].setHurtTime(this.hurtTime);
+			for (int i = 0; i < this.numHeads; i++) {
+				this.hc[i].setHurtTime(this.hurtTime);
 			}
 		}
 
 		this.ticksSinceDamaged++;
 
-		if (!this.level.isClientSide && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 5 == 0) {
+		if (!this.getLevel().isClientSide() && this.ticksSinceDamaged > TICKS_BEFORE_HEALING && this.ticksSinceDamaged % 5 == 0) {
 			this.heal(1);
 		}
 
 		// update fight variables for difficulty setting
-		setDifficultyVariables();
+		this.setDifficultyVariables();
 
 		super.aiStep();
 
@@ -207,56 +196,56 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 		double dx, dy, dz;
 
 		// body goes behind the actual position of the hydra
-		angle = (((yBodyRot + 180) * 3.141593F) / 180F);
+		angle = (((this.yBodyRot + 180.0F) * Mth.PI) / 180.0F);
 
-		dx = getX() - Mth.sin(angle) * 3.0;
-		dy = getY() + 0.1;
-		dz = getZ() + Mth.cos(angle) * 3.0;
-		body.setPos(dx, dy, dz);
+		dx = getX() - Mth.sin(angle) * 3.0D;
+		dy = getY() + 0.1D;
+		dz = getZ() + Mth.cos(angle) * 3.0D;
+		this.body.setPos(dx, dy, dz);
 
-		dx = getX() - Mth.sin(angle) * 10.5;
-		dy = getY() + 0.1;
-		dz = getZ() + Mth.cos(angle) * 10.5;
-		tail.setPos(dx, dy, dz);
+		dx = getX() - Mth.sin(angle) * 10.5D;
+		dy = getY() + 0.1D;
+		dz = getZ() + Mth.cos(angle) * 10.5D;
+		this.tail.setPos(dx, dy, dz);
 
 		if (hurtTime == 0) {
-			this.collideWithEntities(this.level.getEntities(this, this.body.getBoundingBox()), this.body);
-			this.collideWithEntities(this.level.getEntities(this, this.tail.getBoundingBox()), this.tail);
+			this.collideWithEntities(this.getLevel().getEntities(this, this.body.getBoundingBox()), this.body);
+			this.collideWithEntities(this.getLevel().getEntities(this, this.tail.getBoundingBox()), this.tail);
 		}
 
 		// destroy blocks
-		if (!this.level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			this.destroyBlocksInAABB(this.body.getBoundingBox());
 			this.destroyBlocksInAABB(this.tail.getBoundingBox());
 
-			for (int i = 0; i < numHeads; i++) {
-				if (hc[i].headEntity != null && hc[i].isActive()) {
+			for (int i = 0; i < this.numHeads; i++) {
+				if (this.hc[i].headEntity != null && this.hc[i].isActive()) {
 					this.destroyBlocksInAABB(this.hc[i].headEntity.getBoundingBox());
 				}
 			}
 
 			// smash blocks beneath us too
 			if (this.tickCount % 20 == 0) {
-				if (isUnsteadySurfaceBeneath()) {
+				if (this.isUnsteadySurfaceBeneath()) {
 					this.destroyBlocksInAABB(this.getBoundingBox().move(0, -1, 0));
 
 				}
 			}
 
-			bossInfo.setProgress(getHealth() / getMaxHealth());
+			this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 		}
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putByte("NumHeads", (byte) countActiveHeads());
+		compound.putByte("NumHeads", (byte) this.countActiveHeads());
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		activateNumberOfHeads(compound.getByte("NumHeads"));
+		this.activateNumberOfHeads(compound.getByte("NumHeads"));
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -268,43 +257,43 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 	@Override
 	protected void customServerAiStep() {
-		xxa = 0.0F;
-		zza = 0.0F;
-		float f = 48F;
+		this.xxa = 0.0F;
+		this.zza = 0.0F;
+		float f = 48.0F;
 
 		// kill heads that have taken too much damage
-		for (int i = 0; i < numHeads; i++) {
-			if (hc[i].isActive() && hc[i].getDamageTaken() > HEAD_MAX_DAMAGE) {
-				hc[i].setNextState(HydraHeadContainer.State.DYING);
-				hc[i].endCurrentAction();
+		for (int i = 0; i < this.numHeads; i++) {
+			if (this.hc[i].isActive() && this.hc[i].getDamageTaken() > HEAD_MAX_DAMAGE) {
+				this.hc[i].setNextState(HydraHeadContainer.State.DYING);
+				this.hc[i].endCurrentAction();
 
 				// set this head and a random dead head to respawn
-				hc[i].setRespawnCounter(HEAD_RESPAWN_TICKS);
-				int otherHead = getRandomDeadHead();
+				this.hc[i].setRespawnCounter(HEAD_RESPAWN_TICKS);
+				int otherHead = this.getRandomDeadHead();
 				if (otherHead != -1) {
-					hc[otherHead].setRespawnCounter(HEAD_RESPAWN_TICKS);
+					this.hc[otherHead].setRespawnCounter(HEAD_RESPAWN_TICKS);
 				}
 			}
 		}
 
-		if (random.nextFloat() < 0.7F) {
-			Player entityplayer1 = level.getNearestPlayer(this, f);
+		if (this.getRandom().nextFloat() < 0.7F) {
+			Player entityplayer1 = this.getLevel().getNearestPlayer(this, f);
 
 			if (entityplayer1 != null && !entityplayer1.isCreative()) {
 				setTarget(entityplayer1);
-				numTicksToChaseTarget = 100 + random.nextInt(20);
+				this.numTicksToChaseTarget = 100 + this.getRandom().nextInt(20);
 			} else {
-				randomYawVelocity = (random.nextFloat() - 0.5F) * 20F;
+				this.randomYawVelocity = (this.getRandom().nextFloat() - 0.5F) * 20F;
 			}
 		}
 
-		if (getTarget() != null) {
-			lookAt(getTarget(), 10F, getMaxHeadXRot());
+		if (this.getTarget() != null) {
+			this.lookAt(this.getTarget(), 10.0F, this.getMaxHeadXRot());
 
 			// have any heads not currently attacking switch to the primary target
-			for (int i = 0; i < numHeads; i++) {
-				if (!hc[i].isAttacking() && !hc[i].isSecondaryAttacking) {
-					hc[i].setTargetEntity(getTarget());
+			for (int i = 0; i < this.numHeads; i++) {
+				if (!this.hc[i].isAttacking() && !this.hc[i].isSecondaryAttacking) {
+					this.hc[i].setTargetEntity(this.getTarget());
 				}
 			}
 
@@ -317,23 +306,23 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 				}
 			}
 
-			if (numTicksToChaseTarget-- <= 0 || !getTarget().isAlive() || getTarget().distanceToSqr(this) > f * f) {
-				setTarget(null);
+			if (this.numTicksToChaseTarget-- <= 0 || !this.getTarget().isAlive() || this.getTarget().distanceToSqr(this) > f * f) {
+				this.setTarget(null);
 			}
 		} else {
-			if (random.nextFloat() < 0.05F) {
-				randomYawVelocity = (random.nextFloat() - 0.5F) * 20F;
+			if (this.getRandom().nextFloat() < 0.05F) {
+				this.randomYawVelocity = (this.getRandom().nextFloat() - 0.5F) * 20F;
 			}
 
-			setYRot(getYRot() + randomYawVelocity);
-			setXRot(0);
+			this.setYRot(this.getYRot() + this.randomYawVelocity);
+			this.setXRot(0);
 
 			// TODO: while we are idle, consider having the heads breathe fire on passive mobs
 
 			// set idle heads to no target
-			for (int i = 0; i < numHeads; i++) {
-				if (hc[i].isIdle()) {
-					hc[i].setTargetEntity(null);
+			for (int i = 0; i < this.numHeads; i++) {
+				if (this.hc[i].isIdle()) {
+					this.hc[i].setTargetEntity(null);
 				}
 			}
 		}
@@ -343,7 +332,7 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	}
 
 	private void setDifficultyVariables() {
-		if (level.getDifficulty() != Difficulty.HARD) {
+		if (this.getLevel().getDifficulty() != Difficulty.HARD) {
 			Hydra.HEADS_ACTIVITY_FACTOR = 0.3F;
 		} else {
 			Hydra.HEADS_ACTIVITY_FACTOR = 0.5F;  // higher is harder
@@ -352,8 +341,8 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 	// TODO: make random
 	private int getRandomDeadHead() {
-		for (int i = 0; i < numHeads; i++) {
-			if (hc[i].canRespawn()) {
+		for (int i = 0; i < this.numHeads; i++) {
+			if (this.hc[i].canRespawn()) {
 				return i;
 			}
 		}
@@ -367,11 +356,11 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 		int moreHeads = howMany - this.countActiveHeads();
 
 		for (int i = 0; i < moreHeads; i++) {
-			int otherHead = getRandomDeadHead();
+			int otherHead = this.getRandomDeadHead();
 			if (otherHead != -1) {
 				// move directly into not dead
-				hc[otherHead].setNextState(HydraHeadContainer.State.IDLE);
-				hc[otherHead].endCurrentAction();
+				this.hc[otherHead].setNextState(HydraHeadContainer.State.IDLE);
+				this.hc[otherHead].endCurrentAction();
 			}
 		}
 	}
@@ -389,24 +378,24 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 		// three main heads can do these kinds of attacks
 		for (int i = 0; i < 3; i++) {
-			if (hc[i].isIdle() && !areTooManyHeadsAttacking(i)) {
-				if (distance > 4 && distance < 10 && random.nextInt(BITE_CHANCE) == 0 && this.countActiveHeads() > 2 && !areOtherHeadsBiting(i)) {
-					hc[i].setNextState(HydraHeadContainer.State.BITE_BEGINNING);
-				} else if (distance > 0 && distance < 20 && random.nextInt(FLAME_CHANCE) == 0) {
-					hc[i].setNextState(HydraHeadContainer.State.FLAME_BEGINNING);
-				} else if (distance > 8 && distance < 32 && !targetAbove && random.nextInt(MORTAR_CHANCE) == 0) {
-					hc[i].setNextState(HydraHeadContainer.State.MORTAR_BEGINNING);
+			if (this.hc[i].isIdle() && !areTooManyHeadsAttacking(i)) {
+				if (distance > 4 && distance < 10 && this.getRandom().nextInt(BITE_CHANCE) == 0 && this.countActiveHeads() > 2 && !this.areOtherHeadsBiting(i)) {
+					this.hc[i].setNextState(HydraHeadContainer.State.BITE_BEGINNING);
+				} else if (distance > 0 && distance < 20 && this.getRandom().nextInt(FLAME_CHANCE) == 0) {
+					this.hc[i].setNextState(HydraHeadContainer.State.FLAME_BEGINNING);
+				} else if (distance > 8 && distance < 32 && !targetAbove && this.getRandom().nextInt(MORTAR_CHANCE) == 0) {
+					this.hc[i].setNextState(HydraHeadContainer.State.MORTAR_BEGINNING);
 				}
 			}
 		}
 
 		// heads 4-7 can do everything but bite
 		for (int i = 3; i < numHeads; i++) {
-			if (hc[i].isIdle() && !areTooManyHeadsAttacking(i)) {
-				if (distance > 0 && distance < 20 && random.nextInt(FLAME_CHANCE) == 0) {
-					hc[i].setNextState(HydraHeadContainer.State.FLAME_BEGINNING);
-				} else if (distance > 8 && distance < 32 && !targetAbove && random.nextInt(MORTAR_CHANCE) == 0) {
-					hc[i].setNextState(HydraHeadContainer.State.MORTAR_BEGINNING);
+			if (this.hc[i].isIdle() && !this.areTooManyHeadsAttacking(i)) {
+				if (distance > 0 && distance < 20 && this.getRandom().nextInt(FLAME_CHANCE) == 0) {
+					this.hc[i].setNextState(HydraHeadContainer.State.FLAME_BEGINNING);
+				} else if (distance > 8 && distance < 32 && !targetAbove && this.getRandom().nextInt(MORTAR_CHANCE) == 0) {
+					this.hc[i].setNextState(HydraHeadContainer.State.MORTAR_BEGINNING);
 				}
 			}
 		}
@@ -415,12 +404,12 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	private boolean areTooManyHeadsAttacking(int testHead) {
 		int otherAttacks = 0;
 
-		for (int i = 0; i < numHeads; i++) {
-			if (i != testHead && hc[i].isAttacking()) {
+		for (int i = 0; i < this.numHeads; i++) {
+			if (i != testHead && this.hc[i].isAttacking()) {
 				otherAttacks++;
 
 				// biting heads count triple
-				if (hc[i].isBiting()) {
+				if (this.hc[i].isBiting()) {
 					otherAttacks += 2;
 				}
 			}
@@ -432,8 +421,8 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	private int countActiveHeads() {
 		int count = 0;
 
-		for (int i = 0; i < numHeads; i++) {
-			if (hc[i].isActive()) {
+		for (int i = 0; i < this.numHeads; i++) {
+			if (this.hc[i].isActive()) {
 				count++;
 			}
 		}
@@ -442,8 +431,8 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	}
 
 	private boolean areOtherHeadsBiting(int testHead) {
-		for (int i = 0; i < numHeads; i++) {
-			if (i != testHead && hc[i].isBiting()) {
+		for (int i = 0; i < this.numHeads; i++) {
+			if (i != testHead && this.hc[i].isBiting()) {
 				return true;
 			}
 		}
@@ -456,8 +445,8 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	 * The center head (head 0) does not make secondary attacks
 	 */
 	private void secondaryAttacks() {
-		for (int i = 0; i < numHeads; i++) {
-			if (hc[i].headEntity == null) {
+		for (int i = 0; i < this.numHeads; i++) {
+			if (this.hc[i].headEntity == null) {
 				return;
 			}
 		}
@@ -467,16 +456,16 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 		if (secondaryTarget != null) {
 			float distance = secondaryTarget.distanceTo(this);
 
-			for (int i = 1; i < numHeads; i++) {
-				if (hc[i].isActive() && hc[i].isIdle() && isTargetOnThisSide(i, secondaryTarget)) {
-					if (distance > 0 && distance < 20 && random.nextInt(SECONDARY_FLAME_CHANCE) == 0) {
-						hc[i].setTargetEntity(secondaryTarget);
-						hc[i].isSecondaryAttacking = true;
-						hc[i].setNextState(HydraHeadContainer.State.FLAME_BEGINNING);
-					} else if (distance > 8 && distance < 32 && random.nextInt(SECONDARY_MORTAR_CHANCE) == 0) {
-						hc[i].setTargetEntity(secondaryTarget);
-						hc[i].isSecondaryAttacking = true;
-						hc[i].setNextState(HydraHeadContainer.State.MORTAR_BEGINNING);
+			for (int i = 1; i < this.numHeads; i++) {
+				if (this.hc[i].isActive() && this.hc[i].isIdle() && isTargetOnThisSide(i, secondaryTarget)) {
+					if (distance > 0 && distance < 20 && this.getRandom().nextInt(SECONDARY_FLAME_CHANCE) == 0) {
+						this.hc[i].setTargetEntity(secondaryTarget);
+						this.hc[i].isSecondaryAttacking = true;
+						this.hc[i].setNextState(HydraHeadContainer.State.FLAME_BEGINNING);
+					} else if (distance > 8 && distance < 32 && this.getRandom().nextInt(SECONDARY_MORTAR_CHANCE) == 0) {
+						this.hc[i].setTargetEntity(secondaryTarget);
+						this.hc[i].isSecondaryAttacking = true;
+						this.hc[i].setNextState(HydraHeadContainer.State.MORTAR_BEGINNING);
 					}
 				}
 			}
@@ -487,7 +476,7 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	 * Used to make sure heads don't attack across the whole body
 	 */
 	private boolean isTargetOnThisSide(int headNum, Entity target) {
-		double headDist = distanceSqXZ(hc[headNum].headEntity, target);
+		double headDist = distanceSqXZ(this.hc[headNum].headEntity, target);
 		double middleDist = distanceSqXZ(this, target);
 		return headDist < middleDist;
 	}
@@ -503,7 +492,7 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 	@Nullable
 	private LivingEntity findSecondaryTarget(double range) {
-		return this.level.getEntitiesOfClass(LivingEntity.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(range, range, range))
+		return this.getLevel().getEntitiesOfClass(LivingEntity.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(range, range, range))
 				.stream()
 				.filter(e -> !(e instanceof Hydra))
 				.filter(e -> e != getTarget() && !isAnyHeadTargeting(e) && getSensing().hasLineOfSight(e) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(e))
@@ -511,8 +500,8 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	}
 
 	private boolean isAnyHeadTargeting(Entity targetEntity) {
-		for (int i = 0; i < numHeads; i++) {
-			if (hc[i].targetEntity != null && hc[i].targetEntity.equals(targetEntity)) {
+		for (int i = 0; i < this.numHeads; i++) {
+			if (this.hc[i].targetEntity != null && this.hc[i].targetEntity.equals(targetEntity)) {
 				return true;
 			}
 		}
@@ -526,7 +515,7 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 		double d1 = (part.getBoundingBox().minZ + part.getBoundingBox().maxZ) / 2.0D;
 
 		for (Entity entity : entities) {
-			if(entity instanceof Player player && player.isCreative()) continue;
+			if (entity instanceof Player player && player.isCreative()) continue;
 			if (entity instanceof LivingEntity) {
 				double d2 = entity.getX() - d0;
 				double d3 = entity.getZ() - d1;
@@ -554,7 +543,7 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 		for (int dx = minX; dx <= maxX; ++dx) {
 			for (int dz = minZ; dz <= maxZ; ++dz) {
 				total++;
-				if (this.level.getBlockState(new BlockPos(dx, dy, dz)).getMaterial().isSolid()) {
+				if (this.getLevel().getBlockState(new BlockPos(dx, dy, dz)).getMaterial().isSolid()) {
 					solid++;
 				}
 			}
@@ -564,10 +553,10 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (deathTime <= 0 && level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+		if (this.deathTime <= 0 && this.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-				if (EntityUtil.canDestroyBlock(level, pos, this)) {
-					level.destroyBlock(pos, false);
+				if (EntityUtil.canDestroyBlock(this.getLevel(), pos, this)) {
+					this.getLevel().destroyBlock(pos, false);
 				}
 			}
 		}
@@ -580,23 +569,23 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 	public boolean attackEntityFromPart(HydraPart part, DamageSource source, float damage) {
 		// if we're in a wall, kill that wall
-		if (!level.isClientSide && source == DamageSource.IN_WALL) {
-			destroyBlocksInAABB(part.getBoundingBox());
+		if (!this.getLevel().isClientSide() && source == DamageSource.IN_WALL) {
+			this.destroyBlocksInAABB(part.getBoundingBox());
 		}
 
 		if (source.getEntity() == this || source.getDirectEntity() == this)
 			return false;
-		if (getParts() != null)
-			for (PartEntity<?> partEntity : getParts())
+		if (this.getParts() != null)
+			for (PartEntity<?> partEntity : this.getParts())
 				if (partEntity == source.getEntity() || partEntity == source.getDirectEntity())
 					return false;
 
 		HydraHeadContainer headCon = null;
 
-		for (int i = 0; i < numHeads; i++) {
-			if (hc[i].headEntity == part) {
-				headCon = hc[i];
-			} else if (part instanceof HydraNeck && hc[i].headEntity == ((HydraNeck) part).head && !hc[i].isActive())
+		for (int i = 0; i < this.numHeads; i++) {
+			if (this.hc[i].headEntity == part) {
+				headCon = this.hc[i];
+			} else if (part instanceof HydraNeck neck && this.hc[i].headEntity == neck.head && !this.hc[i].isActive())
 				return false;
 		}
 
@@ -633,13 +622,13 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	}
 
 	private double calculateRange(DamageSource damagesource) {
-		return damagesource.getEntity() != null ? distanceToSqr(damagesource.getEntity()) : -1;
+		return damagesource.getEntity() != null ? this.distanceToSqr(damagesource.getEntity()) : -1;
 	}
 
 	@Override
 	public boolean hurt(DamageSource src, float damage) {
-		if(src.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
-			hurtBy.add(player);
+		if (src.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
+			this.hurtBy.add(player);
 		}
 		return src == DamageSource.OUT_OF_WORLD && super.hurt(src, damage);
 	}
@@ -655,12 +644,12 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	@Nullable
 	@Override
 	public PartEntity<?>[] getParts() {
-		return partArray;
+		return this.partArray;
 	}
 
 	@Override
-	public void recreateFromPacket(ClientboundAddMobPacket p_147206_) {
-		super.recreateFromPacket(p_147206_);
+	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+		super.recreateFromPacket(packet);
 		TFPart.assignPartIDs(this);
 	}
 
@@ -681,7 +670,8 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	}
 
 	@Override
-	protected void doPush(Entity entity) {}
+	protected void doPush(Entity entity) {
+	}
 
 	@Override
 	public void knockback(double strength, double xRatio, double zRatio) {
@@ -689,17 +679,17 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HYDRA_GROWL;
+		return TFSounds.HYDRA_GROWL.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.HYDRA_HURT;
+		return TFSounds.HYDRA_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.HYDRA_DEATH;
+		return TFSounds.HYDRA_DEATH.get();
 	}
 
 	@Override
@@ -711,13 +701,13 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the lair as defeated
-		if (!level.isClientSide) {
-			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.HYDRA_LAIR);
-			for (ServerPlayer player :hurtBy) {
+		if (!this.getLevel().isClientSide()) {
+			TFGenerationSettings.markStructureConquered(this.getLevel(), new BlockPos(this.blockPosition()), TFLandmark.HYDRA_LAIR);
+			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 
@@ -742,13 +732,13 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 		++this.deathTime;
 
 		// stop any head actions on death
-		if (deathTime == 1) {
-			for (int i = 0; i < numHeads; i++) {
-				hc[i].setRespawnCounter(-1);
-				if (hc[i].isActive()) {
-					hc[i].setNextState(HydraHeadContainer.State.IDLE);
-					hc[i].endCurrentAction();
-					hc[i].setHurtTime(200);
+		if (this.deathTime == 1) {
+			for (int i = 0; i < this.numHeads; i++) {
+				this.hc[i].setRespawnCounter(-1);
+				if (this.hc[i].isActive()) {
+					this.hc[i].setNextState(HydraHeadContainer.State.IDLE);
+					this.hc[i].endCurrentAction();
+					this.hc[i].setHurtTime(200);
 				}
 			}
 		}
@@ -757,20 +747,20 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 		if (this.deathTime <= 140 && this.deathTime % 20 == 0) {
 			int headToDie = (this.deathTime / 20) - 1;
 
-			if (hc[headToDie].isActive()) {
-				hc[headToDie].setNextState(HydraHeadContainer.State.DYING);
-				hc[headToDie].endCurrentAction();
+			if (this.hc[headToDie].isActive()) {
+				this.hc[headToDie].setNextState(HydraHeadContainer.State.DYING);
+				this.hc[headToDie].endCurrentAction();
 			}
 		}
 
 		if (this.deathTime == 200) {
-			if (!this.level.isClientSide && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
-				int i = this.getExperienceReward(this.lastHurtByPlayer);
+			if (!this.getLevel().isClientSide() && (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0 && this.shouldDropExperience() && this.getLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
+				int i = this.getExperienceReward();
 				//i = ForgeEventFactory.getExperienceDrop(this, this.lastHurtByPlayer, i); TODO: EVENT
 				while (i > 0) {
 					int j = ExperienceOrb.getExperienceValue(i);
 					i -= j;
-					this.level.addFreshEntity(new ExperienceOrb(this.level, this.getX(), this.getY(), this.getZ(), j));
+					this.getLevel().addFreshEntity(new ExperienceOrb(this.getLevel(), this.getX(), this.getY(), this.getZ(), j));
 				}
 			}
 
@@ -778,13 +768,13 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 		}
 
 		for (int i = 0; i < 20; ++i) {
-			double vx = this.random.nextGaussian() * 0.02D;
-			double vy = this.random.nextGaussian() * 0.02D;
-			double vz = this.random.nextGaussian() * 0.02D;
-			this.level.addParticle((random.nextInt(2) == 0 ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION),
-					this.getX() + this.random.nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
-					this.getY() + this.random.nextFloat() * this.body.getBbHeight(),
-					this.getZ() + this.random.nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
+			double vx = this.getRandom().nextGaussian() * 0.02D;
+			double vy = this.getRandom().nextGaussian() * 0.02D;
+			double vz = this.getRandom().nextGaussian() * 0.02D;
+			this.getLevel().addParticle((this.getRandom().nextInt(2) == 0 ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION),
+					this.getX() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
+					this.getY() + this.getRandom().nextFloat() * this.body.getBbHeight(),
+					this.getZ() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
 					vx, vy, vz
 			);
 		}
@@ -801,7 +791,7 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 

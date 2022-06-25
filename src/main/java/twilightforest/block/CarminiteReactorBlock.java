@@ -1,24 +1,23 @@
 package twilightforest.block;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import twilightforest.block.entity.CarminiteReactorBlockEntity;
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.init.TFBlockEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
-
-import net.minecraft.core.Direction;
 
 public class CarminiteReactorBlock extends BaseEntityBlock {
 
@@ -26,7 +25,7 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 
 	public CarminiteReactorBlock(Properties props) {
 		super(props);
-		this.registerDefaultState(stateDefinition.any().setValue(ACTIVE, false));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
 	}
 
 	@Override
@@ -36,27 +35,27 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public RenderShape getRenderShape(BlockState p_49232_) {
+	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
 
 	@Override
 	@Deprecated
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (world.isClientSide) return;
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		if (level.isClientSide()) return;
 
-		if (!state.getValue(ACTIVE) && isReactorReady(world, pos)) {
+		if (!state.getValue(ACTIVE) && this.isReactorReady(level, pos)) {
 			// check if we should fire up the reactor
-			world.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
+			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
 		}
 	}
 
 	/**
 	 * Check if the reactor has all the specified things around it
 	 */
-	private boolean isReactorReady(Level world, BlockPos pos) {
+	private boolean isReactorReady(Level level, BlockPos pos) {
 		return Arrays.stream(Direction.values())
-				.allMatch(e -> world.getBlockState(pos.relative(e)).getBlock() == Blocks.REDSTONE_BLOCK);
+				.allMatch(e -> level.getBlockState(pos.relative(e)).getBlock() == Blocks.REDSTONE_BLOCK);
 	}
 
 	@Nullable

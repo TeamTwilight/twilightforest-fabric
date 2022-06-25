@@ -12,7 +12,7 @@ import slimeknights.tconstruct.library.entity.EntityProjectileBase;
 import slimeknights.tconstruct.library.traits.AbstractProjectileTrait;
 import twilightforest.world.TFWorld;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class TraitTwilit extends AbstractProjectileTrait {

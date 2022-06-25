@@ -1,9 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "#H#",
-    "#H#"
-  ],
   "key": {
     "#": [
       {
@@ -37,8 +33,12 @@
       }
     ]
   },
+  "pattern": [
+    "#H#",
+    "#H#"
+  ],
   "result": {
-    "item": "twilightforest:encased_castle_brick_pillar",
-    "count": 6
+    "count": 6,
+    "item": "twilightforest:encased_castle_brick_pillar"
   }
 }

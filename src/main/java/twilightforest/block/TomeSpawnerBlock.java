@@ -26,20 +26,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import twilightforest.TFSounds;
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.block.entity.TomeSpawnerBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class TomeSpawnerBlock extends BaseEntityBlock implements CaughtFireBlock, EnchantmentBonusBlock {
 
 	public static IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, 10);
 	public static BooleanProperty SPAWNER = BooleanProperty.create("spawner");
 
-	protected TomeSpawnerBlock(Properties properties) {
+	public TomeSpawnerBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(getStateDefinition().any().setValue(BOOK_STAGES, 10).setValue(SPAWNER, true));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(BOOK_STAGES, 10).setValue(SPAWNER, true));
 		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
 	}
 
@@ -49,14 +49,14 @@ public class TomeSpawnerBlock extends BaseEntityBlock implements CaughtFireBlock
 	}
 
 	@Override
-	public void onCaughtFire(BlockState state, Level world, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
-		if(world.getDifficulty() != Difficulty.PEACEFUL && world.getBlockState(pos).getValue(SPAWNER) && world.getBlockEntity(pos) instanceof TomeSpawnerBlockEntity ts && world instanceof ServerLevel level) {
+	public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
+		if(level.getDifficulty() != Difficulty.PEACEFUL && level.getBlockState(pos).getValue(SPAWNER) && level.getBlockEntity(pos) instanceof TomeSpawnerBlockEntity ts && level instanceof ServerLevel serverLevel) {
 			for(int i = 0; i < state.getValue(BOOK_STAGES); i++) {
-				ts.attemptSpawnTome(level, pos, true);
+				ts.attemptSpawnTome(serverLevel, pos, true);
 			}
-			world.destroyBlock(pos, false);
+			level.destroyBlock(pos, false);
 		}
-		CaughtFireBlock.super.onCaughtFire(state, world, pos, face, igniter);
+		CaughtFireBlock.super.onCaughtFire(state, level, pos, face, igniter);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock implements CaughtFireBlock
 	@Override
 	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity entity, ItemStack stack) {
 		if(!level.isClientSide && state.getValue(SPAWNER)) {
-			level.playSound(null, pos, TFSounds.TOME_DEATH, SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.playSound(null, pos, TFSounds.TOME_DEATH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			for (int i = 0; i < 20; ++i) {
 				double d3 = level.random.nextGaussian() * 0.02D;
 				double d1 = level.random.nextGaussian() * 0.02D;
@@ -89,14 +89,14 @@ public class TomeSpawnerBlock extends BaseEntityBlock implements CaughtFireBlock
 	}
 
 	@Override
-	public float getEnchantPowerBonus(BlockState state, LevelReader world, BlockPos pos) {
+	public float getEnchantPowerBonus(BlockState state, LevelReader reader, BlockPos pos) {
 		return state.getValue(BOOK_STAGES) * 0.1F;
 	}
 
 	@Nullable
 	@Override
-	public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-		return blockState.getValue(SPAWNER) ? new TomeSpawnerBlockEntity(blockPos, blockState) : null;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return state.getValue(SPAWNER) ? new TomeSpawnerBlockEntity(pos, state) : null;
 	}
 
 	@Nullable

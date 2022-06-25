@@ -16,7 +16,7 @@ import twilightforest.entity.boss.NagaSegment;
 
 public class NagaLegacyModel<T extends Entity> extends ListModel<T> {
 
-	public ModelPart head;
+	public final ModelPart head;
 	public ModelPart body;
 	private T entity;
 

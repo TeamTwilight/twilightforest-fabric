@@ -12,47 +12,46 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DiggerItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TFSounds;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ChainBlock;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEnchantments;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 import twilightforest.util.TwilightItemTier;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class ChainBlockItem extends DiggerItem implements FabricItem, ShieldBlockItem {
 
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
-	protected ChainBlockItem(Properties props) {
-		super(6, -3.0F, TwilightItemTier.KNIGHTMETAL, BlockTags.BASE_STONE_OVERWORLD, props);
+	public ChainBlockItem(Properties properties) {
+		super(6, -3.0F, TwilightItemTier.KNIGHTMETAL, BlockTags.BASE_STONE_OVERWORLD, properties);
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level world, Entity holder, int slot, boolean isSelected) {
-		if (!world.isClientSide && getThrownUuid(stack) != null && getThrownEntity(world, stack) == null) {
+	public void inventoryTick(ItemStack stack, Level level, Entity holder, int slot, boolean isSelected) {
+		if (!level.isClientSide() && getThrownUuid(stack) != null && getThrownEntity(level, stack) == null) {
 			stack.getTag().remove(THROWN_UUID_KEY);
 		}
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (getThrownUuid(stack) != null)
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
-		player.playSound(TFSounds.BLOCKCHAIN_FIRED, 0.5F, 1.0F / (world.random.nextFloat() * 0.4F + 1.2F));
+		player.playSound(TFSounds.BLOCKCHAIN_FIRED.get(), 0.5F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));
 
-		if (!world.isClientSide) {
-			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), world, player, hand, stack);
-			world.addFreshEntity(launchedBlock);
+		if (!level.isClientSide()) {
+			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), level, player, hand, stack);
+			level.addFreshEntity(launchedBlock);
 			setThrownEntity(stack, launchedBlock);
 
 			stack.hurtAndBreak(1, player, (user) -> user.broadcastBreakEvent(hand));
@@ -63,7 +62,7 @@ public class ChainBlockItem extends DiggerItem implements FabricItem, ShieldBloc
 	}
 
 	@Nullable
-	protected static UUID getThrownUuid(ItemStack stack) {
+	public static UUID getThrownUuid(ItemStack stack) {
 		if (stack.hasTag() && stack.getTag().hasUUID(THROWN_UUID_KEY)) {
 			return stack.getTag().getUUID(THROWN_UUID_KEY);
 		}
@@ -72,11 +71,11 @@ public class ChainBlockItem extends DiggerItem implements FabricItem, ShieldBloc
 	}
 
 	@Nullable
-	private static ChainBlock getThrownEntity(Level world, ItemStack stack) {
-		if (world instanceof ServerLevel) {
+	private static ChainBlock getThrownEntity(Level level, ItemStack stack) {
+		if (level instanceof ServerLevel server) {
 			UUID id = getThrownUuid(stack);
 			if (id != null) {
-				Entity e = ((ServerLevel) world).getEntity(id);
+				Entity e = server.getEntity(id);
 				if (e instanceof ChainBlock) {
 					return (ChainBlock) e;
 				}
@@ -112,16 +111,18 @@ public class ChainBlockItem extends DiggerItem implements FabricItem, ShieldBloc
 	public boolean isSuitableFor(ItemStack stack, BlockState state) {
 		if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
 				|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
-			return TierSortingRegistry.isCorrectTierForDrops(Tiers.IRON, state);
+			return TierSortingRegistry.isCorrectTierForDrops(this.getHarvestLevel(stack), state);
 		return super.isSuitableFor(stack, state);
 	}
 
-	/*@Override
-	public int getHarvestLevel(ItemStack stack, ToolType tool, @Nullable Player player, @Nullable BlockState blockState) {
-		if (tool == ToolType.PICKAXE) {
-			return 2;
+	public Tier getHarvestLevel(ItemStack stack) {
+		int enchantLevel = EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack);
+		if (enchantLevel == 2) {
+			return Tiers.STONE;
+		} else if (enchantLevel == 3) {
+			return Tiers.IRON;
 		} else {
-			return -1;
+			return Tiers.WOOD;
 		}
-	}*/
+	}
 }

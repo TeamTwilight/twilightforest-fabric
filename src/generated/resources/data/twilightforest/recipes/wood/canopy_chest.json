@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "###",
-    "#C#",
-    "###"
-  ],
   "key": {
     "#": {
       "item": "twilightforest:canopy_planks"
@@ -13,8 +8,13 @@
       "tag": "c:chests/wooden"
     }
   },
+  "pattern": [
+    "###",
+    "#C#",
+    "###"
+  ],
   "result": {
-    "item": "twilightforest:canopy_chest",
-    "count": 2
+    "count": 2,
+    "item": "twilightforest:canopy_chest"
   }
 }

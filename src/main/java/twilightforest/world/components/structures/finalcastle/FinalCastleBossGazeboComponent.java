@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,25 +15,25 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.ForceFieldBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Random;
+
 
 @ParametersAreNonnullByDefault
 public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 
 	@SuppressWarnings("unused")
 	public FinalCastleBossGazeboComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCBoGaz, nbt);
+		super(TFStructurePieceTypes.TFFCBoGaz.get(), nbt);
 	}
 
-	public FinalCastleBossGazeboComponent(TFFeature feature, Random rand, int i, TFStructureComponentOld keep, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCBoGaz, feature, i, x, y, z);
+	public FinalCastleBossGazeboComponent(TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld keep, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFFCBoGaz.get(), feature, i, x, y, z);
 		this.spawnListIndex = -1; // no monsters
 
 		this.setOrientation(keep.getOrientation());
@@ -41,7 +42,7 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		this.deco = new StructureTFDecoratorCastle();
 		this.deco.blockState = TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
 
@@ -49,7 +50,7 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		BlockState state = TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState();
 
 		// walls

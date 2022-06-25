@@ -1,11 +1,11 @@
 {
+  "type": "twilightforest:lampposts",
   "config": {
     "state": {
+      "Name": "twilightforest:cicada_jar",
       "Properties": {
         "waterlogged": "false"
-      },
-      "Name": "twilightforest:cicada_jar"
+      }
     }
-  },
-  "type": "twilightforest:lampposts"
+  }
 }

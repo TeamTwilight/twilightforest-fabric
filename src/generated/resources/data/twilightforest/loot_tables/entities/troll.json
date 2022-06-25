@@ -2,21 +2,21 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "chance": 0.025,
+          "condition": "minecraft:random_chance_with_looting",
+          "looting_multiplier": 0.01
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
           "name": "twilightforest:magic_beans"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance_with_looting",
-          "chance": 0.025,
-          "looting_multiplier": 0.01
-        }
-      ]
+      "rolls": 1.0
     }
   ]
 }

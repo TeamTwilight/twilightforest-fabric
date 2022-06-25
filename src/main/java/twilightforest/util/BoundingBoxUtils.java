@@ -4,7 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.core.Vec3i;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class BoundingBoxUtils {
 	@Deprecated // Use `BoundingBox#getCenter` directly

@@ -20,7 +20,8 @@ import twilightforest.entity.monster.PinchBeetle;
  */
 @Environment(EnvType.CLIENT)
 public class PinchBeetleModel extends HierarchicalModel<PinchBeetle> {
-    public ModelPart root, head;
+    public final ModelPart root;
+	public final ModelPart head;
     public ModelPart rightLeg1, rightLeg2, rightLeg3;
     public ModelPart leftLeg1, leftLeg2, leftLeg3;
     public ModelPart rightPincer, leftPincer;

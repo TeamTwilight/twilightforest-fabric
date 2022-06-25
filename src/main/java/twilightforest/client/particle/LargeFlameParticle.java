@@ -1,8 +1,7 @@
 package twilightforest.client.particle;
 
-import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteProvider;
-import net.minecraft.client.particle.*;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -12,11 +11,11 @@ public class LargeFlameParticle extends TextureSheetParticle {
 
 	private final float flameScale;
 
-	LargeFlameParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
-		super(world, x, y, z, vx, vy, vz);
-		this.xd = this.xd * 0.009999999776482582D + vx;
-		this.yd = this.yd * 0.009999999776482582D + vy;
-		this.zd = this.zd * 0.009999999776482582D + vz;
+	public LargeFlameParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz) {
+		super(level, x, y, z, vx, vy, vz);
+		this.xd = this.xd * 0.01D + vx;
+		this.yd = this.yd * 0.01D + vy;
+		this.zd = this.zd * 0.01D + vz;
 		this.quadSize *= 5.0D;
 		this.flameScale = this.quadSize;
 		this.rCol = this.gCol = this.bCol = 1.0F;
@@ -72,28 +71,23 @@ public class LargeFlameParticle extends TextureSheetParticle {
 		this.yd += 0.004D;
 
 		this.move(this.xd, this.yd, this.zd);
-		this.xd *= 0.9599999785423279D;
-		this.yd *= 0.9599999785423279D;
-		this.zd *= 0.9599999785423279D;
+		this.xd *= 0.96D;
+		this.yd *= 0.96D;
+		this.zd *= 0.96D;
 
 		if (this.onGround) {
-			this.xd *= 0.699999988079071D;
-			this.zd *= 0.699999988079071D;
+			this.xd *= 0.7D;
+			this.zd *= 0.7D;
 		}
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static class Factory implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public Factory(FabricSpriteProvider sprite) {
-			this.spriteSet = sprite;
-		}
+	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			LargeFlameParticle particle = new LargeFlameParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
-			particle.pickSprite(this.spriteSet);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			LargeFlameParticle particle = new LargeFlameParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+			particle.pickSprite(this.sprite);
 			return particle;
 		}
 	}

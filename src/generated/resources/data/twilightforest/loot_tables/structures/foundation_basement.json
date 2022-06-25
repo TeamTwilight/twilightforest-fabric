@@ -2,100 +2,99 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 4.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "weight": 25,
-          "name": "twilightforest:structures/useless"
+          "name": "twilightforest:structures/useless",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
               "function": "minecraft:set_nbt",
               "tag": "{Potion:\"minecraft:water\"}"
             }
           ],
-          "name": "minecraft:potion"
+          "name": "minecraft:potion",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 6.0
+                "max": 6.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:rotten_flesh"
+          "name": "minecraft:rotten_flesh",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "max": 2.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:poisonous_potato"
+          "name": "minecraft:poisonous_potato",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
-          "name": "minecraft:water_bucket"
+          "name": "minecraft:water_bucket",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:torch"
+          "name": "minecraft:torch",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
-          "name": "minecraft:milk_bucket"
+          "name": "minecraft:milk_bucket",
+          "weight": 75
         }
-      ]
+      ],
+      "rolls": 4.0
     },
     {
-      "rolls": 2.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 6.0
+                "max": 6.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:wheat"
@@ -134,13 +133,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 6.0
+                "max": 6.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:rotten_flesh"
@@ -149,13 +148,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 5.0
+                "max": 5.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:melon_seeds"
@@ -164,97 +163,98 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 5.0
+                "max": 5.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:pumpkin_seeds"
         }
-      ]
+      ],
+      "rolls": 2.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:glistering_melon_slice"
+          "name": "minecraft:glistering_melon_slice",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
-          "name": "minecraft:map"
+          "name": "minecraft:map",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
-          "name": "twilightforest:charm_of_keeping_1"
+          "name": "twilightforest:charm_of_keeping_1",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "max": 2.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:golden_apple"
+          "name": "minecraft:golden_apple",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "max": 2.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:golden_carrot"
+          "name": "minecraft:golden_carrot",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
-          "name": "minecraft:oak_boat"
+          "name": "minecraft:oak_boat",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
-          "name": "twilightforest:hollow_oak_sapling"
+          "name": "twilightforest:hollow_oak_sapling",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
-          "name": "twilightforest:music_disc_thread"
+          "name": "twilightforest:music_disc_thread",
+          "weight": 25
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

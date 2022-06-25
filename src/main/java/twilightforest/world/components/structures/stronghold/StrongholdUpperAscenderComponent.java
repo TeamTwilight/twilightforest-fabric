@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.stronghold;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -14,22 +15,22 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class StrongholdUpperAscenderComponent extends StructureTFStrongholdComponent {
 
 	boolean exitTop;
 
 	public StrongholdUpperAscenderComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSUA, nbt);
+		super(TFStructurePieceTypes.TFSUA.get(), nbt);
 		this.exitTop = nbt.getBoolean("exitTop");
 	}
 
-	public StrongholdUpperAscenderComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSUA, feature, i, facing, x, y, z);
+	public StrongholdUpperAscenderComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSUA.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random random) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource random) {
 		super.addChildren(parent, list, random);
 
 		// make a random component on the other side
@@ -58,7 +59,7 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		/*if (this.edgesLiquid(world, sbb)) {
 			return false;
 		} else */{

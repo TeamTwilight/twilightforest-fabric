@@ -2,19 +2,19 @@
   "feature": "twilightforest:huge_water_lily",
   "placement": [
     {
-      "heightmap": "WORLD_SURFACE_WG",
-      "type": "minecraft:heightmap"
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
     },
     {
-      "chance": 25,
-      "type": "minecraft:rarity_filter"
+      "type": "minecraft:rarity_filter",
+      "chance": 25
     },
     {
       "type": "minecraft:in_square"
     },
     {
-      "count": 5,
-      "type": "minecraft:count"
+      "type": "minecraft:count",
+      "count": 5
     },
     {
       "type": "minecraft:biome"

@@ -2,40 +2,42 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "has_diamond": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:alt/treasures/minotaur_axe_diamond": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
+      },
+      "trigger": "minecraft:tick"
     },
     "has_gold": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:alt/treasures/minotaur_axe_gold": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
+      },
+      "trigger": "minecraft:tick"
     }
   },
   "requirements": [

@@ -13,8 +13,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,19 +20,19 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.renderer.TFArmorRenderer;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
-	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
-	public ArcticArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties props) {
-		super(armorMaterial, armorType, props);
+	public ArcticArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties properties) {
+		super(armorMaterial, armorType, properties);
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> this::initializeClient);
 	}
 
@@ -121,8 +119,8 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+		super.appendHoverText(stack, level, tooltip, flagIn);
 		tooltip.add(TOOLTIP);
 	}
 

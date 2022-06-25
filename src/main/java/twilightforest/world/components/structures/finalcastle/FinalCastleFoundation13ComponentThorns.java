@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.Rotation;
@@ -12,12 +13,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 /**
  * Foundation that makes thorns go all through the tower
@@ -27,26 +28,26 @@ import java.util.Random;
 public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundation13Component {
 
 	public FinalCastleFoundation13ComponentThorns(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCFTh21, nbt);
+		super(TFStructurePieceTypes.TFFCFTh21.get(), nbt);
 	}
 
-	public FinalCastleFoundation13ComponentThorns(TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCFTh21, feature, rand, i, sideTower, x, y, z);
+	public FinalCastleFoundation13ComponentThorns(TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFFCFTh21.get(), feature, rand, i, sideTower, x, y, z);
 
 		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 5, sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().minZ() - 5, sideTower.getBoundingBox().maxX() + 5, sideTower.getBoundingBox().maxY(), sideTower.getBoundingBox().maxZ() + 5);
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// thorns
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		for (Rotation i : RotationUtil.ROTATIONS) {
 			this.makeThornVine(world, decoRNG, i, sbb);
 		}
 	}
 
-	private void makeThornVine(WorldGenLevel world, Random decoRNG, Rotation rotation, BoundingBox sbb) {
+	private void makeThornVine(WorldGenLevel world, RandomSource decoRNG, Rotation rotation, BoundingBox sbb) {
 
 		int x = 3 + decoRNG.nextInt(13);
 		int z = 3 + decoRNG.nextInt(13);
@@ -99,7 +100,7 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 	}
 
 	private void makeThornBranch(WorldGenLevel world, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
-		Random rand = new Random(world.getSeed() + (x * 321534781) ^ (y * 756839) + z);
+		RandomSource rand = RandomSource.create(world.getSeed() + (x * 321534781) ^ (y * 756839) + z);
 
 		// pick a direction
 		Rotation dir = RotationUtil.getRandomRotation(rand);

@@ -9,12 +9,12 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class EtchedNagastoneBlock extends DirectionalBlock {
-    protected EtchedNagastoneBlock(Properties props) {
-        super(props);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.DOWN));
+    public EtchedNagastoneBlock(Properties properties) {
+        super(properties);
+        this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.DOWN));
     }
 
 	@Nullable
@@ -32,12 +32,12 @@ public class EtchedNagastoneBlock extends DirectionalBlock {
     }
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.setValue(FACING, mirrorIn.mirror(state.getValue(FACING)));
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
 }

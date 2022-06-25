@@ -14,7 +14,7 @@ import twilightforest.entity.monster.UpperGoblinKnight;
 
 public class UpperGoblinKnightLegacyModel extends HumanoidModel<UpperGoblinKnight> {
 
-	public ModelPart breastplate;
+	public final ModelPart breastplate;
 
 	public ModelPart shield;
 	public ModelPart spear;

@@ -1,9 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "---",
-    "| |"
-  ],
   "key": {
     "-": {
       "item": "minecraft:jungle_slab"
@@ -12,8 +8,12 @@
       "tag": "c:rods/wooden"
     }
   },
+  "pattern": [
+    "---",
+    "| |"
+  ],
   "result": {
-    "item": "twilightforest:jungle_banister",
-    "count": 3
+    "count": 3,
+    "item": "twilightforest:jungle_banister"
   }
 }

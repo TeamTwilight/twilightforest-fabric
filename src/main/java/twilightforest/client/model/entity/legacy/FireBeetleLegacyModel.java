@@ -16,8 +16,8 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.monster.FireBeetle;
 
 public class FireBeetleLegacyModel extends HierarchicalModel<FireBeetle> {
-	ModelPart root;
-	ModelPart head;
+	final ModelPart root;
+	final ModelPart head;
 	ModelPart leg6;
 	ModelPart leg4;
 	ModelPart leg2;

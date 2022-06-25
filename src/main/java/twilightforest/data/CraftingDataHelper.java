@@ -24,8 +24,8 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.block.TwilightChest;
+import twilightforest.init.TFBlocks;
+import twilightforest.block.TFChestBlock;
 import twilightforest.data.tags.ItemTagGenerator;
 
 import java.lang.reflect.Constructor;
@@ -329,7 +329,7 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 				.save(consumer, locWood(name + "_banister"));
 	}
 
-	protected final void chestBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends TwilightChest> result, Supplier<? extends Block> material) {
+	protected final void chestBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends TFChestBlock> result, Supplier<? extends Block> material) {
 		ShapedRecipeBuilder.shaped(result.get(), 2)
 				.pattern("###")
 				.pattern("#C#")
@@ -345,7 +345,7 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 				.requires(armor)
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), vials)
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
-				.save(consumer, locEquip("fiery_" + Registry.ITEM.getKey(armor).getPath()));
+				.save(consumer, locEquip("fiery_" + Registry.ITEM.getKey(result.get()).getPath()));
 	}
 
 	protected final ResourceLocation locCastle(String name) {

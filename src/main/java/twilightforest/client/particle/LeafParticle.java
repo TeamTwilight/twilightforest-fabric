@@ -1,13 +1,13 @@
 package twilightforest.client.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.particle.*;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.*;
 import net.minecraft.util.Mth;
-import com.mojang.math.Quaternion;
 import net.minecraft.world.phys.Vec3;
-import com.mojang.math.Vector3f;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.client.particle.data.LeafParticleData;
@@ -18,27 +18,27 @@ public class LeafParticle extends TextureSheetParticle {
 	private final Vec3 target;
 	private float rot;
 
-	LeafParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
+	public LeafParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
 		this(world, x, y, z, vx, vy, vz, 1.0F);
 	}
 
-	LeafParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, float scale) {
+	public LeafParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		target = new Vec3(x, y, z);
-		this.xd *= 0.10000000149011612D;
-		this.yd *= 0.10000000149011612D;
-		this.zd *= 0.10000000149011612D;
+		this.xd *= 0.1D;
+		this.yd *= 0.1D;
+		this.zd *= 0.1D;
 		this.xd += vx * 0.4D;
 		this.yd += vy * 0.4D;
 		this.zd += vz * 0.4D;
 		this.rCol = this.gCol = this.bCol = 1.0F;
-		this.alpha = 0F;
-		this.quadSize *= 0.75F * (random.nextBoolean() ? -1F : 1F);
+		this.alpha = 0.0F;
+		this.quadSize *= 0.75F * (random.nextBoolean() ? -1.0F : 1.0F);
 		this.quadSize *= scale;
-		this.lifetime = 160 + ((int) (random.nextFloat() * 30F));
+		this.lifetime = 160 + ((int) (random.nextFloat() * 30.0F));
 		this.lifetime = (int) (this.lifetime * scale);
 		this.hasPhysics = true;
-		this.oRoll = this.roll = random.nextFloat() * 2F - 1F;
+		this.oRoll = this.roll = random.nextFloat() * 2.0F - 1.0F;
 	}
 
 	@Override
@@ -58,12 +58,12 @@ public class LeafParticle extends TextureSheetParticle {
 
 		this.move(this.xd, this.yd, this.zd);
 
-		this.yd *= 0.699999988079071D;
-		this.yd -= 0.019999999552965164D;
+		this.yd *= 0.7D;
+		this.yd -= 0.02D;
 
 		if (this.onGround) {
-			this.xd *= 0.699999988079071D;
-			this.zd *= 0.699999988079071D;
+			this.xd *= 0.7D;
+			this.zd *= 0.7D;
 		} else {
 			rot += 5F;
 			if (xd == 0)
@@ -79,37 +79,37 @@ public class LeafParticle extends TextureSheetParticle {
 
 	@Override
 	public void render(VertexConsumer buffer, Camera entity, float partialTicks) {
-		alpha = Math.min(Mth.clamp(age, 0, 20) / 20F, Mth.clamp(lifetime - age, 0, 20) / 20F);
-		Vec3 lvt_4_1_ = entity.getPosition();
-		float lvt_5_1_ = (float)(Mth.lerp(partialTicks, this.xo, this.x) - lvt_4_1_.x());
-		float lvt_6_1_ = (float)(Mth.lerp(partialTicks, this.yo, this.y) - lvt_4_1_.y());
-		float lvt_7_1_ = (float)(Mth.lerp(partialTicks, this.zo, this.z) - lvt_4_1_.z());
-		Quaternion lvt_8_2_ = new Quaternion(entity.rotation());
+		this.alpha = Math.min(Mth.clamp(this.age, 0, 20) / 20.0F, Mth.clamp(this.lifetime - this.age, 0, 20) / 20.0F);
+		Vec3 pos = entity.getPosition();
+		float lerpx = (float) (Mth.lerp(partialTicks, this.xo, this.x) - pos.x());
+		float lerpy = (float) (Mth.lerp(partialTicks, this.yo, this.y) - pos.y());
+		float lerpz = (float) (Mth.lerp(partialTicks, this.zo, this.z) - pos.z());
+		Quaternion quaternion = new Quaternion(entity.rotation());
 		if (this.roll != 0.0F) {
-			float lvt_9_1_ = Mth.lerp(partialTicks, this.oRoll, this.roll);
-			lvt_8_2_.mul(Vector3f.ZP.rotation(lvt_9_1_));
+			float roll = Mth.lerp(partialTicks, this.oRoll, this.roll);
+			quaternion.mul(Vector3f.ZP.rotation(roll));
 		}
-		lvt_8_2_.mul(Vector3f.YP.rotation(Mth.cos((float) Math.toRadians(rot % 360F))));
-		Vector3f lvt_9_2_ = new Vector3f(-1.0F, -1.0F, 0.0F);
-		lvt_9_2_.transform(lvt_8_2_);
-		Vector3f[] lvt_10_1_ = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
-		float lvt_11_1_ = this.getQuadSize(partialTicks);
+		quaternion.mul(Vector3f.YP.rotation(Mth.cos((float) Math.toRadians(rot % 360.0F))));
+		Vector3f vec = new Vector3f(-1.0F, -1.0F, 0.0F);
+		vec.transform(quaternion);
+		Vector3f[] vecList = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
+		float quadSize = this.getQuadSize(partialTicks);
 
-		for(int lvt_12_1_ = 0; lvt_12_1_ < 4; ++lvt_12_1_) {
-			Vector3f lvt_13_1_ = lvt_10_1_[lvt_12_1_];
-			lvt_13_1_.transform(lvt_8_2_);
-			lvt_13_1_.mul(lvt_11_1_);
-			lvt_13_1_.add(lvt_5_1_, lvt_6_1_, lvt_7_1_);
+		for (int i = 0; i < 4; i++) {
+			Vector3f selectedVec = vecList[i];
+			selectedVec.transform(quaternion);
+			selectedVec.mul(quadSize);
+			selectedVec.add(lerpx, lerpy, lerpz);
 		}
-		float lvt_12_2_ = this.getU0();
-		float lvt_13_2_ = this.getU1();
-		float lvt_14_1_ = this.getV0();
-		float lvt_15_1_ = this.getV1();
-		int lvt_16_1_ = this.getLightColor(partialTicks);
-		buffer.vertex(lvt_10_1_[0].x(), lvt_10_1_[0].y(), lvt_10_1_[0].z()).uv(lvt_13_2_, lvt_15_1_).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(lvt_16_1_).endVertex();
-		buffer.vertex(lvt_10_1_[1].x(), lvt_10_1_[1].y(), lvt_10_1_[1].z()).uv(lvt_13_2_, lvt_14_1_).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(lvt_16_1_).endVertex();
-		buffer.vertex(lvt_10_1_[2].x(), lvt_10_1_[2].y(), lvt_10_1_[2].z()).uv(lvt_12_2_, lvt_14_1_).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(lvt_16_1_).endVertex();
-		buffer.vertex(lvt_10_1_[3].x(), lvt_10_1_[3].y(), lvt_10_1_[3].z()).uv(lvt_12_2_, lvt_15_1_).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(lvt_16_1_).endVertex();
+		float u = this.getU0();
+		float u1 = this.getU1();
+		float v = this.getV0();
+		float v1 = this.getV1();
+		int light = this.getLightColor(partialTicks);
+		buffer.vertex(vecList[0].x(), vecList[0].y(), vecList[0].z()).uv(u1, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
+		buffer.vertex(vecList[1].x(), vecList[1].y(), vecList[1].z()).uv(u1, v).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
+		buffer.vertex(vecList[2].x(), vecList[2].y(), vecList[2].z()).uv(u, v).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
+		buffer.vertex(vecList[3].x(), vecList[3].y(), vecList[3].z()).uv(u, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(light).endVertex();
 	}
 
 	@Override
@@ -118,18 +118,13 @@ public class LeafParticle extends TextureSheetParticle {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static class Factory implements ParticleProvider<LeafParticleData> {
-		private final SpriteSet spriteSet;
-
-		public Factory(SpriteSet sprite) {
-			this.spriteSet = sprite;
-		}
+	public record Factory(SpriteSet sprite) implements ParticleProvider<LeafParticleData> {
 
 		@Override
-		public Particle createParticle(LeafParticleData data, ClientLevel world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			LeafParticle particle = new LeafParticle(world, x, y, z, xSpeed, ySpeed, zSpeed);
-			particle.setColor(data.r / 255F, data.g / 255F, data.b / 255F);
-			particle.pickSprite(this.spriteSet);
+		public Particle createParticle(LeafParticleData data, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			LeafParticle particle = new LeafParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+			particle.setColor(data.r / 255.0F, data.g / 255.0F, data.b / 255.0F);
+			particle.pickSprite(this.sprite);
 			return particle;
 		}
 	}

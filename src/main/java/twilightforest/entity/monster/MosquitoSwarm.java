@@ -1,8 +1,8 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -18,20 +18,12 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.biome.Biome;
-import twilightforest.TFSounds;
-import twilightforest.world.registration.biomes.BiomeKeys;
-
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
+import twilightforest.init.TFSounds;
 
 public class MosquitoSwarm extends Monster {
 
 	public MosquitoSwarm(EntityType<? extends MosquitoSwarm> type, Level world) {
 		super(type, world);
-
-		this.maxUpStep = 2.1f;
 	}
 
 	@Override
@@ -51,21 +43,26 @@ public class MosquitoSwarm extends Monster {
 	}
 
 	@Override
+	public float getStepHeight() {
+		return 2.1F;
+	}
+
+	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MOSQUITO;
+		return TFSounds.MOSQUITO.get();
 	}
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (super.doHurtTarget(entity)) {
-			if (entity instanceof LivingEntity) {
-				int duration = switch (level.getDifficulty()) {
+			if (entity instanceof LivingEntity living) {
+				int duration = switch (this.getLevel().getDifficulty()) {
 					case EASY -> 7;
 					case HARD -> 30;
 					default -> 15;
 				};
 
-				((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.HUNGER, duration * 20, 0));
+				living.addEffect(new MobEffectInstance(MobEffects.HUNGER, duration * 20, 0));
 			}
 
 			return true;
@@ -74,8 +71,8 @@ public class MosquitoSwarm extends Monster {
 		}
 	}
 
-	public static boolean canSpawn(EntityType<? extends Monster> type, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && Monster.checkAnyLightMonsterSpawnRules(type, world, reason, pos, rand);
+	public static boolean canSpawn(EntityType<? extends Monster> type, LevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource rand) {
+		return accessor.getDifficulty() != Difficulty.PEACEFUL && Monster.checkAnyLightMonsterSpawnRules(type, accessor, reason, pos, rand);
 	}
 
 	@Override

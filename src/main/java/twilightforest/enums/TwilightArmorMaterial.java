@@ -7,8 +7,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFItems;
 
 import java.util.function.Supplier;
 
@@ -17,7 +17,7 @@ public enum TwilightArmorMaterial implements ArmorMaterial {
 	ARMOR_IRONWOOD("ironwood", 20, new int[]{2, 5, 7, 2}, 15, SoundEvents.ARMOR_EQUIP_GENERIC, 0F, () -> Ingredient.of(TFItems.IRONWOOD_INGOT.get())),
 	ARMOR_FIERY("fiery", 25, new int[]{4, 7, 9, 4}, 10, SoundEvents.ARMOR_EQUIP_GENERIC, 1.5F, () -> Ingredient.of(TFItems.FIERY_INGOT.get())),
 	ARMOR_STEELEAF("steeleaf", 10, new int[]{3, 6, 8, 3}, 9, SoundEvents.ARMOR_EQUIP_GENERIC, 0F, () -> Ingredient.of(TFItems.STEELEAF_INGOT.get())),
-	ARMOR_KNIGHTLY("knightly", 20, new int[]{3, 6, 8, 3}, 8, TFSounds.KNIGHTMETAL_EQUIP, 1.0F, () -> Ingredient.of(TFItems.KNIGHTMETAL_INGOT.get())),
+	ARMOR_KNIGHTLY("knightly", 20, new int[]{3, 6, 8, 3}, 8, TFSounds.KNIGHTMETAL_EQUIP.get(), 1.0F, () -> Ingredient.of(TFItems.KNIGHTMETAL_INGOT.get())),
 	ARMOR_PHANTOM("phantom", 30, new int[]{3, 6, 8, 3}, 8, SoundEvents.ARMOR_EQUIP_GENERIC, 2.5F, () -> Ingredient.of(TFItems.KNIGHTMETAL_INGOT.get())),
 	ARMOR_YETI("yetiarmor", 20, new int[]{3, 6, 7, 4}, 15, SoundEvents.ARMOR_EQUIP_GENERIC, 3F, () -> Ingredient.of(TFItems.ALPHA_YETI_FUR.get())),
 	ARMOR_ARCTIC("arcticarmor", 10, new int[]{2, 5, 7, 2}, 8, SoundEvents.ARMOR_EQUIP_GENERIC, 2F, () -> Ingredient.of(TFItems.ARCTIC_FUR.get()));

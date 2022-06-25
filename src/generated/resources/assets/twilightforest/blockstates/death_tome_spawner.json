@@ -3,6 +3,9 @@
     "book_stages=1": {
       "model": "twilightforest:block/death_tome_spawner_1"
     },
+    "book_stages=10": {
+      "model": "twilightforest:block/death_tome_spawner_10"
+    },
     "book_stages=2": {
       "model": "twilightforest:block/death_tome_spawner_2"
     },
@@ -26,9 +29,6 @@
     },
     "book_stages=9": {
       "model": "twilightforest:block/death_tome_spawner_9"
-    },
-    "book_stages=10": {
-      "model": "twilightforest:block/death_tome_spawner_10"
     }
   }
 }

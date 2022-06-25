@@ -13,9 +13,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.Lich;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFEntities;
 
 public class LichBomb extends TFThrowable implements ItemSupplier {
 
@@ -39,9 +39,9 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 			double sy = 0.5 * (this.random.nextDouble() - this.random.nextDouble()) + this.getDeltaMovement().y();
 			double sz = 0.5 * (this.random.nextDouble() - this.random.nextDouble()) + this.getDeltaMovement().z();
 
-			double dx = getX() + sx;
-			double dy = getY() + sy;
-			double dz = getZ() + sz;
+			double dx = this.getX() + sx;
+			double dy = this.getY() + sy;
+			double dz = this.getZ() + sz;
 
 			this.getLevel().addParticle(ParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
 		}

@@ -13,8 +13,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,18 +26,18 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.YetiArmorModel;
 import twilightforest.client.renderer.TFArmorRenderer;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class YetiArmorItem extends ArmorItem {
-	private static final MutableComponent TOOLTIP = new TranslatableComponent("item.twilightforest.yeti_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.yeti_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
-	public YetiArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties props) {
-		super(material, slot, props);
+	public YetiArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
+		super(material, slot, properties);
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> this::initializeClient);
 	}
 
-	public static String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+	public static String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS || slot == EquipmentSlot.CHEST) {
 			return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
 		} else {
@@ -48,26 +46,26 @@ public class YetiArmorItem extends ArmorItem {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
-			switch (this.slot) {
-				case HEAD, CHEST, LEGS -> istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+		if (this.allowedIn(tab)) {
+			ItemStack stack = new ItemStack(this);
+			switch (this.getSlot()) {
+				case HEAD, CHEST, LEGS -> stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
 				case FEET -> {
-					istack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
-					istack.enchant(Enchantments.FALL_PROTECTION, 4);
+					stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
+					stack.enchant(Enchantments.FALL_PROTECTION, 4);
 				}
 				default -> { }
 			}
-			list.add(istack);
+			items.add(stack);
 		}
 	}
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltips, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltips, flags);
-		tooltips.add(TOOLTIP);
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
+		tooltip.add(TOOLTIP);
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -83,8 +81,8 @@ public class YetiArmorItem extends ArmorItem {
 		@Override
 		public void render(PoseStack matrices, MultiBufferSource vertexConsumers, ItemStack itemStack, LivingEntity entityLiving, EquipmentSlot armorSlot, int light, HumanoidModel<LivingEntity> parentModel) {
 			EntityModelSet models = Minecraft.getInstance().getEntityModels();
-			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.YETI_ARMOR_INNER : TFModelLayers.YETI_ARMOR_OUTER);
-			armorModel = new YetiArmorModel(armorSlot, root);
+			ModelPart root = models.bakeLayer(slot == EquipmentSlot.LEGS ? TFModelLayers.YETI_ARMOR_INNER : TFModelLayers.YETI_ARMOR_OUTER);
+			armorModel = new YetiArmorModel(slot, root);
 			parentModel.copyPropertiesTo(armorModel);
 			TFArmorRenderer.setPartVisibility(armorModel, armorSlot);
 			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, new ResourceLocation(getArmorTexture(itemStack, entityLiving, armorSlot, null)));

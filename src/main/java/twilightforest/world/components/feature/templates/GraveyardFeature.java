@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.math.StatsAccumulator;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
@@ -28,14 +29,13 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.Wraith;
-import twilightforest.entity.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFEntities;
+import twilightforest.loot.TFLootTables;
 import twilightforest.world.registration.TFStructureProcessors;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("feature/graveyard/graveyard");
@@ -109,13 +109,13 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random rand = ctx.random();
+		RandomSource rand = ctx.random();
 
 		int flags = 16 | 2 | 1;
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
-		Random random = world.getRandom();
+		RandomSource random = world.getRandom();
 
-		StructureManager templatemanager = world.getLevel().getServer().getStructureManager();
+		StructureTemplateManager templatemanager = world.getLevel().getServer().getStructureManager();
 		StructureTemplate base = templatemanager.getOrCreate(GRAVEYARD);
 		if (base == null)
 			return false;
@@ -197,7 +197,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						}
 						data.addAll(trap.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 						if (world.setBlock(placement.offset(chestloc), Blocks.TRAPPED_CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags)) {
-							TFTreasure.GRAVEYARD.generateChestContents(world, placement.offset(chestloc));
+							TFLootTables.GRAVEYARD.generateChestContents(world, placement.offset(chestloc));
 							world.setBlock(placement.offset(chestloc).below(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
 						}
 						Wraith wraith = new Wraith(TFEntities.WRAITH.get(), world.getLevel());

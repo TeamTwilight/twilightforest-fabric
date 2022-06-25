@@ -1,15 +1,15 @@
 {
   "parent": "twilightforest:block/util/pedestal_2_layer",
   "textures": {
-    "end": "twilightforest:block/pedestal/top",
-    "north": "twilightforest:block/pedestal/naga",
-    "south": "twilightforest:block/pedestal/lich",
-    "west": "twilightforest:block/pedestal/hydra",
     "east": "twilightforest:block/pedestal/ur-ghast",
+    "east2": "twilightforest:block/pedestal/ur-ghast_glow",
+    "end": "twilightforest:block/pedestal/top",
     "end2": "twilightforest:block/pedestal/top_glow",
+    "north": "twilightforest:block/pedestal/naga",
     "north2": "twilightforest:block/pedestal/naga_glow",
+    "south": "twilightforest:block/pedestal/lich",
     "south2": "twilightforest:block/pedestal/lich_glow",
-    "west2": "twilightforest:block/pedestal/hydra_glow",
-    "east2": "twilightforest:block/pedestal/ur-ghast_glow"
+    "west": "twilightforest:block/pedestal/hydra",
+    "west2": "twilightforest:block/pedestal/hydra_glow"
   }
 }

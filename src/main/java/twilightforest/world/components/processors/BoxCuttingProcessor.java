@@ -16,7 +16,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.registration.TFStructureProcessors;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

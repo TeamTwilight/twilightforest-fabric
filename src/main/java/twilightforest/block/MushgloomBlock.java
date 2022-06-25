@@ -9,29 +9,30 @@ import net.minecraft.world.level.block.MushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFConfiguredFeatures;
 
 public class MushgloomBlock extends MushroomBlock {
 
 	private static final VoxelShape MUSHGLOOM_SHAPE = box(2, 0, 2, 14, 8, 14);
 
-	public MushgloomBlock(Properties props) {
-		super(props, () -> TFConfiguredFeatures.BIG_MUSHGLOOM);
+	public MushgloomBlock(Properties properties) {
+		super(properties, () -> TFConfiguredFeatures.BIG_MUSHGLOOM);
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-		return world.getBlockState(pos.below()).isFaceSturdy(world, pos, Direction.UP) || world.getBlockState(pos.below()).is(TFBlocks.UBEROUS_SOIL.get());
+	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+		return reader.getBlockState(pos.below()).isFaceSturdy(reader, pos, Direction.UP) || reader.getBlockState(pos.below()).is(TFBlocks.UBEROUS_SOIL.get());
 	}
 
 	@Override
 	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter access, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return MUSHGLOOM_SHAPE;
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter blockGetter, BlockPos pos, BlockState state, boolean isClientSide) {
+	public boolean isValidBonemealTarget(BlockGetter getter, BlockPos pos, BlockState state, boolean isClientSide) {
 		return false;
 	}
 

@@ -1,26 +1,22 @@
 {
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
-  "textures": {
-    "particle": "#pane"
-  },
   "elements": [
     {
-      "from": [
-        9,
-        0,
-        7
-      ],
-      "to": [
-        16,
-        7,
-        9
-      ],
-      "shade": false,
       "faces": {
         "down": {
+          "cullface": "down",
+          "texture": "#pane"
+        },
+        "east": {
+          "cullface": "east",
           "texture": "#pane",
-          "cullface": "down"
+          "uv": [
+            7.0,
+            0.0,
+            9.0,
+            7.0
+          ]
         },
         "north": {
           "texture": "#pane",
@@ -39,18 +35,22 @@
             7.0,
             7.0
           ]
-        },
-        "east": {
-          "texture": "#pane",
-          "uv": [
-            7.0,
-            0.0,
-            9.0,
-            7.0
-          ],
-          "cullface": "east"
         }
-      }
+      },
+      "from": [
+        9,
+        0,
+        7
+      ],
+      "shade": false,
+      "to": [
+        16,
+        7,
+        9
+      ]
     }
-  ]
+  ],
+  "textures": {
+    "particle": "#pane"
+  }
 }

@@ -38,11 +38,6 @@ public class LandmarkBiomeSource extends BiomeSource {
     }
 
     @Override
-    public BiomeSource withSeed(long seed) {
-        return new LandmarkBiomeSource(seed, this.palette);
-    }
-
-    @Override
     public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler climateSampler) {
         // TODO Fractal Voronoi coordinate filtering
 

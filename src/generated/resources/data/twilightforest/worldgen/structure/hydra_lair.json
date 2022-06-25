@@ -1,0 +1,31 @@
+{
+  "type": "twilightforest:legacy_landmark",
+  "adjust_structure_elevation": false,
+  "advancements_required": [
+    "twilightforest:progress_labyrinth"
+  ],
+  "allow_biome_surface_decorations": false,
+  "allow_biome_underground_decorations": false,
+  "ambient_spawns": [],
+  "biomes": "#twilightforest:valid_hydra_lair_biomes",
+  "hint_item": {
+    "Count": 1,
+    "id": "minecraft:written_book",
+    "tag": {
+      "author": "A Forgotten Explorer",
+      "pages": [
+        "{\"translate\":\"twilightforest.book.hydralair.1\"}",
+        "{\"translate\":\"twilightforest.book.hydralair.2\"}",
+        "{\"translate\":\"twilightforest.book.hydralair.3\"}",
+        "{\"translate\":\"twilightforest.book.hydralair.4\"}"
+      ],
+      "title": "Notes on the Fire Swamp"
+    }
+  },
+  "hint_mob": "twilightforest:kobold",
+  "labelled_monster_spawns": {},
+  "legacy_landmark_start": "hydra_lair",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "water_spawns": []
+}

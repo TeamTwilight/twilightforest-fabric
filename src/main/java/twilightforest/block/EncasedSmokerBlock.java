@@ -7,15 +7,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 
 public class EncasedSmokerBlock extends TFSmokerBlock {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-	protected EncasedSmokerBlock(Properties props) {
-		super(props);
-		this.registerDefaultState(stateDefinition.any().setValue(ACTIVE, false));
+	public EncasedSmokerBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
 	}
 
 	@Override
@@ -26,19 +26,19 @@ public class EncasedSmokerBlock extends TFSmokerBlock {
 
 	@Override
 	@Deprecated
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (world.isClientSide) return;
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		if (level.isClientSide()) return;
 
-		boolean powered = world.hasNeighborSignal(pos);
+		boolean powered = level.hasNeighborSignal(pos);
 
 		if (!state.getValue(ACTIVE) && powered) {
-			world.setBlock(pos, state.setValue(ACTIVE, true), 3);
-			world.playSound(null, pos, TFSounds.SMOKER_START, SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.setBlock(pos, state.setValue(ACTIVE, true), 3);
+			level.playSound(null, pos, TFSounds.SMOKER_START.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 		}
 
 		if (state.getValue(ACTIVE) && !powered) {
-			world.setBlock(pos, state.setValue(ACTIVE, false), 3);
-			world.playSound(null, pos, TFSounds.SMOKER_START, SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.setBlock(pos, state.setValue(ACTIVE, false), 3);
+			level.playSound(null, pos, TFSounds.SMOKER_START.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 		}
 	}
 }

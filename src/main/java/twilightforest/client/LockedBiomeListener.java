@@ -6,10 +6,10 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TFConfig;
-import twilightforest.block.TFBlocks;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 public class LockedBiomeListener {
 

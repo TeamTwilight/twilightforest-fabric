@@ -4,8 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,25 +15,25 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Component {
 
 	public FinalCastleDungeonExitComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCDunEx, nbt);
+		super(TFStructurePieceTypes.TFFCDunEx.get(), nbt);
 	}
 
-	public FinalCastleDungeonExitComponent(TFFeature feature, int i, int x, int y, int z, Direction direction, int level) {
-		super(FinalCastlePieces.TFFCDunEx, feature, i, x, y, z, direction, level);
+	public FinalCastleDungeonExitComponent(TFLandmark feature, int i, int x, int y, int z, Direction direction, int level) {
+		super(TFStructurePieceTypes.TFFCDunEx.get(), feature, i, x, y, z, direction, level);
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -55,7 +56,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
@@ -83,7 +84,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 	}
 
 	@Override
-	protected BlockState getForceFieldColor(Random decoRNG) {
+	protected BlockState getForceFieldColor(RandomSource decoRNG) {
 		return TFBlocks.PINK_FORCE_FIELD.get().defaultBlockState();
 	}
 

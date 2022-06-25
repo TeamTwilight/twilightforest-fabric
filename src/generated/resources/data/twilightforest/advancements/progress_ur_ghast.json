@@ -1,12 +1,68 @@
 {
   "parent": "twilightforest:ghast_trap",
+  "criteria": {
+    "ghast": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:ur_ghast"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "previous_progression": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:progress_knights": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    },
+    "trophy": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:ur_ghast_trophy"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "was_in_fight": {
+      "conditions": {
+        "hurt_entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:ur_ghast"
+            }
+          }
+        ]
+      },
+      "trigger": "twilightforest:hurt_boss"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:ur_ghast_trophy"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.progress_ur_ghast"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.progress_ur_ghast.desc",
       "with": [
@@ -16,68 +72,13 @@
       ]
     },
     "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:ur_ghast_trophy"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "ghast": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:ur_ghast"
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "trophy": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:ur_ghast_trophy"
-            ]
-          }
-        ]
-      }
-    },
-    "was_in_fight": {
-      "trigger": "twilightforest:hurt_boss",
-      "conditions": {
-        "hurt_entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:ur_ghast"
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "previous_progression": {
-      "trigger": "minecraft:tick",
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "advancements": {
-                  "twilightforest:progress_knights": true
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
+    "title": {
+      "translate": "advancement.twilightforest.progress_ur_ghast"
     }
   },
   "requirements": [

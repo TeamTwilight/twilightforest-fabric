@@ -20,7 +20,7 @@ import twilightforest.entity.passive.QuestRam;
  */
 @Environment(EnvType.CLIENT)
 public class QuestRamModel extends QuadrupedModel<QuestRam> {
-    public ModelPart horns;
+    public final ModelPart horns;
     public ModelPart backtorso, frontTorso;
 
     public ModelPart[] segments = new ModelPart[16];

@@ -3,8 +3,8 @@
     "facing=down": {
       "model": "twilightforest:block/etched_nagastone"
     },
-    "facing=up": {
-      "model": "twilightforest:block/etched_nagastone_up"
+    "facing=east": {
+      "model": "twilightforest:block/etched_nagastone_east"
     },
     "facing=north": {
       "model": "twilightforest:block/etched_nagastone_north"
@@ -12,11 +12,11 @@
     "facing=south": {
       "model": "twilightforest:block/etched_nagastone_south"
     },
+    "facing=up": {
+      "model": "twilightforest:block/etched_nagastone_up"
+    },
     "facing=west": {
       "model": "twilightforest:block/etched_nagastone_west"
-    },
-    "facing=east": {
-      "model": "twilightforest:block/etched_nagastone_east"
     }
   }
 }

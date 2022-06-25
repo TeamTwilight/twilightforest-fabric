@@ -1,8 +1,8 @@
 {
+  "type": "twilightforest:fire_jet",
   "config": {
     "state": {
       "Name": "twilightforest:smoker"
     }
-  },
-  "type": "twilightforest:fire_jet"
+  }
 }

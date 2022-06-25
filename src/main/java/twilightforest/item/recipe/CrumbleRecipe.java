@@ -17,24 +17,16 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
-public class CrumbleRecipe implements Recipe<Container> {
+import org.jetbrains.annotations.Nullable;
 
-	private final ResourceLocation recipeID;
-	private final BlockState input;
-	private final BlockState result;
-
-	public CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockState result) {
-		this.recipeID = recipeID;
-		this.input = input;
-		this.result = result;
-	}
+public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockState result) implements Recipe<Container> {
 
 	public BlockState getInput() {
-		return input;
+		return this.input;
 	}
 
 	public BlockState getResult() {
-		return result;
+		return this.result;
 	}
 
 	@Override
@@ -48,7 +40,7 @@ public class CrumbleRecipe implements Recipe<Container> {
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int p_43999_, int p_44000_) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return true;
 	}
 
@@ -78,7 +70,7 @@ public class CrumbleRecipe implements Recipe<Container> {
 		public CrumbleRecipe fromJson(ResourceLocation id, JsonObject object) {
 			Block input = Registry.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
 			Block output = Registry.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
-			if(input != null && output != null) {
+			if (input != null && output != null) {
 				return new CrumbleRecipe(id, input.defaultBlockState(), output.defaultBlockState());
 			}
 			return new CrumbleRecipe(id, Blocks.AIR.defaultBlockState(), Blocks.AIR.defaultBlockState());

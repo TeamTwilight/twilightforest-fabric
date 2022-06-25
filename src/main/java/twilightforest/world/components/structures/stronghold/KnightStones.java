@@ -1,15 +1,14 @@
 package twilightforest.world.components.structures.stronghold;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import twilightforest.block.TFBlocks;
-
-import java.util.Random;
+import twilightforest.init.TFBlocks;
 
 public class KnightStones extends StructurePiece.BlockSelector {
 
 	@Override
-	public void next(Random random, int x, int y, int z, boolean edge) {
+	public void next(RandomSource random, int x, int y, int z, boolean edge) {
 		if (!edge) {
 			this.next = Blocks.AIR.defaultBlockState();
 		} else {

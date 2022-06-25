@@ -2,33 +2,33 @@ package twilightforest.world.components.structures.darktower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
-
-import java.util.Random;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerBeardComponent extends TFStructureComponentOld {
 
-	protected int size;
+	protected final int size;
 	protected int height;
 
 	public DarkTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(DarkTowerPieces.TFDTBea, nbt);
+		super(TFStructurePieceTypes.TFDTBea.get(), nbt);
 		this.size = nbt.getInt("beardSize");
 		this.height = nbt.getInt("beardHeight");
 	}
 
-	public DarkTowerBeardComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(DarkTowerPieces.TFDTBea, feature, i, x, y, z);
+	public DarkTowerBeardComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFDTBea.get(), feature, i, x, y, z);
 
 		this.setOrientation(wing.getOrientation());
 		this.size = wing.size;
@@ -50,7 +50,7 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 	 * Makes a dark tower type beard
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		makeDarkBeard(world, sbb, 0, 0, size - 1, height - 1, size - 1);
 	}
 

@@ -10,9 +10,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,30 +27,30 @@ public class SeekerArrow extends TFArrow {
 
 	public SeekerArrow(EntityType<? extends SeekerArrow> type, Level world) {
 		super(type, world);
-		setBaseDamage(1.0D);
+		this.setBaseDamage(1.0D);
 	}
 
 	public SeekerArrow(Level world, Entity shooter) {
 		super(TFEntities.SEEKER_ARROW.get(), world, shooter);
-		setBaseDamage(1.0D);
+		this.setBaseDamage(1.0D);
 	}
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(TARGET, -1);
+		this.entityData.define(TARGET, -1);
 	}
 
 	@Override
 	public void tick() {
 		if (isThisArrowFlying()) {
-			if (!level.isClientSide) {
-				updateTarget();
+			if (!this.getLevel().isClientSide()) {
+				this.updateTarget();
 			}
 
-			if (level.isClientSide && !inGround) {
+			if (this.getLevel().isClientSide() && !this.inGround) {
 				for (int i = 0; i < 4; ++i) {
-					this.level.addParticle(ParticleTypes.WITCH, this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());
+					this.getLevel().addParticle(ParticleTypes.WITCH, this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());
 				}
 			}
 
@@ -63,7 +63,7 @@ public class SeekerArrow extends TFArrow {
 				// vector lengths
 				double courseLen = courseVec.length();
 				double targetLen = targetVec.length();
-				double totalLen = Math.sqrt(courseLen*courseLen + targetLen*targetLen);
+				double totalLen = Math.sqrt(courseLen * courseLen + targetLen * targetLen);
 
 				double dotProduct = courseVec.dot(targetVec) / (courseLen * targetLen); // cosine similarity
 
@@ -74,9 +74,9 @@ public class SeekerArrow extends TFArrow {
 
 					this.setDeltaMovement(newMotion.add(0, 0.045F, 0));
 
-				} else if (!level.isClientSide) {
+				} else if (!this.getLevel().isClientSide()) {
 					// too inaccurate for our intended target, give up on it
-					setTarget(null);
+					this.setTarget(null);
 				}
 			}
 		}
@@ -90,7 +90,7 @@ public class SeekerArrow extends TFArrow {
 
 		if (target != null && !target.isAlive()) {
 			target = null;
-			setTarget(null);
+			this.setTarget(null);
 		}
 
 		if (target == null) {
@@ -109,10 +109,10 @@ public class SeekerArrow extends TFArrow {
 			double closestDot = -1.0;
 			Entity closestTarget = null;
 
-			List<LivingEntity> entityList = this.level.getEntitiesOfClass(LivingEntity.class, targetBB);
+			List<LivingEntity> entityList = this.getLevel().getEntitiesOfClass(LivingEntity.class, targetBB);
 			List<LivingEntity> monsters = entityList.stream().filter(l -> l instanceof Monster).collect(Collectors.toList());
 
-			if(!monsters.isEmpty()) {
+			if (!monsters.isEmpty()) {
 				for (LivingEntity monster : monsters) {
 					if (((Monster) monster).getTarget() == this.getOwner()) {
 						setTarget(monster);
@@ -120,7 +120,7 @@ public class SeekerArrow extends TFArrow {
 					}
 				}
 				for (LivingEntity monster : monsters) {
-					if(monster instanceof NeutralMob) continue;
+					if (monster instanceof NeutralMob) continue;
 
 					if (monster.hasLineOfSight(this)) {
 						setTarget(monster);
@@ -131,11 +131,12 @@ public class SeekerArrow extends TFArrow {
 
 			for (LivingEntity living : entityList) {
 
-				if(!living.hasLineOfSight(this)) continue;
+				if (!living.hasLineOfSight(this)) continue;
 
 				if (living == this.getOwner()) continue;
 
-				if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner()) continue;
+				if (getOwner() != null && living instanceof TamableAnimal animal && animal.getOwner() == this.getOwner())
+					continue;
 
 				Vec3 motionVec = getMotionVec().normalize();
 				Vec3 targetVec = getVectorToTarget(living).normalize();
@@ -164,20 +165,20 @@ public class SeekerArrow extends TFArrow {
 
 	@Nullable
 	private Entity getTarget() {
-		return level.getEntity(entityData.get(TARGET));
+		return this.getLevel().getEntity(this.entityData.get(TARGET));
 	}
 
 	private void setTarget(@Nullable Entity e) {
-		entityData.set(TARGET, e == null ? -1 : e.getId());
+		this.entityData.set(TARGET, e == null ? -1 : e.getId());
 	}
 
 	private boolean isThisArrowFlying() {
-		return !inGround && getDeltaMovement().lengthSqr() > 1.0;
+		return !this.inGround && getDeltaMovement().lengthSqr() > 1.0;
 	}
 
 	@Override
-	protected void onHitEntity(EntityHitResult pResult) {
+	protected void onHitEntity(EntityHitResult result) {
 		this.setCritArrow(false);
-		super.onHitEntity(pResult);
+		super.onHitEntity(result);
 	}
 }

@@ -1,7 +1,0 @@
-{
-  "config": {},
-  "biomes": "#twilightforest:valid_lich_tower_biomes",
-  "adapt_noise": true,
-  "spawn_overrides": {},
-  "type": "twilightforest:lich_tower"
-}

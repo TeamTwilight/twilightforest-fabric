@@ -3,23 +3,24 @@ package twilightforest.world.components.structures.trollcave;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.ArmoredGiant;
 import twilightforest.entity.monster.GiantMiner;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class CloudCastleComponent extends TFStructureComponentOld {
 
@@ -27,13 +28,13 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	private boolean warriorPlaced = false;
 
 	public CloudCastleComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TrollCavePieces.TFClCa, nbt);
+		super(TFStructurePieceTypes.TFClCa.get(), nbt);
 		this.minerPlaced = nbt.getBoolean("minerPlaced");
 		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
 	}
 
-	public CloudCastleComponent(TFFeature feature, int index, int x, int y, int z) {
-		super(TrollCavePieces.TFClCa, feature, index, x, y, z);
+	public CloudCastleComponent(TFLandmark feature, int index, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFClCa.get(), feature, index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// round to nearest mult of 4
@@ -55,7 +56,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		// up to two trees
 		// tree in x direction
 		boolean plus = rand.nextBoolean();
@@ -74,7 +75,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// make haus
 		this.generateBox(world, sbb, 8, 0, 8, 23, 3, 23, TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), false);

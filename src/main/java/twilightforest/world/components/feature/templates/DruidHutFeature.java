@@ -5,6 +5,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -13,17 +14,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFEntities;
+import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.processors.CobblePlankSwizzler;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;
-
-import java.util.Random;
 
 public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
 	public DruidHutFeature(Codec<NoneFeatureConfiguration> config) {
@@ -31,17 +30,19 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
 	}
 
 	@Override
-    protected StructureTemplate getTemplate(StructureManager templateManager, Random random) {
+    protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
 	    return templateManager.getOrCreate(Util.getRandom(DruidHutFeature.HutType.values(), random).resourceLocation);
     }
 
     @Override
-    protected void modifySettings(StructurePlaceSettings settings, Random random) {
+    protected void modifySettings(StructurePlaceSettings settings, RandomSource random) {
         settings.addProcessor(new CobblePlankSwizzler(random)).addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
     }
 
+    
+
     @Override
-    protected void postPlacement(WorldGenLevel world, Random random, StructureManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
+    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
         if (random.nextBoolean()) {
             StructureTemplate template = templateManager.getOrCreate(DruidHutFeature.BasementType.values()[random.nextInt(DruidHutFeature.BasementType.size)].getBasement(random.nextBoolean()));
 
@@ -58,7 +59,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
     }
 
 	@Override
-	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, Random random) {
+	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
         String s = info.nbt.getString("metadata");
         BlockPos blockPos = info.pos;
         /**
@@ -100,7 +101,7 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
                 default -> chest.setValue(HorizontalDirectionalBlock.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
             };
 
-            TFTreasure.BASEMENT.generateLootContainer(world, blockPos, chest, 16 | 2);
+            TFLootTables.BASEMENT.generateLootContainer(world, blockPos, chest, 16 | 2);
         }
     }
 

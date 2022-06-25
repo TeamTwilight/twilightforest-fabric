@@ -2,16 +2,16 @@
   "feature": "twilightforest:tree/hollow_tree",
   "placement": [
     {
-      "max_water_depth": 0,
-      "type": "minecraft:surface_water_depth_filter"
+      "type": "minecraft:surface_water_depth_filter",
+      "max_water_depth": 0
     },
     {
-      "chance": 35,
-      "type": "minecraft:rarity_filter"
+      "type": "minecraft:rarity_filter",
+      "chance": 35
     },
     {
-      "heightmap": "OCEAN_FLOOR",
-      "type": "minecraft:heightmap"
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR"
     },
     {
       "type": "twilightforest:chunk_centerer"
@@ -19,22 +19,22 @@
     {
       "type": "twilightforest:no_structure",
       "value": {
+        "additional_clearance": 32,
         "occupies_surface": true,
-        "occupies_underground": false,
-        "additional_clearance": 32
+        "occupies_underground": false
       }
     },
     {
+      "type": "minecraft:block_predicate_filter",
       "predicate": {
+        "type": "minecraft:would_survive",
         "state": {
+          "Name": "twilightforest:hollow_oak_sapling",
           "Properties": {
             "stage": "0"
-          },
-          "Name": "twilightforest:hollow_oak_sapling"
-        },
-        "type": "minecraft:would_survive"
-      },
-      "type": "minecraft:block_predicate_filter"
+          }
+        }
+      }
     },
     {
       "type": "minecraft:biome"

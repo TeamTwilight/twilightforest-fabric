@@ -9,16 +9,16 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 public class SteeleafAxeItem extends AxeItem {
 
-	protected SteeleafAxeItem(Tier material, Properties props) {
+	public SteeleafAxeItem(Tier material, Properties props) {
 		super(material, 6F, material.getSpeed() * 0.05f - 3.4f, props);
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
-			istack.enchant(Enchantments.BLOCK_EFFICIENCY, 2);
-			list.add(istack);
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+		if (this.allowedIn(tab)) {
+			ItemStack stack = new ItemStack(this);
+			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 2);
+			items.add(stack);
 		}
 	}
 }

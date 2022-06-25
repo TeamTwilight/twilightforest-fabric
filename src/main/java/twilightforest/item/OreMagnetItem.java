@@ -29,9 +29,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.init.TFSounds;
 import twilightforest.util.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
@@ -44,12 +45,12 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 
 	private static final float WIGGLE = 10F;
 
-	protected OreMagnetItem(Properties props) {
-		super(props);
+	public OreMagnetItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack pStack) {
+	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
 
@@ -72,53 +73,48 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 
 	@Nonnull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
 		player.startUsingItem(hand);
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 	}
 
 	@Override
-	public void releaseUsing(ItemStack stack, Level world, LivingEntity living, int useRemaining) {
+	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
-		if (!world.isClientSide && useTime > 10) {
-			int moved = doMagnet(world, living, 0, 0);
+		if (!level.isClientSide() && useTime > 10) {
+			int moved = this.doMagnet(level, living, 0, 0);
 
 			if (moved == 0) {
-				moved = doMagnet(world, living, WIGGLE, 0);
+				moved = this.doMagnet(level, living, WIGGLE, 0);
 			}
 			if (moved == 0) {
-				moved = doMagnet(world, living, WIGGLE, WIGGLE);
+				moved = this.doMagnet(level, living, WIGGLE, WIGGLE);
 			}
 			if (moved == 0) {
-				moved = doMagnet(world, living, 0, WIGGLE);
+				moved = this.doMagnet(level, living, 0, WIGGLE);
 			}
 			if (moved == 0) {
-				moved = doMagnet(world, living, -WIGGLE, WIGGLE);
+				moved = this.doMagnet(level, living, -WIGGLE, WIGGLE);
 			}
 			if (moved == 0) {
-				moved = doMagnet(world, living, -WIGGLE, 0);
+				moved = this.doMagnet(level, living, -WIGGLE, 0);
 			}
 			if (moved == 0) {
-				moved = doMagnet(world, living, -WIGGLE, -WIGGLE);
+				moved = this.doMagnet(level, living, -WIGGLE, -WIGGLE);
 			}
 			if (moved == 0) {
-				moved = doMagnet(world, living, 0, -WIGGLE);
+				moved = this.doMagnet(level, living, 0, -WIGGLE);
 			}
 			if (moved == 0) {
-				moved = doMagnet(world, living, WIGGLE, -WIGGLE);
+				moved = this.doMagnet(level, living, WIGGLE, -WIGGLE);
 			}
 
 			if (moved > 0) {
 				stack.hurtAndBreak(moved, living, user -> user.broadcastBreakEvent(living.getUsedItemHand()));
-				world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB, living.getSoundSource(), 1.0F, 1.0F);
+				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB.get(), living.getSoundSource(), 1.0F, 1.0F);
 			}
 		}
-	}
-
-	@Override
-	public float getXpRepairRatio(ItemStack stack) {
-		return 0.1f;
 	}
 
 	@Nonnull
@@ -135,17 +131,17 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 	/**
 	 * Magnet from the player's position and facing to the specified offset
 	 */
-	private int doMagnet(Level world, LivingEntity living, float yawOffset, float pitchOffset) {
+	private int doMagnet(Level level, LivingEntity living, float yawOffset, float pitchOffset) {
 		// find vector 32 blocks from look
 		double range = 32.0D;
 		Vec3 srcVec = new Vec3(living.getX(), living.getY() + living.getEyeHeight(), living.getZ());
 		Vec3 lookVec = getOffsetLook(living, yawOffset, pitchOffset);
-		Vec3 destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
 
-		return doMagnet(world, new BlockPos(srcVec), new BlockPos(destVec));
+		return doMagnet(level, new BlockPos(srcVec), new BlockPos(destVec));
 	}
 
-	public static int doMagnet(Level world, BlockPos usePos, BlockPos destPos) {
+	public static int doMagnet(Level level, BlockPos usePos, BlockPos destPos) {
 		// FIXME Find a better place to invoke this!
 		initOre2BlockMap();
 
@@ -155,10 +151,10 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 		BlockState attactedOreBlock = Blocks.AIR.defaultBlockState();
 		BlockState replacementBlock = Blocks.AIR.defaultBlockState();
 		BlockPos foundPos = null;
-        BlockPos basePos = null;
+		BlockPos basePos = null;
 
 		for (BlockPos coord : new VoxelBresenhamIterator(usePos, destPos)) {
-			BlockState searchState = world.getBlockState(coord);
+			BlockState searchState = level.getBlockState(coord);
 
 			// keep track of where the dirt/stone we first find is.
 			if (basePos == null) {
@@ -166,7 +162,7 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 					basePos = coord;
 				}
 				// This ordering is so that the base pos is found first before we pull ores - pushing ores away is a baaaaad idea!
-			} else if (foundPos == null && searchState.getBlock() != Blocks.AIR && isOre(searchState.getBlock()) && world.getBlockEntity(coord) == null) {
+			} else if (foundPos == null && searchState.getBlock() != Blocks.AIR && isOre(searchState.getBlock()) && level.getBlockEntity(coord) == null) {
 				attactedOreBlock = searchState;
 				replacementBlock = ORE_TO_BLOCK_REPLACEMENTS.getOrDefault(attactedOreBlock.getBlock(), Blocks.STONE).defaultBlockState();
 				foundPos = coord;
@@ -176,7 +172,7 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 		if (basePos != null && foundPos != null && attactedOreBlock.getBlock() != Blocks.AIR) {
 			// find the whole vein
 			Set<BlockPos> veinBlocks = new HashSet<>();
-			findVein(world, foundPos, attactedOreBlock, veinBlocks);
+			findVein(level, foundPos, attactedOreBlock, veinBlocks);
 
 			// move it up into minable blocks or dirt
 			int offX = basePos.getX() - foundPos.getX();
@@ -185,13 +181,13 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 
 			for (BlockPos coord : veinBlocks) {
 				BlockPos replacePos = coord.offset(offX, offY, offZ);
-				BlockState replaceState = world.getBlockState(replacePos);
+				BlockState replaceState = level.getBlockState(replacePos);
 
 				if (isReplaceable(replaceState) || replaceState.getMaterial().isReplaceable() || replaceState.isAir()) {
-					world.setBlock(coord, replacementBlock, 2);
+					level.setBlock(coord, replacementBlock, 2);
 
 					// set close to ore material
-					world.setBlock(replacePos, attactedOreBlock, 2);
+					level.setBlock(replacePos, attactedOreBlock, 2);
 					blocksMoved++;
 				}
 			}
@@ -217,7 +213,7 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 		return state.is(BlockTagGenerator.ORE_MAGNET_SAFE_REPLACE_BLOCK);
 	}
 
-	private static boolean findVein(Level world, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {
+	private static boolean findVein(Level level, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {
 		// is this already on the list?
 		if (veinBlocks.contains(here)) {
 			return false;
@@ -229,12 +225,12 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 		}
 
 		// otherwise, check if we're still in the vein
-		if (world.getBlockState(here) == oreState) {
+		if (level.getBlockState(here) == oreState) {
 			veinBlocks.add(here);
 
 			// recurse in 6 directions
 			for (Direction e : Direction.values()) {
-				findVein(world, here.relative(e), oreState, veinBlocks);
+				findVein(level, here.relative(e), oreState, veinBlocks);
 			}
 
 			return true;
@@ -267,46 +263,18 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 				//grab the part after the slash for use later
 				String oreground = tag.location().getPath().substring(15);
 				//check if a tag for ore grounds matches up with our ores in ground tag
-				if(Registry.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
+				if (Registry.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
 					//add each ground type to each ore
 					Objects.requireNonNull(Registry.BLOCK.getTag(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "ore_bearing_ground/" + oreground)))).get().forEach(groundHolder ->
 							Objects.requireNonNull(Registry.BLOCK.getTag(tag)).get().forEach(oreHolder -> {
 								//exclude ignored ores
-								if(!oreHolder.is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
+								if (!oreHolder.is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
 									ORE_TO_BLOCK_REPLACEMENTS.put(oreHolder.value(), groundHolder.value());
 								}
 							}));
 				}
-
-
 			}
 		}
-
-		//keeping just in case
-//		for (Block blockReplaceOre : BlockTagGenerator.ORE_MAGNET_BLOCK_REPLACE_ORE.getValues()) {
-//			ResourceLocation rl = blockReplaceOre.getRegistryName();
-//			Tag<Block> tag = BlockTags.getAllTags().getTagOrEmpty(TwilightForestMod.prefix("ore_magnet/" + rl.getNamespace() + "/" + rl.getPath()));
-//
-//			for (Block oreBlock : tag.getValues()) {
-//				ORE_TO_BLOCK_REPLACEMENTS.put(oreBlock, blockReplaceOre);
-//			}
-//		}
-//
-//		Set<Block> remainingOres = new HashSet<>(Tags.Blocks.ORES.getValues());
-//		remainingOres.removeAll(ORE_TO_BLOCK_REPLACEMENTS.keySet());
-//		remainingOres.removeIf(b -> "minecraft".equals(b.getRegistryName().getNamespace()));
-//		if (!remainingOres.isEmpty()) {
-//			TwilightForestMod.LOGGER.warn(remainingOres
-//					.stream()
-//					.peek(ore -> ORE_TO_BLOCK_REPLACEMENTS.put(ore, Blocks.STONE))
-//					.map(Block::getRegistryName)
-//					.map(ResourceLocation::toString)
-//					.collect(Collectors.joining(", ", "Partially supported ores with Ore Magnet, [", "], will relate these to `minecraft:stone`. Mod packers/Mod devs are encouraged to add support for their ores to our ore magnet through block tag jsons"))
-//			);
-//		} else {
-//			// You're probably NEVER going to see this message on a modpack
-//			TwilightForestMod.LOGGER.info("No remaining ores to map!");
-//		}
 
 		cacheNeedsBuild = false;
 	}
@@ -324,7 +292,8 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 					cacheNeedsBuild = true;
 				}
 
-				return stage.wait(null).thenRun(() -> {}); // Nothing to do here
+				return stage.wait(null).thenRun(() -> {
+			}); // Nothing to do here
 			}
 		});
 	}

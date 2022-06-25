@@ -6,7 +6,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseSettings;
-import net.minecraft.world.level.levelgen.NoiseSlider;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 
@@ -36,14 +36,14 @@ public class TFTerrainWarp {
         }
     });
 
-    public TFTerrainWarp(int width, int height, int yCount, BiomeSource source, NoiseSettings settings, BlendedNoise blend, NoiseModifier modifier) {
+    public TFTerrainWarp(int width, int height, int yCount, BiomeSource source, NoiseSlider topslide, NoiseSlider bottomslide, NoiseSettings settings, BlendedNoise blend, NoiseModifier modifier) {
         this.cellWidth = width;
         this.cellHeight = height;
         this.cellCountY = yCount;
         this.biomeSource = source;
         this.noiseSettings = settings;
-        this.topSlide = settings.topSlideSettings();
-        this.bottomSlide = settings.bottomSlideSettings();
+        this.topSlide = topslide;
+        this.bottomSlide = bottomslide;
         this.blendedNoise = blend;
         //Fallbacks will never be met as this will crash to enforce correct source
         this.dimensionDensityFactor = source instanceof TFBiomeProvider tfsource ? tfsource.getBaseFactor() : 1.0F;
@@ -51,18 +51,18 @@ public class TFTerrainWarp {
         this.caveNoiseModifier = modifier;
     }
 
-    public void fillNoiseColumn(ChunkGenerator generator, double[] adouble, int x, int z, NoiseSettings settings, int sealevel, int min, int max) {
+    public void fillNoiseColumn(RandomState state, double[] adouble, int x, int z, int sealevel, int min, int max) {
         if (biomeSource instanceof TFBiomeProvider source) {
             double d0;
             double d1;
             float f = 0.0F;
             float f1 = 0.0F;
             float f2 = 0.0F;
-            float depth = source.getBiomeDepth(x, sealevel, z, generator.climateSampler());
+            float depth = source.getBiomeDepth(x, sealevel, z, state.sampler());
 
             for (int offX = -2; offX <= 2; ++offX) {
                 for (int offZ = -2; offZ <= 2; ++offZ) {
-                    Biome biome = source.getNoiseBiome(x + offX, sealevel, z + offZ, generator.climateSampler()).value();
+                    Biome biome = source.getNoiseBiome(x + offX, sealevel, z + offZ, state.sampler()).value();
                     float offD = source.getBiomeDepth(biome);
                     float offS = source.getBiomeScale(biome);
                     float f6;
@@ -85,13 +85,19 @@ public class TFTerrainWarp {
             d0 = d6 * 0.265625D;
             d1 = 96.0D / d8;
 
-            double scaleXZ = 684.412D * settings.noiseSamplingSettings().xzScale();
-            double scaleY = 684.412D * settings.noiseSamplingSettings().yScale();
-            double factorXZ = scaleXZ / settings.noiseSamplingSettings().xzFactor();
-            double factorY = scaleY / settings.noiseSamplingSettings().yFactor();
-            double density = -0.46875;
+//            double scaleXZ = 684.412D * settings.noiseSamplingSettings().xzScale();
+//            double scaleY = 684.412D * settings.noiseSamplingSettings().yScale();
+//            double factorXZ = scaleXZ / settings.noiseSamplingSettings().xzFactor();
+//            double factorY = scaleY / settings.noiseSamplingSettings().yFactor();
+//            double density = -0.46875;
 
             if (blendedNoise instanceof TFBlendedNoise blend) {
+                double scaleXZ = 684.412D * blend.xzScale;
+                double scaleY = 684.412D * blend.yScale;
+                double factorXZ = scaleXZ / blend.xzFactor;
+                double factorY = scaleY / blend.yFactor;
+                double density = -0.46875;
+
                 for (int index = 0; index <= max; ++index) {
                     int y = index + min;
                     double noise = blend.sampleAndClampNoise(x, y, z, scaleXZ, scaleY, factorXZ, factorY);

@@ -26,25 +26,25 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.projectile.MoonwormShot;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Objects;
 
 public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorItem {
 
-	protected static final int FIRING_TIME = 12;
+	public static final int FIRING_TIME = 12;
 
-	protected MoonwormQueenItem(Properties props) {
-		super(props);
+	public MoonwormQueenItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack pStack) {
+	public boolean isEnchantable(ItemStack stack) {
 		return false;
 	}
 
@@ -59,7 +59,7 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (stack.getDamageValue() + 1 >= this.getMaxDamage(/*stack*/)) {
 			return InteractionResultHolder.fail(stack);
@@ -72,22 +72,22 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 	//	[VanillaCopy] ItemBlock.onItemUse, harcoding the block
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
-		Level worldIn = context.getLevel();
+		Level level = context.getLevel();
 		BlockPos pos = context.getClickedPos();
-		BlockState iblockstate = worldIn.getBlockState(pos);
+		BlockState state = level.getBlockState(pos);
 		Player player = context.getPlayer();
 		BlockPlaceContext blockItemUseContext = new BlockPlaceContext(context);
 
-		if (!iblockstate.getMaterial().isReplaceable()) {
+		if (!state.getMaterial().isReplaceable()) {
 			pos = pos.relative(context.getClickedFace());
 		}
 
 		ItemStack itemstack = player.getItemInHand(context.getHand());
 
-		if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && worldIn.isUnobstructed(TFBlocks.MOONWORM.get().defaultBlockState(), pos, CollisionContext.empty())) {
+		if (itemstack.getDamageValue() < itemstack.getMaxDamage() && player.mayUseItemAt(pos, context.getClickedFace(), itemstack) && level.isUnobstructed(TFBlocks.MOONWORM.get().defaultBlockState(), pos, CollisionContext.empty())) {
 			if (this.tryPlace(blockItemUseContext).shouldSwing()) {
-				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos)/*, worldIn, pos, player*/);
-				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+				SoundType soundtype = level.getBlockState(pos).getBlock().getSoundType(level.getBlockState(pos)/*, level, pos, player*/);
+				level.playSound(player, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				// TF - damage stack instead of shrinking
 				player.stopUsingItem();
 			}
@@ -100,16 +100,16 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 
 
 	@Override
-	public void releaseUsing(ItemStack stack, Level world, LivingEntity living, int useRemaining) {
+	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
-		if (!world.isClientSide && useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
-			boolean fired = world.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT.get(), world, living));
+		if (!level.isClientSide() && useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
+			boolean fired = level.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT.get(), level, living));
 
 			if (fired) {
-				stack.hurt(2, world.random, null);
+				stack.hurt(2, level.getRandom(), null);
 
-				world.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH, living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1, 1);
+				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH.get(), living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1.0F, 1.0F);
 			}
 		}
 
@@ -152,7 +152,7 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 						this.onBlockPlaced(blockpos, world, playerentity, itemstack);
 						block.setPlacedBy(world, blockpos, blockstate1, playerentity, itemstack);
 						if (playerentity instanceof ServerPlayer) {
-							CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)playerentity, blockpos, itemstack);
+							CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) playerentity, blockpos, itemstack);
 						}
 					}
 
@@ -168,8 +168,8 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 		}
 	}
 
-	protected SoundEvent getPlaceSound(BlockState state, Level world, BlockPos pos, Player entity) {
-		return state.getSoundType(/*world, pos, entity*/).getPlaceSound();
+	protected SoundEvent getPlaceSound(BlockState state, Level level, BlockPos pos, Player entity) {
+		return state.getSoundType(/*level, pos, entity*/).getPlaceSound();
 	}
 
 	@Nullable
@@ -177,8 +177,8 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 		return context;
 	}
 
-	protected boolean onBlockPlaced(BlockPos pos, Level worldIn, @Nullable Player player, ItemStack stack) {
-		return BlockItem.updateCustomBlockEntityTag(worldIn, player, pos, stack);
+	protected boolean onBlockPlaced(BlockPos pos, Level level, @Nullable Player player, ItemStack stack) {
+		return BlockItem.updateCustomBlockEntityTag(level, player, pos, stack);
 	}
 
 	@Nullable
@@ -187,20 +187,20 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 		return blockstate != null && this.canPlace(context, blockstate) ? blockstate : null;
 	}
 
-	protected boolean canPlace(BlockPlaceContext p_195944_1_, BlockState p_195944_2_) {
-		Player playerentity = p_195944_1_.getPlayer();
-		CollisionContext iselectioncontext = playerentity == null ? CollisionContext.empty() : CollisionContext.of(playerentity);
-		return (p_195944_2_.canSurvive(p_195944_1_.getLevel(), p_195944_1_.getClickedPos())) && p_195944_1_.getLevel().isUnobstructed(p_195944_2_, p_195944_1_.getClickedPos(), iselectioncontext);
+	protected boolean canPlace(BlockPlaceContext context, BlockState state) {
+		Player player = context.getPlayer();
+		CollisionContext collision = player == null ? CollisionContext.empty() : CollisionContext.of(player);
+		return (state.canSurvive(context.getLevel(), context.getClickedPos())) && context.getLevel().isUnobstructed(state, context.getClickedPos(), collision);
 	}
 
-	private BlockState updateBlockStateFromTag(BlockPos p_219985_1_, Level p_219985_2_, ItemStack p_219985_3_, BlockState p_219985_4_) {
-		BlockState blockstate = p_219985_4_;
-		CompoundTag compoundnbt = p_219985_3_.getTag();
+	private BlockState updateBlockStateFromTag(BlockPos pos, Level level, ItemStack stack, BlockState state) {
+		BlockState blockstate = state;
+		CompoundTag compoundnbt = stack.getTag();
 		if (compoundnbt != null) {
 			CompoundTag compoundnbt1 = compoundnbt.getCompound("BlockStateTag");
-			StateDefinition<Block, BlockState> statecontainer = p_219985_4_.getBlock().getStateDefinition();
+			StateDefinition<Block, BlockState> statecontainer = state.getBlock().getStateDefinition();
 
-			for(String s : compoundnbt1.getAllKeys()) {
+			for (String s : compoundnbt1.getAllKeys()) {
 				Property<?> property = statecontainer.getProperty(s);
 				if (property != null) {
 					String s1 = compoundnbt1.get(s).getAsString();
@@ -209,17 +209,15 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 			}
 		}
 
-		if (blockstate != p_219985_4_) {
-			p_219985_2_.setBlock(p_219985_1_, blockstate, 2);
+		if (blockstate != state) {
+			level.setBlock(pos, blockstate, 2);
 		}
 
 		return blockstate;
 	}
 
-	private static <T extends Comparable<T>> BlockState updateState(BlockState p_219988_0_, Property<T> p_219988_1_, String p_219988_2_) {
-		return p_219988_1_.getValue(p_219988_2_).map((p_219986_2_) -> {
-			return p_219988_0_.setValue(p_219988_1_, p_219986_2_);
-		}).orElse(p_219988_0_);
+	private static <T extends Comparable<T>> BlockState updateState(BlockState state, Property<T> property, String name) {
+		return property.getValue(name).map(value -> state.setValue(property, value)).orElse(state);
 	}
 
 	protected boolean placeBlock(BlockPlaceContext context, BlockState state) {

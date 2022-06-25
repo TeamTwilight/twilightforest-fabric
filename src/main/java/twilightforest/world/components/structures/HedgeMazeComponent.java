@@ -3,24 +3,24 @@ package twilightforest.world.components.structures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class HedgeMazeComponent extends TFStructureComponentOld {
 
@@ -30,13 +30,13 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	private static final int FLOOR_LEVEL = 0;
 
 	public HedgeMazeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFFeature.TFHedge, nbt);
+		super(TFStructurePieceTypes.TFHedge.get(), nbt);
 
 		this.boundingBox = BoundingBoxUtils.NBTToBoundingBox(nbt);
 	}
 
-	public HedgeMazeComponent(TFFeature feature, int i, int x, int y, int z) {
-		super(TFFeature.TFHedge, feature, i, x, y, z);
+	public HedgeMazeComponent(TFLandmark feature, int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFHedge.get(), feature, i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 
@@ -45,7 +45,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		TFMaze maze = new TFMaze(MSIZE, MSIZE);
 
 		maze.oddBias = 2;
@@ -149,7 +149,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	 */
 	private void decorate3x3Room(WorldGenLevel world, int x, int z, BoundingBox sbb) {
 		// make a new RNG for this room!
-		Random roomRNG = new Random(world.getSeed() ^ x + z);
+		RandomSource roomRNG = RandomSource.create(world.getSeed() ^ x + z);
 
 		// a few jack-o-lanterns
 		roomJackO(world, roomRNG, x, z, 8, sbb);
@@ -170,7 +170,7 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	/**
 	 * Place a spawner within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomSpawner(WorldGenLevel world, Random rand, int x, int z, int diameter, BoundingBox sbb) {
+	private void roomSpawner(WorldGenLevel world, RandomSource rand, int x, int z, int diameter, BoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
@@ -186,27 +186,22 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	/**
 	 * Place a treasure chest within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomTreasure(WorldGenLevel world, Random rand, int x, int z, int diameter, BoundingBox sbb) {
+	private void roomTreasure(WorldGenLevel world, RandomSource rand, int x, int z, int diameter, BoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, TFTreasure.HEDGE_MAZE, sbb);
+		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, TFLootTables.HEDGE_MAZE, sbb);
 	}
 
 	/**
 	 * Place a lit pumpkin lantern within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomJackO(WorldGenLevel world, Random rand, int x, int z, int diameter, BoundingBox sbb) {
+	private void roomJackO(WorldGenLevel world, RandomSource rand, int x, int z, int diameter, BoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
 		placeBlock(world, Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.from2DDataValue(rand.nextInt(4))),
 				rx, FLOOR_LEVEL, rz, sbb);
-	}
-
-	@Override
-	public NoiseEffect getNoiseEffect() {
-		return NoiseEffect.BEARD;
 	}
 
 	@Override

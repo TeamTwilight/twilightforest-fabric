@@ -13,12 +13,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
 import twilightforest.entity.projectile.IceBomb;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 
 public class TFDispenserBehaviors {
 
@@ -73,7 +73,7 @@ public class TFDispenserBehaviors {
 			@Override
 			protected void playSound(BlockSource source) {
 				BlockPos pos = source.getPos();
-				source.getLevel().playSound(null, pos, TFSounds.SCEPTER_PEARL, SoundSource.BLOCKS, 1, 1);
+				source.getLevel().playSound(null, pos, TFSounds.SCEPTER_PEARL.get(), SoundSource.BLOCKS, 1, 1);
 			}
 		});
 

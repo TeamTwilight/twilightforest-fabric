@@ -2,25 +2,25 @@ package twilightforest.world.components.structures.darktower;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
-
-import java.util.Random;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerEntranceBridgeComponent extends DarkTowerBridgeComponent {
 
 	public DarkTowerEntranceBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(DarkTowerPieces.TFDTEB, nbt);
+		super(TFStructurePieceTypes.TFDTEB.get(), nbt);
 	}
 
-	protected DarkTowerEntranceBridgeComponent(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(DarkTowerPieces.TFDTEB, feature, i, x, y, z, pSize, pHeight, direction);
+	protected DarkTowerEntranceBridgeComponent(TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(TFStructurePieceTypes.TFDTEB.get(), feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// make an entrance tower
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);

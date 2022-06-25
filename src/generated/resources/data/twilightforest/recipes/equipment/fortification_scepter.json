@@ -3,8 +3,8 @@
   "ingredients": [
     {
       "type": "forge:nbt",
-      "item": "twilightforest:fortification_scepter",
       "count": 1,
+      "item": "twilightforest:fortification_scepter",
       "nbt": "{Damage:9}"
     },
     {

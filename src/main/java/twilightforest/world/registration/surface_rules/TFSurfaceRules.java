@@ -6,8 +6,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFBlocks;
 
 public class TFSurfaceRules {
 
@@ -32,46 +32,10 @@ public class TFSurfaceRules {
 		return SurfaceRules.state(block.defaultBlockState());
 	}
 
-	public static SurfaceRules.RuleSource basicOverworldGen() {
-		SurfaceRules.ConditionSource y62 = SurfaceRules.yBlockCheck(VerticalAnchor.absolute(62), 0);
-		SurfaceRules.RuleSource sandPlacer = SurfaceRules.sequence(SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, SANDSTONE), SAND);
-
-		SurfaceRules.RuleSource overworldLike = SurfaceRules.sequence(
-				SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-						SurfaceRules.sequence(
-								SurfaceRules.ifTrue(
-										SurfaceRules.isBiome(BiomeKeys.SWAMP),
-										SurfaceRules.ifTrue(y62,
-												SurfaceRules.ifTrue(
-														SurfaceRules.noiseCondition(Noises.SWAMP, 0.0D), WATER))),
-								SurfaceRules.ifTrue(
-										SurfaceRules.isBiome(BiomeKeys.FIRE_SWAMP),
-										SurfaceRules.ifTrue(y62,
-												SurfaceRules.ifTrue(
-														SurfaceRules.noiseCondition(Noises.SWAMP, 0.0D), LAVA))),
-								SurfaceRules.ifTrue(
-										SurfaceRules.isBiome(BiomeKeys.LAKE, BiomeKeys.STREAM), sandPlacer),
-								SurfaceRules.ifTrue(
-										SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), DIRT)),
-				SurfaceRules.ifTrue(
-						SurfaceRules.waterStartCheck(-6, -1),
-						SurfaceRules.sequence(
-								SurfaceRules.ifTrue(
-										SurfaceRules.UNDER_FLOOR,
-										DIRT))));
-
-
-		ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
-		builder.add(SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)), BEDROCK));
-		SurfaceRules.RuleSource surfacerules$rulesource9 = SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(), overworldLike);
-		builder.add(surfacerules$rulesource9);
-		return SurfaceRules.sequence(builder.build().toArray(SurfaceRules.RuleSource[]::new));
-	}
-
 	public static SurfaceRules.RuleSource tfSurface() {
 		//surface is a normal overworld surface as the base
 		//snowy forest is all snow on the top layers
-		//glacier has 1 ice layer, 30 packed ice layers, gravel for a few layers, then stone
+		//glacier has gravel for a few layers, then stone
 		//highlands has a noise-based mixture of podzol and coarse dirt
 		//thornlands/plateau has no caves and deadrock instead of stone
 
@@ -131,6 +95,23 @@ public class TFSurfaceRules {
 														SurfaceRules.UNDER_FLOOR,
 														GRAVEL))))));
 
+		SurfaceRules.RuleSource overworldLike = SurfaceRules.sequence(
+						SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
+								SurfaceRules.sequence(
+										SurfaceRules.ifTrue(
+												//lakes and rivers get sand
+												SurfaceRules.isBiome(BiomeKeys.LAKE, BiomeKeys.STREAM),
+												SurfaceRules.sequence(
+														SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, SANDSTONE), SAND)),
+										//make everything else grass
+										SurfaceRules.ifTrue(
+												SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), DIRT)),
+						//dirt goes under the grass of course!
+						SurfaceRules.ifTrue(
+								SurfaceRules.waterStartCheck(-6, -1),
+								SurfaceRules.sequence(
+										SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, DIRT))));
+
 
 		ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
 		builder
@@ -138,8 +119,9 @@ public class TFSurfaceRules {
 				.add(deadrockLands)
 				.add(snowyForest)
 				.add(glacier)
-				//overworld generation last
-				.add(basicOverworldGen());
+				.add(overworldLike)
+				.add(SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)), BEDROCK));
+
 		return SurfaceRules.sequence(builder.build().toArray(SurfaceRules.RuleSource[]::new));
 	}
 

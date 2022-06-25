@@ -1,12 +1,38 @@
 {
   "parent": "twilightforest:troll",
+  "criteria": {
+    "beans": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:magic_beans"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "use_beans": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:magic_beans"
+          ]
+        },
+        "location": {
+          "block": {
+            "blocks": [
+              "twilightforest:uberous_soil"
+            ]
+          }
+        }
+      },
+      "trigger": "minecraft:item_used_on_block"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:huge_stalk"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.beanstalk"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.beanstalk.desc",
       "with": [
@@ -16,39 +42,13 @@
       ]
     },
     "frame": "goal",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "beans": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:magic_beans"
-            ]
-          }
-        ]
-      }
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:huge_stalk"
     },
-    "use_beans": {
-      "trigger": "minecraft:item_used_on_block",
-      "conditions": {
-        "location": {
-          "block": {
-            "blocks": [
-              "twilightforest:uberous_soil"
-            ]
-          }
-        },
-        "item": {
-          "items": [
-            "twilightforest:magic_beans"
-          ]
-        }
-      }
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.beanstalk"
     }
   },
   "requirements": [

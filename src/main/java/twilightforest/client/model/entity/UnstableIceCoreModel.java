@@ -15,8 +15,8 @@ import twilightforest.entity.monster.BaseIceMob;
 
 public class UnstableIceCoreModel<T extends BaseIceMob> extends HierarchicalModel<T> {
 
-	public ModelPart[] spikes = new ModelPart[16];
-	public ModelPart[] cubes = new ModelPart[16];
+	public final ModelPart[] spikes = new ModelPart[16];
+	public final ModelPart[] cubes = new ModelPart[16];
 
 	private final ModelPart root;
 	protected boolean alive;

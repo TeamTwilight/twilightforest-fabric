@@ -21,7 +21,9 @@ import twilightforest.entity.monster.HelmetCrab;
  */
 public class HelmetCrabLegacyModel extends HierarchicalModel<HelmetCrab> {
 	//fields
-	ModelPart root, body, rightArm;
+	final ModelPart root;
+	final ModelPart body;
+	ModelPart rightArm;
 	ModelPart leg1, leg2, leg3, leg4, leg5;
 
 	public HelmetCrabLegacyModel(ModelPart root) {

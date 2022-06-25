@@ -1,8 +1,6 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.HierarchicalModel;
-import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -13,7 +11,7 @@ import twilightforest.entity.boss.HydraMortarHead;
 
 public class HydraMortarModel extends HierarchicalModel<HydraMortarHead> {
 
-	public ModelPart root;
+	public final ModelPart root;
 
 	public HydraMortarModel(ModelPart root) {
 		this.root = root;

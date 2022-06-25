@@ -15,7 +15,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.entity.projectile.IceSnowball;
 
 public class StableIceCore extends BaseIceMob implements RangedAttackMob {
@@ -37,7 +37,7 @@ public class StableIceCore extends BaseIceMob implements RangedAttackMob {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
+				.add(Attributes.MOVEMENT_SPEED, 0.23D)
 				.add(Attributes.ATTACK_DAMAGE, 3.0D);
 	}
 
@@ -48,31 +48,31 @@ public class StableIceCore extends BaseIceMob implements RangedAttackMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_CORE_AMBIENT;
+		return TFSounds.ICE_CORE_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_CORE_HURT;
+		return TFSounds.ICE_CORE_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_CORE_DEATH;
+		return TFSounds.ICE_CORE_DEATH.get();
 	}
 
 	@Override
 	public int getMaxSpawnClusterSize() {
-		return 8;
+		return 2;
 	}
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
-		IceSnowball snowball = new IceSnowball(level, this);
+		IceSnowball snowball = new IceSnowball(this.getLevel(), this);
 		snowball.setPos(this.getX(), this.getY() + this.getEyeHeight(), this.getZ());
 
-		// [VanillaCopy] Adapted from EntitySnowman
-		double d0 = target.getY() + target.getEyeHeight() - 1.4;
+		// [VanillaCopy] Adapted from SlowGolem
+		double d0 = target.getY() + target.getEyeHeight() - 1.4D;
 		double d1 = target.getX() - this.getX();
 		double d2 = d0 - snowball.getY();
 		double d3 = target.getZ() - this.getZ();
@@ -80,7 +80,7 @@ public class StableIceCore extends BaseIceMob implements RangedAttackMob {
 		//accuracy of a normal difficulty skeleton
 		snowball.shoot(d1, d2 + f, d3, 1.6F, 6.0F);
 
-		this.playSound(TFSounds.ICE_CORE_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-		this.level.addFreshEntity(snowball);
+		this.playSound(TFSounds.ICE_CORE_SHOOT.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+		this.getLevel().addFreshEntity(snowball);
 	}
 }

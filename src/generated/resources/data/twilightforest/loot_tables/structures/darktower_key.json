@@ -2,143 +2,142 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 4.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "weight": 25,
-          "name": "twilightforest:structures/useless"
+          "name": "twilightforest:structures/useless",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 4.0
+                "max": 4.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:iron_ingot"
+          "name": "minecraft:iron_ingot",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 4.0
+                "max": 4.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:gunpowder"
+          "name": "minecraft:gunpowder",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 4.0
+                "max": 4.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:ironwood_ingot"
+          "name": "twilightforest:ironwood_ingot",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 5.0
+                "max": 5.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:firefly"
+          "name": "twilightforest:firefly",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:experiment_115"
+          "name": "twilightforest:experiment_115",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:glowstone_dust"
+          "name": "minecraft:glowstone_dust",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 6.0
+                "max": 6.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:redstone"
+          "name": "minecraft:redstone",
+          "weight": 75
         }
-      ]
+      ],
+      "rolls": 4.0
     },
     {
-      "rolls": 2.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 6.0
+                "max": 6.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "twilightforest:steeleaf_ingot"
@@ -175,10 +174,10 @@
           "type": "minecraft:item",
           "name": "twilightforest:ironwood_sword"
         }
-      ]
+      ],
+      "rolls": 2.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -189,10 +188,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:feather_falling": 3
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "minecraft:enchanted_book"
@@ -201,10 +200,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:knockback": 2
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "minecraft:enchanted_book"
@@ -213,25 +212,26 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:efficiency": 3
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "minecraft:enchanted_book"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "twilightforest:tower_key"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

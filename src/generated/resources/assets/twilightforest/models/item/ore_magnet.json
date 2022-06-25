@@ -1,22 +1,22 @@
 {
   "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "twilightforest:items/ore_magnet"
-  },
   "overrides": [
     {
+      "model": "twilightforest:item/ore_magnet_pulling_1",
       "predicate": {
-        "minecraft:pulling": 1.0,
-        "minecraft:pull": 0.5
-      },
-      "model": "twilightforest:item/ore_magnet_pulling_1"
+        "minecraft:pull": 0.5,
+        "minecraft:pulling": 1.0
+      }
     },
     {
+      "model": "twilightforest:item/ore_magnet_pulling_2",
       "predicate": {
-        "minecraft:pulling": 1.0,
-        "minecraft:pull": 1.0
-      },
-      "model": "twilightforest:item/ore_magnet_pulling_2"
+        "minecraft:pull": 1.0,
+        "minecraft:pulling": 1.0
+      }
     }
-  ]
+  ],
+  "textures": {
+    "layer0": "twilightforest:items/ore_magnet"
+  }
 }

@@ -21,8 +21,8 @@ import twilightforest.world.components.layer.vanillalegacy.area.AreaFactory;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
-import twilightforest.world.registration.TwilightFeatures;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.TFFeatureModifiers;
+import twilightforest.init.BiomeKeys;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +32,7 @@ import java.util.function.LongFunction;
 @Deprecated // TODO move to TwilightBiomeSource
 public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TwilightFeatures.seed).forGetter((obj) -> obj.seed),
+			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFFeatureModifiers.seed).forGetter((obj) -> obj.seed),
 			RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(provider -> provider.registry),
 			RecordCodecBuilder.<Pair<TerrainPoint, Holder<Biome>>>create((pair) -> pair.group(
 					TerrainPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst),
@@ -83,12 +83,6 @@ public class TFBiomeProvider extends BiomeSource {
 		this.seed = seed;
 		this.baseOffset = offset;
 		this.baseFactor = factor;
-		//getBiomesToSpawnIn().clear();
-		//getBiomesToSpawnIn().add(TFBiomes.twilightForest.get());
-		//getBiomesToSpawnIn().add(TFBiomes.denseTwilightForest.get());
-		//getBiomesToSpawnIn().add(TFBiomes.clearing.get());
-		//getBiomesToSpawnIn().add(TFBiomes.tfSwamp.get());
-		//getBiomesToSpawnIn().add(TFBiomes.mushrooms.get());
 
 		registry = registryIn;
 		biomeList = list;
@@ -187,11 +181,6 @@ public class TFBiomeProvider extends BiomeSource {
 	@Override
 	protected Codec<? extends BiomeSource> codec() {
 		return TF_CODEC;
-	}
-
-	@Override
-	public BiomeSource withSeed(long l) {
-		return new TFBiomeProvider(l, registry, biomeList, baseOffset, baseFactor);
 	}
 
 	public float getBaseOffset() {

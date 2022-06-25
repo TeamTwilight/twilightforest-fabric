@@ -2,20 +2,21 @@ package twilightforest.enums;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.ArrayUtil;
 import twilightforest.util.FeaturePlacers;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 import java.util.function.Supplier;
 
 public enum StructureWoodVariant implements StringRepresentable {
@@ -60,7 +61,7 @@ public enum StructureWoodVariant implements StringRepresentable {
 	}
 
 	// Since this is worldgen code, this solution would take the least amount of hits on RNG
-	public static StructureWoodVariant getRandomWeighted(Random random) {
+	public static StructureWoodVariant getRandomWeighted(RandomSource random) {
 		int randomVal = random.nextInt() & Integer.MAX_VALUE;
 
 		if ((randomVal & 0b1) == 0) {

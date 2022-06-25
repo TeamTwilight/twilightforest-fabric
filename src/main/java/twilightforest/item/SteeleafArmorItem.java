@@ -13,12 +13,12 @@ import twilightforest.TwilightForestMod;
 
 public class SteeleafArmorItem extends ArmorItem implements ArmorTextureItem {
 
-	public SteeleafArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties props) {
-		super(material, slot, props);
+	public SteeleafArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
+		super(material, slot, properties);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "steeleaf_2.png";
 		} else {
@@ -27,17 +27,18 @@ public class SteeleafArmorItem extends ArmorItem implements ArmorTextureItem {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
-			switch (this.slot) {
-				case HEAD -> istack.enchant(Enchantments.PROJECTILE_PROTECTION, 2);
-				case CHEST -> istack.enchant(Enchantments.BLAST_PROTECTION, 2);
-				case LEGS -> istack.enchant(Enchantments.FIRE_PROTECTION, 2);
-				case FEET -> istack.enchant(Enchantments.FALL_PROTECTION, 2);
-				default -> { }
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+		if (this.allowedIn(tab)) {
+			ItemStack stack = new ItemStack(this);
+			switch (this.getSlot()) {
+				case HEAD -> stack.enchant(Enchantments.PROJECTILE_PROTECTION, 2);
+				case CHEST -> stack.enchant(Enchantments.BLAST_PROTECTION, 2);
+				case LEGS -> stack.enchant(Enchantments.FIRE_PROTECTION, 2);
+				case FEET -> stack.enchant(Enchantments.FALL_PROTECTION, 2);
+				default -> {
+				}
 			}
-			list.add(istack);
+			items.add(stack);
 		}
 	}
 }

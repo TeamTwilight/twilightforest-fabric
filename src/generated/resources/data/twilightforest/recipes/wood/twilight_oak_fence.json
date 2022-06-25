@@ -1,9 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "#S#",
-    "#S#"
-  ],
   "key": {
     "#": {
       "item": "twilightforest:twilight_oak_planks"
@@ -12,8 +8,12 @@
       "tag": "c:rods/wooden"
     }
   },
+  "pattern": [
+    "#S#",
+    "#S#"
+  ],
   "result": {
-    "item": "twilightforest:twilight_oak_fence",
-    "count": 3
+    "count": 3,
+    "item": "twilightforest:twilight_oak_fence"
   }
 }

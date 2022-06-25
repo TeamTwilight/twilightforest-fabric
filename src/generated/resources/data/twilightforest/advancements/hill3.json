@@ -1,12 +1,26 @@
 {
   "parent": "twilightforest:hill2",
+  "criteria": {
+    "redcap": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:wraith",
+              "location": {
+                "structure": "twilightforest:large_hollow_hill"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "minecraft:glowstone_dust"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.hill3"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.hill3.desc",
       "with": [
@@ -16,27 +30,13 @@
       ]
     },
     "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:glowstone_dust"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "redcap": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:wraith",
-              "location": {
-                "feature": "twilightforest:large_hollow_hill"
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
+    "title": {
+      "translate": "advancement.twilightforest.hill3"
     }
   },
   "requirements": [

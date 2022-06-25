@@ -26,10 +26,10 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWit
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
-import twilightforest.item.TFItems;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
+import twilightforest.loot.TFLootTables;
 import twilightforest.loot.conditions.IsMinion;
 import twilightforest.loot.conditions.ModExists;
 import twilightforest.loot.functions.ModItemSwap;
@@ -73,22 +73,22 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 		add(TFEntities.CARMINITE_BROODLING.get(), fromEntityLootTable(EntityType.SPIDER));
 		add(TFEntities.CARMINITE_GHASTGUARD.get(), fromEntityLootTable(EntityType.GHAST));
 		add(TFEntities.BIGHORN_SHEEP.get(), fromEntityLootTable(EntityType.SHEEP));
-		add(TFTreasure.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_BLUE, sheepLootTableBuilderWithDrop(Blocks.BLUE_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_BROWN, sheepLootTableBuilderWithDrop(Blocks.BROWN_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_CYAN, sheepLootTableBuilderWithDrop(Blocks.CYAN_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_GRAY, sheepLootTableBuilderWithDrop(Blocks.GRAY_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_GREEN, sheepLootTableBuilderWithDrop(Blocks.GREEN_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_LIGHT_BLUE, sheepLootTableBuilderWithDrop(Blocks.LIGHT_BLUE_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_LIGHT_GRAY, sheepLootTableBuilderWithDrop(Blocks.LIGHT_GRAY_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_LIME, sheepLootTableBuilderWithDrop(Blocks.LIME_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_MAGENTA, sheepLootTableBuilderWithDrop(Blocks.MAGENTA_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_ORANGE, sheepLootTableBuilderWithDrop(Blocks.ORANGE_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_PINK, sheepLootTableBuilderWithDrop(Blocks.PINK_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_PURPLE, sheepLootTableBuilderWithDrop(Blocks.PURPLE_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_RED, sheepLootTableBuilderWithDrop(Blocks.RED_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_WHITE, sheepLootTableBuilderWithDrop(Blocks.WHITE_WOOL));
-		add(TFTreasure.BIGHORN_SHEEP_YELLOW, sheepLootTableBuilderWithDrop(Blocks.YELLOW_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_BLUE, sheepLootTableBuilderWithDrop(Blocks.BLUE_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_BROWN, sheepLootTableBuilderWithDrop(Blocks.BROWN_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_CYAN, sheepLootTableBuilderWithDrop(Blocks.CYAN_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_GRAY, sheepLootTableBuilderWithDrop(Blocks.GRAY_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_GREEN, sheepLootTableBuilderWithDrop(Blocks.GREEN_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_LIGHT_BLUE, sheepLootTableBuilderWithDrop(Blocks.LIGHT_BLUE_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_LIGHT_GRAY, sheepLootTableBuilderWithDrop(Blocks.LIGHT_GRAY_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_LIME, sheepLootTableBuilderWithDrop(Blocks.LIME_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_MAGENTA, sheepLootTableBuilderWithDrop(Blocks.MAGENTA_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_ORANGE, sheepLootTableBuilderWithDrop(Blocks.ORANGE_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_PINK, sheepLootTableBuilderWithDrop(Blocks.PINK_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_PURPLE, sheepLootTableBuilderWithDrop(Blocks.PURPLE_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_RED, sheepLootTableBuilderWithDrop(Blocks.RED_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_WHITE, sheepLootTableBuilderWithDrop(Blocks.WHITE_WOOL));
+		add(TFLootTables.BIGHORN_SHEEP_YELLOW, sheepLootTableBuilderWithDrop(Blocks.YELLOW_WOOL));
 
 		add(TFEntities.ARMORED_GIANT.get(),
 				LootTable.lootTable()
@@ -373,20 +373,20 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 						.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(Items.WRITABLE_BOOK).setWeight(2).setQuality(3))
 								.add(LootItem.lootTableItem(Items.BOOK).setWeight(19))
-								.add(LootTableReference.lootTableReference(TFTreasure.DEATH_TOME_BOOKS).setWeight(1)))
+								.add(LootTableReference.lootTableReference(TFLootTables.DEATH_TOME_BOOKS).setWeight(1)))
 						.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 								.when(LootItemKilledByPlayerCondition.killedByPlayer())
 								.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.005F))
 								.add(LootItem.lootTableItem(TFItems.MAGIC_MAP_FOCUS.get()))));
 
-		add(TFTreasure.DEATH_TOME_HURT,
+		add(TFLootTables.DEATH_TOME_HURT,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootTableReference.lootTableReference(BuiltInLootTables.EMPTY))
 								.add(LootItem.lootTableItem(Items.PAPER))));
 
-		add(TFTreasure.DEATH_TOME_BOOKS,
+		add(TFLootTables.DEATH_TOME_BOOKS,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -601,7 +601,7 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
 										.when(ModExists.builder("immersiveengineering"))
 										.apply(ModItemSwap.builder().apply("immersiveengineering", Registry.ITEM.get(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.ICE_BOMB.get())))));
 
-		add(TFTreasure.QUESTING_RAM_REWARDS,
+		add(TFLootTables.QUESTING_RAM_REWARDS,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))

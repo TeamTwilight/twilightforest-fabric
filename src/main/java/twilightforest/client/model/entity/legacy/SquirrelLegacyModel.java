@@ -17,7 +17,7 @@ import twilightforest.entity.passive.Squirrel;
 
 public class SquirrelLegacyModel extends QuadrupedModel<Squirrel> {
 	//fields
-	ModelPart tail;
+	final ModelPart tail;
 	ModelPart fluff1;
 	ModelPart fluff2;
 	ModelPart fluff3;

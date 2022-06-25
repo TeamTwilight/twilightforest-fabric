@@ -1,12 +1,13 @@
 {
   "parent": "twilightforest:root",
+  "criteria": {
+    "quest_ram_complete": {
+      "conditions": {},
+      "trigger": "twilightforest:complete_quest_ram"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:quest_ram_trophy"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.quest_ram"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.quest_ram.desc",
       "with": [
@@ -16,23 +17,22 @@
       ]
     },
     "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:quest_ram_trophy"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "rewards": {
-    "experience": 100,
-    "function": "twilightforest:give_3_shields"
-  },
-  "criteria": {
-    "quest_ram_complete": {
-      "trigger": "twilightforest:complete_quest_ram",
-      "conditions": {}
+    "title": {
+      "translate": "advancement.twilightforest.quest_ram"
     }
   },
   "requirements": [
     [
       "quest_ram_complete"
     ]
-  ]
+  ],
+  "rewards": {
+    "experience": 100,
+    "function": "twilightforest:give_3_shields"
+  }
 }

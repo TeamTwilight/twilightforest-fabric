@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -31,26 +30,26 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock, CustomPathNodeTypeBlock {
-	private static final MutableComponent TOOLTIP = new TranslatableComponent("block.knightmetal.tooltip").withStyle(ChatFormatting.GRAY);
+	private static final MutableComponent TOOLTIP = Component.translatable("block.knightmetal.tooltip").withStyle(ChatFormatting.GRAY);
 
 	private static final VoxelShape SHAPE = Shapes.create(new AABB(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F));
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final float BLOCK_DAMAGE = 4;
 
-	public KnightmetalBlock(Properties props) {
-		super(props);
-		registerDefaultState(getStateDefinition().any().setValue(WATERLOGGED, false));
+	public KnightmetalBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
 	}
 
 	@Override
 	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return SHAPE;
 	}
 
@@ -67,12 +66,12 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock, C
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED)) {
+			accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
 		}
 
-		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
 	}
 
 	@Override
@@ -83,19 +82,19 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock, C
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
+	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return BlockPathTypes.DAMAGE_CACTUS;
 	}
 
 	@Override
 	@Deprecated
-	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		entity.hurt(TFDamageSources.KNIGHTMETAL, BLOCK_DAMAGE);
 	}
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable BlockGetter getter, List<Component> tooltip, TooltipFlag flagIn) {
 		tooltip.add(TOOLTIP);
 	}
 }

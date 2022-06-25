@@ -3,7 +3,6 @@ package twilightforest.client.renderer.tileentity;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -20,14 +19,14 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.block.TrophyBlock;
 import twilightforest.block.TrophyWallBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.client.model.tileentity.legacy.*;
 import twilightforest.enums.BossVariant;
 import twilightforest.block.entity.TrophyBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 

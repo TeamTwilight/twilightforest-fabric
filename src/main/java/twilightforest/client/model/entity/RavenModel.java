@@ -18,8 +18,8 @@ import twilightforest.entity.passive.Raven;
  */
 @Environment(EnvType.CLIENT)
 public class RavenModel extends HierarchicalModel<Raven> {
-    public ModelPart root;
-    public ModelPart head;
+    public final ModelPart root;
+    public final ModelPart head;
     public ModelPart rightWing;
     public ModelPart leftWing;
     public ModelPart rightLeg;

@@ -3,14 +3,14 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -18,14 +18,15 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.material.Material;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
+
 import java.util.function.Predicate;
 
 public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
@@ -33,14 +34,14 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
 	public FinalCastleDungeonRoom31Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(FinalCastlePieces.TFFCDunR31, nbt);
+		this(TFStructurePieceTypes.TFFCDunR31.get(), nbt);
 	}
 
 	public FinalCastleDungeonRoom31Component(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public FinalCastleDungeonRoom31Component(StructurePieceType piece, TFFeature feature, int i, int x, int y, int z, Direction direction, int level) {
+	public FinalCastleDungeonRoom31Component(StructurePieceType piece, TFLandmark feature, int i, int x, int y, int z, Direction direction, int level) {
 		super(piece, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.spawnListIndex = 2; // dungeon monsters
@@ -51,7 +52,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -93,12 +94,12 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		}
 	}
 
-	protected boolean addDungeonRoom(StructurePiece parent, StructurePieceAccessor list, Random rand, Rotation rotation, int level) {
+	protected boolean addDungeonRoom(StructurePiece parent, StructurePieceAccessor list, RandomSource rand, Rotation rotation, int level) {
 		rotation = rotation.getRotated(this.rotation);
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 
-		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(FinalCastlePieces.TFFCDunR31, getFeatureType(), this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
+		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(TFStructurePieceTypes.TFFCDunR31.get(), getFeatureType(), this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
 
 		BoundingBox largerBB = BoundingBoxUtils.clone(dRoom.getBoundingBox());
 
@@ -120,7 +121,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	//TODO: Parameter "parent" is unused. Remove?
-	protected boolean addDungeonExit(StructurePiece parent, StructurePieceAccessor list, Random rand, Rotation rotation) {
+	protected boolean addDungeonExit(StructurePiece parent, StructurePieceAccessor list, RandomSource rand, Rotation rotation) {
 
 		//TODO: check if we are sufficiently near the castle center
 
@@ -138,7 +139,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		return false;
 	}
 
-	private BlockPos getNewRoomCoords(Random rand, Rotation rotation) {
+	private BlockPos getNewRoomCoords(RandomSource rand, Rotation rotation) {
 		// make the rooms connect around the corners, not the centers
 		int offset = rand.nextInt(15) - 9;
 		if (rand.nextBoolean()) {
@@ -154,12 +155,12 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		if (this.isBoundingBoxOutsideBiomes(world, plateauBiomes)) {
 			return;
 		}
 
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, state -> state.getMaterial() == Material.STONE);
 
@@ -200,17 +201,12 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		return forceFieldColor == TFBlocks.BLUE_FORCE_FIELD.get().defaultBlockState() ? TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState() : TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
 	}
 
-	protected BlockState getForceFieldColor(Random decoRNG) {
+	protected BlockState getForceFieldColor(RandomSource decoRNG) {
 		int i = decoRNG.nextInt(2) + 3;
 
 		if (i == 3)
 			return TFBlocks.GREEN_FORCE_FIELD.get().defaultBlockState();
 		else
 			return TFBlocks.BLUE_FORCE_FIELD.get().defaultBlockState();
-	}
-
-	@Override
-	public NoiseEffect getNoiseEffect() {
-		return NoiseEffect.BURY;
 	}
 }

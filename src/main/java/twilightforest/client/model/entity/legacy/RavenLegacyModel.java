@@ -17,9 +17,9 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.passive.Raven;
 
 public class RavenLegacyModel extends HierarchicalModel<Raven> {
-	ModelPart root;
+	final ModelPart root;
 	//fields
-	ModelPart head;
+	final ModelPart head;
 	ModelPart rightarm;
 	ModelPart leftarm;
 	ModelPart rightleg;

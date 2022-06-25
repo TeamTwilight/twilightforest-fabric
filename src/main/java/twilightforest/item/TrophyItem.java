@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.Block;
 
 public class TrophyItem extends StandingAndWallBlockItem {
 
-	public TrophyItem(Block floorBlockIn, Block wallBlockIn, FabricItemSettings builder) {
-		super(floorBlockIn, wallBlockIn, builder.equipmentSlot(stack -> EquipmentSlot.HEAD));
+	public TrophyItem(Block floorBlock, Block wallBlock, FabricItemSettings properties) {
+		super(floorBlock, wallBlock, properties.equipmentSlot(stack -> EquipmentSlot.HEAD));
 	}
 }

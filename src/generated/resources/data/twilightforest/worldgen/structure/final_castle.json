@@ -1,0 +1,99 @@
+{
+  "type": "twilightforest:legacy_landmark",
+  "adjust_structure_elevation": false,
+  "advancements_required": [
+    "twilightforest:progress_troll"
+  ],
+  "allow_biome_surface_decorations": false,
+  "allow_biome_underground_decorations": true,
+  "ambient_spawns": [],
+  "biomes": "#twilightforest:valid_final_castle_biomes",
+  "hint_item": {
+    "Count": 1,
+    "id": "minecraft:written_book",
+    "tag": {
+      "author": "A Forgotten Explorer",
+      "pages": [
+        "{\"translate\":\"twilightforest.book.unknown.1\"}",
+        "{\"translate\":\"twilightforest.book.unknown.2\"}"
+      ],
+      "title": "Notes on the Unexplained"
+    }
+  },
+  "hint_mob": "twilightforest:kobold",
+  "labelled_monster_spawns": {
+    "0": [
+      {
+        "type": "twilightforest:kobold",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:adherent",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:harbinger_cube",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      }
+    ],
+    "1": [
+      {
+        "type": "twilightforest:kobold",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:adherent",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:harbinger_cube",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:armored_giant",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      }
+    ],
+    "2": [
+      {
+        "type": "twilightforest:adherent",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      }
+    ],
+    "3": [
+      {
+        "type": "minecraft:blaze",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 10
+      }
+    ]
+  },
+  "legacy_landmark_start": "final_castle",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "water_spawns": []
+}

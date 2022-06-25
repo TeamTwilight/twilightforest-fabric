@@ -6,8 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
@@ -24,14 +22,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import twilightforest.world.registration.TFFeature;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMagicMapData;
+import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFLandmark;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.biomes.BiomeKeys;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,13 +42,13 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 	public static final String STR_ID = "magicmap";
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
-	protected MagicMapItem(Properties props) {
-		super(props);
+	public MagicMapItem(Properties properties) {
+		super(properties);
 	}
 
 	private static class MapColorBrightness {
-		public MaterialColor color;
-		public int brightness;
+		public final MaterialColor color;
+		public final int brightness;
 
 		public MapColorBrightness(MaterialColor color, int brightness) {
 			this.color = color;
@@ -62,31 +61,31 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 		}
 	}
 
-	public static ItemStack setupNewMap(Level world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
+	public static ItemStack setupNewMap(Level level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
 		ItemStack itemstack = new ItemStack(TFItems.FILLED_MAGIC_MAP.get());
-		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.dimension());
+		createMapData(itemstack, level, worldX, worldZ, scale, trackingPosition, unlimitedTracking, level.dimension());
 		return itemstack;
 	}
 
 	@Nullable
-	public static TFMagicMapData getData(ItemStack stack, Level world) {
+	public static TFMagicMapData getData(ItemStack stack, Level level) {
 		Integer id = getMapId(stack);
-		return id == null ? null : TFMagicMapData.getMagicMapData(world, getMapName(id));
+		return id == null ? null : TFMagicMapData.getMagicMapData(level, getMapName(id));
 	}
 
 	@Nullable
 	@Override
-	public TFMagicMapData getCustomMapData(ItemStack stack, Level world) {
-		TFMagicMapData mapdata = getData(stack, world);
-		if (mapdata == null && !world.isClientSide) {
-			mapdata = MagicMapItem.createMapData(stack, world, world.getLevelData().getXSpawn(), world.getLevelData().getZSpawn(), 3, false, false, world.dimension());
+	public TFMagicMapData getCustomMapData(ItemStack stack, Level level) {
+		TFMagicMapData mapdata = getData(stack, level);
+		if (mapdata == null && !level.isClientSide()) {
+			mapdata = MagicMapItem.createMapData(stack, level, level.getLevelData().getXSpawn(), level.getLevelData().getZSpawn(), 3, false, false, level.dimension());
 		}
 
 		return mapdata;
 	}
 
-	private static TFMagicMapData createMapData(ItemStack stack, Level world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension) {
-		int i = world.getFreeMapId();
+	private static TFMagicMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension) {
+		int i = level.getFreeMapId();
 
 		// magic maps are aligned to the key biome grid so that 0,0 -> 2048,2048 is the covered area
 		int mapSize = 2048;
@@ -95,8 +94,8 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 		int scaledX = roundX * mapSize + 1024;
 		int scaledZ = roundZ * mapSize + 1024;
 
-		TFMagicMapData mapdata = new TFMagicMapData(scaledX, scaledZ, (byte)scale, trackingPosition, unlimitedTracking, false, dimension);
-		TFMagicMapData.registerMagicMapData(world, mapdata, getMapName(i)); // call our own register method
+		TFMagicMapData mapdata = new TFMagicMapData(scaledX, scaledZ, (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
+		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(i)); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
 		return mapdata;
 	}
@@ -108,8 +107,8 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 	private static final Map<ChunkPos, Biome[]> CACHE = new HashMap<>();
 
 	@Override
-	public void update(Level world, Entity viewer, MapItemSavedData data) {
-		if (world.dimension() == data.dimension && viewer instanceof Player && world instanceof ServerLevel serverLevel && TFGenerationSettings.usesTwilightChunkGenerator(serverLevel)) {
+	public void update(Level level, Entity viewer, MapItemSavedData data) {
+		if (level.dimension() == data.dimension && viewer instanceof Player && level instanceof ServerLevel serverLevel && TFGenerationSettings.usesTwilightChunkGenerator(serverLevel)) {
 			int biomesPerPixel = 4;
 			int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it
 			int centerX = data.x;
@@ -122,9 +121,9 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 			int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
 			Biome[] biomes = CACHE.computeIfAbsent(new ChunkPos(startX, startZ), pos -> {
 				Biome[] array = new Biome[128 * biomesPerPixel * 128 * biomesPerPixel];
-				for(int l = 0; l < 128 * biomesPerPixel; ++l) {
-					for(int i1 = 0; i1 < 128 * biomesPerPixel; ++i1) {
-						array[l * 128 * biomesPerPixel + i1] = world.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel)).value();
+				for (int l = 0; l < 128 * biomesPerPixel; ++l) {
+					for (int i1 = 0; i1 < 128 * biomesPerPixel; ++i1) {
+						array[l * 128 * biomesPerPixel + i1] = level.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel)).value();
 					}
 				}
 				return array;
@@ -144,12 +143,12 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 						Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
 						biome = overBiome != null && BiomeKeys.STREAM.location().equals(world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(overBiome)) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(downBiome)) ? downBiome : biome;
 
-						MapColorBrightness colorBrightness = this.getMapColorPerBiome(world, biome);
+						MapColorBrightness colorBrightness = this.getMapColorPerBiome(level, biome);
 
 						MaterialColor mapcolor = colorBrightness.color;
 						int brightness = colorBrightness.brightness;
 
-						if (zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels && (!shouldFuzz || (xPixel + zPixel & 1) != 0)) {
+						if (xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels && (!shouldFuzz || (xPixel + zPixel & 1) != 0)) {
 							byte orgPixel = data.colors[xPixel + zPixel * 128];
 							byte ourPixel = (byte) (mapcolor.id * 4 + brightness);
 
@@ -161,10 +160,10 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 							// look for TF features
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
-							if (TFFeature.isInFeatureChunk(worldX, worldZ)) {
+							if (TFLandmark.isInFeatureChunk(worldX, worldZ)) {
 								byte mapX = (byte) ((worldX - centerX) / (float) blocksPerPixel * 2F);
 								byte mapZ = (byte) ((worldZ - centerZ) / (float) blocksPerPixel * 2F);
-								TFFeature feature = TFFeature.getFeatureAt(worldX, worldZ, (ServerLevel) world);
+								TFLandmark feature = TFLandmark.getFeatureAt(worldX, worldZ, (ServerLevel) level);
 								TFMagicMapData tfData = (TFMagicMapData) data;
 								tfData.tfDecorations.add(new TFMagicMapData.TFMapDecoration(feature, mapX, mapZ, (byte) 8));
 								//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
@@ -180,7 +179,7 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 		if (BIOME_COLORS.isEmpty()) {
 			setupBiomeColors();
 		}
-		if(biome == null)
+		if (biome == null)
 			return new MapColorBrightness(MaterialColor.COLOR_BLACK);
 		ResourceLocation key = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
 		MapColorBrightness color = BIOME_COLORS.get(key);
@@ -257,20 +256,20 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		Integer integer = getMapId(stack);
-		TFMagicMapData mapitemsaveddata = pLevel == null ? null : getData(stack, pLevel);
-		if (pFlag.isAdvanced()) {
+		TFMagicMapData mapitemsaveddata = level == null ? null : getData(stack, level);
+		if (flag.isAdvanced()) {
 			if (mapitemsaveddata != null) {
-				pTooltip.add((new TranslatableComponent("filled_map.id", integer)).withStyle(ChatFormatting.GRAY));
-				pTooltip.add((new TranslatableComponent("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
-				pTooltip.add((new TranslatableComponent("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
+				tooltip.add((Component.translatable("filled_map.id", integer)).withStyle(ChatFormatting.GRAY));
+				tooltip.add((Component.translatable("filled_map.scale", 1 << mapitemsaveddata.scale)).withStyle(ChatFormatting.GRAY));
+				tooltip.add((Component.translatable("filled_map.level", mapitemsaveddata.scale, 4)).withStyle(ChatFormatting.GRAY));
 			} else {
-				pTooltip.add((new TranslatableComponent("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
+				tooltip.add((Component.translatable("filled_map.unknown")).withStyle(ChatFormatting.GRAY));
 			}
 		} else {
 			if (integer != null) {
-				pTooltip.add((new TextComponent("#" + integer)).withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.literal("#" + integer).withStyle(ChatFormatting.GRAY));
 			}
 		}
 

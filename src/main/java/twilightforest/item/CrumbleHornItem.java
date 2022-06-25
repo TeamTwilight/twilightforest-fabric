@@ -29,8 +29,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.recipe.TFRecipes;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFRecipes;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFStats;
 import twilightforest.util.WorldUtil;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,14 +41,14 @@ public class CrumbleHornItem extends Item implements ReequipAnimationItem, Conti
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
 
-	public CrumbleHornItem(Properties props) {
-		super(props);
+	public CrumbleHornItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		player.startUsingItem(hand);
-		player.playSound(TFSounds.QUEST_RAM_AMBIENT, 1.0F, 0.8F);
+		player.playSound(TFSounds.QUEST_RAM_AMBIENT.get(), 1.0F, 0.8F);
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
 	}
 
@@ -60,7 +61,7 @@ public class CrumbleHornItem extends Item implements ReequipAnimationItem, Conti
 				stack.hurtAndBreak(crumbled, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
 			}
 
-			living.level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT, living.getSoundSource(), 1.0F, 0.8F);
+			living.level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.get(), living.getSoundSource(), 1.0F, 0.8F);
 		}
 	}
 
@@ -119,14 +120,15 @@ public class CrumbleHornItem extends Item implements ReequipAnimationItem, Conti
 
 		if (state.isAir()) return false;
 
-		if(living instanceof Player) {
-			if (!PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(world, (Player)living, pos, state, null)) return false;
+		if (living instanceof Player) {
+			if (!PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(world, (Player) living, pos, state, null))
+				return false;
 		}
 
-		if(world instanceof ServerLevel level) {
+		if (world instanceof ServerLevel level) {
 			level.getRecipeManager().getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()).forEach(recipe -> {
-				if(flag.get()) return;
-				if(recipe.getResult().is(Blocks.AIR)) {
+				if (flag.get()) return;
+				if (recipe.getResult().is(Blocks.AIR)) {
 					if (recipe.getInput().is(block) && world.random.nextInt(CHANCE_HARVEST) == 0 && !flag.get()) {
 						if (living instanceof Player) {
 							if ((block instanceof HarvestableBlock harvestableBlock && harvestableBlock.canHarvestBlock(state, world, pos, (Player) living)) || ((Player) living).hasCorrectToolForDrops(state)) {

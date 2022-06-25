@@ -5,8 +5,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -18,22 +19,23 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.init.TFConfiguredFeatures;
 
-import java.util.Random;
+
 
 public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 
 	private boolean enterBottom;
 
 	public StrongholdAtriumComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSAt, nbt);
+		super(TFStructurePieceTypes.TFSAt.get(), nbt);
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
-	public StrongholdAtriumComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSAt, feature, i, facing, x, y, z);
+	public StrongholdAtriumComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSAt.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random random) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource random) {
 		super.addChildren(parent, list, random);
 
 		if (this.enterBottom) {
@@ -84,7 +86,7 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 	 * Generate the blocks that go here
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 13, 17, rand, deco.randomBlocks);
 
 

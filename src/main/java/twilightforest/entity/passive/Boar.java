@@ -1,16 +1,16 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Pig;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
+import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 
 public class Boar extends Pig {
 
@@ -19,27 +19,27 @@ public class Boar extends Pig {
 	}
 
 	@Override
-	public Pig getBreedOffspring(ServerLevel world, AgeableMob entityanimal) {
+	public Pig getBreedOffspring(ServerLevel world, AgeableMob ageableMob) {
 		return TFEntities.BOAR.get().create(world);
-	}
-	
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return TFSounds.BOAR_AMBIENT;
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.BOAR_HURT;
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.BOAR_AMBIENT.get();
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.BOAR_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.BOAR_DEATH;
+		return TFSounds.BOAR_DEATH.get();
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState blockIn) {
-		this.playSound(TFSounds.BOAR_STEP, 0.15F, 1.0F);
+	protected void playStepSound(BlockPos pos, BlockState state) {
+		this.playSound(TFSounds.BOAR_STEP.get(), 0.15F, 1.0F);
 	}
 }

@@ -10,7 +10,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.alchemy.Potion;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
 public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.Instance> {

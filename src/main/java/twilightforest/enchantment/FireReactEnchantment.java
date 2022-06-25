@@ -1,5 +1,6 @@
 package twilightforest.enchantment;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,8 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
-
-import java.util.Random;
+import twilightforest.init.TFEnchantments;
 
 public class FireReactEnchantment extends LootOnlyEnchantment {
 
@@ -21,18 +21,18 @@ public class FireReactEnchantment extends LootOnlyEnchantment {
 	}
 
 	@Override
-	public boolean canEnchant(ItemStack pStack) {
-		return pStack.getItem() instanceof ArmorItem || super.canEnchant(pStack);
+	public boolean canEnchant(ItemStack stack) {
+		return stack.getItem() instanceof ArmorItem || super.canEnchant(stack);
 	}
 
 	@Override
-	public int getMinCost(int pEnchantmentLevel) {
-		return 5 + (pEnchantmentLevel - 1) * 9;
+	public int getMinCost(int level) {
+		return 5 + (level - 1) * 9;
 	}
 
 	@Override
-	public int getMaxCost(int pEnchantmentLevel) {
-		return this.getMinCost(pEnchantmentLevel) + 15;
+	public int getMaxCost(int level) {
+		return this.getMinCost(level) + 15;
 	}
 
 	@Override
@@ -42,17 +42,17 @@ public class FireReactEnchantment extends LootOnlyEnchantment {
 
 	@Override
 	public void doPostHurt(LivingEntity user, Entity attacker, int level) {
-		Random random = user.getRandom();
-		if (shouldHit(level, random, attacker)) {
+		RandomSource random = user.getRandom();
+		if (attacker != null && shouldHit(level, random, attacker)) {
 			attacker.setSecondsOnFire(2 + (random.nextInt(level) * 3));
 		}
 	}
 
-	public static boolean shouldHit(int level, Random pRnd, Entity attacker) {
+	public static boolean shouldHit(int level, RandomSource random, Entity attacker) {
 		if (level <= 0 || attacker.fireImmune()) {
 			return false;
 		} else {
-			return pRnd.nextFloat() < 0.15F * (float)level;
+			return random.nextFloat() < 0.15F * (float)level;
 		}
 	}
 

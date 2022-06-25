@@ -14,7 +14,7 @@ import twilightforest.client.model.tileentity.GenericTrophyModel;
 
 public class UrGhastTrophyLegacyModel extends GenericTrophyModel {
 
-	public ModelPart body;
+	public final ModelPart body;
 	private final ModelPart[][] tentacles = new ModelPart[9][3];
 
 	public UrGhastTrophyLegacyModel(ModelPart root) {

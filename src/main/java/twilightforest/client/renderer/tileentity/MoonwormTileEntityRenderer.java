@@ -17,7 +17,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
 import twilightforest.block.entity.MoonwormBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormBlockEntity> {
 

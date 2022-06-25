@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.minotaurmaze;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -11,24 +12,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFBlocks;
+import twilightforest.loot.TFLootTables;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class MazeRoomBossComponent extends MazeRoomComponent {
 
 	public MazeRoomBossComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMRB, nbt);
+		super(TFStructurePieceTypes.TFMMRB.get(), nbt);
 	}
 
-	public MazeRoomBossComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRB, feature, i, rand, x, y, z);
+	public MazeRoomBossComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMRB.get(), feature, i, rand, x, y, z);
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// doorways
 		if (this.getBlock(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {
 			generateBox(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.defaultBlockState(), AIR, false);
@@ -74,25 +75,25 @@ public class MazeRoomBossComponent extends MazeRoomComponent {
 		generateBox(world, sbb, 1, 2, 1, 1, 3, 4, redMushroom, AIR, false);
 		generateBox(world, sbb, 2, 2, 1, 4, 3, 1, redMushroom, AIR, false);
 		generateBox(world, sbb, 1, 4, 1, 3, 4, 3, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, 3, 2, 3, TFTreasure.LABYRINTH_ROOM, sbb);
+		placeTreasureAtCurrentPosition(world, 3, 2, 3, TFLootTables.LABYRINTH_ROOM, sbb);
 
 		generateBox(world, sbb, 12, 1, 12, 14, 1, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 14, 2, 11, 14, 3, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 11, 2, 14, 14, 3, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 12, 4, 12, 14, 4, 14, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, 12, 2, 12, TFTreasure.LABYRINTH_ROOM, sbb);
+		placeTreasureAtCurrentPosition(world, 12, 2, 12, TFLootTables.LABYRINTH_ROOM, sbb);
 
 		generateBox(world, sbb, 1, 1, 12, 3, 1, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 1, 2, 11, 1, 3, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 2, 2, 14, 4, 3, 14, redMushroom, AIR, false);
 		generateBox(world, sbb, 1, 4, 12, 3, 4, 14, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, 3, 2, 12, TFTreasure.LABYRINTH_ROOM, sbb);
+		placeTreasureAtCurrentPosition(world, 3, 2, 12, TFLootTables.LABYRINTH_ROOM, sbb);
 
 		generateBox(world, sbb, 12, 1, 1, 14, 1, 3, brownMushroom, AIR, false);
 		generateBox(world, sbb, 11, 2, 1, 14, 3, 1, brownMushroom, AIR, false);
 		generateBox(world, sbb, 14, 2, 2, 14, 3, 4, brownMushroom, AIR, false);
 		generateBox(world, sbb, 12, 4, 1, 14, 4, 3, brownMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, 12, 2, 3, TFTreasure.LABYRINTH_ROOM, sbb);
+		placeTreasureAtCurrentPosition(world, 12, 2, 3, TFLootTables.LABYRINTH_ROOM, sbb);
 
 		// a few more ceilingshrooms
 		generateBox(world, sbb, 5, 4, 5, 7, 5, 7, brownMushroom, AIR, false);

@@ -1,44 +1,43 @@
 package twilightforest.block;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import twilightforest.enums.NagastoneVariant;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import twilightforest.init.TFBlocks;
 
 public class NagastoneBlock extends Block {
 
 	public static final EnumProperty<NagastoneVariant> VARIANT = EnumProperty.create("variant", NagastoneVariant.class);
 
-	public NagastoneBlock(Properties props) {
-		super(props);
-		this.registerDefaultState(stateDefinition.any().setValue(VARIANT, NagastoneVariant.SOLID));
+	public NagastoneBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(VARIANT, NagastoneVariant.SOLID));
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction directionToNeighbor, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
-		return getVariant(world, pos);
+	public BlockState updateShape(BlockState state, Direction directionToNeighbor, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
+		return this.getVariant(accessor, pos);
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return getVariant(ctx.getLevel(), ctx.getClickedPos());
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return this.getVariant(context.getLevel(), context.getClickedPos());
 	}
 
 	@SuppressWarnings("fallthrough")
-	private BlockState getVariant(LevelAccessor world, BlockPos pos) {
+	private BlockState getVariant(LevelAccessor accessor, BlockPos pos) {
 		int connectionCount = 0;
 		BlockState stateOut;
 		Direction[] facings = new Direction[2];
 
 		for (Direction side : Direction.values()) {
-			BlockState neighborState = world.getBlockState(pos.relative(side));
+			BlockState neighborState = accessor.getBlockState(pos.relative(side));
 			if (neighborState.getBlock() == this || (neighborState.getBlock() == TFBlocks.NAGASTONE_HEAD.get() && side == neighborState.getValue(TFHorizontalBlock.FACING))) {
 				facings[connectionCount++] = side;
 				if (connectionCount >= 2) {

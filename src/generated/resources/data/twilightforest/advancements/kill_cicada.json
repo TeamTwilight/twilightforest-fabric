@@ -1,12 +1,15 @@
 {
   "parent": "twilightforest:root",
+  "criteria": {
+    "kill_cicada": {
+      "conditions": {
+        "bug": "twilightforest:cicada"
+      },
+      "trigger": "twilightforest:kill_bug"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:cicada"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.kill_cicada"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.kill_cicada.desc",
       "with": [
@@ -16,16 +19,13 @@
       ]
     },
     "frame": "task",
+    "hidden": true,
+    "icon": {
+      "item": "twilightforest:cicada"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": true
-  },
-  "criteria": {
-    "kill_cicada": {
-      "trigger": "twilightforest:kill_bug",
-      "conditions": {
-        "bug": "twilightforest:cicada"
-      }
+    "title": {
+      "translate": "advancement.twilightforest.kill_cicada"
     }
   },
   "requirements": [

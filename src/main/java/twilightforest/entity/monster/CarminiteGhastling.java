@@ -3,21 +3,21 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 
-import java.util.Random;
+import java.util.Objects;
 
 public class CarminiteGhastling extends CarminiteGhastguard {
 
@@ -26,6 +26,11 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 	public CarminiteGhastling(EntityType<? extends CarminiteGhastling> type, Level world) {
 		super(type, world);
 		this.wanderFactor = 4.0F;
+
+		if (this.isMinion() && this.getAttribute(Attributes.MAX_HEALTH) != null) {
+			Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(6);
+			this.setHealth(this.getMaxHealth());
+		}
 	}
 
 	@Override
@@ -35,45 +40,45 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return CarminiteGhastguard.registerAttributes()
-				.add(Attributes.MAX_HEALTH,/* this.isMinion ? 6 :*/ 10) //TODO
+				.add(Attributes.MAX_HEALTH, 10)
 				.add(Attributes.FOLLOW_RANGE, 16.0D);
 	}
 
 	@Override
-	protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
+	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
 		return 0.5F;
 	}
-	
-	@Override
-	protected SoundEvent getAmbientSound() {
-	      return TFSounds.GHASTLING_AMBIENT;
-	   }
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return TFSounds.GHASTLING_HURT;
-	   }
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.GHASTLING_AMBIENT.get();
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.GHASTLING_HURT.get();
+	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.GHASTLING_DEATH;
-	   }
+		return TFSounds.GHASTLING_DEATH.get();
+	}
 
 	@Override
 	public SoundEvent getFireSound() {
-		return TFSounds.GHASTLING_SHOOT;
+		return TFSounds.GHASTLING_SHOOT.get();
 	}
 
 	@Override
 	public SoundEvent getWarnSound() {
-		return TFSounds.GHASTLING_WARN;
+		return TFSounds.GHASTLING_WARN.get();
 	}
 
-	// Loosely based on EntityEnderman.shouldAttackPlayer
+	// Loosely based on EnderMan.isLookingAtMe
 	@Override
-	protected boolean shouldAttack(LivingEntity living) {
+	public boolean shouldAttack(LivingEntity living) {
 		ItemStack helmet = living.getItemBySlot(EquipmentSlot.HEAD);
-		if (!helmet.isEmpty() && helmet.getItem() == Item.byBlock(Blocks.PUMPKIN)) {
+		if (!helmet.isEmpty() && helmet.is(Items.PUMPKIN)) {
 			return false;
 		} else if (living.distanceTo(this) <= 3.5F) {
 			return living.hasLineOfSight(this);
@@ -88,7 +93,7 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 	}
 
 	//This does not factor into whether the entity is a Minion or not. However, since it is spawned via MOB_SUMMONED, it will always spawn if that is the SpawnReason
-	public static boolean canSpawnHere(EntityType<CarminiteGhastling> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
+	public static boolean canSpawnHere(EntityType<CarminiteGhastling> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && (reason == MobSpawnType.MOB_SUMMONED || Monster.isDarkEnoughToSpawn(world, pos, random)) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 
@@ -97,11 +102,11 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 		this.isMinion = true;
 
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(6);
-		this.setHealth(6);
+		this.setHealth(this.getMaxHealth());
 	}
 
 	public boolean isMinion() {
-		return isMinion;
+		return this.isMinion;
 	}
 
 	@Override
@@ -114,7 +119,13 @@ public class CarminiteGhastling extends CarminiteGhastguard {
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		if (compound.getBoolean("isMinion")) {
-			makeBossMinion();
+			this.makeBossMinion();
 		}
+	}
+
+	//prevents ghastlings from triggering the traps on accident
+	@Override
+	public boolean isIgnoringBlockTriggers() {
+		return true;
 	}
 }

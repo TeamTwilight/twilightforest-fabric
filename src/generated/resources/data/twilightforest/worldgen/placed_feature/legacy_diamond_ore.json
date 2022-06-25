@@ -2,16 +2,16 @@
   "feature": "twilightforest:legacy_diamond_ore",
   "placement": [
     {
+      "type": "minecraft:height_range",
       "height": {
-        "min_inclusive": {
-          "above_bottom": 0
-        },
+        "type": "minecraft:uniform",
         "max_inclusive": {
           "absolute": 15
         },
-        "type": "minecraft:uniform"
-      },
-      "type": "minecraft:height_range"
+        "min_inclusive": {
+          "above_bottom": 0
+        }
+      }
     }
   ]
 }

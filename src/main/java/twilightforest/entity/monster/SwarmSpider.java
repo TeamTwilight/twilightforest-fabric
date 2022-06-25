@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,12 +20,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.entity.TFEntities;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.TFSounds;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
-import java.util.Random;
+import org.jetbrains.annotations.Nullable;
 
 public class SwarmSpider extends Spider {
 
@@ -37,8 +37,8 @@ public class SwarmSpider extends Spider {
 	public SwarmSpider(EntityType<? extends SwarmSpider> type, Level world, boolean spawnMore) {
 		super(type, world);
 
-		setSpawnMore(spawnMore);
-		xpReward = 2;
+		this.setSpawnMore(spawnMore);
+		this.xpReward = 2;
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -68,36 +68,36 @@ public class SwarmSpider extends Spider {
 		// Replace with one that doesn't care about light
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
-	
+
 	@Override
 	protected SoundEvent getAmbientSound() {
-	      return TFSounds.SWARM_SPIDER_AMBIENT;
-	   }
+		return TFSounds.SWARM_SPIDER_AMBIENT.get();
+	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return TFSounds.SWARM_SPIDER_HURT;
-	   }
+		return TFSounds.SWARM_SPIDER_HURT.get();
+	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.SWARM_SPIDER_DEATH;
-	   }
+		return TFSounds.SWARM_SPIDER_DEATH.get();
+	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState blockIn) {
-	      this.playSound(TFSounds.SWARM_SPIDER_STEP, 0.15F, 1.0F);
-	   }
+	protected void playStepSound(BlockPos pos, BlockState state) {
+		this.playSound(TFSounds.SWARM_SPIDER_STEP.get(), 0.15F, 1.0F);
+	}
 
 	@Override
-	protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
-	      return 0.3F;
-	   }
+	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
+		return 0.3F;
+	}
 
 	@Override
 	public void tick() {
-		if (!level.isClientSide && shouldSpawnMore()) {
-			int more = 1 + random.nextInt(2);
+		if (!this.getLevel().isClientSide() && shouldSpawnMore()) {
+			int more = 1 + this.getRandom().nextInt(2);
 			for (int i = 0; i < more; i++) {
 				// try twice to spawn
 				if (!spawnAnother()) {
@@ -112,35 +112,35 @@ public class SwarmSpider extends Spider {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		return random.nextInt(4) == 0 && super.doHurtTarget(entity);
+		return this.getRandom().nextInt(4) == 0 && super.doHurtTarget(entity);
 	}
 
 	protected boolean spawnAnother() {
-		SwarmSpider another = new SwarmSpider(TFEntities.SWARM_SPIDER.get(), level, false);
+		SwarmSpider another = new SwarmSpider(TFEntities.SWARM_SPIDER.get(), this.getLevel(), false);
 
-		double sx = getX() + (random.nextBoolean() ? 0.9 : -0.9);
-		double sy = getY();
-		double sz = getZ() + (random.nextBoolean() ? 0.9 : -0.9);
-		another.moveTo(sx, sy, sz, random.nextFloat() * 360F, 0.0F);
-		if (!another.checkSpawnRules(level, MobSpawnType.MOB_SUMMONED)) {
+		double sx = this.getX() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
+		double sy = this.getY();
+		double sz = this.getZ() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
+		another.moveTo(sx, sy, sz, this.getRandom().nextFloat() * 360.0F, 0.0F);
+		if (!another.checkSpawnRules(this.getLevel(), MobSpawnType.MOB_SUMMONED)) {
 			another.discard();
 			return false;
 		}
-		level.addFreshEntity(another);
+		this.getLevel().addFreshEntity(another);
 		another.spawnAnim();
 
 		return true;
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends SwarmSpider> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
+	public static boolean getCanSpawnHere(EntityType<? extends SwarmSpider> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+		return accessor.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(accessor, pos, random) && checkMobSpawnRules(entity, accessor, reason, pos, random);
 	}
 
-	public static boolean isValidLightLevel(ServerLevelAccessor world, BlockPos pos, Random random) {
+	public static boolean isValidLightLevel(ServerLevelAccessor accessor, BlockPos pos, RandomSource random) {
 		int chunkX = Mth.floor(pos.getX()) >> 4;
 		int chunkZ = Mth.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return TFFeature.getNearestFeature(chunkX, chunkZ, (ServerLevel) world) == TFFeature.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(world, pos, random);
+		return TFLandmark.getNearestFeature(chunkX, chunkZ, (ServerLevel) accessor) == TFLandmark.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(accessor, pos, random);
 	}
 
 	public boolean shouldSpawnMore() {
@@ -154,35 +154,35 @@ public class SwarmSpider extends Spider {
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putBoolean("SpawnMore", shouldSpawnMore());
+		compound.putBoolean("SpawnMore", this.shouldSpawnMore());
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		setSpawnMore(compound.getBoolean("SpawnMore"));
+		this.setSpawnMore(compound.getBoolean("SpawnMore"));
 	}
 
 	@Override
 	public float getVoicePitch() {
-		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.5F;
+		return (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.5F;
 	}
 
 	@Override
 	public int getMaxSpawnClusterSize() {
-		return 16;
+		return 6;
 	}
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag dataTag) {
-		livingData = super.finalizeSpawn(worldIn, difficulty, reason, livingData, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag dataTag) {
+		livingData = super.finalizeSpawn(accessor, difficulty, reason, livingData, dataTag);
 
-		if (this.getFirstPassenger() != null || worldIn.getRandom().nextInt(20) <= difficulty.getDifficulty().getId()) {
-			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level);
+		if (this.getFirstPassenger() != null || accessor.getRandom().nextInt(20) <= difficulty.getDifficulty().getId()) {
+			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.getLevel());
 			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 			druid.setBaby(true);
-			druid.finalizeSpawn(worldIn, difficulty, MobSpawnType.JOCKEY, null, null);
+			druid.finalizeSpawn(accessor, difficulty, MobSpawnType.JOCKEY, null, null);
 
 			if (this.hasPassenger(e -> true)) {
 				this.ejectPassengers();

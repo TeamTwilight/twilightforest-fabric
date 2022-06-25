@@ -3,30 +3,32 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.ArrayList;
-import java.util.Random;
+
 
 public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerComponent {
 
 	public FinalCastleWreckedTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCWrT, nbt);
+		super(TFStructurePieceTypes.TFFCWrT.get(), nbt);
 	}
 
-	public FinalCastleWreckedTowerComponent(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(FinalCastlePieces.TFFCWrT, feature, rand, i, x, y, z, direction);
+	public FinalCastleWreckedTowerComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
+		super(TFStructurePieceTypes.TFFCWrT.get(), feature, rand, i, x, y, z, direction);
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -73,7 +75,7 @@ public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerCom
 	}
 
 	@Override
-	protected ArrayList<DestroyArea> makeInitialDestroyList(Random rand) {
+	protected ArrayList<DestroyArea> makeInitialDestroyList(RandomSource rand) {
 		ArrayList<DestroyArea> areas = new ArrayList<DestroyArea>(2);
 
 		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().maxY() - 1, areas));

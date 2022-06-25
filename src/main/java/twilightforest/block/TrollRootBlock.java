@@ -22,33 +22,33 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.TFSounds;
-import twilightforest.item.TFItems;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFStats;
 
 public class TrollRootBlock extends Block {
 
 	protected static final VoxelShape AABB = Shapes.create(new AABB(0.1, 0.0, 0.1, 0.9, 1.0, 0.9));
 
-	protected TrollRootBlock(Properties props) {
-		super(props);
+	public TrollRootBlock(Properties properties) {
+		super(properties);
 	}
 
-	public static boolean canPlaceRootBelow(LevelReader world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
+	public static boolean canPlaceRootBelow(LevelReader reader, BlockPos pos) {
+		BlockState state = reader.getBlockState(pos);
 
-		return state.is(BlockTags.BASE_STONE_OVERWORLD) || block == TFBlocks.TROLLVIDR.get() || block == TFBlocks.TROLLBER.get() || block == TFBlocks.UNRIPE_TROLLBER.get();
+		return state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(TFBlocks.TROLLVIDR.get()) || state.is(TFBlocks.TROLLBER.get()) || state.is(TFBlocks.UNRIPE_TROLLBER.get());
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if(state.getBlock() == TFBlocks.TROLLBER.get()) {
+		if (state.getBlock() == TFBlocks.TROLLBER.get()) {
 			level.setBlock(pos, TFBlocks.TROLLVIDR.get().defaultBlockState(), 2);
-			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			ItemEntity torchberries = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.TORCHBERRIES.get()));
 			level.addFreshEntity(torchberries);
-			if(player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED.get());
+			if (player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED.get());
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return super.use(state, level, pos, player, hand, result);
@@ -56,21 +56,21 @@ public class TrollRootBlock extends Block {
 
 	@Override
 	@Deprecated
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-		return canPlaceRootBelow(world, pos.above());
+	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+		return canPlaceRootBelow(reader, pos.above());
 	}
 
 	@Override
 	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return AABB;
 	}
 
 	@Override
 	@Deprecated
-	public BlockState updateShape(BlockState state, Direction dirToNeighbor, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
+	public BlockState updateShape(BlockState state, Direction dirToNeighbor, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
 		if (dirToNeighbor == Direction.UP) {
-			return canSurvive(state, world, pos) ? state : Blocks.AIR.defaultBlockState();
+			return canSurvive(state, accessor, pos) ? state : Blocks.AIR.defaultBlockState();
 		}
 		return state;
 	}

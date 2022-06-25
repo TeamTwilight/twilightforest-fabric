@@ -1,22 +1,8 @@
 {
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
-  "textures": {
-    "particle": "#pane"
-  },
   "elements": [
     {
-      "from": [
-        7,
-        9,
-        7
-      ],
-      "to": [
-        9,
-        16,
-        9
-      ],
-      "shade": false,
       "faces": {
         "south": {
           "texture": "#pane",
@@ -27,7 +13,21 @@
             16.0
           ]
         }
-      }
+      },
+      "from": [
+        7,
+        9,
+        7
+      ],
+      "shade": false,
+      "to": [
+        9,
+        16,
+        9
+      ]
     }
-  ]
+  ],
+  "textures": {
+    "particle": "#pane"
+  }
 }

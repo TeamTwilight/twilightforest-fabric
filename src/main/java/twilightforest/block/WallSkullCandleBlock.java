@@ -9,6 +9,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -24,7 +25,6 @@ import twilightforest.block.entity.SkullCandleBlockEntity;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 
@@ -51,13 +51,13 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
 	}
 
-	public VoxelShape getShape(BlockState p_58114_, BlockGetter p_58115_, BlockPos p_58116_, CollisionContext p_58117_) {
-		return AABBS.get(p_58114_.getValue(FACING));
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+		return AABBS.get(state.getValue(FACING));
 	}
 
 	@Override
-	protected Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor level, BlockPos pos) {
-		if(level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+	protected Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
+		if (accessor.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			return PARTICLE_OFFSETS.get(sc.candleAmount);
 		}
 		return PARTICLE_OFFSETS.get(1);
@@ -84,11 +84,11 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 
 	//we want the candle flames to offset based on which way the skull is facing, so apply it here
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		Direction dir = state.getValue(FACING);
 		if (state.getValue(LIGHTING) != Lighting.NONE) {
 			this.getParticleOffsets(state, level, pos).forEach((offset) ->
-					addParticlesAndSound(level, offset.add(pos.getX() - (float)dir.getStepX() * 0.25F, pos.getY(), pos.getZ() - (float)dir.getStepZ() * 0.25F), rand, state.getValue(LIGHTING) == Lighting.OMINOUS));
+					addParticlesAndSound(level, offset.add(pos.getX() - (float) dir.getStepX() * 0.25F, pos.getY(), pos.getZ() - (float) dir.getStepZ() * 0.25F), rand, state.getValue(LIGHTING) == Lighting.OMINOUS));
 		}
 	}
 

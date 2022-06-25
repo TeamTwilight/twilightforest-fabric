@@ -2,6 +2,7 @@ package twilightforest.world.components.chunkgenerators.warp;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.RandomState;
 
 //VanillaCopy of NoiseInterpolator from 1.17.1. Just easier to control than the existing NoiseInterpolator
 public class TFNoiseInterpolator {
@@ -55,18 +56,18 @@ public class TFNoiseInterpolator {
         return cells;
     }
 
-    public void initialiseFirstX() {
-        this.fillSlice(this.slice0, this.firstX);
+    public void initialiseFirstX(RandomState random) {
+        this.fillSlice(random, this.slice0, this.firstX);
     }
 
-    public void advanceX(int advance) {
-        this.fillSlice(this.slice1, this.firstX + advance + 1);
+    public void advanceX(RandomState random, int advance) {
+        this.fillSlice(random, this.slice1, this.firstX + advance + 1);
     }
 
-    private void fillSlice(double[][] slices, int cell) {
+    private void fillSlice(RandomState random, double[][] slices, int cell) {
         for (int width = 0; width < this.cellCountZ + 1; width++) {
             int cellWidth = this.firstZ + width;
-            this.noiseFiller.fillNoiseColumn(slices[width], cell, cellWidth, this.cellMinY, this.cellCountY);
+            this.noiseFiller.fillNoiseColumn(random, slices[width], cell, cellWidth, this.cellMinY, this.cellCountY);
         }
     }
 
@@ -105,6 +106,6 @@ public class TFNoiseInterpolator {
     }
 
     public interface NoiseFiller {
-        void fillNoiseColumn(double[] columns, int x, int z, int min, int max);
+        void fillNoiseColumn(RandomState random, double[] columns, int x, int z, int min, int max);
     }
 }

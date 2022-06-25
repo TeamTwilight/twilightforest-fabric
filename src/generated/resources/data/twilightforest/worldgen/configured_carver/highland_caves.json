@@ -1,37 +1,24 @@
 {
+  "type": "twilightforest:highland_caves",
   "config": {
-    "yScale": 0.75,
+    "floor_level": -0.7,
+    "horizontal_radius_multiplier": 1.0,
     "lava_level": {
       "above_bottom": 0
     },
-    "debug_settings": {
-      "water_state": {
-        "Name": "minecraft:blue_stained_glass"
-      },
-      "lava_state": {
-        "Name": "minecraft:red_stained_glass"
-      },
-      "barrier_state": {
-        "Name": "minecraft:red_wool"
-      },
-      "air_state": {
-        "Name": "minecraft:glass"
-      }
-    },
     "probability": 0.1,
+    "replaceable": "#minecraft:overworld_carver_replaceables",
+    "vertical_radius_multiplier": 1.0,
     "y": {
-      "min_inclusive": {
-        "above_bottom": 5
-      },
+      "type": "minecraft:biased_to_bottom",
+      "inner": 48,
       "max_inclusive": {
         "absolute": 65
       },
-      "inner": 48,
-      "type": "minecraft:biased_to_bottom"
+      "min_inclusive": {
+        "above_bottom": 5
+      }
     },
-    "horizontal_radius_multiplier": 1.0,
-    "vertical_radius_multiplier": 1.0,
-    "floor_level": -0.7
-  },
-  "type": "twilightforest:highland_caves"
+    "yScale": 0.75
+  }
 }

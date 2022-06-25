@@ -17,7 +17,7 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	private static final EntityDataAccessor<Boolean> DATA_SIZEACTIVE = SynchedEntityData.defineId(HydraPart.class, EntityDataSerializers.BOOLEAN);
 
 	final float maxHealth = 1000F;
-	float health = maxHealth;
+	float health = this.maxHealth;
 
 	private EntityDimensions cacheSize;
 
@@ -27,38 +27,37 @@ public abstract class HydraPart extends TFPart<Hydra> {
 
 	@Override
 	protected void defineSynchedData() {
-		fireImmune();
-		entityData.define(DATA_SIZEACTIVE, true);
+		this.entityData.define(DATA_SIZEACTIVE, true);
 	}
 
 	@Override
-	public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
-		super.onSyncedDataUpdated(pKey);
-		if (pKey == DATA_SIZEACTIVE) {
-			if (entityData.get(DATA_SIZEACTIVE))
-				activate();
+	public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+		super.onSyncedDataUpdated(accessor);
+		if (accessor == DATA_SIZEACTIVE) {
+			if (this.entityData.get(DATA_SIZEACTIVE))
+				this.activate();
 			else
-				deactivate();
+				this.deactivate();
 		}
 	}
 
 	// [VanillaCopy] from MobEntity
-	public boolean canEntityBeSeen(Entity entityIn) {
+	public boolean canEntityBeSeen(Entity entity) {
 		Vec3 vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-		Vec3 vector3d1 = new Vec3(entityIn.getX(), entityIn.getEyeY(), entityIn.getZ());
-		return this.level.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+		Vec3 vector3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
+		return this.getLevel().clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
 	}
 
 	public HydraPart(Hydra parent, float width, float height) {
 		this(parent);
-		setSize(EntityDimensions.scalable(width, height));
+		this.setSize(EntityDimensions.scalable(width, height));
 		this.refreshDimensions();
 	}
 
 	@Override
 	protected void setSize(EntityDimensions size) {
 		super.setSize(size);
-		cacheSize = size;
+		this.cacheSize = size;
 	}
 
 	@Override
@@ -66,17 +65,17 @@ public abstract class HydraPart extends TFPart<Hydra> {
 		clearFire();
 		super.tick();
 
-		if(hurtTime > 0)
-			hurtTime--;
+		if (this.hurtTime > 0)
+			this.hurtTime--;
 
-		if(health <= 0F)
-			deathTime++;
+		if (this.health <= 0F)
+			this.deathTime++;
 
 	}
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		return getParent() != null && getParent().attackEntityFromPart(this, source, amount);
+		return this.getParent() != null && this.getParent().attackEntityFromPart(this, source, amount);
 	}
 
 	@Override
@@ -91,7 +90,7 @@ public abstract class HydraPart extends TFPart<Hydra> {
 
 	@Override
 	public boolean is(Entity entity) {
-		return this == entity || getParent() == entity;
+		return this == entity || this.getParent() == entity;
 	}
 
 	@Override
@@ -111,12 +110,12 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	}
 
 	public void activate() {
-		dimensions = cacheSize;
-		entityData.set(DATA_SIZEACTIVE, true);
+		this.dimensions = this.cacheSize;
+		this.entityData.set(DATA_SIZEACTIVE, true);
 	}
 
 	public void deactivate() {
-		dimensions = EntityDimensions.scalable(0, 0);
-		entityData.set(DATA_SIZEACTIVE, false);
+		this.dimensions = EntityDimensions.scalable(0, 0);
+		this.entityData.set(DATA_SIZEACTIVE, false);
 	}
 }

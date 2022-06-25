@@ -3,9 +3,10 @@ package twilightforest.world.components.structures.lichtower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
@@ -14,34 +15,32 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-
-import java.util.Random;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class TowerMainComponent extends TowerWingComponent {
 
 	public TowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTMai, nbt);
+		super(TFStructurePieceTypes.TFLTMai.get(), nbt);
 	}
 
-	public TowerMainComponent(TFFeature feature, Random rand, int index, int x, int y, int z) {
+	public TowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z) {
 		// some of these are subject to change if the ground level is > 30.
-		super(LichTowerPieces.TFLTMai, feature, index, x, y + 5, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
+		super(TFStructurePieceTypes.TFLTMai.get(), feature, index, x, y + 5, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		// add a roof?
 		makeARoof(parent, list, rand);
 
@@ -113,7 +112,7 @@ public class TowerMainComponent extends TowerWingComponent {
 	/**
 	 * Gets a random position in the specified direction that we can make an outbuilding at
 	 */
-	public int[] getOutbuildingOpening(Random rand, Rotation rotation) {
+	public int[] getOutbuildingOpening(RandomSource rand, Rotation rotation) {
 
 		int rx = 0;
 		int ry = 1;
@@ -143,7 +142,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		return new int[]{rx, ry, rz};
 	}
 
-	public boolean makeTowerOutbuilding(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerOutbuilding(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 		TowerOutbuildingComponent outbuilding = new TowerOutbuildingComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
@@ -160,7 +159,7 @@ public class TowerMainComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
 		generateBox(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, false, rand, TFStructureComponentOld.getStrongholdStones());
 
@@ -207,7 +206,7 @@ public class TowerMainComponent extends TowerWingComponent {
 	/**
 	 * Make 1-2 platforms joining the stairways
 	 */
-	protected void makeStairwayCrossings(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected void makeStairwayCrossings(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		int flights = (this.highestOpening / 5) - 2;
 
 		for (int i = 2 + rand.nextInt(2); i < flights; i += 1 + rand.nextInt(5)) {
@@ -215,7 +214,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		}
 	}
 
-	protected void makeStairCrossing(WorldGenLevel world, Random rand, int flight, BoundingBox sbb) {
+	protected void makeStairCrossing(WorldGenLevel world, RandomSource rand, int flight, BoundingBox sbb) {
 		Direction temp = this.getOrientation();
 		if (flight % 2 == 0) {
 			this.setOrientation(getStructureRelativeRotation(Rotation.CLOCKWISE_90));
@@ -272,7 +271,7 @@ public class TowerMainComponent extends TowerWingComponent {
 	/**
 	 * Make a neat little room for the lich to fight in
 	 */
-	protected void makeLichRoom(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected void makeLichRoom(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		// figure out where the stairs end
 		int floorLevel = 2 + (this.highestOpening / 5) * 5;
 		// we need a floor
@@ -292,7 +291,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		placeBlock(world, TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState(), size / 2, floorLevel + 2, size / 2, sbb);
 	}
 
-	protected void makeTowerPaintings(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected void makeTowerPaintings(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		int howMany = 10;
 
 		// do wall 0.
@@ -420,7 +419,7 @@ public class TowerMainComponent extends TowerWingComponent {
 	/**
 	 * Cover the walls in the lich's room with paintings.  How is this going to work, chunk by chunk?
 	 */
-	protected void decoratePaintings(WorldGenLevel world, Random rand, int floorLevel, BoundingBox sbb) {
+	protected void decoratePaintings(WorldGenLevel world, RandomSource rand, int floorLevel, BoundingBox sbb) {
 		// I reduced this number since it turns out paintings already generate in the boss room before this is called
 		int howMany = 25;
 
@@ -435,7 +434,7 @@ public class TowerMainComponent extends TowerWingComponent {
 	/**
 	 * Put torches on each wall
 	 */
-	protected void decorateTorches(WorldGenLevel world, Random rand, int floorLevel, BoundingBox sbb) {
+	protected void decorateTorches(WorldGenLevel world, RandomSource rand, int floorLevel, BoundingBox sbb) {
 		generateTorchesOnWall(world, rand, floorLevel, Direction.SOUTH, sbb);
 		generateTorchesOnWall(world, rand, floorLevel, Direction.EAST, sbb);
 		generateTorchesOnWall(world, rand, floorLevel, Direction.NORTH, sbb);
@@ -445,7 +444,7 @@ public class TowerMainComponent extends TowerWingComponent {
 	/**
 	 * Place up to 5 torches (with fence holders) on the wall, checking that they don't overlap any paintings or other torches
 	 */
-	protected void generateTorchesOnWall(WorldGenLevel world, Random rand,
+	protected void generateTorchesOnWall(WorldGenLevel world, RandomSource rand,
 										 int floorLevel, Direction direction, BoundingBox sbb) {
 		for (int i = 0; i < 5; i++) {
 			// get some random coordinates on the wall in the chunk
@@ -468,10 +467,5 @@ public class TowerMainComponent extends TowerWingComponent {
 				world.setBlock(tCoords.above(), Blocks.TORCH.defaultBlockState(), 2);
 			}
 		}
-	}
-
-	@Override
-	public NoiseEffect getNoiseEffect() {
-		return NoiseEffect.BEARD;
 	}
 }

@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 import java.util.Set;
 import java.util.function.Predicate;
@@ -208,6 +208,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(),
+				TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(),
@@ -227,7 +228,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				TFBlocks.HOLLOW_DARK_OAK_LOG_VERTICAL.get(),
 				TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL.get(),
 				TFBlocks.HOLLOW_WARPED_STEM_VERTICAL.get(),
-
+				TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL.get(),
 				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(),
 				TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(),
 				TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(),
@@ -247,7 +248,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(),
-
+				TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(),
@@ -300,7 +301,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 		tag(ORES_KNIGHTMETAL); // Intentionally blank
 
 		tag(BlockTags.DIRT).add(TFBlocks.UBEROUS_SOIL.get());
-		tag(PORTAL_EDGE).addTag(BlockTags.DIRT);
+		tag(PORTAL_EDGE).addTag(BlockTags.DIRT).add(Blocks.FARMLAND, Blocks.DIRT_PATH);
 		// So yes, we could do fluid tags for the portal pool but the problem is that we're -replacing- the block, effectively replacing what would be waterlogged, with the portal block
 		// In the future if we can "portal log" blocks then we can re-explore doing it as a fluid
 		tag(PORTAL_POOL).add(Blocks.WATER);
@@ -321,6 +322,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 						Blocks.POTTED_CACTUS, Blocks.POTTED_CORNFLOWER, Blocks.POTTED_LILY_OF_THE_VALLEY, Blocks.POTTED_WITHER_ROSE,
 						Blocks.POTTED_BAMBOO, Blocks.POTTED_CRIMSON_FUNGUS, Blocks.POTTED_WARPED_FUNGUS, Blocks.POTTED_CRIMSON_ROOTS,
 						Blocks.POTTED_WARPED_ROOTS, Blocks.POTTED_AZALEA, Blocks.POTTED_FLOWERING_AZALEA);
+
+		tag(BlockTags.FROG_PREFER_JUMP_TO).add(TFBlocks.HUGE_LILY_PAD.get());
 
 		tag(TROPHIES)
 				.add(TFBlocks.NAGA_TROPHY.get(), TFBlocks.NAGA_WALL_TROPHY.get())
@@ -608,6 +611,82 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				TFBlocks.SMOKER.get(),
 				TFBlocks.FIRE_JET.get(),
 				TFBlocks.UBEROUS_SOIL.get()
+		);
+
+		tag(Tags.Blocks.NEEDS_WOOD_TOOL).add(
+				TFBlocks.NAGASTONE.get(),
+				TFBlocks.NAGASTONE_HEAD.get(),
+				TFBlocks.ETCHED_NAGASTONE.get(),
+				TFBlocks.CRACKED_ETCHED_NAGASTONE.get(),
+				TFBlocks.MOSSY_ETCHED_NAGASTONE.get(),
+				TFBlocks.NAGASTONE_PILLAR.get(),
+				TFBlocks.CRACKED_NAGASTONE_PILLAR.get(),
+				TFBlocks.MOSSY_NAGASTONE_PILLAR.get(),
+				TFBlocks.NAGASTONE_STAIRS_LEFT.get(),
+				TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(),
+				TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get(),
+				TFBlocks.NAGASTONE_STAIRS_RIGHT.get(),
+				TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get(),
+				TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get(),
+				TFBlocks.SPIRAL_BRICKS.get(),
+				TFBlocks.TWISTED_STONE.get(),
+				TFBlocks.TWISTED_STONE_PILLAR.get(),
+				TFBlocks.BOLD_STONE_PILLAR.get(),
+				TFBlocks.AURORA_PILLAR.get(),
+				TFBlocks.AURORA_SLAB.get(),
+				TFBlocks.TROLLSTEINN.get()
+		);
+
+		tag(BlockTags.NEEDS_STONE_TOOL).add(
+				TFBlocks.UNDERBRICK.get(),
+				TFBlocks.CRACKED_UNDERBRICK.get(),
+				TFBlocks.MOSSY_UNDERBRICK.get(),
+				TFBlocks.UNDERBRICK_FLOOR.get(),
+				TFBlocks.IRON_LADDER.get()
+		);
+
+		tag(BlockTags.NEEDS_IRON_TOOL).add(
+				TFBlocks.FIERY_BLOCK.get(),
+				TFBlocks.KNIGHTMETAL_BLOCK.get()
+		);
+
+		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(
+				TFBlocks.MAZESTONE.get(),
+				TFBlocks.MAZESTONE_BRICK.get(),
+				TFBlocks.CRACKED_MAZESTONE.get(),
+				TFBlocks.MOSSY_MAZESTONE.get(),
+				TFBlocks.DECORATIVE_MAZESTONE.get(),
+				TFBlocks.CUT_MAZESTONE.get(),
+				TFBlocks.MAZESTONE_BORDER.get(),
+				TFBlocks.MAZESTONE_MOSAIC.get(),
+				TFBlocks.AURORA_BLOCK.get(),
+				TFBlocks.DEADROCK.get(),
+				TFBlocks.CRACKED_DEADROCK.get(),
+				TFBlocks.WEATHERED_DEADROCK.get(),
+				TFBlocks.CASTLE_BRICK.get(),
+				TFBlocks.WORN_CASTLE_BRICK.get(),
+				TFBlocks.CRACKED_CASTLE_BRICK.get(),
+				TFBlocks.MOSSY_CASTLE_BRICK.get(),
+				TFBlocks.THICK_CASTLE_BRICK.get(),
+				TFBlocks.CASTLE_ROOF_TILE.get(),
+				TFBlocks.ENCASED_CASTLE_BRICK_PILLAR.get(),
+				TFBlocks.ENCASED_CASTLE_BRICK_TILE.get(),
+				TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get(),
+				TFBlocks.BOLD_CASTLE_BRICK_TILE.get(),
+				TFBlocks.CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(),
+				TFBlocks.PINK_CASTLE_RUNE_BRICK.get(),
+				TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(),
+				TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(),
+				TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
+				TFBlocks.PINK_CASTLE_DOOR.get(),
+				TFBlocks.YELLOW_CASTLE_DOOR.get(),
+				TFBlocks.BLUE_CASTLE_DOOR.get(),
+				TFBlocks.VIOLET_CASTLE_DOOR.get()
 		);
 
 		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(TFBlocks.UBEROUS_SOIL.get());

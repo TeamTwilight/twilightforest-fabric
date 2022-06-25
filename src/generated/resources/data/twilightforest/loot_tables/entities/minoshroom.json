@@ -2,51 +2,50 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": {
-        "type": "minecraft:uniform",
-        "min": 2.0,
-        "max": 5.0
-      },
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:looting_enchant",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              }
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:looting_enchant"
             }
           ],
           "name": "twilightforest:meef_stroganoff"
         }
-      ]
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 5.0,
+        "min": 2.0
+      }
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "twilightforest:minoshroom_trophy"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "twilightforest:diamond_minotaur_axe"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -59,8 +58,8 @@
           ],
           "functions": [
             {
-              "function": "twilightforest:item_or_default",
-              "default": "twilightforest:meef_stroganoff"
+              "default": "twilightforest:meef_stroganoff",
+              "function": "twilightforest:item_or_default"
             },
             {
               "function": "minecraft:set_nbt",
@@ -69,10 +68,10 @@
           ],
           "name": "twilightforest:meef_stroganoff"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -85,13 +84,14 @@
           ],
           "functions": [
             {
-              "function": "twilightforest:item_or_default",
-              "default": "twilightforest:meef_stroganoff"
+              "default": "twilightforest:meef_stroganoff",
+              "function": "twilightforest:item_or_default"
             }
           ],
           "name": "twilightforest:meef_stroganoff"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

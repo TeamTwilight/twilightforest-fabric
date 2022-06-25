@@ -14,7 +14,8 @@ import twilightforest.entity.boss.HydraPart;
 
 public class HydraHeadModel extends ListModel<HydraHead> {
 
-	public ModelPart head, mouth;
+	public final ModelPart head;
+	public ModelPart mouth;
 
 	public HydraHeadModel(ModelPart root) {
 		this.head = root.getChild("head");

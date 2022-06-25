@@ -34,14 +34,14 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.entity.ai.QuestRamEatWoolGoal;
-import twilightforest.loot.TFTreasure;
+import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
+import twilightforest.init.TFSounds;
+import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class QuestRam extends Animal {
@@ -108,14 +108,14 @@ public class QuestRam extends Animal {
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		if(type == MobSpawnType.STRUCTURE) this.restrictTo(this.blockPosition(), 13);
+		if (type == MobSpawnType.STRUCTURE) this.restrictTo(this.blockPosition(), 13);
 		return super.finalizeSpawn(accessor, difficulty, type, data, tag);
 	}
 
 	private void rewardQuest() {
 		// todo flesh the context out more
 		LootContext ctx = new LootContext.Builder((ServerLevel) this.getLevel()).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.PIGLIN_BARTER);
-		this.getLevel().getServer().getLootTables().get(TFTreasure.QUESTING_RAM_REWARDS).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+		this.getLevel().getServer().getLootTables().get(TFLootTables.QUESTING_RAM_REWARDS).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
 
 		for (ServerPlayer player : this.getLevel().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
 			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
@@ -153,10 +153,10 @@ public class QuestRam extends Animal {
 	@Nullable
 	public DyeColor guessColor(ItemStack stack) {
 		List<Item> wools = ImmutableList.of(
-						Blocks.WHITE_WOOL.asItem(), Blocks.ORANGE_WOOL.asItem(), Blocks.MAGENTA_WOOL.asItem(), Blocks.LIGHT_BLUE_WOOL.asItem(),
-						Blocks.YELLOW_WOOL.asItem(), Blocks.LIME_WOOL.asItem(), Blocks.PINK_WOOL.asItem(), Blocks.GRAY_WOOL.asItem(),
-						Blocks.LIGHT_GRAY_WOOL.asItem(), Blocks.CYAN_WOOL.asItem(), Blocks.PURPLE_WOOL.asItem(), Blocks.BLUE_WOOL.asItem(),
-						Blocks.BROWN_WOOL.asItem(), Blocks.GREEN_WOOL.asItem(), Blocks.RED_WOOL.asItem(), Blocks.BLACK_WOOL.asItem()
+				Blocks.WHITE_WOOL.asItem(), Blocks.ORANGE_WOOL.asItem(), Blocks.MAGENTA_WOOL.asItem(), Blocks.LIGHT_BLUE_WOOL.asItem(),
+				Blocks.YELLOW_WOOL.asItem(), Blocks.LIME_WOOL.asItem(), Blocks.PINK_WOOL.asItem(), Blocks.GRAY_WOOL.asItem(),
+				Blocks.LIGHT_GRAY_WOOL.asItem(), Blocks.CYAN_WOOL.asItem(), Blocks.PURPLE_WOOL.asItem(), Blocks.BLUE_WOOL.asItem(),
+				Blocks.BROWN_WOOL.asItem(), Blocks.GREEN_WOOL.asItem(), Blocks.RED_WOOL.asItem(), Blocks.BLACK_WOOL.asItem()
 		);
 		int i = wools.indexOf(stack.getItem());
 		if (i < 0) {
@@ -172,8 +172,10 @@ public class QuestRam extends Animal {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("ColorFlags", this.getColorFlags());
 		compound.putBoolean("Rewarded", this.getRewarded());
-		BlockPos home = this.getRestrictCenter();
-		compound.put("HomePos", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
+		if (this.getRestrictCenter() != BlockPos.ZERO) {
+			BlockPos home = this.getRestrictCenter();
+			compound.put("HomePos", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
+		}
 	}
 
 	@Override
@@ -255,21 +257,21 @@ public class QuestRam extends Animal {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.QUEST_RAM_AMBIENT;
+		return TFSounds.QUEST_RAM_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.QUEST_RAM_HURT;
+		return TFSounds.QUEST_RAM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.QUEST_RAM_DEATH;
+		return TFSounds.QUEST_RAM_DEATH.get();
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(TFSounds.QUEST_RAM_STEP, 0.15F, 1.0F);
+	protected void playStepSound(BlockPos pos, BlockState state) {
+		this.playSound(TFSounds.QUEST_RAM_STEP.get(), 0.15F, 1.0F);
 	}
 }

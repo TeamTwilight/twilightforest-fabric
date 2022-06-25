@@ -1,113 +1,110 @@
 {
   "parent": "twilightforest:root",
-  "display": {
-    "icon": {
-      "item": "minecraft:bowl"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.twilight_dining"
-    },
-    "description": {
-      "translate": "advancement.twilightforest.twilight_dining.desc"
-    },
-    "frame": "challenge",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "rewards": {
-    "experience": 75
-  },
   "criteria": {
-    "raw_venison": {
-      "trigger": "minecraft:consume_item",
-      "conditions": {
-        "item": {
-          "items": [
-            "twilightforest:raw_venison"
-          ]
-        }
-      }
-    },
-    "cooked_venison": {
-      "trigger": "minecraft:consume_item",
-      "conditions": {
-        "item": {
-          "items": [
-            "twilightforest:cooked_venison"
-          ]
-        }
-      }
-    },
-    "raw_meef": {
-      "trigger": "minecraft:consume_item",
-      "conditions": {
-        "item": {
-          "items": [
-            "twilightforest:raw_meef"
-          ]
-        }
-      }
-    },
     "cooked_meef": {
-      "trigger": "minecraft:consume_item",
       "conditions": {
         "item": {
           "items": [
             "twilightforest:cooked_meef"
           ]
         }
-      }
+      },
+      "trigger": "minecraft:consume_item"
     },
-    "meef_stroganoff": {
-      "trigger": "minecraft:consume_item",
+    "cooked_venison": {
       "conditions": {
         "item": {
           "items": [
-            "twilightforest:meef_stroganoff"
+            "twilightforest:cooked_venison"
           ]
         }
-      }
-    },
-    "hydra_chop": {
-      "trigger": "minecraft:consume_item",
-      "conditions": {
-        "item": {
-          "items": [
-            "twilightforest:hydra_chop"
-          ]
-        }
-      }
-    },
-    "maze_wafer": {
-      "trigger": "minecraft:consume_item",
-      "conditions": {
-        "item": {
-          "items": [
-            "twilightforest:maze_wafer"
-          ]
-        }
-      }
+      },
+      "trigger": "minecraft:consume_item"
     },
     "experiment_115": {
-      "trigger": "minecraft:consume_item",
       "conditions": {
         "item": {
           "items": [
             "twilightforest:experiment_115"
           ]
         }
-      }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "hydra_chop": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:hydra_chop"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "maze_wafer": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:maze_wafer"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "meef_stroganoff": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:meef_stroganoff"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "raw_meef": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:raw_meef"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "raw_venison": {
+      "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:raw_venison"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
     },
     "torchberries": {
-      "trigger": "minecraft:consume_item",
       "conditions": {
         "item": {
           "items": [
             "twilightforest:torchberries"
           ]
         }
-      }
+      },
+      "trigger": "minecraft:consume_item"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.twilightforest.twilight_dining.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:bowl"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.twilight_dining"
     }
   },
   "requirements": [
@@ -134,5 +131,8 @@
     [
       "torchberries"
     ]
-  ]
+  ],
+  "rewards": {
+    "experience": 75
+  }
 }

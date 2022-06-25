@@ -1,9 +1,7 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,11 +10,13 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.entity.Entity;
 
 public class FireflyModel extends Model {
 	//fields
-	public ModelPart legs, fatbody, skinnybody, glow;
+	public final ModelPart legs;
+	public ModelPart fatbody;
+	public ModelPart skinnybody;
+	public ModelPart glow;
 
 	public FireflyModel(ModelPart root) {
 		super(RenderType::entityCutoutNoCull);

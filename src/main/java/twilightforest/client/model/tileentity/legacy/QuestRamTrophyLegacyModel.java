@@ -12,7 +12,7 @@ import twilightforest.client.model.tileentity.GenericTrophyModel;
 
 public class QuestRamTrophyLegacyModel extends GenericTrophyModel {
 
-	public ModelPart head;
+	public final ModelPart head;
 
 	public QuestRamTrophyLegacyModel(ModelPart root) {
 		this.head = root.getChild("head");

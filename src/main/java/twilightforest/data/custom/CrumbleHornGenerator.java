@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
 //import quek.undergarden.registry.UGBlocks;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 public class CrumbleHornGenerator extends CrumbleHornProvider {
 

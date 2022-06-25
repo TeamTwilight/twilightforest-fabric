@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "side": "twilightforest:block/mazestone_brick",
-    "end": "twilightforest:block/mazestone_border"
+    "end": "twilightforest:block/mazestone_border",
+    "side": "twilightforest:block/mazestone_brick"
   }
 }

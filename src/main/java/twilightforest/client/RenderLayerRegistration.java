@@ -3,7 +3,7 @@ package twilightforest.client;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 public class RenderLayerRegistration {
 	public static void init() {
@@ -29,6 +29,7 @@ public class RenderLayerRegistration {
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), cutout);
@@ -53,6 +54,7 @@ public class RenderLayerRegistration {
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.TIME_TRAPDOOR.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.SORTING_TRAPDOOR.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.TWILIGHT_PORTAL.get(), translucent);

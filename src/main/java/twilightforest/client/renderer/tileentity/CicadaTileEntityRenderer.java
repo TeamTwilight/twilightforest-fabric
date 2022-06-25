@@ -15,7 +15,7 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CicadaModel;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class CicadaTileEntityRenderer implements BlockEntityRenderer<CicadaBlockEntity> {
 

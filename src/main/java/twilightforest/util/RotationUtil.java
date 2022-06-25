@@ -1,6 +1,7 @@
 package twilightforest.util;
 
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 
 import java.util.Random;
@@ -12,7 +13,7 @@ public final class RotationUtil {
 	private RotationUtil() {
 	}
 
-	public static Rotation getRandomRotation(Random random) {
+	public static Rotation getRandomRotation(RandomSource random) {
 		return ROTATIONS[random.nextInt(ROTATIONS.length)];
 	}
 
@@ -76,7 +77,7 @@ public final class RotationUtil {
 		};
 	}
 
-	public static Direction getRandomFacing(Random random) {
+	public static Direction getRandomFacing(RandomSource random) {
 		return CARDINALS[random.nextInt(CARDINALS.length)];
 	}
 }

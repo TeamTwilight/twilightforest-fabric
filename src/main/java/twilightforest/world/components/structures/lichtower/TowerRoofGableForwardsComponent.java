@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.lichtower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
@@ -12,18 +13,18 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class TowerRoofGableForwardsComponent extends TowerRoofComponent {
 
 	public TowerRoofGableForwardsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTRGF, nbt);
+		super(TFStructurePieceTypes.TFLTRGF.get(), nbt);
 	}
 
-	public TowerRoofGableForwardsComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(LichTowerPieces.TFLTRGF, feature, i, x, y, z);
+	public TowerRoofGableForwardsComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFLTRGF.get(), feature, i, x, y, z);
 
 		// same facing
 		this.setOrientation(wing.getOrientation());
@@ -39,7 +40,7 @@ public class TowerRoofGableForwardsComponent extends TowerRoofComponent {
 	 * Makes a pointy roof out of stuff
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		BlockState birchSlab = Blocks.BIRCH_SLAB.defaultBlockState();
 		BlockState birchPlanks = Blocks.BIRCH_PLANKS.defaultBlockState();
 

@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.lichtower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
@@ -12,9 +13,9 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 /**
  * A flat tower roof using slabs that is larger than the tower under it.
@@ -24,11 +25,11 @@ import java.util.Random;
 public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 
 	public TowerRoofSlabForwardsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTRSF, nbt);
+		super(TFStructurePieceTypes.TFLTRSF.get(), nbt);
 	}
 
-	public TowerRoofSlabForwardsComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(LichTowerPieces.TFLTRSF, feature, i, wing, x, y, z);
+	public TowerRoofSlabForwardsComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFLTRSF.get(), feature, i, wing, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());
@@ -44,7 +45,7 @@ public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 	 * Makes flat hip roof
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		BlockState birchSlab = Blocks.BIRCH_SLAB.defaultBlockState();
 		BlockState birchDoubleSlab = Blocks.BIRCH_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE);
 

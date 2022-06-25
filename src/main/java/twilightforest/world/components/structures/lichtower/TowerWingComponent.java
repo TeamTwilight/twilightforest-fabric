@@ -3,16 +3,17 @@ package twilightforest.world.components.structures.lichtower;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.HangingEntity;
-import net.minecraft.world.entity.decoration.Motive;
 import net.minecraft.world.entity.decoration.Painting;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,26 +30,27 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.phys.AABB;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CastleBlock;
-import twilightforest.entity.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFEntities;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+@SuppressWarnings({"deprecation", "unused"})
 public class TowerWingComponent extends TFStructureComponentOld {
 
 	public TowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(LichTowerPieces.TFLTWin, nbt);
+		this(TFStructurePieceTypes.TFLTWin.get(), nbt);
 	}
 
 	public TowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -75,12 +77,12 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	protected int highestOpening;
 	protected boolean[] openingTowards = new boolean[]{false, false, true, false};
 
-	protected TowerWingComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+	protected TowerWingComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
 		super(type, feature, i, x, y, z);
 		this.highestOpening = 0;
 	}
 
-	protected TowerWingComponent(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected TowerWingComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(type, feature, i, x, y, z);
 
 		this.size = pSize;
@@ -135,7 +137,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		// we should have a door where we started
 		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 
@@ -160,7 +162,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		}
 	}
 
-	public boolean makeTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// kill too-small towers
 		if (wingHeight < 6) {
 			return false;
@@ -175,7 +177,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			// I think there are very few circumstances where we can make a wing and not a bridge
 		}
 
-		TowerWingComponent wing = new TowerWingComponent(LichTowerPieces.TFLTWin, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		TowerWingComponent wing = new TowerWingComponent(TFStructurePieceTypes.TFLTWin.get(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(wing.boundingBox);
 		if (intersect == null || intersect == this) {
@@ -194,7 +196,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	}
 
 
-	protected boolean makeBridge(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	protected boolean makeBridge(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// bridges are size 3 always
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
@@ -242,7 +244,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Add a beard to this structure.  There is only one type of beard.
 	 */
-	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 
 		boolean attached = parent.getBoundingBox().minY() < this.boundingBox.minY();
 
@@ -251,7 +253,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (attached) {
 			beard = new TowerBeardAttachedComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		} else {
-			beard = new TowerBeardComponent(LichTowerPieces.TFLTBea, getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			beard = new TowerBeardComponent(TFStructurePieceTypes.TFLTBea.get(), getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		}
 		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
@@ -263,7 +265,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * <p>
 	 * This function keeps trying roofs starting with the largest and fanciest, and then keeps trying smaller and plainer ones
 	 */
-	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 
 		// we are attached if our parent is taller than we are
 		boolean attached = parent.getBoundingBox().maxY() > this.boundingBox.maxY();
@@ -277,7 +279,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	}
 
 
-	protected void makeAttachedRoof(StructurePieceAccessor list, Random rand) {
+	protected void makeAttachedRoof(StructurePieceAccessor list, RandomSource rand) {
 		int index = this.getGenDepth();
 		TowerRoofComponent roof;
 
@@ -311,7 +313,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * Check to see if this roof fits.  If it does:
 	 * Add the specified roof to this tower and set the roofType variable.
 	 */
-	protected void tryToFitRoof(StructurePieceAccessor list, Random rand, TowerRoofComponent roof) {
+	protected void tryToFitRoof(StructurePieceAccessor list, RandomSource rand, TowerRoofComponent roof) {
 		if (roof.fits(this, list)) {
 			list.addPiece(roof);
 			roof.addChildren(this, list, rand);
@@ -319,7 +321,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		}
 	}
 
-	protected void makeFreestandingRoof(StructurePieceAccessor list, Random rand) {
+	protected void makeFreestandingRoof(StructurePieceAccessor list, RandomSource rand) {
 		int index = this.getGenDepth();
 		TowerRoofComponent roof;
 
@@ -343,7 +345,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		if (roofType == null && rand.nextInt(53) != 0) {
 			// fall through to this next roof
-			roof = new TowerRoofSlabComponent(LichTowerPieces.TFLTRS, getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofSlabComponent(TFStructurePieceTypes.TFLTRS.get(), getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
@@ -355,7 +357,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel worldIn, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel worldIn, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
 		generateBox(worldIn, sbb, 0, 0, 0, size - 1, height - 1, size - 1, false, rand, TFStructureComponentOld.getStrongholdStones());
 
@@ -392,7 +394,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 *
 	 * @param numMarkers How many markers to make
 	 */
-	protected void makeOpeningMarkers(WorldGenLevel world, Random rand, int numMarkers, BoundingBox sbb) {
+	protected void makeOpeningMarkers(WorldGenLevel world, RandomSource rand, int numMarkers, BoundingBox sbb) {
 		if (size > 4) {
 			final BlockState woolWhite = Blocks.WHITE_WOOL.defaultBlockState();
 			final BlockState woolOrange = Blocks.ORANGE_WOOL.defaultBlockState();
@@ -423,7 +425,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * Add some appropriate decorations to this tower
 	 */
 	protected void decorateThisTower(WorldGenLevel world, BoundingBox sbb) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) * (this.boundingBox.minZ() * 756839L));
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) * (this.boundingBox.minZ() * 756839L));
 
 		if (size > 3) {
 			// only decorate towers with more than one available square inside.
@@ -439,7 +441,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Decorates a dead end tower.  These towers have no stairs, and will be the focus of our interior design.
 	 */
-	protected void decorateDeadEnd(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected void decorateDeadEnd(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		final BlockState birchPlanks = Blocks.BIRCH_PLANKS.defaultBlockState();
 		int floors = (this.height - 1) / 5;
 
@@ -483,7 +485,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Called to decorate each floor.  This is responsible for adding a ladder up, the stub of the ladder going down, then picking a theme for each floor and executing it.
 	 */
-	protected void decorateFloor(WorldGenLevel world, Random rand, int floor, int bottom, int top, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, @Nullable Rotation ladderUpDir, @Nullable Rotation ladderDownDir, BoundingBox sbb) {
 
 		final BlockState ladder = Blocks.LADDER.defaultBlockState();
 		if (ladderUpDir != null) {
@@ -533,7 +535,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Decorate this floor with a scenic well.
 	 */
-	protected void decorateWell(WorldGenLevel world, Random rand, int bottom, BoundingBox sbb) {
+	protected void decorateWell(WorldGenLevel world, RandomSource rand, int bottom, BoundingBox sbb) {
 		int cx = size / 2;
 
 		BlockState waterOrLava = rand.nextInt(4) == 0 ? Blocks.LAVA.defaultBlockState() : Blocks.WATER.defaultBlockState();
@@ -564,12 +566,12 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Add a skeleton spawner on this floor and decorate it in an appropriately scary manner.
 	 */
-	protected void decorateSkeletonRoom(WorldGenLevel world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateSkeletonRoom(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		// skeleton spawner
 		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityType.SKELETON);
 
 		// floor-to-ceiling chains
-		ArrayList<BlockPos> chainList = new ArrayList<BlockPos>();
+		ArrayList<BlockPos> chainList = new ArrayList<>();
 		chainList.add(new BlockPos(size / 2, bottom + 2, size / 2)); // don't block the spawner
 		for (int i = 0; i < size + 2; i++) {
 			BlockPos chain = new BlockPos(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
@@ -601,7 +603,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Add a zombie spawner on this floor and decorate it in an appropriately scary manner.
 	 */
-	protected void decorateZombieRoom(WorldGenLevel world, Random rand, int bottom, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateZombieRoom(WorldGenLevel world, RandomSource rand, int bottom, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		// zombie spawner
 		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityType.ZOMBIE);
 		final BlockState ironBars = Blocks.IRON_BARS.defaultBlockState();
@@ -621,7 +623,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		}
 
 		// slab tables
-		ArrayList<BlockPos> slabList = new ArrayList<BlockPos>();
+		ArrayList<BlockPos> slabList = new ArrayList<>();
 		slabList.add(new BlockPos(size / 2, bottom + 2, size / 2)); // don't block the spawner
 		for (int i = 0; i < size - 1; i++) {
 			BlockPos slab = new BlockPos(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
@@ -639,7 +641,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Fill this room with sand and floor-to-ceiling cacti
 	 */
-	protected void decorateCactusRoom(WorldGenLevel world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateCactusRoom(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		// sand & random dead bush
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
@@ -655,7 +657,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		}
 
 		// cacti
-		ArrayList<BlockPos> cactusList = new ArrayList<BlockPos>();
+		ArrayList<BlockPos> cactusList = new ArrayList<>();
 		cactusList.add(new BlockPos(size / 2, bottom + 2, size / 2)); // don't block the spawner
 		for (int i = 0; i < size + 12; i++) {
 			BlockPos cactus = new BlockPos(2 + rand.nextInt(size - (4)), height - 2, 2 + rand.nextInt(size - (4)));
@@ -699,13 +701,13 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			surroundBlockCorners(world, stoneBrick, cx, top-1, cx, sbb);
 		}
 
-		placeTreasureAtCurrentPosition(world, cx, bottom + 1, cx, TFTreasure.TOWER_ROOM, sbb);
+		placeTreasureAtCurrentPosition(world, cx, bottom + 1, cx, TFLootTables.TOWER_ROOM, sbb);
 	}
 
 	/**
 	 * Decorate this floor with a mass of messy spider webs.
 	 */
-	protected void decorateSpiderWebs(WorldGenLevel world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateSpiderWebs(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		for (int dy = bottom; dy < top; dy++) {
 			int chance = (top - dy + 2);
 			for (int dx = 1; dx <= size - 2; dx++) {
@@ -736,7 +738,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Place some furniture around the room.  This should probably only be called on larger towers.
 	 */
-	protected void decorateFurniture(WorldGenLevel world, Random rand, int bottom, int freeSpace, BoundingBox sbb) {
+	protected void decorateFurniture(WorldGenLevel world, RandomSource rand, int bottom, int freeSpace, BoundingBox sbb) {
 		// 66% chance of a table
 		if (rand.nextInt(3) > 0) {
 			placeBlock(world, Blocks.OAK_FENCE.defaultBlockState(), size / 2, bottom, size / 2, sbb);
@@ -762,7 +764,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Decorate this floor with solid rock
 	 */
-	protected void decorateSolidRock(WorldGenLevel world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateSolidRock(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		for (int dy = bottom; dy < top; dy++) {
 			for (int dx = 1; dx <= size - 2; dx++) {
 				for (int dz = 1; dz <= size - 2; dz++) {
@@ -779,7 +781,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Decorate this floor with an orderly library
 	 */
-	protected void decorateLibrary(WorldGenLevel world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateLibrary(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		// put some bookshelves around the room
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
@@ -808,28 +810,28 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * Place a library treasure chest somewhere in the library
 	 */
 	@SuppressWarnings("fallthrough")
-	protected void decorateLibraryTreasure(WorldGenLevel world, Random rand, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateLibraryTreasure(WorldGenLevel world, RandomSource rand, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		// FIXME: case 3 gets slightly higher chance than others
 		switch (rand.nextInt(4)) {
 			case 0:
 			default:
 				if (!isLadderPos(2, 1, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, 2, top - 2, 1, TFTreasure.TOWER_LIBRARY, sbb);
+					placeTreasureAtCurrentPosition(world, 2, top - 2, 1, TFLootTables.TOWER_LIBRARY, sbb);
 					break;
 				}
 			case 1:
 				if (!isLadderPos(size - 2, 2, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, size - 2, top - 2, 2, TFTreasure.TOWER_LIBRARY, sbb);
+					placeTreasureAtCurrentPosition(world, size - 2, top - 2, 2, TFLootTables.TOWER_LIBRARY, sbb);
 					break;
 				}
 			case 2:
 				if (!isLadderPos(size - 3, size - 2, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, size - 3, top - 2, size - 2, TFTreasure.TOWER_LIBRARY, sbb);
+					placeTreasureAtCurrentPosition(world, size - 3, top - 2, size - 2, TFLootTables.TOWER_LIBRARY, sbb);
 					break;
 				}
 			case 3:
 				if (!isLadderPos(1, size - 3, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, 1, top - 2, size - 3, TFTreasure.TOWER_LIBRARY, sbb);
+					placeTreasureAtCurrentPosition(world, 1, top - 2, size - 3, TFLootTables.TOWER_LIBRARY, sbb);
 					break;
 				}
 		}
@@ -838,7 +840,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Decorate this floor with an overflowing library
 	 */
-	protected void decorateFullLibrary(WorldGenLevel world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateFullLibrary(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		// put some bookshelves around the room
 		for (int dx = 1; dx <= size - 2; dx++) {
 			for (int dz = 1; dz <= size - 2; dz++) {
@@ -994,7 +996,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * or we can divide the tower into the "stair" section on the bottom and the
 	 * "attic" section at the top and decorate those seperately.
 	 */
-	protected void decorateStairTower(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected void decorateStairTower(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 
 		// if it's tall enough, consider adding extra floors onto the top.
 		if (height - highestOpening > 8) {
@@ -1073,7 +1075,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * <p>
 	 * This is for towers with stairs at the bottom, not towers divided into floors
 	 */
-	protected void decorateStairFloor(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected void decorateStairFloor(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		// decorate the bottom
 		if (size > 5) {
 			if (rand.nextInt(3) == 0) {
@@ -1088,7 +1090,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Make a chandelier.  The chandelier hangs down a random amount between the top of the tower and the highest opening.
 	 */
-	protected void decorateChandelier(WorldGenLevel world, Random rand, int decoTop, BoundingBox sbb) {
+	protected void decorateChandelier(WorldGenLevel world, RandomSource rand, int decoTop, BoundingBox sbb) {
 		if (decoTop < 8 || size < 8) {
 			return;
 		}
@@ -1113,7 +1115,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * <p>
 	 * The chains go from the ceiling to just above the highest doorway.
 	 */
-	protected void decorateHangingChains(WorldGenLevel world, Random rand, int decoTop, BoundingBox sbb) {
+	protected void decorateHangingChains(WorldGenLevel world, RandomSource rand, int decoTop, BoundingBox sbb) {
 		// a list of existing chains
 		ArrayList<BlockPos> chainList = new ArrayList<BlockPos>();
 		// try size + 2 times to find a chain that does not collide
@@ -1147,7 +1149,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		return false;
 	}
 
-	protected void decorateOneChain(WorldGenLevel world, Random rand, int dx, int decoTop, int length, int dz, BoundingBox sbb) {
+	protected void decorateOneChain(WorldGenLevel world, RandomSource rand, int dx, int decoTop, int length, int dz, BoundingBox sbb) {
 		for (int y = 1; y <= length; y++) {
 			placeBlock(world, Blocks.IRON_BARS.defaultBlockState(), dx, decoTop - y - 1, dz, sbb);
 		}
@@ -1168,9 +1170,9 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Decorates a tower with an array of floating bookshelves.
 	 */
-	protected void decorateFloatingBooks(WorldGenLevel world, Random rand, int decoTop, BoundingBox sbb) {
+	protected void decorateFloatingBooks(WorldGenLevel world, RandomSource rand, int decoTop, BoundingBox sbb) {
 		// a list of existing bookshelves
-		ArrayList<BlockPos> shelfList = new ArrayList<BlockPos>();
+		ArrayList<BlockPos> shelfList = new ArrayList<>();
 		// try size + 2 times to find a shelf that does not collide
 		for (int i = 0; i < size + 2; i++) {
 			int filled = size < 15 ? 2 : 4;
@@ -1190,7 +1192,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Decorates a tower with an array of floating vines, attached to mossy cobblestone.
 	 */
-	protected void decorateFloatingVines(WorldGenLevel world, Random rand, int decoTop, BoundingBox sbb) {
+	protected void decorateFloatingVines(WorldGenLevel world, RandomSource rand, int decoTop, BoundingBox sbb) {
 		final BlockState mossyCobbleStone = Blocks.MOSSY_COBBLESTONE.defaultBlockState();
 		final BlockState vine = Blocks.VINE.defaultBlockState();
 		final BlockState vineNorth = vine.setValue(VineBlock.NORTH, true);
@@ -1199,7 +1201,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		final BlockState vineWest = vine.setValue(VineBlock.WEST, true);
 
 		// a list of existing blocks
-		ArrayList<BlockPos> mossList = new ArrayList<BlockPos>();
+		ArrayList<BlockPos> mossList = new ArrayList<>();
 		// try size + 2 times to find a rock pillar that does not collide
 		for (int i = 0; i < size + 2; i++) {
 			int filled = size < 15 ? 2 : 4;
@@ -1244,26 +1246,25 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Makes a planter.  Depending on the situation, it can be filled with trees, flowers, or crops
 	 */
-	protected void decoratePlanter(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected void decoratePlanter(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		int cx = size / 2;
-		int cz = cx;
 
-		surroundBlockCardinal(world, TFStructureHelper.stoneSlab, cx, 1, cz, sbb);
+		surroundBlockCardinal(world, TFStructureHelper.stoneSlab, cx, 1, cx, sbb);
 
 		if (size > 7)
-			surroundBlockCorners(world, TFStructureHelper.stoneSlabDouble, cx, 1, cz, sbb);
+			surroundBlockCorners(world, TFStructureHelper.stoneSlabDouble, cx, 1, cx, sbb);
 
 
 		// place a cute planted thing
-		placeBlock(world, Blocks.GRASS_BLOCK.defaultBlockState(), cx, 1, cz, sbb);
+		placeBlock(world, Blocks.GRASS_BLOCK.defaultBlockState(), cx, 1, cx, sbb);
 
 		int i = rand.nextInt(6);
 		boolean isTree = i > 4;
 		final BlockState plant = isTree ? TFStructureHelper.randomSapling(i) : TFStructureHelper.randomMushroom(i);
 
 
-		placeBlock(world, plant, cx, 2, cz, sbb);
-		final BlockPos pos = getBlockPosWithOffset(cx, 2, cz);
+		placeBlock(world, plant, cx, 2, cx, sbb);
+		final BlockPos pos = getBlockPosWithOffset(cx, 2, cx);
 
 		// FIXME: we CANNOT use world.getWorld in structure generation, we CANNOT cast to ServerWorld either. Saplings require a ServerWorld.....
 		/*if(isTree) //grow tree
@@ -1273,17 +1274,16 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 
 		// otherwise, place the block into a flowerpot
-		BlockState whatHappened = this.getBlock(world, cx, 2, cz, sbb);
+		BlockState whatHappened = this.getBlock(world, cx, 2, cx, sbb);
 		if (whatHappened.getBlock() == plant.getBlock() || whatHappened.getBlock() == Blocks.AIR)
-			placeBlock(world, Blocks.FLOWER_POT.defaultBlockState(), cx, 2, cz, sbb);
+			placeBlock(world, Blocks.FLOWER_POT.defaultBlockState(), cx, 2, cx, sbb);
 	}
 
 	/**
 	 * Decorate the floor of this stair tower with a scenic well.
 	 */
-	protected void decorateStairWell(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected void decorateStairWell(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		int cx = size / 2;
-		int cz = cx;
 		int cy = 1;
 
 		final BlockState waterOrLava = rand.nextInt(4) == 0 ? Blocks.LAVA.defaultBlockState() : Blocks.WATER.defaultBlockState();
@@ -1293,22 +1293,22 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		if (size > 7) {
 			// actual well structure
-			placeBlock(world, stoneBrick, cx - 1, cy, cz - 1, sbb);
-			placeBlock(world, stoneSlab, cx - 1, cy + 1, cz - 1, sbb);
-			placeBlock(world, stoneBrick, cx, cy, cz - 1, sbb);
-			placeBlock(world, stoneBrick, cx + 1, cy, cz - 1, sbb);
-			placeBlock(world, stoneSlab, cx + 1, cy + 1, cz - 1, sbb);
-			placeBlock(world, stoneBrick, cx - 1, cy, cz, sbb);
-			placeBlock(world, waterOrLava, cx, cy, cz, sbb);
-			placeBlock(world, stoneBrick, cx + 1, cy, cz, sbb);
-			placeBlock(world, stoneBrick, cx - 1, cy, cz + 1, sbb);
-			placeBlock(world, stoneSlab, cx - 1, cy + 1, cz + 1, sbb);
-			placeBlock(world, stoneBrick, cx, cy, cz + 1, sbb);
-			placeBlock(world, stoneBrick, cx + 1, cy, cz + 1, sbb);
-			placeBlock(world, stoneSlab, cx + 1, cy + 1, cz + 1, sbb);
+			placeBlock(world, stoneBrick, cx - 1, cy, cx - 1, sbb);
+			placeBlock(world, stoneSlab, cx - 1, cy + 1, cx - 1, sbb);
+			placeBlock(world, stoneBrick, cx, cy, cx - 1, sbb);
+			placeBlock(world, stoneBrick, cx + 1, cy, cx - 1, sbb);
+			placeBlock(world, stoneSlab, cx + 1, cy + 1, cx - 1, sbb);
+			placeBlock(world, stoneBrick, cx - 1, cy, cx, sbb);
+			placeBlock(world, waterOrLava, cx, cy, cx, sbb);
+			placeBlock(world, stoneBrick, cx + 1, cy, cx, sbb);
+			placeBlock(world, stoneBrick, cx - 1, cy, cx + 1, sbb);
+			placeBlock(world, stoneSlab, cx - 1, cy + 1, cx + 1, sbb);
+			placeBlock(world, stoneBrick, cx, cy, cx + 1, sbb);
+			placeBlock(world, stoneBrick, cx + 1, cy, cx + 1, sbb);
+			placeBlock(world, stoneSlab, cx + 1, cy + 1, cx + 1, sbb);
 		}
 
-		placeBlock(world, waterOrLava, cx, cy - 1, cz, sbb);
+		placeBlock(world, waterOrLava, cx, 0, cx, sbb);
 	}
 
 	/**
@@ -1343,7 +1343,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
 	 */
-	public int[] getValidOpening(Random rand, Rotation direction) {
+	public int[] getValidOpening(RandomSource rand, Rotation direction) {
 		// variables!
 		int wLength = size - 2; // wall length
 		int offset = 1; // wall thickness
@@ -1379,7 +1379,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * Gets a Y value where the stairs meet the specified X coordinate.
 	 * Also works for Z coordinates.
 	 */
-	protected int getYByStairs(int rx, Random rand, Rotation direction) {
+	protected int getYByStairs(int rx, RandomSource rand, Rotation direction) {
 		// initialize some variables
 		int rise = 1;
 		int base = 0;
@@ -1447,7 +1447,6 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 */
 	protected void makeWindows(WorldGenLevel world, BoundingBox sbb, boolean real) {
 
-		//for (int i = 0; i < 4; i++) {
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			boolean realWindows = real && !openingTowards[rotation.ordinal()];
 			makeWindowBlock(world, size - 1, 2, size / 2, rotation, sbb, realWindows);
@@ -1500,7 +1499,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Add stairs to this tower.
 	 */
-	protected boolean makeStairs(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected boolean makeStairs(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		if (this.size == 15) {
 			return makeStairs15(world, rand, sbb);
 		}
@@ -1520,7 +1519,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Stair maker for a size 5 tower
 	 */
-	protected boolean makeStairs5(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected boolean makeStairs5(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		// staircases rotating around the tower
 		int rise = 1;
 //		int numFlights = ((this.height - 3) / rise) - 1;
@@ -1556,7 +1555,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Stair maker for a size 7 tower
 	 */
-	protected boolean makeStairs7(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected boolean makeStairs7(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		// foot of stairs
 		placeBlock(world, TFStructureHelper.birchSlab, 1, 1, 4, sbb);
 		placeBlock(world, TFStructureHelper.birchSlabTop, 1, 1, 5, sbb);
@@ -1600,7 +1599,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Stair maker for a size 9 tower
 	 */
-	protected boolean makeStairs9(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected boolean makeStairs9(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 
 		// foot of stairs
 		placeBlock(world, TFStructureHelper.birchSlab, 1, 1, 6, sbb);
@@ -1648,7 +1647,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Stair maker for a size 15 tower
 	 */
-	protected boolean makeStairs15(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected boolean makeStairs15(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		final BlockState planks = Blocks.BIRCH_PLANKS.defaultBlockState();
 		final BlockState oakFence = Blocks.OAK_FENCE.defaultBlockState();
 		final BlockState birchSlab = TFStructureHelper.birchSlab;
@@ -1717,7 +1716,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * Function called by makeStairs7 to place stair blocks
 	 * pretty sure this is the one that makes the main staircase
 	 */
-	protected void makeStairs15flight(WorldGenLevel world, Random rand, BoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
+	protected void makeStairs15flight(WorldGenLevel world, RandomSource rand, BoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
 		Direction temp = this.getOrientation();
 
 		this.setOrientation(rotation.rotate(temp));
@@ -1788,16 +1787,16 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Makes paintings of the minimum size or larger on the specified wall
 	 */
-	protected void generatePaintingsOnWall(WorldGenLevel world, Random rand, int howMany, int floorLevel, Direction direction, int minSize, BoundingBox sbb) {
+	protected void generatePaintingsOnWall(WorldGenLevel world, RandomSource rand, int howMany, int floorLevel, Direction direction, int minSize, BoundingBox sbb) {
 		for (int i = 0; i < howMany; i++) {
 			// get some random coordinates on the wall in the chunk
 			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
 			// initialize a painting object
-			Motive art = getPaintingOfSize(rand, minSize);
+			Holder<PaintingVariant> art = getPaintingOfSize(rand, minSize);
 			Painting painting = new Painting(EntityType.PAINTING, world.getLevel());
 			painting.setDirection(direction);
-			painting.motive = art;
+			painting.setVariant(art);
 			painting.setPos(pCoords.getX(), pCoords.getY(), pCoords.getZ()); // this is done to refresh the bounding box after changing the art
 
 			// check if we can fit a painting there
@@ -1811,12 +1810,12 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * At least one of the painting's parameters must be the specified size or greater
 	 */
-	protected Motive getPaintingOfSize(Random rand, int minSize) {
-		ArrayList<Motive> valid = new ArrayList<>();
+	protected Holder<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
+		ArrayList<Holder<PaintingVariant>> valid = new ArrayList<>();
 
-		for (Motive art : Registry.MOTIVE) {
+		for (PaintingVariant art : ForgeRegistries.PAINTING_VARIANTS) {
 			if (art.getWidth() >= minSize || art.getHeight() >= minSize) {
-				valid.add(art);
+				valid.add(Holder.direct(art));
 			}
 		}
 
@@ -1880,7 +1879,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * This returns the real-world coordinates of a possible painting or torch spot on the specified wall of this tower.
 	 */
-	protected BlockPos getRandomWallSpot(Random rand, int floorLevel, Direction direction, BoundingBox sbb) {
+	protected BlockPos getRandomWallSpot(RandomSource rand, int floorLevel, Direction direction, BoundingBox sbb) {
 		int minX = this.boundingBox.minX() + 2;
 		int maxX = this.boundingBox.maxX() - 2;
 
@@ -1930,7 +1929,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * This method is for final castle towers actually.
 	 * We need to break up this class into a more abstract tower class and a concrete lich tower class one day
 	 */
-	protected void makeGlyphBranches(WorldGenLevel world, Random rand, BlockState colour, BoundingBox sbb) {
+	protected void makeGlyphBranches(WorldGenLevel world, RandomSource rand, BlockState colour, BoundingBox sbb) {
 		// pick a random side of the tower
 		Rotation rotation = RotationUtil.ROTATIONS[rand.nextInt(4)];
 

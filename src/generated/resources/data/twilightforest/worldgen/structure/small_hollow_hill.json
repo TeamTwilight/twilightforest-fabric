@@ -1,0 +1,60 @@
+{
+  "type": "twilightforest:legacy_landmark",
+  "adjust_structure_elevation": false,
+  "advancements_required": [],
+  "allow_biome_surface_decorations": true,
+  "allow_biome_underground_decorations": false,
+  "ambient_spawns": [],
+  "biomes": "#twilightforest:valid_hollow_hill_biomes",
+  "hint_item": {
+    "Count": 1,
+    "id": "minecraft:written_book",
+    "tag": {
+      "author": "A Forgotten Explorer",
+      "pages": [
+        "{\"translate\":\"twilightforest.book.unknown.1\"}",
+        "{\"translate\":\"twilightforest.book.unknown.2\"}"
+      ],
+      "title": "Notes on the Unexplained"
+    }
+  },
+  "hint_mob": "twilightforest:kobold",
+  "labelled_monster_spawns": {
+    "0": [
+      {
+        "type": "minecraft:spider",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:zombie",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:redcap",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:swarm_spider",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:kobold",
+        "maxCount": 8,
+        "minCount": 4,
+        "weight": 10
+      }
+    ]
+  },
+  "legacy_landmark_start": "small_hollow_hill",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "water_spawns": []
+}

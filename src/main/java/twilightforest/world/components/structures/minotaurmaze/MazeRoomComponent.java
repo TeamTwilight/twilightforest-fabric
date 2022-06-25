@@ -3,34 +3,33 @@ package twilightforest.world.components.structures.minotaurmaze;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
-
-import java.util.Random;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class MazeRoomComponent extends TFStructureComponentOld {
 
 	public MazeRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(MinotaurMazePieces.TFMMR, nbt);
+		this(TFStructurePieceTypes.TFMMR.get(), nbt);
 	}
 
 	public MazeRoomComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public MazeRoomComponent(StructurePieceType type, TFFeature feature, int i, Random rand, int x, int y, int z) {
+	public MazeRoomComponent(StructurePieceType type, TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
 		super(type, feature, i, x, y, z);
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 
@@ -41,12 +40,12 @@ public class MazeRoomComponent extends TFStructureComponentOld {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, Random random) {
+	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, RandomSource random) {
 		// NO-OP
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// floor border
 		generateBox(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.MAZESTONE_BORDER.get().defaultBlockState(), AIR, true);
 		generateBox(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), AIR, true);
@@ -71,10 +70,5 @@ public class MazeRoomComponent extends TFStructureComponentOld {
 			generateBox(world, sbb, 15, 1, 6, 15, 4, 9, Blocks.OAK_FENCE.defaultBlockState(), AIR, false);
 			generateAirBox(world, sbb, 15, 1, 7, 15, 3, 8);
 		}
-	}
-
-	@Override
-	public NoiseEffect getNoiseEffect() {
-		return NoiseEffect.BURY;
 	}
 }

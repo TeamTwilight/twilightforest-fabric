@@ -12,7 +12,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class MinoshroomTrophyModel extends GenericTrophyModel {
 
-	public ModelPart head;
+	public final ModelPart head;
 
 	public MinoshroomTrophyModel(ModelPart part) {
 		this.head = part.getChild("head");

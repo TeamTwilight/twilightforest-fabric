@@ -27,7 +27,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, EntityDestroyBlock {
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -63,21 +63,21 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, En
 	protected static final VoxelShape SOUTH_WEST_SHAPE = Block.box(0.0D, 7.0D, 9.0D, 7.0D, 9.0D, 16.0D);
 	protected static final VoxelShape SOUTH_EAST_SHAPE = Block.box(9.0D, 7.0D, 9.0D, 16.0D, 9.0D, 16.0D);
 
-	ForceFieldBlock(BlockBehaviour.Properties props) {
-		super(props);
-		this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(AXIS, Direction.Axis.Y)
+	public ForceFieldBlock(BlockBehaviour.Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false).setValue(AXIS, Direction.Axis.Y)
 				.setValue(DOWN, false).setValue(UP, false)
 				.setValue(NORTH, false).setValue(SOUTH, false)
 				.setValue(WEST, false).setValue(EAST, false));
 	}
 
 	@Override
-	public boolean canEntityDestroy(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
+	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
 		return false;
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext collisionContext) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return this.getVoxelShape(state);
 	}
 
@@ -149,31 +149,33 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, En
 
 	private static int countSides(BlockState state) {
 		int count = 0;
-		for (Direction direction : Direction.values()) if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction))) count++;
+		for (Direction direction : Direction.values())
+			if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction))) count++;
 		return count;
 	}
 
 	@Override
-	public float getShadeBrightness(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+	public float getShadeBrightness(BlockState state, BlockGetter getter, BlockPos pos) {
 		return 1.0F;
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
 		return true;
 	}
 
-	public boolean canConnectTo(BlockGetter blockGetter, BlockPos pos, Direction direction) {
-		BlockState state = blockGetter.getBlockState(pos.relative(direction));
-		boolean solidSide = state.isFaceSturdy(blockGetter, pos.relative(direction), direction.getOpposite());
+	public boolean canConnectTo(BlockGetter getter, BlockPos pos, Direction direction) {
+		BlockState state = getter.getBlockState(pos.relative(direction));
+		boolean solidSide = state.isFaceSturdy(getter, pos.relative(direction), direction.getOpposite());
 		Block block = state.getBlock();
 
 		int betterConnections = 0;
 		if (!state.is(this)) {
 			for (Direction face : Direction.values()) {
-				if (blockGetter.getBlockState(pos.relative(face)).is(this)) betterConnections++;
+				if (getter.getBlockState(pos.relative(face)).is(this)) betterConnections++;
 			}
-			if (betterConnections > 3) return false; //Might need to alter this a bit, without this the forcefields in the final castles like to attach to every block, still does a bit in the main room :/
+			if (betterConnections > 3)
+				return false; //Might need to alter this a bit, without this the forcefields in the final castles like to attach to every block, still does a bit in the main room :/
 		}
 
 		return !isExceptionForConnection(state) && solidSide || block instanceof ForceFieldBlock || block instanceof IronBarsBlock || state.is(BlockTags.WALLS);
@@ -202,14 +204,14 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock, En
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor levelAccessor, BlockPos pos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) levelAccessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
-		return state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), this.canConnectTo(levelAccessor, pos, direction));
+	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor accessor, BlockPos pos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED)) accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
+		return state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), this.canConnectTo(accessor, pos, direction));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(WATERLOGGED, AXIS,  NORTH, EAST, SOUTH, WEST, UP, DOWN);
+		builder.add(WATERLOGGED, AXIS, NORTH, EAST, SOUTH, WEST, UP, DOWN);
 	}
 }

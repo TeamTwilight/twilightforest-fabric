@@ -1,0 +1,97 @@
+{
+  "type": "twilightforest:legacy_landmark",
+  "adjust_structure_elevation": true,
+  "advancements_required": [
+    "twilightforest:progress_knights"
+  ],
+  "allow_biome_surface_decorations": false,
+  "allow_biome_underground_decorations": true,
+  "ambient_spawns": [],
+  "biomes": "#twilightforest:valid_dark_tower_biomes",
+  "hint_item": {
+    "Count": 1,
+    "id": "minecraft:written_book",
+    "tag": {
+      "author": "A Forgotten Explorer",
+      "pages": [
+        "{\"translate\":\"twilightforest.book.darktower.1\"}",
+        "{\"translate\":\"twilightforest.book.darktower.2\"}",
+        "{\"translate\":\"twilightforest.book.darktower.3\"}"
+      ],
+      "title": "Notes on a Wooden Tower"
+    }
+  },
+  "hint_mob": "twilightforest:kobold",
+  "labelled_monster_spawns": {
+    "0": [
+      {
+        "type": "twilightforest:carminite_golem",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:skeleton",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:creeper",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 2
+      },
+      {
+        "type": "minecraft:witch",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 1
+      },
+      {
+        "type": "twilightforest:carminite_ghastling",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:carminite_broodling",
+        "maxCount": 8,
+        "minCount": 8,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:pinch_beetle",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 10
+      }
+    ],
+    "1": [
+      {
+        "type": "twilightforest:carminite_ghastguard",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 10
+      }
+    ]
+  },
+  "legacy_landmark_start": "dark_tower",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "water_spawns": [
+    {
+      "type": "minecraft:squid",
+      "maxCount": 4,
+      "minCount": 4,
+      "weight": 10
+    }
+  ]
+}

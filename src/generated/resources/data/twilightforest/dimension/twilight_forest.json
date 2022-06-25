@@ -1,180 +1,161 @@
 {
-  "type": {
-    "logical_height": 288,
-    "infiniburn": "#minecraft:infiniburn_overworld",
-    "effects": "twilightforest:renderer",
-    "ambient_light": 0.0,
-    "respawn_anchor_works": true,
-    "has_raids": false,
-    "min_y": -32,
-    "height": 288,
-    "natural": true,
-    "coordinate_scale": 0.125,
-    "piglin_safe": false,
-    "bed_works": true,
-    "fixed_time": 13000,
-    "has_skylight": true,
-    "has_ceiling": false,
-    "ultrawarm": false
-  },
+  "type": "twilightforest:twilight_forest_type",
   "generator": {
+    "type": "twilightforest:structure_locating_wrapper",
+    "dark_forest_canopy_height": 12,
     "generate_dark_forest_canopy": true,
     "monster_spawns_below_sealevel": true,
-    "dark_forest_canopy_height": 12,
+    "noise_generation_settings": "twilightforest:twilight_noise_gen",
     "wrapped_generator": {
+      "type": "minecraft:noise",
       "biome_source": {
+        "type": "twilightforest:twilight_biomes",
+        "base_factor": 2.5,
+        "base_offset": -1.25,
         "biomes": [
           {
+            "biome": "twilightforest:forest",
             "parameters": {
               "depth": 0.025,
               "scale": 0.05
-            },
-            "biome": "twilightforest:forest"
+            }
           },
           {
+            "biome": "twilightforest:dense_forest",
             "parameters": {
               "depth": 0.1,
               "scale": 0.2
-            },
-            "biome": "twilightforest:dense_forest"
+            }
           },
           {
+            "biome": "twilightforest:firefly_forest",
             "parameters": {
               "depth": 0.0625,
               "scale": 0.05
-            },
-            "biome": "twilightforest:firefly_forest"
+            }
           },
           {
+            "biome": "twilightforest:clearing",
             "parameters": {
               "depth": 0.005,
               "scale": 0.005
-            },
-            "biome": "twilightforest:clearing"
+            }
           },
           {
+            "biome": "twilightforest:oak_savannah",
             "parameters": {
               "depth": 0.05,
               "scale": 0.1
-            },
-            "biome": "twilightforest:oak_savannah"
+            }
           },
           {
+            "biome": "twilightforest:stream",
             "parameters": {
               "depth": -1.65,
               "scale": 0.25
-            },
-            "biome": "twilightforest:stream"
+            }
           },
           {
+            "biome": "twilightforest:lake",
             "parameters": {
               "depth": -1.97,
               "scale": 0.0
-            },
-            "biome": "twilightforest:lake"
+            }
           },
           {
+            "biome": "twilightforest:mushroom_forest",
             "parameters": {
               "depth": 0.025,
               "scale": 0.05
-            },
-            "biome": "twilightforest:mushroom_forest"
+            }
           },
           {
+            "biome": "twilightforest:dense_mushroom_forest",
             "parameters": {
               "depth": 0.05,
               "scale": 0.05
-            },
-            "biome": "twilightforest:dense_mushroom_forest"
+            }
           },
           {
+            "biome": "twilightforest:enchanted_forest",
             "parameters": {
               "depth": 0.025,
               "scale": 0.05
-            },
-            "biome": "twilightforest:enchanted_forest"
+            }
           },
           {
+            "biome": "twilightforest:spooky_forest",
             "parameters": {
               "depth": 0.025,
               "scale": 0.05
-            },
-            "biome": "twilightforest:spooky_forest"
+            }
           },
           {
+            "biome": "twilightforest:swamp",
             "parameters": {
               "depth": -0.9,
               "scale": 0.15
-            },
-            "biome": "twilightforest:swamp"
+            }
           },
           {
+            "biome": "twilightforest:fire_swamp",
             "parameters": {
               "depth": -0.2,
               "scale": 0.05
-            },
-            "biome": "twilightforest:fire_swamp"
+            }
           },
           {
+            "biome": "twilightforest:dark_forest",
             "parameters": {
               "depth": 0.025,
               "scale": 0.005
-            },
-            "biome": "twilightforest:dark_forest"
+            }
           },
           {
+            "biome": "twilightforest:dark_forest_center",
             "parameters": {
               "depth": 0.025,
               "scale": 0.005
-            },
-            "biome": "twilightforest:dark_forest_center"
+            }
           },
           {
+            "biome": "twilightforest:snowy_forest",
             "parameters": {
               "depth": 0.05,
               "scale": 0.15
-            },
-            "biome": "twilightforest:snowy_forest"
+            }
           },
           {
+            "biome": "twilightforest:glacier",
             "parameters": {
               "depth": 0.025,
               "scale": 0.05
-            },
-            "biome": "twilightforest:glacier"
+            }
           },
           {
+            "biome": "twilightforest:highlands",
             "parameters": {
               "depth": 3.0,
               "scale": 0.25
-            },
-            "biome": "twilightforest:highlands"
+            }
           },
           {
+            "biome": "twilightforest:thornlands",
             "parameters": {
               "depth": 7.0,
               "scale": 0.1
-            },
-            "biome": "twilightforest:thornlands"
+            }
           },
           {
+            "biome": "twilightforest:final_plateau",
             "parameters": {
               "depth": 13.75,
               "scale": 0.025
-            },
-            "biome": "twilightforest:final_plateau"
+            }
           }
-        ],
-        "base_offset": -1.25,
-        "base_factor": 2.5,
-        "type": "twilightforest:twilight_biomes"
+        ]
       },
-      "seed": 0,
-      "settings": "twilightforest:twilight_noise_gen",
-      "type": "minecraft:noise"
-    },
-    "noise_generation_settings": "twilightforest:twilight_noise_gen",
-    "type": "twilightforest:structure_locating_wrapper",
-    "use_overworld_seed": true
+      "settings": "twilightforest:twilight_noise_gen"
+    }
   }
 }

@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "##",
-    "##",
-    "##"
-  ],
   "key": {
     "#": {
       "item": "twilightforest:sorting_planks"
     }
   },
+  "pattern": [
+    "##",
+    "##",
+    "##"
+  ],
   "result": {
-    "item": "twilightforest:sorting_door",
-    "count": 3
+    "count": 3,
+    "item": "twilightforest:sorting_door"
   }
 }

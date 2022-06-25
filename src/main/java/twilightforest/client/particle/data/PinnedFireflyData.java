@@ -6,7 +6,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.init.TFParticleType;
 
 public class PinnedFireflyData implements ParticleOptions {
 

@@ -1,12 +1,12 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.client.particle.TFParticleType;
-
-import java.util.Random;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFParticleType;
 
 public class FireflyBlockEntity extends BlockEntity {
 
@@ -17,15 +17,15 @@ public class FireflyBlockEntity extends BlockEntity {
 	public float glowIntensity;
 	private boolean glowing;
 	private int glowDelay;
-	public float randRot = new Random().nextInt(3) * 90.0F;
+	public float randRot = RandomSource.create().nextInt(3) * 90.0F;
 
 	public FireflyBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.FIREFLY.get(), pos, state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, FireflyBlockEntity te) {
-		if (level.isClientSide) {
-			if (te.anyPlayerInRange() && level.random.nextInt(20) == 0) {
+		if (level.isClientSide()) {
+			if (te.anyPlayerInRange() && level.getRandom().nextInt(20) == 0) {
 				te.spawnParticles();
 			}
 
@@ -34,8 +34,8 @@ public class FireflyBlockEntity extends BlockEntity {
 			} else {
 				if (te.currentYaw == 0 && te.desiredYaw == 0) {
 					// make it rotate!
-					te.yawDelay = 200 + level.random.nextInt(200);
-					te.desiredYaw = level.random.nextInt(15) - level.random.nextInt(15);
+					te.yawDelay = 200 + level.getRandom().nextInt(200);
+					te.desiredYaw = level.getRandom().nextInt(15) - level.getRandom().nextInt(15);
 				}
 
 				if (te.currentYaw < te.desiredYaw) {
@@ -63,22 +63,22 @@ public class FireflyBlockEntity extends BlockEntity {
 				}
 				if (!te.glowing && te.glowIntensity <= 0) {
 					te.glowing = true;
-					te.glowDelay = level.random.nextInt(50);
+					te.glowDelay = level.getRandom().nextInt(50);
 				}
 			}
 		}
 	}
 
 	private boolean anyPlayerInRange() {
-		return level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, 16D, false) != null;
+		return this.getLevel().getNearestPlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, 16D, false) != null;
 	}
 
 	private void spawnParticles() {
-		double rx = worldPosition.getX() + level.random.nextFloat();
-		double ry = worldPosition.getY() + level.random.nextFloat();
-		double rz = worldPosition.getZ() + level.random.nextFloat();
+		double rx = this.getBlockPos().getX() + this.getLevel().getRandom().nextFloat();
+		double ry = this.getBlockPos().getY() + this.getLevel().getRandom().nextFloat();
+		double rz = this.getBlockPos().getZ() + this.getLevel().getRandom().nextFloat();
 //    	ModLoader.getMinecraftInstance().effectRenderer.addEffect(fireflyfx);
 		// ^ keeping here only for pure lolz
-		level.addParticle(TFParticleType.FIREFLY.get(), rx, ry, rz, 0, 0, 0);
+		this.getLevel().addParticle(TFParticleType.FIREFLY.get(), rx, ry, rz, 0, 0, 0);
 	}
 }

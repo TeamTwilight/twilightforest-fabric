@@ -5,9 +5,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.ai.CubeCenterOnSymbolGoal;
-import twilightforest.entity.ai.CubeMoveToRedstoneSymbolsGoal;
+import twilightforest.entity.ai.goal.CubeCenterOnSymbolGoal;
+import twilightforest.entity.ai.goal.CubeMoveToRedstoneSymbolsGoal;
+import twilightforest.init.TFParticleType;
 
 public class RovingCube extends Monster {
 
@@ -36,7 +36,7 @@ public class RovingCube extends Monster {
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
 				.add(Attributes.MAX_HEALTH, 10.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
+				.add(Attributes.MOVEMENT_SPEED, 0.23D)
 				.add(Attributes.ATTACK_DAMAGE, 5.0D);
 	}
 
@@ -44,13 +44,13 @@ public class RovingCube extends Monster {
 	public void aiStep() {
 		super.aiStep();
 
-		if (this.level.isClientSide) {
+		if (this.getLevel().isClientSide()) {
 			for (int i = 0; i < 3; i++) {
-				float px = (this.random.nextFloat() - this.random.nextFloat()) * 2.0F;
-				float py = this.getEyeHeight() - 0.25F + (this.random.nextFloat() - this.random.nextFloat()) * 2.0F;
-				float pz = (this.random.nextFloat() - this.random.nextFloat()) * 2.0F;
+				float px = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 2.0F;
+				float py = this.getEyeHeight() - 0.25F + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 2.0F;
+				float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 2.0F;
 
-				level.addParticle(TFParticleType.ANNIHILATE.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+				this.getLevel().addParticle(TFParticleType.ANNIHILATE.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 			}
 		}
 	}

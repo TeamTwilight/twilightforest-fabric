@@ -1,21 +1,7 @@
 {
   "parent": "minecraft:block/block",
-  "textures": {
-    "particle": "#all",
-    "all": "twilightforest:block/boss_spawner"
-  },
   "elements": [
     {
-      "from": [
-        -4,
-        -4,
-        -4
-      ],
-      "to": [
-        20,
-        20,
-        20
-      ],
       "faces": {
         "down": {
           "texture": "#all",
@@ -26,7 +12,7 @@
             14.0
           ]
         },
-        "up": {
+        "east": {
           "texture": "#all",
           "uv": [
             2.0,
@@ -53,7 +39,7 @@
             14.0
           ]
         },
-        "west": {
+        "up": {
           "texture": "#all",
           "uv": [
             2.0,
@@ -62,7 +48,7 @@
             14.0
           ]
         },
-        "east": {
+        "west": {
           "texture": "#all",
           "uv": [
             2.0,
@@ -71,7 +57,21 @@
             14.0
           ]
         }
-      }
+      },
+      "from": [
+        -4,
+        -4,
+        -4
+      ],
+      "to": [
+        20,
+        20,
+        20
+      ]
     }
-  ]
+  ],
+  "textures": {
+    "all": "twilightforest:block/boss_spawner",
+    "particle": "#all"
+  }
 }

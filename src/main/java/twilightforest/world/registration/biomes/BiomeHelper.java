@@ -10,11 +10,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFEntities;
 import twilightforest.world.registration.ConfiguredWorldCarvers;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
-import twilightforest.world.registration.features.TFPlacedFeatures;
+import twilightforest.init.TFConfiguredFeatures;
+import twilightforest.init.TFPlacedFeatures;
 
 public abstract class BiomeHelper {
 
@@ -517,7 +517,6 @@ public abstract class BiomeHelper {
 	public static Biome.BiomeBuilder biomeWithDefaults(BiomeSpecialEffects.Builder biomeAmbience, MobSpawnSettings.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
         return new Biome.BiomeBuilder()
                 .precipitation(Biome.Precipitation.RAIN)
-                .biomeCategory(Biome.BiomeCategory.FOREST)
                 //.depth(0.025f)
                 //.scale(0.05f)
                 .temperature(0.5F)

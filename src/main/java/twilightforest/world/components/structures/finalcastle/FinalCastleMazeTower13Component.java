@@ -4,8 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -18,21 +19,21 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 	public static final int LOWEST_DOOR = 144;
 	public static final int HIGHEST_DOOR = 222;
 
-	public BlockState color;
+	public final BlockState color;
 
 	public FinalCastleMazeTower13Component(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
@@ -40,10 +41,10 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	public FinalCastleMazeTower13Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(FinalCastlePieces.TFFCSiTo, nbt);
+		this(TFStructurePieceTypes.TFFCSiTo.get(), nbt);
 	}
 
-	public FinalCastleMazeTower13Component(StructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, BlockState color, Direction direction) {
+	public FinalCastleMazeTower13Component(StructurePieceType piece, TFLandmark feature, RandomSource rand, int i, int x, int y, int z, BlockState color, Direction direction) {
 		super(piece, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.color = color;
@@ -80,7 +81,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleMazeTower13Component(StructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
+	public FinalCastleMazeTower13Component(StructurePieceType piece, TFLandmark feature, RandomSource rand, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
 		super(piece, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.color = color;
@@ -91,13 +92,13 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent,StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent,StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(FinalCastlePieces.TFFCToF13, getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
@@ -110,7 +111,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	/**
 	 * Build more components towards the destination
 	 */
-	public void buildTowards(StructurePiece parent, StructurePieceAccessor list, Random rand, BlockPos dest) {
+	public void buildTowards(StructurePiece parent, StructurePieceAccessor list, RandomSource rand, BlockPos dest) {
 		// regular building first, adds roof/foundation
 		this.addChildren(parent, list, rand);
 
@@ -155,7 +156,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	//TODO: Parameter "parent" is unused. Remove?
-	protected void buildNonCriticalTowers(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	protected void buildNonCriticalTowers(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		// pick a random direction
 		Direction dir = RotationUtil.getRandomFacing(rand);
 		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getOrientation(), dir);
@@ -234,7 +235,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		return this.getOrientation();
 	}
 
-	private boolean buildContinueTowerTowards(StructurePieceAccessor list, Random rand, BlockPos dest, Direction facing, int howFar) {
+	private boolean buildContinueTowerTowards(StructurePieceAccessor list, RandomSource rand, BlockPos dest, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// adjust opening towards dest.getY() if we are getting close to dest
@@ -264,7 +265,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 			if (isWithinRange(centerX, centerZ, tc.getX(), tc.getZ(), 128)) {
 
-				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(FinalCastlePieces.TFFCSiTo, getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
+				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
 
 				BoundingBox largerBB = new BoundingBox(
 						sTower.getBoundingBox().minX() - 6, 0, sTower.getBoundingBox().minZ() - 6,
@@ -300,7 +301,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		 return false;
 	}
 
-	protected boolean buildDamagedTower(StructurePieceAccessor list, Random rand, Direction facing) {
+	protected boolean buildDamagedTower(StructurePieceAccessor list, RandomSource rand, Direction facing) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		int howFar = 14 + rand.nextInt(24);
@@ -334,8 +335,8 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 	}
 
-	protected FinalCastleMazeTower13Component makeNewDamagedTower(Random rand, Direction facing, BlockPos tc) {
-		return new FinalCastleDamagedTowerComponent(FinalCastlePieces.TFFCDamT, getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
+	protected FinalCastleMazeTower13Component makeNewDamagedTower(RandomSource rand, Direction facing, BlockPos tc) {
+		return new FinalCastleDamagedTowerComponent(TFStructurePieceTypes.TFFCDamT.get(), getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 
 	private int adjustOpening(int posY, BlockPos dest) {
@@ -353,7 +354,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		return openY;
 	}
 
-	private boolean buildEndTowerTowards(StructurePieceAccessor list, Random rand, BlockPos dest, Direction facing, int howFar) {
+	private boolean buildEndTowerTowards(StructurePieceAccessor list, RandomSource rand, BlockPos dest, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 		opening = new BlockPos(
 				opening.getX(),
@@ -412,7 +413,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	/**
 	 * Gets a random position in the specified direction that connects to a floor currently in the tower.
 	 */
-	public BlockPos getValidOpeningCC(Random rand, Direction facing) {
+	public BlockPos getValidOpeningCC(RandomSource rand, Direction facing) {
 		Rotation relative = RotationUtil.getRelativeRotation(this.getOrientation(), facing);
 		int floors = (this.height / 8);
 
@@ -460,8 +461,8 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel worldIn, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(worldIn.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+	public void postProcess(WorldGenLevel worldIn, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		RandomSource decoRNG = RandomSource.create(worldIn.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// walls
 		generateBox(worldIn, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, false, rand, deco.randomBlocks);
@@ -496,7 +497,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	private void addFloors(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	private void addFloors(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		// only add floors up to highest opening
 		int floors = (this.highestOpening / 8) + 1;
 

@@ -14,7 +14,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 
 public class LiverootBlock extends Block {
 
@@ -23,8 +24,8 @@ public class LiverootBlock extends Block {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-		if(player.getItemInHand(hand).is(ToolTags.AXES) || player.getItemInHand(hand).getItem() instanceof AxeItem) {
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+		if (player.getItemInHand(hand).is(ToolTags.AXES) || player.getItemInHand(hand).getItem() instanceof AxeItem) {
 			level.setBlockAndUpdate(pos, TFBlocks.ROOT_BLOCK.get().defaultBlockState());
 			ItemEntity liveroot = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.LIVEROOT.get()));
 			level.addFreshEntity(liveroot);
@@ -32,6 +33,6 @@ public class LiverootBlock extends Block {
 			player.getItemInHand(hand).hurtAndBreak(1, player, evt -> evt.broadcastBreakEvent(hand));
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
-		return super.use(state, level, pos, player, hand, hitResult);
+		return super.use(state, level, pos, player, hand, result);
 	}
 }

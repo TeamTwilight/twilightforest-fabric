@@ -9,19 +9,23 @@ import io.github.fabricators_of_create.porting_lib.loot.LootModifierManager;
 import io.github.fabricators_of_create.porting_lib.util.PathResourcePack;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
@@ -34,34 +38,32 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.TFBlocks;
-import twilightforest.block.entity.TFBlockEntities;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.compat.CuriosCompat;
+import twilightforest.compat.TFCompat;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.TrinketsCompat;
 import twilightforest.compat.TConCompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
-import twilightforest.enchantment.TFEnchantments;
-import twilightforest.entity.TFEntities;
-import twilightforest.inventory.TFContainers;
-import twilightforest.item.FieryPickItem;
-import twilightforest.item.TFItems;
-import twilightforest.item.recipe.TFRecipes;
+import twilightforest.init.TFEnchantments;
+import twilightforest.init.TFEntities;
+import twilightforest.init.*;
+import twilightforest.init.TFMenuTypes;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFLootModifiers;
+import twilightforest.loot.TFLootTables;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.potions.TFMobEffects;
-import twilightforest.util.TFStats;
+import twilightforest.init.TFBannerPatterns;
+import twilightforest.init.TFStats;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.registration.*;
-import twilightforest.world.registration.biomes.BiomeKeys;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
-import twilightforest.world.registration.features.TFPlacedFeatures;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -100,38 +102,48 @@ public class TwilightForestMod implements ModInitializer {
 
 		CommandRegistrationCallback.EVENT.register(this::registerCommands);
 
+		TFBannerPatterns.BANNER_PATTERNS.register();
 		BiomeKeys.BIOMES.register();
 		TFBlockEntities.BLOCK_ENTITIES.register();
 		TFBlocks.BLOCKS.register();
-		TFContainers.CONTAINERS.register();
+		TFLoot.CONDITIONS.register();
+		TFMenuTypes.CONTAINERS.register();
+		TFDimensionSettings.DIMENSION_TYPES.register();
 		TFEnchantments.ENCHANTMENTS.register();
 		TFEntities.ENTITIES.register();
-		TFBiomeFeatures.FEATURES.register();
-		TwilightFeatures.FOLIAGE_PLACERS.register();
+		TFFeatures.FEATURES.register();
+		TFFeatureModifiers.FOLIAGE_PLACERS.register();
+		TFLoot.FUNCTIONS.register();
 		TFItems.ITEMS.register();
+		TFLootModifiers.LOOT_MODIFIERS.register();
 		TFMobEffects.MOB_EFFECTS.register();
-		TFNoiseGenerationSettings.NOISE_GENERATORS.register();
+		TFDimensionSettings.NOISE_GENERATORS.register();
 		TFParticleType.PARTICLE_TYPES.register();
-		TwilightFeatures.PLACEMENT_MODIFIERS.register();
+		TFFeatureModifiers.PLACEMENT_MODIFIERS.register();
 		TFRecipes.RECIPE_SERIALIZERS.register();
 		TFRecipes.RECIPE_TYPES.register();
 		//TFPotions.POTIONS.register(modbus);
+		TFSounds.SOUNDS.register();
 		TFEntities.SPAWN_EGGS.register();
 		TFStats.STATS.register();
+		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(modbus);
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register();
-		TwilightFeatures.TREE_DECORATORS.register();
-		TwilightFeatures.TRUNK_PLACERS.register();
+		TFStructureSets.STRUCTURE_SETS.register(modbus);
+		TFStructureTypes.STRUCTURE_TYPES.register(modbus);
+		TFStructures.STRUCTURES.register(modbus);
+		TFFeatureModifiers.TREE_DECORATORS.register();
+		TFFeatureModifiers.TRUNK_PLACERS.register();
 		TFBlocks.registerItemblocks();
 		TFEntities.init();
 
-		if(FabricLoader.getInstance().isModLoaded(TFCompat.UNDERGARDEN_ID)) {
+//		if(FabricLoader.getInstance().isModLoaded(TFCompat.UNDERGARDEN_ID)) {
 //			UndergardenCompat.ENTITIES.register();
-		}
-
-		if(FabricLoader.getInstance().isModLoaded(TFCompat.TCON_ID)) {
-			TConCompat.FLUIDS.register();
-			TConCompat.MODIFIERS.register();
-		}
+//		}
+//
+//		if(FabricLoader.getInstance().isModLoaded(TFCompat.TCON_ID)) {
+//			TConCompat.FLUIDS.register();
+//			TConCompat.MODIFIERS.register();
+//		}
 
 		TFStructures.register();
 		if(FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
@@ -161,10 +173,8 @@ public class TwilightForestMod implements ModInitializer {
 
 
 		registerSerializers();
-		registerLootModifiers();
 		ItemEvents.init();
 		AddPackFindersCallback.EVENT.register(TwilightForestMod::addClassicPack);
-		TFEventListener.init();
 		TFTickHandler.init();
 		init();
 	}
@@ -178,7 +188,7 @@ public class TwilightForestMod implements ModInitializer {
 				if (metadataSection != null) {
 					sources.accept((packConsumer, packConstructor) ->
 							packConsumer.accept(packConstructor.create(
-									"builtin/twilight_forest_legacy_resources", new TextComponent("Twilight Classic"), false,
+									"builtin/twilight_forest_legacy_resources", Component.literal("Twilight Classic"), false,
 									() -> pack, metadataSection, Pack.Position.TOP, PackSource.BUILT_IN)));
 				}
 			}
@@ -191,18 +201,12 @@ public class TwilightForestMod implements ModInitializer {
 	public static void registerSerializers() {
 		//How do I add a condition serializer as fast as possible? An event that fires really early
 		new UncraftingEnabledCondition().register();
-		TFTreasure.init();
 
-		//TODO find a better place for these? they work fine here but idk
-		Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
-		Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
+			//TODO find a better place for these? they work fine here but idk
+			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
+			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
 
-		Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
-	}
-
-	public static void registerLootModifiers() {
-		Registry.register(LootModifierManager.SERIALIZER, ID + ":fiery_pick_smelting", new FieryPickItem.Serializer());
-		Registry.register(LootModifierManager.SERIALIZER, ID + ":giant_block_grouping", new TFEventListener.Serializer());
+			Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
 	}
 
 	public void sendIMCs() {
@@ -212,7 +216,6 @@ public class TwilightForestMod implements ModInitializer {
 	public static void init() {
 		TFPacketHandler.init();
 		TFAdvancements.init();
-		BiomeKeys.addBiomeTypes();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
@@ -241,8 +244,10 @@ public class TwilightForestMod implements ModInitializer {
 			TFBlocks.tfCompostables();
 			TFBlocks.tfBurnables();
 			TFBlocks.tfPots();
+			TFEntities.registerSpawnPlacements();
 			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();
+			TFStats.init();
 
 			WoodType.register(TFBlocks.TWILIGHT_OAK);
 			WoodType.register(TFBlocks.CANOPY);
@@ -279,7 +284,7 @@ public class TwilightForestMod implements ModInitializer {
 //		});
 	}
 
-	public void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, boolean dedicated) {
+	public void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
 		TFCommand.register(dispatcher);
 	}
 

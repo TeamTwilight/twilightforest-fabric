@@ -3,10 +3,10 @@ package twilightforest.enums;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import twilightforest.block.entity.TFBlockEntities;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.block.entity.spawner.BossSpawnerBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 import java.util.function.Supplier;
 

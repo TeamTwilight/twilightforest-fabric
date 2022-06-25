@@ -1,7 +1,0 @@
-{
-  "config": {},
-  "biomes": "#twilightforest:valid_labyrinth_biomes",
-  "adapt_noise": true,
-  "spawn_overrides": {},
-  "type": "twilightforest:labyrinth"
-}

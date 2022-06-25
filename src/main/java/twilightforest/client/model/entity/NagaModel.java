@@ -23,8 +23,8 @@ import twilightforest.entity.boss.NagaSegment;
 @Environment(EnvType.CLIENT)
 public class NagaModel<T extends Entity> extends ListModel<T> {
 
-    public ModelPart root;
-    public ModelPart head;
+    public final ModelPart root;
+    public final ModelPart head;
     public ModelPart body;
     private T entity;
 

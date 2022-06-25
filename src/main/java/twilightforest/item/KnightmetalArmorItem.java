@@ -22,19 +22,16 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.renderer.TFArmorRenderer;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.function.Consumer;
 
 public class KnightmetalArmorItem extends ArmorItem {
 
-	private static final Map<EquipmentSlot, HumanoidModel<?>> knightlyArmorModel = new EnumMap<>(EquipmentSlot.class);
-
-	public KnightmetalArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties props) {
-		super(material, slot, props);
+	public KnightmetalArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
+		super(material, slot, properties);
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> this::initializeClient);
 	}
 
-	public static String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot slot, String layer) {
+	public static String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
 		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "knightly_2.png";
 		} else {

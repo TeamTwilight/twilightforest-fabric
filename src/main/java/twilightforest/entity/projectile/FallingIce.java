@@ -1,20 +1,20 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import twilightforest.client.particle.TFParticleType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import twilightforest.entity.boss.AlphaYeti;
+import twilightforest.init.TFParticleType;
 
 import java.util.List;
 
@@ -35,15 +35,15 @@ public class FallingIce extends FallingBlockEntity {
 
 	@Override
 	public void tick() {
-		if (time > HANG_TIME) {
-			setNoGravity(true);
+		if (this.time > HANG_TIME) {
+			this.setNoGravity(true);
 		}
 
 		super.tick();
 
 		// kill other nearby blocks if they are not as old as this one
-		if (!this.level.isClientSide) {
-			List<FallingIce> nearby = this.level.getEntitiesOfClass(FallingIce.class, this.getBoundingBox());
+		if (!this.getLevel().isClientSide()) {
+			List<FallingIce> nearby = this.getLevel().getEntitiesOfClass(FallingIce.class, this.getBoundingBox());
 
 			for (FallingIce entity : nearby) {
 				if (entity != this) {
@@ -53,19 +53,19 @@ public class FallingIce extends FallingBlockEntity {
 				}
 			}
 
-			destroyIceInAABB(this.getBoundingBox().inflate(0.5, 0, 0.5));
+			this.destroyIceInAABB(this.getBoundingBox().inflate(0.5, 0, 0.5));
 		} else {
-			makeTrail();
+			this.makeTrail();
 		}
 	}
 
 	private void makeTrail() {
 		for (int i = 0; i < 2; i++) {
-			double dx = this.getX() + 2F * (random.nextFloat() - random.nextFloat());
-			double dy = this.getY() - 3F + 3F * (random.nextFloat() - random.nextFloat());
-			double dz = this.getZ() + 2F * (random.nextFloat() - random.nextFloat());
+			double dx = this.getX() + 2F * (this.random.nextFloat() - this.random.nextFloat());
+			double dy = this.getY() - 3F + 3F * (this.random.nextFloat() - this.random.nextFloat());
+			double dz = this.getZ() + 2F * (this.random.nextFloat() - this.random.nextFloat());
 
-			level.addParticle(TFParticleType.SNOW_WARNING.get(), dx, dy, dz, 0, -1, 0);
+			this.getLevel().addParticle(TFParticleType.SNOW_WARNING.get(), dx, dy, dz, 0, -1, 0);
 		}
 	}
 
@@ -76,7 +76,7 @@ public class FallingIce extends FallingBlockEntity {
 			int i = Mth.ceil(distance - 1.0F);
 
 			if (i > 0) {
-				List<Entity> list = this.level.getEntities(this, this.getBoundingBox());
+				List<Entity> list = this.getLevel().getEntities(this, this.getBoundingBox());
 				DamageSource damagesource = DamageSource.FALLING_BLOCK;
 
 				for (Entity entity : list) {
@@ -89,14 +89,14 @@ public class FallingIce extends FallingBlockEntity {
 
 		BlockState stateId = Blocks.PACKED_ICE.defaultBlockState();
 		for (int i = 0; i < 200; i++) {
-			double dx = this.getX() + 3F * (random.nextFloat() - random.nextFloat());
-			double dy = this.getY() + 2 + 3F * (random.nextFloat() - random.nextFloat());
-			double dz = this.getZ() + 3F * (random.nextFloat() - random.nextFloat());
+			double dx = this.getX() + 3F * (this.random.nextFloat() - this.random.nextFloat());
+			double dy = this.getY() + 2 + 3F * (this.random.nextFloat() - this.random.nextFloat());
+			double dz = this.getZ() + 3F * (this.random.nextFloat() - this.random.nextFloat());
 
-			this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, stateId), dx, dy, dz, 0, 0, 0);
+			this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, stateId), dx, dy, dz, 0, 0, 0);
 		}
 
-		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.defaultBlockState()/*, level, blockPosition(), null*/).getBreakSound(), 3F, 0.5F);
+		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.defaultBlockState()/*, this.getLevel(), blockPosition(), null*/).getBreakSound(), 3F, 0.5F);
 		return false;
 	}
 
@@ -112,10 +112,10 @@ public class FallingIce extends FallingBlockEntity {
 			for (int dy = minY; dy <= maxY; ++dy) {
 				for (int dz = minZ; dz <= maxZ; ++dz) {
 					BlockPos pos = new BlockPos(dx, dy, dz);
-					Block block = this.level.getBlockState(pos).getBlock();
+					Block block = this.getLevel().getBlockState(pos).getBlock();
 
 					if (block == Blocks.ICE || block == Blocks.PACKED_ICE || block == Blocks.STONE) {
-						this.level.destroyBlock(pos, false);
+						this.getLevel().destroyBlock(pos, false);
 					}
 				}
 			}

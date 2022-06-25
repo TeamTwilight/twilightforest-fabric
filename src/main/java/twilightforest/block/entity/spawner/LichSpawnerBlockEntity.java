@@ -7,9 +7,9 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.entity.TFBlockEntities;
-import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.Lich;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFEntities;
 
 public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
@@ -19,25 +19,25 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 	@Override
 	public boolean anyPlayerInRange() {
-		Player closestPlayer = level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange(), false);
-		return closestPlayer != null && closestPlayer.getY() > worldPosition.getY() - 4;
+		Player closestPlayer = this.getLevel().getNearestPlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange(), false);
+		return closestPlayer != null && closestPlayer.getY() > this.getBlockPos().getY() - 4;
 	}
 
 	@Override
-	protected boolean spawnMyBoss(ServerLevelAccessor world) {
+	protected boolean spawnMyBoss(ServerLevelAccessor accessor) {
 
-		Lich myCreature = makeMyCreature();
+		Lich myCreature = this.makeMyCreature();
 
-		myCreature.moveTo(worldPosition, world.getLevel().random.nextFloat() * 360F, 0.0F);
-		myCreature.finalizeSpawn(world, world.getCurrentDifficultyAt(worldPosition), MobSpawnType.SPAWNER, null, null);
+		myCreature.moveTo(this.getBlockPos(), accessor.getLevel().random.nextFloat() * 360F, 0.0F);
+		myCreature.finalizeSpawn(accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null, null);
 		myCreature.setAttackCooldown(40);
 		myCreature.setExtinguishTimer();
 
 		// set creature's home to this
-		initializeCreature(myCreature);
+		this.initializeCreature(myCreature);
 
 		// spawn it
-		return world.addFreshEntity(myCreature);
+		return accessor.addFreshEntity(myCreature);
 	}
 
 	@Override

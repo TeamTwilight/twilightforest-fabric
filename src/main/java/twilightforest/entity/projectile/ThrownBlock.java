@@ -15,11 +15,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import twilightforest.entity.TFEntities;
 import twilightforest.entity.monster.Troll;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFEntities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ThrownBlock extends TFThrowable {
 
@@ -31,7 +31,7 @@ public class ThrownBlock extends TFThrowable {
 
 	public ThrownBlock(Level world, LivingEntity thrower, @Nullable BlockState state) {
 		super(TFEntities.THROWN_BLOCK.get(), world, thrower);
-		if(state != null) {
+		if (state != null) {
 			this.state = state;
 		}
 	}
@@ -51,9 +51,9 @@ public class ThrownBlock extends TFThrowable {
 	@Override
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
-			ParticleOptions particle = new BlockParticleOption(ParticleTypes.BLOCK, state);
+			ParticleOptions particle = new BlockParticleOption(ParticleTypes.BLOCK, this.state);
 			for (int i = 0; i < 20; i++) {
-				this.level.addParticle(particle, false, this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
+				this.level.addParticle(particle, false, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, this.random.nextDouble() * 0.2D, this.random.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -63,10 +63,10 @@ public class ThrownBlock extends TFThrowable {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if(result.getEntity() instanceof LivingEntity living && !(living instanceof Troll) && !this.level.isClientSide) {
+		if (result.getEntity() instanceof LivingEntity living && !(living instanceof Troll) && !this.getLevel().isClientSide()) {
 			living.hurt(TFDamageSources.THROWN_BLOCK, 6);
 
-			this.level.broadcastEntityEvent(this, (byte) 3);
+			this.getLevel().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
 	}
@@ -74,14 +74,14 @@ public class ThrownBlock extends TFThrowable {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		if (!this.level.isClientSide) {
-			this.level.broadcastEntityEvent(this, (byte) 3);
+		if (!this.getLevel().isClientSide()) {
+			this.getLevel().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
 	}
 
 	public BlockState getBlockState() {
-		return state;
+		return this.state;
 	}
 
 	@Override

@@ -10,10 +10,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 
 /**
  * Copied a few things from {@link net.minecraft.world.level.levelgen.structure.TemplateStructurePiece}
@@ -21,7 +21,7 @@ import twilightforest.world.registration.TFFeature;
 @Deprecated // Should extend TemplateStructurePiece instead
 public abstract class TFStructureComponentTemplate extends TFStructureComponent {
 
-    protected StructurePlaceSettings placeSettings = new StructurePlaceSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+    protected final StructurePlaceSettings placeSettings = new StructurePlaceSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
     protected BlockPos templatePosition;
     protected BlockPos rotatedPosition;
     protected StructureTemplate TEMPLATE;
@@ -31,10 +31,10 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
         super(piece, nbt);
         this.templatePosition = new BlockPos(nbt.getInt("TPX"), nbt.getInt("TPY"), nbt.getInt("TPZ"));
         this.placeSettings.setRotation(this.rotation);
-		LAZY_TEMPLATE_LOADER = () -> setup(ctx.structureManager());
+		LAZY_TEMPLATE_LOADER = () -> setup(ctx.structureTemplateManager());
     }
 
-    public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, BoundingBox boundingBox) {
+    public TFStructureComponentTemplate(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, BoundingBox boundingBox) {
         super(type, i, boundingBox);
         setFeature(feature);
         this.mirror = Mirror.NONE;
@@ -42,7 +42,7 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
     }
 
     @Deprecated
-    public TFStructureComponentTemplate(StructureManager manager, StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+    public TFStructureComponentTemplate(StructureTemplateManager manager, StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, Rotation rotation) {
         super(type, i, new BoundingBox(x, y, z, x, y, z));
         setFeature(feature);
         this.rotation = rotation;
@@ -54,7 +54,7 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 
     //TODO: Unused. Remove?
     @Deprecated
-    public TFStructureComponentTemplate(StructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
+    public TFStructureComponentTemplate(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
         super(type, i, new BoundingBox(x, y, z, x, y, z));
         setFeature(feature);
         this.rotation = rotation;
@@ -63,13 +63,13 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
         this.templatePosition = new BlockPos(x, y, z);
     }
 
-    public final void setup(StructureManager templateManager) {
+    public final void setup(StructureTemplateManager templateManager) {
         loadTemplates(templateManager);
         setModifiedTemplatePositionFromRotation();
         setBoundingBoxFromTemplate(rotatedPosition);
     }
 
-    protected abstract void loadTemplates(StructureManager templateManager);
+    protected abstract void loadTemplates(StructureTemplateManager templateManager);
 
     @Override
     protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {

@@ -2,6 +2,7 @@ package twilightforest.entity.monster;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -19,11 +20,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import twilightforest.TFSounds;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class SnowGuardian extends BaseIceMob {
 
@@ -44,33 +45,33 @@ public class SnowGuardian extends BaseIceMob {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
+				.add(Attributes.MOVEMENT_SPEED, 0.23D)
 				.add(Attributes.ATTACK_DAMAGE, 3.0D)
 				.add(Attributes.MAX_HEALTH, 10.0D);
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_GUARDIAN_AMBIENT;
+		return TFSounds.ICE_GUARDIAN_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_GUARDIAN_HURT;
+		return TFSounds.ICE_GUARDIAN_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_GUARDIAN_DEATH;
+		return TFSounds.ICE_GUARDIAN_DEATH.get();
 	}
 
 	@Override
 	public float getVoicePitch() {
-		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.8F;
+		return (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 0.8F;
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
+	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
 		int type = random.nextInt(4);
 		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(this.makeItemForSlot(EquipmentSlot.MAINHAND, type)));
 		this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(this.makeItemForSlot(EquipmentSlot.CHEST, type)));
@@ -113,10 +114,10 @@ public class SnowGuardian extends BaseIceMob {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		SpawnGroupData data = super.finalizeSpawn(worldIn, difficulty, reason, spawnDataIn, dataTag);
-		this.populateDefaultEquipmentSlots(difficulty);
-		this.populateDefaultEquipmentEnchantments(difficulty);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn, dataTag);
+		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
+		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
 		return data;
 	}
 
@@ -124,19 +125,19 @@ public class SnowGuardian extends BaseIceMob {
 	public void aiStep() {
 		super.aiStep();
 
-		if (this.level.isClientSide) {
+		if (this.getLevel().isClientSide()) {
 			for (int i = 0; i < 3; i++) {
-				float px = (this.random.nextFloat() - this.random.nextFloat()) * 0.3F;
-				float py = this.getEyeHeight() + (this.random.nextFloat() - this.random.nextFloat()) * 0.5F;
-				float pz = (this.random.nextFloat() - this.random.nextFloat()) * 0.3F;
+				float px = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
+				float py = this.getEyeHeight() + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
+				float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
 
-				level.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+				this.getLevel().addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 			}
 		}
 	}
 
 	@Override
 	public int getMaxSpawnClusterSize() {
-		return 8;
+		return 2;
 	}
 }

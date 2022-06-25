@@ -15,11 +15,11 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,23 +43,23 @@ public class PlateauBoss extends Monster {
 
 	@Override
 	public void aiStep() {
-		if (!level.isClientSide) {
-			bossInfo.setProgress(getHealth() / getMaxHealth());
+		if (!this.getLevel().isClientSide()) {
+			this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 		}
 	}
 
 	@Override
-	public boolean removeWhenFarAway(double p_213397_1_) {
+	public boolean removeWhenFarAway(double distance) {
 		return false;
 	}
 
 	@Override
 	public void checkDespawn() {
-		if (level.getDifficulty() == Difficulty.PEACEFUL) {
-			if (!hasRestriction()) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get().defaultBlockState());
+		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
+			if (!this.hasRestriction()) {
+				this.getLevel().setBlockAndUpdate(getRestrictCenter(), TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get().defaultBlockState());
 			}
-			discard();
+			this.discard();
 		} else {
 			super.checkDespawn();
 		}
@@ -67,8 +67,8 @@ public class PlateauBoss extends Monster {
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		if(source.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
-			hurtBy.add(player);
+		if(source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
+			this.hurtBy.add(player);
 		}
 		return super.hurt(source, amount);
 	}
@@ -76,9 +76,9 @@ public class PlateauBoss extends Monster {
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if (!level.isClientSide) {
-			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.FINAL_CASTLE);
-			for(ServerPlayer player : hurtBy) {
+		if (!this.getLevel().isClientSide()) {
+			TFGenerationSettings.markStructureConquered(this.getLevel(), this.blockPosition(), TFLandmark.FINAL_CASTLE);
+			for(ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 		}
@@ -105,8 +105,7 @@ public class PlateauBoss extends Monster {
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		BlockPos home = this.getRestrictCenter();
-		compound.put("Home", newDoubleList(home.getX(), home.getY(), home.getZ()));
-		compound.putBoolean("HasHome", this.hasRestriction());
+		compound.put("Home", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
 		super.addAdditionalSaveData(compound);
 	}
 
@@ -120,16 +119,13 @@ public class PlateauBoss extends Monster {
 			int hz = (int) nbttaglist.getDouble(2);
 			this.restrictTo(new BlockPos(hx, hy, hz), 30);
 		}
-		if (!compound.getBoolean("HasHome")) {
-			this.hasRestriction();
-		}
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 

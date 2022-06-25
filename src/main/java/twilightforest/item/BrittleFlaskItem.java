@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -20,10 +19,10 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BrittleFlaskItem extends Item {
@@ -75,7 +74,7 @@ public class BrittleFlaskItem extends Item {
 						player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
 					}
 					flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-					player.playSound(TFSounds.FLASK_FILL, flaskTag.getInt("Uses") * 0.25F, player.level.random.nextFloat() * 0.1F + 0.9F);
+					player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
 					return true;
 				} else if (!flaskTag.contains("Potion")) {
 					if (!player.getAbilities().instabuild) {
@@ -84,7 +83,7 @@ public class BrittleFlaskItem extends Item {
 					}
 					flaskTag.putString("Potion", potionTag.getString("Potion"));
 					flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-					player.playSound(TFSounds.FLASK_FILL, flaskTag.getInt("Uses") * 0.25F, player.level.random.nextFloat() * 0.1F + 0.9F);
+					player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
 					return true;
 				}
 			}
@@ -120,7 +119,7 @@ public class BrittleFlaskItem extends Item {
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
 		CompoundTag tag = stack.getOrCreateTag();
 		if (entity instanceof Player player) {
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				if (!player.isCreative()) addTowardsAdvancement(Potion.byName(tag.getString("Potion")), player);
 				for (MobEffectInstance mobeffectinstance : PotionUtils.getMobEffects(stack)) {
 					if (mobeffectinstance.getEffect().isInstantenous()) {
@@ -142,11 +141,11 @@ public class BrittleFlaskItem extends Item {
 			if (canBreak() && !player.getAbilities().instabuild) {
 				if (tag.getInt("Uses") <= 0) {
 					stack.shrink(1);
-					level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK, player.getSoundSource(), 1.5F, 0.7F);
+					level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK.get(), player.getSoundSource(), 1.5F, 0.7F);
 				} else {
 					tag.putInt("Breakage", tag.getInt("Breakage") + 1);
 					tag.putBoolean("Refillable", false);
-					level.playSound(null, player, TFSounds.BRITTLE_FLASK_CRACK, player.getSoundSource(), 1.5F, 2.0F);
+					level.playSound(null, player, TFSounds.BRITTLE_FLASK_CRACK.get(), player.getSoundSource(), 1.5F, 2.0F);
 				}
 			}
 		}
@@ -193,9 +192,9 @@ public class BrittleFlaskItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
-		tooltip.add(new TranslatableComponent("item.twilightforest.flask_doses", stack.getOrCreateTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable("item.twilightforest.flask_doses", stack.getOrCreateTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
 		if (!stack.getOrCreateTag().getBoolean("Refillable"))
-			tooltip.add(new TranslatableComponent("item.twilightforest.flask_no_refill").withStyle(ChatFormatting.RED));
+			tooltip.add(Component.translatable("item.twilightforest.flask_no_refill").withStyle(ChatFormatting.RED));
 	}
 
 	//copied from Item.getBarWidth, but reversed the "durability" check so it increments up, not down
@@ -206,7 +205,7 @@ public class BrittleFlaskItem extends Item {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (allowdedIn(tab)) {
+		if (this.allowedIn(tab)) {
 			ItemStack stack = new ItemStack(this);
 			stack.getOrCreateTag().putInt("Uses", 0);
 			stack.getOrCreateTag().putInt("Breakage", 0);

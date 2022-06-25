@@ -1,37 +1,38 @@
 package twilightforest.block;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFStats;
 import twilightforest.util.PlayerHelper;
-import twilightforest.util.TFStats;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock {
 
@@ -48,9 +49,9 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 
 	private static final VoxelShape FINAL = Shapes.or(BOTTOM, MID, TOP, CORNER1, CORNER2, CORNER3, CORNER4);
 
-	public TrophyPedestalBlock(Properties props) {
-		super(props);
-		this.registerDefaultState(defaultBlockState().setValue(ACTIVE, false).setValue(WATERLOGGED, false));
+	public TrophyPedestalBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -67,12 +68,12 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED)) {
+			accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
 		}
 
-		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
 	}
 
 	@Override
@@ -83,43 +84,43 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 
 	@Override
 	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return FINAL;
 	}
 
 	@Override
 	@Deprecated
-	public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		world.updateNeighbourForOutputSignal(pos, this);
-		if (world.isClientSide || state.getValue(ACTIVE) || !isTrophyOnTop(world, pos)) return;
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		level.updateNeighbourForOutputSignal(pos, this);
+		if (level.isClientSide() || state.getValue(ACTIVE) || !isTrophyOnTop(level, pos)) return;
 
-		if (TFGenerationSettings.isProgressionEnforced(world)) {
-			if (areNearbyPlayersEligible(world, pos)) {
-				doPedestalEffect(world, pos, state);
+		if (TFGenerationSettings.isProgressionEnforced(level)) {
+			if (this.areNearbyPlayersEligible(level, pos)) {
+				this.doPedestalEffect(level, pos, state);
 			}
-			warnIneligiblePlayers(world, pos);
+			this.warnIneligiblePlayers(level, pos);
 		} else {
-			doPedestalEffect(world, pos, state);
+			this.doPedestalEffect(level, pos, state);
 		}
 
-		rewardNearbyPlayers(world, pos);
+		this.rewardNearbyPlayers(level, pos);
 	}
 
-	private boolean isTrophyOnTop(Level world, BlockPos pos) {
-		return world.getBlockState(pos.above()).is(BlockTagGenerator.TROPHIES);
+	private boolean isTrophyOnTop(Level level, BlockPos pos) {
+		return level.getBlockState(pos.above()).is(BlockTagGenerator.TROPHIES);
 	}
 
-	private void warnIneligiblePlayers(Level world, BlockPos pos) {
-		for (Player player : world.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
-			if (!isPlayerEligible(player)) {
-				player.displayClientMessage(new TranslatableComponent(TwilightForestMod.ID + ".trophy_pedestal.ineligible"), true);
+	private void warnIneligiblePlayers(Level level, BlockPos pos) {
+		for (Player player : level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
+			if (!this.isPlayerEligible(player)) {
+				player.displayClientMessage(Component.translatable(TwilightForestMod.ID + ".trophy_pedestal.ineligible"), true);
 			}
 		}
 	}
 
-	private boolean areNearbyPlayersEligible(Level world, BlockPos pos) {
-		for (Player player : world.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
-			if (isPlayerEligible(player)) return true;
+	private boolean areNearbyPlayersEligible(Level level, BlockPos pos) {
+		for (Player player : level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(16.0D))) {
+			if (this.isPlayerEligible(player)) return true;
 		}
 		return false;
 	}
@@ -128,31 +129,31 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("progress_lich"));
 	}
 
-	private void doPedestalEffect(Level world, BlockPos pos, BlockState state) {
-		world.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
-		removeNearbyShields(world, pos);
-		world.playSound(null, pos, TFSounds.PEDESTAL_ACTIVATE, SoundSource.BLOCKS, 4.0F, 0.1F);
+	private void doPedestalEffect(Level level, BlockPos pos, BlockState state) {
+		level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
+		removeNearbyShields(level, pos);
+		level.playSound(null, pos, TFSounds.PEDESTAL_ACTIVATE.get(), SoundSource.BLOCKS, 4.0F, 0.1F);
 	}
 
-	private void rewardNearbyPlayers(Level world, BlockPos pos) {
-		for (ServerPlayer player : world.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(16.0D))) {
+	private void rewardNearbyPlayers(Level level, BlockPos pos) {
+		for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(16.0D))) {
 			TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.trigger(player);
 			player.awardStat(TFStats.TROPHY_PEDESTALS_ACTIVATED.get());
 		}
 	}
 
-	private void removeNearbyShields(Level world, BlockPos pos) {
+	private void removeNearbyShields(Level level, BlockPos pos) {
 		for (int sx = -5; sx <= 5; sx++)
 			for (int sy = -5; sy <= 5; sy++)
 				for (int sz = -5; sz <= 5; sz++)
-					if (world.getBlockState(pos.offset(sx, sy, sz)).getBlock() == TFBlocks.STRONGHOLD_SHIELD.get()) {
-						world.destroyBlock(pos.offset(sx, sy, sz), false);
+					if (level.getBlockState(pos.offset(sx, sy, sz)).getBlock() == TFBlocks.STRONGHOLD_SHIELD.get()) {
+						level.destroyBlock(pos.offset(sx, sy, sz), false);
 					}
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, Player player, BlockGetter worldIn, BlockPos pos) {
-		return state.getValue(ACTIVE) ? super.getDestroyProgress(state, player, worldIn, pos) : -1;
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
+		return state.getValue(ACTIVE) ? super.getDestroyProgress(state, player, getter, pos) : -1;
 	}
 
 	@Override
@@ -161,10 +162,10 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	}
 
 	@Override
-	public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-		Block trophy = worldIn.getBlockState(pos.above()).getBlock();
-		if(trophy instanceof TrophyBlock) {
-			return ((TrophyBlock)trophy).getComparatorValue();
+	public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+		Block trophy = level.getBlockState(pos.above()).getBlock();
+		if (trophy instanceof TrophyBlock value) {
+			return value.getComparatorValue();
 		}
 		return 0;
 	}

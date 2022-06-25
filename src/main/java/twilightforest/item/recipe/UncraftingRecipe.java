@@ -19,31 +19,14 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFRecipes;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
-@SuppressWarnings("NullableProblems")
-public class UncraftingRecipe extends ShapedRecipe implements IUncraftingRecipe {
-    private final ResourceLocation recipeID;
-    private final int cost;
-    private final int width;
-    private final int height;
-    private final Ingredient ingredient;
-    private final int count;
-    private final NonNullList<Ingredient> resultItems;
-
-    public UncraftingRecipe(ResourceLocation recipeID, int cost, int width, int height, Ingredient ingredient, int count, NonNullList<Ingredient> resultItems) {
-        super(recipeID, "", width, height, resultItems, null);
-        this.recipeID = recipeID;
-        this.cost = cost;
-        this.width = width;
-        this.height = height;
-        this.ingredient = ingredient;
-        this.count = count;
-        this.resultItems = resultItems;
-    }
+public record UncraftingRecipe(ResourceLocation recipeID, int cost, int width, int height, Ingredient ingredient, int count, NonNullList<Ingredient> resultItems) implements IUncraftingRecipe {
 
     @Override //This method is never used, but it has to be implemented
     public boolean matches(CraftingContainer pContainer, Level pLevel) {
@@ -65,7 +48,7 @@ public class UncraftingRecipe extends ShapedRecipe implements IUncraftingRecipe 
         return (width >= this.width && height >= this.height);
     }
 
-    //Checks if the itemStack is a part of the ingredient when UncraftingContainer's getRecipesFor() method iterates through all recipes.
+    //Checks if the itemStack is a part of the ingredient when UncraftingMenu's getRecipesFor() method iterates through all recipes.
     public boolean isItemStackAnIngredient(ItemStack itemStack) {
         return Arrays.stream(this.ingredient.getItems()).anyMatch(i -> (itemStack.getItem() == i.getItem() && itemStack.getCount() >= i.getCount()));
     }
@@ -144,7 +127,7 @@ public class UncraftingRecipe extends ShapedRecipe implements IUncraftingRecipe 
 
         private static Map<String, Ingredient> keyFromJson(JsonObject json) {
             Map<String, Ingredient> map = Maps.newHashMap();
-            for(Map.Entry<String, JsonElement> entry : json.entrySet()) {
+            for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
                 if (entry.getKey().length() != 1)
                     throw new JsonSyntaxException("Invalid key entry: '" + entry.getKey() + "' is an invalid symbol (must be 1 character only).");
                 if (" ".equals(entry.getKey()))
@@ -161,7 +144,7 @@ public class UncraftingRecipe extends ShapedRecipe implements IUncraftingRecipe 
             int k = 0;
             int l = 0;
 
-            for(int i1 = 0; i1 < prePattern.length; ++i1) {
+            for (int i1 = 0; i1 < prePattern.length; ++i1) {
                 String s = prePattern[i1];
                 i = Math.min(i, firstNonSpace(s));
                 int j1 = lastNonSpace(s);
@@ -175,7 +158,7 @@ public class UncraftingRecipe extends ShapedRecipe implements IUncraftingRecipe 
             if (prePattern.length == l) return new String[0];
             else {
                 String[] shrunk = new String[prePattern.length - l - k];
-                for(int k1 = 0; k1 < shrunk.length; ++k1) shrunk[k1] = prePattern[k1 + k].substring(i, j + 1);
+                for (int k1 = 0; k1 < shrunk.length; ++k1) shrunk[k1] = prePattern[k1 + k].substring(i, j + 1);
                 return shrunk;
             }
         }
@@ -201,7 +184,7 @@ public class UncraftingRecipe extends ShapedRecipe implements IUncraftingRecipe 
             } else if (stringPattern.length == 0) {
                 throw new JsonSyntaxException("Invalid pattern: empty pattern not allowed");
             } else {
-                for(int i = 0; i < stringPattern.length; ++i) {
+                for (int i = 0; i < stringPattern.length; ++i) {
                     String s = GsonHelper.convertToString(pattern.get(i), "pattern[" + i + "]");
                     if (s.length() > 3)
                         throw new JsonSyntaxException("Invalid pattern: too many columns, 3 is maximum");
@@ -218,8 +201,8 @@ public class UncraftingRecipe extends ShapedRecipe implements IUncraftingRecipe 
             Set<String> set = Sets.newHashSet(key.keySet());
             set.remove(" ");
 
-            for(int i = 0; i < pattern.length; ++i) {
-                for(int j = 0; j < pattern[i].length(); ++j) {
+            for (int i = 0; i < pattern.length; ++i) {
+                for (int j = 0; j < pattern[i].length(); ++j) {
                     String s = pattern[i].substring(j, j + 1);
                     Ingredient ingredient = key.get(s);
                     if (ingredient == null)
@@ -229,7 +212,8 @@ public class UncraftingRecipe extends ShapedRecipe implements IUncraftingRecipe 
                 }
             }
 
-            if (!set.isEmpty()) throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + set);
+            if (!set.isEmpty())
+                throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + set);
             else return results;
         }
 
@@ -242,7 +226,7 @@ public class UncraftingRecipe extends ShapedRecipe implements IUncraftingRecipe 
             Ingredient result = Ingredient.fromNetwork(buffer);
             int count = buffer.readVarInt();
             NonNullList<Ingredient> ingredients = NonNullList.withSize(width * height, Ingredient.EMPTY);
-            for(int k = 0; k < ingredients.size(); ++k) ingredients.set(k, Ingredient.fromNetwork(buffer));
+            for (int k = 0; k < ingredients.size(); ++k) ingredients.set(k, Ingredient.fromNetwork(buffer));
             return new UncraftingRecipe(id, cost, width, height, result, count, ingredients);
         }
 

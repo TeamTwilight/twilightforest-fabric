@@ -2,7 +2,6 @@ package twilightforest.client.model.tileentity.legacy;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -11,7 +10,7 @@ import twilightforest.client.model.tileentity.GenericTrophyModel;
 
 public class MinoshroomTrophyLegacyModel extends GenericTrophyModel {
 
-	public ModelPart head;
+	public final ModelPart head;
 
 	public MinoshroomTrophyLegacyModel(ModelPart part) {
 		this.head = part.getChild("head");

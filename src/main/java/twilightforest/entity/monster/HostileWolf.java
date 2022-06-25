@@ -3,6 +3,7 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -19,10 +20,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
-import java.util.Random;
+import org.jetbrains.annotations.Nullable;
 
 public class HostileWolf extends Monster {
 
@@ -46,38 +46,38 @@ public class HostileWolf extends Monster {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends HostileWolf> pType, ServerLevelAccessor pLevel, MobSpawnType pReason, BlockPos pPos, Random pRandom) {
-		return pLevel.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(pLevel, pPos, pRandom) && checkMobSpawnRules(pType, pLevel, pReason, pPos, pRandom);
+	public static boolean getCanSpawnHere(EntityType<? extends HostileWolf> entity, ServerLevelAccessor accessor, MobSpawnType type, BlockPos pos, RandomSource random) {
+		return accessor.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(accessor, pos, random) && checkMobSpawnRules(entity, accessor, type, pos, random);
 	}
 
 	@Override
 	public void setTarget(@Nullable LivingEntity entity) {
-		if (entity != null && entity != getTarget())
-			playSound(getTargetSound(), 4F, getVoicePitch());
+		if (entity != null && entity != this.getTarget())
+			this.playSound(this.getTargetSound(), 4F, this.getVoicePitch());
 		super.setTarget(entity);
 	}
 
 	protected SoundEvent getTargetSound() {
-		return TFSounds.HOSTILE_WOLF_TARGET;
+		return TFSounds.HOSTILE_WOLF_TARGET.get();
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HOSTILE_WOLF_AMBIENT;
+		return TFSounds.HOSTILE_WOLF_AMBIENT.get();
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.HOSTILE_WOLF_HURT;
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.HOSTILE_WOLF_HURT.get();
 	}
-	
+
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.HOSTILE_WOLF_DEATH;
+		return TFSounds.HOSTILE_WOLF_DEATH.get();
 	}
 
 	@Override
-	protected void playStepSound(BlockPos p_30415_, BlockState p_30416_) {
+	protected void playStepSound(BlockPos pos, BlockState state) {
 		this.playSound(SoundEvents.WOLF_STEP, 0.15F, 1.0F);
 	}
 
@@ -95,11 +95,11 @@ public class HostileWolf extends Monster {
 		if (this.getTarget() != null) {
 			return 1.5393804F;
 		} else {
-			return ((float)Math.PI / 5F);
+			return ((float) Math.PI / 5F);
 		}
 	}
 
-	//add agressive flags so its face doesnt turn passive when it jumps
+	//add aggressive flags so its face doesnt turn passive when it jumps
 	public static class LeapGoal extends LeapAtTargetGoal {
 
 		private final Mob mob;

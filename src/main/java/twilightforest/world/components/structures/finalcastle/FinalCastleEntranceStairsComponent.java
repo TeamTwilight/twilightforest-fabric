@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -13,9 +14,9 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 /**
  * Stair blocks heading to the entrance tower doors
@@ -23,24 +24,24 @@ import java.util.Random;
 public class FinalCastleEntranceStairsComponent extends TFStructureComponentOld {
 
 	public FinalCastleEntranceStairsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCEnSt, nbt);
+		super(TFStructurePieceTypes.TFFCEnSt.get(), nbt);
 	}
 
-	public FinalCastleEntranceStairsComponent(TFFeature feature, int index, int x, int y, int z, Direction direction) {
-		super(FinalCastlePieces.TFFCEnSt, feature, index, x, y, z);
+	public FinalCastleEntranceStairsComponent(TFLandmark feature, int index, int x, int y, int z, Direction direction) {
+		super(TFStructurePieceTypes.TFFCEnSt.get(), feature, index, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int size = 13;
 
 		for (int x = 1; x < size; x++) {

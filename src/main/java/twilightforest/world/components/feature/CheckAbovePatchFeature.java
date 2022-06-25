@@ -2,6 +2,7 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -14,57 +15,47 @@ import net.minecraft.world.level.levelgen.feature.configurations.DiskConfigurati
 //[VanillaCopy] of BaseDiskFeature, but we add a check to make sure the block above is air
 public class CheckAbovePatchFeature extends Feature<DiskConfiguration> {
 
-	public CheckAbovePatchFeature(Codec<DiskConfiguration> pCodec) {
-		super(pCodec);
+	public CheckAbovePatchFeature(Codec<DiskConfiguration> codec) {
+		super(codec);
 	}
 
 	@Override
 	public boolean place(FeaturePlaceContext<DiskConfiguration> ctx) {
-		DiskConfiguration config = ctx.config();
+		DiskConfiguration diskconfiguration = ctx.config();
 		BlockPos blockpos = ctx.origin();
-		WorldGenLevel level = ctx.level();
+		WorldGenLevel worldgenlevel = ctx.level();
+		RandomSource randomsource = ctx.random();
 		boolean flag = false;
 		int i = blockpos.getY();
-		int j = i + config.halfHeight();
-		int k = i - config.halfHeight() - 1;
-		boolean flag1 = config.state().getBlock() instanceof FallingBlock;
-		int l = config.radius().sample(ctx.random());
+		int j = i + diskconfiguration.halfHeight();
+		int k = i - diskconfiguration.halfHeight() - 1;
+		int l = diskconfiguration.radius().sample(randomsource);
+		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-		for(int i1 = blockpos.getX() - l; i1 <= blockpos.getX() + l; ++i1) {
-			for(int j1 = blockpos.getZ() - l; j1 <= blockpos.getZ() + l; ++j1) {
-				int k1 = i1 - blockpos.getX();
-				int l1 = j1 - blockpos.getZ();
-				if (k1 * k1 + l1 * l1 <= l * l) {
-					boolean flag2 = false;
-
-					for(int i2 = j; i2 >= k; --i2) {
-						BlockPos blockpos1 = new BlockPos(i1, i2, j1);
-						BlockState blockstate = level.getBlockState(blockpos1);
-						Block block = blockstate.getBlock();
-						boolean flag3 = false;
-						if (i2 > k) {
-							for(BlockState blockstate1 : config.targets()) {
-								//TF: add a check to make sure the block above is air or replaceable
-								if (blockstate1.is(block) && (level.getBlockState(blockpos1.above()).isAir() || level.getBlockState(blockpos1.above()).getMaterial().isReplaceable())) {
-									level.setBlock(blockpos1, config.state(), 2);
-									this.markAboveForPostProcessing(level, blockpos1);
-									flag = true;
-									flag3 = true;
-									break;
-								}
-							}
-						}
-
-						if (flag1 && flag2 && blockstate.isAir()) {
-							BlockState blockstate2 = config.state().is(Blocks.RED_SAND) ? Blocks.RED_SANDSTONE.defaultBlockState() : Blocks.SANDSTONE.defaultBlockState();
-							level.setBlock(new BlockPos(i1, i2 + 1, j1), blockstate2, 2);
-						}
-
-						flag2 = flag3;
-					}
-				}
+		for(BlockPos blockpos1 : BlockPos.betweenClosed(blockpos.offset(-l, 0, -l), blockpos.offset(l, 0, l))) {
+			int i1 = blockpos1.getX() - blockpos.getX();
+			int j1 = blockpos1.getZ() - blockpos.getZ();
+			if (i1 * i1 + j1 * j1 <= l * l) {
+				flag |= this.placeColumn(diskconfiguration, worldgenlevel, randomsource, j, k, blockpos$mutableblockpos.set(blockpos1));
 			}
 		}
+
+		return flag;
+	}
+
+	protected boolean placeColumn(DiskConfiguration config, WorldGenLevel level, RandomSource random, int start, int end, BlockPos.MutableBlockPos mutablePos) {
+		boolean flag = false;
+
+		for(int i = start; i > end; --i) {
+			mutablePos.setY(i);
+			if (config.target().test(level, mutablePos) && level.getBlockState(mutablePos).getMaterial().isReplaceable()) {
+				BlockState blockstate1 = config.stateProvider().getState(level, random, mutablePos);
+				level.setBlock(mutablePos, blockstate1, 2);
+				this.markAboveForPostProcessing(level, mutablePos);
+				flag = true;
+			}
+		}
+
 		return flag;
 	}
 }

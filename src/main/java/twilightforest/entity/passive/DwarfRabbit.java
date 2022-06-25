@@ -23,12 +23,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFEntities;
 
-import javax.annotation.Nullable;
-
-// TODO: I feel like using the properly classes could be usueful
+import org.jetbrains.annotations.Nullable;
 
 public class DwarfRabbit extends Animal {
 
@@ -36,10 +34,7 @@ public class DwarfRabbit extends Animal {
 
 	public DwarfRabbit(EntityType<? extends DwarfRabbit> type, Level world) {
 		super(type, world);
-
-		// maybe this will help them move cuter?
-		this.maxUpStep = 1;
-		setBunnyType(random.nextInt(4));
+		this.setBunnyType(this.getRandom().nextInt(4));
 	}
 
 	@Override
@@ -65,27 +60,32 @@ public class DwarfRabbit extends Animal {
 				.add(Attributes.MOVEMENT_SPEED, 0.3D);
 	}
 
+	@Override
+	public float getStepHeight() {
+		return 1.0F;
+	}
+
 	@Nullable
 	@Override
-	public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob ageableEntity) {
-		DwarfRabbit rabbit = TFEntities.DWARF_RABBIT.get().create(world);
-		int i = world.random.nextInt(4);
-		if (this.random.nextInt(20) != 0) {
-			if (ageableEntity instanceof DwarfRabbit && this.random.nextBoolean()) {
-				i = ((DwarfRabbit)ageableEntity).getBunnyType();
+	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob ageableEntity) {
+		DwarfRabbit dwarf = TFEntities.DWARF_RABBIT.get().create(level);
+		int i = level.getRandom().nextInt(4);
+		if (this.getRandom().nextInt(20) != 0) {
+			if (ageableEntity instanceof DwarfRabbit rabbit && this.getRandom().nextBoolean()) {
+				i = rabbit.getBunnyType();
 			} else {
 				i = this.getBunnyType();
 			}
 		}
 
-		rabbit.setBunnyType(i);
-		return rabbit;
+		dwarf.setBunnyType(i);
+		return dwarf;
 	}
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(DATA_TYPE, (byte) 0);
+		this.entityData.define(DATA_TYPE, (byte) 0);
 	}
 
 	@Override
@@ -101,11 +101,11 @@ public class DwarfRabbit extends Animal {
 	}
 
 	public int getBunnyType() {
-		return entityData.get(DATA_TYPE);
+		return this.entityData.get(DATA_TYPE);
 	}
 
 	public void setBunnyType(int type) {
-		entityData.set(DATA_TYPE, (byte) type);
+		this.entityData.set(DATA_TYPE, (byte) type);
 	}
 
 	@Override
@@ -114,14 +114,14 @@ public class DwarfRabbit extends Animal {
 	}
 
 	@Override
-	public boolean removeWhenFarAway(double p_213397_1_) {
+	public boolean removeWhenFarAway(double distance) {
 		return false;
 	}
 
 	@Override
 	public float getWalkTargetValue(BlockPos pos) {
 		// avoid leaves & wood
-		Material underMaterial = this.level.getBlockState(pos.below()).getMaterial();
+		Material underMaterial = this.getLevel().getBlockState(pos.below()).getMaterial();
 		if (underMaterial == Material.LEAVES) {
 			return -1.0F;
 		}
@@ -132,7 +132,7 @@ public class DwarfRabbit extends Animal {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas
-		return this.level.getMaxLocalRawBrightness(pos) - 0.5F;
+		return this.getLevel().getMaxLocalRawBrightness(pos) - 0.5F;
 	}
 
 	private static boolean isTemptingItem(ItemStack stack) {
@@ -147,18 +147,18 @@ public class DwarfRabbit extends Animal {
 	@Nullable
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.DWARF_DEATH;
+		return TFSounds.DWARF_DEATH.get();
 	}
 
 	@Nullable
 	@Override
-	protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-		return TFSounds.DWARF_HURT;
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.DWARF_HURT.get();
 	}
 
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.DWARF_AMBIENT;
+		return TFSounds.DWARF_AMBIENT.get();
 	}
 }

@@ -5,10 +5,13 @@ import com.mojang.serialization.Codec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -16,13 +19,12 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.material.Material;
 
-import javax.annotation.Nullable;
-import java.util.Random;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class TemplateFeature<T extends FeatureConfiguration> extends Feature<T> {
 	public TemplateFeature(Codec<T> config) {
@@ -33,9 +35,9 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 	public final boolean place(FeaturePlaceContext<T> ctx) {
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
-		Random random = world.getRandom();
+		RandomSource random = world.getRandom();
 
-		StructureManager templateManager = world.getLevel().getServer().getStructureManager();
+		StructureTemplateManager templateManager = world.getLevel().getServer().getStructureManager();
 		StructureTemplate template = this.getTemplate(templateManager, random);
 
 		if(template == null)
@@ -77,15 +79,15 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 	}
 
     @Nullable
-	protected abstract StructureTemplate getTemplate(StructureManager templateManager, Random random);
+	protected abstract StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random);
 
-	protected void modifySettings(StructurePlaceSettings settings, Random random) {
+	protected void modifySettings(StructurePlaceSettings settings, RandomSource random) {
     }
 
-	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, Random random) {
+	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
     }
 
-    protected void postPlacement(WorldGenLevel world, Random random, StructureManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
+    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
     }
 
     protected int yLevelOffset() {

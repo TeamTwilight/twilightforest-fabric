@@ -1,25 +1,25 @@
 {
+  "type": "minecraft:random_selector",
   "config": {
-    "features": [
-      {
-        "feature": {
-          "feature": "twilightforest:tree/mega_spruce_tree",
-          "placement": []
-        },
-        "chance": 0.1
-      },
-      {
-        "feature": {
-          "feature": "twilightforest:tree/large_winter_tree",
-          "placement": []
-        },
-        "chance": 0.01
-      }
-    ],
     "default": {
       "feature": "twilightforest:tree/snowy_spruce_tree",
       "placement": []
-    }
-  },
-  "type": "minecraft:random_selector"
+    },
+    "features": [
+      {
+        "chance": 0.1,
+        "feature": {
+          "feature": "twilightforest:tree/mega_spruce_tree",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.01,
+        "feature": {
+          "feature": "twilightforest:tree/large_winter_tree",
+          "placement": []
+        }
+      }
+    ]
+  }
 }

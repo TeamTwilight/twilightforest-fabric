@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtower;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
@@ -10,20 +11,20 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 
 	public TowerRoofStairsOverhangComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTRStO, nbt);
+		super(TFStructurePieceTypes.TFLTRStO.get(), nbt);
 	}
 
-	public TowerRoofStairsOverhangComponent(TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(LichTowerPieces.TFLTRStO, feature, i, x, y, z);
+	public TowerRoofStairsOverhangComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFLTRStO.get(), feature, i, x, y, z);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
 		this.setOrientation(Direction.SOUTH);
@@ -39,7 +40,7 @@ public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 	 * Makes a pyramid-shaped roof out of stairs
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		BlockState woodenSlab = Blocks.BIRCH_SLAB.defaultBlockState();
 		BlockState woodenPlanks = Blocks.BIRCH_PLANKS.defaultBlockState();
 

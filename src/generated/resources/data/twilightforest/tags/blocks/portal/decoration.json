@@ -1,11 +1,12 @@
 {
-  "replace": false,
   "values": [
     "#minecraft:flowers",
     "#minecraft:leaves",
     "#minecraft:saplings",
     "#minecraft:crops",
     "minecraft:bamboo",
+    "minecraft:mangrove_propagule",
+    "minecraft:mangrove_leaves",
     "minecraft:grass",
     "minecraft:fern",
     "minecraft:dead_bush",

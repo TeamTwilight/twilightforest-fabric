@@ -1,35 +1,5 @@
 {
   "variants": {
-    "variant=north_down": {
-      "model": "twilightforest:block/naga_segment/down",
-      "y": 270
-    },
-    "variant=south_down": {
-      "model": "twilightforest:block/naga_segment/down",
-      "y": 90
-    },
-    "variant=west_down": {
-      "model": "twilightforest:block/naga_segment/down",
-      "y": 180
-    },
-    "variant=east_down": {
-      "model": "twilightforest:block/naga_segment/down"
-    },
-    "variant=north_up": {
-      "model": "twilightforest:block/naga_segment/up",
-      "y": 270
-    },
-    "variant=south_up": {
-      "model": "twilightforest:block/naga_segment/up",
-      "y": 90
-    },
-    "variant=east_up": {
-      "model": "twilightforest:block/naga_segment/up"
-    },
-    "variant=west_up": {
-      "model": "twilightforest:block/naga_segment/up",
-      "y": 180
-    },
     "variant=axis_x": {
       "model": "twilightforest:block/naga_segment/horizontal"
     },
@@ -40,8 +10,38 @@
       "model": "twilightforest:block/naga_segment/horizontal",
       "y": 90
     },
+    "variant=east_down": {
+      "model": "twilightforest:block/naga_segment/down"
+    },
+    "variant=east_up": {
+      "model": "twilightforest:block/naga_segment/up"
+    },
+    "variant=north_down": {
+      "model": "twilightforest:block/naga_segment/down",
+      "y": 270
+    },
+    "variant=north_up": {
+      "model": "twilightforest:block/naga_segment/up",
+      "y": 270
+    },
     "variant=solid": {
       "model": "twilightforest:block/nagastone"
+    },
+    "variant=south_down": {
+      "model": "twilightforest:block/naga_segment/down",
+      "y": 90
+    },
+    "variant=south_up": {
+      "model": "twilightforest:block/naga_segment/up",
+      "y": 90
+    },
+    "variant=west_down": {
+      "model": "twilightforest:block/naga_segment/down",
+      "y": 180
+    },
+    "variant=west_up": {
+      "model": "twilightforest:block/naga_segment/up",
+      "y": 180
     }
   }
 }

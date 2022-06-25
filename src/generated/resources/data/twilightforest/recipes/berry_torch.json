@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "|": {
+      "tag": "forge:rods/wooden"
+    },
+    "∴": {
+      "item": "twilightforest:torchberries"
+    }
+  },
   "pattern": [
     "∴",
     "|"
   ],
-  "key": {
-    "∴": {
-      "item": "twilightforest:torchberries"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
-  },
   "result": {
-    "item": "minecraft:torch",
-    "count": 5
+    "count": 5,
+    "item": "minecraft:torch"
   }
 }

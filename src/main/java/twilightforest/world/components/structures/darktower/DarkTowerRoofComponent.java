@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.darktower;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -14,21 +15,20 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
-
-import java.util.Random;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerRoofComponent extends TowerRoofComponent {
 
 	public DarkTowerRoofComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(DarkTowerPieces.TFDTRooS, nbt);
+		this(TFStructurePieceTypes.TFDTRooS.get(), nbt);
 	}
 
 	public DarkTowerRoofComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public DarkTowerRoofComponent(StructurePieceType piece, TFFeature feature, int i, TowerWingComponent wing, int x, int y, int z) {
+	public DarkTowerRoofComponent(StructurePieceType piece, TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
 		super(piece, feature, i, x, y, z);
 
 		// same alignment
@@ -45,7 +45,7 @@ public class DarkTowerRoofComponent extends TowerRoofComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -55,7 +55,7 @@ public class DarkTowerRoofComponent extends TowerRoofComponent {
 	 * A fence around the roof!
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// fence
 		for (int x = 0; x <= size - 1; x++) {
 			for (int z = 0; z <= size - 1; z++) {

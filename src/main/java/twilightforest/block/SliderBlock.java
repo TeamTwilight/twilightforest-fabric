@@ -1,36 +1,36 @@
 package twilightforest.block;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.entity.SlideBlock;
-import twilightforest.entity.TFEntities;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFEntities;
 
-import javax.annotation.Nullable;
-import java.util.Random;
+import org.jetbrains.annotations.Nullable;
 
 public class SliderBlock extends RotatedPillarBlock implements SimpleWaterloggedBlock {
 
@@ -45,9 +45,9 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	private static final VoxelShape Z_BB = Shapes.create(new AABB(0.3125, 0.3125, 0, 0.6875, 0.6875, 1F));
 	private static final VoxelShape X_BB = Shapes.create(new AABB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875));
 
-	protected SliderBlock() {
+	public SliderBlock() {
 		super(Properties.of(Material.METAL, MaterialColor.DIRT).strength(2.0F, 10.0F).randomTicks().noOcclusion());
-		this.registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.Y).setValue(DELAY, 0).setValue(WATERLOGGED, false));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(AXIS, Direction.Axis.Y).setValue(DELAY, 0).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -60,16 +60,16 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
 		boolean flag = fluidstate.getType() == Fluids.WATER;
-		return super.getStateForPlacement(context).setValue(WATERLOGGED, Boolean.valueOf(flag));
+		return super.getStateForPlacement(context).setValue(WATERLOGGED, flag);
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED)) {
+			accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
 		}
 
-		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 
 	@Override
 	@Deprecated
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return switch (state.getValue(AXIS)) {
 			case X -> X_BB;
 			case Z -> Z_BB;
@@ -90,67 +90,66 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
-		if (!world.isClientSide && this.isConnectedInRange(world, pos)) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		if (!level.isClientSide() && this.isConnectedInRange(level, pos)) {
 			//TODO calls for a creakstart sound effect, but it doesnt exist in the game files
 			//world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.SLIDER, SoundCategory.BLOCKS, 0.75F, 1.5F);
 
-			SlideBlock slideBlock = new SlideBlock(TFEntities.SLIDER.get(), world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
-			world.addFreshEntity(slideBlock);
+			SlideBlock slideBlock = new SlideBlock(TFEntities.SLIDER.get(), level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
+			level.addFreshEntity(slideBlock);
 		}
 
-		scheduleBlockUpdate(world, pos);
+		this.scheduleBlockUpdate(level, pos);
 	}
 
 	/**
 	 * Check if there is any players in range, and also recursively check connected blocks
 	 */
-	public boolean isConnectedInRange(Level world, BlockPos pos) {
-		Direction.Axis axis = world.getBlockState(pos).getValue(AXIS);
+	public boolean isConnectedInRange(Level level, BlockPos pos) {
+		Direction.Axis axis = level.getBlockState(pos).getValue(AXIS);
 
 		return switch (axis) {
-			case Y -> this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.UP) || this.isConnectedInRangeRecursive(world, pos, Direction.DOWN);
-			case X -> this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.WEST) || this.isConnectedInRangeRecursive(world, pos, Direction.EAST);
-			case Z -> this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.NORTH) || this.isConnectedInRangeRecursive(world, pos, Direction.SOUTH);
-			//default -> this.anyPlayerInRange(world, pos);
+			case Y -> this.anyPlayerInRange(level, pos) || this.isConnectedInRangeRecursive(level, pos, Direction.UP) || this.isConnectedInRangeRecursive(level, pos, Direction.DOWN);
+			case X -> this.anyPlayerInRange(level, pos) || this.isConnectedInRangeRecursive(level, pos, Direction.WEST) || this.isConnectedInRangeRecursive(level, pos, Direction.EAST);
+			case Z -> this.anyPlayerInRange(level, pos) || this.isConnectedInRangeRecursive(level, pos, Direction.NORTH) || this.isConnectedInRangeRecursive(level, pos, Direction.SOUTH);
 		};
 	}
 
-	private boolean isConnectedInRangeRecursive(Level world, BlockPos pos, Direction dir) {
+	private boolean isConnectedInRangeRecursive(Level level, BlockPos pos, Direction dir) {
 		BlockPos dPos = pos.relative(dir);
 
-		if (world.getBlockState(pos) == world.getBlockState(dPos)) {
-			return this.anyPlayerInRange(world, dPos) || this.isConnectedInRangeRecursive(world, dPos, dir);
+		if (level.getBlockState(pos) == level.getBlockState(dPos)) {
+			return this.anyPlayerInRange(level, dPos) || this.isConnectedInRangeRecursive(level, dPos, dir);
 		} else {
 			return false;
 		}
 	}
 
-	private boolean anyPlayerInRange(Level world, BlockPos pos) {
-		return world.getNearestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, PLAYER_RANGE, false) != null;
+	private boolean anyPlayerInRange(Level level, BlockPos pos) {
+		return level.getNearestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, PLAYER_RANGE, false) != null;
 	}
 
-	public void scheduleBlockUpdate(Level world, BlockPos pos) {
-		int offset = world.getBlockState(pos).getValue(DELAY);
-		int update = TICK_TIME - ((int) (world.getGameTime() - (offset * OFFSET_TIME)) % TICK_TIME);
-		world.scheduleTick(pos, this, update);
-	}
-
-	@Override
-	@Deprecated
-	public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean isMoving) {
-		scheduleBlockUpdate(world, pos);
+	public void scheduleBlockUpdate(Level level, BlockPos pos) {
+		int offset = level.getBlockState(pos).getValue(DELAY);
+		int update = TICK_TIME - ((int) (level.getGameTime() - (offset * OFFSET_TIME)) % TICK_TIME);
+		level.scheduleTick(pos, this, update);
 	}
 
 	@Override
 	@Deprecated
-	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entity) {
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+		this.scheduleBlockUpdate(level, pos);
+	}
+
+	@Override
+	@Deprecated
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		entity.hurt(TFDamageSources.SLIDER, BLOCK_DAMAGE);
-		if (entity instanceof LivingEntity) {
+		if (entity instanceof LivingEntity living) {
 			double kx = (pos.getX() + 0.5 - entity.getX()) * 2.0;
 			double kz = (pos.getZ() + 0.5 - entity.getZ()) * 2.0;
 
-			((LivingEntity) entity).knockback(2, kx, kz);
+			living.knockback(2, kx, kz);
 		}
 	}
 }

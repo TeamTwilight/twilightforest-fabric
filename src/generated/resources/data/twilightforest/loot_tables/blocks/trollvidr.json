@@ -2,14 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:trollvidr"
-        }
-      ],
       "conditions": [
         {
           "condition": "minecraft:match_tool",
@@ -17,7 +10,14 @@
             "tag": "c:shears"
           }
         }
-      ]
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:trollvidr"
+        }
+      ],
+      "rolls": 1.0
     }
   ]
 }

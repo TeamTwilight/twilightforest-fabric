@@ -1,27 +1,28 @@
 {
-  "effects": {
-    "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
-      "block_search_extent": 8,
-      "offset": 2.0
-    },
-    "music": {
-      "sound": "twilightforest:music.bg",
-      "min_delay": 1200,
-      "max_delay": 12000,
-      "replace_current_music": true
-    },
-    "grass_color_modifier": "twilightforest:dark_forest_center",
-    "sky_color": 2105930,
-    "foliage_color": 16351774,
-    "grass_color": 6714688,
-    "fog_color": 12648408,
-    "water_color": 4159204,
-    "water_fog_color": 329011
-  },
   "carvers": {
     "air": "twilightforest:tf_caves"
+  },
+  "downfall": 0.5,
+  "effects": {
+    "fog_color": 12648408,
+    "foliage_color": 16351774,
+    "grass_color": 6714688,
+    "grass_color_modifier": "twilightforest:dark_forest_center",
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    },
+    "music": {
+      "max_delay": 12000,
+      "min_delay": 1200,
+      "replace_current_music": true,
+      "sound": "twilightforest:music.bg"
+    },
+    "sky_color": 2105930,
+    "water_color": 4159204,
+    "water_fog_color": 329011
   },
   "features": [
     [],
@@ -56,19 +57,17 @@
       "twilightforest:dark_mushrooms"
     ]
   ],
+  "precipitation": "rain",
+  "spawn_costs": {},
   "spawners": {
-    "monster": [],
-    "creature": [],
     "ambient": [],
     "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
     "underground_water_creature": [],
-    "water_creature": [],
     "water_ambient": [],
-    "misc": []
+    "water_creature": []
   },
-  "spawn_costs": {},
-  "precipitation": "rain",
-  "temperature": 0.5,
-  "downfall": 0.5,
-  "category": "forest"
+  "temperature": 0.5
 }

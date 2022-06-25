@@ -12,8 +12,8 @@ public class FireflyParticle extends TextureSheetParticle {
 
 	private final int halfLife;
 
-	FireflyParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
-		super(world, x, y, z, vx, vy, vz);
+	public FireflyParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz) {
+		super(level, x, y, z, vx, vy, vz);
 		xd *= 2.1;
 		yd *= 2.1;
 		zd *= 2.1;
@@ -32,9 +32,9 @@ public class FireflyParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public void render(VertexConsumer buffer, Camera entity, float partialTicks) {
+	public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
 		alpha = getGlowBrightness();
-		super.render(buffer, entity, partialTicks);
+		super.render(buffer, camera, partialTicks);
 	}
 
 	@Override
@@ -59,17 +59,12 @@ public class FireflyParticle extends TextureSheetParticle {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static class Factory implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public Factory(SpriteSet sprite) {
-			this.spriteSet = sprite;
-		}
+	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			FireflyParticle particle = new FireflyParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
-			particle.pickSprite(this.spriteSet);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			FireflyParticle particle = new FireflyParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+			particle.pickSprite(this.sprite);
 			return particle;
 		}
 	}

@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 public class QuestRamLegacyModel extends HierarchicalModel<QuestRam> {
 	//root
-	public ModelPart root;
+	public final ModelPart root;
 	//fields
 	ModelPart rearbody;
 	public ModelPart leg1;
@@ -36,7 +36,7 @@ public class QuestRamLegacyModel extends HierarchicalModel<QuestRam> {
 	public ModelPart leg4;
 	public ModelPart haunch4;
 	public ModelPart neck;
-	public ModelPart head;
+	public final ModelPart head;
 	public ModelPart[] segments = new ModelPart[16];
 
 	int[] colorOrder = new int[]{0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};

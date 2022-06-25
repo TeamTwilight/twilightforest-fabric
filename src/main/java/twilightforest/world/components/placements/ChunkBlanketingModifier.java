@@ -6,16 +6,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.init.TFFeatureModifiers;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Stream;
 
 // Ideally, you should not be mixing this with other decorators unless you know what you're doing
@@ -43,7 +44,7 @@ public class ChunkBlanketingModifier extends PlacementModifier {
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, Random random, BlockPos placement) {
+    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos placement) {
         int chunkOriginX = placement.getX() & 0xfffffff0;
         int chunkOriginZ = placement.getZ() & 0xfffffff0;
 
@@ -71,6 +72,6 @@ public class ChunkBlanketingModifier extends PlacementModifier {
 
     @Override
     public PlacementModifierType<?> type() {
-        return TwilightFeatures.CHUNK_BLANKETING.get();
+        return TFFeatureModifiers.CHUNK_BLANKETING.get();
     }
 }

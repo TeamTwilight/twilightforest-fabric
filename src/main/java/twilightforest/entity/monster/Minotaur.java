@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -24,14 +25,14 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TFSounds;
 import twilightforest.entity.ITFCharger;
-import twilightforest.entity.ai.ChargeAttackGoal;
+import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.entity.boss.Minoshroom;
-import twilightforest.item.TFItems;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class Minotaur extends Monster implements ITFCharger {
 
@@ -76,13 +77,13 @@ public class Minotaur extends Monster implements ITFCharger {
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
-		this.populateDefaultEquipmentSlots(difficulty);
-		this.populateDefaultEquipmentEnchantments(difficulty);
+		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
+		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
 		return data;
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
+	protected void populateDefaultEquipmentSlots(RandomSource source, DifficultyInstance difficulty) {
 		int random = this.getRandom().nextInt(10);
 		float additionalDiff = difficulty.getEffectiveDifficulty() + 1;
 		int result = (int) (random / additionalDiff);
@@ -104,11 +105,11 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	//[VanillaCopy] of Mob.doHurtTarget, edits noted
 	public boolean doHurtTarget(Entity entity) {
-		float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-		float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		float f = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		float f1 = (float) this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 		if (entity instanceof LivingEntity living) {
 			f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), living.getMobType());
-			f1 += (float)EnchantmentHelper.getKnockbackBonus(this);
+			f1 += (float) EnchantmentHelper.getKnockbackBonus(this);
 		}
 
 		int i = EnchantmentHelper.getFireAspect(this);
@@ -142,7 +143,7 @@ public class Minotaur extends Monster implements ITFCharger {
 	}
 
 	protected SoundEvent getChargeSound() {
-		return TFSounds.MINOTAUR_ATTACK;
+		return TFSounds.MINOTAUR_ATTACK.get();
 	}
 
 	@Override
@@ -156,22 +157,22 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MINOTAUR_AMBIENT;
+		return TFSounds.MINOTAUR_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.MINOTAUR_HURT;
+		return TFSounds.MINOTAUR_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MINOTAUR_DEATH;
+		return TFSounds.MINOTAUR_DEATH.get();
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
-		playSound(TFSounds.MINOTAUR_STEP, 0.15F, 0.8F);
+	protected void playStepSound(BlockPos pos, BlockState state) {
+		playSound(TFSounds.MINOTAUR_STEP.get(), 0.15F, 0.8F);
 	}
 
 	@Override

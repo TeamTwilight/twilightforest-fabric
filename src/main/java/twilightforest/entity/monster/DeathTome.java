@@ -25,12 +25,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.TomeBolt;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.loot.TFLootTables;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class DeathTome extends Monster implements RangedAttackMob {
@@ -83,7 +83,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 		for (int i = 0; i < 1; ++i) {
 			this.getLevel().addParticle(ParticleTypes.ENCHANT, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(),
-					0, 0.5, 0);
+					0.0D, 0.5D, 0.0D);
 		}
 	}
 
@@ -109,7 +109,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 				if (!this.getLevel().isClientSide()) {
 					LootContext ctx = createLootContext(true, src).create(LootContextParamSets.ENTITY);
 
-					Objects.requireNonNull(this.getLevel().getServer()).getLootTables().get(TFTreasure.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+					Objects.requireNonNull(this.getLevel().getServer()).getLootTables().get(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
 				}
 			}
 			return true;
@@ -126,22 +126,22 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.TOME_AMBIENT;
+		return TFSounds.TOME_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TOME_HURT;
+		return TFSounds.TOME_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TOME_DEATH;
+		return TFSounds.TOME_DEATH.get();
 	}
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
-		ThrowableProjectile projectile = new TomeBolt(TFEntities.TOME_BOLT.get(), this.level, this);
+		ThrowableProjectile projectile = new TomeBolt(TFEntities.TOME_BOLT.get(), this.getLevel(), this);
 		double tx = target.getX() - this.getX();
 		double ty = target.getY() + target.getEyeHeight() - 1.1D - projectile.getY();
 		double tz = target.getZ() - this.getZ();

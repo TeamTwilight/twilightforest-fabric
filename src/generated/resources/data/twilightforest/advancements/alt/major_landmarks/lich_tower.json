@@ -2,12 +2,20 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "found_structure": {
-      "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "feature": "twilightforest:lich_tower"
-        }
-      }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "structure": "twilightforest:lich_tower"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
     }
   },
   "requirements": [

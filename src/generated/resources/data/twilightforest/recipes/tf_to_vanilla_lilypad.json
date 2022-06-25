@@ -9,7 +9,7 @@
     }
   ],
   "result": {
-    "item": "minecraft:lily_pad",
-    "count": 4
+    "count": 4,
+    "item": "minecraft:lily_pad"
   }
 }

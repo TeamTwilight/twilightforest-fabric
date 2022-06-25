@@ -10,7 +10,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.*;
 import twilightforest.TwilightForestMod;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class OptifineWarningScreen extends Screen {
@@ -19,17 +19,17 @@ public class OptifineWarningScreen extends Screen {
 	private int ticksUntilEnable = 20 * 10;
 	private MultiLineLabel message = MultiLineLabel.EMPTY;
 	private MultiLineLabel suggestions = MultiLineLabel.EMPTY;
-	private static final Component text = new TranslatableComponent(TwilightForestMod.ID + ".gui.optifine.message");
+	private static final Component text = Component.translatable(TwilightForestMod.ID + ".gui.optifine.message");
 	private static final MutableComponent url;
 	private final List<Button> exitButton = Lists.newArrayList();
 
 	static {
-		(url = new TranslatableComponent(TwilightForestMod.ID + ".gui.optifine.suggestions"))
-				.withStyle(style -> style.withColor(ChatFormatting.GREEN).withUnderlined(true).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://gist.github.com/alkyaly/02830c560d15256855bc529e1e232e88")));
+		(url = Component.translatable(TwilightForestMod.ID + ".gui.optifine.suggestions"))
+				.withStyle(style -> style.withColor(ChatFormatting.GREEN).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://gist.github.com/alkyaly/02830c560d15256855bc529e1e232e88")));
 	}
 
 	protected OptifineWarningScreen(Screen screen) {
-		super(new TranslatableComponent(TwilightForestMod.ID + ".gui.optifine.title"));
+		super(Component.translatable(TwilightForestMod.ID + ".gui.optifine.title"));
 		this.lastScreen = screen;
 	}
 

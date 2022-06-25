@@ -16,43 +16,32 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.GhastTrapBlock;
-import twilightforest.block.TFBlocks;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.NoClipMoveHelper;
-import twilightforest.entity.TFEntities;
+import twilightforest.entity.ai.control.NoClipMoveControl;
+import twilightforest.entity.ai.goal.GhastguardHomedFlightGoal;
+import twilightforest.entity.ai.goal.UrGhastFlightGoal;
 import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.entity.projectile.UrGhastFireball;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.*;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
-import twilightforest.util.TFDamageSources;
-import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 
 public class UrGhast extends CarminiteGhastguard {
 
 	private static final EntityDataAccessor<Boolean> DATA_TANTRUM = SynchedEntityData.defineId(UrGhast.class, EntityDataSerializers.BOOLEAN);
-
-	//private static final int CRUISING_ALTITUDE = 235; // absolute cruising altitude
-	private static final int HOVER_ALTITUDE = 20; // how far, relatively, do we hover over ghast traps?
 
 	private List<BlockPos> trapLocations;
 	private int nextTantrumCry;
@@ -68,7 +57,7 @@ public class UrGhast extends CarminiteGhastguard {
 		this.noPhysics = true;
 		this.setInTantrum(false);
 		this.xpReward = 317;
-		this.moveControl = new NoClipMoveHelper(this);
+		this.moveControl = new NoClipMoveControl(this);
 	}
 
 	@Override
@@ -86,100 +75,23 @@ public class UrGhast extends CarminiteGhastguard {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(DATA_TANTRUM, false);
+		this.entityData.define(DATA_TANTRUM, false);
+	}
+
+	public List<BlockPos> getTrapLocations() {
+		return this.trapLocations;
+	}
+
+	public boolean isInNoTrapMode() {
+		return this.noTrapMode;
 	}
 
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		trapLocations = new ArrayList<BlockPos>();
-		this.goalSelector.availableGoals.removeIf(e -> e.getGoal() instanceof CarminiteGhastguard.AIHomedFly);
-		this.goalSelector.addGoal(5, new AIWaypointFly(this));
-	}
-
-	static class AIWaypointFly extends Goal {
-		private final UrGhast taskOwner;
-
-		private final List<BlockPos> pointsToVisit;
-		private int currentPoint = 0;
-
-		AIWaypointFly(UrGhast ghast) {
-			this.taskOwner = ghast;
-			pointsToVisit = createPath();
-			setFlags(EnumSet.of(Flag.MOVE));
-		}
-
-		// [VanillaCopy] EntityGhast.AIRandomFly
-		@Override
-		public boolean canUse() {
-			MoveControl entitymovehelper = this.taskOwner.getMoveControl();
-
-			if (!entitymovehelper.hasWanted()) {
-				return true;
-			} else {
-				double d0 = entitymovehelper.getWantedX() - this.taskOwner.getX();
-				double d1 = entitymovehelper.getWantedY() - this.taskOwner.getY();
-				double d2 = entitymovehelper.getWantedZ() - this.taskOwner.getZ();
-				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-				return d3 < 1.0D || d3 > 3600.0D;
-			}
-		}
-
-		@Override
-		public boolean canContinueToUse() {
-			return false;
-		}
-
-		@Override
-		public void start() {
-			if (this.pointsToVisit.isEmpty()) {
-				pointsToVisit.addAll(createPath());
-			} else {
-				if (this.currentPoint >= pointsToVisit.size()) {
-					this.currentPoint = 0;
-
-					// when we're in tantrum mode, this is a good time to check if we need to spawn more ghasts
-					if (!taskOwner.checkGhastsAtTraps()) {
-						taskOwner.spawnGhastsAtTraps();
-					}
-				}
-
-				// TODO reintrodue wanderFactor somehow? Would need to change move helper or add extra fields here
-
-				double x = pointsToVisit.get(currentPoint).getX();
-				double y = pointsToVisit.get(currentPoint).getY() + HOVER_ALTITUDE;
-				double z = pointsToVisit.get(currentPoint).getZ();
-				taskOwner.getMoveControl().setWantedPosition(x, y, z, 1.0F);
-				this.currentPoint++;
-
-				// we have reached cruising altitude, time to turn noClip off
-				taskOwner.noPhysics = false;
-			}
-		}
-
-		private List<BlockPos> createPath() {
-			List<BlockPos> potentialPoints = new ArrayList<>();
-			BlockPos pos = new BlockPos(this.taskOwner.blockPosition());
-
-			if (!this.taskOwner.noTrapMode) {
-				// make a copy of the trap locations list
-				potentialPoints.addAll(this.taskOwner.trapLocations);
-			} else {
-				potentialPoints.add(pos.offset(20, -HOVER_ALTITUDE, 0));
-				potentialPoints.add(pos.offset(0, -HOVER_ALTITUDE, -20));
-				potentialPoints.add(pos.offset(-20, -HOVER_ALTITUDE, 0));
-				potentialPoints.add(pos.offset(0, -HOVER_ALTITUDE, 20));
-			}
-
-			Collections.shuffle(potentialPoints);
-
-			if (this.taskOwner.noTrapMode) {
-				// if in no trap mode, head back to the middle when we're done
-				potentialPoints.add(pos.below(HOVER_ALTITUDE));
-			}
-
-			return potentialPoints;
-		}
+		this.trapLocations = new ArrayList<>();
+		this.goalSelector.availableGoals.removeIf(e -> e.getGoal() instanceof GhastguardHomedFlightGoal);
+		this.goalSelector.addGoal(5, new UrGhastFlightGoal(this));
 	}
 
 	@Override
@@ -189,69 +101,69 @@ public class UrGhast extends CarminiteGhastguard {
 
 	@Override
 	public void checkDespawn() {
-		if (level.getDifficulty() == Difficulty.PEACEFUL) {
-			if (hasHome()) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get().defaultBlockState());
+		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
+			if (this.hasHome()) {
+				this.getLevel().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get().defaultBlockState());
 			}
-			discard();
+			this.discard();
 		} else {
 			super.checkDespawn();
 		}
 	}
-	
-	@Override
-	protected SoundEvent getAmbientSound() {
-	      return TFSounds.URGHAST_AMBIENT;
-	   }
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return TFSounds.URGHAST_HURT;
-	   }
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.URGHAST_AMBIENT.get();
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.URGHAST_HURT.get();
+	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.URGHAST_DEATH;
-	   }
+		return TFSounds.URGHAST_DEATH.get();
+	}
 
 	@Override
 	public SoundEvent getFireSound() {
-		return TFSounds.URGHAST_SHOOT;
+		return TFSounds.URGHAST_SHOOT.get();
 	}
 
 	@Override
 	public SoundEvent getWarnSound() {
-		return TFSounds.URGHAST_WARN;
+		return TFSounds.URGHAST_WARN.get();
 	}
 
 	@Override
 	public void aiStep() {
 		super.aiStep();
 
-		if (!level.isClientSide) {
-			bossInfo.setProgress(getHealth() / getMaxHealth());
+		if (!this.getLevel().isClientSide()) {
+			this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 		} else {
 			if (this.isInTantrum()) {
-				level.addParticle(TFParticleType.BOSS_TEAR.get(),
-						this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
-						this.getY() + this.random.nextDouble() * this.getBbHeight() * 0.5D,
-						this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
+				this.getLevel().addParticle(TFParticleType.BOSS_TEAR.get(),
+						this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
+						this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 0.5D,
+						this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
 						0, 0, 0
 				);
 			}
 
 			// extra death explosions
-			if (deathTime > 0) {
+			if (this.deathTime > 0) {
 				for (int k = 0; k < 5; k++) {
 
-					double d = random.nextGaussian() * 0.02D;
-					double d1 = random.nextGaussian() * 0.02D;
-					double d2 = random.nextGaussian() * 0.02D;
+					double d = this.getRandom().nextGaussian() * 0.02D;
+					double d1 = this.getRandom().nextGaussian() * 0.02D;
+					double d2 = this.getRandom().nextGaussian() * 0.02D;
 
-					level.addParticle(random.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION,
-							(getX() + random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(),
-							getY() + random.nextFloat() * getBbHeight(),
-							(getZ() + random.nextFloat() * getBbWidth() * 2.0F) - getBbWidth(),
+					this.getLevel().addParticle(this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION,
+							(this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
+							this.getY() + this.getRandom().nextFloat() * this.getBbHeight(),
+							(this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
 							d, d1, d2
 					);
 				}
@@ -286,13 +198,13 @@ public class UrGhast extends CarminiteGhastguard {
 			attackSuccessful = super.hurt(source, damage);
 		}
 
-		float lastDamage = oldHealth - getHealth();
+		float lastDamage = oldHealth - this.getHealth();
 
-		if(source.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
-			hurtBy.add(player);
+		if (source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
+			this.hurtBy.add(player);
 		}
 
-		if (!level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			if (this.hurtTime == this.hurtDuration) {
 				this.damageUntilNextPhase -= lastDamage;
 
@@ -316,7 +228,7 @@ public class UrGhast extends CarminiteGhastguard {
 			this.startTantrum();
 		}
 
-		resetDamageUntilNextPhase();
+		this.resetDamageUntilNextPhase();
 	}
 
 	public void resetDamageUntilNextPhase() {
@@ -338,22 +250,22 @@ public class UrGhast extends CarminiteGhastguard {
 		//worldInfo.setRaining(true);
 		//worldInfo.setThundering(true);
 
-		spawnGhastsAtTraps();
+		this.spawnGhastsAtTraps();
 	}
 
 	/**
 	 * Spawn ghasts at two of the traps
 	 */
-	private void spawnGhastsAtTraps() {
+	public void spawnGhastsAtTraps() {
 		// spawn ghasts around two of the traps
-		List<BlockPos> ghastSpawns = new ArrayList<BlockPos>(this.trapLocations);
+		List<BlockPos> ghastSpawns = new ArrayList<>(this.trapLocations);
 		Collections.shuffle(ghastSpawns);
 
 		int numSpawns = Math.min(2, ghastSpawns.size());
 
 		for (int i = 0; i < numSpawns; i++) {
 			BlockPos spawnCoord = ghastSpawns.get(i);
-			spawnMinionGhastsAt(spawnCoord.getX(), spawnCoord.getY(), spawnCoord.getZ());
+			this.spawnMinionGhastsAt(spawnCoord.getX(), spawnCoord.getY(), spawnCoord.getZ());
 		}
 	}
 
@@ -369,23 +281,23 @@ public class UrGhast extends CarminiteGhastguard {
 		int rangeY = 8;
 
 		// lightning strike
-		LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+		LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, this.getLevel());
 		bolt.setPos(x, y + 4, z);
 		bolt.setVisualOnly(true);
-		this.level.addFreshEntity(bolt);
+		this.getLevel().addFreshEntity(bolt);
 
 		for (int i = 0; i < tries; i++) {
-			CarminiteGhastling minion = TFEntities.CARMINITE_GHASTLING.get().create(level);
+			CarminiteGhastling minion = TFEntities.CARMINITE_GHASTLING.get().create(this.getLevel());
 
-			double sx = x + ((random.nextDouble() - random.nextDouble()) * rangeXZ);
-			double sy = y + (random.nextDouble() * rangeY);
-			double sz = z + ((random.nextDouble() - random.nextDouble()) * rangeXZ);
+			double sx = x + ((this.getRandom().nextDouble() - this.getRandom().nextDouble()) * rangeXZ);
+			double sy = y + (this.getRandom().nextDouble() * rangeY);
+			double sz = z + ((this.getRandom().nextDouble() - this.getRandom().nextDouble()) * rangeXZ);
 
-			minion.moveTo(sx, sy, sz, this.level.random.nextFloat() * 360.0F, 0.0F);
+			minion.moveTo(sx, sy, sz, this.getLevel().getRandom().nextFloat() * 360.0F, 0.0F);
 			minion.makeBossMinion();
 
-			if (minion.checkSpawnRules(level, MobSpawnType.MOB_SUMMONED)) {
-				this.level.addFreshEntity(minion);
+			if (minion.checkSpawnRules(this.getLevel(), MobSpawnType.MOB_SUMMONED)) {
+				this.getLevel().addFreshEntity(minion);
 				minion.spawnAnim();
 			}
 
@@ -401,32 +313,32 @@ public class UrGhast extends CarminiteGhastguard {
 		this.hasRestriction();
 
 		// despawn mini ghasts that are in our AABB
-		for (CarminiteGhastling ghast : level.getEntitiesOfClass(CarminiteGhastling.class, this.getBoundingBox().inflate(1, 1, 1))) {
+		for (CarminiteGhastling ghast : this.getLevel().getEntitiesOfClass(CarminiteGhastling.class, this.getBoundingBox().inflate(1.0D))) {
 			ghast.spawnAnim();
 			ghast.discard();
 			this.heal(2);
 		}
 
 		// trap locations?
-		if (this.trapLocations.isEmpty() && !this.noTrapMode) {
+		if (this.getTrapLocations().isEmpty() && !this.isInNoTrapMode()) {
 			this.scanForTrapsTwice();
 
-			if (this.trapLocations.isEmpty()) {
+			if (this.getTrapLocations().isEmpty()) {
 				this.noTrapMode = true;
 			}
 		}
 
 		if (this.isInTantrum()) {
-			setTarget(null);
+			this.setTarget(null);
 
 			// cry?
 			if (--this.nextTantrumCry <= 0) {
-				this.playSound(getHurtSound(null), this.getSoundVolume(), this.getVoicePitch());
-				this.nextTantrumCry = 20 + random.nextInt(30);
+				this.playSound(this.getHurtSound(null), this.getSoundVolume(), this.getVoicePitch());
+				this.nextTantrumCry = 20 + this.getRandom().nextInt(30);
 			}
 
 			if (this.tickCount % 10 == 0) {
-				doTantrumDamageEffects();
+				this.doTantrumDamageEffects();
 			}
 		}
 	}
@@ -435,14 +347,14 @@ public class UrGhast extends CarminiteGhastguard {
 		// harm player below
 		AABB below = this.getBoundingBox().move(0, -16, 0).inflate(0, 16, 0);
 
-		for (Player player : level.getEntitiesOfClass(Player.class, below)) {
-			if (level.canSeeSkyFromBelowWater(player.blockPosition())) {
+		for (Player player : this.getLevel().getEntitiesOfClass(Player.class, below)) {
+			if (this.getLevel().canSeeSkyFromBelowWater(player.blockPosition())) {
 				player.hurt(TFDamageSources.GHAST_TEAR, 3);
 			}
 		}
 
 		// also suck up mini ghasts
-		for (CarminiteGhastling ghast : level.getEntitiesOfClass(CarminiteGhastling.class, below)) {
+		for (CarminiteGhastling ghast : this.getLevel().getEntitiesOfClass(CarminiteGhastling.class, below)) {
 			ghast.push(0, 1, 0);
 		}
 	}
@@ -450,13 +362,13 @@ public class UrGhast extends CarminiteGhastguard {
 	/**
 	 * Check if there are at least 4 ghasts near at least 2 traps.  Return false if not.
 	 */
-	private boolean checkGhastsAtTraps() {
+	public boolean checkGhastsAtTraps() {
 		int trapsWithEnoughGhasts = 0;
 
-		for (BlockPos trap : this.trapLocations) {
+		for (BlockPos trap : this.getTrapLocations()) {
 			AABB aabb = new AABB(trap, trap.offset(1, 1, 1)).inflate(8D, 16D, 8D);
 
-			List<CarminiteGhastling> nearbyGhasts = level.getEntitiesOfClass(CarminiteGhastling.class, aabb);
+			List<CarminiteGhastling> nearbyGhasts = this.getLevel().getEntitiesOfClass(CarminiteGhastling.class, aabb);
 
 			if (nearbyGhasts.size() >= 4) {
 				trapsWithEnoughGhasts++;
@@ -467,29 +379,29 @@ public class UrGhast extends CarminiteGhastguard {
 	}
 
 	@Override
-	protected void spitFireball() {
+	public void spitFireball() {
 		double offsetX = this.getTarget().getX() - this.getX();
 		double offsetY = this.getTarget().getBoundingBox().minY + this.getTarget().getBbHeight() / 2.0F - (this.getY() + this.getBbHeight() / 2.0F);
 		double offsetZ = this.getTarget().getZ() - this.getZ();
 
-		UrGhastFireball entityFireball = new UrGhastFireball(this.level, this, offsetX, offsetY, offsetZ, 1);
+		UrGhastFireball entityFireball = new UrGhastFireball(this.getLevel(), this, offsetX, offsetY, offsetZ, 1);
 		double shotSpawnDistance = 8.5D;
 		Vec3 lookVec = this.getViewVector(1.0F);
 		entityFireball.setPos(
-				this.getX() + lookVec.x * shotSpawnDistance,
-				this.getY() + this.getBbHeight() / 2.0F + lookVec.y * shotSpawnDistance,
-				this.getZ() + lookVec.z * shotSpawnDistance
+				this.getX() + lookVec.x() * shotSpawnDistance,
+				this.getY() + this.getBbHeight() / 2.0F + lookVec.y() * shotSpawnDistance,
+				this.getZ() + lookVec.z() * shotSpawnDistance
 		);
-		this.level.addFreshEntity(entityFireball);
+		this.getLevel().addFreshEntity(entityFireball);
 
 		for (int i = 0; i < 2; i++) {
-			entityFireball = new UrGhastFireball(this.level, this, offsetX + (random.nextFloat() - random.nextFloat()) * 8, offsetY, offsetZ + (random.nextFloat() - random.nextFloat()) * 8, 1);
+			entityFireball = new UrGhastFireball(this.getLevel(), this, offsetX + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 8, offsetY, offsetZ + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 8, 1);
 			entityFireball.setPos(
-					this.getX() + lookVec.x * shotSpawnDistance,
-					this.getY() + this.getBbHeight() / 2.0F + lookVec.y * shotSpawnDistance,
-					this.getZ() + lookVec.z * shotSpawnDistance
+					this.getX() + lookVec.x() * shotSpawnDistance,
+					this.getY() + this.getBbHeight() / 2.0F + lookVec.y() * shotSpawnDistance,
+					this.getZ() + lookVec.z() * shotSpawnDistance
 			);
-			this.level.addFreshEntity(entityFireball);
+			this.getLevel().addFreshEntity(entityFireball);
 		}
 	}
 
@@ -500,23 +412,23 @@ public class UrGhast extends CarminiteGhastguard {
 		int scanRangeXZ = 48;
 		int scanRangeY = 32;
 
-		scanForTraps(scanRangeXZ, scanRangeY, blockPosition());
+		this.scanForTraps(scanRangeXZ, scanRangeY, this.blockPosition());
 
-		if (trapLocations.size() > 0) {
+		if (this.getTrapLocations().size() > 0) {
 			// average the location of the traps we've found, and scan again from there
 			int ax = 0, ay = 0, az = 0;
 
-			for (BlockPos trapCoords : trapLocations) {
+			for (BlockPos trapCoords : this.getTrapLocations()) {
 				ax += trapCoords.getX();
 				ay += trapCoords.getY();
 				az += trapCoords.getZ();
 			}
 
-			ax /= trapLocations.size();
-			ay /= trapLocations.size();
-			az /= trapLocations.size();
+			ax /= this.getTrapLocations().size();
+			ay /= this.getTrapLocations().size();
+			az /= this.getTrapLocations().size();
 
-			scanForTraps(scanRangeXZ, scanRangeY, new BlockPos(ax, ay, az));
+			this.scanForTraps(scanRangeXZ, scanRangeY, new BlockPos(ax, ay, az));
 		}
 	}
 
@@ -525,8 +437,8 @@ public class UrGhast extends CarminiteGhastguard {
 			for (int sz = -scanRangeXZ; sz <= scanRangeXZ; sz++) {
 				for (int sy = -scanRangeY; sy <= scanRangeY; sy++) {
 					BlockPos trapCoords = pos.offset(sx, sy, sz);
-					if (isTrapAt(trapCoords)) {
-						trapLocations.add(trapCoords);
+					if (this.isTrapAt(trapCoords)) {
+						this.getTrapLocations().add(trapCoords);
 					}
 				}
 			}
@@ -534,10 +446,8 @@ public class UrGhast extends CarminiteGhastguard {
 	}
 
 	private boolean isTrapAt(BlockPos pos) {
-		BlockState inactive = TFBlocks.GHAST_TRAP.get().defaultBlockState().setValue(GhastTrapBlock.ACTIVE, false);
-		BlockState active = TFBlocks.GHAST_TRAP.get().defaultBlockState().setValue(GhastTrapBlock.ACTIVE, true);
-		return level.hasChunkAt(pos)
-				&& (level.getBlockState(pos) == inactive || level.getBlockState(pos) == active);
+		return this.getLevel().hasChunkAt(pos)
+				&& (this.getLevel().getBlockState(pos).is(TFBlocks.GHAST_TRAP.get()));
 	}
 
 	@Override
@@ -563,12 +473,12 @@ public class UrGhast extends CarminiteGhastguard {
 	}
 
 	public boolean isInTantrum() {
-		return entityData.get(DATA_TANTRUM);
+		return this.entityData.get(DATA_TANTRUM);
 	}
 
 	public void setInTantrum(boolean inTantrum) {
-		entityData.set(DATA_TANTRUM, inTantrum);
-		resetDamageUntilNextPhase();
+		this.entityData.set(DATA_TANTRUM, inTantrum);
+		this.resetDamageUntilNextPhase();
 	}
 
 	@Override
@@ -578,7 +488,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 	@Override
 	public float getVoicePitch() {
-		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.5F;
+		return (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 0.5F;
 	}
 
 	@Override
@@ -600,13 +510,13 @@ public class UrGhast extends CarminiteGhastguard {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the tower as defeated
-		if (!level.isClientSide) {
-			TFGenerationSettings.markStructureConquered(level, findChestCoords(), TFFeature.DARK_TOWER);
-			for(ServerPlayer player : hurtBy) {
+		if (!this.getLevel().isClientSide()) {
+			TFGenerationSettings.markStructureConquered(this.getLevel(), this.findChestCoords(), TFLandmark.DARK_TOWER);
+			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.DARKWOOD_CHEST.get().defaultBlockState(), this.findChestCoords());
+			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.DARKWOOD_CHEST.get().defaultBlockState(), this.findChestCoords());
 		}
 	}
 
@@ -617,19 +527,19 @@ public class UrGhast extends CarminiteGhastguard {
 	}
 
 	private BlockPos findChestCoords() {
-		if (trapLocations.size() > 0) {
+		if (this.getTrapLocations().size() > 0) {
 			// average the location of the traps we've found, and scan again from there
 			int ax = 0, ay = 0, az = 0;
 
-			for (BlockPos trapCoords : trapLocations) {
+			for (BlockPos trapCoords : this.getTrapLocations()) {
 				ax += trapCoords.getX();
 				ay += trapCoords.getY();
 				az += trapCoords.getZ();
 			}
 
-			ax /= trapLocations.size();
-			ay /= trapLocations.size();
-			az /= trapLocations.size();
+			ax /= this.getTrapLocations().size();
+			ay /= this.getTrapLocations().size();
+			az /= this.getTrapLocations().size();
 
 
 			return new BlockPos(ax, ay + 2, az);
@@ -640,7 +550,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 	// Don't attack (or even think about attacking) things while we're throwing a tantrum
 	@Override
-	protected boolean shouldAttack(LivingEntity living) {
+	public boolean shouldAttack(LivingEntity living) {
 		return !this.isInTantrum();
 	}
 

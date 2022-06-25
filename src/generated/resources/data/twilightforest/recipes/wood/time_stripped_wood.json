@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "##",
-    "##"
-  ],
   "key": {
     "#": {
       "item": "twilightforest:stripped_time_log"
     }
   },
+  "pattern": [
+    "##",
+    "##"
+  ],
   "result": {
-    "item": "twilightforest:stripped_time_wood",
-    "count": 3
+    "count": 3,
+    "item": "twilightforest:stripped_time_wood"
   }
 }

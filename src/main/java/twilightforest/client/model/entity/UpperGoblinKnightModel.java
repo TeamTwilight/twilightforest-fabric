@@ -19,7 +19,7 @@ import twilightforest.entity.monster.UpperGoblinKnight;
  */
 @Environment(EnvType.CLIENT)
 public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
-    public ModelPart breastplate;
+    public final ModelPart breastplate;
     public ModelPart spear;
     public ModelPart shield;
 

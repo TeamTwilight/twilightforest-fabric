@@ -1,20 +1,20 @@
 {
+  "type": "minecraft:random_selector",
   "config": {
+    "default": "twilightforest:tf_oak_fallen_log",
     "features": [
       {
-        "feature": "twilightforest:birch_fallen_log",
-        "chance": 0.1
+        "chance": 0.1,
+        "feature": "twilightforest:birch_fallen_log"
       },
       {
-        "feature": "twilightforest:oak_fallen_log",
-        "chance": 0.2
+        "chance": 0.2,
+        "feature": "twilightforest:oak_fallen_log"
       },
       {
-        "feature": "twilightforest:canopy_fallen_log",
-        "chance": 0.4
+        "chance": 0.4,
+        "feature": "twilightforest:canopy_fallen_log"
       }
-    ],
-    "default": "twilightforest:tf_oak_fallen_log"
-  },
-  "type": "minecraft:random_selector"
+    ]
+  }
 }

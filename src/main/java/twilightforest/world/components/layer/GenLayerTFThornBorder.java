@@ -4,7 +4,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 public enum GenLayerTFThornBorder implements IThornsTransformer {
 	INSTANCE;

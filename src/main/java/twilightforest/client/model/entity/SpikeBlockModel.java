@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 import twilightforest.entity.SpikeBlock;
 
 public class SpikeBlockModel extends ListModel<SpikeBlock> {
-	ModelPart block;
+	final ModelPart block;
 
 	public SpikeBlockModel(ModelPart root) {
 		this.block = root.getChild("block");

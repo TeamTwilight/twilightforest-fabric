@@ -1,14 +1,13 @@
 package twilightforest.entity;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.Level;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import twilightforest.init.TFEntities;
 
 public class ProtectionBox extends Entity {
 
@@ -22,34 +21,34 @@ public class ProtectionBox extends Entity {
 
 	public ProtectionBox(EntityType<?> type, Level world) {
 		super(type, world);
-		sizeX = sizeY = sizeZ = 0;
-		sbb = null;
+		this.sizeX = this.sizeY = this.sizeZ = 0;
+		this.sbb = null;
 	}
 
 	public ProtectionBox(Level world, BoundingBox sbb) {
 		super(TFEntities.PROTECTION_BOX.get(), world);
 
-		this.sbb = sbb;//new BoundingBox(sbb.getCenter());
+		this.sbb = sbb;
 
 		this.moveTo(sbb.minX(), sbb.minY(), sbb.minZ(), 0.0F, 0.0F);
 
-		sizeX = sbb.getXSpan();
-		sizeY = sbb.getYSpan();
-		sizeZ = sbb.getZSpan();
+		this.sizeX = sbb.getXSpan();
+		this.sizeY = sbb.getYSpan();
+		this.sizeZ = sbb.getZSpan();
 
-		this.dimensions = EntityDimensions.fixed(Math.max(sizeX, sizeZ), sizeY);
+		this.dimensions = EntityDimensions.fixed(Math.max(this.sizeX, this.sizeZ), this.sizeY);
 
-		lifeTime = 60;
+		this.lifeTime = 60;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		if (lifeTime <= 1) {
-			discard();
+		if (this.lifeTime <= 1) {
+			this.discard();
 		} else {
-			lifeTime--;
+			this.lifeTime--;
 		}
 	}
 
@@ -59,24 +58,21 @@ public class ProtectionBox extends Entity {
 	}
 
 	public void resetLifetime() {
-		lifeTime = 60;
+		this.lifeTime = 60;
 	}
 
 	@Override
-	public float getBrightness() {
-		return 1.0F;
+	protected void defineSynchedData() {
 	}
 
 	@Override
-	protected void defineSynchedData() {}
+	protected void readAdditionalSaveData(CompoundTag compound) {
+	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {}
+	protected void addAdditionalSaveData(CompoundTag compound) {
+	}
 
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {}
-
-	@Environment(EnvType.CLIENT)
 	@Override
 	public boolean displayFireAnimation() {
 		return false;
@@ -89,6 +85,6 @@ public class ProtectionBox extends Entity {
 
 	@Override
 	public Packet<?> getAddEntityPacket() {
-		throw new IllegalStateException("should never be spawned on server");
+		throw new IllegalStateException("Should never be spawned on server");
 	}
 }

@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "#6#",
-    "6o6",
-    "#6#"
-  ],
   "key": {
-    "6": {
-      "tag": "c:gems/carminite"
-    },
     "#": {
       "item": "twilightforest:encased_towerwood"
+    },
+    "6": {
+      "tag": "forge:gems/carminite"
     },
     "o": {
       "item": "minecraft:dispenser"
     }
   },
+  "pattern": [
+    "#6#",
+    "6o6",
+    "#6#"
+  ],
   "result": {
     "item": "twilightforest:carminite_builder"
   }

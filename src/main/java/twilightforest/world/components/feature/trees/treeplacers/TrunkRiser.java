@@ -3,16 +3,16 @@ package twilightforest.world.components.feature.trees.treeplacers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.init.TFFeatureModifiers;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.BiConsumer;
 
 public class TrunkRiser extends TrunkPlacer {
@@ -35,11 +35,11 @@ public class TrunkRiser extends TrunkPlacer {
 
     @Override
     protected TrunkPlacerType<TrunkRiser> type() {
-        return TwilightFeatures.TRUNK_RISER.get();
+        return TFFeatureModifiers.TRUNK_RISER.get();
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, Random random, int height, BlockPos startPos, TreeConfiguration treeConfig) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration treeConfig) {
         return this.placer.placeTrunk(worldReader, worldPlacer, random, height, startPos.above(this.offset), treeConfig);
     }
 }

@@ -1,12 +1,116 @@
 {
   "parent": "twilightforest:progress_naga",
+  "criteria": {
+    "kill_lich": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:lich"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "kill_naga": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "advancements": {
+                  "twilightforest:progress_naga": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tick"
+    },
+    "lifedrain_scepter": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:lifedrain_scepter"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "shield_scepter": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:fortification_scepter"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "trophy": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:lich_trophy"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_scepter": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:twilight_scepter"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "was_in_fight": {
+      "conditions": {
+        "hurt_entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:lich"
+            }
+          }
+        ]
+      },
+      "trigger": "twilightforest:hurt_boss"
+    },
+    "zombie_scepter": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:zombie_scepter"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:lich_tower_miniature_structure"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.kill_lich"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.kill_lich.desc",
       "with": [
@@ -16,116 +120,13 @@
       ]
     },
     "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:lich_tower_miniature_structure"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "kill_lich": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:lich"
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "trophy": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:lich_trophy"
-            ]
-          }
-        ]
-      }
-    },
-    "lifedrain_scepter": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:lifedrain_scepter"
-            ]
-          }
-        ]
-      }
-    },
-    "twilight_scepter": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:twilight_scepter"
-            ]
-          }
-        ]
-      }
-    },
-    "zombie_scepter": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:zombie_scepter"
-            ]
-          }
-        ]
-      }
-    },
-    "shield_scepter": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:fortification_scepter"
-            ]
-          }
-        ]
-      }
-    },
-    "was_in_fight": {
-      "trigger": "twilightforest:hurt_boss",
-      "conditions": {
-        "hurt_entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:lich"
-            },
-            "entity": "this"
-          }
-        ]
-      }
-    },
-    "kill_naga": {
-      "trigger": "minecraft:tick",
-      "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "advancements": {
-                  "twilightforest:progress_naga": true
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
+    "title": {
+      "translate": "advancement.twilightforest.kill_lich"
     }
   },
   "requirements": [

@@ -1,43 +1,43 @@
 {
   "parent": "twilightforest:progress_yeti",
-  "display": {
-    "icon": {
-      "item": "twilightforest:glass_sword",
-      "nbt": "{Damage:0}"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.glass_sword"
-    },
-    "description": {
-      "translate": "advancement.twilightforest.glass_sword.desc"
-    },
-    "frame": "challenge",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": true
-  },
-  "rewards": {
-    "experience": 42,
-    "loot": [
-      "twilightforest:glass_sword"
-    ]
-  },
   "criteria": {
     "broken_sword": {
-      "trigger": "minecraft:item_durability_changed",
       "conditions": {
+        "durability": -1,
         "item": {
           "items": [
             "twilightforest:glass_sword"
           ]
-        },
-        "durability": -1
-      }
+        }
+      },
+      "trigger": "minecraft:item_durability_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.twilightforest.glass_sword.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "item": "twilightforest:glass_sword",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.glass_sword"
     }
   },
   "requirements": [
     [
       "broken_sword"
     ]
-  ]
+  ],
+  "rewards": {
+    "experience": 42,
+    "loot": [
+      "twilightforest:glass_sword"
+    ]
+  }
 }

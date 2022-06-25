@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.3,
   "ingredient": {
     "item": "twilightforest:etched_nagastone"
   },
-  "result": "twilightforest:cracked_etched_nagastone",
-  "experience": 0.3,
-  "cookingtime": 200
+  "result": "twilightforest:cracked_etched_nagastone"
 }

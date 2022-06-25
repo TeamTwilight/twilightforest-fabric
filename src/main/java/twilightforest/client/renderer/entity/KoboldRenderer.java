@@ -4,9 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,19 +21,22 @@ import twilightforest.entity.monster.Kobold;
 @Environment(EnvType.CLIENT)
 public class KoboldRenderer extends TFBipedRenderer<Kobold, KoboldModel> {
 
-	public KoboldRenderer(EntityRendererProvider.Context manager, KoboldModel modelBiped, float shadowSize, String textureName) {
-		super(manager, modelBiped, shadowSize, textureName);
+	public KoboldRenderer(EntityRendererProvider.Context context, KoboldModel model, float shadowSize, String textureName) {
+		super(context, model, shadowSize, textureName);
 
-		this.layers.removeIf(r -> r instanceof net.minecraft.client.renderer.entity.layers.ItemInHandLayer);
-		this.addLayer(new HeldItemLayer(this));
+		this.layers.removeIf(r -> r instanceof ItemInHandLayer);
+		this.addLayer(new HeldItemLayer(this, context.getItemInHandRenderer()));
 	}
 
 	/**
 	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.ItemInHandLayer} with additional transforms
 	 */
 	private static class HeldItemLayer extends RenderLayer<Kobold, KoboldModel> {
-		public HeldItemLayer(RenderLayerParent<Kobold, KoboldModel> renderer) {
+		private final ItemInHandRenderer handRenderer;
+
+		public HeldItemLayer(RenderLayerParent<Kobold, KoboldModel> renderer, ItemInHandRenderer handRenderer) {
 			super(renderer);
+			this.handRenderer = handRenderer;
 		}
 
 		@Override
@@ -60,7 +65,7 @@ public class KoboldRenderer extends TFBipedRenderer<Kobold, KoboldModel> {
 				ms.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 				boolean flag = handSide == HumanoidArm.LEFT;
 				ms.translate(0.05D, 0.125D, -0.35D);
-				Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, stack, transform, flag, ms, buffers, light);
+				this.handRenderer.renderItem(entity, stack, transform, flag, ms, buffers, light);
 				ms.popPose();
 			}
 		}

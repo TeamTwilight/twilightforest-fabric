@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.stronghold;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -14,19 +15,19 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class StrongholdAccessChamberComponent extends StructureTFStrongholdComponent {
 
 	public StrongholdAccessChamberComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSAC, nbt);
+		super(TFStructurePieceTypes.TFSAC.get(), nbt);
 	}
 
-	public StrongholdAccessChamberComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSAC, feature, i, facing, x, y, z);
+	public StrongholdAccessChamberComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSAC.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class StrongholdAccessChamberComponent extends StructureTFStrongholdCompo
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random random) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource random) {
 		super.addChildren(parent, list, random);
 
 		// make a random component in each direction
@@ -50,7 +51,7 @@ public class StrongholdAccessChamberComponent extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		generateBox(world, sbb, 0, 0, 0, 8, 4, 8, true, rand, deco.randomBlocks);
 
 		// doors

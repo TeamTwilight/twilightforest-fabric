@@ -22,7 +22,7 @@ import twilightforest.entity.passive.TinyBird;
 @Environment(EnvType.CLIENT)
 public class TinyBirdModel extends AgeableListModel<TinyBird> {
     public ModelPart head;
-    public ModelPart body;
+    public final ModelPart body;
     public ModelPart rightFoot;
     public ModelPart leftFoot;
     public ModelPart rightWing;

@@ -15,42 +15,45 @@ import net.minecraft.world.level.material.Fluids;
 
 import java.util.Optional;
 
-/** [VanillaCopy] Replaced all BlockState Checking/Setting with stateIsWaterlogged and setWaterlogging */
+/**
+ * [VanillaCopy] Replaced all BlockState Checking/Setting with stateIsWaterlogged and setWaterlogging
+ */
 public interface WaterloggedBlock extends BucketPickup, LiquidBlockContainer {
-    boolean isStateWaterlogged(BlockState state);
-    BlockState setWaterlog(BlockState prior, boolean doWater);
+	boolean isStateWaterlogged(BlockState state);
 
-    default boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
-        return !this.isStateWaterlogged(state) && fluid == Fluids.WATER;
-    }
+	BlockState setWaterlog(BlockState prior, boolean doWater);
 
-    default boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState) {
-        if (!this.isStateWaterlogged(state) && fluidState.getType() == Fluids.WATER) {
-            if (!level.isClientSide()) {
-                level.setBlock(pos, this.setWaterlog(state, true), 3);
-                level.scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(level));
-            }
+	default boolean canPlaceLiquid(BlockGetter getter, BlockPos pos, BlockState state, Fluid fluid) {
+		return !this.isStateWaterlogged(state) && fluid == Fluids.WATER;
+	}
 
-            return true;
-        } else {
-            return false;
-        }
-    }
+	default boolean placeLiquid(LevelAccessor accessor, BlockPos pos, BlockState state, FluidState fluidState) {
+		if (!this.isStateWaterlogged(state) && fluidState.getType() == Fluids.WATER) {
+			if (!accessor.isClientSide()) {
+				accessor.setBlock(pos, this.setWaterlog(state, true), 3);
+				accessor.scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(accessor));
+			}
 
-    default ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state) {
-        if (this.isStateWaterlogged(state)) {
-            level.setBlock(pos, this.setWaterlog(state, false), 3);
-            if (!state.canSurvive(level, pos)) {
-                level.destroyBlock(pos, true);
-            }
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-            return new ItemStack(Items.WATER_BUCKET);
-        } else {
-            return ItemStack.EMPTY;
-        }
-    }
+	default ItemStack pickupBlock(LevelAccessor accessor, BlockPos pos, BlockState state) {
+		if (this.isStateWaterlogged(state)) {
+			accessor.setBlock(pos, this.setWaterlog(state, false), 3);
+			if (!state.canSurvive(accessor, pos)) {
+				accessor.destroyBlock(pos, true);
+			}
 
-    default Optional<SoundEvent> getPickupSound() {
-        return Fluids.WATER.getPickupSound();
-    }
+			return new ItemStack(Items.WATER_BUCKET);
+		} else {
+			return ItemStack.EMPTY;
+		}
+	}
+
+	default Optional<SoundEvent> getPickupSound() {
+		return Fluids.WATER.getPickupSound();
+	}
 }

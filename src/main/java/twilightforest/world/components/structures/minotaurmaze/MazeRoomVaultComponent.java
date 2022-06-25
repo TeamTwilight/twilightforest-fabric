@@ -3,34 +3,35 @@ package twilightforest.world.components.structures.minotaurmaze;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFBlocks;
+import twilightforest.loot.TFLootTables;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class MazeRoomVaultComponent extends MazeRoomComponent {
 
 	public MazeRoomVaultComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMRV, nbt);
+		super(TFStructurePieceTypes.TFMMRV.get(), nbt);
 	}
 
-	public MazeRoomVaultComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRV, feature, i, rand, x, y, z);
+	public MazeRoomVaultComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMRV.get(), feature, i, rand, x, y, z);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// fill room with bricks
 		generateBox(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
 		generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, false);
@@ -56,10 +57,10 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 		generateBox(world, sbb, 10, 0, 6, 10, 0, 9, Blocks.TNT.defaultBlockState(), AIR, false);
 
 		// LEWTZ!
-		this.setDoubleLootChest(world, 7, 2, 6, 8, 2, 6, Direction.SOUTH, TFTreasure.LABYRINTH_VAULT, sbb, false);
-		this.setDoubleLootChest(world, 8, 2, 9, 7, 2, 9, Direction.NORTH, TFTreasure.LABYRINTH_VAULT, sbb, false);
-		this.setDoubleLootChest(world, 6, 2, 8, 6, 2, 7, Direction.EAST, TFTreasure.LABYRINTH_VAULT, sbb, false);
-		this.setDoubleLootChest(world, 9, 2, 7, 9, 2, 8, Direction.WEST, TFTreasure.LABYRINTH_VAULT, sbb, false);
+		this.setDoubleLootChest(world, 7, 2, 6, 8, 2, 6, Direction.SOUTH, TFLootTables.LABYRINTH_VAULT, sbb, false);
+		this.setDoubleLootChest(world, 8, 2, 9, 7, 2, 9, Direction.NORTH, TFLootTables.LABYRINTH_VAULT, sbb, false);
+		this.setDoubleLootChest(world, 6, 2, 8, 6, 2, 7, Direction.EAST, TFLootTables.LABYRINTH_VAULT, sbb, false);
+		this.setDoubleLootChest(world, 9, 2, 7, 9, 2, 8, Direction.WEST, TFLootTables.LABYRINTH_VAULT, sbb, false);
 
 		// mazebreaker!
 	}

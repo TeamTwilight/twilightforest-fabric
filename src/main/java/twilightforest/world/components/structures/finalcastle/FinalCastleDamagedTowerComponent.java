@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -12,35 +13,36 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.ArrayList;
-import java.util.Random;
+
 
 public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Component {
 
 	public FinalCastleDamagedTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(FinalCastlePieces.TFFCDamT, nbt);
+		this(TFStructurePieceTypes.TFFCDamT.get(), nbt);
 	}
 
 	public FinalCastleDamagedTowerComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public FinalCastleDamagedTowerComponent(StructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
+	public FinalCastleDamagedTowerComponent(StructurePieceType piece, TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
 		super(piece, feature, rand, i, x, y, z, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);  //TODO: change rune color
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(FinalCastlePieces.TFFCToF13, getFeatureType(), rand, 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), getFeatureType(), rand, 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
@@ -60,19 +62,19 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 	}
 
 	@Override
-	protected FinalCastleMazeTower13Component makeNewDamagedTower(Random rand, Direction facing, BlockPos tc) {
+	protected FinalCastleMazeTower13Component makeNewDamagedTower(RandomSource rand, Direction facing, BlockPos tc) {
 		return new FinalCastleWreckedTowerComponent(getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		this.destroyTower(world, decoRNG, sbb);
 	}
 
-	public void destroyTower(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	public void destroyTower(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 
 		// make list of destroyed areas
 		ArrayList<DestroyArea> areas = makeInitialDestroyList(rand);
@@ -112,7 +114,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 		}
 	}
 
-	protected ArrayList<DestroyArea> makeInitialDestroyList(Random rand) {
+	protected ArrayList<DestroyArea> makeInitialDestroyList(RandomSource rand) {
 		ArrayList<DestroyArea> areas = new ArrayList<DestroyArea>(2);
 
 		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().maxY() - 1, areas));

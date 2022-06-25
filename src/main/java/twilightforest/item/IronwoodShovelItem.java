@@ -9,16 +9,16 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 public class IronwoodShovelItem extends ShovelItem {
 
-	public IronwoodShovelItem(Tier toolMaterial, Properties props) {
-		super(toolMaterial, 1.5F, -3.0F, props);
+	public IronwoodShovelItem(Tier toolMaterial, Properties properties) {
+		super(toolMaterial, 1.5F, -3.0F, properties);
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
-			istack.enchant(Enchantments.UNBREAKING, 1);
-			list.add(istack);
+		if (this.allowedIn(tab)) {
+			ItemStack stack = new ItemStack(this);
+			stack.enchant(Enchantments.UNBREAKING, 1);
+			list.add(stack);
 		}
 	}
 }

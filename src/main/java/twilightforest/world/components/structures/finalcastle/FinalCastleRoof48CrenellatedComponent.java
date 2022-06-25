@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,21 +13,21 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class FinalCastleRoof48CrenellatedComponent extends TFStructureComponentOld {
 
 	public FinalCastleRoof48CrenellatedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCRo48Cr, nbt);
+		super(TFStructurePieceTypes.TFFCRo48Cr.get(), nbt);
 	}
 
-	public FinalCastleRoof48CrenellatedComponent(TFFeature feature, int i, TFStructureComponentOld keep, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCRo48Cr,feature, i, x, y, z);
+	public FinalCastleRoof48CrenellatedComponent(TFLandmark feature, int i, TFStructureComponentOld keep, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFFCRo48Cr.get(),feature, i, x, y, z);
 
 		int height = 5;
 
@@ -36,14 +37,14 @@ public class FinalCastleRoof48CrenellatedComponent extends TFStructureComponentO
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// add second layer of floor
 		final BlockState castleMagic = TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState();
 		this.generateBox(world, sbb, 2, 2, 2, 50, 2, 50, castleMagic, castleMagic, false);

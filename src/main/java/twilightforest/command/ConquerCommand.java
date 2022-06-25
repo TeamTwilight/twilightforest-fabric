@@ -7,7 +7,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -16,7 +16,7 @@ import twilightforest.world.registration.TFGenerationSettings;
 import java.util.Optional;
 
 public class ConquerCommand {
-	private static final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(new TranslatableComponent("commands.tffeature.structure.required"));
+	private static final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.structure.required"));
 
 	public static LiteralArgumentBuilder<CommandSourceStack> register() {
 		LiteralArgumentBuilder<CommandSourceStack> conquer = Commands.literal("conquer").requires(cs -> cs.hasPermission(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), true));
@@ -38,7 +38,7 @@ public class ConquerCommand {
 			if(struct.isEmpty())
 				throw NOT_IN_STRUCTURE.create();
 			struct.ifPresent(structure -> {
-				source.sendSuccess(new TranslatableComponent("commands.tffeature.structure.conquer.update", structure.isConquered(), flag), true);
+				source.sendSuccess(Component.translatable("commands.tffeature.structure.conquer.update", structure.isConquered(), flag), true);
 				structure.setConquered(flag);
 			});
 			return Command.SINGLE_SUCCESS;

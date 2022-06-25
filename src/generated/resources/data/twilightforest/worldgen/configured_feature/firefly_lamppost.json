@@ -1,11 +1,11 @@
 {
+  "type": "twilightforest:lampposts",
   "config": {
     "state": {
+      "Name": "twilightforest:firefly_jar",
       "Properties": {
         "waterlogged": "false"
-      },
-      "Name": "twilightforest:firefly_jar"
+      }
     }
-  },
-  "type": "twilightforest:lampposts"
+  }
 }

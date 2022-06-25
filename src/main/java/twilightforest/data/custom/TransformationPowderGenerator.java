@@ -3,11 +3,10 @@ package twilightforest.data.custom;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
-//import quek.undergarden.registry.UGEntityTypes;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 
-public class TransformationPowderGenerator extends TransformationPowderProvider{
+public class TransformationPowderGenerator extends TransformationPowderProvider {
 
 	public TransformationPowderGenerator(DataGenerator generator, ExistingFileHelper helper) {
 		super(generator, TwilightForestMod.ID, helper);

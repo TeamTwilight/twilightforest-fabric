@@ -1,7 +1,5 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
@@ -16,16 +14,14 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.entity.monster.SlimeBeetle;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /**
  * ModelSlimeBeetle - MCVinnyq
  * Created using Tabula 8.0.0
  */
 @Environment(EnvType.CLIENT)
 public class SlimeBeetleModel extends HierarchicalModel<SlimeBeetle> {
-    public ModelPart root, head;
+    public final ModelPart root;
+	public final ModelPart head;
     public ModelPart rightLeg1, rightLeg2, rightLeg3;
     public ModelPart leftLeg1, leftLeg2, leftLeg3;
     public ModelPart rightAntenna, leftAntenna;

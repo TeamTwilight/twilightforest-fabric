@@ -2,67 +2,66 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": 6.0,
-              "add": false
+              "function": "minecraft:set_count"
             },
             {
-              "function": "minecraft:looting_enchant",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              }
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:looting_enchant"
             }
           ],
           "name": "twilightforest:alpha_yeti_fur"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": 6.0,
-              "add": false
+              "function": "minecraft:set_count"
             },
             {
-              "function": "minecraft:looting_enchant",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              }
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:looting_enchant"
             }
           ],
           "name": "twilightforest:ice_bomb"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "twilightforest:alpha_yeti_trophy"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -75,8 +74,8 @@
           ],
           "functions": [
             {
-              "function": "twilightforest:item_or_default",
-              "default": "twilightforest:ice_bomb"
+              "default": "twilightforest:ice_bomb",
+              "function": "twilightforest:item_or_default"
             },
             {
               "function": "minecraft:set_nbt",
@@ -85,10 +84,10 @@
           ],
           "name": "twilightforest:ice_bomb"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -101,13 +100,14 @@
           ],
           "functions": [
             {
-              "function": "twilightforest:item_or_default",
-              "default": "twilightforest:ice_bomb"
+              "default": "twilightforest:ice_bomb",
+              "function": "twilightforest:item_or_default"
             }
           ],
           "name": "twilightforest:ice_bomb"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

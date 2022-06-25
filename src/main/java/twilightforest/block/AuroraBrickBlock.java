@@ -54,8 +54,8 @@ public class AuroraBrickBlock extends Block {
 
 	@Override
 	@Deprecated
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-		return defaultBlockState().setValue(VARIANT, calcVariant(currentPos));
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
+		return this.defaultBlockState().setValue(VARIANT, calcVariant(currentPos));
 	}
 
 	@Override
@@ -65,21 +65,21 @@ public class AuroraBrickBlock extends Block {
 	}
 
 	/*
-	* A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.
-	*
-	* Based on example code by Stefan Gustavson (stegu@itn.liu.se).
-	* Optimisations by Peter Eastman (peastman@drizzle.stanford.edu).
-	* Better rank ordering method for 4D by Stefan Gustavson in 2012.
-	*
-	* This could be speeded up even further, but it's useful as it is.
-	*
-	* Version 2012-03-09
-	*
-	* This code was placed in the public domain by its original author,
-	* Stefan Gustavson. You may use it as you see fit, but
-	* attribution is appreciated.
-	*
-	*/
+	 * A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.
+	 *
+	 * Based on example code by Stefan Gustavson (stegu@itn.liu.se).
+	 * Optimisations by Peter Eastman (peastman@drizzle.stanford.edu).
+	 * Better rank ordering method for 4D by Stefan Gustavson in 2012.
+	 *
+	 * This could be speeded up even further, but it's useful as it is.
+	 *
+	 * Version 2012-03-09
+	 *
+	 * This code was placed in the public domain by its original author,
+	 * Stefan Gustavson. You may use it as you see fit, but
+	 * attribution is appreciated.
+	 *
+	 */
 
 	private static class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
 		private static final Grad[] grad3 = {new Grad(1, 1, 0), new Grad(-1, 1, 0), new Grad(1, -1, 0), new Grad(-1, -1, 0),

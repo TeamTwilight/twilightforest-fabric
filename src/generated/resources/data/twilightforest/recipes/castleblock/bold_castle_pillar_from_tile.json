@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "##",
-    "##"
-  ],
   "key": {
     "#": {
       "item": "twilightforest:bold_castle_brick_tile"
     }
   },
+  "pattern": [
+    "##",
+    "##"
+  ],
   "result": {
-    "item": "twilightforest:bold_castle_brick_pillar",
-    "count": 4
+    "count": 4,
+    "item": "twilightforest:bold_castle_brick_pillar"
   }
 }

@@ -1,30 +1,15 @@
 {
   "parent": "twilightforest:experiment_115",
-  "display": {
-    "icon": {
-      "item": "twilightforest:experiment_115",
-      "nbt": "{think:{think:1}}"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.experiment_115_3"
-    },
-    "description": {
-      "translate": "advancement.twilightforest.experiment_115_3.desc"
-    },
-    "frame": "challenge",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": true
-  },
   "criteria": {
     "eat_115_e115": {
-      "trigger": "minecraft:location",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "stats": [
                   {
                     "type": "minecraft:custom",
@@ -35,11 +20,27 @@
                   }
                 ]
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
+      },
+      "trigger": "minecraft:location"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.twilightforest.experiment_115_3.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "item": "twilightforest:experiment_115",
+      "nbt": "{think:{think:1}}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.experiment_115_3"
     }
   },
   "requirements": [

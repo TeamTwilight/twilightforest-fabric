@@ -1,44 +1,7 @@
 {
   "parent": "twilightforest:alt/root",
   "criteria": {
-    "has_sapling": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:mining_sapling"
-            ]
-          }
-        ]
-      }
-    },
-    "has_log": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:mining_log"
-            ]
-          }
-        ]
-      }
-    },
-    "has_wood": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:mining_wood"
-            ]
-          }
-        ]
-      }
-    },
     "has_leaves": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -47,7 +10,44 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mining_log"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mining_sapling"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mining_wood"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [

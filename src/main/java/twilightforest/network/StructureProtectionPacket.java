@@ -25,19 +25,19 @@ public class StructureProtectionPacket implements S2CPacket {
 	}
 
 	public StructureProtectionPacket(FriendlyByteBuf buf) {
-		sbb = new BoundingBox(
+		this.sbb = new BoundingBox(
 				buf.readInt(), buf.readInt(), buf.readInt(),
 				buf.readInt(), buf.readInt(), buf.readInt()
 		);
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(sbb.minX());
-		buf.writeInt(sbb.minY());
-		buf.writeInt(sbb.minZ());
-		buf.writeInt(sbb.maxX());
-		buf.writeInt(sbb.maxY());
-		buf.writeInt(sbb.maxZ());
+		buf.writeInt(this.sbb.minX());
+		buf.writeInt(this.sbb.minY());
+		buf.writeInt(this.sbb.minZ());
+		buf.writeInt(this.sbb.maxX());
+		buf.writeInt(this.sbb.maxY());
+		buf.writeInt(this.sbb.maxZ());
 	}
 
 	@Override
@@ -54,8 +54,8 @@ public class StructureProtectionPacket implements S2CPacket {
 				if (info instanceof TwilightForestRenderInfo tfInfo) {
 					TFWeatherRenderer weatherRenderer = tfInfo.getWeatherRenderHandler();
 
-					if (weatherRenderer instanceof TFWeatherRenderer) {
-						((TFWeatherRenderer) weatherRenderer).setProtectedBox(message.sbb);
+					if (weatherRenderer instanceof TFWeatherRenderer renderer) {
+						renderer.setProtectedBox(message.sbb);
 					}
 				}
 			});

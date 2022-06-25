@@ -31,11 +31,11 @@ public class TrophyBlock extends AbstractTrophyBlock {
 
 	public TrophyBlock(BossVariant variant, int value) {
 		super(variant, value, Properties.of(Material.DECORATION).instabreak());
-		registerDefaultState(stateDefinition.any().setValue(TrophyBlock.ROTATION, 0));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(TrophyBlock.ROTATION, 0));
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		if (((AbstractTrophyBlock) state.getBlock()).getVariant() == BossVariant.UR_GHAST) {
 			return GHAST_SHAPE;
 		} else if (((AbstractTrophyBlock) state.getBlock()).getVariant() == BossVariant.ALPHA_YETI) {
@@ -49,23 +49,23 @@ public class TrophyBlock extends AbstractTrophyBlock {
 	}
 
 	@Override
-	public VoxelShape getOcclusionShape(BlockState state, BlockGetter worldIn, BlockPos pos) {
+	public VoxelShape getOcclusionShape(BlockState state, BlockGetter getter, BlockPos pos) {
 		return Shapes.empty();
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return this.defaultBlockState().setValue(ROTATION, Integer.valueOf(Mth.floor(context.getRotation() * 16.0F / 360.0F + 0.5D) & 15));
+		return this.defaultBlockState().setValue(ROTATION, Mth.floor(context.getRotation() * 16.0F / 360.0F + 0.5D) & 15);
 	}
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.setValue(ROTATION, Integer.valueOf(rot.rotate(state.getValue(ROTATION), 16)));
+		return state.setValue(ROTATION, rot.rotate(state.getValue(ROTATION), 16));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.setValue(ROTATION, Integer.valueOf(mirrorIn.mirror(state.getValue(ROTATION), 16)));
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.setValue(ROTATION, mirror.mirror(state.getValue(ROTATION), 16));
 	}
 
 	@Override

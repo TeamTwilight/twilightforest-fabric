@@ -3,36 +3,37 @@ package twilightforest.world.components.structures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class HydraLairComponent extends HollowHillComponent {
 
 	public HydraLairComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFFeature.TFHydra, nbt);
+		super(TFStructurePieceTypes.TFHydra.get(), nbt);
 	}
 
-	public HydraLairComponent(TFFeature feature, Random rand, int i, int x, int y, int z) {
-		super(TFFeature.TFHydra, feature, i, 2, x, y + 2, z);
+	public HydraLairComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFHydra.get(), feature, i, 2, x, y + 2, z);
 	}
 
 	@Override
-	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor accessor, Random random) {
+	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor accessor, RandomSource random) {
 		// NO-OP
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int stalacts = 64;
 		int stalags = 8;
 
@@ -58,7 +59,7 @@ public class HydraLairComponent extends HollowHillComponent {
 	}
 
 	@Override
-	BlockPos.MutableBlockPos randomFloorCoordinates(Random rand, float maximumRadius) {
+	BlockPos.MutableBlockPos randomFloorCoordinates(RandomSource rand, float maximumRadius) {
 		float degree = rand.nextFloat() * 4.537856f + 1.7453294f; // rand * (2pi - 5pi/9) + 5pi/9
 		// The full radius isn't actually hollow. Not feeling like doing the math to find the intersections of the curves involved
 		float radius = maximumRadius * 0.9f * (rand.nextFloat() * 0.35f + 0.65f); // 0.9 (max width) * 0.65 minimum radius
@@ -70,7 +71,7 @@ public class HydraLairComponent extends HollowHillComponent {
 	}
 
 	@Override
-	BlockPos.MutableBlockPos randomCeilingCoordinates(Random rand, float maximumRadius) {
+	BlockPos.MutableBlockPos randomCeilingCoordinates(RandomSource rand, float maximumRadius) {
 		float degree = rand.nextFloat() * 4.537856f + 1.7453294f; // rand * (2pi - 5pi/9) + 5pi/9
 		// The full radius isn't actually hollow. Not feeling like doing the math to find the intersections of the curves involved
 		float radius = rand.nextFloat() * 0.9f * maximumRadius;

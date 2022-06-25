@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import slimeknights.tconstruct.library.entity.EntityProjectileBase;
 import slimeknights.tconstruct.library.traits.AbstractProjectileTrait;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class TraitVeiled extends AbstractProjectileTrait {
     public TraitVeiled() {

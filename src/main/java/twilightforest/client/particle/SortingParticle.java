@@ -13,8 +13,8 @@ public class SortingParticle extends TextureSheetParticle {
     private final double yStart;
     private final double zStart;
 
-    SortingParticle(ClientLevel clientLevel, double x, double y, double z, double x2, double y2, double z2) {
-        super(clientLevel, x, y, z);
+    public SortingParticle(ClientLevel level, double x, double y, double z, double x2, double y2, double z2) {
+        super(level, x, y, z);
         this.xd = x2;
         this.yd = y2;
         this.zd = z2;
@@ -76,12 +76,7 @@ public class SortingParticle extends TextureSheetParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public static class Factory implements ParticleProvider<SimpleParticleType> {
-        private final SpriteSet sprite;
-
-        public Factory(SpriteSet spriteSet) {
-            this.sprite = spriteSet;
-        }
+    public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
         public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double x2, double y2, double z2) {
             SortingParticle sortingParticle = new SortingParticle(level, x, y, z, x2, y2, z2);

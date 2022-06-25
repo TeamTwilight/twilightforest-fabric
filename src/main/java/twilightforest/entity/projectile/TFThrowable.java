@@ -1,5 +1,8 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.world.entity.EntityType;
@@ -23,7 +26,20 @@ public abstract class TFThrowable extends ThrowableProjectile implements ITFProj
 
 	@Override
 	protected void defineSynchedData() {
-		
+
+	}
+
+	public void makeTrail(ParticleOptions particle, int amount) {
+		this.makeTrail(particle, 0.0D, 0.0D, 0.0D, amount);
+	}
+
+	public void makeTrail(ParticleOptions particle, double r, double g, double b, int amount) {
+		for (int i = 0; i < amount; i++) {
+			double dx = this.getX() + 0.5 * (this.random.nextDouble() - this.random.nextDouble());
+			double dy = this.getY() + 0.5 * (this.random.nextDouble() - this.random.nextDouble());
+			double dz = this.getZ() + 0.5 * (this.random.nextDouble() - this.random.nextDouble());
+			this.getLevel().addParticle(particle, dx, dy, dz, r, g, b);
+		}
 	}
 
 	@Override

@@ -1,27 +1,25 @@
 package twilightforest.item;
 
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import twilightforest.advancements.TFAdvancements;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class HydraChopItem extends Item {
 
-	public HydraChopItem(Properties props) {
-		super(props);
+	public HydraChopItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	public ItemStack finishUsingItem(ItemStack itemStack, Level world, LivingEntity living) {
+	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
 		// if the player is at zero food, achievements
-		if (living instanceof ServerPlayer && ((ServerPlayer) living).getFoodData().getFoodLevel() <= 0) {
-			TFAdvancements.CONSUME_HYDRA_CHOP.trigger((ServerPlayer) living);
+		if (living instanceof ServerPlayer player && player.getFoodData().getFoodLevel() <= 0) {
+			TFAdvancements.CONSUME_HYDRA_CHOP.trigger(player);
 		}
 		// then normal effects
-		return super.finishUsingItem(itemStack, world, living);
+		return super.finishUsingItem(stack, level, living);
 	}
 }

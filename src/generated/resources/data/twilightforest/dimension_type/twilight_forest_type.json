@@ -1,0 +1,26 @@
+{
+  "ambient_light": 0.0,
+  "bed_works": true,
+  "coordinate_scale": 0.125,
+  "effects": "twilightforest:renderer",
+  "fixed_time": 13000,
+  "has_ceiling": false,
+  "has_raids": false,
+  "has_skylight": true,
+  "height": 288,
+  "infiniburn": "#minecraft:infiniburn_overworld",
+  "logical_height": 288,
+  "min_y": -32,
+  "monster_spawn_block_light_limit": 7,
+  "monster_spawn_light_level": {
+    "type": "minecraft:uniform",
+    "value": {
+      "max_inclusive": 7,
+      "min_inclusive": 0
+    }
+  },
+  "natural": true,
+  "piglin_safe": false,
+  "respawn_anchor_works": true,
+  "ultrawarm": false
+}

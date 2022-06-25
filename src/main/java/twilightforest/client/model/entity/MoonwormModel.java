@@ -20,7 +20,7 @@ import net.minecraft.util.Mth;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.block.entity.MoonwormBlockEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class MoonwormModel extends Model {
 	private final ModelPart shape1, shape2, shape3, head;

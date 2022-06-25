@@ -1,27 +1,7 @@
 {
   "parent": "twilightforest:progress_lich",
-  "display": {
-    "icon": {
-      "item": "twilightforest:zombie_scepter",
-      "nbt": "{Damage:0}"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.lich_scepters"
-    },
-    "description": {
-      "translate": "advancement.twilightforest.lich_scepters.desc"
-    },
-    "frame": "challenge",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": true
-  },
-  "rewards": {
-    "experience": 100
-  },
   "criteria": {
     "scepters": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -45,12 +25,32 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.twilightforest.lich_scepters.desc"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "item": "twilightforest:zombie_scepter",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.lich_scepters"
     }
   },
   "requirements": [
     [
       "scepters"
     ]
-  ]
+  ],
+  "rewards": {
+    "experience": 100
+  }
 }

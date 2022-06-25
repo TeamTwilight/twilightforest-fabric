@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -34,21 +35,21 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.NoClipMoveHelper;
-import twilightforest.entity.ai.PhantomAttackStartGoal;
-import twilightforest.entity.ai.PhantomThrowWeaponGoal;
-import twilightforest.entity.ai.PhantomUpdateFormationAndMoveGoal;
-import twilightforest.entity.ai.PhantomWatchAndAttackGoal;
-import twilightforest.item.TFItems;
-import twilightforest.loot.TFTreasure;
-import twilightforest.util.TFDamageSources;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFBlocks;
+import twilightforest.entity.ai.control.NoClipMoveControl;
+import twilightforest.entity.ai.goal.PhantomAttackStartGoal;
+import twilightforest.entity.ai.goal.PhantomThrowWeaponGoal;
+import twilightforest.entity.ai.goal.PhantomUpdateFormationAndMoveGoal;
+import twilightforest.entity.ai.goal.PhantomWatchAndAttackGoal;
+import twilightforest.init.TFItems;
+import twilightforest.loot.TFLootTables;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,43 +67,42 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 
 	public KnightPhantom(EntityType<? extends KnightPhantom> type, Level world) {
 		super(type, world);
-		noPhysics = true;
-		fireImmune();
-		currentFormation = Formation.HOVER;
-		xpReward = 93;
-		moveControl = new NoClipMoveHelper(this);
+		this.noPhysics = true;
+		this.currentFormation = Formation.HOVER;
+		this.xpReward = 93;
+		this.moveControl = new NoClipMoveControl(this);
 	}
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		SpawnGroupData data = super.finalizeSpawn(worldIn, difficulty, reason, spawnDataIn, dataTag);
-		populateDefaultEquipmentSlots(difficulty);
-		populateDefaultEquipmentEnchantments(difficulty);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn, dataTag);
+		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
+		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
 		return data;
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
-		setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
-		setItemSlot(EquipmentSlot.CHEST, new ItemStack(TFItems.PHANTOM_CHESTPLATE.get()));
-		setItemSlot(EquipmentSlot.HEAD, new ItemStack(TFItems.PHANTOM_HELMET.get()));
+	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
+		this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(TFItems.PHANTOM_CHESTPLATE.get()));
+		this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TFItems.PHANTOM_HELMET.get()));
 	}
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(FLAG_CHARGING, false);
+		this.entityData.define(FLAG_CHARGING, false);
 	}
 
 	@Override
 	protected void registerGoals() {
-		goalSelector.addGoal(0, new PhantomWatchAndAttackGoal(this));
-		goalSelector.addGoal(1, new PhantomUpdateFormationAndMoveGoal(this));
-		goalSelector.addGoal(2, new PhantomAttackStartGoal(this));
-		goalSelector.addGoal(3, new PhantomThrowWeaponGoal(this));
+		this.goalSelector.addGoal(0, new PhantomWatchAndAttackGoal(this));
+		this.goalSelector.addGoal(1, new PhantomUpdateFormationAndMoveGoal(this));
+		this.goalSelector.addGoal(2, new PhantomAttackStartGoal(this));
+		this.goalSelector.addGoal(3, new PhantomThrowWeaponGoal(this));
 
-		targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, false));
+		this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, false));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -112,15 +112,15 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 	}
 
 	public Formation getCurrentFormation() {
-		return currentFormation;
+		return this.currentFormation;
 	}
 
 	public BlockPos getChargePos() {
-		return chargePos;
+		return this.chargePos;
 	}
 
 	public void setChargePos(BlockPos pos) {
-		chargePos = pos;
+		this.chargePos = pos;
 	}
 
 	@Override
@@ -135,11 +135,11 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 
 	@Override
 	public void checkDespawn() {
-		if (level.getDifficulty() == Difficulty.PEACEFUL) {
-			if (hasHome() && getNumber() == 0) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get().defaultBlockState());
+		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
+			if (this.hasHome() && this.getNumber() == 0) {
+				this.getLevel().setBlockAndUpdate(getRestrictCenter(), TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get().defaultBlockState());
 			}
-			discard();
+			this.discard();
 		} else {
 			super.checkDespawn();
 		}
@@ -149,13 +149,13 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 	public void aiStep() {
 		super.aiStep();
 
-		if (isChargingAtPlayer()) {
+		if (this.isChargingAtPlayer()) {
 			// make particles
 			for (int i = 0; i < 4; ++i) {
-				Item particleID = random.nextBoolean() ? TFItems.PHANTOM_HELMET.get() : TFItems.KNIGHTMETAL_SWORD.get();
+				Item particleID = this.getRandom().nextBoolean() ? TFItems.PHANTOM_HELMET.get() : TFItems.KNIGHTMETAL_SWORD.get();
 
-				level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(particleID)), getX() + (random.nextFloat() - 0.5D) * getBbWidth(), getY() + random.nextFloat() * (getBbHeight() - 0.75D) + 0.5D, getZ() + (random.nextFloat() - 0.5D) * getBbWidth(), 0, -0.1, 0);
-				level.addParticle(ParticleTypes.SMOKE, getX() + (random.nextFloat() - 0.5D) * getBbWidth(), getY() + random.nextFloat() * (getBbHeight() - 0.75D) + 0.5D, getZ() + (random.nextFloat() - 0.5D) * getBbWidth(), 0, 0.1, 0);
+				this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(particleID)), getX() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), getY() + this.getRandom().nextFloat() * (this.getBbHeight() - 0.75D) + 0.5D, getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 0, -0.1, 0);
+				this.getLevel().addParticle(ParticleTypes.SMOKE, getX() + (this.getRandom().nextFloat() - 0.5D) * getBbWidth(), getY() + this.getRandom().nextFloat() * (this.getBbHeight() - 0.75D) + 0.5D, getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 0, 0.1, 0);
 			}
 		}
 	}
@@ -165,10 +165,10 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 		super.tickDeath();
 
 		for (int i = 0; i < 20; ++i) {
-			double d0 = random.nextGaussian() * 0.02D;
-			double d1 = random.nextGaussian() * 0.02D;
-			double d2 = random.nextGaussian() * 0.02D;
-			level.addParticle(ParticleTypes.EXPLOSION, getX() + random.nextFloat() * getBbWidth() * 2.0F - getBbWidth(), getY() + random.nextFloat() * getBbHeight(), getZ() + random.nextFloat() * getBbWidth() * 2.0F - getBbWidth(), d0, d1, d2);
+			double d0 = this.getRandom().nextGaussian() * 0.02D;
+			double d1 = this.getRandom().nextGaussian() * 0.02D;
+			double d2 = this.getRandom().nextGaussian() * 0.02D;
+			this.getLevel().addParticle(ParticleTypes.EXPLOSION, getX() + this.getRandom().nextFloat() * getBbWidth() * 2.0F - getBbWidth(), getY() + this.getRandom().nextFloat() * getBbHeight(), getZ() + this.getRandom().nextFloat() * getBbWidth() * 2.0F - getBbWidth(), d0, d1, d2);
 		}
 	}
 
@@ -177,13 +177,13 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 
 		super.die(cause);
 
-		if (level instanceof ServerLevel serverLevel && getNearbyKnights().isEmpty() && cause != DamageSource.OUT_OF_WORLD) {
+		if (this.getLevel() instanceof ServerLevel serverLevel && this.getNearbyKnights().isEmpty() && cause != DamageSource.OUT_OF_WORLD) {
 
-			BlockPos treasurePos = hasHome() ? getRestrictCenter().below() : new BlockPos(this.blockPosition());
+			BlockPos treasurePos = this.hasHome() ? this.getRestrictCenter().below() : this.blockPosition();
 
 			// make treasure for killing the last knight
 			// This one won't receive the same loot treatment like the other bosses because this chest is supposed to reward for all of them instead of just the last one killed
-			TFTreasure.STRONGHOLD_BOSS.generateChest(serverLevel, treasurePos, Direction.NORTH, false);
+			TFLootTables.STRONGHOLD_BOSS.generateChest(serverLevel, treasurePos, Direction.NORTH, false);
 
 			//trigger criteria for killing every phantom in a group
 			if(cause.getEntity() instanceof ServerPlayer player) {
@@ -191,13 +191,13 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 			}
 
 			// mark the stronghold as defeated
-			TFGenerationSettings.markStructureConquered(level, treasurePos, TFFeature.KNIGHT_STRONGHOLD);
+			TFGenerationSettings.markStructureConquered(this.getLevel(), treasurePos, TFLandmark.KNIGHT_STRONGHOLD);
 
-			for(ServerPlayer player : hurtBy) {
+			for(ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			for(ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(homePosition).inflate(10.0D))) {
+			for(ServerPlayer player : this.getLevel().getEntitiesOfClass(ServerPlayer.class, new AABB(this.homePosition).inflate(10.0D))) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 		}
@@ -206,11 +206,11 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		if(this.isDamageSourceBlocked(source)){
-			playSound(SoundEvents.SHIELD_BLOCK,1.0F,0.8F + this.level.random.nextFloat() * 0.4F);
+			this.playSound(SoundEvents.SHIELD_BLOCK, 1.0F, 0.8F + this.getLevel().getRandom().nextFloat() * 0.4F);
 		}
 
-		if(source.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
-			hurtBy.add(player);
+		if(source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
+			this.hurtBy.add(player);
 		}
 		return super.hurt(source, amount);
 	}
@@ -256,22 +256,22 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 
 	@Override
 	public void knockback(double damage, double xRatio, double zRatio) {
-		hasImpulse = true;
+		this.hasImpulse = true;
 		float f = Mth.sqrt((float) (xRatio * xRatio + zRatio * zRatio));
 		float distance = 0.2F;
-		setDeltaMovement(new Vec3(getDeltaMovement().x() / 2.0D, getDeltaMovement().y() / 2.0D, getDeltaMovement().z() / 2.0D));
-		setDeltaMovement(new Vec3(
-				getDeltaMovement().x() - xRatio / f * distance,
-				getDeltaMovement().y() + distance,
-				getDeltaMovement().z() - zRatio / f * distance));
+		this.setDeltaMovement(new Vec3(this.getDeltaMovement().x() / 2.0D, this.getDeltaMovement().y() / 2.0D, this.getDeltaMovement().z() / 2.0D));
+		this.setDeltaMovement(new Vec3(
+				this.getDeltaMovement().x() - xRatio / f * distance,
+				this.getDeltaMovement().y() + distance,
+				this.getDeltaMovement().z() - zRatio / f * distance));
 
-		if (this.getDeltaMovement().y() > 0.4000000059604645D) {
-			setDeltaMovement(getDeltaMovement().x(), 0.4000000059604645D, getDeltaMovement().z());
+		if (this.getDeltaMovement().y() > 0.4D) {
+			this.setDeltaMovement(this.getDeltaMovement().x(), 0.4D, this.getDeltaMovement().z());
 		}
 	}
 
 	public List<KnightPhantom> getNearbyKnights() {
-		return level.getEntitiesOfClass(KnightPhantom.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 8.0D, 32.0D), LivingEntity::isAlive);
+		return this.getLevel().getEntitiesOfClass(KnightPhantom.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D), LivingEntity::isAlive);
 	}
 
 	private void updateMyNumber() {
@@ -301,17 +301,17 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 				}
 			}
 		}
-		if (number > smallestUnused || nums.contains(number))
+		if (this.number > smallestUnused || nums.contains(this.number))
 			setNumber(smallestUnused);
 	}
 
 	public boolean isChargingAtPlayer() {
-		return entityData.get(FLAG_CHARGING);
+		return this.entityData.get(FLAG_CHARGING);
 	}
 
 	private void setChargingAtPlayer(boolean flag) {
-		entityData.set(FLAG_CHARGING, flag);
-		if (!level.isClientSide) {
+		this.entityData.set(FLAG_CHARGING, flag);
+		if (!this.getLevel().isClientSide()) {
 			if (flag) {
 				if (!getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {
 					getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(CHARGING_MODIFIER);
@@ -324,38 +324,38 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.PHANTOM_AMBIENT;
+		return TFSounds.PHANTOM_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.PHANTOM_HURT;
+		return TFSounds.PHANTOM_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.PHANTOM_DEATH;
+		return TFSounds.PHANTOM_DEATH.get();
 	}
 
 	private void switchToFormationByNumber(int formationNumber) {
-		currentFormation = Formation.values()[formationNumber];
-		ticksProgress = 0;
+		this.currentFormation = Formation.values()[formationNumber];
+		this.ticksProgress = 0;
 	}
 
 	public void switchToFormation(Formation formation) {
-		currentFormation = formation;
-		ticksProgress = 0;
-		updateMyNumber();
-		setChargingAtPlayer(currentFormation == Formation.ATTACK_PLAYER_START || currentFormation == Formation.ATTACK_PLAYER_ATTACK);
+		this.currentFormation = formation;
+		this.ticksProgress = 0;
+		this.updateMyNumber();
+		this.setChargingAtPlayer(this.currentFormation == Formation.ATTACK_PLAYER_START || this.currentFormation == Formation.ATTACK_PLAYER_ATTACK);
 
 	}
 
 	private int getFormationAsNumber() {
-		return currentFormation.ordinal();
+		return this.currentFormation.ordinal();
 	}
 
 	public int getTicksProgress() {
-		return ticksProgress;
+		return this.ticksProgress;
 	}
 
 	public void setTicksProgress(int ticksProgress) {
@@ -363,23 +363,23 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 	}
 
 	public int getMaxTicksForFormation() {
-		return currentFormation.duration;
+		return this.currentFormation.duration;
 	}
 
 	public boolean isSwordKnight() {
-		return getMainHandItem().getItem() == TFItems.KNIGHTMETAL_SWORD.get();
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_SWORD.get());
 	}
 
 	public boolean isAxeKnight() {
-		return getMainHandItem().getItem() == TFItems.KNIGHTMETAL_AXE.get();
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_AXE.get());
 	}
 
 	public boolean isPickKnight() {
-		return getMainHandItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get();
+		return this.getMainHandItem().is(TFItems.KNIGHTMETAL_PICKAXE.get());
 	}
 
 	public int getNumber() {
-		return number;
+		return this.number;
 	}
 
 	public void setNumber(int number) {
@@ -387,22 +387,22 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 
 		// set weapon per number
 		switch (number % 3) {
-			case 0 -> setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
-			case 1 -> setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
-			case 2 -> setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
+			case 0 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
+			case 1 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
+			case 2 -> this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()));
 		}
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		if (hasHome()) {
-			BlockPos home = getRestrictCenter();
-			compound.put("Home", newDoubleList(home.getX(), home.getY(), home.getZ()));
+		if (this.hasHome()) {
+			BlockPos home = this.getRestrictCenter();
+			compound.put("Home", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
 		}
-		compound.putInt("MyNumber", getNumber());
-		compound.putInt("Formation", getFormationAsNumber());
-		compound.putInt("TicksProgress", getTicksProgress());
+		compound.putInt("MyNumber", this.getNumber());
+		compound.putInt("Formation", this.getFormationAsNumber());
+		compound.putInt("TicksProgress", this.getTicksProgress());
 	}
 
 	@Override
@@ -415,12 +415,10 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 			int hy = (int) nbttaglist.getDouble(1);
 			int hz = (int) nbttaglist.getDouble(2);
 			restrictTo(new BlockPos(hx, hy, hz), 20);
-		} else {
-			hasRestriction();
 		}
-		setNumber(compound.getInt("MyNumber"));
-		switchToFormationByNumber(compound.getInt("Formation"));
-		setTicksProgress(compound.getInt("TicksProgress"));
+		this.setNumber(compound.getInt("MyNumber"));
+		this.switchToFormationByNumber(compound.getInt("Formation"));
+		this.setTicksProgress(compound.getInt("TicksProgress"));
 	}
 
 	public enum Formation {
@@ -493,7 +491,7 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 	@Override
 	public void restrictTo(BlockPos pos, int distance) {
 		// set the chargePos here as well so we dont go off flying in some direction when we first spawn
-		homePosition = chargePos = pos;
+		this.homePosition = this.chargePos = pos;
 		this.maximumHomeDistance = distance;
 	}
 

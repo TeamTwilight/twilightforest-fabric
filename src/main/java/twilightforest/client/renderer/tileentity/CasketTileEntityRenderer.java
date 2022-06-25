@@ -25,7 +25,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.client.model.TFModelLayers;
 
@@ -36,7 +36,7 @@ import twilightforest.client.model.TFModelLayers;
 //Most of the other stuff is derived from ChestTileEntityRenderer
 @Environment(EnvType.CLIENT)
 public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
-    public ModelPart base;
+    public final ModelPart base;
     public ModelPart lid;
 
     public CasketTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {

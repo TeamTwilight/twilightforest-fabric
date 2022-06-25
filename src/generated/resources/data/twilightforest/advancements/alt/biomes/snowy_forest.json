@@ -1,31 +1,40 @@
 {
   "parent": "twilightforest:alt/root",
   "criteria": {
-    "in_biome": {
-      "trigger": "minecraft:location",
-      "conditions": {
-        "location": {
-          "biome": "twilightforest:snowy_forest"
-        }
-      }
-    },
     "has_other": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:alt/biomes/twilight_glacier": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
+      },
+      "trigger": "minecraft:tick"
+    },
+    "in_biome": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "twilightforest:snowy_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
     }
   },
   "requirements": [

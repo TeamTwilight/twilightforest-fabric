@@ -20,7 +20,11 @@ import twilightforest.entity.boss.HydraPart;
 
 public class HydraLegacyModel extends HierarchicalModel<Hydra> {
 	//fields
-	ModelPart root, body, tail, leg1, leg2;
+	final ModelPart root;
+	final ModelPart body;
+	ModelPart tail;
+	ModelPart leg1;
+	ModelPart leg2;
 
 	public HydraLegacyModel(ModelPart root) {
 		this.root = root;

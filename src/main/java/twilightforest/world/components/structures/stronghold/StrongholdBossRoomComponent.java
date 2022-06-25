@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.stronghold;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -13,19 +14,19 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class StrongholdBossRoomComponent extends StructureTFStrongholdComponent {
 
 	public StrongholdBossRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSBR, nbt);
+		super(TFStructurePieceTypes.TFSBR.get(), nbt);
 	}
 
-	public StrongholdBossRoomComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSBR, feature, i, facing, x, y, z);
+	public StrongholdBossRoomComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSBR.get(), feature, i, facing, x, y, z);
 		this.spawnListIndex = Integer.MAX_VALUE;
 	}
 
@@ -35,14 +36,14 @@ public class StrongholdBossRoomComponent extends StructureTFStrongholdComponent 
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random random) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource random) {
 		super.addChildren(parent, list, random);
 
 		this.addDoor(13, 1, 0);
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 26, 6, 26, rand, deco.randomBlocks);
 
 		// inner walls

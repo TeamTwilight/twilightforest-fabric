@@ -3,6 +3,7 @@ package twilightforest.world.components.processors;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,8 +15,7 @@ import twilightforest.enums.StructureWoodVariant;
 import twilightforest.util.ArrayUtil;
 import twilightforest.world.registration.TFStructureProcessors;
 
-import javax.annotation.Nullable;
-import java.util.Random;
+import org.jetbrains.annotations.Nullable;
 
 public final class CobblePlankSwizzler extends StructureProcessor {
     private final StructureWoodVariant OAK_SWIZZLE;
@@ -34,7 +34,7 @@ public final class CobblePlankSwizzler extends StructureProcessor {
         this.BIRCH_SWIZZLE = ArrayUtil.wrapped(StructureWoodVariant.values(), birchSwizzle);
     }
 
-    public CobblePlankSwizzler(Random random) {
+    public CobblePlankSwizzler(RandomSource random) {
         this.OAK_SWIZZLE = StructureWoodVariant.getRandomWeighted(random);
         this.SPRUCE_SWIZZLE = StructureWoodVariant.getRandomWeighted(random);
         this.BIRCH_SWIZZLE = StructureWoodVariant.getRandomWeighted(random);

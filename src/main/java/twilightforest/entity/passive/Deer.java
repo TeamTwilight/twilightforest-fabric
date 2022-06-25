@@ -14,8 +14,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 
 public class Deer extends Animal {
 
@@ -49,25 +49,25 @@ public class Deer extends Animal {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.DEER_AMBIENT;
+		return TFSounds.DEER_AMBIENT.get();
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.DEER_HURT;
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.DEER_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.DEER_DEATH;
+		return TFSounds.DEER_DEATH.get();
 	}
 
-    @Override
-    protected void playStepSound(BlockPos pos, BlockState blockIn) {
-    }
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState state) {
+	}
 
 	@Override
-	public Deer getBreedOffspring(ServerLevel p_241840_1_, AgeableMob mate) {
+	public Deer getBreedOffspring(ServerLevel level, AgeableMob mate) {
 		return TFEntities.DEER.get().create(level);
 	}
 

@@ -2,8 +2,9 @@ package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,12 +14,12 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 import java.util.function.Predicate;
 
 public class FinalCastleFoundation13Component extends TFStructureComponentOld {
@@ -26,14 +27,14 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 	protected int groundLevel = -1;
 
 	public FinalCastleFoundation13Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(FinalCastlePieces.TFFCToF13, nbt);
+		this(TFStructurePieceTypes.TFFCToF13.get(), nbt);
 	}
 
 	public FinalCastleFoundation13Component(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
 	}
 
-	public FinalCastleFoundation13Component(StructurePieceType type, TFFeature feature, Random rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+	public FinalCastleFoundation13Component(StructurePieceType type, TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(type, feature, i, x, y, z);
 
 		this.setOrientation(sideTower.getOrientation());
@@ -41,14 +42,14 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource randomIn, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// offset bounding box to average ground level
 		if (this.groundLevel < 0) {
 			this.groundLevel = this.findGroundLevel(world, sbb, 150, isDeadrock); // is 150 a good place to start? :)

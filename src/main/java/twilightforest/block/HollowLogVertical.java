@@ -33,91 +33,88 @@ import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.util.DirectionUtil;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private static final VoxelShape HOLLOW_SHAPE = Shapes.join(Shapes.block(), Block.box(2, 0, 2, 14, 16, 14), BooleanOp.ONLY_FIRST);
-    private static final VoxelShape COLLISION_SHAPE = Shapes.join(Shapes.block(), Block.box(1, 0, 1, 15, 16, 15), BooleanOp.ONLY_FIRST);
+	private static final VoxelShape HOLLOW_SHAPE = Shapes.join(Shapes.block(), Block.box(2, 0, 2, 14, 16, 14), BooleanOp.ONLY_FIRST);
+	private static final VoxelShape COLLISION_SHAPE = Shapes.join(Shapes.block(), Block.box(1, 0, 1, 15, 16, 15), BooleanOp.ONLY_FIRST);
 
-    private final RegistryObject<HollowLogClimbable> climbable;
+	private final RegistryObject<HollowLogClimbable> climbable;
 
-    public HollowLogVertical(Properties props, RegistryObject<HollowLogClimbable> climbable) {
-        super(props);
-        this.climbable = climbable;
+	public HollowLogVertical(Properties properties, RegistryObject<HollowLogClimbable> climbable) {
+		super(properties);
+		this.climbable = climbable;
 
-        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
         FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
     }
 
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return HOLLOW_SHAPE;
-    }
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+		return HOLLOW_SHAPE;
+	}
 
-    @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return COLLISION_SHAPE;
-    }
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+		return COLLISION_SHAPE;
+	}
 
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(WATERLOGGED));
-    }
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder.add(WATERLOGGED));
+	}
 
-    @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!isInside(hit, pos)) return super.use(state, level, pos, player, hand, hit);
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!isInside(hit, pos)) return super.use(state, level, pos, player, hand, hit);
 
-        ItemStack stack = player.getItemInHand(hand);
+		ItemStack stack = player.getItemInHand(hand);
 
-        if (stack.is(Blocks.VINE.asItem())) {
-            level.setBlock(pos, this.climbable.get().defaultBlockState().setValue(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.VINE).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
-            level.playSound(null, pos, SoundEvents.VINE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-            if (!player.isCreative()) stack.shrink(1);
+		if (stack.is(Blocks.VINE.asItem())) {
+			level.setBlock(pos, this.climbable.get().defaultBlockState().setValue(HollowLogClimbable.VARIANT, HollowLogVariants.Climbable.VINE).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
+			level.playSound(null, pos, SoundEvents.VINE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+			if (!player.isCreative()) stack.shrink(1);
 
-            player.swing(hand);
+			return InteractionResult.sidedSuccess(level.isClientSide());
 
-            return InteractionResult.CONSUME;
-        } else if (stack.is(Blocks.LADDER.asItem())) {
-            level.setBlock(pos, this.climbable.get().defaultBlockState().setValue(HollowLogClimbable.VARIANT, state.getValue(WATERLOGGED) ? HollowLogVariants.Climbable.LADDER_WATERLOGGED : HollowLogVariants.Climbable.LADDER).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
-            level.playSound(null, pos, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-            if (!player.isCreative()) stack.shrink(1);
+		} else if (stack.is(Blocks.LADDER.asItem())) {
+			level.setBlock(pos, this.climbable.get().defaultBlockState().setValue(HollowLogClimbable.VARIANT, state.getValue(WATERLOGGED) ? HollowLogVariants.Climbable.LADDER_WATERLOGGED : HollowLogVariants.Climbable.LADDER).setValue(HollowLogClimbable.FACING, DirectionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
+			level.playSound(null, pos, SoundEvents.LADDER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+			if (!player.isCreative()) stack.shrink(1);
 
-            player.swing(hand);
+			return InteractionResult.sidedSuccess(level.isClientSide());
+		}
 
-            return InteractionResult.CONSUME;
-        }
+		return super.use(state, level, pos, player, hand, hit);
+	}
 
-        return super.use(state, level, pos, player, hand, hit);
-    }
+	@Nullable
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return super.getStateForPlacement(context).setValue(WATERLOGGED, context.getLevel().getBlockState(context.getClickedPos()).getFluidState().getType() == Fluids.WATER);
+	}
 
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return super.getStateForPlacement(context).setValue(WATERLOGGED, context.getLevel().getBlockState(context.getClickedPos()).getFluidState().getType() == Fluids.WATER);
-    }
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
 
-    @Override
-    public FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-    }
+	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
+		if (state.getValue(WATERLOGGED)) {
+			accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
+		}
 
-    @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-        if (state.getValue(WATERLOGGED)) {
-            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-        }
+		return super.updateShape(state, facing, neighborState, accessor, pos, neighborPos);
+	}
 
-        return super.updateShape(state, facing, neighborState, level, pos, neighborPos);
-    }
+	private static boolean isInside(HitResult result, BlockPos pos) {
+		Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
 
-    private static boolean isInside(HitResult result, BlockPos pos) {
-        Vec3 vec = result.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
-
-        return (0.124 <= vec.x && vec.x <= 0.876) && (0.124 <= vec.z && vec.z <= 0.876);
-    }
+		return (0.124 <= vec.x() && vec.x() <= 0.876) && (0.124 <= vec.z() && vec.z() <= 0.876);
+	}
 
     public int getFlammability() {
         return 5;

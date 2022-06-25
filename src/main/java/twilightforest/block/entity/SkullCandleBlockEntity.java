@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.init.TFBlockEntities;
 
 public class SkullCandleBlockEntity extends SkullBlockEntity {
 
@@ -25,17 +26,18 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 	public BlockEntityType<?> getType() {
 		return TFBlockEntities.SKULL_CANDLE.get();
 	}
+
 	@Override
 	public void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
-		tag.putInt("CandleColor", candleColor);
-		if(candleAmount != 0) tag.putInt("CandleAmount", candleAmount);
+		tag.putInt("CandleColor", this.candleColor);
+		if (this.candleAmount != 0) tag.putInt("CandleAmount", this.candleAmount);
 	}
 
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
-		candleColor = tag.getInt("CandleColor");
-		candleAmount = tag.getInt("CandleAmount");
+		this.candleColor = tag.getInt("CandleColor");
+		this.candleAmount = tag.getInt("CandleAmount");
 	}
 }

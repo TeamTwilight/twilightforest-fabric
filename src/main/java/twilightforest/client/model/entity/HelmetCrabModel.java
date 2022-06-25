@@ -17,7 +17,10 @@ import twilightforest.entity.monster.HelmetCrab;
  */
 @Environment(EnvType.CLIENT)
 public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
-    public ModelPart root, body, leftClaw, rightClaw;
+    public final ModelPart root;
+	public final ModelPart body;
+	public ModelPart leftClaw;
+	public ModelPart rightClaw;
     public ModelPart rightLeg1, rightLeg2, leftLeg1, leftLeg2;
 
     public HelmetCrabModel(ModelPart root) {

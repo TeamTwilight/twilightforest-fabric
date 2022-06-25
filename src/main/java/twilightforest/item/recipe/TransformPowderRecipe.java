@@ -12,27 +12,18 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import twilightforest.init.TFRecipes;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-public class TransformPowderRecipe implements Recipe<Container> {
-
-	private final ResourceLocation recipeID;
-	private final EntityType<?> input;
-	private final EntityType<?> result;
-
-	public TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> input, EntityType<?> result) {
-		this.recipeID = recipeID;
-		this.input = input;
-		this.result = result;
-	}
+public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> input, EntityType<?> result) implements Recipe<Container> {
 
 	public EntityType<?> getInput() {
-		return input;
+		return this.input;
 	}
 
 	public EntityType<?> getResult() {
-		return result;
+		return this.result;
 	}
 
 	@Override
@@ -46,7 +37,7 @@ public class TransformPowderRecipe implements Recipe<Container> {
 	}
 
 	@Override
-	public boolean canCraftInDimensions(int p_43999_, int p_44000_) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return true;
 	}
 
@@ -76,7 +67,7 @@ public class TransformPowderRecipe implements Recipe<Container> {
 		public TransformPowderRecipe fromJson(ResourceLocation id, JsonObject object) {
 			EntityType<?> input = Registry.ENTITY_TYPE.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
 			EntityType<?> output = Registry.ENTITY_TYPE.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
-			if(input != null && output != null) {
+			if (input != null && output != null) {
 				return new TransformPowderRecipe(id, input, output);
 			}
 			return new TransformPowderRecipe(id, EntityType.PIG, EntityType.ZOMBIFIED_PIGLIN);

@@ -20,7 +20,7 @@ import twilightforest.entity.boss.Minoshroom;
  */
 @Environment(EnvType.CLIENT)
 public class MinoshroomModel extends HumanoidModel<Minoshroom> {
-    public ModelPart cowTorso;
+    public final ModelPart cowTorso;
     public ModelPart rightFrontLeg;
     public ModelPart leftFrontLeg;
     public ModelPart rightBackLeg;

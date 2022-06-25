@@ -11,8 +11,8 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
-import twilightforest.entity.ai.ChargeAttackGoal;
+import twilightforest.entity.ai.goal.ChargeAttackGoal;
+import twilightforest.init.TFSounds;
 
 public class Boggard extends Monster {
 
@@ -41,16 +41,16 @@ public class Boggard extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.REDCAP_AMBIENT;
+		return TFSounds.REDCAP_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.REDCAP_HURT;
+		return TFSounds.REDCAP_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.REDCAP_AMBIENT;
+		return TFSounds.REDCAP_AMBIENT.get();
 	}
 }

@@ -13,7 +13,7 @@ import twilightforest.client.model.tileentity.GenericTrophyModel;
 
 public class HydraTrophyLegacyModel extends GenericTrophyModel {
 
-	public ModelPart head;
+	public final ModelPart head;
 	public ModelPart jaw;
 
 	public HydraTrophyLegacyModel(ModelPart root) {

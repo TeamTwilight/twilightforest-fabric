@@ -8,11 +8,13 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.MultifaceBlock;
+import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.entity.RedThreadBlockEntity;
+import twilightforest.init.TFBlocks;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class RedThreadBlock extends MultifaceBlock implements EntityBlock , ValidSpawnBlock {
 	public RedThreadBlock(Properties properties) {
@@ -23,8 +25,14 @@ public class RedThreadBlock extends MultifaceBlock implements EntityBlock , Vali
 		return !ctx.getItemInHand().is(TFBlocks.RED_THREAD.get().asItem()) || super.canBeReplaced(state, ctx);
 	}
 
+	//TODO required to implement but do not want
 	@Override
-	public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, SpawnPlacements.Type type, EntityType<?> entityType) {
+	public MultifaceSpreader getSpreader() {
+		return new MultifaceSpreader(this);
+	}
+
+	@Override
+	public boolean isValidSpawn(BlockState state, BlockGetter getter, BlockPos pos, SpawnPlacements.Type type, EntityType<?> entityType) {
 		return false;
 	}
 

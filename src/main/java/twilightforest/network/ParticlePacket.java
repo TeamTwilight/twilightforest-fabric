@@ -19,7 +19,8 @@ import java.util.function.Supplier;
 public class ParticlePacket implements S2CPacket {
 	private final List<QueuedParticle> queuedParticles = new ArrayList<>();
 
-	public ParticlePacket() {}
+	public ParticlePacket() {
+	}
 
 	@SuppressWarnings("deprecation")
 	public ParticlePacket(FriendlyByteBuf buf) {
@@ -62,7 +63,9 @@ public class ParticlePacket implements S2CPacket {
 		this.queuedParticles.add(new QueuedParticle(particleOptions, b, xyz.x, xyz.y, xyz.z, xyz2.x, xyz2.y, xyz2.z));
 	}
 
-	private record QueuedParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2, double y2, double z2) {}
+	private record QueuedParticle(ParticleOptions particleOptions, boolean b, double x, double y, double z, double x2,
+								  double y2, double z2) {
+	}
 
 	@Override
     public void handle(Minecraft client, ClientPacketListener listener, PacketSender responseSender, SimpleChannel channel) {

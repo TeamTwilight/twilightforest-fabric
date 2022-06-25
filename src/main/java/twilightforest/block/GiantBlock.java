@@ -1,31 +1,29 @@
 package twilightforest.block;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import org.jetbrains.annotations.Nullable;
 
 public class GiantBlock extends Block {
 
 	private boolean isSelfDestructing;
 
-	public GiantBlock(Properties props) {
-		super(props);
+	public GiantBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Nullable
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		for (BlockPos dPos : getVolume(ctx.getClickedPos())) {
-			if (!ctx.getLevel().getBlockState(dPos).canBeReplaced(ctx)) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		for (BlockPos dPos : getVolume(context.getClickedPos())) {
+			if (!context.getLevel().getBlockState(dPos).canBeReplaced(context)) {
 				return null;
 			}
 		}
@@ -33,39 +31,39 @@ public class GiantBlock extends Block {
 	}
 
 	@Override
-	public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		if (!world.isClientSide) {
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+		if (!level.isClientSide()) {
 			for (BlockPos dPos : getVolume(pos)) {
-				world.setBlockAndUpdate(dPos, defaultBlockState());
+				level.setBlockAndUpdate(dPos, defaultBlockState());
 			}
 		}
 	}
 
 	@Override
 	@Deprecated
-	public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
-		super.onRemove(state, world, pos, newState, isMoving);
-		if (!this.isSelfDestructing && !isVolumeFilled(world, pos)) {
-			this.setGiantBlockToAir(world, pos);
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		super.onRemove(state, level, pos, newState, isMoving);
+		if (!this.isSelfDestructing && !isVolumeFilled(level, pos)) {
+			this.setGiantBlockToAir(level, pos);
 		}
 	}
 
-	private void setGiantBlockToAir(Level world, BlockPos pos) {
+	private void setGiantBlockToAir(Level level, BlockPos pos) {
 		// prevent mutual infinite recursion
 		this.isSelfDestructing = true;
 
 		for (BlockPos iterPos : getVolume(pos)) {
-			if (!pos.equals(iterPos) && world.getBlockState(iterPos).getBlock() == this) {
-				world.destroyBlock(iterPos, false);
+			if (!pos.equals(iterPos) && level.getBlockState(iterPos).getBlock() == this) {
+				level.destroyBlock(iterPos, false);
 			}
 		}
 
 		this.isSelfDestructing = false;
 	}
 
-	private boolean isVolumeFilled(Level world, BlockPos pos) {
+	private boolean isVolumeFilled(Level level, BlockPos pos) {
 		for (BlockPos dPos : getVolume(pos)) {
-			if (world.getBlockState(dPos).getBlock() != this) {
+			if (level.getBlockState(dPos).getBlock() != this) {
 				return false;
 			}
 		}
@@ -81,7 +79,7 @@ public class GiantBlock extends Block {
 	public static Iterable<BlockPos> getVolume(BlockPos pos) {
 		return BlockPos.betweenClosed(
 				pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
-				pos.getX() |  0b11, pos.getY() |  0b11, pos.getZ() |  0b11
+				pos.getX() | 0b11, pos.getY() | 0b11, pos.getZ() | 0b11
 		);
 	}
 }

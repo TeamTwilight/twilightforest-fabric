@@ -1,14 +1,14 @@
 {
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 0,
+    "separation": 0,
+    "spacing": 1
+  },
   "structures": [
     {
       "structure": "twilightforest:naga_courtyard",
       "weight": 1
     }
-  ],
-  "placement": {
-    "salt": 0,
-    "spacing": 1,
-    "separation": 0,
-    "type": "minecraft:random_spread"
-  }
+  ]
 }

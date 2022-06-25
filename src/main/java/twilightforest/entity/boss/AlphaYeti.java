@@ -35,22 +35,19 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TFSounds;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.TFBlocks;
-import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IHostileMount;
-import twilightforest.entity.TFEntities;
-import twilightforest.entity.ai.ThrowRiderGoal;
-import twilightforest.entity.ai.YetiRampageGoal;
-import twilightforest.entity.ai.YetiTiredGoal;
+import twilightforest.entity.ai.goal.ThrowRiderGoal;
+import twilightforest.entity.ai.goal.YetiRampageGoal;
+import twilightforest.entity.ai.goal.YetiTiredGoal;
 import twilightforest.entity.projectile.FallingIce;
 import twilightforest.entity.projectile.IceBomb;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.*;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFFeature;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +55,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 
 	private static final EntityDataAccessor<Byte> RAMPAGE_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> TIRED_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BYTE);
-	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
+	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private int collisionCounter;
 	private boolean canRampage;
 	private final List<ServerPlayer> hurtBy = new ArrayList<>();
@@ -85,13 +82,13 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 			protected void checkAndPerformAttack(LivingEntity victim, double p_190102_2_) {
 				super.checkAndPerformAttack(victim, p_190102_2_);
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_GRAB, 4F, 0.75F + getRandom().nextFloat() * 0.25F);
+					playSound(TFSounds.ALPHAYETI_GRAB.get(), 4F, 0.75F + getRandom().nextFloat() * 0.25F);
 			}
 
 			@Override
 			public void stop() {
 				if (!getPassengers().isEmpty())
-					playSound(TFSounds.ALPHAYETI_THROW, 4F, 0.75F + getRandom().nextFloat() * 0.25F);
+					playSound(TFSounds.ALPHAYETI_THROW.get(), 4F, 0.75F + getRandom().nextFloat() * 0.25F);
 				super.stop();
 			}
 		});
@@ -105,8 +102,8 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(RAMPAGE_FLAG, (byte) 0);
-		entityData.define(TIRED_FLAG, (byte) 0);
+		this.entityData.define(RAMPAGE_FLAG, (byte) 0);
+		this.entityData.define(TIRED_FLAG, (byte) 0);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -129,8 +126,8 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 			this.getLookControl().setLookAt(getPassengers().get(0), 100F, 100F);
 		}
 
-		if (!level.isClientSide) {
-			bossInfo.setProgress(getHealth() / getMaxHealth());
+		if (!this.getLevel().isClientSide()) {
+			this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 
 			if (this.horizontalCollision || this.verticalCollision) { //collided does not exist, but this is an equal?
 				this.collisionCounter++;
@@ -154,7 +151,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 
 			if (this.isTired()) {
 				for (int i = 0; i < 20; i++) {
-					this.level.addParticle(ParticleTypes.SPLASH, this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.5, this.getY() + this.getEyeHeight(), this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.5, (random.nextFloat() - 0.5F) * 0.75F, 0, (random.nextFloat() - 0.5F) * 0.75F);
+					this.getLevel().addParticle(ParticleTypes.SPLASH, this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.5, this.getY() + this.getEyeHeight(), this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth() * 0.5, (random.nextFloat() - 0.5F) * 0.75F, 0, (random.nextFloat() - 0.5F) * 0.75F);
 				}
 			}
 		}
@@ -165,13 +162,13 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		double py = hgt % 5F;
 		double pz = 3F * Math.sin(rotation);
 
-		level.addParticle(TFParticleType.SNOW.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+		this.getLevel().addParticle(TFParticleType.SNOW.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 	}
 
 	@Override
 	public void setTarget(@Nullable LivingEntity entity) {
-		if (entity != null && entity != getTarget())
-			playSound(TFSounds.ALPHAYETI_ALERT, 4F, 0.5F + getRandom().nextFloat() * 0.5F);
+		if (entity != null && entity != this.getTarget())
+			this.playSound(TFSounds.ALPHAYETI_ALERT.get(), 4F, 0.5F + this.getRandom().nextFloat() * 0.5F);
 		super.setTarget(entity);
 	}
 
@@ -183,8 +180,8 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		}
 
 		this.canRampage = true;
-		if(source.getEntity() instanceof ServerPlayer player && !hurtBy.contains(player)) {
-			hurtBy.add(player);
+		if (source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
+			this.hurtBy.add(player);
 		}
 		return super.hurt(source, amount);
 	}
@@ -192,17 +189,17 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ALPHAYETI_GROWL;
+		return TFSounds.ALPHAYETI_GROWL.get();
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.ALPHAYETI_HURT;
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.ALPHAYETI_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ALPHAYETI_DEATH;
+		return TFSounds.ALPHAYETI_DEATH.get();
 	}
 
 	@Override
@@ -218,7 +215,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	public void positionRider(Entity passenger) {
 		Vec3 riderPos = this.getRiderPosition();
-		passenger.setPos(riderPos.x, riderPos.y, riderPos.z);
+		passenger.setPos(riderPos.x(), riderPos.y(), riderPos.z());
 	}
 
 	@Override
@@ -230,7 +227,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	 * Used to both get a rider position and to push out of blocks
 	 */
 	private Vec3 getRiderPosition() {
-		if (isVehicle()) {
+		if (this.isVehicle()) {
 			float distance = 0.4F;
 
 			double dx = Math.cos((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
@@ -250,8 +247,8 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	public void destroyBlocksInAABB(AABB box) {
 		if (level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-				if (EntityUtil.canDestroyBlock(level, pos, this)) {
-					level.destroyBlock(pos, false);
+				if (EntityUtil.canDestroyBlock(this.getLevel(), pos, this)) {
+					this.getLevel().destroyBlock(pos, false);
 				}
 			}
 		}
@@ -259,7 +256,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 
 	public void makeRandomBlockFall() {
 		// begin turning blocks into falling blocks
-		makeRandomBlockFall(30);
+		this.makeRandomBlockFall(30);
 	}
 
 	private void makeRandomBlockFall(int range) {
@@ -268,15 +265,15 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		int bz = Mth.floor(this.getZ()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
 		int by = Mth.floor(this.getY() + this.getEyeHeight());
 
-		makeBlockFallAbove(new BlockPos(bx, bz, by));
+		this.makeBlockFallAbove(new BlockPos(bx, bz, by));
 	}
 
 	private void makeBlockFallAbove(BlockPos pos) {
-		if (level.isEmptyBlock(pos)) {
+		if (this.getLevel().isEmptyBlock(pos)) {
 			for (int i = 1; i < 30; i++) {
 				BlockPos up = pos.above(i);
-				if (!level.isEmptyBlock(up)) {
-					makeBlockFall(up);
+				if (!this.getLevel().isEmptyBlock(up)) {
+					this.makeBlockFall(up);
 					break;
 				}
 			}
@@ -284,7 +281,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	}
 
 	public void makeNearbyBlockFall() {
-		makeRandomBlockFall(15);
+		this.makeRandomBlockFall(15);
 	}
 
 	public void makeBlockAboveTargetFall() {
@@ -294,48 +291,48 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 			int bz = Mth.floor(this.getTarget().getZ());
 			int by = Mth.floor(this.getTarget().getY() + this.getTarget().getEyeHeight());
 
-			makeBlockFallAbove(new BlockPos(bx, bz, by));
+			this.makeBlockFallAbove(new BlockPos(bx, bz, by));
 		}
 
 	}
 
 	private void makeBlockFall(BlockPos pos) {
-		level.setBlockAndUpdate(pos, Blocks.PACKED_ICE.defaultBlockState());
-		level.levelEvent(2001, pos, Block.getId(Blocks.PACKED_ICE.defaultBlockState()));
+		this.getLevel().setBlockAndUpdate(pos, Blocks.PACKED_ICE.defaultBlockState());
+		this.getLevel().levelEvent(2001, pos, Block.getId(Blocks.PACKED_ICE.defaultBlockState()));
 
-		FallingIce ice = new FallingIce(level, pos.getX(), pos.getY() - 3, pos.getZ());
-		level.addFreshEntity(ice);
+		FallingIce ice = new FallingIce(this.getLevel(), pos.getX(), pos.getY() - 3, pos.getZ());
+		this.getLevel().addFreshEntity(ice);
 	}
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (!this.canRampage) {
-			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.level, this);
+			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.getLevel(), this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
 			double d0 = target.getX() - this.getX();
 			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - ice.getY();
 			double d2 = target.getZ() - this.getZ();
 			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
-			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, 14 - this.level.getDifficulty().getId() * 4);
+			ice.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 14 - this.getLevel().getDifficulty().getId() * 4);
 
-			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-			this.level.addFreshEntity(ice);
+			this.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.getLevel().addFreshEntity(ice);
 		}
 	}
 
 	@Override
-	public boolean removeWhenFarAway(double p_213397_1_) {
+	public boolean removeWhenFarAway(double dist) {
 		return false;
 	}
 
 	@Override
 	public void checkDespawn() {
-		if (level.getDifficulty() == Difficulty.PEACEFUL) {
-			if (getRestrictCenter() != BlockPos.ZERO) {
-				level.setBlockAndUpdate(getRestrictCenter(), TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get().defaultBlockState());
+		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
+			if (this.getRestrictCenter() != BlockPos.ZERO) {
+				this.getLevel().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get().defaultBlockState());
 			}
-			remove(RemovalReason.DISCARDED);
+			this.discard();
 		} else {
 			super.checkDespawn();
 		}
@@ -354,20 +351,20 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	}
 
 	public void setTired(boolean tired) {
-		entityData.set(TIRED_FLAG, (byte) (tired ? 1 : 0));
+		this.entityData.set(TIRED_FLAG, (byte) (tired ? 1 : 0));
 		this.canRampage = false;
 	}
 
 	public boolean isTired() {
-		return entityData.get(TIRED_FLAG) == 1;
+		return this.entityData.get(TIRED_FLAG) == 1;
 	}
 
 	@Override
 	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
 
-		if (!this.level.isClientSide && isRampaging()) {
-			this.playSound(TFSounds.ALPHAYETI_ICE, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-			hitNearbyEntities();
+		if (!this.getLevel().isClientSide() && isRampaging()) {
+			this.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.hitNearbyEntities();
 		}
 
 		//TODO: Return value?
@@ -375,7 +372,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	}
 
 	private void hitNearbyEntities() {
-		for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5, 0, 5))) {
+		for (LivingEntity entity : this.getLevel().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5, 0, 5))) {
 			if (entity != this && entity.hurt(DamageSource.mobAttack(this), 5F)) {
 				entity.push(0, 0.4, 0);
 			}
@@ -386,13 +383,13 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the lair as defeated
-		if (!level.isClientSide) {
-			TFGenerationSettings.markStructureConquered(level, new BlockPos(this.blockPosition()), TFFeature.YETI_CAVE);
-			for(ServerPlayer player : hurtBy) {
+		if (!this.getLevel().isClientSide()) {
+			TFGenerationSettings.markStructureConquered(this.getLevel(), new BlockPos(this.blockPosition()), TFLandmark.YETI_CAVE);
+			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFTreasure.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 
@@ -423,8 +420,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		BlockPos home = this.getRestrictCenter();
-		compound.put("Home", newDoubleList(home.getX(), home.getY(), home.getZ()));
-		compound.putBoolean("HasHome", this.hasRestriction());
+		compound.put("Home", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
 		super.addAdditionalSaveData(compound);
 	}
 
@@ -437,9 +433,6 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 			int hy = (int) nbttaglist.getDouble(1);
 			int hz = (int) nbttaglist.getDouble(2);
 			this.restrictTo(new BlockPos(hx, hy, hz), 30);
-		}
-		if (!compound.getBoolean("HasHome")) {
-			this.hasRestriction();
 		}
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());

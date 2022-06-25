@@ -2,95 +2,94 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 4.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "weight": 25,
-          "name": "twilightforest:structures/useless"
+          "name": "twilightforest:structures/useless",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 9.0
+                "max": 9.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:gold_nugget"
+          "name": "minecraft:gold_nugget",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 4.0
+                "max": 4.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:potato"
+          "name": "minecraft:potato",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 4.0
+                "max": 4.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:cod"
+          "name": "minecraft:cod",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 5.0
+                "max": 5.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:torchberries"
+          "name": "twilightforest:torchberries",
+          "weight": 75
         }
-      ]
+      ],
+      "rolls": 4.0
     },
     {
-      "rolls": 2.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:torch"
@@ -99,13 +98,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:arrow"
@@ -114,13 +113,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 4.0
+                "max": 4.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:gunpowder"
@@ -129,13 +128,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 4.0
+                "max": 4.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "twilightforest:steeleaf_ingot"
@@ -148,89 +147,90 @@
           "type": "minecraft:item",
           "name": "twilightforest:ore_magnet"
         }
-      ]
+      ],
+      "rolls": 2.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:transformation_powder"
+          "name": "twilightforest:transformation_powder",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:efficiency": 1,
                 "minecraft:fortune": 1
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
-          "name": "twilightforest:ironwood_pickaxe"
+          "name": "twilightforest:ironwood_pickaxe",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 75,
-          "name": "twilightforest:magic_map"
+          "name": "twilightforest:magic_map",
+          "weight": 75
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
+                "max": 2.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:diamond"
+          "name": "minecraft:diamond",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
-          "name": "twilightforest:moonworm_queen"
+          "name": "twilightforest:moonworm_queen",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
-          "name": "twilightforest:charm_of_life_1"
+          "name": "twilightforest:charm_of_life_1",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
-          "name": "twilightforest:charm_of_keeping_1"
+          "name": "twilightforest:charm_of_keeping_1",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 25,
-          "name": "twilightforest:ironwood_block"
+          "name": "twilightforest:ironwood_block",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
-          "name": "twilightforest:music_disc_maker"
+          "name": "twilightforest:music_disc_maker",
+          "weight": 20
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

@@ -23,11 +23,11 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMazeMapData;
+import twilightforest.init.TFItems;
 import twilightforest.network.MazeMapPacket;
 import twilightforest.network.TFPacketHandler;
-
-import javax.annotation.Nullable;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 
@@ -38,46 +38,46 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 
 	protected final boolean mapOres;
 
-	protected MazeMapItem(boolean mapOres, Properties props) {
-		super(props);
+	public MazeMapItem(boolean mapOres, Properties properties) {
+		super(properties);
 		this.mapOres = mapOres;
 	}
 
-	public static ItemStack setupNewMap(Level world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
+	public static ItemStack setupNewMap(Level level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
 		ItemStack itemstack = new ItemStack(mapOres ? TFItems.FILLED_ORE_MAP.get() : TFItems.FILLED_MAZE_MAP.get());
-		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.dimension(), worldY);
+		createMapData(itemstack, level, worldX, worldZ, scale, trackingPosition, unlimitedTracking, level.dimension(), worldY);
 		return itemstack;
 	}
 
 	@Nullable
-	public static TFMazeMapData getData(ItemStack stack, Level world) {
+	public static TFMazeMapData getData(ItemStack stack, Level level) {
 		Integer id = getMapId(stack);
-		return id == null ? null : TFMazeMapData.getMazeMapData(world, getMapName(id));
+		return id == null ? null : TFMazeMapData.getMazeMapData(level, getMapName(id));
 	}
 
 	@Nullable
 	@Override
-	public TFMazeMapData getCustomMapData(ItemStack stack, Level world) {
-		TFMazeMapData mapdata = getData(stack, world);
-		if (mapdata == null && !world.isClientSide) {
-			mapdata = MazeMapItem.createMapData(stack, world, world.getLevelData().getXSpawn(), world.getLevelData().getZSpawn(), 0, false, false, world.dimension(), world.getLevelData().getYSpawn());
+	public TFMazeMapData getCustomMapData(ItemStack stack, Level level) {
+		TFMazeMapData mapdata = getData(stack, level);
+		if (mapdata == null && !level.isClientSide()) {
+			mapdata = MazeMapItem.createMapData(stack, level, level.getLevelData().getXSpawn(), level.getLevelData().getZSpawn(), 0, false, false, level.dimension(), level.getLevelData().getYSpawn());
 		}
 
 		return mapdata;
 	}
 
-	private static TFMazeMapData createMapData(ItemStack stack, Level world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y) {
-		int i = world.getFreeMapId();
+	private static TFMazeMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y) {
+		int i = level.getFreeMapId();
 
 		int mapSize = 128 * (1 << scale);
-		int roundX = Mth.floor((x + 64.0D) / (double)mapSize);
-		int roundZ = Mth.floor((z + 64.0D) / (double)mapSize);
+		int roundX = Mth.floor((x + 64.0D) / (double) mapSize);
+		int roundZ = Mth.floor((z + 64.0D) / (double) mapSize);
 		int scaledX = roundX * mapSize + mapSize / 2 - 64;
 		int scaledZ = roundZ * mapSize + mapSize / 2 - 64;
 
-		TFMazeMapData mapdata = new TFMazeMapData(scaledX, scaledZ, (byte)scale, trackingPosition, unlimitedTracking, false, dimension);
-		mapdata.calculateMapCenter(world, x, y, z); // call our own map center calculation
-		TFMazeMapData.registerMazeMapData(world, mapdata, getMapName(i)); // call our own register method
+		TFMazeMapData mapdata = new TFMazeMapData(scaledX, scaledZ, (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
+		mapdata.calculateMapCenter(level, x, y, z); // call our own map center calculation
+		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i)); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
 		return mapdata;
 	}
@@ -88,8 +88,8 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 
 	// [VanillaCopy] of superclass, with sane variable names and noted changes
 	@Override
-	public void update(Level world, Entity viewer, MapItemSavedData data) {
-		if (world.dimension() == data.dimension && viewer instanceof Player) {
+	public void update(Level level, Entity viewer, MapItemSavedData data) {
+		if (level.dimension() == data.dimension && viewer instanceof Player) {
 			int blocksPerPixel = 1 << data.scale;
 			int centerX = data.x;
 			int centerZ = data.z;
@@ -97,7 +97,7 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 			int viewerZ = Mth.floor(viewer.getZ() - centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 16; // TF this is smaller on the maze map
 
-			if (world.dimensionType().hasCeiling()) {
+			if (level.dimensionType().hasCeiling()) {
 				viewRadiusPixels /= 2;
 			}
 
@@ -117,21 +117,21 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
 							Multiset<MaterialColor> multiset = HashMultiset.create();
-							LevelChunk chunk = world.getChunkAt(new BlockPos(worldX, 0, worldZ));
+							LevelChunk chunk = level.getChunkAt(new BlockPos(worldX, 0, worldZ));
 
 							int brightness = 1;
 							if (!chunk.isEmpty()) {
 								int worldXRounded = worldX & 15;
 								int worldZRounded = worldZ & 15;
 
-								if (world.dimensionType().hasCeiling()) {
+								if (level.dimensionType().hasCeiling()) {
 									int l3 = worldX + worldZ * 231871;
 									l3 = l3 * l3 * 31287121 + l3 * 11;
 
 									if ((l3 >> 20 & 1) == 0) {
-										multiset.add(Blocks.DIRT.defaultBlockState().getMapColor(world, BlockPos.ZERO), 10);
+										multiset.add(Blocks.DIRT.defaultBlockState().getMapColor(level, BlockPos.ZERO), 10);
 									} else {
-										multiset.add(Blocks.STONE.defaultBlockState().getMapColor(world, BlockPos.ZERO), 100);
+										multiset.add(Blocks.STONE.defaultBlockState().getMapColor(level, BlockPos.ZERO), 100);
 									}
 
 								} else {
@@ -141,7 +141,7 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 									BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(worldXRounded, yCenter, worldZRounded);
 									BlockState state = chunk.getBlockState(blockpos$mutableblockpos);
 
-									multiset.add(state.getMapColor(world, blockpos$mutableblockpos));
+									multiset.add(state.getMapColor(level, blockpos$mutableblockpos));
 
 									if (state.is(Blocks.STONE) || state.isAir()) {
 										for (int i = -YSEARCH; i <= YSEARCH; i++) {
@@ -177,8 +177,8 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 											multiset.add(MaterialColor.DIAMOND, 1000);
 										} else if (state.is(BlockTags.EMERALD_ORES)) {
 											multiset.add(MaterialColor.EMERALD, 1000);
-										}else if (state.is(BlockTags.COPPER_ORES)) {
-												multiset.add(MaterialColor.COLOR_ORANGE, 1000);
+										} else if (state.is(BlockTags.COPPER_ORES)) {
+											multiset.add(MaterialColor.COLOR_ORANGE, 1000);
 										} else if (state.getBlock() != Blocks.AIR && state.is(Tags.Blocks.ORES)) {
 											multiset.add(MaterialColor.COLOR_PINK, 1000);
 										}
@@ -207,12 +207,12 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 
 	// [VanillaCopy] super but shows a dot if player is too far in the vertical direction as well
 	@Override
-	public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int slot, boolean isSelected) {
-		if (!worldIn.isClientSide) {
-			TFMazeMapData mapdata = this.getCustomMapData(stack, worldIn);
+	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
+		if (!level.isClientSide()) {
+			TFMazeMapData mapdata = this.getCustomMapData(stack, level);
 
 			if (mapdata != null) {
-				if (entityIn instanceof Player entityplayer) {
+				if (entity instanceof Player entityplayer) {
 					mapdata.tickCarriedBy(entityplayer, stack);
 
 					// TF - if player is far away vertically, show a dot
@@ -225,23 +225,23 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 					}
 				}
 
-				if (!mapdata.locked && (isSelected || entityIn instanceof Player player && player.getOffhandItem() == stack)) {
-					this.update(worldIn, entityIn, mapdata);
+				if (!mapdata.locked && (isSelected || entity instanceof Player player && player.getOffhandItem() == stack)) {
+					this.update(level, entity, mapdata);
 				}
 			}
 		}
 	}
 
 	@Override
-	public void onCraftedBy(ItemStack stack, Level world, Player player) {
+	public void onCraftedBy(ItemStack stack, Level level, Player player) {
 		// disable zooming
 	}
 
 	@Override
 	@Nullable
-	public Packet<?> getUpdatePacket(ItemStack stack, Level worldIn, Player player) {
+	public Packet<?> getUpdatePacket(ItemStack stack, Level level, Player player) {
 		Integer id = getMapId(stack);
-		TFMazeMapData mapdata = getCustomMapData(stack, worldIn);
+		TFMazeMapData mapdata = getCustomMapData(stack, level);
 		Packet<?> p = id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
 		return p instanceof ClientboundMapItemDataPacket ? TFPacketHandler.CHANNEL.createVanillaPacket(new MazeMapPacket((ClientboundMapItemDataPacket) p)) : p;
 	}

@@ -2,17 +2,25 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "found_structure": {
-      "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "position": {
-            "y": {
-              "min": 150.0
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "position": {
+                  "y": {
+                    "min": 150.0
+                  }
+                },
+                "structure": "twilightforest:troll_cave"
+              }
             }
-          },
-          "feature": "twilightforest:troll_cave"
-        }
-      }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
     }
   },
   "requirements": [

@@ -2,6 +2,7 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -15,13 +16,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import twilightforest.block.TFBlocks;
-import twilightforest.item.TFItems;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFItems;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
-import java.util.Random;
 
 public class GiantMiner extends Monster {
 
@@ -29,7 +29,7 @@ public class GiantMiner extends Monster {
 		super(type, world);
 
 		for (EquipmentSlot slot : EquipmentSlot.values()) {
-			setDropChance(slot, 0);
+			this.setDropChance(slot, 0);
 		}
 	}
 
@@ -59,29 +59,33 @@ public class GiantMiner extends Monster {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		SpawnGroupData data = super.finalizeSpawn(worldIn, difficulty, reason, spawnDataIn, dataTag);
-		populateDefaultEquipmentSlots(difficulty);
-		populateDefaultEquipmentEnchantments(difficulty);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn, dataTag);
+		populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
+		populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
 
 		return data;
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
-		setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GIANT_PICKAXE.get()));
+	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GIANT_PICKAXE.get()));
 	}
 
 	@Override
-	protected void enchantSpawnedWeapon(float chance) {}
+	protected void enchantSpawnedWeapon(RandomSource random, float chance) {
+
+	}
 
 	@Override
-	protected void enchantSpawnedArmor(float chance, EquipmentSlot slot) {}
+	protected void enchantSpawnedArmor(RandomSource random, float chance, EquipmentSlot slot) {
+
+	}
 
 	@Override
-	public boolean doHurtTarget(Entity entityIn) {
-		entityIn.hurt(TFDamageSources.ant(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		return super.doHurtTarget(entityIn);
+	public boolean doHurtTarget(Entity entity) {
+		entity.hurt(TFDamageSources.ant(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		return super.doHurtTarget(entity);
 	}
 
 	@Override
@@ -90,17 +94,17 @@ public class GiantMiner extends Monster {
 	}
 
 	@Override
-	public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-		List<GiantMiner> giantsNearby = worldIn.getEntitiesOfClass(GiantMiner.class, this.getBoundingBox().inflate(100, 10, 100));
+	public boolean checkSpawnRules(LevelAccessor accessor, MobSpawnType reason) {
+		List<GiantMiner> giantsNearby = accessor.getEntitiesOfClass(GiantMiner.class, this.getBoundingBox().inflate(100, 10, 100));
 		return giantsNearby.size() < 10;
 	}
 
-	public static boolean canSpawn(EntityType<? extends GiantMiner> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
-		return Monster.checkMonsterSpawnRules(type, world, reason, pos, rand) || world.getBlockState(pos).getBlock() == TFBlocks.WISPY_CLOUD.get() || world.getBlockState(pos).getBlock() == TFBlocks.FLUFFY_CLOUD.get();
+	public static boolean canSpawn(EntityType<? extends GiantMiner> type, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource rand) {
+		return Monster.checkMonsterSpawnRules(type, accessor, reason, pos, rand) || accessor.getBlockState(pos).is(TFBlocks.WISPY_CLOUD.get()) || accessor.getBlockState(pos).is(TFBlocks.FLUFFY_CLOUD.get());
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 }

@@ -1,12 +1,26 @@
 {
   "parent": "twilightforest:progress_merge",
+  "criteria": {
+    "troll": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "twilightforest:troll",
+              "location": {
+                "structure": "twilightforest:troll_cave"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:magic_beans"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.troll"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.troll.desc",
       "with": [
@@ -16,27 +30,13 @@
       ]
     },
     "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:magic_beans"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "troll": {
-      "trigger": "minecraft:player_killed_entity",
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "type": "twilightforest:troll",
-              "location": {
-                "feature": "twilightforest:troll_cave"
-              }
-            },
-            "entity": "this"
-          }
-        ]
-      }
+    "title": {
+      "translate": "advancement.twilightforest.troll"
     }
   },
   "requirements": [

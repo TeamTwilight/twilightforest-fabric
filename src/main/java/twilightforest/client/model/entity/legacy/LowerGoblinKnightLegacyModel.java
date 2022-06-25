@@ -11,7 +11,7 @@ import twilightforest.entity.monster.LowerGoblinKnight;
 
 public class LowerGoblinKnightLegacyModel extends HumanoidModel<LowerGoblinKnight> {
 
-	ModelPart tunic;
+	final ModelPart tunic;
 
 	public LowerGoblinKnightLegacyModel(ModelPart root) {
 		super(root);

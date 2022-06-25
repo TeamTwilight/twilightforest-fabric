@@ -14,7 +14,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 
 public class TwilightWandBolt extends TFThrowable {
 
@@ -24,7 +24,7 @@ public class TwilightWandBolt extends TFThrowable {
 
 	public TwilightWandBolt(Level world, LivingEntity thrower) {
 		super(TFEntities.WAND_BOLT.get(), world, thrower);
-		shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0, 1.5F, 1.0F);
+		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0, 1.5F, 1.0F);
 	}
 
 	public TwilightWandBolt(Level worldIn, double x, double y, double z) {
@@ -34,20 +34,20 @@ public class TwilightWandBolt extends TFThrowable {
 	@Override
 	public void tick() {
 		super.tick();
-		makeTrail();
+		this.makeTrail();
 	}
 
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = getX() + 0.5 * (random.nextDouble() - random.nextDouble());
-			double dy = getY() + 0.5 * (random.nextDouble() - random.nextDouble());
-			double dz = getZ() + 0.5 * (random.nextDouble() - random.nextDouble());
+			double dx = this.getX() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
+			double dy = this.getY() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
+			double dz = this.getZ() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
 
-			double s1 = ((random.nextFloat() * 0.5F) + 0.5F) * 0.17F;  // color
-			double s2 = ((random.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
-			double s3 = ((random.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
+			double s1 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.17F;  // color
+			double s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
+			double s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
 
-			level.addParticle(ParticleTypes.ENTITY_EFFECT, dx, dy, dz, s1, s2, s3);
+			this.getLevel().addParticle(ParticleTypes.ENTITY_EFFECT, dx, dy, dz, s1, s2, s3);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class TwilightWandBolt extends TFThrowable {
 		if (id == 3) {
 			ParticleOptions particle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.ENDER_PEARL));
 			for (int i = 0; i < 8; i++) {
-				this.level.addParticle(particle, false, this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
+				this.getLevel().addParticle(particle, false, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -72,10 +72,10 @@ public class TwilightWandBolt extends TFThrowable {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (!this.level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			result.getEntity().hurt(DamageSource.indirectMagic(this, this.getOwner()).setProjectile(), 6);
 
-			this.level.broadcastEntityEvent(this, (byte) 3);
+			this.getLevel().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
 	}
@@ -83,9 +83,9 @@ public class TwilightWandBolt extends TFThrowable {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		if (!this.level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 
-			this.level.broadcastEntityEvent(this, (byte) 3);
+			this.getLevel().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
 	}
@@ -94,10 +94,10 @@ public class TwilightWandBolt extends TFThrowable {
 	public boolean hurt(DamageSource source, float amount) {
 		super.hurt(source, amount);
 
-		if (!this.level.isClientSide && source.getEntity() != null) {
+		if (!this.getLevel().isClientSide() && source.getEntity() != null) {
 			Vec3 vec3d = source.getEntity().getLookAngle();
 			// reflect faster and more accurately
-			this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);
+			this.shoot(vec3d.x(), vec3d.y(), vec3d.z(), 1.5F, 0.1F);
 
 			if (source.getDirectEntity() instanceof LivingEntity) {
 				this.setOwner(source.getDirectEntity());

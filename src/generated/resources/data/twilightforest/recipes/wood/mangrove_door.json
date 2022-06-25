@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "##",
-    "##",
-    "##"
-  ],
   "key": {
     "#": {
       "item": "twilightforest:mangrove_planks"
     }
   },
+  "pattern": [
+    "##",
+    "##",
+    "##"
+  ],
   "result": {
-    "item": "twilightforest:mangrove_door",
-    "count": 3
+    "count": 3,
+    "item": "twilightforest:mangrove_door"
   }
 }

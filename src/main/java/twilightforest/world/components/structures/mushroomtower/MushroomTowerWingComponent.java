@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.mushroomtower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -16,14 +17,13 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class MushroomTowerWingComponent extends TowerWingComponent {
 
@@ -35,7 +35,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	public boolean isAscender = false;
 
 	public MushroomTowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(MushroomTowerPieces.TFMTWin, nbt);
+		this(TFStructurePieceTypes.TFMTWin.get(), nbt);
 	}
 
 	public MushroomTowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -44,7 +44,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 		this.isAscender = nbt.getBoolean("isAscender");
 	}
 
-	protected MushroomTowerWingComponent(StructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected MushroomTowerWingComponent(StructurePieceType piece, TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
@@ -57,7 +57,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -122,7 +122,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	 * Make a new wing
 	 */
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
@@ -137,7 +137,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 			dx = adjustCoordinates(dx[0], dx[1], dx[2], wingSize, direction, list);
 		}
 
-		MushroomTowerWingComponent wing = new MushroomTowerWingComponent(MushroomTowerPieces.TFMTWin, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		MushroomTowerWingComponent wing = new MushroomTowerWingComponent(TFStructurePieceTypes.TFMTWin.get(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this || intersect instanceof TowerRoofMushroomComponent) {
@@ -213,7 +213,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	 * Make a mushroom roof!
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 
 		TowerRoofComponent roof = new TowerRoofMushroomComponent(getFeatureType(), this.getGenDepth() + 1, this, 1.6F, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		if (!(list.findCollisionPiece(roof.getBoundingBox()) instanceof TowerRoofMushroomComponent)) {
@@ -227,11 +227,11 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	protected boolean makeBridge(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	protected boolean makeBridge(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		return this.makeBridge(list, rand, index, x, y, z, wingSize, wingHeight, rotation, false);
 	}
 
-	protected boolean makeBridge(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation, boolean ascender) {
+	protected boolean makeBridge(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation, boolean ascender) {
 		// bridges are size  always
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
@@ -241,7 +241,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 			wingHeight = 4;
 		}
 
-		MushroomTowerBridgeComponent bridge = new MushroomTowerBridgeComponent(MushroomTowerPieces.TFMTBri, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		MushroomTowerBridgeComponent bridge = new MushroomTowerBridgeComponent(TFStructurePieceTypes.TFMTBri.get(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		bridge.isAscender = ascender;
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(bridge.getBoundingBox());
@@ -261,7 +261,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	private boolean makeMainBridge(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingHeight, Rotation rotation) {
+	private boolean makeMainBridge(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingHeight, Rotation rotation) {
 
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
@@ -278,7 +278,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
 	 */
 	@Override
-	public int[] getValidOpening(Random rand, Rotation direction) {
+	public int[] getValidOpening(RandomSource rand, Rotation direction) {
 		// variables!
 		int wLength = Math.min(size / 3, 3); // wall length
 		int offset = (size - wLength) / 2; // wall thickness
@@ -309,7 +309,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	 * Also works for Z coordinates.
 	 */
 	@Override
-	protected int getYByStairs(int rx, Random rand, Rotation direction) {
+	protected int getYByStairs(int rx, RandomSource rand, Rotation direction) {
 
 		int floors = this.height / FLOOR_HEIGHT;
 
@@ -317,7 +317,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		makeTrunk(world, sbb);
 
@@ -418,7 +418,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	 * @param ladderDownDir
 	 */
 	@Override
-	protected void decorateFloor(WorldGenLevel world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
+	protected void decorateFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
 		//decorateWraparoundWallSteps(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 	}
 }

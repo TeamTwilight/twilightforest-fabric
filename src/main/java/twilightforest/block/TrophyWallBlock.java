@@ -1,28 +1,24 @@
 package twilightforest.block;
 
-import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.level.BlockGetter;
 import twilightforest.enums.BossVariant;
 
-//[VanillaCopy] of WallSkullBlock except we use BossVariants instead of ISkullType
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import java.util.Map;
 
 public class TrophyWallBlock extends AbstractTrophyBlock {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -33,7 +29,7 @@ public class TrophyWallBlock extends AbstractTrophyBlock {
 
 	public TrophyWallBlock(BossVariant variant) {
 		super(variant, 0, Properties.of(Material.DECORATION).instabreak());
-		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
 	}
 
 	@Override
@@ -42,7 +38,7 @@ public class TrophyWallBlock extends AbstractTrophyBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		if (((AbstractTrophyBlock) state.getBlock()).getVariant() == BossVariant.UR_GHAST) {
 			return TrophyBlock.GHAST_SHAPE;
 		} else if (((AbstractTrophyBlock) state.getBlock()).getVariant() == BossVariant.ALPHA_YETI) {
@@ -77,8 +73,8 @@ public class TrophyWallBlock extends AbstractTrophyBlock {
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	@Override

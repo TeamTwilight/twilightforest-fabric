@@ -7,7 +7,7 @@ import net.minecraft.world.level.biome.Biome;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer0;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 import java.util.List;
 
@@ -20,14 +20,14 @@ public enum GenLayerTFBiomes implements AreaTransformer0 {
 	INSTANCE;
 	private static final int RARE_BIOME_CHANCE = 15;
 
-	protected static final List<ResourceKey<Biome>> commonBiomes = ImmutableList.of(
+	private static final List<ResourceKey<Biome>> commonBiomes = ImmutableList.of(
 			BiomeKeys.FOREST,
 			BiomeKeys.DENSE_FOREST,
 			BiomeKeys.MUSHROOM_FOREST,
 			BiomeKeys.OAK_SAVANNAH,
 			BiomeKeys.FIREFLY_FOREST
 	);
-	protected static final List<ResourceKey<Biome>> rareBiomes = ImmutableList.of(
+	private static final List<ResourceKey<Biome>> rareBiomes = ImmutableList.of(
 			BiomeKeys.LAKE,
 			BiomeKeys.DENSE_MUSHROOM_FOREST,
 			BiomeKeys.ENCHANTED_FOREST,

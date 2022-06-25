@@ -1,14 +1,14 @@
 {
   "parent": "twilightforest:item/util/overlap_gui_held",
-  "textures": {
-    "layer0": "twilightforest:items/cube_of_annihilation"
-  },
   "overrides": [
     {
+      "model": "twilightforest:item/cube_of_annihilation_thrown",
       "predicate": {
         "twilightforest:thrown": 1.0
-      },
-      "model": "twilightforest:item/cube_of_annihilation_thrown"
+      }
     }
-  ]
+  ],
+  "textures": {
+    "layer0": "twilightforest:items/cube_of_annihilation"
+  }
 }

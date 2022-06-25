@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -37,13 +37,13 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
-import twilightforest.block.entity.TFBlockEntities;
 import twilightforest.enums.BlockLoggingEnum;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable {
@@ -64,7 +64,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	private static final VoxelShape SOLID_X = Shapes.or(SOLID, TOPPER_X);
 	private static final VoxelShape SOLID_Z = Shapes.or(SOLID, TOPPER_Z);
 
-	protected KeepsakeCasketBlock() {
+	public KeepsakeCasketBlock() {
 		super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).noOcclusion().requiresCorrectToolForDrops().strength(50.0F, 1200.0F).sound(SoundType.NETHERITE_BLOCK).lightLevel(state -> state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA ? 15 : 0).explosionResistance(Float.MAX_VALUE));
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(BREAKAGE, 0));
 	}
@@ -78,7 +78,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-		if(state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() != Blocks.AIR && state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) {
+		if (state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() != Blocks.AIR && state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() == Fluids.EMPTY) {
 			return direction.getAxis() == Direction.Axis.X ? SOLID_X : SOLID_Z;
 		} else {
 			return direction.getAxis() == Direction.Axis.X ? CASKET_X : CASKET_Z;
@@ -111,10 +111,15 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+	public float getExplosionResistance(BlockState state, BlockGetter getter, BlockPos pos, Explosion explosion) {
+		return Float.MAX_VALUE;
+	}
+
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		boolean flag = false;
-		if(state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() == Blocks.AIR || state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() != Fluids.EMPTY) {
-			ItemStack stack = player.getItemInHand(handIn);
+		if (state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() == Blocks.AIR || state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() != Fluids.EMPTY) {
+			ItemStack stack = player.getItemInHand(hand);
 			if (!(stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get())) {
 				if (level.isClientSide()) {
 					return InteractionResult.SUCCESS;
@@ -130,12 +135,12 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				if (stack.getItem() == TFItems.CHARM_OF_KEEPING_3.get() && state.getValue(BREAKAGE) > 0) {
 					if (!player.isCreative()) stack.shrink(1);
 					level.setBlockAndUpdate(pos, state.setValue(BREAKAGE, state.getValue(BREAKAGE) - 1));
-					level.playSound(null, pos, TFSounds.CASKET_REPAIR, SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+					level.playSound(null, pos, TFSounds.CASKET_REPAIR.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 					flag = true;
 				}
 			}
 		}
-		return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
+		return flag ? InteractionResult.sidedSuccess(level.isClientSide()) : InteractionResult.PASS;
 	}
 
 	@Override
@@ -144,7 +149,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 			BlockEntity tile = level.getBlockEntity(pos);
 			if (tile instanceof KeepsakeCasketBlockEntity casket) {
 				ItemStack stack = new ItemStack(this);
-				String nameCheck = new TextComponent(casket.name + "'s " + casket.getDisplayName()).getString();
+				String nameCheck = Component.literal(casket.name + "'s " + casket.getDisplayName()).getString();
 				ItemEntity itementity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
 				CompoundTag nbt = new CompoundTag();
 				nbt.putInt("damage", state.getValue(BREAKAGE));
@@ -198,7 +203,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 		if (state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA) {
 			boolean flag = level.getBlockState(pos.below()).is(Blocks.SOUL_SOIL);
 
-			for(Direction direction : Direction.values()) {
+			for (Direction direction : Direction.values()) {
 				if (direction != Direction.DOWN) {
 					BlockPos blockpos = pos.relative(direction);
 					if (level.getFluidState(blockpos).is(FluidTags.WATER)) {
@@ -213,7 +218,7 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				}
 			}
 		} else if (state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.WATER) {
-			for(Direction direction : Direction.values()) {
+			for (Direction direction : Direction.values()) {
 				if (direction != Direction.DOWN) {
 					BlockPos blockpos = pos.relative(direction);
 					if (level.getFluidState(blockpos).is(FluidTags.LAVA)) {

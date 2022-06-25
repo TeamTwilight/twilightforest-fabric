@@ -65,8 +65,8 @@ public class HydraMortarHead extends ThrowableProjectile {
 		if (this.isOnGround()) {
 			this.getDeltaMovement().multiply(0.9D, 0.9D, 0.9D);
 
-			if (!level.isClientSide() && this.fuse-- <= 0) {
-				detonate();
+			if (!this.getLevel().isClientSide() && this.fuse-- <= 0) {
+				this.detonate();
 			}
 		}
 	}
@@ -80,7 +80,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 		super.onHitBlock(result);
 		if (!this.megaBlast) {
 			//if we hit a wall, explode
-			if(result.getDirection() != Direction.DOWN) this.detonate();
+			if (result.getDirection() != Direction.UP) this.detonate();
 			// we hit the ground
 			this.setDeltaMovement(this.getDeltaMovement().x(), 0.0D, this.getDeltaMovement().z());
 			this.onGround = true;
@@ -93,17 +93,17 @@ public class HydraMortarHead extends ThrowableProjectile {
 	protected void onHit(HitResult result) {
 		HitResult.Type hitresult$type = result.getType();
 		if (hitresult$type == HitResult.Type.ENTITY) {
-			this.onHitEntity((EntityHitResult)result);
+			this.onHitEntity((EntityHitResult) result);
 		} else if (hitresult$type == HitResult.Type.BLOCK) {
-			this.onHitBlock((BlockHitResult)result);
+			this.onHitBlock((BlockHitResult) result);
 		}
 	}
 
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		Entity entity = result.getEntity();
-		if (!level.isClientSide() && this.getOwner() != null) {
-			if((!(entity instanceof HydraMortarHead mortar) || mortar.getOwner().is(this.getOwner())) && !entity.is(this.getOwner()) && !this.isPartOfHydra(entity)) {
+		if (!this.getLevel().isClientSide() && this.getOwner() != null) {
+			if ((!(entity instanceof HydraMortarHead mortar) || mortar.getOwner().is(this.getOwner())) && !entity.is(this.getOwner()) && !this.isPartOfHydra(entity)) {
 				this.detonate();
 			}
 		}
@@ -149,7 +149,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 			Vec3 vec3d = source.getEntity().getLookAngle();
 			if (vec3d != null) {
 				// reflect faster and more accurately
-				this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
+				this.shoot(vec3d.x(), vec3d.y(), vec3d.z(), 1.5F, 0.1F);  // reflect faster and more accurately
 				this.onGround = false;
 				this.fuse += 20;
 			}

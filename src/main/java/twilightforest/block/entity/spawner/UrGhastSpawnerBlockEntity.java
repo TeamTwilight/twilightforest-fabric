@@ -5,8 +5,8 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.entity.TFBlockEntities;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.boss.UrGhast;
 
 public class UrGhastSpawnerBlockEntity extends BossSpawnerBlockEntity<UrGhast> {
@@ -17,8 +17,8 @@ public class UrGhastSpawnerBlockEntity extends BossSpawnerBlockEntity<UrGhast> {
 
 	@Override
 	public boolean anyPlayerInRange() {
-		Player closestPlayer = level.getNearestPlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange(), false);
-		return closestPlayer != null && closestPlayer.getY() > worldPosition.getY() - 4;
+		Player closestPlayer = this.getLevel().getNearestPlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, getRange(), false);
+		return closestPlayer != null && closestPlayer.getY() > this.getBlockPos().getY() - 4;
 	}
 
 	@Override

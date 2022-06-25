@@ -1,45 +1,44 @@
 {
+  "carvers": {},
+  "creature_spawn_probability": 0.3,
+  "downfall": 0.2,
   "effects": {
+    "fog_color": 12648408,
     "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
       "block_search_extent": 8,
-      "offset": 2.0
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
     },
     "music": {
-      "sound": "twilightforest:music.bg",
-      "min_delay": 1200,
       "max_delay": 12000,
-      "replace_current_music": true
+      "min_delay": 1200,
+      "replace_current_music": true,
+      "sound": "twilightforest:music.bg"
     },
     "sky_color": 2105930,
-    "fog_color": 12648408,
     "water_color": 4159204,
     "water_fog_color": 329011
   },
-  "carvers": {},
   "features": [],
-  "creature_spawn_probability": 0.3,
+  "precipitation": "rain",
+  "spawn_costs": {},
   "spawners": {
-    "monster": [],
+    "ambient": [],
+    "axolotls": [],
     "creature": [
       {
         "type": "twilightforest:raven",
-        "weight": 10,
+        "maxCount": 4,
         "minCount": 4,
-        "maxCount": 4
+        "weight": 10
       }
     ],
-    "ambient": [],
-    "axolotls": [],
+    "misc": [],
+    "monster": [],
     "underground_water_creature": [],
-    "water_creature": [],
     "water_ambient": [],
-    "misc": []
+    "water_creature": []
   },
-  "spawn_costs": {},
-  "precipitation": "rain",
-  "temperature": 1.0,
-  "downfall": 0.2,
-  "category": "mesa"
+  "temperature": 1.0
 }

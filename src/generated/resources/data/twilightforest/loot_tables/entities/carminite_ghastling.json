@@ -2,20 +2,20 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "twilightforest:is_minion",
+          "inverse": true
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:loot_table",
           "name": "minecraft:entities/ghast"
         }
       ],
-      "conditions": [
-        {
-          "condition": "twilightforest:is_minion",
-          "inverse": true
-        }
-      ]
+      "rolls": 1.0
     }
   ]
 }

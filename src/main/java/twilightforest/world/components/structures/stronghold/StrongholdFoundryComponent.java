@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.stronghold;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -14,9 +15,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 
@@ -24,13 +25,13 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 	boolean deepslateVer;
 
 	public StrongholdFoundryComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSFo, nbt);
+		super(TFStructurePieceTypes.TFSFo.get(), nbt);
 		this.deepslateVer = nbt.getBoolean("deepslateVer");
 		this.entranceLevel = nbt.getInt("entranceLevel");
 	}
 
-	public StrongholdFoundryComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSFo, feature, i, facing, x, y, z);
+	public StrongholdFoundryComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSFo.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		this.deepslateVer = new Random().nextBoolean();
+		this.deepslateVer = RandomSource.create().nextBoolean();
 		if (y > -15) {
 			this.entranceLevel = 3;
 			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -20, 0, 18, 25, 18, facing);
@@ -56,7 +57,7 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random random) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource random) {
 		super.addChildren(parent, list, random);
 
 		switch (this.entranceLevel) {
@@ -82,7 +83,7 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 25, 17, rand, deco.randomBlocks);
 
 		// lava bottom
@@ -114,7 +115,7 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 		this.generateBox(world, sbb, 15, 1, 16, 15, 24, 16, false, rand, deco.randomBlocks);
 
 		// suspended mass
-		Random massRandom = new Random(rand.nextLong());
+		RandomSource massRandom = RandomSource.create(rand.nextLong());
 
 		for (int x = 4; x < 14; x++) {
 			for (int z = 4; z < 14; z++) {
@@ -184,7 +185,7 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 	/**
 	 * Add a block of ore to the mass
 	 */
-	private void addOreToMass(WorldGenLevel world, BoundingBox sbb, Random massRandom, BlockState state) {
+	private void addOreToMass(WorldGenLevel world, BoundingBox sbb, RandomSource massRandom, BlockState state) {
 		for (int i = 0; i < 10; i++) {
 			int dx = massRandom.nextInt(9) + 5;
 			int dz = massRandom.nextInt(9) + 5;

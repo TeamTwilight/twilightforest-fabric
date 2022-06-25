@@ -14,8 +14,8 @@ public class StrongholdPieceWeight {
 	/**
 	 * How many Structure Pieces of this type may spawn in a structure
 	 */
-	public int instancesLimit;
-	public int minimumDepth;
+	public final int instancesLimit;
+	public final int minimumDepth;
 
 	public <T extends StructureTFStrongholdComponent> StrongholdPieceWeight(Factory<T> factory, int weight, int limit) {
 		this(factory, weight, limit, 0);

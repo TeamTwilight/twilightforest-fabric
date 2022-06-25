@@ -2,15 +2,15 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "used": {
-      "trigger": "minecraft:item_used_on_block",
       "conditions": {
-        "location": {},
         "item": {
           "items": [
             "twilightforest:crumble_horn"
           ]
-        }
-      }
+        },
+        "location": {}
+      },
+      "trigger": "minecraft:item_used_on_block"
     }
   },
   "requirements": [

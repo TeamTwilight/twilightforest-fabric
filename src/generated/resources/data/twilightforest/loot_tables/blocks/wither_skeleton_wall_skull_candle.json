@@ -2,14 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:wither_skeleton_skull"
-        }
-      ],
       "conditions": [
         {
           "condition": "minecraft:inverted",
@@ -27,7 +20,14 @@
             }
           }
         }
-      ]
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wither_skeleton_skull"
+        }
+      ],
+      "rolls": 1.0
     }
   ]
 }

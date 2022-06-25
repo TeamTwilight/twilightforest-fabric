@@ -2,21 +2,21 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "has_item": {
-      "trigger": "minecraft:item_used_on_block",
       "conditions": {
+        "item": {
+          "items": [
+            "twilightforest:magic_beans"
+          ]
+        },
         "location": {
           "block": {
             "blocks": [
               "twilightforest:uberous_soil"
             ]
           }
-        },
-        "item": {
-          "items": [
-            "twilightforest:magic_beans"
-          ]
         }
-      }
+      },
+      "trigger": "minecraft:item_used_on_block"
     }
   },
   "requirements": [

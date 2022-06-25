@@ -4,18 +4,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public final class CentralTowerAttachment extends TwilightTemplateStructurePiece {
     private final int width;
@@ -23,20 +24,20 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     private final int length = 2; // Determines how far out the piece should gen
 
     public CentralTowerAttachment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, compoundTag, ctx, TwilightTemplateStructurePiece.readSettings(compoundTag));
+        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.get(), compoundTag, ctx, TwilightTemplateStructurePiece.readSettings(compoundTag));
         this.width = compoundTag.getInt("width");
     }
 
-    private CentralTowerAttachment(StructureManager structureManager, Rotation rotation, String name, BlockPos startPosition, int width) {
+    private CentralTowerAttachment(StructureTemplateManager structureManager, Rotation rotation, String name, BlockPos startPosition, int width) {
         this(structureManager, TwilightForestMod.prefix("lich_tower/attachments/central/" + name), makeSettings(rotation), startPosition.relative(rotation.rotate(Direction.EAST), -(width - 5 >> 1)), width);
     }
 
-    private CentralTowerAttachment(StructureManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int width) {
-        super(LichTowerRevampPieces.CENTRAL_TO_SIDE_TOWER, 0, structureManager, templateLocation, placeSettings, startPosition);
+    private CentralTowerAttachment(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition, int width) {
+        super(TFStructurePieceTypes.CENTRAL_TO_SIDE_TOWER.get(), 0, structureManager, templateLocation, placeSettings, startPosition);
         this.width = width;
     }
 
-    public static CentralTowerAttachment startRandomAttachment(StructureManager structureManager, Rotation rotation, BlockPos startPosition, Random random) {
+    public static CentralTowerAttachment startRandomAttachment(StructureTemplateManager structureManager, Rotation rotation, BlockPos startPosition, RandomSource random) {
         float weight = random.nextFloat() * random.nextFloat();
 
         if (weight < 1/3f)
@@ -48,20 +49,20 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
         return largeAttachment(structureManager, rotation, startPosition);
     }
 
-    public static CentralTowerAttachment smallAttachment(StructureManager structureManager, Rotation rotation, BlockPos startPosition) {
+    public static CentralTowerAttachment smallAttachment(StructureTemplateManager structureManager, Rotation rotation, BlockPos startPosition) {
         return new CentralTowerAttachment(structureManager, rotation, "central_to_small", startPosition, 5);
     }
 
-    public static CentralTowerAttachment mediumAttachment(StructureManager structureManager, Rotation rotation, BlockPos startPosition) {
+    public static CentralTowerAttachment mediumAttachment(StructureTemplateManager structureManager, Rotation rotation, BlockPos startPosition) {
         return new CentralTowerAttachment(structureManager, rotation, "central_to_medium", startPosition, 7);
     }
 
-    public static CentralTowerAttachment largeAttachment(StructureManager structureManager, Rotation rotation, BlockPos startPosition) {
+    public static CentralTowerAttachment largeAttachment(StructureTemplateManager structureManager, Rotation rotation, BlockPos startPosition) {
         return new CentralTowerAttachment(structureManager, rotation, "central_to_large", startPosition, 9);
     }
 
     @Override
-    public void addChildren(StructurePiece parent, StructurePieceAccessor structureStart, Random random) {
+    public void addChildren(StructurePiece parent, StructurePieceAccessor structureStart, RandomSource random) {
         super.addChildren(parent, structureStart, random);
 
         Direction dir = this.rotation.rotate(Direction.SOUTH);
@@ -87,7 +88,7 @@ public final class CentralTowerAttachment extends TwilightTemplateStructurePiece
     }
 
     @Override
-    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, Random random, BoundingBox boundingBox) {
+    protected void handleDataMarker(String label, BlockPos pos, ServerLevelAccessor levelAccessor, RandomSource random, BoundingBox boundingBox) {
 
     }
 

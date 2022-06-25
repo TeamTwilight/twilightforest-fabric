@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -20,29 +21,27 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.TFSounds;
-import twilightforest.item.TFItems;
-import twilightforest.util.TFStats;
-
-import java.util.Random;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFStats;
 
 public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBlock {
 
 	public static final BooleanProperty HAS_BERRIES = BooleanProperty.create("has_torchberries");
-	private static final VoxelShape TORCHBERRY_SHAPE = box(1, 2, 1, 15, 16, 15);
+	private static final VoxelShape TORCHBERRY_SHAPE = Block.box(1, 2, 1, 15, 16, 15);
 
-	public TorchberryPlantBlock(Properties props) {
-		super(props);
-		registerDefaultState(getStateDefinition().any().setValue(HAS_BERRIES, false));
+	public TorchberryPlantBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(HAS_BERRIES, false));
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-		return TFPlantBlock.canPlaceRootAt(world, pos);
+	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
+		return TFPlantBlock.canPlaceRootAt(reader, pos);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter access, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return TORCHBERRY_SHAPE;
 	}
 
@@ -50,7 +49,7 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if(state.getValue(HAS_BERRIES)) {
 			level.setBlockAndUpdate(pos, state.setValue(HAS_BERRIES, false));
-			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			ItemEntity torchberries = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.TORCHBERRIES.get()));
 			level.addFreshEntity(torchberries);
 			if(player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED.get());
@@ -60,17 +59,17 @@ public class TorchberryPlantBlock extends TFPlantBlock implements BonemealableBl
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean isValidBonemealTarget(BlockGetter getter, BlockPos pos, BlockState state, boolean isClient) {
 		return !state.getValue(HAS_BERRIES);
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, Random rand, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level level, RandomSource rand, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel level, Random rand, BlockPos pos, BlockState state) {
+	public void performBonemeal(ServerLevel level, RandomSource rand, BlockPos pos, BlockState state) {
 		level.setBlock(pos, state.setValue(HAS_BERRIES, true), 2);
 	}
 

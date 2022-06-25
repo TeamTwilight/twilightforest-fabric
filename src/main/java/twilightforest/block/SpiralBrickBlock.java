@@ -1,37 +1,30 @@
 package twilightforest.block;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import twilightforest.enums.Diagonals;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import org.jetbrains.annotations.Nullable;
 
 public class SpiralBrickBlock extends Block {
 
-    public static final EnumProperty<Diagonals> DIAGONAL = EnumProperty.create("diagonal", Diagonals.class);
-    public static final EnumProperty<Direction.Axis> AXIS_FACING = EnumProperty.create("axis", Direction.Axis.class);
+	public static final EnumProperty<Diagonals> DIAGONAL = EnumProperty.create("diagonal", Diagonals.class);
+	public static final EnumProperty<Direction.Axis> AXIS_FACING = EnumProperty.create("axis", Direction.Axis.class);
 
-    public SpiralBrickBlock() {
-        super(Properties.of(Material.STONE, MaterialColor.STONE).requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE).noOcclusion());
-        this.registerDefaultState(this.getStateDefinition().any().setValue(DIAGONAL, Diagonals.BOTTOM_RIGHT).setValue(AXIS_FACING, Direction.Axis.X));
-    }
+	public SpiralBrickBlock() {
+		super(Properties.of(Material.STONE, MaterialColor.STONE).requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE).noOcclusion());
+		this.registerDefaultState(this.getStateDefinition().any().setValue(DIAGONAL, Diagonals.BOTTOM_RIGHT).setValue(AXIS_FACING, Direction.Axis.X));
+	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -42,7 +35,7 @@ public class SpiralBrickBlock extends Block {
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		if(context.isSecondaryUseActive()) {
+		if (context.isSecondaryUseActive()) {
 			//if sneaking, place on the y axis with glazed terracotta logic
 			return this.defaultBlockState()
 					.setValue(AXIS_FACING, Direction.Axis.Y)
@@ -51,7 +44,7 @@ public class SpiralBrickBlock extends Block {
 			//otherwise, place on the x and z with stair logic
 			return this.defaultBlockState()
 					.setValue(AXIS_FACING, context.getHorizontalDirection().getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X) //this is insanely jank but for some reason it rotates the wrong way normally. Might be a model issue but im too lazy to fix it, so this works
-					.setValue(DIAGONAL, getHorizontalDiagonalFromPlayerPlacement(context.getPlayer(), context.getHorizontalDirection(), context.getClickLocation().y - (double)context.getClickedPos().getY() > 0.5D));
+					.setValue(DIAGONAL, getHorizontalDiagonalFromPlayerPlacement(context.getPlayer(), context.getHorizontalDirection(), context.getClickLocation().y - (double) context.getClickedPos().getY() > 0.5D));
 		}
 	}
 
@@ -64,7 +57,7 @@ public class SpiralBrickBlock extends Block {
 		};
 	}
 
-    private static Diagonals getHorizontalDiagonalFromPlayerPlacement(LivingEntity placer, Direction facing, boolean upper) {
+	private static Diagonals getHorizontalDiagonalFromPlayerPlacement(LivingEntity placer, Direction facing, boolean upper) {
 		return switch (facing) {
 			case NORTH, EAST -> Diagonals.getDiagonalFromUpDownLeftRight(placer.getDirection() != facing, upper);
 			case SOUTH, WEST -> Diagonals.getDiagonalFromUpDownLeftRight(placer.getDirection() == facing, upper);

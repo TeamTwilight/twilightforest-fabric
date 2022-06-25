@@ -1,12 +1,13 @@
 {
   "parent": "twilightforest:progress_knights",
+  "criteria": {
+    "activate_ghast_trap": {
+      "conditions": {},
+      "trigger": "twilightforest:activate_ghast_trap"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:ghast_trap"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.ghast_trap"
-    },
+    "announce_to_chat": true,
     "description": {
       "translate": "advancement.twilightforest.ghast_trap.desc",
       "with": [
@@ -22,14 +23,13 @@
       ]
     },
     "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:ghast_trap"
+    },
     "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "criteria": {
-    "activate_ghast_trap": {
-      "trigger": "twilightforest:activate_ghast_trap",
-      "conditions": {}
+    "title": {
+      "translate": "advancement.twilightforest.ghast_trap"
     }
   },
   "requirements": [

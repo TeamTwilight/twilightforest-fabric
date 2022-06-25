@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "###",
-    "#•#",
-    "###"
-  ],
   "key": {
     "#": {
       "tag": "c:paper"
@@ -13,6 +8,11 @@
       "item": "twilightforest:magic_map_focus"
     }
   },
+  "pattern": [
+    "###",
+    "#•#",
+    "###"
+  ],
   "result": {
     "item": "twilightforest:magic_map"
   }

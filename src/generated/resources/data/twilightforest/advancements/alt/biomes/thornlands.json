@@ -2,12 +2,20 @@
   "parent": "twilightforest:alt/root",
   "criteria": {
     "in_biome": {
-      "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "twilightforest:thornlands"
-        }
-      }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "twilightforest:thornlands"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
     }
   },
   "requirements": [

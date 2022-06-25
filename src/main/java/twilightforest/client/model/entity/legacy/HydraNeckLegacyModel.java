@@ -12,7 +12,7 @@ import twilightforest.entity.boss.HydraNeck;
 
 public class HydraNeckLegacyModel extends ListModel<HydraNeck> {
 
-    ModelPart neck;
+    final ModelPart neck;
 
     public HydraNeckLegacyModel(ModelPart root) {
         this.neck = root.getChild("neck");

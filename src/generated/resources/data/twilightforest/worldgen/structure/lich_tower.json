@@ -1,0 +1,71 @@
+{
+  "type": "twilightforest:legacy_landmark",
+  "adjust_structure_elevation": true,
+  "advancements_required": [
+    "twilightforest:progress_naga"
+  ],
+  "allow_biome_surface_decorations": false,
+  "allow_biome_underground_decorations": true,
+  "ambient_spawns": [],
+  "biomes": "#twilightforest:valid_lich_tower_biomes",
+  "hint_item": {
+    "Count": 1,
+    "id": "minecraft:written_book",
+    "tag": {
+      "author": "A Forgotten Explorer",
+      "pages": [
+        "{\"translate\":\"twilightforest.book.lichtower.1\"}",
+        "{\"translate\":\"twilightforest.book.lichtower.2\"}",
+        "{\"translate\":\"twilightforest.book.lichtower.3\"}",
+        "{\"translate\":\"twilightforest.book.lichtower.4\"}"
+      ],
+      "title": "Notes on a Pointy Tower"
+    }
+  },
+  "hint_mob": "twilightforest:kobold",
+  "labelled_monster_spawns": {
+    "0": [
+      {
+        "type": "minecraft:zombie",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:skeleton",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:creeper",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 1
+      },
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 1
+      },
+      {
+        "type": "twilightforest:death_tome",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:witch",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 1
+      }
+    ]
+  },
+  "legacy_landmark_start": "lich_tower",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "water_spawns": []
+}

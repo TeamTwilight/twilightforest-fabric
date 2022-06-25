@@ -7,16 +7,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import twilightforest.TwilightForestMod;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFRecipes;
+import twilightforest.init.TFItems;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MoonwormQueenRepairRecipe extends CustomRecipe {
 
-	public MoonwormQueenRepairRecipe(ResourceLocation pId) {
-		super(pId);
+	public MoonwormQueenRepairRecipe(ResourceLocation id) {
+		super(id);
 	}
 
 	@Override

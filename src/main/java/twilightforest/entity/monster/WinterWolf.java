@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -24,15 +25,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFSounds;
-import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
-import twilightforest.entity.ai.BreathAttackGoal;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.entity.ai.goal.BreathAttackGoal;
+import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFSounds;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 
 public class WinterWolf extends HostileWolf implements IBreathAttacker {
 
@@ -63,18 +63,18 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(BREATH_FLAG, false);
+		this.entityData.define(BREATH_FLAG, false);
 	}
 
 	@Override
 	public void aiStep() {
 		super.aiStep();
 
-		if (isBreathing()) {
-			if (this.level.isClientSide) {
-				spawnBreathParticles();
+		if (this.isBreathing()) {
+			if (this.getLevel().isClientSide()) {
+				this.spawnBreathParticles();
 			}
-			playBreathSound();
+			this.playBreathSound();
 		}
 	}
 
@@ -83,67 +83,67 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 		Vec3 look = this.getLookAngle();
 
 		final double dist = 0.5;
-		double px = this.getX() + look.x * dist;
-		double py = this.getY() + 1.25 + look.y * dist;
-		double pz = this.getZ() + look.z * dist;
+		double px = this.getX() + look.x() * dist;
+		double py = this.getY() + 1.25 + look.y() * dist;
+		double pz = this.getZ() + look.z() * dist;
 
 		for (int i = 0; i < 10; i++) {
-			double dx = look.x;
-			double dy = look.y;
-			double dz = look.z;
+			double dx = look.x();
+			double dy = look.y();
+			double dz = look.z();
 
-			double spread   = 5.0 + this.getRandom().nextDouble() * 2.5;
+			double spread = 5.0 + this.getRandom().nextDouble() * 2.5;
 			double velocity = 3.0 + this.getRandom().nextDouble() * 0.15;
 
 			// spread flame
-			dx += this.getRandom().nextGaussian() * 0.007499999832361937D * spread;
-			dy += this.getRandom().nextGaussian() * 0.007499999832361937D * spread;
-			dz += this.getRandom().nextGaussian() * 0.007499999832361937D * spread;
+			dx += this.getRandom().nextGaussian() * 0.0075D * spread;
+			dy += this.getRandom().nextGaussian() * 0.0075D * spread;
+			dz += this.getRandom().nextGaussian() * 0.0075D * spread;
 			dx *= velocity;
 			dy *= velocity;
 			dz *= velocity;
 
-			level.addParticle(TFParticleType.SNOW.get(), px, py, pz, dx, dy, dz);
+			this.getLevel().addParticle(TFParticleType.SNOW.get(), px, py, pz, dx, dy, dz);
 		}
 	}
 
 	@Override
 	protected SoundEvent getTargetSound() {
-		return TFSounds.WINTER_WOLF_TARGET;
+		return TFSounds.WINTER_WOLF_TARGET.get();
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.WINTER_WOLF_AMBIENT;
+		return TFSounds.WINTER_WOLF_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.WINTER_WOLF_HURT;
+		return TFSounds.WINTER_WOLF_HURT.get();
 	}
 
 	private void playBreathSound() {
-		playSound(TFSounds.WINTER_WOLF_SHOOT, random.nextFloat() * 0.5F, random.nextFloat() * 0.5F);
+		playSound(TFSounds.WINTER_WOLF_SHOOT.get(), this.getRandom().nextFloat() * 0.5F, this.getRandom().nextFloat() * 0.5F);
 	}
-	
+
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.WINTER_WOLF_DEATH;
+		return TFSounds.WINTER_WOLF_DEATH.get();
 	}
 
 	@Override
 	public float getVoicePitch() {
-		return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.6F;
+		return (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 0.6F;
 	}
 
 	@Override
 	public boolean isBreathing() {
-		return entityData.get(BREATH_FLAG);
+		return this.entityData.get(BREATH_FLAG);
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-		entityData.set(BREATH_FLAG, flag);
+		this.entityData.set(BREATH_FLAG, flag);
 	}
 
 	@Override
@@ -151,8 +151,8 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 		target.hurt(DamageSource.mobAttack(this), BREATH_DAMAGE);
 	}
 
-	public static boolean canSpawnHere(EntityType<? extends WinterWolf> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
-		Optional<ResourceKey<Biome>> key = world.getBiome(pos).unwrapKey();
-		return world.getDifficulty() != Difficulty.PEACEFUL && Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST)) || Monster.isDarkEnoughToSpawn(world, pos, random);
+	public static boolean canSpawnHere(EntityType<? extends WinterWolf> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+		Optional<ResourceKey<Biome>> key = accessor.getBiome(pos).unwrapKey();
+		return accessor.getDifficulty() != Difficulty.PEACEFUL && Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST)) || Monster.isDarkEnoughToSpawn(accessor, pos, random);
 	}
 }

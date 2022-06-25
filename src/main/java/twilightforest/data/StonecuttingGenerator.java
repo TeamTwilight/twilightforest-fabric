@@ -14,9 +14,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.block.TFBlocks;
+import net.minecraftforge.registries.ForgeRegistries;
+import twilightforest.init.TFBlocks;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 import static twilightforest.TwilightForestMod.prefix;
@@ -111,7 +112,7 @@ public class StonecuttingGenerator extends FabricRecipeProvider {
 		consumer.accept(stonecutting(Blocks.DARK_OAK_LOG, TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get()));
 		consumer.accept(stonecutting(Blocks.CRIMSON_STEM, TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get()));
 		consumer.accept(stonecutting(Blocks.WARPED_STEM, TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get()));
-
+		consumer.accept(stonecutting(Blocks.MANGROVE_LOG, TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get()));
 		consumer.accept(stonecutting(Blocks.STONE, TFBlocks.TWISTED_STONE.get()));
 		consumer.accept(stonecutting(Blocks.STONE, TFBlocks.BOLD_STONE_PILLAR.get()));
 

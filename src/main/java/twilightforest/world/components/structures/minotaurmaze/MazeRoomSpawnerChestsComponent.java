@@ -3,33 +3,34 @@ package twilightforest.world.components.structures.minotaurmaze;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
-import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
+import twilightforest.loot.TFLootTables;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 
 	public MazeRoomSpawnerChestsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMRSC, nbt);
+		super(TFStructurePieceTypes.TFMMRSC.get(), nbt);
 	}
 
-	public MazeRoomSpawnerChestsComponent(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRSC, feature, i, rand, x, y, z);
+	public MazeRoomSpawnerChestsComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMRSC.get(), feature, i, rand, x, y, z);
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// 4 pillar enclosures
@@ -42,10 +43,10 @@ public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 		setSpawner(world, 4, 2, 4, sbb, TFEntities.MINOTAUR.get());
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(world, 4, 2, 11, TFTreasure.LABYRINTH_ROOM, sbb);
+		this.placeTreasureAtCurrentPosition(world, 4, 2, 11, TFLootTables.LABYRINTH_ROOM, sbb);
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(world, 11, 2, 4, TFTreasure.LABYRINTH_ROOM, sbb);
+		this.placeTreasureAtCurrentPosition(world, 11, 2, 4, TFLootTables.LABYRINTH_ROOM, sbb);
 
 		// trap
 		placeBlock(world, Blocks.OAK_PRESSURE_PLATE.defaultBlockState(), 11, 1, 11, sbb);

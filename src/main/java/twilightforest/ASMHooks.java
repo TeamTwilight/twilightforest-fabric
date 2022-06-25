@@ -2,7 +2,6 @@ package twilightforest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.DataFixer;
-import com.mojang.datafixers.util.Function4;
 import com.mojang.math.Matrix4f;
 import com.mojang.serialization.Dynamic;
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
@@ -19,8 +18,6 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.core.MappedRegistry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
@@ -34,7 +31,6 @@ import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
@@ -43,19 +39,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.TFPart;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.TwilightFeatures;
+import twilightforest.init.TFFeatureModifiers;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression", "deprecation"})
 public class ASMHooks {
@@ -66,7 +58,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST PUTFIELD]
 	 */
 	public static long seed(long seed) {
-		TwilightFeatures.seed = seed;
+		TFFeatureModifiers.seed = seed;
 		return seed;
 	}
 
@@ -76,7 +68,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST ASTORE]
 	 */
 	public static Dynamic<Tag> seed(Dynamic<Tag> seed) {
-		TwilightFeatures.seed = ((CompoundTag) seed.getValue()).getLong("seed");
+		TFFeatureModifiers.seed = ((CompoundTag) seed.getValue()).getLong("seed");
 		return seed;
 	}
 

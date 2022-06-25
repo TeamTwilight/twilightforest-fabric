@@ -1,14 +1,13 @@
 package twilightforest.world.components.structures;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-
-import java.util.Random;
 
 public class StrongholdStones extends StructurePiece.BlockSelector {
 
 	@Override
-	public void next(Random random, int x, int y, int z, boolean wall) {
+	public void next(RandomSource random, int x, int y, int z, boolean wall) {
 		if (!wall) {
 			next = Blocks.AIR.defaultBlockState();
 		} else {

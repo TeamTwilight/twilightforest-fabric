@@ -1,23 +1,23 @@
 package twilightforest.entity.projectile;
 
-import net.fabricmc.fabric.impl.item.ItemExtensions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.entity.TFEntities;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFEntities;
 
+@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class IceSnowball extends TFThrowable implements ItemSupplier {
 
 	private static final int DAMAGE = 2;
@@ -33,7 +33,7 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	@Override
 	public void tick() {
 		super.tick();
-		makeTrail();
+		this.makeTrail(ParticleTypes.ITEM_SNOWBALL, 2);
 	}
 
 	@Override
@@ -41,19 +41,10 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 		return 0.006F;
 	}
 
-	public void makeTrail() {
-		for (int i = 0; i < 2; i++) {
-			double dx = getX() + 0.5 * (random.nextDouble() - random.nextDouble());
-			double dy = getY() + 0.5 * (random.nextDouble() - random.nextDouble());
-			double dz = getZ() + 0.5 * (random.nextDouble() - random.nextDouble());
-			level.addParticle(ParticleTypes.ITEM_SNOWBALL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
-		}
-	}
-
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		super.hurt(source, amount);
-		die();
+		this.die();
 		return true;
 	}
 
@@ -62,7 +53,7 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int j = 0; j < 8; ++j) {
-				this.level.addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.getLevel().addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -70,25 +61,28 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	protected void onHit(HitResult result) {
-		if (result instanceof EntityHitResult) {
-			Entity target = ((EntityHitResult)result).getEntity();
-			if (!level.isClientSide && target instanceof LivingEntity) {
-				target.hurt(TFDamageSources.snowballFight(this, (LivingEntity) this.getOwner()), DAMAGE);
-				//damage armor pieces
-				if(target instanceof Player) {
-					for(ItemStack stack : target.getArmorSlots())
-					stack.hurtAndBreak(random.nextInt(1), ((Player)target), (user) -> user.broadcastBreakEvent(((ItemExtensions) stack.getItem()).fabric_getEquipmentSlotProvider().getPreferredEquipmentSlot(stack)));
-				}
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		Entity target = result.getEntity();
+		if (!this.getLevel().isClientSide() && target instanceof LivingEntity) {
+			target.hurt(TFDamageSources.snowballFight(this, (LivingEntity) this.getOwner()), DAMAGE);
+			//damage armor pieces
+			if (target instanceof Player) {
+				for (ItemStack stack : target.getArmorSlots())
+					stack.hurtAndBreak(this.random.nextInt(1), ((Player) target), (user) -> user.broadcastBreakEvent(((ItemExtensions) stack.getItem()).fabric_getEquipmentSlotProvider().getPreferredEquipmentSlot(stack)));
 			}
 		}
+	}
 
-		die();
+	@Override
+	protected void onHit(HitResult result) {
+		super.onHit(result);
+		this.die();
 	}
 
 	private void die() {
-		if (!this.level.isClientSide) {
-			this.level.broadcastEntityEvent(this, (byte) 3);
+		if (!this.getLevel().isClientSide()) {
+			this.getLevel().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
 	}

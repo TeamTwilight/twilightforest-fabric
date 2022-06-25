@@ -1,20 +1,20 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.entity.boss.KnightPhantom;
-import twilightforest.item.TFItems;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFItems;
 
 public class ThrownWep extends TFThrowable {
 
@@ -32,27 +32,27 @@ public class ThrownWep extends TFThrowable {
 	}
 
 	public ThrownWep setDamage(float damage) {
-		projectileDamage = damage;
+		this.projectileDamage = damage;
 		return this;
 	}
 
 	@Override
 	protected void defineSynchedData() {
-		entityData.define(DATA_ITEMSTACK, ItemStack.EMPTY);
-		entityData.define(DATA_VELOCITY, 0.001F);
+		this.entityData.define(DATA_ITEMSTACK, ItemStack.EMPTY);
+		this.entityData.define(DATA_VELOCITY, 0.001F);
 	}
 
 	public ThrownWep setItem(ItemStack stack) {
-		entityData.set(DATA_ITEMSTACK, stack);
+		this.entityData.set(DATA_ITEMSTACK, stack);
 		return this;
 	}
 
 	public ItemStack getItem() {
-		return entityData.get(DATA_ITEMSTACK);
+		return this.entityData.get(DATA_ITEMSTACK);
 	}
 
 	public ThrownWep setVelocity(float velocity) {
-		entityData.set(DATA_VELOCITY, velocity);
+		this.entityData.set(DATA_VELOCITY, velocity);
 		return this;
 	}
 
@@ -61,7 +61,7 @@ public class ThrownWep extends TFThrowable {
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.getLevel().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -69,19 +69,23 @@ public class ThrownWep extends TFThrowable {
 	}
 
 	@Override
-	protected void onHit(HitResult result) {
-		if (result instanceof EntityHitResult) {
-			if (((EntityHitResult)result).getEntity() instanceof KnightPhantom || ((EntityHitResult)result).getEntity() == this.getOwner()) {
-				return;
-			}
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		if (result.getEntity() instanceof KnightPhantom || result.getEntity() == this.getOwner()) {
+			return;
+		}
 
-			if (!level.isClientSide) {
-				if (((EntityHitResult)result).getEntity() != null) {
-					((EntityHitResult)result).getEntity().hurt(this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get() ? TFDamageSources.THROWN_PICKAXE : TFDamageSources.THROWN_AXE, projectileDamage);
-				}
-				level.broadcastEntityEvent(this, (byte) 3);
-				discard();
-			}
+		if (!this.getLevel().isClientSide()) {
+			result.getEntity().hurt(this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get() ? TFDamageSources.THROWN_PICKAXE : TFDamageSources.THROWN_AXE, projectileDamage);
+		}
+	}
+
+	@Override
+	protected void onHit(HitResult result) {
+		super.onHit(result);
+		if (!this.getLevel().isClientSide()) {
+			this.getLevel().broadcastEntityEvent(this, (byte) 3);
+			discard();
 		}
 	}
 
@@ -97,6 +101,6 @@ public class ThrownWep extends TFThrowable {
 
 	@Override
 	protected float getGravity() {
-		return entityData.get(DATA_VELOCITY);
+		return this.entityData.get(DATA_VELOCITY);
 	}
 }

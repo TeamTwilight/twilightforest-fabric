@@ -11,10 +11,10 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.item.TFItems;
-import twilightforest.item.recipe.TFRecipes;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 
 import java.util.function.Consumer;
@@ -339,17 +339,17 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ShapelessRecipeBuilder.shapeless(Blocks.COBBLESTONE, 64)
 				.requires(TFBlocks.GIANT_COBBLESTONE.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_COBBLESTONE.getId().getPath() + "_to_" + Registry.ITEM.getKey(Blocks.COBBLESTONE.asItem()).getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_COBBLESTONE.getId().getPath() + "_to_" + Registry.ITEM.getKey(Items.COBBLESTONE).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(Blocks.OAK_PLANKS, 64)
 				.requires(TFBlocks.GIANT_LOG.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_LOG.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + Registry.ITEM.getKey(Blocks.OAK_PLANKS.asItem()).getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + Registry.ITEM.getKey(Items.OAK_PLANKS).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(Blocks.OAK_LEAVES, 64)
 				.requires(TFBlocks.GIANT_LEAVES.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_LEAVES.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + Registry.ITEM.getKey(Blocks.OAK_LEAVES.asItem()).getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + Registry.ITEM.getKey(Items.OAK_LEAVES).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.BLOCK_AND_CHAIN.get())
 				.requires(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL)

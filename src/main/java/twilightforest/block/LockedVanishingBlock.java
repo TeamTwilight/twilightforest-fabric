@@ -1,34 +1,30 @@
 package twilightforest.block;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
-import twilightforest.item.TFItems;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
 
 public class LockedVanishingBlock extends VanishingBlock {
 
 	public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
 
-	public LockedVanishingBlock(Properties props) {
-		super(props);
-		this.registerDefaultState(defaultBlockState().setValue(LOCKED, true));
+	public LockedVanishingBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(LOCKED, true));
 	}
 
 	@Override
@@ -38,26 +34,26 @@ public class LockedVanishingBlock extends VanishingBlock {
 	}
 
 	@Override
-	public float getExplosionResistance(BlockState state, BlockGetter world, BlockPos pos, Explosion explosion) {
-		return state.getValue(LOCKED) ? 6000000.0F : super.getExplosionResistance(state, world, pos, explosion);
+	public float getExplosionResistance(BlockState state, BlockGetter getter, BlockPos pos, Explosion explosion) {
+		return state.getValue(LOCKED) ? 6000000.0F : super.getExplosionResistance(state, getter, pos, explosion);
 	}
 
 	@Override
-	public boolean canEntityDestroy(BlockState state, BlockGetter world, BlockPos pos, Entity entity) {
-		return !state.getValue(LOCKED) && super.canEntityDestroy(state, world, pos, entity);
+	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
+		return !state.getValue(LOCKED) && super.canEntityDestroy(state, getter, pos, entity);
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (!stack.isEmpty() && stack.getItem() == TFItems.TOWER_KEY.get() && state.getValue(LOCKED)) {
-			if (!world.isClientSide) {
+			if (!level.isClientSide()) {
 				stack.shrink(1);
-				world.setBlockAndUpdate(pos, state.setValue(LOCKED, false));
-				world.playSound(null, pos, TFSounds.UNLOCK_VANISHING_BLOCK, SoundSource.BLOCKS, 0.3F, 0.6F);
+				level.setBlockAndUpdate(pos, state.setValue(LOCKED, false));
+				level.playSound(null, pos, TFSounds.UNLOCK_VANISHING_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
 			}
-			return InteractionResult.SUCCESS;
+			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
-		return super.use(state, world, pos, player, hand, hit);
+		return super.use(state, level, pos, player, hand, result);
 	}
 }

@@ -11,21 +11,16 @@ import net.fabricmc.api.Environment;
 
 public class SmokeScaleParticle extends SmokeParticle {
 
-	SmokeScaleParticle(ClientLevel world, double x, double y, double z, double velX, double velY, double velZ, float scale, SpriteSet sprite) {
-		super(world, x, y, z, velX, velY, velZ, scale, sprite);
+	public SmokeScaleParticle(ClientLevel level, double x, double y, double z, double velX, double velY, double velZ, float scale, SpriteSet sprite) {
+		super(level, x, y, z, velX, velY, velZ, scale, sprite);
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static class Factory implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public Factory(SpriteSet sprite) {
-			this.spriteSet = sprite;
-		}
+	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			return new SmokeScaleParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, 4.0F, this.spriteSet);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			return new SmokeScaleParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 4.0F, this.sprite);
 		}
 	}
 }

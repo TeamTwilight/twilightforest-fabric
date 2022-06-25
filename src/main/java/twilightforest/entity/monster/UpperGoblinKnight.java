@@ -30,10 +30,11 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
-import twilightforest.entity.ai.HeavySpearAttackGoal;
+import twilightforest.entity.ai.goal.HeavySpearAttackGoal;
+import twilightforest.init.TFSounds;
 
 import java.util.List;
+import java.util.Objects;
 
 public class UpperGoblinKnight extends Monster {
 
@@ -60,7 +61,7 @@ public class UpperGoblinKnight extends Monster {
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false) {
 			@Override
 			public boolean canUse() {
-				return !this.mob.isPassenger() && !(((UpperGoblinKnight)this.mob).heavySpearTimer > 0) && super.canUse();
+				return !this.mob.isPassenger() && !(((UpperGoblinKnight) this.mob).heavySpearTimer > 0) && super.canUse();
 			}
 		});
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -80,24 +81,24 @@ public class UpperGoblinKnight extends Monster {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(DATA_EQUIP, (byte) 0);
+		this.entityData.define(DATA_EQUIP, (byte) 0);
 	}
 
 	public boolean hasArmor() {
-		return (entityData.get(DATA_EQUIP) & 1) > 0;
+		return (this.entityData.get(DATA_EQUIP) & 1) > 0;
 	}
 
 	private void setHasArmor(boolean flag) {
-		byte otherFlags = entityData.get(DATA_EQUIP);
-		entityData.set(DATA_EQUIP, flag ? (byte) (otherFlags | 1) : (byte) (otherFlags & ~1));
+		byte otherFlags = this.entityData.get(DATA_EQUIP);
+		this.entityData.set(DATA_EQUIP, flag ? (byte) (otherFlags | 1) : (byte) (otherFlags & ~1));
 
-		if (!level.isClientSide) {
+		if (!this.getLevel().isClientSide()) {
 			if (flag) {
-				if (!getAttribute(Attributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
-					getAttribute(Attributes.ARMOR).addTransientModifier(ARMOR_MODIFIER);
+				if (!Objects.requireNonNull(getAttribute(Attributes.ARMOR)).hasModifier(ARMOR_MODIFIER)) {
+					Objects.requireNonNull(getAttribute(Attributes.ARMOR)).addTransientModifier(ARMOR_MODIFIER);
 				}
 			} else {
-				getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER);
+				Objects.requireNonNull(getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER);
 			}
 		}
 	}
@@ -136,17 +137,17 @@ public class UpperGoblinKnight extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.GOBLIN_KNIGHT_AMBIENT;
+		return TFSounds.GOBLIN_KNIGHT_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.GOBLIN_KNIGHT_DEATH;
+		return TFSounds.GOBLIN_KNIGHT_DEATH.get();
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.GOBLIN_KNIGHT_HURT;
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.GOBLIN_KNIGHT_HURT.get();
 	}
 
 	@Override
@@ -164,11 +165,11 @@ public class UpperGoblinKnight extends Monster {
 			}
 
 			if (this.heavySpearTimer > 0) {
-				if (!this.getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(DAMAGE_MODIFIER)) {
-					this.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(DAMAGE_MODIFIER);
+				if (!Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).hasModifier(DAMAGE_MODIFIER)) {
+					Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).addTransientModifier(DAMAGE_MODIFIER);
 				}
 			} else {
-				this.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(DAMAGE_MODIFIER.getId());
+				Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).removeModifier(DAMAGE_MODIFIER.getId());
 			}
 		}
 	}
@@ -183,7 +184,7 @@ public class UpperGoblinKnight extends Monster {
 		double pz = this.getZ() + vector.z() * dist;
 
 
-		if(this.getLevel() instanceof ServerLevel server) {
+		if (this.getLevel() instanceof ServerLevel server) {
 			for (int i = 0; i < 50; i++) {
 				server.sendParticles(
 						ParticleTypes.LARGE_SMOKE, px, py, pz, 1,

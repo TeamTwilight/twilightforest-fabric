@@ -13,7 +13,7 @@ import twilightforest.client.model.tileentity.GenericTrophyModel;
 
 public class SnowQueenTrophyLegacyModel extends GenericTrophyModel {
 
-	public ModelPart head;
+	public final ModelPart head;
 
 	public SnowQueenTrophyLegacyModel(ModelPart root) {
 		this.head = root.getChild("head");

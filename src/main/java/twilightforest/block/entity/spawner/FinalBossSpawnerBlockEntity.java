@@ -4,10 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.entity.TFBlockEntities;
-import twilightforest.client.particle.TFParticleType;
-import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.PlateauBoss;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFParticleType;
 
 public class FinalBossSpawnerBlockEntity extends BossSpawnerBlockEntity<PlateauBoss> {
 

@@ -8,7 +8,9 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
+
+import org.jetbrains.annotations.Nullable;
 
 public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider {
     public static final TagKey<EntityType<?>> BOSSES = create(TwilightForestMod.prefix("bosses"));
@@ -27,6 +29,7 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
         tag(EntityTypeTags.SKELETONS).add(TFEntities.SKELETON_DRUID.get());
         tag(EntityTypeTags.ARROWS).add(TFEntities.ICE_ARROW.get(), TFEntities.SEEKER_ARROW.get());
         tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(TFEntities.FIRE_BEETLE.get());
+        tag(EntityTypeTags.FROG_FOOD).add(TFEntities.MAZE_SLIME.get());
 
         tag(BOSSES).add(
                 TFEntities.NAGA.get(),
@@ -107,11 +110,11 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
         // These entities forcefully take players from the entity they're riding
         tag(RIDES_OBSTRUCT_SNATCHING).add(TFEntities.PINCH_BEETLE.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get());
 
-        tag(DONT_KILL_BUGS).add(TFEntities.CICADA_SHOT.get(), TFEntities.MOONWORM_SHOT.get())
+        tag(DONT_KILL_BUGS).add(TFEntities.CICADA_SHOT.get(), TFEntities.MOONWORM_SHOT.get());
                 //these ones have to be optional. They aren't registered unless undergarden is actually installed.
-                /*.addOptional(UndergardenCompat.CICADA_SLINGSHOT.get().getRegistryName())
-                .addOptional(UndergardenCompat.FIREFLY_SLINGSHOT.get().getRegistryName())
-                .addOptional(UndergardenCompat.MOONWORM_SLINGSHOT.get().getRegistryName())*/;
+//                .addOptional(UndergardenCompat.CICADA_SLINGSHOT.get().getRegistryName())
+//                .addOptional(UndergardenCompat.FIREFLY_SLINGSHOT.get().getRegistryName())
+//                .addOptional(UndergardenCompat.MOONWORM_SLINGSHOT.get().getRegistryName());
 
         tag(SORTABLE_ENTITIES).add(
                 EntityType.CHEST_MINECART,

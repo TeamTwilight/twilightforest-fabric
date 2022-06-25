@@ -1,28 +1,28 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.Level;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import twilightforest.TFSounds;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.loot.TFLootTables;
 
-import javax.annotation.Nullable;
-import java.util.Random;
+import org.jetbrains.annotations.Nullable;
 
 public class Bighorn extends Sheep {
 
@@ -41,70 +41,69 @@ public class Bighorn extends Sheep {
 			return this.getType().getDefaultLootTable();
 		} else {
 			return switch (this.getColor()) {
-				case ORANGE -> TFTreasure.BIGHORN_SHEEP_ORANGE;
-				case MAGENTA -> TFTreasure.BIGHORN_SHEEP_MAGENTA;
-				case LIGHT_BLUE -> TFTreasure.BIGHORN_SHEEP_LIGHT_BLUE;
-				case YELLOW -> TFTreasure.BIGHORN_SHEEP_YELLOW;
-				case LIME -> TFTreasure.BIGHORN_SHEEP_LIME;
-				case PINK -> TFTreasure.BIGHORN_SHEEP_PINK;
-				case GRAY -> TFTreasure.BIGHORN_SHEEP_GRAY;
-				case LIGHT_GRAY -> TFTreasure.BIGHORN_SHEEP_LIGHT_GRAY;
-				case CYAN -> TFTreasure.BIGHORN_SHEEP_CYAN;
-				case PURPLE -> TFTreasure.BIGHORN_SHEEP_PURPLE;
-				case BLUE -> TFTreasure.BIGHORN_SHEEP_BLUE;
-				case BROWN -> TFTreasure.BIGHORN_SHEEP_BROWN;
-				case GREEN -> TFTreasure.BIGHORN_SHEEP_GREEN;
-				case RED -> TFTreasure.BIGHORN_SHEEP_RED;
-				case BLACK -> TFTreasure.BIGHORN_SHEEP_BLACK;
-				default -> TFTreasure.BIGHORN_SHEEP_WHITE;
+				case ORANGE -> TFLootTables.BIGHORN_SHEEP_ORANGE;
+				case MAGENTA -> TFLootTables.BIGHORN_SHEEP_MAGENTA;
+				case LIGHT_BLUE -> TFLootTables.BIGHORN_SHEEP_LIGHT_BLUE;
+				case YELLOW -> TFLootTables.BIGHORN_SHEEP_YELLOW;
+				case LIME -> TFLootTables.BIGHORN_SHEEP_LIME;
+				case PINK -> TFLootTables.BIGHORN_SHEEP_PINK;
+				case GRAY -> TFLootTables.BIGHORN_SHEEP_GRAY;
+				case LIGHT_GRAY -> TFLootTables.BIGHORN_SHEEP_LIGHT_GRAY;
+				case CYAN -> TFLootTables.BIGHORN_SHEEP_CYAN;
+				case PURPLE -> TFLootTables.BIGHORN_SHEEP_PURPLE;
+				case BLUE -> TFLootTables.BIGHORN_SHEEP_BLUE;
+				case BROWN -> TFLootTables.BIGHORN_SHEEP_BROWN;
+				case GREEN -> TFLootTables.BIGHORN_SHEEP_GREEN;
+				case RED -> TFLootTables.BIGHORN_SHEEP_RED;
+				case BLACK -> TFLootTables.BIGHORN_SHEEP_BLACK;
+				default -> TFLootTables.BIGHORN_SHEEP_WHITE;
 			};
 		}
 	}
 
-	private static DyeColor getRandomFleeceColor(Random random) {
+	private static DyeColor getRandomFleeceColor(RandomSource random) {
 		return random.nextBoolean()
 				? DyeColor.BROWN
 				: DyeColor.byId(random.nextInt(16));
 	}
 
 	@Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag dataTag) {
-        livingdata = super.finalizeSpawn(worldIn, difficulty, reason, livingdata, dataTag);
-        this.setColor(getRandomFleeceColor(this.level.random));
-        return livingdata;
-    }
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag dataTag) {
+		livingdata = super.finalizeSpawn(accessor, difficulty, reason, livingdata, dataTag);
+		this.setColor(getRandomFleeceColor(accessor.getRandom()));
+		return livingdata;
+	}
 
-    @Override
+	@Override
 	public Sheep getBreedOffspring(ServerLevel world, AgeableMob ageable) {
-		if (!(ageable instanceof Bighorn)) {
+		if (!(ageable instanceof Bighorn otherParent)) {
 			TwilightForestMod.LOGGER.error("Code was called to breed a Bighorn with a non Bighorn! Cancelling!");
 			return null;
 		}
 
-		Bighorn otherParent = (Bighorn) ageable;
 		Bighorn babySheep = TFEntities.BIGHORN_SHEEP.get().create(world);
 		babySheep.setColor(getOffspringColor(this, otherParent));
 		return babySheep;
 	}
-    
-    @Override
+
+	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.BIGHORN_AMBIENT;
+		return TFSounds.BIGHORN_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.BIGHORN_HURT;
+		return TFSounds.BIGHORN_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.BIGHORN_DEATH;
+		return TFSounds.BIGHORN_DEATH.get();
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(TFSounds.BIGHORN_STEP, 0.15F, 1.0F);
+	protected void playStepSound(BlockPos pos, BlockState state) {
+		this.playSound(TFSounds.BIGHORN_STEP.get(), 0.15F, 1.0F);
 	}
 }

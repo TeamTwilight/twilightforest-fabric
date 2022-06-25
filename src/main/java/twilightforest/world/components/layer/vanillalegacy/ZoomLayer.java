@@ -25,7 +25,7 @@ public enum ZoomLayer implements AreaTransformer1 {
 
 	public int applyPixel(BigContext<?> p_76966_, Area p_76967_, int p_76968_, int p_76969_) {
 		int i = p_76967_.get(this.getParentX(p_76968_), this.getParentY(p_76969_));
-		p_76966_.initRandom((long)(p_76968_ >> 1 << 1), (long)(p_76969_ >> 1 << 1));
+		p_76966_.initRandom(p_76968_ >> 1 << 1, p_76969_ >> 1 << 1);
 		int j = p_76968_ & 1;
 		int k = p_76969_ & 1;
 		if (j == 0 && k == 0) {

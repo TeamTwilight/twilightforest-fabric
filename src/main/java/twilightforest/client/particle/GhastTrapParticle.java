@@ -17,12 +17,12 @@ public class GhastTrapParticle extends TextureSheetParticle {
 	private final double originY;
 	private final double originZ;
 
-	GhastTrapParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
-		this(world, x, y, z, 3.0F, vx, vy, vz);
+	public GhastTrapParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz) {
+		this(level, x, y, z, 3.0F, vx, vy, vz);
 	}
 
-	GhastTrapParticle(ClientLevel world, double x, double y, double z, float scale, double mx, double my, double mz) {
-		super(world, x + mx, y + my, z + mz, mx, my, mz);
+	public GhastTrapParticle(ClientLevel level, double x, double y, double z, float scale, double mx, double my, double mz) {
+		super(level, x + mx, y + my, z + mz, mx, my, mz);
 		this.xd = mx;
 		this.yd = my;
 		this.zd = mz;
@@ -30,10 +30,10 @@ public class GhastTrapParticle extends TextureSheetParticle {
 		this.originX = x;
 		this.originY = y;
 		this.originZ = z;
-		float brightness = (float) Math.random() * 0.4F;// + 0.6F;
+		float brightness = (float) Math.random() * 0.4F;
 		this.rCol = 1.0F;
-		this.gCol = ((float) (Math.random() * 0.20000000298023224D) + 0.8F) * brightness;
-		this.bCol  = ((float) (Math.random() * 0.20000000298023224D) + 0.8F) * brightness;
+		this.gCol = ((float) (Math.random() * 0.2D) + 0.8F) * brightness;
+		this.bCol  = ((float) (Math.random() * 0.2D) + 0.8F) * brightness;
 		this.quadSize *= 0.75F * scale;
 		this.reddustParticleScale = this.quadSize;
 		this.lifetime = (int) (10.0D / (Math.random() * 0.8D + 0.2D));
@@ -48,7 +48,7 @@ public class GhastTrapParticle extends TextureSheetParticle {
 	@Override
 	public float getQuadSize(float partialTicks) {
 		float f6 = (this.age + partialTicks) / this.lifetime * 32.0F;
-		f6 = Mth.clamp(f6, 0f, 1f);
+		f6 = Mth.clamp(f6, 0.0F, 1.0F);
 
 		return this.reddustParticleScale * f6;
 	}
@@ -61,7 +61,7 @@ public class GhastTrapParticle extends TextureSheetParticle {
 		float proportion = (float) this.age / (float) this.lifetime;
 		proportion = 1.0F - proportion;
 		this.x = this.originX + this.xd * proportion;
-		this.y = this.originY + this.yd * proportion;// - (double)(antiProportion * 1.2F);
+		this.y = this.originY + this.yd * proportion;
 		this.z = this.originZ + this.zd * proportion;
 
 		if (this.age++ >= this.lifetime) {
@@ -70,17 +70,12 @@ public class GhastTrapParticle extends TextureSheetParticle {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static class Factory implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public Factory(FabricSpriteProvider sprite) {
-			this.spriteSet = sprite;
-		}
+	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			GhastTrapParticle particle = new GhastTrapParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
-			particle.setSpriteFromAge(this.spriteSet);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			GhastTrapParticle particle = new GhastTrapParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+			particle.setSpriteFromAge(this.sprite);
 			return particle;
 		}
 	}

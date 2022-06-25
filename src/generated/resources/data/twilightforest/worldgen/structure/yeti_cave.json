@@ -1,0 +1,40 @@
+{
+  "type": "twilightforest:legacy_landmark",
+  "adjust_structure_elevation": false,
+  "advancements_required": [
+    "twilightforest:progress_lich"
+  ],
+  "allow_biome_surface_decorations": true,
+  "allow_biome_underground_decorations": false,
+  "ambient_spawns": [],
+  "biomes": "#twilightforest:valid_yeti_cave_biomes",
+  "hint_item": {
+    "Count": 1,
+    "id": "minecraft:written_book",
+    "tag": {
+      "author": "A Forgotten Explorer",
+      "pages": [
+        "{\"translate\":\"twilightforest.book.yeticave.1\"}",
+        "{\"translate\":\"twilightforest.book.yeticave.2\"}",
+        "{\"translate\":\"twilightforest.book.yeticave.3\"}"
+      ],
+      "title": "Notes on an Icy Cave"
+    }
+  },
+  "hint_mob": "twilightforest:kobold",
+  "labelled_monster_spawns": {
+    "0": [
+      {
+        "type": "twilightforest:yeti",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      }
+    ]
+  },
+  "legacy_landmark_start": "yeti_lairs",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "bury",
+  "water_spawns": []
+}

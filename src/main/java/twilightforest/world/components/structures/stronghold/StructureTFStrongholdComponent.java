@@ -3,12 +3,12 @@ package twilightforest.world.components.structures.stronghold;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.NoiseEffect;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -18,12 +18,12 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import net.minecraft.world.level.material.Material;
 import twilightforest.TFConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 
 public abstract class StructureTFStrongholdComponent extends TFStructureComponentOld {
 
@@ -34,7 +34,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		this.readOpeningsFromArray(nbt.getIntArray("doorInts"));
 	}
 
-	public StructureTFStrongholdComponent(StructurePieceType type, TFFeature feature, int i, Direction facing, int x, int y, int z) {
+	public StructureTFStrongholdComponent(StructurePieceType type, TFLandmark feature, int i, Direction facing, int x, int y, int z) {
 		super(type, feature, i, x, y, z);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setOrientation(facing);
@@ -87,7 +87,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -96,7 +96,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	/**
 	 * Add a new component in the specified direction
 	 */
-	protected void addNewComponent(StructurePiece entrance, StructurePieceAccessor list, Random random, Rotation facing, int x, int y, int z) {
+	protected void addNewComponent(StructurePiece entrance, StructurePieceAccessor list, RandomSource random, Rotation facing, int x, int y, int z) {
 		int index = this.genDepth + 1;
 		Direction nFacing = getStructureRelativeRotation(facing);
 		int nx = this.getWorldX(x, z);
@@ -145,7 +145,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		return null;
 	}
 
-	protected void addNewUpperComponent(StructurePiece parent, StructurePieceAccessor list, Random random, Rotation facing, int x, int y, int z) {
+	protected void addNewUpperComponent(StructurePiece parent, StructurePieceAccessor list, RandomSource random, Rotation facing, int x, int y, int z) {
 		StructureTFStrongholdComponent attempted;
 
 		int index = this.genDepth + 1;
@@ -443,7 +443,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	/**
 	 * Place stronghold walls in every position except those filled with dirt.
 	 */
-	protected void placeStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
+	protected void placeStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, RandomSource rand, StructurePiece.BlockSelector randomBlocks) {
 		for (int y = sy; y <= dy; ++y) {
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {
@@ -474,7 +474,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	/**
 	 * Place stronghold walls on dirt/grass/stone
 	 */
-	protected void placeUpperStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
+	protected void placeUpperStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, RandomSource rand, StructurePiece.BlockSelector randomBlocks) {
 		for (int y = sy; y <= dy; ++y) {
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {
@@ -501,13 +501,8 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		}
 	}
 
-	@Override
-	public NoiseEffect getNoiseEffect() {
-		return this.isComponentProtected() ? NoiseEffect.BURY : NoiseEffect.NONE;
-	}
-
 	public interface Factory<T extends StructureTFStrongholdComponent> {
 
-		T newInstance(TFFeature feature, int i, Direction facing, int x, int y, int z);
+		T newInstance(TFLandmark feature, int i, Direction facing, int x, int y, int z);
 	}
 }

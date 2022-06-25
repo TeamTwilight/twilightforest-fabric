@@ -20,8 +20,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
 import twilightforest.util.ColorUtil;
 
 public class UnstableIceCore extends BaseIceMob {
@@ -45,23 +45,23 @@ public class UnstableIceCore extends BaseIceMob {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
+				.add(Attributes.MOVEMENT_SPEED, 0.23D)
 				.add(Attributes.ATTACK_DAMAGE, 3.0D);
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_CORE_AMBIENT;
+		return TFSounds.ICE_CORE_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_CORE_HURT;
+		return TFSounds.ICE_CORE_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_CORE_DEATH;
+		return TFSounds.ICE_CORE_DEATH.get();
 	}
 
 	@Override
@@ -75,18 +75,18 @@ public class UnstableIceCore extends BaseIceMob {
 
 		if (this.deathTime == 60) // delay until 3 seconds
 		{
-			if (!level.isClientSide) {
+			if (!this.getLevel().isClientSide()) {
 				boolean mobGriefing = level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-				this.level.explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, mobGriefing ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.DESTROY);
+				this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, mobGriefing ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.DESTROY);
 
 				if (mobGriefing) {
 					this.transformBlocks();
 				}
 			}
 			// Fake to trigger super's behaviour
-			deathTime = 19;
+			this.deathTime = 19;
 			super.tickDeath();
-			deathTime = 60;
+			this.deathTime = 60;
 		}
 	}
 
@@ -100,7 +100,7 @@ public class UnstableIceCore extends BaseIceMob {
 				for (int dz = -range; dz <= range; dz++) {
 					double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-					float randRange = range + (random.nextFloat() - random.nextFloat()) * 2F;
+					float randRange = range + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 2.0F;
 
 					if (distance < randRange) {
 						this.transformBlock(pos.offset(dx, dy, dz));
@@ -111,32 +111,32 @@ public class UnstableIceCore extends BaseIceMob {
 	}
 
 	private void transformBlock(BlockPos pos) {
-		BlockState state = level.getBlockState(pos);
+		BlockState state = this.getLevel().getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (block.getExplosionResistance() < 8F && state.getDestroySpeed(level, pos) >= 0) {
+		if (block.getExplosionResistance() < 8F && state.getDestroySpeed(this.getLevel(), pos) >= 0) {
 			// todo improve for blocks where state is known? or perhaps if a propertycolor is present
-			int blockColor = state.getMapColor(level, pos).col;
+			int blockColor = state.getMapColor(this.getLevel(), pos).col;
 
 			// do appropriate transformation
 			if (this.shouldTransformGlass(state, pos)) {
-				this.level.setBlockAndUpdate(pos, ColorUtil.STAINED_GLASS.getColor(getClosestDyeColor(blockColor)));
+				this.getLevel().setBlockAndUpdate(pos, ColorUtil.STAINED_GLASS.getColor(getClosestDyeColor(blockColor)));
 			} else if (this.shouldTransformClay(state, pos)) {
-				this.level.setBlockAndUpdate(pos, ColorUtil.TERRACOTTA.getColor(getClosestDyeColor(blockColor)));
+				this.getLevel().setBlockAndUpdate(pos, ColorUtil.TERRACOTTA.getColor(getClosestDyeColor(blockColor)));
 			}
 		}
 	}
 
 	private boolean shouldTransformClay(BlockState state, BlockPos pos) {
-		return state.isRedstoneConductor(this.level, pos);
+		return state.isRedstoneConductor(this.getLevel(), pos);
 	}
 
 	private boolean shouldTransformGlass(BlockState state, BlockPos pos) {
-		return state.getBlock() != Blocks.AIR && isBlockNormalBounds(state, pos) && (!state.getMaterial().isSolidBlocking() || state.getMaterial() == Material.LEAVES || state.getBlock() == Blocks.ICE || state.getBlock() == TFBlocks.AURORA_BLOCK.get());
+		return state.getBlock() != Blocks.AIR && isBlockNormalBounds(state, pos) && (!state.getMaterial().isSolidBlocking() || state.getMaterial() == Material.LEAVES || state.is(Blocks.ICE) || state.is(TFBlocks.AURORA_BLOCK.get()));
 	}
 
 	private boolean isBlockNormalBounds(BlockState state, BlockPos pos) {
-		return Block.isShapeFullBlock(state.getShape(level, pos));
+		return Block.isShapeFullBlock(state.getShape(this.getLevel(), pos));
 	}
 
 	private static DyeColor getClosestDyeColor(int blockColor) {
@@ -168,6 +168,6 @@ public class UnstableIceCore extends BaseIceMob {
 
 	@Override
 	public int getMaxSpawnClusterSize() {
-		return 8;
+		return 2;
 	}
 }

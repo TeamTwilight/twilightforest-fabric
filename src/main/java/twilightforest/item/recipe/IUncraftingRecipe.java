@@ -2,8 +2,8 @@ package twilightforest.item.recipe;
 
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import twilightforest.init.TFRecipes;
 
-@SuppressWarnings("NullableProblems")
 public interface IUncraftingRecipe extends CraftingRecipe {
     @Override
     default RecipeType<?> getType() {

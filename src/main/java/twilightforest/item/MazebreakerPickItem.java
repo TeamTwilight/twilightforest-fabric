@@ -12,24 +12,24 @@ import twilightforest.block.MazestoneBlock;
 import javax.annotation.Nonnull;
 
 public class MazebreakerPickItem extends PickaxeItem {
-	protected MazebreakerPickItem(Tier material, Properties props) {
-		super(material, 1, -2.8F, props);
+	public MazebreakerPickItem(Tier material, Properties properties) {
+		super(material, 1, -2.8F, properties);
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
-			istack.enchant(Enchantments.BLOCK_EFFICIENCY, 4);
-			istack.enchant(Enchantments.UNBREAKING, 3);
-			istack.enchant(Enchantments.BLOCK_FORTUNE, 2);
-			list.add(istack);
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+		if (this.allowedIn(tab)) {
+			ItemStack stack = new ItemStack(this);
+			stack.enchant(Enchantments.BLOCK_EFFICIENCY, 4);
+			stack.enchant(Enchantments.UNBREAKING, 3);
+			stack.enchant(Enchantments.BLOCK_FORTUNE, 2);
+			items.add(stack);
 		}
 	}
 
 	@Override
 	public float getDestroySpeed(@Nonnull ItemStack stack, BlockState state) {
 		float destroySpeed = super.getDestroySpeed(stack, state);
-		return state.getBlock() instanceof MazestoneBlock ? destroySpeed * 16F : destroySpeed;
+		return state.getBlock() instanceof MazestoneBlock ? destroySpeed * 16.0F : destroySpeed;
 	}
 }

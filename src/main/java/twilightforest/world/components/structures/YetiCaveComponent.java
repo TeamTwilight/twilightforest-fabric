@@ -2,10 +2,11 @@ package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -14,11 +15,11 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.feature.config.SpikeConfig;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class YetiCaveComponent extends HollowHillComponent {
 	private static final SpikeConfig BLUE_ICE_SPIKE = new SpikeConfig(BlockStateProvider.simple(Blocks.BLUE_ICE.defaultBlockState()), UniformInt.of(8, 8), ConstantInt.of(4), true);
@@ -26,18 +27,18 @@ public class YetiCaveComponent extends HollowHillComponent {
 	private static final SpikeConfig ICE_SPIKE = new SpikeConfig(BlockStateProvider.simple(Blocks.ICE.defaultBlockState()), UniformInt.of(6, 10), ConstantInt.of(4), true);
 
 	public YetiCaveComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFFeature.TFYeti, nbt);
+		super(TFStructurePieceTypes.TFYeti.get(), nbt);
 	}
 
-	public YetiCaveComponent(TFFeature feature, Random rand, int i, int x, int y, int z) {
-		super(TFFeature.TFYeti, feature, i, 2, x, y, z);
+	public YetiCaveComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFYeti.get(), feature, i, 2, x, y, z);
 	}
 
 	/**
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		int sn = 64;
 
 		// fill in features
@@ -86,7 +87,7 @@ public class YetiCaveComponent extends HollowHillComponent {
 	}
 
 	@Override
-	BlockPos.MutableBlockPos randomCeilingCoordinates(Random rand, float maximumRadius) {
+	BlockPos.MutableBlockPos randomCeilingCoordinates(RandomSource rand, float maximumRadius) {
 		int rad = (int) maximumRadius;
 		int x = rand.nextInt(rad * 2) - rad;
 		int z = rand.nextInt(rad * 2) - rad;

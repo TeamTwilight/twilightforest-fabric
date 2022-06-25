@@ -10,7 +10,7 @@ import twilightforest.block.HollowLogClimbable;
 import twilightforest.block.HollowLogHorizontal;
 import twilightforest.block.HollowLogVertical;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public class HollowLogItem extends BlockItem {
@@ -35,18 +35,18 @@ public class HollowLogItem extends BlockItem {
     }
 
     @Override
-    public void registerBlocks(Map<Block, Item> pBlockToItemMap, Item pItem) {
-        super.registerBlocks(pBlockToItemMap, pItem);
-        pBlockToItemMap.put(this.horizontalLog, pItem);
-        pBlockToItemMap.put(this.verticalLog, pItem);
-        pBlockToItemMap.put(this.climbable, pItem);
+    public void registerBlocks(Map<Block, Item> blockItemMap, Item item) {
+        super.registerBlocks(blockItemMap, item);
+        blockItemMap.put(this.horizontalLog, item);
+        blockItemMap.put(this.verticalLog, item);
+        blockItemMap.put(this.climbable, item);
     }
 
     @Override
-    public void removeFromBlockToItemMap(Map<Block, Item> blockToItemMap, Item itemIn) {
-        super.removeFromBlockToItemMap(blockToItemMap, itemIn);
-        blockToItemMap.remove(this.horizontalLog);
-        blockToItemMap.remove(this.verticalLog);
-        blockToItemMap.remove(this.climbable);
+    public void removeFromBlockToItemMap(Map<Block, Item> blockItemMap, Item item) {
+        super.removeFromBlockToItemMap(blockItemMap, item);
+        blockItemMap.remove(this.horizontalLog);
+        blockItemMap.remove(this.verticalLog);
+        blockItemMap.remove(this.climbable);
     }
 }

@@ -10,17 +10,17 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 public class SnowParticle extends TextureSheetParticle {
 
-	float initialParticleScale;
+	final float initialParticleScale;
 
-	SnowParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz) {
-		this(world, x, y, z, vx, vy, vz, 1.0F);
+	public SnowParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz) {
+		this(level, x, y, z, vx, vy, vz, 1.0F);
 	}
 
-	SnowParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, float scale) {
-		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
-		this.xd *= 0.10000000149011612D;
-		this.yd *= 0.10000000149011612D;
-		this.zd *= 0.10000000149011612D;
+	public SnowParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, float scale) {
+		super(level, x, y, z, 0.0D, 0.0D, 0.0D);
+		this.xd *= 0.1D;
+		this.yd *= 0.1D;
+		this.zd *= 0.1D;
 		this.xd += vx * 0.4D;
 		this.yd += vy * 0.4D;
 		this.zd += vz * 0.4D;
@@ -50,14 +50,14 @@ public class SnowParticle extends TextureSheetParticle {
 
 		this.move(this.xd, this.yd, this.zd);
 
-		this.xd *= 0.699999988079071D;
-		this.yd *= 0.699999988079071D;
-		this.zd *= 0.699999988079071D;
-		this.yd -= 0.019999999552965164D;
+		this.xd *= 0.7D;
+		this.yd *= 0.7D;
+		this.zd *= 0.7D;
+		this.yd -= 0.02D;
 
 		if (this.onGround) {
-			this.xd *= 0.699999988079071D;
-			this.zd *= 0.699999988079071D;
+			this.xd *= 0.7D;
+			this.zd *= 0.7D;
 		}
 	}
 
@@ -67,17 +67,12 @@ public class SnowParticle extends TextureSheetParticle {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static class Factory implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public Factory(FabricSpriteProvider sprite) {
-			this.spriteSet = sprite;
-		}
+	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			SnowParticle particle = new SnowParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
-			particle.pickSprite(this.spriteSet);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			SnowParticle particle = new SnowParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+			particle.pickSprite(this.sprite);
 			return particle;
 		}
 	}

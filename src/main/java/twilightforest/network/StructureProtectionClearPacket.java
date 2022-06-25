@@ -17,11 +17,14 @@ import java.util.function.Supplier;
 
 public class StructureProtectionClearPacket implements S2CPacket {
 
-	public StructureProtectionClearPacket() {}
+	public StructureProtectionClearPacket() {
+	}
 
-	public StructureProtectionClearPacket(FriendlyByteBuf unused) {}
+	public StructureProtectionClearPacket(FriendlyByteBuf unused) {
+	}
 
-	public void encode(FriendlyByteBuf unused) {}
+	public void encode(FriendlyByteBuf unused) {
+	}
 
 	@Override
 	public void handle(Minecraft client, ClientPacketListener handler, PacketSender sender, SimpleChannel responseTarget) {
@@ -37,8 +40,8 @@ public class StructureProtectionClearPacket implements S2CPacket {
 				if (info instanceof TwilightForestRenderInfo tfInfo) {
 					TFWeatherRenderer weatherRenderer = tfInfo.getWeatherRenderHandler();
 
-					if (weatherRenderer instanceof TFWeatherRenderer) {
-						((TFWeatherRenderer) weatherRenderer).setProtectedBox(null);
+					if (weatherRenderer instanceof TFWeatherRenderer renderer) {
+						renderer.setProtectedBox(null);
 					}
 				}
 			});

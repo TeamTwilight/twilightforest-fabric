@@ -28,19 +28,20 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
-import twilightforest.block.TFBlocks;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraftforge.registries.ForgeRegistries;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.IntPair;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.chunkgenerators.warp.NoiseModifier;
-import twilightforest.world.components.chunkgenerators.warp.TFBlendedNoise;
-import twilightforest.world.components.chunkgenerators.warp.TFNoiseInterpolator;
-import twilightforest.world.components.chunkgenerators.warp.TFTerrainWarp;
+import twilightforest.world.components.chunkgenerators.warp.*;
+import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.world.components.structures.start.LegacyLandmark;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.TwilightFeatures;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.BiomeKeys;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,8 +60,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			NoiseGeneratorSettings.CODEC.fieldOf("noise_generation_settings").forGetter(o -> o.noiseGeneratorSettings),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
 			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel),
-			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight),
-			Codec.BOOL.fieldOf("use_overworld_seed").forGetter(o -> false) // Don't make this persistent, we want to load the stored seed on existing worlds! This is purely used on world creation ONLY!!
+			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight)
 	).apply(instance, instance.stable(ChunkGeneratorTwilight::new)));
 
 	private final Holder<NoiseGeneratorSettings> noiseGeneratorSettings;
@@ -73,12 +73,11 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	private final Optional<Climate.Sampler> surfaceNoiseGetter;
 	private final Optional<TFTerrainWarp> warper;
 
-	public final ConcurrentHashMap<ChunkPos, TFFeature> featureCache = new ConcurrentHashMap<>();
+	public final ConcurrentHashMap<ChunkPos, TFLandmark> featureCache = new ConcurrentHashMap<>();
 	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight, boolean owSeed) {
-		//super(delegate.getBiomeSource(), delegate.getBiomeSource(), delegate.getSettings(), delegate instanceof NoiseBasedChunkGenerator noiseGen ? noiseGen.seed : delegate.strongholdSeed);
-		super(structures, owSeed ? delegate = delegate.withSeed(TwilightFeatures.seed) : delegate);
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight) {
+		super(structures, delegate);
 		this.noiseGeneratorSettings = noiseGenSettings;
 		this.genDarkForestCanopy = genDarkForestCanopy;
 		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
@@ -87,19 +86,20 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen) {
 			this.defaultBlock = noiseGen.defaultBlock;
 			this.defaultFluid = noiseGenSettings.value().defaultFluid();
-			this.surfaceNoiseGetter = Optional.of(noiseGen.sampler);
+			this.surfaceNoiseGetter = Optional.empty();//Optional.of(noiseGen.sampler);
 		} else {
 			this.defaultBlock = Blocks.STONE.defaultBlockState();
 			this.defaultFluid = Blocks.WATER.defaultBlockState();
 			this.surfaceNoiseGetter = Optional.empty();
 		}
 
+//FIXME Watch this space, make sure it worked
 		NoiseSettings settings = noiseGenSettings.value().noiseSettings();
 		if (delegate.getBiomeSource() instanceof TFBiomeProvider source) {
-			WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(delegate.ringPlacementSeed));
-			TFBlendedNoise blendedNoise = new TFBlendedNoise(random, settings.noiseSamplingSettings(), settings.getCellWidth(), settings.getCellHeight());
+			WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
+			TFBlendedNoise blendedNoise = new TFBlendedNoise(random);
 			NoiseModifier modifier = NoiseModifier.PASS;
-			this.warper = Optional.of(new TFTerrainWarp(settings.getCellWidth(), settings.getCellHeight(), settings.getCellCountY(), source, settings, blendedNoise, modifier));
+			this.warper = Optional.of(new TFTerrainWarp(settings.getCellWidth(), settings.getCellHeight(), settings.height() / settings.getCellHeight(), source, new NoiseSlider(-10.0D, 3, 0), new NoiseSlider(15.0D, 3, 0), settings, blendedNoise, modifier));
 		} else {
 			this.warper = Optional.empty();
 		}
@@ -111,28 +111,23 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public ChunkGenerator withSeed(long newSeed) {
-		return new ChunkGeneratorTwilight(this.delegate.withSeed(newSeed), this.structureSets, this.noiseGeneratorSettings, this.genDarkForestCanopy, this.monsterSpawnsBelowSeaLevel, this.darkForestCanopyHeight, false);
-	}
-
-	@Override
-	public int getBaseHeight(int x, int z, Heightmap.Types heightMap, LevelHeightAccessor level) {
+	public int getBaseHeight(int x, int z, Heightmap.Types heightMap, LevelHeightAccessor level, RandomState random) {
 		if (warper.isEmpty()) {
-			return super.getBaseHeight(x, z, heightMap, level);
+			return super.getBaseHeight(x, z, heightMap, level, random);
 		} else {
 			NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 			int minY = Math.max(settings.minY(), level.getMinBuildHeight());
 			int maxY = Math.min(settings.minY() + settings.height(), level.getMaxBuildHeight());
 			int minCell = Mth.intFloorDiv(minY, settings.getCellHeight());
 			int maxCell = Mth.intFloorDiv(maxY - minY, settings.getCellHeight());
-			return maxCell <= 0 ? level.getMinBuildHeight() : this.iterateNoiseColumn(x, z, null, heightMap.isOpaque(), minCell, maxCell).orElse(level.getMinBuildHeight());
+			return maxCell <= 0 ? level.getMinBuildHeight() : this.iterateNoiseColumn(random, x, z, null, heightMap.isOpaque(), minCell, maxCell).orElse(level.getMinBuildHeight());
 		}
 	}
 
 	@Override
-	public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level) {
+	public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level, RandomState random) {
 		if (warper.isEmpty()) {
-			return super.getBaseColumn(x, z, level);
+			return super.getBaseColumn(x, z, level, random);
 		} else {
 			NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 			int minY = Math.max(settings.minY(), level.getMinBuildHeight());
@@ -143,14 +138,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 				return new NoiseColumn(minY, EMPTY_COLUMN);
 			} else {
 				BlockState[] ablockstate = new BlockState[maxCell * settings.getCellHeight()];
-				this.iterateNoiseColumn(x, z, ablockstate, null, minCell, maxCell);
+				this.iterateNoiseColumn(random, x, z, ablockstate, null, minCell, maxCell);
 				return new NoiseColumn(minY, ablockstate);
 			}
 		}
 	}
 
 	//This logic only seems to concern very specific features, but it does need the Warp
-	protected OptionalInt iterateNoiseColumn(int x, int z, BlockState[] states, Predicate<BlockState> predicate, int min, int max) {
+	protected OptionalInt iterateNoiseColumn(RandomState random, int x, int z, BlockState[] states, Predicate<BlockState> predicate, int min, int max) {
 		NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 		int cellWidth = settings.getCellWidth();
 		int cellHeight = settings.getCellHeight();
@@ -161,10 +156,10 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		int xMin = xMod / cellWidth;
 		int zMin = zMod / cellWidth;
 		double[][] columns = new double[][] {
-				this.makeAndFillNoiseColumn(xDiv, zDiv, min, max),
-				this.makeAndFillNoiseColumn(xDiv, zDiv + 1, min, max),
-				this.makeAndFillNoiseColumn(xDiv + 1, zDiv, min, max),
-				this.makeAndFillNoiseColumn(xDiv + 1, zDiv + 1, min, max)
+				this.makeAndFillNoiseColumn(random, xDiv, zDiv, min, max),
+				this.makeAndFillNoiseColumn(random, xDiv, zDiv + 1, min, max),
+				this.makeAndFillNoiseColumn(random, xDiv + 1, zDiv, min, max),
+				this.makeAndFillNoiseColumn(random, xDiv + 1, zDiv + 1, min, max)
 		};
 
 		for (int cell = max - 1; cell >= 0; cell--) {
@@ -198,19 +193,19 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public CompletableFuture<ChunkAccess> createBiomes(Registry<Biome> biomes, Executor executor, Blender blender, StructureFeatureManager manager, ChunkAccess chunkAccess) {
+	public CompletableFuture<ChunkAccess> createBiomes(Registry<Biome> biomes, Executor executor, RandomState random, Blender blender, StructureManager manager, ChunkAccess chunkAccess) {
 		//Mimic behaviour of ChunkGenerator, NoiseBasedChunkGenerator does weird things
 		return CompletableFuture.supplyAsync(Util.wrapThreadWithTaskName("init_biomes", () -> {
-			chunkAccess.fillBiomesFromNoise(this.getBiomeSource(), this.climateSampler());
+			chunkAccess.fillBiomesFromNoise(this.getBiomeSource(), Climate.empty());
 			return chunkAccess;
 		}), Util.backgroundExecutor());
 	}
 
 	//VanillaCopy of NoiseBasedChunkGenerator#fillFromNoise, only so doFill can be ours
 	@Override
-	public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, StructureFeatureManager structureManager, ChunkAccess chunkAccess) {
+	public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, RandomState random, StructureManager structureManager, ChunkAccess chunkAccess) {
 		if (warper.isEmpty()) {
-			return super.fillFromNoise(executor, blender, structureManager, chunkAccess);
+			return super.fillFromNoise(executor, blender, random, structureManager, chunkAccess);
 		} else {
 			NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 			int cellHeight = settings.getCellHeight();
@@ -232,7 +227,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					sections.add(section);
 				}
 
-				return CompletableFuture.supplyAsync(() -> this.doFill(chunkAccess, mincell, maxcell), Util.backgroundExecutor()).whenCompleteAsync((chunk, throwable) -> {
+				return CompletableFuture.supplyAsync(() -> this.doFill(random, chunkAccess, mincell, maxcell), Util.backgroundExecutor()).whenCompleteAsync((chunk, throwable) -> {
 					for (LevelChunkSection section : sections) {
 						section.release();
 					}
@@ -241,7 +236,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		}
 	}
 
-	private ChunkAccess doFill(ChunkAccess access, int min, int max) {
+	private ChunkAccess doFill(RandomState random, ChunkAccess access, int min, int max) {
 		NoiseSettings settings = noiseGeneratorSettings.value().noiseSettings();
 		int cellWidth = settings.getCellWidth();
 		int cellHeight = settings.getCellHeight();
@@ -254,12 +249,12 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		int minZ = chunkpos.getMinBlockZ();
 		TFNoiseInterpolator interpolator = new TFNoiseInterpolator(cellCountX, max, cellCountZ, chunkpos, min, this::fillNoiseColumn);
 		List<TFNoiseInterpolator> list = Lists.newArrayList(interpolator);
-		list.forEach(TFNoiseInterpolator::initialiseFirstX);
+		list.forEach(noiseint -> noiseint.initialiseFirstX(random));
 		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
 		for (int cellX = 0; cellX < cellCountX; cellX++) {
 			int advX = cellX;
-			list.forEach((noiseint) -> noiseint.advanceX(advX));
+			list.forEach((noiseint) -> noiseint.advanceX(random, advX));
 
 			for (int cellZ = 0; cellZ < cellCountZ; cellZ++) {
 				LevelChunkSection section = access.getSection(access.getSectionsCount() - 1);
@@ -323,15 +318,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		return access;
 	}
 
-	private double[] makeAndFillNoiseColumn(int x, int z, int min, int max) {
+	private double[] makeAndFillNoiseColumn(RandomState state, int x, int z, int min, int max) {
 		double[] columns = new double[max + 1];
-		this.fillNoiseColumn(columns, x, z, min, max);
+		this.fillNoiseColumn(state, columns, x, z, min, max);
 		return columns;
 	}
 
-	private void fillNoiseColumn(double[] columns, int x, int z, int min, int max) {
-		NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
-		this.warper.get().fillNoiseColumn(this, columns, x, z, settings, this.getSeaLevel(), min, max);
+	private void fillNoiseColumn(RandomState state, double[] columns, int x, int z, int min, int max) {
+		this.warper.get().fillNoiseColumn(state, columns, x, z, this.getSeaLevel(), min, max);
 	}
 
 	//Logic based on 1.16. Will only ever get the default Block, Fluid, or Air
@@ -350,10 +344,10 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public void buildSurface(WorldGenRegion world, StructureFeatureManager manager, ChunkAccess chunk) {
+	public void buildSurface(WorldGenRegion world, StructureManager manager, RandomState random, ChunkAccess chunk) {
 		this.deformTerrainForFeature(world, chunk);
 
-		super.buildSurface(world, manager, chunk);
+		super.buildSurface(world, manager, random, chunk);
 
 		//noinspection OptionalIsPresent
 		if (this.darkForestCanopyHeight.isPresent())
@@ -397,14 +391,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public void addDebugScreenInfo(List<String> p_208054_, BlockPos p_208055_) {
+	public void addDebugScreenInfo(List<String> p_223175_, RandomState p_223176_, BlockPos p_223177_) {
 		//do we do anything with this? we need to implement it for some reason
 	}
 
 	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
 	protected final void deformTerrainForFeature(WorldGenRegion primer, ChunkAccess chunk) {
 		IntPair featureRelativePos = new IntPair();
-		TFFeature nearFeature = TFFeature.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, featureRelativePos);
+		TFLandmark nearFeature = TFLandmark.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, featureRelativePos);
 
 		//Optional<StructureStart<?>> structureStart = TFGenerationSettings.locateTFStructureInRange(primer.getLevel(), nearFeature, chunk.getPos().getWorldPosition(), nearFeature.size + 1);
 
@@ -415,7 +409,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		final int relativeFeatureX = featureRelativePos.x;
 		final int relativeFeatureZ = featureRelativePos.z;
 
-		if (TFFeature.isTheseFeatures(nearFeature, TFFeature.SMALL_HILL, TFFeature.MEDIUM_HILL, TFFeature.LARGE_HILL, TFFeature.HYDRA_LAIR)) {
+		if (TFLandmark.isTheseFeatures(nearFeature, TFLandmark.SMALL_HILL, TFLandmark.MEDIUM_HILL, TFLandmark.LARGE_HILL, TFLandmark.HYDRA_LAIR)) {
 			int hdiam = (nearFeature.size * 2 + 1) * 16;
 
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
@@ -428,7 +422,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					this.raiseHills(primer, chunk, nearFeature, hdiam, xInChunk, zInChunk, featureDX, featureDZ, hheight);
 				}
 			}
-		} else if (nearFeature == TFFeature.HEDGE_MAZE || nearFeature == TFFeature.NAGA_COURTYARD || nearFeature == TFFeature.QUEST_GROVE) {
+		} else if (nearFeature == TFLandmark.HEDGE_MAZE || nearFeature == TFLandmark.NAGA_COURTYARD || nearFeature == TFLandmark.QUEST_GROVE) {
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
 				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
 					int featureDX = xInChunk - relativeFeatureX;
@@ -436,7 +430,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					flattenTerrainForFeature(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
 				}
 			}
-		} else if (nearFeature == TFFeature.YETI_CAVE) {
+		} else if (nearFeature == TFLandmark.YETI_CAVE) {
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
 				for (int zInChunk = 0; zInChunk < 16; zInChunk++) {
 					int featureDX = xInChunk - relativeFeatureX;
@@ -445,7 +439,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					this.deformTerrainForYetiLair(primer, nearFeature, xInChunk, zInChunk, featureDX, featureDZ);
 				}
 			}
-		} else if (nearFeature == TFFeature.TROLL_CAVE) {
+		} else if (nearFeature == TFLandmark.TROLL_CAVE) {
 			// troll cloud, more like
 			this.deformTerrainForTrollCloud2(primer, chunk, nearFeature, relativeFeatureX, relativeFeatureZ);
 		}
@@ -453,7 +447,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		// done!
 	}
 
-	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
+	private void flattenTerrainForFeature(WorldGenRegion primer, TFLandmark nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
 		int mazeHeight = TFGenerationSettings.SEALEVEL + 2;
@@ -509,7 +503,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	//TODO: Parameter "nearFeature" is unused. Remove?
-	private void deformTerrainForTrollCloud2(WorldGenRegion primer, ChunkAccess chunkAccess, TFFeature nearFeature, int hx, int hz) {
+	private void deformTerrainForTrollCloud2(WorldGenRegion primer, ChunkAccess chunkAccess, TFLandmark nearFeature, int hx, int hz) {
 		for (int bx = 0; bx < 4; bx++) {
 			for (int bz = 0; bz < 4; bz++) {
 				int dx = bx * 4 - hx - 2;
@@ -598,7 +592,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	 * Raises up and hollows out the hollow hills.
 	 */ // TODO Add some surface noise
 	// FIXME Make this method process whole chunks instead of columns only
-	private void raiseHills(WorldGenRegion world, ChunkAccess chunk, TFFeature nearFeature, int hdiam, int xInChunk, int zInChunk, int featureDX, int featureDZ, float hillHeight) {
+	private void raiseHills(WorldGenRegion world, ChunkAccess chunk, TFLandmark nearFeature, int hdiam, int xInChunk, int zInChunk, int featureDX, int featureDZ, float hillHeight) {
 		BlockPos.MutableBlockPos movingPos = world.getCenter().getWorldPosition().offset(xInChunk, 0, zInChunk).mutable();
 
 		// raise the hill
@@ -623,7 +617,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		int hollow = Math.min((int) hillHeight - 4 - nearFeature.size, totalHeight - 3);
 
 		// hydra lair has a piece missing
-		if (nearFeature == TFFeature.HYDRA_LAIR) {
+		if (nearFeature == TFLandmark.HYDRA_LAIR) {
 			int mx = featureDX + 16;
 			int mz = featureDZ + 16;
 			int mdist = (int) Mth.sqrt(mx * mx + mz * mz);
@@ -633,14 +627,14 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		}
 
 		// hollow out the hollow parts
-		int hollowFloor = nearFeature == TFFeature.HYDRA_LAIR ? this.getSeaLevel() : this.getSeaLevel() - 5 - (hollow >> 3);
+		int hollowFloor = nearFeature == TFLandmark.HYDRA_LAIR ? this.getSeaLevel() : this.getSeaLevel() - 5 - (hollow >> 3);
 
 		for (int y = hollowFloor + 1; y < hollowFloor + hollow; y++) {
 			world.setBlock(movingPos.setY(y), Blocks.AIR.defaultBlockState(), 3);
 		}
 	}
 
-	private void deformTerrainForYetiLair(WorldGenRegion primer, TFFeature nearFeature, int xInChunk, int zInChunk, int featureDX, int featureDZ) {
+	private void deformTerrainForYetiLair(WorldGenRegion primer, TFLandmark nearFeature, int xInChunk, int zInChunk, int featureDX, int featureDZ) {
 		float squishFactor = 0f;
 		int topHeight = this.getSeaLevel() + 24;
 		int outerBoundary = (nearFeature.size * 2 + 1) * 8 - 8;
@@ -741,7 +735,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		if (!biomeFound) return;
 
 		IntPair nearCenter = new IntPair();
-		TFFeature nearFeature = TFFeature.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, nearCenter);
+		TFLandmark nearFeature = TFLandmark.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, nearCenter);
 
 		double d = 0.03125D;
 		//depthBuffer = noiseGen4.generateNoiseOctaves(depthBuffer, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
@@ -761,7 +755,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 						- 4;
 
 				// make sure we're not too close to the tower
-				if (nearFeature == TFFeature.DARK_TOWER) {
+				if (nearFeature == TFLandmark.DARK_TOWER) {
 					int hx = nearCenter.x;
 					int hz = nearCenter.z;
 
@@ -815,11 +809,44 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		chunk.getOrCreateHeightmapUnprimed(type).setHeight(pos.getX() & 15, pos.getZ() & 15, dY + 1);
 	}
 
+	private static int getSpawnListIndexAt(StructureStart start, BlockPos pos) {
+		int highestFoundIndex = -1;
+		for (StructurePiece component : start.getPieces()) {
+			if (component.getBoundingBox().isInside(pos)) {
+				if (component instanceof TFStructureComponent tfComponent) {
+					if (tfComponent.spawnListIndex > highestFoundIndex)
+						highestFoundIndex = tfComponent.spawnListIndex;
+				} else
+					return 0;
+			}
+		}
+		return highestFoundIndex;
+	}
+
+	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
+		for (LegacyLandmark structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream()
+				.filter(LegacyLandmark.class::isInstance).map(LegacyLandmark.class::cast).toList()) {
+			StructureStart start = structureManager.getStructureAt(pos, structure);
+			if (!start.isValid())
+				continue;
+
+			if (classification != MobCategory.MONSTER)
+				return structure.getSpawnableList(classification);
+			if ((start instanceof TFStructureStart<?> s && s.isConquered()) /*|| legacyData.isConquered()*/)
+				return null;
+			final int index = getSpawnListIndexAt(start, pos);
+			if (index < 0)
+				return null;
+			return structure.getSpawnableMonsterList(index);
+		}
+		return null;
+	}
+
 	@Override
-	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureFeatureManager structureManager, MobCategory mobCategory, BlockPos pos) {
+	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureManager structureManager, MobCategory mobCategory, BlockPos pos) {
 		if (!this.monsterSpawnsBelowSeaLevel) return super.getMobsAt(biome, structureManager, mobCategory, pos);
 
-		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = TFStructureStart.gatherPotentialSpawns(structureManager, mobCategory, pos);
+		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(structureManager, mobCategory, pos);
 		if (potentialStructureSpawns != null)
 			return WeightedRandomList.create(potentialStructureSpawns);
 		//FIXME forge has StructureSpawnManager commented out, find out if theyre redoing this class or removing it entirely
@@ -829,7 +856,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		return mobCategory == MobCategory.MONSTER && pos.getY() >= this.getSeaLevel() ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, mobCategory, pos);
 	}
 
-	public TFFeature getFeatureCached(final ChunkPos chunk, final WorldGenLevel world) {
-		return this.featureCache.computeIfAbsent(chunk, chunkPos -> TFFeature.generateFeature(chunkPos.x, chunkPos.z, world));
+	public TFLandmark getFeatureCached(final ChunkPos chunk, final WorldGenLevel world) {
+		return this.featureCache.computeIfAbsent(chunk, chunkPos -> TFLandmark.generateFeature(chunkPos.x, chunkPos.z, world));
 	}
 }

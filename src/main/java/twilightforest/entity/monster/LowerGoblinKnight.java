@@ -23,11 +23,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
-import twilightforest.entity.ai.RiderSpearAttackGoal;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFEntities;
+import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
+import java.util.Objects;
 
 public class LowerGoblinKnight extends Monster {
 
@@ -81,11 +82,11 @@ public class LowerGoblinKnight extends Monster {
 
 		if (!this.getLevel().isClientSide()) {
 			if (flag) {
-				if (!this.getAttribute(Attributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
-					this.getAttribute(Attributes.ARMOR).addTransientModifier(ARMOR_MODIFIER);
+				if (!Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).hasModifier(ARMOR_MODIFIER)) {
+					Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).addTransientModifier(ARMOR_MODIFIER);
 				}
 			} else {
-				this.getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER);
+				Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).removeModifier(ARMOR_MODIFIER);
 			}
 		}
 	}
@@ -107,7 +108,7 @@ public class LowerGoblinKnight extends Monster {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
 
-		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.level);
+		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.getLevel());
 		upper.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 		upper.finalizeSpawn(accessor, difficulty, MobSpawnType.NATURAL, data, tag);
 		upper.startRiding(this);
@@ -133,17 +134,17 @@ public class LowerGoblinKnight extends Monster {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT : TFSounds.GOBLIN_KNIGHT_AMBIENT;
+		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT.get() : TFSounds.GOBLIN_KNIGHT_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH : TFSounds.GOBLIN_KNIGHT_DEATH;
+		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH.get() : TFSounds.GOBLIN_KNIGHT_DEATH.get();
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT : TFSounds.GOBLIN_KNIGHT_HURT;
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT.get() : TFSounds.GOBLIN_KNIGHT_HURT.get();
 	}
 
 	@Override

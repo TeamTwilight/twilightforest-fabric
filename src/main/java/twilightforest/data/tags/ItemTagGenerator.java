@@ -13,8 +13,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 
 public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 	public static final TagKey<Item> TWILIGHT_OAK_LOGS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("twilight_oak_logs"));
@@ -64,6 +64,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
 	public static final TagKey<Item> BANNED_UNCRAFTING_INGREDIENTS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("banned_uncrafting_ingredients"));
 	public static final TagKey<Item> BANNED_UNCRAFTABLES = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("banned_uncraftables"));
+
+	public static final TagKey<Item> KEPT_ON_DEATH = ItemTags.create(TwilightForestMod.prefix("kept_on_death"));
 
 	private static final TagKey<Item> CHARM = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("curios", "charm"));
 	private static final TagKey<Item> HEAD = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("curios", "head"));
@@ -211,6 +213,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		tag(ItemTags.MUSIC_DISCS).addTag(TF_MUSIC_DISCS);
 
 		tag(BANNED_UNCRAFTING_INGREDIENTS).add(
+				TFBlocks.GIANT_LOG.get().asItem(),
 				TFBlocks.INFESTED_TOWERWOOD.get().asItem(),
 				TFBlocks.HOLLOW_OAK_SAPLING.get().asItem(),
 				TFBlocks.TIME_SAPLING.get().asItem(),
@@ -219,6 +222,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFBlocks.SORTING_SAPLING.get().asItem());
 
 		tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.get().asItem());
+
+		tag(KEPT_ON_DEATH).add(TFItems.TOWER_KEY.get(), TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 
 		tag(ItemTags.PIGLIN_LOVED).add(TFItems.GOLDEN_MINOTAUR_AXE.get(), TFItems.CHARM_OF_KEEPING_3.get(), TFItems.CHARM_OF_LIFE_2.get(), TFItems.LAMP_OF_CINDERS.get());
 

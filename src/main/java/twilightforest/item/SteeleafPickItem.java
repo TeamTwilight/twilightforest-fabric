@@ -9,16 +9,16 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 public class SteeleafPickItem extends PickaxeItem {
 
-	protected SteeleafPickItem(Tier material, Properties props) {
+	public SteeleafPickItem(Tier material, Properties props) {
 		super(material, 1, -2.8F, props);
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-		if (allowdedIn(tab)) {
-			ItemStack istack = new ItemStack(this);
-			istack.enchant(Enchantments.BLOCK_FORTUNE, 2);
-			list.add(istack);
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+		if (this.allowedIn(tab)) {
+			ItemStack stack = new ItemStack(this);
+			stack.enchant(Enchantments.BLOCK_FORTUNE, 2);
+			items.add(stack);
 		}
 	}
 }

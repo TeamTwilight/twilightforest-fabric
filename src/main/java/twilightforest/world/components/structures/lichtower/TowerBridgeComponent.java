@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.lichtower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -13,9 +14,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class TowerBridgeComponent extends TowerWingComponent {
 
@@ -23,18 +24,18 @@ public class TowerBridgeComponent extends TowerWingComponent {
 	int dHeight;
 
 	public TowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(LichTowerPieces.TFLTBri, nbt);
+		super(TFStructurePieceTypes.TFLTBri.get(), nbt);
 	}
 
-	protected TowerBridgeComponent(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(LichTowerPieces.TFLTBri, feature, i, x, y, z, 3, 3, direction);
+	protected TowerBridgeComponent(TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(TFStructurePieceTypes.TFLTBri.get(), feature, i, x, y, z, 3, 3, direction);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		int[] dest = new int[]{2, 1, 1};//getValidOpening(rand, 0);
 		makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], dSize, dHeight, Rotation.NONE);
 	}
@@ -50,7 +51,7 @@ public class TowerBridgeComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
 		for (int x = 0; x < 3; x++) {
 			placeBlock(world, Blocks.OAK_FENCE.defaultBlockState(), x, 2, 0, sbb);

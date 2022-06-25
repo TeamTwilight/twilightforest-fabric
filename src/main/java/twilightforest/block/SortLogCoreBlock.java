@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,8 +17,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.client.particle.TFParticleType;
 import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
@@ -25,16 +26,15 @@ import twilightforest.util.WorldUtil;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
-	public SortLogCoreBlock(Properties props) {
-		super(props);
+	public SortLogCoreBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	void performTreeEffect(Level level, BlockPos pos, Random rand) {
+	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
 		Map<Storage<ItemVariant>, Vec3> inputHandlers = new HashMap<>();
 		Map<Storage<ItemVariant>, Vec3> outputHandlers = new HashMap<>();
 
@@ -51,7 +51,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		}
 
 		// TODO: PORT other entities
-		level.getEntities((Entity)null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
+		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
 			if (entity instanceof Player player)
 				inputHandlers.put(PlayerInventoryStorage.of(player), entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 		});

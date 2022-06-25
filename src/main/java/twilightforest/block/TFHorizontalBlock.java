@@ -6,14 +6,14 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.StateDefinition;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class TFHorizontalBlock extends HorizontalDirectionalBlock {
 
-    protected TFHorizontalBlock(Properties props) {
-        super(props);
+    public TFHorizontalBlock(Properties properties) {
+        super(properties);
     }
 
 	@Override

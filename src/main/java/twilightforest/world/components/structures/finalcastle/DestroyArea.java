@@ -1,19 +1,19 @@
 package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * An area that we're going to destroy.  Default is just a MutableBoundingBox
  */
 public class DestroyArea {
 
-	BoundingBox destroyBox;
+	final BoundingBox destroyBox;
 
-	public DestroyArea(BoundingBox tower, Random rand, int y) {
+	public DestroyArea(BoundingBox tower, RandomSource rand, int y) {
 		// make a 4x4 area that's entirely within the tower bounding box
 
 		int bx = tower.minX() - 2 + rand.nextInt(tower.getXSpan());
@@ -33,7 +33,7 @@ public class DestroyArea {
 	/**
 	 * construct a new area that does not intersect any other areas in the list
 	 */
-	public static DestroyArea createNonIntersecting(BoundingBox tower, Random rand, int y, ArrayList<DestroyArea> otherAreas) {
+	public static DestroyArea createNonIntersecting(BoundingBox tower, RandomSource rand, int y, ArrayList<DestroyArea> otherAreas) {
 		int attempts = 100;
 
 		DestroyArea area = null;

@@ -13,12 +13,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.*;
+import twilightforest.block.AbstractLightableBlock;
+import twilightforest.block.AbstractSkullCandleBlock;
+import twilightforest.block.SkullCandleBlock;
+import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.init.TFBlocks;
 
 public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 
-	public SkullCandleDispenseBehavior() { }
+	public SkullCandleDispenseBehavior() {
+	}
 
 	@Override
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
@@ -35,7 +40,7 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 	}
 
 	private static boolean tryAddCandle(ServerLevel level, BlockPos pos, Item candle) {
-		if(level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			if (candle == AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(sc.candleColor).getSerializedName()).asItem()) {
 				if (sc.candleAmount < 4) {
 					sc.candleAmount++;
@@ -76,7 +81,9 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 					if (wall) makeWallSkull(level, pos, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), candle);
 					else makeFloorSkull(level, pos, TFBlocks.CREEPER_SKULL_CANDLE.get(), candle);
 				}
-				default -> { return false; }
+				default -> {
+					return false;
+				}
 			}
 			return true;
 		}
@@ -86,7 +93,7 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 
 	private static void makeFloorSkull(Level level, BlockPos pos, Block newBlock, Item candle) {
 		GameProfile profile = null;
-		if(level.getBlockEntity(pos) instanceof SkullBlockEntity skull) profile = skull.getOwnerProfile();
+		if (level.getBlockEntity(pos) instanceof SkullBlockEntity skull) profile = skull.getOwnerProfile();
 		level.setBlockAndUpdate(pos, newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
 				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION)));
@@ -95,12 +102,12 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 						.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
 						.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION)),
 				AbstractSkullCandleBlock.candleToCandleColor(candle).getValue(), 1));
-		if(level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 
 	private static void makeWallSkull(Level level, BlockPos pos, Block newBlock, Item candle) {
 		GameProfile profile = null;
-		if(level.getBlockEntity(pos) instanceof SkullBlockEntity skull) profile = skull.getOwnerProfile();
+		if (level.getBlockEntity(pos) instanceof SkullBlockEntity skull) profile = skull.getOwnerProfile();
 		level.setBlockAndUpdate(pos, newBlock.defaultBlockState()
 				.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
 				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING)));
@@ -109,6 +116,6 @@ public class SkullCandleDispenseBehavior extends OptionalDispenseItemBehavior {
 						.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
 						.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING)),
 				AbstractSkullCandleBlock.candleToCandleColor(candle).getValue(), 1));
-		if(level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 }

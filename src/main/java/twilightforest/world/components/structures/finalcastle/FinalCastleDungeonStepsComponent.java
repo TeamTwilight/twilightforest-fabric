@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.StairBlock;
@@ -15,18 +16,18 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 
 	public FinalCastleDungeonStepsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCDunSt, nbt);
+		super(TFStructurePieceTypes.TFFCDunSt.get(), nbt);
 	}
 
-	public FinalCastleDungeonStepsComponent(TFFeature feature, Random rand, int i, int x, int y, int z, Direction rotation) {
-		super(FinalCastlePieces.TFFCDunSt, feature, i, x, y, z);
+	public FinalCastleDungeonStepsComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction rotation) {
+		super(TFStructurePieceTypes.TFFCDunSt.get(), feature, i, x, y, z);
 		this.spawnListIndex = 2; // dungeon monsters
 
 		this.setOrientation(rotation);
@@ -34,7 +35,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -43,7 +44,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	/**
 	 * build more steps towards the specified direction
 	 */
-	public FinalCastleDungeonStepsComponent buildMoreStepsTowards(StructurePiece parent, StructurePieceAccessor list, Random rand, Rotation rotation) {
+	public FinalCastleDungeonStepsComponent buildMoreStepsTowards(StructurePiece parent, StructurePieceAccessor list, RandomSource rand, Rotation rotation) {
 
 		Direction direction = getStructureRelativeRotation(rotation);
 
@@ -75,7 +76,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	/**
 	 * build a new level under the exit
 	 */
-	public FinalCastleDungeonEntranceComponent buildLevelUnder(StructurePiece parent, StructurePieceAccessor list, Random rand, int level) {
+	public FinalCastleDungeonEntranceComponent buildLevelUnder(StructurePiece parent, StructurePieceAccessor list, RandomSource rand, int level) {
 		// find center of landing
 		int dx = this.getWorldX(2, 19);
 		int dy = this.getWorldY(-7);
@@ -92,7 +93,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	/**
 	 * build the boss room
 	 */
-	public FinalCastleDungeonForgeRoomComponent buildBossRoomUnder(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public FinalCastleDungeonForgeRoomComponent buildBossRoomUnder(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		// find center of landing
 		int dx = this.getWorldX(2, 19);
 		int dy = this.getWorldY(-31);
@@ -107,7 +108,7 @@ public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		final BlockState stairState = deco.stairState.setValue(StairBlock.FACING, Direction.SOUTH);
 		for (int z = 0; z < 15; z++) {
 			int y = 14 - z;

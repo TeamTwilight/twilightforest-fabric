@@ -4,8 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.WorldGenLevel;
@@ -24,14 +25,13 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.TwilightForestMod;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -46,12 +46,12 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	}
 
 	@Deprecated // Use Below
-	public TFStructureComponentOld(StructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
+	public TFStructureComponentOld(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
 		super(type, i, new BoundingBox(x, y, z, x, y, z));
 		setFeature(feature);
 	}
 
-	public TFStructureComponentOld(StructurePieceType type, TFFeature feature, int i, BoundingBox box) {
+	public TFStructureComponentOld(StructurePieceType type, TFLandmark feature, int i, BoundingBox box) {
 		super(type, i, box);
 		setFeature(feature);
 	}
@@ -150,7 +150,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFTreasure treasureType, BoundingBox sbb) {
+	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFLootTables treasureType, BoundingBox sbb) {
 		this.placeTreasureAtCurrentPosition(world, x, y, z, treasureType, false, sbb);
 	}
 
@@ -159,7 +159,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFTreasure treasureType, boolean trapped, BoundingBox sbb) {
+	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
 		int dx = getWorldX(x, z);
 		int dy = getWorldY(y);
 		int dz = getWorldZ(x, z);
@@ -174,7 +174,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFTreasure treasureType, BoundingBox sbb) {
+	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFLootTables treasureType, BoundingBox sbb) {
 		this.placeTreasureRotated(world, x, y, z, facing, rotation, treasureType, false, sbb);
 	}
 
@@ -183,7 +183,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFTreasure treasureType, boolean trapped, BoundingBox sbb) {
+	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
 		if(facing == null) {
 			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
 			facing = Direction.NORTH;
@@ -198,7 +198,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		}
 	}
 
-	protected void manualTreaurePlacement(WorldGenLevel world, int x, int y, int z, Direction facing, TFTreasure treasureType, boolean trapped, BoundingBox sbb) {
+	protected void manualTreaurePlacement(WorldGenLevel world, int x, int y, int z, Direction facing, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
 		int lootx = getWorldX(x, z);
 		int looty = getWorldY(y);
 		int lootz = getWorldZ(x, z);
@@ -207,7 +207,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		treasureType.generateChestContents(world, lootPos);
 	}
 
-	protected void setDoubleLootChest(WorldGenLevel world, int x, int y, int z, int otherx, int othery, int otherz, Direction facing, TFTreasure treasureType, BoundingBox sbb, boolean trapped) {
+	protected void setDoubleLootChest(WorldGenLevel world, int x, int y, int z, int otherx, int othery, int otherz, Direction facing, TFLootTables treasureType, BoundingBox sbb, boolean trapped) {
 		if(facing == null) {
 			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
 			facing = Direction.NORTH;
@@ -260,8 +260,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 			SignBlockEntity teSign = (SignBlockEntity) world.getBlockEntity(pos);
 			if (teSign != null) {
-				teSign.setMessage(1, new TextComponent(string0));
-				teSign.setMessage(2, new TextComponent(string1));
+				teSign.setMessage(1, Component.literal(string0));
+				teSign.setMessage(2, Component.literal(string1));
 			}
 		}
 	}
@@ -416,7 +416,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	}
 
 	// [VanillaCopy] Keep pinned on signature of fillWithBlocksRandomly (though passing false for excludeAir)
-	protected void randomlyFillBlocksRotated(WorldGenLevel worldIn, BoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState blockstate1, BlockState blockstate2, Rotation rotation) {
+	protected void randomlyFillBlocksRotated(WorldGenLevel worldIn, BoundingBox boundingboxIn, RandomSource rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState blockstate1, BlockState blockstate2, Rotation rotation) {
 		Direction oldBase = fakeBaseMode(rotation);
 		final boolean minimumLightLevel = true;
 		generateMaybeBox(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false, minimumLightLevel);

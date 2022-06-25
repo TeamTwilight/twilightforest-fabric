@@ -2,7 +2,6 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 4.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -69,7 +68,8 @@
           "type": "minecraft:item",
           "name": "minecraft:black_wool"
         }
-      ]
+      ],
+      "rolls": 4.0
     }
   ]
 }

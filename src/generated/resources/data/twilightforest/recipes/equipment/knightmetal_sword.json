@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "#",
-    "#",
-    "X"
-  ],
   "key": {
     "#": {
       "tag": "c:ingots/knightmetal"
@@ -13,6 +8,11 @@
       "tag": "c:rods/wooden"
     }
   },
+  "pattern": [
+    "#",
+    "#",
+    "X"
+  ],
   "result": {
     "item": "twilightforest:knightmetal_sword"
   }

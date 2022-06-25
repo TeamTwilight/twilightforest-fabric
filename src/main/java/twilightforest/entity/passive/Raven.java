@@ -10,15 +10,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
+import twilightforest.init.TFSounds;
 
 public class Raven extends TinyBird {
 
 	public Raven(EntityType<? extends Raven> type, Level world) {
 		super(type, world);
-
-		// maybe this will help them move cuter?
-		this.maxUpStep = 1;
 	}
 
 	@Override
@@ -38,18 +35,23 @@ public class Raven extends TinyBird {
 	}
 
 	@Override
+	public float getStepHeight() {
+		return 1.0F;
+	}
+
+	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.RAVEN_CAW;
+		return TFSounds.RAVEN_CAW.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.RAVEN_SQUAWK;
+		return TFSounds.RAVEN_SQUAWK.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.RAVEN_SQUAWK;
+		return TFSounds.RAVEN_SQUAWK.get();
 	}
 
 	@Override
@@ -58,7 +60,7 @@ public class Raven extends TinyBird {
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 

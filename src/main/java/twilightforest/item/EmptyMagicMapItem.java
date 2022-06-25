@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -15,35 +15,35 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TFGenerationSettings;
 
 public class EmptyMagicMapItem extends ComplexItem {
-	protected EmptyMagicMapItem(Properties props) {
-		super(props);
+	public EmptyMagicMapItem(Properties properties) {
+		super(properties);
 	}
 
 	// [VanillaCopy] ItemEmptyMap.onItemRightClick, edits noted
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-		ItemStack emptyMapStack = playerIn.getItemInHand(handIn);
-		if (worldIn.isClientSide)
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		ItemStack emptyMapStack = player.getItemInHand(hand);
+		if (level.isClientSide())
 			return InteractionResultHolder.pass(emptyMapStack);
-		if(worldIn instanceof ServerLevel level && !TFGenerationSettings.usesTwilightChunkGenerator(level)) {
-			playerIn.displayClientMessage(new TranslatableComponent(TwilightForestMod.ID + ".ui.magicmap.fail"), true);
+		if(level instanceof ServerLevel server && !TFGenerationSettings.usesTwilightChunkGenerator(server)) {
+			player.displayClientMessage(Component.translatable(TwilightForestMod.ID + ".ui.magicmap.fail"), true);
 			return InteractionResultHolder.fail(emptyMapStack);
 		}
 		// TF - scale at 4
-		ItemStack newMapStack = MagicMapItem.setupNewMap(worldIn, Mth.floor(playerIn.getX()), Mth.floor(playerIn.getZ()), (byte) 4, true, false);
-		if (!playerIn.getAbilities().instabuild) {
+		ItemStack newMapStack = MagicMapItem.setupNewMap(level, Mth.floor(player.getX()), Mth.floor(player.getZ()), (byte) 4, true, false);
+		if (!player.getAbilities().instabuild) {
 			emptyMapStack.shrink(1);
 		}
 
 		if (emptyMapStack.isEmpty()) {
 			return InteractionResultHolder.success(newMapStack);
 		} else {
-			if (!playerIn.getInventory().add(newMapStack.copy())) {
-				playerIn.drop(newMapStack, false);
+			if (!player.getInventory().add(newMapStack.copy())) {
+				player.drop(newMapStack, false);
 			}
 
-			playerIn.awardStat(Stats.ITEM_USED.get(this));
-			playerIn.level.playSound(null, playerIn, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, playerIn.getSoundSource(), 1.0F, 1.0F);
+			player.awardStat(Stats.ITEM_USED.get(this));
+			player.getLevel().playSound(null, player, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, player.getSoundSource(), 1.0F, 1.0F);
 			return InteractionResultHolder.success(emptyMapStack);
 		}
 	}

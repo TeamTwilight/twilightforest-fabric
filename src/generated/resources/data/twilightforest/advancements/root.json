@@ -1,32 +1,40 @@
 {
+  "criteria": {
+    "in_tf": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "make_portal": {
+      "conditions": {},
+      "trigger": "twilightforest:make_tf_portal"
+    }
+  },
   "display": {
-    "icon": {
-      "item": "twilightforest:twilight_portal_miniature_structure"
-    },
-    "title": {
-      "translate": "itemGroup.twilightforest"
-    },
+    "announce_to_chat": false,
+    "background": "twilightforest:textures/block/mazestone_large_brick.png",
     "description": {
       "translate": "advancement.twilightforest.root.desc"
     },
     "frame": "task",
-    "show_toast": true,
-    "announce_to_chat": false,
     "hidden": false,
-    "background": "twilightforest:textures/block/mazestone_large_brick.png"
-  },
-  "criteria": {
-    "in_tf": {
-      "trigger": "minecraft:location",
-      "conditions": {
-        "location": {
-          "dimension": "twilightforest:twilight_forest"
-        }
-      }
+    "icon": {
+      "item": "twilightforest:twilight_portal_miniature_structure"
     },
-    "make_portal": {
-      "trigger": "twilightforest:make_tf_portal",
-      "conditions": {}
+    "show_toast": true,
+    "title": {
+      "translate": "itemGroup.twilightforest"
     }
   },
   "requirements": [

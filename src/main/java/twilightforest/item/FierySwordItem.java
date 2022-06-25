@@ -5,10 +5,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,15 +17,14 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.world.phys.EntityHitResult;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class FierySwordItem extends SwordItem implements CustomEnchantingBehaviorItem {
 
-	public FierySwordItem(Tier toolMaterial, Properties props) {
-		super(toolMaterial, 3, -2.4F, props);
+	public FierySwordItem(Tier toolMaterial, Properties properties) {
+		super(toolMaterial, 3, -2.4F, properties);
 	}
 
 	@Override
@@ -60,18 +55,10 @@ public class FierySwordItem extends SwordItem implements CustomEnchantingBehavio
 		return result;
 	}
 
-	//we have to set the entity on fire early in order to actually cook the food
-	public static InteractionResult setFireBeforeDeath(Player player, Level world, InteractionHand hand, Entity entity, @Nullable EntityHitResult hitResult) {
-		if(entity instanceof LivingEntity living && living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) && !living.fireImmune()) {
-			living.setSecondsOnFire(1);
-		}
-		return InteractionResult.PASS;
-	}
-
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		tooltip.add(new TranslatableComponent(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(getDescriptionId() + ".tooltip").withStyle(ChatFormatting.GRAY));
 	}
 }

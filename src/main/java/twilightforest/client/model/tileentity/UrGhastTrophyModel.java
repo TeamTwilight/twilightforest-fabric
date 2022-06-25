@@ -1,7 +1,5 @@
 package twilightforest.client.model.tileentity;
 
-import java.util.Random;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -16,7 +14,7 @@ import twilightforest.TwilightForestMod;
 
 public class UrGhastTrophyModel extends GenericTrophyModel {
 
-	public ModelPart body;
+	public final ModelPart body;
 	private final ModelPart[][] tentacles = new ModelPart[9][3];
 	
 	public UrGhastTrophyModel(ModelPart part) {

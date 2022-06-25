@@ -2,20 +2,19 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": 4.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 20.0,
-                "max": 56.0
+                "max": 56.0,
+                "min": 20.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "twilightforest:red_thread"
@@ -24,13 +23,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 9.0
+                "max": 9.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:iron_ingot"
@@ -39,13 +38,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 5.0
+                "max": 5.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "minecraft:emerald"
@@ -54,13 +53,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 9.0
+                "max": 9.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "twilightforest:ironwood_ingot"
@@ -69,13 +68,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "twilightforest:maze_wafer"
@@ -110,21 +109,21 @@
           ],
           "name": "minecraft:potion"
         }
-      ]
+      ],
+      "rolls": 4.0
     },
     {
-      "rolls": 2.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:infinity": 1,
                 "minecraft:punch": 2
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "minecraft:bow"
@@ -133,11 +132,11 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
-                "minecraft:power": 3,
-                "minecraft:flame": 1
-              }
+                "minecraft:flame": 1,
+                "minecraft:power": 3
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "minecraft:bow"
@@ -146,10 +145,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:enchant_randomly",
               "enchantments": [
                 "twilightforest:fire_react"
-              ]
+              ],
+              "function": "minecraft:enchant_randomly"
             }
           ],
           "name": "minecraft:book"
@@ -158,13 +157,13 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 12.0
+                "max": 12.0,
+                "min": 1.0
               },
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "twilightforest:steeleaf_ingot"
@@ -173,11 +172,11 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:efficiency": 4,
                 "minecraft:unbreaking": 2
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "twilightforest:steeleaf_shovel"
@@ -186,10 +185,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:efficiency": 5
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "twilightforest:steeleaf_axe"
@@ -198,10 +197,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:protection": 3
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "twilightforest:steeleaf_chestplate"
@@ -210,10 +209,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:protection": 2
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "twilightforest:steeleaf_boots"
@@ -222,10 +221,10 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:fire_protection": 4
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "twilightforest:steeleaf_leggings"
@@ -234,18 +233,18 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:respiration": 3
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "twilightforest:steeleaf_helmet"
         }
-      ]
+      ],
+      "rolls": 2.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -260,11 +259,11 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
-                "minecraft:silk_touch": 1,
-                "minecraft:efficiency": 4
-              }
+                "minecraft:efficiency": 4,
+                "minecraft:silk_touch": 1
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "twilightforest:steeleaf_pickaxe"
@@ -273,11 +272,11 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:knockback": 2,
                 "minecraft:sharpness": 4
-              }
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "twilightforest:steeleaf_sword"
@@ -286,11 +285,11 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
-                "minecraft:fire_aspect": 2,
-                "minecraft:bane_of_arthropods": 5
-              }
+                "minecraft:bane_of_arthropods": 5,
+                "minecraft:fire_aspect": 2
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "twilightforest:steeleaf_sword"
@@ -299,17 +298,18 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "twilightforest:enchant",
               "enchantments": {
                 "minecraft:efficiency": 4,
-                "minecraft:unbreaking": 3,
-                "minecraft:fortune": 2
-              }
+                "minecraft:fortune": 2,
+                "minecraft:unbreaking": 3
+              },
+              "function": "twilightforest:enchant"
             }
           ],
           "name": "twilightforest:mazebreaker_pickaxe"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

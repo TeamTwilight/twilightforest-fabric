@@ -17,7 +17,7 @@ import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
 import twilightforest.entity.TFPart;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
 public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>> extends EntityRenderer<T> {

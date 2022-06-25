@@ -1,30 +1,30 @@
 {
+  "type": "twilightforest:mycelium_blob",
   "config": {
-    "state": {
-      "Name": "twilightforest:uberous_soil"
-    },
+    "half_height": 1,
     "radius": {
       "type": "minecraft:uniform",
       "value": {
-        "min_inclusive": 4,
-        "max_inclusive": 8
+        "max_inclusive": 8,
+        "min_inclusive": 4
       }
     },
-    "half_height": 1,
-    "targets": [
-      {
-        "Properties": {
-          "snowy": "false"
-        },
-        "Name": "minecraft:podzol"
+    "state_provider": {
+      "fallback": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "twilightforest:uberous_soil"
+        }
       },
-      {
-        "Name": "minecraft:coarse_dirt"
-      },
-      {
-        "Name": "minecraft:dirt"
-      }
-    ]
-  },
-  "type": "twilightforest:mycelium_blob"
+      "rules": []
+    },
+    "target": {
+      "type": "minecraft:matching_blocks",
+      "blocks": [
+        "minecraft:podzol",
+        "minecraft:coarse_dirt",
+        "minecraft:dirt"
+      ]
+    }
+  }
 }

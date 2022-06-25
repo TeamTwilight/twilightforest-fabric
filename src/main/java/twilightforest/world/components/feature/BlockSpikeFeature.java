@@ -2,6 +2,7 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -13,7 +14,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.FeatureLogic;
@@ -21,7 +21,6 @@ import twilightforest.world.components.feature.config.SpikeConfig;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class BlockSpikeFeature extends Feature<SpikeConfig> {
     public BlockSpikeFeature(Codec<SpikeConfig> codec) {
@@ -30,15 +29,15 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
 
     @Override
     public boolean place(FeaturePlaceContext<SpikeConfig> context) {
-        Random random = context.random();
+        RandomSource random = context.random();
         return startSpike(context.level(), context.origin(), context.config(), random);
     }
 
-    public static boolean startSpike(WorldGenLevel level, BlockPos startPos, SpikeConfig config, Random random) {
+    public static boolean startSpike(WorldGenLevel level, BlockPos startPos, SpikeConfig config, RandomSource random) {
         return startSpike(level, startPos, config.blockState, config.lengthBounds.sample(random), config.lengthBounds.getMinValue(), config.tipClearance.sample(random), config.hang, random);
     }
 
-    public static boolean startSpike(WorldGenLevel level, BlockPos startPos, BlockStateProvider blockState, int length, int lengthMinimum, int clearance, boolean hang, Random random) {
+    public static boolean startSpike(WorldGenLevel level, BlockPos startPos, BlockStateProvider blockState, int length, int lengthMinimum, int clearance, boolean hang, RandomSource random) {
         BlockPos.MutableBlockPos movingPos = startPos.mutable();
         int clearedLength = 0;
         int dY = hang ? -1 : 1;
@@ -73,7 +72,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
         return makeSpike(level, startPos, blockState, finalLength, dY, random, hang);
     }
 
-    private static boolean makeSpike(WorldGenLevel level, BlockPos startPos, BlockStateProvider blockState, int length, int dY, Random random, boolean hang) {
+    private static boolean makeSpike(WorldGenLevel level, BlockPos startPos, BlockStateProvider blockState, int length, int dY, RandomSource random, boolean hang) {
         int diameter = (int) (length / 4.5F); // diameter of the base
 
         //only place spikes on solid ground, not on the tops of trees
@@ -116,7 +115,7 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
      * <p>
      * Diamonds and lapis only appear in size 3 and larger caves.
      */
-    public static SpikeConfig makeRandomOreStalactite(Random rand, int hillSize) {
+    public static SpikeConfig makeRandomOreStalactite(RandomSource rand, int hillSize) {
         if (hillSize >= 3 || hillSize >= 2 && rand.nextInt(5) == 0) {
             return WeightedRandom.getRandomItem(rand, largeHillStalactites).get().stalactite;
         }
@@ -200,6 +199,5 @@ public class BlockSpikeFeature extends Feature<SpikeConfig> {
             return;
         }
         addDefaultStalactites();
-        IMCHandler.getStalactites().forEach(BlockSpikeFeature::registerStalactite);
     }
 }

@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     "twilightforest:hollow_oak_log_climbable",
     "twilightforest:hollow_spruce_log_climbable",
@@ -9,6 +8,7 @@
     "twilightforest:hollow_dark_oak_log_climbable",
     "twilightforest:hollow_crimson_stem_climbable",
     "twilightforest:hollow_warped_stem_climbable",
+    "twilightforest:hollow_vangrove_log_climbable",
     "twilightforest:hollow_twilight_oak_log_climbable",
     "twilightforest:hollow_canopy_log_climbable",
     "twilightforest:hollow_mangrove_log_climbable",

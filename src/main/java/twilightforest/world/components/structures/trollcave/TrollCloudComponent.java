@@ -2,16 +2,17 @@ package twilightforest.world.components.structures.trollcave;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class TrollCloudComponent extends TFStructureComponentOld {
 
@@ -19,7 +20,7 @@ public class TrollCloudComponent extends TFStructureComponentOld {
 	private final int height;
 
 	public TrollCloudComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TrollCavePieces.TFTCloud, nbt);
+		super(TFStructurePieceTypes.TFTCloud.get(), nbt);
 		this.size = nbt.getInt("size");
 		this.height = nbt.getInt("height");
 	}
@@ -32,7 +33,7 @@ public class TrollCloudComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeCloud(world, sbb, 0, 0, 0, this.size - 1, 6, this.size - 1);
 	}
 

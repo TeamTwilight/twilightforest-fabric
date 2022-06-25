@@ -1,32 +1,7 @@
 {
   "parent": "twilightforest:progress_naga",
-  "display": {
-    "icon": {
-      "item": "twilightforest:naga_chestplate",
-      "nbt": "{Damage:0}"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.naga_armors"
-    },
-    "description": {
-      "translate": "advancement.twilightforest.naga_armors.desc",
-      "with": [
-        {
-          "translate": "item.twilightforest.naga_scale"
-        }
-      ]
-    },
-    "frame": "challenge",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
-  "rewards": {
-    "experience": 25
-  },
   "criteria": {
     "armor": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -40,12 +15,37 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.twilightforest.naga_armors.desc",
+      "with": [
+        {
+          "translate": "item.twilightforest.naga_scale"
+        }
+      ]
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:naga_chestplate",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.naga_armors"
     }
   },
   "requirements": [
     [
       "armor"
     ]
-  ]
+  ],
+  "rewards": {
+    "experience": 25
+  }
 }

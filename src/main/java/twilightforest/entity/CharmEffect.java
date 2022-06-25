@@ -1,32 +1,34 @@
 package twilightforest.entity;
 
+import net.fabricmc.api.EnvironmentInterface;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.ItemSupplier;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
+@EnvironmentInterface(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class CharmEffect extends Entity implements ItemSupplier {
 	private static final EntityDataAccessor<Integer> DATA_OWNER = SynchedEntityData.defineId(CharmEffect.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<ItemStack> DATA_ITEMID = SynchedEntityData.defineId(CharmEffect.class, EntityDataSerializers.ITEM_STACK);
-	private static final double DISTANCE = 0.75;
+	private static final double DISTANCE = 0.75D;
 	private double interpTargetX;
 	private double interpTargetY;
 	private double interpTargetZ;
@@ -49,8 +51,8 @@ public class CharmEffect extends Entity implements ItemSupplier {
 		this.moveTo(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), owner.getYRot(), owner.getXRot());
 
 		Vec3 look = new Vec3(DISTANCE, 0, 0);
-		double x = getX() + (look.x * DISTANCE);
-		double z = getZ() + (look.z * DISTANCE);
+		double x = getX() + (look.x() * DISTANCE);
+		double z = getZ() + (look.z() * DISTANCE);
 		this.setPos(x, this.getY(), z);
 	}
 
@@ -74,24 +76,23 @@ public class CharmEffect extends Entity implements ItemSupplier {
 			this.setRot(this.getYRot(), this.getXRot());
 		}
 
-		LivingEntity orbiting = getOwner();
+		LivingEntity orbiting = this.getOwner();
 
 		if (orbiting != null) {
-			float rotation = this.tickCount / 10.0F + offset;
+			float rotation = this.tickCount / 10.0F + this.offset;
 			Vec3 look = new Vec3(DISTANCE, 0, 0).yRot(rotation);
-			this.moveTo(orbiting.getX() + look.x, orbiting.getY() + orbiting.getEyeHeight(), orbiting.getZ() + look.z, orbiting.getYRot(), orbiting.getXRot());
+			this.moveTo(orbiting.getX() + look.x(), orbiting.getY() + orbiting.getEyeHeight(), orbiting.getZ() + look.z(), orbiting.getYRot(), orbiting.getXRot());
 		}
 
 		if (!this.getItemID().isEmpty()) {
-			double dx = getX() + 0.25 * (random.nextDouble() - random.nextDouble());
-			double dy = getY() + 0.25 * (random.nextDouble() - random.nextDouble());
-			double dz = getZ() + 0.25 * (random.nextDouble() - random.nextDouble());
+			double dx = getX() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
+			double dy = getY() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
+			double dz = getZ() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
 
-			level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
+			this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
 		}
 
-		if (!this.level.isClientSide
-				&& (this.tickCount > 200 || (orbiting != null && !orbiting.isAlive()))) {
+		if (!this.getLevel().isClientSide() && (this.tickCount > 200 || (orbiting != null && !orbiting.isAlive()))) {
 			this.discard();
 		}
 	}
@@ -114,39 +115,41 @@ public class CharmEffect extends Entity implements ItemSupplier {
 
 	@Override
 	protected void defineSynchedData() {
-		entityData.define(DATA_ITEMID, ItemStack.EMPTY);
-		entityData.define(DATA_OWNER, -1);
+		this.entityData.define(DATA_ITEMID, ItemStack.EMPTY);
+		this.entityData.define(DATA_OWNER, -1);
 	}
 
 	public void setOwner(LivingEntity owner) {
-		entityData.set(DATA_OWNER, owner.getId());
+		this.entityData.set(DATA_OWNER, owner.getId());
 	}
 
 	@Nullable
 	public LivingEntity getOwner() {
-		Entity e = this.level.getEntity(entityData.get(DATA_OWNER));
-		if (e instanceof LivingEntity)
-			return (LivingEntity) e;
+		Entity e = this.getLevel().getEntity(this.entityData.get(DATA_OWNER));
+		if (e instanceof LivingEntity living)
+			return living;
 		else return null;
 	}
 
 	public ItemStack getItemID() {
-		return entityData.get(DATA_ITEMID);
+		return this.entityData.get(DATA_ITEMID);
 	}
 
 	public void setItemID(Item item) {
-		entityData.set(DATA_ITEMID, new ItemStack(item));
+		this.entityData.set(DATA_ITEMID, new ItemStack(item));
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag cmp) {}
+	protected void readAdditionalSaveData(CompoundTag cmp) {
+	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag cmp) {}
+	protected void addAdditionalSaveData(CompoundTag cmp) {
+	}
 
 	@Nonnull
 	@Override
 	public ItemStack getItem() {
-		return getItemID();
+		return this.getItemID();
 	}
 }

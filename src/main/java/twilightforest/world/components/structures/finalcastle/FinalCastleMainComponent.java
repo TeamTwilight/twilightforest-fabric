@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.finalcastle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,23 +17,24 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
+
 
 public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 	public FinalCastleMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(FinalCastlePieces.TFFCMain, nbt);
+		super(TFStructurePieceTypes.TFFCMain.get(), nbt);
 	}
 
-	public FinalCastleMainComponent(TFFeature feature, Random rand, int i, int x, int y, int z) {
-		super(FinalCastlePieces.TFFCMain, feature, i, x, y, z);
+	public FinalCastleMainComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFFCMain.get(), feature, i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
 
@@ -41,7 +43,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH);
 
-		BlockPos cc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4);
+		BlockPos cc = TFLandmark.getNearestCenterXYZ(x >> 4, z >> 4);
 
 		int cx = (x >> 8) << 8;
 		int cz = (z >> 8) << 8;
@@ -56,7 +58,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		// add foundation
 		FinalCastleFoundation48Component foundation = new FinalCastleFoundation48Component(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
@@ -130,7 +132,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	/**
 	 * Build a side tower, then tell it to start building towards the destination
 	 */
-	private void buildTowerMaze(StructurePieceAccessor list, Random rand, int x, int y, int z, int howFar, Direction direction, BlockState type, BlockPos dest) {
+	private void buildTowerMaze(StructurePieceAccessor list, RandomSource rand, int x, int y, int z, int howFar, Direction direction, BlockState type, BlockPos dest) {
 		if (list instanceof StructurePiecesBuilder start) {
 			boolean complete = false;
 			int iterations = 0;
@@ -141,7 +143,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 				// build
 				BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
-				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(FinalCastlePieces.TFFCSiTo, getFeatureType(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
+				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), getFeatureType(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
 
 				// add bridge
 				BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
@@ -215,7 +217,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// walls
 		generateBox(world, sbb, 0, 0, 0, 48, 40, 48, false, rand, deco.randomBlocks);
 

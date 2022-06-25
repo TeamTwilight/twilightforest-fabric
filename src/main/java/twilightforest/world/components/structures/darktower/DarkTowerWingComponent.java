@@ -3,9 +3,10 @@ package twilightforest.world.components.structures.darktower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,24 +19,24 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.block.TFBlocks;
-import twilightforest.entity.TFEntities;
-import twilightforest.loot.TFTreasure;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
+import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TFStructureDecorator;
 import twilightforest.world.components.structures.lichtower.*;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class DarkTowerWingComponent extends TowerWingComponent {
 	protected boolean keyTower = false;
 	protected ArrayList<EnumDarkTowerDoor> openingTypes = new ArrayList<>();
 
 	public DarkTowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(DarkTowerPieces.TFDTWin, nbt);
+		this(TFStructurePieceTypes.TFDTWin.get(), nbt);
 	}
 
 	public DarkTowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -45,7 +46,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		this.readDoorsTypesFromArray(nbt.getIntArray("doorTypeInts"));
 	}
 
-	protected DarkTowerWingComponent(StructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+	protected DarkTowerWingComponent(StructurePieceType piece, TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
@@ -83,7 +84,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -126,7 +127,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Attach a roof to this tower.
 	 */
 	@Override
-	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		int index = this.getGenDepth();
 
 		TowerRoofComponent roof = switch (rand.nextInt(5)) {
@@ -142,7 +143,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	protected void makeAttachedRoof(StructurePieceAccessor list, Random rand) {
+	protected void makeAttachedRoof(StructurePieceAccessor list, RandomSource rand) {
 		int index = this.getGenDepth();
 		TowerRoofComponent roof;
 
@@ -175,7 +176,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Add a beard to this structure.  There is only one type of beard.
 	 */
 	@Override
-	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		DarkTowerBeardComponent beard = new DarkTowerBeardComponent(getFeatureType(), this.getGenDepth() + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
@@ -185,7 +186,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Make another wing just like this one
 	 */
 	@Override
-	public boolean makeTowerWing(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// kill too-small towers
 		if (wingHeight < 8) {
 			return false;
@@ -199,7 +200,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 			return false;
 		}
 
-		DarkTowerBridgeComponent bridge = new DarkTowerBridgeComponent(DarkTowerPieces.TFDTBri, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		DarkTowerBridgeComponent bridge = new DarkTowerBridgeComponent(TFStructurePieceTypes.TFDTBri.get(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(bridge.getBoundingBox());
 		if (intersect == null || intersect == this) {
@@ -217,7 +218,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	protected boolean makeTowerBalcony(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, Rotation rotation) {
+	protected boolean makeTowerBalcony(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
@@ -235,8 +236,8 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// make walls
 		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
@@ -284,7 +285,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Add a destruction burst
 	 */
-	protected void destroyTower(WorldGenLevel world, Random decoRNG, int x, int y, int z, int amount, BoundingBox sbb) {
+	protected void destroyTower(WorldGenLevel world, RandomSource decoRNG, int x, int y, int z, int amount, BoundingBox sbb) {
 		//makeNetherburst(world, decoRNG, 16, 100, 40, x, y, z, 0, sbb);
 
 		int initialRadius = decoRNG.nextInt(amount) + amount;
@@ -301,9 +302,9 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	private void netherTransformBlob(WorldGenLevel world, Random inRand, int sx, int sy, int sz, int rad, BoundingBox sbb) {
+	private void netherTransformBlob(WorldGenLevel world, RandomSource inRand, int sx, int sy, int sz, int rad, BoundingBox sbb) {
 
-		Random rand = new Random(inRand.nextLong());
+		RandomSource rand = RandomSource.create(inRand.nextLong());
 
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
@@ -337,7 +338,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		}
 	}
 
-	private void testAndChangeToNetherrack(WorldGenLevel world, Random rand, int x, int y, int z, BoundingBox sbb) {
+	private void testAndChangeToNetherrack(WorldGenLevel world, RandomSource rand, int x, int y, int z, BoundingBox sbb) {
 		if (this.getBlock(world, x, y, z, sbb).getBlock() != Blocks.AIR) {
 			this.placeBlock(world, Blocks.NETHERRACK.defaultBlockState(), x, y, z, sbb);
 
@@ -386,7 +387,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Add a bunch of random half floors
 	 */
 	@SuppressWarnings("fallthrough")
-	private void addHalfFloors(WorldGenLevel world, Random rand, BoundingBox sbb, int bottom, int top) {
+	private void addHalfFloors(WorldGenLevel world, RandomSource rand, BoundingBox sbb, int bottom, int top) {
 
 		int spacing = 4;//this.size > 9 ? 4 : 3;
 		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY() + bottom) % 3];
@@ -480,10 +481,10 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 		setBlockStateRotated(world, myDeco.platformState, x, y + 1, z, rotation, sbb);
 
-		placeTreasureAtCurrentPosition(world, x, y + 2, z, this.isKeyTower() ? TFTreasure.DARKTOWER_KEY : TFTreasure.DARKTOWER_CACHE, sbb);
+		placeTreasureAtCurrentPosition(world, x, y + 2, z, this.isKeyTower() ? TFLootTables.DARKTOWER_KEY : TFLootTables.DARKTOWER_CACHE, sbb);
 	}
 
-	private void decorateSpawner(WorldGenLevel world, Random rand, BoundingBox sbb, Rotation rotation, int y) {
+	private void decorateSpawner(WorldGenLevel world, RandomSource rand, BoundingBox sbb, Rotation rotation, int y) {
 		int x = this.size > 9 ? 4 : 3;
 		int z = this.size > 9 ? 5 : 4;
 
@@ -642,7 +643,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		setBlockStateRotated(world, deco.accentState, x + 1, y + 3, z - 2, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.defaultBlockState(), AttachFace.WALL, Direction.WEST, false), x + 2, y + 3, z - 2, rotation, sbb);
 
-		placeTreasureRotated(world, x + 1, y + 2, z + 1, getOrientation(), rotation, TFTreasure.DARKTOWER_CACHE, sbb);
+		placeTreasureRotated(world, x + 1, y + 2, z + 1, getOrientation(), rotation, TFLootTables.DARKTOWER_CACHE, sbb);
 	}
 
 	/**
@@ -713,7 +714,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Add a bunch of timber beams
 	 */
-	protected void addSmallTimberBeams(WorldGenLevel world, Random rand, BoundingBox sbb, int bottom, int top) {
+	protected void addSmallTimberBeams(WorldGenLevel world, RandomSource rand, BoundingBox sbb, int bottom, int top) {
 
 		int spacing = 4;
 		Rotation rotation = Rotation.NONE;
@@ -776,7 +777,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Make a lattice of log blocks
 	 */
-	protected void makeSmallTimberBeams(WorldGenLevel world, Random rand, BoundingBox sbb, Rotation rotation, int y, boolean bottom) {
+	protected void makeSmallTimberBeams(WorldGenLevel world, RandomSource rand, BoundingBox sbb, Rotation rotation, int y, boolean bottom) {
 		BlockState beamID = TFBlocks.DARK_LOG.get().defaultBlockState();
 		BlockState beamStateNS = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 		BlockState beamStateUD = beamID.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
@@ -816,7 +817,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Utility function to pick a random number between two values, excluding three specified values
 	 */
-	protected int pickBetweenExcluding(int low, int high, Random rand, int k, int l, int m) {
+	protected int pickBetweenExcluding(int low, int high, RandomSource rand, int k, int l, int m) {
 		int result;
 
 		do {
@@ -830,7 +831,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Pick one of the three specified values at random
 	 */
-	protected int pickFrom(Random rand, int i, int j, int k) {
+	protected int pickFrom(RandomSource rand, int i, int j, int k) {
 		return switch (rand.nextInt(3)) {
 			case 1 -> j;
 			case 2 -> k;
@@ -856,7 +857,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 *
 	 * @param rand
 	 */
-	protected void makeEncasedWalls(WorldGenLevel world, Random rand, BoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+	protected void makeEncasedWalls(WorldGenLevel world, RandomSource rand, BoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 
 		for (int x = minX; x <= maxX; x++) {
 			for (int y = minY; y <= maxY; y++) {
@@ -911,7 +912,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 * Gets a random position in the specified direction that connects to a floor currently in the tower.
 	 */
 	@Override
-	public int[] getValidOpening(Random rand, Rotation direction) {
+	public int[] getValidOpening(RandomSource rand, Rotation direction) {
 		int verticalOffset = this.size == 19 ? 5 : 4;
 
 		// for directions 0 or 2, the wall lies along the z axis

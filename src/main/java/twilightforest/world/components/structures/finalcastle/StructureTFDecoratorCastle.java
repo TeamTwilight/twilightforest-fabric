@@ -1,7 +1,7 @@
 package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureDecorator;
 
 public class StructureTFDecoratorCastle extends TFStructureDecorator {

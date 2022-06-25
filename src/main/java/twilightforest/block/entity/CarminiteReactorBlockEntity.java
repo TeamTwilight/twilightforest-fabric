@@ -3,6 +3,7 @@ package twilightforest.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Explosion;
@@ -11,13 +12,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TFSounds;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFSounds;
 import twilightforest.block.CarminiteReactorBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.entity.TFEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.CarminiteGhastling;
-import twilightforest.util.TFDamageSources;
+import twilightforest.init.TFDamageSources;
 
 import java.util.Random;
 
@@ -33,7 +35,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 	public CarminiteReactorBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.CARMINITE_REACTOR.get(), pos, state);
-		Random rand = new Random();
+		RandomSource rand = RandomSource.create();
 
 		// determine the two smaller bursts
 		this.secX = 3 * (rand.nextBoolean() ? 1 : -1);
@@ -56,7 +58,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 		if(state.getValue(CarminiteReactorBlock.ACTIVE)) {
 			te.counter++;
 
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 
 				// every 2 seconds for 10 seconds, destroy a new radius
 				int offset = 10;
@@ -149,7 +151,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 			} else {
 				if (te.counter % 5 == 0 && te.counter <= 250) {
-					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.REACTOR_AMBIENT, SoundSource.BLOCKS, te.counter / 100F, te.counter / 100F, false);
+					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.REACTOR_AMBIENT.get(), SoundSource.BLOCKS, te.counter / 100F, te.counter / 100F, false);
 				}
 			}
 		}
@@ -157,10 +159,10 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 
 	private void spawnGhastNear(int x, int y, int z) {
-		CarminiteGhastling ghast = TFEntities.CARMINITE_GHASTLING.get().create(level);
-		ghast.moveTo(x - 1.5 + level.random.nextFloat() * 3.0, y - 1.5 + level.random.nextFloat() * 3.0, z - 1.5 + level.random.nextFloat() * 3.0, level.random.nextFloat() * 360F, 0.0F);
+		CarminiteGhastling ghast = TFEntities.CARMINITE_GHASTLING.get().create(this.getLevel());
+		ghast.moveTo(x - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, y - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, z - 1.5 + level.random.nextFloat() * 3.0, level.random.nextFloat() * 360F, 0.0F);
 		ghast.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 200));
-		level.addFreshEntity(ghast);
+		this.getLevel().addFreshEntity(ghast);
 	}
 
 	private void drawBlob(BlockPos pos, int rad, BlockState state, int fuzz, boolean netherTransform) {
@@ -187,14 +189,14 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 					if (dist == rad && !(dx == 0 && dy == 0 && dz == 0)) {
 						// do eight at a time for easiness!
 						switch (fuzzX) {
-							case 0 -> transformBlock(pos.offset(dx, dy, dz), state, fuzzY, netherTransform);
-							case 1 -> transformBlock(pos.offset(dx, dy, -dz), state, fuzzY, netherTransform);
-							case 2 -> transformBlock(pos.offset(-dx, dy, dz), state, fuzzY, netherTransform);
-							case 3 -> transformBlock(pos.offset(-dx, dy, -dz), state, fuzzY, netherTransform);
-							case 4 -> transformBlock(pos.offset(dx, -dy, dz), state, fuzzY, netherTransform);
-							case 5 -> transformBlock(pos.offset(dx, -dy, -dz), state, fuzzY, netherTransform);
-							case 6 -> transformBlock(pos.offset(-dx, -dy, dz), state, fuzzY, netherTransform);
-							case 7 -> transformBlock(pos.offset(-dx, -dy, -dz), state, fuzzY, netherTransform);
+							case 0 -> this.transformBlock(pos.offset(dx, dy, dz), state, fuzzY, netherTransform);
+							case 1 -> this.transformBlock(pos.offset(dx, dy, -dz), state, fuzzY, netherTransform);
+							case 2 -> this.transformBlock(pos.offset(-dx, dy, dz), state, fuzzY, netherTransform);
+							case 3 -> this.transformBlock(pos.offset(-dx, dy, -dz), state, fuzzY, netherTransform);
+							case 4 -> this.transformBlock(pos.offset(dx, -dy, dz), state, fuzzY, netherTransform);
+							case 5 -> this.transformBlock(pos.offset(dx, -dy, -dz), state, fuzzY, netherTransform);
+							case 6 -> this.transformBlock(pos.offset(-dx, -dy, dz), state, fuzzY, netherTransform);
+							case 7 -> this.transformBlock(pos.offset(-dx, -dy, -dz), state, fuzzY, netherTransform);
 						}
 					}
 				}
@@ -203,7 +205,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 	}
 
 	private void transformBlock(BlockPos pos, BlockState state, int fuzz, boolean netherTransform) {
-		BlockState stateThere = level.getBlockState(pos);
+		BlockState stateThere = this.getLevel().getBlockState(pos);
 
 		if (stateThere.getBlock() != Blocks.AIR && (stateThere.is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) || stateThere.getDestroySpeed(level, pos) == -1)) {
 			// don't destroy unbreakable stuff
@@ -212,33 +214,33 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 		if (fuzz == 0 && stateThere.getBlock() != Blocks.AIR) {
 			// make pop thing for original block
-			level.levelEvent(2001, pos, Block.getId(stateThere));
+			this.getLevel().levelEvent(2001, pos, Block.getId(stateThere));
 		}
 
 		if (netherTransform && stateThere.getBlock() != Blocks.AIR) {
 			BlockState ore = Registry.BLOCK.getTag(BlockTagGenerator.CARMINITE_REACTOR_ORES)
-					.flatMap(tag -> tag.getRandomElement(level.random))
+					.flatMap(tag -> tag.getRandomElement(this.getLevel().getRandom()))
 					.map(holder -> holder.value().defaultBlockState())
 					.orElse(Blocks.NETHERRACK.defaultBlockState());
 
-			level.setBlock(pos, (level.random.nextInt(8) == 0 ? ore : Blocks.NETHERRACK.defaultBlockState()), 3);
+			this.getLevel().setBlock(pos, (this.getLevel().getRandom().nextInt(8) == 0 ? ore : Blocks.NETHERRACK.defaultBlockState()), 3);
 			// fire on top?
-			if (level.isEmptyBlock(pos.above()) && fuzz % 3 == 0) {
-				level.setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), 3);
+			if (this.getLevel().isEmptyBlock(pos.above()) && fuzz % 3 == 0) {
+				this.getLevel().setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), 3);
 			}
 		} else {
-			level.setBlock(pos, state, 3);
+			this.getLevel().setBlock(pos, state, 3);
 		}
 	}
 
 	private void createFakeBlock(BlockPos pos, BlockState state) {
-		BlockState stateThere = level.getBlockState(pos);
+		BlockState stateThere = this.getLevel().getBlockState(pos);
 
 		// don't destroy unbreakable stuff
 		if (stateThere.getBlock() != Blocks.AIR &&
 				!(stateThere.is(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) ||
-						(stateThere.getDestroySpeed(level, pos) == -1))) {
-			level.setBlock(pos, state, 2);
+						(stateThere.getDestroySpeed(this.getLevel(), pos) == -1))) {
+			this.getLevel().setBlock(pos, state, 2);
 		}
 	}
 }

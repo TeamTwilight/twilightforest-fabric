@@ -1,7 +1,0 @@
-{
-  "config": {},
-  "biomes": "#twilightforest:valid_knight_stronghold_biomes",
-  "adapt_noise": true,
-  "spawn_overrides": {},
-  "type": "twilightforest:knight_stronghold"
-}

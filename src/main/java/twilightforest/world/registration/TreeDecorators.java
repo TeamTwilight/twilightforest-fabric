@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import twilightforest.block.FireflyBlock;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.feature.trees.treeplacers.TreeRootsDecorator;
 import twilightforest.world.components.feature.trees.treeplacers.TrunkSideDecorator;
 

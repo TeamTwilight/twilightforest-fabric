@@ -17,7 +17,7 @@ public class BookshelfBlock extends Block implements EnchantmentBonusBlock {
 	}
 
 	@Override
-	public float getEnchantPowerBonus(BlockState state, LevelReader world, BlockPos pos) {
+	public float getEnchantPowerBonus(BlockState state, LevelReader reader, BlockPos pos) {
 		return 1.0F;
 	}
 

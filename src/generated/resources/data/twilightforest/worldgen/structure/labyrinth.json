@@ -1,0 +1,84 @@
+{
+  "type": "twilightforest:legacy_landmark",
+  "adjust_structure_elevation": false,
+  "advancements_required": [
+    "twilightforest:progress_lich"
+  ],
+  "allow_biome_surface_decorations": true,
+  "allow_biome_underground_decorations": false,
+  "ambient_spawns": [],
+  "biomes": "#twilightforest:valid_labyrinth_biomes",
+  "hint_item": {
+    "Count": 1,
+    "id": "minecraft:written_book",
+    "tag": {
+      "author": "A Forgotten Explorer",
+      "pages": [
+        "{\"translate\":\"twilightforest.book.labyrinth.1\"}",
+        "{\"translate\":\"twilightforest.book.labyrinth.2\"}",
+        "{\"translate\":\"twilightforest.book.labyrinth.3\"}",
+        "{\"translate\":\"twilightforest.book.labyrinth.4\"}",
+        "{\"translate\":\"twilightforest.book.labyrinth.5\"}"
+      ],
+      "title": "Notes on a Swampy Labyrinth"
+    }
+  },
+  "hint_mob": "twilightforest:kobold",
+  "labelled_monster_spawns": {
+    "0": [
+      {
+        "type": "twilightforest:minotaur",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 20
+      },
+      {
+        "type": "minecraft:cave_spider",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:creeper",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:maze_slime",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 4,
+        "minCount": 1,
+        "weight": 1
+      },
+      {
+        "type": "twilightforest:fire_beetle",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:slime_beetle",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:pinch_beetle",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 10
+      }
+    ]
+  },
+  "legacy_landmark_start": "labyrinth",
+  "spawn_overrides": {},
+  "step": "underground_structures",
+  "terrain_adaptation": "bury",
+  "water_spawns": []
+}

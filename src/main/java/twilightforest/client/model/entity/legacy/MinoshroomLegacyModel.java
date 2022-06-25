@@ -1,7 +1,6 @@
 package twilightforest.client.model.entity.legacy;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -12,7 +11,7 @@ import twilightforest.entity.boss.Minoshroom;
 
 public class MinoshroomLegacyModel extends HumanoidModel<Minoshroom> {
 
-	ModelPart leg1;
+	final ModelPart leg1;
 	ModelPart leg2;
 	ModelPart leg3;
 	ModelPart leg4;

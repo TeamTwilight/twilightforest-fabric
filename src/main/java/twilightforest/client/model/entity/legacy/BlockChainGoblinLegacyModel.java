@@ -9,7 +9,7 @@ import twilightforest.entity.monster.BlockChainGoblin;
 
 public class BlockChainGoblinLegacyModel<T extends BlockChainGoblin> extends HumanoidModel<T> {
 
-	ModelPart block;
+	final ModelPart block;
 
 	public BlockChainGoblinLegacyModel(ModelPart root) {
 		super(root);

@@ -12,32 +12,32 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class BurntThornsBlock extends ThornsBlock {
 
-	protected BurntThornsBlock(Properties props) {
-		super(props);
+	public BurntThornsBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Nullable
 	@Override
-	public BlockPathTypes getAiPathNodeType(BlockState state, BlockGetter world, BlockPos pos, @Nullable Mob entity) {
+	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return null;
 	}
 
 	@Override
 	@Deprecated
-	public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		// dissolve
-		if (!world.isClientSide && (entity instanceof LivingEntity || entity instanceof Projectile)) {
-			world.destroyBlock(pos, false);
+		if (!level.isClientSide() && (entity instanceof LivingEntity || entity instanceof Projectile)) {
+			level.destroyBlock(pos, false);
 		}
 	}
 
 	@Override
-	public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-		state.getBlock().playerWillDestroy(world, pos, state, player);
-		return world.setBlock(pos, fluid.createLegacyBlock(), world.isClientSide ? 11 : 3);
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+		state.getBlock().playerWillDestroy(level, pos, state, player);
+		return level.setBlock(pos, fluid.createLegacyBlock(), level.isClientSide ? 11 : 3);
 	}
 }

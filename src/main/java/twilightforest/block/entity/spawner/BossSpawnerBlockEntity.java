@@ -26,23 +26,22 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 	}
 
 	public boolean anyPlayerInRange() {
-		return level.hasNearbyAlivePlayer(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, getRange());
+		return this.getLevel().hasNearbyAlivePlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, this.getRange());
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, BossSpawnerBlockEntity<?> te) {
 		if (te.spawnedBoss || !te.anyPlayerInRange()) {
 			return;
 		}
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			// particles
-			double rx = (pos.getX() - 0.2F) + (level.random.nextFloat() * 1.25F);
-			double ry = (pos.getY() - 0.2F) + (level.random.nextFloat() * 1.25F);
-			double rz = (pos.getZ() - 0.2F) + (level.random.nextFloat() * 1.25F);
-			//level.addParticle(ParticleTypes.SMOKE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			double rx = (pos.getX() - 0.2F) + (level.getRandom().nextFloat() * 1.25F);
+			double ry = (pos.getY() - 0.2F) + (level.getRandom().nextFloat() * 1.25F);
+			double rz = (pos.getZ() - 0.2F) + (level.getRandom().nextFloat() * 1.25F);
 			level.addParticle(te.getSpawnerParticle(), rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		} else {
 			if (level.getDifficulty() != Difficulty.PEACEFUL) {
-				if (te.spawnMyBoss((ServerLevel)level)) {
+				if (te.spawnMyBoss((ServerLevel) level)) {
 					level.destroyBlock(pos, false);
 					te.spawnedBoss = true;
 				}
@@ -50,24 +49,24 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 		}
 	}
 
-	protected boolean spawnMyBoss(ServerLevelAccessor world) {
+	protected boolean spawnMyBoss(ServerLevelAccessor accessor) {
 		// create creature
 		T myCreature = makeMyCreature();
 
-		myCreature.moveTo(worldPosition.below(), world.getLevel().random.nextFloat() * 360F, 0.0F);
-		myCreature.finalizeSpawn(world, world.getCurrentDifficultyAt(worldPosition), MobSpawnType.SPAWNER, null, null);
+		myCreature.moveTo(this.getBlockPos().below(), accessor.getLevel().getRandom().nextFloat() * 360F, 0.0F);
+		myCreature.finalizeSpawn(accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null, null);
 
 		// set creature's home to this
 		initializeCreature(myCreature);
 
 		// spawn it
-		return world.addFreshEntity(myCreature);
+		return accessor.addFreshEntity(myCreature);
 	}
 
 	public abstract ParticleOptions getSpawnerParticle();
 
 	protected void initializeCreature(T myCreature) {
-		myCreature.restrictTo(worldPosition, 46);
+		myCreature.restrictTo(this.getBlockPos(), 46);
 	}
 
 	protected int getRange() {
@@ -75,6 +74,6 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 	}
 
 	protected T makeMyCreature() {
-		return entityType.create(level);
+		return entityType.create(this.getLevel());
 	}
 }

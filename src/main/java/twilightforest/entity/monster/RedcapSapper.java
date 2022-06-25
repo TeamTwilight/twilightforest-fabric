@@ -1,14 +1,15 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.Level;
-import twilightforest.entity.ai.RedcapPlantTNTGoal;
-import twilightforest.item.TFItems;
+import twilightforest.entity.ai.goal.RedcapPlantTNTGoal;
+import twilightforest.init.TFItems;
 
 public class RedcapSapper extends Redcap {
 
@@ -19,8 +20,8 @@ public class RedcapSapper extends Redcap {
 	}
 
 	@Override
-	protected void populateDefaultEquipmentSlots(DifficultyInstance difficulty) {
-		super.populateDefaultEquipmentSlots(difficulty);
+	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
+		super.populateDefaultEquipmentSlots(random, difficulty);
 		this.setItemSlot(EquipmentSlot.FEET, new ItemStack(TFItems.IRONWOOD_BOOTS.get()));
 	}
 

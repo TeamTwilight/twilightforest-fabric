@@ -1,46 +1,55 @@
 {
   "parent": "twilightforest:progress_thorns",
-  "display": {
-    "icon": {
-      "item": "twilightforest:violet_castle_rune_brick"
-    },
-    "title": {
-      "translate": "advancement.twilightforest.progress_castle"
-    },
-    "description": {
-      "translate": "advancement.twilightforest.progress_castle.desc"
-    },
-    "frame": "goal",
-    "show_toast": true,
-    "announce_to_chat": true,
-    "hidden": false
-  },
   "criteria": {
     "castle": {
-      "trigger": "minecraft:location",
-      "conditions": {
-        "location": {
-          "feature": "twilightforest:final_castle"
-        }
-      }
-    },
-    "previous_progression": {
-      "trigger": "minecraft:tick",
       "conditions": {
         "player": [
           {
             "condition": "minecraft:entity_properties",
+            "entity": "this",
             "predicate": {
-              "player": {
+              "location": {
+                "structure": "twilightforest:final_castle"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "previous_progression": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
                 "advancements": {
                   "twilightforest:progress_thorns": true
                 }
               }
-            },
-            "entity": "this"
+            }
           }
         ]
-      }
+      },
+      "trigger": "minecraft:tick"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.twilightforest.progress_castle.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "twilightforest:violet_castle_rune_brick"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.twilightforest.progress_castle"
     }
   },
   "requirements": [

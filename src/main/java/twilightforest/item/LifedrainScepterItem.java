@@ -5,12 +5,10 @@ import io.github.fabricators_of_create.porting_lib.util.ContinueUsingItem;
 import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import io.github.fabricators_of_create.porting_lib.util.UsingTickItem;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -29,12 +27,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.TFSounds;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
+import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFSounds;
 import twilightforest.util.EntityUtil;
-import twilightforest.util.TFDamageSources;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,7 +77,7 @@ public class LifedrainScepterItem extends Item implements CustomEnchantingBehavi
 		// 1 in 100 chance of a big pop, you're welcome KD
 		double explosionPower = level.getRandom().nextInt(100) == 0 ? 0.5D : 0.15D;
 
-		for (int i = 0; i < 50 + ((int)target.dimensions.width * 75); ++i) {
+		for (int i = 0; i < 50 + ((int) target.dimensions.width * 75); ++i) {
 			double gaussX = level.getRandom().nextGaussian() * 0.01D;
 			double gaussY = level.getRandom().nextGaussian() * 0.01D;
 			double gaussZ = level.getRandom().nextGaussian() * 0.01D;
@@ -147,21 +145,21 @@ public class LifedrainScepterItem extends Item implements CustomEnchantingBehavi
 			Entity pointedEntity = getPlayerLookTarget(level, living);
 
 			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand)) {
-				if(level.isClientSide()) {
-					this.makeRedMagicTrail(level, living, target.eyeBlockPosition());
+				if (level.isClientSide()) {
+					this.makeRedMagicTrail(level, living, target.getEyePosition());
 				}
 
 				if (target.getHealth() <= 3 && target.hurt(TFDamageSources.lifedrain(living, living), 1)) {
 					// make it explode
 					if (!level.isClientSide()) {
-						if(!target.getType().is(EntityTagGenerator.LIFEDRAIN_DROPS_NO_FLESH)) {
+						if (!target.getType().is(EntityTagGenerator.LIFEDRAIN_DROPS_NO_FLESH)) {
 							target.spawnAtLocation(new ItemStack(Items.ROTTEN_FLESH, level.getRandom().nextInt(3)));
 							animateTargetShatter((ServerLevel) level, target);
 						}
 						if (target instanceof Mob mob) {
 							mob.spawnAnim();
 						}
-						target.playSound(TFSounds.SCEPTER_DRAIN, 1.0F, living.getVoicePitch());
+						target.playSound(TFSounds.SCEPTER_DRAIN.get(), 1.0F, living.getVoicePitch());
 						level.playSound(null, target.blockPosition(), EntityUtil.getDeathSound(target), SoundSource.HOSTILE, 1.0F, target.getVoicePitch());
 						target.die(TFDamageSources.lifedrain(living, living));
 						target.discard();
@@ -199,7 +197,7 @@ public class LifedrainScepterItem extends Item implements CustomEnchantingBehavi
 		}
 	}
 
-	private void makeRedMagicTrail(Level level, LivingEntity source, BlockPos target) {
+	private void makeRedMagicTrail(Level level, LivingEntity source, Vec3 target) {
 		// make particle trail
 		int particles = 32;
 		for (int i = 0; i < particles; i++) {
@@ -208,9 +206,9 @@ public class LifedrainScepterItem extends Item implements CustomEnchantingBehavi
 			float f1 = 0.5F;
 			float f2 = 0.5F;
 			double handOffset = source.getItemInHand(InteractionHand.OFF_HAND).is(this) ? -0.35D : 0.35D;
-			double tx = source.getX() + (target.getX() - source.getX()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
-			double ty = source.getEyeY() - 0.1D + (target.getY() - source.getEyeY()) * trailFactor + level.getRandom().nextGaussian() * 0.005D - 0.1D;
-			double tz = source.getZ() + (target.getZ() - source.getZ()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
+			double tx = source.getX() + (target.x() - source.getX()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
+			double ty = source.getEyeY() - 0.1D + (target.y() - source.getEyeY()) * trailFactor + level.getRandom().nextGaussian() * 0.005D - 0.1D;
+			double tz = source.getZ() + (target.z() - source.getZ()) * trailFactor + level.getRandom().nextGaussian() * 0.005D + (handOffset * Direction.fromYRot(source.yBodyRot).get2DDataValue());
 			level.addParticle(ParticleTypes.ENTITY_EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
@@ -237,8 +235,8 @@ public class LifedrainScepterItem extends Item implements CustomEnchantingBehavi
 
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, world, tooltip, flags);
-		tooltip.add(new TranslatableComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
+		super.appendHoverText(stack, level, tooltip, flags);
+		tooltip.add(Component.translatable("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

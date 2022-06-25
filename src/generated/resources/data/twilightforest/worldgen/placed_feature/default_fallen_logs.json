@@ -2,22 +2,22 @@
   "feature": "twilightforest:default_fallen_logs",
   "placement": [
     {
-      "chance": 40,
-      "type": "minecraft:rarity_filter"
+      "type": "minecraft:rarity_filter",
+      "chance": 40
     },
     {
       "type": "minecraft:in_square"
     },
     {
-      "heightmap": "OCEAN_FLOOR",
-      "type": "minecraft:heightmap"
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR"
     },
     {
       "type": "twilightforest:no_structure",
       "value": {
+        "additional_clearance": 0,
         "occupies_surface": true,
-        "occupies_underground": false,
-        "additional_clearance": 0
+        "occupies_underground": false
       }
     }
   ]

@@ -30,12 +30,12 @@ public class MistWolfRenderer extends HostileWolfRenderer {
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		//GlStateManager.blendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
 
-		float misty = entity.getBrightness() * 3F + 0.25F;
-		misty = Math.min(1F, misty);
-
-		float smoky = entity.getBrightness() * 2F + 0.6F;
-
-		RenderSystem.setShaderColor(misty, misty, misty, smoky);
+//		float misty = entity.getBrightness() * 3F + 0.25F;
+//		misty = Math.min(1F, misty);
+//
+//		float smoky = entity.getBrightness() * 2F + 0.6F;
+//
+//		RenderSystem.setShaderColor(misty, misty, misty, smoky);
 	}
 
     @Override

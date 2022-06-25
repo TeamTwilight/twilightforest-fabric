@@ -3,6 +3,7 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -18,11 +19,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFSounds;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 public class TowerwoodBorer extends Monster {
 
@@ -63,17 +63,17 @@ public class TowerwoodBorer extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.TERMITE_AMBIENT;
+		return TFSounds.TERMITE_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TERMITE_HURT;
+		return TFSounds.TERMITE_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TERMITE_DEATH;
+		return TFSounds.TERMITE_DEATH.get();
 	}
 
 	// [VanillaCopy] Silverfish.hurt
@@ -92,7 +92,7 @@ public class TowerwoodBorer extends Monster {
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(TFSounds.TERMITE_STEP, 0.15F, 1.0F);
+		this.playSound(TFSounds.TERMITE_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class TowerwoodBorer extends Monster {
 			} else if (!this.mob.getNavigation().isDone()) {
 				return false;
 			} else {
-				Random random = this.mob.getRandom();
+				RandomSource random = this.mob.getRandom();
 
 				if (random.nextInt(10) == 0 && this.mob.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 					this.facing = Direction.getRandom(random);
@@ -197,7 +197,7 @@ public class TowerwoodBorer extends Monster {
 			if (this.lookForFriends <= 0) {
 
 				Level world = this.borer.getLevel();
-				Random random = this.borer.getRandom();
+				RandomSource random = this.borer.getRandom();
 				BlockPos pos = new BlockPos(this.borer.blockPosition());
 
 				for (int i = 0; i <= 5 && i >= -5; i = (i <= 0 ? 1 : 0) - i) {

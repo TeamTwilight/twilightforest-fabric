@@ -2,7 +2,6 @@ package twilightforest.capabilities.shield;
 
 import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;

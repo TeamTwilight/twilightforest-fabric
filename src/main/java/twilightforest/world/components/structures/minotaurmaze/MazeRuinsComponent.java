@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.minotaurmaze;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -12,9 +13,9 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 /**
  * This component is the base for the maze/ruins combo feature.  There are village-like ruins above and a maze underneath.
@@ -24,11 +25,11 @@ import java.util.Random;
 public class MazeRuinsComponent extends TFStructureComponentOld {
 
 	public MazeRuinsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMRuins, nbt);
+		super(TFStructurePieceTypes.TFMMRuins.get(), nbt);
 	}
 
-	public MazeRuinsComponent(TFFeature feature, int i, int x, int y, int z) {
-		super(MinotaurMazePieces.TFMMRuins, feature, i, feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH));
+	public MazeRuinsComponent(TFLandmark feature, int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMRuins.get(), feature, i, feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH));
 		this.setOrientation(Direction.SOUTH);
 	}
 
@@ -36,7 +37,7 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, Random random) {
+	public void addChildren(StructurePiece structurecomponent, StructurePieceAccessor list, RandomSource random) {
 		super.addChildren(structurecomponent, list, random);
 
 		// add a maze
@@ -60,7 +61,7 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 	 * the end, it adds Fences...
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// I have no components
 	}
 }

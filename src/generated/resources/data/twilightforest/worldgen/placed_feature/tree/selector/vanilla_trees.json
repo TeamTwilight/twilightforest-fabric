@@ -5,32 +5,32 @@
       "type": "minecraft:in_square"
     },
     {
-      "max_water_depth": 0,
-      "type": "minecraft:surface_water_depth_filter"
+      "type": "minecraft:surface_water_depth_filter",
+      "max_water_depth": 0
     },
     {
-      "heightmap": "OCEAN_FLOOR",
-      "type": "minecraft:heightmap"
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR"
     },
     {
       "type": "twilightforest:no_structure",
       "value": {
+        "additional_clearance": 0,
         "occupies_surface": true,
-        "occupies_underground": false,
-        "additional_clearance": 0
+        "occupies_underground": false
       }
     },
     {
+      "type": "minecraft:block_predicate_filter",
       "predicate": {
+        "type": "minecraft:would_survive",
         "state": {
+          "Name": "twilightforest:twilight_oak_sapling",
           "Properties": {
             "stage": "0"
-          },
-          "Name": "twilightforest:twilight_oak_sapling"
-        },
-        "type": "minecraft:would_survive"
-      },
-      "type": "minecraft:block_predicate_filter"
+          }
+        }
+      }
     },
     {
       "type": "minecraft:biome"

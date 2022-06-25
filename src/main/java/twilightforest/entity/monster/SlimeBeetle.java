@@ -19,9 +19,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.SlimeProjectile;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 
 public class SlimeBeetle extends Monster implements RangedAttackMob {
 
@@ -50,17 +50,17 @@ public class SlimeBeetle extends Monster implements RangedAttackMob {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.SLIME_BEETLE_HURT;
+		return TFSounds.SLIME_BEETLE_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.SLIME_BEETLE_DEATH;
+		return TFSounds.SLIME_BEETLE_DEATH.get();
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
-		playSound(TFSounds.SLIME_BEETLE_STEP, 0.15F, 1.0F);
+	protected void playStepSound(BlockPos pos, BlockState state) {
+		playSound(TFSounds.SLIME_BEETLE_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override
@@ -75,13 +75,13 @@ public class SlimeBeetle extends Monster implements RangedAttackMob {
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
-		ThrowableProjectile projectile = new SlimeProjectile(TFEntities.SLIME_BLOB.get(), this.level, this);
-		playSound(TFSounds.SLIME_BEETLE_SQUISH_SMALL, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+		ThrowableProjectile projectile = new SlimeProjectile(TFEntities.SLIME_BLOB.get(), this.getLevel(), this);
+		playSound(TFSounds.SLIME_BEETLE_SQUISH_SMALL.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 		double tx = target.getX() - this.getX();
-		double ty = target.getY() + target.getEyeHeight() - 1.100000023841858D - projectile.getY();
+		double ty = target.getY() + target.getEyeHeight() - 1.1D - projectile.getY();
 		double tz = target.getZ() - this.getZ();
 		float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.2F;
 		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
-		this.level.addFreshEntity(projectile);
+		this.getLevel().addFreshEntity(projectile);
 	}
 }

@@ -6,11 +6,11 @@
       }
     },
     {
-      "when": {
-        "vanish": "false"
-      },
       "apply": {
         "model": "twilightforest:block/yellow_castle_door"
+      },
+      "when": {
+        "vanish": "false"
       }
     }
   ]

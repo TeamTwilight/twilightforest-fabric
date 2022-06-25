@@ -7,12 +7,12 @@ import twilightforest.entity.projectile.SeekerArrow;
 
 public class SeekerBowItem extends BowItem implements CustomArrowItem {
 
-	public SeekerBowItem(Properties props) {
-		super(props);
+	public SeekerBowItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow) {
-		return new SeekerArrow(arrow.level, arrow.getOwner());
+		return new SeekerArrow(arrow.getLevel(), arrow.getOwner());
 	}
 }

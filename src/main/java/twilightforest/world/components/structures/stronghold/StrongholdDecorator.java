@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.stronghold;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureDecorator;
 
 public class StrongholdDecorator extends TFStructureDecorator {

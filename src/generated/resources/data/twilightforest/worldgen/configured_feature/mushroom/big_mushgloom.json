@@ -1,34 +1,34 @@
 {
+  "type": "twilightforest:big_mushgloom",
   "config": {
     "cap_provider": {
+      "type": "minecraft:simple_state_provider",
       "state": {
+        "Name": "twilightforest:huge_mushgloom",
         "Properties": {
-          "west": "true",
+          "down": "false",
+          "east": "true",
+          "north": "true",
+          "south": "true",
           "up": "true",
-          "south": "true",
-          "north": "true",
-          "east": "true",
-          "down": "false"
-        },
-        "Name": "twilightforest:huge_mushgloom"
-      },
-      "type": "minecraft:simple_state_provider"
+          "west": "true"
+        }
+      }
     },
+    "foliage_radius": 1,
     "stem_provider": {
+      "type": "minecraft:simple_state_provider",
       "state": {
+        "Name": "twilightforest:huge_mushgloom_stem",
         "Properties": {
-          "west": "true",
-          "up": "false",
-          "south": "true",
-          "north": "true",
+          "down": "false",
           "east": "true",
-          "down": "false"
-        },
-        "Name": "twilightforest:huge_mushgloom_stem"
-      },
-      "type": "minecraft:simple_state_provider"
-    },
-    "foliage_radius": 1
-  },
-  "type": "twilightforest:big_mushgloom"
+          "north": "true",
+          "south": "true",
+          "up": "false",
+          "west": "true"
+        }
+      }
+    }
+  }
 }

@@ -9,13 +9,13 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 public class AnnihilateParticle extends TextureSheetParticle {
 
-	float initialParticleScale;
+	private final float initialParticleScale;
 
-	public AnnihilateParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, float scale) {
-		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
-		this.xd *= 0.10000000149011612D;
-		this.yd *= 0.10000000149011612D;
-		this.zd *= 0.10000000149011612D;
+	public AnnihilateParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, float scale) {
+		super(level, x, y, z, 0.0D, 0.0D, 0.0D);
+		this.xd *= 0.1D;
+		this.yd *= 0.1D;
+		this.zd *= 0.1D;
 		this.xd += vx * 0.4D;
 		this.yd += vy * 0.4D;
 		this.zd += vz * 0.4D;
@@ -45,13 +45,13 @@ public class AnnihilateParticle extends TextureSheetParticle {
 
 		this.move(this.xd, this.yd, this.zd);
 
-		this.xd *= 0.9599999785423279D;
-		this.yd *= 0.9599999785423279D;
-		this.zd *= 0.9599999785423279D;
+		this.xd *= 0.96D;
+		this.yd *= 0.96D;
+		this.zd *= 0.96D;
 
 		if (this.onGround) {
-			this.xd *= 0.699999988079071D;
-			this.zd *= 0.699999988079071D;
+			this.xd *= 0.7D;
+			this.zd *= 0.7D;
 		}
 
 		this.quadSize *= 0.97D;
@@ -74,17 +74,12 @@ public class AnnihilateParticle extends TextureSheetParticle {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static class Factory implements ParticleProvider<SimpleParticleType> {
-		private final SpriteSet spriteSet;
-
-		public Factory(SpriteSet sprite) {
-			this.spriteSet = sprite;
-		}
+	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			AnnihilateParticle particle = new AnnihilateParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, 0.75F);
-			particle.pickSprite(this.spriteSet);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			AnnihilateParticle particle = new AnnihilateParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 0.75F);
+			particle.pickSprite(this.sprite);
 			return particle;
 		}
 	}

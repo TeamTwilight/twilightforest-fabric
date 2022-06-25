@@ -3,10 +3,12 @@ package twilightforest.client.renderer.entity.legacy;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,19 +20,22 @@ import twilightforest.entity.monster.Kobold;
 
 public class LegacyKoboldRenderer extends TFBipedRenderer<Kobold, KoboldLegacyModel> {
 
-	public LegacyKoboldRenderer(EntityRendererProvider.Context manager, KoboldLegacyModel modelBiped, float shadowSize, String textureName) {
-		super(manager, modelBiped, shadowSize, textureName);
+	public LegacyKoboldRenderer(EntityRendererProvider.Context context, KoboldLegacyModel model, float shadowSize, String textureName) {
+		super(context, model, shadowSize, textureName);
 
-		this.layers.removeIf(r -> r instanceof net.minecraft.client.renderer.entity.layers.ItemInHandLayer);
-		this.addLayer(new HeldItemLayer(this));
+		this.layers.removeIf(r -> r instanceof ItemInHandLayer);
+		this.addLayer(new HeldItemLayer(this, context.getItemInHandRenderer()));
 	}
 
 	/**
 	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.ItemInHandLayer} with additional transforms
 	 */
 	private static class HeldItemLayer extends RenderLayer<Kobold, KoboldLegacyModel> {
-		public HeldItemLayer(RenderLayerParent<Kobold, KoboldLegacyModel> renderer) {
+		private final ItemInHandRenderer handRenderer;
+
+		public HeldItemLayer(RenderLayerParent<Kobold, KoboldLegacyModel> renderer, ItemInHandRenderer handRenderer) {
 			super(renderer);
+			this.handRenderer = handRenderer;
 		}
 
 		@Override
@@ -59,7 +64,7 @@ public class LegacyKoboldRenderer extends TFBipedRenderer<Kobold, KoboldLegacyMo
 				ms.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 				boolean flag = handSide == HumanoidArm.LEFT;
 				ms.translate(0.05D, 0.125D, -0.35D);
-				Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, stack, transform, flag, ms, buffers, light);
+				this.handRenderer.renderItem(entity, stack, transform, flag, ms, buffers, light);
 				ms.popPose();
 			}
 		}

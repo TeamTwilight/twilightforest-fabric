@@ -152,8 +152,9 @@ public class TFSkyRenderer implements DimensionRenderingRegistry.SkyRenderer {
 		// TF - inlined RenderGlobal field that's only used once here
 		this.starVBO = new VertexBuffer(/*DefaultVertexFormat.POSITION*/);
 		this.renderStars(bufferbuilder);
-		bufferbuilder.end();
-		this.starVBO.upload(bufferbuilder);
+		//TODO is this right?
+		//bufferbuilder.end();
+		this.starVBO.upload(bufferbuilder.end());
 	}
 
 	// [VanillaCopy] of RenderGlobal.renderStars but with double the number of them

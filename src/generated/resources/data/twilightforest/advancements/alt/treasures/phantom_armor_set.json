@@ -1,20 +1,7 @@
 {
   "parent": "twilightforest:alt/root",
   "criteria": {
-    "has_helm": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:phantom_helmet"
-            ]
-          }
-        ]
-      }
-    },
     "has_chestplate": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
@@ -23,7 +10,20 @@
             ]
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_helm": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:phantom_helmet"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [

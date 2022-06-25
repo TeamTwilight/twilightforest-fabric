@@ -3,28 +3,29 @@ package twilightforest.world.components.structures.minotaurmaze;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.block.TFBlocks;
-import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.init.TFBlocks;
+import twilightforest.loot.TFLootTables;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 
 	public MazeDeadEndTrappedChestComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(MinotaurMazePieces.TFMMDETrC, nbt);
+		super(TFStructurePieceTypes.TFMMDETrC.get(), nbt);
 	}
 
-	public MazeDeadEndTrappedChestComponent(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(MinotaurMazePieces.TFMMDETrC, feature, i, x, y, z, rotation);
+	public MazeDeadEndTrappedChestComponent(TFLandmark feature, int i, int x, int y, int z, Direction rotation) {
+		super(TFStructurePieceTypes.TFMMDETrC.get(), feature, i, x, y, z, rotation);
 		this.setOrientation(rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
@@ -32,7 +33,7 @@ public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		//super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// dais
@@ -42,7 +43,7 @@ public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 		this.placeBlock(world, getStairState(Blocks.OAK_STAIRS.defaultBlockState(), Direction.NORTH, false), 3, 1, 3, sbb);
 
 		// chest
-		this.setDoubleLootChest(world, 2, 2, 4,3, 2, 4, Direction.SOUTH, TFTreasure.LABYRINTH_DEAD_END, sbb, true);
+		this.setDoubleLootChest(world, 2, 2, 4,3, 2, 4, Direction.SOUTH, TFLootTables.LABYRINTH_DEAD_END, sbb, true);
 
 //		// torches
 //		this.setBlockState(world, Blocks.TORCH, 0, 1, 3, 4, sbb);

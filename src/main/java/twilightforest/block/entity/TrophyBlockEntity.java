@@ -2,11 +2,12 @@ package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
 
 public class TrophyBlockEntity extends BlockEntity {
 

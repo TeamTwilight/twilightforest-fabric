@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "###",
-    "#C#",
-    "###"
-  ],
   "key": {
     "#": {
       "item": "twilightforest:dark_planks"
@@ -13,8 +8,13 @@
       "tag": "c:chests/wooden"
     }
   },
+  "pattern": [
+    "###",
+    "#C#",
+    "###"
+  ],
   "result": {
-    "item": "twilightforest:darkwood_chest",
-    "count": 2
+    "count": 2,
+    "item": "twilightforest:darkwood_chest"
   }
 }

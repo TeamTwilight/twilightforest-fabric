@@ -13,34 +13,29 @@ import twilightforest.client.MissingAdvancementToast;
 import java.util.concurrent.Executor;
 
 public class MissingAdvancementToastPacket implements S2CPacket {
-    private final Component title;
-    private final ItemStack icon;
+	private final Component title;
+	private final ItemStack icon;
 
-    public MissingAdvancementToastPacket(Component title, ItemStack icon) {
-        this.title = title;
-        this.icon = icon;
-    }
+	public MissingAdvancementToastPacket(Component title, ItemStack icon) {
+		this.title = title;
+		this.icon = icon;
+	}
 
-    public MissingAdvancementToastPacket(FriendlyByteBuf buf) {
-        this.title = buf.readComponent();
-        this.icon = buf.readItem();
-    }
+	public MissingAdvancementToastPacket(FriendlyByteBuf buf) {
+		this.title = buf.readComponent();
+		this.icon = buf.readItem();
+	}
 
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeComponent(this.title);
-        buf.writeItem(this.icon);
-    }
+	public void encode(FriendlyByteBuf buf) {
+		buf.writeComponent(this.title);
+		buf.writeItem(this.icon);
+	}
 
-    public static boolean handle(MissingAdvancementToastPacket packet, Executor ctx) {
-        ctx.execute(new Runnable() {
-            @Override
-            public void run() {
-                Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title, packet.icon));
-            }
-        });
-
-        return true;
-    }
+	public static boolean handle(MissingAdvancementToastPacket packet, Executor ctx) {
+		ctx.execute(() ->
+				Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title, packet.icon)));
+		return true;
+	}
 
     @Override
     public void handle(Minecraft client, ClientPacketListener handler, PacketSender sender, SimpleChannel responseTarget) {

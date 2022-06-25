@@ -11,14 +11,12 @@ import com.mojang.serialization.Encoder;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.*;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
+import net.minecraft.data.*;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
@@ -30,8 +28,8 @@ import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.chunkgenerators.warp.TerrainPoint;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.world.registration.TFNoiseGenerationSettings;
-import twilightforest.world.registration.biomes.BiomeKeys;
+import twilightforest.init.TFDimensionSettings;
+import twilightforest.init.BiomeKeys;
 import twilightforest.world.registration.biomes.BiomeMaker;
 
 import java.io.IOException;
@@ -46,9 +44,8 @@ import java.util.stream.StreamSupport;
 public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-	public void run(HashCache cache) {
+	public void run(CachedOutput cache) {
 		Path path = this.generator.getOutputFolder();
 		RegistryAccess registryaccess = BuiltinRegistries.ACCESS;
 		DynamicOps<JsonElement> dynamicops = RegistryOps.create(JsonOps.INSTANCE, registryaccess);
@@ -72,7 +69,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 		dumpRegistry(path, cache, dynamicops, Registry.LEVEL_STEM_REGISTRY, twilight, LevelStem.CODEC);
 	}
 
-	private static <T> void dumpRegistryCap(HashCache cache, Path path, RegistryAccess access, DynamicOps<JsonElement> ops, RegistryAccess.RegistryData<T> data) {
+	private static <T> void dumpRegistryCap(CachedOutput cache, Path path, RegistryAccess access, DynamicOps<JsonElement> ops, RegistryAccess.RegistryData<T> data) {
 		LOGGER.info("Dumping: {}", data.key());
 		dumpRegistry(path, cache, ops, data.key(), access.ownedRegistryOrThrow(data.key()), data.codec());
 	}
@@ -80,40 +77,38 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 	private Registry<LevelStem> registerTFSettings(RegistryAccess access) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, Lifecycle.experimental(), null);
 		Registry<Biome> biomeRegistry = access.registryOrThrow(Registry.BIOME_REGISTRY);
-		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getOrCreateHolder(TFNoiseGenerationSettings.TWILIGHT_NOISE_GEN.getKey());
+		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getHolderOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN.getKey());
 
 		NoiseBasedChunkGenerator forestChunkGen =
 				new NoiseBasedChunkGenerator(
 						access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY),
 						access.registryOrThrow(Registry.NOISE_REGISTRY),
 						new TFBiomeProvider(0L, biomeRegistry, makeBiomeList(biomeRegistry), -1.25F, 2.5F),
-						0L,
 						noiseGenSettings
 				);
 
-		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12), true)/*, true*/), Lifecycle.experimental());
+		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12))), Lifecycle.experimental());
 		return writableregistry;
 	}
 
 	private Registry<LevelStem> registerSkylightSettings(RegistryAccess access) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, Lifecycle.experimental(), null);
 		Registry<Biome> biomeRegistry = new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null);
-		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getOrCreateHolder(TFNoiseGenerationSettings.SKYLIGHT_NOISE_GEN.getKey());
+		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getHolderOrThrow(TFDimensionSettings.SKYLIGHT_NOISE_GEN.getKey());
 
 		NoiseBasedChunkGenerator forestChunkGen =
 				new NoiseBasedChunkGenerator(
 						access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY),
 						access.registryOrThrow(Registry.NOISE_REGISTRY),
 						new TFBiomeProvider(0L, biomeRegistry, makeBiomeList(biomeRegistry), -1.25F, 2.5F),
-						4L, //drull had it set like this so its staying until he changes it
 						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(Holder.direct(this.twilightDimType()), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12), true)), Lifecycle.stable());
+		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12))), Lifecycle.stable());
 		return writableregistry;
 	}
 
-	private static <E, T extends Registry<E>> void dumpRegistry(Path path, HashCache cache, DynamicOps<JsonElement> ops, ResourceKey<? extends T> key, T registry, Encoder<E> encoder) {
+	private static <E, T extends Registry<E>> void dumpRegistry(Path path, CachedOutput cache, DynamicOps<JsonElement> ops, ResourceKey<? extends T> key, T registry, Encoder<E> encoder) {
 		for (Map.Entry<ResourceKey<E>, E> entry : registry.entrySet()) {
 			if (entry.getKey().location().getNamespace().equals(TwilightForestMod.ID)) {
 				LOGGER.info("\t\t{}", entry.getKey().location().getPath());
@@ -124,7 +119,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	}
 
-	private static <E> void dumpValue(Path path, HashCache cache, DynamicOps<JsonElement> ops, Encoder<E> encoder, E entry) {
+	private static <E> void dumpValue(Path path, CachedOutput cache, DynamicOps<JsonElement> ops, Encoder<E> encoder, E entry) {
 		try {
 			Optional<JsonElement> optional = encoder.encodeStart(ops, entry).resultOrPartial((p_206405_) -> {
 				LOGGER.error("Couldn't serialize element {}: {}", path, p_206405_);
@@ -145,7 +140,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						}
 					}
 				}
-				DataProvider.save(GSON, cache, optional.get(), path);
+				DataProvider.saveStable(cache, optional.get(), path);
 			}
 		} catch (IOException ioexception) {
 			LOGGER.error("Couldn't save element {}", path, ioexception);
@@ -161,34 +156,12 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 		return "Worldgen";
 	}
 
-	private DimensionType twilightDimType() {
-		return DimensionType.create(
-				OptionalLong.of(13000L), //fixed time TODO Kill the celestial bodies
-				true, //skylight
-				false, //ceiling
-				false, //ultrawarm
-				true, //natural
-				0.125D, //coordinate scale
-				false, //dragon fight
-				false, //piglin safe
-				true, //bed works
-				true, //respawn anchor works
-				false, //raids
-				-32, // Minimum Y Level
-				32 + 256, // Height + Min Y = Max Y
-				32 + 256, // Logical Height
-				BlockTags.INFINIBURN_OVERWORLD, //infiburn
-				TwilightForestMod.prefix("renderer"), // DimensionRenderInfo
-				0f // Wish this could be set to -0.05 since it'll make the world truly blacked out if an area is not sky-lit (see: Dark Forests) Sadly this also messes up night vision so it gets 0
-		);
-	}
-
 	private Map<ResourceLocation, Biome> getBiomes() {
 		return BiomeMaker
 				.BIOMES
 				.entrySet()
 				.stream()
-//				.peek(registryKeyBiomeEntry -> BuiltinRegistries.register(BuiltinRegistries.BIOME, registryKeyBiomeEntry.getKey().location(), registryKeyBiomeEntry.getValue()))
+				//.peek(registryKeyBiomeEntry -> ForgeRegistries.BIOMES.register(registryKeyBiomeEntry.getKey().location(), registryKeyBiomeEntry.getValue()))
 				.collect(Collectors.toMap(entry -> entry.getKey().location(), Map.Entry::getValue));
 	}
 

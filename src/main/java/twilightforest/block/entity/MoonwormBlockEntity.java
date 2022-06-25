@@ -1,9 +1,11 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.init.TFBlockEntities;
 
 import java.util.Random;
 
@@ -11,7 +13,7 @@ public class MoonwormBlockEntity extends BlockEntity {
 	public int yawDelay;
 	public int currentYaw;
 	public int desiredYaw;
-	public float randRot = new Random().nextInt(3) * 90.0F;
+	public float randRot = RandomSource.create().nextInt(3) * 90.0F;
 
 	public MoonwormBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.MOONWORM.get(), pos, state);
@@ -21,9 +23,9 @@ public class MoonwormBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, MoonwormBlockEntity te) {
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			if (te.currentYaw == -1) {
-				te.currentYaw = level.random.nextInt(4) * 90;
+				te.currentYaw = level.getRandom().nextInt(4) * 90;
 			}
 
 			if (te.yawDelay > 0) {
@@ -31,8 +33,8 @@ public class MoonwormBlockEntity extends BlockEntity {
 			} else {
 				if (te.desiredYaw == 0) {
 					// make it rotate!
-					te.yawDelay = 200 + level.random.nextInt(200);
-					te.desiredYaw = level.random.nextInt(4) * 90;
+					te.yawDelay = 200 + level.getRandom().nextInt(200);
+					te.desiredYaw = level.getRandom().nextInt(4) * 90;
 				}
 
 				te.currentYaw++;

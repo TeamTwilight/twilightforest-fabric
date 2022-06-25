@@ -5,13 +5,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFBlocks;
 
 public record MissingAdvancementToast(Component title, ItemStack icon) implements Toast {
-    public static final MissingAdvancementToast FALLBACK = new MissingAdvancementToast(new TranslatableComponent(".ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()));
-    private static final TranslatableComponent UPPER_TEXT = new TranslatableComponent("twilightforest.ui.advancement.required");
+    public static final MissingAdvancementToast FALLBACK = new MissingAdvancementToast(Component.translatable(".ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()));
+    private static final Component UPPER_TEXT = Component.translatable("twilightforest.ui.advancement.required");
 
     @Override
     public Toast.Visibility render(PoseStack stack, ToastComponent component, long timer) {

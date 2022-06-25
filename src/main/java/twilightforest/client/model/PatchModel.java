@@ -7,11 +7,12 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import twilightforest.block.PatchBlock;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -36,14 +37,14 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
     }
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random random) {
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource random) {
         if (state == null)
             return this.getQuads(false, false, false, false, PatchBlock.AABBFromRandom(random), random);
         else
             return this.getQuads(state.getValue(PatchBlock.NORTH), state.getValue(PatchBlock.EAST), state.getValue(PatchBlock.SOUTH), state.getValue(PatchBlock.WEST), PatchBlock.AABBFromRandom(random), random);
     }
 
-    private List<BakedQuad> getQuads(boolean north, boolean east, boolean south, boolean west, AABB bb, Random random) {
+    private List<BakedQuad> getQuads(boolean north, boolean east, boolean south, boolean west, AABB bb, RandomSource random) {
         List<BakedQuad> list = new ArrayList<>();
 
         this.setVectors(bb, north, east, south, west);

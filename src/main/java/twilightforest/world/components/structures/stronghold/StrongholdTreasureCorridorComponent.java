@@ -3,8 +3,9 @@ package twilightforest.world.components.structures.stronghold;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.StairBlock;
@@ -13,19 +14,19 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.loot.TFTreasure;
-import twilightforest.world.registration.TFFeature;
+import twilightforest.loot.TFLootTables;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdComponent {
 
 	public StrongholdTreasureCorridorComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(StrongholdPieces.TFSTC, nbt);
+		super(TFStructurePieceTypes.TFSTC.get(), nbt);
 	}
 
-	public StrongholdTreasureCorridorComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(StrongholdPieces.TFSTC, feature, i, facing, x, y, z);
+	public StrongholdTreasureCorridorComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSTC.get(), feature, i, facing, x, y, z);
 	}
 
 	@Override
@@ -34,7 +35,7 @@ public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdCo
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random random) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource random) {
 		super.addChildren(parent, list, random);
 
 		// entrance
@@ -45,7 +46,7 @@ public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdCo
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 26, rand, deco.randomBlocks);
 
 		// statues
@@ -57,7 +58,7 @@ public class StrongholdTreasureCorridorComponent extends StructureTFStrongholdCo
 		Rotation rotation = (this.boundingBox.minX() ^ this.boundingBox.minZ()) % 2 == 0 ? Rotation.NONE : Rotation.CLOCKWISE_180;
 
 		// treasure!
-		this.placeTreasureRotated(world, 8, 2, 13, rotation == Rotation.NONE ? getOrientation().getClockWise() : getOrientation().getCounterClockWise(), rotation, TFTreasure.STRONGHOLD_CACHE, sbb);
+		this.placeTreasureRotated(world, 8, 2, 13, rotation == Rotation.NONE ? getOrientation().getClockWise() : getOrientation().getCounterClockWise(), rotation, TFLootTables.STRONGHOLD_CACHE, sbb);
 
 		// niche!
 

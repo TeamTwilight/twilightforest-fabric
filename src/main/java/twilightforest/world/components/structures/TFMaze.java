@@ -1,7 +1,8 @@
 package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -9,10 +10,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.registration.features.TFConfiguredFeatures;
-
-import java.util.Random;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFConfiguredFeatures;
 
 /**
  * This is a maze of cells and walls.
@@ -23,11 +22,11 @@ import java.util.Random;
  */
 public class TFMaze {
 
-	public int width; // cells wide (x)
-	public int depth; // cells deep (z)
+	public final int width; // cells wide (x)
+	public final int depth; // cells deep (z)
 
 	public int oddBias; // corridor thickness, default 3
-	public int evenBias; // wall thickness here.  NYI 
+	public final int evenBias; // wall thickness here.  NYI
 
 	public int tall; // wall blocks tall
 	public int head;// blocks placed above the maze
@@ -55,16 +54,16 @@ public class TFMaze {
 	public BlockState torchBlockState;
 	public float torchRarity;
 
-	protected int rawWidth;
-	protected int rawDepth;
-	protected int[] storage;
+	protected final int rawWidth;
+	protected final int rawDepth;
+	protected final int[] storage;
 
 	public static final int OUT_OF_BOUNDS = Integer.MIN_VALUE;
 	public static final int OOB = OUT_OF_BOUNDS;
 	public static final int ROOM = 5;
 	public static final int DOOR = 6;
 
-	public Random rand;
+	public final RandomSource rand;
 
 	public TFMaze(int cellsWidth, int cellsDepth) {
 		// default values
@@ -88,7 +87,7 @@ public class TFMaze {
 		this.rawDepth = depth * 2 + 1;
 		storage = new int[rawWidth * rawDepth];
 
-		rand = new Random();
+		rand = RandomSource.create();
 	}
 
 	/**
@@ -186,7 +185,7 @@ public class TFMaze {
 	/**
 	 * Copy the maze into a StructureTFComponentOld
 	 */
-	public void copyToStructure(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, int dx, int dy, int dz, TFStructureComponentOld component, BoundingBox sbb) {
+	public void copyToStructure(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, int dx, int dy, int dz, TFStructureComponentOld component, BoundingBox sbb) {
 		for (int x = 0; x < rawWidth; x++) {
 			for (int z = 0; z < rawDepth; z++) {
 				// only draw walls.  if the data is 0 the there's a wall

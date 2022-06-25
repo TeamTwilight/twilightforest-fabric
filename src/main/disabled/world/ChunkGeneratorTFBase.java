@@ -24,7 +24,7 @@ import twilightforest.world.registration.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;

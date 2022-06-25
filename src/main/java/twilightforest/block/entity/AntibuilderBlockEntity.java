@@ -1,16 +1,16 @@
 package twilightforest.block.entity;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.util.RandomSource;
 import io.github.fabricators_of_create.porting_lib.util.LevelUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.BlockPos;
-import twilightforest.block.TFBlocks;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.data.tags.BlockTagGenerator;
-
-import java.util.Random;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
 
 public class AntibuilderBlockEntity extends BlockEntity {
 	private static final int REVERT_CHANCE = 10;
@@ -19,7 +19,7 @@ public class AntibuilderBlockEntity extends BlockEntity {
 	private static final int DIAMETER = 2 * RADIUS + 1;
 	private static final double PLAYER_RANGE = 16.0;
 
-	private final Random rand = new Random();
+	private final RandomSource rand = RandomSource.create();
 
 	private int tickCount;
 	private boolean slowScan;
@@ -35,10 +35,10 @@ public class AntibuilderBlockEntity extends BlockEntity {
 		if (te.anyPlayerInRange()) {
 			te.tickCount++;
 
-			if (level.isClientSide) {
-				double x = pos.getX() + level.random.nextFloat();
-				double y = pos.getY() + level.random.nextFloat();
-				double z = pos.getZ() + level.random.nextFloat();
+			if (level.isClientSide()) {
+				double x = pos.getX() + level.getRandom().nextFloat();
+				double y = pos.getY() + level.getRandom().nextFloat();
+				double z = pos.getZ() + level.getRandom().nextFloat();
 				level.addParticle(DustParticleOptions.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D);
 
 				// occasionally make a little red dust line to outline our radius
@@ -88,13 +88,13 @@ public class AntibuilderBlockEntity extends BlockEntity {
 	 */
 	private void makeOutline(int outline) {
 		// src
-		double sx = this.worldPosition.getX();
-		double sy = this.worldPosition.getY();
-		double sz = this.worldPosition.getZ();
+		double sx = this.getBlockPos().getX();
+		double sy = this.getBlockPos().getY();
+		double sz = this.getBlockPos().getZ();
 		// dest
-		double dx = this.worldPosition.getX();
-		double dy = this.worldPosition.getY();
-		double dz = this.worldPosition.getZ();
+		double dx = this.getBlockPos().getX();
+		double dy = this.getBlockPos().getY();
+		double dz = this.getBlockPos().getZ();
 
 		switch (outline) {
 			case 0, 8 -> {
@@ -162,12 +162,12 @@ public class AntibuilderBlockEntity extends BlockEntity {
 			}
 		}
 
-		if (rand.nextBoolean()) {
-			drawParticleLine(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, dx, dy, dz);
+		if (this.rand.nextBoolean()) {
+			this.drawParticleLine(this.getBlockPos().getX() + 0.5, this.getBlockPos().getY() + 0.5, this.getBlockPos().getZ() + 0.5, dx, dy, dz);
 		} else {
-			drawParticleLine(sx, sy, sz, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5);
+			this.drawParticleLine(sx, sy, sz, this.getBlockPos().getX() + 0.5, this.getBlockPos().getY() + 0.5, this.getBlockPos().getZ() + 0.5);
 		}
-		drawParticleLine(sx, sy, sz, dx, dy, dz);
+		this.drawParticleLine(sx, sy, sz, dx, dy, dz);
 	}
 
 	private void drawParticleLine(double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
@@ -176,10 +176,10 @@ public class AntibuilderBlockEntity extends BlockEntity {
 		for (int i = 0; i < particles; i++) {
 			double trailFactor = i / (particles - 1.0D);
 
-			double tx = srcX + (destX - srcX) * trailFactor + rand.nextFloat() * 0.005;
-			double ty = srcY + (destY - srcY) * trailFactor + rand.nextFloat() * 0.005;
-			double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextFloat() * 0.005;
-			level.addParticle(DustParticleOptions.REDSTONE, tx, ty, tz, 0, 0, 0);
+			double tx = srcX + (destX - srcX) * trailFactor + this.rand.nextFloat() * 0.005;
+			double ty = srcY + (destY - srcY) * trailFactor + this.rand.nextFloat() * 0.005;
+			double tz = srcZ + (destZ - srcZ) * trailFactor + this.rand.nextFloat() * 0.005;
+			this.getLevel().addParticle(DustParticleOptions.REDSTONE, tx, ty, tz, 0, 0, 0);
 		}
 	}
 
@@ -190,13 +190,13 @@ public class AntibuilderBlockEntity extends BlockEntity {
 		for (int x = -RADIUS; x <= RADIUS; x++) {
 			for (int y = -RADIUS; y <= RADIUS; y++) {
 				for (int z = -RADIUS; z <= RADIUS; z++) {
-					BlockState stateThere = level.getBlockState(worldPosition.offset(x, y, z));
+					BlockState stateThere = this.getLevel().getBlockState(this.getBlockPos().offset(x, y, z));
 
-					if (blockData[index].getBlock() != stateThere.getBlock()) {
-						if (revertBlock(worldPosition.offset(x, y, z), stateThere, blockData[index])) {
+					if (this.blockData[index].getBlock() != stateThere.getBlock()) {
+						if (revertBlock(this.getBlockPos().offset(x, y, z), stateThere, this.blockData[index])) {
 							reverted = true;
 						} else {
-							blockData[index] = stateThere;
+							this.blockData[index] = stateThere;
 						}
 					}
 
@@ -212,7 +212,7 @@ public class AntibuilderBlockEntity extends BlockEntity {
 		if (stateThere.isAir() && !replaceWith.getMaterial().blocksMotion()) {
 			return false;
 		}
-		if (stateThere.getDestroySpeed(level, pos) < 0 || isUnrevertable(stateThere, replaceWith)) {
+		if (stateThere.getDestroySpeed(this.getLevel(), pos) < 0 || this.isUnrevertable(stateThere, replaceWith)) {
 			return false;
 		} else if (this.rand.nextInt(REVERT_CHANCE) == 0) {
 			// don't revert everything instantly
@@ -221,9 +221,9 @@ public class AntibuilderBlockEntity extends BlockEntity {
 			}
 
 			if (stateThere.isAir()) {
-				level.levelEvent(2001, pos, Block.getId(replaceWith));
+				this.getLevel().levelEvent(2001, pos, Block.getId(replaceWith));
 			}
-			Block.updateOrDestroy(stateThere, replaceWith, level, pos, 2);
+			Block.updateOrDestroy(stateThere, replaceWith, this.getLevel(), pos, 2);
 		}
 
 		return true;
@@ -234,14 +234,14 @@ public class AntibuilderBlockEntity extends BlockEntity {
 	}
 
 	private void captureBlockData() {
-		blockData = new BlockState[DIAMETER * DIAMETER * DIAMETER];
+		this.blockData = new BlockState[DIAMETER * DIAMETER * DIAMETER];
 
 		int index = 0;
 
 		for (int x = -RADIUS; x <= RADIUS; x++) {
 			for (int y = -RADIUS; y <= RADIUS; y++) {
 				for (int z = -RADIUS; z <= RADIUS; z++) {
-					blockData[index] = level.getBlockState(worldPosition.offset(x, y, z));
+					this.blockData[index] = this.getLevel().getBlockState(this.getBlockPos().offset(x, y, z));
 					index++;
 				}
 			}
@@ -249,6 +249,6 @@ public class AntibuilderBlockEntity extends BlockEntity {
 	}
 
 	private boolean anyPlayerInRange() {
-		return this.level.hasNearbyAlivePlayer(this.worldPosition.getX() + 0.5D, this.worldPosition.getY() + 0.5D, this.worldPosition.getZ() + 0.5D, AntibuilderBlockEntity.PLAYER_RANGE);
+		return this.getLevel().hasNearbyAlivePlayer(this.getBlockPos().getX() + 0.5D, this.getBlockPos().getY() + 0.5D, this.getBlockPos().getZ() + 0.5D, AntibuilderBlockEntity.PLAYER_RANGE);
 	}
 }

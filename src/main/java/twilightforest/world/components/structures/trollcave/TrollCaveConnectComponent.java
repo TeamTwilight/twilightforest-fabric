@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.trollcave;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,35 +14,35 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.world.components.feature.config.SpikeConfig;
-import twilightforest.world.registration.TFFeature;
-import twilightforest.block.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.util.RotationUtil;
+import twilightforest.init.TFStructurePieceTypes;
 
-import java.util.Random;
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	protected static final SpikeConfig STONE_STALACTITE_SMALL = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(5, 5), UniformInt.of(2, 3), true);
 	protected static final SpikeConfig STONE_STALAGMITE_SMALL = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(2, 4), UniformInt.of(2, 3), false);
 
-	protected boolean[] openingTowards = {false, false, true, false};
+	protected final boolean[] openingTowards = {false, false, true, false};
 
 	public TrollCaveConnectComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TrollCavePieces.TFTCCon, nbt);
+		super(TFStructurePieceTypes.TFTCCon.get(), nbt);
 		this.openingTowards[0] = nbt.getBoolean("openingTowards0");
 		this.openingTowards[1] = nbt.getBoolean("openingTowards1");
 		this.openingTowards[2] = nbt.getBoolean("openingTowards2");
 		this.openingTowards[3] = nbt.getBoolean("openingTowards3");
 	}
 
-	public TrollCaveConnectComponent(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
-		super(TrollCavePieces.TFTCCon, feature, index, x, y, z);
+	public TrollCaveConnectComponent(TFLandmark feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
+		super(TFStructurePieceTypes.TFTCCon.get(), feature, index, x, y, z);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);
@@ -59,7 +60,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent, StructurePieceAccessor list, Random rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		// make 4 caves
 		if (this.getGenDepth() < 3) {
 			for (final Rotation rotation : RotationUtil.ROTATIONS) {
@@ -73,7 +74,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	@Override
-	public void postProcess(WorldGenLevel world, StructureFeatureManager manager, ChunkGenerator generator, Random rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 //		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
 //			return false;
 //		}
@@ -81,7 +82,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		// clear inside
 		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
 
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
 		// wall decorations
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
@@ -113,7 +114,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		}
 	}
 
-	protected void makeMonolith(WorldGenLevel world, Random rand, BoundingBox sbb) {
+	protected void makeMonolith(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		// monolith
 		int mid = this.size / 2;
 		int height = 7 + rand.nextInt(8);
@@ -135,7 +136,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		return count;
 	}
 
-	private void decorateWall(WorldGenLevel world, BoundingBox sbb, Random decoRNG, Rotation rotation) {
+	private void decorateWall(WorldGenLevel world, BoundingBox sbb, RandomSource decoRNG, Rotation rotation) {
 		if (decoRNG.nextBoolean()) {
 			//FIXME: AtomicBlom: Don't do this, bring rotation all the way through.
 			decorateBracketMushrooms(world, sbb, decoRNG, rotation);
@@ -147,7 +148,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		}
 	}
 
-	private void decorateStoneFormation(WorldGenLevel world, BoundingBox sbb, Random decoRNG, Rotation rotation) {
+	private void decorateStoneFormation(WorldGenLevel world, BoundingBox sbb, RandomSource decoRNG, Rotation rotation) {
 		int z = 5 + decoRNG.nextInt(7);
 		int startY = 1 + decoRNG.nextInt(2);
 
@@ -165,7 +166,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		}
 	}
 
-	private void makeSingleStoneFormation(WorldGenLevel world, BoundingBox sbb, Random decoRNG, Rotation rotation, int z, int y, int width, int depth) {
+	private void makeSingleStoneFormation(WorldGenLevel world, BoundingBox sbb, RandomSource decoRNG, Rotation rotation, int z, int y, int width, int depth) {
 		if (decoRNG.nextInt(8) == 0) {
 			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, Blocks.OBSIDIAN.defaultBlockState(), rotation);
 		} else if (decoRNG.nextInt(4) == 0) {
@@ -177,7 +178,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		//this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.5F, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, TFBlocks.trollsteinn, 0, Blocks.STONE, 0, rotation);
 	}
 
-	private void decorateStoneProjection(WorldGenLevel world, BoundingBox sbb, Random decoRNG, Rotation rotation) {
+	private void decorateStoneProjection(WorldGenLevel world, BoundingBox sbb, RandomSource decoRNG, Rotation rotation) {
 		int z = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 		int y = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 
@@ -194,7 +195,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	/**
 	 * Decorate with a patch of bracket fungi
 	 */
-	private void decorateBracketMushrooms(WorldGenLevel world, BoundingBox sbb, Random decoRNG, Rotation rotation) {
+	private void decorateBracketMushrooms(WorldGenLevel world, BoundingBox sbb, RandomSource decoRNG, Rotation rotation) {
 		int z = 5 + decoRNG.nextInt(7);
 		int startY = 1 + decoRNG.nextInt(4);
 
@@ -241,7 +242,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		return HugeMushroomUtil.getState(defaultRotation, mushroomBlockState);
 	}
 
-	protected boolean makeGardenCave(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
+	protected boolean makeGardenCave(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 
@@ -276,7 +277,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	}
 
 	@Override
-	protected boolean makeSmallerCave(StructurePieceAccessor list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
+	protected boolean makeSmallerCave(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
 		if (super.makeSmallerCave(list, rand, index, x, y, z, caveSize, caveHeight, rotation)) {
 			this.openingTowards[rotation.ordinal()] = true;
 			return true;

@@ -1,35 +1,29 @@
 package twilightforest.entity.monster;
 
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Spider;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
-import twilightforest.TFSounds;
-import twilightforest.entity.TFEntities;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class KingSpider extends Spider {
 
 	public KingSpider(EntityType<? extends KingSpider> type, Level world) {
 		super(type, world);
-	}
-
-	@Override
-	protected void registerGoals() {
-		super.registerGoals();
-		//this.goalSelector.addGoal(1, new EntityAITFChargeAttack(this, 0.4F));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -38,26 +32,26 @@ public class KingSpider extends Spider {
 				.add(Attributes.MOVEMENT_SPEED, 0.35D)
 				.add(Attributes.ATTACK_DAMAGE, 6.0D);
 	}
-	
-	@Override
-	protected SoundEvent getAmbientSound() {
-	      return TFSounds.KING_SPIDER_AMBIENT;
-	   }
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-	      return TFSounds.KING_SPIDER_HURT;
-	   }
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.KING_SPIDER_AMBIENT.get();
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.KING_SPIDER_HURT.get();
+	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-	      return TFSounds.KING_SPIDER_DEATH;
-	   }
+		return TFSounds.KING_SPIDER_DEATH.get();
+	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState blockIn) {
-	      this.playSound(TFSounds.KING_SPIDER_STEP, 0.15F, 1.0F);
-	   }
+		this.playSound(TFSounds.KING_SPIDER_STEP.get(), 0.15F, 1.0F);
+	}
 
 	@Override
 	public boolean onClimbable() {
@@ -67,19 +61,19 @@ public class KingSpider extends Spider {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag dataTag) {
-		livingData = super.finalizeSpawn(worldIn, difficulty, reason, livingData, dataTag);
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
 
-		// will always have a dryad riding the spider or whatever is riding the spider
-		SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(level);
+		// will always have a druid riding the spider or whatever is riding the spider
+		SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.getLevel());
 		druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-		druid.finalizeSpawn(worldIn, difficulty, MobSpawnType.JOCKEY, null, null);
+		druid.finalizeSpawn(accessor, difficulty, MobSpawnType.JOCKEY, null, null);
 		Entity lastRider = this;
 		while (!lastRider.getPassengers().isEmpty())
 			lastRider = lastRider.getPassengers().get(0);
 		druid.startRiding(lastRider);
 
-		return livingData;
+		return data;
 	}
 
 	@Override

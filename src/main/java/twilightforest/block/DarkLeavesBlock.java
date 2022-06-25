@@ -8,8 +8,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class DarkLeavesBlock extends TFLeavesBlock {
 
-	protected DarkLeavesBlock(Properties props) {
-		super(props);
+	public DarkLeavesBlock(Properties properties) {
+		super(properties);
 	}
 
     @Override
@@ -23,12 +23,12 @@ public class DarkLeavesBlock extends TFLeavesBlock {
 	}
 
 	@Override
-	public VoxelShape getBlockSupportShape(BlockState pState, BlockGetter pReader, BlockPos pPos) {
+	public VoxelShape getBlockSupportShape(BlockState state, BlockGetter getter, BlockPos pos) {
 		return Shapes.block();
 	}
-	
+
 	@Override
-	public int getLightBlock(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+	public int getLightBlock(BlockState state, BlockGetter getter, BlockPos pos) {
 		return 15;
 	}
 }

@@ -9,12 +9,12 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class GiantLeavesBlock extends GiantBlock implements ValidSpawnBlock {
 
-	public GiantLeavesBlock(Properties props) {
-		super(props);
+	public GiantLeavesBlock(Properties properties) {
+		super(properties);
 	}
 
 	@Override
-	public boolean isValidSpawn(BlockState state, BlockGetter world, BlockPos pos, SpawnPlacements.Type type, EntityType<?> entityType) {
+	public boolean isValidSpawn(BlockState state, BlockGetter getter, BlockPos pos, SpawnPlacements.Type type, EntityType<?> entityType) {
 		return false;
 	}
 }

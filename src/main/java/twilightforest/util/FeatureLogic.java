@@ -2,6 +2,7 @@ package twilightforest.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -68,7 +69,7 @@ public final class FeatureLogic {
      * Gets either cobblestone or mossy cobblestone, randomly.  Used for ruins.
      */
     @Deprecated // Determine if we can actually remove this one and delegate to StructureProcessor
-    public static BlockState randStone(Random rand, int howMuch) {
+    public static BlockState randStone(RandomSource rand, int howMuch) {
         return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE.defaultBlockState() : Blocks.MOSSY_COBBLESTONE.defaultBlockState();
     }
 }

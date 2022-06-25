@@ -8,6 +8,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import twilightforest.TwilightForestMod;
 
+import org.jetbrains.annotations.Nullable;
+
 public class FluidTagGenerator extends FabricTagProvider.FluidTagProvider {
 
     public static final TagKey<Fluid> FIRE_JET_FUEL = TagKey.create(Registry.FLUID_REGISTRY, TwilightForestMod.prefix("fire_jet_fuel"));
@@ -18,6 +20,6 @@ public class FluidTagGenerator extends FabricTagProvider.FluidTagProvider {
 
     @Override
     protected void generateTags() {
-        getOrCreateTagBuilder(FIRE_JET_FUEL).forceAddTag(FluidTags.LAVA);
+        tag(FIRE_JET_FUEL).addTag(FluidTags.LAVA);
     }
 }

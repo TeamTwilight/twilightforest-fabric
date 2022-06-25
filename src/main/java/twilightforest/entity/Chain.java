@@ -1,8 +1,8 @@
 package twilightforest.entity;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.nbt.CompoundTag;
 import twilightforest.entity.monster.BlockChainGoblin;
 
 public class Chain extends BlockChainGoblin.MultipartGenericsAreDumb {
@@ -13,7 +13,7 @@ public class Chain extends BlockChainGoblin.MultipartGenericsAreDumb {
 
 	@Override
 	protected void defineSynchedData() {
-		realSize = EntityDimensions.scalable(0.75F, 0.75F);
+		this.realSize = EntityDimensions.scalable(0.75F, 0.75F);
 	}
 
 	@Override

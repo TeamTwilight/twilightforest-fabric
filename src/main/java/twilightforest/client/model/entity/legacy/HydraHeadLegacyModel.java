@@ -14,7 +14,7 @@ import twilightforest.entity.boss.HydraPart;
 
 public class HydraHeadLegacyModel extends ListModel<HydraHead> {
 
-    ModelPart head;
+    final ModelPart head;
     ModelPart jaw;
 
     public HydraHeadLegacyModel(ModelPart root) {

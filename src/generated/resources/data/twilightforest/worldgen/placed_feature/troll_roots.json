@@ -2,24 +2,24 @@
   "feature": "twilightforest:troll_roots",
   "placement": [
     {
-      "heightmap": "WORLD_SURFACE_WG",
-      "type": "minecraft:heightmap"
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
     },
     {
+      "type": "minecraft:height_range",
       "height": {
-        "min_inclusive": {
-          "above_bottom": 0
-        },
+        "type": "minecraft:uniform",
         "max_inclusive": {
           "absolute": 60
         },
-        "type": "minecraft:uniform"
-      },
-      "type": "minecraft:height_range"
+        "min_inclusive": {
+          "above_bottom": 0
+        }
+      }
     },
     {
-      "count": 8,
-      "type": "minecraft:count"
+      "type": "minecraft:count",
+      "count": 8
     },
     {
       "type": "minecraft:biome"
