@@ -118,6 +118,7 @@ dependencies {
 
     modImplementation(include('com.github.Chocohead:Fabric-ASM:v2.3'))
     modImplementation(include("me.alphamode:ForgeTags:2.1"))
+    modImplementation(include("maven.modrinth:here-be-no-dragons:1.0.0"))
     modImplementation "dev.emi:trinkets:${trinkets_version}"
 //    modImplementation(include('com.github.alkyaly:js-coremods-fabric:1.0.0'))
 }
