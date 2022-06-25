@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:item/util/overlap_gui_held",
+  "parent": "minecraft:item/handheld",
   "overrides": [
     {
       "model": "twilightforest:item/cube_of_annihilation_thrown",

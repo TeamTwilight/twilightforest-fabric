@@ -7,14 +7,17 @@
     },
     {
       "type": "minecraft:count",
-      "count": 20
+      "count": 3
     },
     {
       "type": "minecraft:in_square"
     },
     {
       "type": "minecraft:rarity_filter",
-      "chance": 15
+      "chance": 2
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }

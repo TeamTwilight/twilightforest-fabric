@@ -50,7 +50,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> CICADA = BLOCKS.register("cicada", () -> new CicadaBlock(BlockBehaviour.Properties.of(new Material.Builder(MaterialColor.GRASS).noCollider().nonSolid().build()).sound(SoundType.SLIME_BLOCK).instabreak().noCollission()));
 	public static final RegistryObject<Block> MOONWORM = BLOCKS.register("moonworm", () -> new MoonwormBlock(BlockBehaviour.Properties.of(new Material.Builder(MaterialColor.GRASS).noCollider().nonSolid().build()).lightLevel((state) -> 14).sound(SoundType.SLIME_BLOCK).instabreak().noCollission()));
 	public static final RegistryObject<HugeLilyPadBlock> HUGE_LILY_PAD = BLOCKS.register("huge_lily_pad", () -> new HugeLilyPadBlock(BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.GRASS)));
-	public static final RegistryObject<Block> HUGE_WATER_LILY = BLOCKS.register("huge_water_lily", () -> new HugeWaterLilyBlock(BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.GRASS)));
+	public static final RegistryObject<Block> HUGE_WATER_LILY = BLOCKS.register("huge_water_lily", () -> new HugeWaterLilyBlock(BlockBehaviour.Properties.of(Material.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
 	public static final RegistryObject<RotatedPillarBlock> SLIDER = BLOCKS.register("slider", SliderBlock::new);
 	public static final RegistryObject<Block> IRON_LADDER = BLOCKS.register("iron_ladder", () -> new IronLadderBlock(BlockBehaviour.Properties.of(Material.DECORATION).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL).noOcclusion()));
 

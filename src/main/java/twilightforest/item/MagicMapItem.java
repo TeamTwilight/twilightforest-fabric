@@ -4,7 +4,7 @@ import io.github.fabricators_of_create.porting_lib.util.CustomMapItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
@@ -141,7 +141,7 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 						// make streams more visible
 						Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
 						Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
-						biome = overBiome != null && BiomeKeys.STREAM.location().equals(world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(overBiome)) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(downBiome)) ? downBiome : biome;
+						biome = overBiome != null && BiomeKeys.STREAM.location().equals(level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(overBiome)) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(downBiome)) ? downBiome : biome;
 
 						MapColorBrightness colorBrightness = this.getMapColorPerBiome(level, biome);
 
@@ -175,13 +175,13 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 		}
 	}
 
-	private MapColorBrightness getMapColorPerBiome(Level world, Biome biome) {
+	private MapColorBrightness getMapColorPerBiome(Level level, Biome biome) {
 		if (BIOME_COLORS.isEmpty()) {
 			setupBiomeColors();
 		}
 		if (biome == null)
 			return new MapColorBrightness(MaterialColor.COLOR_BLACK);
-		ResourceLocation key = world.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
+		ResourceLocation key = level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
 		MapColorBrightness color = BIOME_COLORS.get(key);
 		if (color != null) {
 			return color;
@@ -217,12 +217,12 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 		BIOME_COLORS.put(biome.location(), color);
 	}
 
-	public static int getBiomeColor(Biome biome) {
+	public static int getBiomeColor(Level level, Biome biome) {
 		if (BIOME_COLORS.isEmpty()) {
 			setupBiomeColors();
 		}
 
-		MapColorBrightness c = BIOME_COLORS.get(BuiltinRegistries.BIOME.getKey(biome));
+		MapColorBrightness c = BIOME_COLORS.get(level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
 
 		return c != null ? getMapColor(c) : 0xFF000000;
 	}

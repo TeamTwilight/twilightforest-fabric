@@ -746,4 +746,9 @@ public class PatchouliAdvancementGenerator extends FabricAdvancementProvider {
 	private PlayerTrigger.TriggerInstance advancementTrigger(String name) {
 		return new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), EntityPredicate.Composite.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()));
 	}
+
+	@Override
+	public String getName() {
+		return "Twilight Forest Patchouli Advancements";
+	}
 }

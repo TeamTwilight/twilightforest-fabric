@@ -408,7 +408,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.ORE_METER);
 		singleTex(TFItems.FILLED_MAGIC_MAP);
 		singleTex(TFItems.FILLED_MAZE_MAP);
-		biggerTex(TFItems.FILLED_ORE_MAP, prefix("items/" + TFItems.FILLED_ORE_MAP.getId().getPath()));
+		singleTex(TFItems.FILLED_ORE_MAP);
 		singleTex(TFItems.RAVEN_FEATHER);
 		singleTex(TFItems.MAGIC_MAP_FOCUS);
 		singleTex(TFItems.MAZE_MAP_FOCUS);
@@ -457,7 +457,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.MAZE_WAFER);
 		singleTex(TFItems.MAGIC_MAP);
 		singleTex(TFItems.MAZE_MAP);
-		biggerTex(TFItems.ORE_MAP, prefix("items/" + TFItems.ORE_MAP.getId().getPath()));
+		singleTex(TFItems.ORE_MAP);
 		ModelFile magnetPull1 = generated("ore_magnet_pulling_1", prefix("items/ore_magnet_pulling_1"));
 		ModelFile magnetPull2 = generated("ore_magnet_pulling_2", prefix("items/ore_magnet_pulling_2"));
 		singleTex(TFItems.ORE_MAGNET)
@@ -478,7 +478,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.ARMOR_SHARD);
 		singleTex(TFItems.ARMOR_SHARD_CLUSTER);
 		singleTex(TFItems.KNIGHTMETAL_INGOT);
-		biggerTex(TFItems.KNIGHTMETAL_HELMET, prefix("items/" + TFItems.KNIGHTMETAL_HELMET.getId().getPath()));
+		singleTex(TFItems.KNIGHTMETAL_HELMET);
 		singleTex(TFItems.KNIGHTMETAL_CHESTPLATE);
 		singleTex(TFItems.KNIGHTMETAL_LEGGINGS);
 		singleTex(TFItems.KNIGHTMETAL_BOOTS);
@@ -490,7 +490,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.PHANTOM_CHESTPLATE);
 		singleTex(TFItems.LAMP_OF_CINDERS);
 		singleTex(TFItems.ALPHA_YETI_FUR);
-		biggerTex(TFItems.YETI_HELMET, prefix("items/" + TFItems.YETI_HELMET.getId().getPath()));
+		singleTex(TFItems.YETI_HELMET);
 		singleTex(TFItems.YETI_CHESTPLATE);
 		singleTex(TFItems.YETI_LEGGINGS);
 		singleTex(TFItems.YETI_BOOTS);
@@ -519,10 +519,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		bowTex(TFItems.ENDER_BOW, enderPulling0, enderPulling1, enderPulling2);
 		tool(TFItems.ICE_SWORD.getId().getPath(), prefix("items/ice_sword_solid"), prefix("items/ice_sword_clear"));
 		tool(TFItems.GLASS_SWORD.getId().getPath(), prefix("items/glass_sword_solid"), prefix("items/glass_sword_clear"));
-		ModelFile chainThrown = biggerTexString("block_and_chain_thrown", prefix("items/block_and_chain_thrown"));
-		biggerTexHeld(TFItems.BLOCK_AND_CHAIN, prefix("items/block_and_chain")).override().predicate(prefix("thrown"), 1).model(chainThrown).end();
-		ModelFile cubeThrown = biggerTexString("cube_of_annihilation_thrown", prefix("items/cube_of_annihilation_thrown"));
-		biggerTexHeld(TFItems.CUBE_OF_ANNIHILATION, prefix("items/cube_of_annihilation")).override().predicate(prefix("thrown"), 1).model(cubeThrown).end();
+		ModelFile chainThrown = tool("block_and_chain_thrown", prefix("items/block_and_chain_thrown"));
+		singleTexTool(TFItems.BLOCK_AND_CHAIN).override().predicate(prefix("thrown"), 1).model(chainThrown).end();
+		ModelFile cubeThrown = tool("cube_of_annihilation_thrown", prefix("items/cube_of_annihilation_thrown"));
+		singleTexTool(TFItems.CUBE_OF_ANNIHILATION).override().predicate(prefix("thrown"), 1).model(cubeThrown).end();
 		singleTex(TFItems.CUBE_TALISMAN);
 		//moon dial is a big boi
 		ModelFile full = phaseTex("moon_dial_full", prefix("items/moon_dial/full"));
@@ -667,30 +667,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	private ItemModelBuilder singleTex(RegistryObject<Item> item) {
 		return generated(item.getId().getPath(), prefix("items/" + item.getId().getPath()));
-	}
-
-	private ItemModelBuilder biggerTex(RegistryObject<Item> item, ResourceLocation... layers) {
-		ItemModelBuilder builder = withExistingParent(item.getId().getPath(), "twilightforest:item/util/overlap_gui");
-		for (int i = 0; i < layers.length; i++) {
-			builder = builder.texture("layer" + i, layers[i]);
-		}
-		return builder;
-	}
-
-	private ItemModelBuilder biggerTexHeld(RegistryObject<Item> item, ResourceLocation... layers) {
-		ItemModelBuilder builder = withExistingParent(item.getId().getPath(), "twilightforest:item/util/overlap_gui_held");
-		for (int i = 0; i < layers.length; i++) {
-			builder = builder.texture("layer" + i, layers[i]);
-		}
-		return builder;
-	}
-
-	private ItemModelBuilder biggerTexString(String name, ResourceLocation... layers) {
-		ItemModelBuilder builder = withExistingParent(name, "twilightforest:item/util/overlap_gui");
-		for (int i = 0; i < layers.length; i++) {
-			builder = builder.texture("layer" + i, layers[i]);
-		}
-		return builder;
 	}
 
 	private ItemModelBuilder arcticArmorTex(RegistryObject<Item> item) {

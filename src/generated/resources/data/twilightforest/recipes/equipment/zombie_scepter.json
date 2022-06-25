@@ -3,27 +3,23 @@
   "ingredients": [
     [
       {
-        "type": "forge:nbt",
-        "count": 1,
+        "type": "forge:partial_nbt",
         "item": "minecraft:potion",
         "nbt": "{Potion:\"minecraft:strength\"}"
       },
       {
-        "type": "forge:nbt",
-        "count": 1,
+        "type": "forge:partial_nbt",
         "item": "minecraft:potion",
         "nbt": "{Potion:\"minecraft:strong_strength\"}"
       },
       {
-        "type": "forge:nbt",
-        "count": 1,
+        "type": "forge:partial_nbt",
         "item": "minecraft:potion",
         "nbt": "{Potion:\"minecraft:long_strength\"}"
       }
     ],
     {
-      "type": "forge:nbt",
-      "count": 1,
+      "type": "forge:partial_nbt",
       "item": "twilightforest:zombie_scepter",
       "nbt": "{Damage:9}"
     },

@@ -1,4 +1,4 @@
-// 1.19	2022-06-16T23:28:08.9038712	Tags for minecraft:block
+// 1.19	2022-06-19T14:31:00.4755777	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -53,7 +53,7 @@ db96f9da8df39e1498ebf29839892448faa170ec data/twilightforest/tags/blocks/antibui
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/blocks/canopy_logs.json
 65138d47619b3b87ed5cdf3b4ec226e0bfebfb64 data/twilightforest/tags/blocks/carminite_reactor_immune.json
 66c63c2aea9e2f572dee901056877665b812ae56 data/twilightforest/tags/blocks/carminite_reactor_ores.json
-7bf74c41b07e125dd7d4e3509c6804fdefd5b5ca data/twilightforest/tags/blocks/common_protections.json
+981ca24d355367f28a0a94beab8608f2915c6c76 data/twilightforest/tags/blocks/common_protections.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/blocks/darkwood_logs.json
 a7801e58506fe6f6666fc0aeabd7fa6dd7ccf6b5 data/twilightforest/tags/blocks/dark_tower_allowed_pots.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/twilightforest/tags/blocks/fences.json

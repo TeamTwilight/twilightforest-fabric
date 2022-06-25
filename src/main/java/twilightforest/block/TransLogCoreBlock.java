@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.chunk.PalettedContainer;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ChangeBiomePacket;
 import twilightforest.network.TFPacketHandler;
@@ -49,12 +50,11 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
 			LevelChunk chunkAt = level.getChunk(dPos.getX() >> 4, dPos.getZ() >> 4);
 			for (LevelChunkSection section : chunkAt.getSections()) {
-				for (int dy = minY; dy < maxY; dy++) { // TODO: This probably isn't correct and isn't good for performance.
-					int y = Mth.clamp(QuartPos.fromBlock(dy), minY, maxY);
-					if (section.getBiomes().get(x & 3, y & 3, z & 3).is(target))
-						continue;
-					//section.getBiomes().set(x & 3, y & 3, z & 3, biome); FIXME
-				}
+				int y = Mth.clamp(QuartPos.fromBlock(section.bottomBlockY()), minY, maxY);
+				if (section.getBiomes().get(x & 3, y & 3, z & 3).is(target))
+					continue;
+				if (section.getBiomes() instanceof PalettedContainer<Holder<Biome>> container)
+					container.set(x & 3, y & 3, z & 3, biome);
 			}
 
 			if (level instanceof ServerLevel) {

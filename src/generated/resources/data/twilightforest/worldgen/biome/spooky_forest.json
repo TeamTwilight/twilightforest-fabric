@@ -45,7 +45,10 @@
       "twilightforest:legacy_redstone_ore",
       "twilightforest:legacy_diamond_ore",
       "twilightforest:legacy_lapis_ore",
-      "twilightforest:legacy_copper_ore"
+      "twilightforest:legacy_copper_ore",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite"
     ],
     [
       "twilightforest:plant_roots",
@@ -56,8 +59,10 @@
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
+      "minecraft:patch_grass_badlands",
+      "minecraft:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
-      "twilightforest:grass_placer",
+      "twilightforest:mayapple",
       "twilightforest:tree/twilight_oak_tree",
       "twilightforest:tree/dead_canopy_tree",
       "twilightforest:pumpkin_lamppost",
@@ -67,6 +72,9 @@
       "twilightforest:fallen_leaves",
       "minecraft:patch_pumpkin",
       "minecraft:patch_dead_bush"
+    ],
+    [
+      "minecraft:freeze_top_layer"
     ]
   ],
   "precipitation": "rain",

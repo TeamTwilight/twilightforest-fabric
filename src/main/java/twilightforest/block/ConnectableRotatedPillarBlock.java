@@ -17,12 +17,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
-	private static final BooleanProperty NORTH = PipeBlock.NORTH;
-	private static final BooleanProperty SOUTH = PipeBlock.SOUTH;
-	private static final BooleanProperty WEST = PipeBlock.WEST;
-	private static final BooleanProperty EAST = PipeBlock.EAST;
-	private static final BooleanProperty UP = PipeBlock.UP;
-	private static final BooleanProperty DOWN = PipeBlock.DOWN;
+	protected static final BooleanProperty NORTH = PipeBlock.NORTH;
+	protected static final BooleanProperty SOUTH = PipeBlock.SOUTH;
+	protected static final BooleanProperty WEST = PipeBlock.WEST;
+	protected static final BooleanProperty EAST = PipeBlock.EAST;
+	protected static final BooleanProperty UP = PipeBlock.UP;
+	protected static final BooleanProperty DOWN = PipeBlock.DOWN;
 
 	final double boundingBoxWidthLower;
 	final double boundingBoxWidthUpper;

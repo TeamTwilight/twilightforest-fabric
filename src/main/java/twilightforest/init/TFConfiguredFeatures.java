@@ -22,12 +22,9 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFBlocks;
 import twilightforest.block.TorchberryPlantBlock;
 import twilightforest.world.components.feature.config.*;
-import twilightforest.init.TFFeatures;
 import twilightforest.world.registration.TreeConfigurations;
 import twilightforest.world.registration.TreeDecorators;
 
@@ -48,6 +45,7 @@ public final class TFConfiguredFeatures {
 	//all the fun little things you find around the dimension
 	public static final Holder<ConfiguredFeature<HugeMushroomFeatureConfiguration, ?>> BIG_MUSHGLOOM = register("mushroom/big_mushgloom", TFFeatures.BIG_MUSHGLOOM.get(), new HugeMushroomFeatureConfiguration(BlockStateProvider.simple(TFBlocks.HUGE_MUSHGLOOM.get().defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.TRUE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), BlockStateProvider.simple(TFBlocks.HUGE_MUSHGLOOM_STEM.get().defaultBlockState().setValue(HugeMushroomBlock.UP, Boolean.FALSE).setValue(HugeMushroomBlock.DOWN, Boolean.FALSE)), 1));
 	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> FALLEN_LEAVES = register("fallen_leaves", TFFeatures.FALLEN_LEAVES.get(), FeatureConfiguration.NONE);
+	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> MAYAPPLE = register("mayapple", Feature.RANDOM_PATCH, FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.MAYAPPLE.get()))));
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> FIDDLEHEAD = register("fiddlehead", Feature.RANDOM_PATCH, FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.FIDDLEHEAD.get()))));
 	public static final Holder<ConfiguredFeature<BlockStateConfiguration, ?>> FIRE_JET = register("fire_jet", TFFeatures.FIRE_JET.get(), new BlockStateConfiguration(TFBlocks.FIRE_JET.get().defaultBlockState()));
 	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> FOUNDATION = register("foundation", TFFeatures.FOUNDATION.get(), FeatureConfiguration.NONE);
@@ -184,29 +182,8 @@ public final class TFConfiguredFeatures {
 							Blocks.ALLIUM.defaultBlockState(),
 							Blocks.AZURE_BLUET.defaultBlockState(),
 							Blocks.OXEYE_DAISY.defaultBlockState())
-					)), BlockPredicate.allOf(BlockPredicate.replaceable(), BlockPredicate.matchesBlocks(Blocks.GRASS_BLOCK)))));
+					)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
 
-	public static final RandomPatchConfiguration FOREST_GRASS = (new RandomPatchConfiguration(64, 7, 7,
-            PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
-			new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
-							//TFBlocks.MAYAPPLE.defaultBlockState(),
-							Blocks.GRASS.defaultBlockState(),
-							Blocks.TALL_GRASS.defaultBlockState(),
-							Blocks.FERN.defaultBlockState(),
-							Blocks.LARGE_FERN.defaultBlockState())
-			)), BlockPredicate.allOf(BlockPredicate.replaceable(), BlockPredicate.matchesBlocks(Blocks.GRASS_BLOCK)))));
-
-	public static final RandomPatchConfiguration OTHER_GRASS = (new RandomPatchConfiguration(64, 7, 7,
-			PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
-			new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
-							Blocks.GRASS.defaultBlockState(),
-							Blocks.TALL_GRASS.defaultBlockState(),
-							Blocks.FERN.defaultBlockState(),
-							Blocks.LARGE_FERN.defaultBlockState())
-			)), BlockPredicate.allOf(BlockPredicate.replaceable(), BlockPredicate.matchesBlocks(Blocks.GRASS_BLOCK)))));
-
-	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> GRASS_PLACER = register("grass_placer", Feature.RANDOM_PATCH, OTHER_GRASS);
-	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> FOREST_GRASS_PLACER = register("forest_grass_placer", Feature.RANDOM_PATCH, FOREST_GRASS);
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> FLOWER_PLACER = register("flower_placer", Feature.FLOWER, SMALL_FLOWER_CONFIG);
 
 	//music!

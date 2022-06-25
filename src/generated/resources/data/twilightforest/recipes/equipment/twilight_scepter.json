@@ -2,8 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "type": "forge:nbt",
-      "count": 1,
+      "type": "forge:partial_nbt",
       "item": "twilightforest:twilight_scepter",
       "nbt": "{Damage:99}"
     },

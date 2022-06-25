@@ -25,6 +25,11 @@ public class LegacyLandmark extends ProgressionStructure implements LegacyLandma
             .apply(instance, LegacyLandmark::new)
     );
 
+    public LegacyLandmark(TFLandmark landmark, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, ControlledSpawningConfig controlledSpawningConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
+        super(advancementLockConfig, hintConfig, controlledSpawningConfig, decorationConfig, structureSettings);
+        this.feature = landmark;
+    }
+
     public static LegacyLandmark extractLandmark(TFLandmark landmark) {
         return new LegacyLandmark(
                 landmark,
@@ -39,11 +44,6 @@ public class LegacyLandmark extends ProgressionStructure implements LegacyLandma
                         landmark.getBeardifierContribution()
                 )
         );
-    }
-
-    public LegacyLandmark(TFLandmark landmark, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, ControlledSpawningConfig controlledSpawningConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-        super(advancementLockConfig, hintConfig, controlledSpawningConfig, decorationConfig, structureSettings);
-        this.feature = landmark;
     }
 
     @Override

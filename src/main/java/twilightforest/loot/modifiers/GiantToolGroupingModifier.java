@@ -32,8 +32,8 @@ public class GiantToolGroupingModifier extends LootModifier {
 	private static boolean shouldMakeGiantCobble = false;
 	private static int amountOfCobbleToReplace = 0;
 
-	public GiantToolGroupingModifier(LootItemCondition[] conditionsIn) {
-		super(conditionsIn);
+	public GiantToolGroupingModifier(LootItemCondition[] conditions) {
+		super(conditions);
 	}
 
 	@Override
@@ -60,13 +60,13 @@ public class GiantToolGroupingModifier extends LootModifier {
 	public static class Serializer extends GlobalLootModifierSerializer<GiantToolGroupingModifier> {
 
 		@Override
-		public GiantToolGroupingModifier read(ResourceLocation name, JsonObject json, LootItemCondition[] conditionsIn) {
-			return new GiantToolGroupingModifier(conditionsIn);
+		public GiantToolGroupingModifier read(ResourceLocation name, JsonObject json, LootItemCondition[] conditions) {
+			return new GiantToolGroupingModifier(conditions);
 		}
 
 		@Override
 		public JsonObject write(GiantToolGroupingModifier instance) {
-			return null;
+			return this.makeConditions(instance.conditions);
 		}
 	}
 

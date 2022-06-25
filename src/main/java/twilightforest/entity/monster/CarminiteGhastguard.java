@@ -2,6 +2,8 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -129,7 +131,6 @@ public class CarminiteGhastguard extends Ghast {
 
 	@Override
 	protected void customServerAiStep() {
-		this.findHome();
 
 		if (this.inTrapCounter > 0) {
 			this.inTrapCounter--;
@@ -196,63 +197,36 @@ public class CarminiteGhastguard extends Ghast {
 		return world.isUnobstructed(this) && !world.containsAnyLiquid(this.getBoundingBox());
 	}
 
-	private void findHome() {
-		if (!this.hasHome()) {
-			int chunkX = Mth.floor(this.getX()) >> 4;
-			int chunkZ = Mth.floor(this.getZ()) >> 4;
-
-			TFLandmark nearFeature = TFLandmark.getFeatureForRegion(chunkX, chunkZ, (ServerLevel) this.getLevel());
-
-			if (nearFeature != TFLandmark.DARK_TOWER) {
-				this.noActionTime += 5;
-			} else {
-				BlockPos cc = TFLandmark.getNearestCenterXYZ(chunkX, chunkZ);
-				this.restrictTo(cc.above(128), 64);
-			}
-		}
-	}
-
-	// [VanillaCopy] Home fields and methods from CreatureEntity, changes noted
-	private BlockPos homePosition = BlockPos.ZERO;
-	private float maximumHomeDistance = -1.0F;
-
-	@Override
-	public boolean isWithinRestriction() {
-		return this.isWithinRestriction(blockPosition());
-	}
-
 	@Override
 	public boolean isWithinRestriction(BlockPos pos) {
 		// TF - restrict valid y levels
 		// Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
-		return this.maximumHomeDistance == -1.0F || pos.getY() > 64 && pos.getY() < 210 && this.homePosition.distSqr(pos) < this.maximumHomeDistance * this.maximumHomeDistance;
+		if (this.getRestrictRadius() == -1.0F) {
+			return true;
+		} else {
+			return pos.getY() > this.getLevel().getMinBuildHeight() + 64 &&
+					pos.getY() < this.getLevel().getMaxBuildHeight() &&
+					this.getRestrictCenter().distSqr(pos) < (double)(this.getRestrictRadius() * this.getRestrictRadius());
+		}
 	}
 
 	@Override
-	public void restrictTo(BlockPos pos, int distance) {
-		this.homePosition = pos;
-		this.maximumHomeDistance = distance;
+	public void addAdditionalSaveData(CompoundTag compound) {
+		BlockPos home = this.getRestrictCenter();
+		compound.put("Home", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
+		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
-	public BlockPos getRestrictCenter() {
-		return this.homePosition;
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
+		if (compound.contains("Home", 9)) {
+			ListTag nbttaglist = compound.getList("Home", 6);
+			int hx = (int) nbttaglist.getDouble(0);
+			int hy = (int) nbttaglist.getDouble(1);
+			int hz = (int) nbttaglist.getDouble(2);
+			this.restrictTo(new BlockPos(hx, hy, hz), 64);
+		}
 	}
-
-	@Override
-	public float getRestrictRadius() {
-		return this.maximumHomeDistance;
-	}
-
-	@Override
-	public boolean hasRestriction() {
-		this.maximumHomeDistance = -1.0F;
-		return false;
-	}
-
-	public boolean hasHome() {
-		return this.maximumHomeDistance != -1.0F;
-	}
-	// End copy
 }
 

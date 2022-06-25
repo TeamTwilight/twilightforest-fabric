@@ -84,7 +84,7 @@ public class MapBiomesCommand {
                 Color color = BIOME2COLOR.get(b);
 
                 if (color == null) {
-                    int colorInt = MagicMapItem.getBiomeColor(b);
+                    int colorInt = MagicMapItem.getBiomeColor(source.getSource().getLevel(), b);
 
                     if (colorInt == 0)
                         colorInt = b.getGrassColor(0, 0);

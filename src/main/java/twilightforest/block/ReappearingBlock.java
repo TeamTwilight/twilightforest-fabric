@@ -15,7 +15,7 @@ public class ReappearingBlock extends VanishingBlock {
 
 	public ReappearingBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.getStateDefinition().any().setValue(VANISHED, false));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false).setValue(VANISHED, false));
 	}
 
 	@Override

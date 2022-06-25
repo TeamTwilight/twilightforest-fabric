@@ -1,19 +1,20 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import twilightforest.init.TFBlocks;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.config.ThornsConfig;
 
 public class ThornFeature extends Feature<ThornsConfig> {
@@ -43,9 +44,10 @@ public class ThornFeature extends Feature<ThornsConfig> {
 			BlockPos dPos = pos.relative(dir, i);
 
 			// Makes it avoid the troll clouds
-			if (!avoidGiantCloud || dPos.getY() - 64 <= world.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, dPos.getX(), dPos.getZ())) {
+			if (!avoidGiantCloud || dPos.getY() - 64 <= WorldUtil.getBaseHeight(world, dPos.getX(), dPos.getZ(), Heightmap.Types.MOTION_BLOCKING_NO_LEAVES)) {
 				if (Math.abs(dPos.getX() - oPos.getX()) < config.maxSpread() && Math.abs(dPos.getZ() - oPos.getZ()) < config.maxSpread() && canPlaceThorns(world, dPos)) {
 					world.setBlock(dPos, TFBlocks.BROWN_THORNS.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, dir.getAxis()), 1 | 2);
+					world.getChunk(dPos).markPosForPostprocessing(dPos);
 
 					// did we make it to the end?
 					if (i == length - 1) {

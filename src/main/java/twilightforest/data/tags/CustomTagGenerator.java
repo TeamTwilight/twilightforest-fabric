@@ -67,5 +67,10 @@ public class CustomTagGenerator {
 		private static TagKey<BannerPattern> create(String name) {
 			return TagKey.create(Registry.BANNER_PATTERN_REGISTRY, TwilightForestMod.prefix(name));
 		}
+
+		@Override
+		public String getName() {
+			return "Twilight Forest Banner Pattern Tags";
+		}
 	}
 }

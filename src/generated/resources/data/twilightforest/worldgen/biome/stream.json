@@ -43,6 +43,9 @@
     [
       "minecraft:seagrass_normal",
       "minecraft:seagrass_simple"
+    ],
+    [
+      "minecraft:freeze_top_layer"
     ]
   ],
   "precipitation": "rain",

@@ -1,7 +1,5 @@
 package twilightforest.data;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
@@ -15,15 +13,15 @@ import net.minecraft.data.*;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFStructureSets;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.chunkgenerators.warp.TerrainPoint;
@@ -37,7 +35,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.OptionalLong;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -50,7 +48,9 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 		RegistryAccess registryaccess = BuiltinRegistries.ACCESS;
 		DynamicOps<JsonElement> dynamicops = RegistryOps.create(JsonOps.INSTANCE, registryaccess);
 
-		Registry<LevelStem> twilight = this.registerTFSettings(registryaccess);
+		Optional<HolderSet<StructureSet>> structureOverrides = this.makeStructureList();
+
+		Registry<LevelStem> twilight = this.registerTFSettings(registryaccess, structureOverrides);
 		//Registry<LevelStem> skylight = this.registerSkylightSettings(registryaccess);
 		//TODO void world
 
@@ -69,12 +69,25 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 		dumpRegistry(path, cache, dynamicops, Registry.LEVEL_STEM_REGISTRY, twilight, LevelStem.CODEC);
 	}
 
+	private Optional<HolderSet<StructureSet>> makeStructureList() {
+		return Optional.of(HolderSet.direct(
+				Function.identity(),
+				TFStructureSets.STRUCTURE_SETS
+						.getEntries()
+						.stream()
+						.map(RegistryObject::getHolder)
+						.filter(Optional::isPresent)
+						.map(Optional::get)
+						.toList()
+		));
+	}
+
 	private static <T> void dumpRegistryCap(CachedOutput cache, Path path, RegistryAccess access, DynamicOps<JsonElement> ops, RegistryAccess.RegistryData<T> data) {
 		LOGGER.info("Dumping: {}", data.key());
 		dumpRegistry(path, cache, ops, data.key(), access.ownedRegistryOrThrow(data.key()), data.codec());
 	}
 
-	private Registry<LevelStem> registerTFSettings(RegistryAccess access) {
+	private Registry<LevelStem> registerTFSettings(RegistryAccess access, Optional<HolderSet<StructureSet>> structureOverrides) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, Lifecycle.experimental(), null);
 		Registry<Biome> biomeRegistry = access.registryOrThrow(Registry.BIOME_REGISTRY);
 		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getHolderOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN.getKey());
@@ -87,11 +100,11 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12))), Lifecycle.experimental());
+		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, true, Optional.of(12))), Lifecycle.experimental());
 		return writableregistry;
 	}
 
-	private Registry<LevelStem> registerSkylightSettings(RegistryAccess access) {
+	private Registry<LevelStem> registerSkylightSettings(RegistryAccess access, Optional<HolderSet<StructureSet>> structureOverrides) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, Lifecycle.experimental(), null);
 		Registry<Biome> biomeRegistry = new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null);
 		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getHolderOrThrow(TFDimensionSettings.SKYLIGHT_NOISE_GEN.getKey());
@@ -104,7 +117,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), noiseGenSettings, true, true, Optional.of(12))), Lifecycle.stable());
+		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, true, Optional.of(12))), Lifecycle.stable());
 		return writableregistry;
 	}
 
@@ -153,7 +166,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 	}
 
 	public String getName() {
-		return "Worldgen";
+		return "Twilight Forest Worldgen";
 	}
 
 	private Map<ResourceLocation, Biome> getBiomes() {

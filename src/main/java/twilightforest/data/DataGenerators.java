@@ -34,6 +34,7 @@ public class DataGenerators {
 		generator.addProvider(true, new StonecuttingGenerator(generator));
 		generator.addProvider(true, new CraftingGenerator(generator));
 		generator.addProvider(true, new WorldGenerator(generator));
+		generator.addProvider(true, new LootModifierGenerator(generator));
 
 		generator.addProvider(true, new CrumbleHornGenerator(generator, helper));
 		generator.addProvider(true, new TransformationPowderGenerator(generator, helper));

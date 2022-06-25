@@ -39,19 +39,24 @@ public class MazeMapPacket implements S2CPacket {
 	}
 
 	public static class Handler {
-		public static boolean onMessage(MazeMapPacket message, Executor ctx) {
-			ctx.execute(() -> {
-				// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
-				MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
-				String s = MazeMapItem.getMapName(message.inner.getMapId());
-				TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(Minecraft.getInstance().level, s);
-				if (mapdata == null) {
-					mapdata = new TFMazeMapData(0, 0, message.inner.getScale(), false, false, message.inner.isLocked(), Minecraft.getInstance().level.dimension());
-					TFMazeMapData.registerMazeMapData(Minecraft.getInstance().level, mapdata, s);
-				}
 
-				message.inner.applyToMap(mapdata);
-				mapitemrenderer.update(message.inner.getMapId(), mapdata);
+		@SuppressWarnings("Convert2Lambda")
+		public static boolean onMessage(MazeMapPacket message, Executor ctx) {
+			ctx.execute(new Runnable() {
+				@Override
+				public void run() {
+					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
+					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
+					String s = MazeMapItem.getMapName(message.inner.getMapId());
+					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(Minecraft.getInstance().level, s);
+					if (mapdata == null) {
+						mapdata = new TFMazeMapData(0, 0, message.inner.getScale(), false, false, message.inner.isLocked(), Minecraft.getInstance().level.dimension());
+						TFMazeMapData.registerMazeMapData(Minecraft.getInstance().level, mapdata, s);
+					}
+
+					message.inner.applyToMap(mapdata);
+					mapitemrenderer.update(message.inner.getMapId(), mapdata);
+				}
 			});
 			return true;
 		}

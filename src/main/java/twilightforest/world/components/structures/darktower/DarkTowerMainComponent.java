@@ -52,7 +52,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	}
 
 	public DarkTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z) {
-		this(feature, rand, index, x + 10, y + 4, z + 10, Direction.NORTH);
+		this(feature, rand, index, x + 10, y, z + 10, Direction.NORTH);
 	}
 
 	public DarkTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {

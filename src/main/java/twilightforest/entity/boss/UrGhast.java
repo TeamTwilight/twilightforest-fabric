@@ -102,7 +102,7 @@ public class UrGhast extends CarminiteGhastguard {
 	@Override
 	public void checkDespawn() {
 		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.hasHome()) {
+			if (this.getRestrictCenter() != BlockPos.ZERO) {
 				this.getLevel().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();

@@ -4,7 +4,7 @@
   },
   "downfall": 0.4,
   "effects": {
-    "fog_color": 12648408,
+    "fog_color": 3672576,
     "foliage_color": 6563343,
     "grass_color": 5713443,
     "mood_sound": {
@@ -49,7 +49,10 @@
       "twilightforest:legacy_redstone_ore",
       "twilightforest:legacy_diamond_ore",
       "twilightforest:legacy_lapis_ore",
-      "twilightforest:legacy_copper_ore"
+      "twilightforest:legacy_copper_ore",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite"
     ],
     [
       "twilightforest:plant_roots",
@@ -60,6 +63,8 @@
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
+      "minecraft:patch_grass_badlands",
+      "minecraft:patch_grass_savanna",
       "minecraft:patch_sugar_cane",
       "twilightforest:tree/hollow_oak",
       "twilightforest:stone_circle",
@@ -68,12 +73,14 @@
       "twilightforest:hollow_stump",
       "twilightforest:hollow_log",
       "twilightforest:tree/swampy_oak_tree",
-      "twilightforest:grass_placer",
       "twilightforest:fire_jet",
       "twilightforest:smoker",
       "minecraft:patch_sugar_cane_swamp",
       "minecraft:vines",
       "minecraft:brown_mushroom_swamp"
+    ],
+    [
+      "minecraft:freeze_top_layer"
     ]
   ],
   "precipitation": "none",

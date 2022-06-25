@@ -5,10 +5,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BucketPickup;
-import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluid;
@@ -37,7 +34,7 @@ public enum BlockLoggingEnum implements StringRepresentable {
         this.fluid = fluid;
         this.name = name().toLowerCase(Locale.ROOT);
 
-        if (fluid != Fluids.EMPTY) {
+        if (fluid != Fluids.EMPTY && block == Blocks.AIR) {
             Ref.FLUIDS.put(fluid, this);
         }
         if(fluid == Fluids.EMPTY && block != Blocks.AIR) {
@@ -80,7 +77,7 @@ public enum BlockLoggingEnum implements StringRepresentable {
 
         @Override
         default boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
-            return state.hasProperty(MULTILOGGED) && Ref.FLUIDS.containsKey(fluid) && !fluid.equals(state.getValue(MULTILOGGED).fluid);
+            return state.hasProperty(MULTILOGGED) && Ref.FLUIDS.containsKey(fluid) && !fluid.equals(state.getValue(MULTILOGGED).fluid) && state.getValue(MULTILOGGED) == AIR;
         }
 
         @Override
@@ -89,18 +86,12 @@ public enum BlockLoggingEnum implements StringRepresentable {
 
             if (stateFluid != fluidState.getType() && Ref.FLUIDS.containsKey(fluidState.getType())) {
                 if (!world.isClientSide()) {
-                    if (stateFluid != Fluids.EMPTY) { // TODO Fix this... if Mojang ever adds a third Liquid
-                        //world.setBlockState(pos, state.with(MULTILOGGED, OBSIDIAN), 3);
-                    } else {
-                        world.setBlock(pos, state.setValue(MULTILOGGED, Ref.FLUIDS.get(fluidState.getType())), 3);
-                        world.scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(world));
-                    }
+                    world.setBlock(pos, state.setValue(MULTILOGGED, Ref.FLUIDS.get(fluidState.getType())), 3);
+                    world.scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(world));
                 }
-
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
     }
 

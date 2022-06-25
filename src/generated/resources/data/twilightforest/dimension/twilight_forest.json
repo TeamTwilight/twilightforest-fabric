@@ -6,6 +6,24 @@
     "generate_dark_forest_canopy": true,
     "monster_spawns_below_sealevel": true,
     "noise_generation_settings": "twilightforest:twilight_noise_gen",
+    "structures_placements": [
+      "twilightforest:hedge_maze",
+      "twilightforest:quest_grove",
+      "twilightforest:mushroom_tower",
+      "twilightforest:small_hollow_hill",
+      "twilightforest:medium_hollow_hill",
+      "twilightforest:large_hollow_hill",
+      "twilightforest:naga_courtyard",
+      "twilightforest:lich_tower",
+      "twilightforest:labyrinth",
+      "twilightforest:hydra_lair",
+      "twilightforest:knight_stronghold",
+      "twilightforest:dark_tower",
+      "twilightforest:yeti_cave",
+      "twilightforest:aurora_palace",
+      "twilightforest:troll_cave",
+      "twilightforest:final_castle"
+    ],
     "wrapped_generator": {
       "type": "minecraft:noise",
       "biome_source": {

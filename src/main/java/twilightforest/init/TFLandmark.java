@@ -594,10 +594,10 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		// what biome is at the center of the chunk?
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8)).value();
-		return generateFeature(chunkX, chunkZ, biomeAt, world.getSeed(), world.registryAccess());
+		return generateFeature(world.registryAccess(), chunkX, chunkZ, biomeAt, world.getSeed(), world.registryAccess());
 	}
 
-	public static TFLandmark generateFeature(int chunkX, int chunkZ, Biome biome, long seed, RegistryAccess registryAccess) {
+	public static TFLandmark generateFeature(RegistryAccess access, int chunkX, int chunkZ, Biome biome, long seed, RegistryAccess registryAccess) {
 		// Remove block comment start-marker to enable debug
 		/*if (true) {
 			return LICH_TOWER;
@@ -608,7 +608,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// does the biome have a feature?
-		TFLandmark biomeFeature = BIOME_FEATURES.get(registryAccess.registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
+		TFLandmark biomeFeature = BIOME_FEATURES.get(access.ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
 
 		if(biomeFeature != null)
 			return biomeFeature;
@@ -903,17 +903,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		return null;
 	}
 
-	private static boolean isValidBiome(Structure.GenerationContext context) {
-		int x = context.chunkPos().getMiddleBlockX();
-		int z = context.chunkPos().getMiddleBlockZ();
-		int y = 1;
-		Holder<Biome> holder = context.chunkGenerator().getBiomeSource().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z), Climate.empty());
-		return ForgeRegistries.BIOMES.getKey(holder.value()) != null && Objects.equals(ForgeRegistries.BIOMES.getKey(holder.value()).getNamespace(), TwilightForestMod.ID);
-	}
-
 	public Optional<Structure.GenerationStub> generateStub(Structure.GenerationContext context) {
-		if (!isValidBiome(context)) return Optional.empty();
-
 		ChunkPos chunkPos = context.chunkPos();
 		if (!TFLandmark.isInFeatureChunk(chunkPos.x << 4, chunkPos.z << 4))
 			return Optional.empty();
@@ -922,7 +912,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
 		int y = shouldAdjustToTerrain() ? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7) : context.chunkGenerator().getSeaLevel();
 		Holder<Biome> holder = context.chunkGenerator().getBiomeSource().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z), Climate.empty());
-		if (this != generateFeature(chunkPos.x, chunkPos.z, holder.value(), context.seed(), context.registryAccess()))
+		if (this != generateFeature(context.registryAccess(), chunkPos.x, chunkPos.z, holder.value(), context.seed(), context.registryAccess()))
 			return Optional.empty();
 		return Optional.ofNullable(this.provideFirstPiece(context.structureTemplateManager(), context.chunkGenerator(), RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z)).map(piece -> this.getStructurePieceGenerationStubFunction(piece, context, x, y, z));
 	}

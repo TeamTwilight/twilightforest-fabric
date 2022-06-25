@@ -6,13 +6,14 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
@@ -166,7 +167,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		ShapedRecipeBuilder.shaped(TFBlocks.CANOPY_BOOKSHELF.get())
 				.pattern("---")
-				.pattern("BBB")
+				.pattern("B B")
 				.pattern("---")
 				.define('-', TFBlocks.CANOPY_PLANKS.get())
 				.define('B', Items.BOOK)
@@ -174,15 +175,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.save(consumer);
 
 		ShapelessRecipeBuilder.shapeless(TFItems.ARMOR_SHARD_CLUSTER.get())
-				.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()))
-				.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()))
-				.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()))
-				.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()))
-				.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()))
-				.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()))
-				.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()))
-				.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()))
-				.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()))
+				.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()), 9)
 				.unlockedBy("has_item", has(TFItems.ARMOR_SHARD.get()))
 				.save(consumer, TwilightForestMod.prefix("material/" + TFItems.ARMOR_SHARD_CLUSTER.getId().getPath()));
 
@@ -352,10 +345,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + Registry.ITEM.getKey(Items.OAK_LEAVES).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.BLOCK_AND_CHAIN.get())
-				.requires(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL)
-				.requires(ItemTagGenerator.KNIGHTMETAL_INGOTS)
-				.requires(ItemTagGenerator.KNIGHTMETAL_INGOTS)
-				.requires(ItemTagGenerator.KNIGHTMETAL_INGOTS)
+				.requires(Ingredient.of(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL))
+				.requires(Ingredient.of(ItemTagGenerator.KNIGHTMETAL_INGOTS), 3)
 				.requires(Ingredient.of(TFItems.KNIGHTMETAL_RING.get()))
 				.unlockedBy("has_block", has(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL))
 				.unlockedBy("has_ingot", has(ItemTagGenerator.KNIGHTMETAL_INGOTS))
@@ -382,45 +373,29 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.save(consumer, locEquip(TFItems.KNIGHTMETAL_SHIELD.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.LIFEDRAIN_SCEPTER.get())
-				.requires(itemWithNBT(TFItems.LIFEDRAIN_SCEPTER, nbt -> nbt.putInt("Damage", TFItems.LIFEDRAIN_SCEPTER.get().getMaxDamage())))
+				.requires(scepter(TFItems.LIFEDRAIN_SCEPTER.get()))
 				.requires(Ingredient.of(Items.FERMENTED_SPIDER_EYE))
 				.unlockedBy("has_item", has(TFItems.LIFEDRAIN_SCEPTER.get()))
 				.save(consumer, locEquip(TFItems.LIFEDRAIN_SCEPTER.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.FORTIFICATION_SCEPTER.get())
-				.requires(itemWithNBT(TFItems.FORTIFICATION_SCEPTER, nbt -> nbt.putInt("Damage", TFItems.FORTIFICATION_SCEPTER.get().getMaxDamage())))
+				.requires(scepter(TFItems.FORTIFICATION_SCEPTER.get()))
 				.requires(Ingredient.of(Items.GOLDEN_APPLE))
 				.unlockedBy("has_item", has(TFItems.FORTIFICATION_SCEPTER.get()))
 				.save(consumer, locEquip(TFItems.FORTIFICATION_SCEPTER.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.TWILIGHT_SCEPTER.get())
-				.requires(itemWithNBT(TFItems.TWILIGHT_SCEPTER, nbt -> nbt.putInt("Damage", TFItems.TWILIGHT_SCEPTER.get().getMaxDamage())))
+				.requires(scepter(TFItems.TWILIGHT_SCEPTER.get()))
 				.requires(Tags.Items.ENDER_PEARLS)
 				.unlockedBy("has_item", has(TFItems.TWILIGHT_SCEPTER.get()))
 				.save(consumer, locEquip(TFItems.TWILIGHT_SCEPTER.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.ZOMBIE_SCEPTER.get())
-				.requires(multipleIngredients(
-						itemWithNBT(Items.POTION, nbt -> nbt.putString("Potion", "minecraft:strength")),
-						itemWithNBT(Items.POTION, nbt -> nbt.putString("Potion", "minecraft:strong_strength")),
-						itemWithNBT(Items.POTION, nbt -> nbt.putString("Potion", "minecraft:long_strength"))
-				))
-				.requires(itemWithNBT(TFItems.ZOMBIE_SCEPTER, nbt -> nbt.putInt("Damage", TFItems.ZOMBIE_SCEPTER.get().getMaxDamage())))
+				.requires(CompoundIngredient.of(potion(Potions.STRENGTH), potion(Potions.STRONG_STRENGTH), potion(Potions.LONG_STRENGTH)))
+				.requires(scepter(TFItems.ZOMBIE_SCEPTER.get()))
 				.requires(Ingredient.of(Items.ROTTEN_FLESH))
 				.unlockedBy("has_item", has(TFItems.ZOMBIE_SCEPTER.get()))
 				.save(consumer, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
-
-		// Testing
-		//ShapelessRecipeBuilder.shapelessRecipe(TFItems.zombie_scepter.get())
-		//		.addIngredient(multipleIngredients(
-		//				Ingredient.fromTag(Tags.Items.GEMS_DIAMOND),
-		//				Ingredient.fromItems(Items.BEDROCK)
-		//		))
-		//		.addIngredient(itemWithNBT(TFItems.zombie_scepter, nbt -> nbt.putInt("Damage", TFItems.zombie_scepter.get().getMaxDamage())))
-		//		.addIngredient(Ingredient.fromItems(Items.ROTTEN_FLESH))
-		//		.addIngredient(Tags.Items.GEMS_EMERALD)
-		//		.addCriterion("has_item", hasItem(TFItems.zombie_scepter.get()))
-		//		.build(consumer, locEquip(TFItems.zombie_scepter.getId().getPath() + "_rv"));
 	}
 
 	private void blockCompressionRecipes(Consumer<FinishedRecipe> consumer) {
@@ -754,5 +729,10 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.MAZESTONE_BRICK.get()), TFBlocks.CRACKED_MAZESTONE.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.MAZESTONE_BRICK.get())).save(consumer, TwilightForestMod.prefix("maze_stone/" + "smelted" + "_maze_stone_cracked").toString());
 		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.CASTLE_BRICK.get()), TFBlocks.CRACKED_CASTLE_BRICK.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.CASTLE_BRICK.get())).save(consumer, TwilightForestMod.prefix("castleblock/" + "smelted" + "_cracked_castle_brick").toString());
 		SimpleCookingRecipeBuilder.cooking(Ingredient.of(TFBlocks.UNDERBRICK.get()), TFBlocks.CRACKED_UNDERBRICK.get(), 0.3f, 200, RecipeSerializer.SMELTING_RECIPE).unlockedBy("has_item", has(TFBlocks.UNDERBRICK.get())).save(consumer, TwilightForestMod.prefix("smelted" + "_cracked_underbrick").toString());
+	}
+
+	@Override
+	public String getName() {
+		return "Twilight Forest Crafting Recipes";
 	}
 }

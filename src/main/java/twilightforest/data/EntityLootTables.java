@@ -3,7 +3,7 @@ package twilightforest.data;
 import com.google.common.collect.Sets;
 import io.github.fabricators_of_create.porting_lib.util.INBTSerializable;
 import net.minecraft.Util;
-import net.minecraft.core.Registry;
+import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
@@ -38,7 +38,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-public class EntityLootTables extends net.minecraft.data.loot.EntityLoot {
+public class EntityLootTables extends EntityLoot {
 
 	private final Set<EntityType<?>> knownEntities = new HashSet<>();
 

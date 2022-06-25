@@ -42,36 +42,41 @@ public class MagicMapPacket implements S2CPacket {
 	}
 
 	public static class Handler {
+
+		@SuppressWarnings("Convert2Lambda")
 		public static boolean onMessage(MagicMapPacket message, Executor ctx) {
-			ctx.execute(() -> {
-				// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
-				MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
-				String s = MagicMapItem.getMapName(message.inner.getMapId());
-				TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(Minecraft.getInstance().level, s);
-				if (mapdata == null) {
-					mapdata = new TFMagicMapData(0, 0, message.inner.getScale(), false, false, message.inner.isLocked(), Minecraft.getInstance().level.dimension());
-					TFMagicMapData.registerMagicMapData(Minecraft.getInstance().level, mapdata, s);
-				}
-
-				message.inner.applyToMap(mapdata);
-
-				// TF - handle custom decorations
-				{
-					mapdata.deserializeFeatures(message.featureData);
-
-					// Cheat and put tfDecorations into main collection so they are called by renderer
-					// However, ensure they come before vanilla's markers, so player markers go above feature markers.
-					Map<String, MapDecoration> saveVanilla = new LinkedHashMap<>(mapdata.decorations);
-					mapdata.decorations.clear();
-
-					for (TFMagicMapData.TFMapDecoration tfDecor : mapdata.tfDecorations) {
-						mapdata.decorations.put(tfDecor.toString(), tfDecor);
+			ctx.execute(new Runnable() {
+				@Override
+				public void run() {
+					// [VanillaCopy] ClientPlayNetHandler#handleMaps with our own mapdatas
+					MapRenderer mapitemrenderer = Minecraft.getInstance().gameRenderer.getMapRenderer();
+					String s = MagicMapItem.getMapName(message.inner.getMapId());
+					TFMagicMapData mapdata = TFMagicMapData.getMagicMapData(Minecraft.getInstance().level, s);
+					if (mapdata == null) {
+						mapdata = new TFMagicMapData(0, 0, message.inner.getScale(), false, false, message.inner.isLocked(), Minecraft.getInstance().level.dimension());
+						TFMagicMapData.registerMagicMapData(Minecraft.getInstance().level, mapdata, s);
 					}
 
-					mapdata.decorations.putAll(saveVanilla);
-				}
+					message.inner.applyToMap(mapdata);
 
-				mapitemrenderer.update(message.inner.getMapId(), mapdata);
+					// TF - handle custom decorations
+					{
+						mapdata.deserializeFeatures(message.featureData);
+
+						// Cheat and put tfDecorations into main collection so they are called by renderer
+						// However, ensure they come before vanilla's markers, so player markers go above feature markers.
+						Map<String, MapDecoration> saveVanilla = new LinkedHashMap<>(mapdata.decorations);
+						mapdata.decorations.clear();
+
+						for (TFMagicMapData.TFMapDecoration tfDecor : mapdata.tfDecorations) {
+							mapdata.decorations.put(tfDecor.toString(), tfDecor);
+						}
+
+						mapdata.decorations.putAll(saveVanilla);
+					}
+
+					mapitemrenderer.update(message.inner.getMapId(), mapdata);
+				}
 			});
 
 			return true;

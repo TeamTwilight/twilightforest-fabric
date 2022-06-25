@@ -4,7 +4,7 @@
   },
   "downfall": 0.8,
   "effects": {
-    "fog_color": 12648408,
+    "fog_color": 0,
     "foliage_color": 3890751,
     "grass_color": 4941652,
     "grass_color_modifier": "twilightforest:dark_forest",
@@ -20,7 +20,7 @@
       "replace_current_music": true,
       "sound": "twilightforest:music.bg"
     },
-    "sky_color": 2105930,
+    "sky_color": 0,
     "water_color": 4159204,
     "water_fog_color": 329011
   },
@@ -47,7 +47,7 @@
     ],
     [],
     [
-      "twilightforest:forest_grass_placer",
+      "twilightforest:mayapple",
       "twilightforest:flower_placer",
       "twilightforest:tree/darkwood_tree",
       "twilightforest:tree/selector/dark_forest_trees",

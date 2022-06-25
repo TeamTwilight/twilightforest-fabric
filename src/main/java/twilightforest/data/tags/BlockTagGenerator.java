@@ -373,7 +373,9 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				Blocks.CHAIN_COMMAND_BLOCK,
 				Blocks.STRUCTURE_BLOCK,
 				Blocks.JIGSAW,
-				Blocks.MOVING_PISTON
+				Blocks.MOVING_PISTON,
+				Blocks.LIGHT,
+				Blocks.REINFORCED_DEEPSLATE
 		);
 
 		// TODO Test behavior with giant blocks for immunity stuffs
@@ -731,5 +733,10 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				TFBlocks.THORN_LEAVES.get(),
 				TFBlocks.BEANSTALK_LEAVES.get()
 		).build();
+	}
+
+	@Override
+	public String getName() {
+		return "Twilight Forest Block Tags";
 	}
 }

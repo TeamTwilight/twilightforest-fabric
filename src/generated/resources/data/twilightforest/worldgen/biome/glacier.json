@@ -42,6 +42,11 @@
       "twilightforest:plant_roots",
       "twilightforest:torch_berries",
       "twilightforest:vanilla_roots"
+    ],
+    [],
+    [],
+    [
+      "minecraft:freeze_top_layer"
     ]
   ],
   "precipitation": "snow",

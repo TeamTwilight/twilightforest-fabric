@@ -251,4 +251,9 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(),
 				TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem());
 	}
+
+	@Override
+	public String getName() {
+		return "Twilight Forest Item Tags";
+	}
 }

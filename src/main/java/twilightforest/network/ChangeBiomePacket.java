@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.SectionPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.chunk.PalettedContainer;
 
 import java.util.concurrent.Executor;
 
@@ -47,27 +49,31 @@ public class ChangeBiomePacket implements S2CPacket {
 
 	public static class Handler {
 
+		@SuppressWarnings("Convert2Lambda")
 		public static boolean onMessage(ChangeBiomePacket message, Executor ctx) {
-			ctx.execute(() -> {
-				ClientLevel world = Minecraft.getInstance().level;
-				LevelChunk chunkAt = (LevelChunk) world.getChunk(message.pos);
+			ctx.execute(new Runnable() {
+				@Override
+				public void run() {
+					ClientLevel world = Minecraft.getInstance().level;
+					LevelChunk chunkAt = (LevelChunk) world.getChunk(message.pos);
 
-				Holder<Biome> biome = world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getHolderOrThrow(message.biomeId);
+					Holder<Biome> biome = world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getHolderOrThrow(message.biomeId);
 
-				int minY = QuartPos.fromBlock(world.getMinBuildHeight());
-				int maxY = minY + QuartPos.fromBlock(world.getHeight()) - 1;
+					int minY = QuartPos.fromBlock(world.getMinBuildHeight());
+					int maxY = minY + QuartPos.fromBlock(world.getHeight()) - 1;
 
-				int x = QuartPos.fromBlock(message.pos.getX());
-				int z = QuartPos.fromBlock(message.pos.getZ());
+					int x = QuartPos.fromBlock(message.pos.getX());
+					int z = QuartPos.fromBlock(message.pos.getZ());
 
-
-				for (LevelChunkSection section : chunkAt.getSections()) {
-					for (int dy = minY; dy < maxY; dy++) { // TODO: This probably isn't correct and isn't good for performance.
-						int y = Mth.clamp(QuartPos.fromBlock(dy), minY, maxY);
-						//section.getBiomes().set(x & 3, y & 3, z & 3, biome); FIXME
+					for (LevelChunkSection section : chunkAt.getSections()) {
+						int y = Mth.clamp(QuartPos.fromBlock(section.bottomBlockY()), minY, maxY);
+						if (section.getBiomes() instanceof PalettedContainer<Holder<Biome>> container)
+							container.set(x & 3, y & 3, z & 3, biome);
+						SectionPos pos = SectionPos.of(message.pos.getX() >> 4, section.bottomBlockY() >> 4, message.pos.getZ() >> 4);
+						world.setSectionDirtyWithNeighbors(pos.x(), pos.y(), pos.z());
 					}
+					world.onChunkLoaded(new ChunkPos(message.pos));
 				}
-				world.onChunkLoaded(new ChunkPos(message.pos));
 			});
 
 			return true;

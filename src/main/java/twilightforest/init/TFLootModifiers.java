@@ -12,6 +12,6 @@ public class TFLootModifiers {
 
 	public static final DeferredRegister<GlobalLootModifierSerializer<?>> LOOT_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.LOOT_MODIFIER_SERIALIZERS, TwilightForestMod.ID);
 
-	public static final RegistryObject<GlobalLootModifierSerializer<?>> FIERY_PICK_SMELTING = LOOT_MODIFIERS.register("fiery_pick_smelting", FieryToolSmeltingModifier.Serializer::new);
-	public static final RegistryObject<GlobalLootModifierSerializer<?>> GIANT_PICK_GROUPING = LOOT_MODIFIERS.register("giant_block_grouping", GiantToolGroupingModifier.Serializer::new);
+	public static final RegistryObject<FieryToolSmeltingModifier.Serializer> FIERY_PICK_SMELTING = LOOT_MODIFIERS.register("fiery_pick_smelting", FieryToolSmeltingModifier.Serializer::new);
+	public static final RegistryObject<GiantToolGroupingModifier.Serializer> GIANT_PICK_GROUPING = LOOT_MODIFIERS.register("giant_block_grouping", GiantToolGroupingModifier.Serializer::new);
 }

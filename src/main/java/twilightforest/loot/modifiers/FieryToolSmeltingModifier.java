@@ -16,11 +16,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class FieryToolSmeltingModifier extends LootModifier {
 
-	protected final LootItemCondition[] conditions;
-
-	public FieryToolSmeltingModifier(LootItemCondition[] conditionsIn) {
-		super(conditionsIn);
-		this.conditions = conditionsIn;
+	public FieryToolSmeltingModifier(LootItemCondition[] conditions) {
+		super(conditions);
 	}
 
 	@Override
@@ -39,13 +36,13 @@ public class FieryToolSmeltingModifier extends LootModifier {
 	public static class Serializer extends GlobalLootModifierSerializer<FieryToolSmeltingModifier> {
 
 		@Override
-		public FieryToolSmeltingModifier read(ResourceLocation name, JsonObject json, LootItemCondition[] conditionsIn) {
-			return new FieryToolSmeltingModifier(conditionsIn);
+		public FieryToolSmeltingModifier read(ResourceLocation name, JsonObject json, LootItemCondition[] conditions) {
+			return new FieryToolSmeltingModifier(conditions);
 		}
 
 		@Override
 		public JsonObject write(FieryToolSmeltingModifier instance) {
-			return null;
+			return this.makeConditions(instance.conditions);
 		}
 	}
 }

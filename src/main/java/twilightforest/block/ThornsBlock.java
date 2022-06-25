@@ -35,7 +35,10 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	public ThornsBlock(Properties props) {
 		super(props, 10);
-		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false).setValue(AXIS, Direction.Axis.Y)
+				.setValue(DOWN, false).setValue(UP, false)
+				.setValue(NORTH, false).setValue(SOUTH, false)
+				.setValue(WEST, false).setValue(EAST, false));
 	}
 
 	@Override

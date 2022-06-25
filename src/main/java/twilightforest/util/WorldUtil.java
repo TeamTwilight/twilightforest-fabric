@@ -59,11 +59,11 @@ public final class WorldUtil {
 		} else return TFGenerationSettings.SEALEVEL;
 	}
 
-//	public static int getBaseHeight(LevelAccessor level, int x, int z, Heightmap.Types type, RandomState randomState) {
-//		if (level.getChunkSource() instanceof ServerChunkCache chunkSource) {
-//			return chunkSource.chunkMap.generator().getBaseHeight(x, z, type, level, randomState);
-//		} else {
-//			return level.getHeight(type, x, z);
-//		}
-//	}
+	public static int getBaseHeight(LevelAccessor level, int x, int z, Heightmap.Types type) {
+		if (level.getChunkSource() instanceof ServerChunkCache chunkSource) {
+			return chunkSource.chunkMap.generator().getBaseHeight(x, z, type, level, chunkSource.randomState());
+		} else {
+			return level.getHeight(type, x, z);
+		}
+	}
 }

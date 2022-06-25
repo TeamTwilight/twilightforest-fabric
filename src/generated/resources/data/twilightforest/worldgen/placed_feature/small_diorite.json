@@ -2,6 +2,18 @@
   "feature": "twilightforest:small_diorite",
   "placement": [
     {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 64
+        },
+        "min_inclusive": {
+          "above_bottom": 0
+        }
+      }
+    },
+    {
       "type": "minecraft:rarity_filter",
       "chance": 60
     },
