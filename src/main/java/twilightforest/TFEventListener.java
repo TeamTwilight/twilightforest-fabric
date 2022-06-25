@@ -7,10 +7,7 @@ import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import com.mojang.authlib.GameProfile;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketsApi;
-import io.github.fabricators_of_create.porting_lib.event.common.ItemCraftedCallback;
-import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
-import io.github.fabricators_of_create.porting_lib.event.common.MountEntityCallback;
-import io.github.fabricators_of_create.porting_lib.event.common.ProjectileImpactCallback;
+import io.github.fabricators_of_create.porting_lib.event.common.*;
 import io.github.fabricators_of_create.porting_lib.loot.GlobalLootModifierSerializer;
 import io.github.fabricators_of_create.porting_lib.loot.LootModifier;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
@@ -129,7 +126,6 @@ public class TFEventListener {
 		UseBlockCallback.EVENT.register(TFEventListener::onPlayerRightClick);
 		PlayerBlockBreakEvents.BEFORE.register(TFEventListener::onCasketBreak);
 		PlayerBlockBreakEvents.BEFORE.register(TFEventListener::breakBlock);
-		ServerPlayConnectionEvents.JOIN.register(TFEventListener::playerLogsIn);
 		ServerPlayerEvents.AFTER_RESPAWN.register(TFEventListener::onPlayerRespawn);
 		ServerPlayerEvents.ALLOW_DEATH.register(TFEventListener::applyDeathItems);
 		ProjectileImpactCallback.EVENT.register(TFEventListener::throwableParry);
@@ -819,8 +815,7 @@ public class TFEventListener {
 	/**
 	 * When player logs in, report conflict status, set enforced_progression rule
 	 */
-	public static void playerLogsIn(ServerGamePacketListenerImpl handler, PacketSender sender, MinecraftServer server) {
-		ServerPlayer player = handler.getPlayer();
+	public static void playerLogsIn(ServerPlayer player) {
 		sendEnforcedProgressionStatus(player, TFGenerationSettings.isProgressionEnforced(player.level));
 		updateCapabilities(player, player);
 		banishNewbieToTwilightZone(player);
