@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.start;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -35,7 +36,8 @@ public class LegacyStructureFeature extends TwilightStructureFeature<NoneFeature
 		int z = context.chunkPos().getMiddleBlockZ();
 		int y = 1;
 		Holder<Biome> holder = context.chunkGenerator().getNoiseBiome(QuartPos.fromBlock(x), QuartPos.fromBlock(y), QuartPos.fromBlock(z));
-		return Objects.equals(context.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(holder.value()).getNamespace(), TwilightForestMod.ID);
+		ResourceLocation id = context.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(holder.value());
+		return id != null && Objects.equals(id.getNamespace(), TwilightForestMod.ID);
 	}
 
     @Override
