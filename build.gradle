@@ -42,7 +42,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.layered() {
         it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${project.minecraft_version}+build.${project.qm_build}:v2"))
-        it.parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip")
+//        it.parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip") // not on 1.19 yet
         it.officialMojangMappings { setNameSyntheticMembers(false) }
     }
     modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
@@ -72,7 +72,7 @@ dependencies {
     implementation(include("com.google.code.findbugs:jsr305:3.0.2"))
 
     // compat
-    modCompileOnly("slimeknights.tconstruct:TConstruct:${project.minecraft_version}-${project.tcon_version}") { exclude(group: "io.github.fabricators_of_create") }
+//    modCompileOnly("slimeknights.tconstruct:TConstruct:${project.minecraft_version}-${project.tcon_version}") { exclude(group: "io.github.fabricators_of_create") }
     modImplementation("dev.emi:trinkets:${project.trinkets_version}")
 }
 
