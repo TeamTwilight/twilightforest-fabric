@@ -1,8 +1,9 @@
+//file:noinspection GradlePackageVersionRange
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
-    id 'io.github.juuxel.loom-quiltflower' version '1.+'
-    id 'org.quiltmc.quilt-mappings-on-loom' version '4.+'
-    id 'maven-publish'
+    id "fabric-loom" version "0.12-SNAPSHOT"
+    id "io.github.juuxel.loom-quiltflower" version "1.+"
+    id "org.quiltmc.quilt-mappings-on-loom" version "4.+"
+    id "maven-publish"
 }
 
 loom {
@@ -18,108 +19,61 @@ version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
 group = project.group_name
 
 sourceSets.main.resources {
-    srcDir 'src/generated/resources'
+    srcDir "src/generated/resources"
 }
 
 repositories {
-    mavenLocal()
-    maven { url = "https://cursemaven.com" }
-    maven { url = "https://api.modrinth.com/maven" }
-    maven { url = "https://maven.shedaniel.me/" }
+    mavenLocal() // test builds of Porting Lib
+    maven { url = "https://cursemaven.com" } // Forge Config API Port
+    maven { url = "https://api.modrinth.com/maven" } // LazyDFU, Suggestion Tweaker
+    maven { url = "https://maven.shedaniel.me/" } // Cloth Config
     maven { url = "https://maven.wispforest.io" } // TOP
-    maven { url = uri("https://storage.googleapis.com/devan-maven/") }
-    maven { url = "https://maven.terraformersmc.com/releases/" }
-    maven { url "https://nexus.resourcefulbees.com/repository/maven-public/" }
-    maven { url 'https://jitpack.io' }
-    maven { url = "https://mvn.devos.one/releases/" }
-    maven { url = "https://mvn.devos.one/snapshots/" }
-    maven { url "https://ladysnake.jfrog.io/artifactory/mods" }
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
-    }
-    maven {
-        url 'https://repo.maven.apache.org/maven2'
-        name 'Maven Central'
-    }
-    maven {
-        name = "BuildCraft"
-        url = "https://mod-buildcraft.com/maven"
-    }
-    maven {
-        name = "ParchmentMC"
-        url = "https://maven.parchmentmc.net/"
-    }
-    maven {
-        url = "https://maven.jamieswhiteshirt.com/libs-release"
-        content {
-            includeGroup("com.jamieswhiteshirt")
-        }
-    }
+    maven { url = "https://storage.googleapis.com/devan-maven/" }
+    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu, Trinkets
+    maven { url = "https://jitpack.io" } // Fabric ASM, Mixin Extras
+    maven { url = "https://mvn.devos.one/snapshots/" } // Porting Lib, Forge Tags, Tinkers, Mantle
+    maven { url = "https://ladysnake.jfrog.io/artifactory/mods" } // Cardinal Components API
+    maven { url = "https://maven.parchmentmc.net/" } // Parchment
+    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
 }
 
 dependencies {
+    // dev env
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-
     mappings loom.layered() {
-        it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:1.18.2+build.22:v2")) // https://maven.quiltmc.org/#browse/browse:release
-        it.parchment("org.parchmentmc.data:parchment-1.18.2:BLEEDING-20220313.132143-1@zip") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
-        it.officialMojangMappings {
-            setNameSyntheticMembers(false)
-        }
+        it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${project.minecraft_version}+build.${project.qm_build}:v2"))
+        it.parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip")
+        it.officialMojangMappings { setNameSyntheticMembers(false) }
     }
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    include(modImplementation(fabricApi.module("fabric-data-generation-api-v1", project.fabric_version))) // include datagen api
-    //Dev Environment Only
-    modCompileOnly ("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-    modImplementation ("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-    modImplementation("dev.architectury:architectury-fabric:${project.architectury_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
+    modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 
-    implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    modLocalRuntime("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { exclude(group: "net.fabricmc.fabric-api") }
+    modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { exclude(group: "net.fabricmc.fabric-api") }
+    modLocalRuntime("dev.architectury:architectury-fabric:${project.architectury_version}") { exclude(group: "net.fabricmc.fabric-api") } // for REI
+    modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") { exclude(group: "net.fabricmc.fabric-api") }
+    modLocalRuntime("maven.modrinth:lazydfu:0.1.2")
+    modLocalRuntime("maven.modrinth:suggestion-tweaker:${project.suggestion_tweaker_version}")
+    modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") { exclude(group: "net.fabricmc.fabric-api") } // for Suggestion Tweaker
 
-    implementation(include("com.electronwill.night-config:core:3.6.3"))
-    implementation(include("com.electronwill.night-config:toml:3.6.3"))
+    // dependencies
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
+    modImplementation(include(fabricApi.module("fabric-data-generation-api-v1", project.fabric_version))) // include datagen api since FAPI fatjar doesn't
     modImplementation(include("io.github.fabricators_of_create:Porting-Lib:${project.port_lib_version}+${project.minecraft_version}-dev.${project.port_lib_hash}"))
-    //modImplementation "com.telepathicgrunt:Blame-Fabric:1.17-4.2.0-fabric"
-//    modImplementation 'com.github.Chocohead:Fabric-ASM:v2.3'
-
     modImplementation(include("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"))
     modImplementation(include("curse.maven:forge-config-api-port-fabric-547434:${project.config_api_version}"))
-
-//    modCompileOnly("slimeknights.tconstruct:TConstruct:${minecraft_version}-${tcon_version}") {
-//        exclude(group: "io.github.fabricators_of_create")
-//    }
-
-//     modImplementation("curse.maven:irisshaders-fabric-455508:3605379")
-//     modImplementation "org.anarres:jcpp:1.4.14"
-
-    modApi ("com.terraformersmc:modmenu:3.1.0") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-
-    //include modImplementation("net.devtech:arrp:0.+")
-
-    //Compiled Jar Side
-    modApi(include("me.shedaniel.cloth:basic-math:0.6.0")) {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"
-    include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}"
-
-    modImplementation(include('com.github.Chocohead:Fabric-ASM:v2.3'))
+    modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"))
+    modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}"))
+    modImplementation(include("com.github.Chocohead:Fabric-ASM:v2.3"))
     modImplementation(include("me.alphamode:ForgeTags:2.1"))
-    modImplementation "dev.emi:trinkets:${trinkets_version}"
-//    modImplementation(include('com.github.alkyaly:js-coremods-fabric:1.0.0'))
+    modImplementation(include("maven.modrinth:here-be-no-dragons:1.0.0"))
+    implementation(include("com.electronwill.night-config:core:3.6.3"))
+    implementation(include("com.electronwill.night-config:toml:3.6.3"))
+    implementation(include("javax.annotation:javax.annotation-api:1.3.2"))
+    implementation(include("com.google.code.findbugs:jsr305:3.0.2"))
+
+    // compat
+    modCompileOnly("slimeknights.tconstruct:TConstruct:${project.minecraft_version}-${project.tcon_version}") { exclude(group: "io.github.fabricators_of_create") }
+    modImplementation("dev.emi:trinkets:${project.trinkets_version}")
 }
 
 loom {
