@@ -593,14 +593,14 @@ public class TFEventListener {
 
 	public static void onPlayerRespawn(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
 //		if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
-//		if (event.isEndConquered()) {
-//			updateCapabilities(serverPlayer, serverPlayer);
-//		} else {
+		if (alive) {
+			updateCapabilities(newPlayer, newPlayer);
+		} else {
 			if(casketExpiration) {
 				newPlayer.sendMessage(new TranslatableComponent("block.twilightforest.casket.broken").withStyle(ChatFormatting.DARK_RED), newPlayer.getUUID());
 			}
 			returnStoredItems(oldPlayer, newPlayer);
-//		}
+		}
 
 		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && newPlayer.getRespawnPosition() == null) {
 			CompoundTag tagCompound = newPlayer.getExtraCustomData();
