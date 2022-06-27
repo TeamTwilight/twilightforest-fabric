@@ -15,7 +15,7 @@ import twilightforest.init.TFBlocks;
 
 public class HardenedDarkLeavesBlock extends Block implements BlockPickInteractionAware {
 
-	protected HardenedDarkLeavesBlock(Properties props) {
+	public HardenedDarkLeavesBlock(Properties props) {
 		super(props);
 		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
 	}
