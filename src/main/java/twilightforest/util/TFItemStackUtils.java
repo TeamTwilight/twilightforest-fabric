@@ -3,11 +3,10 @@ package twilightforest.util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.ItemLike;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
