@@ -1,24 +1,24 @@
 package twilightforest.events;
 
+import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
-import twilightforest.TwilightForestMod;
+import net.minecraft.world.phys.BlockHitResult;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.monster.Kobold;
 import twilightforest.init.TFLandmark;
@@ -36,37 +36,36 @@ import java.util.Optional;
 /**
  * A class to store events relating to progression
  */
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class ProgressionEvents {
+
+	public static void init() {
+		LivingEntityEvents.ATTACK.register(ProgressionEvents::livingAttack);
+		UseBlockCallback.EVENT.register(ProgressionEvents::onPlayerRightClick);
+		PlayerBlockBreakEvents.BEFORE.register(ProgressionEvents::breakBlock);
+		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(ProgressionEvents::playerPortals);
+	}
 
 	/**
 	 * Check if the player is trying to break a block in a structure that's considered unbreakable for progression reasons
 	 */
-	@SubscribeEvent
-	public static void breakBlock(BlockEvent.BreakEvent event) {
-		Player player = event.getPlayer();
-		BlockPos pos = event.getPos();
-
-		if (!(event.getWorld() instanceof Level level) || level.isClientSide()) return;
+	public static boolean breakBlock(Level level, Player player, BlockPos pos, BlockState state, /* Nullable */ BlockEntity blockEntity) {
+		if (level.isClientSide()) return true;
 
 		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
-			event.setCanceled(true);
+			return false;
 
 		}
+		return true;
 	}
 
 	/**
 	 * Stop the player from interacting with blocks that could produce treasure or open doors in a protected area
 	 */
-	@SubscribeEvent
-	public static void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event) {
-
-		Player player = event.getPlayer();
-		Level level = player.getLevel();
-
-		if (!level.isClientSide() && isBlockProtectedFromInteraction(level, event.getPos()) && isAreaProtected(level, player, event.getPos())) {
-			event.setUseBlock(Event.Result.DENY);
+	public static InteractionResult onPlayerRightClick(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
+		if (!level.isClientSide() && isBlockProtectedFromInteraction(level, hitResult.getBlockPos()) && isAreaProtected(level, player, hitResult.getBlockPos())) {
+			return InteractionResult.FAIL;
 		}
+		return InteractionResult.PASS;
 	}
 
 	private static boolean isBlockProtectedFromInteraction(Level level, BlockPos pos) {
@@ -84,7 +83,7 @@ public class ProgressionEvents {
 	private static boolean isAreaProtected(Level level, Player player, BlockPos pos) {
 
 		if (player.getAbilities().instabuild || player.isSpectator() ||
-				!TFGenerationSettings.isProgressionEnforced(level) || player instanceof FakePlayer) {
+				!TFGenerationSettings.isProgressionEnforced(level) || (player instanceof ServerPlayer && player.getClass() != ServerPlayer.class)) {
 			return false;
 		}
 
@@ -125,38 +124,34 @@ public class ProgressionEvents {
 	}
 
 	private static void sendAreaProtectionPacket(Level level, BlockPos pos, List<BoundingBox> sbb) {
-		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, level.dimension());
-		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new AreaProtectionPacket(sbb, pos));
+		TFPacketHandler.CHANNEL.sendToClientsAround(new AreaProtectionPacket(sbb, pos), (ServerLevel) level, pos, 64);
 	}
 
-	@SubscribeEvent
-	public static void livingAttack(LivingAttackEvent event) {
-		LivingEntity living = event.getEntityLiving();
+	public static boolean livingAttack(LivingEntity living, DamageSource source, float amount) {
 		// cancel attacks in protected areas
-		if (!living.getLevel().isClientSide() && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)
-				&& isAreaProtected(living.getLevel(), (Player) event.getSource().getEntity(), new BlockPos(living.blockPosition()))) {
+		if (!living.getLevel().isClientSide() && living instanceof Enemy && source.getEntity() instanceof Player && !(living instanceof Kobold)
+				&& isAreaProtected(living.getLevel(), (Player) source.getEntity(), new BlockPos(living.blockPosition()))) {
 
-			event.setCanceled(true);
+			return true;
 		}
+		return false;
 	}
 
-	@SubscribeEvent
-	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getPlayer().getLevel().isClientSide() && event.getPlayer() instanceof ServerPlayer player) {
+	public static void playerPortals(ServerPlayer player, ServerLevel origin, ServerLevel destination) {
+		if (!player.getLevel().isClientSide()) {
 			if (TFGenerationSettings.usesTwilightChunkGenerator(player.getLevel())) {
-				sendEnforcedProgressionStatus((ServerPlayer) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(player.getLevel()));
+				sendEnforcedProgressionStatus(player, TFGenerationSettings.isProgressionEnforced(player.getLevel()));
 			}
 		}
 	}
 
-	@SubscribeEvent
-	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getPlayer().getLevel().isClientSide() && event.getPlayer() instanceof ServerPlayer) {
-			sendEnforcedProgressionStatus((ServerPlayer) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().getLevel()));
+	public static void playerLogsIn(ServerPlayer player) {
+		if (!player.getLevel().isClientSide()) {
+			sendEnforcedProgressionStatus(player, TFGenerationSettings.isProgressionEnforced(player.getLevel()));
 		}
 	}
 
 	private static void sendEnforcedProgressionStatus(ServerPlayer player, boolean isEnforced) {
-		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EnforceProgressionStatusPacket(isEnforced));
+		TFPacketHandler.CHANNEL.sendToClient(new EnforceProgressionStatusPacket(isEnforced), player);
 	}
 }
