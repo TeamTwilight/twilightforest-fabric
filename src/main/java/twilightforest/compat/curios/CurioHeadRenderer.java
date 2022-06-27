@@ -24,7 +24,7 @@ public class CurioHeadRenderer {
 			matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 			matrixStack.scale(0.625F, -0.625F, -0.625F);
 			ItemInHandRenderer renderer = new ItemInHandRenderer(Minecraft.getInstance(), Minecraft.getInstance().getEntityRenderDispatcher(), Minecraft.getInstance().getItemRenderer());
-			renderer.renderItem(slotContext.entity(), stack, ItemTransforms.TransformType.HEAD, false, matrixStack, renderTypeBuffer, light);
+			renderer.renderItem(entity, stack, ItemTransforms.TransformType.HEAD, false, matrixStack, buffer, light);
 			matrixStack.popPose();
 		}
 	}

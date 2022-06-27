@@ -47,7 +47,6 @@ import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
-import twilightforest.compat.CuriosCompat;
 import twilightforest.compat.TFCompat;
 import twilightforest.compat.TrinketsCompat;
 import twilightforest.data.tags.ItemTagGenerator;

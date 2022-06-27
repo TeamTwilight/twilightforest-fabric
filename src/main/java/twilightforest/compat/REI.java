@@ -9,16 +9,14 @@ import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.client.UncraftingGui;
+import twilightforest.client.UncraftingScreen;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.item.recipe.TFRecipes;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFRecipes;
 
 import java.util.Collection;
 import java.util.List;
@@ -76,7 +74,7 @@ public class REI implements REIClientPlugin {
 
     @Override
     public void registerScreens(ScreenRegistry registry) {
-        registry.registerClickArea(screen -> new Rectangle(34, 33, 27, 20), UncraftingGui.class, REIUncraftingCategory.UNCRAFTING);
-        registry.registerClickArea(screen -> new Rectangle(115, 33, 27, 20), UncraftingGui.class, BuiltinPlugin.CRAFTING);
+        registry.registerClickArea(screen -> new Rectangle(34, 33, 27, 20), UncraftingScreen.class, REIUncraftingCategory.UNCRAFTING);
+        registry.registerClickArea(screen -> new Rectangle(115, 33, 27, 20), UncraftingScreen.class, BuiltinPlugin.CRAFTING);
     }
 }

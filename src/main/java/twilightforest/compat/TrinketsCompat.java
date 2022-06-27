@@ -15,16 +15,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.TFEventListener;
 import twilightforest.block.CritterBlock;
-import twilightforest.block.TFBlocks;
 import twilightforest.compat.curios.CharmOfKeepingRenderer;
 import twilightforest.compat.curios.CharmOfLife1NecklaceRenderer;
 import twilightforest.compat.curios.CharmOfLife2NecklaceRenderer;
 import twilightforest.compat.curios.CurioHeadRenderer;
+import twilightforest.events.CharmEvents;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
 import twilightforest.item.CuriosCharmItem;
 import twilightforest.item.SkullCandleItem;
-import twilightforest.item.TFItems;
 import twilightforest.item.TrophyItem;
 
 public class TrinketsCompat extends TFCompat {
@@ -62,10 +62,6 @@ public class TrinketsCompat extends TFCompat {
 //		InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HEAD.getMessageBuilder().build());
 	}
 
-	@Override
-	protected void initItems() {
-	}
-
 	public static void setupCuriosCapability(Item item) {
 		TrinketsApi.registerTrinket(item, new Trinket() {
 			@Override
@@ -78,8 +74,8 @@ public class TrinketsCompat extends TFCompat {
 	//if we have any curios and die with a charm of keeping on us, keep our curios instead of dropping them
 	public static TrinketEnums.DropRule keepCurios(TrinketEnums.DropRule rule, ItemStack stack, SlotReference ref, LivingEntity entity) {
 		if (entity instanceof Player player) {
-			CompoundTag playerData = TFEventListener.getPlayerData(player);
-			if (!player.level.isClientSide() && playerData.contains(TFEventListener.CHARM_INV_TAG) && !playerData.getList(TFEventListener.CHARM_INV_TAG, 10).isEmpty()) {
+			CompoundTag playerData = CharmEvents.getPlayerData(player);
+			if (!player.level.isClientSide() && playerData.contains(CharmEvents.CHARM_INV_TAG) && !playerData.getList(CharmEvents.CHARM_INV_TAG, 10).isEmpty()) {
 				//Keep all Curios items
 				return TrinketEnums.DropRule.KEEP;
 			}

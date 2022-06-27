@@ -3,7 +3,6 @@ package twilightforest.compat;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
-import me.shedaniel.rei.api.client.gui.widgets.Slot;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
@@ -11,14 +10,13 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,15 +27,14 @@ public class REIUncraftingCategory implements DisplayCategory<REIUncraftingDispl
     public static final int width = 126;
     public static final int height = 64;
     private final Renderer icon;
-    private final TranslatableComponent localizedName;
+    private final Component localizedName;
 
     public REIUncraftingCategory() {
         ResourceLocation location = TwilightForestMod.getGuiTexture("uncrafting_jei.png");
         this.icon = EntryStacks.of(TFBlocks.UNCRAFTING_TABLE.get());
-        this.localizedName = new TranslatableComponent("gui.uncrafting_jei");
+        this.localizedName = Component.translatable("gui.uncrafting_jei");
     }
 
-    @SuppressWarnings("removal")
     @Override
     public CategoryIdentifier<REIUncraftingDisplay> getCategoryIdentifier() {
         return UNCRAFTING;
