@@ -1,5 +1,6 @@
 package twilightforest.entity.passive;
 
+import io.github.fabricators_of_create.porting_lib.entity.StepHeightEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,7 +20,7 @@ import net.minecraft.world.level.material.Material;
 
 import org.jetbrains.annotations.Nullable;
 
-public class Squirrel extends Animal {
+public class Squirrel extends Animal implements StepHeightEntity {
 
 	protected static final Ingredient SEEDS = Ingredient.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 

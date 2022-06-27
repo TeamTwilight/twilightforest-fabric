@@ -3,7 +3,6 @@ package twilightforest.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.RandomSource;
-import io.github.fabricators_of_create.porting_lib.util.LevelUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -50,7 +49,7 @@ public class AntibuilderBlockEntity extends BlockEntity {
 			} else {
 
 				// new plan, take a snapshot of the world when we are first activated, and then rapidly revert changes
-				if (te.blockData == null && LevelUtil.isAreaLoaded(level, pos, AntibuilderBlockEntity.RADIUS)) {
+				if (te.blockData == null && level.isAreaLoaded(pos, AntibuilderBlockEntity.RADIUS)) {
 					te.captureBlockData();
 					te.slowScan = true;
 				}

@@ -205,10 +205,10 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 			BlockState state = this.getLevel().getBlockState(pos);
 			Block block = state.getBlock();
 
-			if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.getLevel(), pos, this)) {
+			if (!state.isAir() && this.stack.isCorrectToolForDrops(state)/* && block.canEntityDestroy(state, this.getLevel(), pos, this)*/) {
 				if (this.getOwner() instanceof Player player) {
 					if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(level, player, pos, state, null)) {
-						if (ForgeEventFactory.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state))) {
+						if (!state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state)) {
 							block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
 
 							this.getLevel().destroyBlock(pos, false);
