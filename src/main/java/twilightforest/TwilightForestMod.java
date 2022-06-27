@@ -39,9 +39,7 @@ import twilightforest.command.TFCommand;
 import twilightforest.compat.TFCompat;
 import twilightforest.compat.TrinketsCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
-import twilightforest.events.PlayerEvents;
-import twilightforest.events.ProgressionEvents;
-import twilightforest.events.ToolEvents;
+import twilightforest.events.*;
 import twilightforest.init.*;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.network.TFPacketHandler;
@@ -166,11 +164,14 @@ public class TwilightForestMod implements ModInitializer {
 	}
 
 	public static void initEvents() {
-		ToolEvents.init();
 		AddPackFindersCallback.EVENT.register(TwilightForestMod::addClassicPack);
 		TFTickHandler.init();
 		PlayerEvents.init();
 		ProgressionEvents.init();
+		MiscEvents.init();
+		HostileMountEvents.init();
+		CharmEvents.init();
+		ToolEvents.init();
 	}
 
 	public static void addClassicPack(PackType packType, Consumer<RepositorySource> sources) {

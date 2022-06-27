@@ -70,7 +70,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 		for (Storage<ItemVariant> inputIItemHandler : inputHandlers.keySet()) {
 			try (Transaction t = TransferUtil.getTransaction()) {
-				for (StorageView<ItemVariant> slot : inputIItemHandler.iterable(t)) {
+				for (StorageView<ItemVariant> slot : inputIItemHandler) {
 					long input = TransferUtil.simulateExtractView(slot, slot.getResource(), 1);
 					if (input != 0) {
 						boolean transferred = false;
@@ -79,7 +79,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 						for (Storage<ItemVariant> outputIItemHandler : outputHandlers.keySet()) {
 							int count = 0;
-							for (StorageView<ItemVariant> slotJ : inputIItemHandler.iterable(t)) {
+							for (StorageView<ItemVariant> slotJ : inputIItemHandler) {
 								if (slotJ.getResource().isOf(slot.getResource().getItem())) count += slotJ.getAmount();
 							}
 							if (count > 0) outputsByCount.put(count, outputIItemHandler);
@@ -88,7 +88,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 						for (Integer count : outputsByCount.keySet().stream().sorted(Comparator.comparingInt(Integer::intValue).reversed()).toList()) {
 							Storage<ItemVariant> outputIItemHandler = outputsByCount.get(count);
 							ItemVariant firstProperStack = ItemVariant.blank();
-							for (StorageView<ItemVariant> slotJ : inputIItemHandler.iterable(t)) {
+							for (StorageView<ItemVariant> slotJ : inputIItemHandler) {
 								ItemStack outputStack = slotJ.getResource().toStack((int) slotJ.getAmount());
 
 								if (firstProperStack.isBlank() && outputStack.isEmpty()) {

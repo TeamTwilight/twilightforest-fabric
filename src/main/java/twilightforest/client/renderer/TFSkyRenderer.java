@@ -29,15 +29,15 @@ public class TFSkyRenderer implements DimensionRenderingRegistry.SkyRenderer {
 
 	// [VanillaCopy] LevelRenderer.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
 	@Override
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void render(WorldRenderContext context) {
 		PoseStack ms = context.matrixStack();
-		ClientLevel world = context.world();
+		ClientLevel level = context.world();
 		float partialTicks = context.tickDelta();
 		LevelRenderer levelRenderer = context.worldRenderer();
 
 		RenderSystem.disableTexture();
-		Vec3 vec3 = level.getSkyColor(mc.gameRenderer.getMainCamera().getPosition(), partialTicks);
+		Vec3 vec3 = level.getSkyColor(context.gameRenderer().getMainCamera().getPosition(), partialTicks);
 		float f = (float) vec3.x();
 		float f1 = (float) vec3.y();
 		float f2 = (float) vec3.z();

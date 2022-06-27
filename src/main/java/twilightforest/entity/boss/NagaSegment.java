@@ -27,6 +27,7 @@ public class NagaSegment extends TFPart<Naga> {
 	public NagaSegment(Naga naga) {
 		super(naga);
 		this.setPos(naga.getX(), naga.getY(), naga.getZ());
+		this.maxUpStep = getStepHeight();
 	}
 
 	@Override
@@ -144,7 +145,7 @@ public class NagaSegment extends TFPart<Naga> {
 		return false;
 	}
 
-	@Override
+//	@Override
 	public float getStepHeight() {
 		return 2.0F;
 	}

@@ -1,5 +1,9 @@
 package twilightforest.events;
 
+import dev.emi.trinkets.api.SlotReference;
+import dev.emi.trinkets.api.TrinketsApi;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -8,9 +12,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -20,15 +25,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotResult;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
@@ -42,9 +38,7 @@ import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class CharmEvents {
 
 	public static final String CHARM_INV_TAG = "TFCharmInventory";
@@ -53,34 +47,35 @@ public class CharmEvents {
 	//stores the charm that was used for the effect later
 	private static ItemStack charmUsed;
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	// For when the player dies
-	public static void applyDeathItems(LivingDeathEvent event) {
-		LivingEntity living = event.getEntityLiving();
+	public static void init() {
+		ServerPlayerEvents.ALLOW_DEATH.register(CharmEvents::applyDeathItems);
+		ServerPlayerEvents.AFTER_RESPAWN.register(CharmEvents::onPlayerRespawn);
+	}
 
-		if (living.getLevel().isClientSide() || !(living instanceof Player player) || living instanceof FakePlayer ||
-				player.isCreative()) return;
+	// For when the player dies
+	public static boolean applyDeathItems(ServerPlayer player, DamageSource damageSource, float damageAmount) {
+		if (player.getLevel().isClientSide() || (player.getClass() != ServerPlayer.class) ||
+				player.isCreative()) return true;
 
 		if (charmOfLife(player)) {
-			event.setCanceled(true); // Executes if the player had charms
-		} else if (!living.getLevel().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+			return false; // Executes if the player had charms
+		} else if (!player.getLevel().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
 			// Did the player recover? No? Let's give them their stuff based on the keeping charms
 			charmOfKeeping(player);
 
 			// Then let's store the rest of their stuff in the casket
 			keepsakeCasket(player);
 		}
+		return true;
 	}
 
-	@SubscribeEvent
-	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
-		if (!event.isEndConquered()) {
+	public static void onPlayerRespawn(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
+		if (!alive) {
 			if (casketExpiration) {
-				serverPlayer.sendSystemMessage(Component.translatable("block.twilightforest.casket.broken").withStyle(ChatFormatting.RED));
+				newPlayer.sendSystemMessage(Component.translatable("block.twilightforest.casket.broken").withStyle(ChatFormatting.RED));
 				casketExpiration = false;
 			}
-			returnStoredItems(serverPlayer);
+			returnStoredItems(newPlayer);
 		}
 	}
 
@@ -301,10 +296,10 @@ public class CharmEvents {
 	}
 
 	public static CompoundTag getPlayerData(Player player) {
-		if (!player.getPersistentData().contains(Player.PERSISTED_NBT_TAG)) {
-			player.getPersistentData().put(Player.PERSISTED_NBT_TAG, new CompoundTag());
+		if (!player.getExtraCustomData().contains("PlayerPersisted")) {
+			player.getExtraCustomData().put("PlayerPersisted", new CompoundTag());
 		}
-		return player.getPersistentData().getCompound(Player.PERSISTED_NBT_TAG);
+		return player.getExtraCustomData().getCompound("PlayerPersisted");
 	}
 
 	//transfers a list of items to another
@@ -316,11 +311,11 @@ public class CharmEvents {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if (ModList.get().isLoaded(TFCompat.CURIOS_ID)) {
-			Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(player, stack -> stack.is(item));
+		if(FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
+			List<Tuple<SlotReference, ItemStack>> slots = player.getComponent(TrinketsApi.TRINKET_COMPONENT).getEquipped(stack -> stack.is(item));
 
-			if (slot.isPresent()) {
-				slot.get().stack().shrink(1);
+			if (!slots.isEmpty() && !slots.get(0).getB().isEmpty()) {
+				slots.get(0).getB().shrink(1);
 				return true;
 			}
 		}

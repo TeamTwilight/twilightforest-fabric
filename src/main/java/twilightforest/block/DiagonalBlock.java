@@ -28,7 +28,7 @@ public class DiagonalBlock extends Block {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, LevelAccessor accessor, BlockPos pos, Rotation rot) {
+	public BlockState rotate(BlockState state, Rotation rot) {
 		return rot == Rotation.NONE || rot == Rotation.CLOCKWISE_180 ? state : state.setValue(IS_ROTATED, !state.getValue(IS_ROTATED));
 	}
 

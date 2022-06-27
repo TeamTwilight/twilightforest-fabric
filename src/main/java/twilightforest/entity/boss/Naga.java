@@ -89,6 +89,7 @@ public class Naga extends Monster implements MultiPartEntity {
 
 	public Naga(EntityType<? extends Naga> type, Level level) {
 		super(type, level);
+		this.maxUpStep = getStepHeight();
 		this.xpReward = 217;
 		this.noCulling = true;
 
@@ -588,7 +589,7 @@ public class Naga extends Monster implements MultiPartEntity {
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
-	@Override
+//	@Override
 	public float getStepHeight() {
 		return 2.0F;
 	}

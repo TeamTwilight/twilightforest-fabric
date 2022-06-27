@@ -174,7 +174,7 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock im
 	}
 
 	@Override
-	public ItemStack getPickedStack(BlockState state, BlockGetter world, BlockPos pos, @Nullable Player player, @Nullable HitResult result) {
+	public ItemStack getPickedStack(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Player player, @Nullable HitResult result) {
 		ItemStack newStack = new ItemStack(this);
 		CompoundTag tag = new CompoundTag();
 		if (getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {

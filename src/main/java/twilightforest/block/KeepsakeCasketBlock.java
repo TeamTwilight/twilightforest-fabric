@@ -110,10 +110,10 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 		}
 	}
 
-	@Override
-	public float getExplosionResistance(BlockState state, BlockGetter getter, BlockPos pos, Explosion explosion) {
-		return Float.MAX_VALUE;
-	}
+	//	@Override // done in properties
+//	public float getExplosionResistance(BlockState state, BlockGetter getter, BlockPos pos, Explosion explosion) {
+//		return Float.MAX_VALUE;
+//	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {

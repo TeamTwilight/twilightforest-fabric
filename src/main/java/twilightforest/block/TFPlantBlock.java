@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import io.github.fabricators_of_create.porting_lib.util.PlantType;
+import io.github.fabricators_of_create.porting_lib.util.PlantUtil;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,7 +28,7 @@ public abstract class TFPlantBlock extends BushBlock implements BonemealableBloc
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
 		BlockState soil = reader.getBlockState(pos.below());
-		return (reader.getMaxLocalRawBrightness(pos) >= 3 || reader.canSeeSkyFromBelowWater(pos)) && soil.canSustainPlant(reader, pos.below(), Direction.UP, this);
+		return (reader.getMaxLocalRawBrightness(pos) >= 3 || reader.canSeeSkyFromBelowWater(pos)) && soil.getBlock().canSustainPlant(soil, reader, pos.below(), Direction.UP, this);
 	}
 
 	public static boolean canPlaceRootAt(LevelReader reader, BlockPos pos) {
