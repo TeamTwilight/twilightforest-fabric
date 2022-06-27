@@ -379,7 +379,7 @@ public class TFClientEvents {
 		if (renderer.getModel() instanceof HeadedModel headedModel) {
 			headedModel.getHead().visible = visible;
 			if (renderer.getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = visible && partShown(event.getEntity());
+				humanoidModel.hat.visible = visible && partShown(entity);
 			}
 		}
 	}
