@@ -1,5 +1,6 @@
 package twilightforest.data.tags;
 
+import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.Registry;
 import net.minecraft.data.tags.BiomeTagsProvider;

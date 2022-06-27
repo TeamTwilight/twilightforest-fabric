@@ -1,10 +1,10 @@
 package twilightforest.data;
 
+import io.github.fabricators_of_create.porting_lib.loot.GlobalLootModifierProvider;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
-import net.minecraftforge.common.data.GlobalLootModifierProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFLootModifiers;

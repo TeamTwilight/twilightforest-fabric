@@ -17,13 +17,13 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import twilightforest.TFConfig;
-import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFMenuTypes;
+import twilightforest.init.TFRecipes;
 import twilightforest.inventory.slot.AssemblySlot;
 import twilightforest.inventory.slot.UncraftingResultSlot;
 import twilightforest.inventory.slot.UncraftingSlot;
-import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.UncraftingRecipe;
 import twilightforest.util.TFItemStackUtils;
 

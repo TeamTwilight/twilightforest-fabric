@@ -1,6 +1,5 @@
 package twilightforest.client;
 
-import com.google.common.base.Charsets;
 import com.google.gson.JsonObject;
 import com.mojang.realmsclient.util.JsonUtils;
 import io.github.fabricators_of_create.porting_lib.mixin.client.accessor.BlockModelAccessor;
@@ -14,7 +13,7 @@ import twilightforest.TwilightForestMod;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Optional;
 
 public final class PatchModelLoader implements ModelResourceProvider {
     public static final PatchModelLoader INSTANCE = new PatchModelLoader();
@@ -41,12 +40,13 @@ public final class PatchModelLoader implements ModelResourceProvider {
 
     static BufferedReader getModelJson(ResourceLocation location) {
         ResourceLocation file = new ResourceLocation(location.getNamespace(), "models/" + location.getPath() + ".json");
-        Resource resource = null;
+        Optional<Resource> resource = null;
+        resource = Minecraft.getInstance().getResourceManager().getResource(file);
         try {
-            resource = Minecraft.getInstance().getResourceManager().getResource(file);
+            return resource.get().openAsReader();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new BufferedReader(new InputStreamReader(resource.getInputStream(), Charsets.UTF_8));
+        return null;
     }
 }

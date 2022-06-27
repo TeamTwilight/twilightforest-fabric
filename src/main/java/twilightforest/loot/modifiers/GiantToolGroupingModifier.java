@@ -4,22 +4,19 @@ import com.google.gson.JsonObject;
 import io.github.fabricators_of_create.porting_lib.loot.GlobalLootModifierSerializer;
 import io.github.fabricators_of_create.porting_lib.loot.LootModifier;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
-import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
@@ -27,8 +24,11 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
 //FIXME I simply migrated this out of TFEventListener, it somehow needs to be redone in a more sane way.
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class GiantToolGroupingModifier extends LootModifier {
+
+	static {
+		PlayerBlockBreakEvents.BEFORE.register(GiantToolGroupingModifier::breakBlock);
+	}
 
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
@@ -72,12 +72,7 @@ public class GiantToolGroupingModifier extends LootModifier {
 		}
 	}
 
-	@SubscribeEvent
-	public static void breakBlock(BlockEvent.BreakEvent event) {
-		Player player = event.getPlayer();
-		BlockPos pos = event.getPos();
-		BlockState state = event.getState();
-
+	public static boolean breakBlock(Level world, Player player, BlockPos pos, BlockState state, /* Nullable */ BlockEntity blockEntity) {
 		if (!isBreakingWithGiantPick && canHarvestWithGiantPick(player, state)) {
 
 			isBreakingWithGiantPick = true;
@@ -90,7 +85,7 @@ public class GiantToolGroupingModifier extends LootModifier {
 				for (BlockPos dPos : GiantBlock.getVolume(pos)) {
 					if (dPos.equals(pos))
 						continue;
-					BlockState stateThere = event.getWorld().getBlockState(dPos);
+					BlockState stateThere = world.getBlockState(dPos);
 					if (stateThere.getBlock().asItem() != cobbleItem) {
 						allCobble = false;
 						break;
@@ -109,7 +104,7 @@ public class GiantToolGroupingModifier extends LootModifier {
 			// break all nearby blocks
 			if (player instanceof ServerPlayer playerMP) {
 				for (BlockPos dPos : GiantBlock.getVolume(pos)) {
-					if (!dPos.equals(pos) && state.getBlock() == event.getWorld().getBlockState(dPos).getBlock()) {
+					if (!dPos.equals(pos) && state.getBlock() == world.getBlockState(dPos).getBlock()) {
 						// try to break that block too!
 						playerMP.gameMode.destroyBlock(dPos);
 					}
@@ -118,11 +113,12 @@ public class GiantToolGroupingModifier extends LootModifier {
 
 			isBreakingWithGiantPick = false;
 		}
+		return true;
 	}
 
 	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
 		ItemStack heldStack = player.getMainHandItem();
 		Item heldItem = heldStack.getItem();
-		return heldItem == TFItems.GIANT_PICKAXE.get() && ForgeHooks.isCorrectToolForDrops(state, player);
+		return heldItem == TFItems.GIANT_PICKAXE.get() && player.hasCorrectToolForDrops(state);
 	}
 }

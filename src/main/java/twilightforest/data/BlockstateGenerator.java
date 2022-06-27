@@ -1249,7 +1249,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		woodFence(fence, plankTexName);
 		woodGate(gate, plankTexName);
 		woodPlate(plate, plankTexName);
-		doorBlockInternal(door, ForgeRegistries.BLOCKS.getKey(door).toString(), prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"));
+		doorBlockInternal(door, Registry.BLOCK.getKey(door).toString(), prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"));
 		trapdoorBlock(trapdoor, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), true);
 		banister(banister, plankTexName);
 	}

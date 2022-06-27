@@ -2,6 +2,7 @@ package twilightforest.data;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.data.custom.CrumbleHornGenerator;
@@ -25,7 +26,7 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		generator.addProvider(true, new ItemModelGenerator(generator, helper));
 		generator.addProvider(true, new BiomeTagGenerator(generator));
 		generator.addProvider(true, new CustomTagGenerator.BannerPatternTagGenerator(generator));
-		BlockTagsProvider blocktags = new BlockTagGenerator(generator);
+		FabricTagProvider.BlockTagProvider blocktags = new BlockTagGenerator(generator);
 		generator.addProvider(true, blocktags);
 		generator.addProvider(true, new FluidTagGenerator(generator));
 		generator.addProvider(true, new ItemTagGenerator(generator, blocktags));
