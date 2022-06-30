@@ -57,10 +57,6 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 		makeInstance(map, TFBlocks.SORTING_CHEST);
 	});
 
-	public ISTER() {
-		super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
-	}
-
 	@Override
 	public void render(ItemStack stack, ItemTransforms.TransformType camera, PoseStack ms, MultiBufferSource buffers, int light, int overlay) {
 		Item item = stack.getItem();
@@ -130,7 +126,7 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 					if (tag.getInt("CandleAmount") <= 0) tag.putInt("CandleAmount", 1);
 					Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
 							AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(tag.getInt("CandleColor")).getSerializedName())
-									.defaultBlockState().setValue(CandleBlock.CANDLES, tag.getInt("CandleAmount")), ms, buffers, light, overlay, EmptyModelData.INSTANCE);
+									.defaultBlockState().setValue(CandleBlock.CANDLES, tag.getInt("CandleAmount")), ms, buffers, light, overlay);
 				}
 			} else {
 				if (block instanceof EntityBlock be) {

@@ -17,14 +17,14 @@ import java.util.function.Supplier;
 
 public class SpecialFlowerPotBlock extends FlowerPotBlock {
 
-	public SpecialFlowerPotBlock(@Nullable Supplier<FlowerPotBlock> emptyPot, Supplier<? extends Block> flower, Properties properties) {
-		super(emptyPot, flower, properties);
+	public SpecialFlowerPotBlock(Supplier<? extends Block> flower, Properties properties) {
+		super(flower.get(), properties);
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if(!this.isEmpty()) {
-			level.setBlock(pos, getEmptyPot().defaultBlockState(), 3);
+			level.setBlock(pos, Blocks.FLOWER_POT.defaultBlockState(), 3);
 			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		} else {

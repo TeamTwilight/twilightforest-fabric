@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import net.fabricmc.fabric.impl.item.ItemExtensions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;

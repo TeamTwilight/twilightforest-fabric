@@ -1,5 +1,6 @@
 package twilightforest.entity.passive;
 
+import io.github.fabricators_of_create.porting_lib.entity.StepHeightEntity;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -12,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFSounds;
 
-public class Raven extends TinyBird {
+public class Raven extends TinyBird implements StepHeightEntity {
 
 	public Raven(EntityType<? extends Raven> type, Level world) {
 		super(type, world);

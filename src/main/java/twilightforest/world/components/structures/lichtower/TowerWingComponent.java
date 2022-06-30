@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.lichtower;
 
 import com.google.common.collect.Lists;
+import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.PaintingAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -1798,7 +1799,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			ResourceKey<PaintingVariant> art = getPaintingOfSize(rand, minSize);
 			Painting painting = new Painting(EntityType.PAINTING, world.getLevel());
 			painting.setDirection(direction);
-			painting.setVariant(Registry.PAINTING_VARIANT.getHolderOrThrow(art));
+			((PaintingAccessor)painting).porting_lib$setVariant(Registry.PAINTING_VARIANT.getHolderOrThrow(art));
 			painting.setPos(pCoords.getX(), pCoords.getY(), pCoords.getZ()); // this is done to refresh the bounding box after changing the art
 
 			// check if we can fit a painting there
@@ -1815,9 +1816,9 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	protected ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
 		List<ResourceKey<PaintingVariant>> valid = new ArrayList<>();
 
-		for (PaintingVariant art : ForgeRegistries.PAINTING_VARIANTS) {
+		for (PaintingVariant art : Registry.PAINTING_VARIANT) {
 			if (art.getWidth() >= minSize || art.getHeight() >= minSize) {
-				valid.add(ResourceKey.create(Registry.PAINTING_VARIANT_REGISTRY, ForgeRegistries.PAINTING_VARIANTS.getKey(art)));
+				valid.add(ResourceKey.create(Registry.PAINTING_VARIANT_REGISTRY, Registry.PAINTING_VARIANT.getKey(art)));
 			}
 		}
 

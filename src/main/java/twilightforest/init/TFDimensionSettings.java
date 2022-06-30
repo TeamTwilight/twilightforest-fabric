@@ -19,7 +19,7 @@ import java.util.OptionalLong;
 public class TFDimensionSettings {
 
 	public static final LazyRegistrar<NoiseGeneratorSettings> NOISE_GENERATORS = LazyRegistrar.create(BuiltinRegistries.NOISE_GENERATOR_SETTINGS, TwilightForestMod.ID);
-	public static final LazyRegistrar<DimensionType> DIMENSION_TYPES = LazyRegistrar.create(Registry.DIMENSION_TYPE_REGISTRY, TwilightForestMod.ID);
+	public static final LazyRegistrar<DimensionType> DIMENSION_TYPES = LazyRegistrar.create(BuiltinRegistries.DIMENSION_TYPE, TwilightForestMod.ID);
 
 	public static final RegistryObject<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = NOISE_GENERATORS.register("twilight_noise_gen", TFDimensionSettings::tfDefault);
 	public static final RegistryObject<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = NOISE_GENERATORS.register("skylight_noise_gen", TFDimensionSettings::skylight);

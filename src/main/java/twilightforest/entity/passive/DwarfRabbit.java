@@ -1,5 +1,6 @@
 package twilightforest.entity.passive;
 
+import io.github.fabricators_of_create.porting_lib.entity.StepHeightEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -28,7 +29,7 @@ import twilightforest.init.TFEntities;
 
 import org.jetbrains.annotations.Nullable;
 
-public class DwarfRabbit extends Animal {
+public class DwarfRabbit extends Animal implements StepHeightEntity {
 
 	private static final EntityDataAccessor<Byte> DATA_TYPE = SynchedEntityData.defineId(DwarfRabbit.class, EntityDataSerializers.BYTE);
 
