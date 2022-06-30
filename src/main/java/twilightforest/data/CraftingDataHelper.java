@@ -1,5 +1,6 @@
 package twilightforest.data;
 
+import io.github.fabricators_of_create.porting_lib.crafting.PartialNBTIngredient;
 import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
