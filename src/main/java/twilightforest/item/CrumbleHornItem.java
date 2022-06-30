@@ -1,9 +1,9 @@
 package twilightforest.item;
 
 import io.github.fabricators_of_create.porting_lib.block.HarvestableBlock;
+import io.github.fabricators_of_create.porting_lib.item.ContinueUsingItem;
 import io.github.fabricators_of_create.porting_lib.item.ReequipAnimationItem;
-import io.github.fabricators_of_create.porting_lib.util.ContinueUsingItem;
-import io.github.fabricators_of_create.porting_lib.util.UsingTickItem;
+import io.github.fabricators_of_create.porting_lib.item.UsingTickItem;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;

@@ -73,16 +73,6 @@ public record UncraftingRecipe(ResourceLocation recipeID, int cost, int width, i
     }
 
     @Override
-    public int getWidth() {
-        return this.width;
-    }
-
-    @Override
-    public int getHeight() {
-        return this.height;
-    }
-
-    @Override
     public NonNullList<Ingredient> getIngredients() {
         return this.resultItems;
     }

@@ -1,10 +1,9 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.util.CustomMapItem;
+import io.github.fabricators_of_create.porting_lib.item.CustomMapItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;

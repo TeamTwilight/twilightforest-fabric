@@ -419,18 +419,17 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				.add(TFBlocks.KEEPSAKE_CASKET.get())
 				.addOptional(new ResourceLocation("gravestone", "gravestone"));
 
-		tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTags(
-				BlockTags.DIRT,
-				Tags.Blocks.GRAVEL,
-				Tags.Blocks.SAND,
-				BlockTags.NYLIUM,
-				BlockTags.BASE_STONE_OVERWORLD,
-				BlockTags.BASE_STONE_NETHER,
-				Tags.Blocks.END_STONES,
-				BlockTags.DEEPSLATE_ORE_REPLACEABLES,
-				BlockTags.STONE_ORE_REPLACEABLES,
-				ROOT_GROUND
-		);
+		tag(ORE_MAGNET_SAFE_REPLACE_BLOCK)
+				.addTag(BlockTags.DIRT)
+				.addTag(Tags.Blocks.GRAVEL)
+				.addTag(Tags.Blocks.SAND)
+				.addTag(BlockTags.NYLIUM)
+				.addTag(BlockTags.BASE_STONE_OVERWORLD)
+				.addTag(BlockTags.BASE_STONE_NETHER)
+				.addTag(Tags.Blocks.END_STONES)
+				.addTag(BlockTags.DEEPSLATE_ORE_REPLACEABLES)
+				.addTag(BlockTags.STONE_ORE_REPLACEABLES)
+				.addTag(ROOT_GROUND);
 
 		getOrCreateTagBuilder(ORE_MAGNET_IGNORE).forceAddTag(BlockTags.COAL_ORES);
 

@@ -1,7 +1,7 @@
 package twilightforest.data;
 
 import com.google.common.collect.Sets;
-import io.github.fabricators_of_create.porting_lib.util.INBTSerializable;
+import io.github.fabricators_of_create.porting_lib.extensions.INBTSerializable;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.data.loot.EntityLoot;

@@ -44,8 +44,8 @@ public abstract class TransformationPowderProvider implements DataProvider {
 		this.registerTransforms();
 		this.builders.forEach((name, transform) -> {
 			List<String> list = builders.keySet().stream()
-					.filter(s -> Registry.ENTITY_TYPE.containsValue(transform.getA()))
-					.filter(s -> Registry.ENTITY_TYPE.containsValue(transform.getB()))
+					.filter(s -> Registry.ENTITY_TYPE.containsKey(Registry.ENTITY_TYPE.getKey(transform.getA())))
+					.filter(s -> Registry.ENTITY_TYPE.containsKey(Registry.ENTITY_TYPE.getKey(transform.getB())))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
 					.collect(Collectors.toList());

@@ -1,7 +1,7 @@
 package twilightforest.block;
 
 import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
-import io.github.fabricators_of_create.porting_lib.util.PlayerDestroyBlock;
+import io.github.fabricators_of_create.porting_lib.block.PlayerDestroyBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;

@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.util.ShieldBlockItem;
+import io.github.fabricators_of_create.porting_lib.item.ShieldBlockItem;
 import io.github.fabricators_of_create.porting_lib.util.TierSortingRegistry;
 import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.nbt.CompoundTag;

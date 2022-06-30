@@ -4,7 +4,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
-import io.github.fabricators_of_create.porting_lib.util.CustomMapItem;
+import io.github.fabricators_of_create.porting_lib.item.CustomMapItem;
 import me.alphamode.forgetags.Tags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;

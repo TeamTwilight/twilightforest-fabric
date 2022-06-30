@@ -1,7 +1,7 @@
 package twilightforest.data;
 
-import io.github.fabricators_of_create.porting_lib.crafting.CompoundIngredient;
 import io.github.fabricators_of_create.porting_lib.data.ConditionalRecipe;
+import io.github.tropheusj.serialization_hooks.ingredient.CombinedIngredient;
 import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.Registry;
@@ -392,7 +392,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.save(consumer, locEquip(TFItems.TWILIGHT_SCEPTER.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(TFItems.ZOMBIE_SCEPTER.get())
-				.requires(CompoundIngredient.of(potion(Potions.STRENGTH), potion(Potions.STRONG_STRENGTH), potion(Potions.LONG_STRENGTH)))
+				.requires(new CombinedIngredient(potion(Potions.STRENGTH), potion(Potions.STRONG_STRENGTH), potion(Potions.LONG_STRENGTH)))
 				.requires(scepter(TFItems.ZOMBIE_SCEPTER.get()))
 				.requires(Ingredient.of(Items.ROTTEN_FLESH))
 				.unlockedBy("has_item", has(TFItems.ZOMBIE_SCEPTER.get()))
