@@ -31,7 +31,7 @@
               "functions": [
                 {
                   "add": false,
-                  "count": 3.0,
+                  "count": 2.0,
                   "function": "minecraft:set_count"
                 },
                 {

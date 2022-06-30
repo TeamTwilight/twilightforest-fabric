@@ -77,26 +77,30 @@ public class BighornModel<T extends Bighorn> extends SheepModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
         if (this.young) {
-            matrixStackIn.pushPose();
-            matrixStackIn.translate(0.0, 0.5, 0.25);
-            ImmutableList.of(this.head).forEach((modelRenderer) -> {
-                modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-            });
-            matrixStackIn.popPose();
+            stack.pushPose();
+            stack.translate(0.0D, 0.5D, 0.25D);
+            ImmutableList.of(this.head).forEach((modelRenderer) ->
+                    modelRenderer.render(stack, consumer, light, overlay, red, green, blue, alpha));
+            stack.popPose();
 
-            matrixStackIn.pushPose();
-            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
-            matrixStackIn.translate(0.0, 1.5, 0.0);
-            ImmutableList.of(this.leftHindLeg, this.rightHindLeg, this.body, this.leftFrontLeg, this.rightFrontLeg).forEach((modelRenderer) -> {
-                modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-            });
-            matrixStackIn.popPose();
+            stack.pushPose();
+            stack.scale(0.5F, 0.5F, 0.5F);
+            stack.translate(0.0D, 1.5D, 0.0D);
+            ImmutableList.of(this.leftHindLeg, this.rightHindLeg, this.body, this.leftFrontLeg, this.rightFrontLeg).forEach((modelRenderer) ->
+                    modelRenderer.render(stack, consumer, light, overlay, red, green, blue, alpha));
+            stack.popPose();
         } else {
-            ImmutableList.of(this.leftHindLeg, this.rightHindLeg, this.body, this.leftFrontLeg, this.rightFrontLeg, this.head).forEach((modelRenderer) -> {
-                modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-            });
+            ImmutableList.of(this.leftHindLeg, this.rightHindLeg, this.body, this.leftFrontLeg, this.rightFrontLeg, this.head).forEach((modelRenderer) ->
+                    modelRenderer.render(stack, consumer, light, overlay, red, green, blue, alpha));
         }
+    }
+
+    @Override
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.head.getChild("left_horn").visible = !entity.isBaby();
+        this.head.getChild("right_horn").visible = !entity.isBaby();
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 }

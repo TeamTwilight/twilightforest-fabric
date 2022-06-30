@@ -1,4 +1,4 @@
-// 1.19	2022-06-11T22:07:39.8890513	TwilightForest loot tables
+// 1.19	2022-06-27T20:04:41.6843628	TwilightForest loot tables
 9992978a24c986ab8bbacfd4cb5c88b4b3d653a2 data/twilightforest/loot_tables/blocks/acacia_banister.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -18,7 +18,7 @@ bc0d1cf7cf622853f45629ebeef100fd8e71f1ee data/twilightforest/loot_tables/blocks/
 ebf0632fc040d668c4da25fa2874aaafea277b19 data/twilightforest/loot_tables/blocks/bold_stone_pillar.json
 99af6a227eafba058d6f1f9af0f8bde4a6abdab0 data/twilightforest/loot_tables/blocks/candelabra.json
 2212848ae5638a228a3b703c9e9ede013b66c286 data/twilightforest/loot_tables/blocks/canopy_banister.json
-ae78f77ce477355e516373c79c7184a8a7cbd0f1 data/twilightforest/loot_tables/blocks/canopy_bookshelf.json
+16cd7df1300078c92388758ee4b571d0c03a50b6 data/twilightforest/loot_tables/blocks/canopy_bookshelf.json
 1ac7b60961be184d0948a82d7073a03d65ecf367 data/twilightforest/loot_tables/blocks/canopy_button.json
 7f1afd6f86eed1fa77e20a7d1764636fee2d1105 data/twilightforest/loot_tables/blocks/canopy_chest.json
 fd43d9d247ebf8333a440ae6872a57ad5c622997 data/twilightforest/loot_tables/blocks/canopy_door.json

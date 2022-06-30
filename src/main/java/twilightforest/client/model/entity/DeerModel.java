@@ -91,13 +91,13 @@ public class DeerModel extends QuadrupedModel<Deer> {
         if (this.young) {
             stack.pushPose();
             stack.scale(0.75F, 0.75F, 0.75F);
-            stack.translate(0F, 0.95F, 0.15F);
+            stack.translate(0.0F, 0.95F, 0.15F);
             this.headParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, red, green, blue, scale));
             stack.popPose();
 
             stack.pushPose();
             stack.scale(0.5F, 0.5F, 0.5F);
-            stack.translate(0F, 1.5F, 0F);
+            stack.translate(0.0F, 1.5F, 0.0F);
             this.bodyParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, red, green, blue, scale));
             stack.popPose();
         } else {
@@ -106,9 +106,11 @@ public class DeerModel extends QuadrupedModel<Deer> {
         }
     }
 
-    public void setupAnim(Deer p_103509_, float p_103510_, float p_103511_, float p_103512_, float p_103513_, float p_103514_) {
-        super.setupAnim(p_103509_, p_103510_, p_103511_, p_103512_, p_103513_, p_103514_);
-        realHead.xRot = head.xRot;
-        realHead.yRot = head.yRot;
+    public void setupAnim(Deer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.realHead.getChild("right_antler").visible = !entity.isBaby();
+        this.realHead.getChild("left_antler").visible = !entity.isBaby();
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        this.realHead.xRot = head.xRot;
+        this.realHead.yRot = head.yRot;
     }
 }

@@ -348,7 +348,7 @@ public class BlockLootTables extends BlockLoot {
 		dropSelf(TFBlocks.CANOPY_TRAPDOOR.get());
 		add(TFBlocks.CANOPY_SIGN.get(), createSingleItemTable(TFBlocks.CANOPY_SIGN.get().asItem()));
 		add(TFBlocks.CANOPY_WALL_SIGN.get(), createSingleItemTable(TFBlocks.CANOPY_SIGN.get().asItem()));
-		add(TFBlocks.CANOPY_BOOKSHELF.get(), createSingleItemTableWithSilkTouch(TFBlocks.CANOPY_BOOKSHELF.get(), Items.BOOK, ConstantValue.exactly(3.0F)));
+		add(TFBlocks.CANOPY_BOOKSHELF.get(), createSingleItemTableWithSilkTouch(TFBlocks.CANOPY_BOOKSHELF.get(), Items.BOOK, ConstantValue.exactly(2.0F)));
 		dropSelf(TFBlocks.CANOPY_BANISTER.get());
 		dropSelf(TFBlocks.CANOPY_CHEST.get());
 
