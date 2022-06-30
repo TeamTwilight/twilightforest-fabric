@@ -38,7 +38,6 @@ accessible method net/minecraft/client/particle/SuspendedTownParticle <init> (Ln
 accessible method net/minecraft/client/particle/ParticleEngine register (Lnet/minecraft/core/particles/ParticleType;Lnet/minecraft/client/particle/ParticleProvider;)V
 accessible field net/minecraft/world/entity/Entity dimensions Lnet/minecraft/world/entity/EntityDimensions;
 accessible field net/minecraft/client/gui/screens/Screen renderables Ljava/util/List;
-accessible class net/minecraft/client/Minecraft$ExperimentalDialogType
 accessible method net/minecraft/client/renderer/Sheets createSignMaterial (Lnet/minecraft/world/level/block/state/properties/WoodType;)Lnet/minecraft/client/resources/model/Material;
 accessible field net/minecraft/server/packs/repository/PackRepository sources Ljava/util/Set;
 accessible method net/minecraft/client/renderer/entity/ItemRenderer renderQuadList (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;Ljava/util/List;Lnet/minecraft/world/item/ItemStack;II)V
@@ -70,7 +69,6 @@ accessible class net/minecraft/world/entity/ai/control/MoveControl$Operation
 accessible method net/minecraft/world/entity/LivingEntity breakItem (Lnet/minecraft/world/item/ItemStack;)V
 accessible method net/minecraft/world/entity/monster/Ghast$GhastLookGoal <init> (Lnet/minecraft/world/entity/monster/Ghast;)V
 accessible field net/minecraft/client/multiplayer/ClientAdvancements progress Ljava/util/Map;
-accessible method net/minecraft/world/level/levelgen/feature/TreeFeature updateLeaves (Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/world/level/levelgen/structure/BoundingBox;Ljava/util/Set;Ljava/util/Set;)Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;
 accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer baseHeight I
 accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer heightRandA I
 accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer heightRandB I
@@ -85,10 +83,8 @@ accessible method net/minecraft/world/level/levelgen/carver/WorldCarver getCarve
 accessible method net/minecraft/world/level/levelgen/carver/WorldCarver isDebugEnabled (Lnet/minecraft/world/level/levelgen/carver/CarverConfiguration;)Z
 accessible method net/minecraft/world/level/levelgen/Heightmap setHeight (III)V
 accessible field net/minecraft/world/level/chunk/ChunkGenerator biomeSource Lnet/minecraft/world/level/biome/BiomeSource;
-accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator seed J
 accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings isAquifersEnabled ()Z
 accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings disableMobGeneration ()Z
-accessible method net/minecraft/world/level/levelgen/Beardifier <init> (Lnet/minecraft/world/level/StructureFeatureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)V
 accessible field net/minecraft/world/level/levelgen/carver/CaveCarverConfiguration floorLevel Lnet/minecraft/util/valueproviders/FloatProvider;
 accessible method net/minecraft/world/entity/monster/AbstractSkeleton getStepSound ()Lnet/minecraft/sounds/SoundEvent;
 accessible field net/minecraft/world/level/block/state/BlockBehaviour material Lnet/minecraft/world/level/material/Material;
@@ -108,8 +104,6 @@ accessible method net/minecraft/data/loot/BlockLoot createShearsDispatchTable (L
 accessible method net/minecraft/data/loot/BlockLoot createSingleItemTable (Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/world/level/storage/loot/LootTable$Builder;
 accessible method net/minecraft/data/loot/BlockLoot createLeavesDrops (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/level/block/Block;[F)Lnet/minecraft/world/level/storage/loot/LootTable$Builder;
 accessible method net/minecraft/data/loot/BlockLoot createSinglePropConditionTable (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/level/block/state/properties/Property;Ljava/lang/Comparable;)Lnet/minecraft/world/level/storage/loot/LootTable$Builder;
-accessible method net/minecraft/data/loot/BlockLoot applyExplosionDecay (Lnet/minecraft/world/level/ItemLike;Lnet/minecraft/world/level/storage/loot/functions/FunctionUserBuilder;)Ljava/lang/Object;
-accessible method net/minecraft/data/loot/BlockLoot applyExplosionCondition (Lnet/minecraft/world/level/ItemLike;Lnet/minecraft/world/level/storage/loot/predicates/ConditionUserBuilder;)Ljava/lang/Object;
 accessible method net/minecraft/data/loot/BlockLoot createSilkTouchOrShearsDispatchTable (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/level/storage/loot/entries/LootPoolEntryContainer$Builder;)Lnet/minecraft/world/level/storage/loot/LootTable$Builder;
 accessible method net/minecraft/data/loot/BlockLoot createSingleItemTableWithSilkTouch (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/level/ItemLike;Lnet/minecraft/world/level/storage/loot/providers/number/NumberProvider;)Lnet/minecraft/world/level/storage/loot/LootTable$Builder;
 accessible method net/minecraft/data/loot/BlockLoot createSingleItemTableWithSilkTouch (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/world/level/storage/loot/LootTable$Builder;
@@ -126,12 +120,6 @@ extendable method net/minecraft/data/loot/EntityLoot add (Lnet/minecraft/resourc
 accessible field net/minecraft/data/loot/BlockLoot map Ljava/util/Map;
 accessible field net/minecraft/data/loot/EntityLoot SPECIAL_LOOT_TABLE_TYPES Ljava/util/Set;
 accessible field net/minecraft/data/loot/EntityLoot map Ljava/util/Map;
-accessible method net/minecraft/data/loot/LootTableProvider createPath (Ljava/nio/file/Path;Lnet/minecraft/resources/ResourceLocation;)Ljava/nio/file/Path;
-accessible field net/minecraft/data/loot/LootTableProvider GSON Lcom/google/gson/Gson;
-accessible field net/minecraft/data/loot/LootTableProvider generator Lnet/minecraft/data/DataGenerator;
-accessible field net/minecraft/data/recipes/RecipeProvider generator Lnet/minecraft/data/DataGenerator;
-accessible method net/minecraft/data/recipes/RecipeProvider saveRecipe (Lnet/minecraft/data/HashCache;Lcom/google/gson/JsonObject;Ljava/nio/file/Path;)V
-accessible method net/minecraft/data/recipes/RecipeProvider saveAdvancement (Lnet/minecraft/data/HashCache;Lcom/google/gson/JsonObject;Ljava/nio/file/Path;)V
 accessible field net/minecraft/world/entity/monster/Slime wasOnGround Z
 accessible method net/minecraft/data/loot/BlockLoot createSilkTouchDispatchTable (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/level/storage/loot/entries/LootPoolEntryContainer$Builder;)Lnet/minecraft/world/level/storage/loot/LootTable$Builder;
 accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator defaultBlock Lnet/minecraft/world/level/block/state/BlockState;
@@ -142,8 +130,6 @@ accessible class net/minecraft/world/item/crafting/Ingredient$Value
 accessible method net/minecraft/world/item/crafting/Ingredient$ItemValue <init> (Lnet/minecraft/world/item/ItemStack;)V
 accessible method net/minecraft/data/recipes/RecipeProvider has (Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/advancements/critereon/InventoryChangeTrigger$TriggerInstance;
 accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer addLayer (Lnet/minecraft/client/renderer/entity/layers/RenderLayer;)Z
-accessible method net/minecraft/client/renderer/Sheets createBannerMaterial (Lnet/minecraft/world/level/block/entity/BannerPattern;)Lnet/minecraft/client/resources/model/Material;
-accessible method net/minecraft/client/renderer/Sheets createShieldMaterial (Lnet/minecraft/world/level/block/entity/BannerPattern;)Lnet/minecraft/client/resources/model/Material;
 accessible class net/minecraft/client/renderer/RenderStateShard$LightmapStateShard
 accessible class net/minecraft/client/renderer/RenderStateShard$CullStateShard
 accessible class net/minecraft/client/renderer/RenderStateShard$DepthTestStateShard
@@ -157,9 +143,6 @@ accessible field net/minecraft/world/level/levelgen/structure/templatesystem/Blo
 accessible field net/minecraft/world/level/levelgen/synth/BlendedNoise mainNoise Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;
 accessible field net/minecraft/world/level/levelgen/synth/BlendedNoise minLimitNoise Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;
 accessible field net/minecraft/world/level/levelgen/synth/BlendedNoise maxLimitNoise Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;
-accessible field net/minecraft/world/level/chunk/ChunkGenerator ringPlacementSeed J
-accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator sampler Lnet/minecraft/world/level/biome/Climate$Sampler;
-accessible method net/minecraft/world/level/levelgen/NoiseRouterData noNewCaves (Lnet/minecraft/world/level/levelgen/NoiseSettings;)Lnet/minecraft/world/level/levelgen/NoiseRouterWithOnlyNoises;
 accessible method net/minecraft/server/level/ChunkMap generator ()Lnet/minecraft/world/level/chunk/ChunkGenerator;
 accessible method net/minecraft/world/entity/decoration/HangingEntity setDirection (Lnet/minecraft/core/Direction;)V
 accessible method net/minecraft/world/damagesource/DamageSource damageHelmet ()Lnet/minecraft/world/damagesource/DamageSource;
@@ -175,7 +158,6 @@ accessible field net/minecraft/world/level/levelgen/structure/pieces/StructurePi
 extendable class net/minecraft/world/item/enchantment/EnchantmentCategory
 extendable class net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier
 extendable method net/minecraft/data/tags/TagsProvider getName ()Ljava/lang/String;
-accessible field net/minecraft/data/tags/TagsProvider GSON Lcom/google/gson/Gson;
 accessible field net/minecraft/data/tags/TagsProvider builders Ljava/util/Map;
 accessible field net/minecraft/data/tags/TagsProvider LOGGER Lorg/slf4j/Logger;
 accessible field net/minecraft/data/loot/LootTableProvider LOGGER Lorg/slf4j/Logger;

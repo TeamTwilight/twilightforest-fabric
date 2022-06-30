@@ -614,7 +614,7 @@ public class Naga extends Monster implements MultiPartEntity {
 	}
 
 	@Override
-	public boolean isPushedByFluid(FluidType type) {
+	public boolean isPushedByFluid() {
 		return false;
 	}
 
