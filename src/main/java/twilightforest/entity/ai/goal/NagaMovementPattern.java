@@ -27,7 +27,7 @@ public class NagaMovementPattern extends Goal {
 
 	@Override
 	public boolean canUse() {
-		return this.naga.getTarget() != null;
+		return this.naga.getTarget() != null && this.naga.areSelfAndTargetInHome(this.naga.getTarget());
 	}
 
 	@Override
