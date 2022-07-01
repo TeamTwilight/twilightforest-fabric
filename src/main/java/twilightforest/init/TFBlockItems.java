@@ -82,17 +82,7 @@ public class TFBlockItems {
 //      register(blockItem(TFBlocks.LAPIS_BLOCK));
 			register(blockItem(TFBlocks.TWISTED_STONE));
 			register(blockItem(TFBlocks.TWISTED_STONE_PILLAR));
-			register(new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), TFItems.defaultBuilder().fireResistant()) {
-				@Override
-				public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-					consumer.accept(new IItemRenderProperties() {
-						@Override
-						public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-							return new ISTER();
-						}
-					});
-				}
-			});
+			ISTERItemRegistry.register(register(new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), TFItems.defaultBuilder().fireResistant())));
 			register(blockItem(TFBlocks.CANDELABRA));
 			register(blockItem(TFBlocks.BOLD_STONE_PILLAR));
 			register(blockItem(TFBlocks.DEATH_TOME_SPAWNER));
@@ -423,17 +413,7 @@ public class TFBlockItems {
 	}
 
 	private static <B extends AbstractSkullCandleBlock> BlockItem skullCandleItem(RegistryObject<B> floor, RegistryObject<B> wall) {
-		return new SkullCandleItem(floor.get(), wall.get(), TFItems.defaultBuilder().rarity(Rarity.UNCOMMON)) {
-			@Override
-			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-				consumer.accept(new IItemRenderProperties() {
-					@Override
-					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-						return new ISTER();
-					}
-				});
-			}
-		};
+		return ISTERItemRegistry.register(new SkullCandleItem(floor.get(), wall.get(), TFItems.defaultBuilder().rarity(Rarity.UNCOMMON)));
 	}
 
 	private static <B extends Block> BlockItem burningItem(RegistryObject<B> block, int burntime) {
@@ -441,31 +421,11 @@ public class TFBlockItems {
 	}
 
 	private static <B extends Block, W extends Block> BlockItem trophyBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
-		return new TrophyItem(block.get(), wallblock.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity())) {
-			@Override
-			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-				consumer.accept(new IItemRenderProperties() {
-					@Override
-					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-						return new ISTER();
-					}
-				});
-			}
-		};
+		return ISTERItemRegistry.register(new TrophyItem(block.get(), wallblock.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity())));
 	}
 
 	private static <T extends Block, E extends BlockEntity> BlockItem wearableBlock(RegistryObject<T> block, RegistryObject<BlockEntityType<E>> tileentity) {
-		return new WearableItem(block.get(), TFItems.defaultBuilder()) {
-			@Override
-			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-				consumer.accept(new IItemRenderProperties() {
-					@Override
-					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-						return new ISTER();
-					}
-				});
-			}
-		};
+		return ISTERItemRegistry.register(new WearableItem(block.get(), TFItems.defaultBuilder()));
 	}
 
 	private static <B extends Block> BlockItem tallBlock(RegistryObject<B> block) {
@@ -477,20 +437,10 @@ public class TFBlockItems {
 	}
 
 	private static void makeBEWLRItem(RegistryObject<? extends Block> block) {
-		register(new BlockItem(block.get(), TFItems.defaultBuilder()) {
-			@Override
-			public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-				consumer.accept(new IItemRenderProperties() {
-					@Override
-					public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-						return new ISTER();
-					}
-				});
-			}
-		});
+		register(ISTERItemRegistry.register(new BlockItem(block.get(), TFItems.defaultBuilder())));
 	}
 
-	private static void register(BlockItem item) {
-		Registry.register(Registry.ITEM, Registry.BLOCK.getKey(item.getBlock()), item);
+	private static BlockItem register(BlockItem item) {
+		return Registry.register(Registry.ITEM, Registry.BLOCK.getKey(item.getBlock()), item);
 	}
 }
