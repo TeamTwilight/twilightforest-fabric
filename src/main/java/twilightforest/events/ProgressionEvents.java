@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.level.phys.BlockHitResult;
+import net.minecraft.world.phys.BlockHitResult;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.monster.Kobold;
 import twilightforest.init.TFLandmark;

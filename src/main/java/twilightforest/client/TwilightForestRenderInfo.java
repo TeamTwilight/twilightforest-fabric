@@ -12,6 +12,8 @@ import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.world.registration.TFGenerationSettings;
 
+import javax.annotation.Nullable;
+
 public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
     public TwilightForestRenderInfo(float cloudHeight, boolean placebo, SkyType fogType, boolean brightenLightMap, boolean entityLightingBottomsLit) {

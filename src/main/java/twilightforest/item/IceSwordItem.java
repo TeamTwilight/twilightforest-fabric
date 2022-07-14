@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,15 +10,13 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.TFMobEffects;
 import twilightforest.init.TFParticleType;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class IceSwordItem extends SwordItem {
+public class IceSwordItem extends SwordItem implements CustomEnchantingBehaviorItem {
 
 	public IceSwordItem(Tier toolMaterial, Properties properties) {
 		super(toolMaterial, 3, -2.4F, properties);
@@ -37,7 +36,7 @@ public class IceSwordItem extends SwordItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Enchantments.FIRE_ASPECT.equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
+		return !Enchantments.FIRE_ASPECT.equals(enchantment) && CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override

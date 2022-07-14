@@ -1,14 +1,14 @@
 package twilightforest.data.helpers;
 
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.*;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
 
@@ -411,7 +411,7 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 	}
 
 	protected ResourceLocation key(Block block) {
-		return ForgeRegistries.BLOCKS.getKey(block);
+		return Registry.BLOCK.getKey(block);
 	}
 
 	protected String name(Block block) {

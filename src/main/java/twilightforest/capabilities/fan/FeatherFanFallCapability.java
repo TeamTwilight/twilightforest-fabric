@@ -1,12 +1,11 @@
 package twilightforest.capabilities.fan;
 
-import net.minecraft.nbt.CompoundTag;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.common.util.INBTSerializable;
 import twilightforest.TwilightForestMod;
 
-public interface FeatherFanFallCapability extends INBTSerializable<CompoundTag> {
+public interface FeatherFanFallCapability extends Component {
 
 	ResourceLocation ID = TwilightForestMod.prefix("cap_feather_fan_fall");
 

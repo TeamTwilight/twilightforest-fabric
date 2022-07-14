@@ -27,6 +27,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.YetiArmorModel;
 import twilightforest.client.renderer.TFArmorRenderer;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class YetiArmorItem extends ArmorItem {

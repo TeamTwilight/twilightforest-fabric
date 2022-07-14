@@ -41,7 +41,6 @@ import twilightforest.compat.TrinketsCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.events.*;
 import twilightforest.init.*;
-import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
@@ -114,7 +113,7 @@ public class TwilightForestMod implements ModInitializer {
 		TFStats.STATS.register();
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register();
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register();
-		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(modbus);
+		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register();
 		TFStructureSets.STRUCTURE_SETS.register();
 		TFStructureTypes.STRUCTURE_TYPES.register();
 		TFStructures.STRUCTURES.register();

@@ -2,7 +2,6 @@ package twilightforest.capabilities.fan;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.network.PacketDistributor;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateFeatherFanFallPacket;
 
@@ -31,7 +30,7 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 	public void setFalling(boolean falling) {
 		this.falling = falling;
 		if (!this.host.getLevel().isClientSide()) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.host), new UpdateFeatherFanFallPacket(this.host.getId(), this));
+			TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateFeatherFanFallPacket(this.host.getId(), this), this.host);
 		}
 	}
 
@@ -41,14 +40,12 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 	}
 
 	@Override
-	public CompoundTag serializeNBT() {
-		CompoundTag tag = new CompoundTag();
+	public void writeToNbt(CompoundTag tag) {
 		tag.putBoolean("featherFanFalling", this.getFalling());
-		return tag;
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag nbt) {
-		this.setFalling(nbt.getBoolean("featherFanFalling"));
+	public void readFromNbt(CompoundTag tag) {
+		this.setFalling(tag.getBoolean("featherFanFalling"));
 	}
 }

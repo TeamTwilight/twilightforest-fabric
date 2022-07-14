@@ -347,8 +347,7 @@ public class TFClientEvents {
 	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
 	 */
 	public static double FOVUpdate(GameRenderer renderer, Camera camera, double partialTick, double fov) {
-		// FIXME PORT
-		Player player = (Player) camera.getEntity();
+		if (!(camera.getEntity() instanceof Player player)) return fov;
 		if (player.isUsingItem()) {
 			Item useItem = player.getUseItem().getItem();
 			if (useItem instanceof TripleBowItem || useItem instanceof EnderBowItem || useItem instanceof IceBowItem || useItem instanceof SeekerBowItem) {

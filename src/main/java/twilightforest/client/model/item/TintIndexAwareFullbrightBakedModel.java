@@ -1,11 +1,9 @@
 package twilightforest.client.model.item;
 
-import io.github.fabricators_of_create.porting_lib.util.LightUtil;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 
-import net.minecraftforge.client.model.IQuadTransformer;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 

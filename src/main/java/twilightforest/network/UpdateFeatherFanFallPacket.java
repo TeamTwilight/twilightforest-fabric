@@ -1,17 +1,18 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.S2CPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.network.NetworkEvent;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.fan.FeatherFanCapabilityHandler;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
 
-import java.util.function.Supplier;
-
-public class UpdateFeatherFanFallPacket {
+public class UpdateFeatherFanFallPacket implements S2CPacket {
 	private final int entityID;
 	private final boolean falling;
 
@@ -34,19 +35,13 @@ public class UpdateFeatherFanFallPacket {
 		buf.writeBoolean(this.falling);
 	}
 
-	public static class Handler {
-
-		public static boolean onMessage(UpdateFeatherFanFallPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
-				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
-				if (entity instanceof LivingEntity) {
-					entity.getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(cap -> {
-						cap.setFalling(message.falling);
-					});
-				}
+	@Override
+	public void handle(Minecraft client, ClientPacketListener listener, PacketSender responseSender, SimpleChannel channel) {
+		Entity entity = Minecraft.getInstance().level.getEntity(entityID);
+		if (entity instanceof LivingEntity) {
+			CapabilityList.FEATHER_FAN_FALLING.maybeGet(entity).ifPresent(cap -> {
+				cap.setFalling(falling);
 			});
-
-			return true;
 		}
 	}
 }

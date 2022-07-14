@@ -16,10 +16,10 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.block.CritterBlock;
-import twilightforest.compat.curios.CharmOfKeepingRenderer;
-import twilightforest.compat.curios.CharmOfLife1NecklaceRenderer;
-import twilightforest.compat.curios.CharmOfLife2NecklaceRenderer;
-import twilightforest.compat.curios.CurioHeadRenderer;
+import twilightforest.compat.trinkets.CharmOfKeepingRenderer;
+import twilightforest.compat.trinkets.CharmOfLife1NecklaceRenderer;
+import twilightforest.compat.trinkets.CharmOfLife2NecklaceRenderer;
+import twilightforest.compat.trinkets.CurioHeadRenderer;
 import twilightforest.events.CharmEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -31,11 +31,6 @@ public class TrinketsCompat extends TFCompat {
 
 	public TrinketsCompat() {
 		super("Trinkets");
-	}
-
-	@Override
-	protected boolean preInit() {
-		return true;
 	}
 
 	@Override

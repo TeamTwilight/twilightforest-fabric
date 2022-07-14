@@ -20,6 +20,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.BiomeKeys;
 import twilightforest.world.registration.TFGenerationSettings;

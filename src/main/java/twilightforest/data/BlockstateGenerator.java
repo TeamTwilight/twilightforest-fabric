@@ -19,6 +19,7 @@ import twilightforest.enums.*;
 import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 
 import static twilightforest.TwilightForestMod.prefix;

@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package twilightforest.compat.tcon.traits;
+package twilightforest.compat.trinkets;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

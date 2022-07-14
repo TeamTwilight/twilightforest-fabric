@@ -1,4 +1,4 @@
-package twilightforest.compat.curios;
+package twilightforest.compat.trinkets;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

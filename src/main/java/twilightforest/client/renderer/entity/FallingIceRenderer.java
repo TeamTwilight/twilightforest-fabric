@@ -17,7 +17,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
 import twilightforest.entity.projectile.FallingIce;
 
 public class FallingIceRenderer extends EntityRenderer<FallingIce> {

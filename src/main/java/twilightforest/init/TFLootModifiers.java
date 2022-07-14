@@ -1,6 +1,7 @@
 package twilightforest.init;
 
 import com.mojang.serialization.Codec;
+import io.github.fabricators_of_create.porting_lib.loot.GlobalLootModifierSerializer;
 import io.github.fabricators_of_create.porting_lib.loot.IGlobalLootModifier;
 import io.github.fabricators_of_create.porting_lib.loot.LootModifierManager;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;

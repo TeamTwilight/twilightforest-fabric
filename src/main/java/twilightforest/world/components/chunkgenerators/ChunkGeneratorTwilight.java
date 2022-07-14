@@ -33,6 +33,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.IntPair;
 import twilightforest.util.LegacyLandmarkPlacements;
@@ -46,6 +47,7 @@ import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.init.BiomeKeys;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
