@@ -11,6 +11,8 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import twilightforest.init.TFEnchantments;
 
+import javax.annotation.Nullable;
+
 public class FireReactEnchantment extends LootOnlyEnchantment {
 
 	public FireReactEnchantment(Rarity rarity) {
@@ -41,7 +43,7 @@ public class FireReactEnchantment extends LootOnlyEnchantment {
 	}
 
 	@Override
-	public void doPostHurt(LivingEntity user, Entity attacker, int level) {
+	public void doPostHurt(LivingEntity user, @Nullable Entity attacker, int level) {
 		RandomSource random = user.getRandom();
 		if (attacker != null && shouldHit(level, random, attacker)) {
 			attacker.setSecondsOnFire(2 + (random.nextInt(level) * 3));

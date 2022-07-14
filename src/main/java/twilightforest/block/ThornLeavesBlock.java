@@ -3,13 +3,13 @@ package twilightforest.block;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
 
-public class BeanstalkLeavesBlock extends TFAlternativeStemLeavesBlock {
-    public BeanstalkLeavesBlock(Properties properties) {
+public class ThornLeavesBlock extends TFAlternativeStemLeavesBlock {
+    public ThornLeavesBlock(Properties properties) {
         super(properties);
     }
 
     @Override
     protected boolean isStem(BlockState state) {
-        return state.is(TFBlocks.HUGE_STALK.get());
+        return state.is(TFBlocks.BROWN_THORNS.get()) || state.is(TFBlocks.GREEN_THORNS.get());
     }
 }

@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import twilightforest.block.ThornLeavesBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.config.ThornsConfig;
@@ -56,7 +57,7 @@ public class ThornFeature extends Feature<ThornsConfig> {
 						if (rand.nextInt(config.chanceOfLeaf()) == 0 && world.isEmptyBlock(dPos.relative(dir))) {
 							if (rand.nextInt(config.chanceLeafIsRose()) > 0) {
 								// leaf
-								world.setBlock(dPos.relative(dir), TFBlocks.THORN_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 3);
+								world.setBlock(dPos.relative(dir), TFBlocks.THORN_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1), 3);
 							} else {
 								// rose
 								world.setBlock(dPos.relative(dir), TFBlocks.THORN_ROSE.get().defaultBlockState(), 3);
@@ -105,7 +106,7 @@ public class ThornFeature extends Feature<ThornsConfig> {
 			BlockPos nextPos = pos.relative(dir, middle).relative(nextDir);
 
 			if (world.isEmptyBlock(nextPos)) {
-				world.setBlock(nextPos, TFBlocks.THORN_LEAVES.get().defaultBlockState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
+				world.setBlock(nextPos, TFBlocks.THORN_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
 			}
 		}
 	}
