@@ -31,7 +31,7 @@ public class TFSkyRenderer {
 
 
 	// [VanillaCopy] LevelRenderer.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
-	public static boolean renderSky(ClientLevel level, int ticks, float partialTicks, PoseStack ms, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
+	public static boolean renderSky(ClientLevel level, float partialTicks, PoseStack ms, Camera camera) {
 		LevelRenderer levelRenderer = Minecraft.getInstance().levelRenderer;
 
 		RenderSystem.disableTexture();

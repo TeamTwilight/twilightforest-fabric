@@ -5,6 +5,7 @@ import io.github.fabricators_of_create.porting_lib.event.client.*;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -17,6 +18,7 @@ import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.DimensionSpecialEffects.SkyType;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -24,9 +26,11 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.*;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -36,6 +40,7 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -70,6 +75,7 @@ public class TFClientEvents {
 	public static void init() {
 		ModBusEvents.registerModels();
 		ModBusEvents.registerLoaders();
+		ModBusEvents.registerDimEffects();
 		WorldRenderEvents.LAST.register(TFClientEvents::renderWorldLast);
 		ModelsBakedCallback.EVENT.register(ModBusEvents::modelBake);
 		TextureStitchCallback.PRE.register(ModBusEvents::texStitch);
@@ -211,12 +217,15 @@ public class TFClientEvents {
 			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(TwilightForestMod.prefix("block/casket_basalt")));
 		}
 
-		@SubscribeEvent
-		public static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
+		public static void registerDimEffects() {
 			//TODO if there is a better way to do this, then do it. This works though, so idk
 			new TFSkyRenderer();
 			new TFWeatherRenderer();
-			event.register(TwilightForestMod.prefix("renderer"), new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
+			ResourceLocation id = TwilightForestMod.prefix("renderer");
+			TwilightForestRenderInfo info = new TwilightForestRenderInfo(128.0F, false, SkyType.NONE, false, false);
+			DimensionRenderingRegistry.registerDimensionEffects(id, info);
+			DimensionRenderingRegistry.registerSkyRenderer(TFGenerationSettings.DIMENSION_KEY, info::renderSky);
+			DimensionRenderingRegistry.registerWeatherRenderer(TFGenerationSettings.DIMENSION_KEY, info::renderSnowAndRain);
 		}
 	}
 
@@ -236,10 +245,10 @@ public class TFClientEvents {
 	 * Render effects in first-person perspective
 	 */
 	public static void renderWorldLast(WorldRenderContext context) {
-		// FIXME PORT
 		// FIXME Verify if this is a good step to run our event for. (This used to be RenderLevelLastEvent)
 		//  "There is no {@link RenderLevelStageEvent.Stage} that directly replaces this event, instead you must decide which Stage best fits your use case."
-		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_WEATHER) return; // Despite Weather rendering inside the translucent
+		// fabric: we already render and the very end
+//		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_WEATHER) return; // Despite Weather rendering inside the translucent
 
 		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
@@ -294,7 +303,7 @@ public class TFClientEvents {
 		sineTicker = sineTicker + partial;
 
 		BugModelAnimationHelper.animate();
-		DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
+		DimensionSpecialEffects info = DimensionRenderingRegistry.getDimensionEffects(TwilightForestMod.prefix("renderer"));
 
 		// add weather box if needed
 		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo) {

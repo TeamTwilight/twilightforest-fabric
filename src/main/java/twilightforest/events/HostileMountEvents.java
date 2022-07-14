@@ -1,5 +1,7 @@
 package twilightforest.events;
 
+import io.github.fabricators_of_create.porting_lib.event.common.EntityEvents;
+import io.github.fabricators_of_create.porting_lib.event.common.EntityEvents.Teleport.EntityTeleportEvent;
 import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
 import io.github.fabricators_of_create.porting_lib.event.common.MountEntityCallback;
 import net.minecraft.world.InteractionResult;
@@ -14,6 +16,7 @@ public class HostileMountEvents {
 	public static volatile boolean allowDismount = false;
 
 	public static void init() {
+		EntityEvents.TELEPORT.register(HostileMountEvents::entityTeleports);
 		LivingEntityEvents.ACTUALLY_HURT.register(HostileMountEvents::entityHurts);
 		MountEntityCallback.EVENT.register(HostileMountEvents::preventMountDismount);
 		LivingEntityEvents.TICK.register(HostileMountEvents::livingUpdate);
@@ -27,7 +30,6 @@ public class HostileMountEvents {
 		return amount;
 	}
 
-	@SubscribeEvent
 	public static void entityTeleports(EntityTeleportEvent event) {
 		// if our grabbed target tries to teleport dont let them
 		if (event.getEntity() instanceof LivingEntity living && isRidingUnfriendly(living)) {

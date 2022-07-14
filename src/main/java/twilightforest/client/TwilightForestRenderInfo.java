@@ -1,16 +1,14 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 
@@ -18,8 +16,6 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
     public TwilightForestRenderInfo(float cloudHeight, boolean placebo, SkyType fogType, boolean brightenLightMap, boolean entityLightingBottomsLit) {
         super(cloudHeight, placebo, fogType, brightenLightMap, entityLightingBottomsLit);
-        DimensionRenderingRegistry.registerSkyRenderer(TFGenerationSettings.DIMENSION_KEY, getSkyRenderHandler());
-//        DimensionRenderingRegistry.registerWeatherRenderer(ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.portalDestinationID.get())), getWeatherRenderHandler());
     }
 
     @Nullable
@@ -48,13 +44,21 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
         return false;
     }
 
-    @Override
-    public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
-        return TFSkyRenderer.renderSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
+
+    public void renderSky(WorldRenderContext context) {
+        ClientLevel level = context.world();
+        float partialTick = context.tickDelta();
+        PoseStack poseStack = context.matrixStack();
+        Camera camera = context.camera();
+        TFSkyRenderer.renderSky(level, partialTick, poseStack, camera);
     }
 
-    @Override
-    public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lightTexture, double camX, double camY, double camZ) {
-        return TFWeatherRenderer.renderSnowAndRain(level, ticks, partialTick, lightTexture, camX, camY, camZ);
+    public void renderSnowAndRain(WorldRenderContext context) {
+        ClientLevel level = context.world();
+        float partialTick = context.tickDelta();
+        LightTexture lightTexture = context.lightmapTextureManager();
+        Camera camera = context.camera();
+        Vec3 pos = camera.getPosition();
+        TFWeatherRenderer.renderSnowAndRain(level, partialTick, lightTexture, pos.x, pos.y, pos.z);
     }
 }

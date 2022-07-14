@@ -1,6 +1,7 @@
 package twilightforest.events;
 
 import com.mojang.authlib.GameProfile;
+import dev.architectury.event.events.common.BlockEvent;
 import io.github.fabricators_of_create.porting_lib.event.common.ItemCraftedCallback;
 import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
 import io.github.fabricators_of_create.porting_lib.event.common.ProjectileImpactCallback;
@@ -69,34 +70,33 @@ public class PlayerEvents {
 
 	public static void init() {
 		ItemCraftedCallback.EVENT.register(PlayerEvents::onCrafting);
+		LivingEntityEvents.TICK.register(PlayerEvents::updateFeatherFanCap);
 		LivingEntityEvents.ACTUALLY_HURT.register(PlayerEvents::entityHurts);
 		UseBlockCallback.EVENT.register(PlayerEvents::createSkullCandle);
 		PlayerBlockBreakEvents.BEFORE.register(PlayerEvents::onCasketBreak);
+		PlayerBlockBreakEvents.AFTER.register(PlayerEvents::damageToolsExtra);
 		ServerPlayerEvents.AFTER_RESPAWN.register(PlayerEvents::onPlayerRespawn);
 		ProjectileImpactCallback.EVENT.register(PlayerEvents::throwableParry);
 		EntityTrackingEvents.START_TRACKING.register(PlayerEvents::onStartTracking);
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(PlayerEvents::playerPortals);
 	}
 
-	@SubscribeEvent
-	public static void damageToolsExtra(BlockEvent.BreakEvent event) {
-		ItemStack stack = event.getPlayer().getMainHandItem();
-		if (event.getState().is(BlockTagGenerator.MAZESTONE) || event.getState().is(BlockTagGenerator.CASTLE_BLOCKS)) {
+	public static void damageToolsExtra(Level world, Player player, BlockPos pos, BlockState state, /* Nullable */ BlockEntity blockEntity) {
+		ItemStack stack = player.getMainHandItem();
+		if (state.is(BlockTagGenerator.MAZESTONE) || state.is(BlockTagGenerator.CASTLE_BLOCKS)) {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
-				stack.hurtAndBreak(16, event.getPlayer(), (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+				stack.hurtAndBreak(16, player, (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
 			}
 		}
 	}
 
-	@SubscribeEvent
-	public static void updateFeatherFanCap(LivingEvent.LivingTickEvent event) {
-		if (event.getEntity() instanceof Player player && player.getCapability(CapabilityList.FEATHER_FAN_FALLING).isPresent()) {
-			player.getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
+	public static void updateFeatherFanCap(LivingEntity entity) {
+		if (entity instanceof Player player && CapabilityList.FEATHER_FAN_FALLING.maybeGet(player).isPresent()) {
+			CapabilityList.FEATHER_FAN_FALLING.maybeGet(player).ifPresent(FeatherFanFallCapability::update);
 		}
 	}
 
-	@SubscribeEvent
-	public static void entityHurts(LivingHurtEvent event) {
+	public static float entityHurts(DamageSource damageSource, LivingEntity living, float amount) {
 		String damageType = damageSource.getMsgId();
 		Entity trueSource = damageSource.getEntity();
 
