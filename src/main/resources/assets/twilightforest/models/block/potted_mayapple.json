@@ -1,5 +1,6 @@
 {
 	"ambientocclusion": false,
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"top": "twilightforest:block/mayapple",
 		"stem": "twilightforest:block/mayapple_side",

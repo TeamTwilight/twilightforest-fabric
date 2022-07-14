@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.PaintingAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
@@ -32,7 +31,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.phys.AABB;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.CastleBlock;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
@@ -1948,7 +1947,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (sbb.isInside(new BlockPos(dx, this.boundingBox.minY() + 1, dz))) {
 			for (int dy = this.getWorldY(startHeight); dy > 0; dy--) {
 				final BlockPos pos = new BlockPos(dx, dy, dz);
-				if (world.getBlockState(pos).getBlock() instanceof CastleBlock) {
+				if (world.getBlockState(pos).is(BlockTagGenerator.CASTLE_BLOCKS) && world.getBlockState(pos).isRedstoneConductor(world, pos)) {
 					world.setBlock(pos, colour, 2);
 				} else {
 					break;

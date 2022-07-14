@@ -1,5 +1,6 @@
 {
   "parent": "twilightforest:block/vertical_hollow_log_ladder",
+  "render_type": "minecraft:cutout",
   "textures": {
     "inner": "twilightforest:block/stripped_time_log",
     "side": "twilightforest:block/time_log",

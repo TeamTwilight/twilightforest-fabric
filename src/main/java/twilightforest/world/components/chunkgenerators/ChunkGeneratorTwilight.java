@@ -1,14 +1,17 @@
 package twilightforest.world.components.chunkgenerators;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
+import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.Util;
 import net.minecraft.core.*;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
@@ -26,26 +29,25 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.IntPair;
+import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.warp.*;
 import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.world.components.structures.placements.BiomeForcedLandmarkPlacement;
 import twilightforest.world.components.structures.start.LegacyLandmark;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.init.BiomeKeys;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
@@ -54,12 +56,15 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public static final Codec<ChunkGeneratorTwilight> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
 			RegistryOps.retrieveRegistry(Registry.STRUCTURE_SET_REGISTRY).forGetter(o -> o.structureSets),
-			RegistryCodecs.homogeneousList(Registry.STRUCTURE_SET_REGISTRY).optionalFieldOf("structures_placements").forGetter(o -> o.structureOverrides),
+			RegistryCodecs.homogeneousList(Registry.STRUCTURE_SET_REGISTRY).fieldOf("structures_placements").forGetter(o -> o.structureOverrides),
 			NoiseGeneratorSettings.CODEC.fieldOf("noise_generation_settings").forGetter(o -> o.noiseGeneratorSettings),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
 			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel),
-			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight)
-	).apply(instance, instance.stable(ChunkGeneratorTwilight::new)));
+			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight),
+			Codec.unboundedMap(ResourceKey.codec(Registry.BIOME_REGISTRY), TFLandmark.CODEC.listOf().xmap(ImmutableSet::copyOf, ImmutableList::copyOf)).fieldOf("landmark_placement_allowed_biomes").forGetter(o -> o.biomeLandmarkOverrides)
+	).apply(instance, ChunkGeneratorTwilight::new));
+
+	private final Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides;
 
 	private final Holder<NoiseGeneratorSettings> noiseGeneratorSettings;
 	private final boolean genDarkForestCanopy;
@@ -71,11 +76,15 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	private final Optional<Climate.Sampler> surfaceNoiseGetter;
 	private final Optional<TFTerrainWarp> warper;
 
-	public final ConcurrentHashMap<ChunkPos, TFLandmark> featureCache = new ConcurrentHashMap<>();
+	private final HolderSet<StructureSet> structureOverrides;
+
 	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, Optional<HolderSet<StructureSet>> structureOverride, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, Optional<Integer> darkForestCanopyHeight) {
-		super(structures, structureOverride, delegate);
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, HolderSet<StructureSet> structureOverrides, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Integer> darkForestCanopyHeight, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
+		super(structures, Optional.of(structureOverrides), delegate);
+		this.structureOverrides = structureOverrides;
+
+		this.biomeLandmarkOverrides = biomeLandmarkOverrides;
 		this.noiseGeneratorSettings = noiseGenSettings;
 		this.genDarkForestCanopy = genDarkForestCanopy;
 		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
@@ -90,6 +99,20 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			this.defaultFluid = Blocks.WATER.defaultBlockState();
 			this.surfaceNoiseGetter = Optional.empty();
 		}
+
+		//BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFLandmark>()
+		//		.put(BiomeKeys.DARK_FOREST.location(), TFLandmark.KNIGHT_STRONGHOLD)
+		//		.put(BiomeKeys.DARK_FOREST_CENTER.location(), TFLandmark.DARK_TOWER)
+		//		//.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
+		//		.put(BiomeKeys.ENCHANTED_FOREST.location(), TFLandmark.QUEST_GROVE)
+		//		.put(BiomeKeys.FINAL_PLATEAU.location(), TFLandmark.FINAL_CASTLE)
+		//		.put(BiomeKeys.FIRE_SWAMP.location(), TFLandmark.HYDRA_LAIR)
+		//		.put(BiomeKeys.GLACIER.location(), TFLandmark.ICE_TOWER)
+		//		.put(BiomeKeys.HIGHLANDS.location(), TFLandmark.TROLL_CAVE)
+		//		.put(BiomeKeys.SNOWY_FOREST.location(), TFLandmark.YETI_CAVE)
+		//		.put(BiomeKeys.SWAMP.location(), TFLandmark.LABYRINTH)
+		//		.put(BiomeKeys.LAKE.location(), TFLandmark.QUEST_ISLAND)
+		//		.build();
 
 //FIXME Watch this space, make sure it worked
 		NoiseSettings settings = noiseGenSettings.value().noiseSettings();
@@ -396,7 +419,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
 	protected final void deformTerrainForFeature(WorldGenRegion primer, ChunkAccess chunk) {
 		IntPair featureRelativePos = new IntPair();
-		TFLandmark nearFeature = TFLandmark.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, featureRelativePos);
+		TFLandmark nearFeature = LegacyLandmarkPlacements.getNearestLandmark(primer.getCenter().x, primer.getCenter().z, primer, featureRelativePos);
 
 		//Optional<StructureStart<?>> structureStart = TFGenerationSettings.locateTFStructureInRange(primer.getLevel(), nearFeature, chunk.getPos().getWorldPosition(), nearFeature.size + 1);
 
@@ -407,7 +430,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		final int relativeFeatureX = featureRelativePos.x;
 		final int relativeFeatureZ = featureRelativePos.z;
 
-		if (TFLandmark.isTheseFeatures(nearFeature, TFLandmark.SMALL_HILL, TFLandmark.MEDIUM_HILL, TFLandmark.LARGE_HILL, TFLandmark.HYDRA_LAIR)) {
+		if (LegacyLandmarkPlacements.isTheseFeatures(nearFeature, TFLandmark.SMALL_HILL, TFLandmark.MEDIUM_HILL, TFLandmark.LARGE_HILL, TFLandmark.HYDRA_LAIR)) {
 			int hdiam = (nearFeature.size * 2 + 1) * 16;
 
 			for (int xInChunk = 0; xInChunk < 16; xInChunk++) {
@@ -732,7 +755,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		if (!biomeFound) return;
 
 		IntPair nearCenter = new IntPair();
-		TFLandmark nearFeature = TFLandmark.getNearestFeature(primer.getCenter().x, primer.getCenter().z, primer, nearCenter);
+		TFLandmark nearFeature = LegacyLandmarkPlacements.getNearestLandmark(primer.getCenter().x, primer.getCenter().z, primer, nearCenter);
 
 		double d = 0.03125D;
 		//depthBuffer = noiseGen4.generateNoiseOctaves(depthBuffer, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
@@ -820,6 +843,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		return highestFoundIndex;
 	}
 
+	@Nullable
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
 		for (LegacyLandmark structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream()
 				.filter(LegacyLandmark.class::isInstance).map(LegacyLandmark.class::cast).toList()) {
@@ -853,7 +877,68 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		return mobCategory == MobCategory.MONSTER && pos.getY() >= this.getSeaLevel() ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, mobCategory, pos);
 	}
 
-	public TFLandmark getFeatureCached(final ChunkPos chunk, final WorldGenLevel world) {
-		return this.featureCache.computeIfAbsent(chunk, chunkPos -> TFLandmark.generateFeature(chunkPos.x, chunkPos.z, world));
+	public TFLandmark pickLandmarkForChunk(final ChunkPos chunk, final WorldGenLevel world) {
+		return this.pickLandmarkForChunk(chunk.x, chunk.z, world);
+	}
+
+	public TFLandmark pickLandmarkForChunk(int x, int z, final WorldGenLevel world) {
+		return LegacyLandmarkPlacements.pickLandmarkForChunk(x, z, world);
+	}
+
+	public boolean isLandmarkPickedForChunk(TFLandmark landmark, Holder<Biome> biome, int chunkX, int chunkZ, long seed) {
+		if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ)) return false;
+
+		var biomeKey = biome.unwrapKey();
+		if (biomeKey.isEmpty()) return false;
+
+		return this.biomeLandmarkOverrides.containsKey(biomeKey.get())
+				? this.biomeGuaranteedLandmark(biomeKey.get(), landmark)
+				: landmark == LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, seed);
+	}
+
+	public boolean biomeGuaranteedLandmark(ResourceKey<Biome> biome, TFLandmark landmark) {
+		if (!this.biomeLandmarkOverrides.containsKey(biome)) return false;
+		return this.biomeLandmarkOverrides.getOrDefault(biome, ImmutableSet.of()).contains(landmark);
+	}
+
+	@Nullable
+	@Override
+	public Pair<BlockPos, Holder<Structure>> findNearestMapStructure(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
+		RandomState randomState = level.getChunkSource().randomState();
+
+		@Nullable
+		Pair<BlockPos, Holder<Structure>> nearest = super.findNearestMapStructure(level, targetStructures, pos, searchRadius, skipKnownStructures);
+
+		Map<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> placementSetMap = new Object2ObjectArrayMap<>();
+		for (Holder<Structure> holder : targetStructures) {
+			for (StructurePlacement structureplacement : this.getPlacementsForStructure(holder, randomState)) {
+				if (structureplacement instanceof BiomeForcedLandmarkPlacement landmarkPlacement) {
+					placementSetMap.computeIfAbsent(landmarkPlacement, v -> new ObjectArraySet<>()).add(holder);
+				}
+			}
+		}
+
+		if (placementSetMap.isEmpty()) return nearest;
+
+		double distance = nearest == null ? Double.MAX_VALUE : nearest.getFirst().distSqr(pos);
+
+		for (BlockPos landmarkCenterPosition : LegacyLandmarkPlacements.landmarkCenterScanner(pos, Mth.ceil(Mth.sqrt(searchRadius)))) {
+			for (Map.Entry<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> landmarkPlacement : placementSetMap.entrySet()) {
+				if (!landmarkPlacement.getKey().isPlacementChunk(this, randomState, randomState.legacyLevelSeed(), landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4)) continue;
+
+				for (Holder<Structure> targetStructure : targetStructures) {
+					if (landmarkPlacement.getValue().contains(targetStructure)) {
+						final double newDistance = landmarkCenterPosition.distToLowCornerSqr(pos.getX(), landmarkCenterPosition.getY(), pos.getZ());
+
+						if (newDistance < distance) {
+							nearest = new Pair<>(landmarkCenterPosition, targetStructure);
+							distance = newDistance;
+						}
+					}
+				}
+			}
+		}
+
+		return nearest;
 	}
 }

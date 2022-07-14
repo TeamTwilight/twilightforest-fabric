@@ -1,5 +1,6 @@
 {
   "parent": "twilightforest:block/util/cube_bottom_double_top_and_sides",
+  "render_type": "minecraft:translucent",
   "textures": {
     "bottom": "minecraft:block/jungle_planks",
     "glow": "twilightforest:block/uncrafting_glow",

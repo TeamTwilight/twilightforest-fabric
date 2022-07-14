@@ -8,6 +8,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -15,7 +17,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -35,8 +36,12 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -47,6 +52,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
@@ -123,8 +129,6 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 		return canSupportCenter(reader, restingPos, facing);
 	}
 
-	public abstract ItemStack getSquishResult(); // oh no! TODO Return Loot Table instead?
-
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
 		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
@@ -157,9 +161,14 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 			level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
 			if (level.isClientSide())
 				Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
+
 			level.playSound(null, pos, TFSounds.BUG_SQUISH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-			ItemEntity squish = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), this.getSquishResult());
-			squish.spawnAtLocation(squish.getItem());
+
+			if (level instanceof ServerLevel serverLevel && this.getSquishLootTable() != null) {
+				LootContext ctx = new LootContext.Builder(serverLevel).withParameter(LootContextParams.BLOCK_STATE, state).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).create(LootContextParamSets.BLOCK);
+				serverLevel.getServer().getLootTables().get(this.getSquishLootTable()).getRandomItems(ctx).forEach((stack) -> popResource(serverLevel, pos, stack));
+			}
+
 			for (int i = 0; i < 50; i++) {
 				boolean wallBug = state.getValue(FACING) != Direction.UP;
 				level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true,
@@ -174,6 +183,8 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 			}
 		}
 	}
+
+	public abstract @Nullable ResourceLocation getSquishLootTable(); // Oh, no!
 
 	@Nullable
 	@Override

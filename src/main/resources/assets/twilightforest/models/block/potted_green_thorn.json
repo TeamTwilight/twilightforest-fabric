@@ -1,5 +1,6 @@
 {
 	"ambientocclusion": false,
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"side": "twilightforest:block/green_thorns_side",
 		"top": "twilightforest:block/green_thorns_top",

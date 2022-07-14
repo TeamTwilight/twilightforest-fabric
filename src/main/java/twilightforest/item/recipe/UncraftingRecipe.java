@@ -50,7 +50,7 @@ public record UncraftingRecipe(ResourceLocation recipeID, int cost, int width, i
 
     //Checks if the itemStack is a part of the ingredient when UncraftingMenu's getRecipesFor() method iterates through all recipes.
     public boolean isItemStackAnIngredient(ItemStack itemStack) {
-        return Arrays.stream(this.ingredient.getItems()).anyMatch(i -> (itemStack.getItem() == i.getItem() && itemStack.getCount() >= i.getCount()));
+        return Arrays.stream(this.ingredient.getItems()).anyMatch(i -> (itemStack.getItem() == i.getItem() && itemStack.getCount() >= this.getCount()));
     }
 
     @Override

@@ -12,6 +12,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -22,12 +24,25 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageSources;
 
 import org.jetbrains.annotations.Nullable;
 
 public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, CustomPathNodeTypeBlock, PlayerDestroyBlock {
+
+	protected static final VoxelShape BASE_SHAPE = Block.box(3.0D, 3.0D, 3.0D, 13.0D, 13.0D, 13.0D);
+
+	protected static final VoxelShape WEST_SHAPE = Block.box(0.0D, 3.0D, 3.0D, 3.0D, 13.0D, 13.0D);
+	protected static final VoxelShape EAST_SHAPE = Block.box(13.0D, 3.0D, 3.0D, 16.0D, 13.0D, 13.0D);
+	protected static final VoxelShape DOWN_SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 3.0D, 13.0D);
+	protected static final VoxelShape UP_SHAPE = Block.box(3.0D, 13.0D, 3.0D, 13.0D, 16.0D, 13.0D);
+	protected static final VoxelShape NORTH_SHAPE = Block.box(3.0D, 3.0D, 0.0D, 13.0D, 13.0D, 3.0D);
+	protected static final VoxelShape SOUTH_SHAPE = Block.box(3.0D, 3.0D, 13.0D, 13.0D, 13.0D, 16.0D);
 
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -44,10 +59,24 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	@Override
 	public boolean canConnectTo(BlockState state, boolean solidSide) {
 		return (state.getBlock() instanceof ThornsBlock
-						|| state.getBlock() == TFBlocks.THORN_ROSE.get()
-						|| state.getBlock() == TFBlocks.THORN_LEAVES.get()
-						|| state.getMaterial() == Material.PLANT
-						|| state.getMaterial() == Material.DIRT);
+						|| state.getBlock().equals(TFBlocks.THORN_ROSE.get())
+						|| state.getBlock().equals(TFBlocks.THORN_LEAVES.get())
+						|| state.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.get()));
+	}
+
+	@Override
+	@SuppressWarnings("deprecation")
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+		VoxelShape shape = BASE_SHAPE;
+
+		if (state.getValue(DOWN)) shape = Shapes.or(shape, DOWN_SHAPE);
+		if (state.getValue(UP)) shape = Shapes.or(shape, UP_SHAPE);
+		if (state.getValue(NORTH)) shape = Shapes.or(shape, NORTH_SHAPE);
+		if (state.getValue(SOUTH)) shape = Shapes.or(shape, SOUTH_SHAPE);
+		if (state.getValue(WEST)) shape = Shapes.or(shape, WEST_SHAPE);
+		if (state.getValue(EAST)) shape = Shapes.or(shape, EAST_SHAPE);
+
+		return shape;
 	}
 
 	@Nullable
@@ -57,6 +86,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		entity.hurt(TFDamageSources.THORNS, THORN_DAMAGE);
 	}
@@ -85,7 +115,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	}
 
 	@Override
-	@Deprecated
+	@SuppressWarnings("deprecation")
 	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.BLOCK;
 	}
@@ -133,23 +163,29 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
-	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-		boolean flag = fluidstate.getType() == Fluids.WATER;
-		return super.getStateForPlacement(context).setValue(WATERLOGGED, flag);
+		BlockState state = this.defaultBlockState().setValue(AXIS, context.getClickedFace().getAxis());
+		BlockPos pos = context.getClickedPos();
+
+		for (Direction direction : Direction.values()) {
+			BlockPos relativePos = pos.relative(direction);
+			BlockState relativeState = context.getLevel().getBlockState(relativePos);
+			state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), this.canConnectTo(relativeState, true));
+		}
+
+		return state.setValue(WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
 	}
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
-			accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
-		}
+		if (state.getValue(WATERLOGGED)) accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
+		if (facingState.is(Blocks.AIR)) return state;
 
 		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
 	}

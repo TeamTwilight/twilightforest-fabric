@@ -44,6 +44,7 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.item.FullbrightBakedModel;
 import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
+import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
@@ -52,6 +53,7 @@ import twilightforest.compat.TrinketsCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -87,8 +89,9 @@ public class TFClientEvents {
 			ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> PatchModelLoader.INSTANCE);
 		}
 
-		@Deprecated // tterrag said this would become deprecated soon in favor of above method
 		public static void modelBake(ModelManager manager, Map<ResourceLocation, BakedModel> models, ModelBakery loader) {
+			TFItems.addItemModelProperties();
+
 			// TODO Unhardcode, into using Model Deserializers and load from JSON instead
 			fullbrightItem(models, TFItems.FIERY_INGOT);
 			fullbrightItem(models, TFItems.FIERY_BOOTS);
@@ -207,14 +210,22 @@ public class TFClientEvents {
 			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(TwilightForestMod.prefix("block/casket_stone")));
 			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(TwilightForestMod.prefix("block/casket_basalt")));
 		}
+
+		@SubscribeEvent
+		public static void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
+			//TODO if there is a better way to do this, then do it. This works though, so idk
+			new TFSkyRenderer();
+			new TFWeatherRenderer();
+			event.register(TwilightForestMod.prefix("renderer"), new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
+		}
 	}
 
 	/**
 	 * Stop the game from rendering the mount health for unfriendly creatures
 	 */
 //	@SubscribeEvent TODO: PORT
-//	public static void preOverlay(RenderGameOverlayEvent.PreLayer event) {
-//		if (event.getOverlay() == ForgeIngameGui.MOUNT_HEALTH_ELEMENT) {
+//	public static void preOverlay(RenderGuiOverlayEvent.Pre event) {
+//		if (event.getOverlay().id() == VanillaGuiOverlay.MOUNT_HEALTH.id()) {
 //			if (HostileMountEvents.isRidingUnfriendly(Minecraft.getInstance().player)) {
 //				event.setCanceled(true);
 //			}
@@ -225,6 +236,10 @@ public class TFClientEvents {
 	 * Render effects in first-person perspective
 	 */
 	public static void renderWorldLast(WorldRenderContext context) {
+		// FIXME PORT
+		// FIXME Verify if this is a good step to run our event for. (This used to be RenderLevelLastEvent)
+		//  "There is no {@link RenderLevelStageEvent.Stage} that directly replaces this event, instead you must decide which Stage best fits your use case."
+		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_WEATHER) return; // Despite Weather rendering inside the translucent
 
 		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
@@ -279,13 +294,11 @@ public class TFClientEvents {
 		sineTicker = sineTicker + partial;
 
 		BugModelAnimationHelper.animate();
-		DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
+		DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
 
 		// add weather box if needed
-		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo tf) {
-			TFWeatherRenderer weatherRenderer = tf.getWeatherRenderHandler();
-			if (weatherRenderer instanceof TFWeatherRenderer)
-				((TFWeatherRenderer) weatherRenderer).tick();
+		if (!mc.isPaused() && mc.level != null && info instanceof TwilightForestRenderInfo) {
+			TFWeatherRenderer.tick();
 		}
 	}
 
@@ -334,6 +347,7 @@ public class TFClientEvents {
 	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
 	 */
 	public static double FOVUpdate(GameRenderer renderer, Camera camera, double partialTick, double fov) {
+		// FIXME PORT
 		Player player = (Player) camera.getEntity();
 		if (player.isUsingItem()) {
 			Item useItem = player.getUseItem().getItem();

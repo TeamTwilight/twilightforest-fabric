@@ -1,5 +1,6 @@
 {
   "loader": "twilightforest:patch",
   "texture": "twilightforest:block/mosspatch",
+  "render_type": "minecraft:cutout",
   "shaggify": true
 }

@@ -1,26 +1,18 @@
 package twilightforest.client;
 
-import net.minecraft.client.Minecraft;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Matrix4f;
+import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.biome.Biome;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.client.renderer.DimensionSpecialEffects.SkyType;
-import twilightforest.init.BiomeKeys;
-
 public class TwilightForestRenderInfo extends DimensionSpecialEffects {
-
-    private DimensionRenderingRegistry.SkyRenderer skyRenderer;
-    private TFWeatherRenderer weatherRenderer;
 
     public TwilightForestRenderInfo(float cloudHeight, boolean placebo, SkyType fogType, boolean brightenLightMap, boolean entityLightingBottomsLit) {
         super(cloudHeight, placebo, fogType, brightenLightMap, entityLightingBottomsLit);
@@ -54,17 +46,13 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
         return false;
     }
 
-    @Nullable
-    public DimensionRenderingRegistry.SkyRenderer getSkyRenderHandler() {
-        if (skyRenderer == null)
-            skyRenderer = new TFSkyRenderer();
-        return skyRenderer;
+    @Override
+    public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
+        return TFSkyRenderer.renderSky(level, ticks, partialTick, poseStack, camera, projectionMatrix, isFoggy, setupFog);
     }
 
-    @Nullable
-    public TFWeatherRenderer getWeatherRenderHandler() {
-        if (weatherRenderer == null)
-            weatherRenderer = new TFWeatherRenderer();
-        return weatherRenderer;
+    @Override
+    public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lightTexture, double camX, double camY, double camZ) {
+        return TFWeatherRenderer.renderSnowAndRain(level, ticks, partialTick, lightTexture, camX, camY, camZ);
     }
 }

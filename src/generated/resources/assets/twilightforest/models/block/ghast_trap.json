@@ -1,5 +1,6 @@
 {
   "parent": "twilightforest:block/util/cube_bottom_top_3_layer",
+  "render_type": "minecraft:cutout",
   "textures": {
     "bottom": "twilightforest:block/encased_towerwood",
     "side": "twilightforest:block/towerdev_ghasttrap_off",

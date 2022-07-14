@@ -6,12 +6,35 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import twilightforest.entity.projectile.IceArrow;
+
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class IceBowItem extends BowItem implements CustomArrowItem {
 
 	public IceBowItem(Properties props) {
 		super(props);
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		AtomicBoolean badEnchant = new AtomicBoolean();
+		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+			if (Objects.equals(Enchantments.FLAMING_ARROWS, enchantment)) {
+				badEnchant.set(true);
+			}
+		});
+
+		return !badEnchant.get();
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return !Enchantments.FLAMING_ARROWS.equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override

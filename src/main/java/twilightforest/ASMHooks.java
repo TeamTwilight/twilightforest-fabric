@@ -24,6 +24,7 @@ import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.TooltipFlag;
@@ -88,6 +89,10 @@ public class ASMHooks {
 	 * Injection Point:<br>
 	 * {@link net.minecraft.client.renderer.ItemInHandRenderer#renderArmWithItem(AbstractClientPlayer, float, float, InteractionHand, float, ItemStack, float, PoseStack, MultiBufferSource, int)} <br>
 	 * [AFTER INST AFTER FIRST GETSTATIC {@link net.minecraft.world.item.Items#FILLED_MAP}]
+	 * <p></p>
+	 * Injection Point:<br>
+	 * {@link ItemFrame#getFramedMapId()} <br>
+	 * [BEFORE FIRST IFEQ]
 	 */
 	public static boolean shouldMapRender(boolean o, ItemStack stack) {
 		return o || isOurMap(stack);
@@ -104,7 +109,7 @@ public class ASMHooks {
 	 */
 	@Nullable
 	public static MapItemSavedData renderMapData(@Nullable MapItemSavedData o, ItemStack stack, @Nullable Level level) {
-		return o == null && isOurMap(stack) ? level == null ? null : MapItem.getSavedData(stack, level) : o;
+		return isOurMap(stack) && level != null ? MapItem.getSavedData(stack, level) : o;
 	}
 
 	/**

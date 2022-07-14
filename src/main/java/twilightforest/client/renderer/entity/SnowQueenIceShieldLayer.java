@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -17,6 +18,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.model.data.ModelData;
 import twilightforest.entity.boss.SnowQueenIceShield;
 
 import java.util.Random;
@@ -36,12 +38,10 @@ public class SnowQueenIceShieldLayer<T extends SnowQueenIceShield> extends Entit
 				matrixStackIn.pushPose();
 				BlockPos blockpos = new BlockPos(entityIn.getX(), entityIn.getBoundingBox().maxY, entityIn.getZ());
 				matrixStackIn.translate(-0.5D, 0.0D, -0.5D);
-				BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
-				for (net.minecraft.client.renderer.RenderType type : net.minecraft.client.renderer.RenderType.chunkBufferLayers()) {
-					if (ItemBlockRenderTypes.getChunkRenderType(blockstate) == type) {
-						blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, matrixStackIn, bufferIn.getBuffer(type), false, world.random, blockstate.getSeed(new BlockPos(entityIn.position())), OverlayTexture.NO_OVERLAY);
-					}
-				}
+				BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
+				var model = dispatcher.getBlockModel(blockstate);
+				for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(blockstate.getSeed(entityIn.blockPosition())), ModelData.EMPTY))
+					dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, matrixStackIn, bufferIn.getBuffer(renderType), false, RandomSource.create(), blockstate.getSeed(entityIn.blockPosition()), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
 				matrixStackIn.popPose();
 				super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 			}

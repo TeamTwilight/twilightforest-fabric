@@ -6,9 +6,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -25,6 +25,8 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 
 import org.jetbrains.annotations.Nullable;
+import twilightforest.loot.TFLootTables;
+
 import java.util.List;
 
 public class CicadaBlock extends CritterBlock {
@@ -47,8 +49,8 @@ public class CicadaBlock extends CritterBlock {
 	}
 
 	@Override
-	public ItemStack getSquishResult() {
-		return new ItemStack(Items.GRAY_DYE, 1);
+	public @Nullable ResourceLocation getSquishLootTable() {
+		return TFLootTables.CICADA_SQUISH_DROPS;
 	}
 
 	@Override

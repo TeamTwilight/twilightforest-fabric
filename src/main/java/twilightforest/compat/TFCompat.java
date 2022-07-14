@@ -5,7 +5,6 @@ import twilightforest.TwilightForestMod;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 //I was having an issue where the game refused to load with the enum method and I couldnt figure it out, so I moved to a new method of registering compat
@@ -22,36 +21,13 @@ public abstract class TFCompat {
 
     static {
         classes.put(TRINKETS_ID, TrinketsCompat.class);
-//        classes.put(IE_ID, IECompat.class);
+        //classes.put(IE_ID, IECompat.class);
         //classes.put(TCON_ID, TConCompat.class);
-//        classes.put(UNDERGARDEN_ID, UndergardenCompat.class);
+        //classes.put(UNDERGARDEN_ID, UndergardenCompat.class);
     }
 
     protected TFCompat(String modName) {
         this.modName = modName;
-    }
-
-    public static void preInitCompat() {
-        for (Map.Entry<String, Class<? extends TFCompat>> entry : classes.entrySet()) {
-            if (FabricLoader.getInstance().isModLoaded(entry.getKey())) {
-                try {
-                    TFCompat compat = entry.getValue().newInstance();
-                    modules.add(compat);
-                    compat.isActivated = compat.preInit();
-
-                    if (compat.isActivated) {
-                        TwilightForestMod.LOGGER.info("Loaded compatibility for mod {}.", compat.modName);
-                    } else {
-                        TwilightForestMod.LOGGER.warn("Couldn't activate compatibility for mod {}!", compat.modName);
-                    }
-                } catch (Exception e) {
-                    TwilightForestMod.LOGGER.error("Had a {} error loading {} compatibility in preInit!", e.getLocalizedMessage(), entry.getKey());
-                    TwilightForestMod.LOGGER.catching(e.fillInStackTrace());
-                }
-            } else {
-                TwilightForestMod.LOGGER.info("Skipped compatibility for mod {}.", entry.getKey());
-            }
-        }
     }
 
     public static void initCompat() {
@@ -96,8 +72,6 @@ public abstract class TFCompat {
             }
         }
     }
-
-    protected abstract boolean preInit();
 
     protected abstract void init();
 

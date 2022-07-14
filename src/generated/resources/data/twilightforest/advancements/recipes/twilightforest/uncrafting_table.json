@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "twilightforest:uncrafting_table"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_uncrafting_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:uncrafting_table"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_uncrafting_table",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "twilightforest:uncrafting_table"
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 {
-	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"sapling": "twilightforest:block/mangrove_sapling",
 		"particle": "block/flower_pot",

@@ -34,9 +34,9 @@ import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.renderer.TFArmorRenderer;
 import twilightforest.data.tags.CustomTagGenerator;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public class PhantomArmorItem extends ArmorItem implements CustomEnchantingBehaviorItem {
@@ -54,19 +54,22 @@ public class PhantomArmorItem extends ArmorItem implements CustomEnchantingBehav
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(enchantment)) && CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
+		return !ForgeRegistries.ENCHANTMENTS.tags().getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).contains(enchantment) && CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
-
-		for (Enchantment ench : enchants.keySet()) {
-			if (Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(ench))) {
-				return false;
+		AtomicBoolean badEnchant = new AtomicBoolean();
+		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+			for (Enchantment banned : ForgeRegistries.ENCHANTMENTS.tags().getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS)) {
+				if (Objects.equals(banned, enchantment)) {
+					badEnchant.set(true);
+					break;
+				}
 			}
-		}
-		return CustomEnchantingBehaviorItem.super.isBookEnchantable(stack, book);
+		});
+
+		return !badEnchant.get();
 	}
 
 	@Override

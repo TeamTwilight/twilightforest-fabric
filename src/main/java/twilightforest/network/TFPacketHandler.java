@@ -29,5 +29,6 @@ public class TFPacketHandler {
 		CHANNEL.registerS2CPacket(SpawnFallenLeafFromPacket.class, id++);
 		CHANNEL.registerS2CPacket(MissingAdvancementToastPacket.class, id++);
 		CHANNEL.registerS2CPacket(ParticlePacket.class, id++);
+		CHANNEL.messageBuilder(UpdateFeatherFanFallPacket.class, id++).encoder(UpdateFeatherFanFallPacket::encode).decoder(UpdateFeatherFanFallPacket::new).consumerMainThread(UpdateFeatherFanFallPacket.Handler::onMessage).add();
 	}
 }

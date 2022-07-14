@@ -1,5 +1,6 @@
 {
   "parent": "block/thin_block",
+  "render_type": "minecraft:cutout",
   "textures": {
 	"particle": "#texture",
 	"texture": "block/oak_leaves"

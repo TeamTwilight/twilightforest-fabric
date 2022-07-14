@@ -57,6 +57,13 @@ public class UncraftingTableBlock extends Block {
 		}
 	}
 
+	@Override
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
+		if (!newState.is(state.getBlock())) {
+			this.neighborChanged(state, level, pos, this, pos, moving);
+		}
+	}
+
 	@Nullable
 	@Override
 	public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {

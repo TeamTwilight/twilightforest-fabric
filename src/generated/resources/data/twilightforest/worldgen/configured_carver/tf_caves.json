@@ -12,7 +12,7 @@
     "y": {
       "type": "minecraft:uniform",
       "max_inclusive": {
-        "absolute": -5
+        "absolute": -8
       },
       "min_inclusive": {
         "above_bottom": 5

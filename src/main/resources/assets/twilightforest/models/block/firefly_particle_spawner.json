@@ -1,5 +1,6 @@
 {
 	"parent": "block/block",
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"0": "twilightforest:block/fireflyjar_side",
 		"1": "twilightforest:block/fireflyjar_top",

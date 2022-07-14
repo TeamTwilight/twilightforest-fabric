@@ -60,10 +60,10 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 		if (!state.getValue(ACTIVE)) {
 			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
 			level.scheduleTick(pos, this, this.tickRate());
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS;
 		} else if (state.getValue(ACTIVE)) {
 			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, false));
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS;
 		}
 
 		return InteractionResult.PASS;

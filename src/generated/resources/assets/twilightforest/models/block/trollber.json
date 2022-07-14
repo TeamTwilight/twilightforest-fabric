@@ -1,5 +1,6 @@
 {
   "parent": "twilightforest:block/util/cross_2_layer",
+  "render_type": "minecraft:cutout",
   "textures": {
     "cross": "twilightforest:block/trollber",
     "cross2": "twilightforest:block/trollber_glow"

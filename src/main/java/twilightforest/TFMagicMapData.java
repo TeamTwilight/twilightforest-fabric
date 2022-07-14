@@ -20,6 +20,8 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import twilightforest.init.TFLandmark;
 
 import org.jetbrains.annotations.Nullable;
+import twilightforest.util.LegacyLandmarkPlacements;
+
 import java.util.*;
 
 public class TFMagicMapData extends MapItemSavedData {
@@ -74,7 +76,7 @@ public class TFMagicMapData extends MapItemSavedData {
 			int worldX = (coord.getX() << this.scale - 1) + this.x;
 			int worldZ = (coord.getY() << this.scale - 1) + this.z;
 
-			int trueId = TFMapDecoration.ICONS_FLIPPED.getInt(TFLandmark.getFeatureAt(worldX, worldZ, (ServerLevel) world));
+			int trueId = TFMapDecoration.ICONS_FLIPPED.getInt(LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, (ServerLevel) world));
 			if (coord.featureId != trueId) {
 				toRemove.add(coord);
 				toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRot()));

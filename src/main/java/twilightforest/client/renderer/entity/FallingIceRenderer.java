@@ -13,9 +13,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.ModelData;
 import twilightforest.entity.projectile.FallingIce;
 
 public class FallingIceRenderer extends EntityRenderer<FallingIce> {
@@ -37,12 +39,10 @@ public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 				BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
 				stack.translate(-0.5D, 0.0D, -0.5D);
 				stack.scale(3, 3, 3); // TF - scale 3
-				BlockRenderDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
-				for (net.minecraft.client.renderer.RenderType type : net.minecraft.client.renderer.RenderType.chunkBufferLayers()) {
-					if (ItemBlockRenderTypes.getChunkRenderType(blockstate) == type) {
-						blockrendererdispatcher.getModelRenderer().tesselateBlock(world, blockrendererdispatcher.getBlockModel(blockstate), blockstate, blockpos, stack, buffer.getBuffer(type), false, world.random, blockstate.getSeed(entity.getStartPos()), OverlayTexture.NO_OVERLAY);
-					}
-				}
+				BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
+				var model = dispatcher.getBlockModel(blockstate);
+				for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(blockstate.getSeed(entity.blockPosition())), ModelData.EMPTY))
+					dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, stack, buffer.getBuffer(renderType), false, RandomSource.create(), blockstate.getSeed(entity.blockPosition()), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
 				stack.popPose();
 				super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 			}

@@ -3,14 +3,13 @@ package twilightforest.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TFConfig;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
-
-import java.util.Random;
 
 public class CicadaBlockEntity extends BlockEntity {
 	private int yawDelay;
@@ -20,7 +19,7 @@ public class CicadaBlockEntity extends BlockEntity {
 	private int singDuration;
 	private boolean singing;
 	private int singDelay;
-	public float randRot = new Random().nextInt(3) * 90.0F;
+	public float randRot = RandomSource.create().nextInt(4) * 90.0F;
 
 	public CicadaBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.CICADA.get(), pos, state);

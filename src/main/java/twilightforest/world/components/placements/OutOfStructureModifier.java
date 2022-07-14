@@ -9,6 +9,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
+import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFFeatureModifiers;
@@ -52,9 +53,9 @@ public class OutOfStructureModifier extends PlacementModifier {
 			return Stream.of(blockPos);
 
 		// Feature Center
-		BlockPos.MutableBlockPos featurePos = TFLandmark.getNearestCenterXYZ(blockPos.getX() >> 4, blockPos.getZ() >> 4).mutable();
+		BlockPos.MutableBlockPos featurePos = LegacyLandmarkPlacements.getNearestCenterXZ(blockPos.getX() >> 4, blockPos.getZ() >> 4).mutable();
 
-		final TFLandmark landmark = tfChunkGen.getFeatureCached(new ChunkPos(featurePos), worldDecoratingHelper.getLevel());
+		final TFLandmark landmark = tfChunkGen.pickLandmarkForChunk(new ChunkPos(featurePos), worldDecoratingHelper.getLevel());
 
 		if ((!occupiesSurface || landmark.isSurfaceDecorationsAllowed()) && (!occupiesUnderground || landmark.isUndergroundDecoAllowed()))
 			return Stream.of(blockPos);

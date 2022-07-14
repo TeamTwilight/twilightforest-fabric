@@ -31,6 +31,7 @@
       "scale": [ 0.75, 0.75, 0.75 ]
     }
   },
+  "render_type": "minecraft:cutout",
   "textures": {
     "particle":   "block/dirt",
     "dirt":       "block/dirt",

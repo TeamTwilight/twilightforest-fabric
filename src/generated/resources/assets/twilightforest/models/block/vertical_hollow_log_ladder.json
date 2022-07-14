@@ -173,6 +173,7 @@
       ]
     }
   ],
+  "render_type": "minecraft:cutout",
   "textures": {
     "climbable": "minecraft:block/ladder",
     "particle": "#side"

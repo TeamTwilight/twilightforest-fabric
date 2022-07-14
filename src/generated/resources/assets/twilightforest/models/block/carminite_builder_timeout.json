@@ -1,5 +1,6 @@
 {
   "parent": "twilightforest:block/util/cube_all_3_layer",
+  "render_type": "minecraft:cutout",
   "textures": {
     "all": "twilightforest:block/towerdev_builder_timeout",
     "all2": "twilightforest:block/tower_device_level_2/towerdev_builder_timeout_1",

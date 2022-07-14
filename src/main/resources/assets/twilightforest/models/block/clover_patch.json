@@ -1,4 +1,5 @@
 {
   "loader": "twilightforest:patch",
-  "texture": "twilightforest:block/cloverpatch"
+  "texture": "twilightforest:block/cloverpatch",
+  "render_type": "minecraft:cutout"
 }

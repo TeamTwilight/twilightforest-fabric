@@ -27,7 +27,6 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.YetiArmorModel;
 import twilightforest.client.renderer.TFArmorRenderer;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class YetiArmorItem extends ArmorItem {
@@ -56,7 +55,8 @@ public class YetiArmorItem extends ArmorItem {
 					stack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 2);
 					stack.enchant(Enchantments.FALL_PROTECTION, 4);
 				}
-				default -> { }
+				default -> {
+				}
 			}
 			items.add(stack);
 		}

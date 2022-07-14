@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -31,14 +32,13 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		super(TFBlockEntities.BEANSTALK_GROWER.get(), pos, state);
 	}
 
-
 	public static void tick(Level level, BlockPos pos, BlockState state, GrowingBeanstalkBlockEntity te) {
 		te.ticker++;
 		if (te.ticker == 1) {
-			//initalize shit. We can't do this in the ctor because there is no level yet
-			te.nextLeafY = pos.getY() + 10 + level.getRandom().nextInt(20);
+			//initialize shit. We can't do this in the ctor because there is no level yet
+			te.nextLeafY = pos.getY() + 10 + level.getRandom().nextInt(10);
 			te.yOffset = level.getRandom().nextInt(100);
-			te.cScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // spiral tightness scaling
+			te.cScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // spiral tightness scaling  //TODO: make this number negative to reverse the spiral
 			te.rScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // radius change scaling
 			te.maxY = Math.max(pos.getY() + 100, 175);
 		}
@@ -114,12 +114,16 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 					if (layerYPos == te.nextLeafY) {
 						// make leaf blob
 
-						int lx = (int) (x + Mth.sin((layerYPos + te.yOffset) * te.cScale) * (radius + stalkThickness));
-						int lz = (int) (z + Mth.cos((layerYPos + te.yOffset) * te.cScale) * (radius + stalkThickness));
+						boolean wasAnEvenNumber = te.nextLeafY % 2 == 0;
+
+						float v = radius + (wasAnEvenNumber ? stalkThickness : -stalkThickness);
+						int lx = (int) (x + Mth.sin((layerYPos + te.yOffset) * te.cScale) * v);
+						int lz = (int) (z + Mth.cos((layerYPos + te.yOffset) * te.cScale) * v);
 
 						te.placeLeaves(level, new BlockPos(lx, layerYPos, lz));
 
 						te.nextLeafY = layerYPos + 5 + level.getRandom().nextInt(10);
+						if ((te.nextLeafY % 2 == 0) == wasAnEvenNumber) te.nextLeafY++;
 					}
 					te.layer++;
 				} else {
@@ -137,15 +141,16 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		// small squares
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dz = -1; dz <= 1; dz++) {
-				this.tryToPlaceLeaves(world, pos.offset(dx, -1, dz));
-				this.tryToPlaceLeaves(world, pos.offset(dx, 1, dz));
+				int distance = Math.abs(dx) + Math.abs(dz) + 1;
+				this.tryToPlaceLeaves(world, pos.offset(dx, -1, dz), distance);
+				this.tryToPlaceLeaves(world, pos.offset(dx, 1, dz), distance);
 			}
 		}
 		// larger square
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
 				if (!((dx == 2 || dx == -2) && (dz == 2 || dz == -2))) {
-					this.tryToPlaceLeaves(world, pos.offset(dx, 0, dz));
+					this.tryToPlaceLeaves(world, pos.offset(dx, 0, dz), Math.abs(dx) + Math.abs(dz));
 				}
 			}
 		}
@@ -174,10 +179,40 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		}
 	}
 
-	private void tryToPlaceLeaves(Level world, BlockPos pos) {
+	private void tryToPlaceLeaves(Level world, BlockPos pos, int distance) {
 		BlockState state = world.getBlockState(pos);
 		if (state.isAir() || state.is(BlockTags.LEAVES)) {
-			world.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true), 2);
+			world.setBlock(pos, TFBlocks.BEANSTALK_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, distance), 2);
 		}
+	}
+
+	@Override
+	protected void saveAdditional(CompoundTag compoundTag) {
+		super.saveAdditional(compoundTag);
+		compoundTag.putInt("ticker", this.ticker);
+		compoundTag.putInt("layer", this.layer);
+		compoundTag.putBoolean("isAreaClearEnough", this.isAreaClearEnough);
+
+		compoundTag.putInt("nextLeafY", this.nextLeafY);
+		compoundTag.putInt("yOffset", this.yOffset);
+		compoundTag.putFloat("cScale", this.cScale);
+		compoundTag.putFloat("rScale", this.rScale);
+		compoundTag.putInt("maxY", this.maxY);
+		compoundTag.putInt("blocksSkipped", this.blocksSkipped);
+	}
+
+	@Override
+	public void load(CompoundTag compoundTag) {
+		super.load(compoundTag);
+		this.ticker = compoundTag.getInt("ticker");
+		this.layer = compoundTag.getInt("layer");
+		this.isAreaClearEnough = compoundTag.getBoolean("isAreaClearEnough");
+
+		this.nextLeafY = compoundTag.getInt("nextLeafY");
+		this.yOffset = compoundTag.getInt("yOffset");
+		this.cScale = compoundTag.getFloat("cScale");
+		this.rScale = compoundTag.getFloat("rScale");
+		this.maxY = compoundTag.getInt("maxY");
+		this.blocksSkipped = compoundTag.getInt("blocksSkipped");
 	}
 }

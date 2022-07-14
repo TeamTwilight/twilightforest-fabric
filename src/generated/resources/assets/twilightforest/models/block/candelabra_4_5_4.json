@@ -1520,6 +1520,7 @@
       ]
     }
   ],
+  "render_type": "minecraft:cutout",
   "textures": {
     "candelabra": "twilightforest:block/candelabra",
     "particle": "#candelabra"

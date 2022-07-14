@@ -32,6 +32,7 @@
     }
   },
   "ambientocclusion": false,
+  "render_type": "minecraft:translucent",
   "textures": {
     "particle": "twilightforest:block/fiery_block",
     "all": "twilightforest:block/fiery_block_inner",

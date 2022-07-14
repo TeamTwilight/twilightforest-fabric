@@ -58,7 +58,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	public int recipeInCycle = 0;
 
 	// Need to store potential custom cost. If set to -1, will calculate uncrafting cost normally.
-	private static int customCost;
+	private int customCost;
 
 	public static UncraftingMenu fromNetwork(int id, Inventory inventory) {
 		return new UncraftingMenu(id, inventory, inventory.player.getLevel(), ContainerLevelAccess.NULL);
@@ -118,7 +118,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 			if (size > 0 && !inputStack.is(ItemTagGenerator.BANNED_UNCRAFTABLES)) {
 
 				CraftingRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
-				customCost = recipe instanceof UncraftingRecipe ? ((UncraftingRecipe) recipe).getCost() : -1;
+				this.customCost = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCost() : -1;
 				ItemStack[] recipeItems = getIngredients(recipe);
 
 				if (recipe instanceof ShapedRecipe rec) {
@@ -169,13 +169,12 @@ public class UncraftingMenu extends AbstractContainerMenu {
 				}
 
 				// store number of items this recipe produces (and thus how many input items are required for uncrafting)
-				this.uncraftingMatrix.numberOfInputItems = recipe.getResultItem().getCount();
-				if (recipe instanceof UncraftingRecipe) this.uncraftingMatrix.numberOfInputItems = ((UncraftingRecipe)recipe).getCount();//Uncrafting recipes need this method call
+				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCount() : recipe.getResultItem().getCount();//Uncrafting recipes need this method call
 				this.uncraftingMatrix.uncraftingCost = calculateUncraftingCost();
 				this.uncraftingMatrix.recraftingCost = 0;
 
 			} else {
-				customCost = -1;
+				this.customCost = -1;
 				this.uncraftingMatrix.numberOfInputItems = 0;
 				this.uncraftingMatrix.uncraftingCost = 0;
 			}
@@ -391,7 +390,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	private int calculateUncraftingCost() {
 		// we don't want to display anything if there is anything in the assembly grid
 		if (this.assemblyMatrix.isEmpty()) {
-			return customCost >= 0 ? customCost : countDamageableParts(this.uncraftingMatrix);
+			return this.customCost >= 0 ? this.customCost : countDamageableParts(this.uncraftingMatrix);
 		} else return 0;
 	}
 

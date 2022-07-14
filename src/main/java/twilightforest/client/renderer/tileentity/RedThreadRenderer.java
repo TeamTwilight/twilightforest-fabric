@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -12,6 +11,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.RedThreadBlockEntity;
@@ -39,12 +39,13 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 	@Override
 	public void render(T thread, float ticks, PoseStack ms, MultiBufferSource source, int light, int overlay) {
 		BlockRenderDispatcher blockrenderdispatcher = Minecraft.getInstance().getBlockRenderer();
+		BlockState state = thread.getBlockState();
 		if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFItems.RED_THREAD.get())) {
 			render(GLOW, blockrenderdispatcher, thread, ms, source, false);
 		} else {
-			RenderType.chunkBufferLayers().stream().filter(type -> ItemBlockRenderTypes.getChunkRenderType(thread.getBlockState()) == type).forEach(type -> {
+			for (RenderType type : blockrenderdispatcher.getBlockModel(state).getRenderTypes(state, thread.getLevel().getRandom(), ModelData.EMPTY)) {
 				render(type, blockrenderdispatcher, thread, ms, source, true);
-			});
+			}
 		}
 	}
 

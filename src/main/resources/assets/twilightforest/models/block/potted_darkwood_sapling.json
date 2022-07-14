@@ -1,5 +1,6 @@
 {
 	"ambientocclusion": false,
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"sapling": "twilightforest:block/darkwood_sapling",
 		"particle": "block/flower_pot",

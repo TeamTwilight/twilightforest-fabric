@@ -18,13 +18,14 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.level.phys.BlockHitResult;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.monster.Kobold;
 import twilightforest.init.TFLandmark;
 import twilightforest.network.AreaProtectionPacket;
 import twilightforest.network.EnforceProgressionStatusPacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -95,7 +96,7 @@ public class ProgressionEvents {
 				StructureStart structure = struct.get();
 				if (structure.getBoundingBox().isInside(pos)) {
 					// what feature is nearby?  is it one the player has not unlocked?
-					TFLandmark nearbyFeature = TFLandmark.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) level);
+					TFLandmark nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), (ServerLevel) level);
 
 					if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
 

@@ -79,6 +79,31 @@ function initializeCoreMod() {
                 return methodNode;
             }
         },
+        'frame': {
+            'target': {
+                'type': 'METHOD',
+                'class': 'net.minecraft.world.entity.decoration.ItemFrame',
+                'methodName': ASM.mapMethod('m_218868_'), // getFramedMapId
+                'methodDesc': '()Ljava/util/OptionalInt;'
+            },
+            'transformer': function (/*org.objectweb.asm.tree.MethodNode*/ methodNode) {
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insertBefore(
+                    ASM.findFirstInstruction(methodNode, Opcodes.IFEQ),
+                    ASM.listOf(
+                        new VarInsnNode(Opcodes.ALOAD, 1),
+                        new MethodInsnNode(
+                            Opcodes.INVOKESTATIC,
+                            'twilightforest/ASMHooks',
+                            'shouldMapRender',
+                            '(ZLnet/minecraft/world/item/ItemStack;)Z',
+                            false
+                        )
+                    )
+                );
+                return methodNode;
+            }
+        },
         'renderdata': {
             'target': {
                 'type': 'METHOD',

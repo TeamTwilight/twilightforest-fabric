@@ -24,7 +24,7 @@ public class LockedVanishingBlock extends VanishingBlock {
 
 	public LockedVanishingBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.getStateDefinition().any().setValue(LOCKED, true));
+		this.registerDefaultState(this.defaultBlockState().setValue(LOCKED, true));
 	}
 
 	@Override

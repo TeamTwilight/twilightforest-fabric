@@ -4,22 +4,21 @@ import com.google.common.collect.Maps;
 import io.github.fabricators_of_create.porting_lib.extensions.ITeleporter;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.portal.PortalInfo;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.server.level.ColumnPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.TicketType;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
@@ -31,7 +30,6 @@ import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -463,7 +461,21 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static BlockState randNatureBlock(RandomSource random) {
-		Block[] blocks = {Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.GRASS, Blocks.POPPY, Blocks.DANDELION};
+		//should this be a tag? If so, what do we call it?
+		//I dont want to use the portal/deco tag because then rare saplings and stuff can generate, and thats no good
+		Block[] blocks = {
+				Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM,
+				Blocks.GRASS, Blocks.FERN,
+				Blocks.POPPY, Blocks.DANDELION,
+				Blocks.BLUE_ORCHID, Blocks.AZURE_BLUET,
+				Blocks.LILY_OF_THE_VALLEY, Blocks.OXEYE_DAISY,
+				Blocks.ALLIUM, Blocks.CORNFLOWER,
+				Blocks.WHITE_TULIP, Blocks.PINK_TULIP,
+				Blocks.ORANGE_TULIP, Blocks.RED_TULIP,
+				TFBlocks.MUSHGLOOM.get(),
+				TFBlocks.MAYAPPLE.get(),
+				TFBlocks.FIDDLEHEAD.get()
+		};
 		return blocks[random.nextInt(blocks.length)].defaultBlockState();
 	}
 

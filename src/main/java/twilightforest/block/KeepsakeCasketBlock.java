@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.*;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -259,6 +260,11 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid().defaultFluidState();
+	}
+
+	@Override
+	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
+		return false;
 	}
 
 	@Environment(EnvType.CLIENT)

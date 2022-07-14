@@ -1,49 +1,48 @@
 package twilightforest.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LightTexture;
-import com.mojang.blaze3d.vertex.Tesselator;
-import net.minecraft.client.renderer.LevelRenderer;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.registration.TFGenerationSettings;
 import twilightforest.init.BiomeKeys;
+import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Random;
 
 /**
  * Copypasta of EntityRenderer.renderRainSnow() hacked to include progression environmental effects
  */
-public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRenderer*/ {
+public class TFWeatherRenderer {
 
 	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
 
 	private static final ResourceLocation SPARKLES_TEXTURE = TwilightForestMod.getEnvTexture("sparkles.png");
 
-	private final float[] rainxs = new float[1024];
-	private final float[] rainzs = new float[1024];
+	private static final float[] rainxs = new float[1024];
+	private static final float[] rainzs = new float[1024];
 
-	private int rendererUpdateCount;
-	private BoundingBox protectedBox;
+	private static int rendererUpdateCount;
+	private static BoundingBox protectedBox;
 
-	private final Random random = new Random();
+	private static final Random random = new Random();
 
 	public TFWeatherRenderer() {
 		for (int i = 0; i < 32; ++i) {
@@ -51,33 +50,34 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 				float f  = j - 16;
 				float f1 = i - 16;
 				float f2 = Mth.sqrt(f * f + f1 * f1);
-				this.rainxs[i << 5 | j] = -f1 / f2;
-				this.rainzs[i << 5 | j] =   f / f2;
+				rainxs[i << 5 | j] = -f1 / f2;
+				rainzs[i << 5 | j] =   f / f2;
 			}
 		}
 	}
 
-	public void tick() {
-		++this.rendererUpdateCount;
+	public static void tick() {
+		++rendererUpdateCount;
 	}
 
 	//Helpful tip: x, y, and z relate to the looking entity's position.
-//	@Override
-	public void render(int ticks, float partialTicks, ClientLevel world, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
+	public static boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTicks, LightTexture lightmap, double camX, double camY, double camZ) {
+		Minecraft mc = Minecraft.getInstance();
 		// do normal weather rendering
-		renderNormalWeather(lightmap, world, mc, partialTicks, xIn, yIn, zIn);
+		renderNormalWeather(lightmap, level, mc, partialTicks, camX, camY, camZ);
 
-		if (TFGenerationSettings.isProgressionEnforced(world) && !mc.player.isCreative() && !mc.player.isSpectator()) {
+		if (TFGenerationSettings.isProgressionEnforced(level) && !mc.player.isCreative() && !mc.player.isSpectator()) {
 			// locked biome weather effects
-			renderLockedBiome(partialTicks, world, mc, lightmap, xIn, yIn, zIn);
+			renderLockedBiome(partialTicks, level, mc, lightmap, camX, camY, camZ);
 
 			// locked structures
-			renderLockedStructure(partialTicks, mc, lightmap, xIn, yIn, zIn);
+			renderLockedStructure(partialTicks, mc, lightmap, camX, camY, camZ);
 		}
+		return true;
 	}
 
 	// [VanillaCopy] exact of WorldRenderer.renderRainSnow
-	private void renderNormalWeather(LightTexture lightmap, ClientLevel world, Minecraft mc, float ticks, double x, double y, double z) {
+	private static void renderNormalWeather(LightTexture lightmap, ClientLevel world, Minecraft mc, float ticks, double x, double y, double z) {
 
 		float f = Minecraft.getInstance().level.getRainLevel(ticks);
 		if (!(f <= 0.0F)) {
@@ -107,8 +107,8 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 			for(int j1 = k - l; j1 <= k + l; ++j1) {
 				for(int k1 = i - l; k1 <= i + l; ++k1) {
 					int l1 = (j1 - k + 16) * 32 + k1 - i + 16;
-					double d0 = (double)this.rainxs[l1] * 0.5D;
-					double d1 = (double)this.rainzs[l1] * 0.5D;
+					double d0 = (double)rainxs[l1] * 0.5D;
+					double d1 = (double)rainzs[l1] * 0.5D;
 					blockpos$mutableblockpos.set(k1, 0, j1);
 					Biome biome = level.getBiome(blockpos$mutableblockpos).value();
 					if (biome.getPrecipitation() != Biome.Precipitation.NONE) {
@@ -200,7 +200,7 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 	}
 
 	// [VanillaCopy] inside of EntityRenderer.renderRainSnow, edits noted
-	private void renderLockedBiome(float partialTicks, ClientLevel wc, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
+	private static void renderLockedBiome(float partialTicks, ClientLevel wc, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
 		// check nearby for locked biome
 		if (isNearLockedBiome(wc, mc.getCameraEntity())) {
 
@@ -229,7 +229,7 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 			RenderSystem.depthMask(Minecraft.useShaderTransparency());
 
 			RenderType currentType = null;
-			float combinedTicks = this.rendererUpdateCount + partialTicks;
+			float combinedTicks = rendererUpdateCount + partialTicks;
 			//bufferbuilder.setTranslation(-dx, -dy, -dz);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
@@ -238,8 +238,8 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 				for (int x = x0 - range; x <= x0 + range; ++x) {
 
 					int idx = (z - z0 + 16) * 32 + x - x0 + 16;
-					double rx = this.rainxs[idx] * 0.5D;
-					double ry = this.rainzs[idx] * 0.5D;
+					double rx = rainxs[idx] * 0.5D;
+					double ry = rainzs[idx] * 0.5D;
 
 					blockpos$mutableblockpos.set(x, 0, z);
 					Biome biome = world.getBiome(blockpos$mutableblockpos).value();
@@ -284,7 +284,7 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 							// TF - replicate for each render type with own changes
 							switch (currentType) {
 								case BLIZZARD, BIG_RAIN -> {
-									float d5 = -((this.rendererUpdateCount + x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
+									float d5 = -((rendererUpdateCount + x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
 									double d6 = x + 0.5F - xIn;
 									double d7 = z + 0.5F - zIn;
 									float f3 = Mth.sqrt((float) (d6 * d6 + d7 * d7)) / range;
@@ -318,7 +318,7 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 									bufferbuilder.vertex(x - xIn - rx + 0.5D, minY - yIn, z - zIn - ry + 0.5D).uv(0.0F + d9, maxY * 0.25F + d8 + d10).color(r, g, b, f5).uv2(j4, k4).endVertex();
 								}
 								case ASHES -> {
-									float d8 = -((this.rendererUpdateCount & 511) + partialTicks) / 512.0F;
+									float d8 = -((rendererUpdateCount & 511) + partialTicks) / 512.0F;
 									float d9 = random.nextFloat() + combinedTicks * 0.01F * (float) random.nextGaussian();
 									float d10 = random.nextFloat() + (combinedTicks * (float) random.nextGaussian()) * 0.001F;
 									double d11 = x + 0.5F - xIn;
@@ -335,7 +335,7 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 									bufferbuilder.vertex(x - xIn - rx + 0.5D, minY - yIn, z - zIn - ry + 0.5D).uv(0.0F + d9, maxY * 0.25F + d8 + d10).color(color, color, color, f5).uv2(j4, k4).endVertex();
 								}
 								case DARK_STREAM -> {
-									float d8 = -((this.rendererUpdateCount & 511) + partialTicks) / 512.0F;
+									float d8 = -((rendererUpdateCount & 511) + partialTicks) / 512.0F;
 									float d9 = 0; // TF - no u wiggle
 									float d10 = random.nextFloat() + (combinedTicks * (float) random.nextGaussian()) * 0.001F;
 									double d11 = x + 0.5F - xIn;
@@ -367,7 +367,7 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 	}
 
 	// [VanillaCopy] inside of EntityRenderer.renderRainSnow, edits noted
-	private void renderLockedStructure(float partialTicks, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
+	private static void renderLockedStructure(float partialTicks, Minecraft mc, LightTexture lightmap, double xIn, double yIn, double zIn) {
 		// draw locked structure thing
 		if (isNearLockedStructure(xIn, zIn)) {
 			lightmap.turnOnLightLayer();
@@ -394,13 +394,13 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 			for (int k1 = k - i1; k1 <= k + i1; ++k1) {
 				for (int l1 = i - i1; l1 <= i + i1; ++l1) {
 					int i2 = (k1 - k + 16) * 32 + l1 - i + 16;
-					double d3 = this.rainxs[i2] * 0.5D;
-					double d4 = this.rainzs[i2] * 0.5D;
+					double d3 = rainxs[i2] * 0.5D;
+					double d4 = rainzs[i2] * 0.5D;
 
 					// TF - replace biome check with box check
-					if (this.protectedBox != null && this.protectedBox.intersects(l1, k1, l1, k1)) {
-						int structureMin = this.protectedBox.minY() - 4;
-						int structureMax = this.protectedBox.maxY() + 4;
+					if (protectedBox != null && protectedBox.intersects(l1, k1, l1, k1)) {
+						int structureMin = protectedBox.minY() - 4;
+						int structureMax = protectedBox.maxY() + 4;
 						int k2 = j - i1;
 						int l2 = j + i1 * 2;
 
@@ -435,7 +435,7 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 								bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 							}
 
-							float d5 = -((this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
+							float d5 = -((rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + partialTicks) / 32.0F * (3.0F + random.nextFloat());
 							double d6 = l1 + 0.5F - xIn;
 							double d7 = k1 + 0.5F - zIn;
 							float f3 = Mth.sqrt((float) (d6 * d6 + d7 * d7)) / i1;
@@ -464,7 +464,7 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 		}
 	}
 
-	private boolean isNearLockedBiome(Level world, Entity viewEntity) {
+	private static boolean isNearLockedBiome(Level world, Entity viewEntity) {
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		final int range = 15;
 		int px = Mth.floor(viewEntity.getX());
@@ -482,19 +482,19 @@ public class TFWeatherRenderer /*implements DimensionRenderingRegistry.WeatherRe
 		return false;
 	}
 
-	private boolean isNearLockedStructure(double xIn, double zIn) {
+	private static boolean isNearLockedStructure(double xIn, double zIn) {
 		final int range = 15;
 		int px = Mth.floor(xIn);
 		int pz = Mth.floor(zIn);
 
-		return this.protectedBox != null && this.protectedBox.intersects(px - range, pz - range, px + range, pz + range);
+		return protectedBox != null && protectedBox.intersects(px - range, pz - range, px + range, pz + range);
 	}
 
-	public void setProtectedBox(BoundingBox protectedBox) {
-		this.protectedBox = protectedBox;
+	public static void setProtectedBox(BoundingBox protectedBox) {
+		TFWeatherRenderer.protectedBox = protectedBox;
 	}
 
-	private RenderType getRenderType(Biome b) {
+	private static RenderType getRenderType(Biome b) {
 		if (Minecraft.getInstance().level == null)
 			return null;
 		ResourceLocation biome = Minecraft.getInstance().level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(b);

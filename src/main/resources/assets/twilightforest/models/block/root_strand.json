@@ -1,6 +1,7 @@
 {
   "__comment": "[VanillaCopy] crop.json, raised by 1 in the Y coordinate",
   "ambientocclusion": false,
+  "render_type": "minecraft:cutout",
   "textures": {
     "particle": "#crop",
     "crop": "twilightforest:block/root_strand"

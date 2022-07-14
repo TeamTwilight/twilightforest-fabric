@@ -4,6 +4,35 @@
     "type": "twilightforest:structure_locating_wrapper",
     "dark_forest_canopy_height": 12,
     "generate_dark_forest_canopy": true,
+    "landmark_placement_allowed_biomes": {
+      "twilightforest:dark_forest": [
+        "knight_stronghold"
+      ],
+      "twilightforest:dark_forest_center": [
+        "dark_tower"
+      ],
+      "twilightforest:enchanted_forest": [
+        "quest_grove"
+      ],
+      "twilightforest:final_plateau": [
+        "final_castle"
+      ],
+      "twilightforest:fire_swamp": [
+        "hydra_lair"
+      ],
+      "twilightforest:glacier": [
+        "ice_tower"
+      ],
+      "twilightforest:highlands": [
+        "troll_lairs"
+      ],
+      "twilightforest:snowy_forest": [
+        "yeti_lairs"
+      ],
+      "twilightforest:swamp": [
+        "labyrinth"
+      ]
+    },
     "monster_spawns_below_sealevel": true,
     "noise_generation_settings": "twilightforest:twilight_noise_gen",
     "structures_placements": [

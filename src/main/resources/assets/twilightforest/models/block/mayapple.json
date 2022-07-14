@@ -1,4 +1,5 @@
 {
+	"render_type": "minecraft:cutout",
 	"textures": {
     "particle": "twilightforest:block/cloverpatch",
     "stem": "twilightforest:block/mayapple_side",

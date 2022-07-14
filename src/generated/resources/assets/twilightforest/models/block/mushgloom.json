@@ -1,5 +1,6 @@
 {
   "parent": "twilightforest:block/util/cross_2_layer",
+  "render_type": "minecraft:cutout",
   "textures": {
     "cross": "twilightforest:block/mushgloom",
     "cross2": "twilightforest:block/mushgloom_head"

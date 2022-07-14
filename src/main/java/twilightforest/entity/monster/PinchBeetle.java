@@ -3,10 +3,7 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -68,9 +65,28 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	public void aiStep() {
 
 		super.aiStep();
+		this.dimensions = this.getDimensions(this.getPose());
 
 		if (!this.getPassengers().isEmpty()) {
 			this.getLookControl().setLookAt(this.getPassengers().get(0), 100.0F, 100.0F);
+			//always set our passenger as our target
+			if (this.getPassengers().get(0) instanceof LivingEntity entity) {
+				this.setTarget(entity);
+			}
+
+			//if our held player switches gamemodes let them go
+			if (this.getPassengers().get(0) instanceof Player player && player.getAbilities().invulnerable) {
+				player.stopRiding();
+				this.setTarget(null);
+			}
+		}
+	}
+
+	@Override
+	public void knockback(double x, double y, double z) {
+		//only take knockback if not holding something
+		if(this.getPassengers().isEmpty()) {
+			super.knockback(x, y, z);
 		}
 	}
 
@@ -131,7 +147,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	public EntityDimensions getDimensions(Pose pose) {
 
 		if (!this.getPassengers().isEmpty()) {
-			return EntityDimensions.scalable(1.9F, 2.0F);
+			return EntityDimensions.scalable(1.9F, 1.25F);
 		} else {
 			return super.getDimensions(pose);
 		}

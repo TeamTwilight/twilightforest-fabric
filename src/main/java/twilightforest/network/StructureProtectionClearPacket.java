@@ -34,11 +34,11 @@ public class StructureProtectionClearPacket implements S2CPacket {
 	public static class Handler {
 		public static boolean onMessage(StructureProtectionClearPacket message, Executor ctx) {
 			ctx.execute(() -> {
-				DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
+				DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
 
 				// add weather box if needed
-				if (info instanceof TwilightForestRenderInfo tfInfo) {
-					tfInfo.getWeatherRenderHandler().setProtectedBox(null);
+				if (info instanceof TwilightForestRenderInfo) {
+					TFWeatherRenderer.setProtectedBox(null);
 				}
 			});
 

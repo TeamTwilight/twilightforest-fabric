@@ -13,11 +13,11 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.helpers.CraftingDataHelper;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
-import twilightforest.item.recipe.UncraftingEnabledCondition;
 
 import java.util.function.Consumer;
 
@@ -134,17 +134,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.unlockedBy("has_item", has(TFItems.TORCHBERRIES.get()))
 				.save(consumer, TwilightForestMod.prefix("berry_torch"));
 
-		ConditionalRecipe.builder()
-				.addCondition(new UncraftingEnabledCondition())
-				.addRecipe(ShapedRecipeBuilder.shaped(TFBlocks.UNCRAFTING_TABLE.get())
-						.pattern("###")
-						.pattern("#X#")
-						.pattern("###")
-						.define('#', Blocks.CRAFTING_TABLE)
-						.define('X', TFItems.MAZE_MAP_FOCUS.get())
-						.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get()))
-						::save)
-				.build(consumer, TwilightForestMod.prefix("uncrafting_table"));
+		ShapedRecipeBuilder.shaped(TFBlocks.UNCRAFTING_TABLE.get())
+				.pattern("###")
+				.pattern("#X#")
+				.pattern("###")
+				.define('#', Blocks.CRAFTING_TABLE)
+				.define('X', TFItems.MAZE_MAP_FOCUS.get())
+				.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE.get()))
+				.save(consumer);
 
 		// Patchouli books would also go here, except they also must craft-result with NBT data.
 
@@ -604,6 +601,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		banisterBlock(consumer, "dark_oak", TFBlocks.DARK_OAK_BANISTER, Blocks.DARK_OAK_SLAB);
 		banisterBlock(consumer, "crimson", TFBlocks.CRIMSON_BANISTER, Blocks.CRIMSON_SLAB);
 		banisterBlock(consumer, "warped", TFBlocks.WARPED_BANISTER, Blocks.WARPED_SLAB);
+		banisterBlock(consumer, "vangrove", TFBlocks.VANGROVE_BANISTER, Blocks.MANGROVE_SLAB);
 
 		chestBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_CHEST, TFBlocks.TWILIGHT_OAK_PLANKS);
 		chestBlock(consumer, "canopy", TFBlocks.CANOPY_CHEST, TFBlocks.CANOPY_PLANKS);

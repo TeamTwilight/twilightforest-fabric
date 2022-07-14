@@ -3,7 +3,6 @@ package twilightforest.loot;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -15,8 +14,6 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import twilightforest.TwilightForestMod;
 
 import java.util.Set;
@@ -76,6 +73,10 @@ public class TFLootTables {
 	public static final ResourceLocation QUESTING_RAM_REWARDS = register("entities/questing_ram_rewards");
 	public static final ResourceLocation DEATH_TOME_HURT = register("entities/death_tome_hurt");
 	public static final ResourceLocation DEATH_TOME_BOOKS = register("entities/death_tome_books");
+
+	public static final ResourceLocation CICADA_SQUISH_DROPS = register("blocks/cicada_squish");
+	public static final ResourceLocation FIREFLY_SQUISH_DROPS = register("blocks/firefly_squish");
+	public static final ResourceLocation MOONWORM_SQUISH_DROPS = register("blocks/moonworm_squish");
 
 	public static final ResourceLocation ALL_BOSSES = register("entities/all_bosses");
 

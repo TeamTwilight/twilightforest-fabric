@@ -70,6 +70,7 @@
       ]
     }
   ],
+  "render_type": "minecraft:cutout",
   "textures": {
     "all": "twilightforest:block/boss_spawner",
     "particle": "#all"

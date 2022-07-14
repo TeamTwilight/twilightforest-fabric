@@ -84,16 +84,10 @@ public class TFClientSetup implements ClientModInitializer {
 		} catch (ClassNotFoundException e) {
 			optifinePresent = false;
 		}
-		TFItems.addItemModelProperties();
 
         RenderLayerRegistration.init();
         TFBlockEntities.registerTileEntityRenders();
         TFMenuTypes.renderScreens();
-
-		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
-			TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
-			DimensionSpecialEffects.EFFECTS.put(TwilightForestMod.prefix("renderer"), renderInfo);
-		});
 
 //        evt.enqueueWork(() -> {
             registerWoodType(TFBlocks.TWILIGHT_OAK);

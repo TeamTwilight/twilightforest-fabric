@@ -1,5 +1,6 @@
 {
     "parent": "block/block",
+    "render_type": "minecraft:cutout",
     "textures": {
         "particle": "#bottom",
         "bottom": "twilightforest:block/experiment115/experiment115_bottom",

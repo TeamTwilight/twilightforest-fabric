@@ -1,9 +1,7 @@
 {
   "placement": {
-    "type": "minecraft:random_spread",
-    "salt": 0,
-    "separation": 0,
-    "spacing": 1
+    "type": "twilightforest:forced_landmark",
+    "landmark_set": "large_hollow_hill"
   },
   "structures": [
     {

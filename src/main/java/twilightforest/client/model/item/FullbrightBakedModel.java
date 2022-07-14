@@ -2,6 +2,7 @@ package twilightforest.client.model.item;
 
 import com.google.common.collect.Maps;
 import io.github.fabricators_of_create.porting_lib.util.LightUtil;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class FullbrightBakedModel implements BakedModel {
 
@@ -45,9 +45,7 @@ public class FullbrightBakedModel implements BakedModel {
 	}
 
 	protected List<BakedQuad> getQuads(@Nullable Direction face, List<BakedQuad> quads) {
-		for (BakedQuad quad : quads)
-			LightUtil.setLightData(quad, 0xF000F0);
-		return quads;
+		return IQuadTransformer.applyingLightmap(0xF000F0).process(quads);
 	}
 
 	@Override

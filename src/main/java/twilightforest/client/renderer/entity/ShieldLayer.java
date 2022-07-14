@@ -5,6 +5,7 @@ import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -68,7 +69,7 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 				Minecraft.getInstance().getItemRenderer().renderQuadList(
 						stack,
 						buffer.getBuffer(Sheets.translucentCullBlockSheet()),
-						model.getQuads(null, dir, entity.getRandom()),
+						model.getQuads(null, dir, entity.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),
 						ItemStack.EMPTY,
 						0xF000F0,
 						OverlayTexture.NO_OVERLAY

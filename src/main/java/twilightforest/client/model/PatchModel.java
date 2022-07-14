@@ -1,5 +1,6 @@
 package twilightforest.client.model;
 
+import com.mojang.math.Transformation;
 import com.mojang.math.Vector3f;
 import io.github.fabricators_of_create.porting_lib.model.SimpleModelState;
 import net.minecraft.client.renderer.block.model.*;
@@ -181,7 +182,7 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             default -> new BlockFaceUV(new float[] { min.x(), min.z(), max.x(), max.z() }, 0);
         });
 
-        return BAKERY.bakeQuad(min, max, face, this.texture(), direction, SimpleModelState.IDENTITY, null, true, this.location);
+        return BAKERY.bakeQuad(min, max, face, this.texture(), direction, new SimpleModelState(Transformation.identity()), null, true, this.location);
     }
 
     // --- Boilerplating ---------------------------------------------------

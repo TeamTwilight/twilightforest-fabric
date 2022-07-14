@@ -1,5 +1,6 @@
 {
   "parent": "block/block",
+  "render_type": "minecraft:cutout",
   "textures": {
     "particle": "block/glass",
     "side": "twilightforest:block/fireflyjar_side",

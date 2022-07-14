@@ -1,5 +1,6 @@
 {
   "parent": "twilightforest:block/candelabra_5_5_4",
+  "render_type": "minecraft:cutout",
   "textures": {
     "candle": "minecraft:block/candle"
   }

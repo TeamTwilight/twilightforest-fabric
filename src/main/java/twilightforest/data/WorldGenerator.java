@@ -1,5 +1,7 @@
 package twilightforest.data;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import org.slf4j.Logger;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureSets;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
@@ -43,12 +46,26 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 
 	private static final Logger LOGGER = LogUtils.getLogger();
 
+	public static final Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> BIOME_FEATURES_SETS = new ImmutableMap.Builder<ResourceKey<Biome>, ImmutableSet<TFLandmark>>()
+			//.put(BiomeKeys.DENSE_MUSHROOM_FOREST, Set.of(MUSHROOM_TOWER))
+			.put(BiomeKeys.ENCHANTED_FOREST, ImmutableSet.of(TFLandmark.QUEST_GROVE))
+			//.put(BiomeKeys.LAKE, ImmutableSet.of(TFLandmark.QUEST_ISLAND))
+			.put(BiomeKeys.SWAMP, ImmutableSet.of(TFLandmark.LABYRINTH))
+			.put(BiomeKeys.FIRE_SWAMP, ImmutableSet.of(TFLandmark.HYDRA_LAIR))
+			.put(BiomeKeys.DARK_FOREST, ImmutableSet.of(TFLandmark.KNIGHT_STRONGHOLD))
+			.put(BiomeKeys.DARK_FOREST_CENTER, ImmutableSet.of(TFLandmark.DARK_TOWER))
+			.put(BiomeKeys.SNOWY_FOREST, ImmutableSet.of(TFLandmark.YETI_CAVE))
+			.put(BiomeKeys.GLACIER, ImmutableSet.of(TFLandmark.ICE_TOWER))
+			.put(BiomeKeys.HIGHLANDS, ImmutableSet.of(TFLandmark.TROLL_CAVE))
+			.put(BiomeKeys.FINAL_PLATEAU, ImmutableSet.of(TFLandmark.FINAL_CASTLE))
+			.build();
+
 	public void run(CachedOutput cache) {
 		Path path = this.generator.getOutputFolder();
 		RegistryAccess registryaccess = BuiltinRegistries.ACCESS;
 		DynamicOps<JsonElement> dynamicops = RegistryOps.create(JsonOps.INSTANCE, registryaccess);
 
-		Optional<HolderSet<StructureSet>> structureOverrides = this.makeStructureList();
+		HolderSet<StructureSet> structureOverrides = this.makeStructureList();
 
 		Registry<LevelStem> twilight = this.registerTFSettings(registryaccess, structureOverrides);
 		//Registry<LevelStem> skylight = this.registerSkylightSettings(registryaccess);
@@ -69,8 +86,8 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 		dumpRegistry(path, cache, dynamicops, Registry.LEVEL_STEM_REGISTRY, twilight, LevelStem.CODEC);
 	}
 
-	private Optional<HolderSet<StructureSet>> makeStructureList() {
-		return Optional.of(HolderSet.direct(
+	private HolderSet<StructureSet> makeStructureList() {
+		return HolderSet.direct(
 				Function.identity(),
 				TFStructureSets.STRUCTURE_SETS
 						.getEntries()
@@ -79,7 +96,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						.filter(Optional::isPresent)
 						.map(Optional::get)
 						.toList()
-		));
+		);
 	}
 
 	private static <T> void dumpRegistryCap(CachedOutput cache, Path path, RegistryAccess access, DynamicOps<JsonElement> ops, RegistryAccess.RegistryData<T> data) {
@@ -87,7 +104,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 		dumpRegistry(path, cache, ops, data.key(), access.ownedRegistryOrThrow(data.key()), data.codec());
 	}
 
-	private Registry<LevelStem> registerTFSettings(RegistryAccess access, Optional<HolderSet<StructureSet>> structureOverrides) {
+	private Registry<LevelStem> registerTFSettings(RegistryAccess access, HolderSet<StructureSet> structureOverrides) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, Lifecycle.experimental(), null);
 		Registry<Biome> biomeRegistry = access.registryOrThrow(Registry.BIOME_REGISTRY);
 		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getHolderOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN.getKey());
@@ -100,11 +117,11 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, true, Optional.of(12))), Lifecycle.experimental());
+		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, true, Optional.of(12), BIOME_FEATURES_SETS)), Lifecycle.experimental());
 		return writableregistry;
 	}
 
-	private Registry<LevelStem> registerSkylightSettings(RegistryAccess access, Optional<HolderSet<StructureSet>> structureOverrides) {
+	private Registry<LevelStem> registerSkylightSettings(RegistryAccess access, HolderSet<StructureSet> structureOverrides) {
 		WritableRegistry<LevelStem> writableregistry = new MappedRegistry<>(Registry.LEVEL_STEM_REGISTRY, Lifecycle.experimental(), null);
 		Registry<Biome> biomeRegistry = new MappedRegistry<>(Registry.BIOME_REGISTRY, Lifecycle.experimental(), null);
 		Holder<NoiseGeneratorSettings> noiseGenSettings = access.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY).getHolderOrThrow(TFDimensionSettings.SKYLIGHT_NOISE_GEN.getKey());
@@ -117,7 +134,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, true, Optional.of(12))), Lifecycle.stable());
+		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, true, Optional.of(12), BIOME_FEATURES_SETS)), Lifecycle.stable());
 		return writableregistry;
 	}
 

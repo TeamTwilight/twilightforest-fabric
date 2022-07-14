@@ -1,8 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -13,6 +12,7 @@ import twilightforest.block.entity.FireflyBlockEntity;
 import twilightforest.init.TFBlockEntities;
 
 import org.jetbrains.annotations.Nullable;
+import twilightforest.loot.TFLootTables;
 
 public class FireflyBlock extends CritterBlock {
 
@@ -33,7 +33,7 @@ public class FireflyBlock extends CritterBlock {
 	}
 
 	@Override
-	public ItemStack getSquishResult() {
-		return new ItemStack(Items.GLOWSTONE_DUST);
+	public @Nullable ResourceLocation getSquishLootTable() {
+		return TFLootTables.FIREFLY_SQUISH_DROPS;
 	}
 }

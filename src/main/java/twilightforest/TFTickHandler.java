@@ -24,6 +24,7 @@ import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.BoundingBoxUtils;
+import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
@@ -103,7 +104,7 @@ public class TFTickHandler {
 			BoundingBox fullSBB = structure.getBoundingBox();
 			Vec3i center = BoundingBoxUtils.getCenter(fullSBB);
 
-			TFLandmark nearFeature = TFLandmark.getFeatureForRegionPos(center.getX(), center.getZ(), (ServerLevel) world);
+			TFLandmark nearFeature = LegacyLandmarkPlacements.getFeatureForRegionPos(center.getX(), center.getZ(), (ServerLevel) world);
 
 			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
 				sendAllClearPacket(world, player);

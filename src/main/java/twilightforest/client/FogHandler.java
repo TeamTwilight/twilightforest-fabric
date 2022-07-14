@@ -52,9 +52,7 @@ public class FogHandler {
 				spoopFog += shift;
 			spoopFog = Mth.clamp(spoopFog, 0F, 1F);
 
-			//FIXME getMode now requires a FogType when it used to want a FogMode. Does this work ok?
-			//if (type == FogRenderer.FogMode.FOG_SKY) {
-			if (type == FogType.NONE) {
+			if (type == FogRenderer.FogMode.FOG_SKY) {
 				RenderSystem.setShaderFogStart(0.0F);
 				RenderSystem.setShaderFogEnd(f);
 			} else {

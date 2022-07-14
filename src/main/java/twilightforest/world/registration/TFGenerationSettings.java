@@ -28,6 +28,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFMobEffects;
+import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
@@ -185,7 +186,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 	public static void markStructureConquered(Level world, BlockPos pos, TFLandmark feature) {
 		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
-		if (generator != null && TFLandmark.getFeatureAt(pos.getX(), pos.getZ(), (ServerLevel) world) == feature) {
+		if (generator != null && LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), (ServerLevel) world) == feature) {
 			locateTFStructureInRange((ServerLevel) world, feature, pos, 0).ifPresent(start -> {
 				if (start instanceof TFStructureStart<?> s)
 					s.setConquered(true);
@@ -194,7 +195,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static Optional<StructureStart> locateTFStructureInRange(WorldGenLevel world, BlockPos pos, int range) {
-		TFLandmark featureCheck = TFLandmark.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
+		TFLandmark featureCheck = LegacyLandmarkPlacements.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
 
 		return locateTFStructureInRange(world, featureCheck, pos, range);
 	}

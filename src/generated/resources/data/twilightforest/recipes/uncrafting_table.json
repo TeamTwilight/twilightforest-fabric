@@ -1,15 +1,5 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "twilightforest:uncrafting_enabled"
-    }
-  ],
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "###",
-    "#X#",
-    "###"
-  ],
   "key": {
     "#": {
       "item": "minecraft:crafting_table"
@@ -18,6 +8,11 @@
       "item": "twilightforest:maze_map_focus"
     }
   },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
   "result": {
     "item": "twilightforest:uncrafting_table"
   }

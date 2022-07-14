@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "minecraft:block/oak_leaves"
+      "model": "twilightforest:block/thorn_leaves"
     }
   }
 }

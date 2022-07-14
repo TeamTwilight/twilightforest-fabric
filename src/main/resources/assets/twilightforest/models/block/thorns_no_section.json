@@ -1,0 +1,16 @@
+{
+	"parent": "block/block",
+	"render_type": "minecraft:cutout",
+	"textures": {
+		"particle": "#side"
+	},
+	"elements": [
+		{
+			"from": [3, 3, 3],
+			"to": [13, 13, 3],
+			"faces": {
+				"north": {"uv": [3, 3, 13, 13], "texture": "#side"}
+			}
+		}
+	]
+}

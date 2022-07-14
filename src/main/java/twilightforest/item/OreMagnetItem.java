@@ -55,14 +55,14 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(book);
-
-		for (Enchantment ench : enchants.keySet()) {
-			if (Objects.equals(Registry.ENCHANTMENT.getKey(ench), Registry.ENCHANTMENT.getKey(Enchantments.UNBREAKING))) {
-				return CustomEnchantingBehaviorItem.super.isBookEnchantable(stack, book);
+		AtomicBoolean badEnchant = new AtomicBoolean();
+		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+			if (!Objects.equals(Enchantments.UNBREAKING, enchantment)) {
+				badEnchant.set(true);
 			}
-		}
-		return false;
+		});
+
+		return !badEnchant.get() && super.isBookEnchantable(stack, book);
 	}
 
 	@Override

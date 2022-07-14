@@ -1,12 +1,12 @@
 package twilightforest.loot.modifiers;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.fabricators_of_create.porting_lib.loot.GlobalLootModifierSerializer;
 import io.github.fabricators_of_create.porting_lib.loot.LootModifier;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -25,6 +25,7 @@ import twilightforest.init.TFItems;
 
 //FIXME I simply migrated this out of TFEventListener, it somehow needs to be redone in a more sane way.
 public class GiantToolGroupingModifier extends LootModifier {
+	public static final Codec<GiantToolGroupingModifier> CODEC = RecordCodecBuilder.create(inst -> LootModifier.codecStart(inst).apply(inst, GiantToolGroupingModifier::new));
 
 	static {
 		PlayerBlockBreakEvents.BEFORE.register(GiantToolGroupingModifier::breakBlock);
@@ -59,17 +60,9 @@ public class GiantToolGroupingModifier extends LootModifier {
 		return flag ? newLoot : generatedLoot;
 	}
 
-	public static class Serializer extends GlobalLootModifierSerializer<GiantToolGroupingModifier> {
-
-		@Override
-		public GiantToolGroupingModifier read(ResourceLocation name, JsonObject json, LootItemCondition[] conditions) {
-			return new GiantToolGroupingModifier(conditions);
-		}
-
-		@Override
-		public JsonObject write(GiantToolGroupingModifier instance) {
-			return this.makeConditions(instance.conditions);
-		}
+	@Override
+	public Codec<? extends IGlobalLootModifier> codec() {
+		return GiantToolGroupingModifier.CODEC;
 	}
 
 	public static boolean breakBlock(Level world, Player player, BlockPos pos, BlockState state, /* Nullable */ BlockEntity blockEntity) {

@@ -1,4 +1,4 @@
-// 1.19	2022-06-19T14:31:00.4755777	Twilight Forest Block Tags
+// 1.19	2022-07-11T00:03:18.7953106	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -29,6 +29,7 @@ e121d38615572a340044db73e20622af4e2a0a7c data/minecraft/tags/blocks/flower_pots.
 d1f677ac5e8be6bff6bd3a82b3586cd745434ef9 data/minecraft/tags/blocks/needs_iron_tool.json
 dfe388780d9d636ad393c72d71b3ff7e0d725c09 data/minecraft/tags/blocks/needs_stone_tool.json
 894142a18566c008a63daa05efba2dde1ef6eb26 data/minecraft/tags/blocks/occludes_vibration_signals.json
+e33c5143db03e28da803a9f265902c39e93589e2 data/minecraft/tags/blocks/overworld_carver_replaceables.json
 9358df5f5420b32a08f45ed7924867342cd14b47 data/minecraft/tags/blocks/planks.json
 65049c26c09e844c582a701fe66bd426a58aec5d data/minecraft/tags/blocks/portals.json
 71d34124020e8085ba2d886811250d261dd9d886 data/minecraft/tags/blocks/replaceable_plants.json
@@ -53,6 +54,7 @@ db96f9da8df39e1498ebf29839892448faa170ec data/twilightforest/tags/blocks/antibui
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/blocks/canopy_logs.json
 65138d47619b3b87ed5cdf3b4ec226e0bfebfb64 data/twilightforest/tags/blocks/carminite_reactor_immune.json
 66c63c2aea9e2f572dee901056877665b812ae56 data/twilightforest/tags/blocks/carminite_reactor_ores.json
+b0ced719d0a9b9e0782222405c773779b2c89002 data/twilightforest/tags/blocks/castle_blocks.json
 981ca24d355367f28a0a94beab8608f2915c6c76 data/twilightforest/tags/blocks/common_protections.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/blocks/darkwood_logs.json
 a7801e58506fe6f6666fc0aeabd7fa6dd7ccf6b5 data/twilightforest/tags/blocks/dark_tower_allowed_pots.json
@@ -66,6 +68,8 @@ e222b54e9f838dbf2e905bf0b137ed8b0c60b328 data/twilightforest/tags/blocks/hollow_
 c8fafdcc498cb38e705f74c899c6adee8c1c137e data/twilightforest/tags/blocks/ice_bomb_replaceables.json
 33bdeefc5a85e9afb7b260809bec0d2a615d1f0f data/twilightforest/tags/blocks/logs.json
 089e4347e6320066de4cd4d08b3e04a9442f4090 data/twilightforest/tags/blocks/mangrove_logs.json
+dd1f6af3c96cc308a52726613452fddc17b9833c data/twilightforest/tags/blocks/mazebreaker_accelerated_mining.json
+efef6a00948d61f46b9ee643ef4f87471c552c3b data/twilightforest/tags/blocks/mazestone.json
 9a0837862b33f048722739e6314f5c471d56b2d6 data/twilightforest/tags/blocks/mining_logs.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/twilightforest/tags/blocks/ores/ironwood.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/twilightforest/tags/blocks/ores/knightmetal.json

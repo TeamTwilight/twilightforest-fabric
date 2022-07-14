@@ -66,11 +66,13 @@ public class ChangeBiomePacket implements S2CPacket {
 					int z = QuartPos.fromBlock(message.pos.getZ());
 
 					for (LevelChunkSection section : chunkAt.getSections()) {
-						int y = Mth.clamp(QuartPos.fromBlock(section.bottomBlockY()), minY, maxY);
-						if (section.getBiomes() instanceof PalettedContainer<Holder<Biome>> container)
-							container.set(x & 3, y & 3, z & 3, biome);
-						SectionPos pos = SectionPos.of(message.pos.getX() >> 4, section.bottomBlockY() >> 4, message.pos.getZ() >> 4);
-						world.setSectionDirtyWithNeighbors(pos.x(), pos.y(), pos.z());
+						for (int sy = 0; sy < 16; sy += 4) {
+							int y = Mth.clamp(QuartPos.fromBlock(section.bottomBlockY() + sy), minY, maxY);
+							if (section.getBiomes() instanceof PalettedContainer<Holder<Biome>> container)
+								container.set(x & 3, y & 3, z & 3, biome);
+							SectionPos pos = SectionPos.of(message.pos.getX() >> 4, (section.bottomBlockY() >> 4) + sy, message.pos.getZ() >> 4);
+							world.setSectionDirtyWithNeighbors(pos.x(), pos.y(), pos.z());
+						}
 					}
 					world.onChunkLoaded(new ChunkPos(message.pos));
 				}

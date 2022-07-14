@@ -129,7 +129,6 @@ public class TFEntities {
 	public static final RegistryObject<EntityType<RovingCube>> ROVING_CUBE = make(TFEntityNames.ROVING_CUBE, RovingCube::new, MobCategory.MONSTER, 1.2F, 2.1F, 0x0a0000, 0x00009b);
 	public static final RegistryObject<EntityType<SeekerArrow>> SEEKER_ARROW = build(TFEntityNames.SEEKER_ARROW, makeCastedBuilder(SeekerArrow.class, SeekerArrow::new, 0.5F, 0.5F, 150, 1), false);
 	public static final RegistryObject<EntityType<SkeletonDruid>> SKELETON_DRUID = make(TFEntityNames.SKELETON_DRUID, SkeletonDruid::new, MobCategory.MONSTER, 0.6F, 1.99F, 0xa3a3a3, 0x2a3b17);
-
 	public static final RegistryObject<EntityType<SlideBlock>> SLIDER = build(TFEntityNames.SLIDER, makeCastedBuilder(SlideBlock.class, SlideBlock::new, 0.98F, 0.98F, 80, 1), false);
 	public static final RegistryObject<EntityType<SlimeBeetle>> SLIME_BEETLE = make(TFEntityNames.SLIME_BEETLE, SlimeBeetle::new, MobCategory.MONSTER, 0.9F, 0.5F, 0x0c1606, 0x60a74c);
 	public static final RegistryObject<EntityType<SlimeProjectile>> SLIME_BLOB = build(TFEntityNames.SLIME_BLOB, makeCastedBuilder(SlimeProjectile.class, SlimeProjectile::new, 0.25F, 0.25F, 150, 3), false);
@@ -247,7 +246,7 @@ public class TFEntities {
 	}
 
 	public static void addEntityAttributes() {
-		FabricDefaultAttributeRegistry.register(BOAR.get(), Pig.createAttributes());
+		FabricDefaultAttributeRegistry.register(BOAR.get(), Boar.registerAttributes());
 		FabricDefaultAttributeRegistry.register(BIGHORN_SHEEP.get(), Sheep.createAttributes());
 		FabricDefaultAttributeRegistry.register(DEER.get(), Deer.registerAttributes());
 		FabricDefaultAttributeRegistry.register(REDCAP.get(), Redcap.registerAttributes());

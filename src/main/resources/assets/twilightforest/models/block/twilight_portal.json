@@ -1,5 +1,6 @@
 {
     "parent": "block/block",
+    "render_type": "minecraft:translucent",
     "textures": { "all": "block/nether_portal", "particle": "block/nether_portal" },
     "elements": [{ "from": [ 0, 13, 0 ], "to": [ 16, 13, 16 ], "faces": {"up": {"texture": "#all" }}}]
 }

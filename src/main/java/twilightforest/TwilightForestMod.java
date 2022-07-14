@@ -114,6 +114,7 @@ public class TwilightForestMod implements ModInitializer {
 		TFStats.STATS.register();
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register();
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register();
+		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(modbus);
 		TFStructureSets.STRUCTURE_SETS.register();
 		TFStructureTypes.STRUCTURE_TYPES.register();
 		TFStructures.STRUCTURES.register();
@@ -132,7 +133,7 @@ public class TwilightForestMod implements ModInitializer {
 //		}
 
 		TFStructures.register();
-		if(FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
+		if (FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
 			TrinketDropCallback.EVENT.register(TrinketsCompat::keepCurios);
 		}
 		ConfiguredWorldCarvers.register();
@@ -143,24 +144,6 @@ public class TwilightForestMod implements ModInitializer {
 
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new BiomeGrassColors();
-
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
-			try {
-				TFCompat.preInitCompat();
-			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
-				LOGGER.error("Had an error loading preInit compatibility!");
-				LOGGER.catching(e.fillInStackTrace());
-			}
-		} else {
-			LOGGER.warn("Skipping compatibility!");
-		}
-
-
-
-		registerSerializers();
-		initEvents();
-		init();
 	}
 
 	public static void initEvents() {
@@ -178,7 +161,7 @@ public class TwilightForestMod implements ModInitializer {
 		try {
 			if (packType == PackType.CLIENT_RESOURCES) {
 				var resourcePath = FabricLoader.getInstance().getModContainer(TwilightForestMod.ID).get().findPath("classic").get();
-				var pack = new PathResourcePack(FabricLoader.getInstance().getModContainer(TwilightForestMod.ID).get().getRootPaths().get(0).getFileName() + ":" + resourcePath, resourcePath);
+				var pack = new PathPackResources(FabricLoader.getInstance().getModContainer(TwilightForestMod.ID).get().getRootPaths().get(0).getFileName() + ":" + resourcePath, resourcePath);
 				var metadataSection = pack.getMetadataSection(PackMetadataSection.SERIALIZER);
 				if (metadataSection != null) {
 					sources.accept((packConsumer, packConstructor) ->
@@ -194,9 +177,6 @@ public class TwilightForestMod implements ModInitializer {
 	}
 
 	public static void registerSerializers() {
-		//How do I add a condition serializer as fast as possible? An event that fires really early
-		new UncraftingEnabledCondition().register();
-
 			//TODO find a better place for these? they work fine here but idk
 			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
@@ -232,7 +212,7 @@ public class TwilightForestMod implements ModInitializer {
 			}
 		}
 
-		TFConfig.build();
+		// TFConfig.build(); FIXME Loading Screen disabled
 		BlockSpikeFeature.loadStalactites();
 
 //		evt.enqueueWork(() -> {

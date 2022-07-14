@@ -27,8 +27,19 @@ public class HostileMountEvents {
 		return amount;
 	}
 
+	@SubscribeEvent
+	public static void entityTeleports(EntityTeleportEvent event) {
+		// if our grabbed target tries to teleport dont let them
+		if (event.getEntity() instanceof LivingEntity living && isRidingUnfriendly(living)) {
+			event.setCanceled(true);
+		}
+	}
+
 	public static InteractionResult preventMountDismount(Entity mounted, Entity mounting, boolean isMounting) {
-		if (!mounted.getLevel().isClientSide() && !isMounting && mounted.isAlive() && mounting instanceof LivingEntity living && living.isAlive() && isRidingUnfriendly(living) && !allowDismount)
+		if (!mounted.getLevel().isClientSide() &&
+				!isMounting && mounted.isAlive() &&
+				mounting instanceof Player player && player.isAlive() &&
+				isRidingUnfriendly(player) && !allowDismount && !player.getAbilities().invulnerable)
 			return InteractionResult.FAIL;
 		return InteractionResult.PASS;
 	}

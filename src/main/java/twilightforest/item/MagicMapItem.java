@@ -28,6 +28,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFLandmark;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.HashMap;
@@ -159,10 +160,10 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 							// look for TF features
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
-							if (TFLandmark.isInFeatureChunk(worldX, worldZ)) {
+							if (LegacyLandmarkPlacements.blockIsInLandmarkCenter(worldX, worldZ)) {
 								byte mapX = (byte) ((worldX - centerX) / (float) blocksPerPixel * 2F);
 								byte mapZ = (byte) ((worldZ - centerZ) / (float) blocksPerPixel * 2F);
-								TFLandmark feature = TFLandmark.getFeatureAt(worldX, worldZ, (ServerLevel) level);
+								TFLandmark feature = LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, (ServerLevel) level);
 								TFMagicMapData tfData = (TFMagicMapData) data;
 								tfData.tfDecorations.add(new TFMagicMapData.TFMapDecoration(feature, mapX, mapZ, (byte) 8));
 								//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);

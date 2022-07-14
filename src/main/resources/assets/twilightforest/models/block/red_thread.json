@@ -1,6 +1,6 @@
 {
-	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"particle": "twilightforest:block/red_thread",
 		"texture": "twilightforest:block/red_thread"

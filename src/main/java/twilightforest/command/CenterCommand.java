@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import twilightforest.init.TFLandmark;
+import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.registration.TFGenerationSettings;
 
 public class CenterCommand {
@@ -27,9 +28,9 @@ public class CenterCommand {
 
         int dx = Mth.floor(source.getPosition().x());
         int dz = Mth.floor(source.getPosition().z());
-        BlockPos cc = TFLandmark.getNearestCenterXYZ(dx >> 4, dz >> 4);
-        TFLandmark closestFeature = TFLandmark.getFeatureAt(cc.getX(), cc.getZ(), source.getLevel());
-        boolean fc = TFLandmark.isInFeatureChunk(dx, dz);
+        BlockPos cc = LegacyLandmarkPlacements.getNearestCenterXZ(dx >> 4, dz >> 4);
+        TFLandmark closestFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(cc.getX(), cc.getZ(), source.getLevel());
+        boolean fc = LegacyLandmarkPlacements.blockIsInLandmarkCenter(dx, dz);
 
         if(closestFeature == TFLandmark.NOTHING) {
             source.sendSuccess(Component.translatable("commands.tffeature.none_nearby").withStyle(ChatFormatting.RED), false);

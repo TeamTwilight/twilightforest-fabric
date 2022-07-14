@@ -1,5 +1,6 @@
 {
   "parent": "block/block",
+  "render_type": "minecraft:cutout",
   "textures": {
     "particle": "twilightforest:block/forcefield_white",
     "overlay": "twilightforest:block/castle_door_rune_corners"

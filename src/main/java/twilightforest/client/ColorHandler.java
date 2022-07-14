@@ -11,11 +11,11 @@ import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.block.AuroraBrickBlock;
 import twilightforest.block.HollowLogClimbable;
-import twilightforest.compat.TFCompat;
 import twilightforest.enums.HollowLogVariants;
+import twilightforest.compat.TFCompat;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFBlocks;
 import twilightforest.item.ArcticArmorItem;
-import twilightforest.init.TFItems;
 
 import java.awt.*;
 
@@ -314,8 +314,8 @@ public final class ColorHandler {
 			} else {
 				return GrassColor.get(0.5D, 1.0D);
 
-			}
-		}, TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.get(),
+					}
+				}, TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(), TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(), TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get());
@@ -375,7 +375,11 @@ public final class ColorHandler {
 	}
 
 	public static void registerItemColors() {
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> ColorProviderRegistry.BLOCK.get(((BlockItem)stack.getItem()).getBlock()).getColor(((BlockItem)stack.getItem()).getBlock().defaultBlockState(), null, null, tintIndex),
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
+					if (stack.getItem() instanceof BlockItem blocc)
+						return blockColors.getColor(blocc.getBlock().defaultBlockState(), null, null, tintIndex);
+					return 0xFFFFFF;
+				},
 				TFBlocks.AURORA_BLOCK.get(), TFBlocks.AURORA_PILLAR.get(), TFBlocks.AURORA_SLAB.get(), TFBlocks.AURORALIZED_GLASS.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get(),
 				TFBlocks.TIME_LEAVES.get(), TFBlocks.TRANSFORMATION_LEAVES.get(), TFBlocks.MINING_LEAVES.get(), TFBlocks.SORTING_LEAVES.get(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.CANOPY_LEAVES.get(), TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.THORN_LEAVES.get(), TFBlocks.BEANSTALK_LEAVES.get(),
 				TFBlocks.FALLEN_LEAVES.get(), TFBlocks.FIDDLEHEAD.get(), TFBlocks.POTTED_FIDDLEHEAD.get(), TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
@@ -384,13 +388,13 @@ public final class ColorHandler {
 				/*TFBlocks.HYDRA_LAIR_MINIATURE_STRUCTURE.get(), TFBlocks.GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE.get(), TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), TFBlocks.YETI_CAVE_MINIATURE_STRUCTURE.get(), TFBlocks.AURORA_PALACE_MINIATURE_STRUCTURE.get(), TFBlocks.TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE.get(), TFBlocks.FINAL_CASTLE_MINIATURE_STRUCTURE.get()*/);
 
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) ->
-				stack.getItem() instanceof ArcticArmorItem
-						? ((ArcticArmorItem) stack.getItem()).getColor(stack, tintIndex)
-						: 0xFFFFFF,
+						stack.getItem() instanceof ArcticArmorItem arctic
+								? (arctic).getColor(stack, tintIndex)
+								: 0xFFFFFF,
 				TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
 
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) ->
-				tintIndex > 0 ? -1 : PotionUtils.getColor(stack),
+						tintIndex > 0 ? -1 : PotionUtils.getColor(stack),
 				TFItems.BRITTLE_FLASK.get(), TFItems.GREATER_FLASK.get());
 
 //		if (FabricLoader.getInstance().isModLoaded(TFCompat.IE_ID)) {

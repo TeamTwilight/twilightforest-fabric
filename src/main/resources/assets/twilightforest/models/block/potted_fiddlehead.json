@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/tinted_flower_pot_cross",
+  "render_type": "minecraft:cutout",
   "textures": {
     "plant": "twilightforest:block/potted_fiddlehead"
   }

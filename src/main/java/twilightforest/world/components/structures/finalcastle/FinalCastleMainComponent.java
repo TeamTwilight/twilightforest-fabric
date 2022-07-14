@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
+import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.init.TFLandmark;
@@ -43,7 +44,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH);
 
-		BlockPos cc = TFLandmark.getNearestCenterXYZ(x >> 4, z >> 4);
+		BlockPos cc = LegacyLandmarkPlacements.getNearestCenterXZ(x >> 4, z >> 4);
 
 		int cx = (x >> 8) << 8;
 		int cz = (z >> 8) << 8;

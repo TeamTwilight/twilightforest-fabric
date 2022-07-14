@@ -1,4 +1,4 @@
-// 1.19	2022-06-27T20:04:41.6843628	TwilightForest loot tables
+// 1.19	2022-07-04T18:51:37.5659525	TwilightForest loot tables
 9992978a24c986ab8bbacfd4cb5c88b4b3d653a2 data/twilightforest/loot_tables/blocks/acacia_banister.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -43,6 +43,7 @@ d13f140a060f57cdb19d2cc8978b5422c3f68a21 data/twilightforest/loot_tables/blocks/
 23d3235deaf6d4f44b88ba2bbbf7ac9cd06fce55 data/twilightforest/loot_tables/blocks/castle_roof_tile.json
 fd2b66f738bd36260a2285b3be11d721373961e1 data/twilightforest/loot_tables/blocks/cicada.json
 c69763d5c79cafe4ebe75fc7a41ca43d6e398629 data/twilightforest/loot_tables/blocks/cicada_jar.json
+69b46db5e5bf1a3850555d67bc276d67affa470b data/twilightforest/loot_tables/blocks/cicada_squish.json
 061d24003f3878177803476e8dcfb10c7efe6892 data/twilightforest/loot_tables/blocks/cinder_furnace.json
 9c3a1ba632003508c7b52677ce6ff68e84f3cc79 data/twilightforest/loot_tables/blocks/cinder_log.json
 36bf1d7411beb004dd1f6b76675fe0d5b693c1db data/twilightforest/loot_tables/blocks/cinder_wood.json
@@ -97,6 +98,7 @@ da172a122ca3abf1bf69d927277e2a284c051809 data/twilightforest/loot_tables/blocks/
 ce4b321a99fce99210c49a680ed8e88c7d59c931 data/twilightforest/loot_tables/blocks/firefly.json
 ae0614f83670e5cc73a2a7743d2e7c144a33b9b7 data/twilightforest/loot_tables/blocks/firefly_jar.json
 8147735f148a68e0393cf0fd7ca0835bfc467bc8 data/twilightforest/loot_tables/blocks/firefly_particle_spawner.json
+4aca4cd774a6164d2a324538776fc0876394c810 data/twilightforest/loot_tables/blocks/firefly_squish.json
 613b3b3da28744de05570c6cc117aaf554c5e1ab data/twilightforest/loot_tables/blocks/fire_jet.json
 9e0dac0b5403f61263242b032ec65bb33bc9abbe data/twilightforest/loot_tables/blocks/fluffy_cloud.json
 0fafce790e5c3b0f4e7b103b02e7d844d38071b8 data/twilightforest/loot_tables/blocks/ghast_trap.json
@@ -221,6 +223,7 @@ c990a801aac5e9b7e8b2161ce7ce5403999c7150 data/twilightforest/loot_tables/blocks/
 955f71e353641746a42ac6cc5d1b3f634ee204de data/twilightforest/loot_tables/blocks/minoshroom_trophy.json
 955f71e353641746a42ac6cc5d1b3f634ee204de data/twilightforest/loot_tables/blocks/minoshroom_wall_trophy.json
 96eb173a677293d185f27a2edaae68159eb2025c data/twilightforest/loot_tables/blocks/moonworm.json
+7c37f078736ce118aa427947265699b9625ff53c data/twilightforest/loot_tables/blocks/moonworm_squish.json
 8e8f065a7e2662d7934e7160cdbd984278df7937 data/twilightforest/loot_tables/blocks/mossy_castle_brick.json
 26a0dd1548a0f6ed2a71731a99d7b925f893ed20 data/twilightforest/loot_tables/blocks/mossy_castle_brick_stairs.json
 70f0dd6ac06810d09db1988de73f2c3287787de9 data/twilightforest/loot_tables/blocks/mossy_etched_nagastone.json
