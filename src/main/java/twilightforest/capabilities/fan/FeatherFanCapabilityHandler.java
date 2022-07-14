@@ -10,6 +10,10 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 	private LivingEntity host;
 	private boolean falling;
 
+	public FeatherFanCapabilityHandler(LivingEntity entity) {
+		host = entity;
+	}
+
 	@Override
 	public void setEntity(LivingEntity entity) {
 		this.host = entity;

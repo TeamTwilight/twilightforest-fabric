@@ -5,6 +5,7 @@ import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import net.minecraft.world.entity.LivingEntity;
+import twilightforest.capabilities.fan.FeatherFanCapabilityHandler;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.capabilities.shield.ShieldCapabilityHandler;
@@ -16,5 +17,6 @@ public class CapabilityList implements EntityComponentInitializer {
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.registerFor(LivingEntity.class, SHIELDS, ShieldCapabilityHandler::new);
+		registry.registerFor(LivingEntity.class, FEATHER_FAN_FALLING, FeatherFanCapabilityHandler::new);
 	}
 }
