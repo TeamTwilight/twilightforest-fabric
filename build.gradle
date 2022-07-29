@@ -40,11 +40,7 @@ repositories {
 dependencies {
     // dev env
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.layered() {
-        it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${project.minecraft_version}+build.${project.qm_build}:v2"))
-        it.parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip")
-        it.officialMojangMappings { setNameSyntheticMembers(false) }
-    }
+    mappings loom.officialMojangMappings()
     modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 
     modLocalRuntime("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { exclude(group: "net.fabricmc.fabric-api") }
