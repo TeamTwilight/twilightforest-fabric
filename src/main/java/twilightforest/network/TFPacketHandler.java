@@ -10,26 +10,27 @@ public class TFPacketHandler {
 	private static final String PROTOCOL_VERSION = "2";
 	public static final SimpleChannel CHANNEL = new SimpleChannel(TwilightForestMod.prefix("channel"));
 
-	@SuppressWarnings({"UnusedAssignment", "Convert2Lambda", "Anonymous2MethodRef"})
+	@SuppressWarnings({"UnusedAssignment"})
 	public static void init() {
 		CHANNEL.initServerListener();
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> CHANNEL::initClientListener);
 		int id = 0;
-		// FIXME PORT
+
 		CHANNEL.registerS2CPacket(AreaProtectionPacket.class, id++);
 		CHANNEL.registerS2CPacket(ChangeBiomePacket.class, id++);
 		CHANNEL.registerS2CPacket(EnforceProgressionStatusPacket.class, id++);
-		CHANNEL.registerS2CPacket(StructureProtectionPacket.class, id++);
-		CHANNEL.registerS2CPacket(StructureProtectionClearPacket.class, id++);
-		CHANNEL.registerS2CPacket(ThrowPlayerPacket.class, id++);
 		CHANNEL.registerS2CPacket(MagicMapPacket.class, id++);
 		CHANNEL.registerS2CPacket(MazeMapPacket.class, id++);
-		CHANNEL.registerS2CPacket(UpdateShieldPacket.class, id++);
-		CHANNEL.registerC2SPacket(UncraftingGuiPacket.class, id++);
-		CHANNEL.registerS2CPacket(UpdateTFMultipartPacket.class, id++);
-		CHANNEL.registerS2CPacket(SpawnFallenLeafFromPacket.class, id++);
 		CHANNEL.registerS2CPacket(MissingAdvancementToastPacket.class, id++);
 		CHANNEL.registerS2CPacket(ParticlePacket.class, id++);
+		CHANNEL.registerS2CPacket(SpawnFallenLeafFromPacket.class, id++);
+		CHANNEL.registerS2CPacket(StructureProtectionClearPacket.class, id++);
+		CHANNEL.registerS2CPacket(StructureProtectionPacket.class, id++);
+		CHANNEL.registerS2CPacket(ThrowPlayerPacket.class, id++);
+		CHANNEL.registerC2SPacket(UncraftingGuiPacket.class, id++);
 		CHANNEL.registerS2CPacket(UpdateFeatherFanFallPacket.class, id++);
+		CHANNEL.registerS2CPacket(UpdateShieldPacket.class, id++);
+		CHANNEL.registerS2CPacket(UpdateTFMultipartPacket.class, id++);
+		CHANNEL.registerS2CPacket(UpdateThrownPacket.class, id++);
 	}
 }

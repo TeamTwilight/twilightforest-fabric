@@ -1,13 +1,17 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.S2CPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.thrown.YetiThrowCapability;
 
-public class UpdateThrownPacket {
+public class UpdateThrownPacket implements S2CPacket {
 
 	private final int entityID;
 	private final boolean thrown;
@@ -41,22 +45,24 @@ public class UpdateThrownPacket {
 		buf.writeInt(this.throwCooldown);
 	}
 
+	@Override
+	public void handle(Minecraft client, ClientPacketListener listener, PacketSender responseSender, SimpleChannel channel) {
+		Handler.onMessage(this);
+	}
+
 	public static class Handler {
 
-		public static boolean onMessage(UpdateThrownPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
+		public static void onMessage(UpdateThrownPacket message) {
+//			ctx.get().enqueueWork(() -> {
 				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
 				if (entity instanceof LivingEntity) {
-					entity.getCapability(CapabilityList.YETI_THROWN).ifPresent(cap -> {
+					CapabilityList.YETI_THROWN.maybeGet(entity).ifPresent(cap -> {
 						LivingEntity thrower = message.thrower != 0 ? (LivingEntity) Minecraft.getInstance().level.getEntity(message.thrower) : null;
 						cap.setThrown(message.thrown, thrower);
 						cap.setThrowCooldown(message.throwCooldown);
 					});
 				}
-			});
-
-			ctx.get().setPacketHandled(true);
-			return true;
+//			});
 		}
 	}
 }

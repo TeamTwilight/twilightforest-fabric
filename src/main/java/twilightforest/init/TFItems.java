@@ -183,19 +183,11 @@ public class TFItems {
 	public static final RegistryObject<Item> SNOW_QUEEN_BANNER_PATTERN = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.SNOW_QUEEN_BANNER_PATTERN, unstackable().rarity(TwilightForestMod.getRarity())));
 	public static final RegistryObject<Item> QUEST_RAM_BANNER_PATTERN = ITEMS.register("quest_ram_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.QUEST_RAM_BANNER_PATTERN, unstackable().rarity(TwilightForestMod.getRarity())));
 
-	// FIXME PORT
-	public static CreativeModeTab creativeTab = FabricItemGroupBuilder.build(TwilightForestMod.prefix(TwilightForestMod.ID), () -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()));
-	public static CreativeModeTab creativeTab = new CreativeModeTab(TwilightForestMod.ID) {
-		@Override
-		public ItemStack makeIcon() {
-			return new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get());
-		}
-
-		@Override
-		public EnchantmentCategory[] getEnchantmentCategories() {
-			return new EnchantmentCategory[] { TFEnchantments.BLOCK_AND_CHAIN };
-		}
-	};
+	public static CreativeModeTab creativeTab = FabricItemGroupBuilder
+			.create(TwilightForestMod.prefix(TwilightForestMod.ID))
+			.icon(() -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()))
+			.build()
+			.setEnchantmentCategories(TFEnchantments.BLOCK_AND_CHAIN);
 
 	public static FabricItemSettings defaultBuilder() {
 		return new FabricItemSettings().group(creativeTab);
