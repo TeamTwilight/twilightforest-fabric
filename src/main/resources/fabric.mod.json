@@ -36,7 +36,13 @@
       "twilightforest.capabilities.CapabilityList"
     ],
     "rei": [
-      "twilightforest.compat.REI"
+      "twilightforest.compat.rei.REICompat"
+    ],
+    "emi": [
+      "twilightforest.compat.emi.EMICompat"
+    ],
+    "jei_mod_plugin": [
+      "twilightforest.compat.jei.JEICompat"
     ]
   },
   "mixins": [

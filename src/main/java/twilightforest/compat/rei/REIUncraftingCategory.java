@@ -1,4 +1,4 @@
-package twilightforest.compat;
+package twilightforest.compat.rei;
 
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;

@@ -1,4 +1,4 @@
-package twilightforest.compat;
+package twilightforest.compat.rei;
 
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
@@ -22,10 +22,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public class REI implements REIClientPlugin {
+public class REICompat implements REIClientPlugin {
 
     @Override
     public void registerCategories(CategoryRegistry registry) {
+        // TODO update this
         registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(TFBlocks.UNCRAFTING_TABLE.get()));
         registry.addWorkstations(REIUncraftingCategory.UNCRAFTING, EntryStacks.of(TFBlocks.UNCRAFTING_TABLE.get()));
 
@@ -44,11 +45,11 @@ public class REI implements REIClientPlugin {
 //        if(FabricLoader.getInstance().isModLoaded(TFCompat.IE_ID)) {
 //            ShaderRegistry.rarityWeightMap.keySet().forEach((rarity) ->
 //                    ingredientManager.removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(
-//                            ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_" + rarity)).getDefaultInstance()
+//                            Registry.ITEM.getValue(TwilightForestMod.prefix("shader_bag_" + rarity)).getDefaultInstance()
 //                    )));
 //
 //            for (ShaderRegistry.ShaderRegistryEntry entry : IEShaderRegister.getAllTwilightShaders()) {
-//                ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")));
+//                ItemStack stack = new ItemStack(Registry.ITEM.getValue(TwilightForestMod.prefix("shader")));
 //                ItemNBTHelper.putString(stack, "shader_name", entry.getName().toString());
 //                ingredientManager.addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, List.of(stack));
 //            }

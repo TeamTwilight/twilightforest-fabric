@@ -13,7 +13,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraft.world.item.SpawnEggItem;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFItems;
 import twilightforest.item.recipe.TransformPowderRecipe;
@@ -74,13 +74,13 @@ public class TransformationPowderCategory implements IRecipeCategory<TransformPo
 				.addIngredient(JEICompat.ENTITY_TYPE, recipe.input());
 
 		//make it so hovering over the entity shows its name
-		builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addItemStack(new ItemStack(ForgeSpawnEggItem.fromEntityType(recipe.input())));
+		builder.addInvisibleIngredients(RecipeIngredientRole.INPUT).addItemStack(new ItemStack(SpawnEggItem.byId(recipe.input())));
 
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 11)
 				.setCustomRenderer(JEICompat.ENTITY_TYPE, this.entityRenderer)
 				.addIngredient(JEICompat.ENTITY_TYPE, recipe.result());
 
 		//make it so hovering over the entity shows its name
-		builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addItemStack(new ItemStack(ForgeSpawnEggItem.fromEntityType(recipe.result())));
+		builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addItemStack(new ItemStack(SpawnEggItem.byId(recipe.result())));
 	}
 }

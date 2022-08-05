@@ -29,12 +29,13 @@ repositories {
     maven { url = "https://maven.shedaniel.me/" } // Cloth Config
     maven { url = "https://maven.wispforest.io" } // TOP
     maven { url = "https://storage.googleapis.com/devan-maven/" }
-    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu, Trinkets
+    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu, Trinkets, EMI
     maven { url = "https://mvn.devos.one/snapshots/" } // Porting Lib, Forge Tags, Tinkers, Mantle
     maven { url = "https://ladysnake.jfrog.io/artifactory/mods" } // Cardinal Components API
     maven { url = "https://maven.parchmentmc.net/" } // Parchment
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
     maven { url = "https://jitpack.io" } // Fabric ASM, Mixin Extras
+    maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
 }
 
 dependencies {
@@ -71,9 +72,32 @@ dependencies {
     // compat
 //    modCompileOnly("slimeknights.tconstruct:TConstruct:${project.minecraft_version}-${project.tcon_version}") { exclude(group: "io.github.fabricators_of_create") }
     modImplementation("dev.emi:trinkets:${project.trinkets_version}")
-    modLocalRuntime("dev.architectury:architectury-fabric:${project.architectury_version}") { exclude(group: "net.fabricmc.fabric-api") } // for REI
-    modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { transitive = false }
-    modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
+    // EMI
+    modCompileOnly("dev.emi:emi:${project.emi_version}") { transitive = false }
+    // JEI
+    // FIXME remapping issues with API jar
+//    deps.modCompileOnly("mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}") { transitive = false }
+//    deps.modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric-api:${project.jei_version}") { transitive = false }
+    modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}") { transitive = false }
+    // REI
+    modCompileOnly("me.shedaniel.cloth:basic-math:0.6.0") { transitive = false }
+    modCompileOnly("dev.architectury:architectury-fabric:${project.architectury_version}") { transitive = false }
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { transitive = false }
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
+
+    String recipeViewer = project.recipe_viewer
+    if (recipeViewer == "emi") {
+        modLocalRuntime("dev.emi:emi:${project.emi_version}") { transitive = false }
+    } else if (recipeViewer == "jei") {
+        modLocalRuntime("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}") { transitive = false }
+    } else if (recipeViewer == "rei") {
+        modLocalRuntime("me.shedaniel.cloth:basic-math:0.6.0") { transitive = false }
+        modLocalRuntime("dev.architectury:architectury-fabric:${project.architectury_version}") { transitive = false }
+        modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") { exclude(group: "net.fabricmc.fabric-api"); transitive = false }
+        modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
+    } else {
+        println("unknown recipe viewer: $recipeViewer")
+    }
 }
 
 loom {

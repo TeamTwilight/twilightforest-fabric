@@ -1,4 +1,4 @@
-package twilightforest.compat;
+package twilightforest.compat.rei;
 
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;

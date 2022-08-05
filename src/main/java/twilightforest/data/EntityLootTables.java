@@ -638,7 +638,7 @@ public class EntityLootTables extends EntityLoot {
 	}
 
 	public Item getShader(String name) {
-		return Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix(name))).asItem();
+		return Objects.requireNonNull(Registry.ITEM.getValue(TwilightForestMod.prefix(name))).asItem();
 	}
 
 	public LootTable.Builder emptyLootTable() {
