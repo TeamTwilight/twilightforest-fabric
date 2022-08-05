@@ -21,7 +21,6 @@ public class CapabilityList implements EntityComponentInitializer {
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.registerFor(LivingEntity.class, SHIELDS, ShieldCapabilityHandler::new);
 		registry.registerFor(LivingEntity.class, FEATHER_FAN_FALLING, FeatherFanCapabilityHandler::new);
-		// FIXME PORT
-		registry.registerFor(LivingEntity.class, YETI_THROWN, FeatherFanCapabilityHandler::new);
+		registry.registerFor(LivingEntity.class, YETI_THROWN, YetiThrowCapabilityHandler::new);
 	}
 }

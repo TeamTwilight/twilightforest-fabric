@@ -1,13 +1,12 @@
 package twilightforest.capabilities.thrown;
 
-import io.github.fabricators_of_create.porting_lib.extensions.INBTSerializable;
-import net.minecraft.nbt.CompoundTag;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 
-public interface YetiThrowCapability extends INBTSerializable<CompoundTag> {
+public interface YetiThrowCapability extends Component {
 
 	ResourceLocation ID = TwilightForestMod.prefix("cap_thrown");
 

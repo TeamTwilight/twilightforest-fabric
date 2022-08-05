@@ -64,7 +64,9 @@
       "com_electronwill_night-config_toml"
     ],
     "cardinal-components": [
-      "twilightforest:cap_shield"
+      "twilightforest:cap_shield",
+      "twilightforest:cap_feather_fan_fall",
+      "twilightforest:cap_thrown"
     ],
     "banner": "twilightforest_logo.png"
   }

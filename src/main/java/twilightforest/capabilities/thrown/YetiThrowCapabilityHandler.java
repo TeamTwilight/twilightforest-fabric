@@ -14,6 +14,10 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 	private LivingEntity thrower;
 	private int throwCooldown;
 
+	public YetiThrowCapabilityHandler(LivingEntity entity) {
+		host = entity;
+	}
+
 	@Override
 	public void setEntity(LivingEntity entity) {
 		this.host = entity;
@@ -66,15 +70,13 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 	}
 
 	@Override
-	public CompoundTag serializeNBT() {
-		CompoundTag tag = new CompoundTag();
+	public void writeToNbt(CompoundTag tag) {
 		tag.putBoolean("yetiThrown", this.getThrown());
 		tag.putInt("throwCooldown", this.getThrowCooldown());
-		return tag;
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag nbt) {
+	public void readFromNbt(CompoundTag nbt) {
 		this.setThrown(nbt.getBoolean("yetiThrown"), null);
 		this.setThrowCooldown(nbt.getInt("throwCooldown"));
 	}
