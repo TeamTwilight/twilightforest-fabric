@@ -233,7 +233,7 @@ public class Minoshroom extends Minotaur {
 	}
 
 	@Override
-	public boolean isPushedByFluid(FluidType type) {
+	public boolean isPushedByFluid() {
 		return false;
 	}
 

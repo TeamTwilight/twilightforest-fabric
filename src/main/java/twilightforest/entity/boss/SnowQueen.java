@@ -487,7 +487,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 	}
 
 	@Override
-	public boolean isPushedByFluid(FluidType type) {
+	public boolean isPushedByFluid() {
 		return false;
 	}
 
