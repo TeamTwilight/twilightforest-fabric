@@ -146,7 +146,7 @@ public class ASM {
      * @param method The method where you want to find the node
      * @param type The type of the old method node.
      * @param owner The owner of the old method node.
-     * @param name The name of the old method node. You may want to use {@link #mapMethod(String)} if this is a srg name
+     * @param name The name of the old method node.
      * @param desc The desc of the old method node.
      * @param list The list that should be inserted
      * @param mode How the given code should be inserted

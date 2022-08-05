@@ -3,7 +3,6 @@ package twilightforest.asm;
 import com.chocohead.mm.api.ClassTinkerers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.MappingResolver;
 import net.minecraft.ChatFormatting;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
@@ -11,23 +10,34 @@ import org.objectweb.asm.tree.*;
 import java.util.Locale;
 
 public class TFASM implements Runnable {
-    
-    public String prefix(String name) {
-        return "twilightforest:" + name.toLowerCase(Locale.ROOT);
-    }
-    
+
     @Override
     public void run() {
-        MappingResolver resolver = FabricLoader.getInstance().getMappingResolver();
-        ClassTinkerers.enumBuilder(resolver.mapClassName("intermediary", "net.minecraft.class_1886")).addEnumSubclass("twilightforest_block_and_chain", "twilightforest.asm.EnchantmentCategoryBlockAndChain").build();
-        String grassColorClass = resolver.mapClassName("intermediary", "net.minecraft.class_4763$class_5486");
-        ClassTinkerers.enumBuilder(grassColorClass, String.class).addEnumSubclass(prefix("enchanted_forest"), "twilightforest.asm.GrassColorModifierEnchantedForest", prefix("enchanted_forest"))
-            .addEnumSubclass(prefix("swamp"), "twilightforest.asm.GrassColorModifierSwamp", prefix("swamp"))
-            .addEnumSubclass(prefix("dark_forest"), "twilightforest.asm.GrassColorModifierDarkForest", prefix("dark_forest"))
-            .addEnumSubclass(prefix("dark_forest_center"), "twilightforest.asm.GrassColorModifierDarkForestCenter", prefix("dark_forest_center"))
-            .addEnumSubclass(prefix("spooky_forest"), "twilightforest.asm.GrassColorModifierSpookyForest", prefix("spooky_forest")).build();
-        ClassTinkerers.enumBuilder(resolver.mapClassName("intermediary", "net.minecraft.class_1814"), "L"+resolver.mapClassName("intermediary", "net.minecraft.class_124")+";").addEnum("TWILIGHT", ChatFormatting.DARK_GREEN).build();
-        ClassTinkerers.enumBuilder(resolver.mapClassName("intermediary", "net.minecraft.class_2582"), String.class, String.class, boolean.class)
+        extendEnums();
+        foliage();
+        music();
+        multipart();
+        maprendercontext();
+        mount();
+        seed();
+    }
+
+    private static void extendEnums() {
+        ClassTinkerers.enumBuilder(mapC("class_1886")) // EnchantmentCategory
+                .addEnumSubclass("TWILIGHTFOREST_BLOCK_AND_CHAIN", "twilightforest.asm.EnchantmentCategoryBlockAndChain")
+                .build();
+        String grassColorClass = mapC("class_4763$class_5486"); // BiomeSpecialEffects.GrassColorModifier
+        ClassTinkerers.enumBuilder(grassColorClass, String.class)
+                .addEnumSubclass("TWILIGHTFOREST_ENCHANTED_FOREST", "twilightforest.asm.GrassColorModifierEnchantedForest", prefix("enchanted_forest"))
+                .addEnumSubclass("TWILIGHTFOREST_SWAMP", "twilightforest.asm.GrassColorModifierSwamp", prefix("swamp"))
+                .addEnumSubclass("TWILIGHTFOREST_DARK_FOREST", "twilightforest.asm.GrassColorModifierDarkForest", prefix("dark_forest"))
+                .addEnumSubclass("TWILIGHTFOREST_DARK_FOREST_CENTER", "twilightforest.asm.GrassColorModifierDarkForestCenter", prefix("dark_forest_center"))
+                .addEnumSubclass("TWILIGHTFOREST_SPOOKY_FOREST", "twilightforest.asm.GrassColorModifierSpookyForest", prefix("spooky_forest"))
+                .build();          // Rarity                                                // ChatFormatting
+        ClassTinkerers.enumBuilder(mapC("class_1814"), "L" + mapC("class_124") + ";")
+                .addEnum("TWILIGHT", () -> new Object[] { ChatFormatting.DARK_GREEN })
+                .build();          // BannerPattern
+        ClassTinkerers.enumBuilder(mapC("class_2582"), String.class, String.class, boolean.class)
                 .addEnum("TWILIGHTFOREST_NAGA", "twilightforest_naga", "tfn", true)
                 .addEnum("TWILIGHTFOREST_LICH", "twilightforest_lich", "tfl", true)
                 .addEnum("TWILIGHTFOREST_MINOSHROOM", "twilightforest_minoshroom", "tfm", true)
@@ -38,11 +48,17 @@ public class TFASM implements Runnable {
                 .addEnum("TWILIGHTFOREST_SNOW_QUEEN", "twilightforest_snow_queen", "tfq", true)
                 .addEnum("TWILIGHTFOREST_QUEST_RAM", "twilightforest_quest_ram", "tfr", true)
                 .build();
-        // foliage.js
-        String biomeClass = resolver.mapClassName("intermediary","net.minecraft.class_1959").replace('.', '/');
-        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary","net.minecraft.class_1163"), classNode -> {
+    }
+
+    private static void foliage() {
+                            // Biome
+        String biomeClass = mapC("class_1959").replace('.', '/');
+                                            // BiomeColors.FOLIAGE_COLOR_RESOLVER lambda
+        String foliageColorResolverLambda = mapM("class_1163.method_23791(Lnet/minecraft/class_1959;DD)I");
+                                         // BiomeColors
+        ClassTinkerers.addTransformation(mapC("class_1163"), classNode -> {
             classNode.methods.forEach(methodNode -> {
-                if(!methodNode.name.equals("lambda$static$0")) return;
+                if(!methodNode.name.equals(foliageColorResolverLambda)) return;
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                 instructions.insertBefore(
                         ASM.findFirstInstruction(methodNode, Opcodes.IRETURN),
@@ -61,12 +77,17 @@ public class TFASM implements Runnable {
                 );
             });
         });
+    }
 
-        // music.js
-        String musicClass = resolver.mapClassName("intermediary", "net.minecraft.class_5195").replace('.', '/');
-        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_1142"), classNode -> {
+    private static void music() {
+                            // Music
+        String musicClass = mapC("class_5195").replace('.', '/');
+                                         // MusicManager
+        ClassTinkerers.addTransformation(mapC("class_1142"), classNode -> {
+                          // MusicManager.tick
+            String tick = mapM("class_1142.method_18669()V");
             classNode.methods.forEach(methodNode -> {
-                if (!methodNode.name.equals(resolver.mapMethodName("intermediary", "net.minecraft.class_1142", "method_18669", "()V")))
+                if (!methodNode.name.equals(tick))
                     return;
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                 instructions.insert(
@@ -83,13 +104,17 @@ public class TFASM implements Runnable {
                 );
             });
         });
+    }
 
-        // multipart.js
-        // ServerEntity
-        String entityClass = resolver.mapClassName("intermediary", "net.minecraft.class_1297").replace('.', '/');
-        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_3231"), classNode -> {
+    private static void multipart() {
+                             // Entity
+        String entityClass = mapC("class_1297").replace('.', '/');
+                                     // ServerEntity.sendDirtyEntityData
+        String sendDirtyEntityData = mapM("class_3231.method_14306()V");
+                                         // ServerEntity
+        ClassTinkerers.addTransformation(mapC("class_3231"), classNode -> {
             classNode.methods.forEach(methodNode -> {
-                if (!methodNode.name.equals(resolver.mapMethodName("intermediary", "net.minecraft.class_3231", "method_14306", "()V")))
+                if (!methodNode.name.equals(sendDirtyEntityData))
                     return;
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                 instructions.insert(
@@ -106,13 +131,14 @@ public class TFASM implements Runnable {
                 );
             });
         });
-        String resourceManagerClass = resolver.mapClassName("intermediary", "net.minecraft.class_3300").replace('.', '/');
-        String reloadName = FabricLoader.getInstance().isDevelopmentEnvironment() ? "onResourceManagerReload" : "method_14491";
-        String providerContext = resolver.mapClassName("intermediary", "net.minecraft.class_5617$class_5618").replace('.', '/');
-        // EntityRenderDispatcher
-        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_898"), classNode -> {
+                                         // ResourceManagerReloadListener.onResourceManagerReload
+        String onResourceManagerReload = mapM("class_4013.method_14491(Lnet/minecraft/class_3300;)V");
+                              // EntityRenderDispatcher.Context
+        String contextClass = mapC("class_5617$class_5618").replace('.', '/');
+                                         // EntityRenderDispatcher
+        ClassTinkerers.addTransformation(mapC("class_898"), classNode -> {
             classNode.methods.forEach(methodNode -> {
-                if (!methodNode.name.equals(reloadName))
+                if (!methodNode.name.equals(onResourceManagerReload))
                     return;
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                 instructions.insert(
@@ -122,17 +148,20 @@ public class TFASM implements Runnable {
                                         Opcodes.INVOKESTATIC,
                                         "twilightforest/ASMHooks",
                                         "bakeMultipartRenders",
-                                        "(L" + providerContext + ";)L" + providerContext + ";",
+                                        "(L" + contextClass + ";)L" + contextClass + ";",
                                         false
                                 )
                         )
                 );
             });
         });
-        // EntityRenderDispatcher
-        String getRendererName = FabricLoader.getInstance().isDevelopmentEnvironment() ? "getRenderer" : "method_3953";
-        String entityRendererClass = resolver.mapClassName("intermediary", "net.minecraft.class_897").replace('.', '/');
-        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_898"), classNode -> {
+
+                                 // EntityRenderDispatcher.getRenderer
+        String getRendererName = mapM("class_898.method_3953(Lnet/minecraft/class_1297;)Lnet/minecraft/class_897;");
+                                     // EntityRenderer
+        String entityRendererClass = mapC("class_897").replace('.', '/');
+                                         // EntityRenderDispatcher
+        ClassTinkerers.addTransformation(mapC("class_898"), classNode -> {
             classNode.methods.forEach(methodNode -> {
                 if (!methodNode.name.equals(getRendererName))
                     return;
@@ -165,12 +194,14 @@ public class TFASM implements Runnable {
                 );
             });
         });
-
-        String renderLevelName = FabricLoader.getInstance().isDevelopmentEnvironment() ? "renderLevel" : "method_22710";
-        // LevelRenderer
-        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_761"), classNode -> {
+                             // LevelRenderer.renderLevel
+        String renderLevel = mapM("class_761.method_22710(Lnet/minecraft/class_4587;FJZLnet/minecraft/class_4184;Lnet/minecraft/class_757;Lnet/minecraft/class_765;Lnet/minecraft/class_1159;)V");
+                                      // entitiesForRendering
+        String entitiesForRendering = mapM("class_638.method_18112()Ljava/lang/Iterable;");
+                                         // LevelRenderer
+        ClassTinkerers.addTransformation(mapC("class_761"), classNode -> {
             classNode.methods.forEach(methodNode -> {
-                if (!methodNode.name.equals(renderLevelName))
+                if (!methodNode.name.equals(renderLevel))
                     return;
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                 AbstractInsnNode lastInstruction = null;
@@ -181,10 +212,10 @@ public class TFASM implements Runnable {
                             node instanceof MethodInsnNode methodInsnNode &&
 
                             node.getOpcode() == Opcodes.INVOKEVIRTUAL &&
+                                                         // ClientLevel
+                            equate(methodInsnNode.owner, mapC("class_638").replace('.', '/')) &&
 
-                            equate(methodInsnNode.owner, resolver.mapClassName("intermediary", "net.minecraft.class_638").replace('.', '/')) &&
-
-                            equate(methodInsnNode.name, FabricLoader.getInstance().isDevelopmentEnvironment() ? "entitiesForRendering" : "method_18112") &&
+                            equate(methodInsnNode.name, entitiesForRendering) &&
 
                             equate(methodInsnNode.desc, "()Ljava/lang/Iterable;")
 
@@ -206,14 +237,21 @@ public class TFASM implements Runnable {
                 );
             });
         });
+    }
 
-        // maprendercontext.js
-        // ItemInHandRenderer
-        String itemStackClass = resolver.mapClassName("intermediary", "net.minecraft.class_1799").replace('.', '/');
-        String itemInHandRendererClass = resolver.mapClassName("intermediary", "net.minecraft.class_759").replace('.', '/');
-        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_759"), classNode -> {
+    private static void maprendercontext() {
+                                // ItemStack
+        String itemStackClass = mapC("class_1799").replace('.', '/');
+                                         // ItemInHandRenderer
+        String itemInHandRendererClass = mapC("class_759").replace('.', '/');
+                                   // ItemInHandRenderer.renderArmWithItem
+        String renderArmWithItem = mapM("class_759.method_3228(Lnet/minecraft/class_742;FFLnet/minecraft/class_1268;FLnet/minecraft/class_1799;FLnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V");
+                           // Items.FILLED_MAP
+        String filledMap = mapF("class_1802.field_8204:Lnet/minecraft/class_1792;");
+                                         // ItemInHandRenderer
+        ClassTinkerers.addTransformation(mapC("class_759"), classNode -> {
             classNode.methods.forEach(methodNode -> {
-                if (!methodNode.name.equals(FabricLoader.getInstance().isDevelopmentEnvironment() ? "renderArmWithItem" : "method_3228"))
+                if (!methodNode.name.equals(renderArmWithItem))
                     return;
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                 var i = 0;
@@ -224,10 +262,10 @@ public class TFASM implements Runnable {
                             node instanceof FieldInsnNode fieldInsnNode &&
 
                             node.getOpcode() == Opcodes.GETSTATIC &&
+                                                        // Items
+                            equate(fieldInsnNode.owner, mapC("class_1802").replace('.', '/')) &&
 
-                            equate(fieldInsnNode.owner, resolver.mapClassName("intermediary", "net.minecraft.class_1802").replace('.', '/')) &&
-
-                            equate(fieldInsnNode.name, FabricLoader.getInstance().isDevelopmentEnvironment() ? "FILLED_MAP" : "field_8204")
+                            equate(fieldInsnNode.name, filledMap)
 
                     )
                         i = index + 1;
@@ -248,13 +286,24 @@ public class TFASM implements Runnable {
                 );
             });
         });
-        String clientLevelName = resolver.mapClassName("intermediary", "net.minecraft.class_638").replace('.', '/');
-        String minecraftClass = resolver.mapClassName("intermediary", "net.minecraft.class_310").replace('.', '/');
-        String mapSaveDataClass = resolver.mapClassName("intermediary", "net.minecraft.class_22").replace('.', '/');
-        String levelClass = resolver.mapClassName("intermediary", "net.minecraft.class_1937").replace('.', '/');
-        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_759"), classNode -> {
+                                 // ClientLevel
+        String clientLevelName = mapC("class_638").replace('.', '/');
+                                // Minecraft
+        String minecraftClass = mapC("class_310").replace('.', '/');
+                                  // MapItemSavedData
+        String mapSaveDataClass = mapC("class_22").replace('.', '/');
+                            // Level
+        String levelClass = mapC("class_1937").replace('.', '/');
+                           // ItemInHandRenderer.renderMap
+        String renderMap = mapM("class_759.method_3223(Lnet/minecraft/class_4587;Lnet/minecraft/class_4597;ILnet/minecraft/class_1799;)V");
+                           // ItemInHandRenderer.minecraft
+        String minecraft = mapF("class_759.field_4050:Lnet/minecraft/class_310;");
+                       // ItemInHandRenderer.level
+        String level = mapF("class_310.field_1687:Lnet/minecraft/class_638;");
+                                         // ItemInHandRenderer
+        ClassTinkerers.addTransformation(mapC("class_759"), classNode -> {
             classNode.methods.forEach(methodNode -> {
-                if (!methodNode.name.equals(FabricLoader.getInstance().isDevelopmentEnvironment() ? "renderMap" : "method_3223"))
+                if (!methodNode.name.equals(renderMap))
                     return;
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                 AbstractInsnNode insn = null;
@@ -277,8 +326,8 @@ public class TFASM implements Runnable {
                         ASM.listOf(
                                 new VarInsnNode(Opcodes.ALOAD, 4),
                                 new VarInsnNode(Opcodes.ALOAD, 0),
-                                new FieldInsnNode(Opcodes.GETFIELD, itemInHandRendererClass, FabricLoader.getInstance().isDevelopmentEnvironment() ? "minecraft" : "field_4050", "L" + minecraftClass +";"),
-                                new FieldInsnNode(Opcodes.GETFIELD, minecraftClass, FabricLoader.getInstance().isDevelopmentEnvironment() ? "level" : "field_1687", "L" + clientLevelName + ";"),
+                                new FieldInsnNode(Opcodes.GETFIELD, itemInHandRendererClass, minecraft, "L" + minecraftClass +";"),
+                                new FieldInsnNode(Opcodes.GETFIELD, minecraftClass, level, "L" + clientLevelName + ";"),
                                 new MethodInsnNode(
                                         Opcodes.INVOKESTATIC,
                                         "twilightforest/ASMHooks",
@@ -290,10 +339,12 @@ public class TFASM implements Runnable {
                 );
             });
         });
-        // MapItem
-        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_1806"), classNode -> {
+                                 // Block.appendHoverText
+        String appendHoverText = mapM("class_2248.method_9568(Lnet/minecraft/class_1799;Lnet/minecraft/class_1922;Ljava/util/List;Lnet/minecraft/class_1836;)V");
+                                         // MapItem
+        ClassTinkerers.addTransformation(mapC("class_1806"), classNode -> {
             classNode.methods.forEach(methodNode -> {
-                if (!methodNode.name.equals(FabricLoader.getInstance().isDevelopmentEnvironment() ? "appendHoverText" : "method_9568"))
+                if (!methodNode.name.equals(appendHoverText))
                     return;
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                 AbstractInsnNode insn = null;
@@ -327,16 +378,31 @@ public class TFASM implements Runnable {
                 );
             });
         });
-        // mount.js
-        // LocalPlayer
-        String inputField = FabricLoader.getInstance().isDevelopmentEnvironment() ? "input" : "field_3913";
-        String inputClass = resolver.mapClassName("intermediary", "net.minecraft.class_744").replace('.', '/');
-        String shiftKeyDownField = FabricLoader.getInstance().isDevelopmentEnvironment() ? "shiftKeyDown" : "field_3903";
-        String localPlayerClass = resolver.mapClassName("intermediary", "net.minecraft.class_746").replace('.', '/');
+    }
+
+    private static void mount() {
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-            ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_746"), classNode -> {
+                                // Input
+            String inputClass = mapC("class_744").replace('.', '/');
+                                  // Input.shiftKeyDown
+            String shiftKeyDown = mapF("class_744.field_3903:Z");
+                           // LocalPlayer.input
+            String input = mapF("class_746.field_3913:Lnet/minecraft/class_744;");
+                                      // LocalPlayer
+            String localPlayerClass = mapC("class_746").replace('.', '/');
+                                       // Player.wantsToStopRiding
+            String wantsToStopRiding = mapM("class_1657.method_21824()Z");
+                                 // Entity
+            String entityClass = mapC("class_1297").replace('.', '/');
+                              // Entity.rideTick
+            String rideTick = mapM("class_1297.method_5842()V");
+                                 // Entity.isPassenger
+            String isPassenger = mapM("class_1297.method_5765()Z");
+
+                                             // LocalPlayer
+            ClassTinkerers.addTransformation(mapC("class_746"), classNode -> {
                 classNode.methods.forEach(methodNode -> {
-                    if (!methodNode.name.equals(FabricLoader.getInstance().isDevelopmentEnvironment() ? "rideTick" : "method_5842"))
+                    if (!methodNode.name.equals(rideTick))
                         return;
                     var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                     instructions.insert(
@@ -346,27 +412,28 @@ public class TFASM implements Runnable {
                                     new FieldInsnNode(
                                             Opcodes.GETFIELD,
                                             localPlayerClass,
-                                            inputField, // input
+                                            input,
                                             "L" + inputClass + ";"
                                     ),
                                     new VarInsnNode(Opcodes.ALOAD, 0),
                                     new FieldInsnNode(
                                             Opcodes.GETFIELD,
                                             localPlayerClass,
-                                            inputField, // input
+                                            input,
                                             "L" + inputClass + ";"
                                     ),
                                     new FieldInsnNode(
                                             Opcodes.GETFIELD,
                                             inputClass,
-                                            shiftKeyDownField, // shiftKeyDown
+                                            shiftKeyDown,
                                             "Z"
                                     ),
                                     new VarInsnNode(Opcodes.ALOAD, 0),
                                     new MethodInsnNode(
                                             Opcodes.INVOKEVIRTUAL,
-                                            resolver.mapClassName("intermediary", "net.minecraft.class_1657").replace('.', '/'),
-                                            FabricLoader.getInstance().isDevelopmentEnvironment() ? "wantsToStopRiding" : "method_21824", // wantsToStopRiding
+                                            // Player
+                                            mapC("class_1657").replace('.', '/'),
+                                            wantsToStopRiding,
                                             "()Z",
                                             false
                                     ),
@@ -374,7 +441,7 @@ public class TFASM implements Runnable {
                                     new MethodInsnNode(
                                             Opcodes.INVOKEVIRTUAL,
                                             entityClass,
-                                            FabricLoader.getInstance().isDevelopmentEnvironment() ? "isPassenger" : "method_5765", // isPassenger
+                                            isPassenger,
                                             "()Z",
                                             false
                                     ),
@@ -388,7 +455,7 @@ public class TFASM implements Runnable {
                                     new FieldInsnNode(
                                             Opcodes.PUTFIELD,
                                             inputClass,
-                                            shiftKeyDownField, // shiftKeyDown
+                                            shiftKeyDown,
                                             "Z"
                                     )
                             )
@@ -396,9 +463,11 @@ public class TFASM implements Runnable {
                 });
             });
         }
-        // seed.js
-        // WorldGenSettings
-        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_5285"), classNode -> {
+    }
+
+    private static void seed() {
+                                         // WorldGenSettings
+        ClassTinkerers.addTransformation(mapC("class_5285"), classNode -> {
             classNode.methods.forEach(methodNode -> {
                 if ((!methodNode.name.equals("<init>")))
                     return;
@@ -419,10 +488,13 @@ public class TFASM implements Runnable {
                 );
             });
         });
-        // LevelStorageSource
-        ClassTinkerers.addTransformation(resolver.mapClassName("intermediary", "net.minecraft.class_32"), classNode -> {
+
+                                      // LevelStorageSource.readWorldGenSettings
+        String readWorldGenSettings = mapM("class_32.method_29010(Lcom/mojang/serialization/Dynamic;Lcom/mojang/datafixers/DataFixer;I)Lcom/mojang/datafixers/util/Pair;");
+                                         // LevelStorageSource
+        ClassTinkerers.addTransformation(mapC("class_32"), classNode -> {
             classNode.methods.forEach(methodNode -> {
-                if (!methodNode.name.equals(FabricLoader.getInstance().isDevelopmentEnvironment() ? "readWorldGenSettings" : "method_29010"))
+                if (!methodNode.name.equals(readWorldGenSettings))
                     return;
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
                 instructions.insertBefore(
@@ -441,7 +513,78 @@ public class TFASM implements Runnable {
         });
     }
 
-    public boolean equate(Object a, Object b) {
+    public static boolean equate(Object a, Object b) {
         return a.equals(b);
+    }
+
+    public static String prefix(String name) {
+        return "twilightforest:" + name.toLowerCase(Locale.ROOT);
+    }
+
+    /**
+     * Remap a class name from intermediary to the runtime name
+     * @param intermediaryName the intermediary name for the class alone, such as 'class_123'
+     * @return the fully qualified remapped name, such as 'net.minecraft.thing.Thing',
+     *         or the input with 'net.minecraft.' prepended if not found.
+     */
+    public static String mapC(String intermediaryName) {
+        return FabricLoader.getInstance().getMappingResolver()
+                .mapClassName("intermediary", "net.minecraft." + intermediaryName);
+    }
+
+    /**
+     * Remap a method name from intermediary to the runtime name
+     * @param name the intermediary name for the method, prefixed with its class, and suffixed with its descriptor in slash format.
+     *             ex: 'class_123.method_456(Lnet/minecraft/class_1959;Ljava/util/Map;D)I'
+     * @return the remapped name of the method. If not found, returns the method name alone.
+     *             ex: 'method_456'
+     */
+    public static String mapM(String name) {
+        int firstDot = name.indexOf('.');
+        // not found          // last character
+        if (firstDot == -1 || firstDot == name.length() - 1) {
+            throw new IllegalStateException("Invalid method name: " + name);
+        }
+        String className = name.substring(0, firstDot);
+        String methodAndDescriptor = name.substring(firstDot + 1);
+        int openParenthesis = methodAndDescriptor.indexOf('(');
+        if (openParenthesis == -1) {
+            throw new IllegalStateException("descriptor not found: " + methodAndDescriptor);
+        }
+        String method = methodAndDescriptor.substring(0, openParenthesis);
+        String descriptor = methodAndDescriptor.substring(openParenthesis);
+        if (descriptor.contains(".")) {
+            throw new IllegalStateException("descriptor should be in slash format");
+        }
+        return FabricLoader.getInstance().getMappingResolver()
+                .mapMethodName("intermediary", "net.minecraft." + className, method, descriptor);
+    }
+
+    /**
+     * Remap a field name from intermediary to the runtime name
+     * @param name the intermediary name for the field, prefixed with its class, and suffixed with its descriptor in slash format.
+     *             ex: 'class_123.field_456:Lnet/minecraft/class_789'
+     * @return the remapped name of the field. If not found, returns the field name alone.
+     *             ex: 'method_456'
+     */
+    public static String mapF(String name) {
+        int firstDot = name.indexOf('.');
+        // not found          // last character
+        if (firstDot == -1 || firstDot == name.length() - 1) {
+            throw new IllegalStateException("Invalid field name: " + name);
+        }
+        String className = name.substring(0, firstDot);
+        String fieldAndDescriptor = name.substring(firstDot + 1);
+        int colon = fieldAndDescriptor.indexOf(':');
+        if (colon == -1) {
+            throw new IllegalStateException("descriptor not found: " + fieldAndDescriptor);
+        }
+        String fieldName = fieldAndDescriptor.substring(0, colon);
+        String descriptor = fieldAndDescriptor.substring(colon + 1);
+        if (descriptor.contains(".")) {
+            throw new IllegalStateException("descriptor should be in slash format");
+        }
+        return FabricLoader.getInstance().getMappingResolver()
+                .mapFieldName("intermediary", "net.minecraft." + className, fieldName, descriptor);
     }
 }

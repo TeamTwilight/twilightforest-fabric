@@ -7,7 +7,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import twilightforest.TwilightForestMod;
-import twilightforest.item.ChainBlockItem;
 
 public class TFEnchantments {
 
@@ -19,5 +18,5 @@ public class TFEnchantments {
 	public static final RegistryObject<Enchantment> BLOCK_STRENGTH = ENCHANTMENTS.register("block_strength", () -> new BlockStrengthEnchantment(Enchantment.Rarity.RARE));
 	public static final RegistryObject<Enchantment> DESTRUCTION = ENCHANTMENTS.register("destruction", () -> new DestructionEnchantment(Enchantment.Rarity.RARE));
 
-	public static final EnchantmentCategory BLOCK_AND_CHAIN = ClassTinkerers.getEnum(EnchantmentCategory.class, "twilightforest_block_and_chain");
+	public static final EnchantmentCategory BLOCK_AND_CHAIN = ClassTinkerers.getEnum(EnchantmentCategory.class, "TWILIGHTFOREST_BLOCK_AND_CHAIN");
 }
