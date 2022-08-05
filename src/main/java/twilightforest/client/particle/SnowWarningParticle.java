@@ -33,7 +33,7 @@ public class SnowWarningParticle extends SnowParticle {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public record ExtendedFactory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override

@@ -25,12 +25,12 @@ public class EntityHelper implements IIngredientHelper<EntityType> {
 
 	@Override
 	public String getUniqueId(EntityType type, UidContext context) {
-		return Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(type)).toString();
+		return Objects.requireNonNull(Registry.ENTITY_TYPE.getKey(type)).toString();
 	}
 
 	@Override
 	public ResourceLocation getResourceLocation(EntityType type) {
-		return Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(type));
+		return Objects.requireNonNull(Registry.ENTITY_TYPE.getKey(type));
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class EntityHelper implements IIngredientHelper<EntityType> {
 		if (type == null) {
 			return "null";
 		}
-		ResourceLocation name = ForgeRegistries.ENTITY_TYPES.getKey(type);
+		ResourceLocation name = Registry.ENTITY_TYPE.getKey(type);
 		if (name == null) {
 			return "unnamed sadface :(";
 		}

@@ -72,8 +72,8 @@ dependencies {
 //    modCompileOnly("slimeknights.tconstruct:TConstruct:${project.minecraft_version}-${project.tcon_version}") { exclude(group: "io.github.fabricators_of_create") }
     modImplementation("dev.emi:trinkets:${project.trinkets_version}")
     modLocalRuntime("dev.architectury:architectury-fabric:${project.architectury_version}") { exclude(group: "net.fabricmc.fabric-api") } // for REI
-    modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { exclude(group: "net.fabricmc.fabric-api") }
-    modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { exclude(group: "net.fabricmc.fabric-api") }
+    modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { transitive = false }
+    modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
 }
 
 loom {

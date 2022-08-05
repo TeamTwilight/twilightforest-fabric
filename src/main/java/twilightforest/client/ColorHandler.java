@@ -1,7 +1,6 @@
 package twilightforest.client;
 
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
@@ -12,7 +11,6 @@ import net.minecraft.world.level.block.Blocks;
 import twilightforest.block.AuroraBrickBlock;
 import twilightforest.block.HollowLogClimbable;
 import twilightforest.enums.HollowLogVariants;
-import twilightforest.compat.TFCompat;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFBlocks;
 import twilightforest.item.ArcticArmorItem;
@@ -377,7 +375,7 @@ public final class ColorHandler {
 	public static void registerItemColors() {
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
 					if (stack.getItem() instanceof BlockItem blocc)
-						return blockColors.getColor(blocc.getBlock().defaultBlockState(), null, null, tintIndex);
+						return ColorProviderRegistry.BLOCK.get(blocc.getBlock()).getColor(blocc.getBlock().defaultBlockState(), null, null, tintIndex);
 					return 0xFFFFFF;
 				},
 				TFBlocks.AURORA_BLOCK.get(), TFBlocks.AURORA_PILLAR.get(), TFBlocks.AURORA_SLAB.get(), TFBlocks.AURORALIZED_GLASS.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get(),

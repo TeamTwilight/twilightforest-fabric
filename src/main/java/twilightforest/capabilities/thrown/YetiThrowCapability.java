@@ -1,9 +1,9 @@
 package twilightforest.capabilities.thrown;
 
+import io.github.fabricators_of_create.porting_lib.extensions.INBTSerializable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 

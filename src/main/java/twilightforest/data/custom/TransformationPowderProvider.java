@@ -89,6 +89,6 @@ public abstract class TransformationPowderProvider implements DataProvider {
 	}
 
 	public void addTwoWayTransform(EntityType<?> from, EntityType<?> to) {
-		builders.put(ForgeRegistries.ENTITY_TYPES.getKey(from).getPath() + "_to_" + ForgeRegistries.ENTITY_TYPES.getKey(to).getPath(), Triple.of(from, to, true));
+		builders.put(Registry.ENTITY_TYPE.getKey(from).getPath() + "_to_" + Registry.ENTITY_TYPE.getKey(to).getPath(), Triple.of(from, to, true));
 	}
 }

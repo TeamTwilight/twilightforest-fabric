@@ -1,6 +1,5 @@
 package twilightforest.entity.passive;
 
-import io.github.fabricators_of_create.porting_lib.entity.StepHeightEntity;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -13,12 +12,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import twilightforest.init.TFSounds;
 
-public class Raven extends FlyingBird implements StepHeightEntity {
+public class Raven extends FlyingBird {
 
 	private PanicGoal panic;
 
 	public Raven(EntityType<? extends Raven> type, Level world) {
 		super(type, world);
+		this.maxUpStep = 1.0F;
 	}
 
 	@Override
@@ -35,11 +35,6 @@ public class Raven extends FlyingBird implements StepHeightEntity {
 		return TinyBird.registerAttributes()
 				.add(Attributes.MAX_HEALTH, 10.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.2D);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
 	}
 
 	@Override

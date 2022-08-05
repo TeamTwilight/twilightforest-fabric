@@ -1,6 +1,5 @@
 package twilightforest.entity.passive;
 
-import io.github.fabricators_of_create.porting_lib.entity.StepHeightEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -29,13 +28,14 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.DwarfRabbitVariant;
 
-public class DwarfRabbit extends Animal implements StepHeightEntity {
+public class DwarfRabbit extends Animal {
 
 	private static final EntityDataAccessor<String> TYPE = SynchedEntityData.defineId(DwarfRabbit.class, EntityDataSerializers.STRING);
 
 	public DwarfRabbit(EntityType<? extends DwarfRabbit> type, Level world) {
 		super(type, world);
 		this.setBunnyType(DwarfRabbitVariant.getVariantId(DwarfRabbitVariant.getRandomVariant(this.getRandom())));
+		this.maxUpStep = 1.0F;
 	}
 
 	@Override
@@ -59,11 +59,6 @@ public class DwarfRabbit extends Animal implements StepHeightEntity {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 3.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.3D);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
 	}
 
 	@Nullable

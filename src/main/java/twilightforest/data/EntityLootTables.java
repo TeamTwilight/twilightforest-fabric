@@ -658,7 +658,7 @@ public class EntityLootTables extends EntityLoot {
 
 //	@Override
 	public Set<EntityType<?>> getKnownEntities() {
-		return ForgeRegistries.ENTITY_TYPES.getValues().stream().filter(entities -> ForgeRegistries.ENTITY_TYPES.getKey(entities).getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toSet());
+		return Registry.ENTITY_TYPE.getValues().stream().filter(entities -> Registry.ENTITY_TYPE.getKey(entities).getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toSet());
 	}
 
 	@Override

@@ -1,10 +1,7 @@
 package twilightforest.capabilities.thrown;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateThrownPacket;
@@ -64,7 +61,7 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 
 	private void sendUpdatePacket() {
 		if (!this.host.getLevel().isClientSide()) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.host), new UpdateThrownPacket(this.host, this));
+			TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateThrownPacket(this.host, this), this.host);
 		}
 	}
 

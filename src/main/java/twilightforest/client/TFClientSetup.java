@@ -31,7 +31,6 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.legacy.*;
-import twilightforest.compat.TFCompat;
 import twilightforest.compat.TrinketsCompat;
 import twilightforest.init.*;
 
@@ -99,7 +98,7 @@ public class TFClientSetup implements ClientModInitializer {
             registerWoodType(TFBlocks.MINING);
             registerWoodType(TFBlocks.SORTING);
 
-			if(FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
+			if(FabricLoader.getInstance().isModLoaded("trinkets")) {
 				ClientLifecycleEvents.CLIENT_STARTED.register(TrinketsCompat::registerCurioRenderers);
 			}
 //        });

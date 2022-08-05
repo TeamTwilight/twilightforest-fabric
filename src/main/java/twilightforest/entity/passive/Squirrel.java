@@ -1,6 +1,5 @@
 package twilightforest.entity.passive;
 
-import io.github.fabricators_of_create.porting_lib.entity.StepHeightEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,12 +19,13 @@ import net.minecraft.world.level.material.Material;
 
 import org.jetbrains.annotations.Nullable;
 
-public class Squirrel extends Animal implements StepHeightEntity {
+public class Squirrel extends Animal {
 
 	protected static final Ingredient SEEDS = Ingredient.of(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public Squirrel(EntityType<? extends Squirrel> type, Level world) {
 		super(type, world);
+		this.maxUpStep = 1.0F;
 	}
 
 	@Override
@@ -48,11 +48,6 @@ public class Squirrel extends Animal implements StepHeightEntity {
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.3D);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 1.0F;
 	}
 
 	@Override

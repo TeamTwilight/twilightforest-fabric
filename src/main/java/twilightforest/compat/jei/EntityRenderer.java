@@ -79,7 +79,7 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 						RenderSystem.applyModelViewMatrix();
 						return;
 					} catch (Exception e) {
-						TwilightForestMod.LOGGER.error("Error drawing entity " + ForgeRegistries.ENTITY_TYPES.getKey(type), e);
+						TwilightForestMod.LOGGER.error("Error drawing entity " + Registry.ENTITY_TYPE.getKey(type), e);
 						IGNORED_ENTITIES.add(type);
 						this.ENTITY_MAP.remove(type);
 					}
@@ -105,7 +105,7 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 		List<Component> tooltip = new ArrayList<>();
 		tooltip.add(type.getDescription());
 		if (flag.isAdvanced()) {
-			tooltip.add(Component.literal(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(type)).toString()).withStyle(ChatFormatting.DARK_GRAY));
+			tooltip.add(Component.literal(Objects.requireNonNull(Registry.ENTITY_TYPE.getKey(type)).toString()).withStyle(ChatFormatting.DARK_GRAY));
 		}
 		return tooltip;
 	}

@@ -3,6 +3,7 @@ package twilightforest.client.model;
 import com.mojang.math.Transformation;
 import com.mojang.math.Vector3f;
 import io.github.fabricators_of_create.porting_lib.model.SimpleModelState;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -12,6 +13,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.block.PatchBlock;
 
 import org.jetbrains.annotations.Nullable;

@@ -2,6 +2,7 @@ package twilightforest.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.fabricators_of_create.porting_lib.event.client.*;
+import io.github.fabricators_of_create.porting_lib.event.client.CameraSetupCallback.CameraInfo;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
@@ -26,13 +27,11 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.*;
-import net.minecraft.core.Registry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -42,7 +41,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
@@ -57,7 +56,6 @@ import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
-import twilightforest.compat.TFCompat;
 import twilightforest.compat.TrinketsCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
@@ -87,11 +85,9 @@ public class TFClientEvents {
 		ClientTickEvents.END_CLIENT_TICK.register(TFClientEvents::clientTick);
 		ItemTooltipCallback.EVENT.register(TFClientEvents::tooltipEvent);
 		FOVModifierCallback.PARTIAL_FOV.register(TFClientEvents::FOVUpdate);
-		LivingEntityRenderEvents.PRE.register((entity, renderer, partialRenderTick, matrixStack, buffers, light) -> {
-			TFClientEvents.unrenderHeadWithTrophies(entity, renderer, partialRenderTick, matrixStack, buffers, light);
-			return false;
-		});
 		LivingEntityRenderEvents.POST.register(TFClientEvents::unrenderHeadWithTrophies);
+		ItemTooltipCallback.EVENT.register(TFClientEvents::translateBookAuthor);
+		CameraSetupCallback.EVENT.register(TFClientEvents::camera);
 	}
 
 	public static class ModBusEvents {
@@ -113,7 +109,7 @@ public class TFClientEvents {
 
 			fullbrightItem(models, TFItems.RED_THREAD);
 
-			fullbrightBlock(event, TFBlocks.FIERY_BLOCK);
+			fullbrightBlock(models, TFBlocks.FIERY_BLOCK);
 		}
 
 		private static void fullbrightItem(Map<ResourceLocation, BakedModel> models, RegistryObject<Item> item) {
@@ -207,8 +203,7 @@ public class TFClientEvents {
 	/**
 	 * Render effects in first-person perspective
 	 */
-	@SubscribeEvent
-	public static void renderWorldLast(RenderLevelStageEvent event) {
+	public static void renderWorldLast(WorldRenderContext context) {
 		// fabric: we already render and the very end
 //		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) { // after particles says its best for special rendering effects, and thats what I consider this
 			if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
@@ -261,9 +256,7 @@ public class TFClientEvents {
 	private static float intensity = 0.0F;
 
 	public static void clientTick(Minecraft client) {
-		 // FIXME PORT
-		// if (Minecraft.getInstance().isPaused()) return;
-		if (event.phase != TickEvent.Phase.END) return;
+		 if (Minecraft.getInstance().isPaused()) return;
 		Minecraft mc = Minecraft.getInstance();
 		float partial = mc.getFrameTime();
 
@@ -306,14 +299,15 @@ public class TFClientEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void camera(ViewportEvent.ComputeCameraAngles event) {
+	public static boolean camera(CameraInfo info) {
 		if (TFConfig.CLIENT_CONFIG.firstPersonEffects.get() && !Minecraft.getInstance().isPaused() && intensity > 0 && Minecraft.getInstance().player != null) {
-			event.setYaw((float) Mth.lerp(event.getPartialTick(), event.getYaw(), event.getYaw() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity));
-			event.setPitch((float) Mth.lerp(event.getPartialTick(), event.getPitch(), event.getPitch() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity));
-			event.setRoll((float) Mth.lerp(event.getPartialTick(), event.getRoll(), event.getRoll() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity));
+
+			info.yaw = (float) Mth.lerp(info.partialTicks, info.yaw, info.yaw + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity);
+			info.pitch = (float) Mth.lerp(info.partialTicks, info.pitch, info.pitch + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity);
+			info.roll = (float) Mth.lerp(info.partialTicks, info.roll, info.roll + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * intensity);
 			intensity = 0F;
 		}
+		return false; // we just modify, don't cancel
 	}
 
 	private static final MutableComponent WIP_TEXT_0 = Component.translatable("twilightforest.misc.wip0").setStyle(Style.EMPTY.withColor(ChatFormatting.RED));
@@ -360,19 +354,17 @@ public class TFClientEvents {
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
-		if (FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			return TrinketsCompat.isTrophyCurioEquipped(entity) || TrinketsCompat.isSkullCurioEquipped(entity);
 		}
 		return false;
 	}
 
-	@SubscribeEvent
-	public static void translateBookAuthor(ItemTooltipEvent event) {
-		ItemStack stack = event.getItemStack();
+	public static void translateBookAuthor(ItemStack stack, TooltipFlag context, List<Component> lines) {
 		if (stack.getItem() instanceof WrittenBookItem && stack.hasTag()) {
 			CompoundTag tag = stack.getOrCreateTag();
 			if (tag.contains(TwilightForestMod.ID + ":book")) {
-				List<Component> components = event.getToolTip();
+				List<Component> components = lines;
 				for (Component component : components) {
 					if (component.toString().contains("book.byAuthor")) {
 						components.set(components.indexOf(component), (Component.translatable("book.byAuthor")

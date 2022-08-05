@@ -1,6 +1,5 @@
 package twilightforest.entity.monster;
 
-import io.github.fabricators_of_create.porting_lib.entity.StepHeightEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
@@ -21,10 +20,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import twilightforest.init.TFSounds;
 
-public class MosquitoSwarm extends Monster implements StepHeightEntity {
+public class MosquitoSwarm extends Monster {
 
 	public MosquitoSwarm(EntityType<? extends MosquitoSwarm> type, Level world) {
 		super(type, world);
+		this.maxUpStep = 2.1F;
 	}
 
 	@Override
@@ -41,11 +41,6 @@ public class MosquitoSwarm extends Monster implements StepHeightEntity {
 				.add(Attributes.MAX_HEALTH, 12.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.23D)
 				.add(Attributes.ATTACK_DAMAGE, 3.0D);
-	}
-
-	@Override
-	public float getStepHeight() {
-		return 2.1F;
 	}
 
 	@Override
