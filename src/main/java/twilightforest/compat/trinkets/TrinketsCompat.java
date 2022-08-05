@@ -1,10 +1,11 @@
-package twilightforest.compat;
+package twilightforest.compat.trinkets;
 
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.Trinket;
 import dev.emi.trinkets.api.TrinketEnums;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
+import dev.emi.trinkets.api.event.TrinketDropCallback;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
@@ -16,10 +17,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.block.CritterBlock;
-import twilightforest.compat.trinkets.CharmOfKeepingRenderer;
-import twilightforest.compat.trinkets.CharmOfLife1NecklaceRenderer;
-import twilightforest.compat.trinkets.CharmOfLife2NecklaceRenderer;
-import twilightforest.compat.trinkets.CurioHeadRenderer;
 import twilightforest.events.CharmEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -27,18 +24,10 @@ import twilightforest.item.CuriosCharmItem;
 import twilightforest.item.SkullCandleItem;
 import twilightforest.item.TrophyItem;
 
-public class TrinketsCompat extends TFCompat {
+public class TrinketsCompat {
 
-	public TrinketsCompat() {
-		super("Trinkets");
-	}
-
-	@Override
-	protected void init() {
-	}
-
-	@Override
-	protected void postInit() {
+	public static void init() {
+		TrinketDropCallback.EVENT.register(TrinketsCompat::keepCurios);
 		RegistryEntryAddedCallback.event(Registry.ITEM).register((rawId, id, object) -> {
 			if(object instanceof BlockItem blockItem && blockItem.getBlock() instanceof CritterBlock)
 				TrinketsCompat.setupCuriosCapability(object);
@@ -49,12 +38,6 @@ public class TrinketsCompat extends TFCompat {
 			if (object instanceof SkullCandleItem)
 				TrinketsCompat.setupCuriosCapability(object);
 		});
-	}
-
-	@Override
-	protected void handleIMCs() {
-//		InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().build());
-//		InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HEAD.getMessageBuilder().build());
 	}
 
 	public static void setupCuriosCapability(Item item) {

@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.mojang.brigadier.CommandDispatcher;
 import dev.emi.trinkets.api.event.TrinketDropCallback;
 import io.github.fabricators_of_create.porting_lib.event.common.AddPackFindersCallback;
-import io.github.fabricators_of_create.porting_lib.util.PathResourcePack;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
@@ -37,7 +36,7 @@ import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.curios.CuriosCompat;
-import twilightforest.compat.TrinketsCompat;
+import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.events.*;
 import twilightforest.init.*;
@@ -84,7 +83,6 @@ public class TwilightForestMod implements ModInitializer {
 			ModLoadingContext.registerConfig(ID, ModConfig.Type.CLIENT, specPair.getRight());
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
-		ModConfigEvent.RELOADING.register(TFConfig::onConfigChanged);
 
 		CommandRegistrationCallback.EVENT.register(this::registerCommands);
 
@@ -123,12 +121,12 @@ public class TwilightForestMod implements ModInitializer {
 		TFBlocks.registerItemblocks();
 		TFEntities.init();
 
-		DwarfRabbitVariant.DWARF_RABBITS.register(modbus);
-		TinyBirdVariant.TINY_BIRDS.register(modbus);
+		DwarfRabbitVariant.DWARF_RABBITS.register();
+		TinyBirdVariant.TINY_BIRDS.register();
 
 		TFStructures.register();
-		if (FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
-			TrinketDropCallback.EVENT.register(TrinketsCompat::keepCurios);
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			TrinketsCompat.init();
 		}
 		ConfiguredWorldCarvers.register();
 		TFConfiguredFeatures.init();
