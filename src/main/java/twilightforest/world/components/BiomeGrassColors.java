@@ -36,14 +36,14 @@ public class BiomeGrassColors {
 		return color;
 	}
 
-	public static final GrassColorModifier ENCHANTED_FOREST = get("enchanted_forest");
+	public static final GrassColorModifier ENCHANTED_FOREST = get("TWILIGHTFOREST_ENCHANTED_FOREST");
 
 	// FIXME Flat color, resolve
-	public static final GrassColorModifier SWAMP = get("swamp");
+	public static final GrassColorModifier SWAMP = get("TWILIGHTFOREST_SWAMP");
 	// FIXME Flat color, resolve
-	public static final GrassColorModifier DARK_FOREST = get("dark_forest");
-	public static final GrassColorModifier DARK_FOREST_CENTER = get("dark_forest_center");
-	public static final GrassColorModifier SPOOKY_FOREST = get("spooky_forest");
+	public static final GrassColorModifier DARK_FOREST = get("TWILIGHTFOREST_DARK_FOREST");
+	public static final GrassColorModifier DARK_FOREST_CENTER = get("TWILIGHTFOREST_DARK_FOREST_CENTER");
+	public static final GrassColorModifier SPOOKY_FOREST = get("TWILIGHTFOREST_SPOOKY_FOREST");
 
 	public static int blendColors(int a, int b, double ratio) {
 		int mask1 = 0x00FF00FF;
@@ -57,6 +57,6 @@ public class BiomeGrassColors {
 	}
 
 	private static GrassColorModifier get(String name) {
-		return ClassTinkerers.getEnum(GrassColorModifier.class, TwilightForestMod.prefix(name).toString());
+		return ClassTinkerers.getEnum(GrassColorModifier.class, name);
 	}
 }
