@@ -254,10 +254,10 @@ public class TFASM implements Runnable {
                 if (!methodNode.name.equals(renderArmWithItem))
                     return;
                 var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                var i = 0;
+                var i = -1;
                 for (var index = instructions.size() - 1; index > 0; index--) {
                     var /*org.objectweb.asm.tree.FieldInsnNode*/ node = instructions.get(index);
-                    if (i == 0 &&
+                    if (i == -1 &&
 
                             node instanceof FieldInsnNode fieldInsnNode &&
 
@@ -271,6 +271,12 @@ public class TFASM implements Runnable {
                         i = index + 1;
 
                 }
+
+                if (i == -1) {
+                    // Must be optifine... Optifine checks for instanceof MapItem, so this patch won't be needed anyway.
+                    return;
+                }
+
                 instructions.insert(
                         instructions.get(i),
                         ASM.listOf(
@@ -286,6 +292,31 @@ public class TFASM implements Runnable {
                 );
             });
         });
+
+                                // ItemFrame.getFramedMapId
+        String getFramedMapId = mapM("class_1533.method_43272()Ljava/util/OptionalInt;");
+                                         // ItemFrame
+        ClassTinkerers.addTransformation(mapC("class_1533"), classNode -> {
+            classNode.methods.forEach(methodNode -> {
+                if (!methodNode.name.equals(getFramedMapId))
+                    return;
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insertBefore(
+                        ASM.findFirstInstruction(methodNode, Opcodes.IFEQ),
+                        ASM.listOf(
+                                new VarInsnNode(Opcodes.ALOAD, 1),
+                                new MethodInsnNode(
+                                        Opcodes.INVOKESTATIC,
+                                        "twilightforest/ASMHooks",
+                                        "shouldMapRender",
+                                        "(ZL" + itemStackClass + ";)Z",
+                                        false
+                                )
+                        )
+                );
+            });
+        });
+
                                  // ClientLevel
         String clientLevelName = mapC("class_638").replace('.', '/');
                                 // Minecraft
