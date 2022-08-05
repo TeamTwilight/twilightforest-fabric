@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.passive.QuestRam;
 
@@ -73,6 +74,7 @@ public class QuestRamEatWoolGoal extends Goal {
 				if (this.ram.distanceToSqr(this.targetItem.position()) < 6.25D && this.ram.tryAccept(this.targetItem.getItem())) {
 					//consume the wool
 					this.targetItem.discard();
+					this.ram.gameEvent(GameEvent.EAT);
 				}
 			}
 		}

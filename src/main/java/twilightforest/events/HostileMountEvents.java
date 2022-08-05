@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import twilightforest.entity.IHostileMount;
+import twilightforest.init.TFDamageSources;
 
 public class HostileMountEvents {
 
@@ -27,7 +28,12 @@ public class HostileMountEvents {
 		if (living instanceof Player && isRidingUnfriendly(living) && damageSource == DamageSource.IN_WALL) {
 			return 0;
 		}
-		return amount;
+
+		if (damageSource == DamageSource.FALL && living.getCapability(CapabilityList.YETI_THROWN).map(YetiThrowCapability::getThrown).orElse(false)) {
+			float amount = event.getAmount();
+			event.setCanceled(true);
+			living.hurt(TFDamageSources.yeeted(living.getCapability(CapabilityList.YETI_THROWN).resolve().get().getThrower()), amount);
+		}
 	}
 
 	public static void entityTeleports(EntityTeleportEvent event) {

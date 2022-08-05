@@ -2,6 +2,7 @@ package twilightforest.entity.ai.goal;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.entity.SpikeBlock;
 import twilightforest.entity.monster.BlockChainGoblin;
 
@@ -39,5 +40,6 @@ public class ThrowSpikeBlockGoal extends Goal {
 	public void start() {
 		this.attacker.setThrowing(true);
 		this.cooldown = 100 + this.attacker.getLevel().getRandom().nextInt(100);
+		this.attacker.gameEvent(GameEvent.PROJECTILE_SHOOT);
 	}
 }

@@ -27,7 +27,6 @@ public class TFStructureDecorator {
 	public StructurePiece.BlockSelector randomBlocks = new StrongholdStones();
 
 	public static String getDecoString(TFStructureDecorator deco) {
-//TODO: Structure Disabled
 		if (deco instanceof StructureDecoratorDarkTower) {
 			return "DecoDarkTower";
 		}
@@ -48,7 +47,6 @@ public class TFStructureDecorator {
 	}
 
 	public static TFStructureDecorator getDecoFor(String decoString) {
-//TODO: Structure Disabled
 		if (decoString.equals("DecoDarkTower")) {
 			return new StructureDecoratorDarkTower();
 		}

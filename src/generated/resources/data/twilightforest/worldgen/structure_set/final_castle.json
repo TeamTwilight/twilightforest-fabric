@@ -1,7 +1,8 @@
 {
   "placement": {
     "type": "twilightforest:forced_landmark",
-    "landmark_set": "final_castle"
+    "landmark_set": "final_castle",
+    "scan_elevation": 256
   },
   "structures": [
     {

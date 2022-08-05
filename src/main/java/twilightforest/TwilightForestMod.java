@@ -36,11 +36,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.TFCompat;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.compat.TrinketsCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.events.*;
 import twilightforest.init.*;
+import twilightforest.init.custom.DwarfRabbitVariant;
+import twilightforest.init.custom.TinyBirdVariant;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
@@ -56,7 +58,6 @@ import java.util.function.Consumer;
 
 public class TwilightForestMod implements ModInitializer {
 
-	// TODO: might be a good idea to find proper spots for all of these? also remove redundants
 	public static final String ID = "twilightforest";
 
 	private static final String MODEL_DIR = "textures/model/";
@@ -122,14 +123,8 @@ public class TwilightForestMod implements ModInitializer {
 		TFBlocks.registerItemblocks();
 		TFEntities.init();
 
-//		if(FabricLoader.getInstance().isModLoaded(TFCompat.UNDERGARDEN_ID)) {
-//			UndergardenCompat.ENTITIES.register();
-//		}
-//
-//		if(FabricLoader.getInstance().isModLoaded(TFCompat.TCON_ID)) {
-//			TConCompat.FLUIDS.register();
-//			TConCompat.MODIFIERS.register();
-//		}
+		DwarfRabbitVariant.DWARF_RABBITS.register(modbus);
+		TinyBirdVariant.TINY_BIRDS.register(modbus);
 
 		TFStructures.register();
 		if (FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
@@ -141,7 +136,6 @@ public class TwilightForestMod implements ModInitializer {
 		TFStructureProcessors.init();
 
 
-		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new BiomeGrassColors();
 	}
 
@@ -169,14 +163,12 @@ public class TwilightForestMod implements ModInitializer {
 									() -> pack, metadataSection, Pack.Position.TOP, PackSource.BUILT_IN)));
 				}
 			}
-		}
-		catch(IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
 
 	public static void registerSerializers() {
-			//TODO find a better place for these? they work fine here but idk
 			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
 
@@ -184,34 +176,15 @@ public class TwilightForestMod implements ModInitializer {
 	}
 
 	public void sendIMCs() {
-		TFCompat.sendIMCs();
+		if (ModList.get().isLoaded("curios")) {
+			CuriosCompat.handleCuriosIMCs();
+		}
 	}
 
 	public static void init() {
 		TFPacketHandler.init();
 		TFAdvancements.init();
 
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
-			try {
-				TFCompat.initCompat();
-			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
-				LOGGER.error("Had an error loading init compatibility!");
-				LOGGER.catching(e.fillInStackTrace());
-			}
-		}
-
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
-			try {
-				TFCompat.postInitCompat();
-			} catch (Exception e) {
-				TFConfig.COMMON_CONFIG.doCompat.set(false);
-				LOGGER.error("Had an error loading postInit compatibility!");
-				LOGGER.catching(e.fillInStackTrace());
-			}
-		}
-
-		// TFConfig.build(); FIXME Loading Screen disabled
 		BlockSpikeFeature.loadStalactites();
 
 //		evt.enqueueWork(() -> {

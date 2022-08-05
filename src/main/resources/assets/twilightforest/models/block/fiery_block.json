@@ -1,83 +1,62 @@
 {
-  "display": {
-    "gui": {
-      "rotation": [ 30, 225, 0 ],
-      "translation": [ 0, 0, 0],
-      "scale":[ 0.625, 0.625, 0.625 ]
-    },
-    "ground": {
-      "rotation": [ 0, 0, 0 ],
-      "translation": [ 0, 3, 0],
-      "scale":[ 0.25, 0.25, 0.25 ]
-    },
-    "fixed": {
-      "rotation": [ 0, 0, 0 ],
-      "translation": [ 0, 0, 0],
-      "scale":[ 0.5, 0.5, 0.5 ]
-    },
-    "thirdperson_righthand": {
-      "rotation": [ 75, 45, 0 ],
-      "translation": [ 0, 2.5, 0],
-      "scale": [ 0.375, 0.375, 0.375 ]
-    },
-    "firstperson_righthand": {
-      "rotation": [ 0, 45, 0 ],
-      "translation": [ 0, 0, 0 ],
-      "scale": [ 0.40, 0.40, 0.40 ]
-    },
-    "firstperson_lefthand": {
-      "rotation": [ 0, 225, 0 ],
-      "translation": [ 0, 0, 0 ],
-      "scale": [ 0.40, 0.40, 0.40 ]
-    }
-  },
-  "ambientocclusion": false,
-  "render_type": "minecraft:translucent",
-  "textures": {
-    "particle": "twilightforest:block/fiery_block",
-    "all": "twilightforest:block/fiery_block_inner",
-    "over": "twilightforest:block/fiery_pattern"
-  },
-  "elements": [
-    {
-      "from": [  0,  1,  0 ],
-      "to":   [ 16, 15, 16 ],
-      "shade": false,
-      "faces": {
-        "down":  { "texture": "#all", "tintindex": 0 },
-        "up":    { "texture": "#all", "tintindex": 0 }
-      }
-    },
-    {
-      "from": [  1,  0,  0 ],
-      "to":   [ 15, 16, 16 ],
-      "shade": false,
-      "faces": {
-        "west":  { "texture": "#all", "tintindex": 0 },
-        "east":  { "texture": "#all", "tintindex": 0 }
-      }
-    },
-    {
-      "from": [  0,  0,  1 ],
-      "to":   [ 16, 16, 15 ],
-      "shade": false,
-      "faces": {
-        "north": { "texture": "#all", "tintindex": 0 },
-        "south": { "texture": "#all", "tintindex": 0 }
-      }
-    },
-    {
-      "from": [ 15.99, 15.99, 15.99 ],
-      "to":   [  0.01,  0.01,  0.01 ],
-      "shade": false,
-      "faces": {
-        "down":  { "texture": "#over", "tintindex": 1, "cullface": "up" },
-        "up":    { "texture": "#over", "tintindex": 1, "cullface": "down" },
-        "north": { "texture": "#over", "tintindex": 1, "cullface": "south" },
-        "south": { "texture": "#over", "tintindex": 1, "cullface": "north" },
-        "west":  { "texture": "#over", "tintindex": 1, "cullface": "east" },
-        "east":  { "texture": "#over", "tintindex": 1, "cullface": "west" }
-      }
-    }
-  ]
+	"ambientocclusion": false,
+	"textures": {
+		"all": "twilightforest:block/fiery_block_inner",
+		"over": "twilightforest:block/fiery_pattern",
+		"particle": "twilightforest:block/fiery_block"
+	},
+	"elements": [
+		{
+			"from": [1, 1, 1],
+			"to": [15, 15, 15],
+			"shade": false,
+			"faces": {
+				"north": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0},
+				"east": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0},
+				"south": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0},
+				"west": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0},
+				"up": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0},
+				"down": {"uv": [1, 1, 15, 15], "texture": "#all", "tintindex": 0}
+			}
+		},
+		{
+			"from": [15.99, 15.99, 15.99],
+			"to": [0.01, 0.01, 0.01],
+			"shade": false,
+			"faces": {
+				"north": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "south", "tintindex": 1},
+				"east": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "west", "tintindex": 1},
+				"south": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "north", "tintindex": 1},
+				"west": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "east", "tintindex": 1},
+				"up": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "down", "tintindex": 1},
+				"down": {"uv": [15.99, 15.99, 0.01, 0.01], "texture": "#over", "cullface": "up", "tintindex": 1}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 225, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"scale": [0.625, 0.625, 0.625]
+		},
+		"fixed": {
+			"scale": [0.5, 0.5, 0.5]
+		}
+	}
 }

@@ -10,11 +10,12 @@ public class TFPacketHandler {
 	private static final String PROTOCOL_VERSION = "2";
 	public static final SimpleChannel CHANNEL = new SimpleChannel(TwilightForestMod.prefix("channel"));
 
-	@SuppressWarnings("UnusedAssignment")
+	@SuppressWarnings({"UnusedAssignment", "Convert2Lambda", "Anonymous2MethodRef"})
 	public static void init() {
 		CHANNEL.initServerListener();
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> CHANNEL::initClientListener);
 		int id = 0;
+		// FIXME PORT
 		CHANNEL.registerS2CPacket(AreaProtectionPacket.class, id++);
 		CHANNEL.registerS2CPacket(ChangeBiomePacket.class, id++);
 		CHANNEL.registerS2CPacket(EnforceProgressionStatusPacket.class, id++);

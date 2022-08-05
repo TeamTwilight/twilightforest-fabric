@@ -26,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
@@ -208,6 +209,8 @@ public class UpperGoblinKnight extends Monster {
 		if (!inBox.isEmpty()) {
 			this.playSound(SoundEvents.PLAYER_ATTACK_CRIT, getSoundVolume(), getVoicePitch());
 		}
+
+		this.gameEvent(GameEvent.HIT_GROUND);
 	}
 
 	@Environment(EnvType.CLIENT)

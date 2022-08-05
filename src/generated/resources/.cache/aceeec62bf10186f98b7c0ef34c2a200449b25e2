@@ -1,4 +1,4 @@
-// 1.19	2022-07-11T00:03:18.7953106	Twilight Forest Block Tags
+// 1.19.1	2022-07-29T16:35:20.7668599	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -11,6 +11,7 @@ ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.js
 82ad1b0beb97d202d619464e397341cab3fc4ea1 data/forge/tags/blocks/storage_blocks.json
 82ad1b0beb97d202d619464e397341cab3fc4ea1 data/minecraft/tags/blocks/beacon_base_blocks.json
 421e214e66436fb5f6d5903b7cdce6c73e7c4ef8 data/minecraft/tags/blocks/climbable.json
+ae78e21d1c31cc73a6963c28dc434ec41063c9f9 data/minecraft/tags/blocks/dampens_vibrations.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/blocks/dirt.json
 1094f05635217cf3ce4a1062e85d14129a347cef data/minecraft/tags/blocks/dragon_immune.json
 f285ead821ac84499caf16d88d7a2b79c397953b data/minecraft/tags/blocks/features_cannot_replace.json
@@ -50,14 +51,14 @@ f3de4b0d6d2929c8fab124e75ff6269ca7642aa7 data/minecraft/tags/blocks/wooden_stair
 8522d5d06fec7c30601264eb04aebaa58886a948 data/minecraft/tags/blocks/wooden_trapdoors.json
 e61eeb87b9b5ecebdb3a29a8ba0b33a4881b48c7 data/twilightforest/tags/blocks/annihilation_inclusions.json
 db96f9da8df39e1498ebf29839892448faa170ec data/twilightforest/tags/blocks/antibuilder_ignores.json
-45e292697e9f4919a7d7c4ad3852090d0273372d data/twilightforest/tags/blocks/banisters.json
+fde6c4812b9605196b988840ddf7a18543095022 data/twilightforest/tags/blocks/banisters.json
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/blocks/canopy_logs.json
 65138d47619b3b87ed5cdf3b4ec226e0bfebfb64 data/twilightforest/tags/blocks/carminite_reactor_immune.json
 66c63c2aea9e2f572dee901056877665b812ae56 data/twilightforest/tags/blocks/carminite_reactor_ores.json
 b0ced719d0a9b9e0782222405c773779b2c89002 data/twilightforest/tags/blocks/castle_blocks.json
 981ca24d355367f28a0a94beab8608f2915c6c76 data/twilightforest/tags/blocks/common_protections.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/blocks/darkwood_logs.json
-a7801e58506fe6f6666fc0aeabd7fa6dd7ccf6b5 data/twilightforest/tags/blocks/dark_tower_allowed_pots.json
+29d004c820708d44b1747a2f31f506646efb1a27 data/twilightforest/tags/blocks/dark_tower_allowed_pots.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/twilightforest/tags/blocks/fences.json
 211134157771c86a72a0c5a1985c2b05da55729b data/twilightforest/tags/blocks/fence_gates.json
 db6195d77bd598771b111d12750ba39f41fe35c7 data/twilightforest/tags/blocks/fire_jet_fuel.json

@@ -21,8 +21,8 @@
       "replace_current_music": true,
       "sound": "twilightforest:music.bg"
     },
-    "sky_color": 2105930,
-    "water_color": 14745518,
+    "sky_color": 8466,
+    "water_color": 9811295,
     "water_fog_color": 329011
   },
   "features": [
@@ -90,7 +90,9 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [
+    "creature": [],
+    "misc": [],
+    "monster": [
       {
         "type": "minecraft:creeper",
         "maxCount": 4,
@@ -110,8 +112,6 @@
         "weight": 10
       }
     ],
-    "misc": [],
-    "monster": [],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []

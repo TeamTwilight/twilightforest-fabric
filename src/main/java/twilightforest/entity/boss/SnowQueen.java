@@ -33,6 +33,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -110,7 +111,8 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 				.add(Attributes.FLYING_SPEED, 0.23D)
 				.add(Attributes.ATTACK_DAMAGE, 7.0D)
 				.add(Attributes.FOLLOW_RANGE, 40.0D)
-				.add(Attributes.MAX_HEALTH, 200.0D);
+				.add(Attributes.MAX_HEALTH, 200.0D)
+				.add(Attributes.KNOCKBACK_RESISTANCE, 0.75D);
 	}
 
 	@Override
@@ -287,7 +289,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 	private void applyShieldCollision(Entity collider, Entity collided) {
 		if (collided != this) {
 			collided.push(collider);
-			if (collided instanceof LivingEntity && super.doHurtTarget(collided)) {
+			if (collided instanceof LivingEntity && this.doHurtTarget(collided)) {
 				Vec3 motion = collided.getDeltaMovement();
 				collided.setDeltaMovement(motion.x(), motion.y() + 0.4, motion.z());
 				this.playSound(TFSounds.SNOW_QUEEN_ATTACK.get(), 1.0F, 1.0F);
@@ -364,6 +366,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 				BlockState state = this.getLevel().getBlockState(pos);
 				if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {
 					this.getLevel().destroyBlock(pos, false);
+					this.gameEvent(GameEvent.BLOCK_DESTROY);
 				}
 			}
 		}
@@ -428,6 +431,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 				attemptZ = targetedEntity.getZ() + this.getRandom().nextGaussian() * 6.0D;
 			}
 			if (minion.randomTeleport(attemptX, attemptY, attemptZ, true)) {
+				this.gameEvent(GameEvent.ENTITY_PLACE, minion);
 				break;
 			}
 		}
@@ -478,12 +482,12 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 
 	@Override
-	public boolean isPushedByFluid() {
+	public boolean isPushedByFluid(FluidType type) {
 		return false;
 	}
 

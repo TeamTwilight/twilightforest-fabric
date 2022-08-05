@@ -13,6 +13,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public class FullbrightBakedModel implements BakedModel {
 	}
 
 	protected List<BakedQuad> getQuads(@Nullable Direction face, List<BakedQuad> quads) {
-		return IQuadTransformer.applyingLightmap(0xF000F0).process(quads);
+		return QuadTransformers.applyingLightmap(0xF000F0).process(quads);
 	}
 
 	@Override

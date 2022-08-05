@@ -15,14 +15,19 @@ import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import java.util.Optional;
 
 public class BiomeForcedLandmarkPlacement extends StructurePlacement {
-    public static final Codec<BiomeForcedLandmarkPlacement> CODEC = RecordCodecBuilder.create(inst -> inst.group(TFLandmark.CODEC.fieldOf("landmark_set").forGetter(p -> p.landmark)).apply(inst, BiomeForcedLandmarkPlacement::new));
+    public static final Codec<BiomeForcedLandmarkPlacement> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+            TFLandmark.CODEC.fieldOf("landmark_set").forGetter(p -> p.landmark),
+            Codec.intRange(-64, 256).fieldOf("scan_elevation").forGetter(p -> p.scanHeight)
+    ).apply(inst, BiomeForcedLandmarkPlacement::new));
 
     private final TFLandmark landmark;
+    private final int scanHeight;
 
-    public BiomeForcedLandmarkPlacement(TFLandmark landmark) {
+    public BiomeForcedLandmarkPlacement(TFLandmark landmark, int biomeScanHeight) {
         super(Vec3i.ZERO, FrequencyReductionMethod.DEFAULT, 1f, 0, Optional.empty()); // None of these params matter except for possibly flat-world or whatever
 
         this.landmark = landmark;
+        this.scanHeight = biomeScanHeight;
     }
 
     @Override
@@ -33,7 +38,7 @@ public class BiomeForcedLandmarkPlacement extends StructurePlacement {
     @Override
     public boolean isPlacementChunk(ChunkGenerator chunkGenerator, RandomState randomState, long seed, int chunkX, int chunkZ) {
         if (chunkGenerator instanceof ChunkGeneratorTwilight twilightGenerator)
-            return twilightGenerator.isLandmarkPickedForChunk(this.landmark, chunkGenerator.getBiomeSource().getNoiseBiome(chunkX << 2, 0, chunkZ << 2, randomState.sampler()), chunkX, chunkZ, seed);
+            return twilightGenerator.isLandmarkPickedForChunk(this.landmark, chunkGenerator.getBiomeSource().getNoiseBiome(chunkX << 2, this.scanHeight, chunkZ << 2, randomState.sampler()), chunkX, chunkZ, seed);
 
         if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ))
             return false;

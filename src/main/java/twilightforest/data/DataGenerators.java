@@ -7,6 +7,7 @@ import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
+import twilightforest.data.custom.UncraftingRecipeGenerator;
 import twilightforest.data.tags.*;
 
 import java.nio.file.Paths;
@@ -40,9 +41,6 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 
 		generator.addProvider(true, new CrumbleHornGenerator(generator, helper));
 		generator.addProvider(true, new TransformationPowderGenerator(generator, helper));
-
-//		if(ModList.get().isLoaded(TFCompat.TCON_ID)) {
-//			TConCompat.tConDatagen(evt);
-//		}
+		generator.addProvider(true, new UncraftingRecipeGenerator(generator, helper));
 	}
 }

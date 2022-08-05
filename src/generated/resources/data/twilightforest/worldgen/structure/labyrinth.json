@@ -12,7 +12,7 @@
     "Count": 1,
     "id": "minecraft:written_book",
     "tag": {
-      "author": "A Forgotten Explorer",
+      "author": "twilightforest.book.author",
       "pages": [
         "{\"translate\":\"twilightforest.book.labyrinth.1\"}",
         "{\"translate\":\"twilightforest.book.labyrinth.2\"}",
@@ -20,7 +20,8 @@
         "{\"translate\":\"twilightforest.book.labyrinth.4\"}",
         "{\"translate\":\"twilightforest.book.labyrinth.5\"}"
       ],
-      "title": "Notes on a Swampy Labyrinth"
+      "title": "twilightforest.book.labyrinth",
+      "twilightforest:book": 1
     }
   },
   "hint_mob": "twilightforest:kobold",

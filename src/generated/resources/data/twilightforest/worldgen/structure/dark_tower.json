@@ -12,13 +12,14 @@
     "Count": 1,
     "id": "minecraft:written_book",
     "tag": {
-      "author": "A Forgotten Explorer",
+      "author": "twilightforest.book.author",
       "pages": [
         "{\"translate\":\"twilightforest.book.darktower.1\"}",
         "{\"translate\":\"twilightforest.book.darktower.2\"}",
         "{\"translate\":\"twilightforest.book.darktower.3\"}"
       ],
-      "title": "Notes on a Wooden Tower"
+      "title": "twilightforest.book.darktower",
+      "twilightforest:book": 1
     }
   },
   "hint_mob": "twilightforest:kobold",

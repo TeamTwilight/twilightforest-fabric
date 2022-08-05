@@ -36,6 +36,7 @@ public class EnforceProgressionStatusPacket implements S2CPacket {
 		public static boolean onMessage(EnforceProgressionStatusPacket message, Executor ctx) {
 			ctx.execute(() ->
 					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null));
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

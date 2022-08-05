@@ -1,16 +1,17 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.Material;
 import twilightforest.init.TFBlocks;
 
 public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
@@ -29,9 +30,7 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 		RandomSource rand = ctx.random();
 
 		do {
-			BlockState state = worldIn.getBlockState(position.below());
-			if (worldIn.isEmptyBlock(position) && (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT))
-				break;
+			if (canPlace(position, worldIn)) break;
 			position = position.below();
 		} while (position.getY() > generator.getSpawnHeight(worldIn));
 
@@ -42,8 +41,7 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 				boolean flag = false;
 				int y = 2;
 				do {
-					BlockState state = worldIn.getBlockState(position.offset(x, y, z).below());
-					if (worldIn.isEmptyBlock(position.offset(x, y, z)) && (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT)) {
+					if (canPlace(position.offset(x, y, z), worldIn)) {
 						flag = true;
 						break;
 					}
@@ -59,4 +57,8 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 		return true;
 	}
 
+	private static boolean canPlace(BlockPos pos, WorldGenLevel worldIn) {
+		BlockState state = worldIn.getBlockState(pos.below());
+		return worldIn.isEmptyBlock(pos) && (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT || state.getMaterial() == Material.ICE || worldIn.getFluidState(pos.below()).getType() == Fluids.WATER);
+	}
 }

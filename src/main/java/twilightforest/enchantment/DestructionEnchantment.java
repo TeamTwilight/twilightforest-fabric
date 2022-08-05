@@ -2,9 +2,12 @@ package twilightforest.enchantment;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import twilightforest.init.TFEnchantments;
+import twilightforest.init.TFItems;
 import twilightforest.item.ChainBlockItem;
 
 public class DestructionEnchantment extends LootOnlyEnchantment {
@@ -34,7 +37,7 @@ public class DestructionEnchantment extends LootOnlyEnchantment {
 	}
 
 	@Override
-	public float getDamageBonus(int level, MobType type) {
-		return -level * 2.0F;
+	public float getDamageBonus(int level, MobType type, ItemStack item) {
+		return -level * 1.5F;
 	}
 }

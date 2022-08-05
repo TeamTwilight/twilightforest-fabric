@@ -72,6 +72,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 			((TntBlock)Blocks.TNT).explode(this.redcap.getLevel(), this.tntPos);
 			this.redcap.swing(InteractionHand.MAIN_HAND);
 			this.redcap.getLevel().setBlock(this.tntPos, Blocks.AIR.defaultBlockState(), 2);
+			this.redcap.gameEvent(GameEvent.PRIME_FUSE);
 			this.redcap.getNavigation().stop();
 		} else {
 			this.redcap.getNavigation().moveTo(this.tntPos.getX(), this.tntPos.getY(), this.tntPos.getZ(), this.pursueSpeed);

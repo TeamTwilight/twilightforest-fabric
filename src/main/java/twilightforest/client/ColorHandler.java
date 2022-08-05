@@ -396,9 +396,5 @@ public final class ColorHandler {
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) ->
 						tintIndex > 0 ? -1 : PotionUtils.getColor(stack),
 				TFItems.BRITTLE_FLASK.get(), TFItems.GREATER_FLASK.get());
-
-//		if (FabricLoader.getInstance().isModLoaded(TFCompat.IE_ID)) {
-//			IECompat.registerShaderColors();
-//		}
 	}
 }

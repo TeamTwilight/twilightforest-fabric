@@ -25,12 +25,36 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "canopy_bookshelf": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:canopy_bookshelf"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "canopy_button": {
       "conditions": {
         "items": [
           {
             "items": [
               "twilightforest:canopy_button"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:canopy_chest"
             ]
           }
         ]
@@ -193,6 +217,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "cracked_towerwood": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:cracked_towerwood"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "dark_button": {
       "conditions": {
         "items": [
@@ -349,6 +385,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "darkwood_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:darkwood_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "darkwood_sapling": {
       "conditions": {
         "items": [
@@ -367,6 +415,30 @@
           {
             "items": [
               "twilightforest:darkwood_sign"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "empty_canopy_bookshelf": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:empty_canopy_bookshelf"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "encased_towerwood": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:encased_towerwood"
             ]
           }
         ]
@@ -421,12 +493,108 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "hollow_canopy_log_horizontal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:hollow_canopy_log_vertical"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_dark_log_horizontal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:hollow_dark_log_vertical"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_mangrove_log_horizontal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:hollow_mangrove_log_vertical"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_mining_log_horizontal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:hollow_mining_log_vertical"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "hollow_oak_sapling": {
       "conditions": {
         "items": [
           {
             "items": [
               "twilightforest:hollow_oak_sapling"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_sorting_log_horizontal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:hollow_sorting_log_vertical"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_time_log_horizontal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:hollow_time_log_vertical"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_transformation_log_horizontal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:hollow_transformation_log_vertical"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "hollow_twilight_oak_log_horizontal": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:hollow_twilight_oak_log_vertical"
             ]
           }
         ]
@@ -487,6 +655,18 @@
           {
             "items": [
               "twilightforest:mangrove_button"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mangrove_chest"
             ]
           }
         ]
@@ -685,6 +865,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "mining_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mining_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "mining_door": {
       "conditions": {
         "items": [
@@ -841,6 +1033,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "mossy_towerwood": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mossy_towerwood"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "rainbow_oak_leaves": {
       "conditions": {
         "items": [
@@ -907,6 +1111,18 @@
           {
             "items": [
               "twilightforest:sorting_button"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:sorting_chest"
             ]
           }
         ]
@@ -1309,6 +1525,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "time_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "time_door": {
       "conditions": {
         "items": [
@@ -1501,6 +1729,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "transformation_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:transformation_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "transformation_door": {
       "conditions": {
         "items": [
@@ -1675,6 +1915,18 @@
           {
             "items": [
               "twilightforest:twilight_oak_button"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:twilight_oak_chest"
             ]
           }
         ]
@@ -1867,6 +2119,9 @@
       "stripped_twilight_oak_wood"
     ],
     [
+      "hollow_twilight_oak_log_horizontal"
+    ],
+    [
       "twilight_oak_leaves"
     ],
     [
@@ -1903,6 +2158,12 @@
       "twilight_oak_sign"
     ],
     [
+      "twilight_oak_chest"
+    ],
+    [
+      "twilight_oak_banister"
+    ],
+    [
       "canopy_log"
     ],
     [
@@ -1913,6 +2174,9 @@
     ],
     [
       "stripped_canopy_wood"
+    ],
+    [
+      "hollow_canopy_log_horizontal"
     ],
     [
       "canopy_leaves"
@@ -1951,6 +2215,18 @@
       "canopy_sign"
     ],
     [
+      "canopy_chest"
+    ],
+    [
+      "canopy_banister"
+    ],
+    [
+      "canopy_bookshelf"
+    ],
+    [
+      "empty_canopy_bookshelf"
+    ],
+    [
       "mangrove_log"
     ],
     [
@@ -1961,6 +2237,9 @@
     ],
     [
       "stripped_mangrove_wood"
+    ],
+    [
+      "hollow_mangrove_log_horizontal"
     ],
     [
       "mangrove_leaves"
@@ -1999,6 +2278,12 @@
       "mangrove_sign"
     ],
     [
+      "mangrove_chest"
+    ],
+    [
+      "mangrove_banister"
+    ],
+    [
       "dark_log"
     ],
     [
@@ -2009,6 +2294,9 @@
     ],
     [
       "stripped_dark_wood"
+    ],
+    [
+      "hollow_dark_log_horizontal"
     ],
     [
       "dark_leaves"
@@ -2047,6 +2335,12 @@
       "darkwood_sign"
     ],
     [
+      "darkwood_chest"
+    ],
+    [
+      "darkwood_banister"
+    ],
+    [
       "time_log"
     ],
     [
@@ -2057,6 +2351,9 @@
     ],
     [
       "stripped_time_wood"
+    ],
+    [
+      "hollow_time_log_horizontal"
     ],
     [
       "time_leaves"
@@ -2095,6 +2392,12 @@
       "time_sign"
     ],
     [
+      "time_chest"
+    ],
+    [
+      "time_banister"
+    ],
+    [
       "transformation_log"
     ],
     [
@@ -2105,6 +2408,9 @@
     ],
     [
       "stripped_transformation_wood"
+    ],
+    [
+      "hollow_transformation_log_horizontal"
     ],
     [
       "transformation_leaves"
@@ -2143,6 +2449,12 @@
       "transformation_sign"
     ],
     [
+      "transformation_chest"
+    ],
+    [
+      "transformation_banister"
+    ],
+    [
       "mining_log"
     ],
     [
@@ -2153,6 +2465,9 @@
     ],
     [
       "stripped_mining_wood"
+    ],
+    [
+      "hollow_mining_log_horizontal"
     ],
     [
       "mining_leaves"
@@ -2191,6 +2506,12 @@
       "mining_sign"
     ],
     [
+      "mining_chest"
+    ],
+    [
+      "mining_banister"
+    ],
+    [
       "sorting_log"
     ],
     [
@@ -2201,6 +2522,9 @@
     ],
     [
       "stripped_sorting_wood"
+    ],
+    [
+      "hollow_sorting_log_horizontal"
     ],
     [
       "sorting_leaves"
@@ -2239,6 +2563,24 @@
       "sorting_sign"
     ],
     [
+      "sorting_chest"
+    ],
+    [
+      "sorting_banister"
+    ],
+    [
+      "towerwood"
+    ],
+    [
+      "cracked_towerwood"
+    ],
+    [
+      "mossy_towerwood"
+    ],
+    [
+      "encased_towerwood"
+    ],
+    [
       "root"
     ],
     [
@@ -2255,9 +2597,6 @@
     ],
     [
       "rainbow_oak_leaves"
-    ],
-    [
-      "towerwood"
     ],
     [
       "giant_log"
@@ -2285,30 +2624,6 @@
     ],
     [
       "mangrove_root"
-    ],
-    [
-      "twilight_oak_banister"
-    ],
-    [
-      "canopy_banister"
-    ],
-    [
-      "mangrove_banister"
-    ],
-    [
-      "darkwood_banister"
-    ],
-    [
-      "time_banister"
-    ],
-    [
-      "transformation_banister"
-    ],
-    [
-      "mining_banister"
-    ],
-    [
-      "sorting_banister"
     ],
     [
       "liveroot"

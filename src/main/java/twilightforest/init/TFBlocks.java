@@ -18,6 +18,7 @@ import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.world.components.feature.trees.growers.*;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 @SuppressWarnings({"WeakerAccess", "unused", "deprecation"})
 @Nonnull
@@ -72,11 +73,8 @@ public class TFBlocks {
 	public static final RegistryObject<StairBlock> CRACKED_NAGASTONE_STAIRS_RIGHT = BLOCKS.register("cracked_nagastone_stairs_right", () -> new StairBlock(CRACKED_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(CRACKED_ETCHED_NAGASTONE.get())));
 
 	//lich tower
-	//public static final RegistryObject<Block> TERRORCOTTA_CIRCLE = BLOCKS.register("terrorcotta_circle", () -> new BlockTFHorizontal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).setRequiresTool().hardnessAndResistance(1.7F).sound(SoundType.STONE)));
-	//public static final RegistryObject<Block> TERRORCOTTA_DIAGONAL = BLOCKS.register("terrorcotta_diagonal", () -> new BlockTFDiagonal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).setRequiresTool().hardnessAndResistance(1.7F).sound(SoundType.STONE)));
 	public static final RegistryObject<RotatedPillarBlock> TWISTED_STONE = BLOCKS.register("twisted_stone", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
 	public static final RegistryObject<Block> TWISTED_STONE_PILLAR = BLOCKS.register("twisted_stone_pillar", () -> new WallPillarBlock(Material.STONE, 12, 16));
-	//public static final RegistryObject<Block> LAPIS_BLOCK = BLOCKS.register("lapis_block", () -> new Block(Block.Properties.create(Material.IRON).setRequiresTool().hardnessAndResistance(3.0F, 5.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<KeepsakeCasketBlock> KEEPSAKE_CASKET = BLOCKS.register("keepsake_casket", KeepsakeCasketBlock::new);
 	public static final RegistryObject<RotatedPillarBlock> BOLD_STONE_PILLAR = BLOCKS.register("bold_stone_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)));
 	public static final RegistryObject<Block> DEATH_TOME_SPAWNER = BLOCKS.register("death_tome_spawner", () -> new TomeSpawnerBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD)));

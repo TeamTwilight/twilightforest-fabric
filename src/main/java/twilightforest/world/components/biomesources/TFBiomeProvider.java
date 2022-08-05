@@ -1,7 +1,5 @@
 package twilightforest.world.components.biomesources;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -11,7 +9,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
-import twilightforest.world.components.chunkgenerators.warp.TerrainPoint;
+import twilightforest.init.TFFeatureModifiers;
+import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
 import twilightforest.world.components.layer.*;
 import twilightforest.world.components.layer.vanillalegacy.Layer;
 import twilightforest.world.components.layer.vanillalegacy.SmoothLayer;
@@ -21,72 +20,48 @@ import twilightforest.world.components.layer.vanillalegacy.area.AreaFactory;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
-import twilightforest.init.TFFeatureModifiers;
-import twilightforest.init.BiomeKeys;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.LongFunction;
+import java.util.stream.Collectors;
 
-@Deprecated // TODO move to TwilightBiomeSource
+@Deprecated
 public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFFeatureModifiers.seed).forGetter((obj) -> obj.seed),
-			RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(provider -> provider.registry),
-			RecordCodecBuilder.<Pair<TerrainPoint, Holder<Biome>>>create((pair) -> pair.group(
-					TerrainPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst),
-					Biome.CODEC.fieldOf("biome").forGetter(Pair::getSecond)
-			).apply(pair, Pair::of)).listOf().fieldOf("biomes").forGetter((obj) -> obj.biomeList),
-			Codec.FLOAT.fieldOf("base_offset").forGetter((obj) -> obj.baseOffset),
-			Codec.FLOAT.fieldOf("base_factor").forGetter((obj) -> obj.baseFactor)
+			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFFeatureModifiers.seed).forGetter(o -> o.seed),
+			RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(o -> o.registry),
+			Biome.CODEC.fieldOf("underground_biome").forGetter(o -> o.undergroundBiome),
+			TerrainColumn.CODEC.listOf().fieldOf("biome_landscape").xmap(l -> l.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), m -> List.copyOf(m.values())).forGetter(o -> o.biomeList),
+			Codec.FLOAT.fieldOf("base_offset").forGetter(o -> o.baseOffset),
+			Codec.FLOAT.fieldOf("base_factor").forGetter(o -> o.baseFactor)
 	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
-	private static final List<ResourceKey<Biome>> BIOMES = ImmutableList.of( //TODO: Can we do this more efficiently?
-			BiomeKeys.LAKE,
-			BiomeKeys.FOREST,
-			BiomeKeys.DENSE_FOREST,
-			BiomeKeys.HIGHLANDS,
-			BiomeKeys.MUSHROOM_FOREST,
-			BiomeKeys.SWAMP,
-			BiomeKeys.STREAM,
-			BiomeKeys.SNOWY_FOREST,
-			BiomeKeys.GLACIER,
-			BiomeKeys.CLEARING,
-			BiomeKeys.OAK_SAVANNAH,
-			BiomeKeys.FIREFLY_FOREST,
-			BiomeKeys.DENSE_MUSHROOM_FOREST,
-			BiomeKeys.DARK_FOREST,
-			BiomeKeys.ENCHANTED_FOREST,
-			BiomeKeys.FIRE_SWAMP,
-			BiomeKeys.DARK_FOREST_CENTER,
-			BiomeKeys.FINAL_PLATEAU,
-			BiomeKeys.THORNLANDS,
-			BiomeKeys.SPOOKY_FOREST
-	);
-
 	private final Registry<Biome> registry;
-	private final List<Pair<TerrainPoint, Holder<Biome>>> biomeList;
+	private final Holder<Biome> undergroundBiome;
+	private final Map<ResourceKey<Biome>, TerrainColumn> biomeList;
 	private final Layer genBiomes;
 	private final long seed;
 	private final float baseOffset;
 	private final float baseFactor;
 
-	public TFBiomeProvider(long seed, Registry<Biome> registryIn, List<Pair<TerrainPoint, Holder<Biome>>> list, float offset, float factor) {
-		super(BIOMES
-				.stream()
-				.map(registryIn::getHolder)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
-		);
+	public TFBiomeProvider(long seed, Registry<Biome> registryIn, Holder<Biome> undergroundBiome, List<TerrainColumn> list, float offset, float factor) {
+		this(seed, registryIn, undergroundBiome, list.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), offset, factor);
+	}
+
+	public TFBiomeProvider(long seed, Registry<Biome> registryIn, Holder<Biome> undergroundBiome, Map<ResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
+		super(list.values().stream().flatMap(TerrainColumn::getBiomes));
 
 		this.seed = seed;
 		this.baseOffset = offset;
 		this.baseFactor = factor;
 
-		registry = registryIn;
-		biomeList = list;
-		genBiomes = makeLayers(seed, registryIn);
+		this.registry = registryIn;
+		this.undergroundBiome = undergroundBiome;
+		this.biomeList = list;
+		this.genBiomes = makeLayers(seed, registryIn);
 	}
 
 	public static int getBiomeId(ResourceKey<Biome> biome, Registry<Biome> registry) {
@@ -94,7 +69,6 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	private static <T extends Area, C extends BigContext<T>> AreaFactory<T> makeLayers(LongFunction<C> seed, Registry<Biome> registry, long rawSeed) {
-
  		AreaFactory<T> biomes = GenLayerTFBiomes.INSTANCE.setup(registry).run(seed.apply(1L));
 		biomes = GenLayerTFKeyBiomes.INSTANCE.setup(registry, rawSeed).run(seed.apply(1000L), biomes);
 		biomes = GenLayerTFCompanionBiomes.INSTANCE.setup(registry).run(seed.apply(1000L), biomes);
@@ -191,30 +165,33 @@ public class TFBiomeProvider extends BiomeSource {
 		return this.baseFactor;
 	}
 
-	public float getBiomeDepth(int x, int y, int z, Climate.Sampler sampler) {
-		Biome biome = this.getNoiseBiome(x, y, z, sampler).value();
-		return this.getBiomeDepth(biome);
+	public float getBiomeDepth(int x, int z) {
+		return this.getBiomeDepth(this.genBiomes.get(this.registry, x, z));
 	}
 
-	public float getBiomeDepth(Biome biome) {
-		return this.getBiomeValue(biome, TerrainPoint::depth);
+	public float getBiomeDepth(Holder<Biome> biome) {
+		return this.getBiomeValue(biome, TerrainColumn::depth, 0f);
 	}
 
-	public float getBiomeScale(int x, int y, int z, Climate.Sampler sampler) {
-		Biome biome = this.getNoiseBiome(x, y, z, sampler).value();
-		return this.getBiomeScale(biome);
+	public Optional<TerrainColumn> getTerrainColumn(int x, int z) {
+		return this.getTerrainColumn(this.genBiomes.get(this.registry, x, z));
 	}
 
-	public float getBiomeScale(Biome biome) {
-		return getBiomeValue(biome, TerrainPoint::scale);
+	public Optional<TerrainColumn> getTerrainColumn(Holder<Biome> biome) {
+		return this.biomeList.values().stream().filter(p -> p.is(biome)).findFirst();
 	}
 
-	private float getBiomeValue(Biome biome, Function<? super TerrainPoint, Float> function) {
-		return this.biomeList.stream().filter(p -> p.getSecond().value().equals(biome)).map(Pair::getFirst).map(function).findFirst().orElse(0.0F);
+	public <T> T getBiomeValue(Holder<Biome> biome, Function<TerrainColumn, T> function, T other) {
+		return this.getTerrainColumn(biome).map(function).orElse(other);
 	}
 
 	@Override
 	public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
-		return genBiomes.get(registry, x, z);
+		// TODO Further positional-smoothing, see TFTerrainWarp.fillNoiseColumn's use of TFTerrainWarp.BIOME_WEIGHTS
+		//  That method already calls this method, resulting in search-space duplication
+
+		// FIXME Hacky double-dipping of biomes
+		Holder<Biome> columnBiome = this.genBiomes.get(this.registry, x, z);
+		return this.biomeList.get(columnBiome.unwrapKey().get()).getBiome(y, columnBiome);
 	}
 }

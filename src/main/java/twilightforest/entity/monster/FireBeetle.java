@@ -22,6 +22,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.ai.goal.BreathAttackGoal;
@@ -119,6 +120,7 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 			}
 
 			playSound(TFSounds.FIRE_BEETLE_SHOOT.get(), this.getRandom().nextFloat() * 0.5F, this.getRandom().nextFloat() * 0.5F);
+			this.gameEvent(GameEvent.PROJECTILE_SHOOT);
 		}
 	}
 

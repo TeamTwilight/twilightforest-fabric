@@ -44,7 +44,7 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 				BiomeKeys.FOREST, BiomeKeys.MUSHROOM_FOREST,
 				BiomeKeys.OAK_SAVANNAH, BiomeKeys.SPOOKY_FOREST,
 				BiomeKeys.ENCHANTED_FOREST, BiomeKeys.DENSE_MUSHROOM_FOREST,
-				BiomeKeys.LAKE, BiomeKeys.STREAM,
+				BiomeKeys.LAKE, BiomeKeys.STREAM, BiomeKeys.UNDERGROUND,
 				BiomeKeys.SWAMP, BiomeKeys.FIRE_SWAMP,
 				BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_CENTER,
 				BiomeKeys.SNOWY_FOREST, BiomeKeys.GLACIER,
@@ -114,6 +114,7 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 		tag(Tags.Biomes.IS_WASTELAND).add(BiomeKeys.GLACIER, BiomeKeys.THORNLANDS, BiomeKeys.FINAL_PLATEAU);
 		tag(Tags.Biomes.IS_DRY).add(BiomeKeys.THORNLANDS, BiomeKeys.FINAL_PLATEAU);
 		tag(Tags.Biomes.IS_PLATEAU).add(BiomeKeys.FINAL_PLATEAU);
+		tag(Tags.Biomes.IS_UNDERGROUND).add(BiomeKeys.UNDERGROUND);
 
 		//other vanilla tags
 		tag(BiomeTags.WITHOUT_WANDERING_TRADER_SPAWNS).addTag(IS_TWILIGHT);

@@ -24,18 +24,17 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFEntities;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
+import twilightforest.init.custom.DwarfRabbitVariant;
 
 public class DwarfRabbit extends Animal implements StepHeightEntity {
 
-	private static final EntityDataAccessor<Byte> DATA_TYPE = SynchedEntityData.defineId(DwarfRabbit.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<String> TYPE = SynchedEntityData.defineId(DwarfRabbit.class, EntityDataSerializers.STRING);
 
 	public DwarfRabbit(EntityType<? extends DwarfRabbit> type, Level world) {
 		super(type, world);
-		this.setBunnyType(this.getRandom().nextInt(4));
 	}
 
 	@Override
@@ -70,7 +69,7 @@ public class DwarfRabbit extends Animal implements StepHeightEntity {
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob ageableEntity) {
 		DwarfRabbit dwarf = TFEntities.DWARF_RABBIT.get().create(level);
-		int i = level.getRandom().nextInt(4);
+		DwarfRabbitVariant i = DwarfRabbitVariant.getRandomVariant(this.getRandom());
 		if (this.getRandom().nextInt(20) != 0) {
 			if (ageableEntity instanceof DwarfRabbit rabbit && this.getRandom().nextBoolean()) {
 				i = rabbit.getBunnyType();
@@ -79,34 +78,34 @@ public class DwarfRabbit extends Animal implements StepHeightEntity {
 			}
 		}
 
-		dwarf.setBunnyType(i);
+		dwarf.setBunnyType(i.toString());
 		return dwarf;
 	}
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_TYPE, (byte) 0);
+		this.entityData.define(TYPE, DwarfRabbitVariant.getVariantId(DwarfRabbitVariant.getRandomVariant(this.getRandom())));
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		compound.putInt("BunnyType", this.getBunnyType());
+		compound.putString("BunnyType", DwarfRabbitVariant.getVariantId(this.getBunnyType()));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.setBunnyType(compound.getInt("BunnyType"));
+		this.setBunnyType(compound.getString("BunnyType"));
 	}
 
-	public int getBunnyType() {
-		return this.entityData.get(DATA_TYPE);
+	public DwarfRabbitVariant getBunnyType() {
+		return DwarfRabbitVariant.getVariant(this.entityData.get(TYPE));
 	}
 
-	public void setBunnyType(int type) {
-		this.entityData.set(DATA_TYPE, (byte) type);
+	public void setBunnyType(String type) {
+		this.entityData.set(TYPE, type);
 	}
 
 	@Override

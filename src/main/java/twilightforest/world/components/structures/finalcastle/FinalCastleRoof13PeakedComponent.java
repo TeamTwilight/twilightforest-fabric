@@ -24,8 +24,7 @@ public class FinalCastleRoof13PeakedComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCRo13Pk.get(), nbt);
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleRoof13PeakedComponent(TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+	public FinalCastleRoof13PeakedComponent(TFLandmark feature, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCRo13Pk.get(), feature, i, x, y, z);
 
 		int height = 18;

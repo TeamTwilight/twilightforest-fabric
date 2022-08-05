@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.core.BlockPos;
 import twilightforest.entity.monster.Redcap;
@@ -37,6 +38,7 @@ public class RedcapPlantTNTGoal extends RedcapBaseGoal {
 			this.redcap.heldTNT.shrink(1);
 			this.redcap.playAmbientSound();
 			this.redcap.getLevel().setBlockAndUpdate(entityPos, Blocks.TNT.defaultBlockState());
+			this.redcap.gameEvent(GameEvent.BLOCK_PLACE);
 		}
 	}
 

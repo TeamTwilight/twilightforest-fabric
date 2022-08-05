@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.entity.monster.BlockChainGoblin;
 import twilightforest.init.TFSounds;
 
@@ -37,6 +38,7 @@ public class SpikeBlock extends BlockChainGoblin.MultipartGenericsAreDumb {
 	public void doFall() {
 		if (this.onGround && !this.isCollideBlock) {
 			this.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.65F, 0.75F);
+			this.gameEvent(GameEvent.HIT_GROUND);
 			this.isCollideBlock = true;
 		} else {
 			this.setDeltaMovement(0.0F, this.getDeltaMovement().y() - 0.04F, 0.0F);

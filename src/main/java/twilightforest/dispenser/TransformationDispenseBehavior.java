@@ -29,8 +29,8 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 		if (!level.isClientSide()) {
 			for (LivingEntity livingentity : level.getEntitiesOfClass(LivingEntity.class, new AABB(blockpos), EntitySelector.NO_SPECTATORS)) {
 				level.getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach((recipe) -> {
-					if (recipe.getInput() == livingentity.getType()) {
-						EntityType<?> type = recipe.getResult();
+					if (recipe.input() == livingentity.getType() || (recipe.isReversible() && recipe.result() == livingentity.getType())) {
+						EntityType<?> type = recipe.isReversible() && recipe.result() == livingentity.getType() ? recipe.input() : recipe.result();
 						Entity newEntity = type.create(level);
 						if (newEntity != null) {
 							newEntity.moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity.getYRot(), livingentity.getXRot());

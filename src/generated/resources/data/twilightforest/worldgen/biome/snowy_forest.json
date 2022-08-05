@@ -4,7 +4,9 @@
   },
   "downfall": 0.9,
   "effects": {
-    "fog_color": 12648408,
+    "fog_color": 16777215,
+    "foliage_color": 16777215,
+    "grass_color": 16777215,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -17,7 +19,7 @@
       "replace_current_music": true,
       "sound": "twilightforest:music.bg"
     },
-    "sky_color": 2105930,
+    "sky_color": 8421504,
     "water_color": 4159204,
     "water_fog_color": 329011
   },
@@ -59,7 +61,9 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [
+    "creature": [],
+    "misc": [],
+    "monster": [
       {
         "type": "twilightforest:winter_wolf",
         "maxCount": 2,
@@ -73,8 +77,6 @@
         "weight": 5
       }
     ],
-    "misc": [],
-    "monster": [],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []

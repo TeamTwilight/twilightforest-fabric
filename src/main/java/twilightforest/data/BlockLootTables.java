@@ -38,12 +38,10 @@ import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.function.BiConsumer;
 
 public class BlockLootTables extends BlockLoot {
-	private final Set<Block> knownBlocks = new HashSet<>();
 	// [VanillaCopy] of BlockLoot fields, just changed shears to work with modded ones
 	private static final float[] DEFAULT_SAPLING_DROP_RATES = new float[]{0.05F, 0.0625F, 0.083333336F, 0.1F};
 	private static final float[] RARE_SAPLING_DROP_RATES = new float[]{0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F};
@@ -54,13 +52,10 @@ public class BlockLootTables extends BlockLoot {
 	private static final LootItemCondition.Builder HAS_NO_SHEARS_OR_SILK_TOUCH = HAS_SHEARS_OR_SILK_TOUCH.invert();
 
 	@Override
-	public void add(Block block, LootTable.Builder builder) {
-		super.add(block, builder);
-		knownBlocks.add(block);
-	}
-
 	protected void addTables() {
 		registerEmpty(TFBlocks.EXPERIMENT_115.get());
+		registerEmpty(TFBlocks.SLIDER.get());
+		registerEmpty(TFBlocks.INFESTED_TOWERWOOD.get());
 		dropSelf(TFBlocks.TOWERWOOD.get());
 		dropSelf(TFBlocks.ENCASED_TOWERWOOD.get());
 		dropSelf(TFBlocks.CRACKED_TOWERWOOD.get());
@@ -207,16 +202,16 @@ public class BlockLootTables extends BlockLoot {
 		add(TFBlocks.QUEST_RAM_TROPHY.get(), createSingleItemTable(TFBlocks.QUEST_RAM_TROPHY.get().asItem()));
 		add(TFBlocks.QUEST_RAM_WALL_TROPHY.get(), createSingleItemTable(TFBlocks.QUEST_RAM_TROPHY.get().asItem()));
 
-		add(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.ZOMBIE_HEAD));
-		add(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.ZOMBIE_HEAD));
-		add(TFBlocks.SKELETON_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.SKELETON_SKULL));
-		add(TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.SKELETON_SKULL));
-		add(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.WITHER_SKELETON_SKULL));
-		add(TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.WITHER_SKELETON_SKULL));
-		add(TFBlocks.CREEPER_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.CREEPER_HEAD));
-		add(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.CREEPER_HEAD));
-		add(TFBlocks.PLAYER_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
-		add(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), dropWithoutSilk(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
+		add(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), createSingleItemTable(Blocks.ZOMBIE_HEAD));
+		add(TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.ZOMBIE_HEAD));
+		add(TFBlocks.SKELETON_SKULL_CANDLE.get(), createSingleItemTable(Blocks.SKELETON_SKULL));
+		add(TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.SKELETON_SKULL));
+		add(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), createSingleItemTable(Blocks.WITHER_SKELETON_SKULL));
+		add(TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.WITHER_SKELETON_SKULL));
+		add(TFBlocks.CREEPER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
+		add(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
+		add(TFBlocks.PLAYER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
+		add(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
 
 		dropSelf(TFBlocks.IRON_LADDER.get());
 		dropSelf(TFBlocks.TWISTED_STONE.get());
@@ -252,6 +247,7 @@ public class BlockLootTables extends BlockLoot {
 		dropSelf(TFBlocks.DARK_OAK_BANISTER.get());
 		dropSelf(TFBlocks.CRIMSON_BANISTER.get());
 		dropSelf(TFBlocks.WARPED_BANISTER.get());
+		dropSelf(TFBlocks.VANGROVE_BANISTER.get());
 
 		add(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get()));
@@ -601,8 +597,7 @@ public class BlockLootTables extends BlockLoot {
 
 //	@Override
 	protected Iterable<Block> getKnownBlocks() {
-		// todo 1.15 once all blockitems are ported, change this to all TF blocks, so an error will be thrown if we're missing any tables
-		return knownBlocks;
+		return ForgeRegistries.BLOCKS.getValues().stream().filter(block -> ForgeRegistries.BLOCKS.getKey(block).getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toList());
 	}
 
 	@Override

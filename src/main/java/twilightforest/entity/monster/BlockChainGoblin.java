@@ -22,6 +22,7 @@ import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.Chain;
 import twilightforest.entity.SpikeBlock;
@@ -266,6 +267,7 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 		if (this.isThrowing() && collider.isInWall()) {
 			this.setThrowing(false);
 			collider.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.65F, 0.75F);
+			this.gameEvent(GameEvent.HIT_GROUND);
 		}
 	}
 
@@ -279,6 +281,7 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 				if (super.doHurtTarget(collided)) {
 					collided.push(0, 0.4, 0);
 					this.playSound(TFSounds.BLOCKCHAIN_HIT.get(), 1.0F, 1.0F);
+					this.gameEvent(GameEvent.PROJECTILE_LAND);
 					this.recoilCounter = 40;
 					if (this.isThrowing()) {
 						this.setThrowing(false);

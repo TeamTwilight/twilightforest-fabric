@@ -5,6 +5,7 @@
     {
       "faces": {
         "down": {
+          "emissivity": 15,
           "texture": "#pane",
           "uv": [
             7.0,

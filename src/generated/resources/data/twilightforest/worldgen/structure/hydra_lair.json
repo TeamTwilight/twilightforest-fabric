@@ -12,14 +12,15 @@
     "Count": 1,
     "id": "minecraft:written_book",
     "tag": {
-      "author": "A Forgotten Explorer",
+      "author": "twilightforest.book.author",
       "pages": [
         "{\"translate\":\"twilightforest.book.hydralair.1\"}",
         "{\"translate\":\"twilightforest.book.hydralair.2\"}",
         "{\"translate\":\"twilightforest.book.hydralair.3\"}",
         "{\"translate\":\"twilightforest.book.hydralair.4\"}"
       ],
-      "title": "Notes on the Fire Swamp"
+      "title": "twilightforest.book.hydralair",
+      "twilightforest:book": 1
     }
   },
   "hint_mob": "twilightforest:kobold",

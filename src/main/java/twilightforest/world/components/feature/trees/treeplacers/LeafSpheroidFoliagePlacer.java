@@ -41,6 +41,8 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
     private final int randomVertical;
     private final int shag_factor;
 
+    public static final LeafSpheroidFoliagePlacer NO_OP = new LeafSpheroidFoliagePlacer(0, 0, ConstantInt.of(0), 0, 0, 0.0F, 0);
+
     public LeafSpheroidFoliagePlacer(float horizontalRadius, float verticalRadius, IntProvider yOffset, int randomHorizontal, int randomVertical, float verticalBias, int shag_factor) {
         super(ConstantInt.of((int) horizontalRadius), yOffset);
 

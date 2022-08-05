@@ -38,7 +38,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 			//initialize shit. We can't do this in the ctor because there is no level yet
 			te.nextLeafY = pos.getY() + 10 + level.getRandom().nextInt(10);
 			te.yOffset = level.getRandom().nextInt(100);
-			te.cScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // spiral tightness scaling  //TODO: make this number negative to reverse the spiral
+			te.cScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // spiral tightness scaling  //make this number negative to reverse the spiral
 			te.rScale = level.getRandom().nextFloat() * 0.25F + 0.125F; // radius change scaling
 			te.maxY = Math.max(pos.getY() + 100, 175);
 		}
@@ -214,5 +214,9 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		this.rScale = compoundTag.getFloat("rScale");
 		this.maxY = compoundTag.getInt("maxY");
 		this.blocksSkipped = compoundTag.getInt("blocksSkipped");
+	}
+
+	public boolean isBeanstalkRumbling() {
+		return this.ticker < 110;
 	}
 }

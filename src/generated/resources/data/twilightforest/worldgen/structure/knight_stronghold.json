@@ -12,7 +12,7 @@
     "Count": 1,
     "id": "minecraft:written_book",
     "tag": {
-      "author": "A Forgotten Explorer",
+      "author": "twilightforest.book.author",
       "pages": [
         "{\"translate\":\"twilightforest.book.tfstronghold.1\"}",
         "{\"translate\":\"twilightforest.book.tfstronghold.2\"}",
@@ -20,7 +20,8 @@
         "{\"translate\":\"twilightforest.book.tfstronghold.4\"}",
         "{\"translate\":\"twilightforest.book.tfstronghold.5\"}"
       ],
-      "title": "Notes on a Stronghold"
+      "title": "twilightforest.book.tfstronghold",
+      "twilightforest:book": 1
     }
   },
   "hint_mob": "twilightforest:kobold",

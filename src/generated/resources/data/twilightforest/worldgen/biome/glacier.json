@@ -5,7 +5,7 @@
   "creature_spawn_probability": 0.2,
   "downfall": 0.1,
   "effects": {
-    "fog_color": 12648408,
+    "fog_color": 3547016,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -18,7 +18,7 @@
       "replace_current_music": true,
       "sound": "twilightforest:music.bg"
     },
-    "sky_color": 2105930,
+    "sky_color": 1248552,
     "water_color": 4159204,
     "water_fog_color": 329011
   },

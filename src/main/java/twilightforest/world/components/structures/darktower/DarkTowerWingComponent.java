@@ -946,8 +946,6 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 	/**
 	 * Add an opening where we keep track of the kind of opening
-	 * TODO: we could make a type of object that stores all these values
-	 * TODO: also use an Enum for the kinds of openings?
 	 */
 	protected void addOpening(int dx, int dy, int dz, Rotation direction, EnumDarkTowerDoor type) {
 		super.addOpening(dx, dy, dz, direction);
@@ -1049,8 +1047,6 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 	/**
 	 * Returns true if this tower has only one exit.
-	 * <p>
-	 * TODO: is this really the best way?
 	 */
 	@Override
 	public boolean isDeadEnd() {

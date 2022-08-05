@@ -16,6 +16,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.registration.TFGenerationSettings;
 
 
 public class MazeEntranceShaftComponent extends TFStructureComponentOld {
@@ -27,7 +28,7 @@ public class MazeEntranceShaftComponent extends TFStructureComponentOld {
 	private final int averageGroundLevel = Integer.MIN_VALUE;
 
 	public MazeEntranceShaftComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMES.get(), feature, i, new BoundingBox(x, y, z, x + 6 - 1, y, z + 6 - 1).encapsulate(new BlockPos(x, 0, z))); // FIXME Swap 0 for Worldgen Sea Level
+		super(TFStructurePieceTypes.TFMMES.get(), feature, i, new BoundingBox(x, y, z, x + 6 - 1, y, z + 6 - 1).encapsulate(new BlockPos(x, TFGenerationSettings.SEALEVEL, z)));
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 	}
 

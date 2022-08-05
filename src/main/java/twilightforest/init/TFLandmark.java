@@ -5,7 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import net.minecraft.Util;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.nbt.ListTag;
@@ -22,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -33,9 +33,9 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
-import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.components.structures.*;
 import twilightforest.world.components.structures.courtyard.CourtyardMain;
 import twilightforest.world.components.structures.darktower.DarkTowerMainComponent;
@@ -46,10 +46,14 @@ import twilightforest.world.components.structures.minotaurmaze.MazeRuinsComponen
 import twilightforest.world.components.structures.mushroomtower.MushroomTowerMainComponent;
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
-import twilightforest.world.components.structures.util.*;
+import twilightforest.world.components.structures.util.AdvancementLockedStructure;
+import twilightforest.world.components.structures.util.ControlledSpawns;
+import twilightforest.world.components.structures.util.DecorationClearance;
+import twilightforest.world.components.structures.util.StructureHints;
 
-import org.jetbrains.annotations.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class TFLandmark implements StructureHints, AdvancementLockedStructure, DecorationClearance, ControlledSpawns {
 	public static final TFLandmark NOTHING = new TFLandmark( 0, "no_feature"       , false, null, TerrainAdjustment.NONE) { { this.enableDecorations().disableStructure(); } };
@@ -169,7 +173,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf("Notes on a Pointy Tower"));
+			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.lichtower"));
 		}
 
 		@Override
@@ -190,7 +194,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf("Notes on the Fire Swamp"));
+			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.hydralair"));
 		}
 
 		@Override
@@ -220,7 +224,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf("Notes on a Swampy Labyrinth"));
+			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.labyrinth"));
 		}
 
 		@Override
@@ -258,7 +262,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf("Notes on a Wooden Tower"));
+			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.darktower"));
 		}
 
 		@Override
@@ -288,7 +292,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf("Notes on a Stronghold"));
+			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.tfstronghold"));
 		}
 
 		@Override
@@ -316,7 +320,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 			book.addTagElement("pages" , bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title" , StringTag.valueOf("Notes on an Icy Cave"));
+			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.yeticave"));
 		}
 
 		@Override
@@ -338,7 +342,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf("Notes on Auroral Fortification"));
+			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.icetower"));
 		}
 
 		@Override
@@ -367,7 +371,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 			book.addTagElement("pages", bookPages);
 			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf("Notes on the Highlands"));
+			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.trollcave"));
 		}
 
 		@Override
@@ -400,7 +404,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new FinalCastleMainComponent(this, rand, 0, x, y, z);
+			return new FinalCastleMainComponent(this, 0, x, y, z);
 		}
 	};
 	public static final TFLandmark MUSHROOM_TOWER = new TFLandmark( 2, "mushroom_tower", true, BiomeTagGenerator.VALID_MUSHROOM_TOWER_BIOMES, TerrainAdjustment.NONE ) {

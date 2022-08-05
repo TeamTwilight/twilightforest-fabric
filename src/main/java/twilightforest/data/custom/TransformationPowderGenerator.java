@@ -30,9 +30,5 @@ public class TransformationPowderGenerator extends TransformationPowderProvider 
 		addTwoWayTransform(TFEntities.CARMINITE_GHASTGUARD.get(), EntityType.GHAST);
 		addTwoWayTransform(TFEntities.TOWERWOOD_BORER.get(), EntityType.SILVERFISH);
 		addTwoWayTransform(TFEntities.MAZE_SLIME.get(), EntityType.SLIME);
-
-//		addTwoWayTransform(UGEntityTypes.GWIBLING.get(), EntityType.COD);
-//		addTwoWayTransform(UGEntityTypes.STONEBORN.get(), EntityType.VILLAGER);
-//		addTwoWayTransform(UGEntityTypes.ROTWALKER.get(), EntityType.ZOMBIE);
 	}
 }

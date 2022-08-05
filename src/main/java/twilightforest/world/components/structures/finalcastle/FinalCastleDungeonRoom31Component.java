@@ -2,6 +2,7 @@ package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.material.Material;
+import twilightforest.init.BiomeKeys;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
@@ -65,7 +67,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 			Rotation direction = RotationUtil.getRandomRotation(rand);
 			for (int i = 0; i < 8 && !isExitBuildForLevel(parent); i++) {
 				direction = direction.getRotated(RotationUtil.ROTATIONS[i & 3]);
-				if (this.addDungeonExit(parent, list, rand, direction)) {
+				if (this.addDungeonExit(list, rand, direction)) {
 					this.setExitBuiltForLevel(parent, true);
 				}
 			}
@@ -103,12 +105,6 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		BoundingBox largerBB = BoundingBoxUtils.clone(dRoom.getBoundingBox());
 
-		int expand = 0;
-		//largerBB.minX() -= expand; FIXME
-		//largerBB.minZ() -= expand;
-		//largerBB.maxX() += expand;
-		//largerBB.maxZ() += expand;
-
 		if (list instanceof StructurePiecesBuilder start) {
 			StructurePiece intersect = TFStructureComponentOld.findIntersectingExcluding(start.pieces, largerBB, this);
 			if (intersect == null) {
@@ -120,8 +116,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		return false;
 	}
 
-	//TODO: Parameter "parent" is unused. Remove?
-	protected boolean addDungeonExit(StructurePiece parent, StructurePieceAccessor list, RandomSource rand, Rotation rotation) {
+	protected boolean addDungeonExit(StructurePieceAccessor list, RandomSource rand, Rotation rotation) {
 
 		//TODO: check if we are sufficiently near the castle center
 
@@ -156,6 +151,10 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		 Predicate<Biome> plateauBiomes = biome ->
+				biome == world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).get(BiomeKeys.THORNLANDS) ||
+						biome == world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).get(BiomeKeys.FINAL_PLATEAU);
+
 		if (this.isBoundingBoxOutsideBiomes(world, plateauBiomes)) {
 			return;
 		}
@@ -193,9 +192,6 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 			}
 		}
 	}
-
-	protected static final Predicate<Biome> plateauBiomes = biome -> true; /* FIXME or remove
-			biome == TFBiomes.highlandsCenter.get() || biome == TFBiomes.thornlands.get()*/
 
 	protected BlockState getRuneColor(BlockState forceFieldColor) {
 		return forceFieldColor == TFBlocks.BLUE_FORCE_FIELD.get().defaultBlockState() ? TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState() : TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();

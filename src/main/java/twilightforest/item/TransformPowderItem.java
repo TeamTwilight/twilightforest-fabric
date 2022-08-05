@@ -36,8 +36,8 @@ public class TransformPowderItem extends Item {
 
 		player.getLevel().getRecipeManager().getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()).forEach((recipe) -> {
 			if (flag.get()) return;
-			if (recipe.getInput() == target.getType()) {
-				EntityType<?> type = recipe.getResult();
+			if (recipe.input() == target.getType() || (recipe.isReversible() && recipe.result() == target.getType())) {
+				EntityType<?> type = recipe.isReversible() && recipe.result() == target.getType() ? recipe.input() : recipe.result();
 				if (type == null) {
 					return;
 				}

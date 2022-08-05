@@ -204,7 +204,8 @@ public class Naga extends Monster implements MultiPartEntity {
 				.add(Attributes.MAX_HEALTH, 120)
 				.add(Attributes.MOVEMENT_SPEED, DEFAULT_SPEED)
 				.add(Attributes.ATTACK_DAMAGE, 5.0D)
-				.add(Attributes.FOLLOW_RANGE, 80.0D);
+				.add(Attributes.FOLLOW_RANGE, 80.0D)
+				.add(Attributes.KNOCKBACK_RESISTANCE, 0.25D);
 	}
 
 	/**

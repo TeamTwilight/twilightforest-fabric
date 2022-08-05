@@ -12,13 +12,14 @@
     "Count": 1,
     "id": "minecraft:written_book",
     "tag": {
-      "author": "A Forgotten Explorer",
+      "author": "twilightforest.book.author",
       "pages": [
         "{\"translate\":\"twilightforest.book.yeticave.1\"}",
         "{\"translate\":\"twilightforest.book.yeticave.2\"}",
         "{\"translate\":\"twilightforest.book.yeticave.3\"}"
       ],
-      "title": "Notes on an Icy Cave"
+      "title": "twilightforest.book.yeticave",
+      "twilightforest:book": 1
     }
   },
   "hint_mob": "twilightforest:kobold",

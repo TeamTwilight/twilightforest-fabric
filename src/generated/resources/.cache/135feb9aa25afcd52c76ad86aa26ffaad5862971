@@ -1,4 +1,4 @@
-// 1.19	2022-07-10T21:04:54.5647481	TwilightForest item and itemblock models
+// 1.19.1	2022-07-30T22:51:55.4007207	TwilightForest item and itemblock models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/adherent_spawn_egg.json
 1fb9b86a63e0c57696cd0fe907f94b1cfae0021e assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
@@ -171,7 +171,7 @@ b9f8983e19fb5842d1c856f03702677bd22300ae assets/twilightforest/models/item/fille
 6d0c86e31d39d88d46daf77d6f0225eeae485cb8 assets/twilightforest/models/item/firefly_jar.json
 e7acd2988378a41a4eb4f423392b0a95545f63ed assets/twilightforest/models/item/firefly_particle_spawner.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/fire_beetle_spawn_egg.json
-fe27f0b791ae5d5576438cb7fe942949e0492a70 assets/twilightforest/models/item/fire_jet.json
+83c3392a583d70aceb92d9b7f16a5cf58172172b assets/twilightforest/models/item/fire_jet.json
 a8f03677eca5d5ab6f83fc4390bcb0338d799ae8 assets/twilightforest/models/item/fluffy_cloud.json
 7ee86ad61816bb9e0e2e8640ef647a83a0fc3eab assets/twilightforest/models/item/fortification_scepter.json
 0dd4422a6efc3e029e3f7fb0eb018f9bf03b1b5c assets/twilightforest/models/item/ghast_trap.json
@@ -421,7 +421,7 @@ b1230980d683af112a60d8d92a6695450d447839 assets/twilightforest/models/item/shade
 bf81b7da7483a7cb79e848de49ff41d1c6c832f9 assets/twilightforest/models/item/skeleton_skull_candle.json
 0ee6598ddfeb5eff5d72843cdec68f0c35f15363 assets/twilightforest/models/item/slider.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/slime_beetle_spawn_egg.json
-fe27f0b791ae5d5576438cb7fe942949e0492a70 assets/twilightforest/models/item/smoker.json
+9b85fe6ee3248abb58c52a8e4de51ee5593d9017 assets/twilightforest/models/item/smoker.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/twilightforest/models/item/snow_guardian_spawn_egg.json
 1fb9b86a63e0c57696cd0fe907f94b1cfae0021e assets/twilightforest/models/item/snow_queen_banner_pattern.json
 17203ca19cd437b70ed9a4cd2fa866e6cfa422fd assets/twilightforest/models/item/snow_queen_boss_spawner.json

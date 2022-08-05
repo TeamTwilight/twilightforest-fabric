@@ -17,7 +17,6 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import twilightforest.init.TFBlocks;
@@ -65,7 +64,7 @@ public class LampOfCindersItem extends Item implements CustomEnchantingBehaviorI
 			if (player instanceof ServerPlayer)
 				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, player.getItemInHand(context.getHand()));
 
-			player.playSound(TFSounds.LAMP_BURN.get(), 0.5F, 1.5F);
+			if (player != null) player.playSound(TFSounds.LAMP_BURN.get(), 0.5F, 1.5F);
 
 			// spawn flame particles
 			for (int i = 0; i < 10; i++) {
@@ -77,19 +76,15 @@ public class LampOfCindersItem extends Item implements CustomEnchantingBehaviorI
 			}
 
 			return InteractionResult.SUCCESS;
-		} else {
-			return InteractionResult.PASS;
-		}
+		} else return InteractionResult.PASS;
 	}
 
 	private boolean burnBlock(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 		if (state.is(TFBlocks.BROWN_THORNS.get()) || state.is(TFBlocks.GREEN_THORNS.get())) {
-			level.setBlockAndUpdate(pos, TFBlocks.BURNT_THORNS.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, state.getValue(RotatedPillarBlock.AXIS)));
+			level.setBlockAndUpdate(pos, TFBlocks.BURNT_THORNS.get().withPropertiesOf(state));
 			return true;
-		} else {
-			return false;
-		}
+		} else return false;
 	}
 
 	@Override

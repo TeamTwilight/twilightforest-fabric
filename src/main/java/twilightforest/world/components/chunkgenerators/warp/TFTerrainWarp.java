@@ -2,13 +2,13 @@ package twilightforest.world.components.chunkgenerators.warp;
 
 import net.minecraft.Util;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseSettings;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
+
+import java.util.Optional;
 
 /*
  * This is where the magic of warping terrain with biomes happens.
@@ -27,7 +27,7 @@ public class TFTerrainWarp {
     private final double dimensionDensityFactor;
     private final double dimensionDensityOffset;
     public final NoiseModifier caveNoiseModifier;
-    protected static final float[] BIOME_WEIGHTS = Util.make(new float[25], (afloat) -> {
+    public static final float[] BIOME_WEIGHTS = Util.make(new float[25], (afloat) -> {
         for(int x = -2; x <= 2; ++x) {
             for(int z = -2; z <= 2; ++z) {
                 float weight = 10.0F / Mth.sqrt((float)(x * x + z * z) + 0.2F);
@@ -53,37 +53,35 @@ public class TFTerrainWarp {
 
     public void fillNoiseColumn(RandomState state, double[] adouble, int x, int z, int sealevel, int min, int max) {
         if (biomeSource instanceof TFBiomeProvider source) {
-            double d0;
-            double d1;
-            float f = 0.0F;
-            float f1 = 0.0F;
-            float f2 = 0.0F;
-            float depth = source.getBiomeDepth(x, sealevel, z, state.sampler());
+            float totalScale = 0.0F;
+            float totalDepth = 0.0F;
+            float totalContribution = 0.0F;
+            float centerDepth = source.getBiomeDepth(x, z);
 
             for (int offX = -2; offX <= 2; ++offX) {
                 for (int offZ = -2; offZ <= 2; ++offZ) {
-                    Biome biome = source.getNoiseBiome(x + offX, sealevel, z + offZ, state.sampler()).value();
-                    float offD = source.getBiomeDepth(biome);
-                    float offS = source.getBiomeScale(biome);
-                    float f6;
-                    float f7;
-                    f6 = offD;
-                    f7 = offS;
+                    Optional<TerrainColumn> terrainColumn = source.getTerrainColumn(x + offX, z + offZ);
 
-                    float f8 = offD > depth ? 0.5F : 1.0F;
-                    float f9 = f8 * BIOME_WEIGHTS[offX + 2 + (offZ + 2) * 5] / (f6 + 2.0F);
-                    f += f7 * f9;
-                    f1 += f6 * f9;
-                    f2 += f9;
+                    if (terrainColumn.isEmpty()) continue;
+
+                    float neighborDepth = terrainColumn.get().depth();
+                    float neighborScale = terrainColumn.get().scale();
+
+                    // If the center column is lower than the given neighboring column, then diminish its height contribution
+                    float topographicContribution = neighborDepth > centerDepth ? 0.5F : 1.0F;
+                    float piecewiseInfluence = topographicContribution * BIOME_WEIGHTS[offX + 2 + (offZ + 2) * 5] / (neighborDepth + 2.0F);
+                    totalDepth += neighborDepth * piecewiseInfluence;
+                    totalScale += neighborScale * piecewiseInfluence;
+                    totalContribution += piecewiseInfluence;
                 }
             }
 
-            float f10 = f1 / f2;
-            float f11 = f / f2;
-            double d6 = f10 * 0.5F - 0.125F;
-            double d8 = f11 * 0.9F + 0.1F;
-            d0 = d6 * 0.265625D;
-            d1 = 96.0D / d8;
+            float depthNormalized = totalDepth / totalContribution;
+            float scaleNormalized = totalScale / totalContribution;
+            double modifiedDepth = depthNormalized * 0.5F - 0.125F;
+            double modifiedScale = scaleNormalized * 0.9F + 0.1F;
+            double offset = modifiedDepth * 0.265625D;
+            double factor = 96.0D / modifiedScale;
 
 //            double scaleXZ = 684.412D * settings.noiseSamplingSettings().xzScale();
 //            double scaleY = 684.412D * settings.noiseSamplingSettings().yScale();
@@ -101,7 +99,7 @@ public class TFTerrainWarp {
                 for (int index = 0; index <= max; ++index) {
                     int y = index + min;
                     double noise = blend.sampleAndClampNoise(x, y, z, scaleXZ, scaleY, factorXZ, factorY);
-                    double totaldensity = this.computeInitialDensity(y, d0, d1, density) + noise;
+                    double totaldensity = this.computeInitialDensity(y, offset, factor, density) + noise;
                     totaldensity = this.caveNoiseModifier.modifyNoise(totaldensity, y * this.cellHeight, z * this.cellWidth, x * this.cellWidth);
                     totaldensity = this.applySlide(totaldensity, y);
                     adouble[index] = totaldensity;

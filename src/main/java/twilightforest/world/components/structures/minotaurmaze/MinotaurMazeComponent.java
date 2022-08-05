@@ -280,11 +280,10 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 
 		// clear the area
 		generateAirBox(world, sbb, 1, 1, 1, getDiameter(), 4, getDiameter());
-		boolean onlyReplaceCeiling = this.level == 1 && !TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get();
+		boolean onlyReplaceCeiling = this.level == 1;
 		generateBox(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.MAZESTONE.get().defaultBlockState(), stone, onlyReplaceCeiling);
 		generateBox(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), stone, false);
 
-		//
 		maze.headBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();
 		maze.wallBlockState = TFBlocks.MAZESTONE_BRICK.get().defaultBlockState();
 		maze.rootBlockState = TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState();

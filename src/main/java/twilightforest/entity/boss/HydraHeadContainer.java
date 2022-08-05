@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -580,9 +581,11 @@ public class HydraHeadContainer {
 		if (this.headEntity.getState() == State.FLAMING && this.headEntity.tickCount % 5 == 0) {
 			// fire breathing!
 			this.headEntity.playSound(TFSounds.HYDRA_SHOOT_FIRE.get(), 0.5F + this.headEntity.getLevel().getRandom().nextFloat(), this.headEntity.getLevel().getRandom().nextFloat() * 0.7F + 0.3F);
+			this.headEntity.gameEvent(GameEvent.PROJECTILE_SHOOT);
 		}
 		if (this.headEntity.getState() == State.ROAR_RAWR) {
 			this.headEntity.playSound(TFSounds.HYDRA_ROAR.get(), 1.25F, this.headEntity.getLevel().getRandom().nextFloat() * 0.3F + 0.7F);
+			this.headEntity.gameEvent(GameEvent.ENTITY_ROAR);
 		}
 		if (this.headEntity.getState() == State.BITE_READY && this.ticksProgress == 60) {
 			this.headEntity.playSound(TFSounds.HYDRA_WARN.get(), 2.0F, this.headEntity.getLevel().getRandom().nextFloat() * 0.3F + 0.7F);

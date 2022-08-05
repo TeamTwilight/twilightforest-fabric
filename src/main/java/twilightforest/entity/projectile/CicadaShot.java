@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -83,9 +84,11 @@ public class CicadaShot extends TFThrowable {
 
         if (currentState.getMaterial().isReplaceable() && !currentState.is(BlockTags.FIRE) && !currentState.is(Blocks.LAVA)) {
             this.getLevel().setBlockAndUpdate(pos, TFBlocks.CICADA.get().defaultBlockState().setValue(DirectionalBlock.FACING, result.getDirection()));
+			this.gameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
         } else {
             ItemEntity squish = new ItemEntity(this.getLevel(), pos.getX(), pos.getY(), pos.getZ(), Items.GRAY_DYE.getDefaultInstance());
             squish.spawnAtLocation(squish.getItem());
+			this.gameEvent(GameEvent.ENTITY_DIE);
         }
     }
 

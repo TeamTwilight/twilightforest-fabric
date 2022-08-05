@@ -56,6 +56,7 @@ public class StructureProtectionPacket implements S2CPacket {
 				}
 			});
 
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

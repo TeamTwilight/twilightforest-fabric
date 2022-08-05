@@ -32,4 +32,9 @@ public class MazebreakerPickItem extends PickaxeItem {
 		float destroySpeed = super.getDestroySpeed(stack, state);
 		return state.is(BlockTagGenerator.MAZEBREAKER_ACCELERATED) ? destroySpeed * 16.0F : destroySpeed;
 	}
+
+	@Override
+	public boolean isValidRepairItem(ItemStack stack, ItemStack otherStack) {
+		return false;
+	}
 }

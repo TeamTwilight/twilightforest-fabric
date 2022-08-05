@@ -284,7 +284,6 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 		};
 	}
 
-	//FIXME
 	@Override
 	public Optional<SoundEvent> getPickupSound() {
 		return Optional.empty();

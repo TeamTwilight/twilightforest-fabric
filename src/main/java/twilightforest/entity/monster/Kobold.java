@@ -23,6 +23,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.ai.goal.FlockToSameKindGoal;
@@ -126,6 +127,7 @@ public class Kobold extends Monster {
 				//every 3 seconds chew some bread
 				if (this.lastEatenBreadTicks > 60 && this.getRandom().nextFloat() < 0.1F) {
 					this.playSound(this.getEatingSound(itemstack), 0.75F, 0.9F);
+					this.gameEvent(GameEvent.EAT);
 					this.getLevel().broadcastEntityEvent(this, (byte) 45);
 					this.lastEatenBreadTicks = 0;
 				}
@@ -195,6 +197,7 @@ public class Kobold extends Monster {
 			this.setItemSlot(EquipmentSlot.MAINHAND, itemstack.split(1));
 			this.handDropChances[EquipmentSlot.MAINHAND.getIndex()] = 2.0F;
 			this.take(item, itemstack.getCount());
+			this.gameEvent(GameEvent.EQUIP);
 			item.discard();
 			this.lastEatenBreadTicks = 1;
 			this.eatingTime = this.difficultyTime() + this.getRandom().nextInt(600);

@@ -1,5 +1,7 @@
 {
   "type": "twilightforest:transformation_powder",
   "from": "twilightforest:deer",
+  "reversible": true,
   "to": "minecraft:cow"
 }
+

@@ -19,7 +19,6 @@ import twilightforest.init.TFStructurePieceTypes;
 public class CourtyardMain extends StructureMazeGenerator {
 	static final int ROW_OF_CELLS = 8;
 	static final int RADIUS = (int) ((((ROW_OF_CELLS - 2) / 2.0F) * 12.0F) + 8);
-	static int DIAMETER = 2 * RADIUS + 1; //TODO: Unused
 
 	static final float HEDGE_FLOOF = 0.5f;
 

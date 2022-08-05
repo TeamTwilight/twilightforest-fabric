@@ -172,7 +172,7 @@ public class TFMagicMapData extends MapItemSavedData {
 		}
 
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
-			super(Type.TARGET_X, xIn, yIn, rotationIn, Component.translatable("map.magic.text")); //TODO: Shush for now
+			super(Type.TARGET_X, xIn, yIn, rotationIn, Component.translatable("map.magic.text"));
 			this.featureId = featureId;
 		}
 

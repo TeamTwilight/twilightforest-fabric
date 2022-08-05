@@ -31,15 +31,18 @@ public class MissingAdvancementToastPacket implements S2CPacket {
 		buf.writeItem(this.icon);
 	}
 
-	@SuppressWarnings("Convert2Lambda")
-	public static boolean handle(MissingAdvancementToastPacket packet, Executor ctx) {
-		ctx.execute(new Runnable() {
-			@Override
-			public void run() {
-				Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title, packet.icon));
-			}
-		});
-		return true;
+	public static class Handler {
+		@SuppressWarnings("Convert2Lambda")
+		public static boolean onMessage(MissingAdvancementToastPacket packet, Executor ctx) {
+			ctx.execute(new Runnable() {
+				@Override
+				public void run() {
+					Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title, packet.icon));
+				}
+			});
+			ctx.get().setPacketHandled(true);
+			return true;
+		}
 	}
 
     @Override

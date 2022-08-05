@@ -5,7 +5,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.GameRules;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.boss.Naga;
 import twilightforest.init.TFSounds;
 import twilightforest.util.EntityUtil;
@@ -145,6 +147,7 @@ public class NagaMovementPattern extends Goal {
 	private void doIntimidate() {
 		this.state = MovementState.INTIMIDATE;
 		this.naga.playSound(TFSounds.NAGA_RATTLE.get(), 4.0F, this.naga.getVoicePitch());
+		this.naga.gameEvent(GameEvent.ENTITY_ROAR);
 
 		this.stateCounter += 15 + this.naga.getRandom().nextInt(10);
 		this.naga.goSlow();
@@ -168,7 +171,6 @@ public class NagaMovementPattern extends Goal {
 			BlockPos pos = new BlockPos(dx, dy, dz);
 
 			if (EntityUtil.canDestroyBlock(this.naga.getLevel(), pos, this.naga)) {
-				// todo limit what can be broken
 				this.naga.getLevel().destroyBlock(pos, true);
 
 				// sparkle!!

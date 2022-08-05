@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.init.TFSounds;
 
 public class GlassSwordItem extends SwordItem {
@@ -23,9 +24,12 @@ public class GlassSwordItem extends SwordItem {
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		attacker.getLevel().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.get(), attacker.getSoundSource(), 1F, 0.5F);
 		target.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.defaultBlockState()), target.getX(), target.getY(), target.getZ(), 1, 1, 1);
-		stack.hurtAndBreak(stack.getMaxDamage() + 1, attacker, (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+		stack.hurtAndBreak(stack.getMaxDamage() + 1, attacker, (user) -> {
+			user.getLevel().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.get(), attacker.getSoundSource(), 1F, 0.5F);
+			user.broadcastBreakEvent(InteractionHand.MAIN_HAND);
+			user.gameEvent(GameEvent.BLOCK_DESTROY);
+		});
 		return true;
 	}
 
@@ -40,8 +44,8 @@ public class GlassSwordItem extends SwordItem {
 
 			ListTag lore = new ListTag();
 			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.1\",\"italic\":false,\"color\":\"gray\"}"));
-			// TODO uncomment if someone asks if this will ever generate as loot
-			//  lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.2\",\"italic\":false,\"color\":\"gray\"}"));
+			// uncomment if someone asks if this will ever generate as loot
+//			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.2\",\"italic\":false,\"color\":\"gray\"}"));
 
 			CompoundTag display = new CompoundTag();
 			display.put("Lore", lore);

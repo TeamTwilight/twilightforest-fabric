@@ -1,7 +1,8 @@
 {
   "placement": {
     "type": "twilightforest:forced_landmark",
-    "landmark_set": "troll_lairs"
+    "landmark_set": "troll_lairs",
+    "scan_elevation": 256
   },
   "structures": [
     {

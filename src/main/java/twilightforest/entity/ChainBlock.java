@@ -27,6 +27,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -74,7 +75,7 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world, LivingEntity thrower, InteractionHand hand, ItemStack stack) {
 		super(type, thrower, world);
 		this.isReturning = false;
-		this.canSmashBlocks = EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0;
+		this.canSmashBlocks = EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0;
 		this.stack = stack;
 		this.setHand(hand);
 		this.chain1 = new Chain(this);
@@ -139,6 +140,7 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 
 			if (!this.isReturning) {
 				this.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
+				this.gameEvent(GameEvent.HIT_GROUND);
 			}
 
 			if (this.blocksSmashed < MAX_SMASH) {

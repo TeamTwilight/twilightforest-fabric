@@ -7,6 +7,7 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.IBreathAttacker;
@@ -85,6 +86,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 			Entity target = this.getHeadLookTarget();
 			if (target != null) {
 				this.entityHost.doBreathAttack(target);
+				this.entityHost.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			}
 		}
 	}

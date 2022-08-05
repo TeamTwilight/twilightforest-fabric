@@ -26,7 +26,7 @@ public class ThrownWepRenderer extends EntityRenderer<ThrownWep> {
 	public void render(ThrownWep entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		stack.pushPose();
 
-		float spin = (entity.tickCount + partialTicks) * -10F + 90F;
+		float spin = (entity.tickCount + partialTicks) * 10F;
 
 		// size up
 		stack.scale(1.25F, 1.25F, 1.25F);
@@ -42,7 +42,7 @@ public class ThrownWepRenderer extends EntityRenderer<ThrownWep> {
 		float f9 = 0.5F;
 		float f10 = 0.25F;
 
-		matrix.mulPose(Vector3f.YP.rotationDegrees(rotation + 270));
+		matrix.mulPose(Vector3f.YP.rotationDegrees(rotation + 90));
 		matrix.mulPose(Vector3f.ZP.rotationDegrees(spin));
 
 		float f12 = 0.0625F;

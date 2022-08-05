@@ -1,16 +1,98 @@
 package twilightforest.world.registration.biomes;
 
 import com.google.common.collect.ImmutableMap;
+import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
+import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
+import net.minecraft.Util;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import twilightforest.init.BiomeKeys;
 import twilightforest.world.components.BiomeGrassColors;
+import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
 
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public final class BiomeMaker extends BiomeHelper {
 	public static final Map<ResourceKey<Biome>, Biome> BIOMES = generateBiomes();
+
+	public static List<TerrainColumn> makeBiomeList(Registry<Biome> biomeRegistry, Holder<Biome> undergroundBiome) {
+		return List.of(
+				biomeColumnWithUnderground(0.025F, 0.05F, biomeRegistry, BiomeKeys.FOREST, undergroundBiome),
+				biomeColumnWithUnderground(0.1F, 0.2F, biomeRegistry, BiomeKeys.DENSE_FOREST, undergroundBiome),
+				biomeColumnWithUnderground(0.0625F, 0.05F, biomeRegistry, BiomeKeys.FIREFLY_FOREST, undergroundBiome),
+				biomeColumnWithUnderground(0.005F, 0.005F, biomeRegistry, BiomeKeys.CLEARING, undergroundBiome),
+				biomeColumnWithUnderground(0.05F, 0.1F, biomeRegistry, BiomeKeys.OAK_SAVANNAH, undergroundBiome),
+				biomeColumnWithUnderground(-1.65F, 0.25F, biomeRegistry, BiomeKeys.STREAM, undergroundBiome),
+				biomeColumnWithUnderground(-1.97F, 0.0F, biomeRegistry, BiomeKeys.LAKE, undergroundBiome),
+
+				biomeColumnWithUnderground(0.025F, 0.05F, biomeRegistry, BiomeKeys.MUSHROOM_FOREST, undergroundBiome),
+				biomeColumnWithUnderground(0.05F, 0.05F, biomeRegistry, BiomeKeys.DENSE_MUSHROOM_FOREST, undergroundBiome),
+
+				biomeColumnWithUnderground(0.025F, 0.05F, biomeRegistry, BiomeKeys.ENCHANTED_FOREST, undergroundBiome),
+				biomeColumnWithUnderground(0.025F, 0.05F, biomeRegistry, BiomeKeys.SPOOKY_FOREST, undergroundBiome),
+
+				biomeColumnWithUnderground(-0.9F, 0.15F, biomeRegistry, BiomeKeys.SWAMP, undergroundBiome),
+				biomeColumnWithUnderground(-0.2F, 0.05F, biomeRegistry, BiomeKeys.FIRE_SWAMP, undergroundBiome),
+
+				biomeColumnWithUnderground(0.025F, 0.005F, biomeRegistry, BiomeKeys.DARK_FOREST, undergroundBiome),
+				biomeColumnWithUnderground(0.025F, 0.005F, biomeRegistry, BiomeKeys.DARK_FOREST_CENTER, undergroundBiome),
+
+				biomeColumnWithUnderground(0.05F, 0.15F, biomeRegistry, BiomeKeys.SNOWY_FOREST, undergroundBiome),
+				biomeColumnWithUnderground(0.025F, 0.05F, biomeRegistry, BiomeKeys.GLACIER, undergroundBiome),
+
+				biomeColumnWithUnderground(3.0F, 0.25F, biomeRegistry, BiomeKeys.HIGHLANDS, undergroundBiome),
+				biomeColumnToBedrock(7.0F, 0.1F, biomeRegistry, BiomeKeys.THORNLANDS),
+				biomeColumnToBedrock(13.75F, 0.025F, biomeRegistry, BiomeKeys.FINAL_PLATEAU)
+		);
+	}
+
+	private static TerrainColumn biomeColumnWithUnderground(float noiseDepth, float noiseScale, Registry<Biome> biomeRegistry, ResourceKey<Biome> key, Holder<Biome> undergroundBiome) {
+		Holder.Reference<Biome> biomeHolder = Holder.Reference.createStandAlone(biomeRegistry, key);
+
+		biomeHolder.bind(key, BIOMES.get(key));
+
+		return makeColumn(noiseDepth, noiseScale, biomeHolder, treeMap -> {
+			// This will put the transition boundary around Y-8
+			treeMap.put(Math.min(noiseDepth - 1, -1), biomeHolder);
+			treeMap.put(Math.min(noiseDepth - 3, -3), undergroundBiome);
+		});
+	}
+
+	private static TerrainColumn biomeColumnToBedrock(float noiseDepth, float noiseScale, Registry<Biome> biomeRegistry, ResourceKey<Biome> key) {
+		Holder.Reference<Biome> biomeHolder = Holder.Reference.createStandAlone(biomeRegistry, key);
+
+		biomeHolder.bind(key, BIOMES.get(key));
+
+		return makeColumn(noiseDepth, noiseScale, biomeHolder, treeMap -> treeMap.put(0, biomeHolder));
+	}
+
+	private static TerrainColumn makeColumn(float noiseDepth, float noiseScale, Holder<Biome> biomeHolder, Consumer<Float2ObjectSortedMap<Holder<Biome>>> layerBuilder) {
+		return new TerrainColumn(biomeHolder, Util.make(new Float2ObjectAVLTreeMap<>(), layerBuilder), noiseDepth, noiseScale);
+	}
+
+	public static Holder<Biome> registerUnderground(Registry<Biome> registry, boolean fullRegister) {
+		Holder.Reference<Biome> holder = Holder.Reference.createStandAlone(registry, BiomeKeys.UNDERGROUND);
+		Biome underground = biomeWithDefaults(
+				defaultAmbientBuilder(),
+				undergroundMobSpawning(),
+				undergroundGen()
+		)
+				.temperature(0.7F)
+				.downfall(0.0F)
+				.build();
+
+		if (fullRegister)
+			Registry.register(registry, BiomeKeys.UNDERGROUND, underground);
+
+		holder.bind(BiomeKeys.UNDERGROUND, underground);
+
+		return holder;
+	}
 
 	private static Map<ResourceKey<Biome>, Biome> generateBiomes() {
 		final ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes = ImmutableMap.builder();
@@ -112,7 +194,7 @@ public final class BiomeMaker extends BiomeHelper {
 						defaultAmbientBuilder()
 								.grassColorOverride(0xC45123)
 								.foliageColorOverride(0xFF8501)
-								.waterColor(0xFA9111)
+								.waterColor(0xBC8857)
 								.grassColorModifier(BiomeGrassColors.SPOOKY_FOREST),
 						spookSpawning(),
 						spookyForestGen()
@@ -161,11 +243,11 @@ public final class BiomeMaker extends BiomeHelper {
 		biomes.put(BiomeKeys.SWAMP,
 				biomeWithDefaults(
 						defaultAmbientBuilder()
-								.waterColor(0x002112)
+								.skyColor(0x002112)
 								.fogColor(0x003F21)
 								.grassColorOverride(0x5C694E)
 								.foliageColorOverride(0x496137)
-								.waterColor(0xE0FFAE)
+								.waterColor(0x95B55F)
 								.grassColorModifier(BiomeGrassColors.SWAMP),
 						swampSpawning(),
 						swampGen()
@@ -227,7 +309,11 @@ public final class BiomeMaker extends BiomeHelper {
 	private static void snowRegionBiomes(ImmutableMap.Builder<ResourceKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SNOWY_FOREST,
 				biomeWithDefaults(
-						defaultAmbientBuilder(),
+						defaultAmbientBuilder()
+								.skyColor(0x808080)
+								.fogColor(0xFFFFFF)
+								.foliageColorOverride(0xFFFFFF)
+								.grassColorOverride(0xFFFFFF),
 						snowForestSpawning(),
 						snowyForestGen()
 				)
@@ -239,7 +325,9 @@ public final class BiomeMaker extends BiomeHelper {
 
 		biomes.put(BiomeKeys.GLACIER,
 				biomeWithDefaults(
-						defaultAmbientBuilder(),
+						defaultAmbientBuilder()
+								.skyColor(0x130D28)
+								.fogColor(0x361F88),
 						penguinSpawning(),
 						glacierGen()
 				)

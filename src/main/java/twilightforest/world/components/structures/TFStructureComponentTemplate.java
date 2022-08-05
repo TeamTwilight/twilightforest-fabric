@@ -52,17 +52,6 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 		LAZY_TEMPLATE_LOADER = () -> setup(manager);
     }
 
-    //TODO: Unused. Remove?
-    @Deprecated
-    public TFStructureComponentTemplate(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
-        super(type, i, new BoundingBox(x, y, z, x, y, z));
-        setFeature(feature);
-        this.rotation = rotation;
-        this.mirror = mirror;
-        this.placeSettings.setRotation(rotation);
-        this.templatePosition = new BlockPos(x, y, z);
-    }
-
     public final void setup(StructureTemplateManager templateManager) {
         loadTemplates(templateManager);
         setModifiedTemplatePositionFromRotation();

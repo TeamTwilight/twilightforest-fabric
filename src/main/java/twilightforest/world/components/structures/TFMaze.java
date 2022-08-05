@@ -32,10 +32,6 @@ public class TFMaze {
 	public int head;// blocks placed above the maze
 	public int roots;// blocks placed under the maze (used for hedge mazes)
 
-	public int worldX; // set when we first copy the maze into the world
-	public int worldY;
-	public int worldZ;
-
 	public int type; // 1-3 = various sizes hollow hills
 
 	public StructurePiece.BlockSelector wallBlocks;
@@ -347,27 +343,8 @@ public class TFMaze {
 		component.placeBlock(world, doorBlockState, x, y, z, sbb);
 	}
 
-	/**
-	 * Carves a block into the world.
-	 * TODO: check what's there?  maybe only certain blocks?
-	 */
-	private void carveBlock(WorldGenLevel world, int x, int y, int z) {
-		world.setBlock(new BlockPos(x, y, z), Blocks.AIR.defaultBlockState(), 2);
-	}
-
-	private void putHeadBlock(WorldGenLevel world, int x, int y, int z) {
-		world.setBlock(new BlockPos(x, y, z), headBlockState, 2);
-	}
-
 	private void putHeadBlock(WorldGenLevel world, int x, int y, int z, TFStructureComponentOld component, BoundingBox sbb) {
 		component.placeBlock(world, headBlockState, x, y, z, sbb);
-	}
-
-	/**
-	 * Puts a root block in the world, at the specified world coordinates.
-	 */
-	private void putRootBlock(WorldGenLevel world, int x, int y, int z) {
-		world.setBlock(new BlockPos(x, y, z), rootBlockState, 2);
 	}
 
 	/**
@@ -391,32 +368,6 @@ public class TFMaze {
 
 	private boolean isEven(int n) {
 		return n % 2 == 0;
-	}
-
-	/**
-	 * Called after copyToWorld.  Places torches in the maze as appropriate
-	 */
-	private void placeTorches(WorldGenLevel world) {
-
-		int torchHeight = 1;
-
-		for (int x = 0; x < rawWidth; x++) {
-			for (int z = 0; z < rawDepth; z++) {
-				if (getRaw(x, z) == 0) {
-					int mdx = worldX + (x / 2 * (evenBias + oddBias));
-					int mdy = worldY + torchHeight;
-					int mdz = worldZ + (z / 2 * (evenBias + oddBias));
-
-					BlockPos pos = new BlockPos(mdx, mdy, mdz);
-
-					if (isEven(x) && isEven(z)) {
-						if (shouldTorch(x, z) && world.getBlockState(pos).getBlock() == wallBlockState.getBlock()) {
-							world.setBlock(pos, torchBlockState, 2);
-						}
-					}
-				}
-			}
-		}
 	}
 
 	/**

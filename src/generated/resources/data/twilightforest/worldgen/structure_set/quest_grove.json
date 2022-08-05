@@ -1,7 +1,8 @@
 {
   "placement": {
     "type": "twilightforest:forced_landmark",
-    "landmark_set": "quest_grove"
+    "landmark_set": "quest_grove",
+    "scan_elevation": 256
   },
   "structures": [
     {

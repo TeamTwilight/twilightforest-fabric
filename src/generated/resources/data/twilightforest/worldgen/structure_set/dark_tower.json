@@ -1,7 +1,8 @@
 {
   "placement": {
     "type": "twilightforest:forced_landmark",
-    "landmark_set": "dark_tower"
+    "landmark_set": "dark_tower",
+    "scan_elevation": 256
   },
   "structures": [
     {

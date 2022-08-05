@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "twilightforest:block/potted_trans_sapling"
+      "model": "twilightforest:block/potted_transformation_sapling"
     }
   }
 }

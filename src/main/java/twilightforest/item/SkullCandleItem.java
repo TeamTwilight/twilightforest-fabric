@@ -8,6 +8,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
@@ -79,6 +81,28 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 			});
 		}
 
+	}
+
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		ItemStack itemstack = player.getItemInHand(hand);
+		EquipmentSlot equipmentslot = Mob.getEquipmentSlotForItem(itemstack);
+		ItemStack itemstack1 = player.getItemBySlot(equipmentslot);
+		if (itemstack1.isEmpty()) {
+			player.setItemSlot(equipmentslot, itemstack.split(1));
+			if (!level.isClientSide()) {
+				player.awardStat(Stats.ITEM_USED.get(this));
+			}
+
+			return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
+		} else {
+			return InteractionResultHolder.fail(itemstack);
+		}
+	}
+
+	@Override
+	public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
+		return slot == EquipmentSlot.HEAD;
 	}
 
 	public static EquipmentSlot getEquipmentSlot(ItemStack stack) {

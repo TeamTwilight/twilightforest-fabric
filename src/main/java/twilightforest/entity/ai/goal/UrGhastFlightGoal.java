@@ -49,27 +49,27 @@ public class UrGhastFlightGoal extends Goal {
 	@Override
 	public void start() {
 		if (this.pointsToVisit.isEmpty()) {
-			pointsToVisit.addAll(createPath());
+			this.pointsToVisit.addAll(createPath());
 		} else {
-			if (this.currentPoint >= pointsToVisit.size()) {
+			if (this.currentPoint >= this.pointsToVisit.size()) {
 				this.currentPoint = 0;
 
 				// when we're in tantrum mode, this is a good time to check if we need to spawn more ghasts
-				if (!ghast.checkGhastsAtTraps()) {
-					ghast.spawnGhastsAtTraps();
+				if (!this.ghast.checkGhastsAtTraps()) {
+					this.ghast.spawnGhastsAtTraps();
 				}
 			}
 
 			// TODO reintroduce wanderFactor somehow? Would need to change move helper or add extra fields here
 
-			double x = pointsToVisit.get(currentPoint).getX();
-			double y = pointsToVisit.get(currentPoint).getY() + HOVER_ALTITUDE;
-			double z = pointsToVisit.get(currentPoint).getZ();
-			ghast.getMoveControl().setWantedPosition(x, y, z, 1.0F);
+			double x = this.pointsToVisit.get(this.currentPoint).getX();
+			double y = this.pointsToVisit.get(this.currentPoint).getY() + HOVER_ALTITUDE;
+			double z = this.pointsToVisit.get(this.currentPoint).getZ();
+			this.ghast.getMoveControl().setWantedPosition(x, y, z, 1.0F);
 			this.currentPoint++;
 
 			// we have reached cruising altitude, time to turn noClip off
-			ghast.noPhysics = false;
+			this.ghast.noPhysics = false;
 		}
 	}
 

@@ -25,7 +25,7 @@ public class FinalCastleRoof13CrenellatedComponent extends TFStructureComponentO
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleRoof13CrenellatedComponent(TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+	public FinalCastleRoof13CrenellatedComponent(TFLandmark feature, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCRo13Cr.get(), feature, i, x, y, z);
 
 		int height = 5;

@@ -8,6 +8,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.TFPart;
@@ -75,7 +76,11 @@ public abstract class HydraPart extends TFPart<Hydra> {
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		return this.getParent() != null && this.getParent().attackEntityFromPart(this, source, amount);
+		boolean flag = this.getParent() != null && this.getParent().attackEntityFromPart(this, source, amount);
+		if (flag) {
+			this.gameEvent(GameEvent.ENTITY_DAMAGE);
+		}
+		return flag;
 	}
 
 	@Override

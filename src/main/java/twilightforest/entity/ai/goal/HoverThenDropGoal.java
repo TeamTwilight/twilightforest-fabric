@@ -112,7 +112,6 @@ public class HoverThenDropGoal extends HoverBaseGoal<SnowQueen> {
 		} else {
 			// drop!
 			this.dropTimer++;
-
 			if (this.attacker.getY() > this.dropY) {
 				this.attacker.destroyBlocksInAABB(this.attacker.getBoundingBox().inflate(1, 0.5F, 1));
 			}

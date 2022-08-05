@@ -25,7 +25,6 @@ public class RedThreadBlock extends MultifaceBlock implements EntityBlock , Vali
 		return !ctx.getItemInHand().is(TFBlocks.RED_THREAD.get().asItem()) || super.canBeReplaced(state, ctx);
 	}
 
-	//TODO required to implement but do not want
 	@Override
 	public MultifaceSpreader getSpreader() {
 		return new MultifaceSpreader(this);

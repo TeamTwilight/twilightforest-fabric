@@ -51,7 +51,7 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, 5, 5, 5, 6, 5, 6, Blocks.COBBLESTONE.defaultBlockState(), Blocks.COBBLESTONE.defaultBlockState(), false);
 
 		// chests
-		this.setDoubleLootChest(world, 5, 6, 5, 5, 6, 6, getOrientation().getClockWise(), TFLootTables.TROLL_VAULT, sbb, false);
+		this.setDoubleLootChest(world, 5, 6, 5, 5, 6, 6, getOrientation().getClockWise(), TFLootTables.TROLL_VAULT, TFLootTables.TROLL_GARDEN, sbb, false);
 		this.setDoubleLootChest(world, 6, 6, 5, 6, 6, 6, getOrientation().getClockWise(), TFLootTables.TROLL_GARDEN, sbb, false);
 	}
 }

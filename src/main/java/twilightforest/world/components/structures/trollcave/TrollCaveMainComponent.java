@@ -216,9 +216,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		return new BlockPos(x, y, z);
 	}
 
-	protected static final Predicate<Biome> highlands = biome -> false; // FIXME biome == TFBiomes.highlands.get();
-
-
 	protected void generateBlockSpike(WorldGenLevel world, SpikeConfig config, Vec3i pos, BoundingBox sbb) {
 		generateBlockSpike(world, config, pos.getX(), pos.getY(), pos.getZ(), sbb);
 	}
@@ -231,7 +228,6 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isInside(pos)) {
 			// generate an RNG for this stalactite
-			//TODO: MOAR RANDOM!
 			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
 
 			// make the actual stalactite

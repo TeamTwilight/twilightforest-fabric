@@ -57,10 +57,10 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 		generateBox(world, sbb, 10, 0, 6, 10, 0, 9, Blocks.TNT.defaultBlockState(), AIR, false);
 
 		// LEWTZ!
-		this.setDoubleLootChest(world, 7, 2, 6, 8, 2, 6, Direction.SOUTH, TFLootTables.LABYRINTH_VAULT, sbb, false);
-		this.setDoubleLootChest(world, 8, 2, 9, 7, 2, 9, Direction.NORTH, TFLootTables.LABYRINTH_VAULT, sbb, false);
-		this.setDoubleLootChest(world, 6, 2, 8, 6, 2, 7, Direction.EAST, TFLootTables.LABYRINTH_VAULT, sbb, false);
-		this.setDoubleLootChest(world, 9, 2, 7, 9, 2, 8, Direction.WEST, TFLootTables.LABYRINTH_VAULT, sbb, false);
+		this.setDoubleLootChest(world, 7, 2, 6, 8, 2, 6, Direction.SOUTH, TFLootTables.LABYRINTH_VAULT, TFLootTables.LABYRINTH_ROOM, sbb, false);
+		this.setDoubleLootChest(world, 8, 2, 9, 7, 2, 9, Direction.NORTH, TFLootTables.LABYRINTH_VAULT, TFLootTables.LABYRINTH_ROOM, sbb, false);
+		this.setDoubleLootChest(world, 6, 2, 8, 6, 2, 7, Direction.EAST, TFLootTables.LABYRINTH_VAULT, TFLootTables.LABYRINTH_ROOM, sbb, false);
+		this.setDoubleLootChest(world, 9, 2, 7, 9, 2, 8, Direction.WEST, TFLootTables.LABYRINTH_VAULT, TFLootTables.LABYRINTH_ROOM, sbb, false);
 
 		// mazebreaker!
 	}

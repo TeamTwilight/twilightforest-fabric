@@ -26,7 +26,7 @@ public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 	}
 
 	/**
-	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.FallingBlockRenderer}, but scaled by 3
+	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.FallingBlockRenderer}
 	 */
 	@Override
 	public void render(FallingIce entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
@@ -37,7 +37,6 @@ public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 				stack.pushPose();
 				BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
 				stack.translate(-0.5D, 0.0D, -0.5D);
-				stack.scale(3, 3, 3); // TF - scale 3
 				BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 				var model = dispatcher.getBlockModel(blockstate);
 				for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(blockstate.getSeed(entity.blockPosition())), ModelData.EMPTY))

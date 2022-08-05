@@ -21,7 +21,7 @@ public class FinalCastleDungeonForgeRoomComponent extends TFStructureComponentOl
 		super(TFStructurePieceTypes.TFFCDunBoR.get(), nbt);
 	}
 
-	public FinalCastleDungeonForgeRoomComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
+	public FinalCastleDungeonForgeRoomComponent(TFLandmark feature, int i, int x, int y, int z, Direction direction) {
 		super(TFStructurePieceTypes.TFFCDunBoR.get(), feature, i, x, y, z);
 		this.spawnListIndex = 3; // forge monsters
 		this.setOrientation(direction);

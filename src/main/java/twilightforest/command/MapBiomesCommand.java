@@ -1,9 +1,5 @@
 package twilightforest.command;
 
-/**
- * Thank you @SuperCoder79 (from Twitter) for sharing the original code! Code sourced from a LGPL project
- */
-
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -11,8 +7,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.ChatFormatting;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.item.MagicMapItem;
 
@@ -26,43 +24,45 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Thank you @SuperCoder79 (from Twitter) for sharing the original code! Code sourced from a LGPL project
+ */
 public class MapBiomesCommand {
     private static final DecimalFormat numberFormat = new DecimalFormat("#.00");
 
-    private static final HashMap<Biome, Color> BIOME2COLOR = new HashMap<>();
+    private static final HashMap<ResourceLocation, Color> BIOME2COLOR = new HashMap<>();
 
     private static void init() {
         if (!BIOME2COLOR.isEmpty())
             return;
 
-        /* FIXME
-        BIOME2COLOR.put(TFBiomes.stream             .get(), new Color(0, 0x66, 255));
-        BIOME2COLOR.put(TFBiomes.tfLake             .get(), new Color(0, 0x44, 255));
-        BIOME2COLOR.put(TFBiomes.clearing           .get(), new Color(180, 220, 100));
-        BIOME2COLOR.put(TFBiomes.oakSavanna         .get(), new Color(250, 240, 150));
-        BIOME2COLOR.put(TFBiomes.twilightForest     .get(), new Color(100, 128, 100));
-        BIOME2COLOR.put(TFBiomes.denseTwilightForest.get(), new Color(50, 100, 50));
-        BIOME2COLOR.put(TFBiomes.fireflyForest      .get(), new Color(150, 255, 0));
-        BIOME2COLOR.put(TFBiomes.enchantedForest    .get(), new Color(255, 100, 255));
-        BIOME2COLOR.put(TFBiomes.mushrooms          .get(), new Color(255, 100, 80));
-        BIOME2COLOR.put(TFBiomes.deepMushrooms      .get(), new Color(200, 80, 80));
+        BIOME2COLOR.put(BiomeKeys.STREAM.location(), new Color(0, 0, 255));
+        BIOME2COLOR.put(BiomeKeys.LAKE.location(), new Color(0, 0, 255));
+        BIOME2COLOR.put(BiomeKeys.CLEARING.location(), new Color(132, 245, 130));
+        BIOME2COLOR.put(BiomeKeys.OAK_SAVANNAH.location(), new Color(239, 245, 130));
+        BIOME2COLOR.put(BiomeKeys.FOREST.location(), new Color(0, 255, 0));
+        BIOME2COLOR.put(BiomeKeys.DENSE_FOREST.location(), new Color(0, 170, 0));
+        BIOME2COLOR.put(BiomeKeys.FIREFLY_FOREST.location(), new Color(88, 252, 102));
+        BIOME2COLOR.put(BiomeKeys.ENCHANTED_FOREST.location(), new Color(0, 255, 255));
+        BIOME2COLOR.put(BiomeKeys.SPOOKY_FOREST.location(), new Color(119, 0, 255));
+        BIOME2COLOR.put(BiomeKeys.MUSHROOM_FOREST.location(), new Color(204, 0, 139));
+        BIOME2COLOR.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), new Color(184, 48, 184));
 
-        BIOME2COLOR.put(TFBiomes.tfSwamp            .get(), new Color(128, 0, 0));
-        BIOME2COLOR.put(TFBiomes.fireSwamp          .get(), new Color(128, 0x22, 0));
+        BIOME2COLOR.put(BiomeKeys.SWAMP.location(), new Color(0, 204, 187));
+        BIOME2COLOR.put(BiomeKeys.FIRE_SWAMP.location(), new Color(140, 0, 0));
 
-        BIOME2COLOR.put(TFBiomes.darkForest         .get(), new Color(0, 60, 0));
-        BIOME2COLOR.put(TFBiomes.darkForestCenter   .get(), new Color(0, 80, 0));
+        BIOME2COLOR.put(BiomeKeys.DARK_FOREST.location(), new Color(25, 61, 13));
+        BIOME2COLOR.put(BiomeKeys.DARK_FOREST_CENTER.location(), new Color(157, 79, 0));
 
-        BIOME2COLOR.put(TFBiomes.snowy_forest       .get(), new Color(220, 240, 240));
-        BIOME2COLOR.put(TFBiomes.glacier            .get(), new Color(180, 255, 255));
+        BIOME2COLOR.put(BiomeKeys.SNOWY_FOREST.location(), new Color(255, 255, 255));
+        BIOME2COLOR.put(BiomeKeys.GLACIER.location(), new Color(130, 191, 245));
 
-        BIOME2COLOR.put(TFBiomes.highlands          .get(), new Color(100, 65, 0));
-        BIOME2COLOR.put(TFBiomes.thornlands         .get(), new Color(128, 100, 90));
-        BIOME2COLOR.put(TFBiomes.highlandsCenter    .get(), new Color(128, 128, 128));*/
+        BIOME2COLOR.put(BiomeKeys.HIGHLANDS.location(), new Color(100, 65, 0));
+        BIOME2COLOR.put(BiomeKeys.THORNLANDS.location(), new Color(128, 100, 90));
+        BIOME2COLOR.put(BiomeKeys.FINAL_PLATEAU.location(), new Color(128, 128, 128));
     }
 
     public static LiteralArgumentBuilder<CommandSourceStack> register() {
-        // TODO elevate command perm
         return Commands.literal("biomepng").requires(cs -> cs.hasPermission(2)).executes(MapBiomesCommand::execute);
     }
 
@@ -80,8 +80,10 @@ public class MapBiomesCommand {
 
         for (int x = 0; x < img.getHeight(); x++) {
             for (int z = 0; z < img.getWidth(); z++) {
-                Biome b = source.getSource().getLevel().getNoiseBiome(x - 2048, 0, z - 2048).value();
-                Color color = BIOME2COLOR.get(b);
+                ServerLevel level = source.getSource().getLevel();
+                Biome b = level.getNoiseBiome(x - 2048, 0, z - 2048).value();
+                ResourceLocation key = level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(b);
+                Color color = BIOME2COLOR.get(key);
 
                 if (color == null) {
                     int colorInt = MagicMapItem.getBiomeColor(source.getSource().getLevel(), b);
@@ -89,7 +91,7 @@ public class MapBiomesCommand {
                     if (colorInt == 0)
                         colorInt = b.getGrassColor(0, 0);
 
-                    BIOME2COLOR.put(b, color = new Color(colorInt | 0xFF000000));
+                    BIOME2COLOR.put(key, color = new Color(colorInt | 0xFF000000));
                 }
 
                 if (!biomeCount.containsKey(b)) {
@@ -110,7 +112,9 @@ public class MapBiomesCommand {
 
         source.getSource().sendSuccess(Component.literal("Approximate biome-block counts within an 2048x2048 region"), true);
         int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
-        biomeCount.forEach((biome, integer) -> source.getSource().sendSuccess(Component.literal(biome.toString()).append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), true));
+        biomeCount.forEach((biome, integer) -> source.getSource().sendSuccess(Component.literal(
+                source.getSource().getLevel().registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome).toString())
+                .append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), true));
 
         //save the biome map
         Path p = Paths.get("biomemap.png");

@@ -34,6 +34,6 @@ public class TFStructureSets {
     public static final RegistryObject<StructureSet> FINAL_CASTLE = register(TFStructures.FINAL_CASTLE, () -> TFLandmark.FINAL_CASTLE);
 
     private static RegistryObject<StructureSet> register(RegistryObject<? extends Structure> structure, Supplier<TFLandmark> landmark) {
-        return TFStructureSets.STRUCTURE_SETS.register(structure.getId().getPath(), () -> new StructureSet(structure.getHolder().map(Holder::<Structure>hackyErase).get(), new BiomeForcedLandmarkPlacement(landmark.get())));
+        return TFStructureSets.STRUCTURE_SETS.register(structure.getId().getPath(), () -> new StructureSet(structure.getHolder().map(Holder::<Structure>hackyErase).get(), new BiomeForcedLandmarkPlacement(landmark.get(), 256)));
     }
 }

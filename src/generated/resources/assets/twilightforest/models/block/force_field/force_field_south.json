@@ -6,6 +6,7 @@
       "faces": {
         "south": {
           "cullface": "south",
+          "emissivity": 15,
           "texture": "#pane"
         }
       },

@@ -27,9 +27,6 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 	final double boundingBoxWidthLower;
 	final double boundingBoxWidthUpper;
 
-	private final double boundingBoxHeightLower;
-	private final double boundingBoxHeightUpper;
-
 	ConnectableRotatedPillarBlock(Properties props, double size) {
 		this(props, size, size);
 	}
@@ -43,14 +40,6 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 		} else {
 			this.boundingBoxWidthLower = 8d - (width / 2d);
 			this.boundingBoxWidthUpper = 16d - this.boundingBoxWidthLower;
-		}
-
-		if (height >= 16d) {
-			this.boundingBoxHeightLower = 0d;
-			this.boundingBoxHeightUpper = 16d;
-		} else {
-			this.boundingBoxHeightLower = 8d - (height / 2d);
-			this.boundingBoxHeightUpper = 16d - this.boundingBoxHeightLower;
 		}
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(AXIS, Direction.Axis.Y)
@@ -93,17 +82,6 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 				.setValue(EAST, this.canConnectTo(blockstate3, blockstate3.isFaceSturdy(iblockreader, blockpos4, Direction.WEST)));
 	}
 
-	// Utility to make a bounding-box piece
-	protected AABB getSidedAABBStraight(Direction facing, Direction.Axis axis) {
-		return makeQuickAABB(
-				facing == Direction.EAST ? 16d : axis == Direction.Axis.X ? this.boundingBoxHeightLower : this.boundingBoxWidthLower,
-				facing == Direction.UP ? 16d : axis == Direction.Axis.Y ? this.boundingBoxHeightLower : this.boundingBoxWidthLower,
-				facing == Direction.SOUTH ? 16d : axis == Direction.Axis.Z ? this.boundingBoxHeightLower : this.boundingBoxWidthLower,
-				facing == Direction.WEST ? 0d : axis == Direction.Axis.X ? this.boundingBoxHeightUpper : this.boundingBoxWidthUpper,
-				facing == Direction.DOWN ? 0d : axis == Direction.Axis.Y ? this.boundingBoxHeightUpper : this.boundingBoxWidthUpper,
-				facing == Direction.NORTH ? 0d : axis == Direction.Axis.Z ? this.boundingBoxHeightUpper : this.boundingBoxWidthUpper);
-	}
-
 	@Override
 	@Deprecated
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
@@ -133,12 +111,5 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 					state.getValue(SOUTH) ? 16d : this.boundingBoxWidthUpper
 			);
 		};
-	}
-
-	protected AABB makeQuickAABB(double x1, double y1, double z1, double x2, double y2, double z2) {
-		return new AABB(
-				x1 / 16.0d, y1 / 16.0d,
-				z1 / 16.0d, x2 / 16.0d,
-				y2 / 16.0d, z2 / 16.0d);
 	}
 }

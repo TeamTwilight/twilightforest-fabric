@@ -208,6 +208,11 @@
         },
         {
           "type": "minecraft:item",
+          "name": "twilightforest:music_disc_thread",
+          "weight": 50
+        },
+        {
+          "type": "minecraft:item",
           "functions": [
             {
               "add": false,
@@ -246,11 +251,6 @@
         {
           "type": "minecraft:item",
           "name": "twilightforest:hollow_oak_sapling",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:music_disc_thread",
           "weight": 25
         }
       ],

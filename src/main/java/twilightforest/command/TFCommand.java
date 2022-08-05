@@ -17,6 +17,7 @@ public class TFCommand {
                 .then(CenterCommand.register())
                 .then(ConquerCommand.register())
                 .then(InfoCommand.register())
+                .then(MapBiomesCommand.register())
                 .then(ShieldCommand.register());
         LiteralCommandNode<CommandSourceStack> node = dispatcher.register(builder);
         dispatcher.register(Commands.literal("tf").redirect(node));

@@ -34,7 +34,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCMain.get(), nbt);
 	}
 
-	public FinalCastleMainComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z) {
+	public FinalCastleMainComponent(TFLandmark feature, int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCMain.get(), feature, i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
@@ -71,7 +71,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		roof.addChildren(this, list, rand);
 
 		// boss gazebo on roof
-		TFStructureComponentOld gazebo = new FinalCastleBossGazeboComponent(getFeatureType(), rand, 5, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		TFStructureComponentOld gazebo = new FinalCastleBossGazeboComponent(getFeatureType(), 5, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(gazebo);
 		gazebo.addChildren(this, list, rand);
 
@@ -81,7 +81,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		list.addPiece(tower0);
 		tower0.addChildren(this, list, rand);
 
-		FinalCastleLargeTowerComponent tower1 = new FinalCastleLargeTowerComponent(getFeatureType(), rand, 3, boundingBox.maxX(), boundingBox.minY() + 3, boundingBox.minZ(), Direction.EAST);
+		FinalCastleLargeTowerComponent tower1 = new FinalCastleLargeTowerComponent(getFeatureType(), 3, boundingBox.maxX(), boundingBox.minY() + 3, boundingBox.minZ(), Direction.EAST);
 		list.addPiece(tower1);
 		tower1.addChildren(this, list, rand);
 
@@ -104,17 +104,17 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 
 		// initial stairs down towards dungeon
-		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(getFeatureType(), rand, 5, boundingBox.minX() + 18, boundingBox.minY() + 1, boundingBox.minZ() + 18, Direction.SOUTH);
+		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(getFeatureType(), 5, boundingBox.minX() + 18, boundingBox.minY() + 1, boundingBox.minZ() + 18, Direction.SOUTH);
 		list.addPiece(steps0);
 		steps0.addChildren(this, list, rand);
 
 		// continued steps
-		FinalCastleDungeonStepsComponent steps1 = steps0.buildMoreStepsTowards(parent, list, rand, Rotation.COUNTERCLOCKWISE_90);
-		FinalCastleDungeonStepsComponent steps2 = steps1.buildMoreStepsTowards(parent, list, rand, Rotation.COUNTERCLOCKWISE_90);
-		FinalCastleDungeonStepsComponent steps3 = steps2.buildMoreStepsTowards(parent, list, rand, Rotation.COUNTERCLOCKWISE_90);
+		FinalCastleDungeonStepsComponent steps1 = steps0.buildMoreStepsTowards(list, rand, Rotation.COUNTERCLOCKWISE_90);
+		FinalCastleDungeonStepsComponent steps2 = steps1.buildMoreStepsTowards(list, rand, Rotation.COUNTERCLOCKWISE_90);
+		FinalCastleDungeonStepsComponent steps3 = steps2.buildMoreStepsTowards(list, rand, Rotation.COUNTERCLOCKWISE_90);
 
 		// start dungeon
-		steps3.buildLevelUnder(parent, list, rand, 1);
+		steps3.buildLevelUnder(list, rand, 1);
 
 		// mural on front
 		BlockPos mc = this.offsetTowerCCoords(48, 23, 25, 1, Direction.SOUTH);
@@ -163,11 +163,9 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 					//TwilightForestMod.LOGGER.debug("Tower maze color {} complete!", type);
 					complete = true;
 				} else {
-					// TODO: add limit on retrying, in case of infinite loop?
 					TwilightForestMod.LOGGER.info("Tower maze color {} INCOMPLETE, retrying!", type);
 					start.pieces.clear();
 					start.pieces.addAll(before);
-					//this.buildTowerMaze(list, rand, x, y, z, howFar, direction, color, dest);
 				}
 			}
 		}

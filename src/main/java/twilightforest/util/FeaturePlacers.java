@@ -99,7 +99,6 @@ public final class FeaturePlacers {
     }
 
     // Use for trunks with Even-count widths
-    // TODO Verify that it works correctly, haven't gotten to a compiling state yet to test
     public static void placeCircleEven(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float radius, BlockStateProvider config) {
         // Normally, I'd use mutable pos here but there are multiple bits of logic down the line that force
         // the pos to be immutable causing multiple same BlockPos instances to exist.

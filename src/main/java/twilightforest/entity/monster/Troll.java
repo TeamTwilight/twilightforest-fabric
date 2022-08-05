@@ -210,7 +210,7 @@ public class Troll extends Monster implements RangedAttackMob {
 	private void ripenBer(int offset, BlockPos pos) {
 		if (this.getLevel().getBlockState(pos).getBlock() == TFBlocks.UNRIPE_TROLLBER.get() && this.getRandom().nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
 			this.getLevel().setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
-			getLevel().levelEvent(2004, pos, 0);
+			this.getLevel().levelEvent(2004, pos, 0);
 		}
 	}
 
@@ -226,6 +226,7 @@ public class Troll extends Monster implements RangedAttackMob {
 			blocc.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 4 - this.getLevel().getDifficulty().getId());
 
 			this.playSound(TFSounds.TROLL_THROWS_ROCK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			this.getLevel().addFreshEntity(blocc);
 			this.setHasRock(false);
 			if (!this.getPassengers().isEmpty() && Objects.requireNonNull(this.getFirstPassenger()).getType() == TFEntities.THROWN_BLOCK.get()) {

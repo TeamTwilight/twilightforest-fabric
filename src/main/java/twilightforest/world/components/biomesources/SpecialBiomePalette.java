@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
+import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -37,7 +38,7 @@ In 3 of our cases, this is just two biomes. However our 4th case are the Highlan
 
 You'll need to worry about deterministically placing the centers randomly inside the blockworld, so the systems that back the Progression Landmark systems can function with positions relative to the center of the Progression Landmark System.
 */
-public record SpecialBiomePalette(Holder<Biome> river, Climate.ParameterList<Holder<Biome>> regularBiomes, HolderSet<Biome> specialBiomes, List<Float2ObjectAVLTreeMap<Holder<Biome>>> landmarkGradients, List<Holder<Biome>> allBiomes) {
+public record SpecialBiomePalette(Holder<Biome> river, Climate.ParameterList<Holder<Biome>> regularBiomes, HolderSet<Biome> specialBiomes, List<Float2ObjectSortedMap<Holder<Biome>>> landmarkGradients, List<Holder<Biome>> allBiomes) {
     public static final Codec<SpecialBiomePalette> CODEC = Util.make(() -> {
         Codec<SpecialBiomePalette> codec = RecordCodecBuilder.create(instance -> instance.group(
                 Biome.CODEC.fieldOf("river").forGetter(SpecialBiomePalette::river), // This is so we can predictably subdivide biomes in the voronoi mesh
@@ -55,7 +56,7 @@ public record SpecialBiomePalette(Holder<Biome> river, Climate.ParameterList<Hol
         return create(Holder.direct(OverworldBiomes.theVoid()), new Climate.ParameterList<>(Collections.emptyList()), HolderSet.direct(), Collections.emptyList());
     }
 
-    private static SpecialBiomePalette create(Holder<Biome> river, Climate.ParameterList<Holder<Biome>> common, HolderSet<Biome> rare, List<Float2ObjectAVLTreeMap<Holder<Biome>>> clusters) {
+    private static SpecialBiomePalette create(Holder<Biome> river, Climate.ParameterList<Holder<Biome>> common, HolderSet<Biome> rare, List<Float2ObjectSortedMap<Holder<Biome>>> clusters) {
         return new SpecialBiomePalette(river, common, rare, clusters, ImmutableList.<Holder<Biome>>builder().add(river).addAll(common.values().stream().map(Pair::getSecond).iterator()).addAll(rare).addAll(clusters.stream().flatMap(tree -> tree.float2ObjectEntrySet().stream()).map(Map.Entry::getValue).iterator()).build());
     }
 
@@ -66,7 +67,7 @@ public record SpecialBiomePalette(Holder<Biome> river, Climate.ParameterList<Hol
         return this.getNearestLandmark(landmarkIndex, permutation).get(distanceRelative);
     }
 
-    private Float2ObjectAVLTreeMap<Holder<Biome>> getNearestLandmark(int landmarkIndex, long permutation) {
+    private Float2ObjectSortedMap<Holder<Biome>> getNearestLandmark(int landmarkIndex, long permutation) {
         return this.landmarkGradients().get(BINARY_GRID_PERMUTATIONS[(int) (permutation % 24)][landmarkIndex]);
     }
 

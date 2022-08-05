@@ -58,6 +58,7 @@ public class MazeMapPacket implements S2CPacket {
 					mapitemrenderer.update(message.inner.getMapId(), mapdata);
 				}
 			});
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

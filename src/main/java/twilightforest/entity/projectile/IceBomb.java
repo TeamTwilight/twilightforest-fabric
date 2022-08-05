@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.HitResult;
 import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.entity.monster.Yeti;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFEntities;
@@ -106,7 +107,7 @@ public class IceBomb extends TFThrowable {
 				this.discard();
 			}
 		} else {
-			this.makeTrail(new BlockParticleOption(ParticleTypes.FALLING_DUST, Blocks.SNOW.defaultBlockState()), 5);
+			this.makeTrail(new BlockParticleOption(ParticleTypes.FALLING_DUST, Blocks.SNOW.defaultBlockState()), this.getOwner() instanceof AlphaYeti ? 2 : 5);
 		}
 	}
 

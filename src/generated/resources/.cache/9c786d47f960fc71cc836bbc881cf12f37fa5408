@@ -1,4 +1,4 @@
-// 1.19	2022-06-17T22:16:32.3208809	Twilight Forest Biome Tags
+// 1.19.1	2022-08-04T00:00:12.4107587	Twilight Forest Biome Tags
 d465db5120f478c5dbf3e4038d755aaec6ea9eed data/forge/tags/worldgen/biome/is_cold.json
 c0ab4555d8e4843166c39003a9e3e683d9ac3702 data/forge/tags/worldgen/biome/is_coniferous.json
 7962d22e7950f3664d8cb46a06a60923349c99cd data/forge/tags/worldgen/biome/is_dead.json
@@ -13,6 +13,7 @@ ffed46f1c73aadb1dec87c223b4930163ccd7036 data/forge/tags/worldgen/biome/is_plate
 650f7e311a8a87442cf55b527bb89b35691f9c86 data/forge/tags/worldgen/biome/is_sparse.json
 9b3e7d9f90d94793ad8a697abfcbc79ad2a83470 data/forge/tags/worldgen/biome/is_spooky.json
 6845d1c43f9f595d482bbbdfd21d6e118018911d data/forge/tags/worldgen/biome/is_swamp.json
+87a147e46c2487c3840dbb599e8b321b606e8275 data/forge/tags/worldgen/biome/is_underground.json
 289b538480e779c04620dc5e3534d81757ff403a data/forge/tags/worldgen/biome/is_wasteland.json
 67a105a5d5bfc85f5997b340298dd3efc924f648 data/forge/tags/worldgen/biome/is_water.json
 de7eae9ce12a34bc9ba7e9b0a080f206b7bf5ab8 data/minecraft/tags/worldgen/biome/has_closer_water_fog.json
@@ -24,7 +25,7 @@ d465db5120f478c5dbf3e4038d755aaec6ea9eed data/minecraft/tags/worldgen/biome/spaw
 cb846337ee5998dbc62b197a9a1f006cbc978bf2 data/minecraft/tags/worldgen/biome/without_patrol_spawns.json
 cb846337ee5998dbc62b197a9a1f006cbc978bf2 data/minecraft/tags/worldgen/biome/without_wandering_trader_spawns.json
 cb846337ee5998dbc62b197a9a1f006cbc978bf2 data/minecraft/tags/worldgen/biome/without_zombie_sieges.json
-c5c091cce5dcfb31ab61654bd9aa24c85526b503 data/twilightforest/tags/worldgen/biome/in_twilight_forest.json
+0c664e7a353239e4d176a7b59ae493337633edc6 data/twilightforest/tags/worldgen/biome/in_twilight_forest.json
 089e3f639e6201676ac279a83e322bf14f2af7f9 data/twilightforest/tags/worldgen/biome/valid_aurora_palace_biomes.json
 bd0de92370a6ecd43b98916ae731430b57c06693 data/twilightforest/tags/worldgen/biome/valid_dark_tower_biomes.json
 ffed46f1c73aadb1dec87c223b4930163ccd7036 data/twilightforest/tags/worldgen/biome/valid_final_castle_biomes.json

@@ -17,7 +17,8 @@ import java.util.function.Consumer;
 import static twilightforest.TwilightForestMod.prefix;
 
 public abstract class BlockModelHelpers extends BlockStateProvider {
-	
+
+	protected static final ResourceLocation SOLID = new ResourceLocation("solid");
 	protected static final ResourceLocation CUTOUT = new ResourceLocation("cutout");
 	protected static final ResourceLocation CUTOUT_MIPPED = new ResourceLocation("cutout_mipped");
 	protected static final ResourceLocation TRANSLUCENT = new ResourceLocation("translucent");
@@ -49,22 +50,6 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		bModel.renderType(renderType);
 		modelCustomizer.accept(bModel);
 		simpleBlock(b, bModel);
-	}
-
-	protected BlockModelBuilder cubeAllTinted(String name, String all, boolean flipV) {
-		String parent = flipV ? "block/util/tinted_cube_all_flipped_v" : "block/util/tinted_cube_all";
-		return models().withExistingParent(name, prefix(parent)).texture("all", "block/" + all);
-	}
-
-	protected BlockModelBuilder cubeAllTinted(String name, String all) {
-		return cubeAllTinted(name, all, false);
-	}
-
-	protected void tintedAndFlipped(Block b) {
-		simpleBlock(b, ConfiguredModel.builder()
-				.modelFile(cubeAllTinted(name(b), name(b))).nextModel()
-				.modelFile(cubeAllTinted(name(b) + "_flipped", name(b), true)).build()
-		);
 	}
 
 	protected void logWoodSapling(RotatedPillarBlock log, RotatedPillarBlock slog, RotatedPillarBlock wood, RotatedPillarBlock swood, Block sapling) {

@@ -191,6 +191,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				TFBlocks.DARK_OAK_BANISTER.get(),
 				TFBlocks.CRIMSON_BANISTER.get(),
 				TFBlocks.WARPED_BANISTER.get(),
+				TFBlocks.VANGROVE_BANISTER.get(),
 
 				TFBlocks.TWILIGHT_OAK_BANISTER.get(),
 				TFBlocks.CANOPY_BANISTER.get(),
@@ -343,7 +344,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 						Blocks.POTTED_RED_MUSHROOM, Blocks.POTTED_BROWN_MUSHROOM, Blocks.POTTED_DEAD_BUSH, Blocks.POTTED_FERN,
 						Blocks.POTTED_CACTUS, Blocks.POTTED_CORNFLOWER, Blocks.POTTED_LILY_OF_THE_VALLEY, Blocks.POTTED_WITHER_ROSE,
 						Blocks.POTTED_BAMBOO, Blocks.POTTED_CRIMSON_FUNGUS, Blocks.POTTED_WARPED_FUNGUS, Blocks.POTTED_CRIMSON_ROOTS,
-						Blocks.POTTED_WARPED_ROOTS, Blocks.POTTED_AZALEA, Blocks.POTTED_FLOWERING_AZALEA);
+						Blocks.POTTED_WARPED_ROOTS, Blocks.POTTED_AZALEA, Blocks.POTTED_FLOWERING_AZALEA, Blocks.POTTED_MANGROVE_PROPAGULE);
 
 		tag(BlockTags.FROG_PREFER_JUMP_TO).add(TFBlocks.HUGE_LILY_PAD.get());
 
@@ -400,7 +401,6 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				Blocks.REINFORCED_DEEPSLATE
 		);
 
-		// TODO Test behavior with giant blocks for immunity stuffs
 		tag(BlockTags.DRAGON_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.GIANT_OBSIDIAN.get(), TFBlocks.FAKE_DIAMOND.get(), TFBlocks.FAKE_GOLD.get());
 
 		tag(BlockTags.WITHER_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.FAKE_DIAMOND.get(), TFBlocks.FAKE_GOLD.get());
@@ -458,6 +458,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 		tag(ROOT_GROUND).add(TFBlocks.ROOT_BLOCK.get());
 		tag(ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.get());
 
+		tag(BlockTags.DAMPENS_VIBRATIONS).add(TFBlocks.ARCTIC_FUR_BLOCK.get(), TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.WISPY_CLOUD.get());
 		tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 
 		tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(TFBlocks.UBEROUS_SOIL.get());
@@ -623,11 +624,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(),
 				TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get(),
 				TFBlocks.IRON_LADDER.get(),
-				//TFBlocks.TERRORCOTTA_CIRCLE.get(),
-				//TFBlocks.TERRORCOTTA_DIAGONAL.get(),
 				TFBlocks.TWISTED_STONE.get(),
 				TFBlocks.TWISTED_STONE_PILLAR.get(),
-				//TFBlocks.LAPIS_BLOCK.get(),
 				TFBlocks.KEEPSAKE_CASKET.get(),
 				TFBlocks.BOLD_STONE_PILLAR.get()
 		);

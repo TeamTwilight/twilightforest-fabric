@@ -104,7 +104,8 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 		return STR_ID + "_" + id;
 	}
 
-	private static final Map<ChunkPos, Biome[]> CACHE = new HashMap<>();
+	private static final Map<ChunkPos, ResourceLocation[]> CACHE = new HashMap<>();
+	private static final ResourceLocation NULL_BIOME = new ResourceLocation("null");
 
 	@Override
 	public void update(Level level, Entity viewer, MapItemSavedData data) {
@@ -119,11 +120,15 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 
 			int startX = (centerX / blocksPerPixel - 64) * biomesPerPixel;
 			int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
-			Biome[] biomes = CACHE.computeIfAbsent(new ChunkPos(startX, startZ), pos -> {
-				Biome[] array = new Biome[128 * biomesPerPixel * 128 * biomesPerPixel];
+			ResourceLocation[] biomes = CACHE.computeIfAbsent(new ChunkPos(startX, startZ), pos -> {
+				ResourceLocation[] array = new ResourceLocation[128 * biomesPerPixel * 128 * biomesPerPixel];
 				for (int l = 0; l < 128 * biomesPerPixel; ++l) {
 					for (int i1 = 0; i1 < 128 * biomesPerPixel; ++i1) {
-						array[l * 128 * biomesPerPixel + i1] = level.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel)).value();
+						array[l * 128 * biomesPerPixel + i1] = level
+								.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel))
+								.unwrapKey()
+								.map(ResourceKey::location)
+								.orElse(NULL_BIOME);
 					}
 				}
 				return array;
@@ -136,12 +141,12 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 						int zPixelDist = zPixel - viewerZ;
 						boolean shouldFuzz = xPixelDist * xPixelDist + zPixelDist * zPixelDist > (viewRadiusPixels - 2) * (viewRadiusPixels - 2);
 
-						Biome biome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel];
+						ResourceLocation biome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel];
 
 						// make streams more visible
-						Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
-						Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
-						biome = overBiome != null && BiomeKeys.STREAM.location().equals(level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(overBiome)) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(downBiome)) ? downBiome : biome;
+						ResourceLocation overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
+						ResourceLocation downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
+						biome = overBiome != null && BiomeKeys.STREAM.location().equals(overBiome) ? overBiome : downBiome != null && BiomeKeys.STREAM.location().equals(downBiome) ? downBiome : biome;
 
 						MapColorBrightness colorBrightness = this.getMapColorPerBiome(level, biome);
 
@@ -175,19 +180,18 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 		}
 	}
 
-	private MapColorBrightness getMapColorPerBiome(Level level, Biome biome) {
+	private MapColorBrightness getMapColorPerBiome(Level level, ResourceLocation biome) {
 		if (BIOME_COLORS.isEmpty()) {
 			setupBiomeColors();
 		}
-		if (biome == null)
+		if (biome == NULL_BIOME)
 			return new MapColorBrightness(MaterialColor.COLOR_BLACK);
-		ResourceLocation key = level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
-		MapColorBrightness color = BIOME_COLORS.get(key);
+		MapColorBrightness color = BIOME_COLORS.get(biome);
 		if (color != null) {
 			return color;
 		}
 		//FIXME surface builder where
-		return new MapColorBrightness(MaterialColor.COLOR_BLACK); //biome.getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial().getMapColor(world, BlockPos.ZERO));
+		return new MapColorBrightness(MaterialColor.COLOR_MAGENTA); //biome.getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial().getMapColor(world, BlockPos.ZERO));
 	}
 
 	private static void setupBiomeColors() {

@@ -57,15 +57,7 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext ctx) {
-		if (getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			return switch (sc.candleAmount) {
-				default -> SKULL_WITH_ONE;
-				case 2 -> SKULL_WITH_TWO;
-				case 3 -> SKULL_WITH_THREE;
-				case 4 -> SKULL_WITH_FOUR;
-			};
-		}
-		return switch (this.getCandleCount()) {
+		return switch (getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc ? sc.candleAmount : 1) {
 			default -> SKULL_WITH_ONE;
 			case 2 -> SKULL_WITH_TWO;
 			case 3 -> SKULL_WITH_THREE;
@@ -75,10 +67,7 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 
 	@Override
 	protected Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
-		if (accessor.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			return PARTICLE_OFFSETS.get(sc.candleAmount);
-		}
-		return PARTICLE_OFFSETS.get(this.getCandleCount());
+		return PARTICLE_OFFSETS.get(accessor.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc ? sc.candleAmount : 1);
 	}
 
 	@Override

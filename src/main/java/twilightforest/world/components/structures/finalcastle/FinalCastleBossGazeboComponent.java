@@ -32,7 +32,7 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCBoGaz.get(), nbt);
 	}
 
-	public FinalCastleBossGazeboComponent(TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld keep, int x, int y, int z) {
+	public FinalCastleBossGazeboComponent(TFLandmark feature, int i, TFStructureComponentOld keep, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCBoGaz.get(), feature, i, x, y, z);
 		this.spawnListIndex = -1; // no monsters
 

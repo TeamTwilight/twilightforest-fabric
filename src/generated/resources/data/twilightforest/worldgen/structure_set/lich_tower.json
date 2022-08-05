@@ -1,7 +1,8 @@
 {
   "placement": {
     "type": "twilightforest:forced_landmark",
-    "landmark_set": "lich_tower"
+    "landmark_set": "lich_tower",
+    "scan_elevation": 256
   },
   "structures": [
     {

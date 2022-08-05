@@ -144,7 +144,7 @@ public class LegacyLandmarkPlacements {
      * it will be set to relative block coordinates indicating the center of
      * that feature relative to the current chunk block coordinate system.
      */
-    public static TFLandmark getNearestLandmark(int cx, int cz, WorldGenLevel world, @Nullable IntPair center) {
+    public static TFLandmark getNearestLandmark(int cx, int cz, WorldGenLevel world, @Nullable Vec2i center) {
         int maxSize = TFLandmark.getMaxSearchSize();
         int diam = maxSize * 2 + 1;
         TFLandmark[] features = new TFLandmark[diam * diam];

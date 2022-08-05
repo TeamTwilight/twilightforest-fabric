@@ -1085,7 +1085,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			Holder<ConfiguredFeature<TreeConfiguration,?>> treeGen = switch (treeNum) {
 				case 1 ->
 						// jungle tree
-						TreeFeatures.JUNGLE_TREE; //TODO: This probably needs to be shorter. Default's max height is 8. Original value 3
+						TreeFeatures.JUNGLE_TREE;
 				case 2 ->
 						// birch
 						TreeFeatures.BIRCH;

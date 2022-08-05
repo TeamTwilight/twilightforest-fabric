@@ -64,7 +64,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 			makeVerticalTree(decoRNG, mural, startX, startY + 1, decoRNG.nextInt(height / 6) + height / 6, true);
 
 			// stripes
-			makeStripes(decoRNG, mural);
+			makeStripes(decoRNG);
 		}
 
 		final BlockState castleMagic = TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
@@ -218,15 +218,14 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		}
 	}
 
-	private void makeStripes(RandomSource decoRNG, byte[][] mural2) {
+	private void makeStripes(RandomSource decoRNG) {
 		// stagger slightly on our way down
 		for (int y = this.height - 2; y > this.height / 3; y -= (2 + decoRNG.nextInt(2))) {
-			makeSingleStripe(mural2, y);
+			makeSingleStripe(y);
 		}
 	}
 
-	//TODO: Parameter "mural2" is unused. Remove?
-	private void makeSingleStripe(byte[][] mural2, int y) {
+	private void makeSingleStripe(int y) {
 		for (int x = 0; x < this.width - 2; x++) {
 			if (mural[x + 1][y] == 0 && mural[x + 1][y + 1] == 0) {
 				mural[x][y] = 1;

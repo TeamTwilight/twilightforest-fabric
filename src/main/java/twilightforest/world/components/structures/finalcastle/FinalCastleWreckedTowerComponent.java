@@ -39,7 +39,7 @@ public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerCom
 //    		foundation.buildComponent(this, list, rand);
 
 		// add thorns
-		FinalCastleFoundation13Component thorns = new FinalCastleFoundation13ComponentThorns(getFeatureType(), rand, 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component thorns = new FinalCastleFoundation13ComponentThorns(getFeatureType(), 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(thorns);
 		thorns.addChildren(this, list, rand);
 

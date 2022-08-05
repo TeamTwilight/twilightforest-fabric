@@ -1,8 +1,127 @@
 {
-  "parent": "twilightforest:block/util/cube_bottom_top_3_layer",
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#bottom"
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#side"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#side"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#side"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#top"
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#side"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "cullface": "east",
+          "emissivity": 15,
+          "texture": "#side2"
+        },
+        "north": {
+          "cullface": "north",
+          "emissivity": 15,
+          "texture": "#side2"
+        },
+        "south": {
+          "cullface": "south",
+          "emissivity": 15,
+          "texture": "#side2"
+        },
+        "up": {
+          "cullface": "up",
+          "emissivity": 10,
+          "texture": "#top2"
+        },
+        "west": {
+          "cullface": "west",
+          "emissivity": 15,
+          "texture": "#side2"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "cullface": "east",
+          "emissivity": 10,
+          "texture": "#side3"
+        },
+        "north": {
+          "cullface": "north",
+          "emissivity": 10,
+          "texture": "#side3"
+        },
+        "south": {
+          "cullface": "south",
+          "emissivity": 10,
+          "texture": "#side3"
+        },
+        "up": {
+          "cullface": "up",
+          "emissivity": 7,
+          "texture": "#top3"
+        },
+        "west": {
+          "cullface": "west",
+          "emissivity": 10,
+          "texture": "#side3"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
   "render_type": "minecraft:cutout",
   "textures": {
     "bottom": "twilightforest:block/encased_towerwood",
+    "particle": "#bottom",
     "side": "twilightforest:block/towerdev_firejet_on",
     "side2": "twilightforest:block/tower_device_level_1/towerdev_smoker_1",
     "side3": "twilightforest:block/tower_device_level_2/towerdev_smoker_on_1",

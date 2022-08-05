@@ -152,4 +152,9 @@ public class PinchBeetle extends Monster implements IHostileMount {
 			return super.getDimensions(pose);
 		}
 	}
+
+	@Override
+	public MobType getMobType() {
+		return MobType.ARTHROPOD;
+	}
 }

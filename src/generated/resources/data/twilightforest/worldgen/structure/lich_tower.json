@@ -12,14 +12,15 @@
     "Count": 1,
     "id": "minecraft:written_book",
     "tag": {
-      "author": "A Forgotten Explorer",
+      "author": "twilightforest.book.author",
       "pages": [
         "{\"translate\":\"twilightforest.book.lichtower.1\"}",
         "{\"translate\":\"twilightforest.book.lichtower.2\"}",
         "{\"translate\":\"twilightforest.book.lichtower.3\"}",
         "{\"translate\":\"twilightforest.book.lichtower.4\"}"
       ],
-      "title": "Notes on a Pointy Tower"
+      "title": "twilightforest.book.lichtower",
+      "twilightforest:book": 1
     }
   },
   "hint_mob": "twilightforest:kobold",

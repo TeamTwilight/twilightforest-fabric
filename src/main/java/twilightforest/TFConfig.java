@@ -3,14 +3,13 @@ package twilightforest;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,17 +32,7 @@ public class TFConfig {
 				DIMENSION.portalForNewPlayerSpawn = builder.
 						translation(config + "portal_for_new_player").
 						comment("If true, the return portal will spawn for new players that were sent to the TF if `spawn_in_tf` is true.").
-						define("portalForNewPlayer", true);
-				DIMENSION.skylightForest = builder.
-						translation(config + "skylight_forest").
-						worldRestart().
-						comment("If true, Twilight Forest will generate as a void except for Major Structures").
-						define("skylightForest", false);
-				DIMENSION.skylightOaks = builder.
-						translation(config + "skylight_oaks").
-						worldRestart().
-						comment("If true, giant Twilight Oaks will also spawn in void worlds").
-						define("skylightOaks", true);
+						define("portalForNewPlayer", false);
 				builder.pop().
 						comment("""
 								Defines custom stalactites generated in hollow hills.
@@ -79,10 +68,6 @@ public class TFConfig {
 				}
 			}
 			builder.pop();
-			doCompat = builder.
-					worldRestart().
-					comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.").
-					define("doCompat", true);
 			originDimension = builder.
 					translation(config + "origin_dimension").
 					comment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld. (domain:regname).").
@@ -170,21 +155,10 @@ public class TFConfig {
 						translation(config + "parry_non_twilight").
 						comment("Set to true to parry non-Twilight projectiles.").
 						define("parryNonTwilightAttacks", false);
-				SHIELD_INTERACTIONS.shieldParryTicksArrow = builder.
-						translation(config + "parry_window_arrow").
-						comment("The amount of ticks after raising a shield that makes it OK to parry an arrow.").
+				SHIELD_INTERACTIONS.shieldParryTicks = builder.
+						translation(config + "parry_window").
+						comment("The amount of ticks after raising a shield that makes it OK to parry a projectile.").
 						defineInRange("shieldParryTicksArrow", 40, 0, Integer.MAX_VALUE);
-				SHIELD_INTERACTIONS.shieldParryTicksFireball = builder.
-						translation(config + "parry_window_fireball").
-						comment("The amount of ticks after raising a shield that makes it OK to parry a fireball.").
-						defineInRange("shieldParryTicksFireball", 40, 0, Integer.MAX_VALUE);
-				SHIELD_INTERACTIONS.shieldParryTicksThrowable = builder.
-						translation(config + "parry_window_throwable").
-						comment("The amount of ticks after raising a shield that makes it OK to parry a thrown item.").
-						defineInRange("shieldParryTicksThrowable", 40, 0, Integer.MAX_VALUE);
-				SHIELD_INTERACTIONS.shieldParryTicksBeam = builder.
-						translation(config + "parry_window_beam").
-						defineInRange("shieldParryTicksBeam", 10, 0, Integer.MAX_VALUE);
 			}
 			builder.pop();
 		}
@@ -195,8 +169,6 @@ public class TFConfig {
 
 			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
 			public ForgeConfigSpec.BooleanValue portalForNewPlayerSpawn;
-			public ForgeConfigSpec.BooleanValue skylightForest;
-			public ForgeConfigSpec.BooleanValue skylightOaks;
 
 			public HollowHillStalactites hollowHillStalactites = new HollowHillStalactites();
 
@@ -243,8 +215,6 @@ public class TFConfig {
 			}
 		}
 
-		public ForgeConfigSpec.BooleanValue doCompat;
-
 		public ForgeConfigSpec.ConfigValue<String> originDimension;
 		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
 		public ForgeConfigSpec.BooleanValue adminOnlyPortals;
@@ -266,15 +236,12 @@ public class TFConfig {
 		}
 
 		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
+		@Nullable
 		public ResourceLocation portalLockingAdvancement;
 
 		public static class ShieldInteractions {
-
 			public ForgeConfigSpec.BooleanValue parryNonTwilightAttacks;
-			public ForgeConfigSpec.IntValue shieldParryTicksArrow;
-			public ForgeConfigSpec.IntValue shieldParryTicksFireball;
-			public ForgeConfigSpec.IntValue shieldParryTicksThrowable;
-			public ForgeConfigSpec.IntValue shieldParryTicksBeam;
+			public ForgeConfigSpec.IntValue shieldParryTicks;
 		}
 
 	}
@@ -302,68 +269,6 @@ public class TFConfig {
 					translation(config + "locked_toasts").
 					comment("Disables the toasts that appear when a biome is locked. Not recommended if you're not familiar with progression.").
 					define("disableLockedBiomeToasts", false);
-			builder.
-					comment("Client only: Controls for the Loading screen").
-					push("Loading Screen");
-			{
-				LOADING_SCREEN.enable = builder.
-						translation(config + "loading_icon_enable").
-						comment("Wobble the Loading icon. Has no performance impact at all. For those who don't like fun.").
-						define("enable", true);
-				LOADING_SCREEN.cycleLoadingScreenFrequency = builder.
-						translation(config + "loading_screen_swap_frequency").
-						comment("How many ticks between each loading screen change. Set to 0 to not cycle at all.").
-						defineInRange("cycleLoadingScreenFrequency", 0, 0, Integer.MAX_VALUE);
-				LOADING_SCREEN.frequency = builder.
-						translation(config + "loading_icon_wobble_bounce_frequency").
-						comment("Frequency of wobble and bounce.").
-						defineInRange("frequency", 5F, 0F, Double.MAX_VALUE);
-				LOADING_SCREEN.scale = builder.
-						translation(config + "loading_icon_scale").
-						comment("Scale of whole bouncy loading icon.").
-						defineInRange("scale", 3F, 0F, Double.MAX_VALUE);
-				LOADING_SCREEN.scaleDeviation = builder.
-						translation(config + "loading_icon_bounciness").
-						comment("How much the loading icon bounces.").
-						defineInRange("scaleDeviation", 5.25F, 0F, Double.MAX_VALUE);
-				LOADING_SCREEN.tiltRange = builder.
-						translation(config + "loading_icon_tilting").
-						comment("How far the loading icon wobbles.").
-						defineInRange("tiltRange", 11.25F, 0F, 360F);
-				LOADING_SCREEN.tiltConstant = builder.
-						translation(config + "loading_icon_tilt_pushback").
-						comment("Pushback value to re-center the wobble of loading icon.").
-						defineInRange("tiltConstant", 22.5F, 0F, 360F);
-				LOADING_SCREEN.loadingIconStacks = builder.
-						translation(config + "loading_icon_stacks").
-						comment("List of items to be used for the wobbling Loading Icon. (domain:item).").
-						defineList("loadingIconStacks", Arrays.asList(
-								"twilightforest:experiment_115",
-								"twilightforest:magic_map",
-								"twilightforest:charm_of_life_2",
-								"twilightforest:charm_of_keeping_3",
-								"twilightforest:phantom_helmet",
-								"twilightforest:lamp_of_cinders",
-								"twilightforest:carminite",
-								"twilightforest:block_and_chain",
-								"twilightforest:yeti_helmet",
-								"twilightforest:hydra_chop",
-								"twilightforest:magic_beans",
-								"twilightforest:ironwood_raw",
-								"twilightforest:naga_scale",
-								"twilightforest:twilight_portal_miniature_structure",
-								"twilightforest:lich_tower_miniature_structure",
-								"twilightforest:knightmetal_block",
-								"twilightforest:ghast_trap",
-								"twilightforest:time_sapling",
-								"twilightforest:transformation_sapling",
-								"twilightforest:mining_sapling",
-								"twilightforest:sorting_sapling",
-								"twilightforest:rainboak_sapling",
-								"twilightforest:borer_essence"
-						), s -> s instanceof String && ResourceLocation.tryParse((String) s) != null);
-			}
-			builder.pop();
 		}
 
 		public ForgeConfigSpec.BooleanValue silentCicadas;
@@ -371,71 +276,26 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
 		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 		public ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
-
-		public final LoadingScreen LOADING_SCREEN = new LoadingScreen();
-
-		public static class LoadingScreen {
-
-			public ForgeConfigSpec.BooleanValue enable;
-			public ForgeConfigSpec.IntValue cycleLoadingScreenFrequency;
-			public ForgeConfigSpec.DoubleValue frequency;
-			public ForgeConfigSpec.DoubleValue scale;
-			public ForgeConfigSpec.DoubleValue scaleDeviation;
-			public ForgeConfigSpec.DoubleValue tiltRange;
-			public ForgeConfigSpec.DoubleValue tiltConstant;
-			public ForgeConfigSpec.ConfigValue<List<? extends String>> loadingIconStacks;
-
-			private ImmutableList<ItemStack> loadingScreenIcons;
-
-			public ImmutableList<ItemStack> getLoadingScreenIcons() {
-				return loadingScreenIcons;
-			}
-
-			void loadLoadingScreenIcons() {
-				ImmutableList.Builder<ItemStack> iconList = ImmutableList.builder();
-
-				for (String s : loadingIconStacks.get()) {
-					parseItemStack(s).ifPresent(iconList::add);
-				}
-				loadingScreenIcons = iconList.build();
-			}
-		}
-
 	}
 
 	private static final String config = TwilightForestMod.ID + ".config.";
 
-	// FIXME Not Firing
-	public static void onConfigChanged(ModConfig config) {
-		if (config.getModId().equals(TwilightForestMod.ID)) {
-			COMMON_CONFIG.portalLockingAdvancement = new ResourceLocation(TFConfig.COMMON_CONFIG.portalAdvancementLock.get());
+	@Nullable
+	public static ResourceLocation getPortalLockingAdvancement(Player player) {
+		//only run assigning logic if the config has an advancement set and the RL is null
+		if (!COMMON_CONFIG.portalAdvancementLock.get().isEmpty() && COMMON_CONFIG.portalLockingAdvancement == null) {
 
-			build();
+			if (!ResourceLocation.isValidResourceLocation(COMMON_CONFIG.portalAdvancementLock.get()) || PlayerHelper.getAdvancement(player, ResourceLocation.tryParse(COMMON_CONFIG.portalAdvancementLock.get())) == null) {
+				//if the RL is not a valid advancement fail us
+				TwilightForestMod.LOGGER.fatal("The portal locking advancement is not a valid advancement! Setting to null!");
+				COMMON_CONFIG.portalAdvancementLock.set("");
+			} else {
+				COMMON_CONFIG.portalLockingAdvancement = ResourceLocation.tryParse(COMMON_CONFIG.portalAdvancementLock.get());
+				TwilightForestMod.LOGGER.debug("Portal Locking Advancement reloaded.");
+			}
 		}
-	}
-
-	// FIXME Remove once the top works again
-	//  This lets us have a RL without inserting RL creation into ticking code
-	@Deprecated
-	public static ResourceLocation getPortalLockingAdvancement() {
-		if (COMMON_CONFIG.portalLockingAdvancement == null) {
-			COMMON_CONFIG.portalLockingAdvancement = new ResourceLocation(TFConfig.COMMON_CONFIG.portalAdvancementLock.get());
-		}
-
+		//always return the RL, even if its null. We can use this to run logic less often
 		return COMMON_CONFIG.portalLockingAdvancement;
-	}
-
-	public static void build() {
-		CLIENT_CONFIG.LOADING_SCREEN.loadLoadingScreenIcons();
-	}
-
-	private static Optional<ItemStack> parseItemStack(String string) {
-		ResourceLocation id = ResourceLocation.tryParse(string);
-		if (id == null || !Registry.ITEM.containsKey(id)) {
-			return Optional.empty();
-		} else {
-			return Optional.of(new ItemStack(Registry.ITEM.get(id)));
-		}
 	}
 
 	private static Optional<Block> parseBlock(String string) {

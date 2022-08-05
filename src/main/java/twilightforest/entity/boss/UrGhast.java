@@ -69,7 +69,8 @@ public class UrGhast extends CarminiteGhastguard {
 	public static AttributeSupplier.Builder registerAttributes() {
 		return CarminiteGhastguard.registerAttributes()
 				.add(Attributes.MAX_HEALTH, 250)
-				.add(Attributes.FOLLOW_RANGE, 128.0D);
+				.add(Attributes.FOLLOW_RANGE, 128.0D)
+				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
 	}
 
 	@Override
@@ -270,7 +271,7 @@ public class UrGhast extends CarminiteGhastguard {
 	}
 
 	/**
-	 * Spawn up to 6 minon ghasts around the indicated area
+	 * Spawn up to 6 minion ghasts around the indicated area
 	 */
 	private void spawnMinionGhastsAt(int x, int y, int z) {
 		int tries = 24;

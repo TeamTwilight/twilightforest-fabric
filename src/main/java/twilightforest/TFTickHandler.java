@@ -137,8 +137,8 @@ public class TFTickHandler {
 
 			if (qualified == null) return;
 
-			if (!player.isCreative() && !player.isSpectator()) {
-				Advancement requirement = PlayerHelper.getAdvancement(player, TFConfig.getPortalLockingAdvancement());
+			if (!player.isCreative() && !player.isSpectator() && TFConfig.getPortalLockingAdvancement(player) != null) {
+				Advancement requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFConfig.getPortalLockingAdvancement(player)));
 				if (requirement != null && !PlayerHelper.doesPlayerHaveRequiredAdvancement(player, requirement)) {
 					player.displayClientMessage(PORTAL_UNWORTHY, true);
 

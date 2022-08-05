@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraftforge.fluids.FluidType;
 import twilightforest.init.TFSounds;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.init.TFBlocks;
@@ -81,7 +82,8 @@ public class Minoshroom extends Minotaur {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Minotaur.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 120.0D);
+				.add(Attributes.MAX_HEALTH, 120.0D)
+				.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
 	}
 
 	@Override
@@ -232,7 +234,7 @@ public class Minoshroom extends Minotaur {
 	}
 
 	@Override
-	public boolean isPushedByFluid() {
+	public boolean isPushedByFluid(FluidType type) {
 		return false;
 	}
 

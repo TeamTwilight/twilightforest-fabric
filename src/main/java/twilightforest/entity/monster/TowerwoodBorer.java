@@ -211,6 +211,7 @@ public class TowerwoodBorer extends Monster {
 							if (state.is(TFBlocks.INFESTED_TOWERWOOD.get())) {
 								if (world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 									world.destroyBlock(offsetPos, true);
+									this.borer.gameEvent(GameEvent.BLOCK_DESTROY);
 								} else {
 									// TF - reset to normal tower wood
 									world.setBlock(offsetPos, TFBlocks.TOWERWOOD.get().defaultBlockState(), 3);

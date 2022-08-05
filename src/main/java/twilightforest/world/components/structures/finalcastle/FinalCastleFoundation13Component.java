@@ -34,7 +34,7 @@ public class FinalCastleFoundation13Component extends TFStructureComponentOld {
 		super(piece, nbt);
 	}
 
-	public FinalCastleFoundation13Component(StructurePieceType type, TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+	public FinalCastleFoundation13Component(StructurePieceType type, TFLandmark feature, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(type, feature, i, x, y, z);
 
 		this.setOrientation(sideTower.getOrientation());

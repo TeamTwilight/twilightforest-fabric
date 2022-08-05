@@ -20,14 +20,6 @@ import twilightforest.init.TFRecipes;
 
 public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockState result) implements Recipe<Container> {
 
-	public BlockState getInput() {
-		return this.input;
-	}
-
-	public BlockState getResult() {
-		return this.result;
-	}
-
 	@Override
 	public boolean matches(Container container, Level level) {
 		return true;

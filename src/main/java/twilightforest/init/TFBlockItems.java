@@ -4,10 +4,7 @@ import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -331,7 +328,7 @@ public class TFBlockItems {
 			register(blockItem(TFBlocks.MUSHGLOOM));
 			register(blockItem(TFBlocks.TORCHBERRY_PLANT));
 			register(blockItem(TFBlocks.ROOT_STRAND));
-			register(blockItem(TFBlocks.FALLEN_LEAVES));
+			register(placeOnWaterBlockItem(TFBlocks.FALLEN_LEAVES));
 			register(wearableBlock(TFBlocks.FIREFLY, TFBlockEntities.FIREFLY));
 			register(wearableBlock(TFBlocks.CICADA, TFBlockEntities.CICADA));
 			register(wearableBlock(TFBlocks.MOONWORM, TFBlockEntities.MOONWORM));
@@ -535,6 +532,10 @@ public class TFBlockItems {
 
 	private static <B extends Block> BlockItem blockItem(RegistryObject<B> block) {
 		return new BlockItem(block.get(), TFItems.defaultBuilder());
+	}
+
+	private static <B extends Block> BlockItem placeOnWaterBlockItem(RegistryObject<B> block) {
+		return new PlaceOnWaterBlockItem(block.get(), TFItems.defaultBuilder());
 	}
 
 	private static <B extends Block> BlockItem fireImmuneBlock(RegistryObject<B> block) {

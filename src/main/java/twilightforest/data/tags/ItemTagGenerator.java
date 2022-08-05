@@ -220,7 +220,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFBlocks.TIME_SAPLING.get().asItem(),
 				TFBlocks.TRANSFORMATION_SAPLING.get().asItem(),
 				TFBlocks.MINING_SAPLING.get().asItem(),
-				TFBlocks.SORTING_SAPLING.get().asItem());
+				TFBlocks.SORTING_SAPLING.get().asItem(),
+				TFItems.TRANSFORMATION_POWDER.get());
 
 		tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.get().asItem());
 
@@ -251,6 +252,13 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(),
 				TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(),
 				TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem());
+
+		tag(Tags.Items.HEADS).add(
+				TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem(),
+				TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(),
+				TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(),
+				TFBlocks.CREEPER_SKULL_CANDLE.get().asItem(),
+				TFBlocks.PLAYER_SKULL_CANDLE.get().asItem());
 	}
 
 	@Override

@@ -6,7 +6,7 @@
         "bottom": "twilightforest:block/experiment115/experiment115_bottom",
         "inside": "twilightforest:block/experiment115/experiment115_inner",
         "top": "twilightforest:block/experiment115/experiment115_top",
-        "top_2": "twilightforest:block/experiment115/experiment115_top",
+        "top_2": "twilightforest:block/stone_twist/twist_blank",
         "side": "twilightforest:block/experiment115/experiment115_side"
     },
     "elements": [
@@ -92,49 +92,49 @@
             "from": [ 1, 8, 1 ],
             "to": [ 8, 8, 15 ],
             "faces": {
-                "up":    { "texture": "#top_2" }
+                "up":    { "texture": "#top_2", "emissivity": 15 }
             }
         }, {
             "from": [ 8, 8, 11 ],
             "to": [ 12, 8, 15 ],
             "faces": {
-                "up":    { "texture": "#top_2" }
+                "up":    { "texture": "#top_2", "emissivity": 15 }
             }
         }, {
             "from": [ 12, 8, 13 ],
             "to": [ 14, 8, 15 ],
             "faces": {
-                "up":    { "texture": "#top_2" }
+                "up":    { "texture": "#top_2", "emissivity": 15 }
             }
         }, {
             "from": [ 8, 8, 9 ],
             "to": [ 10, 8, 11 ],
             "faces": {
-                "up":    { "texture": "#top_2" }
+                "up":    { "texture": "#top_2", "emissivity": 15 }
             }
         }, {
             "from": [ 8, 8, 8 ],
             "to": [ 9, 8, 9 ],
             "faces": {
-                "up":    { "texture": "#top_2" }
+                "up":    { "texture": "#top_2", "emissivity": 15 }
             }
         }, {
             "from": [ 10, 8, 10 ],
             "to": [ 11, 8, 11 ],
             "faces": {
-                "up":    { "texture": "#top_2" }
+                "up":    { "texture": "#top_2", "emissivity": 15 }
             }
         }, {
             "from": [ 12, 8, 12 ],
             "to": [ 13, 8, 13 ],
             "faces": {
-                "up":    { "texture": "#top_2" }
+                "up":    { "texture": "#top_2", "emissivity": 15 }
             }
         }, {
             "from": [ 14, 8, 14 ],
             "to": [ 15, 8, 15 ],
             "faces": {
-                "up":    { "texture": "#top_2" }
+                "up":    { "texture": "#top_2", "emissivity": 15 }
             }
         }
     ]

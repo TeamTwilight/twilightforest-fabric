@@ -40,6 +40,8 @@ public class BiomeKeys {
 	public static final ResourceKey<Biome> THORNLANDS = makeKey("thornlands");
 	public static final ResourceKey<Biome> FINAL_PLATEAU = makeKey("final_plateau");
 
+	public static final ResourceKey<Biome> UNDERGROUND = makeKey("underground");
+
 	private static ResourceKey<Biome> makeKey(String name) {
 		// Apparently this resolves biome shuffling /shrug
 		BIOMES.register(name, () -> new Biome.BiomeBuilder()

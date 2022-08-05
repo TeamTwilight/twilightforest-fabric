@@ -1,0 +1,3 @@
+files:
+  - source: /src/main/resources/assets/twilightforest/lang/*.json
+    translation: /src/main/resources/assets/twilightforest/lang/%locale_with_underscore%.json

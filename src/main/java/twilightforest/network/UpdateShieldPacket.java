@@ -59,6 +59,7 @@ public class UpdateShieldPacket implements S2CPacket {
 				}
 			});
 
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

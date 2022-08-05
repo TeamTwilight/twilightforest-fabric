@@ -4,13 +4,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Mirror;
-import twilightforest.util.IntPair;
+import twilightforest.util.Vec2i;
 
 
 
 public final class LichTowerUtil {
     // Segment step refers to the stair level for a given side. Consider it almost like a min-chunk
-    static IntPair yOffsetForOpening(Direction side, RandomSource random, int segmentLevel, boolean sidesFaceXAxis) {
+    static Vec2i yOffsetForOpening(Direction side, RandomSource random, int segmentLevel, boolean sidesFaceXAxis) {
         // Each segment is a parallel set of stairs, rotating by 90 degrees. This offsetting is XORed by `sidesFaceXAxis`
         int height = (side.getAxis() == Direction.Axis.X) != sidesFaceXAxis ? 4 : 0;
 
@@ -23,11 +23,11 @@ public final class LichTowerUtil {
 
         offsetFromLeft += CentralTowerSegment.ATTACHMENT_POINT_START;
 
-        return new IntPair(offsetFromLeft, height);
+        return new Vec2i(offsetFromLeft, height);
     }
 
     static BlockPos getRandomOpeningPlacementPos(BlockPos origin, Direction side, Mirror mirror, RandomSource random, int segmentLevel, boolean sidesFaceXAxis) {
-        IntPair pair = yOffsetForOpening(side, random, segmentLevel, sidesFaceXAxis);
+        Vec2i pair = yOffsetForOpening(side, random, segmentLevel, sidesFaceXAxis);
 
         return switch (side) {
             case EAST -> origin.offset(-1, pair.z, mirror == Mirror.FRONT_BACK ? CentralTowerSegment.SIDE_LENGTH - pair.x : pair.x);

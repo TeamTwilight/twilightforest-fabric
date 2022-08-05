@@ -16,10 +16,13 @@ public class BighornLegacyModel<T extends Bighorn> extends SheepModel<T> {
 		MeshDefinition mesh = SheepModel.createBodyMesh(0, CubeDeformation.NONE);
 		PartDefinition partRoot = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
 						.texOffs(0, 0)
-						.addBox(-3.0F, -4.0F, -6.0F, 6.0F, 6.0F, 7.0F)
+						.addBox(-3.0F, -4.0F, -6.0F, 6.0F, 6.0F, 7.0F),
+				PartPose.offset(0.0F, 6.0F, -8.0F));
 
+		//register horns as separate parts, prevents a crash with the legacy pack
+		head.addOrReplaceChild("left_horn", CubeListBuilder.create()
 						.texOffs(28, 16)
 						.addBox(-5.0F, -4.0F, -4.0F, 2.0F, 2.0F, 2.0F)
 						.texOffs(16, 13)
@@ -29,8 +32,10 @@ public class BighornLegacyModel<T extends Bighorn> extends SheepModel<T> {
 						.texOffs(18, 27)
 						.addBox(-8.0F, 0.0F, -2.0F, 2.0F, 2.0F, 3.0F)
 						.texOffs(28, 27)
-						.addBox(-9.0F, -1.0F, -3.0F, 2.0F, 2.0F, 1.0F)
+						.addBox(-9.0F, -1.0F, -3.0F, 2.0F, 2.0F, 1.0F),
+				PartPose.ZERO);
 
+		head.addOrReplaceChild("right_horn", CubeListBuilder.create()
 						.texOffs(28, 16)
 						.addBox(3.0F, -4.0F, -4.0F, 2.0F, 2.0F, 2.0F)
 						.texOffs(16, 13)
@@ -41,7 +46,7 @@ public class BighornLegacyModel<T extends Bighorn> extends SheepModel<T> {
 						.addBox(6.0F, 0.0F, -2.0F, 2.0F, 2.0F, 3.0F)
 						.texOffs(28, 27)
 						.addBox(7.0F, -1.0F, -3.0F, 2.0F, 2.0F, 1.0F),
-				PartPose.offset(0.0F, 6.0F, -8.0F));
+				PartPose.ZERO);
 
 		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(36, 10)
@@ -69,5 +74,12 @@ public class BighornLegacyModel<T extends Bighorn> extends SheepModel<T> {
 				PartPose.offset(3.0F, 12.0F, -5.0F));
 
 		return LayerDefinition.create(mesh, 64, 32);
+	}
+
+	@Override
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.head.getChild("left_horn").visible = !entity.isBaby();
+		this.head.getChild("right_horn").visible = !entity.isBaby();
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 	}
 }

@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import twilightforest.entity.monster.Troll;
@@ -76,6 +77,7 @@ public class ThrownBlock extends TFThrowable {
 		super.onHitBlock(result);
 		if (!this.getLevel().isClientSide()) {
 			this.getLevel().broadcastEntityEvent(this, (byte) 3);
+			this.gameEvent(GameEvent.BLOCK_DESTROY, this.getOwner());
 			this.discard();
 		}
 	}

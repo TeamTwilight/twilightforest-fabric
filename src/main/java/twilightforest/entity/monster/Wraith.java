@@ -1,10 +1,13 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -21,6 +24,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFSounds;
@@ -53,7 +57,7 @@ public class Wraith extends FlyingMob implements Enemy {
 
 	@Override
 	public boolean isSteppingCarefully() {
-		return false;
+		return true;
 	}
 
 	// [VanillaCopy] Mob.doHurtTarget. This whole inheritance hierarchy makes me sad.
@@ -146,7 +150,32 @@ public class Wraith extends FlyingMob implements Enemy {
 		return world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+		if (type == MobSpawnType.STRUCTURE || type == MobSpawnType.SPAWNER) this.restrictTo(this.blockPosition(), 13);
+		return super.finalizeSpawn(accessor, difficulty, type, data, tag);
+	}
 
+	@Override
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
+		if (this.getRestrictCenter() != BlockPos.ZERO) {
+			BlockPos home = this.getRestrictCenter();
+			tag.put("HomePos", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
+		}
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
+		if (tag.contains("HomePos", 9)) {
+			ListTag nbttaglist = tag.getList("HomePos", 6);
+			int hx = (int) nbttaglist.getDouble(0);
+			int hy = (int) nbttaglist.getDouble(1);
+			int hz = (int) nbttaglist.getDouble(2);
+			this.restrictTo(new BlockPos(hx, hy, hz), 13);
+		}
+	}
 
 	static class FlyTowardsTargetGoal extends Goal {
 		private final Wraith taskOwner;

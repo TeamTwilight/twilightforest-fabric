@@ -24,13 +24,13 @@ public class FinalCastleRoof9CrenellatedComponent extends TFStructureComponentOl
 		super(TFStructurePieceTypes.TFFCRo9Cr.get(), nbt);
 	}
 
-	public FinalCastleRoof9CrenellatedComponent(TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+	public FinalCastleRoof9CrenellatedComponent(TFLandmark feature, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCRo9Cr.get(), feature, i, x, y, z);
 
 		int height = 5;
 
 		this.setOrientation(sideTower.getOrientation());
-		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 2, sideTower.getBoundingBox().minY() - 1, sideTower.getBoundingBox().minZ() - 2, sideTower.getBoundingBox().maxX() + 2, sideTower.getBoundingBox().maxY() + height - 1, sideTower.getBoundingBox().maxZ() + 2);
+		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 2, sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().minZ() - 2, sideTower.getBoundingBox().maxX() + 2, sideTower.getBoundingBox().maxY() + height - 1, sideTower.getBoundingBox().maxZ() + 2);
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 /*
  * Honestly, this just makes absolutely certain that things go the way we want it. Might not even need this? Who knows.
  */
-//FIXME Come back here if anything awkward happens. The ctor is using primarily dummy values
 public class TFBlendedNoise extends BlendedNoise {
 
     public TFBlendedNoise(RandomSource random) {

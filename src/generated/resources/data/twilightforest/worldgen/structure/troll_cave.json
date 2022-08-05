@@ -12,13 +12,14 @@
     "Count": 1,
     "id": "minecraft:written_book",
     "tag": {
-      "author": "A Forgotten Explorer",
+      "author": "twilightforest.book.author",
       "pages": [
         "{\"translate\":\"twilightforest.book.trollcave.1\"}",
         "{\"translate\":\"twilightforest.book.trollcave.2\"}",
         "{\"translate\":\"twilightforest.book.trollcave.3\"}"
       ],
-      "title": "Notes on the Highlands"
+      "title": "twilightforest.book.trollcave",
+      "twilightforest:book": 1
     }
   },
   "hint_mob": "twilightforest:kobold",

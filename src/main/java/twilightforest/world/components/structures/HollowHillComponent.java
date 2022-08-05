@@ -142,7 +142,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 
 	protected void generateTreasureChest(WorldGenLevel world, int x, int y, int z, BoundingBox sbb) {
 		// generate an RNG for this chest
-		//TODO: MOAR RANDOM!
 		RandomSource chestRNG = RandomSource.create(world.getSeed() + (long) x * z);
 
 		// try placing it
@@ -167,7 +166,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
-			//TODO: MOAR RANDOM!
 			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
 
 			// make the actual stalactite
@@ -184,7 +182,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
-			//TODO: MOAR RANDOM!
 			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
 
 			// make the actual stalactite

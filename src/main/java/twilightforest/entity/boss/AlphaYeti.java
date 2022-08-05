@@ -11,6 +11,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -30,6 +33,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -110,7 +114,8 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 				.add(Attributes.MAX_HEALTH, 200.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.38D)
 				.add(Attributes.ATTACK_DAMAGE, 1.0D)
-				.add(Attributes.FOLLOW_RANGE, 40.0D);
+				.add(Attributes.FOLLOW_RANGE, 40.0D)
+				.add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
 	}
 
 	@Override
@@ -128,7 +133,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		if (!this.getLevel().isClientSide()) {
 			this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 
-			if (this.horizontalCollision || this.verticalCollision) { //collided does not exist, but this is an equal?
+			if (this.isRampaging() && (this.horizontalCollision || this.verticalCollision)) { //collided does not exist, but this is an equal?
 				this.collisionCounter++;
 			}
 
@@ -253,53 +258,36 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		}
 	}
 
-	public void makeRandomBlockFall() {
-		// begin turning blocks into falling blocks
-		this.makeRandomBlockFall(30);
+	public void makeRandomBlockFall(int range, int hangTime) {
+		if (ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this)) {
+			// find a block nearby
+			int bx = Mth.floor(this.getX()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
+			int bz = Mth.floor(this.getZ()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
+			int by = Mth.floor(this.getY() + this.getEyeHeight());
+
+			this.makeBlockFallAbove(new BlockPos(bx, by, bz), hangTime);
+		}
 	}
 
-	private void makeRandomBlockFall(int range) {
-		// find a block nearby
-		int bx = Mth.floor(this.getX()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
-		int bz = Mth.floor(this.getZ()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
-		int by = Mth.floor(this.getY() + this.getEyeHeight());
-
-		this.makeBlockFallAbove(new BlockPos(bx, bz, by));
-	}
-
-	private void makeBlockFallAbove(BlockPos pos) {
-		if (this.getLevel().isEmptyBlock(pos)) {
-			for (int i = 1; i < 30; i++) {
-				BlockPos up = pos.above(i);
-				if (!this.getLevel().isEmptyBlock(up)) {
-					this.makeBlockFall(up);
-					break;
-				}
+	private void makeBlockFallAbove(BlockPos pos, int hangTime) {
+		for (int i = 1; i < 25; i++) {
+			BlockPos up = pos.above(i);
+			if (this.getLevel().getBlockState(up).is(BlockTags.ICE) && this.getLevel().getBlockState(up.below()).isAir()) {
+				this.makeBlockFall(up, hangTime);
+				break;
 			}
 		}
 	}
 
-	public void makeNearbyBlockFall() {
-		this.makeRandomBlockFall(15);
-	}
-
 	public void makeBlockAboveTargetFall() {
 		if (this.getTarget() != null) {
-
-			int bx = Mth.floor(this.getTarget().getX());
-			int bz = Mth.floor(this.getTarget().getZ());
-			int by = Mth.floor(this.getTarget().getY() + this.getTarget().getEyeHeight());
-
-			this.makeBlockFallAbove(new BlockPos(bx, bz, by));
+			this.makeBlockFallAbove(this.getTarget().blockPosition(), 40);
 		}
-
 	}
 
-	private void makeBlockFall(BlockPos pos) {
-		this.getLevel().setBlockAndUpdate(pos, Blocks.PACKED_ICE.defaultBlockState());
-		this.getLevel().levelEvent(2001, pos, Block.getId(Blocks.PACKED_ICE.defaultBlockState()));
-
-		FallingIce ice = new FallingIce(this.getLevel(), pos.getX(), pos.getY() - 3, pos.getZ());
+	private void makeBlockFall(BlockPos pos, int hangTime) {
+		FallingIce ice = new FallingIce(this.getLevel(), pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, this.getLevel().getBlockState(pos), hangTime);
+		this.getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 		this.getLevel().addFreshEntity(ice);
 	}
 
@@ -308,7 +296,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		if (!this.canRampage) {
 			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.getLevel(), this);
 
-			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
+			// [VanillaCopy] Part of Skeleton.performRangedAttack
 			double d0 = target.getX() - this.getX();
 			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - ice.getY();
 			double d2 = target.getZ() - this.getZ();
@@ -316,6 +304,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 			ice.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 14 - this.getLevel().getDifficulty().getId() * 4);
 
 			this.playSound(TFSounds.ALPHAYETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			this.getLevel().addFreshEntity(ice);
 		}
 	}

@@ -20,6 +20,9 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -30,6 +33,8 @@ import twilightforest.client.model.armor.FieryArmorModel;
 import twilightforest.client.renderer.TFArmorRenderer;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public class FieryArmorItem extends ArmorItem {
@@ -38,6 +43,23 @@ public class FieryArmorItem extends ArmorItem {
 	public FieryArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
 		super(material, slot, properties);
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> this::initializeClient);
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		AtomicBoolean badEnchant = new AtomicBoolean();
+		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
+			if (Objects.equals(Enchantments.THORNS, enchantment) || Objects.equals(TFEnchantments.CHILL_AURA.get(), enchantment)) {
+				badEnchant.set(true);
+			}
+		});
+
+		return !badEnchant.get();
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return !Enchantments.THORNS.equals(enchantment) && !TFEnchantments.CHILL_AURA.get().equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	public static String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {

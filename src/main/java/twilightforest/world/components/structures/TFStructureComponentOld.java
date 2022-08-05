@@ -207,19 +207,21 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		treasureType.generateChestContents(world, lootPos);
 	}
 
-	protected void setDoubleLootChest(WorldGenLevel world, int x, int y, int z, int otherx, int othery, int otherz, Direction facing, TFLootTables treasureType, BoundingBox sbb, boolean trapped) {
-		if(facing == null) {
+	//when adding a loot table to a chest using this method, please be aware it places 2 of the same loot table, one for each chest
+	protected void setDoubleLootChest(WorldGenLevel world, int x, int y, int z, int otherx, int othery, int otherz, @Nullable Direction facing, TFLootTables treasureType, BoundingBox sbb, boolean trapped) {
+		this.setDoubleLootChest(world, x, y, z, otherx, othery, otherz, facing, treasureType, treasureType, sbb, trapped);
+	}
+
+	protected void setDoubleLootChest(WorldGenLevel world, int x, int y, int z, int otherx, int othery, int otherz, @Nullable Direction facing, TFLootTables treasureType, TFLootTables secondaryLootType, BoundingBox sbb, boolean trapped) {
+		if (facing == null) {
 			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
 			facing = Direction.NORTH;
 		}
 
-		int lootx = getWorldX(x, z);
-		int looty = getWorldY(y);
-		int lootz = getWorldZ(x, z);
-		BlockPos lootPos = new BlockPos(lootx, looty, lootz);
 		this.placeBlock(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.TYPE, ChestType.LEFT).setValue(ChestBlock.FACING, facing), x, y, z, sbb);
 		this.placeBlock(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.TYPE, ChestType.RIGHT).setValue(ChestBlock.FACING, facing), otherx, othery, otherz, sbb);
-		treasureType.generateChestContents(world, lootPos);
+		treasureType.generateChestContents(world, new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z)));
+		secondaryLootType.generateChestContents(world, new BlockPos(this.getWorldX(otherx, otherz), this.getWorldY(othery), this.getWorldZ(otherx, otherz)));
 	}
 
 	/**
@@ -231,12 +233,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	 */
 	protected void placeTripwire(WorldGenLevel world, int x, int y, int z, int size, Direction facing, BoundingBox sbb) {
 
-		// FIXME: not sure if this capture crap is still needed
-
 		int dx = facing.getStepX();
 		int dz = facing.getStepZ();
-
-//		world.captureBlockSnapshots = true;
 
 		// add tripwire hooks
 		BlockState tripwireHook = Blocks.TRIPWIRE_HOOK.defaultBlockState();
@@ -328,7 +326,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 			return switch (enumfacing) {
 				case SOUTH -> this.boundingBox.minX() + x;
 				case WEST -> this.boundingBox.maxX() - z;
-				case NORTH -> this.boundingBox.maxX() - x; // TF - Add case for NORTH todo 1.9 is this correct?
+				case NORTH -> this.boundingBox.maxX() - x; // TF - Add case for NORTH
 				case EAST -> this.boundingBox.minX() + z;
 				default -> x;
 			};

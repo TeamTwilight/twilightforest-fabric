@@ -5,7 +5,7 @@
         "particle": "#bottom",
         "bottom": "twilightforest:block/experiment115/experiment115_bottom",
         "top": "twilightforest:block/experiment115/experiment115_top",
-        "top_2": "twilightforest:block/experiment115/experiment115_top",
+        "top_2": "twilightforest:block/stone_twist/twist_blank",
         "side": "twilightforest:block/experiment115/experiment115_side"
     },
     "elements": [
@@ -24,13 +24,13 @@
             "from": [ 1, 8, 1 ],
             "to": [ 15, 8, 15 ],
             "faces": {
-                "up": { "texture": "#top_2" }
+                "up": { "texture": "#top_2", "emissivity": 15 }
             }
         }, {
             "from": [ 1, 8, 1 ],
             "to": [ 15, 8.02, 15 ],
             "faces": {
-                "up": { "texture": "#top_2" }
+                "up": { "texture": "#top_2", "emissivity": 15 }
             }
         }
     ]

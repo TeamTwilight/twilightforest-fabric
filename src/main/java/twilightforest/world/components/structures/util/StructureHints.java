@@ -22,13 +22,14 @@ import twilightforest.init.TFEntities;
 import org.jetbrains.annotations.Nullable;
 
 public interface StructureHints {
-    String BOOK_AUTHOR = "A Forgotten Explorer";
+    String BOOK_AUTHOR = TwilightForestMod.ID + ".book.author";
 
     /**
      * Create a hint book for the specified feature.  Only features with block protection will need this.
      */
     default ItemStack createHintBook() {
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+        book.getOrCreateTag().putBoolean(TwilightForestMod.ID + ":book", true);
         this.addBookInformation(book, new ListTag());
         return book;
     }
@@ -38,7 +39,7 @@ public interface StructureHints {
 
         book.addTagElement("pages", bookPages);
         book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-        book.addTagElement("title", StringTag.valueOf("Notes on the Unexplained"));
+        book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.unknown"));
     }
 
     static void addTranslatedPages(ListTag bookPages, String translationKey, int pageCount) {

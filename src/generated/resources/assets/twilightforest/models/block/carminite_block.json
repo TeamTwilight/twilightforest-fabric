@@ -1,7 +1,117 @@
 {
-  "parent": "twilightforest:block/util/cube_all_2_layer",
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "emissivity": 4,
+          "texture": "#bottom"
+        },
+        "east": {
+          "cullface": "east",
+          "emissivity": 4,
+          "texture": "#east"
+        },
+        "north": {
+          "cullface": "north",
+          "emissivity": 4,
+          "texture": "#north"
+        },
+        "south": {
+          "cullface": "south",
+          "emissivity": 4,
+          "texture": "#south"
+        },
+        "up": {
+          "cullface": "up",
+          "emissivity": 4,
+          "texture": "#top"
+        },
+        "west": {
+          "cullface": "west",
+          "emissivity": 4,
+          "texture": "#west"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "emissivity": 7,
+          "texture": "#bottom2",
+          "tintindex": 0
+        },
+        "east": {
+          "cullface": "east",
+          "emissivity": 7,
+          "texture": "#east2",
+          "tintindex": 0
+        },
+        "north": {
+          "cullface": "north",
+          "emissivity": 7,
+          "texture": "#north2",
+          "tintindex": 0
+        },
+        "south": {
+          "cullface": "south",
+          "emissivity": 7,
+          "texture": "#south2",
+          "tintindex": 0
+        },
+        "up": {
+          "cullface": "up",
+          "emissivity": 7,
+          "texture": "#top2",
+          "tintindex": 0
+        },
+        "west": {
+          "cullface": "west",
+          "emissivity": 7,
+          "texture": "#west2",
+          "tintindex": 0
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "render_type": "minecraft:solid",
   "textures": {
     "all": "twilightforest:block/carminite_block",
-    "all2": "twilightforest:block/carminite_block_overlay"
+    "all2": "twilightforest:block/carminite_block_overlay",
+    "bottom": "#all",
+    "bottom2": "#all2",
+    "east": "#all",
+    "east2": "#all2",
+    "north": "#all",
+    "north2": "#all2",
+    "particle": "#bottom",
+    "south": "#all",
+    "south2": "#all2",
+    "top": "#all",
+    "top2": "#all2",
+    "west": "#all",
+    "west2": "#all2"
   }
 }

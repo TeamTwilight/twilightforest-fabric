@@ -22,7 +22,7 @@
       "sound": "twilightforest:music.bg"
     },
     "sky_color": 2105930,
-    "water_color": 16421137,
+    "water_color": 12355671,
     "water_fog_color": 329011
   },
   "features": [
@@ -80,9 +80,18 @@
   "precipitation": "rain",
   "spawn_costs": {},
   "spawners": {
-    "ambient": [],
+    "ambient": [
+      {
+        "type": "minecraft:bat",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 20
+      }
+    ],
     "axolotls": [],
-    "creature": [
+    "creature": [],
+    "misc": [],
+    "monster": [
       {
         "type": "minecraft:spider",
         "maxCount": 4,
@@ -100,16 +109,8 @@
         "maxCount": 1,
         "minCount": 1,
         "weight": 5
-      },
-      {
-        "type": "minecraft:bat",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 20
       }
     ],
-    "misc": [],
-    "monster": [],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []

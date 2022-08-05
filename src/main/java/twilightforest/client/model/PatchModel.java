@@ -9,11 +9,14 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import twilightforest.block.PatchBlock;
 
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFBlocks;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -219,6 +222,14 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
 
     @Override
     public ItemOverrides getOverrides() {
-        return ItemOverrides.EMPTY; // TODO I doubt we need to do anything here
+        return ItemOverrides.EMPTY; //I doubt we need to do anything here
+    }
+
+    @Override
+    public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+        if (state.is(TFBlocks.CLOVER_PATCH.get())) {
+            return ChunkRenderTypeSet.of(RenderType.cutout());
+        }
+        return BakedModel.super.getRenderTypes(state, rand, data);
     }
 }

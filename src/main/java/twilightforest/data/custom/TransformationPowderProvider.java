@@ -1,8 +1,6 @@
 package twilightforest.data.custom;
 
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import net.minecraft.core.Registry;
 import net.minecraft.data.CachedOutput;
@@ -11,7 +9,7 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import oshi.util.tuples.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
 
@@ -26,9 +24,7 @@ public abstract class TransformationPowderProvider implements DataProvider {
 	private final DataGenerator generator;
 	private final String modId;
 	private final ExistingFileHelper helper;
-	protected final Map<String, Pair<EntityType<?>, EntityType<?>>> builders = Maps.newLinkedHashMap();
-
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
+	protected final Map<String, Triple<EntityType<?>, EntityType<?>, Boolean>> builders = Maps.newLinkedHashMap();
 
 	public TransformationPowderProvider(DataGenerator generator, final String modId, final ExistingFileHelper helper) {
 		this.generator = generator;
@@ -44,8 +40,8 @@ public abstract class TransformationPowderProvider implements DataProvider {
 		this.registerTransforms();
 		this.builders.forEach((name, transform) -> {
 			List<String> list = builders.keySet().stream()
-					.filter(s -> Registry.ENTITY_TYPE.containsKey(Registry.ENTITY_TYPE.getKey(transform.getA())))
-					.filter(s -> Registry.ENTITY_TYPE.containsKey(Registry.ENTITY_TYPE.getKey(transform.getB())))
+					.filter(s -> Registry.ENTITY_TYPE.containsKey(Registry.ENTITY_TYPE.getKey(transform.getLeft())))
+					.filter(s -> Registry.ENTITY_TYPE.containsKey(Registry.ENTITY_TYPE.getKey(transform.getMiddle())))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
 					.collect(Collectors.toList());
@@ -53,7 +49,7 @@ public abstract class TransformationPowderProvider implements DataProvider {
 			if (!list.isEmpty()) {
 				throw new IllegalArgumentException(String.format("Duplicate Transformation Powder Transformations: %s", list.stream().map(Objects::toString).collect(Collectors.joining(", "))));
 			} else {
-				JsonObject obj = serializeToJson(transform.getA(), transform.getB());
+				JsonObject obj = serializeToJson(transform.getLeft(), transform.getMiddle(), transform.getRight());
 				Path path = createPath(new ResourceLocation(modId, name));
 				try {
 					DataProvider.saveStable(cache, obj, path);
@@ -72,12 +68,13 @@ public abstract class TransformationPowderProvider implements DataProvider {
 		return generator.getOutputFolder().resolve("data/" + name.getNamespace() + "/recipes/transformation_powder/" + name.getPath() + ".json");
 	}
 
-	private JsonObject serializeToJson(EntityType<?> transformFrom, EntityType<?> transformTo) {
+	private JsonObject serializeToJson(EntityType<?> transformFrom, EntityType<?> transformTo, boolean reversible) {
 		JsonObject jsonobject = new JsonObject();
 
 		jsonobject.addProperty("type", Registry.RECIPE_SERIALIZER.getKey(TFRecipes.TRANSFORMATION_SERIALIZER.get()).toString());
 		jsonobject.addProperty("from", Registry.ENTITY_TYPE.getKey(transformFrom).toString());
 		jsonobject.addProperty("to", Registry.ENTITY_TYPE.getKey(transformTo).toString());
+		jsonobject.addProperty("reversible", reversible);
 		return jsonobject;
 	}
 
@@ -87,12 +84,11 @@ public abstract class TransformationPowderProvider implements DataProvider {
 	}
 
 	//helper methods
-	public void addSingleTransform(EntityType<?> from, EntityType<?> to) {
-		builders.put(Registry.ENTITY_TYPE.getKey(from).getPath() + "_to_" + Registry.ENTITY_TYPE.getKey(to).getPath(), new Pair<>(from, to));
+	public void addOneWayTransform(EntityType<?> from, EntityType<?> to) {
+		builders.put(Registry.ENTITY_TYPE.getKey(from).getPath() + "_to_" + Registry.ENTITY_TYPE.getKey(to).getPath(), Triple.of(from, to, false));
 	}
 
 	public void addTwoWayTransform(EntityType<?> from, EntityType<?> to) {
-		builders.put(Registry.ENTITY_TYPE.getKey(from).getPath() + "_to_" + Registry.ENTITY_TYPE.getKey(to).getPath(), new Pair<>(from, to));
-		builders.put(Registry.ENTITY_TYPE.getKey(to).getPath() + "_to_" + Registry.ENTITY_TYPE.getKey(from).getPath(), new Pair<>(to, from));
+		builders.put(ForgeRegistries.ENTITY_TYPES.getKey(from).getPath() + "_to_" + ForgeRegistries.ENTITY_TYPES.getKey(to).getPath(), Triple.of(from, to, true));
 	}
 }

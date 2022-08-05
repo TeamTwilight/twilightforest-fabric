@@ -125,6 +125,11 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
 		tooltip.add(TOOLTIP);
 	}
 
+	@Override
+	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+		return stack.is(TFItems.ARCTIC_BOOTS.get());
+	}
+
 	@Environment(EnvType.CLIENT)
 	public void initializeClient() {
 		ArmorRenderer.register(ArmorRender.INSTANCE, this);

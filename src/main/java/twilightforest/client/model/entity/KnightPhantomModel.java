@@ -9,8 +9,11 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import twilightforest.entity.boss.KnightPhantom;
 
+import javax.annotation.Nullable;
+
 public class KnightPhantomModel extends HumanoidModel<KnightPhantom> {
 
+	@Nullable
 	private KnightPhantom knight;
 
 	public KnightPhantomModel(ModelPart root) {
@@ -44,9 +47,6 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantom> {
 		return LayerDefinition.create(mesh, 64, 32);
 	}
 
-	/**
-	 * TODO: Should this be in Renderer instead?
-	 */
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
 		if (knight != null && knight.isChargingAtPlayer()) {

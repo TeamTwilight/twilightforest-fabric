@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -37,11 +38,6 @@ public class MoonwormShot extends TFThrowable {
 
 	public MoonwormShot(Level level, double x, double y, double z) {
 		super(TFEntities.MOONWORM_SHOT.get(), level, x, y, z);
-	}
-
-	@Override
-	public void tick() {
-		super.tick();
 	}
 
 	@Override
@@ -75,14 +71,16 @@ public class MoonwormShot extends TFThrowable {
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		BlockPos pos = result.getBlockPos().relative(result.getDirection());
-		BlockState currentState = level.getBlockState(pos);
+		BlockState currentState = this.getLevel().getBlockState(pos);
 
 		if (currentState.getMaterial().isReplaceable() && !currentState.is(BlockTags.FIRE) && !currentState.is(Blocks.LAVA)) {
-			level.setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState().setValue(DirectionalBlock.FACING, result.getDirection()));
+			this.getLevel().setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState().setValue(DirectionalBlock.FACING, result.getDirection()));
+			this.gameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
 			// todo sound
 		} else {
-			ItemEntity squish = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), Items.LIME_DYE.getDefaultInstance());
+			ItemEntity squish = new ItemEntity(this.getLevel(), pos.getX(), pos.getY(), pos.getZ(), Items.LIME_DYE.getDefaultInstance());
 			squish.spawnAtLocation(squish.getItem());
+			this.gameEvent(GameEvent.ENTITY_DIE);
 		}
 	}
 
@@ -92,7 +90,7 @@ public class MoonwormShot extends TFThrowable {
 		if (result.getEntity() instanceof Player player && !player.hasItemInSlot(EquipmentSlot.HEAD)) {
 			player.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TFBlocks.MOONWORM.get()));
 		} else {
-			result.getEntity().hurt(new IndirectEntityDamageSource("moonworm", this, this), random.nextInt(3) == 0 ? 1 : 0);
+			result.getEntity().hurt(new IndirectEntityDamageSource("moonworm", this, this), this.random.nextInt(3) == 0 ? 1 : 0);
 		}
 	}
 

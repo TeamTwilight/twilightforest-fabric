@@ -39,7 +39,7 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
         ResourceKey<Biome> biome = Minecraft.getInstance().player.level.getBiome(new BlockPos(player.position())).unwrapKey().get();
 
-        // FIXME Make the fog on these biomes much much darker, maybe pitch black even. Do we keep this harsher fog underground too?
+        //Make the fog on these biomes much much darker, maybe pitch black even. Do we keep this harsher fog underground too?
         return biome == BiomeKeys.DARK_FOREST || biome == BiomeKeys.DARK_FOREST_CENTER;*/
         return false;
     }

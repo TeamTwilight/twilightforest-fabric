@@ -15,7 +15,6 @@ import twilightforest.client.model.item.CharmOfLife2NecklaceModel;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.client.model.tileentity.legacy.*;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
-import twilightforest.compat.TFCompat;
 
 public class TFLayerDefinitions {
 

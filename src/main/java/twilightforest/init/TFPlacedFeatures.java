@@ -13,58 +13,57 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.placements.ChunkBlanketingModifier;
 import twilightforest.world.components.placements.ChunkCenterModifier;
-import twilightforest.world.components.placements.OutOfStructureModifier;
+import twilightforest.world.components.placements.AvoidLandmarkModifier;
 
 import java.util.List;
 
 public class TFPlacedFeatures {
 
-	public static final Holder<PlacedFeature> PLACED_LAKE_LAVA = register("lava_lake", TFConfiguredFeatures.LAKE_LAVA, tfFeatureCheckArea(OutOfStructureModifier.checkBoth(), 10).build());
-	public static final Holder<PlacedFeature> PLACED_LAKE_WATER = register("water_lake", TFConfiguredFeatures.LAKE_WATER, tfFeatureCheckArea(OutOfStructureModifier.checkBoth(), 4).build());
+	public static final Holder<PlacedFeature> PLACED_LAKE_LAVA = register("lava_lake", TFConfiguredFeatures.LAKE_LAVA, tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 10).build());
+	public static final Holder<PlacedFeature> PLACED_LAKE_WATER = register("water_lake", TFConfiguredFeatures.LAKE_WATER, tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 4).build());
 	public static final Holder<PlacedFeature> PLACED_SIMPLE_WELL = register("simple_well", TFConfiguredFeatures.SIMPLE_WELL, ImmutableList.<PlacementModifier>builder().build());
 	public static final Holder<PlacedFeature> PLACED_FANCY_WELL = register("fancy_well", TFConfiguredFeatures.FANCY_WELL, ImmutableList.<PlacementModifier>builder().build());
-	public static final Holder<PlacedFeature> PLACED_DRUID_HUT = register("druid_hut", TFConfiguredFeatures.DRUID_HUT, tfFeatureCheckArea(OutOfStructureModifier.checkBoth(), 105).build());
-	public static final Holder<PlacedFeature> PLACED_GRAVEYARD = register("graveyard", TFConfiguredFeatures.GRAVEYARD, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 75).build());
-	public static final Holder<PlacedFeature> PLACED_BIG_MUSHGLOOM = register("big_mushgloom", TFConfiguredFeatures.BIG_MUSHGLOOM, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 1).build());
-	public static final Holder<PlacedFeature> PLACED_FALLEN_LEAVES = register("fallen_leaves", TFConfiguredFeatures.FALLEN_LEAVES, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 1).build());
+	public static final Holder<PlacedFeature> PLACED_DRUID_HUT = register("druid_hut", TFConfiguredFeatures.DRUID_HUT, tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 105).build());
+	public static final Holder<PlacedFeature> PLACED_GRAVEYARD = register("graveyard", TFConfiguredFeatures.GRAVEYARD, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 75).build());
+	public static final Holder<PlacedFeature> PLACED_BIG_MUSHGLOOM = register("big_mushgloom", TFConfiguredFeatures.BIG_MUSHGLOOM, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 1).build());
+	public static final Holder<PlacedFeature> PLACED_FALLEN_LEAVES = register("fallen_leaves", TFConfiguredFeatures.FALLEN_LEAVES, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 1).build());
 	public static final Holder<PlacedFeature> PLACED_FIDDLEHEAD = register("fiddlehead", TFConfiguredFeatures.FIDDLEHEAD, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build());
 	public static final Holder<PlacedFeature> PLACED_FIRE_JET = register("fire_jet", TFConfiguredFeatures.FIRE_JET, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, InSquarePlacement.spread(), BiomeFilter.biome()).build());
-	public static final Holder<PlacedFeature> PLACED_FOUNDATION = register("foundation", TFConfiguredFeatures.FOUNDATION, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 100).build());
-	public static final Holder<PlacedFeature> PLACED_GROVE_RUINS = register("grove_ruins", TFConfiguredFeatures.GROVE_RUINS, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 105).build());
-	public static final Holder<PlacedFeature> PLACED_HOLLOW_LOG = register("hollow_log", TFConfiguredFeatures.HOLLOW_LOG, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 100).build());
-	public static final Holder<PlacedFeature> PLACED_HOLLOW_STUMP = register("hollow_stump", TFConfiguredFeatures.HOLLOW_STUMP, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 90).build());
+	public static final Holder<PlacedFeature> PLACED_FOUNDATION = register("foundation", TFConfiguredFeatures.FOUNDATION, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 100).build());
+	public static final Holder<PlacedFeature> PLACED_GROVE_RUINS = register("grove_ruins", TFConfiguredFeatures.GROVE_RUINS, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 105).build());
+	public static final Holder<PlacedFeature> PLACED_HOLLOW_LOG = register("hollow_log", TFConfiguredFeatures.HOLLOW_LOG, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 100).build());
+	public static final Holder<PlacedFeature> PLACED_HOLLOW_STUMP = register("hollow_stump", TFConfiguredFeatures.HOLLOW_STUMP, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 90).build());
 	public static final Holder<PlacedFeature> PLACED_HUGE_LILY_PAD = register("huge_lily_pad", TFConfiguredFeatures.HUGE_LILY_PAD, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, RarityFilter.onAverageOnceEvery(20), InSquarePlacement.spread(), CountPlacement.of(10), BiomeFilter.biome()).build());
 	public static final Holder<PlacedFeature> PLACED_HUGE_WATER_LILY = register("huge_water_lily", TFConfiguredFeatures.HUGE_WATER_LILY, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, RarityFilter.onAverageOnceEvery(25), InSquarePlacement.spread(), CountPlacement.of(5), BiomeFilter.biome()).build());
 	public static final Holder<PlacedFeature> PLACED_CICADA_LAMPPOST = register("cicada_lamppost", TFConfiguredFeatures.CICADA_LAMPPOST, ImmutableList.<PlacementModifier>builder().build());
 	public static final Holder<PlacedFeature> PLACED_FIREFLY_LAMPPOST = register("firefly_lamppost", TFConfiguredFeatures.FIREFLY_LAMPPOST, ImmutableList.<PlacementModifier>builder().build());
 	public static final Holder<PlacedFeature> PLACED_MAYAPPLE = register("mayapple", TFConfiguredFeatures.MAYAPPLE, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome()).build());
-	public static final Holder<PlacedFeature> PLACED_MONOLITH = register("monolith", TFConfiguredFeatures.MONOLITH, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 90).build());
+	public static final Holder<PlacedFeature> PLACED_MONOLITH = register("monolith", TFConfiguredFeatures.MONOLITH, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 90).build());
 	public static final Holder<PlacedFeature> PLACED_MUSHGLOOM_CLUSTER = register("mushgloom_cluster", TFConfiguredFeatures.MUSHGLOOM_CLUSTER, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, RarityFilter.onAverageOnceEvery(5), InSquarePlacement.spread(), BiomeFilter.biome()).build());
-	public static final Holder<PlacedFeature> PLACED_MYCELIUM_BLOB = register("mycelium_blob", TFConfiguredFeatures.MYCELIUM_BLOB, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 3).build());
-	public static final Holder<PlacedFeature> PLACED_OUTSIDE_STALAGMITE = register("outside_stalagmite", TFConfiguredFeatures.OUTSIDE_STALAGMITE, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 88).build());
-	public static final Holder<PlacedFeature> PLACED_PLANT_ROOTS = register("plant_roots", TFConfiguredFeatures.PLANT_ROOTS, tfFeatureCheckArea(OutOfStructureModifier.checkUnderground(), 1, CountPlacement.of(4), HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(10))).build());
-	public static final Holder<PlacedFeature> PLACED_PUMPKIN_LAMPPOST = register("pumpkin_lamppost", TFConfiguredFeatures.PUMPKIN_LAMPPOST, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 1).build());
+	public static final Holder<PlacedFeature> PLACED_MYCELIUM_BLOB = register("mycelium_blob", TFConfiguredFeatures.MYCELIUM_BLOB, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 3).build());
+	public static final Holder<PlacedFeature> PLACED_OUTSIDE_STALAGMITE = register("outside_stalagmite", TFConfiguredFeatures.OUTSIDE_STALAGMITE, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 88).build());
+	public static final Holder<PlacedFeature> PLACED_PLANT_ROOTS = register("plant_roots", TFConfiguredFeatures.PLANT_ROOTS, tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 1, CountPlacement.of(4), HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(10))).build());
+	public static final Holder<PlacedFeature> PLACED_PUMPKIN_LAMPPOST = register("pumpkin_lamppost", TFConfiguredFeatures.PUMPKIN_LAMPPOST, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 1).build());
 	public static final Holder<PlacedFeature> PLACED_SMOKER = register("smoker", TFConfiguredFeatures.SMOKER, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, InSquarePlacement.spread(), BiomeFilter.biome()).build());
-	public static final Holder<PlacedFeature> PLACED_STONE_CIRCLE = register("stone_circle", TFConfiguredFeatures.STONE_CIRCLE, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 105).build());
+	public static final Holder<PlacedFeature> PLACED_STONE_CIRCLE = register("stone_circle", TFConfiguredFeatures.STONE_CIRCLE, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 105).build());
 	public static final Holder<PlacedFeature> PLACED_THORNS = register("thorns", TFConfiguredFeatures.THORNS, ImmutableList.<PlacementModifier>builder().add(ChunkBlanketingModifier.addThorns(), BiomeFilter.biome()).build());
-	public static final Holder<PlacedFeature> PLACED_TORCH_BERRIES = register("torch_berries", TFConfiguredFeatures.TORCH_BERRIES, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(60)), CountPlacement.of(8), OutOfStructureModifier.checkUnderground(), BiomeFilter.biome()).build());
+	public static final Holder<PlacedFeature> PLACED_TORCH_BERRIES = register("torch_berries", TFConfiguredFeatures.TORCH_BERRIES, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(60)), CountPlacement.of(8), AvoidLandmarkModifier.checkUnderground(), BiomeFilter.biome()).build());
 	public static final Holder<PlacedFeature> PLACED_TROLL_ROOTS = register("troll_roots", TFConfiguredFeatures.TROLL_ROOTS, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(60)), CountPlacement.of(8), BiomeFilter.biome()).build());
-	public static final Holder<PlacedFeature> PLACED_VANILLA_ROOTS = register("vanilla_roots", TFConfiguredFeatures.VANILLA_ROOTS, tfFeatureCheckArea(OutOfStructureModifier.checkUnderground(), 1, CountPlacement.of(16), HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(10))).build());
-	public static final Holder<PlacedFeature> PLACED_WEBS = register("webs", TFConfiguredFeatures.WEBS, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, InSquarePlacement.spread(), CountPlacement.of(60), BiomeFilter.biome()).build());
-	public static final Holder<PlacedFeature> PLACED_WOOD_ROOTS_SPREAD = register("wood_roots", TFConfiguredFeatures.WOOD_ROOTS_SPREAD, tfFeatureCheckArea(OutOfStructureModifier.checkUnderground(), 40, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(0))).build());
+	public static final Holder<PlacedFeature> PLACED_VANILLA_ROOTS = register("vanilla_roots", TFConfiguredFeatures.VANILLA_ROOTS, tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 1, CountPlacement.of(16), HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(10))).build());
+	public static final Holder<PlacedFeature> PLACED_WEBS = register("webs", TFConfiguredFeatures.WEBS, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, CountPlacement.of(60), InSquarePlacement.spread(), BiomeFilter.biome()).build());
+	public static final Holder<PlacedFeature> PLACED_WOOD_ROOTS_SPREAD = register("wood_roots", TFConfiguredFeatures.WOOD_ROOTS_SPREAD, tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 40, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(0))).build());
 	public static final Holder<PlacedFeature> PLACED_SNOW_UNDER_TREES = register("snow_under_trees", TFConfiguredFeatures.SNOW_UNDER_TREES, ImmutableList.<PlacementModifier>builder().add(BiomeFilter.biome()).build());
-	public static final Holder<PlacedFeature> PLACED_TF_OAK_FALLEN_LOG = register("tf_oak_fallen_log", TFConfiguredFeatures.TF_OAK_FALLEN_LOG, hollowLog(OutOfStructureModifier.checkSurface(), 40).build());
-	public static final Holder<PlacedFeature> PLACED_CANOPY_FALLEN_LOG = register("canopy_fallen_log", TFConfiguredFeatures.CANOPY_FALLEN_LOG, hollowLog(OutOfStructureModifier.checkSurface(), 40).build());
-	public static final Holder<PlacedFeature> PLACED_MANGROVE_FALLEN_LOG = register("mangrove_fallen_log", TFConfiguredFeatures.MANGROVE_FALLEN_LOG, hollowLog(OutOfStructureModifier.checkSurface(), 40).build());
-	public static final Holder<PlacedFeature> PLACED_OAK_FALLEN_LOG = register("oak_fallen_log", TFConfiguredFeatures.OAK_FALLEN_LOG, hollowLog(OutOfStructureModifier.checkSurface(), 40).build());
-	public static final Holder<PlacedFeature> PLACED_SPRUCE_FALLEN_LOG = register("spruce_fallen_log", TFConfiguredFeatures.SPRUCE_FALLEN_LOG, hollowLog(OutOfStructureModifier.checkSurface(), 40).build());
-	public static final Holder<PlacedFeature> PLACED_BIRCH_FALLEN_LOG = register("birch_fallen_log", TFConfiguredFeatures.BIRCH_FALLEN_LOG, hollowLog(OutOfStructureModifier.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_TF_OAK_FALLEN_LOG = register("tf_oak_fallen_log", TFConfiguredFeatures.TF_OAK_FALLEN_LOG, hollowLog(AvoidLandmarkModifier.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_CANOPY_FALLEN_LOG = register("canopy_fallen_log", TFConfiguredFeatures.CANOPY_FALLEN_LOG, hollowLog(AvoidLandmarkModifier.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_MANGROVE_FALLEN_LOG = register("mangrove_fallen_log", TFConfiguredFeatures.MANGROVE_FALLEN_LOG, hollowLog(AvoidLandmarkModifier.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_OAK_FALLEN_LOG = register("oak_fallen_log", TFConfiguredFeatures.OAK_FALLEN_LOG, hollowLog(AvoidLandmarkModifier.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_SPRUCE_FALLEN_LOG = register("spruce_fallen_log", TFConfiguredFeatures.SPRUCE_FALLEN_LOG, hollowLog(AvoidLandmarkModifier.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_BIRCH_FALLEN_LOG = register("birch_fallen_log", TFConfiguredFeatures.BIRCH_FALLEN_LOG, hollowLog(AvoidLandmarkModifier.checkSurface(), 40).build());
 	public static final Holder<PlacedFeature> PLACED_SMALL_GRANITE = register("small_granite", TFConfiguredFeatures.SMALL_GRANITE, ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(64)), RarityFilter.onAverageOnceEvery(60), InSquarePlacement.spread(), CountPlacement.of(5)).build());
 	public static final Holder<PlacedFeature> PLACED_SMALL_DIORITE = register("small_diorite", TFConfiguredFeatures.SMALL_DIORITE, ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(64)), RarityFilter.onAverageOnceEvery(60), InSquarePlacement.spread(), CountPlacement.of(5)).build());
 	public static final Holder<PlacedFeature> PLACED_SMALL_ANDESITE = register("small_andesite", TFConfiguredFeatures.SMALL_ANDESITE, ImmutableList.<PlacementModifier>builder().add(HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(64)), RarityFilter.onAverageOnceEvery(60), InSquarePlacement.spread(), CountPlacement.of(5)).build());
@@ -91,23 +90,23 @@ public class TFPlacedFeatures {
 	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> DEFAULT_FALLEN_LOGS = TFConfiguredFeatures.register("default_fallen_logs", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(ImmutableList.of(new WeightedPlacedFeature(TFPlacedFeatures.PLACED_BIRCH_FALLEN_LOG, 0.1F), new WeightedPlacedFeature(TFPlacedFeatures.PLACED_OAK_FALLEN_LOG, 0.2F), new WeightedPlacedFeature(TFPlacedFeatures.PLACED_CANOPY_FALLEN_LOG, 0.4F)), TFPlacedFeatures.PLACED_TF_OAK_FALLEN_LOG));
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-	public static final Holder<PlacedFeature> PLACED_WELL_PLACER = register("well_placer", WELL_PLACER, tfFeatureCheckArea(OutOfStructureModifier.checkBoth(), 80).build());
-	public static final Holder<PlacedFeature> PLACED_LAMPPOST_PLACER = register("lamppost_placer", LAMPPOST_PLACER, tfFeatureCheckArea(OutOfStructureModifier.checkSurface(), 2).build());
-	public static final Holder<PlacedFeature> PLACED_DEFAULT_FALLEN_LOGS = register("default_fallen_logs", DEFAULT_FALLEN_LOGS, hollowLog(OutOfStructureModifier.checkSurface(), 40).build());
+	public static final Holder<PlacedFeature> PLACED_WELL_PLACER = register("well_placer", WELL_PLACER, tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 80).build());
+	public static final Holder<PlacedFeature> PLACED_LAMPPOST_PLACER = register("lamppost_placer", LAMPPOST_PLACER, tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 2).build());
+	public static final Holder<PlacedFeature> PLACED_DEFAULT_FALLEN_LOGS = register("default_fallen_logs", DEFAULT_FALLEN_LOGS, hollowLog(AvoidLandmarkModifier.checkSurface(), 40).build());
 
 	public static final Holder<PlacedFeature> PLACED_FLOWER_PLACER = register("flower_placer", TFConfiguredFeatures.FLOWER_PLACER, ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, CountPlacement.of(3), InSquarePlacement.spread(), RarityFilter.onAverageOnceEvery(2), BiomeFilter.biome()).build());
 
 	//Trees!
 	public static final Holder<PlacedFeature> PLACED_DEAD_CANOPY_TREE = register("tree/dead_canopy_tree", TFConfiguredFeatures.DEAD_CANOPY_TREE, tfTreeCheckArea(PlacementUtils.countExtra(2, 0.1F, 1), TFBlocks.CANOPY_SAPLING.get().defaultBlockState()));
-	public static final Holder<PlacedFeature> PLACED_MANGROVE_TREE = register("tree/mangrove_tree", TFConfiguredFeatures.MANGROVE_TREE, List.of(PlacementUtils.countExtra(3, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(6), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureModifier.checkSurface(), PlacementUtils.filteredByBlockSurvival(TFBlocks.MANGROVE_SAPLING.get()), BiomeFilter.biome()));
+	public static final Holder<PlacedFeature> PLACED_MANGROVE_TREE = register("tree/mangrove_tree", TFConfiguredFeatures.MANGROVE_TREE, List.of(PlacementUtils.countExtra(3, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(6), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, AvoidLandmarkModifier.checkSurface(), PlacementUtils.filteredByBlockSurvival(TFBlocks.MANGROVE_SAPLING.get()), BiomeFilter.biome()));
 	public static final Holder<PlacedFeature> PLACED_TWILIGHT_OAK_TREE = register("tree/twilight_oak_tree", TFConfiguredFeatures.TWILIGHT_OAK_TREE, tfTreeCheckArea(PlacementUtils.countExtra(1, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState()));
 	public static final Holder<PlacedFeature> PLACED_FOREST_CANOPY_OAK_TREE = register("tree/forest_canopy_oak_tree", TFConfiguredFeatures.FOREST_CANOPY_OAK_TREE, tfTreeCheckArea(PlacementUtils.countExtra(7, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState()));
 	public static final Holder<PlacedFeature> PLACED_SAVANNAH_OAK_TREE = register("tree/savannah_oak_tree", TFConfiguredFeatures.TWILIGHT_OAK_TREE, tfTreeCheckArea(PlacementUtils.countExtra(1, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState()));
 	public static final Holder<PlacedFeature> PLACED_SAVANNAH_CANOPY_OAK_TREE = register("tree/savannah_canopy_oak_tree", TFConfiguredFeatures.SAVANNAH_CANOPY_OAK_TREE, tfTreeCheckArea(PlacementUtils.countExtra(0, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState()));
 	public static final Holder<PlacedFeature> PLACED_SWAMPY_OAK_TREE = register("tree/swampy_oak_tree", TFConfiguredFeatures.SWAMPY_OAK_TREE, tfTreeCheckArea(PlacementUtils.countExtra(4, 0.1F, 1), TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState()));
-	public static final Holder<PlacedFeature> PLACED_DARKWOOD_TREE = register("tree/darkwood_tree", TFConfiguredFeatures.DARKWOOD_TREE, List.of(PlacementUtils.countExtra(5, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, new OutOfStructureModifier(true, false, 16), PlacementUtils.filteredByBlockSurvival(TFBlocks.DARKWOOD_SAPLING.get()), BiomeFilter.biome()));
+	public static final Holder<PlacedFeature> PLACED_DARKWOOD_TREE = register("tree/darkwood_tree", TFConfiguredFeatures.DARKWOOD_TREE, List.of(PlacementUtils.countExtra(5, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, new AvoidLandmarkModifier(true, false, 16), PlacementUtils.filteredByBlockSurvival(TFBlocks.DARKWOOD_SAPLING.get()), BiomeFilter.biome()));
 	public static final Holder<PlacedFeature> PLACED_SNOWY_SPRUCE_TREE = register("tree/snowy_spruce", TFConfiguredFeatures.SNOWY_SPRUCE_TREE, tfTreeCheckArea(Blocks.SPRUCE_SAPLING.defaultBlockState()));
-	public static final Holder<PlacedFeature> PLACED_HOLLOW_OAK_TREE = register("tree/hollow_oak", TFConfiguredFeatures.HOLLOW_TREE, List.of(SurfaceWaterDepthFilter.forMaxDepth(0), RarityFilter.onAverageOnceEvery(35), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, ChunkCenterModifier.center(), new OutOfStructureModifier(true, false, 32), PlacementUtils.filteredByBlockSurvival(TFBlocks.HOLLOW_OAK_SAPLING.get()), BiomeFilter.biome()));
+	public static final Holder<PlacedFeature> PLACED_HOLLOW_OAK_TREE = register("tree/hollow_oak", TFConfiguredFeatures.HOLLOW_TREE, List.of(SurfaceWaterDepthFilter.forMaxDepth(0), RarityFilter.onAverageOnceEvery(35), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, ChunkCenterModifier.center(), new AvoidLandmarkModifier(true, false, 32), PlacementUtils.filteredByBlockSurvival(TFBlocks.HOLLOW_OAK_SAPLING.get()), BiomeFilter.biome()));
 
 	public static final Holder<PlacedFeature> PLACED_CANOPY_TREES = register("tree/selector/canopy_trees", TFConfiguredFeatures.CANOPY_TREES, tfTreeCheckArea(TFBlocks.CANOPY_SAPLING.get().defaultBlockState()));
 	public static final Holder<PlacedFeature> PLACED_DENSE_CANOPY_TREES = register("tree/selector/dense_canopy_trees", TFConfiguredFeatures.DENSE_CANOPY_TREES, tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), TFBlocks.CANOPY_SAPLING.get().defaultBlockState()));
@@ -115,7 +114,7 @@ public class TFPlacedFeatures {
 	public static final Holder<PlacedFeature> PLACED_DARK_FOREST_TREES = register("tree/selector/dark_forest_trees", TFConfiguredFeatures.DARK_FOREST_TREES, tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), TFBlocks.DARKWOOD_SAPLING.get().defaultBlockState(), false));
 	public static final Holder<PlacedFeature> PLACED_HIGHLANDS_TREES = register("tree/selector/highlands_trees", TFConfiguredFeatures.HIGHLANDS_TREES, tfTreeCheckArea(PlacementUtils.countExtra(3, 0.1F, 1), Blocks.SPRUCE_SAPLING.defaultBlockState()));
 	public static final Holder<PlacedFeature> PLACED_ENCHANTED_FOREST_TREES = register("tree/selector/enchanted_forest_trees", TFConfiguredFeatures.ENCHANTED_FOREST_TREES, tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), TFBlocks.RAINBOW_OAK_SAPLING.get().defaultBlockState()));
-	public static final Holder<PlacedFeature> PLACED_SNOWY_FOREST_TREES = register("tree/selector/snowy_forest_trees", TFConfiguredFeatures.SNOWY_FOREST_TREES, List.of(PlacementUtils.countExtra(10, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureModifier.checkSurface(), EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.not(BlockPredicate.matchesBlocks(Blocks.POWDER_SNOW)), 8), BlockPredicateFilter.forPredicate(TreePlacements.SNOW_TREE_PREDICATE), BiomeFilter.biome()));
+	public static final Holder<PlacedFeature> PLACED_SNOWY_FOREST_TREES = register("tree/selector/snowy_forest_trees", TFConfiguredFeatures.SNOWY_FOREST_TREES, List.of(PlacementUtils.countExtra(10, 0.1F, 1), InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, AvoidLandmarkModifier.checkSurface(), EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.not(BlockPredicate.matchesBlocks(Blocks.POWDER_SNOW)), 8), BlockPredicateFilter.forPredicate(TreePlacements.SNOW_TREE_PREDICATE), BiomeFilter.biome()));
 	public static final Holder<PlacedFeature> PLACED_VANILLA_TF_TREES = register("tree/selector/vanilla_trees", TFConfiguredFeatures.VANILLA_TF_TREES, tfTreeCheckArea(TFBlocks.TWILIGHT_OAK_SAPLING.get().defaultBlockState()));
 	public static final Holder<PlacedFeature> PLACED_VANILLA_TF_BIG_MUSH = register("tree/selector/vanilla_mushrooms", TFConfiguredFeatures.VANILLA_TF_BIG_MUSH, tfTreeCheckArea(TFBlocks.CANOPY_SAPLING.get().defaultBlockState()));
 
@@ -123,7 +122,7 @@ public class TFPlacedFeatures {
 	public static final Holder<PlacedFeature> PLACED_CANOPY_MUSHROOMS_DENSE = register("mushroom/canopy_mushrooms_dense", TFConfiguredFeatures.CANOPY_MUSHROOMS_DENSE, tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), TFBlocks.CANOPY_SAPLING.get().defaultBlockState()));
 
 	private static List<PlacementModifier> tfTreeCheckArea(BlockState sapling) {
-		return List.of(InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureModifier.checkSurface(), PlacementUtils.filteredByBlockSurvival(sapling.getBlock()), BiomeFilter.biome());
+		return List.of(InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, AvoidLandmarkModifier.checkSurface(), PlacementUtils.filteredByBlockSurvival(sapling.getBlock()), BiomeFilter.biome());
 	}
 
 	private static List<PlacementModifier> tfTreeCheckArea(PlacementModifier count, BlockState sapling) {
@@ -132,7 +131,7 @@ public class TFPlacedFeatures {
 
 	private static List<PlacementModifier> tfTreeCheckArea(PlacementModifier count, BlockState sapling, boolean checkSurvival) {
 		ImmutableList.Builder<PlacementModifier> list = ImmutableList.builder();
-		list.add(count, InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, OutOfStructureModifier.checkSurface());
+		list.add(count, InSquarePlacement.spread(), SurfaceWaterDepthFilter.forMaxDepth(0), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, AvoidLandmarkModifier.checkSurface());
 		if (checkSurvival) {
 			list.add(PlacementUtils.filteredByBlockSurvival(sapling.getBlock()));
 		}
@@ -140,19 +139,19 @@ public class TFPlacedFeatures {
 		return list.build();
 	}
 
-	private static ImmutableList.Builder<PlacementModifier> tfFeatureCheckArea(OutOfStructureModifier filter, int rarity) {
+	private static ImmutableList.Builder<PlacementModifier> tfFeatureCheckArea(AvoidLandmarkModifier filter, int rarity) {
 		return ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, filter, BiomeFilter.biome());
 	}
 
-	private static ImmutableList.Builder<PlacementModifier> tfFeatureCheckArea(OutOfStructureModifier filter, int rarity, PlacementModifier... extra) {
+	private static ImmutableList.Builder<PlacementModifier> tfFeatureCheckArea(AvoidLandmarkModifier filter, int rarity, PlacementModifier... extra) {
 		return ImmutableList.<PlacementModifier>builder().add(extra).add(filter, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
 	}
 
-	private static ImmutableList.Builder<PlacementModifier> hollowLog(OutOfStructureModifier filter, int rarity) {
+	private static ImmutableList.Builder<PlacementModifier> hollowLog(AvoidLandmarkModifier filter, int rarity) {
 		return ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, filter);
 	}
 
-	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<PlacedFeature> register(String name, Holder<? extends ConfiguredFeature<?, ?>> feature, List<PlacementModifier> placements) {
+	public static Holder<PlacedFeature> register(String name, Holder<? extends ConfiguredFeature<?, ?>> feature, List<PlacementModifier> placements) {
 		return BuiltinRegistries.registerExact(BuiltinRegistries.PLACED_FEATURE, TwilightForestMod.prefix(name).toString(), new PlacedFeature(Holder.hackyErase(feature), List.copyOf(placements)));
 	}
 

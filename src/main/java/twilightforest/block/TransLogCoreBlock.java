@@ -28,7 +28,6 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
 	/**
 	 * The tree of transformation transforms the biome in the area near it into the enchanted forest biome.
-	 * TODO: also change entities
 	 */
 	@Override
 	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {

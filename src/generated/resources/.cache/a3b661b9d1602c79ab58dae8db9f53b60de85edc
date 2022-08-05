@@ -1,4 +1,4 @@
-// 1.19	2022-06-30T22:02:17.9346114	Twilight Forest Item Tags
+// 1.19.1	2022-08-01T01:05:20.5106469	Twilight Forest Item Tags
 3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/items/charm.json
 28506418ae14efe13cfbe34765fa39ba5d6e03e7 data/curios/tags/items/head.json
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/items/chests/wooden.json
@@ -9,6 +9,7 @@ ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/items/chests/wooden.jso
 211134157771c86a72a0c5a1985c2b05da55729b data/forge/tags/items/fence_gates/wooden.json
 7cd3b2411fa5446314de9b697ced80544311ae21 data/forge/tags/items/gems.json
 59f0dea7ea969cac60bf1ef1576b47003387759e data/forge/tags/items/gems/carminite.json
+2cde752e787c2b7f52cdf813f13bf14697aad5c0 data/forge/tags/items/heads.json
 6134f84d115da289273e5d022184f4ecb976af76 data/forge/tags/items/ingots.json
 c4ca6360cc73d65fd4a4a4c6cf7de2143124ccbf data/forge/tags/items/ingots/fiery.json
 bed43612fb08f85dd3dc7dbc5a4a871f7440b9d7 data/forge/tags/items/ingots/ironwood.json
@@ -45,7 +46,7 @@ f3de4b0d6d2929c8fab124e75ff6269ca7642aa7 data/minecraft/tags/items/wooden_stairs
 8522d5d06fec7c30601264eb04aebaa58886a948 data/minecraft/tags/items/wooden_trapdoors.json
 b365ad6615ef9b05f43067637b8c869c06150e9e data/twilightforest/tags/items/arctic_fur.json
 03701e27c1ba9819ac4dc5865a2bd2ab3be6a7be data/twilightforest/tags/items/banned_uncraftables.json
-f08bac4a14916e2327dde432a20a7abd9d56c3b3 data/twilightforest/tags/items/banned_uncrafting_ingredients.json
+56270443a1fd793325c562a083f2166dcc07d426 data/twilightforest/tags/items/banned_uncrafting_ingredients.json
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/items/canopy_logs.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/items/darkwood_logs.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/twilightforest/tags/items/fences.json

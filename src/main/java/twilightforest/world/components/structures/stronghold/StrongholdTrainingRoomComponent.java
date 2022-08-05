@@ -84,6 +84,6 @@ public class StrongholdTrainingRoomComponent extends StructureTFStrongholdCompon
 		this.setBlockStateRotated(world, Blocks.BIRCH_PLANKS.defaultBlockState(), 6, 2, 6, rotation, sbb);
 		this.setBlockStateRotated(world, Blocks.OAK_FENCE.defaultBlockState(), 5, 2, 6, rotation, sbb);
 		this.setBlockStateRotated(world, Blocks.OAK_FENCE.defaultBlockState(), 7, 2, 6, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.PUMPKIN.defaultBlockState()/*FIXME .with(CarvedPumpkinBlock.FACING, getStructureRelativeRotation(rotation))*/, 6, 3, 6, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.CARVED_PUMPKIN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, getStructureRelativeRotation(rotation)), 6, 3, 6, rotation, sbb);
 	}
 }

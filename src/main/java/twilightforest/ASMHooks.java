@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
@@ -210,4 +211,15 @@ public class ASMHooks {
 		return o;
 	}
 
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.item.WrittenBookItem#getName(net.minecraft.world.item.ItemStack)}<br>
+	 * [BEFORE ARETURN]
+	 */
+	@OnlyIn(Dist.CLIENT)
+	public static Component book(Component component, CompoundTag tag) {
+		if (tag.contains(TwilightForestMod.ID + ":book")) {
+			return Component.translatable(component.getString());
+		} else return component;
+	}
 }

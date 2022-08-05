@@ -252,7 +252,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 					int level = entry.getValue();
 
 					// only apply enchants that are better than what we already have
-					if (EnchantmentHelper.getItemEnchantmentLevel(ench, result) < level) {
+					if (EnchantmentHelper.getTagEnchantmentLevel(ench, result) < level) {
 						result.enchant(ench, level);
 					}
 				}

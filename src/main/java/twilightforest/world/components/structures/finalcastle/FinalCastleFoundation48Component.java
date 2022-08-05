@@ -24,7 +24,6 @@ public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCToF48.get(), nbt);
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
 	public FinalCastleFoundation48Component(TFLandmark feature, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCToF48.get(), feature, i, x, y, z);
 

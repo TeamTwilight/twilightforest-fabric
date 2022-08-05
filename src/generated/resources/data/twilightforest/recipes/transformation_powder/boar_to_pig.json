@@ -1,5 +1,7 @@
 {
   "type": "twilightforest:transformation_powder",
   "from": "twilightforest:boar",
+  "reversible": true,
   "to": "minecraft:pig"
 }
+

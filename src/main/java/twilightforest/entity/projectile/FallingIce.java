@@ -1,124 +1,278 @@
 package twilightforest.entity.projectile;
 
+import net.minecraft.CrashReportCategory;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.DirectionalPlaceContext;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ConcretePowderBlock;
+import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.AlphaYeti;
+import twilightforest.init.TFEntities;
 import twilightforest.init.TFParticleType;
 
-import java.util.List;
+import java.util.Objects;
 
-public class FallingIce extends FallingBlockEntity {
+//modified version of FallingBlockEntity, edits noted
+public class FallingIce extends Entity {
 
-	private static final int HANG_TIME = 100;
+	private int hangTime = 100; //TF: add hangTime. This defines how long the block should exist before falling.
+	private BlockState blockState = Blocks.PACKED_ICE.defaultBlockState(); //TF: change default block to packed ice
+	public int time;
+	protected int fallDamageMax = 100; //TF: change max damage to 100 damage from 40
+	public float[] damagePerDifficulty = { 1.0F, 1.0F, 3.0F, 6.0F }; //TF: change the damage done per block fallen based on difficulty
+	@Nullable
+	public CompoundTag blockData;
+	protected static final EntityDataAccessor<BlockPos> DATA_START_POS = SynchedEntityData.defineId(FallingIce.class, EntityDataSerializers.BLOCK_POS);
 
-	public FallingIce(EntityType<? extends FallingIce> type, Level world) {
-		super(type, world); // set falling tile on client to prevent crash
+	public FallingIce(EntityType<? extends FallingIce> type, Level level) {
+		super(type, level);
 	}
 
-	public FallingIce(Level world, int x, int y, int z) {
-		super(world, x, y, z, Blocks.PACKED_ICE.defaultBlockState());
-		this.fallDamagePerDistance = 10.0F;
-		this.fallDamageMax = 30;
-		this.hurtEntities = true;
+	public FallingIce(Level level, double x, double y, double z, BlockState state, int hangTime) {
+		this(TFEntities.FALLING_ICE.get(), level);
+		this.hangTime = hangTime;
+		this.blockState = state;
+		this.blocksBuilding = true;
+		this.setPos(x, y, z);
+		this.setDeltaMovement(Vec3.ZERO);
+		this.xo = x;
+		this.yo = y;
+		this.zo = z;
+		this.setStartPos(this.blockPosition());
+	}
+
+	public void setStartPos(BlockPos pos) {
+		this.entityData.set(DATA_START_POS, pos);
+	}
+
+	public BlockPos getStartPos() {
+		return this.entityData.get(DATA_START_POS);
+	}
+
+	@Override
+	public boolean isAttackable() {
+		return false;
+	}
+
+	@Override
+	protected Entity.MovementEmission getMovementEmission() {
+		return Entity.MovementEmission.NONE;
+	}
+
+	@Override
+	protected void defineSynchedData() {
+		this.entityData.define(DATA_START_POS, BlockPos.ZERO);
+	}
+
+	@Override
+	public boolean isPickable() {
+		return !this.isRemoved();
 	}
 
 	@Override
 	public void tick() {
-		if (this.time > HANG_TIME) {
-			this.setNoGravity(true);
-		}
-
-		super.tick();
-
-		// kill other nearby blocks if they are not as old as this one
-		if (!this.getLevel().isClientSide()) {
-			List<FallingIce> nearby = this.getLevel().getEntitiesOfClass(FallingIce.class, this.getBoundingBox());
-
-			for (FallingIce entity : nearby) {
-				if (entity != this) {
-					if (entity.time < this.time) {
-						entity.discard();
-					}
-				}
+		if (this.blockState.isAir()) {
+			this.discard();
+		} else {
+			this.time++;
+			this.setNoGravity(this.time < this.hangTime); //TF: if we haven't passed our hanging time, keep in the air
+			if (!this.isNoGravity()) {
+				this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.04D, 0.0D));
 			}
 
-			this.destroyIceInAABB(this.getBoundingBox().inflate(0.5, 0, 0.5));
-		} else {
-			this.makeTrail();
+			this.move(MoverType.SELF, this.getDeltaMovement());
+			if (!this.getLevel().isClientSide()) {
+				BlockPos blockpos = this.blockPosition();
+				boolean flag = this.blockState.getBlock() instanceof ConcretePowderBlock;
+				boolean flag1 = flag && this.blockState.canBeHydrated(this.level, blockpos, this.level.getFluidState(blockpos), blockpos);
+				double d0 = this.getDeltaMovement().lengthSqr();
+				if (flag && d0 > 1.0D) {
+					BlockHitResult blockhitresult = this.level.clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
+					if (blockhitresult.getType() != HitResult.Type.MISS && this.blockState.canBeHydrated(this.getLevel(), blockpos, this.getLevel().getFluidState(blockhitresult.getBlockPos()), blockhitresult.getBlockPos())) {
+						blockpos = blockhitresult.getBlockPos();
+						flag1 = true;
+					}
+				}
+
+				if (!this.onGround && !flag1) {
+					if (!this.getLevel().isClientSide() && (this.time > 100 && (blockpos.getY() <= this.getLevel().getMinBuildHeight() || blockpos.getY() > this.getLevel().getMaxBuildHeight()) || this.time > 1000)) {
+						this.discard();
+					}
+				} else {
+					BlockState blockstate = this.getLevel().getBlockState(blockpos);
+					this.setDeltaMovement(this.getDeltaMovement().multiply(0.7D, -0.5D, 0.7D));
+					if (!blockstate.is(Blocks.MOVING_PISTON)) {
+						boolean flag2 = blockstate.canBeReplaced(new DirectionalPlaceContext(this.getLevel(), blockpos, Direction.DOWN, ItemStack.EMPTY, Direction.UP));
+						boolean flag3 = FallingBlock.isFree(this.getLevel().getBlockState(blockpos.below())) && (!flag || !flag1);
+						boolean flag4 = this.blockState.canSurvive(this.getLevel(), blockpos) && !flag3;
+						if (flag2 && flag4) {
+							if (this.blockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.getLevel().getFluidState(blockpos).getType() == Fluids.WATER) {
+								this.blockState = this.blockState.setValue(BlockStateProperties.WATERLOGGED, true);
+							}
+
+							if (this.getLevel().setBlock(blockpos, this.blockState, 3)) {
+								((ServerLevel) this.getLevel()).getChunkSource().chunkMap.broadcast(this, new ClientboundBlockUpdatePacket(blockpos, this.getLevel().getBlockState(blockpos)));
+								this.discard();
+
+								if (this.blockData != null && this.blockState.hasBlockEntity()) {
+									BlockEntity blockentity = this.getLevel().getBlockEntity(blockpos);
+									if (blockentity != null) {
+										CompoundTag compoundtag = blockentity.saveWithoutMetadata();
+
+										for (String s : this.blockData.getAllKeys()) {
+											compoundtag.put(s, Objects.requireNonNull(this.blockData.get(s)).copy());
+										}
+
+										try {
+											blockentity.load(compoundtag);
+										} catch (Exception exception) {
+											TwilightForestMod.LOGGER.error("Failed to load block entity from falling block", exception);
+										}
+
+										blockentity.setChanged();
+									}
+								}
+							}
+						} else {
+							this.discard();
+						}
+					}
+				}
+			} else {
+				//TF: add ice trail
+				this.makeTrail();
+			}
+
+			this.setDeltaMovement(this.getDeltaMovement().scale(0.98D));
 		}
 	}
 
 	private void makeTrail() {
-		for (int i = 0; i < 2; i++) {
-			double dx = this.getX() + 2F * (this.random.nextFloat() - this.random.nextFloat());
-			double dy = this.getY() - 3F + 3F * (this.random.nextFloat() - this.random.nextFloat());
-			double dz = this.getZ() + 2F * (this.random.nextFloat() - this.random.nextFloat());
+		for (int i = 0; i < 3; i++) {
+			double dx = this.getX() + 1.5F * (this.random.nextFloat() - this.random.nextFloat());
+			double dy = this.getY() - 4.0F * (this.random.nextFloat() - this.random.nextFloat()) - 3.0F;
+			double dz = this.getZ() + 1.5F * (this.random.nextFloat() - this.random.nextFloat());
 
-			this.getLevel().addParticle(TFParticleType.SNOW_WARNING.get(), dx, dy, dz, 0, -1, 0);
+			this.getLevel().addAlwaysVisibleParticle(TFParticleType.EXTENDED_SNOW_WARNING.get(), dx, dy, dz, 0.0D, -1.0D, 0.0D);
 		}
 	}
 
-	// [VanillaCopy] Like super, but without anvil cases and with extra stuff
+	//TF: always hurt entities, remove anvil and dripstone crap, make sure our target isn't the alpha yeti, and scale damage based on difficulty
 	@Override
-	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
-		if (this.hurtEntities) {
-			int i = Mth.ceil(distance - 1.0F);
+	public boolean causeFallDamage(float dist, float multiplier, DamageSource source) {
 
-			if (i > 0) {
-				List<Entity> list = this.getLevel().getEntities(this, this.getBoundingBox());
-				DamageSource damagesource = DamageSource.FALLING_BLOCK;
-
-				for (Entity entity : list) {
-					if (!(entity instanceof AlphaYeti)) {
-						entity.hurt(damagesource, Math.min(Mth.floor(i * this.fallDamagePerDistance), this.fallDamageMax));
-					}
+		int realDist = Mth.ceil(dist - 1.0F);
+		if (realDist >= 0) {
+			float dmg = (float) Math.min(Mth.floor((float) realDist * this.damagePerDifficulty[this.getLevel().getDifficulty().getId()]), this.fallDamageMax);
+			this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0F, 0.0F, 1.0F), EntitySelector.NO_SPECTATORS).forEach((entity) -> {
+				if (!(entity instanceof AlphaYeti)) {
+					entity.hurt(DamageSource.FALLING_BLOCK.bypassEnchantments(), dmg);
 				}
-			}
+			});
 		}
 
-		BlockState stateId = Blocks.PACKED_ICE.defaultBlockState();
+		//TF: Shattering particles and sound
 		for (int i = 0; i < 200; i++) {
-			double dx = this.getX() + 3F * (this.random.nextFloat() - this.random.nextFloat());
-			double dy = this.getY() + 2 + 3F * (this.random.nextFloat() - this.random.nextFloat());
-			double dz = this.getZ() + 3F * (this.random.nextFloat() - this.random.nextFloat());
+			double dx = this.getX() + 3.0F * (this.random.nextFloat() - this.random.nextFloat());
+			double dy = this.getY() + 5.0F * (this.random.nextFloat() - this.random.nextFloat());
+			double dz = this.getZ() + 3.0F * (this.random.nextFloat() - this.random.nextFloat());
 
-			this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, stateId), dx, dy, dz, 0, 0, 0);
+			this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.blockState), dx, dy, dz, 0, 0, 0);
 		}
 
-		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.defaultBlockState()/*, this.getLevel(), blockPosition(), null*/).getBreakSound(), 3F, 0.5F);
+		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.defaultBlockState(), this.getLevel(), blockPosition(), null).getBreakSound(), 3.0F, 0.5F);
 		return false;
 	}
 
-	private void destroyIceInAABB(AABB aabb) {
-		int minX = Mth.floor(aabb.minX);
-		int minY = Mth.floor(aabb.minY);
-		int minZ = Mth.floor(aabb.minZ);
-		int maxX = Mth.floor(aabb.maxX);
-		int maxY = Mth.floor(aabb.maxY);
-		int maxZ = Mth.floor(aabb.maxZ);
-
-		for (int dx = minX; dx <= maxX; ++dx) {
-			for (int dy = minY; dy <= maxY; ++dy) {
-				for (int dz = minZ; dz <= maxZ; ++dz) {
-					BlockPos pos = new BlockPos(dx, dy, dz);
-					Block block = this.getLevel().getBlockState(pos).getBlock();
-
-					if (block == Blocks.ICE || block == Blocks.PACKED_ICE || block == Blocks.STONE) {
-						this.getLevel().destroyBlock(pos, false);
-					}
-				}
-			}
+	@Override
+	protected void addAdditionalSaveData(CompoundTag tag) {
+		tag.put("BlockState", NbtUtils.writeBlockState(this.blockState));
+		tag.putInt("Time", this.time);
+		if (this.blockData != null) {
+			tag.put("BlockEntityData", this.blockData);
 		}
+
+	}
+
+	@Override
+	protected void readAdditionalSaveData(CompoundTag tag) {
+		this.blockState = NbtUtils.readBlockState(tag.getCompound("BlockState"));
+		this.time = tag.getInt("Time");
+		if (tag.contains("BlockEntityData", 10)) {
+			this.blockData = tag.getCompound("BlockEntityData");
+		}
+
+		if (this.blockState.isAir()) {
+			this.blockState = Blocks.PACKED_ICE.defaultBlockState();
+		}
+
+	}
+
+	@Override
+	public boolean displayFireAnimation() {
+		return false;
+	}
+
+	@Override
+	public void fillCrashReportCategory(CrashReportCategory category) {
+		super.fillCrashReportCategory(category);
+		category.setDetail("Imitating BlockState", this.blockState.toString());
+	}
+
+	public BlockState getBlockState() {
+		return this.blockState;
+	}
+
+	@Override
+	public boolean onlyOpCanSetNbt() {
+		return true;
+	}
+
+	@Override
+	public Packet<?> getAddEntityPacket() {
+		return new ClientboundAddEntityPacket(this, Block.getId(this.getBlockState()));
+	}
+
+	@Override
+	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+		super.recreateFromPacket(packet);
+		this.blockState = Block.stateById(packet.getData());
+		this.blocksBuilding = true;
+		double d0 = packet.getX();
+		double d1 = packet.getY();
+		double d2 = packet.getZ();
+		this.setPos(d0, d1, d2);
+		this.setStartPos(this.blockPosition());
 	}
 }

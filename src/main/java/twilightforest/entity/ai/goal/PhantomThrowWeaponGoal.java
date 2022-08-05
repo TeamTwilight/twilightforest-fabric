@@ -4,6 +4,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.entity.boss.KnightPhantom;
 import twilightforest.entity.projectile.ThrownWep;
 import twilightforest.init.TFEntities;
@@ -47,6 +48,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 		double tz = targetedEntity.getZ() - sz;
 
 		this.boss.playSound(TFSounds.PHANTOM_THROW_AXE.get(), 1.0F, (this.boss.getRandom().nextFloat() - this.boss.getRandom().nextFloat()) * 0.2F + 0.4F);
+		this.boss.gameEvent(GameEvent.PROJECTILE_SHOOT);
 		ThrownWep projectile = new ThrownWep(TFEntities.THROWN_WEP.get(), this.boss.getLevel(), this.boss).setItem(new ItemStack(TFItems.KNIGHTMETAL_AXE.get()));
 
 		float speed = 0.75F;
@@ -60,6 +62,7 @@ public class PhantomThrowWeaponGoal extends Goal {
 
 	private void launchPicks() {
 		this.boss.playSound(TFSounds.PHANTOM_THROW_PICK.get(), 1.0F, (boss.getRandom().nextFloat() - boss.getRandom().nextFloat()) * 0.2F + 0.4F);
+		this.boss.gameEvent(GameEvent.PROJECTILE_SHOOT);
 
 		for (int i = 0; i < 8; i++) {
 			float throwAngle = i * Mth.PI / 4F;

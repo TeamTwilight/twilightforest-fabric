@@ -12,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
+import twilightforest.network.UpdateTFMultipartPacket;
 
 import java.util.Objects;
 
@@ -91,8 +92,18 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 	}
 
 	@Override
-	public EntityDimensions getDimensions(Pose poseIn) {
-		return realSize;
+	public boolean isCurrentlyGlowing() {
+		return this.getParent().isCurrentlyGlowing();
+	}
+
+	@Override
+	public boolean isInvisible() {
+		return this.getParent().isInvisible();
+	}
+
+	@Override
+	public EntityDimensions getDimensions(Pose pose) {
+		return this.realSize;
 	}
 
 	@Override
@@ -105,25 +116,30 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 		super.setId(id + 1);
 	}
 
-	public void writeData(FriendlyByteBuf buffer) {
-		buffer.writeDouble(this.getX());
-		buffer.writeDouble(this.getY());
-		buffer.writeDouble(this.getZ());
-		buffer.writeFloat(this.getYRot());
-		buffer.writeFloat(this.getXRot());
-		buffer.writeFloat(this.dimensions.width);
-		buffer.writeFloat(this.dimensions.height);
-		buffer.writeBoolean(this.dimensions.fixed);
+	public UpdateTFMultipartPacket.PartDataHolder writeData() {
+		return new UpdateTFMultipartPacket.PartDataHolder(
+				this.getX(),
+				this.getY(),
+				this.getZ(),
+				this.getYRot(),
+				this.getXRot(),
+				this.dimensions.width,
+				this.dimensions.height,
+				this.dimensions.fixed,
+				getEntityData().isDirty(),
+				getEntityData().isDirty() ? getEntityData().packDirty() : null);
 
 	}
 
-	public void readData(FriendlyByteBuf buffer) {
-		Vec3 vec = new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
-		this.setPositionAndRotationDirect(vec.x(), vec.y(), vec.z(), buffer.readFloat(), buffer.readFloat(), 3);
-		final float w = buffer.readFloat();
-		final float h = buffer.readFloat();
-		this.setSize(buffer.readBoolean() ? EntityDimensions.fixed(w, h) : EntityDimensions.scalable(w, h));
+	public void readData(UpdateTFMultipartPacket.PartDataHolder data) {
+		Vec3 vec = new Vec3(data.x(), data.y(), data.z());
+		this.setPositionAndRotationDirect(vec.x(), vec.y(), vec.z(), data.yRot(), data.xRot(), 3);
+		final float w = data.width();
+		final float h = data.height();
+		this.setSize(data.fixed() ? EntityDimensions.fixed(w, h) : EntityDimensions.scalable(w, h));
 		this.refreshDimensions();
+		if (data.dirty())
+			getEntityData().assignValues(data.data());
 	}
 
 	public static void assignPartIDs(Entity parent) {

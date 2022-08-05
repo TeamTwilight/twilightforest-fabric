@@ -33,6 +33,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFSounds;
@@ -311,6 +312,7 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 
 	private void setChargingAtPlayer(boolean flag) {
 		this.entityData.set(FLAG_CHARGING, flag);
+		this.gameEvent(GameEvent.ENTITY_INTERACT);
 		if (!this.getLevel().isClientSide()) {
 			if (flag) {
 				if (!getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {

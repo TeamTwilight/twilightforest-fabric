@@ -35,7 +35,7 @@ import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.IntPair;
+import twilightforest.util.Vec2i;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.warp.*;
@@ -54,6 +54,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
 // TODO override getBaseHeight and getBaseColumn for our advanced structure terraforming
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "SuspiciousNameCombination", "deprecation"})
 public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public static final Codec<ChunkGeneratorTwilight> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
@@ -61,7 +62,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			RegistryCodecs.homogeneousList(Registry.STRUCTURE_SET_REGISTRY).fieldOf("structures_placements").forGetter(o -> o.structureOverrides),
 			NoiseGeneratorSettings.CODEC.fieldOf("noise_generation_settings").forGetter(o -> o.noiseGeneratorSettings),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
-			Codec.BOOL.fieldOf("monster_spawns_below_sealevel").forGetter(o -> o.monsterSpawnsBelowSeaLevel),
 			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight),
 			Codec.unboundedMap(ResourceKey.codec(Registry.BIOME_REGISTRY), TFLandmark.CODEC.listOf().xmap(ImmutableSet::copyOf, ImmutableList::copyOf)).fieldOf("landmark_placement_allowed_biomes").forGetter(o -> o.biomeLandmarkOverrides)
 	).apply(instance, ChunkGeneratorTwilight::new));
@@ -70,7 +70,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	private final Holder<NoiseGeneratorSettings> noiseGeneratorSettings;
 	private final boolean genDarkForestCanopy;
-	private final boolean monsterSpawnsBelowSeaLevel;
 	private final Optional<Integer> darkForestCanopyHeight;
 
 	private final BlockState defaultBlock;
@@ -82,14 +81,13 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, HolderSet<StructureSet> structureOverrides, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, boolean monsterSpawnsBelowSeaLevel, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Integer> darkForestCanopyHeight, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, HolderSet<StructureSet> structureOverrides, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, Optional<Integer> darkForestCanopyHeight, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
 		super(structures, Optional.of(structureOverrides), delegate);
 		this.structureOverrides = structureOverrides;
 
 		this.biomeLandmarkOverrides = biomeLandmarkOverrides;
 		this.noiseGeneratorSettings = noiseGenSettings;
 		this.genDarkForestCanopy = genDarkForestCanopy;
-		this.monsterSpawnsBelowSeaLevel = monsterSpawnsBelowSeaLevel;
 		this.darkForestCanopyHeight = darkForestCanopyHeight;
 
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen) {
@@ -168,7 +166,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	//This logic only seems to concern very specific features, but it does need the Warp
-	protected OptionalInt iterateNoiseColumn(RandomState random, int x, int z, BlockState[] states, Predicate<BlockState> predicate, int min, int max) {
+	protected OptionalInt iterateNoiseColumn(RandomState random, int x, int z, BlockState[] states, @Nullable Predicate<BlockState> predicate, int min, int max) {
 		NoiseSettings settings = this.noiseGeneratorSettings.value().noiseSettings();
 		int cellWidth = settings.getCellWidth();
 		int cellHeight = settings.getCellHeight();
@@ -322,12 +320,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 									section.setBlockState(mincellX, mincellY, mincellZ, state, false);
 									oceanfloor.update(mincellX, minheight, mincellZ, state);
 									surface.update(mincellX, minheight, mincellZ, state);
-
-									//Probably not necessary?
-//									if (emptyAquifier.shouldScheduleFluidUpdate() && !state.getFluidState().isEmpty()) {
-//										mutable.set(minwidthX, minheight, minwidthZ);
-//										access.markPosForPostprocessing(mutable);
-//									}
 								}
 							}
 						}
@@ -372,9 +364,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		super.buildSurface(world, manager, random, chunk);
 
-		//noinspection OptionalIsPresent
-		if (this.darkForestCanopyHeight.isPresent())
-			this.addDarkForestCanopy(world, chunk, this.darkForestCanopyHeight.get());
+		this.darkForestCanopyHeight.ifPresent(integer -> this.addDarkForestCanopy(world, chunk, integer));
 
 		addGlaciers(world, chunk);
 	}
@@ -420,7 +410,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	// TODO Is there a way we can make a beard instead of making hard terrain shapes?
 	protected final void deformTerrainForFeature(WorldGenRegion primer, ChunkAccess chunk) {
-		IntPair featureRelativePos = new IntPair();
+		Vec2i featureRelativePos = new Vec2i();
 		TFLandmark nearFeature = LegacyLandmarkPlacements.getNearestLandmark(primer.getCenter().x, primer.getCenter().z, primer, featureRelativePos);
 
 		//Optional<StructureStart<?>> structureStart = TFGenerationSettings.locateTFStructureInRange(primer.getLevel(), nearFeature, chunk.getPos().getWorldPosition(), nearFeature.size + 1);
@@ -464,7 +454,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			}
 		} else if (nearFeature == TFLandmark.TROLL_CAVE) {
 			// troll cloud, more like
-			this.deformTerrainForTrollCloud2(primer, chunk, nearFeature, relativeFeatureX, relativeFeatureZ);
+			this.deformTerrainForTrollCloud2(primer, chunk, relativeFeatureX, relativeFeatureZ);
 		}
 
 		// done!
@@ -525,8 +515,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		return new BlockPos(old.getX(), y, old.getZ());
 	}
 
-	//TODO: Parameter "nearFeature" is unused. Remove?
-	private void deformTerrainForTrollCloud2(WorldGenRegion primer, ChunkAccess chunkAccess, TFLandmark nearFeature, int hx, int hz) {
+	private void deformTerrainForTrollCloud2(WorldGenRegion primer, ChunkAccess chunkAccess, int hx, int hz) {
 		for (int bx = 0; bx < 4; bx++) {
 			for (int bz = 0; bz < 4; bz++) {
 				int dx = bx * 4 - hx - 2;
@@ -546,7 +535,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 				int num4 = (int) (seed >> 9 & 3L);
 				int num5 = (int) (seed >> 6 & 3L);
 				int num6 = (int) (seed >> 3 & 3L);
-				int num7 = (int) (seed >> 0 & 3L);
+				int num7 = (int) (seed & 3L);
 
 				int dx2 = dx + num0 * 5 - num1 * 4;
 				int dz2 = dz + num2 * 4 - num3 * 5;
@@ -744,7 +733,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 				for (int bx = -1; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
-						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2, null).value();
+						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 256, p.getZ() >> 2, null).value();
 						if (BiomeKeys.DARK_FOREST.location().equals(primer.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome)) || BiomeKeys.DARK_FOREST_CENTER.location().equals(primer.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome))) {
 							thicks[dX + dZ * 5]++;
 							biomeFound = true;
@@ -756,7 +745,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		if (!biomeFound) return;
 
-		IntPair nearCenter = new IntPair();
+		Vec2i nearCenter = new Vec2i();
 		TFLandmark nearFeature = LegacyLandmarkPlacements.getNearestLandmark(primer.getCenter().x, primer.getCenter().z, primer, nearCenter);
 
 		double d = 0.03125D;
@@ -855,7 +844,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 			if (classification != MobCategory.MONSTER)
 				return structure.getSpawnableList(classification);
-			if ((start instanceof TFStructureStart<?> s && s.isConquered()) /*|| legacyData.isConquered()*/)
+			if ((start instanceof TFStructureStart<?> s && s.isConquered()))
 				return null;
 			final int index = getSpawnListIndexAt(start, pos);
 			if (index < 0)
@@ -867,16 +856,11 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	@Override
 	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureManager structureManager, MobCategory mobCategory, BlockPos pos) {
-		if (!this.monsterSpawnsBelowSeaLevel) return super.getMobsAt(biome, structureManager, mobCategory, pos);
-
 		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(structureManager, mobCategory, pos);
 		if (potentialStructureSpawns != null)
 			return WeightedRandomList.create(potentialStructureSpawns);
-		//FIXME forge has StructureSpawnManager commented out, find out if theyre redoing this class or removing it entirely
-//		WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = StructureSpawnManager.getStructureSpawns(structureManager, mobCategory, pos);
-//		if (spawns != null)
-//			return spawns;
-		return mobCategory == MobCategory.MONSTER && pos.getY() >= this.getSeaLevel() ? WeightedRandomList.create() : super.getMobsAt(biome, structureManager, mobCategory, pos);
+
+		return super.getMobsAt(biome, structureManager, mobCategory, pos);
 	}
 
 	public TFLandmark pickLandmarkForChunk(final ChunkPos chunk, final WorldGenLevel world) {

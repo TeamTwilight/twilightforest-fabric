@@ -16,7 +16,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 12.0,
+                "max": 6.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
@@ -32,7 +32,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 12.0,
+                "max": 6.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
@@ -48,7 +48,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 12.0,
+                "max": 6.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
@@ -69,7 +69,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 9.0,
+                "max": 5.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
@@ -85,7 +85,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 12.0,
+                "max": 6.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
@@ -101,7 +101,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 4.0,
+                "max": 2.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
@@ -142,7 +142,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 6.0,
+                "max": 3.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
@@ -157,7 +157,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 8.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
@@ -172,7 +172,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 5.0,
+                "max": 2.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
@@ -201,8 +201,8 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 36.0,
-                "min": 10.0
+                "max": 18.0,
+                "min": 5.0
               },
               "function": "minecraft:set_count"
             }
@@ -211,17 +211,6 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
           "name": "minecraft:blaze_rod"
         },
         {
@@ -243,7 +232,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 8.0,
+                "max": 4.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"

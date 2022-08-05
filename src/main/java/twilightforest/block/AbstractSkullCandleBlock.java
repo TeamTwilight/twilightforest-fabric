@@ -16,14 +16,11 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -31,36 +28,23 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 
-import org.jetbrains.annotations.Nullable;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock implements LightEmissiveBlock, BlockPickInteractionAware {
 
 	private final SkullBlock.Type type;
-	private int candleCount;
-	private int color;
-	@Nullable
-	private GameProfile owner;
 
 	public AbstractSkullCandleBlock(SkullBlock.Type type, Properties properties) {
 		super(properties);
 		this.type = type;
-	}
-
-	public int getColor() {
-		return this.color;
-	}
-
-	public int getCandleCount() {
-		return this.candleCount;
 	}
 
 	public SkullBlock.Type getType() {
@@ -88,7 +72,7 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock im
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SkullCandleBlockEntity(pos, state, this.getColor(), this.getCandleCount());
+		return new SkullCandleBlockEntity(pos, state, 0, 0);
 	}
 
 	//input one of the enum names to convert it into a candle block
@@ -137,40 +121,29 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock im
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-		if (!level.isClientSide() && !player.isCreative() && level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			this.color = sc.candleColor;
-			this.candleCount = sc.candleAmount;
-			this.owner = sc.getOwnerProfile();
-		}
-		super.playerWillDestroy(level, pos, state, player);
-	}
-
-	//TODO at the moment, candles will only drop when mined by a player. This means water or pistons will ONLY drop the skull
-	@Override
-	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity entity, ItemStack stack) {
-		if (!level.isClientSide() && !player.isCreative() && level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && this.candleCount > 0) {
-			//if we have silk touch, assign the candle values to the item and drop it
-			if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0) {
-				ItemStack newStack = new ItemStack(this);
-				ItemEntity itementity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), newStack);
-				CompoundTag tag = new CompoundTag();
-				tag.putInt("CandleColor", this.color);
-				tag.putInt("CandleAmount", this.candleCount);
-				newStack.addTagElement("BlockEntityTag", tag);
-				if (this.owner != null)
-					newStack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), this.owner));
-				itementity.setDefaultPickUpDelay();
-				level.addFreshEntity(itementity);
-				//otherwise lets drop the skull and candles
-			} else {
-				//skull is handled via loot table
-				ItemStack newStack = new ItemStack(candleColorToCandle(CandleColors.colorFromInt(color).getSerializedName()), candleCount);
-				ItemEntity itementity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), newStack);
-				level.addFreshEntity(itementity);
+	@SuppressWarnings("deprecation")
+	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+		List<ItemStack> drops = super.getDrops(state, builder);
+		Optional<ItemStack> skullStack = drops.stream().filter(item -> item.is(Tags.Items.HEADS) && !item.is(this.asItem())).findFirst();
+		if (skullStack.isPresent()) {
+			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+			if (blockEntity instanceof SkullCandleBlockEntity sc) {
+				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
+					ItemStack newStack = new ItemStack(this);
+					CompoundTag tag = new CompoundTag();
+					tag.putInt("CandleColor", sc.candleColor);
+					tag.putInt("CandleAmount", sc.candleAmount);
+					newStack.addTagElement("BlockEntityTag", tag);
+					if (sc.getOwnerProfile() != null) newStack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), sc.getOwnerProfile()));
+					drops.remove(skullStack.get());
+					drops.add(newStack);
+				} else {
+					drops.add(new ItemStack(candleColorToCandle(CandleColors.colorFromInt(sc.candleColor).getSerializedName()), sc.candleAmount));
+				}
 			}
 		}
-		super.playerDestroy(level, player, pos, state, entity, stack);
+
+		return drops;
 	}
 
 	@Override

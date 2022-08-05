@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFSounds;
@@ -70,6 +71,7 @@ public class LichPopMobsGoal extends Goal {
 					this.lich.heal(2.0F);
 					this.lich.swing(InteractionHand.MAIN_HAND);
 					this.lich.setPopCooldown(40);
+					this.lich.gameEvent(GameEvent.ENTITY_DIE);
 					break;
 				}
 			}

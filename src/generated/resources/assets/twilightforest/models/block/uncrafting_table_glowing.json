@@ -1,11 +1,97 @@
 {
-  "parent": "twilightforest:block/util/cube_bottom_double_top_and_sides",
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#bottom"
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#east"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#north"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#south"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#top"
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#west"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "cullface": "east",
+          "emissivity": 15,
+          "texture": "#east2"
+        },
+        "north": {
+          "cullface": "north",
+          "emissivity": 15,
+          "texture": "#north2"
+        },
+        "south": {
+          "cullface": "south",
+          "emissivity": 15,
+          "texture": "#south2"
+        },
+        "up": {
+          "cullface": "up",
+          "emissivity": 15,
+          "texture": "#top2"
+        },
+        "west": {
+          "cullface": "west",
+          "emissivity": 15,
+          "texture": "#west2"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
   "render_type": "minecraft:translucent",
   "textures": {
     "bottom": "minecraft:block/jungle_planks",
-    "glow": "twilightforest:block/uncrafting_glow",
-    "side": "twilightforest:block/uncrafting_side",
-    "sideglow": "twilightforest:block/uncrafting_glow_side",
-    "top": "twilightforest:block/uncrafting_top"
+    "east": "twilightforest:block/uncrafting_side",
+    "east2": "twilightforest:block/uncrafting_glow_side",
+    "north": "twilightforest:block/uncrafting_side",
+    "north2": "twilightforest:block/uncrafting_glow_side",
+    "particle": "#bottom",
+    "south": "twilightforest:block/uncrafting_side",
+    "south2": "twilightforest:block/uncrafting_glow_side",
+    "top": "twilightforest:block/uncrafting_top",
+    "top2": "twilightforest:block/uncrafting_glow",
+    "west": "twilightforest:block/uncrafting_side",
+    "west2": "twilightforest:block/uncrafting_glow_side"
   }
 }

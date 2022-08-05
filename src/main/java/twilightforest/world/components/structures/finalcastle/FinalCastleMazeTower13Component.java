@@ -80,8 +80,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		tagCompound.put("color", NbtUtils.writeBlockState(color));
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	public FinalCastleMazeTower13Component(StructurePieceType piece, TFLandmark feature, RandomSource rand, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
+	public FinalCastleMazeTower13Component(StructurePieceType piece, TFLandmark feature, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
 		super(piece, feature, i, x, y, z);
 		this.setOrientation(direction);
 		this.color = color;
@@ -98,12 +97,12 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add roof
-		TFStructureComponentOld roof = rand.nextBoolean() ? new FinalCastleRoof13ConicalComponent(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()) : new FinalCastleRoof13CrenellatedComponent(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		TFStructureComponentOld roof = rand.nextBoolean() ? new FinalCastleRoof13ConicalComponent(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()) : new FinalCastleRoof13CrenellatedComponent(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 	}
@@ -152,11 +151,10 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 
 		// finally, now that the critical path is built, let's add some other towers for atmosphere and complication
-		this.buildNonCriticalTowers(parent, list, rand);
+		this.buildNonCriticalTowers(list, rand);
 	}
 
-	//TODO: Parameter "parent" is unused. Remove?
-	protected void buildNonCriticalTowers(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
+	protected void buildNonCriticalTowers(StructurePieceAccessor list, RandomSource rand) {
 		// pick a random direction
 		Direction dir = RotationUtil.getRandomFacing(rand);
 		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getOrientation(), dir);
@@ -371,9 +369,9 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		// what color of tower?
 		FinalCastleMazeTower13Component eTower;
 		if (this.color == TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
-			eTower = new FinalCastleEntranceTowerComponent(getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
+			eTower = new FinalCastleEntranceTowerComponent(getFeatureType(), this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 		} else {
-			eTower = new FinalCastleBellTower21Component(getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
+			eTower = new FinalCastleBellTower21Component(getFeatureType(), this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 		}
 
 		BoundingBox largerBB = BoundingBoxUtils.cloneWithAdjustments(eTower.getBoundingBox(), -6, 0, -6, 6, 0, 6);
@@ -481,7 +479,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 
 		// floors
-		addFloors(worldIn, decoRNG, sbb);
+		addFloors(worldIn, sbb);
 
 		// openings
 		makeOpenings(worldIn, sbb);
@@ -496,8 +494,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	private void addFloors(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
+	private void addFloors(WorldGenLevel world, BoundingBox sbb) {
 		// only add floors up to highest opening
 		int floors = (this.highestOpening / 8) + 1;
 

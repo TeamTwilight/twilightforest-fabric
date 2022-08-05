@@ -78,6 +78,7 @@ public class ChangeBiomePacket implements S2CPacket {
 				}
 			});
 
+			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}
