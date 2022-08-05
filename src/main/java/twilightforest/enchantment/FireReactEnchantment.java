@@ -9,6 +9,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class FireReactEnchantment extends LootOnlyEnchantment {
@@ -41,9 +42,9 @@ public class FireReactEnchantment extends LootOnlyEnchantment {
 	}
 
 	@Override
-	public void doPostHurt(LivingEntity user, Entity attacker, int level) {
+	public void doPostHurt(LivingEntity user, @Nullable Entity attacker, int level) {
 		Random random = user.getRandom();
-		if (shouldHit(level, random, attacker)) {
+		if (attacker != null && shouldHit(level, random, attacker)) {
 			attacker.setSecondsOnFire(2 + (random.nextInt(level) * 3));
 		}
 	}
