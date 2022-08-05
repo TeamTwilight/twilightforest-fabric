@@ -1,11 +1,19 @@
 package twilightforest.item;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+
+import javax.annotation.Nullable;
 
 public class WearableItem extends BlockItem {
     public WearableItem(Block block, FabricItemSettings props) {
@@ -27,16 +35,5 @@ public class WearableItem extends BlockItem {
 		} else {
 			return InteractionResultHolder.fail(itemstack);
 		}
-	}
-
-	@Override
-	public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
-		return slot == EquipmentSlot.HEAD;
-	}
-
-	@Override
-	@Nullable
-	public EquipmentSlot getEquipmentSlot(ItemStack stack) {
-		return EquipmentSlot.HEAD;
 	}
 }

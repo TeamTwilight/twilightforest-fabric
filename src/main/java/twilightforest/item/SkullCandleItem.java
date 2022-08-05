@@ -7,6 +7,9 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +30,7 @@ import java.util.List;
 public class SkullCandleItem extends StandingAndWallBlockItem {
 
 	public SkullCandleItem(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall, FabricItemSettings properties) {
-		super(floor, wall, properties.equipmentSlot(SkullCandleItem::getEquipmentSlot));
+		super(floor, wall, properties.equipmentSlot(stack -> EquipmentSlot.HEAD));
 	}
 
 	@Override
@@ -98,15 +101,6 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 		} else {
 			return InteractionResultHolder.fail(itemstack);
 		}
-	}
-
-	@Override
-	public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
-		return slot == EquipmentSlot.HEAD;
-	}
-
-	public static EquipmentSlot getEquipmentSlot(ItemStack stack) {
-		return EquipmentSlot.HEAD;
 	}
 
 	@Override

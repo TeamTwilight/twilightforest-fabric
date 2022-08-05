@@ -1,7 +1,5 @@
 package twilightforest.block;
 
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -12,13 +10,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.CicadaBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
+
+import javax.annotation.Nullable;
 
 public class CicadaBlock extends CritterBlock {
 	public CicadaBlock(Properties properties) {

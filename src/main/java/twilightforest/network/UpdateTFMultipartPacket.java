@@ -59,22 +59,22 @@ public class UpdateTFMultipartPacket implements S2CPacket {
 
 	@Override
 	public void handle(Minecraft client, ClientPacketListener handler, PacketSender sender, SimpleChannel responseTarget) {
-		Handler.onMessage(this, client);
+		Handler.onMessage(this);
 	}
 
 	public static class Handler {
 
 		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(UpdateTFMultipartPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(new Runnable() {
-				@Override
-				public void run() {
+		public static void onMessage(UpdateTFMultipartPacket message) {
+//			ctx.get().enqueueWork(new Runnable() {
+//				@Override
+//				public void run() {
 					Level world = Minecraft.getInstance().level;
 					if (world == null)
 						return;
 					Entity ent = world.getEntity(message.id);
-					if (ent != null && ent.isMultipartEntity()) {
-						PartEntity<?>[] parts = ent.getParts();
+					if (ent instanceof MultiPartEntity multipart) {
+						PartEntity<?>[] parts = multipart.getParts();
 						if (parts == null)
 							return;
 						int index = 0;
@@ -85,10 +85,8 @@ public class UpdateTFMultipartPacket implements S2CPacket {
 							}
 						}
 					}
-				}
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
+//				}
+//			});
 		}
 	}
 

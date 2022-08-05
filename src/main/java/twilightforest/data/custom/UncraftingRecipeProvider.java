@@ -6,13 +6,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.UncraftingRecipe;
@@ -73,7 +73,7 @@ public abstract class UncraftingRecipeProvider implements DataProvider {
     private JsonObject serializeToJson(UncraftingRecipe uncraftingRecipe, String[] pattern) {
         JsonObject jsonobject = new JsonObject();
 
-        jsonobject.addProperty("type", Objects.requireNonNull(ForgeRegistries.RECIPE_SERIALIZERS.getKey(TFRecipes.UNCRAFTING_SERIALIZER.get())).toString());
+        jsonobject.addProperty("type", Objects.requireNonNull(Registry.RECIPE_SERIALIZER.getKey(TFRecipes.UNCRAFTING_SERIALIZER.get())).toString());
         jsonobject.add("ingredient", uncraftingRecipe.ingredient().toJson());
         jsonobject.addProperty("count", uncraftingRecipe.count());
         jsonobject.addProperty("cost", uncraftingRecipe.cost());

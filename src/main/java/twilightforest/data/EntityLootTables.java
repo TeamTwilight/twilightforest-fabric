@@ -10,6 +10,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -37,6 +38,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("deprecation")
 public class EntityLootTables extends EntityLoot {
@@ -638,7 +640,7 @@ public class EntityLootTables extends EntityLoot {
 	}
 
 	public Item getShader(String name) {
-		return Objects.requireNonNull(Registry.ITEM.getValue(TwilightForestMod.prefix(name))).asItem();
+		return Objects.requireNonNull(Registry.ITEM.get(TwilightForestMod.prefix(name))).asItem();
 	}
 
 	public LootTable.Builder emptyLootTable() {
@@ -658,7 +660,7 @@ public class EntityLootTables extends EntityLoot {
 
 //	@Override
 	public Set<EntityType<?>> getKnownEntities() {
-		return Registry.ENTITY_TYPE.getValues().stream().filter(entities -> Registry.ENTITY_TYPE.getKey(entities).getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toSet());
+		return Registry.ENTITY_TYPE.stream().filter(entities -> Registry.ENTITY_TYPE.getKey(entities).getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toSet());
 	}
 
 	@Override
