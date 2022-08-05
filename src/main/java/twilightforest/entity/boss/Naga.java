@@ -357,6 +357,11 @@ public class Naga extends Monster implements MultiPartEntity {
 	}
 
 	@Override
+	public boolean causeFallDamage(float dist, float mult, DamageSource source) {
+		return false;
+	}
+
+	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		if (source != DamageSource.FALL && super.hurt(source, amount)) {
 			this.ticksSinceDamaged = 0;
@@ -373,11 +378,11 @@ public class Naga extends Monster implements MultiPartEntity {
 	public boolean doHurtTarget(Entity toAttack) {
 		if (this.movementAI.getState() == NagaMovementPattern.MovementState.CHARGE && toAttack instanceof LivingEntity living && living.isBlocking()) {
 			Vec3 motion = this.getDeltaMovement();
-			toAttack.push(motion.x() * 1.25D, 0.5D, motion.z() * 1.25D);
-			this.setDeltaMovement(motion.x() * -1.5D, motion.y() + 0.5D, motion.z() * -1.5D);
+			toAttack.push(motion.x() * 1.5D, 0.5D, motion.z() * 1.5D);
+			this.push(motion.x() * -1.25D, 0.5D, motion.z() * -1.25D);
 			if (toAttack instanceof ServerPlayer player) {
 				player.getUseItem().hurt(5, this.getRandom(), player);
-				TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket((float) toAttack.getDeltaMovement().x(), (float) toAttack.getDeltaMovement().y(), (float) toAttack.getDeltaMovement().z()), player);
+				TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket((float) motion.x() * 3.0F, (float) motion.y() + 0.75F, (float) motion.z() * 3.0F), player);
 			}
 			this.hurt(DamageSource.GENERIC, 4.0F);
 			this.getLevel().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.getLevel().getRandom().nextFloat() * 0.4F);

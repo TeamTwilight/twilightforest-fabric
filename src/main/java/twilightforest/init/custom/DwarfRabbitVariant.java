@@ -11,6 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public record DwarfRabbitVariant(ResourceLocation texture) {
@@ -27,8 +28,8 @@ public record DwarfRabbitVariant(ResourceLocation texture) {
 		return DwarfRabbitVariant.DWARF_RABBIT_REGISTRY.get().getValues().toArray(DwarfRabbitVariant[]::new)[random.nextInt(DwarfRabbitVariant.DWARF_RABBIT_REGISTRY.get().getValues().size())];
 	}
 
-	public static DwarfRabbitVariant getVariant(String id) {
-		return DwarfRabbitVariant.DWARF_RABBIT_REGISTRY.get().getValue(new ResourceLocation(id));
+	public static Optional<DwarfRabbitVariant> getVariant(String id) {
+		return Optional.ofNullable(DWARF_RABBIT_REGISTRY.get().getValue(new ResourceLocation(id)));
 	}
 
 	public static String getVariantId(DwarfRabbitVariant variant) {

@@ -11,6 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 import twilightforest.TwilightForestMod;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public record TinyBirdVariant(ResourceLocation texture) {
@@ -27,8 +28,8 @@ public record TinyBirdVariant(ResourceLocation texture) {
 		return TINY_BIRD_REGISTRY.get().getValues().toArray(TinyBirdVariant[]::new)[random.nextInt(TINY_BIRD_REGISTRY.get().getValues().size())];
 	}
 
-	public static TinyBirdVariant getVariant(String id) {
-		return TINY_BIRD_REGISTRY.get().getValue(new ResourceLocation(id));
+	public static Optional<TinyBirdVariant> getVariant(String id) {
+		return Optional.ofNullable(TINY_BIRD_REGISTRY.get().getValue(new ResourceLocation(id)));
 	}
 
 	public static String getVariantId(TinyBirdVariant variant) {

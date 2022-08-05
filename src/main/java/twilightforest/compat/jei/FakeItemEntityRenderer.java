@@ -79,7 +79,7 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 	private void renderItemEntity(ItemStack stack, Level level) {
 		PoseStack posestack = RenderSystem.getModelViewStack();
 		posestack.pushPose();
-		posestack.translate(8.0D, 25.0D, 1050.0D);
+		posestack.translate(16.0D, 32.0D, 1050.0D);
 		posestack.scale(1.0F, 1.0F, -1.0F);
 		RenderSystem.applyModelViewMatrix();
 		PoseStack posestack1 = new PoseStack();

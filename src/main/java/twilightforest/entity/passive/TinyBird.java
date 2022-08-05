@@ -26,6 +26,7 @@ public class TinyBird extends FlyingBird {
 
 	public TinyBird(EntityType<? extends TinyBird> type, Level world) {
 		super(type, world);
+		this.setBirdType(TinyBirdVariant.getVariantId(TinyBirdVariant.getRandomVariant(this.getRandom())));
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class TinyBird extends FlyingBird {
 	}
 
 	public TinyBirdVariant getBirdType() {
-		return TinyBirdVariant.getVariant(this.entityData.get(TYPE));
+		return TinyBirdVariant.getVariant(this.entityData.get(TYPE)).orElse(TinyBirdVariant.BLUE.get());
 	}
 
 	public void setBirdType(String type) {
@@ -96,7 +97,7 @@ public class TinyBird extends FlyingBird {
 	@Override
 	public boolean isSpooked() {
 		if (this.hurtTime > 0) return true;
-		Player closestPlayer = this.getLevel().getNearestPlayer(this, 4.0D);
+		Player closestPlayer = this.getLevel().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 4.0D, true);
 		return closestPlayer != null
 				&& !SEEDS.test(closestPlayer.getMainHandItem())
 				&& !SEEDS.test(closestPlayer.getOffhandItem());
