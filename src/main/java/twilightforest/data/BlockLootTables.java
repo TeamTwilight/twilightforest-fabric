@@ -33,11 +33,13 @@ import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.function.BiConsumer;
 
@@ -597,7 +599,7 @@ public class BlockLootTables extends BlockLoot {
 
 //	@Override
 	protected Iterable<Block> getKnownBlocks() {
-		return ForgeRegistries.BLOCKS.getValues().stream().filter(block -> ForgeRegistries.BLOCKS.getKey(block).getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toList());
+		return Registry.BLOCK.stream().filter(block -> Registry.BLOCK.getKey(block).getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toList());
 	}
 
 	@Override

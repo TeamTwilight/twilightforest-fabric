@@ -22,7 +22,6 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 				true, null, null);
 
 		generator.addProvider(true, new AdvancementGenerator(generator));
-		generator.addProvider(true, new PatchouliAdvancementGenerator(generator));
 		generator.addProvider(true, new BlockstateGenerator(generator, helper));
 		generator.addProvider(true, new ItemModelGenerator(generator, helper));
 		generator.addProvider(true, new BiomeTagGenerator(generator));

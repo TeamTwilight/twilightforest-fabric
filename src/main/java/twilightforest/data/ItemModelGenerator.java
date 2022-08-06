@@ -723,7 +723,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void woodBlock(Block b, String variant) {
-		woodBlockModel(b, ForgeRegistries.BLOCKS.getKey(b).getPath(), variant);
+		woodBlockModel(b, Registry.BLOCK.getKey(b).getPath(), variant);
 	}
 
 	private void toBlockModel(Block b, String model) {
