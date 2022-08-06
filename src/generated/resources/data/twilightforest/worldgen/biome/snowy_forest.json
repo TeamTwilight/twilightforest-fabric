@@ -2,6 +2,7 @@
   "carvers": {
     "air": "twilightforest:tf_caves"
   },
+  "creature_spawn_probability": 0.05,
   "downfall": 0.9,
   "effects": {
     "fog_color": 16777215,
@@ -66,7 +67,7 @@
     "monster": [
       {
         "type": "twilightforest:winter_wolf",
-        "maxCount": 2,
+        "maxCount": 1,
         "minCount": 1,
         "weight": 5
       },

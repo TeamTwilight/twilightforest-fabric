@@ -29,8 +29,8 @@
     "0": [
       {
         "type": "twilightforest:blockchain_goblin",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 10
       },
       {
@@ -42,32 +42,32 @@
       {
         "type": "twilightforest:helmet_crab",
         "maxCount": 4,
-        "minCount": 4,
+        "minCount": 2,
         "weight": 10
       },
       {
         "type": "twilightforest:slime_beetle",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 3,
+        "minCount": 2,
         "weight": 10
       },
       {
         "type": "twilightforest:redcap_sapper",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 2
       },
       {
         "type": "twilightforest:kobold",
-        "maxCount": 8,
-        "minCount": 4,
+        "maxCount": 4,
+        "minCount": 2,
         "weight": 10
       },
       {
         "type": "minecraft:creeper",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 5
       },
       {
         "type": "minecraft:slime",

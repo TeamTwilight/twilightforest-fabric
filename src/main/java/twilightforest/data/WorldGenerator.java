@@ -118,7 +118,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, Optional.of(12), BIOME_FEATURES_SETS)), Lifecycle.experimental());
+		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, Optional.of(16), BIOME_FEATURES_SETS)), Lifecycle.experimental());
 		return writableregistry;
 	}
 
@@ -136,7 +136,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, Optional.of(12), BIOME_FEATURES_SETS)), Lifecycle.stable());
+		writableregistry.register(ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, TwilightForestMod.prefix("skylight_forest")), new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, Optional.of(16), BIOME_FEATURES_SETS)), Lifecycle.stable());
 		return writableregistry;
 	}
 

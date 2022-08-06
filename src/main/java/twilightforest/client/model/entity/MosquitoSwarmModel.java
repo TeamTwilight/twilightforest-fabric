@@ -9,15 +9,14 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.monster.MosquitoSwarm;
-
-import java.util.Random;
 
 public class MosquitoSwarmModel extends HierarchicalModel<MosquitoSwarm> {
 	private final ModelPart root, core, group1, group2, group3, group4, group5, group6;
 
-	private static final Random rand = new Random();
+	private static final RandomSource rand = RandomSource.create();
 
 	public MosquitoSwarmModel(ModelPart root) {
 		this.root = root;

@@ -2,7 +2,6 @@
   "carvers": {
     "air": "twilightforest:tf_caves"
   },
-  "creature_spawn_probability": 0.2,
   "downfall": 0.9,
   "effects": {
     "fog_color": 16161,
@@ -94,15 +93,9 @@
     "misc": [],
     "monster": [
       {
-        "type": "minecraft:creeper",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
         "type": "minecraft:zombie",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 10
       },
       {

@@ -26,8 +26,8 @@
     "0": [
       {
         "type": "twilightforest:kobold",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 10
       },
       {
@@ -52,8 +52,8 @@
     "1": [
       {
         "type": "twilightforest:kobold",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 10
       },
       {

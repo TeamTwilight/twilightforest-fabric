@@ -27,20 +27,20 @@
     "0": [
       {
         "type": "twilightforest:snow_guardian",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 10
       },
       {
         "type": "twilightforest:stable_ice_core",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 10
       },
       {
         "type": "twilightforest:unstable_ice_core",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 5
       }
     ]

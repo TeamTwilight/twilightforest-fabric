@@ -56,7 +56,7 @@
     "ambient": [
       {
         "type": "minecraft:bat",
-        "maxCount": 2,
+        "maxCount": 1,
         "minCount": 1,
         "weight": 10
       }
@@ -67,44 +67,44 @@
     "monster": [
       {
         "type": "minecraft:spider",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 3,
+        "minCount": 2,
         "weight": 10
       },
       {
         "type": "minecraft:zombie",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 10
       },
       {
         "type": "minecraft:skeleton",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 1,
+        "minCount": 1,
         "weight": 10
       },
       {
         "type": "minecraft:creeper",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 1,
+        "minCount": 1,
         "weight": 1
       },
       {
         "type": "minecraft:slime",
         "maxCount": 4,
-        "minCount": 4,
+        "minCount": 2,
         "weight": 10
       },
       {
         "type": "minecraft:enderman",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 1
       },
       {
         "type": "twilightforest:kobold",
-        "maxCount": 4,
-        "minCount": 2,
+        "maxCount": 3,
+        "minCount": 1,
         "weight": 10
       }
     ],

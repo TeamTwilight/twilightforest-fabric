@@ -1,5 +1,5 @@
 {
-  "feature": "twilightforest:tree/darkwood_tree",
+  "feature": "twilightforest:tree/selector/dark_forest_trees",
   "placement": [
     {
       "type": "minecraft:count",
@@ -7,11 +7,11 @@
         "type": "minecraft:weighted_list",
         "distribution": [
           {
-            "data": 8,
+            "data": 10,
             "weight": 9
           },
           {
-            "data": 9,
+            "data": 11,
             "weight": 1
           }
         ]

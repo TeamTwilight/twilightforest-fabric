@@ -2,6 +2,7 @@
   "carvers": {
     "air": "twilightforest:tf_caves"
   },
+  "creature_spawn_probability": 0.05,
   "downfall": 0.8,
   "effects": {
     "fog_color": 0,
@@ -47,10 +48,10 @@
     ],
     [],
     [
-      "twilightforest:mayapple",
       "twilightforest:flower_placer",
-      "twilightforest:tree/darkwood_tree",
+      "twilightforest:tree/selector/dark_forest_tree_mix",
       "twilightforest:tree/selector/dark_forest_trees",
+      "twilightforest:tree/darkwood_tree",
       "twilightforest:dark_grass",
       "twilightforest:dark_ferns",
       "twilightforest:dark_mushglooms",
@@ -69,43 +70,43 @@
     "monster": [
       {
         "type": "minecraft:enderman",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 1
       },
       {
         "type": "minecraft:zombie",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 5
       },
       {
         "type": "minecraft:skeleton",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 5
       },
       {
         "type": "twilightforest:mist_wolf",
-        "maxCount": 4,
+        "maxCount": 1,
         "minCount": 1,
         "weight": 10
       },
       {
         "type": "twilightforest:skeleton_druid",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 10
       },
       {
         "type": "twilightforest:king_spider",
-        "maxCount": 4,
+        "maxCount": 1,
         "minCount": 1,
-        "weight": 10
+        "weight": 5
       },
       {
         "type": "twilightforest:kobold",
-        "maxCount": 4,
+        "maxCount": 3,
         "minCount": 1,
         "weight": 10
       },

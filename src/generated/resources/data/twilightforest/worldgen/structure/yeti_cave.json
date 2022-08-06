@@ -27,9 +27,9 @@
     "0": [
       {
         "type": "twilightforest:yeti",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 5
       }
     ]
   },

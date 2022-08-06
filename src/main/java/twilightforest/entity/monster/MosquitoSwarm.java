@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -49,6 +50,16 @@ public class MosquitoSwarm extends Monster {
 	}
 
 	@Override
+	protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+		return null;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return null;
+	}
+
+	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (super.doHurtTarget(entity)) {
 			if (entity instanceof LivingEntity living) {
@@ -67,8 +78,9 @@ public class MosquitoSwarm extends Monster {
 		}
 	}
 
-	public static boolean canSpawn(EntityType<? extends Monster> type, LevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource rand) {
-		return accessor.getDifficulty() != Difficulty.PEACEFUL && Monster.checkAnyLightMonsterSpawnRules(type, accessor, reason, pos, rand);
+	@Override
+	public boolean displayFireAnimation() {
+		return false;
 	}
 
 	@Override

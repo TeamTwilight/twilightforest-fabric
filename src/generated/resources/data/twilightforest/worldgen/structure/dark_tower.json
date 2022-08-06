@@ -27,25 +27,25 @@
     "0": [
       {
         "type": "twilightforest:carminite_golem",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 10
       },
       {
         "type": "minecraft:skeleton",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 10
       },
       {
         "type": "minecraft:creeper",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
       },
       {
         "type": "minecraft:enderman",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 2
       },
@@ -57,27 +57,27 @@
       },
       {
         "type": "twilightforest:carminite_ghastling",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 10
       },
       {
         "type": "twilightforest:carminite_broodling",
-        "maxCount": 8,
-        "minCount": 8,
+        "maxCount": 4,
+        "minCount": 4,
         "weight": 10
       },
       {
         "type": "twilightforest:pinch_beetle",
-        "maxCount": 4,
-        "minCount": 2,
+        "maxCount": 1,
+        "minCount": 1,
         "weight": 10
       }
     ],
     "1": [
       {
         "type": "twilightforest:carminite_ghastguard",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 10
       }

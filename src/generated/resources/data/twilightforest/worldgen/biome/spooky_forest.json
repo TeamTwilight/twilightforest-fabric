@@ -2,7 +2,7 @@
   "carvers": {
     "air": "twilightforest:tf_caves"
   },
-  "creature_spawn_probability": 0.4,
+  "creature_spawn_probability": 0.2,
   "downfall": 1.0,
   "effects": {
     "fog_color": 12648408,
@@ -84,7 +84,7 @@
       {
         "type": "minecraft:bat",
         "maxCount": 4,
-        "minCount": 4,
+        "minCount": 2,
         "weight": 20
       }
     ],
@@ -94,13 +94,13 @@
     "monster": [
       {
         "type": "minecraft:spider",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 50
       },
       {
         "type": "minecraft:skeleton",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 20
       },

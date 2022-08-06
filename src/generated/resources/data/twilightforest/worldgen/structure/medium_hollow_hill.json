@@ -24,56 +24,56 @@
     "0": [
       {
         "type": "twilightforest:redcap",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 10
       },
       {
         "type": "twilightforest:redcap_sapper",
-        "maxCount": 4,
+        "maxCount": 2,
         "minCount": 1,
         "weight": 1
       },
       {
         "type": "twilightforest:kobold",
-        "maxCount": 8,
-        "minCount": 4,
+        "maxCount": 4,
+        "minCount": 2,
         "weight": 10
       },
       {
         "type": "minecraft:skeleton",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 3,
+        "minCount": 2,
         "weight": 10
       },
       {
         "type": "twilightforest:swarm_spider",
         "maxCount": 4,
-        "minCount": 4,
+        "minCount": 2,
         "weight": 10
       },
       {
         "type": "minecraft:spider",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 3,
+        "minCount": 1,
         "weight": 10
       },
       {
         "type": "minecraft:creeper",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 2,
+        "minCount": 1,
         "weight": 10
       },
       {
         "type": "twilightforest:fire_beetle",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 1,
+        "minCount": 1,
         "weight": 5
       },
       {
         "type": "twilightforest:slime_beetle",
-        "maxCount": 4,
-        "minCount": 4,
+        "maxCount": 1,
+        "minCount": 1,
         "weight": 5
       },
       {

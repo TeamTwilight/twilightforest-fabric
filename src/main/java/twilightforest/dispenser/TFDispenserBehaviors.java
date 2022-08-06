@@ -1,12 +1,11 @@
 package twilightforest.dispenser;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
@@ -23,10 +22,20 @@ import twilightforest.init.TFSounds;
 public class TFDispenserBehaviors {
 
 	public static void init() {
-		DispenserBlock.registerBehavior(TFItems.MOONWORM_QUEEN.get(), new MoonwormDispenseBehavior() {
+		DispenserBlock.registerBehavior(TFItems.MOONWORM_QUEEN.get(), new DamageableStackDispenseBehavior() {
 			@Override
-			protected Projectile getProjectileEntity(Level worldIn, Position position, ItemStack stackIn) {
-				return new MoonwormShot(worldIn, position.x(), position.y(), position.z());
+			protected Projectile getProjectileEntity(Level level, Position position, ItemStack stack) {
+				return new MoonwormShot(level, position.x(), position.y(), position.z());
+			}
+
+			@Override
+			protected int getDamageAmount() {
+				return 2;
+			}
+
+			@Override
+			protected SoundEvent getFiredSound() {
+				return TFSounds.MOONWORM_SQUISH.get();
 			}
 		});
 
@@ -55,25 +64,29 @@ public class TFDispenserBehaviors {
 		DispenserBlock.registerBehavior(TFBlocks.FIREFLY.get().asItem(), idispenseitembehavior);
 		DispenserBlock.registerBehavior(TFBlocks.MOONWORM.get().asItem(), idispenseitembehavior);
 
-		DispenseItemBehavior pushmobsbehavior = new FeatherFanDispenseBehavior();
-		DispenserBlock.registerBehavior(TFItems.PEACOCK_FEATHER_FAN.get().asItem(), pushmobsbehavior);
+		DispenserBlock.registerBehavior(TFItems.PEACOCK_FEATHER_FAN.get().asItem(), new FeatherFanDispenseBehavior());
+		DispenserBlock.registerBehavior(TFItems.CRUMBLE_HORN.get().asItem(), new CrumbleDispenseBehavior());
+		DispenserBlock.registerBehavior(TFItems.TRANSFORMATION_POWDER.get().asItem(), new TransformationDispenseBehavior());
 
-		DispenseItemBehavior crumblebehavior = new CrumbleDispenseBehavior();
-		DispenserBlock.registerBehavior(TFItems.CRUMBLE_HORN.get().asItem(), crumblebehavior);
-
-		DispenseItemBehavior transformbehavior = new TransformationDispenseBehavior();
-		DispenserBlock.registerBehavior(TFItems.TRANSFORMATION_POWDER.get().asItem(), transformbehavior);
-
-		DispenserBlock.registerBehavior(TFItems.TWILIGHT_SCEPTER.get(), new MoonwormDispenseBehavior() {
+		DispenserBlock.registerBehavior(TFItems.TWILIGHT_SCEPTER.get(), new DamageableStackDispenseBehavior() {
 			@Override
-			protected Projectile getProjectileEntity(Level worldIn, Position position, ItemStack stackIn) {
-				return new TwilightWandBolt(worldIn, position.x(), position.y(), position.z());
+			protected Projectile getProjectileEntity(Level level, Position position, ItemStack stack) {
+				return new TwilightWandBolt(level, position.x(), position.y(), position.z());
 			}
 
 			@Override
-			protected void playSound(BlockSource source) {
-				BlockPos pos = source.getPos();
-				source.getLevel().playSound(null, pos, TFSounds.SCEPTER_PEARL.get(), SoundSource.BLOCKS, 1, 1);
+			protected int getDamageAmount() {
+				return 1;
+			}
+
+			@Override
+			protected SoundEvent getFiredSound() {
+				return TFSounds.SCEPTER_PEARL.get();
+			}
+
+			@Override
+			protected float getProjectileInaccuracy() {
+				return 6.0F;
 			}
 		});
 
