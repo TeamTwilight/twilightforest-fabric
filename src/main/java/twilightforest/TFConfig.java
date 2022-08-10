@@ -102,6 +102,10 @@ public class TFConfig {
 					translation(config + "portal_unlocked_by_advancement").
 					comment("Use a valid advancement resource location as a string. For example, using the string \"minecraft:story/mine_diamond\" will lock the portal behind the \"Diamonds!\" advancement. Invalid/Empty Advancement resource IDs will leave the portal entirely unlocked.").
 					define("portalUnlockedByAdvancement", "");
+			maxPortalSize = builder.
+					translation(config + "max_portal_size").
+					comment("The max amount of water spaces the mod will check for when creating a portal. Very high numbers may cause issues.").
+					defineInRange("maxPortalSize", 64, 4, Integer.MAX_VALUE);
 			casketUUIDLocking = builder.
 					worldRestart().
 					translation(config + "casket_uuid_locking").
@@ -223,6 +227,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue portalLightning;
 		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
 		public ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
+		public ForgeConfigSpec.IntValue maxPortalSize;
 		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
 		public ForgeConfigSpec.BooleanValue disableSkullCandles;
 

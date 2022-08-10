@@ -64,8 +64,6 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F));
 
 	private static final int MIN_PORTAL_SIZE = 4;
-	private static final int MAX_PORTAL_SIZE = 64;
-
 	private static final HashSet<ServerPlayer> playersNotified = new HashSet<>();
 
 	public TFPortalBlock(BlockBehaviour.Properties properties) {
@@ -159,11 +157,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static boolean recursivelyValidatePortal(Level level, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState poolBlock) {
-		if (portalSize.incrementAndGet() > MAX_PORTAL_SIZE) return false;
+		if (portalSize.incrementAndGet() > TFConfig.COMMON_CONFIG.maxPortalSize.get()) return false;
 
 		boolean isPoolProbablyEnclosed = true;
 
-		for (int i = 0; i < 4 && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
+		for (int i = 0; i < 4 && portalSize.intValue() <= TFConfig.COMMON_CONFIG.maxPortalSize.get(); i++) {
 			BlockPos positionCheck = pos.relative(Direction.from2DDataValue(i));
 
 			if (!blocksChecked.containsKey(positionCheck)) {

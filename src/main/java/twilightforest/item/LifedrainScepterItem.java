@@ -149,35 +149,28 @@ public class LifedrainScepterItem extends Item implements CustomEnchantingBehavi
 					this.makeRedMagicTrail(level, living, target.getEyePosition());
 				}
 
-				if (target.getHealth() <= 3 && target.hurt(TFDamageSources.lifedrain(living, living), 1)) {
+				if (target.hurt(TFDamageSources.lifedrain(living, living), 1)) {
 					// make it explode
 					if (!level.isClientSide()) {
-						if (!target.getType().is(EntityTagGenerator.LIFEDRAIN_DROPS_NO_FLESH)) {
-							target.spawnAtLocation(new ItemStack(Items.ROTTEN_FLESH, level.getRandom().nextInt(3)));
-							animateTargetShatter((ServerLevel) level, target);
-						}
-						if (target instanceof Mob mob) {
-							mob.spawnAnim();
-						}
-						target.playSound(TFSounds.SCEPTER_DRAIN.get(), 1.0F, living.getVoicePitch());
-						level.playSound(null, target.blockPosition(), EntityUtil.getDeathSound(target), SoundSource.HOSTILE, 1.0F, target.getVoicePitch());
-						target.die(TFDamageSources.lifedrain(living, living));
-						target.discard();
-
-						if (living instanceof Player player && !player.isCreative()) {
-							stack.hurt(1, level.getRandom(), null);
-						}
-					}
-					living.stopUsingItem();
-				} else {
-					// we have hit this creature recently
-					if (target.hurt(TFDamageSources.lifedrain(living, living), 3)) {
-						if (!level.isClientSide()) {
-							// only do lifting effect on creatures weaker than the player
-							if (target.getHealth() <= living.getHealth()) {
-								target.setDeltaMovement(0, 0.2D, 0);
+						if (target.getHealth() <= 1) {
+							if (!target.getType().is(EntityTagGenerator.LIFEDRAIN_DROPS_NO_FLESH)) {
+								target.spawnAtLocation(new ItemStack(Items.ROTTEN_FLESH, level.getRandom().nextInt(3)));
+								animateTargetShatter((ServerLevel) level, target);
 							}
-
+							if (target instanceof Mob mob) {
+								mob.spawnAnim();
+							}
+							target.playSound(TFSounds.SCEPTER_DRAIN.get(), 1.0F, living.getVoicePitch());
+							level.playSound(null, target.blockPosition(), EntityUtil.getDeathSound(target), SoundSource.HOSTILE, 1.0F, target.getVoicePitch());
+							if (!target.isDeadOrDying()) {
+								if (target instanceof Player) {
+									target.hurt(TFDamageSources.lifedrain(living, living), Float.MAX_VALUE);
+								} else {
+									target.die(TFDamageSources.lifedrain(living, living));
+									target.discard();
+								}
+							}
+						} else {
 							target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
 							if (count % 10 == 0) {
 								// heal the player
@@ -186,12 +179,17 @@ public class LifedrainScepterItem extends Item implements CustomEnchantingBehavi
 								if (living instanceof Player player)
 									player.getFoodData().eat(1, 0.1F);
 							}
+						}
 
-							if (living instanceof Player player && !player.isCreative()) {
-								stack.hurt(1, level.getRandom(), null);
-							}
+						if (living instanceof Player player && !player.isCreative()) {
+							stack.hurt(1, level.getRandom(), null);
 						}
 					}
+				}
+
+				if (!level.isClientSide() && target.getHealth() <= living.getHealth()) {
+					// only do lifting effect on creatures weaker than the player
+					target.setDeltaMovement(0, 0.15D, 0);
 				}
 			}
 		}

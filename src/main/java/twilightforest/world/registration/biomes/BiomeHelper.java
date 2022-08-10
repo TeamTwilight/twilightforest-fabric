@@ -284,6 +284,7 @@ public abstract class BiomeHelper {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder();
 
 		BiomeDefaultFeatures.addDefaultSoftDisks(biome);
+		BiomeDefaultFeatures.addSurfaceFreezing(biome);
 		withWoodRoots(biome);
 		addCaves(biome);
 		addSmallStoneClusters(biome);

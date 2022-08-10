@@ -37,6 +37,7 @@ public class TFLootTables {
 	public static final TFLootTables BASEMENT = new TFLootTables("basement");
 	public static final TFLootTables FOUNDATION_BASEMENT = new TFLootTables("foundation_basement");
 	public static final TFLootTables LABYRINTH_VAULT = new TFLootTables("labyrinth_vault");
+	public static final TFLootTables LABYRINTH_VAULT_JACKPOT = new TFLootTables("labyrinth_vault_jackpot");
 	public static final TFLootTables DARKTOWER_CACHE = new TFLootTables("darktower_cache");
 	public static final TFLootTables DARKTOWER_KEY = new TFLootTables("darktower_key");
 	public static final TFLootTables DARKTOWER_BOSS = new TFLootTables("darktower_boss");
@@ -49,6 +50,7 @@ public class TFLootTables {
 //	public static final TFLootTables AURORA_BOSS = new TFLootTables("aurora_boss"); //unused
 	public static final TFLootTables TROLL_GARDEN = new TFLootTables("troll_garden");
 	public static final TFLootTables TROLL_VAULT = new TFLootTables("troll_vault");
+	public static final TFLootTables TROLL_VAULT_WITH_LAMP = new TFLootTables("troll_vault_with_lamp");
 	public static final TFLootTables GRAVEYARD = new TFLootTables("graveyard");
 	public static final TFLootTables QUEST_GROVE = new TFLootTables("quest_grove_dropper");
 	public static final TFLootTables USELESS_LOOT = new TFLootTables("useless");

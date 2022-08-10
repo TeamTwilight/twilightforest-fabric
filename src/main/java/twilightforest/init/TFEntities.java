@@ -79,7 +79,6 @@ public class TFEntities {
 	public static final RegistryObject<EntityType<CarminiteGolem>> CARMINITE_GOLEM = make(TFEntityNames.CARMINITE_GOLEM, CarminiteGolem::new, MobCategory.MONSTER, 1.4F, 2.9F, 0x6b3d20, 0xe2ddda);
 	public static final RegistryObject<EntityType<ChainBlock>> CHAIN_BLOCK = build(TFEntityNames.CHAIN_BLOCK, makeCastedBuilder(ChainBlock.class, ChainBlock::new, 0.6F, 0.6F, 80, 1), true);
 	public static final RegistryObject<EntityType<CharmEffect>> CHARM_EFFECT = make(TFEntityNames.CHARM_EFFECT, CharmEffect::new, MobCategory.MISC, 0.25F, 0.25F, 0, 0);
-	public static final RegistryObject<EntityType<CicadaShot>> CICADA_SHOT = build(TFEntityNames.CICADA_SHOT, makeCastedBuilder(CicadaShot.class, CicadaShot::new, 0.25F, 0.25F, 150, 3), false);
 	public static final RegistryObject<EntityType<CubeOfAnnihilation>> CUBE_OF_ANNIHILATION = build(TFEntityNames.CUBE_OF_ANNIHILATION, makeCastedBuilder(CubeOfAnnihilation.class, CubeOfAnnihilation::new, 1.0F, 1.0F, 80, 1), true);
 	public static final RegistryObject<EntityType<DeathTome>> DEATH_TOME = make(TFEntityNames.DEATH_TOME, DeathTome::new, MobCategory.MONSTER, 0.6F, 1.1F, 0x774e22, 0xdbcdbe);
 	public static final RegistryObject<EntityType<Deer>> DEER = make(TFEntityNames.DEER, Deer::new, MobCategory.CREATURE, 0.7F, 1.8F, 0x7b4d2e, 0x4b241d);
@@ -375,24 +374,23 @@ public class TFEntities {
 		EntityRendererRegistry.register(PLATEAU_BOSS.get(), NoopRenderer::new);
 
 		// projectiles
-		EntityRendererRegistry.register(NATURE_BOLT.get(), ThrownItemRenderer::new);
-		EntityRendererRegistry.register(LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/items/twilight_orb.png")));
-		EntityRendererRegistry.register(WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/items/twilight_orb.png")));
-		EntityRendererRegistry.register(TOME_BOLT.get(), ThrownItemRenderer::new);
-		EntityRendererRegistry.register(HYDRA_MORTAR.get(), HydraMortarRenderer::new);
-		EntityRendererRegistry.register(SLIME_BLOB.get(), ThrownItemRenderer::new);
-		EntityRendererRegistry.register(CICADA_SHOT.get(), CicadaShotRenderer::new);
-		EntityRendererRegistry.register(MOONWORM_SHOT.get(), MoonwormShotRenderer::new);
-		EntityRendererRegistry.register(CHARM_EFFECT.get(), ThrownItemRenderer::new);
-		EntityRendererRegistry.register(LICH_BOMB.get(), ThrownItemRenderer::new);
-		EntityRendererRegistry.register(THROWN_WEP.get(), ThrownWepRenderer::new);
-		EntityRendererRegistry.register(FALLING_ICE.get(), FallingIceRenderer::new);
-		EntityRendererRegistry.register(THROWN_ICE.get(), ThrownIceRenderer::new);
-		EntityRendererRegistry.register(THROWN_BLOCK.get(), ThrownBlockRenderer::new);
-		EntityRendererRegistry.register(ICE_SNOWBALL.get(), ThrownItemRenderer::new);
-		EntityRendererRegistry.register(SLIDER.get(), SlideBlockRenderer::new);
-		EntityRendererRegistry.register(SEEKER_ARROW.get(), DefaultArrowRenderer::new);
-		EntityRendererRegistry.register(ICE_ARROW.get(), DefaultArrowRenderer::new);
+		event.registerEntityRenderer(NATURE_BOLT.get(), ThrownItemRenderer::new);
+		event.registerEntityRenderer(LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/items/twilight_orb.png")));
+		event.registerEntityRenderer(WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/items/twilight_orb.png")));
+		event.registerEntityRenderer(TOME_BOLT.get(), ThrownItemRenderer::new);
+		event.registerEntityRenderer(HYDRA_MORTAR.get(), HydraMortarRenderer::new);
+		event.registerEntityRenderer(SLIME_BLOB.get(), ThrownItemRenderer::new);
+		event.registerEntityRenderer(MOONWORM_SHOT.get(), MoonwormShotRenderer::new);
+		event.registerEntityRenderer(CHARM_EFFECT.get(), ThrownItemRenderer::new);
+		event.registerEntityRenderer(LICH_BOMB.get(), ThrownItemRenderer::new);
+		event.registerEntityRenderer(THROWN_WEP.get(), ThrownWepRenderer::new);
+		event.registerEntityRenderer(FALLING_ICE.get(), FallingIceRenderer::new);
+		event.registerEntityRenderer(THROWN_ICE.get(), ThrownIceRenderer::new);
+		event.registerEntityRenderer(THROWN_BLOCK.get(), ThrownBlockRenderer::new);
+		event.registerEntityRenderer(ICE_SNOWBALL.get(), ThrownItemRenderer::new);
+		event.registerEntityRenderer(SLIDER.get(), SlideBlockRenderer::new);
+		event.registerEntityRenderer(SEEKER_ARROW.get(), DefaultArrowRenderer::new);
+		event.registerEntityRenderer(ICE_ARROW.get(), DefaultArrowRenderer::new);
 	}
 
 	@Environment(EnvType.CLIENT)

@@ -29,7 +29,6 @@
   "entity.twilightforest.carminitegolem.hurt": { "subtitle": "subtitles.twilightforest.entity.carminitegolem.hurt", "sounds": [  "mob/irongolem/hit1", "mob/irongolem/hit2", "mob/irongolem/hit3", "mob/irongolem/hit4" ] },
   "entity.twilightforest.carminitegolem.step": { "subtitle": "subtitles.block.generic.footsteps", "sounds": [ "mob/irongolem/walk1", "mob/irongolem/walk2", "mob/irongolem/walk3", "mob/irongolem/walk4" ] },
   "entity.twilightforest.cicada": { "subtitle": "subtitles.twilightforest.entity.cicada", "sounds": [ "twilightforest:mob/cicada0", "twilightforest:mob/cicada1" ] },
-  "entity.twilightforest.cicada_flying": { "subtitle": "subtitles.twilightforest.entity.cicada_flying", "sounds": [ "twilightforest:mob/cicada_flying" ] },
   "entity.twilightforest.deer.death": { "subtitle": "subtitles.twilightforest.entity.deer.death", "sounds": [ "twilightforest:mob/deer/death" ] },
   "entity.twilightforest.deer.hurt": { "subtitle": "subtitles.twilightforest.entity.deer.hurt", "sounds": [ "twilightforest:mob/deer/hurt1", "twilightforest:mob/deer/hurt2" ] },
   "entity.twilightforest.deer.ambient": { "subtitle": "subtitles.twilightforest.entity.deer.ambient", "sounds": [ "twilightforest:mob/deer/idle1", "twilightforest:mob/deer/idle2", "twilightforest:mob/deer/idle3" ] },

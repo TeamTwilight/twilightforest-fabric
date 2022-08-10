@@ -11,7 +11,7 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 32.0,
+                "max": 16.0,
                 "min": 1.0
               },
               "function": "minecraft:set_count"
@@ -87,16 +87,6 @@
         }
       ],
       "rolls": 2.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:lamp_of_cinders"
-        }
-      ],
-      "rolls": 1.0
     }
   ]
 }

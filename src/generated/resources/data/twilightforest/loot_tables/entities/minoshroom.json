@@ -44,54 +44,6 @@
         }
       ],
       "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "conditions": [
-            {
-              "condition": "twilightforest:mod_exists",
-              "mod_id": "immersiveengineering"
-            }
-          ],
-          "functions": [
-            {
-              "default": "twilightforest:meef_stroganoff",
-              "function": "twilightforest:item_or_default"
-            },
-            {
-              "function": "minecraft:set_nbt",
-              "tag": "{shader_name:\"twilightforest:minoshroom\"}"
-            }
-          ],
-          "name": "twilightforest:meef_stroganoff"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "conditions": [
-            {
-              "condition": "twilightforest:mod_exists",
-              "mod_id": "immersiveengineering"
-            }
-          ],
-          "functions": [
-            {
-              "default": "twilightforest:meef_stroganoff",
-              "function": "twilightforest:item_or_default"
-            }
-          ],
-          "name": "twilightforest:meef_stroganoff"
-        }
-      ],
-      "rolls": 1.0
     }
   ]
 }

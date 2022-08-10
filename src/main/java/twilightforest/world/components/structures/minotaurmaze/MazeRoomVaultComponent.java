@@ -12,9 +12,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.loot.TFLootTables;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.loot.TFLootTables;
 
 
 public class MazeRoomVaultComponent extends MazeRoomComponent {
@@ -56,12 +56,17 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 		generateBox(world, sbb, 5, 0, 6, 5, 0, 9, Blocks.TNT.defaultBlockState(), AIR, false);
 		generateBox(world, sbb, 10, 0, 6, 10, 0, 9, Blocks.TNT.defaultBlockState(), AIR, false);
 
-		// LEWTZ!
-		this.setDoubleLootChest(world, 7, 2, 6, 8, 2, 6, Direction.SOUTH, TFLootTables.LABYRINTH_VAULT, TFLootTables.LABYRINTH_ROOM, sbb, false);
-		this.setDoubleLootChest(world, 8, 2, 9, 7, 2, 9, Direction.NORTH, TFLootTables.LABYRINTH_VAULT, TFLootTables.LABYRINTH_ROOM, sbb, false);
-		this.setDoubleLootChest(world, 6, 2, 8, 6, 2, 7, Direction.EAST, TFLootTables.LABYRINTH_VAULT, TFLootTables.LABYRINTH_ROOM, sbb, false);
-		this.setDoubleLootChest(world, 9, 2, 7, 9, 2, 8, Direction.WEST, TFLootTables.LABYRINTH_VAULT, TFLootTables.LABYRINTH_ROOM, sbb, false);
 
-		// mazebreaker!
+		// LEWTZ!
+		int i = rand.nextInt(4); //Set the index of the jackpot chest, so it's not always the same one
+
+		this.setVaultDoubleLootChest(world, 7, 6, 8, 6, Direction.SOUTH, sbb, i == 0);
+		this.setVaultDoubleLootChest(world, 8, 9, 7, 9, Direction.NORTH, sbb, i == 1);
+		this.setVaultDoubleLootChest(world, 6, 8, 6, 7, Direction.EAST, sbb, i == 2);
+		this.setVaultDoubleLootChest(world, 9, 7, 9, 8, Direction.WEST, sbb, i == 3);
+	}
+
+	private void setVaultDoubleLootChest(WorldGenLevel world, int x, int z, int x2, int z2, Direction facing, BoundingBox sbb, boolean jackpot) {
+		this.setDoubleLootChest(world, x, 2, z, x2, 2, z2, facing, jackpot ? TFLootTables.LABYRINTH_VAULT_JACKPOT : TFLootTables.LABYRINTH_VAULT, TFLootTables.LABYRINTH_VAULT, sbb, false);
 	}
 }

@@ -48,8 +48,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.FAKE_DIAMOND.get(), new ResourceLocation("block/diamond_block"));
 		toBlock(TFBlocks.STRONGHOLD_SHIELD.get());
 		toBlock(TFBlocks.TROPHY_PEDESTAL.get());
-		//toBlock(TFBlocks.TERRORCOTTA_CIRCLE.get());
-		//toBlock(TFBlocks.TERRORCOTTA_DIAGONAL.get());
 		toBlockModel(TFBlocks.AURORA_BLOCK.get(), prefix("block/aurora_block_0"));
 		toBlock(TFBlocks.AURORA_PILLAR.get());
 		toBlock(TFBlocks.AURORA_SLAB.get());
@@ -115,10 +113,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.CINDER_LOG.get());
 		toBlock(TFBlocks.CINDER_WOOD.get());
 		toBlockModel(TFBlocks.CINDER_FURNACE.get(), new ResourceLocation("block/furnace"));
-		//toBlock(TFBlocks.YELLOW_CASTLE_DOOR.get());
-		//toBlock(TFBlocks.VIOLET_CASTLE_DOOR.get());
-		//toBlock(TFBlocks.PINK_CASTLE_DOOR.get());
-		//toBlock(TFBlocks.BLUE_CASTLE_DOOR.get());
 		ModelFile think115 = generated("item/think115", prefix("items/think115"));
 		ModelFile fullBlockSprinkle = getExistingFile(prefix("block/experiment115_8_8_regenerating"));
 		generated(TFBlocks.EXPERIMENT_115.getId().getPath(), prefix("items/experiment_115"))
@@ -193,7 +187,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get());
 		toBlock(TFBlocks.CANOPY_BOOKSHELF.get());
 		toBlockModel(TFBlocks.CANDELABRA.get(), "candelabra_4_5_4_plain");
-		//toBlock(TFBlocks.lapis_block.get());
 
 		withExistingParent(TFBlocks.OAK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/oak_planks");
 		withExistingParent(TFBlocks.SPRUCE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/spruce_planks");
@@ -511,7 +504,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile icePulling0 = bowItem("ice_bow_pulling_0", prefix("items/ice_bow_solid_pulling_0"), prefix("items/ice_bow_clear_pulling_0"));
 		ModelFile icePulling1 = bowItem("ice_bow_pulling_1", prefix("items/ice_bow_solid_pulling_1"), prefix("items/ice_bow_clear_pulling_1"));
 		ModelFile icePulling2 = bowItem("ice_bow_pulling_2", prefix("items/ice_bow_solid_pulling_2"), prefix("items/ice_bow_clear_pulling_2"));
-		iceBowTex(TFItems.ICE_BOW, icePulling0, icePulling1, icePulling2);
+		iceBowTex(icePulling0, icePulling1, icePulling2);
 		ModelFile enderPulling0 = bowItem("ender_bow_pulling_0", prefix("items/ender_bow_pulling_0"));
 		ModelFile enderPulling1 = bowItem("ender_bow_pulling_1", prefix("items/ender_bow_pulling_1"));
 		ModelFile enderPulling2 = bowItem("ender_bow_pulling_2", prefix("items/ender_bow_pulling_2"));
@@ -614,29 +607,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFItems.SNOW_QUEEN_BANNER_PATTERN.getId().getPath(), prefix("items/tf_banner_pattern"));
 		generated(TFItems.QUEST_RAM_BANNER_PATTERN.getId().getPath(), prefix("items/tf_banner_pattern"));
 
-		//compat stuff
-		ModelFile freshBook = generated("logbook_0", prefix("items/logbook/fresh"));
-		ModelFile usedBook = generated("logbook_1", prefix("items/logbook/used"));
-		ModelFile smortBook = generated("logbook_2", prefix("items/logbook/knowledgable"));
-		ModelFile masterBook = generated("logbook_3", prefix("items/logbook/supreme"));
-		generated("logbook", prefix("items/logbook/fresh"))
-				.override().predicate(new ResourceLocation("completion"), 0).model(freshBook).end()
-				.override().predicate(new ResourceLocation("completion"), 0.333F).model(usedBook).end()
-				.override().predicate(new ResourceLocation("completion"), 0.666F).model(smortBook).end()
-				.override().predicate(new ResourceLocation("completion"), 1).model(masterBook).end();
-
-		withExistingParent("shader", prefix("item/lunchcase"))
-				.texture("missing", prefix("block/fluffy_cloud"))
-				.texture("face", prefix("block/lunchbox_face"))
-				.texture("side", prefix("block/lunchbox_side"));
-
-		withExistingParent("shader_bag_common", prefix("item/shader"));
-		withExistingParent("shader_bag_uncommon", prefix("item/shader"));
-		withExistingParent("shader_bag_rare", prefix("item/shader"));
-		withExistingParent("shader_bag_epic", prefix("item/shader"));
-		withExistingParent("shader_bag_ie_masterwork", prefix("item/shader"));
-		withExistingParent("shader_bag_twilight", prefix("item/shader"));
-
 		//these models are used as references in other things, they dont have actual items
 		generated("trophy", prefix("items/trophy"));
 		generated("trophy_minor", prefix("items/trophy_minor"));
@@ -668,8 +638,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		return generated(item.getId().getPath(), prefix("items/" + item.getId().getPath()));
 	}
 
-	private ItemModelBuilder arcticArmorTex(RegistryObject<Item> item) {
-		return generated(item.getId().getPath(), prefix("items/" + item.getId().getPath()), prefix("items/" + item.getId().getPath() + "_0"));
+	private void arcticArmorTex(RegistryObject<Item> item) {
+		generated(item.getId().getPath(), prefix("items/" + item.getId().getPath()), prefix("items/" + item.getId().getPath() + "_0"));
 	}
 
 	private ItemModelBuilder bowItem(String name, ResourceLocation... layers) {
@@ -680,15 +650,15 @@ public class ItemModelGenerator extends ItemModelProvider {
 		return builder;
 	}
 
-	private ItemModelBuilder bowTex(RegistryObject<Item> item, ModelFile pull0, ModelFile pull1, ModelFile pull2) {
-		return bowItem(item.getId().getPath(), prefix("items/" + item.getId().getPath()))
+	private void bowTex(RegistryObject<Item> item, ModelFile pull0, ModelFile pull1, ModelFile pull2) {
+		bowItem(item.getId().getPath(), prefix("items/" + item.getId().getPath()))
 				.override().predicate(new ResourceLocation("pulling"), 1).model(pull0).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.65).model(pull1).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.9).model(pull2).end();
 	}
 
-	private ItemModelBuilder iceBowTex(RegistryObject<Item> item, ModelFile pull0, ModelFile pull1, ModelFile pull2) {
-		return bowItem(item.getId().getPath(), prefix("items/ice_bow_solid"), prefix("items/ice_bow_clear"))
+	private void iceBowTex(ModelFile pull0, ModelFile pull1, ModelFile pull2) {
+		bowItem(TFItems.ICE_BOW.getId().getPath(), prefix("items/ice_bow_solid"), prefix("items/ice_bow_clear"))
 				.override().predicate(new ResourceLocation("pulling"), 1).model(pull0).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.65).model(pull1).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.9).model(pull2).end();

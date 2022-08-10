@@ -105,54 +105,6 @@
         }
       ],
       "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "conditions": [
-            {
-              "condition": "twilightforest:mod_exists",
-              "mod_id": "immersiveengineering"
-            }
-          ],
-          "functions": [
-            {
-              "default": "twilightforest:knightmetal_ingot",
-              "function": "twilightforest:item_or_default"
-            },
-            {
-              "function": "minecraft:set_nbt",
-              "tag": "{shader_name:\"twilightforest:knight_phantom\"}"
-            }
-          ],
-          "name": "twilightforest:knightmetal_ingot"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "conditions": [
-            {
-              "condition": "twilightforest:mod_exists",
-              "mod_id": "immersiveengineering"
-            }
-          ],
-          "functions": [
-            {
-              "default": "twilightforest:knightmetal_ingot",
-              "function": "twilightforest:item_or_default"
-            }
-          ],
-          "name": "twilightforest:knightmetal_ingot"
-        }
-      ],
-      "rolls": 1.0
     }
   ]
 }

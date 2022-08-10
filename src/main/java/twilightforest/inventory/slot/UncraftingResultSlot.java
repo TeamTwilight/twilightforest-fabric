@@ -1,7 +1,8 @@
 package twilightforest.inventory.slot;
 
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.item.ItemStack;
@@ -49,9 +50,31 @@ public class UncraftingResultSlot extends ResultSlot {
 			this.inputSlot.removeItem(0, this.uncraftingMatrix.numberOfInputItems);
 		}
 
+		//VanillaCopy of the super method, but altered to work with the assembly matrix
 		this.checkTakeAchievements(stack);
-		for (int i = 0; i < this.assemblyMatrix.getContainerSize(); i++) {
-			this.assemblyMatrix.removeItem(i, 1);
+
+		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(player);
+		NonNullList<ItemStack> remainingItems = player.level.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, this.assemblyMatrix, player.level);
+		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
+
+		for(int i = 0; i < remainingItems.size(); ++i) {
+			ItemStack currentStack = this.assemblyMatrix.getItem(i);
+			ItemStack remainingStack = remainingItems.get(i);
+			if (!currentStack.isEmpty()) {
+				this.assemblyMatrix.removeItem(i, 1);
+				currentStack = this.assemblyMatrix.getItem(i);
+			}
+
+			if (!remainingStack.isEmpty()) {
+				if (currentStack.isEmpty()) {
+					this.assemblyMatrix.setItem(i, remainingStack);
+				} else if (ItemStack.isSame(currentStack, remainingStack) && ItemStack.tagMatches(currentStack, remainingStack)) {
+					remainingStack.grow(currentStack.getCount());
+					this.assemblyMatrix.setItem(i, remainingStack);
+				} else if (!this.player.getInventory().add(remainingStack)) {
+					this.player.drop(remainingStack, false);
+				}
+			}
 		}
 	}
 }

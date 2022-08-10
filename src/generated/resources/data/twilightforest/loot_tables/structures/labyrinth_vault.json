@@ -278,20 +278,6 @@
             }
           ],
           "name": "twilightforest:steeleaf_sword"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "enchantments": {
-                "minecraft:efficiency": 4,
-                "minecraft:fortune": 2,
-                "minecraft:unbreaking": 3
-              },
-              "function": "twilightforest:enchant"
-            }
-          ],
-          "name": "twilightforest:mazebreaker_pickaxe"
         }
       ],
       "rolls": 1.0

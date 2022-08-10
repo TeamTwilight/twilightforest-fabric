@@ -218,10 +218,14 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 			facing = Direction.NORTH;
 		}
 
+		boolean flipContents = world.getRandom().nextBoolean();
+		BlockPos firstChestPos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
+		BlockPos secondChestPos = new BlockPos(this.getWorldX(otherx, otherz), this.getWorldY(othery), this.getWorldZ(otherx, otherz));
+
 		this.placeBlock(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.TYPE, ChestType.LEFT).setValue(ChestBlock.FACING, facing), x, y, z, sbb);
 		this.placeBlock(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).defaultBlockState().setValue(ChestBlock.TYPE, ChestType.RIGHT).setValue(ChestBlock.FACING, facing), otherx, othery, otherz, sbb);
-		treasureType.generateChestContents(world, new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z)));
-		secondaryLootType.generateChestContents(world, new BlockPos(this.getWorldX(otherx, otherz), this.getWorldY(othery), this.getWorldZ(otherx, otherz)));
+		treasureType.generateChestContents(world, flipContents ? secondChestPos : firstChestPos);
+		secondaryLootType.generateChestContents(world, flipContents ? firstChestPos : secondChestPos);
 	}
 
 	/**
