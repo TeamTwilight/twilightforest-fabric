@@ -55,15 +55,15 @@ public class PhantomArmorItem extends ArmorItem implements CustomEnchantingBehav
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !ForgeRegistries.ENCHANTMENTS.tags().getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).contains(enchantment) && CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
+		return !Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(enchantment)) && CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
 		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
-			for (Enchantment banned : ForgeRegistries.ENCHANTMENTS.tags().getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS)) {
-				if (Objects.equals(banned, enchantment)) {
+			for (Holder<Enchantment> banned : Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get()) {
+				if (Objects.equals(banned.value(), enchantment)) {
 					badEnchant.set(true);
 					break;
 				}

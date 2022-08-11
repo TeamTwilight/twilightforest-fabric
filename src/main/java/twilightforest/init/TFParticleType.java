@@ -63,7 +63,7 @@ public class TFParticleType {
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.SNOW.get(), SnowParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.SNOW_GUARDIAN.get(), SnowGuardianParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.SNOW_WARNING.get(), SnowWarningParticle.SimpleFactory::new);
-		event.register(TFParticleType.EXTENDED_SNOW_WARNING.get(), SnowWarningParticle.ExtendedFactory::new);
+		ParticleFactoryRegistry.getInstance().register(TFParticleType.EXTENDED_SNOW_WARNING.get(), SnowWarningParticle.ExtendedFactory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.ICE_BEAM.get(), IceBeamParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);

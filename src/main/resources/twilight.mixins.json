@@ -6,7 +6,6 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "twilightforest.mixin.TFMixinPlugin",
   "client": [
-    "client.LevelRendererMixin",
     "client.MapRendererMapInstanceMixin",
     "client.ModelLayersMixin",
     "client.SheetsMixin"

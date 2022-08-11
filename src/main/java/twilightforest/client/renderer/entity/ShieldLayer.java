@@ -69,7 +69,7 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 				Minecraft.getInstance().getItemRenderer().renderQuadList(
 						stack,
 						buffer.getBuffer(Sheets.translucentCullBlockSheet()),
-						model.getQuads(null, dir, entity.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),
+						model.getQuads(null, dir, entity.getRandom()),
 						ItemStack.EMPTY,
 						0xF000F0,
 						OverlayTexture.NO_OVERLAY

@@ -18,6 +18,8 @@ import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.capabilities.CapabilityList;
+import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
@@ -34,12 +36,12 @@ public class PeacockFanItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		boolean flag = !player.isOnGround() && !player.isSwimming() && !player.getCapability(CapabilityList.FEATHER_FAN_FALLING).map(FeatherFanFallCapability::getFalling).orElse(true);
+		boolean flag = !player.isOnGround() && !player.isSwimming() && !CapabilityList.FEATHER_FAN_FALLING.maybeGet(player).map(FeatherFanFallCapability::getFalling).orElse(true);
 
 		if (!level.isClientSide()) {
 			int fanned = this.doFan(level, player);
 			stack.hurtAndBreak(fanned + 1, player, (user) -> user.broadcastBreakEvent(hand));
-			if (flag) player.getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(cap -> cap.setFalling(true));
+			if (flag) CapabilityList.FEATHER_FAN_FALLING.maybeGet(player).ifPresent(cap -> cap.setFalling(true));
 		} else {
 			if (player.isFallFlying()) {
 				Vec3 look = player.getLookAngle();

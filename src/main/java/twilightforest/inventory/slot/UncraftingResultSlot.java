@@ -53,9 +53,9 @@ public class UncraftingResultSlot extends ResultSlot {
 		//VanillaCopy of the super method, but altered to work with the assembly matrix
 		this.checkTakeAchievements(stack);
 
-		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(player);
+//		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(player);
 		NonNullList<ItemStack> remainingItems = player.level.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, this.assemblyMatrix, player.level);
-		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
+//		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
 
 		for(int i = 0; i < remainingItems.size(); ++i) {
 			ItemStack currentStack = this.assemblyMatrix.getItem(i);

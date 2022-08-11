@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
+import twilightforest.init.BiomeKeys;
 import twilightforest.item.MagicMapItem;
 
 import javax.imageio.ImageIO;

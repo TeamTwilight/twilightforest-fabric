@@ -12,7 +12,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import twilightforest.TwilightForestMod;
 
-public final class PatchModelLoader implements /* FIXME PORT ModelResourceProvider */ IGeometryLoader<UnbakedPatchModel> {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Optional;
+
+public final class PatchModelLoader implements ModelResourceProvider {
     public static final PatchModelLoader INSTANCE = new PatchModelLoader();
 
     private PatchModelLoader() {
@@ -29,7 +33,7 @@ public final class PatchModelLoader implements /* FIXME PORT ModelResourceProvid
             if (!object.has("texture"))
                 throw new JsonParseException("Patch model missing value for 'texture'.");
 
-            return new UnbakedPatchModel(new ResourceLocation(modelContents.get("texture").getAsString()), JsonUtils.getBooleanOr("shaggify", modelContents, false));
+            return new UnbakedPatchModel(new ResourceLocation(object.get("texture").getAsString()), JsonUtils.getBooleanOr("shaggify", object, false));
         }
 
         return null;

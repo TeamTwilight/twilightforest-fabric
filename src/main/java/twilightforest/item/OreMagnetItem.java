@@ -38,6 +38,7 @@ import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem, XpRepairItem {
@@ -62,7 +63,7 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 			}
 		});
 
-		return !badEnchant.get() && super.isBookEnchantable(stack, book);
+		return !badEnchant.get() && CustomEnchantingBehaviorItem.super.isBookEnchantable(stack, book);
 	}
 
 	@Override

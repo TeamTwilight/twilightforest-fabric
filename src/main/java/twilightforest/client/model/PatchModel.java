@@ -226,12 +226,4 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
     public ItemOverrides getOverrides() {
         return ItemOverrides.EMPTY; //I doubt we need to do anything here
     }
-
-    @Override
-    public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-        if (state.is(TFBlocks.CLOVER_PATCH.get())) {
-            return ChunkRenderTypeSet.of(RenderType.cutout());
-        }
-        return BakedModel.super.getRenderTypes(state, rand, data);
-    }
 }
