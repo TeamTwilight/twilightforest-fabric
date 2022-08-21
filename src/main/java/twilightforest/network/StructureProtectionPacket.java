@@ -48,7 +48,7 @@ public class StructureProtectionPacket implements S2CPacket {
 	public static class Handler {
 		public static boolean onMessage(StructureProtectionPacket message, Executor ctx) {
 			ctx.execute(() -> {
-				DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TwilightForestMod.prefix("renderer"));
+				DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
 
 				// add weather box if needed
 				if (info instanceof TwilightForestRenderInfo) {
@@ -56,7 +56,6 @@ public class StructureProtectionPacket implements S2CPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

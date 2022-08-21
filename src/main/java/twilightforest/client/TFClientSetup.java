@@ -83,7 +83,6 @@ public class TFClientSetup implements ClientModInitializer {
 			optifinePresent = false;
 		}
 
-        RenderLayerRegistration.init();
         TFBlockEntities.registerTileEntityRenders();
         TFMenuTypes.renderScreens();
 

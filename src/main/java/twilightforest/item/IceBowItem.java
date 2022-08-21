@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import io.github.fabricators_of_create.porting_lib.item.CustomArrowItem;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -14,7 +15,7 @@ import twilightforest.entity.projectile.IceArrow;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class IceBowItem extends BowItem implements CustomArrowItem {
+public class IceBowItem extends BowItem implements CustomArrowItem, CustomEnchantingBehaviorItem {
 
 	public IceBowItem(Properties props) {
 		super(props);
@@ -34,7 +35,7 @@ public class IceBowItem extends BowItem implements CustomArrowItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Enchantments.FLAMING_ARROWS.equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
+		return !Enchantments.FLAMING_ARROWS.equals(enchantment) && CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override

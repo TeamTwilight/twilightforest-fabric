@@ -1,15 +1,14 @@
-package twilightforest.compat.jei;
+package twilightforest.compat.jei.renderers;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.Registry;
@@ -77,7 +76,6 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 						this.renderTheEntity(this.size / 2, this.size - 2, scale, livingEntity);
 						modelView.popPose();
 						RenderSystem.applyModelViewMatrix();
-						return;
 					} catch (Exception e) {
 						TwilightForestMod.LOGGER.error("Error drawing entity " + Registry.ENTITY_TYPE.getKey(type), e);
 						IGNORED_ENTITIES.add(type);
@@ -89,14 +87,6 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 					this.ENTITY_MAP.remove(type);
 				}
 			}
-
-			// fallback, draw a pink and black "spawn egg"
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			RenderSystem.setShaderTexture(0, TwilightForestMod.getGuiTexture("transformation_jei.png"));
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
-			int offset = (this.size - 16) / 2;
-			Screen.blit(stack, offset, offset, 149.0F, 58.0F, 16, 16, 256, 256);
 		}
 	}
 
@@ -143,8 +133,15 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 		entityrenderdispatcher.overrideCameraOrientation(quaternion1);
 		entityrenderdispatcher.setRenderShadow(false);
 		MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-		RenderSystem.runAsFancy(() ->
-				entityrenderdispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880));
+		RenderSystem.runAsFancy(() -> {
+			entityrenderdispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880);
+			if (entity instanceof MultiPartEntity multiPartEntity && multiPartEntity.isMultipartEntity()) {
+				Arrays.stream(multiPartEntity.getParts())
+						.filter(Objects::nonNull)
+						.forEach(partEntity ->
+								entityrenderdispatcher.render(partEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880));
+			}
+		});
 		multibuffersource$buffersource.endBatch();
 		entityrenderdispatcher.setRenderShadow(true);
 		entity.yBodyRot = f2;

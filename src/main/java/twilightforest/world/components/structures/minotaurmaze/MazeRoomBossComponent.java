@@ -26,6 +26,9 @@ public class MazeRoomBossComponent extends MazeRoomComponent {
 
 	public MazeRoomBossComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFMMRB.get(), feature, i, rand, x, y, z);
+
+		//get the fuck outta here
+		this.spawnListIndex = Integer.MAX_VALUE;
 	}
 
 	@Override

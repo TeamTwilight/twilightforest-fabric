@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import io.github.fabricators_of_create.porting_lib.model.data.ModelData;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;

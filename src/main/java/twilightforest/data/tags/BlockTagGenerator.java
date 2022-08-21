@@ -19,8 +19,8 @@ import java.util.function.Predicate;
 
 public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 	public static final TagKey<Block> TOWERWOOD = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("towerwood"));
-	public static final TagKey<Block> MAZESTONE = BlockTags.create(TwilightForestMod.prefix("mazestone"));
-	public static final TagKey<Block> CASTLE_BLOCKS = BlockTags.create(TwilightForestMod.prefix("castle_blocks"));
+	public static final TagKey<Block> MAZESTONE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("mazestone"));
+	public static final TagKey<Block> CASTLE_BLOCKS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("castle_blocks"));
 
 	public static final TagKey<Block> TWILIGHT_OAK_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("twilight_oak_logs"));
 	public static final TagKey<Block> CANOPY_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("canopy_logs"));
@@ -58,7 +58,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 	public static final TagKey<Block> TROPHIES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("trophies"));
 	public static final TagKey<Block> FIRE_JET_FUEL = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("fire_jet_fuel"));
 	public static final TagKey<Block> ICE_BOMB_REPLACEABLES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("ice_bomb_replaceables"));
-	public static final TagKey<Block> MAZEBREAKER_ACCELERATED = BlockTags.create(TwilightForestMod.prefix("mazebreaker_accelerated_mining"));
+	public static final TagKey<Block> MAZEBREAKER_ACCELERATED = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("mazebreaker_accelerated_mining"));
 
 	public static final TagKey<Block> COMMON_PROTECTIONS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("common_protections"));
 	public static final TagKey<Block> ANNIHILATION_INCLUSIONS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("annihilation_inclusions"));
@@ -75,6 +75,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 	public static final TagKey<Block> ORE_MAGNET_IGNORE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("ore_magnet/ignored_ores"));
 	public static final TagKey<Block> ROOT_GROUND = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "ore_bearing_ground/root"));
 	public static final TagKey<Block> ROOT_ORES = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "ores_in_ground/root"));
+
+	public static final TagKey<Block> TIME_CORE_EXCLUDED = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("time_core_excluded"));
 
 	public BlockTagGenerator(FabricDataGenerator generator) {
 		super(generator);
@@ -480,6 +482,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				TFBlocks.MOSS_PATCH.get(),
 				TFBlocks.CLOVER_PATCH.get(),
 				TFBlocks.FALLEN_LEAVES.get());
+
+		tag(TIME_CORE_EXCLUDED).add(Blocks.NETHER_PORTAL);
 
 		tag(BlockTags.MINEABLE_WITH_AXE).addTag(BANISTERS).addTag(HOLLOW_LOGS).add(
 				TFBlocks.HEDGE.get(),

@@ -120,16 +120,36 @@ public class TFConfig {
 					comment("Settings for all things related to the uncrafting table.").
 					push("Uncrafting Table");
 			{
+				UNCRAFTING_STUFFS.disableUncraftingXpCost = builder.
+						worldRestart().
+						translation(config + "uncrafting_xp_cost").
+						comment("""
+								Setting this to true will make it so you dont have to pay XP to uncraft stuff. This will only affect uncrafting.
+								If you want to disable the xp cost for repairing and recrafting, see the below option.""").
+						define("disableUncraftingXpCost", false);
+				UNCRAFTING_STUFFS.disableRepairingXpCost = builder.
+						worldRestart().
+						translation(config + "repairing_xp_cost").
+						comment("""
+								Setting this to true will make it so you dont have to pay XP to repair and recraft stuff in the uncrafting table. This wont affect uncrafting cost.
+								If youre confused about what repairing and recrafting are, you can read about them here: http://benimatic.com/tfwiki/index.php?title=Uncrafting_Table
+								If you want to disable the xp cost for uncrafting, see the above option.""").
+						define("disableRepairingXpCost", false);
 				UNCRAFTING_STUFFS.disableUncraftingRecipes = builder.
 						worldRestart().
 						translation(config + "uncrafting_recipes").
 						comment("""
 								If you don't want to disable uncrafting altogether, and would rather disable certain recipes, this is for you.
 								To add a recipe, add the mod id followed by the name of the recipe. You can check this in things like JEI.
-								Example: "twilightforest:moonworm_queen" will disable uncrafting the moonworm queen into itself and 3 torchberries.
+								Example: "twilightforest:firefly_particle_spawner" will disable uncrafting the particle spawner into a firefly jar, firefly, and poppy.
 								If an item has multiple crafting recipes and you wish to disable them all, add the item to the "twilightforest:banned_uncraftables" item tag.
 								If you have a problematic ingredient, like infested towerwood for example, add the item to the "twilightforest:banned_uncrafting_ingredients" item tag.""").
 						defineList("disableUncraftingRecipes", new ArrayList<>(), s -> s instanceof String);
+				UNCRAFTING_STUFFS.reverseRecipeBlacklist = builder.
+						worldRestart().
+						translation(config + "uncrafting_recipes_flip").
+						comment("If true, this will invert the above uncrafting recipe list from a blacklist to a whitelist.").
+						define("flipRecipeList", false);
 				UNCRAFTING_STUFFS.blacklistedUncraftingModIds = builder.
 						worldRestart().
 						translation(config + "uncrafting_mod_ids").
@@ -148,6 +168,60 @@ public class TFConfig {
 						translation(config + "uncrafting").
 						comment("Disable the uncrafting function of the uncrafting table. Recommended as a last resort if there's too many things to change about its behavior.").
 						define("disableUncrafting", false);
+			}
+			builder.pop();
+
+			builder.
+					comment("Settings for all things related to the magic trees.").
+					push("Magic Trees");
+			{
+				MAGIC_TREES.disableTime = builder.
+						worldRestart().
+						translation(config + "disable_time").
+						comment("If true, prevents the Timewood Core from functioning.").
+						define("disableTimeCore", false);
+
+				MAGIC_TREES.timeRange = builder.
+						worldRestart().
+						translation(config + "time_range").
+						comment("Defines the radius at which the Timewood Core works. Can be a number anywhere between 1 and 128.")
+						.defineInRange("timeCoreRange", 16, 1, 128);
+
+				MAGIC_TREES.disableTransformation = builder.
+						worldRestart().
+						translation(config + "disable_transformation").
+						comment("If true, prevents the Transformation Core from functioning.").
+						define("disableTransformationCore", false);
+
+				MAGIC_TREES.transformationRange = builder.
+						worldRestart().
+						translation(config + "transformation_range").
+						comment("Defines the radius at which the Transformation Core works. Can be a number anywhere between 1 and 128.")
+						.defineInRange("transformationCoreRange", 16, 1, 128);
+
+				MAGIC_TREES.disableMining = builder.
+						worldRestart().
+						translation(config + "disable_mining").
+						comment("If true, prevents the Minewood Core from functioning.").
+						define("disableMiningCore", false);
+
+				MAGIC_TREES.miningRange = builder.
+						worldRestart().
+						translation(config + "mining_range").
+						comment("Defines the radius at which the Minewood Core works. Can be a number anywhere between 1 and 128.")
+						.defineInRange("miningCoreRange", 16, 1, 128);
+
+				MAGIC_TREES.disableSorting = builder.
+						worldRestart().
+						translation(config + "disable_sorting").
+						comment("If true, prevents the Sortingwood Core from functioning.").
+						define("disableSortingCore", false);
+
+				MAGIC_TREES.sortingRange = builder.
+						worldRestart().
+						translation(config + "sorting_range").
+						comment("Defines the radius at which the Sortingwood Core works. Can be a number anywhere between 1 and 128.")
+						.defineInRange("sortingCoreRange", 16, 1, 128);
 			}
 			builder.pop();
 
@@ -231,11 +305,27 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
 		public ForgeConfigSpec.BooleanValue disableSkullCandles;
 
+		public MagicTrees MAGIC_TREES = new MagicTrees();
+
+		public static class MagicTrees {
+			public ForgeConfigSpec.BooleanValue disableTime;
+			public ForgeConfigSpec.IntValue timeRange;
+			public ForgeConfigSpec.BooleanValue disableTransformation;
+			public ForgeConfigSpec.IntValue transformationRange;
+			public ForgeConfigSpec.BooleanValue disableMining;
+			public ForgeConfigSpec.IntValue miningRange;
+			public ForgeConfigSpec.BooleanValue disableSorting;
+			public ForgeConfigSpec.IntValue sortingRange;
+		}
+
 		public UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
 
 		public static class UncraftingStuff {
+			public ForgeConfigSpec.BooleanValue disableUncraftingXpCost;
+			public ForgeConfigSpec.BooleanValue disableRepairingXpCost;
 			public ForgeConfigSpec.BooleanValue disableUncrafting;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
+			public ForgeConfigSpec.BooleanValue reverseRecipeBlacklist;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedUncraftingModIds;
 			public ForgeConfigSpec.BooleanValue flipUncraftingModIdList;
 		}

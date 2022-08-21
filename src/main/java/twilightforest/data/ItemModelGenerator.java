@@ -105,11 +105,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), "castle_rune_brick_0");
 		toBlockModel(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), "castle_rune_brick_0");
 		toBlockModel(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), "castle_rune_brick_0");
-		generated(TFBlocks.PINK_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		generated(TFBlocks.BLUE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		generated(TFBlocks.GREEN_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		generated(TFBlocks.VIOLET_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
-		generated(TFBlocks.ORANGE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.PINK_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.BLUE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.GREEN_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.VIOLET_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
+		forcefield(TFBlocks.ORANGE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
 		toBlock(TFBlocks.CINDER_LOG.get());
 		toBlock(TFBlocks.CINDER_WOOD.get());
 		toBlockModel(TFBlocks.CINDER_FURNACE.get(), new ResourceLocation("block/furnace"));
@@ -135,7 +135,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.MOSSY_MAZESTONE.get());
 		toBlock(TFBlocks.MAZESTONE_MOSAIC.get());
 		toBlock(TFBlocks.MAZESTONE_BORDER.get());
-		generated(TFBlocks.RED_THREAD.getId().getPath(), TwilightForestMod.prefix("items/red_thread"));
+		fullbright(TFBlocks.RED_THREAD.getId().getPath(), TwilightForestMod.prefix("items/red_thread"));
 		toBlock(TFBlocks.HEDGE.get());
 		toBlock(TFBlocks.ROOT_BLOCK.get());
 		toBlock(TFBlocks.LIVEROOT_BLOCK.get());
@@ -416,19 +416,19 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTexTool(TFItems.IRONWOOD_AXE);
 		singleTexTool(TFItems.IRONWOOD_SHOVEL);
 		singleTexTool(TFItems.IRONWOOD_HOE);
-		singleTex(TFItems.TORCHBERRIES);
+		singleTexFullbright(TFItems.TORCHBERRIES);
 		singleTex(TFItems.RAW_VENISON);
 		singleTex(TFItems.COOKED_VENISON);
 		singleTex(TFItems.HYDRA_CHOP);
 		singleTex(TFItems.FIERY_BLOOD);
 		singleTex(TFItems.FIERY_TEARS);
-		singleTex(TFItems.FIERY_INGOT);
-		singleTex(TFItems.FIERY_HELMET);
-		singleTex(TFItems.FIERY_CHESTPLATE);
-		singleTex(TFItems.FIERY_LEGGINGS);
-		singleTex(TFItems.FIERY_BOOTS);
-		singleTexTool(TFItems.FIERY_SWORD);
-		singleTexTool(TFItems.FIERY_PICKAXE);
+		singleTexFullbright(TFItems.FIERY_INGOT);
+		singleTexFullbright(TFItems.FIERY_HELMET);
+		singleTexFullbright(TFItems.FIERY_CHESTPLATE);
+		singleTexFullbright(TFItems.FIERY_LEGGINGS);
+		singleTexFullbright(TFItems.FIERY_BOOTS);
+		singleTexFullbrightTool(TFItems.FIERY_SWORD);
+		singleTexFullbrightTool(TFItems.FIERY_PICKAXE);
 		singleTex(TFItems.STEELEAF_INGOT);
 		singleTex(TFItems.STEELEAF_HELMET);
 		singleTex(TFItems.STEELEAF_CHESTPLATE);
@@ -457,15 +457,17 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), 1).model(magnetPull2).end();
 		singleTexTool(TFItems.CRUMBLE_HORN);
 		singleTexTool(TFItems.PEACOCK_FEATHER_FAN);
-		ModelFile queenAlt = tool("moonworm_queen_alt", prefix("items/moonworm_queen_alt"));
-		singleTexTool(TFItems.MOONWORM_QUEEN).override().predicate(prefix("alt"), 1).model(queenAlt).end();
+		ModelFile queenAlt = fullbrightTool("moonworm_queen_alt", prefix("items/moonworm_queen_alt"));
+		singleTexFullbrightTool(TFItems.MOONWORM_QUEEN).override().predicate(prefix("alt"), 1).model(queenAlt).end();
 		singleTex(TFItems.CHARM_OF_KEEPING_1);
 		singleTex(TFItems.CHARM_OF_KEEPING_2);
 		singleTex(TFItems.CHARM_OF_KEEPING_3);
 		singleTex(TFItems.CHARM_OF_LIFE_1);
 		singleTex(TFItems.CHARM_OF_LIFE_2);
-		singleTex(TFItems.TOWER_KEY);
+		singleTexFullbright(TFItems.TOWER_KEY);
+		//TODO layer 1 has an emissivity of 7, layer 2 has 15
 		generated(TFItems.BORER_ESSENCE.getId().getPath(), prefix("items/" + TFItems.BORER_ESSENCE.getId().getPath()), prefix("items/borer_essence_particles"));
+		//TODO has an emissivity of 7
 		singleTex(TFItems.CARMINITE);
 		singleTex(TFItems.ARMOR_SHARD);
 		singleTex(TFItems.ARMOR_SHARD_CLUSTER);
@@ -614,24 +616,50 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated("shield", prefix("items/lich_shield_frame"), prefix("items/lich_shield_fill"));
 	}
 
+	private void fullbright(String name, ResourceLocation... layers) {
+		buildItem(name, "item/generated", true, layers);
+	}
+
+	private ItemModelBuilder fullbrightTool(String name, ResourceLocation... layers) {
+		return buildItem(name, "item/handheld", true, layers);
+	}
+
 	private ItemModelBuilder generated(String name, ResourceLocation... layers) {
+		return buildItem(name, "item/generated", false, layers);
+	}
+
+	private ItemModelBuilder tool(String name, ResourceLocation... layers) {
+		return buildItem(name, "item/handheld", false, layers);
+	}
+
+	private ItemModelBuilder buildItem(String name, String parent, boolean fullbright, ResourceLocation... layers) {
+		ItemModelBuilder builder = withExistingParent(name, parent);
+		for (int i = 0; i < layers.length; i++) {
+			builder = builder.texture("layer" + i, layers[i]);
+		}
+		if (fullbright) builder = builder.customLoader(ItemLayersModelBuilder::begin).emissive(0).end();
+		return builder;
+	}
+
+	private ItemModelBuilder forcefield(String name, ResourceLocation... layers) {
 		ItemModelBuilder builder = withExistingParent(name, "item/generated");
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
+		builder = builder.customLoader(ItemLayersModelBuilder::begin).emissive(0).renderType(new ResourceLocation("translucent"), 0).end();
 		return builder;
+	}
+
+	private void singleTexFullbright(RegistryObject<Item> item) {
+		fullbright(item.getId().getPath(), prefix("items/" + item.getId().getPath()));
+	}
+
+	private ItemModelBuilder singleTexFullbrightTool(RegistryObject<Item> item) {
+		return fullbrightTool(item.getId().getPath(), prefix("items/" + item.getId().getPath()));
 	}
 
 	private ItemModelBuilder singleTexTool(RegistryObject<Item> item) {
 		return tool(item.getId().getPath(), prefix("items/" + item.getId().getPath()));
-	}
-
-	private ItemModelBuilder tool(String name, ResourceLocation... layers) {
-		ItemModelBuilder builder = withExistingParent(name, "item/handheld");
-		for (int i = 0; i < layers.length; i++) {
-			builder = builder.texture("layer" + i, layers[i]);
-		}
-		return builder;
 	}
 
 	private ItemModelBuilder singleTex(RegistryObject<Item> item) {

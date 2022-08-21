@@ -42,7 +42,6 @@ public class ThrowPlayerPacket implements S2CPacket {
 		public static boolean onMessage(ThrowPlayerPacket message, Executor ctx) {
 			ctx.execute(() ->
 					Minecraft.getInstance().player.push(message.motionX, message.motionY, message.motionZ));
-			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

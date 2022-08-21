@@ -150,7 +150,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
 				if (!((dx == 2 || dx == -2) && (dz == 2 || dz == -2))) {
-					this.tryToPlaceLeaves(world, pos.offset(dx, 0, dz), Math.abs(dx) + Math.abs(dz));
+					this.tryToPlaceLeaves(world, pos.offset(dx, 0, dz), Math.max(Math.abs(dx) + Math.abs(dz), 1));
 				}
 			}
 		}

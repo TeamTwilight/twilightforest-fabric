@@ -1,7 +1,7 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
-import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.HumanoidModelAccessor;
+import io.github.fabricators_of_create.porting_lib.mixin.client.accessor.HumanoidModelAccessor;
 import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;

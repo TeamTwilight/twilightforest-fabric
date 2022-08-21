@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-05T20:31:17.418585	Twilight Forest Block Tags
+// 1.19.2	2022-08-20T13:29:08.8051363	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -89,6 +89,7 @@ e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/twilightforest/tags/blocks/storage
 34bb5d122fd15f6d868a5ff3cfe8ac8eafc6e892 data/twilightforest/tags/blocks/storage_blocks/steeleaf.json
 e8dff7060ae0b5dc59523232b42860f500def67a data/twilightforest/tags/blocks/structure_banned_interactions.json
 aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/blocks/timewood_logs.json
+6ac229128975c2e8f70b767e08a76386b7bc81df data/twilightforest/tags/blocks/time_core_excluded.json
 6352667067c11a27cfc37713a8f8543507c1f18e data/twilightforest/tags/blocks/towerwood.json
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/blocks/transwood_logs.json
 78d9ab5df124bfcb634f3024d9a5bf46d47c31c5 data/twilightforest/tags/blocks/tree_roots_skip.json

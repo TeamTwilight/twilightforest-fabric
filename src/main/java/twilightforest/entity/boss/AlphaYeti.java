@@ -259,7 +259,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	}
 
 	public void makeRandomBlockFall(int range, int hangTime) {
-		if (ForgeEventFactory.getMobGriefingEvent(this.getLevel(), this)) {
+		if (this.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 			// find a block nearby
 			int bx = Mth.floor(this.getX()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
 			int bz = Mth.floor(this.getZ()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);

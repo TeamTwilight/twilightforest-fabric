@@ -24,7 +24,6 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
-		super.onHitEntity(result);
 		if (!this.getLevel().isClientSide() && !(result.getEntity() instanceof AbstractHurtingProjectile)) {
 			// TF - up damage by 10
 			result.getEntity().hurt(DamageSource.fireball(this, this.getOwner()), 16.0F);

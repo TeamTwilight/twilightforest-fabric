@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import com.google.common.collect.Sets;
+import io.github.fabricators_of_create.porting_lib.data.ModdedBlockLoot;
 import me.alphamode.forgetags.Tags;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -43,7 +44,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.function.BiConsumer;
 
-public class BlockLootTables extends BlockLoot {
+public class BlockLootTables extends ModdedBlockLoot {
 	// [VanillaCopy] of BlockLoot fields, just changed shears to work with modded ones
 	private static final float[] DEFAULT_SAPLING_DROP_RATES = new float[]{0.05F, 0.0625F, 0.083333336F, 0.1F};
 	private static final float[] RARE_SAPLING_DROP_RATES = new float[]{0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F};

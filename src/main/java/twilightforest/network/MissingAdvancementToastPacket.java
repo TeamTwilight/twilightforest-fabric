@@ -40,13 +40,12 @@ public class MissingAdvancementToastPacket implements S2CPacket {
 					Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title, packet.icon));
 				}
 			});
-			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}
 
     @Override
     public void handle(Minecraft client, ClientPacketListener handler, PacketSender sender, SimpleChannel responseTarget) {
-        handle(this, client);
+        Handler.onMessage(this, client);
     }
 }

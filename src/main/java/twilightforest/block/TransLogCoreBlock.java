@@ -14,6 +14,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
+import twilightforest.TFConfig;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ChangeBiomePacket;
 import twilightforest.network.TFPacketHandler;
@@ -26,6 +27,11 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 		super(props);
 	}
 
+	@Override
+	public boolean doesCoreFunction() {
+		return !TFConfig.COMMON_CONFIG.MAGIC_TREES.disableTransformation.get();
+	}
+
 	/**
 	 * The tree of transformation transforms the biome in the area near it into the enchanted forest biome.
 	 */
@@ -33,8 +39,9 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
 		ResourceKey<Biome> target = BiomeKeys.ENCHANTED_FOREST;
 		Holder<Biome> biome = level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getHolderOrThrow(target);
+		int range = TFConfig.COMMON_CONFIG.MAGIC_TREES.transformationRange.get();
 		for (int i = 0; i < 16; i++) {
-			BlockPos dPos = WorldUtil.randomOffset(rand, pos, 16, 0, 16);
+			BlockPos dPos = WorldUtil.randomOffset(rand, pos, range, 0, range);
 			if (dPos.distSqr(pos) > 256.0)
 				continue;
 

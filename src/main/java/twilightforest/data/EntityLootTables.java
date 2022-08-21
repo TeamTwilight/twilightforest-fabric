@@ -1,8 +1,11 @@
 package twilightforest.data;
 
 import com.google.common.collect.Sets;
+import io.github.fabricators_of_create.porting_lib.data.ModdedEntityLoot;
 import io.github.fabricators_of_create.porting_lib.extensions.INBTSerializable;
 import net.minecraft.Util;
+import net.minecraft.advancements.critereon.DamageSourcePredicate;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.core.Registry;
 import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.nbt.CompoundTag;
@@ -41,14 +44,13 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("deprecation")
-public class EntityLootTables extends EntityLoot {
+public class EntityLootTables extends ModdedEntityLoot {
 
 	@Override
 	protected void addTables() {
 		add(TFEntities.ADHERENT.get(), emptyLootTable());
 		add(TFEntities.LICH_MINION.get(), emptyLootTable());
 		add(TFEntities.LOYAL_ZOMBIE.get(), emptyLootTable());
-		add(TFEntities.RISING_ZOMBIE.get(), emptyLootTable());
 		add(TFEntities.KNIGHT_PHANTOM.get(), emptyLootTable());
 		//haha no loot for you
 		add(TFEntities.PLATEAU_BOSS.get(), emptyLootTable());
@@ -70,6 +72,7 @@ public class EntityLootTables extends EntityLoot {
 		add(TFEntities.CARMINITE_BROODLING.get(), fromEntityLootTable(EntityType.SPIDER));
 		add(TFEntities.CARMINITE_GHASTGUARD.get(), fromEntityLootTable(EntityType.GHAST));
 		add(TFEntities.BIGHORN_SHEEP.get(), fromEntityLootTable(EntityType.SHEEP));
+		add(TFEntities.RISING_ZOMBIE.get(), fromEntityLootTable(EntityType.ZOMBIE));
 		add(TFLootTables.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
 		add(TFLootTables.BIGHORN_SHEEP_BLUE, sheepLootTableBuilderWithDrop(Blocks.BLUE_WOOL));
 		add(TFLootTables.BIGHORN_SHEEP_BROWN, sheepLootTableBuilderWithDrop(Blocks.BROWN_WOOL));

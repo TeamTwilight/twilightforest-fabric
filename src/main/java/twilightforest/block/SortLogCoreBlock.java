@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
@@ -34,11 +35,16 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 	}
 
 	@Override
+	public boolean doesCoreFunction() {
+		return !TFConfig.COMMON_CONFIG.MAGIC_TREES.disableSorting.get();
+	}
+
+	@Override
 	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
 		Map<Storage<ItemVariant>, Vec3> inputHandlers = new HashMap<>();
 		Map<Storage<ItemVariant>, Vec3> outputHandlers = new HashMap<>();
 
-		for (BlockPos blockPos : WorldUtil.getAllAround(pos, 16)) {
+		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.COMMON_CONFIG.MAGIC_TREES.sortingRange.get())) {
 			if (!blockPos.equals(pos)) {
 				Storage<ItemVariant> storage = TransferUtil.getItemStorage(level, blockPos);
 

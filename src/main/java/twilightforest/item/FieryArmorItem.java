@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.ChatFormatting;
@@ -31,13 +32,14 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.FieryArmorModel;
 import twilightforest.client.renderer.TFArmorRenderer;
+import twilightforest.init.TFEnchantments;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
-public class FieryArmorItem extends ArmorItem {
+public class FieryArmorItem extends ArmorItem implements CustomEnchantingBehaviorItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.fiery_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public FieryArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
@@ -59,7 +61,7 @@ public class FieryArmorItem extends ArmorItem {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Enchantments.THORNS.equals(enchantment) && !TFEnchantments.CHILL_AURA.get().equals(enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
+		return !Enchantments.THORNS.equals(enchantment) && !TFEnchantments.CHILL_AURA.get().equals(enchantment) && CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	public static String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {

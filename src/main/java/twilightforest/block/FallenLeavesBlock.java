@@ -42,7 +42,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	}
 
 	@Override
-	protected boolean mayPlaceOn(BlockState state, BlockGetter getter, BlockPos pos) {
+	public boolean mayPlaceOn(BlockState state, BlockGetter getter, BlockPos pos) {
 		return super.mayPlaceOn(state, getter, pos) || ((getter.getFluidState(pos).getType() == Fluids.WATER || state.getMaterial() == Material.ICE) && getter.getFluidState(pos.above()).getType() == Fluids.EMPTY);
 	}
 

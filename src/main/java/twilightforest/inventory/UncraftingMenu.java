@@ -1,6 +1,8 @@
 package twilightforest.inventory;
 
 import me.alphamode.forgetags.Tags;
+import net.fabricmc.fabric.api.item.v1.FabricItem;
+import net.fabricmc.fabric.impl.item.ItemExtensions;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -247,7 +249,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 					int level = entry.getValue();
 
 					// only apply enchants that are better than what we already have
-					if (EnchantmentHelper.getTagEnchantmentLevel(ench, result) < level) {
+					if (EnchantmentHelper.getItemEnchantmentLevel(ench, result) < level) {
 						result.enchant(ench, level);
 					}
 				}
@@ -300,7 +302,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 						recipe.canCraftInDimensions(3, 3) &&
 						!recipe.getIngredients().isEmpty() &&
 						matches(inputStack, recipe.getResultItem()) &&
-						!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString())) {
+						TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString())) {
 					if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) {
 						recipes.add(rec);
 					}
@@ -376,7 +378,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		if (stack.getItem() instanceof ArmorItem armor) {
 			return armor.getSlot();
 		}
-		return stack.getEquipmentSlot();
+		return ((ItemExtensions)stack.getItem()).fabric_getEquipmentSlotProvider().getPreferredEquipmentSlot(stack);
 	}
 
 	public int getUncraftingCost() {
@@ -391,6 +393,9 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Calculate the cost of uncrafting, if any.  Return 0 if uncrafting is not available at this time
 	 */
 	private int calculateUncraftingCost() {
+		//disable the uncrafting cost if the config option says to
+		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingXpCost.get()) return 0;
+
 		// we don't want to display anything if there is anything in the assembly grid
 		if (this.assemblyMatrix.isEmpty()) {
 			return this.customCost >= 0 ? this.customCost : countDamageableParts(this.uncraftingMatrix);
@@ -401,6 +406,9 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Return the cost of recrafting, if any.  Return 0 if recrafting is not available at this time
 	 */
 	private int calculateRecraftingCost() {
+
+		//disable the recrafting/repairing cost if the config option says to
+		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableRepairingXpCost.get()) return 0;
 
 		ItemStack input = this.tinkerInput.getItem(0);
 		ItemStack output = this.tinkerResult.getItem(0);
@@ -424,7 +432,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		cost += damagedCost;
 
 		// factor in enchantability difference
-		int enchantabilityDifference = input.getItem().getEnchantmentValue(input) - output.getItem().getEnchantmentValue(output);
+		int enchantabilityDifference = input.getItem().getEnchantmentValue(/*input*/) - output.getItem().getEnchantmentValue(/*output*/);
 		cost += enchantabilityDifference;
 
 		// minimum cost of 1 if we're even calling this part

@@ -1,4 +1,4 @@
-package twilightforest.compat.jei;
+package twilightforest.compat.jei.categories;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;

@@ -1,6 +1,8 @@
 package twilightforest.block;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -21,7 +23,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
 	protected SpecialMagicLogBlock(BlockBehaviour.Properties properties) {
-		super(properties.strength(2.0F).sound(SoundType.WOOD).lightLevel((state) -> 15));
+		super(properties.strength(2.0F).sound(SoundType.WOOD).lightLevel((state) -> state.getValue(ACTIVE) ? 15 : 0));
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
 	}
@@ -46,7 +48,7 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	@Override
 	@Deprecated
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
-		if (level.isClientSide() || !state.getValue(ACTIVE)) return;
+		if (level.isClientSide() || !state.getValue(ACTIVE) || !this.doesCoreFunction()) return;
 
 		this.playSound(level, pos, rand);
 		this.performTreeEffect(level, pos, rand);
@@ -57,6 +59,12 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	@Override
 	@Deprecated
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+		if (!this.doesCoreFunction()) {
+			state.setValue(ACTIVE, false);
+			player.displayClientMessage(Component.translatable("block.twilightforest.core.disabled", this.getName()).withStyle(ChatFormatting.RED), true);
+			return InteractionResult.SUCCESS;
+		}
+
 		if (!state.getValue(ACTIVE)) {
 			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
 			level.scheduleTick(pos, this, this.tickRate());
@@ -70,6 +78,8 @@ public abstract class SpecialMagicLogBlock extends RotatedPillarBlock {
 	}
 
 	abstract void performTreeEffect(Level level, BlockPos pos, RandomSource rand);
+
+	public abstract boolean doesCoreFunction();
 
 	protected void playSound(Level level, BlockPos pos, RandomSource rand) {
 	}

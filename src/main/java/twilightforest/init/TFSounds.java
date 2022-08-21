@@ -60,7 +60,6 @@ public final class TFSounds {
 	public static final RegistryObject<SoundEvent> CHARM_KEEP = createEvent("item.twilightforest.charm.keep");
 	public static final RegistryObject<SoundEvent> CHARM_LIFE = createEvent("item.twilightforest.charm.life");
 	public static final RegistryObject<SoundEvent> CICADA = createEvent("entity.twilightforest.cicada");
-	public static final RegistryObject<SoundEvent> CICADA_FLYING = createEvent("entity.twilightforest.cicada_flying");
 	public static final RegistryObject<SoundEvent> DEER_DEATH = createEvent("entity.twilightforest.deer.death");
 	public static final RegistryObject<SoundEvent> DEER_HURT = createEvent("entity.twilightforest.deer.hurt");
 	public static final RegistryObject<SoundEvent> DEER_AMBIENT = createEvent("entity.twilightforest.deer.ambient");

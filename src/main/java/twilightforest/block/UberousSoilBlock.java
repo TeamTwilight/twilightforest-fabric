@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.extensions.IPlantable;
+import io.github.fabricators_of_create.porting_lib.util.IPlantable;
 import io.github.fabricators_of_create.porting_lib.util.PlantType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

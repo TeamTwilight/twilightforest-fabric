@@ -1,5 +1,9 @@
 {
   "parent": "minecraft:item/handheld",
+  "emissive_layers": [
+    0
+  ],
+  "loader": "forge:item_layers",
   "overrides": [
     {
       "model": "twilightforest:item/moonworm_queen_alt",
@@ -8,6 +12,7 @@
       }
     }
   ],
+  "render_types": {},
   "textures": {
     "layer0": "twilightforest:items/moonworm_queen"
   }

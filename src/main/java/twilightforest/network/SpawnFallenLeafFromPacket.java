@@ -67,7 +67,6 @@ public class SpawnFallenLeafFromPacket implements S2CPacket {
 					);
 				}
 			});
-			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

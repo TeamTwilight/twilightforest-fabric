@@ -116,7 +116,7 @@ public class ChainBlockItem extends DiggerItem implements FabricItem, ShieldBloc
 	}
 
 	public Tier getHarvestLevel(ItemStack stack) {
-		int enchantLevel = EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack);
+		int enchantLevel = EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack);
 		if (enchantLevel == 2) {
 			return Tiers.STONE;
 		} else if (enchantLevel >= 3) {

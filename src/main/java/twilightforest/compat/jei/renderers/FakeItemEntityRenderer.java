@@ -1,4 +1,4 @@
-package twilightforest.compat.jei;
+package twilightforest.compat.jei.renderers;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -23,6 +23,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.compat.jei.FakeItemEntity;
 
 import java.util.ArrayList;
 import java.util.List;

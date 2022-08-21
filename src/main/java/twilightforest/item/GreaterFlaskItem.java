@@ -29,30 +29,21 @@ public class GreaterFlaskItem extends BrittleFlaskItem {
 	}
 
 	@Override
-	public boolean isBarVisible(ItemStack stack) {
-		return false;
-	}
-
-	@Override
 	public Rarity getRarity(ItemStack stack) {
 		return PotionUtils.getMobEffects(stack).isEmpty() ? Rarity.UNCOMMON : Rarity.RARE;
 	}
 
-	//no break
+	//no breaking
 	@Override
 	public boolean canBreak() {
 		return false;
 	}
 
 	@Override
-	public boolean canBeRefilled(ItemStack stack) {
-		return true;
-	}
-
-	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
-		tooltip.add(Component.translatable("item.twilightforest.flask_doses", stack.getOrCreateTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
+		if (stack.getTag() != null)
+			tooltip.add(Component.translatable("item.twilightforest.flask_doses", stack.getTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
 	}
 
 	@Override

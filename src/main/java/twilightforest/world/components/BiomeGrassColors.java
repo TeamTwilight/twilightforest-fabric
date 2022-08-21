@@ -14,7 +14,7 @@ public class BiomeGrassColors {
 	public static int getEnchantedColor(int x, int z) {
 		// center of the biome is at % 256 - 8
 		int cx = 256 * Math.round((x - 8) / 256F) + 8;
-		int cz = 256 * Math.round((z - 8) / 256F) + 8;
+		int cz = 256 * Math.round((z - 8) / 256F) - 8;
 
 		int dist = (int) Mth.sqrt((cx - x) * (cx - x) + (cz - z) * (cz - z));
 		int color = dist * 64;
@@ -25,13 +25,6 @@ public class BiomeGrassColors {
 		}
 
 		color = 255 - color;
-
-		// FIXME Biome colors are cached on chunk model build since like 1.7, we should be doing this differently. Maybe perlin based
-		int randomFlicker = COLOR_RNG.nextInt(32) - 16;
-
-		if (0 < color + randomFlicker && color + randomFlicker > 255) {
-			color += randomFlicker;
-		}
 
 		return color;
 	}

@@ -1,4 +1,4 @@
-package twilightforest.compat.jei;
+package twilightforest.compat.jei.renderers;
 
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
@@ -7,6 +7,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.compat.jei.JEICompat;
 
 import java.util.Objects;
 

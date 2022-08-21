@@ -41,11 +41,7 @@ repositories {
 dependencies {
     // dev env
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.layered() {
-        it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${project.minecraft_version}+build.${project.qm_build}:v2"))
-//        it.parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip") // TODO not on 1.19 yet
-        it.officialMojangMappings { setNameSyntheticMembers(false) }
-    }
+    mappings loom.officialMojangMappings()
     modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 
     modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") { exclude(group: "net.fabricmc.fabric-api") }
@@ -56,7 +52,8 @@ dependencies {
     // dependencies
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
     modImplementation(include(fabricApi.module("fabric-data-generation-api-v1", project.fabric_version))) // include datagen api since FAPI fatjar doesn't
-    modImplementation(include("io.github.fabricators_of_create:Porting-Lib:${project.port_lib_version}+${project.minecraft_version}"))
+    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:porting-lib:${project.port_lib_version}+${project.minecraft_version}"))
+    modImplementation(include("io.github.tropheusj:serialization-hooks:${project.serialization_hooks_version}"))
     modImplementation(include("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}"))
     modImplementation(include("net.minecraftforge:forgeconfigapiport-fabric:${project.config_api_version}"))
     modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"))

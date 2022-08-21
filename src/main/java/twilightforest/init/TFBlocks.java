@@ -35,7 +35,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> MOSS_PATCH = BLOCKS.register("moss_patch", () -> new MossPatchBlock(BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.MOSS).noCollission().noOcclusion()));
 	public static final RegistryObject<Block> MAYAPPLE = BLOCKS.register("mayapple", () -> new MayappleBlock(BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.GRASS).noCollission().noOcclusion()));
 	public static final RegistryObject<Block> CLOVER_PATCH = BLOCKS.register("clover_patch", () -> new PatchBlock(BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.GRASS).noCollission().noOcclusion()));
-	public static final RegistryObject<Block> FIDDLEHEAD = BLOCKS.register("fiddlehead", () -> new FiddleheadBlock(BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.GRASS).noCollission().noOcclusion()));
+	public static final RegistryObject<Block> FIDDLEHEAD = BLOCKS.register("fiddlehead", () -> new FiddleheadBlock(BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).instabreak().sound(SoundType.GRASS).noCollission().noOcclusion()));
 	public static final RegistryObject<Block> MUSHGLOOM = BLOCKS.register("mushgloom", () -> new MushgloomBlock(BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.FUNGUS).noCollission().noOcclusion().lightLevel((state) -> 3)));
 	public static final RegistryObject<Block> TORCHBERRY_PLANT = BLOCKS.register("torchberry_plant", () -> new TorchberryPlantBlock(BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.HANGING_ROOTS).noCollission().noOcclusion().lightLevel((state) -> (state.getValue(TorchberryPlantBlock.HAS_BERRIES) ? 8 : 0))));
 	public static final RegistryObject<Block> ROOT_STRAND = BLOCKS.register("root_strand", () -> new RootStrandBlock(BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.HANGING_ROOTS).noCollission().noOcclusion()));
@@ -100,7 +100,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> MOSSY_MAZESTONE = BLOCKS.register("mossy_mazestone", () -> new Block(BlockBehaviour.Properties.copy(MAZESTONE.get())));
 	public static final RegistryObject<Block> MAZESTONE_MOSAIC = BLOCKS.register("mazestone_mosaic", () -> new Block(BlockBehaviour.Properties.copy(MAZESTONE.get())));
 	public static final RegistryObject<Block> MAZESTONE_BORDER = BLOCKS.register("mazestone_border", () -> new Block(BlockBehaviour.Properties.copy(MAZESTONE.get())));
-	public static final RegistryObject<Block> RED_THREAD = BLOCKS.register("red_thread", () -> new RedThreadBlock(BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noCollission()));
+	public static final RegistryObject<Block> RED_THREAD = BLOCKS.register("red_thread", () -> new RedThreadBlock(BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noCollission().color(MaterialColor.FIRE)));
 
 	//stronghold
 	public static final RegistryObject<Block> STRONGHOLD_SHIELD = BLOCKS.register("stronghold_shield", () -> new StrongholdShieldBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(-1.0F, 6000000.0F).sound(SoundType.METAL).noLootTable()));

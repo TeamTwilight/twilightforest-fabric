@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.extensions.IPlantable;
 import io.github.fabricators_of_create.porting_lib.util.PlantType;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;

@@ -2,7 +2,6 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.util.RandomSource;
-import io.github.fabricators_of_create.porting_lib.util.LevelUtil;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockState;

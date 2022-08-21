@@ -1,4 +1,4 @@
-package twilightforest.compat.trinkets;
+package twilightforest.compat.trinkets.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -14,8 +14,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.item.CharmOfKeepingModel;
 import twilightforest.item.CuriosCharmItem;
+import twilightforest.compat.trinkets.model.CharmOfKeepingModel;
 
 public class CharmOfKeepingRenderer implements TrinketRenderer {
 

@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.block.ValidSpawnBlock;
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
@@ -14,7 +15,7 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 
-public class HardenedDarkLeavesBlock extends Block implements BlockPickInteractionAware {
+public class HardenedDarkLeavesBlock extends Block implements BlockPickInteractionAware, ValidSpawnBlock {
 
 	public HardenedDarkLeavesBlock(Properties props) {
 		super(props);

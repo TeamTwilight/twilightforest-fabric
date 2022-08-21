@@ -42,7 +42,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.WrittenBookItem;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -50,8 +49,6 @@ import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
-import twilightforest.client.model.item.FullbrightBakedModel;
-import twilightforest.client.model.item.TintIndexAwareFullbrightBakedModel;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
@@ -59,7 +56,6 @@ import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
-import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
 import twilightforest.util.WorldUtil;
@@ -67,9 +63,7 @@ import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
 
 @Environment(EnvType.CLIENT)
 public class TFClientEvents {
@@ -97,63 +91,6 @@ public class TFClientEvents {
 
 		public static void modelBake(ModelManager manager, Map<ResourceLocation, BakedModel> models, ModelBakery loader) {
 			TFItems.addItemModelProperties();
-
-			// TODO Unhardcode, into using Model Deserializers and load from JSON instead
-			fullbrightItem(models, TFItems.FIERY_INGOT);
-			fullbrightItem(models, TFItems.FIERY_BOOTS);
-			fullbrightItem(models, TFItems.FIERY_CHESTPLATE);
-			fullbrightItem(models, TFItems.FIERY_HELMET);
-			fullbrightItem(models, TFItems.FIERY_LEGGINGS);
-			fullbrightItem(models, TFItems.FIERY_PICKAXE);
-			fullbrightItem(models, TFItems.FIERY_SWORD);
-
-			fullbrightItem(models, TFItems.RED_THREAD);
-
-			fullbrightBlock(models, TFBlocks.FIERY_BLOCK);
-		}
-
-		private static void fullbrightItem(Map<ResourceLocation, BakedModel> models, RegistryObject<Item> item) {
-			fullbrightItem(models, item, f -> f);
-		}
-
-		private static void fullbrightItem(Map<ResourceLocation, BakedModel> models, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
-			fullbright(models, Objects.requireNonNull(item.getId()), "inventory", process);
-		}
-
-		private static void fullbrightBlock(Map<ResourceLocation, BakedModel> models, RegistryObject<Block> block) {
-			fullbrightBlock(models, block, f -> f);
-		}
-
-		private static void fullbrightBlock(Map<ResourceLocation, BakedModel> models, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
-			fullbright(models, Objects.requireNonNull(block.getId()), "inventory", process);
-			fullbright(models, Objects.requireNonNull(block.getId()), "", process);
-		}
-
-		private static void fullbright(Map<ResourceLocation, BakedModel> models, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
-			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			models.put(mrl, process.apply(new FullbrightBakedModel(models.get(mrl))));
-		}
-
-		private static void tintedFullbrightItem(Map<ResourceLocation, BakedModel> models, RegistryObject<Item> item) {
-			tintedFullbrightItem(models, item, f -> f);
-		}
-
-		private static void tintedFullbrightItem(Map<ResourceLocation, BakedModel> models, RegistryObject<Item> item, UnaryOperator<FullbrightBakedModel> process) {
-			tintedFullbright(models, Objects.requireNonNull(item.getId()), "inventory", process);
-		}
-
-		private static void tintedFullbrightBlock(Map<ResourceLocation, BakedModel> models, RegistryObject<Block> block) {
-			tintedFullbrightBlock(models, block, f -> f);
-		}
-
-		private static void tintedFullbrightBlock(Map<ResourceLocation, BakedModel> models, RegistryObject<Block> block, UnaryOperator<FullbrightBakedModel> process) {
-			tintedFullbright(models, Objects.requireNonNull(block.getId()), "inventory", process);
-			tintedFullbright(models, Objects.requireNonNull(block.getId()), "", process);
-		}
-
-		private static void tintedFullbright(Map<ResourceLocation, BakedModel> models, ResourceLocation rl, String state, UnaryOperator<FullbrightBakedModel> process) {
-			ModelResourceLocation mrl = new ModelResourceLocation(rl, state);
-			models.put(mrl, process.apply(new TintIndexAwareFullbrightBakedModel(models.get(mrl))));
 		}
 
 		public static void texStitch(TextureAtlas map, Consumer<ResourceLocation> spriteAdder) {

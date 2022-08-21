@@ -374,23 +374,23 @@ public class TFEntities {
 		EntityRendererRegistry.register(PLATEAU_BOSS.get(), NoopRenderer::new);
 
 		// projectiles
-		event.registerEntityRenderer(NATURE_BOLT.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/items/twilight_orb.png")));
-		event.registerEntityRenderer(WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/items/twilight_orb.png")));
-		event.registerEntityRenderer(TOME_BOLT.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(HYDRA_MORTAR.get(), HydraMortarRenderer::new);
-		event.registerEntityRenderer(SLIME_BLOB.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(MOONWORM_SHOT.get(), MoonwormShotRenderer::new);
-		event.registerEntityRenderer(CHARM_EFFECT.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(LICH_BOMB.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(THROWN_WEP.get(), ThrownWepRenderer::new);
-		event.registerEntityRenderer(FALLING_ICE.get(), FallingIceRenderer::new);
-		event.registerEntityRenderer(THROWN_ICE.get(), ThrownIceRenderer::new);
-		event.registerEntityRenderer(THROWN_BLOCK.get(), ThrownBlockRenderer::new);
-		event.registerEntityRenderer(ICE_SNOWBALL.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(SLIDER.get(), SlideBlockRenderer::new);
-		event.registerEntityRenderer(SEEKER_ARROW.get(), DefaultArrowRenderer::new);
-		event.registerEntityRenderer(ICE_ARROW.get(), DefaultArrowRenderer::new);
+		EntityRendererRegistry.register(NATURE_BOLT.get(), ThrownItemRenderer::new);
+		EntityRendererRegistry.register(LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/items/twilight_orb.png")));
+		EntityRendererRegistry.register(WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/items/twilight_orb.png")));
+		EntityRendererRegistry.register(TOME_BOLT.get(), ThrownItemRenderer::new);
+		EntityRendererRegistry.register(HYDRA_MORTAR.get(), HydraMortarRenderer::new);
+		EntityRendererRegistry.register(SLIME_BLOB.get(), ThrownItemRenderer::new);
+		EntityRendererRegistry.register(MOONWORM_SHOT.get(), MoonwormShotRenderer::new);
+		EntityRendererRegistry.register(CHARM_EFFECT.get(), ThrownItemRenderer::new);
+		EntityRendererRegistry.register(LICH_BOMB.get(), ThrownItemRenderer::new);
+		EntityRendererRegistry.register(THROWN_WEP.get(), ThrownWepRenderer::new);
+		EntityRendererRegistry.register(FALLING_ICE.get(), FallingIceRenderer::new);
+		EntityRendererRegistry.register(THROWN_ICE.get(), ThrownIceRenderer::new);
+		EntityRendererRegistry.register(THROWN_BLOCK.get(), ThrownBlockRenderer::new);
+		EntityRendererRegistry.register(ICE_SNOWBALL.get(), ThrownItemRenderer::new);
+		EntityRendererRegistry.register(SLIDER.get(), SlideBlockRenderer::new);
+		EntityRendererRegistry.register(SEEKER_ARROW.get(), DefaultArrowRenderer::new);
+		EntityRendererRegistry.register(ICE_ARROW.get(), DefaultArrowRenderer::new);
 	}
 
 	@Environment(EnvType.CLIENT)

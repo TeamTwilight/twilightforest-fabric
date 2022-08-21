@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.fabricators_of_create.porting_lib.item.WalkOnSnowItem;
 import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.ChatFormatting;
@@ -26,10 +27,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.renderer.TFArmorRenderer;
+import twilightforest.init.TFItems;
 
 import java.util.List;
 
-public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem {
+public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, WalkOnSnowItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public ArcticArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties properties) {

@@ -9,6 +9,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import twilightforest.capabilities.CapabilityList;
+import twilightforest.capabilities.thrown.YetiThrowCapability;
 import twilightforest.entity.IHostileMount;
 import twilightforest.init.TFDamageSources;
 
@@ -29,11 +31,12 @@ public class HostileMountEvents {
 			return 0;
 		}
 
-		if (damageSource == DamageSource.FALL && living.getCapability(CapabilityList.YETI_THROWN).map(YetiThrowCapability::getThrown).orElse(false)) {
-			float amount = event.getAmount();
+		if (damageSource == DamageSource.FALL && CapabilityList.YETI_THROWN.maybeGet(living).map(YetiThrowCapability::getThrown).orElse(false)) {
 			event.setCanceled(true);
-			living.hurt(TFDamageSources.yeeted(living.getCapability(CapabilityList.YETI_THROWN).resolve().get().getThrower()), amount);
+			living.hurt(TFDamageSources.yeeted(CapabilityList.YETI_THROWN.maybeGet(living).get().getThrower()), amount);
 		}
+
+		return amount;
 	}
 
 	public static void entityTeleports(EntityTeleportEvent event) {

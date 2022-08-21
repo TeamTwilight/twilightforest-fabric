@@ -56,7 +56,6 @@ public class UncraftingGuiPacket implements C2SPacket {
 				}
 			});
 
-			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

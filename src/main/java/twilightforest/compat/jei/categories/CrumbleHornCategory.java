@@ -1,4 +1,4 @@
-package twilightforest.compat.jei;
+package twilightforest.compat.jei.categories;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
@@ -14,6 +14,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TwilightForestMod;
+import twilightforest.compat.jei.FakeItemEntity;
+import twilightforest.compat.jei.renderers.FakeItemEntityRenderer;
+import twilightforest.compat.jei.JEICompat;
 import twilightforest.init.TFItems;
 import twilightforest.item.recipe.CrumbleRecipe;
 

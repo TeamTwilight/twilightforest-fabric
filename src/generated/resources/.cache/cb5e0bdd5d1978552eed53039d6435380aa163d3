@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-08T07:25:59.7837087	TwilightForest loot tables
+// 1.19.2	2022-08-11T08:23:20.50837	TwilightForest loot tables
 9992978a24c986ab8bbacfd4cb5c88b4b3d653a2 data/twilightforest/loot_tables/blocks/acacia_banister.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_trophy.json
 fc581ec88db2dfcaf7146ce9e5f1b5a3ef8b2634 data/twilightforest/loot_tables/blocks/alpha_yeti_wall_trophy.json
@@ -463,7 +463,7 @@ ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data/twilightforest/loot_tables/entitie
 53fe759ce8b0828308d42091b01c5608dc7e3d19 data/twilightforest/loot_tables/entities/raven.json
 d4b1c2236dd7c80a4bb2faf7f8267f8bf2b41bc6 data/twilightforest/loot_tables/entities/redcap.json
 13cbc3b0403816220ffa764eda30cac8b4b30652 data/twilightforest/loot_tables/entities/redcap_sapper.json
-ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data/twilightforest/loot_tables/entities/rising_zombie.json
+d10e857ca8aaea5d4eab8dfd57b2132964b855c5 data/twilightforest/loot_tables/entities/rising_zombie.json
 ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data/twilightforest/loot_tables/entities/roving_cube.json
 5b3adfe7bea747796813f4a5401f2be713ef29f6 data/twilightforest/loot_tables/entities/skeleton_druid.json
 ed6283cd82a193e2c3ce45265d36b9886efc2495 data/twilightforest/loot_tables/entities/slime_beetle.json

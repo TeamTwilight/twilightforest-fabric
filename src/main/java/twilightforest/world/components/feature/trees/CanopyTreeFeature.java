@@ -2,7 +2,6 @@ package twilightforest.world.components.feature.trees;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
-import io.github.fabricators_of_create.porting_lib.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;

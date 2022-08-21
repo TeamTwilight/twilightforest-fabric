@@ -1,6 +1,7 @@
 package twilightforest.client.model.item;
 
 import com.google.common.collect.Maps;
+import io.github.fabricators_of_create.porting_lib.model.QuadTransformers;
 import io.github.fabricators_of_create.porting_lib.util.LightUtil;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
