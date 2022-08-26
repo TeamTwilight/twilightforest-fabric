@@ -376,16 +376,12 @@ public class TFClientEvents {
 		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
 		boolean visible = !(stack.getItem() instanceof TrophyItem) && !(stack.getItem() instanceof SkullCandleItem) && !areCuriosEquipped(event.getEntity());
 
-		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
-			headedModel.getHead().visible = visible;
+		if (!visible && event.getRenderer().getModel() instanceof HeadedModel headedModel) {
+			headedModel.getHead().visible = false;
 			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = visible && partShown(event.getEntity());
+				humanoidModel.hat.visible = false;
 			}
 		}
-	}
-
-	private static boolean partShown(Entity entity) {
-		return !(entity instanceof AbstractClientPlayer player) || player.isModelPartShown(PlayerModelPart.HAT);
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
