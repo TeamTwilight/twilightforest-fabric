@@ -14,6 +14,12 @@ import twilightforest.block.AbstractLightableBlock;
 
 public class IgniteLightableDispenseBehavior extends OptionalDispenseItemBehavior {
 
+	private final DispenseItemBehavior vanillaBehavior;
+
+	public IgniteLightableDispenseBehavior(DispenseItemBehavior vanillaBehavior) {
+		this.vanillaBehavior = vanillaBehavior;
+	}
+
 	@Override
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
 		ServerLevel level = source.getLevel();
@@ -25,7 +31,7 @@ public class IgniteLightableDispenseBehavior extends OptionalDispenseItemBehavio
 			}
 		}
 
-		return stack;
+		return this.vanillaBehavior.dispense(source, stack);
 	}
 
 	private static boolean tryLightBlock(ServerLevel level, BlockPos pos) {
