@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.PieceGeneratorSupplier;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
@@ -23,10 +24,12 @@ public class LegacyStructureFeature extends TwilightStructureFeature<NoneFeature
         super(NoneFeatureConfiguration.CODEC, configContext -> isValidBiome(configContext) ? feature.generatePieces(configContext).map(piece -> (structurePiecesBuilder, context) -> {
 			structurePiecesBuilder.addPiece(piece);
 			piece.addChildren(piece, structurePiecesBuilder, context.random());
-			structurePiecesBuilder.pieces.stream()
-					.filter(TFStructureComponentTemplate.class::isInstance)
-					.map(TFStructureComponentTemplate.class::cast)
-					.forEach(t -> t.LAZY_TEMPLATE_LOADER.run());
+
+			for (StructurePiece structurePiece : structurePiecesBuilder.pieces) {
+				if (structurePiece instanceof TFStructureComponentTemplate t) {
+					t.LAZY_TEMPLATE_LOADER.run();
+				}
+			}
 		}) : Optional.empty());
         this.feature = feature;
     }
