@@ -13,6 +13,7 @@
   ],
   "mixins": [
     "ConnectionMixin",
+    "DispenserBlockAccessor",
     "PlayerListMixin"
   ],
   "injectors": {

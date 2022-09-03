@@ -1,5 +1,22 @@
 package twilightforest.compat;
 
+import io.github.fabricators_of_create.porting_lib.event.client.RegisterShadersCallback.ShaderRegistry;
+import me.alphamode.star.events.client.ModelBakeEvent;
+import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.phys.Vec3;
+import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
+import twilightforest.entity.projectile.CicadaShot;
+
+import java.util.Locale;
+
+/*
 import blusunrize.immersiveengineering.api.crafting.builders.ThermoelectricSourceBuilder;
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import blusunrize.immersiveengineering.api.tool.RailgunHandler;
@@ -40,7 +57,7 @@ import java.util.Locale;
  *   - I wasnt able to properly call {@link ShaderManager#initShaders}, so that may be why
  * - There was a lonely command in the client proxy that I moved to its own command class. Once ShaderManager is back online, verify the command works and add it to the list of commands.
  * - A class in the disabled bin called GradientMappedTexture is helplessly broken. If anyone can fix this, re-enable the event in {@link TFClientEvents.ModBusEvents#texStitch} and correct the bandaid fixes in {@link IEShaderRegister}
- */
+ *
 public class IECompat extends TFCompat {
 
     public IECompat() {
@@ -120,3 +137,4 @@ public class IECompat extends TFCompat {
         }
     }
 }
+*/

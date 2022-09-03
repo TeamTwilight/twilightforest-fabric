@@ -13,12 +13,14 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.tags.ItemTagGenerator;
+import twilightforest.item.recipe.UncraftingRecipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,7 +90,22 @@ public class REIUncraftingCategory implements DisplayCategory<REIUncraftingDispl
             widgets.add(Widgets.createSlot(new Point(bounds.getX() + x * 18 + 63, bounds.getY() + y * 18 + 1)).markOutput().disableBackground().entries(EntryIngredients.ofIngredient(outputs.get(j - k)))); //Set input as output and place in the grid
         }
 
-        widgets.add(Widgets.createSlot(new Point(bounds.getX() + 5, bounds.getY() + 19)).markInput().disableBackground().entries(EntryIngredients.of(recipe.getResultItem())));//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
+        if (recipe instanceof UncraftingRecipe uncraftingRecipe) {
+            ItemStack[] stacks = uncraftingRecipe.getIngredient().getItems();
+            ItemStack[] stackedStacks = new ItemStack[stacks.length];
+            for (int i = 0; i < stacks.length; i++) stackedStacks[i] = new ItemStack(stacks[0].getItem(), uncraftingRecipe.getCount());
+            widgets.add(Widgets.createSlot(new Point(bounds.getX() + 5, bounds.getY() + 19))
+                    .markInput()
+                    .disableBackground()
+                    .entries(EntryIngredients.ofIngredient(Ingredient.of(stackedStacks)))
+            );//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack
+        } else {
+            widgets.add(Widgets.createSlot(new Point(bounds.getX() + 5, bounds.getY() + 19))
+                    .markInput()
+                    .disableBackground()
+                    .entries(EntryIngredients.of(recipe.getResultItem()))
+            );//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
+        }
         return widgets;
     }
 }

@@ -121,7 +121,10 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
                 EntityType.DONKEY,
                 EntityType.MULE);
 
-        tag(IETags.shaderbagBlacklist).addTag(BOSSES);
+        tag(TagKey.create(
+                Registry.ENTITY_TYPE_REGISTRY,
+                new ResourceLocation("immersiveengineering", "shaderbag/blacklist")
+        )).addTag(BOSSES);
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation rl) {
