@@ -2,6 +2,7 @@ package twilightforest.dispenser;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,6 +15,12 @@ import twilightforest.block.AbstractLightableBlock;
 
 public class IgniteLightableDispenseBehavior extends OptionalDispenseItemBehavior {
 
+	private final DispenseItemBehavior vanillaBehavior;
+
+	public IgniteLightableDispenseBehavior(DispenseItemBehavior vanillaBehavior) {
+		this.vanillaBehavior = vanillaBehavior;
+	}
+
 	@Override
 	protected ItemStack execute(BlockSource source, ItemStack stack) {
 		ServerLevel level = source.getLevel();
@@ -25,7 +32,7 @@ public class IgniteLightableDispenseBehavior extends OptionalDispenseItemBehavio
 			}
 		}
 
-		return stack;
+		return this.vanillaBehavior.dispense(source, stack);
 	}
 
 	private static boolean tryLightBlock(ServerLevel level, BlockPos pos) {

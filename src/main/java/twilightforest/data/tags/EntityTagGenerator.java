@@ -120,6 +120,8 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
                 EntityType.TRADER_LLAMA,
                 EntityType.DONKEY,
                 EntityType.MULE);
+
+        tag(IETags.shaderbagBlacklist).addTag(BOSSES);
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation rl) {

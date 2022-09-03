@@ -384,10 +384,6 @@ public class TFClientEvents {
 		}
 	}
 
-	private static boolean partShown(Entity entity) {
-		return !(entity instanceof AbstractClientPlayer player) || player.isModelPartShown(PlayerModelPart.HAT);
-	}
-
 	private static boolean areCuriosEquipped(LivingEntity entity) {
 		if (FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
 			return TrinketsCompat.isTrophyCurioEquipped(entity) || TrinketsCompat.isSkullCurioEquipped(entity);
