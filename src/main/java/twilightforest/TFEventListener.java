@@ -364,14 +364,20 @@ public class TFEventListener {
 
 		if (charmOfLife(player)) {
 			return false; // Executes if the player had charms
-		} else if (!player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+		}
+		// fabric: inv storage moved to onPlayerActuallyDead
+		return true;
+	}
+
+	// fabric: only store stuff on death when actually dead
+	public static void onPlayerActuallyDead(ServerPlayer player) {
+		if (!player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
 			// Did the player recover? No? Let's give them their stuff based on the keeping charms
 			charmOfKeeping(player);
 
 			// Then let's store the rest of their stuff in the casket
 			keepsakeCasket(player);
 		}
-		return true;
 	}
 
 	private static boolean casketExpiration = false;
