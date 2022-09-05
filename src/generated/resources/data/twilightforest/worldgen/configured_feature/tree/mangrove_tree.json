@@ -9,12 +9,12 @@
           "state": {
             "Name": "twilightforest:firefly",
             "Properties": {
-              "facing": "north",
+              "facing": "up",
               "waterlogged": "false"
             }
           }
         },
-        "placement_count": 1,
+        "placement_count": 2,
         "probability_of_placement": 1.0
       },
       {

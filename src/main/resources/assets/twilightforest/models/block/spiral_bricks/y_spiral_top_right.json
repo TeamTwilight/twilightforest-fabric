@@ -178,7 +178,7 @@
 			"from": [0, 0, 13],
 			"to": [16, 8, 16],
 			"faces": {
-				"east": {"uv": [8, 3, 0, 0], "rotation": 90, "texture": "#border", "cullface": "east"},
+				"east": {"uv": [16, 16, 8, 13], "rotation": 270, "texture": "#border", "cullface": "east"},
 				"south": {"uv": [8, 0, 16, 16], "rotation": 90, "texture": "#border", "cullface": "south"},
 				"west": {"uv": [16, 3, 8, 0], "rotation": 270, "texture": "#inner_a", "cullface": "west"},
 				"down": {"uv": [0, 0, 1.5, 8], "rotation": 90, "texture": "#pattern", "cullface": "down"}
@@ -355,11 +355,13 @@
 		{
 			"name": "group",
 			"origin": [8, 8, 8],
+			"color": 0,
 			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 		},
 		{
 			"name": "group",
 			"origin": [8, 8, 8],
+			"color": 0,
 			"children": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41]
 		}
 	]

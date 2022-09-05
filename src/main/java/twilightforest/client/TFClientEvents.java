@@ -27,7 +27,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.*;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -42,6 +41,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.WrittenBookItem;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -58,9 +60,9 @@ import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFItems;
 import twilightforest.item.*;
-import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -219,16 +221,28 @@ public class TFClientEvents {
 			}
 
 			if (TFConfig.CLIENT_CONFIG.firstPersonEffects.get() && mc.level != null && mc.player != null) {
-				for (BlockPos pos : WorldUtil.getAllAround(mc.player.blockPosition(), 16)) {
-					if (mc.level.getBlockEntity(pos) instanceof GrowingBeanstalkBlockEntity bean && bean.isBeanstalkRumbling()) {
-						Player player = mc.player;
-						intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(pos)) / Math.pow(16, 2));
-						if (intensity > 0) {
-							player.moveTo(player.getX(), player.getY(), player.getZ(),
-									player.getYRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity,
-									player.getXRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity);
-							intensity = 0.0F;
-							break;
+				HashSet<ChunkPos> chunksInRange = new HashSet<>();
+				for (int x = -16; x <= 16; x += 16) {
+					for (int z = -16; z <= 16; z += 16) {
+						chunksInRange.add(new ChunkPos((int) (mc.player.getX() + x) >> 4, (int) (mc.player.getZ() + z) >> 4));
+					}
+				}
+				for (ChunkPos pos : chunksInRange) {
+					if (mc.level.getChunk(pos.x, pos.z, ChunkStatus.FULL, false) != null) {
+						List<BlockEntity> beanstalksInChunk = mc.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream()
+								.filter(blockEntity -> blockEntity instanceof GrowingBeanstalkBlockEntity beanstalkBlock && beanstalkBlock.isBeanstalkRumbling())
+								.collect(Collectors.toList());
+						if (!beanstalksInChunk.isEmpty()) {
+							BlockEntity beanstalk = beanstalksInChunk.get(0);
+							Player player = mc.player;
+							intensity = (float) (1.0F - mc.player.distanceToSqr(Vec3.atCenterOf(beanstalk.getBlockPos())) / Math.pow(16, 2));
+							if (intensity > 0) {
+								player.moveTo(player.getX(), player.getY(), player.getZ(),
+										player.getYRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity,
+										player.getXRot() + (player.getRandom().nextFloat() * 2.0F - 1.0F) * intensity);
+								intensity = 0.0F;
+								break;
+							}
 						}
 					}
 				}

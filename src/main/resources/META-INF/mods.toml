@@ -1,20 +1,20 @@
-modLoader="javafml" #mandatory
+modLoader="javafml"
 loaderVersion="[43,)"
-issueTrackerURL="https://github.com/TeamTwilight/twilightforest/issues" #optional
+issueTrackerURL="https://github.com/TeamTwilight/twilightforest/issues"
 license="GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
 
 [[mods]]
 modId="twilightforest"
 version="${file.jarVersion}"
 displayName="The Twilight Forest"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest" #optional
+itemIcon="twilightforest:twilight_portal_miniature_structure"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest"
 updateJSONURL="https://gh.tamaized.com/TeamTwilight/twilightforest/update.json"
-logoFile="twilightforest_logo.png" #optional
-credits="By Benimatic (Ben Mazur)" #optional
-authors="Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus, Andromander, GizmoTheMoonPig, Jodlodi" #optional
+logoFile="twilightforest_logo.png"
+credits="By Benimatic (Ben Mazur)"
+authors="Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus, Andromander, GizmoTheMoonPig, Jodlodi"
 description='''
-An enchanted forest dimension.
-'''
+An enchanted forest dimension.'''
 
 [[dependencies.twilightforest]]
     modId="forge"
@@ -29,3 +29,6 @@ An enchanted forest dimension.
     versionRange="[1.19.2,)"
     ordering="NONE"
     side="BOTH"
+
+[modproperties.twilightforest]
+    configuredBackground="twilightforest:textures/block/mazestone_large_brick.png"

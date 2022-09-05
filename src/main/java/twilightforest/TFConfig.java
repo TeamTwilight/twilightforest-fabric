@@ -132,7 +132,7 @@ public class TFConfig {
 						translation(config + "repairing_xp_cost").
 						comment("""
 								Setting this to true will make it so you dont have to pay XP to repair and recraft stuff in the uncrafting table. This wont affect uncrafting cost.
-								If youre confused about what repairing and recrafting are, you can read about them here: http://benimatic.com/tfwiki/index.php?title=Uncrafting_Table
+								If you're confused about what repairing and recrafting are, you can read about them here: http://benimatic.com/tfwiki/index.php?title=Uncrafting_Table
 								If you want to disable the xp cost for uncrafting, see the above option.""").
 						define("disableRepairingXpCost", false);
 				UNCRAFTING_STUFFS.disableUncraftingRecipes = builder.
@@ -144,7 +144,7 @@ public class TFConfig {
 								Example: "twilightforest:firefly_particle_spawner" will disable uncrafting the particle spawner into a firefly jar, firefly, and poppy.
 								If an item has multiple crafting recipes and you wish to disable them all, add the item to the "twilightforest:banned_uncraftables" item tag.
 								If you have a problematic ingredient, like infested towerwood for example, add the item to the "twilightforest:banned_uncrafting_ingredients" item tag.""").
-						defineList("disableUncraftingRecipes", new ArrayList<>(), s -> s instanceof String);
+						defineList("disableUncraftingRecipes", List.of("twilightforest:giant_log_to_oak_planks"), s -> s instanceof String);
 				UNCRAFTING_STUFFS.reverseRecipeBlacklist = builder.
 						worldRestart().
 						translation(config + "uncrafting_recipes_flip").
@@ -364,6 +364,10 @@ public class TFConfig {
 					translation(config + "locked_toasts").
 					comment("Disables the toasts that appear when a biome is locked. Not recommended if you're not familiar with progression.").
 					define("disableLockedBiomeToasts", false);
+			showQuestRamCrosshairIndicator = builder.
+					translation(config + "ram_indicator").
+					comment("Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.").
+					define("questRamWoolIndicator", true);
 		}
 
 		public ForgeConfigSpec.BooleanValue silentCicadas;
@@ -371,6 +375,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
 		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 		public ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
+		public ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
 	}
 
 	private static final String config = TwilightForestMod.ID + ".config.";

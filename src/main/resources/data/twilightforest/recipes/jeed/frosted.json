@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "modid": "jeed",
+          "type": "forge:mod_loaded"
+        }
+      ],
+      "recipe": {
+        "type": "jeed:effect_provider",
+        "effect": {
+          "id": "twilightforest:frosted"
+        },
+        "providers": [
+          {
+            "item": "twilightforest:alpha_yeti_spawn_egg"
+          },
+          {
+            "item": "twilightforest:ice_bomb"
+          },
+          {
+            "item": "twilightforest:ice_bow"
+          },
+          {
+            "item": "twilightforest:ice_sword"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,6 +1,10 @@
-// 1.19.2	2022-08-05T20:31:17.3886659	Twilight Forest Item Tags
+// 1.19.2	2022-09-03T22:43:30.5805563	Twilight Forest Item Tags
 3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/items/charm.json
 28506418ae14efe13cfbe34765fa39ba5d6e03e7 data/curios/tags/items/head.json
+017a0eae9dcb1c009506ab7fb1bf5ed2867507aa data/forge/tags/items/armors/boots.json
+03872ed5aa0d028cd3b99a2831294e3a644fe8cc data/forge/tags/items/armors/chestplates.json
+026e98f4ffeff627fe9fe8cfc5cb65d8cb836366 data/forge/tags/items/armors/helmets.json
+655cef31e84248dab842522100e9d348cc681c2d data/forge/tags/items/armors/leggings.json
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/items/chests/wooden.json
 359528c25cb6b4d29dc01cbafbeb8f161c0dac0f data/forge/tags/items/feathers.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/items/fences.json
@@ -26,6 +30,13 @@ c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/forge/tags/items/storage_blocks/fi
 b1bdb774a7cf90e5cfbf8d045a3ccca943b8e073 data/forge/tags/items/storage_blocks/ironwood.json
 e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/forge/tags/items/storage_blocks/knightmetal.json
 34bb5d122fd15f6d868a5ff3cfe8ac8eafc6e892 data/forge/tags/items/storage_blocks/steeleaf.json
+bbc3c7d372a10410465d7fb27cb47b47e553f7c1 data/forge/tags/items/tools/axes.json
+2973abf7fe5598a763a9738ca24c06f80b1eb5b1 data/forge/tags/items/tools/bows.json
+b696524eda9e607bebc1b307e19c2b1633b8b0b1 data/forge/tags/items/tools/hoes.json
+53c28c807e0dd902c2220e008fdba29fd288f535 data/forge/tags/items/tools/pickaxes.json
+1b205b8add451aa431d3db9121828f233c2cbad2 data/forge/tags/items/tools/shields.json
+c962432d898202b279bf401da90ab10b601de742 data/forge/tags/items/tools/shovels.json
+931bc115353e6c267d36d480a5891285fde13487 data/forge/tags/items/tools/swords.json
 e66649b3248e051912913e282cb83d3b5006cde0 data/minecraft/tags/items/freeze_immune_wearables.json
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/items/leaves.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/items/logs.json
@@ -46,7 +57,7 @@ f3de4b0d6d2929c8fab124e75ff6269ca7642aa7 data/minecraft/tags/items/wooden_stairs
 8522d5d06fec7c30601264eb04aebaa58886a948 data/minecraft/tags/items/wooden_trapdoors.json
 b365ad6615ef9b05f43067637b8c869c06150e9e data/twilightforest/tags/items/arctic_fur.json
 03701e27c1ba9819ac4dc5865a2bd2ab3be6a7be data/twilightforest/tags/items/banned_uncraftables.json
-56270443a1fd793325c562a083f2166dcc07d426 data/twilightforest/tags/items/banned_uncrafting_ingredients.json
+db3a933719c405a3ec1c7ba068704346c2eb30a0 data/twilightforest/tags/items/banned_uncrafting_ingredients.json
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/items/canopy_logs.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/items/darkwood_logs.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/twilightforest/tags/items/fences.json
@@ -65,4 +76,5 @@ aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/items/timewood
 6352667067c11a27cfc37713a8f8543507c1f18e data/twilightforest/tags/items/towerwood.json
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/items/transwood_logs.json
 d94381f990d5908c2d71247b1b14946ef4a4ef3d data/twilightforest/tags/items/twilight_oak_logs.json
+00307f9c52357fb388557306df3446b2f1fcef42 data/twilightforest/tags/items/uncrafting_ignores_cost.json
 01dc9db4a8fa2842566a0d9311358d09014c1c41 data/twilightforest/tags/items/wip.json

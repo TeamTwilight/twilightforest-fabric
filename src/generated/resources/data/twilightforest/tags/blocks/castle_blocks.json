@@ -15,6 +15,14 @@
     "twilightforest:cracked_castle_brick_stairs",
     "twilightforest:mossy_castle_brick_stairs",
     "twilightforest:encased_castle_brick_stairs",
-    "twilightforest:bold_castle_brick_stairs"
+    "twilightforest:bold_castle_brick_stairs",
+    "twilightforest:pink_castle_rune_brick",
+    "twilightforest:yellow_castle_rune_brick",
+    "twilightforest:blue_castle_rune_brick",
+    "twilightforest:violet_castle_rune_brick",
+    "twilightforest:pink_castle_door",
+    "twilightforest:yellow_castle_door",
+    "twilightforest:blue_castle_door",
+    "twilightforest:violet_castle_door"
   ]
 }

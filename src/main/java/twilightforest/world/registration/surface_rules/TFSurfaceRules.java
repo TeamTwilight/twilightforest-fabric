@@ -19,11 +19,7 @@ public class TFSurfaceRules {
 	private static final SurfaceRules.RuleSource GRAVEL = makeStateRule(Blocks.GRAVEL);
 	private static final SurfaceRules.RuleSource SAND = makeStateRule(Blocks.SAND);
 	private static final SurfaceRules.RuleSource SANDSTONE = makeStateRule(Blocks.SANDSTONE);
-	private static final SurfaceRules.RuleSource ICE = makeStateRule(Blocks.ICE);
-	private static final SurfaceRules.RuleSource PACKED_ICE = makeStateRule(Blocks.PACKED_ICE);
 	private static final SurfaceRules.RuleSource SNOW = makeStateRule(Blocks.SNOW_BLOCK);
-	private static final SurfaceRules.RuleSource WATER = makeStateRule(Blocks.WATER);
-	private static final SurfaceRules.RuleSource LAVA = makeStateRule(Blocks.LAVA);
 	private static final SurfaceRules.RuleSource WEATHERED_DEADROCK = makeStateRule(TFBlocks.WEATHERED_DEADROCK.get());
 	private static final SurfaceRules.RuleSource CRACKED_DEADROCK = makeStateRule(TFBlocks.CRACKED_DEADROCK.get());
 	private static final SurfaceRules.RuleSource DEADROCK = makeStateRule(TFBlocks.DEADROCK.get());
@@ -137,12 +133,13 @@ public class TFSurfaceRules {
 
 		ImmutableList.Builder<SurfaceRules.RuleSource> builder = ImmutableList.builder();
 		builder
+
+				.add(SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)), BEDROCK))
 				.add(highlandsNoise)
 				.add(deadrockLands)
 				.add(snowyForest)
 				.add(glacier)
-				.add(overworldLike)
-				.add(SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(5)), BEDROCK));
+				.add(overworldLike);
 
 		return SurfaceRules.sequence(builder.build().toArray(SurfaceRules.RuleSource[]::new));
 	}

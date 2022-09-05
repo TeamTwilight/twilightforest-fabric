@@ -347,22 +347,28 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Checks if the result is a valid match for the input. Currently, only accepts armor or tools that are the same type as the input
 	 */
 	private static boolean isValidMatchForInput(ItemStack inputStack, ItemStack resultStack) {
-		if (inputStack.getItem() instanceof PickaxeItem && resultStack.getItem() instanceof PickaxeItem) {
+		if (inputStack.is(Tags.Items.TOOLS_PICKAXES) && resultStack.is(Tags.Items.TOOLS_PICKAXES)) {
 			return true;
 		}
-		if (inputStack.getItem() instanceof AxeItem && resultStack.getItem() instanceof AxeItem) {
+		if (inputStack.is(Tags.Items.TOOLS_AXES) && resultStack.is(Tags.Items.TOOLS_AXES)) {
 			return true;
 		}
-		if (inputStack.getItem() instanceof ShovelItem && resultStack.getItem() instanceof ShovelItem) {
+		if (inputStack.is(Tags.Items.TOOLS_SHOVELS) && resultStack.is(Tags.Items.TOOLS_SHOVELS)) {
 			return true;
 		}
-		if (inputStack.getItem() instanceof HoeItem && resultStack.getItem() instanceof HoeItem) {
+		if (inputStack.is(Tags.Items.TOOLS_HOES) && resultStack.is(Tags.Items.TOOLS_HOES)) {
 			return true;
 		}
-		if (inputStack.getItem() instanceof SwordItem && resultStack.getItem() instanceof SwordItem) {
+		if (inputStack.is(Tags.Items.TOOLS_SWORDS) && resultStack.is(Tags.Items.TOOLS_SWORDS)) {
 			return true;
 		}
-		if (inputStack.getItem() instanceof BowItem && resultStack.getItem() instanceof BowItem) {
+		if (inputStack.is(Tags.Items.TOOLS_BOWS) && resultStack.is(Tags.Items.TOOLS_BOWS)) {
+			return true;
+		}
+		if (inputStack.is(Tags.Items.TOOLS_CROSSBOWS) && resultStack.is(Tags.Items.TOOLS_CROSSBOWS)) {
+			return true;
+		}
+		if (inputStack.is(Tags.Items.TOOLS_FISHING_RODS) && resultStack.is(Tags.Items.TOOLS_FISHING_RODS)) {
 			return true;
 		}
 
@@ -519,7 +525,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Should the specified item count for taking damage?
 	 */
 	private static boolean isDamageableComponent(ItemStack itemStack) {
-		return !itemStack.isEmpty() && !itemStack.is(Tags.Items.RODS_WOODEN);
+		return !itemStack.is(ItemTagGenerator.UNCRAFTING_IGNORES_COST);
 	}
 
 	/**

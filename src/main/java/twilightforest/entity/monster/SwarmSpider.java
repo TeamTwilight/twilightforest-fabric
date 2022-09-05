@@ -141,7 +141,7 @@ public class SwarmSpider extends Spider {
 		int chunkX = Mth.floor(pos.getX()) >> 4;
 		int chunkZ = Mth.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return LegacyLandmarkPlacements.getNearestLandmark(chunkX, chunkZ, (ServerLevel) accessor) == TFLandmark.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(accessor, pos, random);
+		return LegacyLandmarkPlacements.getNearestLandmark(chunkX, chunkZ, accessor.getLevel()) == TFLandmark.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(accessor, pos, random);
 	}
 
 	public boolean shouldSpawnMore() {

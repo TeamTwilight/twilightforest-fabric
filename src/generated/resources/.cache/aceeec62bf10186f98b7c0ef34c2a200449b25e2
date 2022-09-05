@@ -1,4 +1,4 @@
-// 1.19.2	2022-08-20T13:29:08.8051363	Twilight Forest Block Tags
+// 1.19.2	2022-08-29T12:19:11.762866	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -21,12 +21,12 @@ e121d38615572a340044db73e20622af4e2a0a7c data/minecraft/tags/blocks/flower_pots.
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/blocks/leaves.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/blocks/logs.json
 0af80d33dcbb7226a5afcb9d8a4c1a73a2c38c9d data/minecraft/tags/blocks/logs_that_burn.json
-8074b6b4b55668d5f80b4d11012e3c2f3e808e24 data/minecraft/tags/blocks/mineable/axe.json
+9022052caf62d58b8c739699427d1cd2524f2aa5 data/minecraft/tags/blocks/mineable/axe.json
 7177f5d8a3deacfcbfc12170902b73749e87213c data/minecraft/tags/blocks/mineable/hoe.json
-26b50408aa86f5495db200a2da049a7efde021c1 data/minecraft/tags/blocks/mineable/pickaxe.json
+c63d6b6410a738e387285a07c999f83e3c294490 data/minecraft/tags/blocks/mineable/pickaxe.json
 944d5178d1a94490d123e31a73bc58d4eea852ab data/minecraft/tags/blocks/mineable/shovel.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/blocks/mushroom_grow_block.json
-8e5f8010258f82c7282ceebd861c14aded7afeae data/minecraft/tags/blocks/needs_diamond_tool.json
+2bf47fe6e0917f3367c02164a55fb63e562f268d data/minecraft/tags/blocks/needs_diamond_tool.json
 d1f677ac5e8be6bff6bd3a82b3586cd745434ef9 data/minecraft/tags/blocks/needs_iron_tool.json
 dfe388780d9d636ad393c72d71b3ff7e0d725c09 data/minecraft/tags/blocks/needs_stone_tool.json
 894142a18566c008a63daa05efba2dde1ef6eb26 data/minecraft/tags/blocks/occludes_vibration_signals.json
@@ -55,7 +55,7 @@ fde6c4812b9605196b988840ddf7a18543095022 data/twilightforest/tags/blocks/baniste
 84101198c6b6d645c6e155abb5349d33e7279300 data/twilightforest/tags/blocks/canopy_logs.json
 65138d47619b3b87ed5cdf3b4ec226e0bfebfb64 data/twilightforest/tags/blocks/carminite_reactor_immune.json
 66c63c2aea9e2f572dee901056877665b812ae56 data/twilightforest/tags/blocks/carminite_reactor_ores.json
-b0ced719d0a9b9e0782222405c773779b2c89002 data/twilightforest/tags/blocks/castle_blocks.json
+ecd0a9f97ab5b54a7c21ed4f6af6896d564ea5f0 data/twilightforest/tags/blocks/castle_blocks.json
 981ca24d355367f28a0a94beab8608f2915c6c76 data/twilightforest/tags/blocks/common_protections.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/blocks/darkwood_logs.json
 29d004c820708d44b1747a2f31f506646efb1a27 data/twilightforest/tags/blocks/dark_tower_allowed_pots.json
@@ -70,7 +70,7 @@ c8fafdcc498cb38e705f74c899c6adee8c1c137e data/twilightforest/tags/blocks/ice_bom
 33bdeefc5a85e9afb7b260809bec0d2a615d1f0f data/twilightforest/tags/blocks/logs.json
 089e4347e6320066de4cd4d08b3e04a9442f4090 data/twilightforest/tags/blocks/mangrove_logs.json
 dd1f6af3c96cc308a52726613452fddc17b9833c data/twilightforest/tags/blocks/mazebreaker_accelerated_mining.json
-efef6a00948d61f46b9ee643ef4f87471c552c3b data/twilightforest/tags/blocks/mazestone.json
+6983cf03e3e0ed197a353c175ee65000bac02492 data/twilightforest/tags/blocks/mazestone.json
 9a0837862b33f048722739e6314f5c471d56b2d6 data/twilightforest/tags/blocks/mining_logs.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/twilightforest/tags/blocks/ores/ironwood.json
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/twilightforest/tags/blocks/ores/knightmetal.json

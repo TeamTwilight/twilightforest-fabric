@@ -4,7 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
@@ -47,11 +49,20 @@ public class TrunkSideDecorator extends TreeDecorator {
 		for (int attempt = 0; attempt < this.count; attempt++) {
 			if (context.random().nextFloat() >= this.probability) continue;
 
-			Rotation rot = Rotation.getRandom(context.random());
-			BlockPos pos = context.logs().get(context.random().nextInt(blockCount)).relative(rot.rotate(Direction.NORTH));
-
-			if (context.isAir(pos)) // Checks if block is air
-				context.setBlock(pos, this.decoration.getState(context.random(), pos));
+			//initial position on the tree trunk
+			BlockPos logPos = context.logs().get(context.random().nextInt(blockCount));
+			//pick a random direction to offset
+			Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(context.random());
+			//commit and set our new placement position there
+			BlockPos newPos = logPos.offset(direction.getStepX(), 0, direction.getStepZ());
+			//if we have empty space, we're golden!
+			if (context.isAir(newPos)) {
+				if (this.decoration.getState(context.random(), newPos).hasProperty(BlockStateProperties.FACING)) {
+					context.setBlock(newPos, this.decoration.getState(context.random(), newPos).setValue(BlockStateProperties.FACING, direction));
+				} else {
+					context.setBlock(newPos, this.decoration.getState(context.random(), newPos));
+				}
+			}
 		}
 	}
 }

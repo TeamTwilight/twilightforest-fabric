@@ -64,6 +64,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
 	public static final TagKey<Item> BANNED_UNCRAFTING_INGREDIENTS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("banned_uncrafting_ingredients"));
 	public static final TagKey<Item> BANNED_UNCRAFTABLES = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("banned_uncraftables"));
+	public static final TagKey<Item> UNCRAFTING_IGNORES_COST = ItemTags.create(TwilightForestMod.prefix("uncrafting_ignores_cost"));
 
 	public static final TagKey<Item> KEPT_ON_DEATH = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("kept_on_death"));
 
@@ -214,7 +215,6 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		tag(ItemTags.MUSIC_DISCS).addTag(TF_MUSIC_DISCS);
 
 		tag(BANNED_UNCRAFTING_INGREDIENTS).add(
-				TFBlocks.GIANT_LOG.get().asItem(),
 				TFBlocks.INFESTED_TOWERWOOD.get().asItem(),
 				TFBlocks.HOLLOW_OAK_SAPLING.get().asItem(),
 				TFBlocks.TIME_SAPLING.get().asItem(),
@@ -224,6 +224,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFItems.TRANSFORMATION_POWDER.get());
 
 		tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.get().asItem());
+		tag(UNCRAFTING_IGNORES_COST).addTag(Tags.Items.RODS_WOODEN);
 
 		tag(KEPT_ON_DEATH).add(TFItems.TOWER_KEY.get(), TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 
@@ -259,6 +260,64 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(),
 				TFBlocks.CREEPER_SKULL_CANDLE.get().asItem(),
 				TFBlocks.PLAYER_SKULL_CANDLE.get().asItem());
+
+		tag(Tags.Items.ARMORS_HELMETS).add(
+				TFItems.IRONWOOD_HELMET.get(),
+				TFItems.STEELEAF_HELMET.get(),
+				TFItems.KNIGHTMETAL_HELMET.get(),
+				TFItems.PHANTOM_HELMET.get(),
+				TFItems.FIERY_HELMET.get(),
+				TFItems.ARCTIC_HELMET.get(),
+				TFItems.YETI_HELMET.get());
+
+		tag(Tags.Items.ARMORS_CHESTPLATES).add(
+				TFItems.NAGA_CHESTPLATE.get(),
+				TFItems.IRONWOOD_CHESTPLATE.get(),
+				TFItems.STEELEAF_CHESTPLATE.get(),
+				TFItems.KNIGHTMETAL_CHESTPLATE.get(),
+				TFItems.PHANTOM_CHESTPLATE.get(),
+				TFItems.FIERY_CHESTPLATE.get(),
+				TFItems.ARCTIC_CHESTPLATE.get(),
+				TFItems.YETI_CHESTPLATE.get());
+
+		tag(Tags.Items.ARMORS_LEGGINGS).add(
+				TFItems.NAGA_LEGGINGS.get(),
+				TFItems.IRONWOOD_LEGGINGS.get(),
+				TFItems.STEELEAF_LEGGINGS.get(),
+				TFItems.KNIGHTMETAL_LEGGINGS.get(),
+				TFItems.FIERY_LEGGINGS.get(),
+				TFItems.ARCTIC_LEGGINGS.get(),
+				TFItems.YETI_LEGGINGS.get());
+
+		tag(Tags.Items.ARMORS_BOOTS).add(
+				TFItems.IRONWOOD_BOOTS.get(),
+				TFItems.STEELEAF_BOOTS.get(),
+				TFItems.KNIGHTMETAL_BOOTS.get(),
+				TFItems.FIERY_BOOTS.get(),
+				TFItems.ARCTIC_BOOTS.get(),
+				TFItems.YETI_BOOTS.get());
+
+		tag(Tags.Items.TOOLS_SWORDS).add(
+				TFItems.IRONWOOD_SWORD.get(),
+				TFItems.STEELEAF_SWORD.get(),
+				TFItems.KNIGHTMETAL_SWORD.get(),
+				TFItems.FIERY_SWORD.get(),
+				TFItems.GIANT_SWORD.get(),
+				TFItems.ICE_SWORD.get(),
+				TFItems.GLASS_SWORD.get());
+
+		tag(Tags.Items.TOOLS_PICKAXES).add(
+				TFItems.IRONWOOD_PICKAXE.get(),
+				TFItems.STEELEAF_PICKAXE.get(),
+				TFItems.KNIGHTMETAL_PICKAXE.get(),
+				TFItems.FIERY_PICKAXE.get(),
+				TFItems.GIANT_PICKAXE.get());
+
+		tag(Tags.Items.TOOLS_AXES).add(TFItems.IRONWOOD_AXE.get(), TFItems.STEELEAF_AXE.get(), TFItems.KNIGHTMETAL_AXE.get());
+		tag(Tags.Items.TOOLS_SHOVELS).add(TFItems.IRONWOOD_SHOVEL.get(), TFItems.STEELEAF_SHOVEL.get());
+		tag(Tags.Items.TOOLS_HOES).add(TFItems.IRONWOOD_HOE.get(), TFItems.STEELEAF_HOE.get());
+		tag(Tags.Items.TOOLS_SHIELDS).add(TFItems.KNIGHTMETAL_SHIELD.get());
+		tag(Tags.Items.TOOLS_BOWS).add(TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get());
 	}
 
 	@Override

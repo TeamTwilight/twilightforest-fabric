@@ -1498,6 +1498,9 @@
   "twilightforest.config.animate_trophyitem": "Rotate Trophy Heads on Item model",
   "twilightforest.config.animate_trophyitem.tooltip": "Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.",
 
+  "twilightforest.config.ram_indicator": "Quest Ram Fed Wool Indicator",
+  "twilightforest.config.ram_indicator.tooltip": "Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.",
+
   "twilightforest.config.shield_parry": "Shield Parrying",
   "twilightforest.config.shield_parry.tooltip": "We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.",
   "twilightforest.config.parry_non_twilight": "Parry non-Twilight projectiles",
@@ -1638,5 +1641,7 @@
 
   "gui.crumble_horn_jei": "Crumble Horn",
   "gui.transformation_jei": "Transformation Powder",
-  "gui.uncrafting_jei": "Uncrafting"
+  "gui.uncrafting_jei": "Uncrafting",
+
+  "config.jade.plugin_twilightforest.quest_ram_wool": "Quest Ram Wool"
 }
