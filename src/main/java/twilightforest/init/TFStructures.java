@@ -2,14 +2,14 @@ package twilightforest.init;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.start.LegacyLandmark;
 
 public class TFStructures {
-	public static final LazyRegistrar<Structure> STRUCTURES = LazyRegistrar.create(BuiltinRegistries.STRUCTURES, TwilightForestMod.ID);
+	public static final LazyRegistrar<Structure> STRUCTURES = LazyRegistrar.create(Registry.STRUCTURE_REGISTRY, TwilightForestMod.ID);
 
 	public static final RegistryObject<LegacyLandmark> HEDGE_MAZE = STRUCTURES.register("hedge_maze", () -> LegacyLandmark.extractLandmark(TFLandmark.HEDGE_MAZE));
 	public static final RegistryObject<LegacyLandmark> QUEST_GROVE = STRUCTURES.register("quest_grove", () -> LegacyLandmark.extractLandmark(TFLandmark.QUEST_GROVE));

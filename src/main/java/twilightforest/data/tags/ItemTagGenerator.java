@@ -4,8 +4,6 @@ import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.Registry;
-import net.minecraft.data.tags.BlockTagsProvider;
-import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -64,7 +62,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
 	public static final TagKey<Item> BANNED_UNCRAFTING_INGREDIENTS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("banned_uncrafting_ingredients"));
 	public static final TagKey<Item> BANNED_UNCRAFTABLES = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("banned_uncraftables"));
-	public static final TagKey<Item> UNCRAFTING_IGNORES_COST = ItemTags.create(TwilightForestMod.prefix("uncrafting_ignores_cost"));
+	public static final TagKey<Item> UNCRAFTING_IGNORES_COST = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("uncrafting_ignores_cost"));
 
 	public static final TagKey<Item> KEPT_ON_DEATH = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("kept_on_death"));
 
@@ -224,7 +222,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFItems.TRANSFORMATION_POWDER.get());
 
 		tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.get().asItem());
-		tag(UNCRAFTING_IGNORES_COST).addTag(Tags.Items.RODS_WOODEN);
+		getOrCreateTagBuilder(UNCRAFTING_IGNORES_COST).forceAddTag(Tags.Items.RODS_WOODEN);
 
 		tag(KEPT_ON_DEATH).add(TFItems.TOWER_KEY.get(), TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 

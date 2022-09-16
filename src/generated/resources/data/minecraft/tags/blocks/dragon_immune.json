@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "#twilightforest:common_protections",
     "twilightforest:giant_obsidian",

@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "#twilightforest:ores/ironwood",
     "#twilightforest:ores/knightmetal"

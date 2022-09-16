@@ -4,6 +4,7 @@ import com.google.common.collect.*;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.ChunkGeneratorAccessor;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.Util;
@@ -897,7 +898,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		Map<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> placementSetMap = new Object2ObjectArrayMap<>();
 		for (Holder<Structure> holder : targetStructures) {
-			for (StructurePlacement structureplacement : this.getPlacementsForStructure(holder, randomState)) {
+			for (StructurePlacement structureplacement : ((ChunkGeneratorAccessor)this).port_lib$getPlacementsForStructure(holder, randomState)) {
 				if (structureplacement instanceof BiomeForcedLandmarkPlacement landmarkPlacement) {
 					placementSetMap.computeIfAbsent(landmarkPlacement, v -> new ObjectArraySet<>()).add(holder);
 				}

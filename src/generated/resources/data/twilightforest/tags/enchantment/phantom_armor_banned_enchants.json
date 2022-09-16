@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "minecraft:vanishing_curse",
     "minecraft:binding_curse"

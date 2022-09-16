@@ -20,7 +20,7 @@ public class FluidTagGenerator extends FabricTagProvider.FluidTagProvider {
 
     @Override
     protected void generateTags() {
-        tag(FIRE_JET_FUEL).addTag(FluidTags.LAVA);
+        getOrCreateTagBuilder(FIRE_JET_FUEL).forceAddTag(FluidTags.LAVA);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.block.EntityDestroyBlock;
 import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -47,7 +48,7 @@ import twilightforest.init.TFSounds;
 import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
-public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable {
+public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLoggingEnum.IMultiLoggable, EntityDestroyBlock {
 
 	public static final DirectionProperty FACING = TFHorizontalBlock.FACING;
 	public static final IntegerProperty BREAKAGE = IntegerProperty.create("damage", 0, 2);

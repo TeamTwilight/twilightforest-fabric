@@ -34,7 +34,7 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 	public void setFalling(boolean falling) {
 		this.falling = falling;
 		if (!this.host.getLevel().isClientSide()) {
-			TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateFeatherFanFallPacket(this.host.getId(), this), this.host);
+//			TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateFeatherFanFallPacket(this.host.getId(), this), this.host); TODO: PORT this causing crashing on world load needs to be fixed
 		}
 	}
 

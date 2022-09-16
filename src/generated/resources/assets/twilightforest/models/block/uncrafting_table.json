@@ -43,7 +43,6 @@
       "faces": {
         "up": {
           "cullface": "up",
-          "emissivity": 15,
           "texture": "#top2"
         }
       },

@@ -312,7 +312,7 @@ public class CharmEvents {
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player) {
-		if(FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
+		if(FabricLoader.getInstance().isModLoaded("trinkets")) {
 			List<Tuple<SlotReference, ItemStack>> slots = player.getComponent(TrinketsApi.TRINKET_COMPONENT).getEquipped(stack -> stack.is(item));
 
 			if (!slots.isEmpty() && !slots.get(0).getB().isEmpty()) {

@@ -76,7 +76,8 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 					ms.pushPose();
 					Lighting.setupForFlatItems();
 					ms.translate(0.5F, 0.5F, -1.5F);
-					Minecraft.getInstance().getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemTransforms.TransformType.GUI, false, ms, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, modelBack.applyTransform(camera, ms, false));
+					modelBack.getTransforms().getTransform(camera).apply(false, ms); // applyTransform
+					Minecraft.getInstance().getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemTransforms.TransformType.GUI, false, ms, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, modelBack);
 					ms.popPose();
 					bufferSource.endBatch();
 					Lighting.setupFor3DItems();
@@ -127,7 +128,7 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 					if (tag.getInt("CandleAmount") <= 0) tag.putInt("CandleAmount", 1);
 					Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
 							AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(tag.getInt("CandleColor")).getSerializedName())
-									.defaultBlockState().setValue(CandleBlock.CANDLES, tag.getInt("CandleAmount")), ms, buffers, light, overlay, ModelData.EMPTY, RenderType.cutout());
+									.defaultBlockState().setValue(CandleBlock.CANDLES, tag.getInt("CandleAmount")), ms, buffers, light, overlay);
 				}
 			} else {
 				if (block instanceof EntityBlock be) {

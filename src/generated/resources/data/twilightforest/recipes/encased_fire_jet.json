@@ -11,7 +11,7 @@
       "item": "minecraft:lava_bucket"
     },
     "∴": {
-      "tag": "forge:dusts/redstone"
+      "tag": "c:dusts/redstone"
     }
   },
   "pattern": [

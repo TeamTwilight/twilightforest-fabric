@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -39,8 +40,9 @@ public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 				stack.translate(-0.5D, 0.0D, -0.5D);
 				BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 				var model = dispatcher.getBlockModel(blockstate);
-				for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(blockstate.getSeed(entity.blockPosition())), ModelData.EMPTY))
-					dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, stack, buffer.getBuffer(renderType), false, RandomSource.create(), blockstate.getSeed(entity.blockPosition()), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
+				for (var renderType : RenderType.chunkBufferLayers())
+					if (ItemBlockRenderTypes.getChunkRenderType(blockstate) == renderType)
+						dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, stack, buffer.getBuffer(renderType), false, RandomSource.create(), blockstate.getSeed(entity.blockPosition()), OverlayTexture.NO_OVERLAY);
 				stack.popPose();
 				super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 			}

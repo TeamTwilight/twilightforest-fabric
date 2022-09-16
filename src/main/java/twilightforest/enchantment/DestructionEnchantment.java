@@ -37,7 +37,7 @@ public class DestructionEnchantment extends LootOnlyEnchantment {
 	}
 
 	@Override
-	public float getDamageBonus(int level, MobType type, ItemStack item) {
+	public float getDamageBonus(int level, MobType type) {
 		return -level * 1.5F;
 	}
 }

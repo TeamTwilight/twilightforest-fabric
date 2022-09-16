@@ -136,6 +136,7 @@ public class TwilightForestMod implements ModInitializer {
 
 		addClassicPack();
 		initEvents();
+		init();
 	}
 
 	public static void initEvents() {

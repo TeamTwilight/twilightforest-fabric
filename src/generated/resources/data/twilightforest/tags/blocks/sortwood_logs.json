@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "twilightforest:sorting_log",
     "twilightforest:stripped_sorting_log",

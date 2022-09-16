@@ -44,7 +44,7 @@ public class ThrownIceRenderer extends EntityRenderer<IceBomb> {
 				var model = dispatcher.getBlockModel(blockstate);
 				for (var renderType : RenderType.chunkBufferLayers())
 					if (ItemBlockRenderTypes.getChunkRenderType(blockstate) == renderType)
-						dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, ms, buffers.getBuffer(renderType), false, RandomSource.create(), blockstate.getSeed(entity.blockPosition()), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
+						dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, ms, buffers.getBuffer(renderType), false, RandomSource.create(), blockstate.getSeed(entity.blockPosition()), OverlayTexture.NO_OVERLAY);
 				ms.popPose();
 				super.render(entity, yaw, partialTicks, ms, buffers, light);
 			}

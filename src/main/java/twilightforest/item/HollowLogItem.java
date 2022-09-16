@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +26,7 @@ public class HollowLogItem extends BlockItem {
         this.horizontalLog = horizontalLog.get();
         this.verticalLog = verticalLog.get();
         this.climbable = climbable.get();
+        FuelRegistry.INSTANCE.add(this, 300);
     }
 
     @Nullable
@@ -50,10 +52,5 @@ public class HollowLogItem extends BlockItem {
         blockItemMap.remove(this.horizontalLog);
         blockItemMap.remove(this.verticalLog);
         blockItemMap.remove(this.climbable);
-    }
-
-    @Override
-    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-        return 300;
     }
 }

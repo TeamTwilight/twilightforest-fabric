@@ -5,12 +5,10 @@
     {
       "faces": {
         "down": {
-          "emissivity": 15,
           "texture": "#pane"
         },
         "east": {
           "cullface": "east",
-          "emissivity": 15,
           "texture": "#pane",
           "uv": [
             0.0,
@@ -21,7 +19,6 @@
         },
         "north": {
           "cullface": "north",
-          "emissivity": 15,
           "texture": "#pane",
           "uv": [
             9.0,
@@ -31,7 +28,6 @@
           ]
         },
         "up": {
-          "emissivity": 15,
           "texture": "#pane",
           "uv": [
             0.0,

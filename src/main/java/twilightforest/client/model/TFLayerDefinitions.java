@@ -153,7 +153,7 @@ public class TFLayerDefinitions {
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.KEEPSAKE_CASKET, CasketTileEntityRenderer::create);
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.MOONWORM, MoonwormModel::create);
 
-		if (FabricLoader.getInstance().isModLoaded(TFCompat.TRINKETS_ID)) {
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_LIFE_1, CharmOfLife1NecklaceModel::create);
 			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_LIFE_2, CharmOfLife2NecklaceModel::create);
 			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_KEEPING, CharmOfKeepingModel::create);

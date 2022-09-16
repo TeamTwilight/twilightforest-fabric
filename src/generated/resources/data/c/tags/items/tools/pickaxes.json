@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:ironwood_pickaxe",
+    "twilightforest:steeleaf_pickaxe",
+    "twilightforest:knightmetal_pickaxe",
+    "twilightforest:fiery_pickaxe",
+    "twilightforest:giant_pickaxe"
+  ]
+}

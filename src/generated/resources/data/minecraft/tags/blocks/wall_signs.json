@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "twilightforest:twilight_wall_sign",
     "twilightforest:canopy_wall_sign",

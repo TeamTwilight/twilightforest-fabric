@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "twilightforest:transformation_log",
     "twilightforest:stripped_transformation_log",

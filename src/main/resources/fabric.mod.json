@@ -47,6 +47,9 @@
     ],
     "jei_mod_plugin": [
       "twilightforest.compat.jei.JEICompat"
+    ],
+    "jade": [
+      "twilightforest.compat.jade.JadeCompat"
     ]
   },
   "mixins": [

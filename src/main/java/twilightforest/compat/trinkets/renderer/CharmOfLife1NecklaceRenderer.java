@@ -15,18 +15,13 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.compat.trinkets.model.CharmOfLife1NecklaceModel;
 
-public class CharmOfLife1NecklaceRenderer implements TrinketRenderer {
+public abstract class CharmOfLife1NecklaceRenderer  {
 
-	private CharmOfLife1NecklaceModel model;
+	private static CharmOfLife1NecklaceModel model;
 
-	public CharmOfLife1NecklaceRenderer() {
-//		this.model = new CharmOfLife1NecklaceModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.CHARM_OF_LIFE_1));
-	}
-
-	@Override
-	public void render(ItemStack item, SlotReference slotContext, EntityModel<? extends LivingEntity> contextModel, PoseStack stack, MultiBufferSource buffer, int light, LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+	public static void render(ItemStack item, SlotReference slotContext, EntityModel<? extends LivingEntity> contextModel, PoseStack stack, MultiBufferSource buffer, int light, LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		if (model == null)
-			this.model = new CharmOfLife1NecklaceModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.CHARM_OF_LIFE_1));
+			model = new CharmOfLife1NecklaceModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.CHARM_OF_LIFE_1));
 		model.setupAnim(slotContext.inventory().getComponent().getEntity(), limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		model.prepareMobModel(slotContext.inventory().getComponent().getEntity(), limbSwing, limbSwingAmount, partialTicks);
 		TrinketRenderer.followBodyRotations(slotContext.inventory().getComponent().getEntity(), model);

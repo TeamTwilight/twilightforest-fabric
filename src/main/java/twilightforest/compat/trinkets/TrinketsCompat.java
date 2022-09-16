@@ -66,11 +66,11 @@ public class TrinketsCompat {
 	}
 
 	public static void registerCurioRenderers(Minecraft client) {
-		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_LIFE_1.get(), new CharmOfLife1NecklaceRenderer()::render);
-		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_LIFE_2.get(), new CharmOfLife2NecklaceRenderer()::render);
-		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_KEEPING_1.get(), new CharmOfKeepingRenderer()::render);
-		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_KEEPING_2.get(), new CharmOfKeepingRenderer()::render);
-		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_KEEPING_3.get(), new CharmOfKeepingRenderer()::render);
+		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_LIFE_1.get(), CharmOfLife1NecklaceRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_LIFE_2.get(), CharmOfLife2NecklaceRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_KEEPING_1.get(), CharmOfKeepingRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_KEEPING_2.get(), CharmOfKeepingRenderer::render);
+		TrinketRendererRegistry.registerRenderer(TFItems.CHARM_OF_KEEPING_3.get(), CharmOfKeepingRenderer::render);
 
 		TrinketRendererRegistry.registerRenderer(TFBlocks.NAGA_TROPHY.get().asItem(), CurioHeadRenderer::render);
 		TrinketRendererRegistry.registerRenderer(TFBlocks.LICH_TROPHY.get().asItem(), CurioHeadRenderer::render);

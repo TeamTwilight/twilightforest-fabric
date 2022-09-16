@@ -115,15 +115,15 @@ public class FallingIce extends Entity {
 			if (!this.getLevel().isClientSide()) {
 				BlockPos blockpos = this.blockPosition();
 				boolean flag = this.blockState.getBlock() instanceof ConcretePowderBlock;
-				boolean flag1 = flag && this.blockState.canBeHydrated(this.level, blockpos, this.level.getFluidState(blockpos), blockpos);
+				boolean flag1 = flag;// && this.blockState.canBeHydrated(this.level, blockpos, this.level.getFluidState(blockpos), blockpos);
 				double d0 = this.getDeltaMovement().lengthSqr();
-				if (flag && d0 > 1.0D) {
-					BlockHitResult blockhitresult = this.level.clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
-					if (blockhitresult.getType() != HitResult.Type.MISS && this.blockState.canBeHydrated(this.getLevel(), blockpos, this.getLevel().getFluidState(blockhitresult.getBlockPos()), blockhitresult.getBlockPos())) {
-						blockpos = blockhitresult.getBlockPos();
-						flag1 = true;
-					}
-				}
+//				if (flag && d0 > 1.0D) { TODO: there is no use for this since fabric doesn't have this method
+//					BlockHitResult blockhitresult = this.level.clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
+//					if (blockhitresult.getType() != HitResult.Type.MISS && this.blockState.canBeHydrated(this.getLevel(), blockpos, this.getLevel().getFluidState(blockhitresult.getBlockPos()), blockhitresult.getBlockPos())) {
+//						blockpos = blockhitresult.getBlockPos();
+//						flag1 = true;
+//					}
+//				}
 
 				if (!this.onGround && !flag1) {
 					if (!this.getLevel().isClientSide() && (this.time > 100 && (blockpos.getY() <= this.getLevel().getMinBuildHeight() || blockpos.getY() > this.getLevel().getMaxBuildHeight()) || this.time > 1000)) {

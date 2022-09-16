@@ -447,16 +447,16 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				.add(TFBlocks.KEEPSAKE_CASKET.get())
 				.addOptional(new ResourceLocation("gravestone", "gravestone"));
 
-		tag(ORE_MAGNET_SAFE_REPLACE_BLOCK)
-				.addTag(BlockTags.DIRT)
-				.addTag(Tags.Blocks.GRAVEL)
-				.addTag(Tags.Blocks.SAND)
-				.addTag(BlockTags.NYLIUM)
-				.addTag(BlockTags.BASE_STONE_OVERWORLD)
-				.addTag(BlockTags.BASE_STONE_NETHER)
-				.addTag(Tags.Blocks.END_STONES)
-				.addTag(BlockTags.DEEPSLATE_ORE_REPLACEABLES)
-				.addTag(BlockTags.STONE_ORE_REPLACEABLES)
+		getOrCreateTagBuilder(ORE_MAGNET_SAFE_REPLACE_BLOCK)
+				.forceAddTag(BlockTags.DIRT)
+				.forceAddTag(Tags.Blocks.GRAVEL)
+				.forceAddTag(Tags.Blocks.SAND)
+				.forceAddTag(BlockTags.NYLIUM)
+				.forceAddTag(BlockTags.BASE_STONE_OVERWORLD)
+				.forceAddTag(BlockTags.BASE_STONE_NETHER)
+				.forceAddTag(Tags.Blocks.END_STONES)
+				.forceAddTag(BlockTags.DEEPSLATE_ORE_REPLACEABLES)
+				.forceAddTag(BlockTags.STONE_ORE_REPLACEABLES)
 				.addTag(ROOT_GROUND);
 
 		getOrCreateTagBuilder(ORE_MAGNET_IGNORE).forceAddTag(BlockTags.COAL_ORES);
@@ -489,7 +489,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 
 		tag(TIME_CORE_EXCLUDED).add(Blocks.NETHER_PORTAL);
 
-		tag(BlockTags.MINEABLE_WITH_AXE).addTag(BANISTERS).addTag(HOLLOW_LOGS, TOWERWOOD).add(
+		tag(BlockTags.MINEABLE_WITH_AXE).addTag(BANISTERS).addTags(HOLLOW_LOGS, TOWERWOOD).add(
 				TFBlocks.HEDGE.get(),
 				TFBlocks.ROOT_BLOCK.get(),
 				TFBlocks.LIVEROOT_BLOCK.get(),

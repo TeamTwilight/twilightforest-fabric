@@ -2,7 +2,6 @@ package twilightforest.init;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
@@ -18,8 +17,8 @@ import java.util.OptionalLong;
 //does this need a better name? Does it need to be split up, or can we possibly add more dimension related registries here?
 public class TFDimensionSettings {
 
-	public static final LazyRegistrar<NoiseGeneratorSettings> NOISE_GENERATORS = LazyRegistrar.create(BuiltinRegistries.NOISE_GENERATOR_SETTINGS, TwilightForestMod.ID);
-	public static final LazyRegistrar<DimensionType> DIMENSION_TYPES = LazyRegistrar.create(BuiltinRegistries.DIMENSION_TYPE, TwilightForestMod.ID);
+	public static final LazyRegistrar<NoiseGeneratorSettings> NOISE_GENERATORS = LazyRegistrar.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.ID);
+	public static final LazyRegistrar<DimensionType> DIMENSION_TYPES = LazyRegistrar.create(Registry.DIMENSION_TYPE_REGISTRY, TwilightForestMod.ID);
 
 	public static final RegistryObject<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = NOISE_GENERATORS.register("twilight_noise_gen", TFDimensionSettings::tfDefault);
 	public static final RegistryObject<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = NOISE_GENERATORS.register("skylight_noise_gen", TFDimensionSettings::skylight);

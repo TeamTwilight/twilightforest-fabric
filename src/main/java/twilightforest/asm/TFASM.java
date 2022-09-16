@@ -33,20 +33,9 @@ public class TFASM implements Runnable {
                 .addEnumSubclass("TWILIGHTFOREST_DARK_FOREST", "twilightforest.asm.GrassColorModifierDarkForest", prefix("dark_forest"))
                 .addEnumSubclass("TWILIGHTFOREST_DARK_FOREST_CENTER", "twilightforest.asm.GrassColorModifierDarkForestCenter", prefix("dark_forest_center"))
                 .addEnumSubclass("TWILIGHTFOREST_SPOOKY_FOREST", "twilightforest.asm.GrassColorModifierSpookyForest", prefix("spooky_forest"))
-                .build();          // Rarity                                                // ChatFormatting
-        ClassTinkerers.enumBuilder(mapC("class_1814"), "L" + mapC("class_124") + ";")
+                .build();
+        ClassTinkerers.enumBuilder(mapC("class_1814"), "L" + mapC("class_124") + ";")  // Rarity // ChatFormatting
                 .addEnum("TWILIGHT", () -> new Object[] { ChatFormatting.DARK_GREEN })
-                .build();          // BannerPattern
-        ClassTinkerers.enumBuilder(mapC("class_2582"), String.class, String.class, boolean.class)
-                .addEnum("TWILIGHTFOREST_NAGA", "twilightforest_naga", "tfn", true)
-                .addEnum("TWILIGHTFOREST_LICH", "twilightforest_lich", "tfl", true)
-                .addEnum("TWILIGHTFOREST_MINOSHROOM", "twilightforest_minoshroom", "tfm", true)
-                .addEnum("TWILIGHTFOREST_HYDRA", "twilightforest_hydra", "tfh", true)
-                .addEnum("TWILIGHTFOREST_PHANTOMS", "twilightforest_phantoms", "tfp", true)
-                .addEnum("TWILIGHTFOREST_UR_GHAST", "twilightforest_ur_ghast", "tfg", true)
-                .addEnum("TWILIGHTFOREST_ALPHA_YETI", "twilightforest_alpha_yeti", "tfy", true)
-                .addEnum("TWILIGHTFOREST_SNOW_QUEEN", "twilightforest_snow_queen", "tfq", true)
-                .addEnum("TWILIGHTFOREST_QUEST_RAM", "twilightforest_quest_ram", "tfr", true)
                 .build();
     }
 

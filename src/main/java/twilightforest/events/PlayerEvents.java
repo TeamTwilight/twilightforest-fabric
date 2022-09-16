@@ -1,10 +1,8 @@
 package twilightforest.events;
 
 import com.mojang.authlib.GameProfile;
-import dev.architectury.event.events.common.BlockEvent;
 import io.github.fabricators_of_create.porting_lib.event.common.ItemCraftedCallback;
 import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
-import io.github.fabricators_of_create.porting_lib.event.common.ProjectileImpactCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -78,7 +76,6 @@ public class PlayerEvents {
 		PlayerBlockBreakEvents.BEFORE.register(PlayerEvents::onCasketBreak);
 		PlayerBlockBreakEvents.AFTER.register(PlayerEvents::damageToolsExtra);
 		ServerPlayerEvents.AFTER_RESPAWN.register(PlayerEvents::onPlayerRespawn);
-		ProjectileImpactCallback.EVENT.register(PlayerEvents::throwableParry);
 		EntityTrackingEvents.START_TRACKING.register(PlayerEvents::onStartTracking);
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(PlayerEvents::playerPortals);
 	}
@@ -93,12 +90,12 @@ public class PlayerEvents {
 	}
 
 	public static void updateFeatherFanCap(LivingEntity entity) {
-		if (event.getEntity().getCapability(CapabilityList.FEATHER_FAN_FALLING).isPresent()) {
-			event.getEntity().getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
+		if (CapabilityList.FEATHER_FAN_FALLING.maybeGet(entity).isPresent()) {
+			CapabilityList.FEATHER_FAN_FALLING.maybeGet(entity).ifPresent(FeatherFanFallCapability::update);
 		}
 
-		if (event.getEntity().getCapability(CapabilityList.YETI_THROWN).isPresent()) {
-			event.getEntity().getCapability(CapabilityList.YETI_THROWN).ifPresent(YetiThrowCapability::update);
+		if (CapabilityList.YETI_THROWN.maybeGet(entity).isPresent()) {
+			CapabilityList.YETI_THROWN.maybeGet(entity).ifPresent(YetiThrowCapability::update);
 		}
 	}
 

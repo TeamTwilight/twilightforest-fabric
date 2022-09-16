@@ -5,7 +5,6 @@
     {
       "faces": {
         "up": {
-          "emissivity": 15,
           "texture": "#pane"
         }
       },

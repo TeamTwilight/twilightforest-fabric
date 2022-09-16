@@ -20,23 +20,23 @@ public class HostileMountEvents {
 
 	public static void init() {
 		EntityEvents.TELEPORT.register(HostileMountEvents::entityTeleports);
-		LivingEntityEvents.ACTUALLY_HURT.register(HostileMountEvents::entityHurts);
+		LivingEntityEvents.ATTACK.register(HostileMountEvents::entityHurts);
 		MountEntityCallback.EVENT.register(HostileMountEvents::preventMountDismount);
 		LivingEntityEvents.TICK.register(HostileMountEvents::livingUpdate);
 	}
 
-	public static float entityHurts(DamageSource damageSource, LivingEntity living, float amount) {
+	public static boolean entityHurts(LivingEntity living, DamageSource damageSource, float amount) {
 		// lets not make the player take suffocation damage if riding something
 		if (living instanceof Player && isRidingUnfriendly(living) && damageSource == DamageSource.IN_WALL) {
-			return 0;
+			return true;
 		}
 
 		if (damageSource == DamageSource.FALL && CapabilityList.YETI_THROWN.maybeGet(living).map(YetiThrowCapability::getThrown).orElse(false)) {
-			event.setCanceled(true);
 			living.hurt(TFDamageSources.yeeted(CapabilityList.YETI_THROWN.maybeGet(living).get().getThrower()), amount);
+			return true;
 		}
 
-		return amount;
+		return false;
 	}
 
 	public static void entityTeleports(EntityTeleportEvent event) {

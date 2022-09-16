@@ -3,7 +3,7 @@ package twilightforest.init;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.Holder;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
@@ -14,7 +14,7 @@ import twilightforest.world.components.structures.placements.BiomeForcedLandmark
 import java.util.function.Supplier;
 
 public class TFStructureSets {
-    public static final LazyRegistrar<StructureSet> STRUCTURE_SETS = LazyRegistrar.create(BuiltinRegistries.STRUCTURE_SETS, TwilightForestMod.ID);
+    public static final LazyRegistrar<StructureSet> STRUCTURE_SETS = LazyRegistrar.create(Registry.STRUCTURE_SET_REGISTRY, TwilightForestMod.ID);
 
     public static final RegistryObject<StructureSet> HEDGE_MAZE = register(TFStructures.HEDGE_MAZE, () -> TFLandmark.HEDGE_MAZE);
     public static final RegistryObject<StructureSet> QUEST_GROVE = register(TFStructures.QUEST_GROVE, () -> TFLandmark.QUEST_GROVE);

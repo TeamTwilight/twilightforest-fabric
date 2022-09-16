@@ -66,6 +66,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
 public class TFClientEvents {
@@ -73,7 +74,7 @@ public class TFClientEvents {
 	public static void init() {
 		ModBusEvents.registerModels();
 		ModBusEvents.registerLoaders();
-		ModBusEvents.registerDimEffects();
+		MinecraftTailCallback.EVENT.register(ModBusEvents::registerDimEffects);
 		WorldRenderEvents.LAST.register(TFClientEvents::renderWorldLast);
 		ModelsBakedCallback.EVENT.register(ModBusEvents::modelBake);
 		TextureStitchCallback.PRE.register(ModBusEvents::texStitch);
@@ -116,7 +117,7 @@ public class TFClientEvents {
 			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(TwilightForestMod.prefix("block/casket_basalt")));
 		}
 
-		public static void registerDimEffects() {
+		public static void registerDimEffects(Minecraft client) {
 			new TFSkyRenderer();
 			new TFWeatherRenderer();
 			ResourceLocation id = TwilightForestMod.prefix("renderer");

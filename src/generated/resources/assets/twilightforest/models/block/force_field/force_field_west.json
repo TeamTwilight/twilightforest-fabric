@@ -6,7 +6,6 @@
       "faces": {
         "west": {
           "cullface": "west",
-          "emissivity": 15,
           "texture": "#pane"
         }
       },

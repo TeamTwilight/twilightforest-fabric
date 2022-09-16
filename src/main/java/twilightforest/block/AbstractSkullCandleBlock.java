@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import com.mojang.authlib.GameProfile;
 import io.github.fabricators_of_create.porting_lib.block.LightEmissiveBlock;
+import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -128,7 +130,7 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock im
 		if (skullStack.isPresent()) {
 			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 			if (blockEntity instanceof SkullCandleBlockEntity sc) {
-				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(Enchantments.SILK_TOUCH) > 0) {
+				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, builder.getParameter(LootContextParams.TOOL)) > 0) {
 					ItemStack newStack = new ItemStack(this);
 					CompoundTag tag = new CompoundTag();
 					tag.putInt("CandleColor", sc.candleColor);

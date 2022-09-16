@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "twilightforest:time_log",
     "twilightforest:stripped_time_log",

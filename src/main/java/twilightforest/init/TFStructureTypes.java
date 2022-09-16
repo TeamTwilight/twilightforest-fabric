@@ -8,7 +8,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.start.LegacyLandmark;
 
 public class TFStructureTypes {
-	public static final LazyRegistrar<StructureType<?>> STRUCTURE_TYPES = LazyRegistrar.create(Registry.STRUCTURE_TYPES, TwilightForestMod.ID);
+	public static final LazyRegistrar<StructureType<?>> STRUCTURE_TYPES = LazyRegistrar.create(Registry.STRUCTURE_TYPE_REGISTRY, TwilightForestMod.ID);
 
 	public static final RegistryObject<StructureType<LegacyLandmark>> LEGACY_LANDMARK = STRUCTURE_TYPES.register("legacy_landmark", () -> () -> LegacyLandmark.CODEC);
 }

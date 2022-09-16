@@ -35,8 +35,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.client.TFClientSetup;
 import twilightforest.entity.TFPart;
-import twilightforest.init.TFEntities;
 import twilightforest.init.TFFeatureModifiers;
 import twilightforest.init.TFItems;
 import twilightforest.network.TFPacketHandler;
@@ -146,7 +146,7 @@ public class ASMHooks {
 	@Environment(EnvType.CLIENT)
 	public static EntityRenderer<?> getMultipartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
 		if(entity instanceof TFPart<?>)
-			return TFEntities.BakedMultiPartRenderers.lookup(((TFPart<?>) entity).renderer());
+			return TFClientSetup.BakedMultiPartRenderers.lookup(((TFPart<?>) entity).renderer());
 		return renderer;
 	}
 
@@ -157,7 +157,7 @@ public class ASMHooks {
 	 */
 	@Environment(EnvType.CLIENT)
 	public static EntityRendererProvider.Context bakeMultipartRenders(EntityRendererProvider.Context context) {
-		TFEntities.BakedMultiPartRenderers.bakeMultiPartRenderers(context);
+		TFClientSetup.BakedMultiPartRenderers.bakeMultiPartRenderers(context);
 		return context;
 	}
 

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -44,8 +45,9 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 		if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFItems.RED_THREAD.get())) {
 			render(GLOW, blockrenderdispatcher, thread, ms, source, false);
 		} else {
-			for (RenderType type : blockrenderdispatcher.getBlockModel(state).getRenderTypes(state, thread.getLevel().getRandom(), ModelData.EMPTY)) {
-				render(type, blockrenderdispatcher, thread, ms, source, true);
+			for (var type : RenderType.chunkBufferLayers()) {
+				if (ItemBlockRenderTypes.getChunkRenderType(state) == type)
+					render(type, blockrenderdispatcher, thread, ms, source, true);
 			}
 		}
 	}

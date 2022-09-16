@@ -2,6 +2,7 @@ package twilightforest.data.tags;
 
 import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
@@ -10,7 +11,7 @@ import net.minecraft.world.level.biome.Biome;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.BiomeKeys;
 
-public class BiomeTagGenerator extends BiomeTagsProvider {
+public class BiomeTagGenerator extends FabricTagProvider.DynamicRegistryTagProvider<Biome> {
 
 	public static final TagKey<Biome> IS_TWILIGHT = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("in_twilight_forest"));
 
@@ -32,11 +33,11 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 	public static final TagKey<Biome> VALID_FINAL_CASTLE_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, TwilightForestMod.prefix("valid_final_castle_biomes"));
 
 	public BiomeTagGenerator(FabricDataGenerator generator) {
-		super(generator);
+		super(generator, Registry.BIOME_REGISTRY);
 	}
 
 	@Override
-	protected void addTags() {
+	protected void generateTags() {
 
 		tag(IS_TWILIGHT).add(
 				BiomeKeys.CLEARING, BiomeKeys.DENSE_FOREST,
