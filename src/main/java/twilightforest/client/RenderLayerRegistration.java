@@ -1,44 +1,39 @@
 package twilightforest.client;
 
+import com.google.common.base.Charsets;
+import com.google.gson.JsonObject;
+import com.google.gson.internal.Streams;
+import com.google.gson.stream.JsonReader;
+import io.github.fabricators_of_create.porting_lib.client.NamedRenderTypeManager;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import twilightforest.init.TFBlocks;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import twilightforest.TwilightForestMod;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.NoSuchElementException;
 
 public class RenderLayerRegistration {
 	@SuppressWarnings("removal")
 	public static void init() {
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BEANSTALK_LEAVES.get(), RenderType.cutoutMipped());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BLUE_CASTLE_DOOR.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BLUE_FORCE_FIELD.get(), RenderType.translucent());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BROWN_THORNS.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BURNT_THORNS.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.CANDELABRA.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.CANOPY_LEAVES.get(), RenderType.cutoutMipped());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.DARK_LEAVES.get(), RenderType.cutoutMipped());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.FIERY_BLOCK.get(), RenderType.translucent());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.GREEN_FORCE_FIELD.get(), RenderType.translucent());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.GREEN_THORNS.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.MANGROVE_LEAVES.get(), RenderType.cutoutMipped());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.MINING_LEAVES.get(), RenderType.cutoutMipped());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.ORANGE_FORCE_FIELD.get(), RenderType.translucent());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.PINK_CASTLE_DOOR.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.PINK_FORCE_FIELD.get(), RenderType.translucent());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.RAINBOW_OAK_LEAVES.get(), RenderType.cutoutMipped());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.RED_THREAD.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.SORTING_LEAVES.get(), RenderType.cutoutMipped());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.THORN_LEAVES.get(), RenderType.cutoutMipped());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.TIME_LEAVES.get(), RenderType.cutoutMipped());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.TRANSFORMATION_LEAVES.get(), RenderType.cutoutMipped());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.TWILIGHT_OAK_LEAVES.get(), RenderType.cutoutMipped());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.TWISTED_STONE_PILLAR.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.VIOLET_CASTLE_DOOR.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.VIOLET_FORCE_FIELD.get(), RenderType.translucent());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.YELLOW_CASTLE_DOOR.get(), RenderType.cutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), RenderType.cutout());
+		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> manager.listResources("models/block", resourceLocation -> {
+			if (resourceLocation.getNamespace().equals(TwilightForestMod.ID) && resourceLocation.getPath().endsWith(".json")) {
+				manager.getResource(resourceLocation).ifPresent(resource -> {
+					try {
+						JsonObject jsonObject = Streams.parse(new JsonReader(new InputStreamReader(resource.open(), Charsets.UTF_8))).getAsJsonObject();
+						if (jsonObject.has("render_type")) {
+							ResourceLocation blockId = new ResourceLocation(resourceLocation.getNamespace(), resourceLocation.getPath().replace(".json", "").replace("models/block/", ""));
+							BlockRenderLayerMap.INSTANCE.putBlock(Registry.BLOCK.get(blockId), NamedRenderTypeManager.get(new ResourceLocation(GsonHelper.getAsString(jsonObject, "render_type"))).block());
+						}
+					} catch (IOException | NoSuchElementException e) {
+						e.fillInStackTrace();
+					}
+				});
+			}
+			return true;
+		}));
 	}
 }
