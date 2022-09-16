@@ -767,11 +767,11 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 			this.discard();
 		}
 
-		for (int i = 0; i < 20; ++i) {
+		for (int i = 0; i < 10; ++i) {
 			double vx = this.getRandom().nextGaussian() * 0.02D;
 			double vy = this.getRandom().nextGaussian() * 0.02D;
 			double vz = this.getRandom().nextGaussian() * 0.02D;
-			this.getLevel().addParticle((this.getRandom().nextInt(2) == 0 ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION),
+			this.getLevel().addParticle((this.getRandom().nextInt(2) == 0 ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
 					this.getX() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),
 					this.getY() + this.getRandom().nextFloat() * this.body.getBbHeight(),
 					this.getZ() + this.getRandom().nextFloat() * this.body.getBbWidth() * 2.0F - this.body.getBbWidth(),

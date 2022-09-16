@@ -25,10 +25,11 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 
 	@Override
 	public void update() {
-		if (this.host.isOnGround() || this.host.isSwimming()) {
-			if (this.getThrown()) {
+		if (this.getThrown()) {
+			if (this.host.isOnGround() || this.host.isSwimming()) {
 				this.setThrown(false, null);
 			}
+		} else {
 			if (this.throwCooldown > 0) {
 				this.throwCooldown--;
 			}

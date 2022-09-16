@@ -1,8 +1,11 @@
 package twilightforest.command;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
@@ -12,16 +15,20 @@ import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.init.BiomeKeys;
 import twilightforest.item.MagicMapItem;
+import twilightforest.util.ColorUtil;
+import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,105 +37,148 @@ import java.util.Map;
  * Thank you @SuperCoder79 (from Twitter) for sharing the original code! Code sourced from a LGPL project
  */
 public class MapBiomesCommand {
-    private static final DecimalFormat numberFormat = new DecimalFormat("#.00");
+	private static final DecimalFormat numberFormat = new DecimalFormat("#.00");
 
-    private static final HashMap<ResourceLocation, Color> BIOME2COLOR = new HashMap<>();
+	private static final HashMap<ResourceLocation, MapColor> BIOME2COLOR = new HashMap<>();
 
-    private static void init() {
-        if (!BIOME2COLOR.isEmpty())
-            return;
+	private static void init() {
 
-        BIOME2COLOR.put(BiomeKeys.STREAM.location(), new Color(0, 0, 255));
-        BIOME2COLOR.put(BiomeKeys.LAKE.location(), new Color(0, 0, 255));
-        BIOME2COLOR.put(BiomeKeys.CLEARING.location(), new Color(132, 245, 130));
-        BIOME2COLOR.put(BiomeKeys.OAK_SAVANNAH.location(), new Color(239, 245, 130));
-        BIOME2COLOR.put(BiomeKeys.FOREST.location(), new Color(0, 255, 0));
-        BIOME2COLOR.put(BiomeKeys.DENSE_FOREST.location(), new Color(0, 170, 0));
-        BIOME2COLOR.put(BiomeKeys.FIREFLY_FOREST.location(), new Color(88, 252, 102));
-        BIOME2COLOR.put(BiomeKeys.ENCHANTED_FOREST.location(), new Color(0, 255, 255));
-        BIOME2COLOR.put(BiomeKeys.SPOOKY_FOREST.location(), new Color(119, 0, 255));
-        BIOME2COLOR.put(BiomeKeys.MUSHROOM_FOREST.location(), new Color(204, 0, 139));
-        BIOME2COLOR.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), new Color(184, 48, 184));
 
-        BIOME2COLOR.put(BiomeKeys.SWAMP.location(), new Color(0, 204, 187));
-        BIOME2COLOR.put(BiomeKeys.FIRE_SWAMP.location(), new Color(140, 0, 0));
+        BIOME2COLOR.put(BiomeKeys.STREAM.location(), new MapColor(0, 0, 255));
+		BIOME2COLOR.put(BiomeKeys.LAKE.location(), new MapColor(0, 0, 255));
+		BIOME2COLOR.put(BiomeKeys.CLEARING.location(), new MapColor(132, 245, 130));
+		BIOME2COLOR.put(BiomeKeys.OAK_SAVANNAH.location(), new MapColor(239, 245, 130));
+		BIOME2COLOR.put(BiomeKeys.FOREST.location(), new MapColor(0, 255, 0));
+		BIOME2COLOR.put(BiomeKeys.DENSE_FOREST.location(), new MapColor(0, 170, 0));
+		BIOME2COLOR.put(BiomeKeys.FIREFLY_FOREST.location(), new MapColor(88, 252, 102));
+		BIOME2COLOR.put(BiomeKeys.ENCHANTED_FOREST.location(), new MapColor(0, 255, 255));
+		BIOME2COLOR.put(BiomeKeys.SPOOKY_FOREST.location(), new MapColor(119, 0, 255));
+		BIOME2COLOR.put(BiomeKeys.MUSHROOM_FOREST.location(), new MapColor(204, 0, 139));
+		BIOME2COLOR.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), new MapColor(184, 48, 184));
 
-        BIOME2COLOR.put(BiomeKeys.DARK_FOREST.location(), new Color(25, 61, 13));
-        BIOME2COLOR.put(BiomeKeys.DARK_FOREST_CENTER.location(), new Color(157, 79, 0));
+		BIOME2COLOR.put(BiomeKeys.SWAMP.location(), new MapColor(0, 204, 187));
+		BIOME2COLOR.put(BiomeKeys.FIRE_SWAMP.location(), new MapColor(140, 0, 0));
 
-        BIOME2COLOR.put(BiomeKeys.SNOWY_FOREST.location(), new Color(255, 255, 255));
-        BIOME2COLOR.put(BiomeKeys.GLACIER.location(), new Color(130, 191, 245));
+		BIOME2COLOR.put(BiomeKeys.DARK_FOREST.location(), new MapColor(25, 61, 13));
+		BIOME2COLOR.put(BiomeKeys.DARK_FOREST_CENTER.location(), new MapColor(157, 79, 0));
 
-        BIOME2COLOR.put(BiomeKeys.HIGHLANDS.location(), new Color(100, 65, 0));
-        BIOME2COLOR.put(BiomeKeys.THORNLANDS.location(), new Color(128, 100, 90));
-        BIOME2COLOR.put(BiomeKeys.FINAL_PLATEAU.location(), new Color(128, 128, 128));
-    }
+		BIOME2COLOR.put(BiomeKeys.SNOWY_FOREST.location(), new MapColor(255, 255, 255));
+		BIOME2COLOR.put(BiomeKeys.GLACIER.location(), new MapColor(130, 191, 245));
 
-    public static LiteralArgumentBuilder<CommandSourceStack> register() {
-        return Commands.literal("biomepng").requires(cs -> cs.hasPermission(2)).executes(MapBiomesCommand::execute);
-    }
+		BIOME2COLOR.put(BiomeKeys.HIGHLANDS.location(), new MapColor(100, 65, 0));
+		BIOME2COLOR.put(BiomeKeys.THORNLANDS.location(), new MapColor(128, 100, 90));
+		BIOME2COLOR.put(BiomeKeys.FINAL_PLATEAU.location(), new MapColor(128, 128, 128));
+	}
 
-    private static int execute(CommandContext<CommandSourceStack> source) {
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
-            return -1;
+	public static LiteralArgumentBuilder<CommandSourceStack> register() {
+		return Commands.literal("biomepng").requires(cs -> cs.hasPermission(2)).executes(context -> createMap(context.getSource(), 4096, 4096, true))
+				.then(Commands.argument("width", IntegerArgumentType.integer(0))
+						.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "width"), true))
+						.then(Commands.argument("height", IntegerArgumentType.integer(0))
+								.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), true))
+								.then(Commands.argument("showBiomePercents", BoolArgumentType.bool())
+										.executes(context -> createMap(context.getSource(), IntegerArgumentType.getInteger(context, "width"), IntegerArgumentType.getInteger(context, "height"), BoolArgumentType.getBool(context, "showBiomePercents"))))));
 
-        init();
+	}
 
-        //setup image
-        Map<Biome, Integer> biomeCount = new HashMap<>();
-        BufferedImage img = new BufferedImage(4096, 4096, BufferedImage.TYPE_INT_RGB);
+	private static int createMap(CommandSourceStack source, int width, int height, boolean showBiomePercents) throws CommandSyntaxException {
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
+			return -1;
 
-        int progressUpdate = img.getHeight() / 8;
+		if (!TFGenerationSettings.usesTwilightChunkGenerator(source.getLevel())) {
+			throw TFCommand.NOT_IN_TF.create();
+		}
 
-        for (int x = 0; x < img.getHeight(); x++) {
-            for (int z = 0; z < img.getWidth(); z++) {
-                ServerLevel level = source.getSource().getLevel();
-                Biome b = level.getNoiseBiome(x - 2048, 0, z - 2048).value();
-                ResourceLocation key = level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(b);
-                Color color = BIOME2COLOR.get(key);
+		if (BIOME2COLOR.isEmpty()) {
+			init();
+		}
 
-                if (color == null) {
-                    int colorInt = MagicMapItem.getBiomeColor(source.getSource().getLevel(), b);
+		//setup image
+		Map<Biome, Integer> biomeCount = new HashMap<>();
+		NativeImage img = new NativeImage(width, height, false);
 
-                    if (colorInt == 0)
-                        colorInt = b.getGrassColor(0, 0);
+		int progressUpdate = img.getHeight() / 8;
 
-                    BIOME2COLOR.put(key, color = new Color(colorInt | 0xFF000000));
-                }
+		for (int x = 0; x < img.getHeight(); x++) {
+			for (int z = 0; z < img.getWidth(); z++) {
+				ServerLevel level = source.getLevel();
+				Biome b = level.getNoiseBiome(x - (img.getWidth() / 2), 0, z - (img.getHeight() / 2)).value();
+				ResourceLocation key = level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(b);
+				MapColor color = BIOME2COLOR.get(key);
 
-                if (!biomeCount.containsKey(b)) {
-                    biomeCount.put(b, 0);
-                } else {
-                    biomeCount.put(b, biomeCount.get(b) + 1);
-                }
+				if (color == null) {
+					int colorInt = MagicMapItem.getBiomeColor(source.getLevel(), b);
 
-                //set the color
-                img.setRGB(x, z, color.getRGB());
-            }
+					if (colorInt == 0)
+						colorInt = b.getGrassColor(0, 0);
 
-            //send a progress update to let people know the server isn't dying
-            if (x % progressUpdate == 0) {
-                source.getSource().sendSuccess(Component.translatable(((double) x / img.getHeight()) * 100 + "% Done mapping"), true);
-            }
-        }
+					BIOME2COLOR.put(key, color = new MapColor(colorInt | 0xFF000000));
+				}
 
-        source.getSource().sendSuccess(Component.literal("Approximate biome-block counts within an 2048x2048 region"), true);
-        int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
-        biomeCount.forEach((biome, integer) -> source.getSource().sendSuccess(Component.literal(
-                source.getSource().getLevel().registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome).toString())
-                .append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), true));
+				if (!biomeCount.containsKey(b)) {
+					biomeCount.put(b, 0);
+				} else {
+					biomeCount.put(b, biomeCount.get(b) + 1);
+				}
 
-        //save the biome map
-        Path p = Paths.get("biomemap.png");
-        try {
-            ImageIO.write(img, "png", p.toAbsolutePath().toFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 0;
-        }
+				//set the color
+				img.setPixelRGBA(x, z, ColorUtil.argbToABGR(color.getARGB()));
+			}
 
-        source.getSource().sendSuccess(Component.literal("Image saved!"), true);
+			//send a progress update to let people know the server isn't dying
+			if (x % progressUpdate == 0) {
+				source.sendSuccess(Component.translatable(((double) x / img.getHeight()) * 100 + "% Done mapping"), false);
+			}
+		}
 
-        return Command.SINGLE_SUCCESS;
-    }
+		if (showBiomePercents) {
+			source.sendSuccess(Component.literal("Approximate biome-block counts within a " + (width + "x" + height) + " region"), false);
+			int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
+			biomeCount.forEach((biome, integer) -> source.sendSuccess(Component.literal(
+							source.getLevel().registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome).toString())
+					.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
+		}
+
+		int startX = Mth.floor(source.getPosition().x()) - (img.getWidth() / 2);
+		int startZ = Mth.floor(source.getPosition().z()) - (img.getHeight() / 2);
+		//file name is formatted as: biomemap-seed-(startX.startZ)-(endX.endZ)
+		//I wanted to put generated maps in the path generated/biomemaps/seed, but it doesnt like when I add more params to the method
+		Path p = Paths.get("biome_map-" + source.getLevel().getSeed() + "-(" + startX + "." + startZ + ")-(" + (startX + width) + "." + (startZ + height) + ").png");
+		//save the biome map
+		try {
+			img.writeToFile(p.toAbsolutePath().toFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+			source.sendFailure(Component.literal("Could not save image! Please report this!"));
+			return 0;
+		}
+
+		source.sendSuccess(Component.literal("Image saved!"), false);
+
+		return Command.SINGLE_SUCCESS;
+	}
+
+	public static class MapColor {
+
+		private final int value;
+
+		public MapColor(int r, int g, int b) {
+			this(r, g, b, 255);
+		}
+
+		public MapColor(int r, int g, int b, int a) {
+			this.value = ((a & 0xFF) << 24) |
+					((r & 0xFF) << 16) |
+					((g & 0xFF) << 8) |
+					((b & 0xFF));
+		}
+
+		public MapColor(int rgb) {
+			this.value = 0xFF000000 | rgb;
+		}
+
+		public int getARGB() {
+			return this.value;
+		}
+	}
 }

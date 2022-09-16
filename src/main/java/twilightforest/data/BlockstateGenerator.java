@@ -13,6 +13,7 @@ import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.minecraftforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
@@ -222,11 +223,16 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 		ConfiguredModel[] runeBrickModels = new ConfiguredModel[8];
 		for (int i = 0; i < runeBrickModels.length; i++) {
-			runeBrickModels[i] = new ConfiguredModel(
-					this.make2LayerCubeAllSidesSame("castle_rune_brick_" + i, CUTOUT, 0, 15, false)
-							.texture("all", prefix("block/castle_brick"))
-							.texture("all2", prefix("block/castleblock_magic_" + i)));
+			runeBrickModels[i] = new ConfiguredModel(models().withExistingParent("castle_rune_brick_" + i, "block/block")
+					.texture("particle", prefix("block/castle_brick")).customLoader(CompositeModelBuilder::begin)
+					.child("brick", models().withExistingParent("castle_rune_bricks", "block/cube_all").texture("all", prefix("block/castle_brick")))
+					.child("runes", this.makeEmissiveBlockAll("castle_runes_" + i, CUTOUT, 15).texture("all", prefix("block/castleblock_magic_" + i)))
+					.end());
 		}
+
+		this.make2LayerCubeAllSidesSame("castle_rune_inventory", CUTOUT, 0, 15, false)
+				.texture("all", prefix("block/castle_brick"))
+				.texture("all2", prefix("block/castleblock_magic_0"));
 
 		simpleBlock(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), runeBrickModels);
 		simpleBlock(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), runeBrickModels);

@@ -102,10 +102,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get());
 		toBlock(TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get());
 		toBlock(TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get());
-		toBlockModel(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), "castle_rune_brick_0");
-		toBlockModel(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), "castle_rune_brick_0");
-		toBlockModel(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), "castle_rune_brick_0");
-		toBlockModel(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), "castle_rune_brick_0");
+		toBlockModel(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
+		toBlockModel(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
+		toBlockModel(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
+		toBlockModel(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), "castle_rune_inventory");
 		forcefield(TFBlocks.PINK_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
 		forcefield(TFBlocks.BLUE_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));
 		forcefield(TFBlocks.GREEN_FORCE_FIELD.getId().getPath(), prefix("block/forcefield_white"));

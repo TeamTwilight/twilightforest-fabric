@@ -49,6 +49,23 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 				.face(Direction.DOWN).texture("#down").cullface(Direction.DOWN).tintindex(0).end().end();
 	}
 
+	protected BlockModelBuilder makeEmissiveBlockAll(String name, ResourceLocation renderType, int emissivity) {
+		return this.makeEmissiveBlock(name, renderType, emissivity)
+				.texture("north", "#all").texture("south", "#all").texture("east", "#all")
+				.texture("west", "#all").texture("up", "#all").texture("down", "#all");
+	}
+
+	protected BlockModelBuilder makeEmissiveBlock(String name, ResourceLocation renderType, int emissivity) {
+		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#north")
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
+				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(emissivity).tintindex(0).end()
+				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(emissivity).tintindex(0).end()
+				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(emissivity).tintindex(0).end()
+				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(emissivity).tintindex(0).end()
+				.face(Direction.UP).texture("#up").cullface(Direction.UP).emissivity(emissivity).tintindex(0).end()
+				.face(Direction.DOWN).texture("#down").cullface(Direction.DOWN).emissivity(emissivity).tintindex(0).end().end();
+	}
+
 	protected BlockModelBuilder makeTintedFlippedBlockAll(String name) {
 		return models().withExistingParent(name, "minecraft:block/block").texture("particle", "#all")
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)

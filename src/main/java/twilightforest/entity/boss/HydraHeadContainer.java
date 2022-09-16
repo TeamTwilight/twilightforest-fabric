@@ -423,11 +423,11 @@ public class HydraHeadContainer {
 	}
 
 	private void doExplosionOn(HydraPart part, boolean large) {
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 5; ++i) {
 			double vx = part.getLevel().getRandom().nextGaussian() * 0.02D;
 			double vy = part.getLevel().getRandom().nextGaussian() * 0.02D;
 			double vz = part.getLevel().getRandom().nextGaussian() * 0.02D;
-			part.getLevel().addParticle((part.getLevel().getRandom().nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), part.getX() + part.getLevel().getRandom().nextFloat() * part.getBbWidth() * 2.0F - part.getBbWidth(), part.getY() + part.getLevel().getRandom().nextFloat() * part.getBbHeight(), part.getZ() + part.getLevel().getRandom().nextFloat() * part.getBbWidth() * 2.0F - part.getBbWidth(), vx, vy, vz);
+			part.getLevel().addParticle((part.getLevel().getRandom().nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION : ParticleTypes.POOF), part.getX() + part.getLevel().getRandom().nextFloat() * 2.0F, part.getY() + part.getLevel().getRandom().nextFloat() * 2.0F, part.getZ() + part.getLevel().getRandom().nextFloat() * 2.0F, vx, vy, vz);
 		}
 	}
 

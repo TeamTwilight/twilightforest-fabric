@@ -1,6 +1,7 @@
 package twilightforest.entity.passive;
 
 import com.google.common.collect.ImmutableList;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -115,7 +116,8 @@ public class QuestRam extends Animal {
 	private void rewardQuest() {
 		// todo flesh the context out more
 		LootContext ctx = new LootContext.Builder((ServerLevel) this.getLevel()).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.PIGLIN_BARTER);
-		this.getLevel().getServer().getLootTables().get(TFLootTables.QUESTING_RAM_REWARDS).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+		ObjectArrayList<ItemStack> rewards = this.getLevel().getServer().getLootTables().get(TFLootTables.QUESTING_RAM_REWARDS).getRandomItems(ctx);
+		rewards.forEach(stack -> this.spawnAtLocation(stack, 1.0F));
 
 		for (ServerPlayer player : this.getLevel().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
 			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);

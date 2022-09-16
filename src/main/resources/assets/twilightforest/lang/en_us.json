@@ -196,6 +196,7 @@
   "block.twilightforest.liveroot_block": "Liveroots",
   "block.twilightforest.mangrove_root": "Mangrove Roots",
   "block.twilightforest.uncrafting_table": "Uncrafting Table",
+  "container.uncrafting_table": "Uncrafting Table",
   "container.uncrafting_table.disabled": "Uncrafting is disabled via config",
   "container.uncrafting_table.disabled_item": "Uncrafting this item is disabled.",
   "block.twilightforest.smoker": "Smoker",
@@ -1434,6 +1435,8 @@
 
   "twilightforest.config.silent_cicadas": "Silent Cicadas",
   "twilightforest.config.silent_cicadas.tooltip": "Make cicadas silent for those having sound library problems, or otherwise finding them annoying.",
+  "twilightforest.config.silent_cicadas_on_head": "Silent Cicadas On Head",
+  "twilightforest.config.silent_cicadas_on_head.tooltip": "Make cicadas silent when sitting on your head. If the above option is already true, this won't have any effect.",
 
   "twilightforest.config.first_person_effects": "Render 1st Person Effects",
   "twilightforest.config.first_person_effects.tooltip": "Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.",

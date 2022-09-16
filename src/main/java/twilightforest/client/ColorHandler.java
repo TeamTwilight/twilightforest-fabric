@@ -14,31 +14,30 @@ import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFBlocks;
 import twilightforest.item.ArcticArmorItem;
-
-import java.awt.*;
+import twilightforest.util.ColorUtil;
 
 public final class ColorHandler {
 
 	public static void registerBlockColors() {
 
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.AURORA_BLOCK.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : ColorUtil.hsvToRGB(getter == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.AURORA_BLOCK.get());
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			int normalColor = ColorProviderRegistry.BLOCK.get(TFBlocks.AURORA_BLOCK.get()).getColor(TFBlocks.AURORA_BLOCK.get().defaultBlockState(), worldIn, pos, tintIndex);
+			int normalColor = ColorProviderRegistry.BLOCK.get(TFBlocks.AURORA_BLOCK.get()).getColor(TFBlocks.AURORA_BLOCK.get().defaultBlockState(), getter, pos, tintIndex);
 
 			int red = (normalColor >> 16) & 255;
 			int blue = normalColor & 255;
 			int green = (normalColor >> 8) & 255;
 
-			float[] hsb = Color.RGBtoHSB(red, blue, green, null);
+			float[] hsb = ColorUtil.rgbToHSV(red, green, blue);
 
-			return Color.HSBtoRGB(hsb[0], hsb[1] * 0.5F, Math.min(hsb[2] + 0.4F, 0.9F));
+			return ColorUtil.hsvToRGB(hsb[0], hsb[1] * 0.5F, Math.min(hsb[2] + 0.4F, 0.9F));
 		}, TFBlocks.AURORA_PILLAR.get(), TFBlocks.AURORA_SLAB.get(), TFBlocks.AURORALIZED_GLASS.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			if (worldIn == null || pos == null) {
+			if (getter == null || pos == null) {
 				return FoliageColor.getDefaultColor();
 			}
 
@@ -48,8 +47,7 @@ public final class ColorHandler {
 
 			for (int dz = -1; dz <= 1; ++dz) {
 				for (int dx = -1; dx <= 1; ++dx) {
-					//int i2 = worldIn.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos.add(dx, 0, dz));
-					int i2 = BiomeColors.getAverageFoliageColor(worldIn, pos.offset(dx, 0, dz));
+					int i2 = BiomeColors.getAverageFoliageColor(getter, pos.offset(dx, 0, dz));
 					red += (i2 & 16711680) >> 16;
 					grn += (i2 & 65280) >> 8;
 					blu += i2 & 255;
@@ -58,12 +56,12 @@ public final class ColorHandler {
 
 			return (red / 9 & 255) << 16 | (grn / 9 & 255) << 8 | blu / 9 & 255;
 		}, TFBlocks.DARK_LEAVES.get(), TFBlocks.HARDENED_DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : ColorProviderRegistry.BLOCK.get(Blocks.GRASS).getColor(Blocks.GRASS.defaultBlockState(), worldIn, pos, tintIndex), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? 2129968 : 7455580, TFBlocks.HUGE_LILY_PAD.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : ColorProviderRegistry.BLOCK.get(Blocks.GRASS).getColor(Blocks.GRASS.defaultBlockState(), getter, pos, tintIndex), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get());
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? 2129968 : 7455580, TFBlocks.HUGE_LILY_PAD.get());
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			if (worldIn == null || pos == null) {
+			if (getter == null || pos == null) {
 				return 106 << 16 | 156 << 8 | 23;
 			} else {
 				int red, green, blue;
@@ -84,10 +82,10 @@ public final class ColorHandler {
 				return red << 16 | green << 8 | blue;
 			}
 		}, TFBlocks.TIME_LEAVES.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			if (worldIn == null || pos == null) {
+			if (getter == null || pos == null) {
 				return 108 << 16 | 204 << 8 | 234;
 			} else {
 				int red, green, blue;
@@ -108,10 +106,10 @@ public final class ColorHandler {
 				return red << 16 | green << 8 | blue;
 			}
 		}, TFBlocks.TRANSFORMATION_LEAVES.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			if (worldIn == null || pos == null) {
+			if (getter == null || pos == null) {
 				return 252 << 16 | 241 << 8 | 68;
 			} else {
 				int red, green, blue;
@@ -132,10 +130,10 @@ public final class ColorHandler {
 				return red << 16 | green << 8 | blue;
 			}
 		}, TFBlocks.MINING_LEAVES.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			if (worldIn == null || pos == null) {
+			if (getter == null || pos == null) {
 				return 54 << 16 | 76 << 8 | 3;
 			} else {
 				int red, green, blue;
@@ -156,14 +154,14 @@ public final class ColorHandler {
 				return red << 16 | green << 8 | blue;
 			}
 		}, TFBlocks.SORTING_LEAVES.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			if (worldIn == null || pos == null) {
+			if (getter == null || pos == null) {
 				return -1;
 			} else {
 				float f = AuroraBrickBlock.rippleFractialNoise(2, 32.0f, pos, 0.4f, 1.0f, 2f);
-				return Color.HSBtoRGB(0.1f, 1f - f, (f + 2f) / 3f);
+				return ColorUtil.hsvToRGB(0.1f, 1f - f, (f + 2f) / 3f);
 			}
 		}, TFBlocks.TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get(), TFBlocks.INFESTED_TOWERWOOD.get(), TFBlocks.MOSSY_TOWERWOOD.get());
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
@@ -178,7 +176,6 @@ public final class ColorHandler {
 
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
-						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
 						int color = BiomeColors.getAverageFoliageColor(world, pos);
 						red += (color & 16711680) >> 16;
 						green += (color & 65280) >> 8;
@@ -201,7 +198,6 @@ public final class ColorHandler {
 
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
-						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
 						int color = BiomeColors.getAverageFoliageColor(world, pos);
 						red += (color & 16711680) >> 16;
 						green += (color & 65280) >> 8;
@@ -212,7 +208,6 @@ public final class ColorHandler {
 				int normalColor = (red / 9 & 0xFF) << 16 | (green / 9 & 0xFF) << 8 | blue / 9 & 0xFF;
 				// canopy colorizer
 				return ((normalColor & 0xFEFEFE) + 0x469A66) / 2;
-				//return ((normalColor & 0xFEFEFE) + 0x009822) / 2;
 			}
 		}, TFBlocks.CANOPY_LEAVES.get());
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
@@ -227,7 +222,6 @@ public final class ColorHandler {
 
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
-						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
 						int color = BiomeColors.getAverageFoliageColor(world, pos);
 						red += (color & 16711680) >> 16;
 						green += (color & 65280) >> 8;
@@ -240,10 +234,10 @@ public final class ColorHandler {
 				return ((normalColor & 0xFEFEFE) + 0xC0E694) / 2;
 			}
 		}, TFBlocks.MANGROVE_LEAVES.get());
-		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
-			if (world == null || pos == null) {
+			if (getter == null || pos == null) {
 				return 0x48B518;
 			} else {
 				int red = 0;
@@ -252,11 +246,10 @@ public final class ColorHandler {
 
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
-						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
-						int color = BiomeColors.getAverageFoliageColor(world, pos);
-						red += (color & 16711680) >> 16;
-						green += (color & 65280) >> 8;
-						blue += color & 255;
+						int color = BiomeColors.getAverageFoliageColor(getter, pos);
+						red += (color & 0xFF0000) >> 16;
+						green += (color & 0xFF00) >> 8;
+						blue += color & 0xFF;
 					}
 				}
 
@@ -279,34 +272,33 @@ public final class ColorHandler {
 				}
 				green &= 255;
 
-
 				return red << 16 | blue << 8 | green;
 			}
 		}, TFBlocks.RAINBOW_OAK_LEAVES.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> FoliageColor.getEvergreenColor(), TFBlocks.BEANSTALK_LEAVES.get(), TFBlocks.THORN_LEAVES.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> FoliageColor.getEvergreenColor(), TFBlocks.BEANSTALK_LEAVES.get(), TFBlocks.THORN_LEAVES.get());
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex != 0) {
 				return 0xFFFFFF;
 			} else {
-				if (worldIn != null && pos != null) {
-					return BiomeColors.getAverageFoliageColor(worldIn, pos);
+				if (getter != null && pos != null) {
+					return BiomeColors.getAverageFoliageColor(getter, pos);
 				} else {
 					return FoliageColor.getDefaultColor();
 				}
 			}
 		}, TFBlocks.FALLEN_LEAVES.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if ((tintIndex & 1) == 1) {
 				return 0xFFFFFF;
 			} else {
-				if (worldIn != null && pos != null) {
-					return BiomeColors.getAverageGrassColor(worldIn, pos);
+				if (getter != null && pos != null) {
+					return BiomeColors.getAverageGrassColor(getter, pos);
 				} else {
 					return GrassColor.get(0.5D, 1.0D);
 				}
 			}
 		}, TFBlocks.FIDDLEHEAD.get(), TFBlocks.POTTED_FIDDLEHEAD.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if ((tintIndex & 1) == 0) {
 				return 0xFFFFFF;
 			} else {
@@ -317,12 +309,12 @@ public final class ColorHandler {
 				TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(), TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(), TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (state.getValue(HollowLogClimbable.VARIANT) != HollowLogVariants.Climbable.VINE || (tintIndex & 1) == 0) {
 				return 0xFFFFFF;
 			} else {
-				if (worldIn != null && pos != null) {
-					return BiomeColors.getAverageFoliageColor(worldIn, pos);
+				if (getter != null && pos != null) {
+					return BiomeColors.getAverageFoliageColor(getter, pos);
 				} else {
 					return FoliageColor.getDefaultColor();
 				}
@@ -331,42 +323,42 @@ public final class ColorHandler {
 				TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(), TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(), TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> GrassColor.get(0.5D, 1.0D),
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> GrassColor.get(0.5D, 1.0D),
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), /*TFBlocks.HEDGE_MAZE_MINIATURE_STRUCTURE.get(), TFBlocks.HOLLOW_HILL_MINIATURE_STRUCTURE.get(), TFBlocks.QUEST_GROVE_MINIATURE_STRUCTURE.get(), TFBlocks.MUSHROOM_TOWER_MINIATURE_STRUCTURE.get(),*/ TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get() //TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(),
 				/*TFBlocks.HYDRA_LAIR_MINIATURE_STRUCTURE.get(), TFBlocks.GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE.get(), TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), TFBlocks.YETI_CAVE_MINIATURE_STRUCTURE.get(), TFBlocks.AURORA_PALACE_MINIATURE_STRUCTURE.get(), TFBlocks.TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE.get(), TFBlocks.FINAL_CASTLE_MINIATURE_STRUCTURE.get()*/);
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0xFF00FF;
 		}, TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.PINK_CASTLE_DOOR.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0x00FFFF;
 		}, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_DOOR.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0xFFFF00;
 		}, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_DOOR.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0x4B0082;
 		}, TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_DOOR.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0x5C1074;
 		}, TFBlocks.VIOLET_FORCE_FIELD.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0xFA057E;
 		}, TFBlocks.PINK_FORCE_FIELD.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0xFF5B02;
 		}, TFBlocks.ORANGE_FORCE_FIELD.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0x89E701;
 		}, TFBlocks.GREEN_FORCE_FIELD.get());
-		ColorProviderRegistry.BLOCK.register((state, worldIn, pos, tintIndex) -> {
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			return 0x0DDEFF;
 		}, TFBlocks.BLUE_FORCE_FIELD.get());

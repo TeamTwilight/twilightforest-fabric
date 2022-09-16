@@ -76,7 +76,7 @@ public class NagaSegment extends TFPart<Naga> {
 					double d = this.random.nextGaussian() * 0.02D;
 					double d1 = this.random.nextGaussian() * 0.02D;
 					double d2 = this.random.nextGaussian() * 0.02D;
-					SimpleParticleType explosionType = random.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION;
+					SimpleParticleType explosionType = random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF;
 
 					this.getLevel().addParticle(explosionType,
 							(this.getX() + this.random.nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),

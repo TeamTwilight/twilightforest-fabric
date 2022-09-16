@@ -348,6 +348,10 @@ public class TFConfig {
 					translation(config + "silent_cicadas").
 					comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.").
 					define("silentCicadas", false);
+			silentCicadasOnHead = builder.
+					translation(config + "silent_cicadas_on_head").
+					comment("Make cicadas silent when sitting on your head. If the above option is already true, this won't have any effect.").
+					define("silentCicadasOnHead", false);
 			firstPersonEffects = builder.
 					translation(config + "first_person_effects").
 					comment("Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.").
@@ -371,6 +375,7 @@ public class TFConfig {
 		}
 
 		public ForgeConfigSpec.BooleanValue silentCicadas;
+		public ForgeConfigSpec.BooleanValue silentCicadasOnHead;
 		public ForgeConfigSpec.BooleanValue firstPersonEffects;
 		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
 		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;

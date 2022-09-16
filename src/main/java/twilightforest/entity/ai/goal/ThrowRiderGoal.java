@@ -27,7 +27,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	public boolean canUse() {
 		return this.mob.getPassengers().isEmpty() &&
 				this.mob.getTarget() != null &&
-				!this.mob.getTarget().getType().is(EntityTagGenerator.BOSSES) &&
+				!this.mob.getTarget().getType().is(Tags.EntityTypes.BOSSES) &&
 				CapabilityList.YETI_THROWN.maybeGet(this.mob.getTarget()).map(cap -> cap.getThrowCooldown() <= 0).orElse(true) &&
 				super.canUse();
 	}

@@ -248,7 +248,7 @@ public class Naga extends Monster implements MultiPartEntity {
 				double d = this.getRandom().nextGaussian() * 0.02D;
 				double d1 = this.getRandom().nextGaussian() * 0.02D;
 				double d2 = this.getRandom().nextGaussian() * 0.02D;
-				this.getLevel().addParticle((this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION),
+				this.getLevel().addParticle((this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF),
 						(this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
 						this.getY() + this.getRandom().nextFloat() * this.getBbHeight(),
 						(this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),

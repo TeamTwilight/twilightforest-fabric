@@ -21,12 +21,14 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 
 	@Override
 	public void update() {
-		if (this.getFalling() && !this.host.isOnGround()) {
-			this.host.resetFallDistance();
-		}
+		if (this.getFalling()) {
+			if (!this.host.isOnGround()) {
+				this.host.resetFallDistance();
+			}
 
-		if (this.host.isOnGround() || this.host.isSwimming()) {
-			this.setFalling(false);
+			if (this.host.isOnGround() || this.host.isSwimming()) {
+				this.setFalling(false);
+			}
 		}
 	}
 

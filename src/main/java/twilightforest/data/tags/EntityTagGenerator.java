@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 
@@ -118,6 +119,8 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
                 EntityType.TRADER_LLAMA,
                 EntityType.DONKEY,
                 EntityType.MULE);
+
+        tag(Tags.EntityTypes.BOSSES).addTag(BOSSES);
     }
 
     private static TagKey<EntityType<?>> create(ResourceLocation rl) {

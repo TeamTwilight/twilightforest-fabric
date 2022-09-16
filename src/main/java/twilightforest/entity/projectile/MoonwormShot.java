@@ -60,7 +60,7 @@ public class MoonwormShot extends TFThrowable {
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, TFBlocks.MOONWORM.get().defaultBlockState()), false, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true, this.getX(), this.getY() + 0.1D, this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleEntityEvent(id);

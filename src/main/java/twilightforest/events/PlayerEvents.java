@@ -23,6 +23,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -58,6 +59,7 @@ import twilightforest.init.TFStats;
 import twilightforest.item.FieryArmorItem;
 import twilightforest.item.MazebreakerPickItem;
 import twilightforest.item.YetiArmorItem;
+import twilightforest.network.CreateMovingCicadaSoundPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateShieldPacket;
 
@@ -89,13 +91,20 @@ public class PlayerEvents {
 		}
 	}
 
-	public static void updateFeatherFanCap(LivingEntity entity) {
-		if (CapabilityList.FEATHER_FAN_FALLING.maybeGet(entity).isPresent()) {
-			CapabilityList.FEATHER_FAN_FALLING.maybeGet(entity).ifPresent(FeatherFanFallCapability::update);
-		}
+	@SubscribeEvent
+	public static void updateCaps(LivingEvent.LivingTickEvent event) {
+		event.getEntity().getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
+		event.getEntity().getCapability(CapabilityList.YETI_THROWN).ifPresent(YetiThrowCapability::update);
+	}
 
-		if (CapabilityList.YETI_THROWN.maybeGet(entity).isPresent()) {
-			CapabilityList.YETI_THROWN.maybeGet(entity).ifPresent(YetiThrowCapability::update);
+	// from what I can see, vanilla doesnt have a hook for this in the item class. So this will have to do.
+	// we only have to check equipping, when its unequipped the sound instance handles the rest
+	@SubscribeEvent
+	public static void equipCicada(LivingEquipmentChangeEvent event) {
+		if(event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.get().asItem())) {
+			if (!event.getEntity().getLevel().isClientSide() && event.getEntity() != null) {
+				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(event::getEntity), new CreateMovingCicadaSoundPacket(event.getEntity().getId()));
+			}
 		}
 	}
 
