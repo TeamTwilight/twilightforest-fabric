@@ -1,5 +1,6 @@
 package twilightforest.entity.ai.goal;
 
+import me.alphamode.forgetags.Tags;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;

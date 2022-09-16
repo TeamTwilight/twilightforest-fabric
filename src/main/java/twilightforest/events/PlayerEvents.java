@@ -63,6 +63,7 @@ import twilightforest.network.CreateMovingCicadaSoundPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateShieldPacket;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 public class PlayerEvents {
@@ -72,7 +73,8 @@ public class PlayerEvents {
 
 	public static void init() {
 		ItemCraftedCallback.EVENT.register(PlayerEvents::onCrafting);
-		LivingEntityEvents.TICK.register(PlayerEvents::updateFeatherFanCap);
+		LivingEntityEvents.TICK.register(PlayerEvents::updateCaps);
+		LivingEntityEvents.EQUIPMENT_CHANGE.register(PlayerEvents::equipCicada);
 		LivingEntityEvents.ACTUALLY_HURT.register(PlayerEvents::entityHurts);
 		UseBlockCallback.EVENT.register(PlayerEvents::createSkullCandle);
 		PlayerBlockBreakEvents.BEFORE.register(PlayerEvents::onCasketBreak);
@@ -91,19 +93,17 @@ public class PlayerEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void updateCaps(LivingEvent.LivingTickEvent event) {
-		event.getEntity().getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
-		event.getEntity().getCapability(CapabilityList.YETI_THROWN).ifPresent(YetiThrowCapability::update);
+	public static void updateCaps(LivingEntity livingEntity) {
+		CapabilityList.FEATHER_FAN_FALLING.maybeGet(livingEntity).ifPresent(FeatherFanFallCapability::update);
+		CapabilityList.YETI_THROWN.maybeGet(livingEntity).ifPresent(YetiThrowCapability::update);
 	}
 
 	// from what I can see, vanilla doesnt have a hook for this in the item class. So this will have to do.
 	// we only have to check equipping, when its unequipped the sound instance handles the rest
-	@SubscribeEvent
-	public static void equipCicada(LivingEquipmentChangeEvent event) {
-		if(event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.get().asItem())) {
-			if (!event.getEntity().getLevel().isClientSide() && event.getEntity() != null) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(event::getEntity), new CreateMovingCicadaSoundPacket(event.getEntity().getId()));
+	public static void equipCicada(LivingEntity entity, EquipmentSlot slot, @Nonnull ItemStack from, @Nonnull ItemStack to) {
+		if(slot == EquipmentSlot.HEAD && to.is(TFBlocks.CICADA.get().asItem())) {
+			if (!entity.getLevel().isClientSide() && entity != null) {
+				TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new CreateMovingCicadaSoundPacket(entity.getId()), entity);
 			}
 		}
 	}

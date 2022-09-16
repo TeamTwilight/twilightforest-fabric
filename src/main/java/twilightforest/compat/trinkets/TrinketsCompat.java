@@ -28,6 +28,8 @@ import twilightforest.item.CuriosCharmItem;
 import twilightforest.item.SkullCandleItem;
 import twilightforest.item.TrophyItem;
 
+import java.util.Optional;
+
 public class TrinketsCompat {
 
 	public static void init() {
@@ -91,6 +93,10 @@ public class TrinketsCompat {
 		TrinketRendererRegistry.registerRenderer(TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(), CurioHeadRenderer::render);
 		TrinketRendererRegistry.registerRenderer(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(), CurioHeadRenderer::render);
 		TrinketRendererRegistry.registerRenderer(TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem(), CurioHeadRenderer::render);
+	}
+
+	public static boolean isCicadaEquipped(LivingEntity entity) {
+		return entity.getComponent(TrinketsApi.TRINKET_COMPONENT).isEquipped(stack -> stack.is(TFBlocks.CICADA.get().asItem()));
 	}
 
 	public static boolean isTrophyCurioEquipped(LivingEntity entity) {

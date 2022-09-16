@@ -18,7 +18,7 @@ public class TFPacketHandler {
 
 		CHANNEL.registerS2CPacket(AreaProtectionPacket.class, id++);
 		CHANNEL.registerS2CPacket(ChangeBiomePacket.class, id++);
-		CHANNEL.registerMessage(id++, CreateMovingCicadaSoundPacket.class, CreateMovingCicadaSoundPacket::encode, CreateMovingCicadaSoundPacket::new, CreateMovingCicadaSoundPacket.Handler::onMessage);
+		CHANNEL.registerS2CPacket(CreateMovingCicadaSoundPacket.class, id++);
 		CHANNEL.registerS2CPacket(EnforceProgressionStatusPacket.class, id++);
 		CHANNEL.registerS2CPacket(MagicMapPacket.class, id++);
 		CHANNEL.registerS2CPacket(MazeMapPacket.class, id++);

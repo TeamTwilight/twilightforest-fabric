@@ -1,4 +1,4 @@
-// 1.19.2	2022-09-16T15:12:38.009725415	Twilight Forest Entity Tags
+// 1.19.2	2022-09-16T16:33:48.159219263	Twilight Forest Entity Tags
 4ff4416ef19181d1e0e08c12e1be12068f398ab7 data/minecraft/tags/entity_types/skeletons.json
 deb8f584b4826c3a2997c9d9aa8443d7163d1d4e data/minecraft/tags/entity_types/impact_projectiles.json
 8a2e087ec320d194248e5e6bd71db12fab88d9b0 data/minecraft/tags/entity_types/powder_snow_walkable_mobs.json
@@ -9,6 +9,7 @@ deb8f584b4826c3a2997c9d9aa8443d7163d1d4e data/minecraft/tags/entity_types/impact
 fa8e98d24f57096814fa6a4fb418b8bf49fc7967 data/minecraft/tags/entity_types/arrows.json
 6d0d94126c0b492eb54df1ffabc507cff01fbd84 data/twilightforest/tags/entity_types/bosses.json
 f6d4c914598792a90ef7301049e6e60e3963a162 data/twilightforest/tags/entity_types/sortable_entities.json
+d0c68210923e9855486c3be0f41046a5a9739df8 data/c/tags/entity_types/bosses.json
 09d2d69b276a62447aeb72df5fbff6874a088ab0 data/minecraft/tags/entity_types/frog_food.json
 56a0cd081c5aba216ae810c768d81f4b9d01d476 data/twilightforest/tags/entity_types/lifedrain_drops_no_flesh.json
 0e8daaf42dc4238cee01c85921fdb67723348421 data/twilightforest/tags/entity_types/dont_kill_bugs.json
