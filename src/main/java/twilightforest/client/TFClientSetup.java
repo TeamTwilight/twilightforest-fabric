@@ -88,7 +88,7 @@ public class TFClientSetup implements ClientModInitializer {
 	}
 
     public static void clientSetup() {
-		optifinePresent = FabricLoader.getInstance().isModLoaded("sodium");
+		optifinePresent = FabricLoader.getInstance().isModLoaded("sodium") && !FabricLoader.getInstance().isModLoaded("indium");
 
         TFBlockEntities.registerTileEntityRenders();
         TFMenuTypes.renderScreens();
