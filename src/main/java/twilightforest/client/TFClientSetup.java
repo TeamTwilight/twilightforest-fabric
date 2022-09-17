@@ -88,12 +88,7 @@ public class TFClientSetup implements ClientModInitializer {
 	}
 
     public static void clientSetup() {
-		try {
-			Class.forName("net.optifine.Config");
-			optifinePresent = true;
-		} catch (ClassNotFoundException e) {
-			optifinePresent = false;
-		}
+		optifinePresent = FabricLoader.getInstance().isModLoaded("sodium");
 
         TFBlockEntities.registerTileEntityRenders();
         TFMenuTypes.renderScreens();
