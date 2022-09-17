@@ -1,6 +1,7 @@
 package twilightforest.capabilities.fan;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateFeatherFanFallPacket;
@@ -36,7 +37,8 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 	public void setFalling(boolean falling) {
 		this.falling = falling;
 		if (!this.host.getLevel().isClientSide()) {
-//			TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateFeatherFanFallPacket(this.host.getId(), this), this.host); TODO: PORT this causing crashing on world load needs to be fixed
+			if (this.host instanceof ServerPlayer serverPlayer && serverPlayer.connection != null)
+				TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateFeatherFanFallPacket(this.host.getId(), this), this.host);
 		}
 	}
 

@@ -43,22 +43,27 @@
       "faces": {
         "east": {
           "cullface": "east",
+          "emissivity": 15,
           "texture": "#east2"
         },
         "north": {
           "cullface": "north",
+          "emissivity": 15,
           "texture": "#north2"
         },
         "south": {
           "cullface": "south",
+          "emissivity": 15,
           "texture": "#south2"
         },
         "up": {
           "cullface": "up",
+          "emissivity": 15,
           "texture": "#top2"
         },
         "west": {
           "cullface": "west",
+          "emissivity": 15,
           "texture": "#west2"
         }
       },

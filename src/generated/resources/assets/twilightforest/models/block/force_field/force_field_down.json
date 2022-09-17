@@ -6,6 +6,7 @@
       "faces": {
         "down": {
           "cullface": "down",
+          "emissivity": 15,
           "texture": "#pane"
         }
       },

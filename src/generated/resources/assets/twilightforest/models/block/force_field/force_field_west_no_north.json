@@ -5,6 +5,7 @@
     {
       "faces": {
         "north": {
+          "emissivity": 15,
           "texture": "#pane",
           "uv": [
             0.0,

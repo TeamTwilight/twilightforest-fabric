@@ -1,6 +1,7 @@
 package twilightforest.capabilities.thrown;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.network.TFPacketHandler;
@@ -66,7 +67,8 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 
 	private void sendUpdatePacket() {
 		if (!this.host.getLevel().isClientSide()) {
-			TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateThrownPacket(this.host, this), this.host);
+			if (this.host instanceof ServerPlayer serverPlayer && serverPlayer.connection != null)
+				TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateThrownPacket(this.host, this), this.host);
 		}
 	}
 

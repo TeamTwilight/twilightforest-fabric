@@ -4,6 +4,7 @@
     {
       "faces": {
         "north": {
+          "emissivity": 10,
           "texture": "#cross",
           "uv": [
             0.0,
@@ -13,6 +14,7 @@
           ]
         },
         "south": {
+          "emissivity": 10,
           "texture": "#cross",
           "uv": [
             0.0,
@@ -47,6 +49,7 @@
     {
       "faces": {
         "east": {
+          "emissivity": 10,
           "texture": "#cross",
           "uv": [
             0.0,
@@ -56,6 +59,7 @@
           ]
         },
         "west": {
+          "emissivity": 10,
           "texture": "#cross",
           "uv": [
             0.0,
@@ -90,6 +94,7 @@
     {
       "faces": {
         "north": {
+          "emissivity": 6,
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -99,6 +104,7 @@
           ]
         },
         "south": {
+          "emissivity": 6,
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -133,6 +139,7 @@
     {
       "faces": {
         "east": {
+          "emissivity": 6,
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -142,6 +149,7 @@
           ]
         },
         "west": {
+          "emissivity": 6,
           "texture": "#cross2",
           "uv": [
             0.0,
