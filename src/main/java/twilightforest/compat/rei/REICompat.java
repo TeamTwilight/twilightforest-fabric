@@ -14,6 +14,8 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import twilightforest.TFConfig;
 import twilightforest.client.UncraftingScreen;
+import twilightforest.compat.rei.categories.REIUncraftingCategory;
+import twilightforest.compat.rei.displays.REIUncraftingDisplay;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFRecipes;

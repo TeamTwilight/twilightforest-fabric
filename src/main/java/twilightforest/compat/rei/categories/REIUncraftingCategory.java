@@ -1,4 +1,4 @@
-package twilightforest.compat.rei;
+package twilightforest.compat.rei.categories;
 
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.TwilightForestMod;
+import twilightforest.compat.rei.displays.REIUncraftingDisplay;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 
