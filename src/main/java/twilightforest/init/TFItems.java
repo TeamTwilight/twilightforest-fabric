@@ -55,9 +55,9 @@ public class TFItems {
 	public static final RegistryObject<Item> FORTIFICATION_SCEPTER = ITEMS.register("fortification_scepter", () -> new FortificationWandItem(defaultBuilder().durability(9).rarity(Rarity.UNCOMMON)));
 	//items.register("Wand of Pacification [NYI]", new Item().setIconIndex(6).setTranslationKey("wandPacification").setMaxStackSize(1));
 	public static final RegistryObject<Item> ORE_METER = ITEMS.register("ore_meter", () -> new OreMeterItem(defaultBuilder()));
-	public static final RegistryObject<Item> FILLED_MAGIC_MAP = ITEMS.register("filled_magic_map", () -> new MagicMapItem(new Item.Properties().stacksTo(1)));
-	public static final RegistryObject<Item> FILLED_MAZE_MAP = ITEMS.register("filled_maze_map", () -> new MazeMapItem(false, new Item.Properties().stacksTo(1)));
-	public static final RegistryObject<Item> FILLED_ORE_MAP = ITEMS.register("filled_ore_map", () -> new MazeMapItem(true, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> FILLED_MAGIC_MAP = ITEMS.register("filled_magic_map", () -> new MagicMapItem(new Item.Properties()));
+	public static final RegistryObject<Item> FILLED_MAZE_MAP = ITEMS.register("filled_maze_map", () -> new MazeMapItem(false, new Item.Properties()));
+	public static final RegistryObject<Item> FILLED_ORE_MAP = ITEMS.register("filled_ore_map", () -> new MazeMapItem(true, new Item.Properties()));
 	public static final RegistryObject<Item> RAVEN_FEATHER = ITEMS.register("raven_feather", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> MAGIC_MAP_FOCUS = ITEMS.register("magic_map_focus", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> MAZE_MAP_FOCUS = ITEMS.register("maze_map_focus", () -> new Item(defaultBuilder()));

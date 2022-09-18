@@ -1,10 +1,13 @@
 package twilightforest.util;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.DyeColor;
 
+import java.util.AbstractMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -136,5 +139,21 @@ public record ColorUtil(Function<DyeColor, Block> function) {
 		int r = (argbColor >> 16) & 0xFF;
 		int b = argbColor & 0xFF;
 		return (argbColor & 0xFF00FF00) | (b << 16) | r;
+	}
+
+	//We COULD use the WOOL method at the very top of this class, but then we have to use the order of the dyecolor enum, which doesnt show the wools in the order the ram displays them.
+	//I personally like this order better so suck it
+	public static final Map<DyeColor, Block> WOOL_TO_DYE_IN_RAM_ORDER = ImmutableMap.ofEntries(
+			entryOf(DyeColor.WHITE, Blocks.WHITE_WOOL), entryOf(DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_WOOL),
+			entryOf(DyeColor.GRAY, Blocks.GRAY_WOOL), entryOf(DyeColor.BLACK, Blocks.BLACK_WOOL),
+			entryOf(DyeColor.RED, Blocks.RED_WOOL), entryOf(DyeColor.ORANGE, Blocks.ORANGE_WOOL),
+			entryOf(DyeColor.YELLOW, Blocks.YELLOW_WOOL), entryOf(DyeColor.LIME, Blocks.LIME_WOOL),
+			entryOf(DyeColor.GREEN, Blocks.GREEN_WOOL), entryOf(DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_WOOL),
+			entryOf(DyeColor.CYAN, Blocks.CYAN_WOOL), entryOf(DyeColor.BLUE, Blocks.BLUE_WOOL),
+			entryOf(DyeColor.PURPLE, Blocks.PURPLE_WOOL), entryOf(DyeColor.MAGENTA, Blocks.MAGENTA_WOOL),
+			entryOf(DyeColor.PINK, Blocks.PINK_WOOL), entryOf(DyeColor.BROWN, Blocks.BROWN_WOOL));
+
+	static <K, V> Map.Entry<K, V> entryOf(K key, V value) {
+		return new AbstractMap.SimpleImmutableEntry<>(key, value);
 	}
 }

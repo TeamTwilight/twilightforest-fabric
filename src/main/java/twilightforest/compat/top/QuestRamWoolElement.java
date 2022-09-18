@@ -12,6 +12,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import twilightforest.TwilightForestMod;
+import twilightforest.util.ColorUtil;
 
 import java.util.Map;
 
@@ -46,7 +47,7 @@ public class QuestRamWoolElement implements IElement {
         int getRenderedWools = 0;
         int colum = 0;
         int row = 0;
-        for (Map.Entry<DyeColor, Block> entry : TOPQuestRamWoolProvider.WOOL_TO_DYE.entrySet()) {
+        for (Map.Entry<DyeColor, Block> entry : ColorUtil.WOOL_TO_DYE_IN_RAM_ORDER.entrySet()) {
             if (!isColorPresent(entry.getKey())) {
                 if (getRenderedWools % 8 == 0) {
                     row++;
@@ -73,7 +74,7 @@ public class QuestRamWoolElement implements IElement {
     public int getHeight() {
         int getRenderedWools = 0;
         int row = 0;
-        for (Map.Entry<DyeColor, Block> entry : TOPQuestRamWoolProvider.WOOL_TO_DYE.entrySet()) {
+        for (Map.Entry<DyeColor, Block> entry : ColorUtil.WOOL_TO_DYE_IN_RAM_ORDER.entrySet()) {
             if (!isColorPresent(entry.getKey())) {
                 if (getRenderedWools % 8 == 0) {
                     row++;
