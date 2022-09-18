@@ -111,7 +111,7 @@ public class PeacockFanItem extends Item {
 			}
 
 			if (entity instanceof ServerPlayer pushedPlayer && pushedPlayer != player && !pushedPlayer.isShiftKeyDown()) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> pushedPlayer), new ThrowPlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()));
+				TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()), pushedPlayer);
 				player.getCooldowns().addCooldown(fan, 40);
 				fannedEntities += 2;
 			}
