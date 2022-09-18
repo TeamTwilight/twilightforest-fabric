@@ -10,26 +10,26 @@ import net.minecraft.network.FriendlyByteBuf;
 import java.util.concurrent.Executor;
 
 public class ThrowPlayerPacket implements S2CPacket {
-	private final float motionX;
-	private final float motionY;
-	private final float motionZ;
+	private final double motionX;
+	private final double motionY;
+	private final double motionZ;
 
-	public ThrowPlayerPacket(float motionX, float motionY, float motionZ) {
+	public ThrowPlayerPacket(double motionX, double motionY, double motionZ) {
 		this.motionX = motionX;
 		this.motionY = motionY;
 		this.motionZ = motionZ;
 	}
 
 	public ThrowPlayerPacket(FriendlyByteBuf buf) {
-		this.motionX = buf.readFloat();
-		this.motionY = buf.readFloat();
-		this.motionZ = buf.readFloat();
+		this.motionX = buf.readDouble();
+		this.motionY = buf.readDouble();
+		this.motionZ = buf.readDouble();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeFloat(this.motionX);
-		buf.writeFloat(this.motionY);
-		buf.writeFloat(this.motionZ);
+		buf.writeDouble(this.motionX);
+		buf.writeDouble(this.motionY);
+		buf.writeDouble(this.motionZ);
 	}
 
 	@Override

@@ -93,7 +93,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 			}
 
 			if (rider instanceof ServerPlayer player) {
-				ThrowPlayerPacket message = new ThrowPlayerPacket((float) throwVec.x(), (float) throwVec.y(), (float) throwVec.z());
+				ThrowPlayerPacket message = new ThrowPlayerPacket(throwVec.x(), throwVec.y(), throwVec.z());
 				TFPacketHandler.CHANNEL.sendToClient(message, player);
 			}
 		}

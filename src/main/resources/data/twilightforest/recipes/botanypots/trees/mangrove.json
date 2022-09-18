@@ -1,0 +1,59 @@
+{
+  "type": "botanypots:crop",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "botanypots"
+    }
+  ],
+  "seed": {
+    "item": "twilightforest:mangrove_sapling"
+  },
+  "categories": [
+    "dirt",
+    "water"
+  ],
+  "growthTicks": 2400,
+  "display": {
+    "type": "botanypots:simple",
+    "block": "twilightforest:mangrove_sapling"
+  },
+  "drops": [
+    {
+      "chance": 1.0,
+      "output": {
+        "item": "twilightforest:mangrove_log"
+      },
+      "minRolls": 2,
+      "maxRolls": 4
+    },
+    {
+      "chance": 0.2,
+      "output": {
+        "item": "twilightforest:mangrove_root"
+      },
+      "minRolls": 1,
+      "maxRolls": 2
+    },
+    {
+      "chance": 0.05,
+      "output": {
+        "item": "twilightforest:liveroot"
+      }
+    },
+    {
+      "chance": 0.1,
+      "output": {
+        "item": "minecraft:stick"
+      },
+      "minRolls": 1,
+      "maxRolls": 2
+    },
+    {
+      "chance": 0.15,
+      "output": {
+        "item": "twilightforest:mangrove_sapling"
+      }
+    }
+  ]
+}

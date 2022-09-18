@@ -1,0 +1,50 @@
+{
+  "type": "botanypots:crop",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "botanypots"
+    }
+  ],
+  "seed": {
+    "item": "twilightforest:darkwood_sapling"
+  },
+  "categories": [
+    "dirt"
+  ],
+  "growthTicks": 2400,
+  "display": {
+    "type": "botanypots:simple",
+    "block": "twilightforest:darkwood_sapling"
+  },
+  "drops": [
+    {
+      "chance": 1.0,
+      "output": {
+        "item": "twilightforest:dark_log"
+      },
+      "minRolls": 2,
+      "maxRolls": 4
+    },
+    {
+      "chance": 0.05,
+      "output": {
+        "item": "twilightforest:liveroot"
+      }
+    },
+    {
+      "chance": 0.1,
+      "output": {
+        "item": "minecraft:stick"
+      },
+      "minRolls": 1,
+      "maxRolls": 2
+    },
+    {
+      "chance": 0.15,
+      "output": {
+        "item": "twilightforest:darkwood_sapling"
+      }
+    }
+  ]
+}

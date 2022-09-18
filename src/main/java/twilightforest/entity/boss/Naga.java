@@ -381,8 +381,8 @@ public class Naga extends Monster implements MultiPartEntity {
 			toAttack.push(motion.x() * 1.5D, 0.5D, motion.z() * 1.5D);
 			this.push(motion.x() * -1.25D, 0.5D, motion.z() * -1.25D);
 			if (toAttack instanceof ServerPlayer player) {
-				player.getUseItem().hurt(5, this.getRandom(), player);
-				TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket((float) motion.x() * 3.0F, (float) motion.y() + 0.75F, (float) motion.z() * 3.0F), player);
+				player.getUseItem().hurtAndBreak(5, player, user -> user.broadcastBreakEvent(player.getUsedItemHand()));
+				TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket(motion.x() * 3.0D,  motion.y() + 0.75D, motion.z() * 3.0D), player);
 			}
 			this.hurt(DamageSource.GENERIC, 4.0F);
 			this.getLevel().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.getLevel().getRandom().nextFloat() * 0.4F);

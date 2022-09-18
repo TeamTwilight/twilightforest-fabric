@@ -9,6 +9,7 @@ import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.block.AuroraBrickBlock;
+import twilightforest.block.CastleDoorBlock;
 import twilightforest.block.HollowLogClimbable;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFItems;
@@ -328,19 +329,27 @@ public final class ColorHandler {
 				/*TFBlocks.HYDRA_LAIR_MINIATURE_STRUCTURE.get(), TFBlocks.GOBLIN_STRONGHOLD_MINIATURE_STRUCTURE.get(), TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), TFBlocks.YETI_CAVE_MINIATURE_STRUCTURE.get(), TFBlocks.AURORA_PALACE_MINIATURE_STRUCTURE.get(), TFBlocks.TROLL_CAVE_COTTAGE_MINIATURE_STRUCTURE.get(), TFBlocks.FINAL_CASTLE_MINIATURE_STRUCTURE.get()*/);
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
-			return 0xFF00FF;
+			int color = 0xFF00FF;
+			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
+			return color;
 		}, TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.PINK_CASTLE_DOOR.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
-			return 0x00FFFF;
+			int color = 0x00FFFF;
+			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
+			return color;
 		}, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_DOOR.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
-			return 0xFFFF00;
+			int color = 0xFFFF00;
+			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
+			return color;
 		}, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_DOOR.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
-			return 0x4B0082;
+			int color = 0x4B0082;
+			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
+			return color;
 		}, TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_DOOR.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;

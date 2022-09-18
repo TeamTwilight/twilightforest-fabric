@@ -1,0 +1,21 @@
+{
+  "type": "botanypots:soil",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "botanypots"
+    }
+  ],
+  "input": {
+    "item": "twilightforest:uberous_soil"
+  },
+  "display": {
+    "block": "twilightforest:uberous_soil"
+  },
+  "categories": [
+    "dirt",
+    "farmland",
+    "mushroom"
+  ],
+  "growthModifier": 2
+}
