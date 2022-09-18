@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -36,16 +35,16 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
-public class QuestRam extends Animal {
+public class QuestRam extends Animal implements EnforcedHomePoint {
 
 	private static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Boolean> DATA_REWARDED = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.BOOLEAN);
@@ -63,7 +62,7 @@ public class QuestRam extends Animal {
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
 		this.goalSelector.addGoal(2, new QuestRamEatWoolGoal(this));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, Ingredient.of(ItemTags.WOOL), false));
-		this.goalSelector.addGoal(4, new MoveTowardsRestrictionGoal(this, 0.75D));
+		this.addRestrictionGoals(this, this.goalSelector);
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 	}
@@ -174,10 +173,7 @@ public class QuestRam extends Animal {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("ColorFlags", this.getColorFlags());
 		compound.putBoolean("Rewarded", this.getRewarded());
-		if (this.getRestrictCenter() != BlockPos.ZERO) {
-			BlockPos home = this.getRestrictCenter();
-			compound.put("HomePos", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
-		}
+		this.saveHomePointToNbt(compound);
 	}
 
 	@Override
@@ -185,16 +181,10 @@ public class QuestRam extends Animal {
 		super.readAdditionalSaveData(compound);
 		this.setColorFlags(compound.getInt("ColorFlags"));
 		this.setRewarded(compound.getBoolean("Rewarded"));
-		if (compound.contains("HomePos", 9)) {
-			ListTag nbttaglist = compound.getList("HomePos", 6);
-			int hx = (int) nbttaglist.getDouble(0);
-			int hy = (int) nbttaglist.getDouble(1);
-			int hz = (int) nbttaglist.getDouble(2);
-			this.restrictTo(new BlockPos(hx, hy, hz), 13);
-		}
+		this.loadHomePointFromNbt(compound, 13);
 	}
 
-	private int getColorFlags() {
+	public int getColorFlags() {
 		return this.entityData.get(DATA_COLOR);
 	}
 
@@ -275,5 +265,15 @@ public class QuestRam extends Animal {
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
 		this.playSound(TFSounds.QUEST_RAM_STEP.get(), 0.15F, 1.0F);
+	}
+
+	@Override
+	public BlockPos getRestrictionCenter() {
+		return this.getRestrictCenter();
+	}
+
+	@Override
+	public void setRestriction(BlockPos pos, int dist) {
+		this.restrictTo(pos, dist);
 	}
 }

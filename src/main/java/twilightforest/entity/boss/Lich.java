@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.client.Game;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -42,28 +41,25 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.ai.goal.*;
-import twilightforest.init.TFSounds;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
+import twilightforest.entity.EnforcedHomePoint;
+import twilightforest.entity.ai.goal.*;
 import twilightforest.entity.monster.LichMinion;
-import twilightforest.init.TFItems;
+import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Lich extends Monster {
+public class Lich extends Monster implements EnforcedHomePoint {
 
 	private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> SHIELD_STRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
@@ -136,7 +132,7 @@ public class Lich extends Monster {
 				this.mob.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.GOLDEN_SWORD));
 			}
 		});
-
+		this.addRestrictionGoals(this, this.goalSelector);
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this) {
 			@Override
 			public boolean canUse() {
@@ -151,18 +147,21 @@ public class Lich extends Monster {
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
+		this.saveHomePointToNbt(compound);
 		compound.putBoolean("ShadowClone", this.isShadowClone());
 		compound.putInt("ShieldStrength", this.getShieldStrength());
 		compound.putInt("MinionsToSummon", this.getMinionsToSummon());
+		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
+		this.loadHomePointFromNbt(compound, 20);
 		this.setShadowClone(compound.getBoolean("ShadowClone"));
 		this.setShieldStrength(compound.getInt("ShieldStrength"));
 		this.setMinionsToSummon(compound.getInt("MinionsToSummon"));
+
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -691,5 +690,15 @@ public class Lich extends Monster {
 	@Override
 	public boolean canChangeDimensions() {
 		return false;
+	}
+
+	@Override
+	public BlockPos getRestrictionCenter() {
+		return this.getRestrictCenter();
+	}
+
+	@Override
+	public void setRestriction(BlockPos pos, int dist) {
+		this.restrictTo(pos, dist);
 	}
 }

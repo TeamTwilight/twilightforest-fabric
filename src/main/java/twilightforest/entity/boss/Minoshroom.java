@@ -28,22 +28,23 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.init.TFSounds;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.init.TFBlocks;
+import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.GroundAttackGoal;
 import twilightforest.entity.monster.Minotaur;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
-import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Minoshroom extends Minotaur {
+public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	private static final EntityDataAccessor<Boolean> GROUND_ATTACK = SynchedEntityData.defineId(Minoshroom.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> GROUND_CHARGE = SynchedEntityData.defineId(Minoshroom.class, EntityDataSerializers.INT);
 	private float prevClientSideChargeAnimation;
@@ -62,6 +63,7 @@ public class Minoshroom extends Minotaur {
 	protected void registerGoals() {
 		super.registerGoals();
 		this.goalSelector.addGoal(1, new GroundAttackGoal(this));
+		this.addRestrictionGoals(this, this.goalSelector);
 	}
 
 	@Override
@@ -110,8 +112,15 @@ public class Minoshroom extends Minotaur {
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag tag) {
-		super.readAdditionalSaveData(tag);
+	public void addAdditionalSaveData(CompoundTag compound) {
+		this.saveHomePointToNbt(compound);
+		super.addAdditionalSaveData(compound);
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
+		this.loadHomePointFromNbt(compound, 20);
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -245,5 +254,15 @@ public class Minoshroom extends Minotaur {
 	@Override
 	public boolean canChangeDimensions() {
 		return false;
+	}
+
+	@Override
+	public BlockPos getRestrictionCenter() {
+		return this.getRestrictCenter();
+	}
+
+	@Override
+	public void setRestriction(BlockPos pos, int dist) {
+		this.restrictTo(pos, dist);
 	}
 }

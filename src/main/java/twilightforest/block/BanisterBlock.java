@@ -156,6 +156,16 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 		return super.use(state, level, pos, player, hand, result);
 	}
 
+	@Override
+	public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+		return 5;
+	}
+
+	@Override
+	public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+		return 20;
+	}
+
 	// These extend upwards to 16 instead of 12 because they're used on both the Tall and Connected shapes
 	private static final VoxelShape NORTH_SUPPORTS_TALL = Shapes.or(
 			Block.box(2.5D, 0.0D, 0.0D, 5.5D, 16.0D, 3.0D),

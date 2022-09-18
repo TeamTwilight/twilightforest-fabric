@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.ai.control.NoClipMoveControl;
@@ -34,11 +35,11 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//ghastguards already set home points so theres no need to here
 public class UrGhast extends CarminiteGhastguard {
 
 	private static final EntityDataAccessor<Boolean> DATA_TANTRUM = SynchedEntityData.defineId(UrGhast.class, EntityDataSerializers.BOOLEAN);
@@ -96,7 +97,7 @@ public class UrGhast extends CarminiteGhastguard {
 	}
 
 	@Override
-	public boolean removeWhenFarAway(double p_213397_1_) {
+	public boolean removeWhenFarAway(double dist) {
 		return false;
 	}
 
@@ -484,7 +485,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 	@Override
 	protected float getSoundVolume() {
-		return 16F;
+		return 16.0F;
 	}
 
 	@Override

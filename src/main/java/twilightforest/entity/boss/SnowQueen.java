@@ -5,6 +5,7 @@ import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -38,6 +40,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.goal.HoverBeamGoal;
@@ -54,7 +57,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEntity {
+public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomePoint, MultiPartEntity {
 
 	private static final int MAX_SUMMONS = 6;
 	private static final EntityDataAccessor<Boolean> BEAM_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BOOLEAN);
@@ -93,6 +96,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 		this.goalSelector.addGoal(1, new HoverSummonGoal(this));
 		this.goalSelector.addGoal(2, new HoverThenDropGoal(this, 80, 20));
 		this.goalSelector.addGoal(3, new HoverBeamGoal(this, 80, 100));
+		this.addRestrictionGoals(this, this.goalSelector);
 		this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -118,8 +122,8 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(BEAM_FLAG, false);
-		entityData.define(PHASE_FLAG, (byte) 0);
+		this.getEntityData().define(BEAM_FLAG, false);
+		this.getEntityData().define(PHASE_FLAG, (byte) 0);
 	}
 
 	@Override
@@ -475,10 +479,18 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 	}
 
 	@Override
+	public void addAdditionalSaveData(CompoundTag compound) {
+		this.saveHomePointToNbt(compound);
+		super.addAdditionalSaveData(compound);
+	}
+
+	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		if (this.hasCustomName())
+		this.loadHomePointFromNbt(compound, 20);
+		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
+		}
 	}
 
 	@Override
@@ -519,5 +531,15 @@ public class SnowQueen extends Monster implements IBreathAttacker, MultiPartEnti
 	@Override
 	public PartEntity<?>[] getParts() {
 		return this.iceArray;
+	}
+
+	@Override
+	public BlockPos getRestrictionCenter() {
+		return this.getRestrictCenter();
+	}
+
+	@Override
+	public void setRestriction(BlockPos pos, int dist) {
+		this.restrictTo(pos, dist);
 	}
 }

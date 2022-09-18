@@ -8,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -36,26 +35,23 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.init.TFSounds;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.init.TFBlocks;
+import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.PhantomAttackStartGoal;
 import twilightforest.entity.ai.goal.PhantomThrowWeaponGoal;
 import twilightforest.entity.ai.goal.PhantomUpdateFormationAndMoveGoal;
 import twilightforest.entity.ai.goal.PhantomWatchAndAttackGoal;
-import twilightforest.init.TFItems;
+import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
-import twilightforest.init.TFDamageSources;
-import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class KnightPhantom extends FlyingMob implements Enemy {
+public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	private static final EntityDataAccessor<Boolean> FLAG_CHARGING = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, AttributeModifier.Operation.ADDITION);
@@ -398,10 +394,7 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		if (this.hasHome()) {
-			BlockPos home = this.getRestrictCenter();
-			compound.put("Home", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
-		}
+		this.saveHomePointToNbt(compound);
 		compound.putInt("MyNumber", this.getNumber());
 		compound.putInt("Formation", this.getFormationAsNumber());
 		compound.putInt("TicksProgress", this.getTicksProgress());
@@ -411,13 +404,7 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 
-		if (compound.contains("Home", 9)) {
-			ListTag nbttaglist = compound.getList("Home", 6);
-			int hx = (int) nbttaglist.getDouble(0);
-			int hy = (int) nbttaglist.getDouble(1);
-			int hz = (int) nbttaglist.getDouble(2);
-			restrictTo(new BlockPos(hx, hy, hz), 20);
-		}
+		this.loadHomePointFromNbt(compound, 20);
 		this.setNumber(compound.getInt("MyNumber"));
 		this.switchToFormationByNumber(compound.getInt("Formation"));
 		this.setTicksProgress(compound.getInt("TicksProgress"));
@@ -474,6 +461,16 @@ public class KnightPhantom extends FlyingMob implements Enemy {
 	@Override
 	public boolean canChangeDimensions() {
 		return false;
+	}
+
+	@Override
+	public BlockPos getRestrictionCenter() {
+		return this.getRestrictCenter();
+	}
+
+	@Override
+	public void setRestriction(BlockPos pos, int dist) {
+		this.restrictTo(pos, dist);
 	}
 
 	// [VanillaCopy] Home fields and methods from CreatureEntity, changes noted

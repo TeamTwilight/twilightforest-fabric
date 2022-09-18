@@ -3,7 +3,6 @@ package twilightforest.entity.boss;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -11,8 +10,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
@@ -31,13 +28,13 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ThrowRiderGoal;
 import twilightforest.entity.ai.goal.YetiRampageGoal;
@@ -50,11 +47,10 @@ import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount {
+public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount, EnforcedHomePoint {
 
 	private static final EntityDataAccessor<Byte> RAMPAGE_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> TIRED_FLAG = SynchedEntityData.defineId(AlphaYeti.class, EntityDataSerializers.BYTE);
@@ -72,7 +68,6 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(1, new YetiTiredGoal(this, 100));
-		this.goalSelector.addGoal(2, new MoveTowardsRestrictionGoal(this, 1.5F));
 		this.goalSelector.addGoal(3, new YetiRampageGoal(this, 10, 180));
 		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.0D, 40, 40, 40.0F) {
 			@Override
@@ -95,6 +90,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 				super.stop();
 			}
 		});
+		this.addRestrictionGoals(this, this.goalSelector);
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 2.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -407,21 +403,14 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
-		BlockPos home = this.getRestrictCenter();
-		compound.put("Home", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
+		this.saveHomePointToNbt(compound);
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		if (compound.contains("Home", 9)) {
-			ListTag nbttaglist = compound.getList("Home", 6);
-			int hx = (int) nbttaglist.getDouble(0);
-			int hy = (int) nbttaglist.getDouble(1);
-			int hz = (int) nbttaglist.getDouble(2);
-			this.restrictTo(new BlockPos(hx, hy, hz), 30);
-		}
+		this.loadHomePointFromNbt(compound, 30);
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -445,5 +434,15 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	public boolean canChangeDimensions() {
 		return false;
+	}
+
+	@Override
+	public BlockPos getRestrictionCenter() {
+		return this.getRestrictCenter();
+	}
+
+	@Override
+	public void setRestriction(BlockPos pos, int dist) {
+		this.restrictTo(pos, dist);
 	}
 }

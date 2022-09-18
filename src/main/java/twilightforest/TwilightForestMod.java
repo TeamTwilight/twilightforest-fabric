@@ -35,6 +35,7 @@ import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.trinkets.TrinketsCompat;
+import twilightforest.compat.top.TopCompat;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.events.*;
 import twilightforest.init.*;

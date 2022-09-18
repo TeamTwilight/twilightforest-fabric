@@ -27,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.GhastguardAttackGoal;
 import twilightforest.entity.ai.goal.GhastguardHomedFlightGoal;
 import twilightforest.entity.ai.goal.GhastguardRandomFlyGoal;
@@ -34,7 +35,7 @@ import twilightforest.entity.boss.UrGhast;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
 
-public class CarminiteGhastguard extends Ghast {
+public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 	// 0 = idle, 1 = eyes open / tracking player, 2 = shooting fireball
 	private static final EntityDataAccessor<Byte> ATTACK_STATUS = SynchedEntityData.defineId(CarminiteGhastguard.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> ATTACK_TIMER = SynchedEntityData.defineId(CarminiteGhastguard.class, EntityDataSerializers.BYTE);
@@ -205,28 +206,31 @@ public class CarminiteGhastguard extends Ghast {
 			return true;
 		} else {
 			return pos.getY() > this.getLevel().getMinBuildHeight() + 64 &&
-					pos.getY() < this.getLevel().getMaxBuildHeight() &&
+					pos.getY() < this.getLevel().getMaxBuildHeight() - 64 &&
 					this.getRestrictCenter().distSqr(pos) < (double)(this.getRestrictRadius() * this.getRestrictRadius());
 		}
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
-		BlockPos home = this.getRestrictCenter();
-		compound.put("Home", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
+		this.saveHomePointToNbt(compound);
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		if (compound.contains("Home", 9)) {
-			ListTag nbttaglist = compound.getList("Home", 6);
-			int hx = (int) nbttaglist.getDouble(0);
-			int hy = (int) nbttaglist.getDouble(1);
-			int hz = (int) nbttaglist.getDouble(2);
-			this.restrictTo(new BlockPos(hx, hy, hz), 64);
-		}
+		this.loadHomePointFromNbt(compound, 64);
+	}
+
+	@Override
+	public BlockPos getRestrictionCenter() {
+		return this.getRestrictCenter();
+	}
+
+	@Override
+	public void setRestriction(BlockPos pos, int dist) {
+		this.restrictTo(pos, dist);
 	}
 }
 

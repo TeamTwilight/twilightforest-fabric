@@ -1,6 +1,8 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundEvent;
@@ -14,7 +16,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -24,14 +28,16 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFSounds;
 
 import java.util.EnumSet;
 
-public class Wraith extends FlyingMob implements Enemy {
+public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	public Wraith(EntityType<? extends Wraith> type, Level world) {
 		super(type, world);
@@ -41,6 +47,7 @@ public class Wraith extends FlyingMob implements Enemy {
 
 	@Override
 	protected void registerGoals() {
+		this.goalSelector.addGoal(2, new MoveTowardsHomeGoal(this, 0.85D));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this));
 		this.goalSelector.addGoal(5, new FlyTowardsTargetGoal(this));
 		this.goalSelector.addGoal(6, new RandomFloatAroundGoal(this));
@@ -152,29 +159,30 @@ public class Wraith extends FlyingMob implements Enemy {
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		if (type == MobSpawnType.STRUCTURE || type == MobSpawnType.SPAWNER) this.restrictTo(this.blockPosition(), 13);
+		if (type == MobSpawnType.STRUCTURE || type == MobSpawnType.SPAWNER) this.restrictTo(this.blockPosition(), 20);
 		return super.finalizeSpawn(accessor, difficulty, type, data, tag);
 	}
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		if (this.getRestrictCenter() != BlockPos.ZERO) {
-			BlockPos home = this.getRestrictCenter();
-			tag.put("HomePos", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
-		}
+		this.saveHomePointToNbt(tag);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		if (tag.contains("HomePos", 9)) {
-			ListTag nbttaglist = tag.getList("HomePos", 6);
-			int hx = (int) nbttaglist.getDouble(0);
-			int hy = (int) nbttaglist.getDouble(1);
-			int hz = (int) nbttaglist.getDouble(2);
-			this.restrictTo(new BlockPos(hx, hy, hz), 13);
-		}
+		this.loadHomePointFromNbt(tag, 20);
+	}
+
+	@Override
+	public BlockPos getRestrictionCenter() {
+		return this.getRestrictCenter();
+	}
+
+	@Override
+	public void setRestriction(BlockPos pos, int dist) {
+		this.restrictTo(pos, dist);
 	}
 
 	static class FlyTowardsTargetGoal extends Goal {
@@ -253,7 +261,7 @@ public class Wraith extends FlyingMob implements Enemy {
 
 		@Override
 		public boolean canUse() {
-			if (this.parentEntity.getTarget() != null)
+			if (this.parentEntity.getTarget() != null || !this.parentEntity.isWithinRestriction())
 				return false;
 			MoveControl entitymovehelper = this.parentEntity.getMoveControl();
 			double d0 = entitymovehelper.getWantedX() - this.parentEntity.getX();
@@ -307,6 +315,47 @@ public class Wraith extends FlyingMob implements Enemy {
 					this.parentEntity.setYBodyRot(this.parentEntity.getYRot());
 				}
 			}
+		}
+	}
+
+	//modified version of MoveTowardsRestrictionGoal. We're limited with what we can use since Wraiths arent PathfinderMobs
+	public static class MoveTowardsHomeGoal extends Goal {
+		private final FlyingMob mob;
+		private double wantedX;
+		private double wantedY;
+		private double wantedZ;
+		private final double speedModifier;
+
+		public MoveTowardsHomeGoal(FlyingMob mob, double speedModifier) {
+			this.mob = mob;
+			this.speedModifier = speedModifier;
+			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+		}
+
+		public boolean canUse() {
+			if (this.mob.isWithinRestriction() || this.mob.getTarget() != null) {
+				return false;
+			} else {
+				BlockPos pos = this.mob.getRestrictCenter()
+						.relative(Direction.getRandom(this.mob.getRandom()))
+						.offset(this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5));
+				if (pos == null || !this.mob.getLevel().isLoaded(pos)) {
+					return false;
+				} else {
+					this.wantedX = pos.getX();
+					this.wantedY = pos.getY();
+					this.wantedZ = pos.getZ();
+					return true;
+				}
+			}
+		}
+
+		public boolean canContinueToUse() {
+			return false;
+		}
+
+		public void start() {
+			this.mob.getMoveControl().setWantedPosition(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
 		}
 	}
 }

@@ -15,6 +15,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerBossEvent;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFBlocks;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -23,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlateauBoss extends Monster {
+public class PlateauBoss extends Monster implements EnforcedHomePoint {
 
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private final List<ServerPlayer> hurtBy = new ArrayList<>();
@@ -105,20 +106,14 @@ public class PlateauBoss extends Monster {
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		BlockPos home = this.getRestrictCenter();
-		compound.put("Home", this.newDoubleList(home.getX(), home.getY(), home.getZ()));
+		this.saveHomePointToNbt(compound);
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		if (compound.contains("Home", 9)) {
-			ListTag nbttaglist = compound.getList("Home", 6);
-			int hx = (int) nbttaglist.getDouble(0);
-			int hy = (int) nbttaglist.getDouble(1);
-			int hz = (int) nbttaglist.getDouble(2);
-			this.restrictTo(new BlockPos(hx, hy, hz), 30);
-		}
+		this.loadHomePointFromNbt(compound, 30);
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -142,5 +137,15 @@ public class PlateauBoss extends Monster {
 	@Override
 	public boolean canChangeDimensions() {
 		return false;
+	}
+
+	@Override
+	public BlockPos getRestrictionCenter() {
+		return this.getRestrictCenter();
+	}
+
+	@Override
+	public void setRestriction(BlockPos pos, int dist) {
+		this.restrictTo(pos, dist);
 	}
 }

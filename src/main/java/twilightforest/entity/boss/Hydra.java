@@ -5,6 +5,7 @@ import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerBossEvent;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFLandmark;
@@ -39,7 +41,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Hydra extends Mob implements Enemy, MultiPartEntity {
+public class Hydra extends Mob implements Enemy, EnforcedHomePoint, MultiPartEntity {
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 100;
@@ -122,7 +124,7 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	public void checkDespawn() {
 		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
 			this.getLevel().setBlockAndUpdate(this.blockPosition().offset(0, 2, 0), TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState());
-			discard();
+			this.discard();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
 					container.headEntity.discard();
@@ -238,19 +240,20 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
+		this.saveHomePointToNbt(compound);
 		compound.putByte("NumHeads", (byte) this.countActiveHeads());
+		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
+		this.loadHomePointFromNbt(compound, 20);
 		this.activateNumberOfHeads(compound.getByte("NumHeads"));
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
 	}
-
 
 	// TODO modernize this more (old AI copypasta still kind of here)
 	private int numTicksToChaseTarget;
@@ -798,5 +801,15 @@ public class Hydra extends Mob implements Enemy, MultiPartEntity {
 	@Override
 	public boolean canChangeDimensions() {
 		return false;
+	}
+
+	@Override
+	public BlockPos getRestrictionCenter() {
+		return this.getRestrictCenter();
+	}
+
+	@Override
+	public void setRestriction(BlockPos pos, int dist) {
+		this.restrictTo(pos, dist);
 	}
 }
