@@ -2,6 +2,7 @@ package twilightforest.world.components.feature.trees;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -18,15 +19,20 @@ import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiConsumer;
 
 @ParametersAreNonnullByDefault
 public class OakCanopyTreeFeature extends CanopyTreeFeature {
 
-	private final List<BlockPos> leaves = Lists.newArrayList();
+	private final List<BlockPos> leaves;
 
 	public OakCanopyTreeFeature(Codec<TFTreeFeatureConfig> config) {
 		super(config);
+		if (FabricLoader.getInstance().isModLoaded("c2me"))
+			leaves = new CopyOnWriteArrayList<>();
+		else
+			leaves = Lists.newArrayList();
 	}
 
 	@Override
