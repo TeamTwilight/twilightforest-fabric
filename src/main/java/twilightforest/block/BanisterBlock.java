@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -50,6 +51,8 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 		super(properties);
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(SHAPE, BanisterShape.TALL).setValue(EXTENDED, false).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
+
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
 	}
 
 	@Override
@@ -156,13 +159,11 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 		return super.use(state, level, pos, player, hand, result);
 	}
 
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+	public int getFireSpreadSpeed() {
 		return 5;
 	}
 
-	@Override
-	public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+	public int getFlammability() {
 		return 20;
 	}
 

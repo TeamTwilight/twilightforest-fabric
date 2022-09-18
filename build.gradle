@@ -89,6 +89,8 @@ dependencies {
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
     // Jade
     modImplementation("curse.maven:jade-324717:${jade_id}")
+    // TOP
+    modCompileOnly("mcjty.theoneprobe:theoneprobe-fabric:${top_version}")
 
     // Botany Pots
     modRuntimeOnly "net.darkhax.botanypots:BotanyPots-Fabric-1.19.2:9.0.3"

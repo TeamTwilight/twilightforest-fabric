@@ -50,6 +50,9 @@
     ],
     "jade": [
       "twilightforest.compat.jade.JadeCompat"
+    ],
+    "top_plugin": [
+      "twilightforest.compat.top.TopCompat"
     ]
   },
   "mixins": [

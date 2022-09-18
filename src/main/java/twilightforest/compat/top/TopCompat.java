@@ -1,14 +1,12 @@
 package twilightforest.compat.top;
 
 import mcjty.theoneprobe.api.ITheOneProbe;
+import mcjty.theoneprobe.api.ITheOneProbePlugin;
 
-import java.util.function.Function;
-
-public class TopCompat implements Function<ITheOneProbe, Void> {
+public class TopCompat implements ITheOneProbePlugin {
     @Override
-    public Void apply(ITheOneProbe api) {
+    public void onLoad(ITheOneProbe api) {
         api.registerElementFactory(QuestRamWoolElement.Factory.INSTANCE);
         api.registerEntityProvider(TOPQuestRamWoolProvider.INSTANCE);
-        return null;
     }
 }
