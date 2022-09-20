@@ -153,14 +153,14 @@ public class ShaderBagItemModel implements BakedModel {
 					.endVertex();
 
 			// Shader, engage!
-			ShaderManager.useShader(ShaderManager.starburstShader, ShaderManager.Uniforms.TIME);
+			//ShaderManager.useShader(ShaderManager.starburstShader, ShaderManager.Uniforms.TIME);
 			// Blur the star burst mask
 			GlStateManager._getTexLevelParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			tessellator.end();
 			// Deblur, so we don't blur all of the textures in rendering calls afterwards
 			GlStateManager._getTexLevelParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 			// Disengage shader
-			ShaderManager.releaseShader();
+			//ShaderManager.releaseShader();
 
 			// reset color
 			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
