@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.util.PlantType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.PlantType;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFStats;

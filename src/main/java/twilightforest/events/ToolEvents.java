@@ -1,5 +1,6 @@
 package twilightforest.events;
 
+import io.github.fabricators_of_create.porting_lib.event.common.BlockEvents;
 import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
 import io.github.fabricators_of_create.porting_lib.event.common.ProjectileImpactCallback;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFItems;
 import twilightforest.item.EnderBowItem;
@@ -34,6 +36,7 @@ public class ToolEvents {
 		LivingEntityEvents.ACTUALLY_HURT.register(ToolEvents::onKnightmetalToolDamage);
 		AttackEntityCallback.EVENT.register(ToolEvents::fieryToolSetFire);
 		ProjectileImpactCallback.EVENT.register(ToolEvents::onEnderBowHit);
+		BlockEvents.BLOCK_BREAK.register(ToolEvents::damageToolsExtra);
 		OreMagnetItem.buildOreMagnetCache();
 
 		ItemStorage.SIDED.registerForBlockEntity((blockEntity, direction) -> Storage.empty(), TFBlockEntities.KEEPSAKE_CASKET.get());
@@ -125,8 +128,7 @@ public class ToolEvents {
 	}
 
 
-	@SubscribeEvent
-	public static void damageToolsExtra(BlockEvent.BreakEvent event) {
+	public static void damageToolsExtra(BlockEvents.BreakEvent event) {
 		ItemStack stack = event.getPlayer().getMainHandItem();
 		if (event.getState().is(BlockTagGenerator.MAZESTONE) || event.getState().is(BlockTagGenerator.CASTLE_BLOCKS)) {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {

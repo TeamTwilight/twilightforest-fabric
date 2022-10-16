@@ -2,17 +2,15 @@ package twilightforest.events;
 
 import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.shield.IShieldCapability;
-import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.entity.passive.Bighorn;
 import twilightforest.entity.passive.DwarfRabbit;
 import twilightforest.entity.passive.Squirrel;
@@ -22,15 +20,12 @@ import twilightforest.network.CreateMovingCicadaSoundPacket;
 import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nonnull;
-import java.util.Optional;
 
 public class MiscEvents {
 
 	public static void init() {
 		ServerEntityEvents.ENTITY_LOAD.register(MiscEvents::addPrey);
 		LivingEntityEvents.EQUIPMENT_CHANGE.register(MiscEvents::armorChanged);
-		LivingEntityEvents.TICK.register(MiscEvents::livingUpdate);
-		LivingEntityEvents.ATTACK.register(MiscEvents::livingAttack);
 	}
 
 	public static void addPrey(Entity entity, ServerLevel world) {
@@ -64,15 +59,15 @@ public class MiscEvents {
 		// we only have to check equipping, when its unequipped the sound instance handles the rest
 
 		//if we have a cicada in our curios slot, dont try to run this
-		if (ModList.get().isLoaded("curios")) {
-			if (CuriosCompat.isCicadaEquipped(event.getEntity())) {
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			if (TrinketsCompat.isCicadaEquipped(living)) {
 				return;
 			}
 		}
 
-		if (event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.get().asItem())) {
-			if (!event.getEntity().getLevel().isClientSide() && event.getEntity() != null) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(event::getEntity), new CreateMovingCicadaSoundPacket(event.getEntity().getId()));
+		if (slot == EquipmentSlot.HEAD && to.is(TFBlocks.CICADA.get().asItem())) {
+			if (!living.getLevel().isClientSide() && living != null) {
+				TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new CreateMovingCicadaSoundPacket(living.getId()), living);
 			}
 		}
 	}

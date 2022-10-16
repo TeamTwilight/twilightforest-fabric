@@ -1,6 +1,7 @@
 package twilightforest.data.custom.stalactites.entry;
 
 import com.google.gson.*;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -15,7 +16,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
+public class StalactiteReloadListener extends SimpleJsonResourceReloadListener implements IdentifiableResourceReloadListener {
 
 	public static final Gson GSON = new GsonBuilder().registerTypeAdapter(Stalactite.class, new Stalactite.Serializer()).create();
 
@@ -94,5 +95,10 @@ public class StalactiteReloadListener extends SimpleJsonResourceReloadListener {
 	public Stalactite getRandomStalactiteFromList(RandomSource random, Map<ResourceLocation, Stalactite> map) {
 		Stalactite[] list = map.values().toArray(new Stalactite[0]);
 		return list[random.nextInt(list.length)];
+	}
+
+	@Override
+	public ResourceLocation getFabricId() {
+		return TwilightForestMod.prefix("stalactites");
 	}
 }

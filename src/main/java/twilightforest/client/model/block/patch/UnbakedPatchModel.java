@@ -5,7 +5,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import twilightforest.client.model.PatchModel;
 
 import java.util.Collection;
 import java.util.Collections;

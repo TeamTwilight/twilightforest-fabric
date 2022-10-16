@@ -47,6 +47,7 @@ import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.registration.ConfiguredWorldCarvers;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import java.io.IOException;
@@ -82,7 +83,7 @@ public class TwilightForestMod implements ModInitializer {
 		}
 
 		CommandRegistrationCallback.EVENT.register(this::registerCommands);
-		MinecraftForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
+		Stalactite.reloadStalactites();
 
 		TFBannerPatterns.BANNER_PATTERNS.register();
 		BiomeKeys.BIOMES.register();
@@ -142,7 +143,8 @@ public class TwilightForestMod implements ModInitializer {
 
 	public static void initEvents() {
 		TFTickHandler.init();
-		PlayerEvents.init();
+		CapabilityEvents.init();
+		EntityEvents.init();
 		ProgressionEvents.init();
 		MiscEvents.init();
 		HostileMountEvents.init();

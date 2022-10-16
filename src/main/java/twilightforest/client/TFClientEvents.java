@@ -48,12 +48,10 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
-import twilightforest.client.model.block.leaves.BakedLeavesModel;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
@@ -69,6 +67,7 @@ import twilightforest.world.registration.TFGenerationSettings;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
@@ -93,16 +92,16 @@ public class TFClientEvents {
 	public static class ModBusEvents {
 		public static void registerLoaders() {
 			ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> PatchModelLoader.INSTANCE);
-			event.register("giant_block", GiantBlockModelLoader.INSTANCE);
+			ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> GiantBlockModelLoader.INSTANCE);
 		}
 
-		public static void modelBake(ModelManager manager, Map<ResourceLocation, BakedModel> models, ModelBakery loader) {
+		public static void modelBake(ModelManager manager, Map<ResourceLocation, BakedModel> bakedModels, ModelBakery loader) {
 			TFItems.addItemModelProperties();
 
-			List<Map.Entry<ResourceLocation, BakedModel>> models =  event.getModels().entrySet().stream()
-					.filter(entry -> entry.getKey().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().getPath().contains("leaves") && !entry.getKey().getPath().contains("dark")).collect(Collectors.toList());
+//			List<Map.Entry<ResourceLocation, BakedModel>> models =  bakedModels.entrySet().stream() Handled by minecraft
+//					.filter(entry -> entry.getKey().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().getPath().contains("leaves") && !entry.getKey().getPath().contains("dark")).collect(Collectors.toList());
 
-			models.forEach(entry -> event.getModels().put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
+//			models.forEach(entry -> bakedModels.put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
 		}
 
 		public static void texStitch(TextureAtlas map, Consumer<ResourceLocation> spriteAdder) {

@@ -7,14 +7,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import twilightforest.events.PlayerEvents;
+import twilightforest.events.CapabilityEvents;
 import twilightforest.events.ProgressionEvents;
 
 @Mixin(PlayerList.class)
 public class PlayerListMixin {
 	@Inject(method = "placeNewPlayer", at = @At("TAIL")) // fabric event fires too early
 	private void twilightforest$onLoginTail(Connection netManager, ServerPlayer player, CallbackInfo ci) {
-		PlayerEvents.playerLogsIn(player);
+		CapabilityEvents.playerLogsIn(player);
 		ProgressionEvents.playerLogsIn(player);
 	}
 }

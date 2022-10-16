@@ -72,7 +72,8 @@
     "cardinal-components": [
       "twilightforest:cap_shield",
       "twilightforest:cap_feather_fan_fall",
-      "twilightforest:cap_thrown"
+      "twilightforest:cap_thrown",
+      "twilightforest:giant_pick_mine"
     ],
     "banner": "twilightforest_logo.png"
   }

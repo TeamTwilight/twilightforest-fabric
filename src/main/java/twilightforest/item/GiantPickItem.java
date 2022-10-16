@@ -64,7 +64,7 @@ public class GiantPickItem extends PickaxeItem {
 	public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
 		ItemStack stack = pPlayer.getMainHandItem();
 		if (stack.is(this)) {
-			pPlayer.getCapability(CapabilityList.GIANT_PICK_MINE).ifPresent(cap -> cap.setMining(pLevel.getGameTime()));
+			CapabilityList.GIANT_PICK_MINE.maybeGet(pPlayer).ifPresent(cap -> cap.setMining(pLevel.getGameTime()));
 		}
 		return super.canAttackBlock(pState, pLevel, pPos, pPlayer);
 	}

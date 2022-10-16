@@ -203,6 +203,18 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 		}
 	}
 
+	protected boolean canEntityDestroy(Block block, BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
+		if (block instanceof EntityDestroyBlock destroyBlock)
+			return destroyBlock.canEntityDestroy(state, level, pos, entity);
+		if (entity instanceof EnderDragon) {
+			return !state.is(BlockTags.DRAGON_IMMUNE);
+		} else if (!(entity instanceof WitherBoss) && !(entity instanceof WitherSkull)) {
+			return true;
+		} else {
+			return state.isAir() || WitherBoss.canDestroy(state);
+		}
+	}
+
 	private void affectBlocksInAABB(AABB box) {
 		if (this.getOwner() instanceof Player player) {
 			boolean creative = player.getAbilities().instabuild;
@@ -211,7 +223,7 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 				BlockState state = this.getLevel().getBlockState(pos);
 				Block block = state.getBlock();
 
-				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.getLevel(), pos, this)) {
+				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && canEntityDestroy(block, state, this.getLevel(), pos, this)) {
 					if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(level, player, pos, state, null)) {
 						if (!state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state)) {
 							this.getLevel().destroyBlock(pos, false);

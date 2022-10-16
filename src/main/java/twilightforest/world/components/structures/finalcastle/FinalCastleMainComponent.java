@@ -16,8 +16,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.RotationUtil;

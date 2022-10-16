@@ -18,12 +18,13 @@ public class CapabilityList implements EntityComponentInitializer {
 	public static final ComponentKey<IShieldCapability> SHIELDS = ComponentRegistry.getOrCreate(IShieldCapability.ID, IShieldCapability.class);
 	public static final ComponentKey<FeatherFanFallCapability> FEATHER_FAN_FALLING = ComponentRegistry.getOrCreate(FeatherFanFallCapability.ID, FeatherFanFallCapability.class);
 	public static final ComponentKey<YetiThrowCapability> YETI_THROWN = ComponentRegistry.getOrCreate(YetiThrowCapability.ID, YetiThrowCapability.class);
-	public static final Capability<GiantPickMineCapability> GIANT_PICK_MINE = CapabilityManager.get(new CapabilityToken<>() {});
+	public static final ComponentKey<GiantPickMineCapability> GIANT_PICK_MINE = ComponentRegistry.getOrCreate(GiantPickMineCapability.ID, GiantPickMineCapability.class);
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
 		registry.registerFor(LivingEntity.class, SHIELDS, ShieldCapabilityHandler::new);
 		registry.registerFor(LivingEntity.class, FEATHER_FAN_FALLING, FeatherFanCapabilityHandler::new);
 		registry.registerFor(LivingEntity.class, YETI_THROWN, YetiThrowCapabilityHandler::new);
+		registry.registerFor(LivingEntity.class, GIANT_PICK_MINE, GiantPickMineCapabilityHandler::new);
 	}
 }

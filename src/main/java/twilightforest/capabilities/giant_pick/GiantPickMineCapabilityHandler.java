@@ -1,10 +1,13 @@
 package twilightforest.capabilities.giant_pick;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
 
 public class GiantPickMineCapabilityHandler implements GiantPickMineCapability {
 
 	private long mining;
+
+	public GiantPickMineCapabilityHandler(LivingEntity entity) {}
 
 	@Override
 	public void setMining(long mining) {
@@ -17,14 +20,12 @@ public class GiantPickMineCapabilityHandler implements GiantPickMineCapability {
 	}
 
 	@Override
-	public CompoundTag serializeNBT() {
-		CompoundTag tag = new CompoundTag();
+	public void writeToNbt(CompoundTag tag) {
 		tag.putLong("giantPickMining", this.getMining());
-		return tag;
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag nbt) {
+	public void readFromNbt(CompoundTag nbt) {
 		this.setMining(nbt.getLong("giantPickMining"));
 	}
 }

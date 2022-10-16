@@ -1,18 +1,17 @@
 package twilightforest.events;
 
+import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
@@ -21,44 +20,50 @@ import twilightforest.capabilities.thrown.YetiThrowCapability;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateShieldPacket;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class CapabilityEvents {
 
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
 
-	@SubscribeEvent
-	public static void updateCaps(LivingEvent.LivingTickEvent event) {
-		event.getEntity().getCapability(CapabilityList.SHIELDS).ifPresent(IShieldCapability::update);
-		event.getEntity().getCapability(CapabilityList.FEATHER_FAN_FALLING).ifPresent(FeatherFanFallCapability::update);
-		event.getEntity().getCapability(CapabilityList.YETI_THROWN).ifPresent(YetiThrowCapability::update);
+	public static void init() {
+		LivingEntityEvents.TICK.register(CapabilityEvents::updateCaps);
+		LivingEntityEvents.ATTACK.register(CapabilityEvents::livingAttack);
+		ServerPlayerEvents.AFTER_RESPAWN.register(CapabilityEvents::onPlayerRespawn);
+		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(CapabilityEvents::playerPortals);
+		EntityTrackingEvents.START_TRACKING.register(CapabilityEvents::onStartTracking);
 	}
 
-	@SubscribeEvent
-	public static void livingAttack(LivingAttackEvent event) {
-		LivingEntity living = event.getEntity();
+	public static void updateCaps(LivingEntity entity) {
+		CapabilityList.SHIELDS.maybeGet(entity).ifPresent(IShieldCapability::update);
+		CapabilityList.FEATHER_FAN_FALLING.maybeGet(entity).ifPresent(FeatherFanFallCapability::update);
+		CapabilityList.YETI_THROWN.maybeGet(entity).ifPresent(YetiThrowCapability::update);
+	}
+
+	public static boolean livingAttack(LivingEntity living, DamageSource source, float damage) {
 		// shields
-		if (!living.getLevel().isClientSide() && !event.getSource().isBypassArmor()) {
-			living.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
+		AtomicBoolean cancel = new AtomicBoolean(false);
+		if (!living.getLevel().isClientSide() && !source.isBypassArmor()) {
+			CapabilityList.SHIELDS.maybeGet(living).ifPresent(cap -> {
 				if (cap.shieldsLeft() > 0) {
 					cap.breakShield();
-					event.setCanceled(true);
+					cancel.set(true);
 				}
 			});
 		}
+		return cancel.get();
 	}
 
-	@SubscribeEvent
-	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
-		if (event.isEndConquered()) {
+	public static void onPlayerRespawn(ServerPlayer oldPlayer, ServerPlayer serverPlayer, boolean alive) {
+		if (alive) {
 			updateCapabilities(serverPlayer, serverPlayer);
 		}
 
 		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && serverPlayer.getRespawnPosition() == null) {
-			CompoundTag tagCompound = serverPlayer.getPersistentData();
-			CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
+			CompoundTag tagCompound = serverPlayer.getExtraCustomData();
+			CompoundTag playerData = tagCompound.getCompound("PlayerPersisted");
 			playerData.putBoolean(NBT_TAG_TWILIGHT, false); // set to false so that the method works
-			tagCompound.put(Player.PERSISTED_NBT_TAG, playerData); // commit
+			tagCompound.put("PlayerPersisted", playerData); // commit
 			banishNewbieToTwilightZone(serverPlayer);
 		}
 	}
@@ -66,45 +71,38 @@ public class CapabilityEvents {
 	/**
 	 * When player logs in, report conflict status, set progression status
 	 */
-	@SubscribeEvent
-	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
-		if (!event.getEntity().getLevel().isClientSide() && event.getEntity() instanceof ServerPlayer) {
-			updateCapabilities((ServerPlayer) event.getEntity(), event.getEntity());
-			banishNewbieToTwilightZone(event.getEntity());
-		}
+	public static void playerLogsIn(ServerPlayer player) {
+		updateCapabilities(player, player);
+		banishNewbieToTwilightZone(player);
 	}
 
-	@SubscribeEvent
-	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getEntity().getLevel().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			updateCapabilities(player, event.getEntity());
-		}
+	public static void playerPortals(ServerPlayer player, ServerLevel origin, ServerLevel destination) {
+		updateCapabilities(player, player);
 	}
 
-	@SubscribeEvent
-	public static void onStartTracking(PlayerEvent.StartTracking event) {
-		updateCapabilities((ServerPlayer) event.getEntity(), event.getTarget());
+	public static void onStartTracking(Entity trackedEntity, ServerPlayer player) {
+		updateCapabilities(player, trackedEntity);
 	}
 
 	// send any capabilities that are needed client-side
 	private static void updateCapabilities(ServerPlayer clientTarget, Entity shielded) {
-		shielded.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
+		CapabilityList.SHIELDS.maybeGet(shielded).ifPresent(cap -> {
 			if (cap.shieldsLeft() > 0) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> clientTarget), new UpdateShieldPacket(shielded, cap));
+				TFPacketHandler.CHANNEL.sendToClient(new UpdateShieldPacket(shielded, cap), clientTarget);
 			}
 		});
 	}
 
 	// Teleport first-time players to Twilight Forest
 	private static void banishNewbieToTwilightZone(Player player) {
-		CompoundTag tagCompound = player.getPersistentData();
-		CompoundTag playerData = tagCompound.getCompound(Player.PERSISTED_NBT_TAG);
+		CompoundTag tagCompound = player.getExtraCustomData();
+		CompoundTag playerData = tagCompound.getCompound("PlayerPersisted");
 
 		// getBoolean returns false, if false or didn't exist
 		boolean shouldBanishPlayer = TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && !playerData.getBoolean(NBT_TAG_TWILIGHT);
 
 		playerData.putBoolean(NBT_TAG_TWILIGHT, true); // set true once player has spawned either way
-		tagCompound.put(Player.PERSISTED_NBT_TAG, playerData); // commit
+		tagCompound.put("PlayerPersisted", playerData); // commit
 
 		if (shouldBanishPlayer)
 			TFPortalBlock.attemptSendEntity(player, true, TFConfig.COMMON_CONFIG.DIMENSION.portalForNewPlayerSpawn.get()); // See ya hate to be ya

@@ -67,7 +67,7 @@ public class FieryArmorItem extends ArmorItem implements CustomEnchantingBehavio
 				!Enchantments.THORNS.equals(enchantment) &&
 				!TFEnchantments.CHILL_AURA.get().equals(enchantment) &&
 				!Enchantments.FROST_WALKER.equals(enchantment) &&
-				super.canApplyAtEnchantingTable(stack, enchantment);
+				CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	public static String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {

@@ -67,23 +67,17 @@ public class EntityEvents {
 	private static final boolean SHIELD_PARRY_MOD_LOADED = FabricLoader.getInstance().isModLoaded("parry");
 
 	public static void init() {
-		ItemCraftedCallback.EVENT.register(PlayerEvents::onCrafting);
-		LivingEntityEvents.TICK.register(PlayerEvents::updateCaps);
-		LivingEntityEvents.EQUIPMENT_CHANGE.register(PlayerEvents::equipCicada);
-		LivingEntityEvents.ACTUALLY_HURT.register(PlayerEvents::entityHurts);
-		UseBlockCallback.EVENT.register(PlayerEvents::createSkullCandle);
-		PlayerBlockBreakEvents.BEFORE.register(PlayerEvents::onCasketBreak);
-		PlayerBlockBreakEvents.AFTER.register(PlayerEvents::damageToolsExtra);
-		ServerPlayerEvents.AFTER_RESPAWN.register(PlayerEvents::onPlayerRespawn);
-		EntityTrackingEvents.START_TRACKING.register(PlayerEvents::onStartTracking);
-		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(PlayerEvents::playerPortals);
+		ItemCraftedCallback.EVENT.register(EntityEvents::onCrafting);
+		LivingEntityEvents.ACTUALLY_HURT.register(EntityEvents::entityHurts);
+		UseBlockCallback.EVENT.register(EntityEvents::createSkullCandle);
+		PlayerBlockBreakEvents.BEFORE.register(EntityEvents::onCasketBreak);
 	}
 
 	public static float entityHurts(DamageSource source, LivingEntity living, float amount) {
 		Entity trueSource = source.getEntity();
 
 		// fire react and chill aura
-		if (source instanceof EntityDamageSource && trueSource != null && event.getAmount() > 0) {
+		if (source instanceof EntityDamageSource && trueSource != null && amount > 0) {
 			int fireLevel = getGearCoverage(living, false) * 5;
 			int chillLevel = getGearCoverage(living, true);
 

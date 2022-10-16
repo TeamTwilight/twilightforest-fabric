@@ -3,12 +3,12 @@ package twilightforest.client.model.block.giantblock;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonObject;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class GiantBlockBuilder<T extends ModelBuilder<T>> extends CustomLoaderBu
 
 	public GiantBlockBuilder<T> parentBlock(Block block) {
 		Preconditions.checkNotNull(block, "parent block must not be null");
-		this.parentBlock = ForgeRegistries.BLOCKS.getKey(block);
+		this.parentBlock = Registry.BLOCK.getKey(block);
 		return this;
 	}
 

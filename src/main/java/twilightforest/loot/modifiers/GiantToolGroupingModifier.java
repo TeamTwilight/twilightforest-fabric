@@ -113,6 +113,6 @@ public class GiantToolGroupingModifier extends LootModifier {
 
 	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
 		return player.getMainHandItem().is(TFItems.GIANT_PICKAXE.get()) && player.hasCorrectToolForDrops(state)
-				&& player.getCapability(CapabilityList.GIANT_PICK_MINE).map(GiantPickMineCapability::getMining).orElse(1L) == player.level.getGameTime();
+				&& CapabilityList.GIANT_PICK_MINE.maybeGet(player).map(GiantPickMineCapability::getMining).orElse(1L) == player.level.getGameTime();
 	}
 }

@@ -1,11 +1,10 @@
 package twilightforest.capabilities.giant_pick;
 
-import net.minecraft.nbt.CompoundTag;
+import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.util.INBTSerializable;
 import twilightforest.TwilightForestMod;
 
-public interface GiantPickMineCapability extends INBTSerializable<CompoundTag> {
+public interface GiantPickMineCapability extends Component {
 
 	ResourceLocation ID = TwilightForestMod.prefix("giant_pick_mine");
 

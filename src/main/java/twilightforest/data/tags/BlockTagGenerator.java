@@ -59,7 +59,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 	public static final TagKey<Block> FIRE_JET_FUEL = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("fire_jet_fuel"));
 	public static final TagKey<Block> ICE_BOMB_REPLACEABLES = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("ice_bomb_replaceables"));
 	public static final TagKey<Block> MAZEBREAKER_ACCELERATED = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("mazebreaker_accelerated_mining"));
-	public static final TagKey<Block> PLANTS_HANG_ON = BlockTags.create(TwilightForestMod.prefix("plants_hang_on"));
+	public static final TagKey<Block> PLANTS_HANG_ON = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("plants_hang_on"));
 
 	public static final TagKey<Block> COMMON_PROTECTIONS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("common_protections"));
 	public static final TagKey<Block> ANNIHILATION_INCLUSIONS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("annihilation_inclusions"));

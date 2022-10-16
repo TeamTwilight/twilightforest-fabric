@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -11,14 +12,13 @@ public class DarkLeavesBlock extends LeavesBlock {
 
 	public DarkLeavesBlock(Properties properties) {
 		super(properties);
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
 	}
 
-    @Override
 	public int getFlammability() {
 		return 1;
 	}
 
-	@Override
 	public int getFireSpreadSpeed() {
 		return 0;
 	}

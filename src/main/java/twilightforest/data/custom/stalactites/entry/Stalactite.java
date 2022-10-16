@@ -1,11 +1,12 @@
 package twilightforest.data.custom.stalactites.entry;
 
 import com.google.gson.*;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.lang.reflect.Type;
 
@@ -13,9 +14,9 @@ public record Stalactite(Block ore, float sizeVariation, int maxLength, int weig
 
 	private static StalactiteReloadListener STALAGTITE_CONFIG;
 
-	public static void reloadStalactites(AddReloadListenerEvent event) {
+	public static void reloadStalactites() {
 		STALAGTITE_CONFIG = new StalactiteReloadListener();
-		event.addListener(STALAGTITE_CONFIG);
+		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(STALAGTITE_CONFIG);
 	}
 
 	public static StalactiteReloadListener getStalactiteConfig() {
@@ -30,10 +31,10 @@ public record Stalactite(Block ore, float sizeVariation, int maxLength, int weig
 		public Stalactite deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 			JsonObject jsonobject = GsonHelper.convertToJsonObject(json, "stalactite");
 			String block = GsonHelper.getAsString(jsonobject, "ore");
-			if (ForgeRegistries.BLOCKS.getValue(ResourceLocation.tryParse(block)) == null) {
+			if (Registry.BLOCK.get(ResourceLocation.tryParse(block)) == null) {
 				throw new JsonParseException("Block " + block + " defined in Stalactite config does not exist!");
 			}
-			Block ore = ForgeRegistries.BLOCKS.getValue(ResourceLocation.tryParse(block));
+			Block ore = Registry.BLOCK.get(ResourceLocation.tryParse(block));
 			float size = GsonHelper.getAsFloat(jsonobject, "size_variation");
 			int maxLength = GsonHelper.getAsInt(jsonobject, "max_length");
 			int weight = GsonHelper.getAsInt(jsonobject, "weight");
@@ -44,7 +45,7 @@ public record Stalactite(Block ore, float sizeVariation, int maxLength, int weig
 		@Override
 		public JsonElement serialize(Stalactite stalactite, Type type, JsonSerializationContext context) {
 			JsonObject jsonobject = new JsonObject();
-			jsonobject.add("ore", context.serialize(ForgeRegistries.BLOCKS.getKey(stalactite.ore()).toString()));
+			jsonobject.add("ore", context.serialize(Registry.BLOCK.getKey(stalactite.ore()).toString()));
 			jsonobject.add("size_variation", context.serialize(stalactite.sizeVariation()));
 			jsonobject.add("max_length", context.serialize(stalactite.maxLength()));
 			jsonobject.add("weight", context.serialize(stalactite.weight()));
