@@ -55,6 +55,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 	private static final EntityDataAccessor<Boolean> FLAG_CHARGING = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, AttributeModifier.Operation.ADDITION);
+	private static final AttributeModifier NON_CHARGING_ARMOR_MODIFIER = new AttributeModifier("Inactive Armor boost", 4.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
 
 	private int number;
 	private int ticksProgress;
@@ -76,6 +77,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn, dataTag);
 		this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
 		this.populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
+		this.getAttribute(Attributes.ARMOR).addTransientModifier(NON_CHARGING_ARMOR_MODIFIER);
 		return data;
 	}
 
@@ -311,11 +313,17 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 		this.gameEvent(GameEvent.ENTITY_INTERACT);
 		if (!this.getLevel().isClientSide()) {
 			if (flag) {
-				if (!getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {
-					getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(CHARGING_MODIFIER);
+				if (!this.getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {
+					this.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(CHARGING_MODIFIER);
+				}
+				if (this.getAttribute(Attributes.ARMOR).hasModifier(NON_CHARGING_ARMOR_MODIFIER)) {
+					this.getAttribute(Attributes.ARMOR).removeModifier(NON_CHARGING_ARMOR_MODIFIER);
 				}
 			} else {
-				getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER);
+				this.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER);
+				if (!this.getAttribute(Attributes.ARMOR).hasModifier(NON_CHARGING_ARMOR_MODIFIER)) {
+					this.getAttribute(Attributes.ARMOR).addTransientModifier(NON_CHARGING_ARMOR_MODIFIER);
+				}
 			}
 		}
 	}

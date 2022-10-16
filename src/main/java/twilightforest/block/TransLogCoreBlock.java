@@ -66,6 +66,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 			}
 
 			if (level instanceof ServerLevel) {
+				if (!chunkAt.isUnsaved()) chunkAt.setUnsaved(true);
 				sendChangedBiome(chunkAt, dPos, target);
 			}
 			break;

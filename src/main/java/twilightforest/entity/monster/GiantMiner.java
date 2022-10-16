@@ -16,11 +16,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFItems;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class GiantMiner extends Monster {
@@ -40,6 +40,12 @@ public class GiantMiner extends Monster {
 			@Override
 			protected double getAttackReachSqr(LivingEntity attackTarget) {
 				return this.mob.getBbWidth() * this.mob.getBbHeight();
+			}
+
+			@Override
+			protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
+				double eyeHeightDistToEnemySqr = this.mob.distanceToSqr(pEnemy.getX(), pEnemy.getY() - this.mob.getEyeHeight() + pEnemy.getEyeHeight(), pEnemy.getZ());
+				super.checkAndPerformAttack(pEnemy, Math.min(pDistToEnemySqr, eyeHeightDistToEnemySqr * 0.8D));
 			}
 		});
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));

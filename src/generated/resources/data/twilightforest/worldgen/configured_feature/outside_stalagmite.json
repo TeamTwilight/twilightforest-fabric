@@ -1,20 +1,4 @@
 {
   "type": "twilightforest:block_spike",
-  "config": {
-    "hanging": false,
-    "length_bounds": {
-      "type": "minecraft:uniform",
-      "value": {
-        "max_inclusive": 10,
-        "min_inclusive": 5
-      }
-    },
-    "state": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "minecraft:stone"
-      }
-    },
-    "tip_clearance": 0
-  }
+  "config": {}
 }

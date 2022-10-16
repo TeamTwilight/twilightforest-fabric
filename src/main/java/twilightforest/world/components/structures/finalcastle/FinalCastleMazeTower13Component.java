@@ -27,11 +27,10 @@ import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
-
 public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
-	public static final int LOWEST_DOOR = 144;
-	public static final int HIGHEST_DOOR = 222;
+	public static final int LOWEST_DOOR = 108;
+	public static final int HIGHEST_DOOR = 186;
 
 	public final BlockState color;
 
@@ -122,9 +121,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 				int howFar = 20;
 				if (!buildEndTowerTowards(list, rand, dest, this.findBestDirectionTowards(dest), howFar)) {
 					if (!buildEndTowerTowards(list, rand, dest, this.findSecondDirectionTowards(dest), howFar)) {
-						if (!buildEndTowerTowards(list, rand, dest, this.findThirdDirectionTowards(dest), howFar)) {
-							TwilightForestMod.LOGGER.info("Could not build final tower");
-						}
+						buildEndTowerTowards(list, rand, dest, this.findThirdDirectionTowards(dest), howFar);
 					}
 				}
 			} else {
@@ -139,15 +136,11 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 						facing = this.findThirdDirectionTowards(dest);
 						if (facing == this.getOrientation() || !buildContinueTowerTowards(list, rand, dest, facing, howFar)) {
 							// fine, just go straight
-							if (!buildContinueTowerTowards(list, rand, dest, this.getOrientation(), howFar)) {
-								TwilightForestMod.LOGGER.info("Could not build tower randomly");
-							}
+							buildContinueTowerTowards(list, rand, dest, this.getOrientation(), howFar);
 						}
 					}
 				}
 			}
-		} else {
-			TwilightForestMod.LOGGER.info("Built 15 towers without reaching destination");
 		}
 
 		// finally, now that the critical path is built, let's add some other towers for atmosphere and complication
@@ -160,7 +153,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getOrientation(), dir);
 
 		// if there isn't something in that direction, check if we can add a wrecked tower
-		if (this.openingTowards[relativeRotation.ordinal()] == false) {
+		if (!this.openingTowards[relativeRotation.ordinal()]) {
 			if (!buildDamagedTower(list, rand, dir)) {
 				dir = RotationUtil.getRandomFacing(rand);
 				if (!buildDamagedTower(list, rand, dir)) {
@@ -288,11 +281,11 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 					return true;
 				} else {
-					TwilightForestMod.LOGGER.info("tower blocked by {}", intersect);
+					//TwilightForestMod.LOGGER.info("tower blocked by {}", intersect);
 					return false;
 				}
 			} else {
-				TwilightForestMod.LOGGER.info("tower out of range");
+				//TwilightForestMod.LOGGER.info("tower out of range");
 				return false;
 			}
 		}
@@ -368,7 +361,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 		// what color of tower?
 		FinalCastleMazeTower13Component eTower;
-		if (this.color == TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
+		if (this.color == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
 			eTower = new FinalCastleEntranceTowerComponent(getFeatureType(), this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 		} else {
 			eTower = new FinalCastleBellTower21Component(getFeatureType(), this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
@@ -399,13 +392,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	private boolean isWithinRange(int centerX, int centerZ, int posX, int posZ, int range) {
-		boolean inRange = Math.abs(centerX - posX) < range && Math.abs(centerZ - posZ) < range;
-
-		if (!inRange) {
-//				TwilightForestMod.LOGGER.info("Tested range, center is at " + centerX + ", " + centerZ + " and tower is " + posX + ", " + posZ + " so distance is " + Math.max(Math.abs(centerX - posX),  Math.abs(centerZ - posZ)));
-		}
-
-		return inRange;
+		return Math.abs(centerX - posX) < range && Math.abs(centerZ - posZ) < range;
 	}
 
 	/**
@@ -473,9 +460,9 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 
 		// add branching runes
-		int numBranches = 2 + decoRNG.nextInt(4) + +decoRNG.nextInt(3);
+		int numBranches = 2 + decoRNG.nextInt(4) + decoRNG.nextInt(3);
 		for (int i = 0; i < numBranches; i++) {
-			makeGlyphBranches(worldIn, decoRNG, this.getGlyphColour(), sbb);
+			makeGlyphBranches(worldIn, decoRNG, this.getGlyphMeta(), sbb);
 		}
 
 		// floors
@@ -485,7 +472,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		makeOpenings(worldIn, sbb);
 	}
 
-	public BlockState getGlyphColour() {
+	public BlockState getGlyphMeta() {
 		if (color == null) {
 			TwilightForestMod.LOGGER.warn("Final Castle tower has null for glyph color, this is a bug.");
 			return TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();

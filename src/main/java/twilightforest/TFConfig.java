@@ -6,7 +6,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -33,39 +32,6 @@ public class TFConfig {
 						translation(config + "portal_for_new_player").
 						comment("If true, the return portal will spawn for new players that were sent to the TF if `spawn_in_tf` is true.").
 						define("portalForNewPlayer", false);
-				builder.pop().
-						comment("""
-								Defines custom stalactites generated in hollow hills.
-								Format is "modid:block size maxLength minHeight weight", where the properties are:
-								Size - the maximum length of the stalactite relative to the space between hill floor and ceiling,
-								Max length - maximum length of a stalactite in blocks,
-								Min height - minimum space between the hill floor and the stalactite to let it generate,
-								Weight - how often it generates.
-
-								For example: "minecraft:iron_ore 0.7 8 1 24" would add a stalactite equal to the default iron ore stalactite.""").
-						push("Custom Hollow Hill Stalactites");
-				{
-					DIMENSION.hollowHillStalactites.largeHill = builder.
-							translation(config + "large_hill").
-							worldRestart().
-							comment("Blocks generating as stalactites in large hills only").
-							defineList("largeHill", new ArrayList<>(), s -> s instanceof String);
-					DIMENSION.hollowHillStalactites.mediumHill = builder.
-							translation(config + "medium_hill").
-							worldRestart().
-							comment("Blocks generating as stalactites in medium and large hills").
-							defineList("mediumHill", new ArrayList<>(), s -> s instanceof String);
-					DIMENSION.hollowHillStalactites.smallHill = builder.
-							translation(config + "small_hill").
-							worldRestart().
-							comment("Blocks generating as stalactites in all hills").
-							defineList("smallHill", new ArrayList<>(), s -> s instanceof String);
-					DIMENSION.hollowHillStalactites.useConfigOnly = builder.
-							translation(config + "stalactite_config_only").
-							worldRestart().
-							comment("If true, default stalactites and stalactites defined by other mods will not be used.").
-							define("useConfigOnly", false);
-				}
 			}
 			builder.pop();
 			originDimension = builder.
@@ -248,49 +214,6 @@ public class TFConfig {
 			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
 			public ForgeConfigSpec.BooleanValue portalForNewPlayerSpawn;
 
-			public HollowHillStalactites hollowHillStalactites = new HollowHillStalactites();
-
-			public static class HollowHillStalactites {
-
-				public ForgeConfigSpec.ConfigValue<List<? extends String>> largeHill;
-				public ForgeConfigSpec.ConfigValue<List<? extends String>> mediumHill;
-				public ForgeConfigSpec.ConfigValue<List<? extends String>> smallHill;
-				public ForgeConfigSpec.BooleanValue useConfigOnly;
-
-				public void load() {
-					registerHill(smallHill.get(), 1);
-					registerHill(mediumHill.get(), 2);
-					registerHill(largeHill.get(), 3);
-				}
-
-				private void registerHill(List<? extends String> definitions, int tier) {
-					for (String definition : definitions) {
-						if (!parseStalactite(definition, tier)) {
-							TwilightForestMod.LOGGER.warn("Invalid hollow hill stalactite definition: {}", definition);
-						}
-					}
-				}
-
-				private boolean parseStalactite(String definition, int tier) {
-					String[] split = definition.split(" ");
-					if (split.length != 5) return false;
-
-					Optional<Block> block = parseBlock(split[0]);
-					if (block.isEmpty()) return false;
-
-					try {
-						BlockSpikeFeature.registerStalactite(tier, block.get().defaultBlockState(),
-								Float.parseFloat(split[1]),
-								Integer.parseInt(split[2]),
-								Integer.parseInt(split[3]),
-								Integer.parseInt(split[4])
-						);
-					} catch (NumberFormatException e) {
-						return false;
-					}
-					return true;
-				}
-			}
 		}
 
 		public ForgeConfigSpec.ConfigValue<String> originDimension;

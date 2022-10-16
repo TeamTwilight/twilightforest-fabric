@@ -99,7 +99,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 		BlockState state = level.getBlockState(pos);
 
-		if (canFormPortal(state) && level.getBlockState(pos.below()).canOcclude()) {
+		if (this.canFormPortal(state) && level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP)) {
 			Map<BlockPos, Boolean> blocksChecked = new HashMap<>();
 			blocksChecked.put(pos, true);
 
@@ -167,7 +167,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			if (!blocksChecked.containsKey(positionCheck)) {
 				BlockState state = level.getBlockState(positionCheck);
 
-				if (state == poolBlock && level.getBlockState(positionCheck.below()).canOcclude()) {
+				if (state == poolBlock && level.getBlockState(positionCheck.below()).isFaceSturdy(level, pos, Direction.UP)) {
 					blocksChecked.put(positionCheck, true);
 					if (isPoolProbablyEnclosed) {
 						isPoolProbablyEnclosed = recursivelyValidatePortal(level, positionCheck, blocksChecked, portalSize, poolBlock);
@@ -194,7 +194,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	@Override
 	@Deprecated
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		boolean good = level.getBlockState(pos.below()).canOcclude();
+		boolean good = level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
 
 		for (Direction facing : Direction.Plane.HORIZONTAL) {
 			if (!good) break;
@@ -275,7 +275,6 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	// Full [VanillaCopy] of BlockPortal.randomDisplayTick
-	// TODO Eeeh... Let's look at changing this too alongside a new model.
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {

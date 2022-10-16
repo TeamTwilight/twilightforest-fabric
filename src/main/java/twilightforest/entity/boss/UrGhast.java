@@ -210,13 +210,13 @@ public class UrGhast extends CarminiteGhastguard {
 			if (this.hurtTime == this.hurtDuration) {
 				this.damageUntilNextPhase -= lastDamage;
 
-				TwilightForestMod.LOGGER.debug("Urghast Attack successful, {} damage until phase switch.", this.damageUntilNextPhase);
+				//TwilightForestMod.LOGGER.debug("Urghast Attack successful, {} damage until phase switch.", this.damageUntilNextPhase);
 
 				if (this.damageUntilNextPhase <= 0) {
 					this.switchPhase();
 				}
 			} else {
-				TwilightForestMod.LOGGER.debug("Urghast Attack fail with {} type attack for {} damage", source.msgId, damage);
+				//TwilightForestMod.LOGGER.debug("Urghast Attack fail with {} type attack for {} damage", source.msgId, damage);
 			}
 		}
 

@@ -8,16 +8,11 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import twilightforest.init.TFBlocks;
-import twilightforest.block.TFPlantBlock;
-import twilightforest.block.TrollRootBlock;
 
 public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 
-	private final boolean isTrollber;
-
-	public UndergroundPlantFeature(Codec<BlockStateConfiguration> config, boolean trollber) {
+	public UndergroundPlantFeature(Codec<BlockStateConfiguration> config) {
 		super(config);
-		this.isTrollber = trollber;
 	}
 
 	@Override
@@ -31,10 +26,8 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 
 		for (; pos.getY() > world.getMinBuildHeight(); pos = pos.below()) {
 			if (world.isEmptyBlock(pos) && random.nextInt(6) > 0) {
-				if (!isTrollber && TFPlantBlock.canPlaceRootAt(world, pos)) {
-					world.setBlock(pos, ctx.config().state, 16 | 2);
-				} else if (isTrollber && TrollRootBlock.canPlaceRootBelow(world, pos.above())) {
-					if (random.nextInt(10) == 0) {
+				if (ctx.config().state.canSurvive(ctx.level(), pos)) {
+					if (ctx.config().state.is(TFBlocks.TROLLVIDR.get()) && random.nextInt(10) == 0) {
 						world.setBlock(pos, TFBlocks.UNRIPE_TROLLBER.get().defaultBlockState(), 16 | 2);
 					} else {
 						world.setBlock(pos, ctx.config().state, 16 | 2);

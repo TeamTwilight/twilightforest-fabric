@@ -837,20 +837,21 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	@Nullable
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
-		for (LegacyLandmark structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream()
-				.filter(LegacyLandmark.class::isInstance).map(LegacyLandmark.class::cast).toList()) {
-			StructureStart start = structureManager.getStructureAt(pos, structure);
-			if (!start.isValid())
-				continue;
+		for (Structure structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY)) {
+			if (structure instanceof LegacyLandmark landmark) {
+				StructureStart start = structureManager.getStructureAt(pos, landmark);
+				if (!start.isValid())
+					continue;
 
-			if (classification != MobCategory.MONSTER)
-				return structure.getSpawnableList(classification);
-			if ((start instanceof TFStructureStart<?> s && s.isConquered()))
-				return null;
-			final int index = getSpawnListIndexAt(start, pos);
-			if (index < 0)
-				return null;
-			return structure.getSpawnableMonsterList(index);
+				if (classification != MobCategory.MONSTER)
+					return landmark.getSpawnableList(classification);
+				if ((start instanceof TFStructureStart<?> s && s.isConquered()))
+					return null;
+				final int index = getSpawnListIndexAt(start, pos);
+				if (index < 0)
+					return null;
+				return landmark.getSpawnableMonsterList(index);
+			}
 		}
 		return null;
 	}

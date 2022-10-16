@@ -1,12 +1,15 @@
 package twilightforest.loot;
 
 import com.google.common.collect.Sets;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -14,6 +17,7 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 
 import java.util.Set;
@@ -128,7 +132,19 @@ public class TFLootTables {
 	public static void entityDropsIntoContainer(LivingEntity entity, LootContext lootContext, BlockState blockContaining, BlockPos placement) {
 		if (entity.getLevel() instanceof ServerLevel serverLevel
 				&& serverLevel.setBlock(placement, blockContaining, DEFAULT_PLACE_FLAG)
-				&& serverLevel.getBlockEntity(placement) instanceof Container container)
-			serverLevel.getServer().getLootTables().get(entity.getLootTable()).fill(container, lootContext);
+				&& serverLevel.getBlockEntity(placement) instanceof Container container) {
+			LootTable table = serverLevel.getServer().getLootTables().get(entity.getLootTable());
+			ObjectArrayList<ItemStack> stacks = table.getRandomItems(lootContext);
+			table.fill(container, lootContext);
+			//if our loot stack size is bigger than the chest, drop everything else outside of it. Dont want to lose any loot now do we?
+			if (stacks.size() > 27) {
+				for (ItemStack stack : stacks.subList(28, stacks.size())) {
+					ItemEntity item = new ItemEntity(serverLevel, placement.above().getX(), placement.above().getY(), placement.above().getZ(), stack);
+					item.setExtendedLifetime();
+					item.setNoPickUpDelay();
+					serverLevel.addFreshEntity(item);
+				}
+			}
+		}
 	}
 }

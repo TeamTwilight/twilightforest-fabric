@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -75,7 +76,7 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level world, LivingEntity thrower, InteractionHand hand, ItemStack stack) {
 		super(type, thrower, world);
 		this.isReturning = false;
-		this.canSmashBlocks = EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0;
+		this.canSmashBlocks = EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0 && !thrower.hasEffect(MobEffects.DIG_SLOWDOWN);
 		this.stack = stack;
 		this.setHand(hand);
 		this.chain1 = new Chain(this);
@@ -203,17 +204,18 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	}
 
 	private void affectBlocksInAABB(AABB box) {
-		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			BlockState state = this.getLevel().getBlockState(pos);
-			Block block = state.getBlock();
+		if (this.getOwner() instanceof Player player) {
+			boolean creative = player.getAbilities().instabuild;
 
-			if (!state.isAir() && this.stack.isCorrectToolForDrops(state)/* && block.canEntityDestroy(state, this.getLevel(), pos, this)*/) {
-				if (this.getOwner() instanceof Player player) {
+			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+				BlockState state = this.getLevel().getBlockState(pos);
+				Block block = state.getBlock();
+
+				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.getLevel(), pos, this)) {
 					if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(level, player, pos, state, null)) {
 						if (!state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state)) {
-							block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
-
 							this.getLevel().destroyBlock(pos, false);
+							if (!creative) block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
 							this.blocksSmashed++;
 						}
 					}

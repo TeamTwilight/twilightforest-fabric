@@ -21,11 +21,10 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -44,12 +43,12 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TFConfig;
-import twilightforest.block.*;
+import twilightforest.block.AbstractLightableBlock;
+import twilightforest.block.AbstractSkullCandleBlock;
+import twilightforest.block.SkullCandleBlock;
+import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
-import twilightforest.capabilities.CapabilityList;
-import twilightforest.capabilities.fan.FeatherFanFallCapability;
-import twilightforest.capabilities.thrown.YetiThrowCapability;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.TFBlocks;
@@ -59,16 +58,12 @@ import twilightforest.init.TFStats;
 import twilightforest.item.FieryArmorItem;
 import twilightforest.item.MazebreakerPickItem;
 import twilightforest.item.YetiArmorItem;
-import twilightforest.network.CreateMovingCicadaSoundPacket;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.network.UpdateShieldPacket;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
-public class PlayerEvents {
+public class EntityEvents {
 
-	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
 	private static final boolean SHIELD_PARRY_MOD_LOADED = FabricLoader.getInstance().isModLoaded("parry");
 
 	public static void init() {
@@ -84,56 +79,27 @@ public class PlayerEvents {
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(PlayerEvents::playerPortals);
 	}
 
-	public static void damageToolsExtra(Level world, Player player, BlockPos pos, BlockState state, /* Nullable */ BlockEntity blockEntity) {
-		ItemStack stack = player.getMainHandItem();
-		if (state.is(BlockTagGenerator.MAZESTONE) || state.is(BlockTagGenerator.CASTLE_BLOCKS)) {
-			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
-				stack.hurtAndBreak(16, player, (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
-			}
-		}
-	}
+	public static float entityHurts(DamageSource source, LivingEntity living, float amount) {
+		Entity trueSource = source.getEntity();
 
-	public static void updateCaps(LivingEntity livingEntity) {
-		CapabilityList.FEATHER_FAN_FALLING.maybeGet(livingEntity).ifPresent(FeatherFanFallCapability::update);
-		CapabilityList.YETI_THROWN.maybeGet(livingEntity).ifPresent(YetiThrowCapability::update);
-	}
+		// fire react and chill aura
+		if (source instanceof EntityDamageSource && trueSource != null && event.getAmount() > 0) {
+			int fireLevel = getGearCoverage(living, false) * 5;
+			int chillLevel = getGearCoverage(living, true);
 
-	// from what I can see, vanilla doesnt have a hook for this in the item class. So this will have to do.
-	// we only have to check equipping, when its unequipped the sound instance handles the rest
-	public static void equipCicada(LivingEntity entity, EquipmentSlot slot, @Nonnull ItemStack from, @Nonnull ItemStack to) {
-		if(slot == EquipmentSlot.HEAD && to.is(TFBlocks.CICADA.get().asItem())) {
-			if (!entity.getLevel().isClientSide() && entity != null) {
-				TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new CreateMovingCicadaSoundPacket(entity.getId()), entity);
-			}
-		}
-	}
-
-	public static float entityHurts(DamageSource damageSource, LivingEntity living, float amount) {
-		String damageType = damageSource.getMsgId();
-		Entity trueSource = damageSource.getEntity();
-
-		// fire aura
-		if (living instanceof Player player && (damageType.equals("mob") || damageType.equals("player")) && trueSource != null) {
-			int fireLevel = getFieryAuraLevel(player.getInventory());
-
-			if (fireLevel > 0 && player.getRandom().nextInt(25) < fireLevel) {
+			if (fireLevel > 0 && living.getRandom().nextInt(25) < fireLevel) {
 				trueSource.setSecondsOnFire(fireLevel / 2);
 			}
-		}
 
-		// chill aura
-		if (living instanceof Player player && (damageType.equals("mob") || damageType.equals("player")) && trueSource instanceof LivingEntity living1) {
-			int chillLevel = getChillAuraLevel(player.getInventory());
-
-			if (chillLevel > 0) {
-				living1.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), chillLevel * 5 + 5, chillLevel));
+			if (chillLevel > 0 && trueSource instanceof LivingEntity target) {
+				target.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), chillLevel * 5 + 5, chillLevel));
 			}
 		}
 
-		// triple bow strips hurtResistantTime
-		if (damageType.equals("arrow") && trueSource instanceof Player player) {
+		// triple bow strips invulnerableTime
+		if (source.getMsgId().equals("arrow") && trueSource instanceof Player player) {
 
-			if (player.getMainHandItem().getItem() == TFItems.TRIPLE_BOW.get() || player.getOffhandItem().getItem() == TFItems.TRIPLE_BOW.get()) {
+			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW.get())) {
 				living.invulnerableTime = 0;
 			}
 		}
@@ -166,43 +132,6 @@ public class PlayerEvents {
 			player.getInventory().placeItemBackInInventory(new ItemStack(Items.OAK_PLANKS, 64));
 			player.getInventory().placeItemBackInInventory(new ItemStack(Items.OAK_PLANKS, 64));
 		}
-	}
-
-	public static void onPlayerRespawn(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
-		if (alive) {
-			updateCapabilities(newPlayer, newPlayer);
-		}
-
-		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && newPlayer.getRespawnPosition() == null) {
-			CompoundTag tagCompound = newPlayer.getExtraCustomData();
-			CompoundTag playerData = tagCompound.getCompound("PlayerPersisted");
-			playerData.putBoolean(NBT_TAG_TWILIGHT, false); // set to false so that the method works
-			tagCompound.put("PlayerPersisted", playerData); // commit
-			banishNewbieToTwilightZone(newPlayer);
-		}
-	}
-
-	/**
-	 * When player logs in, report conflict status, set progression status
-	 */
-	public static void playerLogsIn(ServerPlayer player) {
-		if (!player.getLevel().isClientSide()) {
-			updateCapabilities(player, player);
-			banishNewbieToTwilightZone(player);
-		}
-	}
-
-	/**
-	 * When player changes dimensions, send the rule status if they're moving to the Twilight Forest
-	 */
-	public static void playerPortals(ServerPlayer player, ServerLevel origin, ServerLevel destination) {
-		if (!player.getLevel().isClientSide()) {
-			updateCapabilities(player, player);
-		}
-	}
-
-	public static void onStartTracking(Entity trackedEntity, ServerPlayer player) {
-		updateCapabilities(player, trackedEntity);
 	}
 
 	// Parrying
@@ -314,57 +243,18 @@ public class PlayerEvents {
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
 	}
 
-	// send any capabilities that are needed client-side
-	private static void updateCapabilities(ServerPlayer clientTarget, Entity shielded) {
-		CapabilityList.SHIELDS.maybeGet(shielded).ifPresent(cap -> {
-			if (cap.shieldsLeft() > 0) {
-				TFPacketHandler.CHANNEL.sendToClient(new UpdateShieldPacket(shielded, cap), clientTarget);
-			}
-		});
-	}
-
-	// Teleport first-time players to Twilight Forest
-	private static void banishNewbieToTwilightZone(Player player) {
-		CompoundTag tagCompound = player.getExtraCustomData();
-		CompoundTag playerData = tagCompound.getCompound("PlayerPersisted");
-
-		// getBoolean returns false, if false or didn't exist
-		boolean shouldBanishPlayer = TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && !playerData.getBoolean(NBT_TAG_TWILIGHT);
-
-		playerData.putBoolean(NBT_TAG_TWILIGHT, true); // set true once player has spawned either way
-		tagCompound.put("PlayerPersisted", playerData); // commit
-
-		if (shouldBanishPlayer)
-			TFPortalBlock.attemptSendEntity(player, true, TFConfig.COMMON_CONFIG.DIMENSION.portalForNewPlayerSpawn.get()); // See ya hate to be ya
-	}
-
 	/**
-	 * Add up the number of fiery armor pieces the player is wearing, multiplied by 5
+	 * Add up the number of armor pieces the player is wearing (either fiery or yeti)
 	 */
-	public static int getFieryAuraLevel(Inventory inventory) {
-		int modifier = 0;
+	public static int getGearCoverage(LivingEntity entity, boolean yeti) {
+		int amount = 0;
 
-		for (ItemStack armor : inventory.armor) {
-			if (!armor.isEmpty() && armor.getItem() instanceof FieryArmorItem) {
-				modifier += 5;
+		for (ItemStack armor : entity.getArmorSlots()) {
+			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
+				amount++;
 			}
 		}
 
-		return modifier;
-	}
-
-	/**
-	 * Add up the number of yeti armor pieces the player is wearing, 0-4
-	 */
-	public static int getChillAuraLevel(Inventory inventory) {
-		int modifier = 0;
-
-		for (ItemStack armor : inventory.armor) {
-			if (!armor.isEmpty() && armor.getItem() instanceof YetiArmorItem) {
-				modifier++;
-			}
-		}
-
-		return modifier;
+		return amount;
 	}
 }

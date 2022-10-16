@@ -1,4 +1,4 @@
-package twilightforest.client.model;
+package twilightforest.client.model.block.patch;
 
 import com.mojang.math.Transformation;
 import com.mojang.math.Vector3f;

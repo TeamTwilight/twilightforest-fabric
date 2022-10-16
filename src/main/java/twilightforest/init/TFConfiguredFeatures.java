@@ -8,7 +8,6 @@ import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.sounds.Music;
-import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
@@ -24,7 +23,10 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockS
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TorchberryPlantBlock;
-import twilightforest.world.components.feature.config.*;
+import twilightforest.world.components.feature.config.HollowLogConfig;
+import twilightforest.world.components.feature.config.RootConfig;
+import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
+import twilightforest.world.components.feature.config.ThornsConfig;
 import twilightforest.world.registration.TreeConfigurations;
 import twilightforest.world.registration.TreeDecorators;
 
@@ -59,7 +61,7 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> MONOLITH = register("monolith", TFFeatures.MONOLITH.get(), FeatureConfiguration.NONE);
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> MUSHGLOOM_CLUSTER = register("mushgloom_cluster", Feature.RANDOM_PATCH, FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(TFBlocks.MUSHGLOOM.get()))));
 	public static final Holder<ConfiguredFeature<DiskConfiguration, ?>> MYCELIUM_BLOB = register("mycelium_blob", TFFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(Blocks.MYCELIUM), BlockPredicate.matchesBlocks(Blocks.GRASS_BLOCK), UniformInt.of(4, 6), 3));
-	public static final Holder<ConfiguredFeature<SpikeConfig, ?>> OUTSIDE_STALAGMITE = register("outside_stalagmite", TFFeatures.CAVE_STALACTITE.get(), new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(5, 10), ConstantInt.of(0), false));
+	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> OUTSIDE_STALAGMITE = register("outside_stalagmite", TFFeatures.CAVE_STALACTITE.get(), FeatureConfiguration.NONE);
 	public static final Holder<ConfiguredFeature<BlockStateConfiguration, ?>> PLANT_ROOTS = register("plant_roots", TFFeatures.UNDERGROUND_PLANTS.get(), new BlockStateConfiguration(TFBlocks.ROOT_STRAND.get().defaultBlockState()));
 	public static final Holder<ConfiguredFeature<BlockStateConfiguration, ?>> PUMPKIN_LAMPPOST = register("pumpkin_lamppost", TFFeatures.LAMPPOSTS.get(), new BlockStateConfiguration(Blocks.JACK_O_LANTERN.defaultBlockState()));
 	public static final Holder<ConfiguredFeature<BlockStateConfiguration, ?>> SMOKER = register("smoker", TFFeatures.FIRE_JET.get(), new BlockStateConfiguration(TFBlocks.SMOKER.get().defaultBlockState()));
@@ -110,6 +112,7 @@ public final class TFConfiguredFeatures {
 
 	//Trees!
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> TWILIGHT_OAK_TREE = register("tree/twilight_oak_tree", Feature.TREE, TreeConfigurations.TWILIGHT_OAK);
+	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> LARGE_TWILIGHT_OAK_TREE = register("tree/large_twilight_oak_tree", Feature.TREE, TreeConfigurations.LARGE_TWILIGHT_OAK);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> SWAMPY_OAK_TREE = register("tree/swampy_oak_tree", Feature.TREE, TreeConfigurations.SWAMPY_OAK);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> CANOPY_TREE = register("tree/canopy_tree", Feature.TREE, TreeConfigurations.CANOPY_TREE);
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> FIREFLY_CANOPY_TREE = register("tree/firefly_canopy_tree", Feature.TREE, TreeConfigurations.CANOPY_TREE_FIREFLY);
@@ -136,6 +139,7 @@ public final class TFConfiguredFeatures {
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> DARK_FOREST_BIRCH_TREE = register("tree/dark_forest_birch_tree", TFFeatures.DARK_CANOPY_TREE.get(), TreeFeatures.BIRCH.value().config());
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> VANILLA_OAK_TREE = register("tree/vanilla_oak_tree", Feature.TREE, TreeFeatures.OAK.value().config());
 	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> VANILLA_BIRCH_TREE = register("tree/vanilla_birch_tree", Feature.TREE, TreeFeatures.BIRCH.value().config());
+	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> SMALLER_JUNGLE_TREE = register("tree/smaller_jungle_tree", Feature.TREE, TreeConfigurations.SMALL_JUNGLE);
 	public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> DUMMY_TREE = register("tree/dummy", Feature.NO_OP, NoneFeatureConfiguration.INSTANCE);
 
 	//random selectors
@@ -185,6 +189,26 @@ public final class TFConfiguredFeatures {
 					)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
 
 	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> FLOWER_PLACER = register("flower_placer", Feature.FLOWER, SMALL_FLOWER_CONFIG);
+
+	public static final RandomPatchConfiguration SMALL_FLOWER_CONFIG_ALT = (new RandomPatchConfiguration(32, 7, 7,
+			PlacementUtils.filtered(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
+					new NoiseProvider(2345L, new NormalNoise.NoiseParameters(0, 1.0D), 0.020833334F, List.of(
+							Blocks.WHITE_TULIP.defaultBlockState(),
+							Blocks.PINK_TULIP.defaultBlockState(),
+							Blocks.ORANGE_TULIP.defaultBlockState(),
+							Blocks.RED_TULIP.defaultBlockState(),
+							Blocks.DANDELION.defaultBlockState(),
+							Blocks.POPPY.defaultBlockState(),
+							Blocks.OXEYE_DAISY.defaultBlockState(),
+							Blocks.AZURE_BLUET.defaultBlockState(),
+							Blocks.ALLIUM.defaultBlockState(),
+							Blocks.BLUE_ORCHID.defaultBlockState(),
+							Blocks.LILY_OF_THE_VALLEY.defaultBlockState(),
+							Blocks.CORNFLOWER.defaultBlockState())
+					)), BlockPredicate.ONLY_IN_AIR_PREDICATE)));
+
+	public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> FLOWER_PLACER_ALT = register("flower_placer_alt", Feature.FLOWER, SMALL_FLOWER_CONFIG_ALT);
+
 
 	//music!
 	public static final Music TFMUSICTYPE = new Music(TFSounds.MUSIC.get(), 1200, 12000, true);

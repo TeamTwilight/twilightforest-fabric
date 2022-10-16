@@ -24,7 +24,7 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 	}
 
 	public FinalCastleEntranceTowerComponent(TFLandmark feature, int i, int x, int y, int z, Direction direction) {
-		super(TFStructurePieceTypes.TFFCEnTo.get(), feature, i, x, y, z, 3, 2, TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
+		super(TFStructurePieceTypes.TFFCEnTo.get(), feature, i, x, y, z, 3, 2, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 		}
 
 		// add bottom tower
-		FinalCastleEntranceBottomTowerComponent eTower = new FinalCastleEntranceBottomTowerComponent(getFeatureType(), this.getGenDepth() + 1, this.boundingBox.minX() + 6, this.boundingBox.minY() - (middleFloors) * 8, this.boundingBox.minZ() + 6, bottomFloors + 1, bottomFloors, facing.getOpposite());
+		FinalCastleEntranceBottomTowerComponent eTower = new FinalCastleEntranceBottomTowerComponent(getFeatureType(), this.getGenDepth() + 1, this.boundingBox.minX() + 6, this.boundingBox.minY() - (middleFloors * 8), this.boundingBox.minZ() + 6, bottomFloors + 1, bottomFloors, facing.getOpposite());
 		list.addPiece(eTower);
 		eTower.addChildren(this, list, rand);
 
@@ -105,7 +105,7 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 
 			return true;
 		} else {
-			TwilightForestMod.LOGGER.info("side entrance tower blocked");
+			//TwilightForestMod.LOGGER.info("side entrance tower blocked");
 			return false;
 		}
 

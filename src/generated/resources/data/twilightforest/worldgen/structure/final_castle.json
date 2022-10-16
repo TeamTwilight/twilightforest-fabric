@@ -22,76 +22,7 @@
     }
   },
   "hint_mob": "twilightforest:kobold",
-  "labelled_monster_spawns": {
-    "0": [
-      {
-        "type": "twilightforest:kobold",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:adherent",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:harbinger_cube",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      }
-    ],
-    "1": [
-      {
-        "type": "twilightforest:kobold",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:adherent",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:harbinger_cube",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      },
-      {
-        "type": "twilightforest:armored_giant",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      }
-    ],
-    "2": [
-      {
-        "type": "twilightforest:adherent",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      }
-    ],
-    "3": [
-      {
-        "type": "minecraft:blaze",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      }
-    ]
-  },
+  "labelled_monster_spawns": {},
   "legacy_landmark_start": "final_castle",
   "spawn_overrides": {},
   "step": "surface_structures",

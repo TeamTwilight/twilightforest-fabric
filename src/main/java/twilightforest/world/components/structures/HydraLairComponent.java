@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.feature.BlockSpikeFeature;
 
 
 public class HydraLairComponent extends HollowHillComponent {
@@ -23,7 +24,7 @@ public class HydraLairComponent extends HollowHillComponent {
 		super(TFStructurePieceTypes.TFHydra.get(), nbt);
 	}
 
-	public HydraLairComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z) {
+	public HydraLairComponent(TFLandmark feature, int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFHydra.get(), feature, i, 2, x, y + 2, z);
 	}
 
@@ -46,12 +47,12 @@ public class HydraLairComponent extends HollowHillComponent {
 		// stone stalactites!
 		for (int i = 0; i < stalacts; i++) {
 			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, this.radius);
-			this.generateBlockSpike(world, STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb);
+			this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb, true);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < stalags; i++) {
 			BlockPos.MutableBlockPos dest = this.randomFloorCoordinates(rand, this.radius);
-			this.generateBlockSpike(world, STONE_STALAGMITE, dest.getX(), dest.getY(), dest.getZ(), sbb);
+			this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb, false);
 		}
 
 		// boss spawner seems important

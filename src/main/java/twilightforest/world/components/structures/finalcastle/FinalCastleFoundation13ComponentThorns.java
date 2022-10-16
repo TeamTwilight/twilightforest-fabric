@@ -40,7 +40,7 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// thorns
-		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.getBoundingBox().minX() * 321534781L) ^ (this.getBoundingBox().minZ() * 756839L));
 
 		for (Rotation i : RotationUtil.ROTATIONS) {
 			this.makeThornVine(world, decoRNG, i, sbb);
@@ -52,14 +52,14 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 		int x = 3 + decoRNG.nextInt(13);
 		int z = 3 + decoRNG.nextInt(13);
 
-		int y = this.boundingBox.getYSpan() + 5;
+		int y = this.getBoundingBox().getYSpan() + 5;
 
 		int twist = decoRNG.nextInt(4);
 		int twistMod = 3 + decoRNG.nextInt(3);
 
 		final BlockState thorns = TFBlocks.BROWN_THORNS.get().defaultBlockState();
 
-		while (this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation).getBlock() != TFBlocks.DEADROCK.get() && this.getWorldY(y) > 60) {
+		while (!this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation).is(TFBlocks.DEADROCK.get()) && this.getWorldY(y) > 90) {
 			this.setBlockStateRotated(world, thorns, x, y, z, rotation, sbb);
 			// twist vines around the center block
 			switch (twist) {
@@ -100,7 +100,7 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 	}
 
 	private void makeThornBranch(WorldGenLevel world, int x, int y, int z, Rotation rotation, BoundingBox sbb) {
-		RandomSource rand = RandomSource.create(world.getSeed() + (x * 321534781) ^ (y * 756839) + z);
+		RandomSource rand = RandomSource.create(world.getSeed() + (x * 321534781L) ^ (y * 756839L) + z);
 
 		// pick a direction
 		Rotation dir = RotationUtil.getRandomRotation(rand);
@@ -110,8 +110,8 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 		int dz = 0;
 
 		switch (dir) {
-			case NONE -> dx = +1;
-			case CLOCKWISE_90 -> dz = +1;
+			case NONE -> dx = 1;
+			case CLOCKWISE_90 -> dz = 1;
 			case CLOCKWISE_180 -> dx = -1;
 			case COUNTERCLOCKWISE_90 -> dz = -1;
 		}
@@ -123,10 +123,10 @@ public class FinalCastleFoundation13ComponentThorns extends FinalCastleFoundatio
 		int destX = x + (dist * dx);
 		int destZ = z + (dist * dz);
 
-		if (destX > 0 && destX < this.boundingBox.getXSpan() && destZ > 0 && destZ < this.boundingBox.getZSpan()) {
+		if (destX > 0 && destX < this.getBoundingBox().getXSpan() && destZ > 0 && destZ < this.getBoundingBox().getZSpan()) {
 			for (int i = 0; i < dist; i++) {
 				// go out that far
-				final Rotation add = dir.getRotated(rotation).getRotated(this.rotation);
+				final Rotation add = dir.getRotated(rotation).getRotated(this.getRotation());
 				BlockState thorns = TFBlocks.GREEN_THORNS.get().defaultBlockState()
 						.setValue(
 								RotatedPillarBlock.AXIS,

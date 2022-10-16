@@ -50,7 +50,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 		head.setDeltaMovement(Vec3.ZERO);
 		this.shootFromRotation(head, head.getXRot(), head.getYRot(), -20.0F, 0.5F, 1F);
 
-		TwilightForestMod.LOGGER.debug("Launching mortar! Current head motion is {}, {}", head.getDeltaMovement().x(), head.getDeltaMovement().z());
+		//TwilightForestMod.LOGGER.debug("Launching mortar! Current head motion is {}, {}", head.getDeltaMovement().x(), head.getDeltaMovement().z());
 	}
 
 	@Override

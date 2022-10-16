@@ -36,6 +36,7 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.compat.top.TopCompat;
+import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.events.*;
 import twilightforest.init.*;
@@ -46,8 +47,6 @@ import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.components.feature.BlockSpikeFeature;
-import twilightforest.world.registration.ConfiguredWorldCarvers;
 import twilightforest.world.registration.TFStructureProcessors;
 
 import java.io.IOException;
@@ -83,6 +82,7 @@ public class TwilightForestMod implements ModInitializer {
 		}
 
 		CommandRegistrationCallback.EVENT.register(this::registerCommands);
+		MinecraftForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
 
 		TFBannerPatterns.BANNER_PATTERNS.register();
 		BiomeKeys.BIOMES.register();
@@ -167,8 +167,6 @@ public class TwilightForestMod implements ModInitializer {
 	public static void init() {
 		TFPacketHandler.init();
 		TFAdvancements.init();
-
-		BlockSpikeFeature.loadStalactites();
 
 //		evt.enqueueWork(() -> {
 			TFBlocks.tfCompostables();

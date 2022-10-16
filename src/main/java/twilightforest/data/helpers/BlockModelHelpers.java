@@ -45,9 +45,8 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 	 * Generates a blockstate json pointing to one single generated model with the same name as the block
 	 * The single generated model has the given parent and can be customized.
 	 */
-	protected void singleBlockBoilerPlate(Block b, String parent, Consumer<BlockModelBuilder> modelCustomizer, ResourceLocation renderType) {
+	protected void singleBlockBoilerPlate(Block b, String parent, Consumer<BlockModelBuilder> modelCustomizer) {
 		BlockModelBuilder bModel = models().withExistingParent(name(b), parent);
-		bModel.renderType(renderType);
 		modelCustomizer.accept(bModel);
 		simpleBlock(b, bModel);
 	}

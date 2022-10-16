@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/leaves",
-  "render_type": "minecraft:solid",
   "textures": {
     "all": "twilightforest:block/darkwood_leaves"
   }

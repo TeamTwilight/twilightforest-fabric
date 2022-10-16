@@ -1085,7 +1085,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 			Holder<ConfiguredFeature<TreeConfiguration,?>> treeGen = switch (treeNum) {
 				case 1 ->
 						// jungle tree
-						TreeFeatures.JUNGLE_TREE;
+						// made a custom one so it doesnt cut through the floor
+						TFConfiguredFeatures.SMALLER_JUNGLE_TREE;
 				case 2 ->
 						// birch
 						TreeFeatures.BIRCH;

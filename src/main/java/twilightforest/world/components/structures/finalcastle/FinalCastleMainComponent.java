@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.LegacyLandmarkPlacements;
@@ -95,7 +96,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 		// tower maze towards entrance
 		BlockPos dest = new BlockPos(boundingBox.minX() - 4, boundingBox.maxY(), boundingBox.minZ() - 24);
-		buildTowerMaze(list, rand, 48, 0, 24, 60, Direction.SOUTH, TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState(), dest);
+		buildTowerMaze(list, rand, 48, 0, 24, 60, Direction.SOUTH, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), dest);
 
 
 		// another tower/bridge maze towards the clock tower
@@ -163,7 +164,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 					//TwilightForestMod.LOGGER.debug("Tower maze color {} complete!", type);
 					complete = true;
 				} else {
-					TwilightForestMod.LOGGER.info("Tower maze color {} INCOMPLETE, retrying!", type);
+					//TwilightForestMod.LOGGER.info("Tower maze color {} INCOMPLETE, retrying!", type);
 					start.pieces.clear();
 					start.pieces.addAll(before);
 				}
@@ -174,7 +175,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	private boolean isMazeComplete(StructurePieceAccessor list, BlockState type) {
 		if (list instanceof StructurePiecesBuilder start) {
 			if (start.pieces.size() > 60) {
-				TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", type);
+				//TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", ForgeRegistries.BLOCKS.getKey(type.getBlock()).toString());
 			}
 			for (StructurePiece structurecomponent : start.pieces) {
 				BoundingBox boundingBox = structurecomponent.getBoundingBox();
@@ -182,7 +183,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 				int y = (boundingBox.maxY() - boundingBox.minY() / 2) + boundingBox.minY();
 				int z = (boundingBox.maxZ() - boundingBox.minZ() / 2) + boundingBox.minZ();
 				//TwilightForestMod.LOGGER.debug("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
-				if (type == TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState() && structurecomponent instanceof FinalCastleEntranceTowerComponent) {
+				if (type == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState() && structurecomponent instanceof FinalCastleEntranceTowerComponent) {
 					return true;
 				}
 				if (type == TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState() && structurecomponent instanceof FinalCastleBellTower21Component) {
@@ -306,7 +307,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, 48, 1, 23, 48, 4, 25, TFBlocks.YELLOW_CASTLE_DOOR.get().defaultBlockState(), AIR, false);
 
 		// door, second floor
-		this.generateBox(world, sbb, 0, 31, 23, 0, 34, 25, TFBlocks.VIOLET_CASTLE_DOOR.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 0, 31, 23, 0, 34, 25, TFBlocks.BLUE_CASTLE_DOOR.get().defaultBlockState(), AIR, false);
 	}
 
 	private void makeSmallTowerStairs(WorldGenLevel world, BoundingBox sbb, Rotation rotation) {

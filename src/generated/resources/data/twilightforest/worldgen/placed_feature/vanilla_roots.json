@@ -10,10 +10,22 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 10
+          "absolute": 0
         },
         "min_inclusive": {
           "above_bottom": 0
+        }
+      }
+    },
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:would_survive",
+        "state": {
+          "Name": "twilightforest:torchberry_plant",
+          "Properties": {
+            "has_torchberries": "false"
+          }
         }
       }
     },

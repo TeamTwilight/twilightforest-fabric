@@ -45,7 +45,7 @@ public class CharmEvents {
 	//stores if the casket was planned to break on respawn
 	private static boolean casketExpiration = false;
 	//stores the charm that was used for the effect later
-	private static ItemStack charmUsed;
+	public static ItemStack charmUsed;
 
 	public static void init() {
 		ServerPlayerEvents.ALLOW_DEATH.register(CharmEvents::applyDeathItems);

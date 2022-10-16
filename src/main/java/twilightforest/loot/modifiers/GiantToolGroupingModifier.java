@@ -20,6 +20,8 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
+import twilightforest.capabilities.CapabilityList;
+import twilightforest.capabilities.giant_pick.GiantPickMineCapability;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
@@ -110,8 +112,7 @@ public class GiantToolGroupingModifier extends LootModifier {
 	}
 
 	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
-		ItemStack heldStack = player.getMainHandItem();
-		Item heldItem = heldStack.getItem();
-		return heldItem == TFItems.GIANT_PICKAXE.get() && player.hasCorrectToolForDrops(state);
+		return player.getMainHandItem().is(TFItems.GIANT_PICKAXE.get()) && player.hasCorrectToolForDrops(state)
+				&& player.getCapability(CapabilityList.GIANT_PICK_MINE).map(GiantPickMineCapability::getMining).orElse(1L) == player.level.getGameTime();
 	}
 }

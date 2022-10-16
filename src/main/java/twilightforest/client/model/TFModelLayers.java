@@ -141,6 +141,8 @@ public class TFModelLayers {
 	public static final ModelLayerLocation KEEPSAKE_CASKET = register("keepsake_casket");
 	public static final ModelLayerLocation MOONWORM = register("moonworm");
 
+	public static final ModelLayerLocation RED_THREAD = register("red_thread");
+
 	public static final ModelLayerLocation CHARM_OF_LIFE_1 = register("charm_of_life_1");
 	public static final ModelLayerLocation CHARM_OF_LIFE_2 = register("charm_of_life_2");
 

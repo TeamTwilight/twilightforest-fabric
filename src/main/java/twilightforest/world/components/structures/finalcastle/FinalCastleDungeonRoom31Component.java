@@ -194,7 +194,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	protected BlockState getRuneColor(BlockState forceFieldColor) {
-		return forceFieldColor == TFBlocks.BLUE_FORCE_FIELD.get().defaultBlockState() ? TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState() : TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		return forceFieldColor.is(TFBlocks.GREEN_FORCE_FIELD.get()) ? TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState() : TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
 	}
 
 	protected BlockState getForceFieldColor(RandomSource decoRNG) {

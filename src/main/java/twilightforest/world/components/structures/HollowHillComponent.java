@@ -6,32 +6,26 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFLootTables;
-import twilightforest.world.components.feature.BlockSpikeFeature;
-import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
-
+import twilightforest.loot.TFLootTables;
+import twilightforest.world.components.feature.BlockSpikeFeature;
 
 public class HollowHillComponent extends TFStructureComponentOld {
 	private final static int[] stalactitesForSizes = {0, 128, 256, 512};
 	private final static int[] spawnersForSizes = {0, 1, 4, 9};
 	private final static int[] chestsForSizes = {0, 2, 6, 12};
-
-	protected static final SpikeConfig STONE_STALACTITE = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE.defaultBlockState()), UniformInt.of(5, 11), UniformInt.of(4, 5), true);
-	protected static final SpikeConfig STONE_STALAGMITE = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE.defaultBlockState()), UniformInt.of(5, 10), UniformInt.of(4, 5), false);
 
 	private final int hillSize;
 	final int radius;
@@ -85,13 +79,13 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		// stone stalactites!
 		for (int i = 0; i < stalactiteCount; i++) {
 			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, this.radius);
-			this.generateBlockSpike(world, STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb);
+			this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb, true);
 			//this.setBlockStateRotated(world, Blocks.BEACON.defaultBlockState(), dest.getX(), dest.getY(), dest.getZ(), Rotation.NONE, sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < stalactiteCount; i++) {
 			BlockPos.MutableBlockPos dest = this.randomFloorCoordinates(rand, this.radius);
-			this.generateBlockSpike(world, STONE_STALAGMITE, dest.getX(), dest.getY(), dest.getZ(), sbb);
+			this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb, false);
 			//this.setBlockStateRotated(world, Blocks.SCAFFOLDING.defaultBlockState(), dest.getX(), dest.getY(), dest.getZ(), Rotation.NONE, sbb);
 		}
 
@@ -169,12 +163,12 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
 
 			// make the actual stalactite
-			SpikeConfig stalag = BlockSpikeFeature.makeRandomOreStalactite(stalRNG, this.hillSize);
-			BlockSpikeFeature.startSpike(world, pos, stalag, stalRNG);
+			Stalactite stalag = BlockSpikeFeature.makeRandomOreStalactite(stalRNG, this.hillSize);
+			BlockSpikeFeature.startSpike(world, pos, stalag, stalRNG, true);
 		}
 	}
 
-	protected void generateBlockSpike(WorldGenLevel world, SpikeConfig config, int x, int y, int z, BoundingBox sbb) {
+	protected void generateBlockSpike(WorldGenLevel world, Stalactite config, int x, int y, int z, BoundingBox sbb, boolean hanging) {
 		// are the coordinates in our bounding box?
 		int dx = getWorldX(x, z);
 		int dy = getWorldY(y);
@@ -185,7 +179,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
 
 			// make the actual stalactite
-			BlockSpikeFeature.startSpike(world, pos, config, stalRNG);
+			BlockSpikeFeature.startSpike(world, pos, config, stalRNG, hanging);
 		}
 	}
 
@@ -201,7 +195,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		return Mth.sqrt(dx * dx + dz * dz) < radius;
 	}
 
-	@Deprecated // Use randomPolarCoordinates
+	@Deprecated
+		// Use randomPolarCoordinates
 	int[] randomCoordinatesInHill2D(RandomSource rand) {
 		return this.randomCoordinatesInHill2D(rand, radius);
 	}
@@ -209,7 +204,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	/**
 	 * @return a two element array containing some coordinates in the hill
 	 */
-	@Deprecated // Use randomPolarCoordinates
+	@Deprecated
+	// Use randomPolarCoordinates
 	int[] randomCoordinatesInHill2D(RandomSource rand, int maximumRadius) {
 		Vec3i pos = this.randomFloorCoordinates(rand, maximumRadius);
 

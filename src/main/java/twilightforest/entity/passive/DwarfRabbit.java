@@ -63,18 +63,18 @@ public class DwarfRabbit extends Animal {
 
 	@Nullable
 	@Override
-	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob ageableEntity) {
+	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
 		DwarfRabbit dwarf = TFEntities.DWARF_RABBIT.get().create(level);
-		DwarfRabbitVariant i = DwarfRabbitVariant.getRandomVariant(this.getRandom());
+		DwarfRabbitVariant variant = DwarfRabbitVariant.getRandomVariant(this.getRandom());
 		if (this.getRandom().nextInt(20) != 0) {
-			if (ageableEntity instanceof DwarfRabbit rabbit && this.getRandom().nextBoolean()) {
-				i = rabbit.getBunnyType();
+			if (mob instanceof DwarfRabbit rabbit && this.getRandom().nextBoolean()) {
+				variant = rabbit.getBunnyType();
 			} else {
-				i = this.getBunnyType();
+				variant = this.getBunnyType();
 			}
 		}
 
-		dwarf.setBunnyType(i.toString());
+		dwarf.setBunnyType(DwarfRabbitVariant.getVariantId(variant));
 		return dwarf;
 	}
 

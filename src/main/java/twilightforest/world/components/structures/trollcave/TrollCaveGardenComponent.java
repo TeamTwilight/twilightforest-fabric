@@ -23,6 +23,7 @@ import twilightforest.init.BiomeKeys;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFConfiguredFeatures;
+import twilightforest.world.components.feature.BlockSpikeFeature;
 
 import java.util.function.Predicate;
 
@@ -97,7 +98,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		// stone stalactites!
 		for (int i = 0; i < 128; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockSpike(world, STONE_STALACTITE, dest.atY(this.height), sbb);
+			generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.atY(this.height), sbb, true);
 		}
 	}
 

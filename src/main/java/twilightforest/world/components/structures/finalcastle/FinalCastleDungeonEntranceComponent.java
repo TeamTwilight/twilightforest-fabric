@@ -34,7 +34,7 @@ public class FinalCastleDungeonEntranceComponent extends FinalCastleDungeonRoom3
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		this.deco = new StructureTFDecoratorCastle();
-		this.deco.blockState = TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		this.deco.blockState = TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState();
 		this.deco.fenceState = TFBlocks.PINK_FORCE_FIELD.get().defaultBlockState();
 
 		// this is going to be the parent for all rooms on this level

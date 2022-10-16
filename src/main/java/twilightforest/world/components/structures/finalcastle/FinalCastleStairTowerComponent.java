@@ -65,7 +65,7 @@ public class FinalCastleStairTowerComponent extends TowerWingComponent {
 		this.placeBlock(world, deco.blockState, 4, -7, 4, sbb);
 
 		// door, first floor
-		final BlockState castleDoor = TFBlocks.BLUE_CASTLE_DOOR.get().defaultBlockState();
+		final BlockState castleDoor = TFBlocks.YELLOW_CASTLE_DOOR.get().defaultBlockState();
 		this.generateBox(world, sbb, 0, 1, 1, 0, 3, 2, castleDoor, AIR, false);
 
 		// stairs
@@ -101,7 +101,7 @@ public class FinalCastleStairTowerComponent extends TowerWingComponent {
 		this.generateBox(world, sbb, 1, 15, 5, 2, 15, 5, deco.blockState, deco.blockState, false);
 
 		// door, roof
-		this.generateBox(world, sbb, 1, 39, 0, 2, 41, 0, castleDoor, AIR, false);
+		this.generateBox(world, sbb, 1, 39, 0, 2, 41, 0, TFBlocks.VIOLET_CASTLE_DOOR.get().defaultBlockState(), AIR, false);
 
 		// stairs
 		rotation = Rotation.COUNTERCLOCKWISE_90;
@@ -129,6 +129,6 @@ public class FinalCastleStairTowerComponent extends TowerWingComponent {
 	}
 
 	public BlockState getGlyphMeta() {
-		return TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		return TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
 	}
 }

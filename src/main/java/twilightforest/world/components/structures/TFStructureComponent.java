@@ -62,6 +62,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Leg
 			.add(Blocks.STONE_BRICK_STAIRS)
 			.add(Blocks.LAVA)
 			.add(Blocks.WATER)
+			.add(Blocks.QUARTZ_STAIRS)
 			.add(TFBlocks.CASTLE_BRICK_STAIRS.get())
 			.add(TFBlocks.BLUE_FORCE_FIELD.get())
 			.add(TFBlocks.GREEN_FORCE_FIELD.get())
@@ -126,7 +127,6 @@ public abstract class TFStructureComponent extends StructurePiece implements Leg
 		setInvisibleTextEntity(world, x, y, z, sbb, s, shouldDebug(), 0f);
 	}
 
-	@SuppressWarnings({"SameParameterValue", "unused"})
 	protected void setInvisibleTextEntity(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, String s, boolean forcePlace, float additionalYOffset) {
 		if (forcePlace) {
 			final BlockPos pos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
@@ -135,7 +135,6 @@ public abstract class TFStructureComponent extends StructurePiece implements Leg
 				final ArmorStand armorStand = new ArmorStand(EntityType.ARMOR_STAND, world.getLevel());
 				armorStand.setCustomName(Component.literal(s));
 				armorStand.moveTo(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
-				armorStand.setInvulnerable(true);
 				armorStand.setInvisible(true);
 				armorStand.setCustomNameVisible(true);
 				armorStand.setSilent(true);

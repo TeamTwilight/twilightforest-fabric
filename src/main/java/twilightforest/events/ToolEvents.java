@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFItems;
 import twilightforest.item.EnderBowItem;
+import twilightforest.item.MazebreakerPickItem;
 import twilightforest.item.MinotaurAxeItem;
 import twilightforest.item.OreMagnetItem;
 
@@ -121,5 +122,16 @@ public class ToolEvents {
 			}
 		}
 		return amount;
+	}
+
+
+	@SubscribeEvent
+	public static void damageToolsExtra(BlockEvent.BreakEvent event) {
+		ItemStack stack = event.getPlayer().getMainHandItem();
+		if (event.getState().is(BlockTagGenerator.MAZESTONE) || event.getState().is(BlockTagGenerator.CASTLE_BLOCKS)) {
+			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
+				stack.hurtAndBreak(16, event.getPlayer(), (user) -> user.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+			}
+		}
 	}
 }

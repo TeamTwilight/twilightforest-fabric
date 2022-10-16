@@ -3,8 +3,6 @@ package twilightforest.world.components.structures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -12,25 +10,24 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.init.TFBlocks;
-import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
-
+import twilightforest.world.components.feature.BlockSpikeFeature;
 
 public class YetiCaveComponent extends HollowHillComponent {
-	private static final SpikeConfig BLUE_ICE_SPIKE = new SpikeConfig(BlockStateProvider.simple(Blocks.BLUE_ICE.defaultBlockState()), UniformInt.of(8, 8), ConstantInt.of(4), true);
-	private static final SpikeConfig PACKED_ICE_SPIKE = new SpikeConfig(BlockStateProvider.simple(Blocks.PACKED_ICE.defaultBlockState()), UniformInt.of(5, 9), ConstantInt.of(4), true);
-	private static final SpikeConfig ICE_SPIKE = new SpikeConfig(BlockStateProvider.simple(Blocks.ICE.defaultBlockState()), UniformInt.of(6, 10), ConstantInt.of(4), true);
+	private static final Stalactite BLUE_ICE_SPIKE = new Stalactite(Blocks.BLUE_ICE, 1.0F, 8, 1);
+	private static final Stalactite PACKED_ICE_SPIKE = new Stalactite(Blocks.PACKED_ICE, 0.5F, 9, 1);
+	private static final Stalactite ICE_SPIKE = new Stalactite(Blocks.ICE, 0.6F, 10, 1);
 
 	public YetiCaveComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFYeti.get(), nbt);
 	}
 
-	public YetiCaveComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z) {
+	public YetiCaveComponent(TFLandmark feature, int i, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFYeti.get(), feature, i, 2, x, y, z);
 	}
 
@@ -52,22 +49,22 @@ public class YetiCaveComponent extends HollowHillComponent {
 		// blue ice stalactites!
 		for (int i = 0; i < sn; i++) {
 			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, 24);
-			this.generateBlockSpike(world, BLUE_ICE_SPIKE, dest.getX(), dest.getY(), dest.getZ(), sbb);
+			this.generateBlockSpike(world, BLUE_ICE_SPIKE, dest.getX(), dest.getY(), dest.getZ(), sbb, true);
 		}
 		// packed ice stalactites!
 		for (int i = 0; i < sn; i++) {
 			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, 24);
-			this.generateBlockSpike(world, PACKED_ICE_SPIKE, dest.getX(), dest.getY(), dest.getZ(), sbb);
+			this.generateBlockSpike(world, PACKED_ICE_SPIKE, dest.getX(), dest.getY(), dest.getZ(), sbb, true);
 		}
 		// ice stalactites!
 		for (int i = 0; i < sn; i++) {
 			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, 24);
-			this.generateBlockSpike(world, ICE_SPIKE, dest.getX(), dest.getY(), dest.getZ(), sbb);
+			this.generateBlockSpike(world, ICE_SPIKE, dest.getX(), dest.getY(), dest.getZ(), sbb, true);
 		}
 		// stone stalactites!
 		for (int i = 0; i < sn; i++) {
 			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, 24);
-			this.generateBlockSpike(world, STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb);
+			this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb, true);
 		}
 
 		// spawn alpha yeti

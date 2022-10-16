@@ -7,6 +7,8 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import net.minecraft.world.entity.LivingEntity;
 import twilightforest.capabilities.fan.FeatherFanCapabilityHandler;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
+import twilightforest.capabilities.giant_pick.GiantPickMineCapability;
+import twilightforest.capabilities.giant_pick.GiantPickMineCapabilityHandler;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.capabilities.shield.ShieldCapabilityHandler;
 import twilightforest.capabilities.thrown.YetiThrowCapability;
@@ -16,6 +18,7 @@ public class CapabilityList implements EntityComponentInitializer {
 	public static final ComponentKey<IShieldCapability> SHIELDS = ComponentRegistry.getOrCreate(IShieldCapability.ID, IShieldCapability.class);
 	public static final ComponentKey<FeatherFanFallCapability> FEATHER_FAN_FALLING = ComponentRegistry.getOrCreate(FeatherFanFallCapability.ID, FeatherFanFallCapability.class);
 	public static final ComponentKey<YetiThrowCapability> YETI_THROWN = ComponentRegistry.getOrCreate(YetiThrowCapability.ID, YetiThrowCapability.class);
+	public static final Capability<GiantPickMineCapability> GIANT_PICK_MINE = CapabilityManager.get(new CapabilityToken<>() {});
 
 	@Override
 	public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {

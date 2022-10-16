@@ -7,40 +7,34 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFConfiguredFeatures;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.BlockSpikeFeature;
-import twilightforest.world.components.feature.config.SpikeConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.init.TFConfiguredFeatures;
 
 import java.util.Objects;
 
-import java.util.function.Predicate;
-
 public class TrollCaveMainComponent extends TFStructureComponentOld {
-	protected static final SpikeConfig STONE_STALACTITE = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(6, 9), UniformInt.of(3, 4), true);
-	protected static final SpikeConfig STONE_STALAGMITE = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(4, 7), UniformInt.of(3, 4), false);
 
 	protected int size;
 	protected int height;
@@ -121,12 +115,12 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		// stone stalactites!
 		for (int i = 0; i < 128; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockSpike(world, STONE_STALACTITE, dest.atY(this.height), sbb);
+			generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.atY(this.height), sbb, true);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockSpike(world, STONE_STALAGMITE, dest.atY(0), sbb);
+			generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.atY(0), sbb, false);
 		}
 
 		// uberous!
@@ -166,6 +160,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	/**
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
 	 */
+	@Nullable
 	public BlockPos getValidOpening(RandomSource rand, Rotation direction) {
 		// variables!
 		int offset = this.size / 4; // wall thickness
@@ -216,11 +211,11 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		return new BlockPos(x, y, z);
 	}
 
-	protected void generateBlockSpike(WorldGenLevel world, SpikeConfig config, Vec3i pos, BoundingBox sbb) {
-		generateBlockSpike(world, config, pos.getX(), pos.getY(), pos.getZ(), sbb);
+	protected void generateBlockSpike(WorldGenLevel world, Stalactite config, Vec3i pos, BoundingBox sbb, boolean hanging) {
+		generateBlockSpike(world, config, pos.getX(), pos.getY(), pos.getZ(), sbb, hanging);
 	}
 
-	protected void generateBlockSpike(WorldGenLevel world, SpikeConfig config, int x, int y, int z, BoundingBox sbb) {
+	protected void generateBlockSpike(WorldGenLevel world, Stalactite config, int x, int y, int z, BoundingBox sbb, boolean hanging) {
 		// are the coordinates in our bounding box?
 		int dx = getWorldX(x, z);
 		int dy = getWorldY(y);
@@ -231,7 +226,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 			RandomSource stalRNG = RandomSource.create(world.getSeed() + (long) dx * dz);
 
 			// make the actual stalactite
-			BlockSpikeFeature.startSpike(world, pos, config, stalRNG);
+			BlockSpikeFeature.startSpike(world, pos, config, stalRNG, hanging);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package twilightforest.client;
+package twilightforest.client.model.block.patch;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

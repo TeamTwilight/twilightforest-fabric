@@ -1,35 +1,32 @@
 package twilightforest.world.components.structures.trollcave;
 
-import net.minecraft.util.RandomSource;
-import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import twilightforest.world.components.feature.config.SpikeConfig;
-import twilightforest.init.TFLandmark;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.util.RotationUtil;
-import twilightforest.init.TFStructurePieceTypes;
-
 
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
-	protected static final SpikeConfig STONE_STALACTITE_SMALL = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(5, 5), UniformInt.of(2, 3), true);
-	protected static final SpikeConfig STONE_STALAGMITE_SMALL = new SpikeConfig(BlockStateProvider.simple(Blocks.STONE), UniformInt.of(2, 4), UniformInt.of(2, 3), false);
+	protected static final Stalactite STONE_STALACTITE_SMALL = new Stalactite(Blocks.STONE, 1.0F, 5, 1);
 
 	protected final boolean[] openingTowards = {false, false, true, false};
 
@@ -95,12 +92,12 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		// stone stalactites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockSpike(world, STONE_STALACTITE_SMALL, dest.atY(this.height), sbb);
+			generateBlockSpike(world, STONE_STALACTITE_SMALL, dest.atY(this.height), sbb, true);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockSpike(world, STONE_STALAGMITE_SMALL, dest.atY(0), sbb);
+			generateBlockSpike(world, STONE_STALACTITE_SMALL, dest.atY(0), sbb, false);
 		}
 
 		// possible treasure
@@ -128,8 +125,8 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 
 	private int countExits() {
 		int count = 0;
-		for (int i = 0; i < this.openingTowards.length; i++) {
-			if (this.openingTowards[i]) {
+		for (boolean openingToward : this.openingTowards) {
+			if (openingToward) {
 				count++;
 			}
 		}
@@ -262,6 +259,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		return false;
 	}
 
+	@Nullable
 	private StructurePiece findNearbyGarden(StructurePieceAccessor list, BoundingBox boundingBox) {
 		BoundingBox largeBox = new BoundingBox(boundingBox.minX() - 30, boundingBox.minY() - 30, boundingBox.minZ() - 30, boundingBox.maxX() - 30, boundingBox.maxY() - 30, boundingBox.maxZ() - 30);
 

@@ -2,11 +2,12 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class DarkLeavesBlock extends TFLeavesBlock {
+public class DarkLeavesBlock extends LeavesBlock {
 
 	public DarkLeavesBlock(Properties properties) {
 		super(properties);

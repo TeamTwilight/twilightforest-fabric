@@ -53,8 +53,8 @@ public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerCom
 	}
 
 	@Override
-	public BlockState getGlyphColour() {
-		return TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
+	public BlockState getGlyphMeta() {
+		return TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
 	}
 
 	@Override

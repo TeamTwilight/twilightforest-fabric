@@ -21,11 +21,12 @@ public abstract class BiomeHelper {
 	public static BiomeGenerationSettings.Builder twilightForestGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 		addHollowOakTrees(biome);
-		addForestVegetation(biome);
+		addForestVegetationAlt(biome);
 		commonFeatures(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_VANILLA_TF_TREES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_TWILIGHT_OAK_TREE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_LARGE_TWILIGHT_OAK_TREE);
 		addCanopyTrees(biome);
 
 		return biome;
@@ -34,7 +35,7 @@ public abstract class BiomeHelper {
 	public static BiomeGenerationSettings.Builder denseForestGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 		addHollowOakTrees(biome);
-		addForestVegetation(biome);
+		addForestVegetationAlt(biome);
 		commonFeatures(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_DENSE_CANOPY_TREES);
@@ -49,12 +50,13 @@ public abstract class BiomeHelper {
 	public static BiomeGenerationSettings.Builder fireflyForestGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 		addHollowOakTrees(biome);
-		addForestVegetation(biome);
+		addForestVegetationAlt(biome);
 		commonFeatures(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_FIREFLY_FOREST_TREES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_VANILLA_TF_TREES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_TWILIGHT_OAK_TREE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_LARGE_TWILIGHT_OAK_TREE);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_LAMPPOST_PLACER);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_MUSHGLOOM_CLUSTER);
@@ -83,6 +85,7 @@ public abstract class BiomeHelper {
 		commonFeatures(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_SAVANNAH_OAK_TREE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_LARGE_TWILIGHT_OAK_TREE);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_DEFAULT_FALLEN_LOGS);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_SAVANNAH_CANOPY_OAK_TREE);
 
@@ -110,6 +113,7 @@ public abstract class BiomeHelper {
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_MAYAPPLE);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_TWILIGHT_OAK_TREE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_LARGE_TWILIGHT_OAK_TREE);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_DEAD_CANOPY_TREE);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_PUMPKIN_LAMPPOST);
@@ -128,13 +132,14 @@ public abstract class BiomeHelper {
 	public static BiomeGenerationSettings.Builder mushroomForestGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 		addHollowOakTrees(biome);
-		addForestVegetation(biome);
+		addForestVegetationAlt(biome);
 		commonFeatures(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_MYCELIUM_BLOB);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_VANILLA_TF_TREES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_TWILIGHT_OAK_TREE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_LARGE_TWILIGHT_OAK_TREE);
 		addCanopyMushrooms(biome, false);
 		addCanopyTrees(biome);
 
@@ -144,13 +149,14 @@ public abstract class BiomeHelper {
 	public static BiomeGenerationSettings.Builder denseMushroomForestGen() {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder();
 		addHollowOakTrees(biome);
-		addForestVegetation(biome);
+		addForestVegetationAlt(biome);
 		commonFeatures(biome);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_MYCELIUM_BLOB);
 
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_VANILLA_TF_TREES);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_TWILIGHT_OAK_TREE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_LARGE_TWILIGHT_OAK_TREE);
 		addCanopyMushrooms(biome, true);
 		addCanopyTrees(biome);
 
@@ -321,6 +327,11 @@ public abstract class BiomeHelper {
 	public static void addForestVegetation(BiomeGenerationSettings.Builder biome) {
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_MAYAPPLE);
 		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_FLOWER_PLACER);
+	}
+
+	public static void addForestVegetationAlt(BiomeGenerationSettings.Builder biome) {
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_MAYAPPLE);
+		biome.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, TFPlacedFeatures.PLACED_FLOWER_PLACER_ALT);
 	}
 
 	public static void addDarkForestVegetation(BiomeGenerationSettings.Builder biome) {

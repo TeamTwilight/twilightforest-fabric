@@ -60,7 +60,10 @@ public class YetiArmorItem extends ArmorItem implements CustomEnchantingBehavior
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Enchantments.THORNS.equals(enchantment) && !TFEnchantments.FIRE_REACT.get().equals(enchantment) && CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
+		return !TFEnchantments.FIRE_REACT.get().equals(enchantment) &&
+				!Enchantments.THORNS.equals(enchantment) &&
+				!TFEnchantments.CHILL_AURA.get().equals(enchantment) &&
+				CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	public static String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {

@@ -10,6 +10,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.PlantType;
 
 public class RootStrandBlock extends TFPlantBlock {
 
@@ -21,7 +22,12 @@ public class RootStrandBlock extends TFPlantBlock {
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
-		return TFPlantBlock.canPlaceRootAt(reader, pos);
+		return TFPlantBlock.canPlaceRootAt(reader, pos) || reader.getBlockState(pos.above()).is(this);
+	}
+
+	@Override
+	public PlantType getPlantType(BlockGetter getter, BlockPos pos) {
+		return PlantType.CAVE;
 	}
 
 	@Override

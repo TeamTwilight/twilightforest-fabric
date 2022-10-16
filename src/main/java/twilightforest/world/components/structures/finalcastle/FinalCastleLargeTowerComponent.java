@@ -65,13 +65,13 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 		this.placeBlock(world, deco.blockState, 4, -7, 4, sbb);
 
 		// door, first floor
-		final BlockState castleDoor = TFBlocks.PINK_CASTLE_DOOR.get().defaultBlockState(); //this.getGlyphMeta()?
+		final BlockState castleDoor = TFBlocks.YELLOW_CASTLE_DOOR.get().defaultBlockState();
 		this.generateBox(world, sbb, 0, 1, 1, 0, 4, 3, castleDoor, AIR, false);
 
 		this.placeSignAtCurrentPosition(world, 6, 1, 6, "Parkour area 1", "Unique monster?", sbb);
 	}
 
 	public BlockState getGlyphMeta() {
-		return TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		return TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
 	}
 }

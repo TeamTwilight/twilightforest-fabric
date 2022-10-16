@@ -12,10 +12,14 @@ import net.minecraft.world.item.ItemStack;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
+import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.passive.Bighorn;
 import twilightforest.entity.passive.DwarfRabbit;
 import twilightforest.entity.passive.Squirrel;
 import twilightforest.entity.passive.TinyBird;
+import twilightforest.init.TFBlocks;
+import twilightforest.network.CreateMovingCicadaSoundPacket;
+import twilightforest.network.TFPacketHandler;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -55,24 +59,21 @@ public class MiscEvents {
 		if (!living.getLevel().isClientSide() && living instanceof ServerPlayer) {
 			TFAdvancements.ARMOR_CHANGED.trigger((ServerPlayer) living, from, to);
 		}
-	}
 
-	public static void livingUpdate(LivingEntity entity) {
-		CapabilityList.SHIELDS.maybeGet(entity).ifPresent(IShieldCapability::update);
-	}
+		// from what I can see, vanilla doesnt have a hook for this in the item class. So this will have to do.
+		// we only have to check equipping, when its unequipped the sound instance handles the rest
 
-	public static boolean livingAttack(LivingEntity living, DamageSource source, float amount) {
-		// shields
-		if (!living.getLevel().isClientSide() && !source.isBypassArmor()) {
-			Optional<IShieldCapability> optional = CapabilityList.SHIELDS.maybeGet(living);
-			if (optional.isPresent()) {
-				IShieldCapability cap = optional.get();
-				if (cap.shieldsLeft() > 0) {
-					cap.breakShield();
-					return true;
-				}
+		//if we have a cicada in our curios slot, dont try to run this
+		if (ModList.get().isLoaded("curios")) {
+			if (CuriosCompat.isCicadaEquipped(event.getEntity())) {
+				return;
 			}
 		}
-		return false;
+
+		if (event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.get().asItem())) {
+			if (!event.getEntity().getLevel().isClientSide() && event.getEntity() != null) {
+				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(event::getEntity), new CreateMovingCicadaSoundPacket(event.getEntity().getId()));
+			}
+		}
 	}
 }
