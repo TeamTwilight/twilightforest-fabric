@@ -1,5 +1,8 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
+import io.github.fabricators_of_create.porting_lib.item.ShieldBlockItem;
+import io.github.fabricators_of_create.porting_lib.util.TierSortingRegistry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
@@ -22,7 +25,7 @@ import twilightforest.init.TFSounds;
 
 import java.util.UUID;
 
-public class ChainBlockItem extends Item {
+public class ChainBlockItem extends Item implements CustomEnchantingBehaviorItem, ShieldBlockItem {
 
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
@@ -32,12 +35,12 @@ public class ChainBlockItem extends Item {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return this.canApplyEnchantment(EnchantmentHelper.getEnchantments(stack).keySet().toArray(new Enchantment[0])) || super.isBookEnchantable(stack, book);
+		return this.canApplyEnchantment(EnchantmentHelper.getEnchantments(stack).keySet().toArray(new Enchantment[0])) || CustomEnchantingBehaviorItem.super.isBookEnchantable(stack, book);
 	}
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return this.canApplyEnchantment(enchantment) || super.canApplyAtEnchantingTable(stack, enchantment);
+		return this.canApplyEnchantment(enchantment) || CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	private boolean canApplyEnchantment(Enchantment... enchantments) {
@@ -121,7 +124,7 @@ public class ChainBlockItem extends Item {
 	public boolean isSuitableFor(ItemStack stack, BlockState state) {
 		//dont try to check harvest level if we arent thrown
 		if (stack.getTag() == null || !stack.getTag().contains(THROWN_UUID_KEY)) return false;
-		if (EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0) {
+		if (EnchantmentHelper.getItemEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0) {
 			if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
 					|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
 				return TierSortingRegistry.isCorrectTierForDrops(this.getHarvestLevel(stack), state);

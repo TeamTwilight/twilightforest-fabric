@@ -31,12 +31,12 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 	public static final TagKey<Block> MINING_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("mining_logs"));
 	public static final TagKey<Block> SORTING_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("sortwood_logs"));
 
-	public static final TagKey<Block> TF_LOGS = BlockTags.create(TwilightForestMod.prefix("logs"));
-	public static final TagKey<Block> BANISTERS = BlockTags.create(TwilightForestMod.prefix("banisters"));
-	public static final TagKey<Block> HOLLOW_LOGS_HORIZONTAL = BlockTags.create(TwilightForestMod.prefix("hollow_logs_horizontal"));
-	public static final TagKey<Block> HOLLOW_LOGS_VERTICAL = BlockTags.create(TwilightForestMod.prefix("hollow_logs_vertical"));
-	public static final TagKey<Block> HOLLOW_LOGS_CLIMBABLE = BlockTags.create(TwilightForestMod.prefix("hollow_logs_climbable"));
-	public static final TagKey<Block> HOLLOW_LOGS = BlockTags.create(TwilightForestMod.prefix("hollow_logs"));
+	public static final TagKey<Block> TF_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("logs"));
+	public static final TagKey<Block> BANISTERS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("banisters"));
+	public static final TagKey<Block> HOLLOW_LOGS_HORIZONTAL = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("hollow_logs_horizontal"));
+	public static final TagKey<Block> HOLLOW_LOGS_VERTICAL = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("hollow_logs_vertical"));
+	public static final TagKey<Block> HOLLOW_LOGS_CLIMBABLE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("hollow_logs_climbable"));
+	public static final TagKey<Block> HOLLOW_LOGS = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("hollow_logs"));
 
 	public static final TagKey<Block> STORAGE_BLOCKS_ARCTIC_FUR = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("storage_blocks/arctic_fur"));
 	public static final TagKey<Block> STORAGE_BLOCKS_CARMINITE = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("storage_blocks/carminite"));
@@ -77,8 +77,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 
 	public static final TagKey<Block> TIME_CORE_EXCLUDED = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("time_core_excluded"));
 
-	public static final TagKey<Block> PENGUINS_SPAWNABLE_ON = BlockTags.create(TwilightForestMod.prefix("penguins_spawnable_on"));
-	public static final TagKey<Block> GIANTS_SPAWNABLE_ON = BlockTags.create(TwilightForestMod.prefix("giants_spawnable_on"));
+	public static final TagKey<Block> PENGUINS_SPAWNABLE_ON = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("penguins_spawnable_on"));
+	public static final TagKey<Block> GIANTS_SPAWNABLE_ON = TagKey.create(Registry.BLOCK_REGISTRY, TwilightForestMod.prefix("giants_spawnable_on"));
 
 	public BlockTagGenerator(FabricDataGenerator generator) {
 		super(generator);

@@ -24,7 +24,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 	public static final TagKey<Item> MINING_LOGS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("mining_logs"));
 	public static final TagKey<Item> SORTING_LOGS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("sortwood_logs"));
 
-	public static final TagKey<Item> TWILIGHT_LOGS = ItemTags.create(TwilightForestMod.prefix("logs"));
+	public static final TagKey<Item> TWILIGHT_LOGS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("logs"));
 
 	public static final TagKey<Item> PAPER = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "paper"));
 
@@ -56,9 +56,9 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
 	public static final TagKey<Item> KOBOLD_PACIFICATION_BREADS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("kobold_pacification_breads"));
 
-	public static final TagKey<Item> BANNED_UNCRAFTING_INGREDIENTS = ItemTags.create(TwilightForestMod.prefix("banned_uncrafting_ingredients"));
-	public static final TagKey<Item> BANNED_UNCRAFTABLES = ItemTags.create(TwilightForestMod.prefix("banned_uncraftables"));
-	public static final TagKey<Item> UNCRAFTING_IGNORES_COST = ItemTags.create(TwilightForestMod.prefix("uncrafting_ignores_cost"));
+	public static final TagKey<Item> BANNED_UNCRAFTING_INGREDIENTS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("banned_uncrafting_ingredients"));
+	public static final TagKey<Item> BANNED_UNCRAFTABLES = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("banned_uncraftables"));
+	public static final TagKey<Item> UNCRAFTING_IGNORES_COST = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("uncrafting_ignores_cost"));
 
 	public static final TagKey<Item> KEPT_ON_DEATH = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("kept_on_death"));
 
