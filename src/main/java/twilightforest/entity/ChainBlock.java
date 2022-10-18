@@ -49,6 +49,7 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	private static final EntityDataAccessor<Boolean> IS_FOIL = SynchedEntityData.defineId(ChainBlock.class, EntityDataSerializers.BOOLEAN);
 	private boolean isReturning = false;
 	private boolean canSmashBlocks;
+	private boolean hitEntity = false;
 	private ItemStack stack;
 	private int blocksSmashed = 0;
 	private double velX;
@@ -125,11 +126,25 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		// only hit living things
-		if (!this.getLevel().isClientSide() && (result.getEntity() instanceof LivingEntity || result.getEntity() instanceof PartEntity<?>) && result.getEntity() != this.getOwner()) {
-			if (result.getEntity().hurt(TFDamageSources.spiked(this, this.getOwner()), 10)) {
-				this.playSound(TFSounds.BLOCKCHAIN_HIT.get(), 1.0f, this.random.nextFloat());
-				// age when we hit a monster so that we go back to the player faster
-				this.tickCount += 60;
+		if (!this.getLevel().isClientSide() && result.getEntity() != this.getOwner()) {
+			float damage = 0.0F;
+			if (result.getEntity() instanceof LivingEntity living) {
+				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getMobType());
+			} else if (result.getEntity() instanceof PartEntity<?> part && part.getParent() instanceof LivingEntity living) {
+				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getMobType());
+			}
+
+			if (damage > 0.0F) {
+				if (result.getEntity().hurt(TFDamageSources.spiked(this, this.getOwner()), damage)) {
+					this.playSound(TFSounds.BLOCKCHAIN_HIT.get(), 1.0f, this.random.nextFloat());
+					// age when we hit a monster so that we go back to the player faster
+					this.hitEntity = true;
+					this.isReturning = true;
+					this.tickCount += 60;
+					if (this.getOwner() instanceof LivingEntity living) {
+						this.stack.hurtAndBreak(1, living, user -> user.broadcastBreakEvent(this.getHand()));
+					}
+				}
 			}
 		}
 	}
@@ -138,66 +153,68 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		if (!this.getLevel().isClientSide() && !this.getLevel().isEmptyBlock(result.getBlockPos())) {
-
-			if (!this.isReturning) {
-				this.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
-				this.gameEvent(GameEvent.HIT_GROUND);
-			}
-
-			if (this.blocksSmashed < MAX_SMASH) {
-				if (this.getLevel().getBlockState(result.getBlockPos()).getDestroySpeed(this.getLevel(), result.getBlockPos()) < 0.0F ||
-						this.getLevel().getBlockState(result.getBlockPos()).getDestroySpeed(this.getLevel(), result.getBlockPos()) > 0.3F) {
-					// riccochet
-					double bounce = 0.6;
-					this.velX *= bounce;
-					this.velY *= bounce;
-					this.velZ *= bounce;
-
-
-					switch (result.getDirection()) {
-						case DOWN:
-							if (this.velY > 0) {
-								this.velY *= -bounce;
-							}
-							break;
-						case UP:
-							if (this.velY < 0) {
-								this.velY *= -bounce;
-							}
-							break;
-						case NORTH:
-							if (this.velZ > 0) {
-								this.velZ *= -bounce;
-							}
-							break;
-						case SOUTH:
-							if (this.velZ < 0) {
-								this.velZ *= -bounce;
-							}
-							break;
-						case WEST:
-							if (this.velX > 0) {
-								this.velX *= -bounce;
-							}
-							break;
-						case EAST:
-							if (this.velX < 0) {
-								this.velX *= -bounce;
-							}
-							break;
-					}
+			if (!this.stack.isCorrectToolForDrops(this.getLevel().getBlockState(result.getBlockPos()))) {
+				if (!this.isReturning && !this.hitEntity) {
+					this.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
+					this.gameEvent(GameEvent.HIT_GROUND);
 				}
 
-				if (this.canSmashBlocks) {
-					// demolish some blocks
-					this.affectBlocksInAABB(this.getBoundingBox().inflate(0.5D));
+				this.isReturning = true;
+
+				// riccochet
+				double bounce = 0.6;
+				this.velX *= bounce;
+				this.velY *= bounce;
+				this.velZ *= bounce;
+
+
+				switch (result.getDirection()) {
+					case DOWN:
+						if (this.velY > 0) {
+							this.velY *= -bounce;
+						}
+						break;
+					case UP:
+						if (this.velY < 0) {
+							this.velY *= -bounce;
+						}
+						break;
+					case NORTH:
+						if (this.velZ > 0) {
+							this.velZ *= -bounce;
+						}
+						break;
+					case SOUTH:
+						if (this.velZ < 0) {
+							this.velZ *= -bounce;
+						}
+						break;
+					case WEST:
+						if (this.velX > 0) {
+							this.velX *= -bounce;
+						}
+						break;
+					case EAST:
+						if (this.velX < 0) {
+							this.velX *= -bounce;
+						}
+						break;
 				}
 			}
 
+			if (this.canSmashBlocks) {
+				// demolish some blocks
+				AABB aabb = this.getBoundingBox().inflate(0.25D);
+				//I don't know why, and I can't find out why, but we have to subtract the coordinates by 0.5 here.
+				//Otherwise, it will sometimes not break blocks when hitting west, and always break too many when hitting east.
+				this.affectBlocksInAABB(aabb.move(result.getLocation().subtract(aabb.getCenter()).add(-0.5D, 0D, 0D)));
+			}
+		}
+
+		// if we have smashed enough, add to ticks so that we go back faster
+		if (this.blocksSmashed > MAX_SMASH) {
 			this.isReturning = true;
-
-			// if we have smashed enough, add to ticks so that we go back faster
-			if (this.blocksSmashed > MAX_SMASH && this.tickCount < 60) {
+			if (this.tickCount < 60) {
 				this.tickCount += 60;
 			}
 		}
@@ -229,6 +246,9 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 							this.getLevel().destroyBlock(pos, false);
 							if (!creative) block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
 							this.blocksSmashed++;
+							if (this.blocksSmashed > MAX_SMASH) {
+								break;
+							}
 						}
 					}
 				}
@@ -294,6 +314,9 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 				if (this.isReturning) {
 					// despawn if close enough
 					if (distToPlayer < 2F) {
+						if (this.getOwner() instanceof LivingEntity living && this.blocksSmashed > 0) {
+							this.stack.hurtAndBreak(Math.min(this.blocksSmashed, 3), living, user -> user.broadcastBreakEvent(this.getHand()));
+						}
 						this.discard();
 					}
 

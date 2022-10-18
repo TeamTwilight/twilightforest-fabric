@@ -24,9 +24,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 	public static final TagKey<Item> MINING_LOGS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("mining_logs"));
 	public static final TagKey<Item> SORTING_LOGS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("sortwood_logs"));
 
-	public static final TagKey<Item> TWILIGHT_LOGS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("logs"));
-	public static final TagKey<Item> TF_FENCES = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("fences"));
-	public static final TagKey<Item> TF_FENCE_GATES = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("fence_gates"));
+	public static final TagKey<Item> TWILIGHT_LOGS = ItemTags.create(TwilightForestMod.prefix("logs"));
 
 	public static final TagKey<Item> PAPER = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "paper"));
 
@@ -58,11 +56,9 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
 	public static final TagKey<Item> KOBOLD_PACIFICATION_BREADS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("kobold_pacification_breads"));
 
-	public static final TagKey<Item> TF_MUSIC_DISCS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("tf_music_discs"));
-
-	public static final TagKey<Item> BANNED_UNCRAFTING_INGREDIENTS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("banned_uncrafting_ingredients"));
-	public static final TagKey<Item> BANNED_UNCRAFTABLES = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("banned_uncraftables"));
-	public static final TagKey<Item> UNCRAFTING_IGNORES_COST = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("uncrafting_ignores_cost"));
+	public static final TagKey<Item> BANNED_UNCRAFTING_INGREDIENTS = ItemTags.create(TwilightForestMod.prefix("banned_uncrafting_ingredients"));
+	public static final TagKey<Item> BANNED_UNCRAFTABLES = ItemTags.create(TwilightForestMod.prefix("banned_uncraftables"));
+	public static final TagKey<Item> UNCRAFTING_IGNORES_COST = ItemTags.create(TwilightForestMod.prefix("uncrafting_ignores_cost"));
 
 	public static final TagKey<Item> KEPT_ON_DEATH = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("kept_on_death"));
 
@@ -95,8 +91,6 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
 		this.copy(BlockTags.PLANKS, ItemTags.PLANKS);
 
-		this.copy(BlockTagGenerator.TF_FENCES, TF_FENCES);
-		this.copy(BlockTagGenerator.TF_FENCE_GATES, TF_FENCE_GATES);
 		this.copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
 		this.copy(Tags.Blocks.FENCES, Tags.Items.FENCES);
 		this.copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
@@ -179,6 +173,9 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
 		tag(WIP).add(
 				TFBlocks.KEEPSAKE_CASKET.get().asItem(),
+				TFBlocks.CANDELABRA.get().asItem(),
+				TFItems.BRITTLE_FLASK.get(),
+				TFItems.GREATER_FLASK.get(),
 				TFItems.CUBE_OF_ANNIHILATION.get()
 		);
 
@@ -198,7 +195,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
 		tag(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
 
-		tag(TF_MUSIC_DISCS).add(
+		tag(ItemTags.MUSIC_DISCS).add(
 				TFItems.MUSIC_DISC_FINDINGS.get(),
 				TFItems.MUSIC_DISC_HOME.get(),
 				TFItems.MUSIC_DISC_MAKER.get(),
@@ -208,8 +205,6 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFItems.MUSIC_DISC_SUPERSTITIOUS.get(),
 				TFItems.MUSIC_DISC_THREAD.get(),
 				TFItems.MUSIC_DISC_WAYFARER.get());
-
-		tag(ItemTags.MUSIC_DISCS).addTag(TF_MUSIC_DISCS);
 
 		tag(BANNED_UNCRAFTING_INGREDIENTS).add(
 				TFBlocks.INFESTED_TOWERWOOD.get().asItem(),

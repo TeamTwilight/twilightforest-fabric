@@ -1,9 +1,5 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.item.ShieldBlockItem;
-import io.github.fabricators_of_create.porting_lib.util.TierSortingRegistry;
-import net.fabricmc.fabric.api.item.v1.FabricItem;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
@@ -13,6 +9,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,21 +19,38 @@ import twilightforest.entity.ChainBlock;
 import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
-import twilightforest.util.TwilightItemTier;
 
 import java.util.UUID;
 
-public class ChainBlockItem extends DiggerItem implements FabricItem, ShieldBlockItem {
+public class ChainBlockItem extends Item {
 
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
 	public ChainBlockItem(Properties properties) {
-		super(6, -3.0F, TwilightItemTier.KNIGHTMETAL, BlockTags.BASE_STONE_OVERWORLD, properties);
+		super(properties);
+	}
+
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return this.canApplyEnchantment(EnchantmentHelper.getEnchantments(stack).keySet().toArray(new Enchantment[0])) || super.isBookEnchantable(stack, book);
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return this.canApplyEnchantment(enchantment) || super.canApplyAtEnchantingTable(stack, enchantment);
+	}
+
+	private boolean canApplyEnchantment(Enchantment... enchantments) {
+		for (Enchantment enchantment : enchantments) {
+			if (enchantment.category == EnchantmentCategory.DIGGER || enchantment.canEnchant(Items.IRON_AXE.getDefaultInstance()))
+				return true;
+		}
+		return false;
 	}
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity holder, int slot, boolean isSelected) {
-		if (!level.isClientSide() && getThrownUuid(stack) != null && getThrownEntity(level, stack) == null) {
+		if (!level.isClientSide() && getThrownUuid(stack) != null && this.getThrownEntity(level, stack) == null) {
 			stack.getTag().remove(THROWN_UUID_KEY);
 		}
 	}
@@ -52,9 +67,7 @@ public class ChainBlockItem extends DiggerItem implements FabricItem, ShieldBloc
 		if (!level.isClientSide()) {
 			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), level, player, hand, stack);
 			level.addFreshEntity(launchedBlock);
-			setThrownEntity(stack, launchedBlock);
-
-			stack.hurtAndBreak(1, player, (user) -> user.broadcastBreakEvent(hand));
+			this.setThrownEntity(stack, launchedBlock);
 		}
 
 		player.startUsingItem(hand);
@@ -71,7 +84,7 @@ public class ChainBlockItem extends DiggerItem implements FabricItem, ShieldBloc
 	}
 
 	@Nullable
-	private static ChainBlock getThrownEntity(Level level, ItemStack stack) {
+	private ChainBlock getThrownEntity(Level level, ItemStack stack) {
 		if (level instanceof ServerLevel server) {
 			UUID id = getThrownUuid(stack);
 			if (id != null) {
@@ -85,11 +98,8 @@ public class ChainBlockItem extends DiggerItem implements FabricItem, ShieldBloc
 		return null;
 	}
 
-	private static void setThrownEntity(ItemStack stack, ChainBlock cube) {
-		if (!stack.hasTag()) {
-			stack.setTag(new CompoundTag());
-		}
-		stack.getTag().putUUID(THROWN_UUID_KEY, cube.getUUID());
+	private void setThrownEntity(ItemStack stack, ChainBlock cube) {
+		stack.getOrCreateTag().putUUID(THROWN_UUID_KEY, cube.getUUID());
 	}
 
 	@Override
@@ -109,10 +119,14 @@ public class ChainBlockItem extends DiggerItem implements FabricItem, ShieldBloc
 
 	@Override
 	public boolean isSuitableFor(ItemStack stack, BlockState state) {
-		if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
-				|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
-			return TierSortingRegistry.isCorrectTierForDrops(this.getHarvestLevel(stack), state);
-		return super.isSuitableFor(stack, state);
+		//dont try to check harvest level if we arent thrown
+		if (stack.getTag() == null || !stack.getTag().contains(THROWN_UUID_KEY)) return false;
+		if (EnchantmentHelper.getTagEnchantmentLevel(TFEnchantments.DESTRUCTION.get(), stack) > 0) {
+			if (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_HOE)
+					|| state.is(BlockTags.MINEABLE_WITH_SHOVEL) || state.is(BlockTags.MINEABLE_WITH_AXE))
+				return TierSortingRegistry.isCorrectTierForDrops(this.getHarvestLevel(stack), state);
+		}
+		return false;
 	}
 
 	public Tier getHarvestLevel(ItemStack stack) {

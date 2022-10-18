@@ -47,6 +47,7 @@
     ],
     [],
     [
+      "minecraft:patch_grass_normal",
       "twilightforest:tree/selector/dark_forest_tree_mix",
       "twilightforest:tree/selector/dark_forest_trees",
       "twilightforest:tree/darkwood_tree",

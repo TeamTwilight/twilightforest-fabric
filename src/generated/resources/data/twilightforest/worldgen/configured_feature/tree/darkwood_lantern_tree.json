@@ -99,7 +99,7 @@
     },
     "trunk_placer": {
       "type": "twilightforest:branching_trunk_placer",
-      "base_height": 6,
+      "base_height": 9,
       "branch_config": {
         "count_minimum": 4,
         "downwards_pitch": 0.23,

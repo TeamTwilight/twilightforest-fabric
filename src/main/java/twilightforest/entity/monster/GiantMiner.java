@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFBlocks;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFItems;
 
@@ -102,11 +102,11 @@ public class GiantMiner extends Monster {
 	@Override
 	public boolean checkSpawnRules(LevelAccessor accessor, MobSpawnType reason) {
 		List<GiantMiner> giantsNearby = accessor.getEntitiesOfClass(GiantMiner.class, this.getBoundingBox().inflate(100, 10, 100));
-		return giantsNearby.size() < 10;
+		return giantsNearby.size() < 5;
 	}
 
 	public static boolean canSpawn(EntityType<? extends GiantMiner> type, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource rand) {
-		return Monster.checkMonsterSpawnRules(type, accessor, reason, pos, rand) || accessor.getBlockState(pos).is(TFBlocks.WISPY_CLOUD.get()) || accessor.getBlockState(pos).is(TFBlocks.FLUFFY_CLOUD.get());
+		return accessor.getBlockState(pos.below()).is(BlockTagGenerator.GIANTS_SPAWNABLE_ON);
 	}
 
 	@Override

@@ -83,7 +83,9 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 
 					if (!flag) { //And if the above check also fails, we check if there is a red thread behind the corner for us to connect to.
 						state = level.getBlockState(pos.relative(direction).relative(face));
-						flag = state.getBlock().equals(TFBlocks.RED_THREAD.get()) && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()));
+						//check if theres a block in the way of the connection. If there is, dont connect
+						boolean threadBlocked = level.getBlockState(pos.relative(direction)).isFaceSturdy(level, pos, direction.getOpposite());
+						flag = state.getBlock().equals(TFBlocks.RED_THREAD.get()) && !threadBlocked && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()));
 					}
 				}
 

@@ -4,30 +4,33 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.LevelWriter;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelWriter;
-import net.minecraft.world.level.LevelSimulatedReader;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import twilightforest.init.TFBlocks;
 
-import java.util.*;
+import java.util.List;
+import java.util.OptionalInt;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 /**
@@ -51,7 +54,6 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		WorldGenLevel reader = ctx.level();
 		BlockPos pos = ctx.origin();
 		RandomSource rand = ctx.random();
-		TreeConfiguration config = ctx.config();
 
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
@@ -72,6 +74,12 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 
 		if (!foundDirt) {
 			return false;
+		}
+
+		for (int i = 0; i < 4; i ++) {
+			//We check against the TreeFeature's validTreePos method, to see if the tree can grow here, cuz the trunk placer uses this as well
+			//If we don't, some trees end up growing only one or two blocks tall
+			if (!TreeFeature.validTreePos(reader, pos.relative(Direction.UP, i))) return false;
 		}
 
 		// do not grow next to another tree

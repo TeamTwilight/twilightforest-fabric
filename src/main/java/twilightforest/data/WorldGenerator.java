@@ -11,11 +11,13 @@ import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.Lifecycle;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.*;
-import net.minecraft.data.*;
+import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
@@ -23,14 +25,13 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import org.slf4j.Logger;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
+import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureSets;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.init.TFDimensionSettings;
-import twilightforest.init.BiomeKeys;
 import twilightforest.world.registration.biomes.BiomeMaker;
 
 import java.io.IOException;
@@ -118,7 +119,7 @@ public record WorldGenerator(DataGenerator generator) implements DataProvider {
 						noiseGenSettings
 				);
 
-		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, Optional.of(16), BIOME_FEATURES_SETS)), Lifecycle.experimental());
+		writableregistry.register(TFGenerationSettings.WORLDGEN_KEY, new LevelStem(TFDimensionSettings.TWILIGHT_DIM_TYPE.getHolder().get(), new ChunkGeneratorTwilight(forestChunkGen, access.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY), structureOverrides, noiseGenSettings, true, Optional.of(19), BIOME_FEATURES_SETS)), Lifecycle.experimental());
 		return writableregistry;
 	}
 

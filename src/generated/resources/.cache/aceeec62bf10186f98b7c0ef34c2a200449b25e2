@@ -1,4 +1,4 @@
-// 1.19.2	2022-10-13T20:49:41.9663387	Twilight Forest Block Tags
+// 1.19.2	2022-10-14T21:44:34.1933214	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -60,9 +60,8 @@ ecd0a9f97ab5b54a7c21ed4f6af6896d564ea5f0 data/twilightforest/tags/blocks/castle_
 981ca24d355367f28a0a94beab8608f2915c6c76 data/twilightforest/tags/blocks/common_protections.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/blocks/darkwood_logs.json
 29d004c820708d44b1747a2f31f506646efb1a27 data/twilightforest/tags/blocks/dark_tower_allowed_pots.json
-879fc86d9d7face7697fbbb62565885740fc7f41 data/twilightforest/tags/blocks/fences.json
-211134157771c86a72a0c5a1985c2b05da55729b data/twilightforest/tags/blocks/fence_gates.json
 db6195d77bd598771b111d12750ba39f41fe35c7 data/twilightforest/tags/blocks/fire_jet_fuel.json
+b491aceb6e547cf99e296737c6ca8ae308169227 data/twilightforest/tags/blocks/giants_spawnable_on.json
 e222b54e9f838dbf2e905bf0b137ed8b0c60b328 data/twilightforest/tags/blocks/hollow_logs.json
 7a1d959542375b7817357292b7a7f8dc238c109b data/twilightforest/tags/blocks/hollow_logs_climbable.json
 83ddb0814968e64db4d54827610be02084d45254 data/twilightforest/tags/blocks/hollow_logs_horizontal.json
@@ -77,6 +76,7 @@ dd1f6af3c96cc308a52726613452fddc17b9833c data/twilightforest/tags/blocks/mazebre
 35133e95f1c8fdd7a1c21afcc231fc0bffefb9a8 data/twilightforest/tags/blocks/ores/knightmetal.json
 2e3669ba44aac2e69249800a996f0e1b27c08e54 data/twilightforest/tags/blocks/ore_magnet/ignored_ores.json
 d82abba18e7ff90d2c891453ddff813ffdb8e55d data/twilightforest/tags/blocks/ore_magnet/ore_safe_replace_block.json
+52413a870520da3227b0d97b44e5455211b16e49 data/twilightforest/tags/blocks/penguins_spawnable_on.json
 0ce6b55aef503d7bff8b5dd86b38092ba2b14c46 data/twilightforest/tags/blocks/plants_hang_on.json
 8a2dc34fc948688f4378d9a34768e56a09d74dc3 data/twilightforest/tags/blocks/portal/decoration.json
 da907279b0d384a39c5e4714ffe703ce4787f9a7 data/twilightforest/tags/blocks/portal/edge.json
