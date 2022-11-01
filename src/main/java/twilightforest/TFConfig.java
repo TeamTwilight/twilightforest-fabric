@@ -295,6 +295,11 @@ public class TFConfig {
 					translation(config + "ram_indicator").
 					comment("Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.").
 					define("questRamWoolIndicator", true);
+
+			disableREIMessage = builder.
+					translation(config + "rei_deprecation").
+					comment("Disables the REI deprecation warning when joining a world.").
+					define("disableREIMessage", false);
 		}
 
 		public ForgeConfigSpec.BooleanValue silentCicadas;
@@ -304,6 +309,9 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 		public ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
 		public ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
+
+		// Fabric
+		public ForgeConfigSpec.BooleanValue disableREIMessage;
 	}
 
 	private static final String config = TwilightForestMod.ID + ".config.";

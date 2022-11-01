@@ -1,5 +1,6 @@
 package twilightforest.compat.rei;
 
+import io.github.fabricators_of_create.porting_lib.util.ServerLifecycleHooks;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
@@ -8,7 +9,9 @@ import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -33,6 +36,9 @@ public class REICompat implements REIClientPlugin {
         registry.addWorkstations(REIUncraftingCategory.UNCRAFTING, EntryStacks.of(TFBlocks.UNCRAFTING_TABLE.get()));
 
         registry.add(new REIUncraftingCategory());
+
+        if (Minecraft.getInstance().player != null && !TFConfig.CLIENT_CONFIG.disableREIMessage.get())
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("Twilight Forest is no longer supporting REI! Consider switching to JEI."/* or EMI (uncomment this when EMI support is done)"*/).withStyle(ChatFormatting.RED));
     }
 
 //    @Override
