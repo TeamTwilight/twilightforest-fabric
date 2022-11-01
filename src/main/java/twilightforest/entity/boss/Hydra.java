@@ -68,6 +68,8 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint, MultiPartEnt
 	private int ticksSinceDamaged = 0;
 	private final List<ServerPlayer> hurtBy = new ArrayList<>();
 
+	public boolean renderFakeHeads = true;
+
 	public Hydra(EntityType<? extends Hydra> type, Level world) {
 		super(type, world);
 
@@ -166,6 +168,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint, MultiPartEnt
 
 	@Override
 	public void aiStep() {
+		if (this.renderFakeHeads) this.renderFakeHeads = false;
 		this.clearFire();
 		this.body.tick();
 		this.leftLeg.tick();

@@ -15,16 +15,19 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.boss.Hydra;
-import twilightforest.entity.boss.HydraPart;
 
 public class HydraLegacyModel extends HierarchicalModel<Hydra> {
 	//fields
-	final ModelPart root;
-	final ModelPart body;
-	ModelPart tail;
-	ModelPart leg1;
-	ModelPart leg2;
+	private final ModelPart root;
+	private final ModelPart body;
+	private final ModelPart tail;
+	private final ModelPart leg1;
+	private final ModelPart leg2;
+
+	@Nullable
+	private Hydra hydra;
 
 	public HydraLegacyModel(ModelPart root) {
 		this.root = root;
@@ -100,7 +103,7 @@ public class HydraLegacyModel extends HierarchicalModel<Hydra> {
 						.addBox(-15F, -2F, -56F, 30, 12, 24)
 						.texOffs(128, 200)
 						.addBox(-2F, -30F, -12F, 4, 24, 24),
-				PartPose.offset(0F, -128F, -53F));
+				PartPose.offset(-74F, -100F, -32F));
 
 		head1.addOrReplaceChild("jaw_1", CubeListBuilder.create()
 						.texOffs(272, 92)
@@ -112,25 +115,20 @@ public class HydraLegacyModel extends HierarchicalModel<Hydra> {
 						.addBox(-24F, -40.0F, 0F, 48, 48, 4),
 				PartPose.offsetAndRotation(0F, 0F, -10F, -0.5235988F, 0F, 0F));
 
-		partRoot.addOrReplaceChild("neck_1a", CubeListBuilder.create()
+		var neck1a = partRoot.addOrReplaceChild("neck_1a", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(0F, -48F, 16F));
+						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
+				PartPose.offset(-42F, -48F, 0F));
 
-		partRoot.addOrReplaceChild("neck_1b", CubeListBuilder.create()
+		var neck1b = neck1a.addOrReplaceChild("neck_1b", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(0F, -68F, 0F));
+						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
+				PartPose.offset(-16F, -16F, -16F));
 
-		partRoot.addOrReplaceChild("neck_1c", CubeListBuilder.create()
+		neck1b.addOrReplaceChild("neck_1c", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(0F, -93F, -14F));
-
-		partRoot.addOrReplaceChild("neck_1d", CubeListBuilder.create()
-						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(0F, -116F, -37F));
+						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
+				PartPose.offset(-16F, -16F, -16F));
 
 		var head2 = partRoot.addOrReplaceChild("head_2", CubeListBuilder.create()
 						.texOffs(272, 0)
@@ -139,7 +137,7 @@ public class HydraLegacyModel extends HierarchicalModel<Hydra> {
 						.addBox(-15F, -2F, -56F, 30, 12, 24)
 						.texOffs(128, 200)
 						.addBox(-2F, -30F, -12F, 4, 24, 24),
-				PartPose.offset(108F, -128F, -53F));
+				PartPose.offset(0F, -116F, -32F));
 
 		head2.addOrReplaceChild("jaw_2", CubeListBuilder.create()
 						.texOffs(272, 92)
@@ -151,25 +149,20 @@ public class HydraLegacyModel extends HierarchicalModel<Hydra> {
 						.addBox(-24F, -40.0F, 0F, 48, 48, 4),
 				PartPose.offsetAndRotation(0F, 0F, -10F, -0.5235988F, 0F, 0F));
 
-		partRoot.addOrReplaceChild("neck_2a", CubeListBuilder.create()
+		var neck2a = partRoot.addOrReplaceChild("neck_2a", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(48F, -48F, 16F));
+						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
+				PartPose.offset(0F, -48F, 0F));
 
-		partRoot.addOrReplaceChild("neck_2b", CubeListBuilder.create()
+		var neck2b = neck2a.addOrReplaceChild("neck_2b", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(71F, -68F, 0F));
+						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
+				PartPose.offset(-0F, -24F, -16F));
 
-		partRoot.addOrReplaceChild("neck_2c", CubeListBuilder.create()
+		neck2b.addOrReplaceChild("neck_2c", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(96F, -93F, -14F));
-
-		partRoot.addOrReplaceChild("neck_2d", CubeListBuilder.create()
-						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(108F, -116F, -37F));
+						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
+				PartPose.offset(0F, -24F, -16F));
 
 		var head3 = partRoot.addOrReplaceChild("head_3", CubeListBuilder.create()
 						.texOffs(272, 0)
@@ -178,7 +171,7 @@ public class HydraLegacyModel extends HierarchicalModel<Hydra> {
 						.addBox(-15F, -2F, -56F, 30, 12, 24)
 						.texOffs(128, 200)
 						.addBox(-2F, -30F, -12F, 4, 24, 24),
-				PartPose.offset(-108F, -24F, -53F));
+				PartPose.offset(74F, -100F, -32F));
 
 		head3.addOrReplaceChild("jaw_3", CubeListBuilder.create()
 						.texOffs(272, 92)
@@ -190,25 +183,20 @@ public class HydraLegacyModel extends HierarchicalModel<Hydra> {
 						.addBox(-24F, -40.0F, 0F, 48, 48, 4),
 				PartPose.offsetAndRotation(0F, 0F, -10F, -0.5235988F, 0F, 0F));
 
-		partRoot.addOrReplaceChild("neck_3a", CubeListBuilder.create()
+		var neck3a = partRoot.addOrReplaceChild("neck_3a", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(-48F, -48F, 16F));
+						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
+				PartPose.offset(42F, -48F, 0F));
 
-		partRoot.addOrReplaceChild("neck_3b", CubeListBuilder.create()
+		var neck3b = neck3a.addOrReplaceChild("neck_3b", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(-71F, -43F, 0F));
+						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
+				PartPose.offset(16F, -16F, -16F));
 
-		partRoot.addOrReplaceChild("neck_3c", CubeListBuilder.create()
+		neck3b.addOrReplaceChild("neck_3c", CubeListBuilder.create()
 						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(-96F, -33F, -14F));
-
-		partRoot.addOrReplaceChild("neck_3d", CubeListBuilder.create()
-						.texOffs(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32)
-						.texOffs(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24),
-				PartPose.offset(-108F, -24F, -37F));
+						.texOffs(128, 200).addBox(-2F, -24F, 0F, 4, 24, 24),
+				PartPose.offset(16F, -16F, -16F));
 
 		return LayerDefinition.create(mesh, 512, 256);
 	}
@@ -219,35 +207,25 @@ public class HydraLegacyModel extends HierarchicalModel<Hydra> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack p_170625_, VertexConsumer p_170626_, int p_170627_, int p_170628_, float p_170629_, float p_170630_, float p_170631_, float p_170632_) {
-		this.leg1.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
-		this.leg2.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
-		this.body.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
-		this.tail.render(p_170625_, p_170626_, p_170627_, p_170628_, p_170629_, p_170630_, p_170631_, p_170632_);
-
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
+		if (this.hydra != null && this.hydra.renderFakeHeads) {
+			super.renderToBuffer(stack, consumer, light, overlay, red, green, blue, alpha);
+		} else {
+			this.leg1.render(stack, consumer, light, overlay, red, green, blue, alpha);
+			this.leg2.render(stack, consumer, light, overlay, red, green, blue, alpha);
+			this.body.render(stack, consumer, light, overlay, red, green, blue, alpha);
+			this.tail.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		}
 	}
 
 	@Override
 	public void setupAnim(Hydra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		//super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+		this.hydra = entity;
 
-		leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-		leg2.xRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.4F * limbSwingAmount;
+		this.leg1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.leg2.xRot = Mth.cos(limbSwing * 0.6662F + 3.141593F) * 1.4F * limbSwingAmount;
 
-		leg1.yRot = 0.0F;
-		leg2.yRot = 0.0F;
-	}
-
-    public float getRotationY(Hydra hydra, HydraPart whichHead, float time) {
-
-		float yawOffset = hydra.yBodyRotO + (hydra.yBodyRot - hydra.yBodyRotO) * time;
-		float yaw = whichHead.yRotO + (whichHead.getYRot() - whichHead.yRotO) * time;
-
-		return (yaw - yawOffset) / 57.29578F;
-	}
-
-	public float getRotationX(Hydra hydra, HydraPart whichHead, float time) {
-
-		return (whichHead.xRotO + (whichHead.getXRot() - whichHead.xRotO) * time) / 57.29578F;
+		this.leg1.yRot = 0.0F;
+		this.leg2.yRot = 0.0F;
 	}
 }
