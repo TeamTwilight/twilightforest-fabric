@@ -93,8 +93,8 @@ public class TFClientEvents {
 	public static class ModBusEvents {
 		public static void registerLoaders() {
 			ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> PatchModelLoader.INSTANCE);
+			ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> GiantBlockModelLoader.INSTANCE);
 			RegisterGeometryLoadersCallback.EVENT.register(map -> {
-				map.put(TwilightForestMod.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
 				map.put(TwilightForestMod.prefix("castle_door"), CastleDoorModelLoader.INSTANCE);
 			});
 		}
@@ -102,7 +102,7 @@ public class TFClientEvents {
 		public static void modelBake(ModelManager manager, Map<ResourceLocation, BakedModel> bakedModels, ModelBakery loader) {
 			TFItems.addItemModelProperties();
 
-//			List<Map.Entry<ResourceLocation, BakedModel>> models =  bakedModels.entrySet().stream() Handled by minecraft
+//			List<Map.Entry<ResourceLocation, BakedModel>> models =  bakedModels.entrySet().stream() Handled by ItemBlockRenderTypesMixin
 //					.filter(entry -> entry.getKey().getNamespace().equals(TwilightForestMod.ID) && entry.getKey().getPath().contains("leaves") && !entry.getKey().getPath().contains("dark")).collect(Collectors.toList());
 
 //			models.forEach(entry -> bakedModels.put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
