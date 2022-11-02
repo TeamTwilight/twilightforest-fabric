@@ -1,10 +1,17 @@
 package twilightforest.client.model.block.doors;
 
+import io.github.fabricators_of_create.porting_lib.model.data.ModelData;
+import io.github.fabricators_of_create.porting_lib.model.data.ModelProperty;
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
+import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -12,11 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.ChunkRenderTypeSet;
-import net.minecraftforge.client.RenderTypeGroup;
-import net.minecraftforge.client.model.IDynamicBakedModel;
-import net.minecraftforge.client.model.data.ModelData;
-import net.minecraftforge.client.model.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
@@ -24,39 +26,40 @@ import twilightforest.init.TFBlocks;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
-public class CastleDoorModel implements IDynamicBakedModel {
+public class CastleDoorModel implements BakedModel, FabricBakedModel {
 	@Nullable
 	private final List<BakedQuad>[] baseQuads;
 	private final BakedQuad[][][] quads;
 	private final TextureAtlasSprite particle;
 	private final ItemOverrides overrides;
 	private final ItemTransforms transforms;
-	private final ChunkRenderTypeSet blockRenderTypes;
-	private final List<RenderType> itemRenderTypes;
-	private final List<RenderType> fabulousItemRenderTypes;
 	//if we ever expand this model to be more flexible, I think we'll need a list of blocks that can connect together defined in the json instead of hardcoding this (tags may be nice for this)
 	private final Block[] validConnectors = {TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()};
 	private static final ModelProperty<CastleDoorData> DATA = new ModelProperty<>();
 
-	public CastleDoorModel(@Nullable List<BakedQuad>[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms, RenderTypeGroup group) {
+	public CastleDoorModel(@Nullable List<BakedQuad>[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms) {
 		this.baseQuads = baseQuads;
 		this.quads = quads;
 		this.particle = particle;
 		this.overrides = overrides;
 		this.transforms = transforms;
-		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
-		this.itemRenderTypes = !group.isEmpty() ? List.of(group.entity()) : null;
-		this.fabulousItemRenderTypes = !group.isEmpty() ? List.of(group.entityFabulous()) : null;
 	}
 
-	@NotNull
 	@Override
-	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource random, @NotNull ModelData extraData, @Nullable RenderType type) {
-		if (side != null) {
+	public boolean isVanillaAdapter() {
+		return false;
+	}
+
+	@Override
+	public void emitBlockQuads(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext context) {
+		QuadEmitter emitter = context.getEmitter();
+
+		for (Direction side : Direction.values()) {
 			int faceIndex = side.get3DDataValue();
-			CastleDoorData data = extraData.get(DATA);
+			CastleDoorData data = getModelData(blockView, pos).get(DATA);
 			ArrayList<BakedQuad> quads = new ArrayList<>(4 + (this.baseQuads != null ? 4 : 0));
 			if (this.baseQuads != null) {
 				quads.addAll(this.baseQuads[faceIndex]);
@@ -69,15 +72,20 @@ public class CastleDoorModel implements IDynamicBakedModel {
 				quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);
 			}
 
-			return quads;
-		} else {
-			return List.of();
+			quads.forEach(bakedQuad -> {
+				emitter.fromVanilla(bakedQuad,  RendererAccess.INSTANCE.getRenderer().materialFinder().find(), side);
+				emitter.emit();
+			});
 		}
 	}
 
-	@NotNull
 	@Override
-	public ModelData getModelData(@NotNull BlockAndTintGetter getter, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
+	public void emitItemQuads(ItemStack stack, Supplier<RandomSource> randomSupplier, RenderContext context) {
+
+	}
+
+	@NotNull
+	public ModelData getModelData(@NotNull BlockAndTintGetter getter, @NotNull BlockPos pos) {
 		CastleDoorData data = new CastleDoorData();
 
 		for (Direction face : Direction.values()) {
@@ -100,7 +108,7 @@ public class CastleDoorModel implements IDynamicBakedModel {
 			}
 		}
 
-		return modelData.derive().with(DATA, data).build();
+		return ModelData.builder().with(DATA, data).build();
 	}
 
 	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side) {
@@ -111,6 +119,11 @@ public class CastleDoorModel implements IDynamicBakedModel {
 	private boolean isCornerBlockPresent(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side1, Direction side2) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side1).relative(side2));
 		return Arrays.stream(this.validConnectors).anyMatch(neighborState::is) && Block.shouldRenderFace(neighborState, getter, pos, face, pos.relative(face));
+	}
+
+	@Override
+	public List<BakedQuad> getQuads(@Nullable BlockState blockState, @Nullable Direction direction, RandomSource randomSource) {
+		return null;
 	}
 
 	@Override
@@ -149,26 +162,6 @@ public class CastleDoorModel implements IDynamicBakedModel {
 	@Override
 	public ItemTransforms getTransforms() {
 		return this.transforms;
-	}
-
-	@NotNull
-	@Override
-	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
-	}
-
-	@NotNull
-	@Override
-	public List<RenderType> getRenderTypes(@NotNull ItemStack stack, boolean fabulous) {
-		if (!fabulous) {
-			if (this.itemRenderTypes != null) {
-				return this.itemRenderTypes;
-			}
-		} else if (this.fabulousItemRenderTypes != null) {
-			return this.fabulousItemRenderTypes;
-		}
-
-		return IDynamicBakedModel.super.getRenderTypes(stack, fabulous);
 	}
 
 	//we need a class to make model data. Fine, here you go

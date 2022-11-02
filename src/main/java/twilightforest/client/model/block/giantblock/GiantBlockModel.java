@@ -16,35 +16,27 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.util.Vec2i;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.function.Supplier;
 
-public class GiantBlockModel implements IDynamicBakedModel {
-
-	private static final ModelProperty<GiantBlockData> DATA = new ModelProperty<>();
+public class GiantBlockModel implements BakedModel, FabricBakedModel {
 	private static final FaceBakery FACE_BAKERY = new FaceBakery();
 
 	private final TextureAtlasSprite[] textures;
 	private final TextureAtlasSprite particle;
 	private final ItemOverrides overrides;
 	private final ItemTransforms transforms;
-	private final ChunkRenderTypeSet blockRenderTypes;
-	private final List<RenderType> itemRenderTypes;
-	private final List<RenderType> fabulousItemRenderTypes;
 
-	public GiantBlockModel(TextureAtlasSprite[] texture, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms, RenderTypeGroup group) {
+	public GiantBlockModel(TextureAtlasSprite[] texture, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms) {
 		this.textures = texture;
 		this.particle = particle;
 		this.overrides = overrides;
 		this.transforms = transforms;
-		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
-		this.itemRenderTypes = !group.isEmpty() ? List.of(group.entity()) : null;
-		this.fabulousItemRenderTypes = !group.isEmpty() ? List.of(group.entityFabulous()) : null;
 	}
 
 	@Override
@@ -56,7 +48,7 @@ public class GiantBlockModel implements IDynamicBakedModel {
 
 			TextureAtlasSprite sprite = this.textures[this.textures.length > 1 ? direction.ordinal() : 0];
 
-			emitter.fromVanilla(FACE_BAKERY.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(direction, direction.ordinal(), direction.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), sprite, direction, BlockModelRotation.X0_Y0, null, false, new ResourceLocation(this.texture().get(direction).getName().getNamespace(), this.texture().get(direction).getName().getPath() + "_" + direction.name().toLowerCase(Locale.ROOT))), RendererAccess.INSTANCE.getRenderer().materialFinder().find(), direction);
+			emitter.fromVanilla(FACE_BAKERY.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(direction, direction.ordinal(), direction.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), sprite, direction, BlockModelRotation.X0_Y0, null, false, new ResourceLocation(sprite.getName().getNamespace(), sprite.getName().getPath() + "_" + direction.name().toLowerCase(Locale.ROOT))), RendererAccess.INSTANCE.getRenderer().materialFinder().find(), direction);
 			emitter.emit();
 		}
 
@@ -139,11 +131,6 @@ public class GiantBlockModel implements IDynamicBakedModel {
 	@Override
 	public TextureAtlasSprite getParticleIcon() {
 		return this.particle;
-	}
-
-	@Override
-	public ItemTransforms getTransforms() {
-		return ItemTransforms.NO_TRANSFORMS;
 	}
 
 	@Override

@@ -15,7 +15,6 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
@@ -1182,7 +1181,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void castleDoor(Block b) {
-		ModelFile vanished = models().withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath() + "_vanished", "block/block")
+		ModelFile vanished = models().withExistingParent(Registry.BLOCK.getKey(b).getPath() + "_vanished", "block/block")
 				.texture("base", TwilightForestMod.prefix("block/castle_door_vanished"))
 				.texture("particle", TwilightForestMod.prefix("block/castle_door_vanished"))
 				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))
@@ -1190,7 +1189,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.renderType(CUTOUT)
 				.customLoader(CastleDoorBuilder::begin).end();
 
-		ModelFile main = models().withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath(), "block/block")
+		ModelFile main = models().withExistingParent(Registry.BLOCK.getKey(b).getPath(), "block/block")
 				.texture("base", TwilightForestMod.prefix("block/castle_door"))
 				.texture("particle", TwilightForestMod.prefix("block/castle_door"))
 				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))

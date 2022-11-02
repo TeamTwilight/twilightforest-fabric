@@ -93,8 +93,10 @@ public class TFClientEvents {
 	public static class ModBusEvents {
 		public static void registerLoaders() {
 			ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> PatchModelLoader.INSTANCE);
-			ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> GiantBlockModelLoader.INSTANCE);
-			event.register("castle_door", CastleDoorModelLoader.INSTANCE);
+			RegisterGeometryLoadersCallback.EVENT.register(map -> {
+				map.put(TwilightForestMod.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
+				map.put(TwilightForestMod.prefix("castle_door"), CastleDoorModelLoader.INSTANCE);
+			});
 		}
 
 		public static void modelBake(ModelManager manager, Map<ResourceLocation, BakedModel> bakedModels, ModelBakery loader) {
