@@ -24,8 +24,28 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public record GiantBlockModel(Map<Direction, TextureAtlasSprite> texture) implements BakedModel, FabricBakedModel {
+public class GiantBlockModel implements IDynamicBakedModel {
+
+	private static final ModelProperty<GiantBlockData> DATA = new ModelProperty<>();
 	private static final FaceBakery FACE_BAKERY = new FaceBakery();
+
+	private final TextureAtlasSprite[] textures;
+	private final TextureAtlasSprite particle;
+	private final ItemOverrides overrides;
+	private final ItemTransforms transforms;
+	private final ChunkRenderTypeSet blockRenderTypes;
+	private final List<RenderType> itemRenderTypes;
+	private final List<RenderType> fabulousItemRenderTypes;
+
+	public GiantBlockModel(TextureAtlasSprite[] texture, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms, RenderTypeGroup group) {
+		this.textures = texture;
+		this.particle = particle;
+		this.overrides = overrides;
+		this.transforms = transforms;
+		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
+		this.itemRenderTypes = !group.isEmpty() ? List.of(group.entity()) : null;
+		this.fabulousItemRenderTypes = !group.isEmpty() ? List.of(group.entityFabulous()) : null;
+	}
 
 	@Override
 	public void emitBlockQuads(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext context) {
@@ -33,7 +53,10 @@ public record GiantBlockModel(Map<Direction, TextureAtlasSprite> texture) implem
 
 		for (Direction direction : Direction.values()) {
 			Vec2i coords = this.calculateOffset(direction, pos.offset(this.magicOffsetFromDir(direction)));
-			emitter.fromVanilla(FACE_BAKERY.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(direction, direction.ordinal(), direction.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), this.texture().get(direction), direction, BlockModelRotation.X0_Y0, null, false, new ResourceLocation(this.texture().get(direction).getName().getNamespace(), this.texture().get(direction).getName().getPath() + "_" + direction.name().toLowerCase(Locale.ROOT))), RendererAccess.INSTANCE.getRenderer().materialFinder().find(), direction);
+
+			TextureAtlasSprite sprite = this.textures[this.textures.length > 1 ? direction.ordinal() : 0];
+
+			emitter.fromVanilla(FACE_BAKERY.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(direction, direction.ordinal(), direction.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), sprite, direction, BlockModelRotation.X0_Y0, null, false, new ResourceLocation(this.texture().get(direction).getName().getNamespace(), this.texture().get(direction).getName().getPath() + "_" + direction.name().toLowerCase(Locale.ROOT))), RendererAccess.INSTANCE.getRenderer().materialFinder().find(), direction);
 			emitter.emit();
 		}
 
@@ -115,7 +138,7 @@ public record GiantBlockModel(Map<Direction, TextureAtlasSprite> texture) implem
 
 	@Override
 	public TextureAtlasSprite getParticleIcon() {
-		return this.texture.get(Direction.NORTH);
+		return this.particle;
 	}
 
 	@Override
@@ -125,9 +148,16 @@ public record GiantBlockModel(Map<Direction, TextureAtlasSprite> texture) implem
 
 	@Override
 	public ItemOverrides getOverrides() {
-		return ItemOverrides.EMPTY;
+		return this.overrides;
 	}
 
+	@NotNull
+	@Override
+	public ItemTransforms getTransforms() {
+		return this.transforms;
+	}
+
+	@NotNull
 	@Override
 	public boolean isVanillaAdapter() {
 		return false;

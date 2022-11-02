@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "twilightforest:castle_door",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "base": "twilightforest:block/castle_door_vanished",
+    "overlay": "twilightforest:block/castle_door_rune_corners",
+    "overlay_connected": "twilightforest:block/castle_door_rune_ctm",
+    "particle": "twilightforest:block/castle_door_vanished"
+  }
+}

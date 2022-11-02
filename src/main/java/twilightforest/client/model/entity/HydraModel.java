@@ -220,6 +220,7 @@ public class HydraModel extends HierarchicalModel<Hydra> {
 			this.body.render(stack, consumer, light, overlay, red, green, blue, alpha);
 			this.tail.render(stack, consumer, light, overlay, red, green, blue, alpha);
 		}
+		this.hydra = null;
 	}
 
 	@Override

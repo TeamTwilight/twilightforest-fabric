@@ -51,6 +51,7 @@ import net.fabricmc.api.Environment;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
+import twilightforest.client.model.block.doors.CastleDoorModelLoader;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
@@ -93,6 +94,7 @@ public class TFClientEvents {
 		public static void registerLoaders() {
 			ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> PatchModelLoader.INSTANCE);
 			ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> GiantBlockModelLoader.INSTANCE);
+			event.register("castle_door", CastleDoorModelLoader.INSTANCE);
 		}
 
 		public static void modelBake(ModelManager manager, Map<ResourceLocation, BakedModel> bakedModels, ModelBakery loader) {

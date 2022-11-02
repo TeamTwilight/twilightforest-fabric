@@ -4,11 +4,7 @@
   "parent_block": "minecraft:oak_leaves",
   "render_type": "minecraft:cutout_mipped",
   "textures": {
-    "down": "minecraft:block/oak_leaves",
-    "east": "minecraft:block/oak_leaves",
-    "north": "minecraft:block/oak_leaves",
-    "south": "minecraft:block/oak_leaves",
-    "up": "minecraft:block/oak_leaves",
-    "west": "minecraft:block/oak_leaves"
+    "all": "minecraft:block/oak_leaves",
+    "particle": "minecraft:block/oak_leaves"
   }
 }

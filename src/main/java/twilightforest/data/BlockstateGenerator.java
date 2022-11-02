@@ -15,9 +15,11 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
+import twilightforest.client.model.block.doors.CastleDoorBuilder;
 import twilightforest.client.model.block.giantblock.GiantBlockBuilder;
 import twilightforest.data.helpers.BlockModelBuilders;
 import twilightforest.enums.*;
@@ -172,13 +174,24 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlockWithRenderType(TFBlocks.WISPY_CLOUD.get(), TRANSLUCENT);
 		simpleBlock(TFBlocks.FLUFFY_CLOUD.get());
 		simpleBlock(TFBlocks.GIANT_COBBLESTONE.get(), models().withExistingParent(TFBlocks.GIANT_COBBLESTONE.getId().getPath(), new ResourceLocation("block/block"))
-				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.COBBLESTONE).allSidedTexture(blockTexture(Blocks.COBBLESTONE)).end());
+				.texture("particle", blockTexture(Blocks.COBBLESTONE))
+				.texture("all", blockTexture(Blocks.COBBLESTONE))
+				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.COBBLESTONE).end());
 		simpleBlock(TFBlocks.GIANT_LOG.get(), models().withExistingParent(TFBlocks.GIANT_LOG.getId().getPath(), new ResourceLocation("block/block"))
-				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OAK_LOG).columnTextures(new ResourceLocation("block/oak_log_top"), blockTexture(Blocks.OAK_LOG)).end());
+				.texture("particle", blockTexture(Blocks.OAK_LOG))
+				.texture("north", blockTexture(Blocks.OAK_LOG)).texture("south", blockTexture(Blocks.OAK_LOG))
+				.texture("west", blockTexture(Blocks.OAK_LOG)).texture("east", blockTexture(Blocks.OAK_LOG))
+				.texture("up", blockTexture(Blocks.OAK_LOG) + "_top").texture("down", blockTexture(Blocks.OAK_LOG) + "_top")
+				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OAK_LOG).end());
 		simpleBlock(TFBlocks.GIANT_LEAVES.get(), models().withExistingParent(TFBlocks.GIANT_LEAVES.getId().getPath(), new ResourceLocation("block/block"))
-				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OAK_LEAVES).allSidedTexture(blockTexture(Blocks.OAK_LEAVES)).renderType("minecraft:cutout_mipped").end());
+				.renderType(CUTOUT_MIPPED)
+				.texture("particle", blockTexture(Blocks.OAK_LEAVES))
+				.texture("all", blockTexture(Blocks.OAK_LEAVES))
+				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OAK_LEAVES).end());
 		simpleBlock(TFBlocks.GIANT_OBSIDIAN.get(), models().withExistingParent(TFBlocks.GIANT_OBSIDIAN.getId().getPath(), new ResourceLocation("block/block"))
-				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OBSIDIAN).allSidedTexture(blockTexture(Blocks.OBSIDIAN)).end());
+				.texture("particle", blockTexture(Blocks.OBSIDIAN))
+				.texture("all", blockTexture(Blocks.OBSIDIAN))
+				.customLoader(GiantBlockBuilder::begin).parentBlock(Blocks.OBSIDIAN).end());
 		simpleBlock(TFBlocks.UBEROUS_SOIL.get(), models().withExistingParent(TFBlocks.UBEROUS_SOIL.getId().getPath(), "block/template_farmland").renderType(TRANSLUCENT)
 				.texture("top", blockTexture(TFBlocks.UBEROUS_SOIL.get()))
 				.texture("dirt", blockTexture(TFBlocks.UBEROUS_SOIL.get())));
@@ -360,10 +373,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TWILIGHT_OAK_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_CANOPY_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_CANOPY_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.CANOPY_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_MANGROVE_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_MANGROVE_SAPLING.getId().getPath(), prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.MANGROVE_SAPLING.get())));
-		simpleBlock(TFBlocks.POTTED_DARKWOOD_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_DARKWOOD_SAPLING.getId().getPath(),  prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.DARKWOOD_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_DARKWOOD_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_DARKWOOD_SAPLING.getId().getPath(), prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.DARKWOOD_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.HOLLOW_OAK_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_RAINBOW_OAK_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.RAINBOW_OAK_SAPLING.get())));
-		simpleBlock(TFBlocks.POTTED_TIME_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TIME_SAPLING.getId().getPath(),  prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TIME_SAPLING.get())));
+		simpleBlock(TFBlocks.POTTED_TIME_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TIME_SAPLING.getId().getPath(), prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TIME_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_TRANSFORMATION_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TRANSFORMATION_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TRANSFORMATION_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_MINING_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_MINING_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.MINING_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_SORTING_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_SORTING_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.SORTING_SAPLING.get())));
@@ -1169,11 +1182,23 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void castleDoor(Block b) {
-		ModelFile overlay = models().getExistingFile(prefix("block/castle_door_overlay"));
-		ModelFile main = models().getExistingFile(prefix("block/castle_door_template"));
-		getMultipartBuilder(b)
-				.part().modelFile(overlay).addModel().condition(CastleDoorBlock.VANISHED, true).end()
-				.part().modelFile(main).addModel().condition(CastleDoorBlock.VANISHED, false).end();
+		ModelFile vanished = models().withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath() + "_vanished", "block/block")
+				.texture("base", TwilightForestMod.prefix("block/castle_door_vanished"))
+				.texture("particle", TwilightForestMod.prefix("block/castle_door_vanished"))
+				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))
+				.texture("overlay_connected", TwilightForestMod.prefix("block/castle_door_rune_ctm"))
+				.renderType(CUTOUT)
+				.customLoader(CastleDoorBuilder::begin).end();
+
+		ModelFile main = models().withExistingParent(ForgeRegistries.BLOCKS.getKey(b).getPath(), "block/block")
+				.texture("base", TwilightForestMod.prefix("block/castle_door"))
+				.texture("particle", TwilightForestMod.prefix("block/castle_door"))
+				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))
+				.texture("overlay_connected", TwilightForestMod.prefix("block/castle_door_rune_ctm"))
+				.renderType(CUTOUT)
+				.customLoader(CastleDoorBuilder::begin).end();
+
+		getVariantBuilder(b).forAllStates(state -> ConfiguredModel.builder().modelFile(state.getValue(CastleDoorBlock.VANISHED) ? vanished : main).build());
 	}
 
 	private void allRotations(Block b, ModelFile model) {

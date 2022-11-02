@@ -11,6 +11,5 @@ public class JadeCompat implements IWailaPlugin {
 	@Override
 	public void registerClient(IWailaClientRegistration registration) {
 		registration.registerEntityComponent(QuestRamWoolProvider.INSTANCE, QuestRam.class);
-//		registration.addConfig(QuestRamWoolProvider.INSTANCE.getUid(), true);
 	}
 }
