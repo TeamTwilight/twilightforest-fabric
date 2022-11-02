@@ -21,12 +21,15 @@ import java.util.function.Function;
 //for now, im keeping this hardcoded to a 2 layer block, with the overlay layer being fullbright and tinted.
 //It might be worth expanding this in the future to be more flexible for other kinds of blocks (1 layer blocks, determining emissivity and tinting per layer, maybe >2 layer blocks?) but for now, I see no point.
 //I only wanted this system for castle doors after all!
-public class UnbakedCastleDoorModel implements IUnbakedGeometry<UnbakedCastleDoorModel> {
+public class UnbakedCastleDoorModel implements UnbakedModel {
 
 	private final BlockElement[][] baseElements;
 	private final BlockElement[][][] faceElements;
 
-	public UnbakedCastleDoorModel() {
+	private final BlockModel ownerModel;
+
+	public UnbakedCastleDoorModel(BlockModel ownerModel) {
+		this.ownerModel = ownerModel;
 		//base elements - the base block. No Connected Textures on this bit.
 		//the array is made of the directions and quads
 		this.baseElements = new BlockElement[6][4];
@@ -55,8 +58,9 @@ public class UnbakedCastleDoorModel implements IUnbakedGeometry<UnbakedCastleDoo
 	}
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
-		Transformation transformation = context.getRootTransform();
+	public BakedModel bake(ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ResourceLocation modelLocation) {
+		ItemOverrides overrides = ownerModel.getOverrides(bakery, ownerModel, spriteGetter);
+		Transformation transformation = ownerModel.getGeometry().getRootTransform();
 		if (!transformation.isIdentity()) {
 			modelState = new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
 		}
@@ -64,7 +68,7 @@ public class UnbakedCastleDoorModel implements IUnbakedGeometry<UnbakedCastleDoo
 		//making an array list like this is cursed, would not recommend
 		@SuppressWarnings("unchecked") //this is fine, I hope
 		List<BakedQuad>[] baseQuads = (List<BakedQuad>[]) Array.newInstance(List.class, 6);
-		TextureAtlasSprite baseTexture = spriteGetter.apply(context.getMaterial("base"));
+		TextureAtlasSprite baseTexture = spriteGetter.apply(ownerModel.getMaterial("base"));
 
 		for (int dir = 0; dir < 6; dir++) {
 			baseQuads[dir] = new ArrayList<>();
@@ -76,7 +80,7 @@ public class UnbakedCastleDoorModel implements IUnbakedGeometry<UnbakedCastleDoo
 
 		//we'll use this to figure out which texture to use with the Connected Texture logic
 		//NONE uses the first one, everything else uses the 2nd one
-		TextureAtlasSprite[] sprites = new TextureAtlasSprite[]{spriteGetter.apply(context.getMaterial("overlay")), spriteGetter.apply(context.getMaterial("overlay_connected"))};
+		TextureAtlasSprite[] sprites = new TextureAtlasSprite[]{spriteGetter.apply(ownerModel.getMaterial("overlay")), spriteGetter.apply(ownerModel.getMaterial("overlay_connected"))};
 
 		BakedQuad[][][] quads = new BakedQuad[6][4][5];
 
@@ -89,15 +93,20 @@ public class UnbakedCastleDoorModel implements IUnbakedGeometry<UnbakedCastleDoo
 			}
 		}
 
-		return new CastleDoorModel(baseQuads, quads, spriteGetter.apply(context.getMaterial("particle")), overrides, context.getTransforms());
+		return new CastleDoorModel(baseQuads, quads, spriteGetter.apply(ownerModel.getMaterial("particle")), overrides, ownerModel.getTransforms());
 	}
 
-	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
+	@Override
+	public Collection<ResourceLocation> getDependencies() {
+		return Collections.emptyList();
+	}
+
+	public Collection<Material> getMaterials(Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
 		ArrayList<Material> materials = new ArrayList<>();
-		materials.add(context.getMaterial("base"));
-		materials.add(context.getMaterial("particle"));
-		materials.add(context.getMaterial("overlay"));
-		materials.add(context.getMaterial("overlay_connected"));
+		materials.add(ownerModel.getMaterial("base"));
+		materials.add(ownerModel.getMaterial("particle"));
+		materials.add(ownerModel.getMaterial("overlay"));
+		materials.add(ownerModel.getMaterial("overlay_connected"));
 		return materials;
 	}
 }
