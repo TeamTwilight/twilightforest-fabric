@@ -69,10 +69,4 @@ public class MinotaurModel extends HumanoidModel<Minotaur> {
 
         return LayerDefinition.create(mesh, 64, 64);
     }
-
-    @Override
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        if(this.riding) matrixStackIn.translate(0, 0.5F, 0);
-        super.renderToBuffer(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-    }
 }

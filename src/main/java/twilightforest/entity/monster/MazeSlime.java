@@ -60,6 +60,11 @@ public class MazeSlime extends Slime {
 	}
 
 	@Override
+	public double getMyRidingOffset() {
+		return 0.25D;
+	}
+
+	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return this.isTiny() ? TFSounds.MAZE_SLIME_HURT_SMALL.get() : TFSounds.MAZE_SLIME_HURT.get();
 	}

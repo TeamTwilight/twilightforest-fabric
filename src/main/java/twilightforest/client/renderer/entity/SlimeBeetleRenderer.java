@@ -24,13 +24,7 @@ public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetle, SlimeBeetleMod
 
 	public SlimeBeetleRenderer(EntityRendererProvider.Context manager, SlimeBeetleModel model, float shadowSize) {
 		super(manager, model, shadowSize);
-		addLayer(new LayerInner(this, manager));
-	}
-
-	@Override
-	public void render(SlimeBeetle entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-		if(this.model.riding) matrixStackIn.translate(0, -0.5F, 0);
-		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+		this.addLayer(new LayerInner(this, manager));
 	}
 
 	@Override

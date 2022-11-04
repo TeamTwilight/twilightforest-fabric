@@ -110,12 +110,6 @@ public class PinchBeetleModel extends HierarchicalModel<PinchBeetle> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        if(this.riding) matrixStackIn.translate(0, -0.15F, 0);
-        super.renderToBuffer(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-    }
-
-    @Override
     public ModelPart root() {
         return this.root;
     }

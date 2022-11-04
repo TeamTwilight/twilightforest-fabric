@@ -84,8 +84,6 @@ public class TFModelLayers {
 	public static final ModelLayerLocation RISING_ZOMBIE = register("rising_zombie");
 	public static final ModelLayerLocation ROVING_CUBE = register("roving_cube");
 	public static final ModelLayerLocation SKELETON_DRUID = register("skeleton_druid");
-	public static final ModelLayerLocation SKELETON_DRUID_INNER_ARMOR = register("skeleton_druid", "inner_armor");
-	public static final ModelLayerLocation SKELETON_DRUID_OUTER_ARMOR = register("skeleton_druid", "outer_armor");
 	public static final ModelLayerLocation SLIME_BEETLE = register("slime_beetle");
 	public static final ModelLayerLocation SLIME_BEETLE_TAIL = register("slime_beetle", "tail");
 	public static final ModelLayerLocation SNOW_QUEEN = register("snow_queen");

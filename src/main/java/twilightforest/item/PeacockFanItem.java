@@ -15,10 +15,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.block.AbstractLightableBlock;
+import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.init.TFSounds;
@@ -148,6 +151,10 @@ public class PeacockFanItem extends Item {
 					cost++;
 				}
 			}
+		} else if (state.getBlock() instanceof AbstractCandleBlock && state.getValue(AbstractCandleBlock.LIT)) {
+			AbstractCandleBlock.extinguish(null, state, level, pos);
+		} else if (state.getBlock() instanceof AbstractSkullCandleBlock && state.getValue(AbstractSkullCandleBlock.LIGHTING) != AbstractLightableBlock.Lighting.NONE) {
+			AbstractSkullCandleBlock.extinguish(null, state, level, pos);
 		}
 
 		return cost;

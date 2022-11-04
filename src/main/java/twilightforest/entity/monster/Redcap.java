@@ -109,4 +109,9 @@ public class Redcap extends Monster {
 		super.readAdditionalSaveData(compound);
 		this.heldTNT.setCount(compound.getInt("TNTLeft"));
 	}
+
+	@Override
+	public double getMyRidingOffset() {
+		return -0.25D;
+	}
 }

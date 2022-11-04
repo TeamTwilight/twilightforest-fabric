@@ -121,6 +121,11 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	}
 
 	@Override
+	public double getMyRidingOffset() {
+		return -0.1D;
+	}
+
+	@Override
 	public double getPassengersRidingOffset() {
 		return 0.75D;
 	}

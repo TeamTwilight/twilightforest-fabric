@@ -27,7 +27,6 @@ public class MazeSlimeRenderer extends MobRenderer<MazeSlime, SlimeModel<MazeSli
 	@Override
 	public void render(MazeSlime entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
 		this.shadowRadius = 0.25F * (float)entityIn.getSize();
-		if(this.model.riding) matrixStackIn.translate(0, 0.25F, 0);
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 

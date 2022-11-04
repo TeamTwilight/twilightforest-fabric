@@ -96,6 +96,11 @@ public class SwarmSpider extends Spider {
 	}
 
 	@Override
+	public double getMyRidingOffset() {
+		return 0.15D;
+	}
+
+	@Override
 	public void tick() {
 		if (!this.getLevel().isClientSide() && shouldSpawnMore()) {
 			int more = 1 + this.getRandom().nextInt(2);

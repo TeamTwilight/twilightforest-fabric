@@ -43,14 +43,6 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 	}
 
 	@Override
-	public void render(T entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-		if(this.model.riding) {
-			matrixStackIn.translate(0, -2.5F, 0);
-		}
-		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-	}
-
-	@Override
 	public ResourceLocation getTextureLocation(GiantMiner entity) {
 		Minecraft mc = Minecraft.getInstance();
 		boolean slim = false;
