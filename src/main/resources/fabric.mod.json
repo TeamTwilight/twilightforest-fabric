@@ -65,6 +65,9 @@
     "minecraft": "1.19.x",
     "java": ">=17"
   },
+  "breaks": {
+    "c2me": "*"
+  },
   "suggests": {
     "modmenu": "*"
   },
