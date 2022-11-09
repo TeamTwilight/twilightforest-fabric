@@ -137,7 +137,7 @@ public class TFEntities {
 
 	private static <E extends Entity> RegistryObject<EntityType<E>> buildNoEgg(ResourceLocation id, FabricEntityTypeBuilder<E> builder, boolean fireproof) {
 		if (fireproof) builder.fireImmune();
-		return ENTITIES.register(id.getPath(), () -> builder.build(id.toString()));
+		return ENTITIES.register(id.getPath(), builder::build);
 	}
 
 	@SuppressWarnings("unchecked")

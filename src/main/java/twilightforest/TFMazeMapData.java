@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.network.NetworkDirection;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFLandmark;
 import twilightforest.network.MazeMapPacket;
@@ -84,6 +83,6 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(int mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MazeMapPacket(mapItemDataPacket), NetworkDirection.PLAY_TO_CLIENT) : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.createVanillaPacket(new MazeMapPacket(mapItemDataPacket)) : packet;
 	}
 }

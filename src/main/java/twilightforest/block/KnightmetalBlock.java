@@ -1,6 +1,8 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -8,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -28,14 +29,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDamageSources;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
-public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock, CustomPathNodeTypeBlock {
+public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock, LandPathNodeTypesRegistry.DynamicPathNodeTypeProvider {
 	private static final MutableComponent TOOLTIP = Component.translatable("block.knightmetal.tooltip").withStyle(ChatFormatting.GRAY);
 
 	private static final VoxelShape SHAPE = Shapes.create(new AABB(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F));
@@ -45,6 +44,7 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock, C
 	public KnightmetalBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
+		LandPathNodeTypesRegistry.registerDynamic(this, this);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock, C
 
 	@Nullable
 	@Override
-	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
+	public BlockPathTypes getPathNodeType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable boolean entity) {
 		return BlockPathTypes.DAMAGE_CACTUS;
 	}
 

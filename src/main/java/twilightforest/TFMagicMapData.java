@@ -135,7 +135,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(int mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(this, mapItemDataPacket), NetworkDirection.PLAY_TO_CLIENT) : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.createVanillaPacket(new MagicMapPacket(this, mapItemDataPacket)) : packet;
 	}
 
 	public static class TFMapDecoration extends MapDecoration {

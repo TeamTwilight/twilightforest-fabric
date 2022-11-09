@@ -22,7 +22,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMazeMapData;
 import twilightforest.init.TFItems;
