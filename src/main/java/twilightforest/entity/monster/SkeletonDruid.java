@@ -113,7 +113,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 		}
 	}
 
-	public static boolean skeletonDruidSpawnHandler(EntityType<? extends SkeletonDruid> entity, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean checkDruidSpawnRules(EntityType<? extends SkeletonDruid> entity, LevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 

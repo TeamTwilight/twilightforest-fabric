@@ -99,7 +99,7 @@ public class Naga extends Monster implements EnforcedHomePoint, MultiPartEntity 
 		}
 
 		this.goNormal();
-		if (this.getLevel().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
+		if (this.getLevel().getDifficulty() != Difficulty.NORMAL && this.getAttribute(Attributes.MAX_HEALTH) != null) {
 			boolean hard = this.level.getDifficulty() == Difficulty.HARD;
 			Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(new AttributeModifier("Difficulty Health Boost", hard ? 130 : 80, AttributeModifier.Operation.ADDITION));
 			this.setHealth(this.getMaxHealth());

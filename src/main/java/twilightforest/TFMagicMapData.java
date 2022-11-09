@@ -12,14 +12,19 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import twilightforest.init.TFLandmark;
 
 import org.jetbrains.annotations.Nullable;
+import twilightforest.network.MagicMapPacket;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LegacyLandmarkPlacements;
 
 import java.util.*;
@@ -116,20 +121,21 @@ public class TFMagicMapData extends MapItemSavedData {
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
 	public static TFMagicMapData getMagicMapData(Level world, String name) {
-		if (world.isClientSide) {
-			return CLIENT_DATA.get(name);
-		} else {
-			return world.getServer().overworld().getDataStorage().get(TFMagicMapData::load, name);
-		}
+		if (world.isClientSide) return CLIENT_DATA.get(name);
+		else return ((ServerLevel)world).getServer().overworld().getDataStorage().get(TFMagicMapData::load, name);
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMagicMapData(Level world, TFMagicMapData data, String id) {
-		if (world.isClientSide) {
-			CLIENT_DATA.put(id, data);
-		} else {
-			world.getServer().overworld().getDataStorage().set(id, data);
-		}
+		if (world.isClientSide) CLIENT_DATA.put(id, data);
+		else ((ServerLevel)world).getServer().overworld().getDataStorage().set(id, data);
+	}
+
+	@Nullable
+	@Override
+	public Packet<?> getUpdatePacket(int mapId, Player player) {
+		Packet<?> packet = super.getUpdatePacket(mapId, player);
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MagicMapPacket(this, mapItemDataPacket), NetworkDirection.PLAY_TO_CLIENT) : packet;
 	}
 
 	public static class TFMapDecoration extends MapDecoration {
@@ -203,9 +209,8 @@ public class TFMagicMapData extends MapItemSavedData {
 
 		@Override
 		public boolean equals(Object o) {
-			if (super.equals(o) && o instanceof TFMapDecoration) {
-				TFMapDecoration other = (TFMapDecoration) o;
-				return this.featureId == other.featureId;
+			if (super.equals(o) && o instanceof TFMapDecoration tfMapDecoration) {
+				return this.featureId == tfMapDecoration.featureId;
 			}
 
 			return false;

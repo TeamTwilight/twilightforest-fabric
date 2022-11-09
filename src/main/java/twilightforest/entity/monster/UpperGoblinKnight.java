@@ -23,6 +23,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -41,15 +42,18 @@ public class UpperGoblinKnight extends Monster {
 
 	private static final int SHIELD_DAMAGE_THRESHOLD = 10;
 	private static final EntityDataAccessor<Byte> DATA_EQUIP = SynchedEntityData.defineId(UpperGoblinKnight.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Boolean> SHIELD_DISABLED = SynchedEntityData.defineId(UpperGoblinKnight.class, EntityDataSerializers.BOOLEAN);
+
 	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 20, AttributeModifier.Operation.ADDITION);
 	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier("Heavy spear attack boost", 12, AttributeModifier.Operation.ADDITION);
 	public static final int HEAVY_SPEAR_TIMER_START = 60;
 
 	private int shieldHits = 0;
+	private int shieldDisabledTicks;
 	public int heavySpearTimer;
 
-	public UpperGoblinKnight(EntityType<? extends UpperGoblinKnight> type, Level world) {
-		super(type, world);
+	public UpperGoblinKnight(EntityType<? extends UpperGoblinKnight> type, Level level) {
+		super(type, level);
 
 		this.setHasArmor(true);
 		this.setHasShield(true);
@@ -82,16 +86,17 @@ public class UpperGoblinKnight extends Monster {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_EQUIP, (byte) 0);
+		this.getEntityData().define(DATA_EQUIP, (byte) 0);
+		this.getEntityData().define(SHIELD_DISABLED, false);
 	}
 
 	public boolean hasArmor() {
-		return (this.entityData.get(DATA_EQUIP) & 1) > 0;
+		return (this.getEntityData().get(DATA_EQUIP) & 1) > 0;
 	}
 
 	private void setHasArmor(boolean flag) {
-		byte otherFlags = this.entityData.get(DATA_EQUIP);
-		this.entityData.set(DATA_EQUIP, flag ? (byte) (otherFlags | 1) : (byte) (otherFlags & ~1));
+		byte otherFlags = this.getEntityData().get(DATA_EQUIP);
+		this.getEntityData().set(DATA_EQUIP, flag ? (byte) (otherFlags | 1) : (byte) (otherFlags & ~1));
 
 		if (!this.getLevel().isClientSide()) {
 			if (flag) {
@@ -105,12 +110,12 @@ public class UpperGoblinKnight extends Monster {
 	}
 
 	public boolean hasShield() {
-		return (this.entityData.get(DATA_EQUIP) & 2) > 0;
+		return (this.getEntityData().get(DATA_EQUIP) & 2) != 0;
 	}
 
 	public void setHasShield(boolean flag) {
-		byte otherFlags = this.entityData.get(DATA_EQUIP);
-		this.entityData.set(DATA_EQUIP, flag ? (byte) (otherFlags | 2) : (byte) (otherFlags & ~2));
+		byte otherFlags = this.getEntityData().get(DATA_EQUIP);
+		this.getEntityData().set(DATA_EQUIP, flag ? (byte) (otherFlags | 2) : (byte) (otherFlags & ~2));
 	}
 
 	@Override
@@ -134,6 +139,16 @@ public class UpperGoblinKnight extends Monster {
 		if ((this.getLevel().isClientSide() || !this.isNoAi()) && this.heavySpearTimer > 0) {
 			--this.heavySpearTimer;
 		}
+
+		if (this.isShieldDisabled()) {
+			this.getLevel().addParticle(ParticleTypes.SPLASH,
+					this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
+					this.getY() + this.getEyeHeight(),
+					this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
+					(this.getRandom().nextFloat() - 0.5F) * 0.75F,
+					0,
+					(this.getRandom().nextFloat() - 0.5F) * 0.75F);
+		}
 	}
 
 	@Override
@@ -154,6 +169,11 @@ public class UpperGoblinKnight extends Monster {
 	@Override
 	public void customServerAiStep() {
 		super.customServerAiStep();
+
+		if (this.isShieldDisabled() && this.shieldDisabledTicks++ >= 100) {
+			this.shieldDisabledTicks = 0;
+			this.getEntityData().set(SHIELD_DISABLED, false);
+		}
 
 		if (this.isAlive()) {
 			// synch target with lower goblin
@@ -254,7 +274,7 @@ public class UpperGoblinKnight extends Monster {
 
 		Entity attacker = damageSource.getEntity();
 
-		if (attacker != null && !damageSource.isCreativePlayer()) {
+		if (attacker != null) {
 			double dx = this.getX() - attacker.getX();
 			double dz = this.getZ() - attacker.getZ();
 			float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
@@ -289,12 +309,23 @@ public class UpperGoblinKnight extends Monster {
 		this.setHasShield(false);
 	}
 
+	public boolean isShieldDisabled() {
+		return this.getEntityData().get(SHIELD_DISABLED);
+	}
 
 	public boolean takeHitOnShield(DamageSource source, float amount) {
+		if (this.isShieldDisabled()) return false;
+
+		if (source.getEntity() instanceof LivingEntity living && living.getMainHandItem().getItem() instanceof AxeItem && !this.getLevel().isClientSide()) {
+			this.getEntityData().set(SHIELD_DISABLED, true);
+			this.playSound(SoundEvents.SHIELD_BREAK, 1.0F, 0.8F + this.getLevel().getRandom().nextFloat() * 0.4F);
+			return true;
+		}
+
 		if (amount > SHIELD_DAMAGE_THRESHOLD && !this.getLevel().isClientSide()) {
 			this.damageShield();
 		} else {
-			this.playSound(SoundEvents.ITEM_BREAK, 1.0F, ((this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			this.playSound(SoundEvents.SHIELD_BLOCK, 1.0F, 0.8F + this.getLevel().getRandom().nextFloat() * 0.4F);
 		}
 
 		// knock back slightly

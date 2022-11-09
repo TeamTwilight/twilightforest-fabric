@@ -11,12 +11,11 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import twilightforest.entity.ai.goal.TinyBirdFlyGoal;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.TinyBirdVariant;
 
@@ -24,32 +23,27 @@ public class TinyBird extends FlyingBird {
 
 	private static final EntityDataAccessor<String> TYPE = SynchedEntityData.defineId(TinyBird.class, EntityDataSerializers.STRING);
 
-	public TinyBird(EntityType<? extends TinyBird> type, Level world) {
-		super(type, world);
+	public TinyBird(EntityType<? extends TinyBird> type, Level level) {
+		super(type, level);
 		this.setBirdType(TinyBirdVariant.getVariantId(TinyBirdVariant.getRandomVariant(this.getRandom())));
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new PanicGoal(this, 1.5F));
-		this.goalSelector.addGoal(2, new TinyBirdFlyGoal(this));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, SEEDS, true));
+		super.registerGoals();
 		this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Cat.class, 8.0F, 1.0D, 1.25D));
 		this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Ocelot.class, 8.0F, 1.0D, 1.25D));
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
-		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 	}
+
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(TYPE, TinyBirdVariant.getVariantId(TinyBirdVariant.getRandomVariant(this.getRandom())));
+		this.getEntityData().define(TYPE, TinyBirdVariant.getVariantId(TinyBirdVariant.getRandomVariant(this.getRandom())));
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
-		return Mob.createMobAttributes()
+		return FlyingBird.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 1.0D)
 				.add(Attributes.MOVEMENT_SPEED, 0.2D);
 	}
@@ -67,11 +61,11 @@ public class TinyBird extends FlyingBird {
 	}
 
 	public TinyBirdVariant getBirdType() {
-		return TinyBirdVariant.getVariant(this.entityData.get(TYPE)).orElse(TinyBirdVariant.BLUE.get());
+		return TinyBirdVariant.getVariant(this.getEntityData().get(TYPE)).orElse(TinyBirdVariant.BLUE.get());
 	}
 
 	public void setBirdType(String type) {
-		this.entityData.set(TYPE, type);
+		this.getEntityData().set(TYPE, type);
 	}
 
 	@Override
@@ -96,7 +90,7 @@ public class TinyBird extends FlyingBird {
 
 	@Override
 	public boolean isSpooked() {
-		if (this.hurtTime > 0) return true;
+		if (this.getLastHurtByMob() != null) return true;
 		Player closestPlayer = this.getLevel().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 4.0D, true);
 		return closestPlayer != null
 				&& !SEEDS.test(closestPlayer.getMainHandItem())

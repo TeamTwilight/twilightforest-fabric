@@ -8,7 +8,6 @@ import io.github.fabricators_of_create.porting_lib.item.CustomMapItem;
 import me.alphamode.forgetags.Tags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
@@ -23,11 +22,10 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMazeMapData;
 import twilightforest.init.TFItems;
-import twilightforest.network.MazeMapPacket;
-import twilightforest.network.TFPacketHandler;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 
@@ -242,7 +240,6 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 	public Packet<?> getUpdatePacket(ItemStack stack, Level level, Player player) {
 		Integer id = getMapId(stack);
 		TFMazeMapData mapdata = getCustomMapData(stack, level);
-		Packet<?> p = id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
-		return p instanceof ClientboundMapItemDataPacket ? TFPacketHandler.CHANNEL.createVanillaPacket(new MazeMapPacket((ClientboundMapItemDataPacket) p)) : p;
+		return id == null || mapdata == null ? null : mapdata.getUpdatePacket(id, player);
 	}
 }

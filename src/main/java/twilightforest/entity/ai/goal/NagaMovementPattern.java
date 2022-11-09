@@ -47,6 +47,12 @@ public class NagaMovementPattern extends Goal {
 
 			//ok im pretty sure this bit right here was what was causing the naga to become undazed after hitting a shield sometimes
 			//this.naga.setDazed(false); // Since we have a path, we shouldn't be dazed anymore.
+
+			//if we get stuck, give up. This really only happens when mob griefing is set to false
+			if (this.naga.getNavigation().isStuck()) {
+				this.naga.getNavigation().stop();
+			}
+
 			return;
 		}
 

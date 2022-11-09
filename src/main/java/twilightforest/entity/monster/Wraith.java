@@ -153,7 +153,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 		return TFSounds.WRAITH_DEATH.get();
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends Wraith> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean checkMonsterSpawnRules(EntityType<? extends Wraith> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && checkMobSpawnRules(entity, world, reason, pos, random);
 	}
 

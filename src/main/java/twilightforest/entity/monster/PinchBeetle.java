@@ -132,7 +132,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 
 	private Vec3 getRiderPosition() {
 		if (!this.getPassengers().isEmpty()) {
-			float distance = 0.9F;
+			float distance = 0.75F;
 
 			double dx = Math.cos((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
 			double dz = Math.sin((this.getYRot() + 90) * Math.PI / 180.0D) * distance;
@@ -152,7 +152,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	public EntityDimensions getDimensions(Pose pose) {
 
 		if (!this.getPassengers().isEmpty()) {
-			return EntityDimensions.scalable(1.9F, 1.25F);
+			return EntityDimensions.scalable(2.25F, 1.25F);
 		} else {
 			return super.getDimensions(pose);
 		}

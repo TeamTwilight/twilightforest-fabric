@@ -1,16 +1,22 @@
 package twilightforest;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraftforge.network.NetworkDirection;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFLandmark;
+import twilightforest.network.MazeMapPacket;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,19 +70,20 @@ public class TFMazeMapData extends MapItemSavedData {
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
 	public static TFMazeMapData getMazeMapData(Level world, String name) {
-		if (world.isClientSide) {
-			return CLIENT_DATA.get(name);
-		} else {
-			return world.getServer().overworld().getDataStorage().get(TFMazeMapData::load, name);
-		}
+		if (world.isClientSide) return CLIENT_DATA.get(name);
+		else return ((ServerLevel)world).getServer().overworld().getDataStorage().get(TFMazeMapData::load, name);
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMazeMapData(Level world, TFMazeMapData data, String id) {
-		if (world.isClientSide) {
-			CLIENT_DATA.put(id, data);
-		} else {
-			world.getServer().overworld().getDataStorage().set(id, data);
-		}
+		if (world.isClientSide) CLIENT_DATA.put(id, data);
+		else ((ServerLevel) world).getServer().overworld().getDataStorage().set(id, data);
+	}
+
+	@Nullable
+	@Override
+	public Packet<?> getUpdatePacket(int mapId, Player player) {
+		Packet<?> packet = super.getUpdatePacket(mapId, player);
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.toVanillaPacket(new MazeMapPacket(mapItemDataPacket), NetworkDirection.PLAY_TO_CLIENT) : packet;
 	}
 }

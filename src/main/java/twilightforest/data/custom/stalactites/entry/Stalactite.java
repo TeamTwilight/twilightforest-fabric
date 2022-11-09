@@ -12,17 +12,17 @@ import java.lang.reflect.Type;
 
 public record Stalactite(Block ore, float sizeVariation, int maxLength, int weight) {
 
-	private static StalactiteReloadListener STALAGTITE_CONFIG;
+	private static StalactiteReloadListener STALACTITE_CONFIG;
 
 	public static void reloadStalactites() {
-		STALAGTITE_CONFIG = new StalactiteReloadListener();
-		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(STALAGTITE_CONFIG);
+		STALACTITE_CONFIG = new StalactiteReloadListener();
+		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(STALACTITE_CONFIG);
 	}
 
 	public static StalactiteReloadListener getStalactiteConfig() {
-		if (STALAGTITE_CONFIG == null)
+		if (STALACTITE_CONFIG == null)
 			throw new IllegalStateException("Can not retrieve Stalactites yet!");
-		return STALAGTITE_CONFIG;
+		return STALACTITE_CONFIG;
 	}
 
 	public static class Serializer implements JsonDeserializer<Stalactite>, JsonSerializer<Stalactite> {

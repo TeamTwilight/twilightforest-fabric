@@ -159,7 +159,7 @@ public class LowerGoblinKnight extends Monster {
 			attacker = source.getEntity();
 		}
 
-		if (attacker != null && !source.isCreativePlayer()) {
+		if (attacker != null) {
 			// determine angle
 
 			double dx = this.getX() - attacker.getX();

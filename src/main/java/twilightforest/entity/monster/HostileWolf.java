@@ -3,13 +3,10 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -18,11 +15,9 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.init.TFSounds;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFSounds;
 
 public class HostileWolf extends Monster {
 
@@ -44,10 +39,6 @@ public class HostileWolf extends Monster {
 		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, HostileWolf.class));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-	}
-
-	public static boolean getCanSpawnHere(EntityType<? extends HostileWolf> entity, ServerLevelAccessor accessor, MobSpawnType type, BlockPos pos, RandomSource random) {
-		return accessor.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(accessor, pos, random) && checkMobSpawnRules(entity, accessor, type, pos, random);
 	}
 
 	@Override

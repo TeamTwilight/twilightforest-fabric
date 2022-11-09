@@ -9,9 +9,13 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFSounds;
@@ -23,7 +27,7 @@ public abstract class FlyingBird extends Bird {
 	private static final EntityDataAccessor<Byte> DATA_BIRDFLAGS = SynchedEntityData.defineId(FlyingBird.class, EntityDataSerializers.BYTE);
 
 	// [VanillaCopy] Bat field
-	private BlockPos spawnPosition;
+	private BlockPos targetPosition;
 	private int currentFlightTime;
 
 	public FlyingBird(EntityType<? extends Bird> entity, Level world) {
@@ -35,12 +39,23 @@ public abstract class FlyingBird extends Bird {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_BIRDFLAGS, (byte) 0);
+		this.getEntityData().define(DATA_BIRDFLAGS, (byte) 0);
 	}
 
 	@Override
-	public boolean removeWhenFarAway(double distance) {
-		return false;
+	protected void registerGoals() {
+		super.registerGoals();
+		this.goalSelector.addGoal(0, new FloatGoal(this));
+		this.goalSelector.addGoal(0, new PanicGoal(this, 1.5F));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, SEEDS, true));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
+		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+	}
+
+	@Override
+	public float getStepHeight() {
+		return 1.0F;
 	}
 
 	@Override
@@ -77,7 +92,7 @@ public abstract class FlyingBird extends Bird {
 			this.currentFlightTime = 0;
 
 			boolean flag = this.isSilent();
-			if (this.isSpooked() || this.isInWater() || this.getLevel().containsAnyLiquid(getBoundingBox()) || (this.getRandom().nextInt(200) == 0 && !this.isLandableBlock(this.blockPosition().below()))) {
+			if (this.isSpooked() || this.isInWater() || !this.getLevel().getBlockState(this.blockPosition().below()).getFluidState().isEmpty() || (this.getRandom().nextInt(200) == 0 && !this.isLandableBlock(this.blockPosition().below()))) {
 				this.setIsBirdLanded(false);
 				if (!flag) {
 					this.playSound(TFSounds.TINYBIRD_TAKEOFF.get(), 0.05F, this.getVoicePitch());
@@ -85,31 +100,30 @@ public abstract class FlyingBird extends Bird {
 			}
 		} else {
 			this.currentFlightTime++;
-			this.gameEvent(GameEvent.FLAP);
 
 			// [VanillaCopy] Modified version of last half of Bat.customServerAiStep(). Edits noted
-			if (this.spawnPosition != null && (!this.getLevel().isEmptyBlock(this.spawnPosition) || this.spawnPosition.getY() <= this.getLevel().getMinBuildHeight())) {
-				this.spawnPosition = null;
+			if (this.targetPosition != null && (!this.getLevel().isEmptyBlock(this.targetPosition) || this.targetPosition.getY() <= this.getLevel().getMinBuildHeight())) {
+				this.targetPosition = null;
 			}
 
 			//TF - no drowning birds
-			if (this.isInWater() || this.getLevel().containsAnyLiquid(getBoundingBox())) {
+			if (this.isInWater() || !this.getLevel().getBlockState(this.blockPosition().below()).getFluidState().isEmpty()) {
 				this.currentFlightTime = 0; // reset timer for MAX FLIGHT :v
 				this.setDeltaMovement(this.getDeltaMovement().x(), 0.1F, this.getDeltaMovement().z());
 			}
 
-			if (this.spawnPosition == null || this.getRandom().nextInt(30) == 0 || this.spawnPosition.closerToCenterThan(this.position(), 2.0D)) {
+			if (this.targetPosition == null || this.getRandom().nextInt(30) == 0 || this.targetPosition.closerToCenterThan(this.position(), 2.0D)) {
 				// TF - modify shift factor of Y
 				int yTarget = this.currentFlightTime < 100 ? 2 : 4;
-				this.spawnPosition = new BlockPos(
+				this.targetPosition = new BlockPos(
 						this.getX() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7),
 						this.getY() + (double) this.getRandom().nextInt(6) - yTarget,
 						this.getZ() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7));
 			}
 
-			double d2 = (double) this.spawnPosition.getX() + 0.5D - this.getX();
-			double d0 = (double) this.spawnPosition.getY() + 0.1D - this.getY();
-			double d1 = (double) this.spawnPosition.getZ() + 0.5D - this.getZ();
+			double d2 = (double) this.targetPosition.getX() + 0.5D - this.getX();
+			double d0 = (double) this.targetPosition.getY() + 0.1D - this.getY();
+			double d1 = (double) this.targetPosition.getZ() + 0.5D - this.getZ();
 			Vec3 vec3 = this.getDeltaMovement();
 			Vec3 vec31 = vec3.add((Math.signum(d2) * 0.5D - vec3.x()) * (double) 0.1F, (Math.signum(d0) * (double) 0.7F - vec3.y()) * (double) 0.1F, (Math.signum(d1) * 0.5D - vec3.z()) * (double) 0.1F);
 			this.setDeltaMovement(vec31);
@@ -135,12 +149,12 @@ public abstract class FlyingBird extends Bird {
 
 	@Override
 	public boolean isBirdLanded() {
-		return (this.entityData.get(DATA_BIRDFLAGS) & 1) != 0;
+		return (this.getEntityData().get(DATA_BIRDFLAGS) & 1) != 0;
 	}
 
 	public void setIsBirdLanded(boolean landed) {
-		byte flags = this.entityData.get(DATA_BIRDFLAGS);
-		this.entityData.set(DATA_BIRDFLAGS, (byte) (landed ? flags | 1 : flags & ~1));
+		byte flags = this.getEntityData().get(DATA_BIRDFLAGS);
+		this.getEntityData().set(DATA_BIRDFLAGS, (byte) (landed ? flags | 1 : flags & ~1));
 	}
 
 	@Override
@@ -158,7 +172,7 @@ public abstract class FlyingBird extends Bird {
 	}
 
 	@Override
-	protected boolean canRide(Entity entityIn) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 

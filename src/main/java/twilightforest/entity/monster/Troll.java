@@ -236,12 +236,4 @@ public class Troll extends Monster implements RangedAttackMob {
 			this.rock = null;
 		}
 	}
-
-	@SuppressWarnings("unused")
-	public static boolean canSpawn(EntityType<? extends Troll> type, LevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource rand) {
-		BlockPos blockpos = pos.below();
-		return accessor.getDifficulty() != Difficulty.PEACEFUL &&
-				accessor.getBlockState(blockpos).getBlock() != TFBlocks.GIANT_OBSIDIAN.get() &&
-				!accessor.canSeeSky(pos);
-	}
 }
