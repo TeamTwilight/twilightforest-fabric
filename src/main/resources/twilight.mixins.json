@@ -14,7 +14,8 @@
   ],
   "mixins": [
     "ConnectionMixin",
-    "PlayerListMixin"
+    "PlayerListMixin",
+    "UncraftingMenuAccessor"
   ],
   "injectors": {
     "defaultRequire": 1,

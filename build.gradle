@@ -43,6 +43,7 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven { url = "https://maven.wispforest.io"}
 }
 
 dependencies {
@@ -71,6 +72,8 @@ dependencies {
     implementation(include("com.electronwill.night-config:toml:3.6.3"))
     implementation(include("javax.annotation:javax.annotation-api:1.3.2"))
     implementation(include("com.google.code.findbugs:jsr305:3.0.2"))
+
+//    modLocalRuntime "io.wispforest:owo-lib:${project.owo_version}"
 
     // compat
 //    modCompileOnly("slimeknights.tconstruct:TConstruct:${project.minecraft_version}-${project.tcon_version}") { exclude(group: "io.github.fabricators_of_create") }

@@ -40,7 +40,10 @@
       "twilightforest.capabilities.CapabilityList"
     ],
     "rei_client": [
-      "twilightforest.compat.rei.REICompat"
+      "twilightforest.compat.rei.TwilightForestREIClientPlugin"
+    ],
+    "rei_common": [
+      "twilightforest.compat.rei.TwilightForestREIServerPlugin"
     ],
     "emi": [
       "twilightforest.compat.emi.EMICompat"
