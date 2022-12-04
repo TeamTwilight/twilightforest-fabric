@@ -3,6 +3,7 @@ package twilightforest.events;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -11,6 +12,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.damagesource.DamageSource;
@@ -37,7 +39,6 @@ import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class CharmEvents {
 
@@ -48,8 +49,11 @@ public class CharmEvents {
 	public static ItemStack charmUsed;
 
 	public static void init() {
-		ServerPlayerEvents.ALLOW_DEATH.register(CharmEvents::applyDeathItems);
 		ServerPlayerEvents.AFTER_RESPAWN.register(CharmEvents::onPlayerRespawn);
+		// have our death event run late only apply if nothing else prevents death first
+		ResourceLocation late = TwilightForestMod.prefix("late");
+		ServerPlayerEvents.ALLOW_DEATH.addPhaseOrdering(Event.DEFAULT_PHASE, late);
+		ServerPlayerEvents.ALLOW_DEATH.register(late, CharmEvents::applyDeathItems);
 	}
 
 	// For when the player dies
