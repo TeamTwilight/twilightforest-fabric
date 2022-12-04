@@ -5,13 +5,13 @@
       "item": "twilightforest:maze_map"
     },
     {
-      "tag": "c:storage_blocks/diamond"
+      "tag": "c:diamond_blocks"
     },
     {
-      "tag": "c:storage_blocks/gold"
+      "tag": "c:gold_blocks"
     },
     {
-      "tag": "c:storage_blocks/iron"
+      "tag": "c:iron_blocks"
     }
   ],
   "result": {

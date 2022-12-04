@@ -5,7 +5,7 @@
       "item": "twilightforest:encased_towerwood"
     },
     "%": {
-      "tag": "c:ores/redstone"
+      "tag": "c:redstone_ores"
     },
     "6": {
       "tag": "c:gems/carminite"

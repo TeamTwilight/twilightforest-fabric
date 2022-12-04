@@ -1,26 +1,23 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "type": "serialization_hooks:combined",
-      "children": [
-        {
-          "type": "forge:partial_nbt",
-          "item": "minecraft:potion",
-          "nbt": "{Potion:\"minecraft:strength\"}"
-        },
-        {
-          "type": "forge:partial_nbt",
-          "item": "minecraft:potion",
-          "nbt": "{Potion:\"minecraft:strong_strength\"}"
-        },
-        {
-          "type": "forge:partial_nbt",
-          "item": "minecraft:potion",
-          "nbt": "{Potion:\"minecraft:long_strength\"}"
-        }
-      ]
-    },
+    [
+      {
+        "type": "forge:partial_nbt",
+        "item": "minecraft:potion",
+        "nbt": "{Potion:\"minecraft:strength\"}"
+      },
+      {
+        "type": "forge:partial_nbt",
+        "item": "minecraft:potion",
+        "nbt": "{Potion:\"minecraft:strong_strength\"}"
+      },
+      {
+        "type": "forge:partial_nbt",
+        "item": "minecraft:potion",
+        "nbt": "{Potion:\"minecraft:long_strength\"}"
+      }
+    ],
     {
       "type": "forge:partial_nbt",
       "item": "twilightforest:zombie_scepter",
