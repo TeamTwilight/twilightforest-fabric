@@ -41,7 +41,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem, XpRepairItem {
+public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem {
 
 	private static final float WIGGLE = 10F;
 

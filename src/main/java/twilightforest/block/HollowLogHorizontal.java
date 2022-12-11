@@ -54,7 +54,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 		super(properties);
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(HORIZONTAL_AXIS, Direction.Axis.X).setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY));
-        FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+        FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
     }
 
 	@Override

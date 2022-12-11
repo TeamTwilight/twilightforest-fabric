@@ -8,6 +8,7 @@ import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -15,9 +16,7 @@ import net.minecraft.world.level.block.DispenserBlock;
 import twilightforest.entity.projectile.IceBomb;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFItems;
-import twilightforest.init.TFSounds;
+import twilightforest.item.TFItems;
 
 public class TFDispenserBehaviors {
 
@@ -98,8 +97,9 @@ public class TFDispenserBehaviors {
 		});
 
 		//store the vanilla values so we can use them in case our stuff fails
-		DispenseItemBehavior cachedFlintBehavior = DispenserBlock.DISPENSER_REGISTRY.get(Items.FLINT_AND_STEEL);
-		DispenseItemBehavior cachedFireChargeBehavior = DispenserBlock.DISPENSER_REGISTRY.get(Items.FIRE_CHARGE);
+		Map<Item, DispenseItemBehavior> dispenserRegistry = DispenserBlockAccessor.twilightforest$DISPENSER_REGISTRY();
+		DispenseItemBehavior cachedFlintBehavior = dispenserRegistry.get(Items.FLINT_AND_STEEL);
+		DispenseItemBehavior cachedFireChargeBehavior = dispenserRegistry.get(Items.FIRE_CHARGE);
 
 		DispenserBlock.registerBehavior(Items.FLINT_AND_STEEL, new IgniteLightableDispenseBehavior(cachedFlintBehavior));
 		DispenserBlock.registerBehavior(Items.FIRE_CHARGE, new IgniteLightableDispenseBehavior(cachedFireChargeBehavior));

@@ -8,7 +8,7 @@ public class TFLogBlock extends RotatedPillarBlock {
 
 	public TFLogBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
 	}
 
 	public int getFlammability() {

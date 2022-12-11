@@ -14,11 +14,13 @@
   ],
   "mixins": [
     "ConnectionMixin",
+    "DispenserBlockAccessor",
+    "ServerPlayerMixin",
     "PlayerListMixin",
     "UncraftingMenuAccessor"
   ],
   "injectors": {
     "defaultRequire": 1,
-    "maxShiftBy": 999999
+    "maxShiftBy": 5
   }
 }

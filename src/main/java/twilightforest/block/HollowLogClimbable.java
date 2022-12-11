@@ -60,7 +60,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 		this.vertical = vertical;
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(VARIANT, HollowLogVariants.Climbable.VINE).setValue(FACING, Direction.NORTH));
-        FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+        FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
     }
 
 	@Override

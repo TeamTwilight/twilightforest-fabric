@@ -13,7 +13,7 @@ public class BookshelfBlock extends Block implements EnchantmentBonusBlock {
 
 	public BookshelfBlock(Properties properties) {
 		super(properties);
-		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
-import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -38,7 +37,6 @@ public class HedgeBlock extends Block implements CustomPathNodeTypeBlock {
 
 	public HedgeBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
 	}
 
 	@Override
@@ -107,11 +105,12 @@ public class HedgeBlock extends Block implements CustomPathNodeTypeBlock {
 		return !(entity instanceof Spider || entity instanceof ItemEntity || entity.isIgnoringBlockTriggers());
 	}
 
-	public int getFlammability() {
-		return 0;
-	}
-
-	public int getFireSpreadSpeed() {
-		return 0;
-	}
+	// fabric: unnecessary
+//	public int getFlammability() {
+//		return 0;
+//	}
+//
+//	public int getFireSpreadSpeed() {
+//		return 0;
+//	}
 }

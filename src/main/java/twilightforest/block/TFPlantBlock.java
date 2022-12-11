@@ -19,7 +19,7 @@ public abstract class TFPlantBlock extends BushBlock implements BonemealableBloc
 
 	protected TFPlantBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
 	}
 
 	public static boolean canPlaceRootAt(LevelReader reader, BlockPos pos) {
