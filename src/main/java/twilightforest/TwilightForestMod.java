@@ -112,9 +112,10 @@ public class TwilightForestMod implements ModInitializer {
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register();
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register();
 		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register();
-		TFStructureSets.STRUCTURE_SETS.register();
+		// fabric: structure sets moved after structures to fix log errors
 		TFStructureTypes.STRUCTURE_TYPES.register();
 		TFStructures.STRUCTURES.register();
+		TFStructureSets.STRUCTURE_SETS.register();
 		TFFeatureModifiers.TREE_DECORATORS.register();
 		TFFeatureModifiers.TRUNK_PLACERS.register();
 		TFBlocks.registerItemblocks();
