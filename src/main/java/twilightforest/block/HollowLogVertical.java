@@ -48,7 +48,7 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
         this.climbable = climbable;
 
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
-        FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+        FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
     }
 
     @Override

@@ -20,7 +20,7 @@ public abstract class TFPlantBlock extends BushBlock implements BonemealableBloc
 
 	protected TFPlantBlock(BlockBehaviour.Properties props) {
 		super(props);
-		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
 	}
 
 	@Override

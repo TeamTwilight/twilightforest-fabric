@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 public class TFLeavesBlock extends LeavesBlock {
 	protected TFLeavesBlock(BlockBehaviour.Properties props) {
 		super(props);
-		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
 	}
 
 	public int getFlammability() {

@@ -1,17 +1,12 @@
 package twilightforest.data;
 
-import com.google.common.collect.ImmutableList;
-import io.github.fabricators_of_create.porting_lib.crafting.CompoundIngredient;
 import io.github.fabricators_of_create.porting_lib.crafting.NBTIngredient;
+import io.github.tropheusj.serialization_hooks.ingredient.CombinedIngredient;
 import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
@@ -28,13 +23,8 @@ import twilightforest.block.TFBlocks;
 import twilightforest.block.TwilightChest;
 import twilightforest.data.tags.ItemTagGenerator;
 
-import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
-import static net.minecraft.world.item.crafting.Ingredient.fromValues;
 
 public abstract class CraftingDataHelper extends FabricRecipeProvider {
 	public CraftingDataHelper(FabricDataGenerator generator) {
@@ -52,37 +42,41 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 		nbtSetter.accept(nbt);
 		stack.setTag(nbt);
 
-		try {
-			Constructor<NBTIngredient> constructor = NBTIngredient.class.getDeclaredConstructor(ItemStack.class);
-
-			constructor.setAccessible(true);
-
-			return constructor.newInstance(stack);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-
-		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
-		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
-		return Ingredient.of(stack);
+		return NBTIngredient.of(stack);
+		// fabric: unnecessary
+//		try {
+//			Constructor<NBTIngredient> constructor = NBTIngredient.class.getDeclaredConstructor(ItemStack.class);
+//
+//			constructor.setAccessible(true);
+//
+//			return constructor.newInstance(stack);
+//		} catch (Throwable e) {
+//			e.printStackTrace();
+//		}
+//
+//		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
+//		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
+//		return Ingredient.of(stack);
 	}
 
 	protected final Ingredient multipleIngredients(Ingredient... ingredientArray) {
-		List<Ingredient> ingredientList = ImmutableList.copyOf(ingredientArray);
-
-		try {
-			Constructor<CompoundIngredient> constructor = CompoundIngredient.class.getDeclaredConstructor(List.class);
-
-			constructor.setAccessible(true);
-
-			return constructor.newInstance(ingredientList);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-
-		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
-		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
-		return fromValues(ingredientList.stream().flatMap(i -> Arrays.stream(i.values)));
+		return new CombinedIngredient(ingredientArray);
+		// fabric: unnecessary
+//		List<Ingredient> ingredientList = ImmutableList.copyOf(ingredientArray);
+//
+//		try {
+//			Constructor<CompoundIngredient> constructor = CompoundIngredient.class.getDeclaredConstructor(List.class);
+//
+//			constructor.setAccessible(true);
+//
+//			return constructor.newInstance(ingredientList);
+//		} catch (Throwable e) {
+//			e.printStackTrace();
+//		}
+//
+//		// This will just defer to the regular Ingredient method instead of some overridden thing, but whatever.
+//		// Forge PRs are too slow to even feel motivated about fixing it on the Forge end.
+//		return fromValues(ingredientList.stream().flatMap(i -> Arrays.stream(i.values)));
 	}
 
 	protected final void charmRecipe(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Item> item) {

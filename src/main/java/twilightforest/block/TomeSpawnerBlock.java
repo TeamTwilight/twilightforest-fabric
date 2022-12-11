@@ -40,7 +40,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock implements CaughtFireBlock
 	protected TomeSpawnerBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(getStateDefinition().any().setValue(BOOK_STAGES, 10).setValue(SPAWNER, true));
-		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
 	}
 
 	@Override

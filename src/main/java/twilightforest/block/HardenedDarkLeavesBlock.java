@@ -1,9 +1,9 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.block.CustomBurnabilityBlock;
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -12,11 +12,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class HardenedDarkLeavesBlock extends Block implements BlockPickInteractionAware {
+public class HardenedDarkLeavesBlock extends Block implements BlockPickInteractionAware, CustomBurnabilityBlock {
 
 	protected HardenedDarkLeavesBlock(Properties props) {
 		super(props);
-		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
 	}
 
 	public int getFlammability() {
@@ -25,6 +25,16 @@ public class HardenedDarkLeavesBlock extends Block implements BlockPickInteracti
 
 	public int getFireSpreadSpeed() {
 		return 0;
+	}
+
+	// fabric: getFireSpreadSpeed returns 0
+	// fire blocks check that to see if they can burn stuff (getFlameOdds)
+	// normally, if it's 0, it can't burn, so it doesn't tick or anything
+	// however, forge patches fire and makes it actually checks getBurnOdds instead (getFlammability)
+	// this method gives us parity with forge by allowing burning even with 0 spread speed
+	@Override
+	public boolean canBurn(BlockState state) {
+		return true;
 	}
 
 	@Override
