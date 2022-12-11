@@ -40,7 +40,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
-public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem, XpRepairItem {
+public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem {
 
 	private static final float WIGGLE = 10F;
 
@@ -116,10 +116,12 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem,
 		}
 	}
 
-	@Override
-	public float getXpRepairRatio(ItemStack stack) {
-		return 0.1f;
-	}
+	// fabric: causes a crash if mending is forced on due to rounding and a stack overflow
+	// mending isn't supposed to be on it anyway, and this was removed in 1.19.
+//	@Override
+//	public float getXpRepairRatio(ItemStack stack) {
+//		return 0.1f;
+//	}
 
 	@Nonnull
 	@Override
