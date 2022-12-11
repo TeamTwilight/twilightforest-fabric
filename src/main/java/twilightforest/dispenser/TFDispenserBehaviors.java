@@ -16,7 +16,12 @@ import net.minecraft.world.level.block.DispenserBlock;
 import twilightforest.entity.projectile.IceBomb;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
-import twilightforest.item.TFItems;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
+import twilightforest.mixin.DispenserBlockAccessor;
+
+import java.util.Map;
 
 public class TFDispenserBehaviors {
 

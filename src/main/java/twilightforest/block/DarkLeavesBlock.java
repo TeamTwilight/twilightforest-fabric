@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import io.github.fabricators_of_create.porting_lib.block.CustomBurnabilityBlock;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -12,7 +13,7 @@ public class DarkLeavesBlock extends LeavesBlock implements CustomBurnabilityBlo
 
 	public DarkLeavesBlock(Properties properties) {
 		super(properties);
-		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
 	}
 
 	public int getFlammability() {

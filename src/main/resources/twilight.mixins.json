@@ -15,7 +15,6 @@
   "mixins": [
     "ConnectionMixin",
     "DispenserBlockAccessor",
-    "ServerPlayerMixin",
     "PlayerListMixin",
     "UncraftingMenuAccessor"
   ],

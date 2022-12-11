@@ -1,10 +1,10 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.block.CustomBurnabilityBlock;
 import io.github.fabricators_of_create.porting_lib.block.ValidSpawnBlock;
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.player.Player;

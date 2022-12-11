@@ -52,7 +52,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(SHAPE, BanisterShape.TALL).setValue(EXTENDED, false).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
 
-		FlammableBlockRegistry.getDefaultInstance().add(this, getFlammability(), getFireSpreadSpeed());
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
 	}
 
 	@Override
