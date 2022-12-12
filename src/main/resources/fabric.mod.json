@@ -81,6 +81,11 @@
       "twilightforest:cap_thrown",
       "twilightforest:giant_pick_mine"
     ],
+    "porting_lib:provided_loaders": [
+      "twilightforest:patch",
+      "twilightforest:giant_block",
+      "twilightforest:castle_door"
+    ],
     "banner": "twilightforest_logo.png"
   }
 }
