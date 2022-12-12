@@ -2,9 +2,9 @@ package twilightforest.compat.emi.recipes;
 
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
+import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.stack.EmiStackConvertible;
 import dev.emi.emi.api.stack.ListEmiIngredient;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.resources.ResourceLocation;
@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
+import twilightforest.TwilightForestMod;
 import twilightforest.compat.emi.EMICompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.item.recipe.UncraftingRecipe;
@@ -21,37 +22,52 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EMIUncraftingRecipe<T extends Recipe<?>> implements EmiRecipe {
-    public static final int width = 126;
-    public static final int height = 64;
+    public static final int width = 118;
+    public static final int height = 54;
 
     protected final EmiRecipeCategory category;
     protected final T recipe;
     protected ResourceLocation id;
     private final List<EmiIngredient> inputs;
-    private final List<EmiStack> outputs;
+    private final List<EmiIngredient> outputs;
+    private final List<EmiStack> flattenedOutputs;
 
-    public EMIUncraftingRecipe(EmiRecipeCategory category, T recipe) {
+    public static <T extends Recipe<?>> EMIUncraftingRecipe<T> of(T crafting) {
+        ResourceLocation baseId = crafting.getId();
+        ResourceLocation newId = TwilightForestMod.prefix("emi/uncrafting/%s/%s".formatted(baseId.getNamespace(), baseId.getPath()));
+        return new EMIUncraftingRecipe<>(EMICompat.UNCRAFTING, crafting, newId);
+    }
+
+    public EMIUncraftingRecipe(EmiRecipeCategory category, T recipe, ResourceLocation id) {
         this.category = category;
         this.recipe = recipe;
-        this.id = recipe.getId();
+        this.id = id;
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
+        this.flattenedOutputs = new ArrayList<>();
 
         List<Ingredient> outputs = new ArrayList<>(recipe.getIngredients()); //Collect each ingredient
         for (int i = 0; i < outputs.size(); i++) {
             outputs.set(i, Ingredient.of(Arrays.stream(outputs.get(i).getItems())
                     .filter(o -> !(o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS)))
-                    .filter(o -> !(o.getItem().hasCraftingRemainingItem()))));//Remove any banned items
+                    .filter(o -> (o.getRecipeRemainder().isEmpty()))));//Remove any banned items
         }
 
-        for (int j = 0, k = 0; j - k < outputs.size() && j < 9; j++) {
-            int x = j % 3, y = j / 3;
+        for (int index = 0, offset = 0; index - offset < outputs.size() && index < 9; index++) {
+            int x = index % 3, y = index / 3;
             if ((recipe.canCraftInDimensions(x, 3) | recipe.canCraftInDimensions(3, y)) && !(recipe instanceof ShapelessRecipe)) {
-                k++;
+                offset++;
+                this.outputs.add(EmiStack.EMPTY);
                 continue;
             } //Skips empty spaces in shaped recipes
-            for (ItemStack output : outputs.get(j - k).getItems())
-                this.outputs.add(EmiStack.of(output)); //Set input as output and place in the grid
+            Ingredient ingredient = outputs.get(index - offset);
+            this.outputs.add(EmiIngredient.of(ingredient));
+            for (ItemStack output : ingredient.getItems())
+                this.flattenedOutputs.add(EmiStack.of(output)); //Set input as output and place in the grid
+        }
+
+        while (this.outputs.size() < 9) {
+            this.outputs.add(EmiStack.EMPTY);
         }
 
         if (recipe instanceof UncraftingRecipe uncraftingRecipe) {
@@ -78,7 +94,7 @@ public class EMIUncraftingRecipe<T extends Recipe<?>> implements EmiRecipe {
 
     @Override
     public List<EmiStack> getOutputs() {
-        return this.outputs;
+        return this.flattenedOutputs;
     }
 
     @Override
@@ -93,13 +109,12 @@ public class EMIUncraftingRecipe<T extends Recipe<?>> implements EmiRecipe {
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        for (int j = 0, k = 0; j - k < outputs.size() && j < 9; j++) {
-            int x = j % 3, y = j / 3;
-            if ((recipe.canCraftInDimensions(x, 3) | recipe.canCraftInDimensions(3, y)) && !(recipe instanceof ShapelessRecipe)) {
-                k++;
-                continue;
-            } //Skips empty spaces in shaped recipes
-            widgets.addSlot(outputs.get(j - k), x * 18 + 63, y * 18 + 1);
+        widgets.addTexture(EmiTexture.EMPTY_ARROW, 35, 18);
+
+        for (int i = 0; i < outputs.size(); i++) {
+            int x = i % 3;
+            int y = i / 3;
+            widgets.addSlot(outputs.get(i), x * 18 + 63, y * 18);
         }
 
         if (recipe instanceof UncraftingRecipe uncraftingRecipe) {
@@ -108,7 +123,7 @@ public class EMIUncraftingRecipe<T extends Recipe<?>> implements EmiRecipe {
             for (int i = 0; i < stacks.length; i++) stackedStacks[i] = new ItemStack(stacks[0].getItem(), uncraftingRecipe.count());
             widgets.addSlot(new ListEmiIngredient(List.of(stackedStacks).stream().map(EmiStack::of).toList(), uncraftingRecipe.count()), 5, 19);//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack
         } else {
-            widgets.addSlot(EmiStack.of(recipe.getResultItem()), 5, 19); //Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
+            widgets.addSlot(EmiStack.of(recipe.getResultItem()), 5, 14).output(true).recipeContext(this); //Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
         }
     }
 }

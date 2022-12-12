@@ -2,7 +2,6 @@ package twilightforest.compat.emi;
 
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
-import dev.emi.emi.api.recipe.EmiCraftingRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiStack;
@@ -11,9 +10,7 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
 import twilightforest.compat.emi.recipes.EMIUncraftingRecipe;
-import twilightforest.compat.jei.categories.JEIUncraftingCategory;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFRecipes;
@@ -23,7 +20,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class EMICompat implements EmiPlugin {
-	public static final EmiRecipeCategory UNCRAFTING = new EmiRecipeCategory(TwilightForestMod.prefix("uncrafting"), EmiStack.of(TFBlocks.UNCRAFTING_TABLE.get()));
+	public static final EmiRecipeCategory UNCRAFTING = new TFEmiRecipeCategory("uncrafting", TFBlocks.UNCRAFTING_TABLE);
 
 	@Override
 	public void register(EmiRegistry registry) {
@@ -43,7 +40,7 @@ public class EMICompat implements EmiPlugin {
 									TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) //remove blacklisted mod ids
 					.collect(Collectors.toList());
 			recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
-			recipes.forEach(craftingRecipe -> registry.addRecipe(new EMIUncraftingRecipe<>(UNCRAFTING, craftingRecipe)));
+			recipes.forEach(craftingRecipe -> registry.addRecipe(EMIUncraftingRecipe.of(craftingRecipe)));
 		}
 	}
 }
