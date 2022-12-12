@@ -63,10 +63,10 @@
   ],
   "accessWidener": "twilightforest.accesswidener",
   "depends": {
-    "fabricloader": ">=0.13.3",
-    "fabric": ">=0.60.0",
-    "minecraft": "1.19.x",
-    "java": ">=17"
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": ">=${fabric_version}",
+    "minecraft": ">=${minecraft_version}",
+    "java": ">=${java_version}"
   },
   "breaks": {
     "c2me": "*"
