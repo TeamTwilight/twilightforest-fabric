@@ -15,12 +15,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Connection.class)
 public class ConnectionMixin {
 
-    @Shadow @Final private static Logger LOGGER;
+    @Shadow
+    @Final
+    private static Logger LOGGER;
 
     @Inject(method = "exceptionCaught", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;debug(Ljava/lang/String;Ljava/lang/Throwable;)V", remap = false))
-    private void on_exceptionCaught(ChannelHandlerContext channelHandlerContext, Throwable throwable, CallbackInfo ci) {
+    private void twilightforest$printNetworkExceptions(ChannelHandlerContext channelHandlerContext, Throwable throwable, CallbackInfo ci) {
         if (throwable instanceof SkipPacketException) return;
         if (throwable instanceof TimeoutException) return;
-        LOGGER.error("Exception occurred in netty pipeline", throwable);
+        LOGGER.error("Twilight Forest: Exception occurred in netty pipeline", throwable);
     }
 }

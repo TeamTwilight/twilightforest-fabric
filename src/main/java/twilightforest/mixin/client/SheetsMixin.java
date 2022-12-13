@@ -19,7 +19,7 @@ public class SheetsMixin {
   public static ResourceLocation SIGN_SHEET;
 
   @Inject(method = "createSignMaterial", at = @At("HEAD"), cancellable = true)
-  private static void fixMantleSigns(WoodType woodType, CallbackInfoReturnable<Material> cir) {
+  private static void twilightforest$fixIdNamespace(WoodType woodType, CallbackInfoReturnable<Material> cir) {
     if (woodType.name().contains("twilightforest:")) {
         ResourceLocation location = new ResourceLocation(woodType.name());
         cir.setReturnValue(new Material(SIGN_SHEET, new ResourceLocation(location.getNamespace(), "entity/signs/" + location.getPath())));

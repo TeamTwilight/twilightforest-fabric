@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ModelLayers.class)
 public class ModelLayersMixin {
   @Inject(method = "createSignModelName", at = @At("HEAD"), cancellable = true)
-  private static void fixSignLocation(WoodType woodType, CallbackInfoReturnable<ModelLayerLocation> cir) {
+  private static void twilightforest$fixIdNamespace(WoodType woodType, CallbackInfoReturnable<ModelLayerLocation> cir) {
     if (woodType.name().contains("twilightforest:")) {
         ResourceLocation location = new ResourceLocation(woodType.name());
         cir.setReturnValue(new ModelLayerLocation(new ResourceLocation(location.getNamespace(), "sign/" + location.getPath()), "main"));
