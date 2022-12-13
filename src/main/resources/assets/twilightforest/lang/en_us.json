@@ -1647,5 +1647,7 @@
   "gui.transformation_jei": "Transformation Powder",
   "gui.uncrafting_jei": "Uncrafting",
 
+  "gui.crumble_horn_jei.dropped_as_item": "Dropped as an item",
+
   "config.jade.plugin_twilightforest.quest_ram_wool": "Quest Ram Wool"
 }

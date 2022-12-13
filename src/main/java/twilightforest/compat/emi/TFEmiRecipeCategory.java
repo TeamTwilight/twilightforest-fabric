@@ -8,11 +8,13 @@ import net.minecraft.world.level.ItemLike;
 import twilightforest.TwilightForestMod;
 
 public class TFEmiRecipeCategory extends EmiRecipeCategory {
+	public final String name;
 	public final Component title;
 
-	public TFEmiRecipeCategory(String type, RegistryObject<? extends ItemLike> icon) {
-		super(TwilightForestMod.prefix(type), EmiStack.of(icon.get()));
-		this.title = Component.translatable("gui.%s_jei".formatted(type));
+	public TFEmiRecipeCategory(String name, RegistryObject<? extends ItemLike> icon) {
+		super(TwilightForestMod.prefix(name), EmiStack.of(icon.get()));
+		this.name = name;
+		this.title = Component.translatable("gui.%s_jei".formatted(name));
 	}
 
 	@Override
