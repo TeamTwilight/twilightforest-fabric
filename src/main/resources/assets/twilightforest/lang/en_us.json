@@ -1668,10 +1668,36 @@
   "tag.twilightforest.canopy_logs": "Canopy Logs",
 
   "tag.twilightforest.kept_on_death": "Kept on Death",
-  "tag.twilightforest.fiery_vial": "Fiery Vials",
-  "tag.twilightforest.arctic_fur": "Arctic Furs",
   "tag.twilightforest.kobold_pacification_breads": "Kobold Pacification Breads",
-  "tag.twilightforest.portal.activator": "Portal Activators",
+  "tag.twilightforest.portal_activators": "Portal Activators",
+
+  "tag.twilightforest.fiery_vial": "Fiery Vials",
+
+  "tag.twilightforest.arctic_fur": "Arctic Furs",
+  "tag.c.arctic_fur_storage_blocks": "Arctic Fur Storage Blocks",
+
+  "tag.c.carminite_gems": "Carminite Gems",
+  "tag.c.carminite_storage_blocks": "Carminite Storage Blocks",
+
+  "tag.c.knightmetal_ores": "Knightmetal Ores",
+  "tag.c.knightmetal_ingots": "Knightmetal Ingots",
+  "tag.c.knightmetal_storage_blocks": "Knightmetal Storage Blocks",
+
+  "tag.c.fiery_ingots": "Fiery Ingots",
+  "tag.c.fiery_storage_blocks": "Fiery Storage Blocks",
+
+  "tag.c.steeleaf_ingots": "Steeleaf Ingots",
+  "tag.c.steeleaf_storage_blocks": "Steeleaf Storage Blocks",
+
+  "tag.c.ironwood_ores": "Ironwood Ores",
+  "tag.c.ironwood_ingots": "Ironwood Ingots",
+  "tag.c.ironwood_storage_blocks": "Ironwood Storage Blocks",
+
+  "tag.c.paper": "Papers",
+
+  "tag.trinkets.head.hat": "Hats",
+  "tag.trinkets.chest.necklace": "Necklaces",
+  "tag.trinkets.legs.belt": "Belts",
 
   "config.jade.plugin_twilightforest.quest_ram_wool": "Quest Ram Wool"
 }

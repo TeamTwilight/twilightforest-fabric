@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:gems/carminite"
+            "tag": "c:carminite_gems"
           }
         ]
       },

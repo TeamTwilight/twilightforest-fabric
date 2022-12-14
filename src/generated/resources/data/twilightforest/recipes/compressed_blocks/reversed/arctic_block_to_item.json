@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "tag": "c:storage_blocks/arctic_fur"
+      "tag": "c:arctic_fur_storage_blocks"
     }
   ],
   "result": {

@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "#c:storage_blocks/fiery",
-    "#c:storage_blocks/arctic_fur",
-    "#c:storage_blocks/carminite",
-    "#c:storage_blocks/ironwood",
-    "#c:storage_blocks/knightmetal",
-    "#c:storage_blocks/steeleaf"
+    "#c:fiery_storage_blocks",
+    "#c:arctic_fur_storage_blocks",
+    "#c:carminite_storage_blocks",
+    "#c:ironwood_storage_blocks",
+    "#c:knightmetal_storage_blocks",
+    "#c:steeleaf_storage_blocks"
   ]
 }

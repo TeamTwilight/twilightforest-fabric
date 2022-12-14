@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#c:ores/ironwood",
-    "#c:ores/knightmetal"
+    "#c:ironwood_ores",
+    "#c:knightmetal_ores"
   ]
 }

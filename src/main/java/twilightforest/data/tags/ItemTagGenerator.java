@@ -33,23 +33,23 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 	public static final TagKey<Item> FIERY_VIAL = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("fiery_vial"));
 
 	public static final TagKey<Item> ARCTIC_FUR = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("arctic_fur"));
-	public static final TagKey<Item> CARMINITE_GEMS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "gems/carminite"));
-	public static final TagKey<Item> FIERY_INGOTS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "ingots/fiery"));
-	public static final TagKey<Item> IRONWOOD_INGOTS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "ingots/ironwood"));
-	public static final TagKey<Item> KNIGHTMETAL_INGOTS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "ingots/knightmetal"));
-	public static final TagKey<Item> STEELEAF_INGOTS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "ingots/steeleaf"));
+	public static final TagKey<Item> CARMINITE_GEMS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "carminite_gems"));
+	public static final TagKey<Item> FIERY_INGOTS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "fiery_ingots"));
+	public static final TagKey<Item> IRONWOOD_INGOTS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "ironwood_ingots"));
+	public static final TagKey<Item> KNIGHTMETAL_INGOTS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "knightmetal_ingots"));
+	public static final TagKey<Item> STEELEAF_INGOTS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "steeleaf_ingots"));
 
-	public static final TagKey<Item> STORAGE_BLOCKS_ARCTIC_FUR = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "storage_blocks/arctic_fur"));
-	public static final TagKey<Item> STORAGE_BLOCKS_CARMINITE = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "storage_blocks/carminite"));
-	public static final TagKey<Item> STORAGE_BLOCKS_FIERY = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "storage_blocks/fiery"));
-	public static final TagKey<Item> STORAGE_BLOCKS_IRONWOOD = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "storage_blocks/ironwood"));
-	public static final TagKey<Item> STORAGE_BLOCKS_KNIGHTMETAL = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "storage_blocks/knightmetal"));
-	public static final TagKey<Item> STORAGE_BLOCKS_STEELEAF = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "storage_blocks/steeleaf"));
+	public static final TagKey<Item> STORAGE_BLOCKS_ARCTIC_FUR = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "arctic_fur_storage_blocks"));
+	public static final TagKey<Item> STORAGE_BLOCKS_CARMINITE = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "carminite_storage_blocks"));
+	public static final TagKey<Item> STORAGE_BLOCKS_FIERY = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "fiery_storage_blocks"));
+	public static final TagKey<Item> STORAGE_BLOCKS_IRONWOOD = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "ironwood_storage_blocks"));
+	public static final TagKey<Item> STORAGE_BLOCKS_KNIGHTMETAL = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "knightmetal_storage_blocks"));
+	public static final TagKey<Item> STORAGE_BLOCKS_STEELEAF = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "steeleaf_storage_blocks"));
 
-	public static final TagKey<Item> ORES_IRONWOOD = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "ores/ironwood"));
-	public static final TagKey<Item> ORES_KNIGHTMETAL = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "ores/knightmetal"));
+	public static final TagKey<Item> ORES_IRONWOOD = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "ironwood_ores"));
+	public static final TagKey<Item> ORES_KNIGHTMETAL = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", "knightmetal_ores"));
 
-	public static final TagKey<Item> PORTAL_ACTIVATOR = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("portal/activator"));
+	public static final TagKey<Item> PORTAL_ACTIVATOR = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("portal_activators"));
 
 	public static final TagKey<Item> WIP = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("wip"));
 	public static final TagKey<Item> NYI = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("nyi"));
@@ -62,8 +62,9 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
 	public static final TagKey<Item> KEPT_ON_DEATH = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("kept_on_death"));
 
-	private static final TagKey<Item> CHARM = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("curios", "charm"));
-	private static final TagKey<Item> HEAD = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("curios", "head"));
+	private static final TagKey<Item> BELTS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("trinkets", "legs/belt"));
+	private static final TagKey<Item> NECKLACES = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("trinkets", "chest/necklace"));
+	private static final TagKey<Item> HATS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("trinkets", "head/hat"));
 
 	public ItemTagGenerator(FabricDataGenerator generator, FabricTagProvider.BlockTagProvider blockprovider) {
 		super(generator, blockprovider);
@@ -222,12 +223,15 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
 		tag(ItemTags.PIGLIN_LOVED).add(TFItems.GOLDEN_MINOTAUR_AXE.get(), TFItems.CHARM_OF_KEEPING_3.get(), TFItems.CHARM_OF_LIFE_2.get(), TFItems.LAMP_OF_CINDERS.get());
 
-		tag(CHARM).add(
-				TFItems.CHARM_OF_LIFE_1.get(), TFItems.CHARM_OF_LIFE_2.get(),
+		tag(NECKLACES).add(
+				TFItems.CHARM_OF_LIFE_1.get(), TFItems.CHARM_OF_LIFE_2.get()
+		);
+
+		tag(BELTS).add(
 				TFItems.CHARM_OF_KEEPING_1.get(), TFItems.CHARM_OF_KEEPING_2.get(), TFItems.CHARM_OF_KEEPING_3.get()
 		);
 
-		tag(HEAD).add(
+		tag(HATS).add(
 				TFBlocks.NAGA_TROPHY.get().asItem(),
 				TFBlocks.LICH_TROPHY.get().asItem(),
 				TFBlocks.MINOSHROOM_TROPHY.get().asItem(),

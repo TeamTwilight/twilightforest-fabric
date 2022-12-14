@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#c:gems/carminite"
+    "#c:carminite_gems"
   ]
 }

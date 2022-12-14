@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "tag": "c:ingots/fiery"
+      "tag": "c:fiery_ingots"
     },
     "X": {
       "tag": "c:blaze_rods"

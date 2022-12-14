@@ -5,7 +5,7 @@
       "tag": "twilightforest:towerwood"
     },
     "-": {
-      "tag": "c:ingots/knightmetal"
+      "tag": "c:knightmetal_ingots"
     },
     "o": {
       "item": "twilightforest:knightmetal_ring"

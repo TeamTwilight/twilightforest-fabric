@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:ingots/ironwood"
+            "tag": "c:ironwood_ingots"
           }
         ]
       },

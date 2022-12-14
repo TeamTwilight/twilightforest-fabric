@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "-": {
-      "tag": "c:ingots/knightmetal"
+      "tag": "c:knightmetal_ingots"
     }
   },
   "pattern": [

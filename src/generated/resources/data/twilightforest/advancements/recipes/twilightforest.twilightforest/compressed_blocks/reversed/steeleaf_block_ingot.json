@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "c:storage_blocks/steeleaf"
+            "tag": "c:steeleaf_storage_blocks"
           }
         ]
       },
