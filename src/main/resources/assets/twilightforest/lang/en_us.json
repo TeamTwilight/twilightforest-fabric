@@ -1649,5 +1649,29 @@
 
   "gui.crumble_horn_jei.dropped_as_item": "Dropped as an item",
 
+  "tag.twilightforest.nyi": "Not Yet Implemented",
+  "tag.twilightforest.wip": "Work in Progress",
+
+  "tag.twilightforest.banned_uncrafting_ingredients": "Banned Uncrafting Ingredients",
+  "tag.twilightforest.uncrafting_ignores_cost": "Uncrafting Ignores Cost",
+  "tag.twilightforest.banned_uncraftables": "Banned Uncraftables",
+
+  "tag.twilightforest.logs": "Twilight Forest Logs",
+  "tag.twilightforest.transwood_logs": "Transwood Logs",
+  "tag.twilightforest.sortwood_logs": "Sortingwood Logs",
+  "tag.twilightforest.twilight_oak_logs": "Twilight Oak Logs",
+  "tag.twilightforest.timewood_logs": "Timewood Logs",
+  "tag.twilightforest.towerwood": "Towerwood",
+  "tag.twilightforest.mangrove_logs": "Mangrove Logs",
+  "tag.twilightforest.darkwood_logs": "Darkwood Logs",
+  "tag.twilightforest.mining_logs": "Minewood Logs",
+  "tag.twilightforest.canopy_logs": "Canopy Logs",
+
+  "tag.twilightforest.kept_on_death": "Kept on Death",
+  "tag.twilightforest.fiery_vial": "Fiery Vials",
+  "tag.twilightforest.arctic_fur": "Arctic Furs",
+  "tag.twilightforest.kobold_pacification_breads": "Kobloid Pacification Breads",
+  "tag.twilightforest.portal.activator": "Portal Activators",
+
   "config.jade.plugin_twilightforest.quest_ram_wool": "Quest Ram Wool"
 }
