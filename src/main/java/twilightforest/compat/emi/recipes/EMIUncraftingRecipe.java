@@ -83,4 +83,9 @@ public class EMIUncraftingRecipe extends TFEmiRecipe<CraftingRecipe> {
             widgets.addSlot(EmiStack.of(recipe.getResultItem()), 5, 14).output(true).recipeContext(this); //Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
         }
     }
+
+    @Override
+    public boolean supportsRecipeTree() {
+        return false;
+    }
 }
