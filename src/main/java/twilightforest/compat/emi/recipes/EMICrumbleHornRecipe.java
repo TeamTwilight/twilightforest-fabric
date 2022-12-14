@@ -8,6 +8,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.compat.emi.CustomTooltipEMISlotWidget;
 import twilightforest.compat.emi.EMICompat;
 import twilightforest.init.TFItems;
 import twilightforest.item.recipe.CrumbleRecipe;
@@ -50,9 +51,9 @@ public class EMICrumbleHornRecipe extends TFEmiRecipe<CrumbleRecipe> {
 			widgets.addSlot(output, 107, 0);
 		} else {
 			Block block = recipe.input().getBlock();
-			widgets.addSlot(EmiStack.of(block), 107, 0)
-					.drawBack(false)
-					.appendTooltip(DROPPED_AS_ITEM);
+			widgets.add(new CustomTooltipEMISlotWidget(EmiStack.of(block), 107, 0))
+					.addTooltipLine(1, DROPPED_AS_ITEM)
+					.drawBack(false);
 		}
 	}
 }

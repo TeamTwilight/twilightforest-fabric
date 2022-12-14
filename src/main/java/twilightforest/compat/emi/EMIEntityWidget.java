@@ -45,11 +45,6 @@ public class EMIEntityWidget extends Widget {
 		this.bounds = new Bounds(x, y, size, size);
 	}
 
-	public EMIEntityWidget addBackground(WidgetHolder widgets) {
-		widgets.addTexture(EmiTexture.LARGE_SLOT, bounds.x(), bounds.y());
-		return this;
-	}
-
 	@Override
 	public Bounds getBounds() {
 		return bounds;
