@@ -31,6 +31,7 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 
 	public SkullCandleItem(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall, FabricItemSettings properties) {
 		super(floor, wall, properties.equipmentSlot(stack -> EquipmentSlot.HEAD));
+		CuriosCharmItem.setupTrinket(this);
 	}
 
 	@Override

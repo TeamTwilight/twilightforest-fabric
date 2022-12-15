@@ -16,6 +16,7 @@ public class TrophyItem extends StandingAndWallBlockItem {
 
 	public TrophyItem(Block floorBlock, Block wallBlock, FabricItemSettings properties) {
 		super(floorBlock, wallBlock, properties.equipmentSlot(stack -> EquipmentSlot.HEAD));
+		CuriosCharmItem.setupTrinket(this);
 	}
 
 	@Override

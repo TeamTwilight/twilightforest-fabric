@@ -85,7 +85,7 @@ public class TFClientEvents {
 		ClientTickEvents.END_CLIENT_TICK.register(TFClientEvents::clientTick);
 		ItemTooltipCallback.EVENT.register(TFClientEvents::tooltipEvent);
 		FOVModifierCallback.PARTIAL_FOV.register(TFClientEvents::FOVUpdate);
-		LivingEntityRenderEvents.POST.register(TFClientEvents::unrenderHeadWithTrophies);
+		LivingEntityRenderEvents.PRE.register(TFClientEvents::unrenderHeadWithTrophies);
 		ItemTooltipCallback.EVENT.register(TFClientEvents::translateBookAuthor);
 		CameraSetupCallback.EVENT.register(TFClientEvents::camera);
 	}
@@ -303,7 +303,7 @@ public class TFClientEvents {
 		return fov;
 	}
 
-	public static void unrenderHeadWithTrophies(LivingEntity entity, LivingEntityRenderer<?, ?> renderer, float partialRenderTick, PoseStack matrixStack, MultiBufferSource buffers, int light) {
+	public static boolean unrenderHeadWithTrophies(LivingEntity entity, LivingEntityRenderer<?, ?> renderer, float partialRenderTick, PoseStack matrixStack, MultiBufferSource buffers, int light) {
 		ItemStack stack = entity.getItemBySlot(EquipmentSlot.HEAD);
 		boolean visible = !(stack.getItem() instanceof TrophyItem) && !(stack.getItem() instanceof SkullCandleItem) && !areCuriosEquipped(entity);
 
@@ -313,6 +313,7 @@ public class TFClientEvents {
 				humanoidModel.hat.visible = false;
 			}
 		}
+		return false;
 	}
 
 	private static boolean areCuriosEquipped(LivingEntity entity) {
