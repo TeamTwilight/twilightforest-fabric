@@ -84,7 +84,7 @@ public class TFClientEvents {
 		RenderTickStartCallback.EVENT.register(TFClientEvents::renderTick);
 		ClientTickEvents.END_CLIENT_TICK.register(TFClientEvents::clientTick);
 		ItemTooltipCallback.EVENT.register(TFClientEvents::tooltipEvent);
-		FOVModifierCallback.PARTIAL_FOV.register(TFClientEvents::FOVUpdate);
+		FieldOfViewEvents.MODIFY.register(TFClientEvents::FOVUpdate);
 		LivingEntityRenderEvents.PRE.register(TFClientEvents::unrenderHeadWithTrophies);
 		ItemTooltipCallback.EVENT.register(TFClientEvents::translateBookAuthor);
 		CameraSetupCallback.EVENT.register(TFClientEvents::camera);
@@ -290,8 +290,7 @@ public class TFClientEvents {
 	/**
 	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
 	 */
-	public static double FOVUpdate(GameRenderer renderer, Camera camera, double partialTick, double fov) {
-		if (!(camera.getEntity() instanceof Player player)) return fov;
+	public static float FOVUpdate(Player player, float fov) {
 		if (player.isUsingItem()) {
 			Item useItem = player.getUseItem().getItem();
 			if (useItem instanceof TripleBowItem || useItem instanceof EnderBowItem || useItem instanceof IceBowItem || useItem instanceof SeekerBowItem) {
