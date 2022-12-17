@@ -6,12 +6,13 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback.RegistrationHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.SilverfishModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
@@ -23,7 +24,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -43,7 +43,6 @@ import twilightforest.init.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
 import static twilightforest.init.TFEntities.*;
@@ -67,7 +66,7 @@ public class TFClientSetup implements ClientModInitializer {
 		ClientTickEvents.END_CLIENT_TICK.register(LockedBiomeListener::clientTick);
 		clientSetup();
 		registerEntityRenderer();
-//		EntityAddedLayerCallback.EVENT.register(TFClientSetup::attachRenderLayers);
+		LivingEntityFeatureRendererRegistrationCallback.EVENT.register(TFClientSetup::attachRenderLayers);
 	}
 
 	public static class FabricEvents {
@@ -110,19 +109,12 @@ public class TFClientSetup implements ClientModInitializer {
 
     }
 
-	@SuppressWarnings("unchecked")
-	public static void attachRenderLayers(final Map<EntityType<?>, EntityRenderer<?>> renderers, final Map<String, EntityRenderer<? extends Player>> skins) {
-		skins.forEach((id, renderer) -> {
-			LivingEntityRenderer<Player, EntityModel<Player>> skin = (LivingEntityRenderer<Player, EntityModel<Player>>) skins.get(renderer);
-			attachRenderLayers(Objects.requireNonNull(skin));
-		});
-		renderers.values().stream().
-				filter(LivingEntityRenderer.class::isInstance).map(LivingEntityRenderer.class::cast).forEach(TFClientSetup::attachRenderLayers);
-	}
-
-	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
-		renderer.addLayer(new ShieldLayer<>(renderer));
-		renderer.addLayer(new IceLayer<>(renderer));
+	public static void attachRenderLayers(EntityType<? extends LivingEntity> entityType,
+										  LivingEntityRenderer<?, ?> renderer,
+										  RegistrationHelper registrationHelper,
+										  EntityRendererProvider.Context context) {
+		registrationHelper.register(new ShieldLayer<>(renderer));
+		registrationHelper.register(new IceLayer<>(renderer));
 	}
 
 	@Environment(EnvType.CLIENT)
