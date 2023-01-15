@@ -72,6 +72,8 @@ public class TFClientEvents {
 		@Deprecated // tterrag said this would become deprecated soon in favor of above method
 		@SubscribeEvent
 		public static void modelBake(ModelBakeEvent event) {
+			TFItems.addItemModelProperties();
+
 			// TODO Unhardcode, into using Model Deserializers and load from JSON instead
 			fullbrightItem(event, TFItems.FIERY_INGOT);
 			fullbrightItem(event, TFItems.FIERY_BOOTS);

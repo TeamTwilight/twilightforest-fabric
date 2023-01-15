@@ -68,7 +68,6 @@ public class TFClientSetup {
 		} catch (ClassNotFoundException e) {
 			optifinePresent = false;
 		}
-		TFItems.addItemModelProperties();
 
         RenderLayerRegistration.init();
         TFBlockEntities.registerTileEntityRenders();
