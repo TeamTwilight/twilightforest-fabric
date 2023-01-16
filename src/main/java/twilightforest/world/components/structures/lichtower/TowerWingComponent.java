@@ -1976,7 +1976,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		// go left a little
 		int leftOffset = startZ - (1 + rand.nextInt(3));
-		int leftHeight = rand.nextInt(this.height - startHeight + 1);
+		int leftHeight = rand.nextInt(Math.max(this.height - startHeight, 1));
 		if (leftOffset >= 0) {
 			for (int z = startZ; z > leftOffset; z--) {
 				this.setBlockStateRotated(world, colour, 0, startHeight, z, rotation, sbb);
@@ -1988,7 +1988,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		// go right a little
 		int rightOffset = startZ + (1 + rand.nextInt(3));
-		int rightHeight = rand.nextInt(this.height - startHeight + 1);
+		int rightHeight = rand.nextInt(Math.max(this.height - startHeight, 1));
 		if (rightOffset < this.size - 1) {
 			for (int z = startZ; z < rightOffset; z++) {
 				this.setBlockStateRotated(world, colour, 0, startHeight, z, rotation, sbb);
