@@ -25,6 +25,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.WrittenBookItem;
@@ -98,7 +99,9 @@ public class TFClientEvents {
 						.map(Material::texture)
 						.forEach(evt::addSprite);
 
-			evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
+			if (InventoryMenu.BLOCK_ATLAS.equals(map.location())) {
+				evt.addSprite(TwilightForestMod.prefix("block/mosspatch"));
+			}
 		}
 
 		@SubscribeEvent
