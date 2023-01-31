@@ -87,8 +87,8 @@ public class TwilightForestMod implements ModInitializer {
 
 		TFBannerPatterns.BANNER_PATTERNS.register();
 		BiomeKeys.BIOMES.register();
-		TFBlockEntities.BLOCK_ENTITIES.register();
 		TFBlocks.BLOCKS.register();
+		TFBlockEntities.BLOCK_ENTITIES.register();
 		TFLoot.CONDITIONS.register();
 		TFMenuTypes.CONTAINERS.register();
 		TFDimensionSettings.DIMENSION_TYPES.register();
@@ -97,6 +97,7 @@ public class TwilightForestMod implements ModInitializer {
 		TFFeatures.FEATURES.register();
 		TFFeatureModifiers.FOLIAGE_PLACERS.register();
 		TFLoot.FUNCTIONS.register();
+		TFSounds.SOUNDS.register();
 		TFItems.ITEMS.register();
 		TFLootModifiers.LOOT_MODIFIERS.register();
 		TFMobEffects.MOB_EFFECTS.register();
@@ -106,7 +107,6 @@ public class TwilightForestMod implements ModInitializer {
 		TFRecipes.RECIPE_SERIALIZERS.register();
 		TFRecipes.RECIPE_TYPES.register();
 		//TFPotions.POTIONS.register(modbus);
-		TFSounds.SOUNDS.register();
 		TFEntities.SPAWN_EGGS.register();
 		TFStats.STATS.register();
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register();
