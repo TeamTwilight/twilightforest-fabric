@@ -215,14 +215,14 @@ public class BrittleFlaskItem extends Item {
 		return 0;
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			stack.getOrCreateTag().putInt("Uses", 0);
-			stack.getOrCreateTag().putInt("Breakage", 0);
-			stack.getOrCreateTag().putBoolean("Refillable", true);
-			items.add(stack);
-		}
-	}
+
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			stack.getOrCreateTag().putInt("Uses", 0);
+//			stack.getOrCreateTag().putInt("Breakage", 0);
+//			stack.getOrCreateTag().putBoolean("Refillable", true);
+//			items.add(stack);
+//		}
+//	}
 }

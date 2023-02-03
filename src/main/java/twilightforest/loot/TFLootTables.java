@@ -20,6 +20,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.TwilightForestMod;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class TFLootTables {
@@ -84,12 +85,12 @@ public class TFLootTables {
 	public static final ResourceLocation FIREFLY_SQUISH_DROPS = register("blocks/firefly_squish");
 	public static final ResourceLocation MOONWORM_SQUISH_DROPS = register("blocks/moonworm_squish");
 
-	public static final ResourceLocation ALL_BOSSES = register("entities/all_bosses");
+	//public static final ResourceLocation ALL_BOSSES = register("entities/all_bosses");
 
 	public final ResourceLocation lootTable;
 
 	private TFLootTables(String path) {
-		this.lootTable = TwilightForestMod.prefix(String.format("structures/%s", path));
+		this.lootTable = TwilightForestMod.prefix(String.format("chests/%s", path));
 	}
 
 	public void generateChest(WorldGenLevel world, BlockPos pos, Direction dir, boolean trapped) {
@@ -146,5 +147,9 @@ public class TFLootTables {
 				}
 			}
 		}
+	}
+
+	public static Set<ResourceLocation> allBuiltin() {
+		return Collections.unmodifiableSet(TF_LOOT_TABLES);
 	}
 }

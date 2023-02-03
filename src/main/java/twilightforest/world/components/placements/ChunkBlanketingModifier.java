@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -56,7 +57,7 @@ public class ChunkBlanketingModifier extends PlacementModifier {
                 BlockPos pos = new BlockPos(chunkOriginX + xInChunk, context.getHeight(heightmap, chunkOriginX + xInChunk, chunkOriginZ + zInChunk), chunkOriginZ + zInChunk);
 
                 if (biomeRLOptional.isPresent()) {
-                    if (biomeRLOptional.get().equals(context.getLevel().registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(context.getLevel().getBiome(pos).value()))) {
+                    if (biomeRLOptional.get().equals(context.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(context.getLevel().getBiome(pos).value()))) {
                         coordinates.add(pos);
                     }
                 } else {

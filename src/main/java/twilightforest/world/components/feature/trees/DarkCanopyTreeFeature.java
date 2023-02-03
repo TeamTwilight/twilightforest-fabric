@@ -42,9 +42,6 @@ import java.util.function.BiConsumer;
 //Lots of things from TreeFeature, but we're checking for dirt to place on
 public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 
-	int difference = 0;
-	BlockPos validPos = new BlockPos(0, 0, 0);
-
 	public DarkCanopyTreeFeature(Codec<TreeConfiguration> config) {
 		super(config);
 	}
@@ -57,6 +54,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
+		BlockPos validPos = BlockPos.ZERO;
 		Material materialUnder;
 		for (int dy = pos.getY(); dy >= reader.getMinBuildHeight(); dy--) {
 			materialUnder = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
@@ -110,7 +108,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			set3.add(p_225290_.immutable());
 			reader.setBlock(p_225290_, p_225291_, 19);
 		};
-		boolean flag = this.doPlace(reader, rand, pos, biconsumer, biconsumer1, biconsumer2, treeconfiguration);
+		boolean flag = this.doPlace(reader, rand, pos, validPos, biconsumer, biconsumer1, biconsumer2, treeconfiguration);
 		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
 			if (!treeconfiguration.decorators.isEmpty()) {
 				TreeDecorator.Context treedecorator$context = new TreeDecorator.Context(reader, biconsumer3, rand, set1, set2, set);
@@ -130,7 +128,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 	}
 
 	//Mostly [VanillaCopy] of TreeFeature.doPlace, edits noted
-	private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, BiConsumer<BlockPos, BlockState> consumer2, TreeConfiguration config) {
+	private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BlockPos validPos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, BiConsumer<BlockPos, BlockState> consumer2, TreeConfiguration config) {
 		//set our blockpos to the valid dirt pos, not highest ground
 		pos = new BlockPos(pos.getX(), validPos.getY(), pos.getZ());
 		int i = config.trunkPlacer.getTreeHeight(random);

@@ -2,46 +2,50 @@ package twilightforest.data;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
 import twilightforest.data.custom.UncraftingRecipeGenerator;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
 
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
 
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators implements DataGeneratorEntrypoint {
+
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator generator) {
-		var existingData = System.getProperty("twilightforest.data.existingData").split(";");
-		ExistingFileHelper helper = new ExistingFileHelper(Arrays.stream(existingData).map(Paths::get).toList(), Collections.emptySet(),
-				true, null, null);
+		FabricDataGenerator.Pack pack = generator.createPack();
+		ExistingFileHelper helper = event.getExistingFileHelper();
 
-		generator.addProvider(true, new AdvancementGenerator(generator));
-		generator.addProvider(true, new BlockstateGenerator(generator, helper));
-		generator.addProvider(true, new ItemModelGenerator(generator, helper));
-		generator.addProvider(true, new BiomeTagGenerator(generator));
-		generator.addProvider(true, new CustomTagGenerator.BannerPatternTagGenerator(generator));
-		FabricTagProvider.BlockTagProvider blocktags = new BlockTagGenerator(generator);
-		generator.addProvider(true, blocktags);
-		generator.addProvider(true, new FluidTagGenerator(generator));
-		generator.addProvider(true, new ItemTagGenerator(generator, blocktags));
-		generator.addProvider(true, new EntityTagGenerator(generator));
-		generator.addProvider(true, new CustomTagGenerator.EnchantmentTagGenerator(generator));
-		generator.addProvider(true, new LootGenerator(generator));
-		generator.addProvider(true, new StonecuttingGenerator(generator));
-		generator.addProvider(true, new CraftingGenerator(generator));
-		generator.addProvider(true, new WorldGenerator(generator));
-		generator.addProvider(true, new LootModifierGenerator(generator));
+		pack.addProvider(TFAdvancementProvider::new);
+		generator.addProvider(event.includeClient(), new BlockstateGenerator(output, helper));
+		generator.addProvider(event.includeClient(), new ItemModelGenerator(output, helper));
+		generator.addProvider(event.includeClient(), new AtlasGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new BiomeTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.BannerPatternTagGenerator(output, provider, helper));
+		BlockTagGenerator blocktags = new BlockTagGenerator(output, provider, helper);
+		generator.addProvider(event.includeServer(), blocktags);
+		generator.addProvider(event.includeServer(), new FluidTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, provider, blocktags, helper));
+		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.EnchantmentTagGenerator(output, provider, helper));
+		pack.addProvider(LootGenerator::new);
+		generator.addProvider(event.includeServer(), new CraftingGenerator(output));
+		generator.addProvider(event.includeServer(), new LootModifierGenerator(output));
+		pack.addProvider(WorldGenerator::new);
 
-		generator.addProvider(true, new CrumbleHornGenerator(generator, helper));
-		generator.addProvider(true, new TransformationPowderGenerator(generator, helper));
-		generator.addProvider(true, new UncraftingRecipeGenerator(generator, helper));
-		generator.addProvider(true, new StalactiteGenerator(generator));
+		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new UncraftingRecipeGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new StalactiteGenerator(output));
 	}
 }

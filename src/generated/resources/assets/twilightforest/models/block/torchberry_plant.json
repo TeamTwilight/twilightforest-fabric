@@ -90,7 +90,10 @@
     {
       "faces": {
         "north": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -100,7 +103,10 @@
           ]
         },
         "south": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -135,7 +141,10 @@
     {
       "faces": {
         "east": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -145,7 +154,10 @@
           ]
         },
         "west": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#cross2",
           "uv": [
             0.0,

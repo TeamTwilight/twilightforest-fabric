@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/naga_chestplate"
+    "layer0": "twilightforest:item/naga_chestplate"
   }
 }

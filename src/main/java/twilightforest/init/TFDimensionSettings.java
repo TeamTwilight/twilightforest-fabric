@@ -1,33 +1,40 @@
 package twilightforest.init;
 
-import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.components.biomesources.TFBiomeProvider;
+import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.registration.biomes.BiomeMaker;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalLong;
 
-//does this need a better name? Does it need to be split up, or can we possibly add more dimension related registries here?
 public class TFDimensionSettings {
 
-	public static final LazyRegistrar<NoiseGeneratorSettings> NOISE_GENERATORS = LazyRegistrar.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, TwilightForestMod.ID);
-	public static final LazyRegistrar<DimensionType> DIMENSION_TYPES = LazyRegistrar.create(Registry.DIMENSION_TYPE_REGISTRY, TwilightForestMod.ID);
+	public static long seed; //used for seed ASM
 
-	public static final RegistryObject<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = NOISE_GENERATORS.register("twilight_noise_gen", TFDimensionSettings::tfDefault);
-	public static final RegistryObject<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = NOISE_GENERATORS.register("skylight_noise_gen", TFDimensionSettings::skylight);
+	public static final ResourceKey<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("twilight_noise_gen"));
+	public static final ResourceKey<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("skylight_noise_gen"));
 
-	public static final RegistryObject<DimensionType> TWILIGHT_DIM_TYPE = DIMENSION_TYPES.register("twilight_forest_type", TFDimensionSettings::twilightDimType);
+	public static final ResourceKey<DimensionType> TWILIGHT_DIM_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE, TwilightForestMod.prefix("twilight_forest_type"));
+
+	public static final ResourceKey<LevelStem> TWILIGHT_LEVEL_STEM =  ResourceKey.create(Registries.LEVEL_STEM, TwilightForestMod.prefix("twilight_forest"));
 
 	private static DimensionType twilightDimType() {
 		return new DimensionType(
-				OptionalLong.of(13000L), //fixed time TODO Kill the celestial bodies
+				OptionalLong.of(13000L), //fixed time
 				true, //skylight
 				false, //ceiling
 				false, //ultrawarm
@@ -125,5 +132,40 @@ public class TFDimensionSettings {
 				false,
 				false
 		);
+	}
+
+	public static void bootstrapNoise(BootstapContext<NoiseGeneratorSettings> context) {
+		context.register(TWILIGHT_NOISE_GEN, tfDefault());
+		context.register(SKYLIGHT_NOISE_GEN, skylight());
+	}
+
+	public static void bootstrapType(BootstapContext<DimensionType> context) {
+		context.register(TWILIGHT_DIM_TYPE, twilightDimType());
+	}
+
+	public static void bootstrapStem(BootstapContext<LevelStem> context) {
+		HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
+		HolderGetter<DimensionType> dimTypes = context.lookup(Registries.DIMENSION_TYPE);
+		HolderGetter<NoiseGeneratorSettings> noiseGenSettings = context.lookup(Registries.NOISE_SETTINGS);
+
+		NoiseBasedChunkGenerator wrappedChunkGenerator = new NoiseBasedChunkGenerator(
+				new TFBiomeProvider(
+						0L,
+						biomeRegistry,
+						BiomeMaker.makeBiomeList(biomeRegistry, biomeRegistry.getOrThrow(TFBiomes.UNDERGROUND)),
+						-1.25F,
+						2.5F),
+				noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN));
+
+		LevelStem stem = new LevelStem(
+				dimTypes.getOrThrow(TFDimensionSettings.TWILIGHT_DIM_TYPE),
+				new ChunkGeneratorTwilight(
+						wrappedChunkGenerator,
+						noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN),
+						true,
+						Optional.of(19),
+						BiomeMaker.BIOME_FEATURES_SETS));
+
+		context.register(TWILIGHT_LEVEL_STEM, stem);
 	}
 }

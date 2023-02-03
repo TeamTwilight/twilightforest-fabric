@@ -3,9 +3,11 @@ package twilightforest.entity.projectile;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,7 +48,7 @@ public class ThrownBlock extends TFThrowable {
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.state = NbtUtils.readBlockState(tag.getCompound("BlockState"));
+		this.state = NbtUtils.readBlockState(this.getLevel().holderLookup(Registries.BLOCK), tag.getCompound("BlockState"));
 	}
 
 	@Override
@@ -87,7 +89,7 @@ public class ThrownBlock extends TFThrowable {
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return new ClientboundAddEntityPacket(this, Block.getId(this.getBlockState()));
 	}
 

@@ -1,12 +1,11 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NagaModel;
@@ -32,8 +31,8 @@ public class NagaSegmentRenderer<T extends NagaSegment> extends TFPartRenderer<T
 			}
 			float yaw2 = entityIn.yRotO + yawDiff * partialTicks;
 
-			matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(yaw2));
-			matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(entityIn.getXRot()));
+			matrixStackIn.mulPose(Axis.YP.rotationDegrees(yaw2));
+			matrixStackIn.mulPose(Axis.XP.rotationDegrees(entityIn.getXRot()));
 
 			int light = entityRenderDispatcher.getPackedLightCoords(entityIn.getParent(), partialTicks);
 			super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, light);

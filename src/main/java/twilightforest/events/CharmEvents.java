@@ -59,7 +59,7 @@ public class CharmEvents {
 	// For when the player dies
 	public static boolean applyDeathItems(ServerPlayer player, DamageSource damageSource, float damageAmount) {
 		//ensure our player is real and in survival before attempting anything
-		if (player.getLevel().isClientSide() || (player.getClass() != ServerPlayer.class) ||
+		if (player.getLevel().isClientSide() || (player.getClass() != ServerPlayer.class) || player.isFake() ||
 				player.isCreative() || player.isSpectator()) return true;
 
 		if (charmOfLife(player)) {

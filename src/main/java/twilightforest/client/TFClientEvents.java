@@ -1,8 +1,11 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.fabricators_of_create.porting_lib.client_events.event.client.ModelEvents;
 import io.github.fabricators_of_create.porting_lib.event.client.*;
 import io.github.fabricators_of_create.porting_lib.event.client.CameraSetupCallback.CameraInfo;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
@@ -11,7 +14,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -19,15 +21,12 @@ import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.client.renderer.DimensionSpecialEffects.SkyType;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.*;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -46,8 +45,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
@@ -57,7 +54,6 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.ShieldLayer;
-import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
@@ -68,7 +64,6 @@ import twilightforest.world.registration.TFGenerationSettings;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
@@ -79,8 +74,7 @@ public class TFClientEvents {
 		ModBusEvents.registerLoaders();
 		MinecraftTailCallback.EVENT.register(ModBusEvents::registerDimEffects);
 		WorldRenderEvents.LAST.register(TFClientEvents::renderWorldLast);
-		ModelsBakedCallback.EVENT.register(ModBusEvents::modelBake);
-		TextureStitchCallback.PRE.register(ModBusEvents::texStitch);
+		ModelEvents.MODIFY_BAKING_RESULT.register(ModBusEvents::modelBake);
 		RenderTickStartCallback.EVENT.register(TFClientEvents::renderTick);
 		ClientTickEvents.END_CLIENT_TICK.register(TFClientEvents::clientTick);
 		ItemTooltipCallback.EVENT.register(TFClientEvents::tooltipEvent);
@@ -97,7 +91,7 @@ public class TFClientEvents {
 			ModelLoadingRegistry.INSTANCE.registerResourceProvider(manager -> CastleDoorModelLoader.INSTANCE);
 		}
 
-		public static void modelBake(ModelManager manager, Map<ResourceLocation, BakedModel> bakedModels, ModelBakery loader) {
+		public static void modelBake(Map<ResourceLocation, BakedModel> models, ModelBakery modelBakery) {
 			TFItems.addItemModelProperties();
 
 //			List<Map.Entry<ResourceLocation, BakedModel>> models =  bakedModels.entrySet().stream() Handled by ItemBlockRenderTypesMixin
@@ -106,32 +100,24 @@ public class TFClientEvents {
 //			models.forEach(entry -> bakedModels.put(entry.getKey(), new BakedLeavesModel(entry.getValue())));
 		}
 
-		public static void texStitch(TextureAtlas map, Consumer<ResourceLocation> spriteAdder) {
-			if (Sheets.CHEST_SHEET.equals(map.location()))
-				TwilightChestRenderer.MATERIALS.values().stream()
-						.flatMap(e -> e.values().stream())
-						.map(Material::texture)
-						.forEach(spriteAdder::accept);
-
-			spriteAdder.accept(TwilightForestMod.prefix("block/mosspatch"));
-		}
-
 		public static void registerModels() {
-			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(ShieldLayer.LOC));
-			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory")));
-			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory")));
-			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory")));
+			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+				out.accept(ShieldLayer.LOC);
+				out.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
+				out.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
+				out.accept(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
 
-			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(TwilightForestMod.prefix("block/casket_obsidian")));
-			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(TwilightForestMod.prefix("block/casket_stone")));
-			ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(TwilightForestMod.prefix("block/casket_basalt")));
+				out.accept(TwilightForestMod.prefix("block/casket_obsidian"));
+				out.accept(TwilightForestMod.prefix("block/casket_stone"));
+				out.accept(TwilightForestMod.prefix("block/casket_basalt"));
+			});
 		}
 
 		public static void registerDimEffects(Minecraft client) {
 			new TFSkyRenderer();
 			new TFWeatherRenderer();
 			ResourceLocation id = TwilightForestMod.prefix("renderer");
-			TwilightForestRenderInfo info = new TwilightForestRenderInfo(128.0F, false, SkyType.NONE, false, false);
+			TwilightForestRenderInfo info = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
 			DimensionRenderingRegistry.registerDimensionEffects(id, info);
 			DimensionRenderingRegistry.registerSkyRenderer(TFGenerationSettings.DIMENSION_KEY, info::renderSky);
 			DimensionRenderingRegistry.registerWeatherRenderer(TFGenerationSettings.DIMENSION_KEY, info::renderSnowAndRain);

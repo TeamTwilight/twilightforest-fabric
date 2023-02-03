@@ -1,7 +1,8 @@
 package twilightforest.client.renderer.entity.legacy;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -44,16 +45,16 @@ public class LegacyMinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Mi
 				int i = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
 				ms.pushPose();
 				ms.translate(0.2F, -0.35F, 0.5D);
-				ms.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
+				ms.mulPose(Axis.YP.rotationDegrees(-48.0F));
 				ms.scale(-1.0F, -1.0F, 1.0F);
 				ms.translate(-0.5D, -0.5D, -0.5D);
 				blockrendererdispatcher.renderSingleBlock(blockstate, ms, buffers, light, i);
 				ms.popPose();
 				ms.pushPose();
 				ms.translate(0.2F, -0.35F, 0.5D);
-				ms.mulPose(Vector3f.YP.rotationDegrees(42.0F));
+				ms.mulPose(Axis.YP.rotationDegrees(42.0F));
 				ms.translate(0.1F, 0.0D, -0.6F);
-				ms.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
+				ms.mulPose(Axis.YP.rotationDegrees(-48.0F));
 				ms.scale(-1.0F, -1.0F, 1.0F);
 				ms.translate(-0.5D, -0.5D, -0.5D);
 				blockrendererdispatcher.renderSingleBlock(blockstate, ms, buffers, light, i);
@@ -62,7 +63,7 @@ public class LegacyMinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Mi
 				this.getParentModel().head.translateAndRotate(ms);
 				// TF - adjust head shroom
 				ms.translate(0.0D, -0.9, 0.05);
-				ms.mulPose(Vector3f.YP.rotationDegrees(-78.0F));
+				ms.mulPose(Axis.YP.rotationDegrees(-78.0F));
 				ms.scale(-1.0F, -1.0F, 1.0F);
 				ms.translate(-0.5D, -0.5D, -0.5D);
 				blockrendererdispatcher.renderSingleBlock(blockstate, ms, buffers, light, i);

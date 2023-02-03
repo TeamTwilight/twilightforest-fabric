@@ -1,8 +1,6 @@
 package twilightforest.client.model.block.patch;
 
 import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
-import io.github.fabricators_of_create.porting_lib.model.SimpleModelState;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -10,18 +8,16 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.block.PatchBlock;
-
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+import twilightforest.block.PatchBlock;
 import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /* Unlike the usual way models are done, this takes more of a state-oriented approach.
  * It is suboptimal but please, be my guest if you wish to see it improved */
@@ -75,13 +71,14 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
+            MAX.x = MIN.x();
             MIN.add(-1, 0, num0);
             if (MAX.z() - ((num1 + num2 + num3)) > MIN.z()) {
                 // draw two blobs
-                MAX.setZ(MIN.z() + num1);
+                MAX.z = MIN.z() + num1;
                 this.quadsFromAABB(list);
-                MAX.setZ(originalMaxZ - num2);
-                MIN.setZ(MAX.z() - num3);
+                MAX.z = originalMaxZ - num2;
+                MIN.z = MAX.z() - num3;
                 this.quadsFromAABB(list);
             } else {
                 //draw one blob
@@ -103,15 +100,15 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            MIN.setX(MAX.x());
+            MIN.x = MAX.x();
             MAX.add(1, 0, 0);
             MIN.add(0, 0, num0);
             if (MAX.z() - ((num1 +num2 + num3)) > MIN.z()) {
                 // draw two blobs
-                MAX.setZ(MIN.z() + num1);
+                MAX.z = MIN.z() + num1;
                 this.quadsFromAABB(list);
-                MAX.setZ(originalMaxZ - num2);
-                MIN.setZ(MAX.z() - num3);
+                MAX.z = originalMaxZ - num2;
+                MIN.z = MAX.z() - num3;
                 this.quadsFromAABB(list);
             } else {
                 //draw one blob
@@ -132,12 +129,12 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-           MAX.setZ(MIN.z());
+           MAX.z = MIN.z();
             MIN.add(num0, 0, -1F);
-            MAX.setX(MIN.x() + num1);
+            MAX.x = MIN.x() + num1;
             this.quadsFromAABB(list);
-            MAX.setX(originalMaxX - num2);
-            MIN.setX(MAX.x() - num3);
+            MAX.x = originalMaxX - num2;
+            MIN.x = MAX.x() - num3;
             this.quadsFromAABB(list);
             // reset render bounds
             this.setVectors(bb);
@@ -153,13 +150,13 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
             int num2 = (int) (seed >> 18 & 3L) + 1;
             int num3 = (int) (seed >> 21 & 3L) + 1;
 
-            MIN.setZ(MAX.z());
+            MIN.z = MAX.z();
             MAX.add(0, 0, 1F);
             MIN.add(num0, 0, 0);
-            MAX.setX(MIN.x() + num1);
+            MAX.x = MIN.x() + num1;
             this.quadsFromAABB(list);
-            MAX.setX(originalMaxX - num2);
-            MIN.setX(MAX.x() - num3);
+            MAX.x = originalMaxX - num2;
+            MIN.x = MAX.x() - num3;
             this.quadsFromAABB(list);
             // reset render bounds
             this.setVectors(bb);
@@ -179,7 +176,7 @@ public record PatchModel(ResourceLocation location, TextureAtlasSprite texture, 
     }
 
     private BakedQuad quadFromVectors(Vector3f min, Vector3f max, Direction direction) {
-        BlockElementFace face = new BlockElementFace(null, 0, this.texture().getName().toString(), switch (direction) {
+        BlockElementFace face = new BlockElementFace(null, 0, this.texture().atlasLocation().toString(), switch (direction) {
             case NORTH -> new BlockFaceUV(new float[] { max.x(), min.z() + 1f, min.x(), min.z() }, 0);
             case EAST  -> new BlockFaceUV(new float[] { max.x(), min.z(), max.x() - 1f, max.z() }, 90);
             case SOUTH -> new BlockFaceUV(new float[] { min.x(), max.z(), max.x(), max.z() - 1f }, 0);

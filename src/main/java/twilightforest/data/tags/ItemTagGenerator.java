@@ -1,18 +1,23 @@
 package twilightforest.data.tags;
 
-import me.alphamode.forgetags.Tags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
+
+import java.util.concurrent.CompletableFuture;
 
 public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 	public static final TagKey<Item> TWILIGHT_OAK_LOGS = TagKey.create(Registry.ITEM_REGISTRY, TwilightForestMod.prefix("twilight_oak_logs"));
@@ -66,12 +71,12 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 	private static final TagKey<Item> NECKLACES = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("trinkets", "chest/necklace"));
 	private static final TagKey<Item> HATS = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("trinkets", "head/hat"));
 
-	public ItemTagGenerator(FabricDataGenerator generator, FabricTagProvider.BlockTagProvider blockprovider) {
-		super(generator, blockprovider);
+	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, TagsProvider<Block> provider, ExistingFileHelper helper) {
+		super(output, future, provider, TwilightForestMod.ID, helper);
 	}
 
 	@Override
-	protected void generateTags() {
+	protected void generateTags(HolderLookup.Provider provider) {
 		this.copy(BlockTagGenerator.TWILIGHT_OAK_LOGS, TWILIGHT_OAK_LOGS);
 		this.copy(BlockTagGenerator.CANOPY_LOGS, CANOPY_LOGS);
 		this.copy(BlockTagGenerator.MANGROVE_LOGS, MANGROVE_LOGS);
@@ -314,6 +319,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		tag(Tags.Items.TOOLS_HOES).add(TFItems.IRONWOOD_HOE.get(), TFItems.STEELEAF_HOE.get());
 		tag(Tags.Items.TOOLS_SHIELDS).add(TFItems.KNIGHTMETAL_SHIELD.get());
 		tag(Tags.Items.TOOLS_BOWS).add(TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get());
+
+		tag(ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.get().asItem());
 	}
 
 	@Override

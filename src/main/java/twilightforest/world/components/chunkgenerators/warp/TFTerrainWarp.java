@@ -4,7 +4,6 @@ import net.minecraft.Util;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.levelgen.NoiseSettings;
-import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.synth.BlendedNoise;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 
@@ -51,7 +50,7 @@ public class TFTerrainWarp {
         this.caveNoiseModifier = modifier;
     }
 
-    public void fillNoiseColumn(RandomState state, double[] adouble, int x, int z, int sealevel, int min, int max) {
+    public void fillNoiseColumn(double[] adouble, int x, int z, int min, int max) {
         if (biomeSource instanceof TFBiomeProvider source) {
             float totalScale = 0.0F;
             float totalDepth = 0.0F;

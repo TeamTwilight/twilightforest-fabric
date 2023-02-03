@@ -249,7 +249,8 @@ public class UncraftingMenu extends AbstractContainerMenu {
 					int level = entry.getValue();
 
 					// only apply enchants that are better than what we already have
-					if (EnchantmentHelper.getItemEnchantmentLevel(ench, result) < level) {
+					// also don't add enchantments if they aren't compatible with already existing ones, we don't want cursed armor sets
+					if (EnchantmentHelper.isEnchantmentCompatible(EnchantmentHelper.getEnchantments(result).keySet(), ench) && EnchantmentHelper.getItemEnchantmentLevel(ench, result) < level) {
 						result.enchant(ench, level);
 					}
 				}

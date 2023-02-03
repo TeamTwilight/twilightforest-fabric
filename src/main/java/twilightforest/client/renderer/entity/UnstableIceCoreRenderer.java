@@ -1,15 +1,13 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import twilightforest.client.model.entity.UnstableIceCoreModel;
 import twilightforest.entity.monster.UnstableIceCore;
 
-@Environment(EnvType.CLIENT)
 public class UnstableIceCoreRenderer<T extends UnstableIceCore, M extends UnstableIceCoreModel<T>> extends TFGenericMobRenderer<T, M> {
 
 	public UnstableIceCoreRenderer(EntityRendererProvider.Context manager, M model) {
@@ -45,7 +43,7 @@ public class UnstableIceCoreRenderer<T extends UnstableIceCore, M extends Unstab
 
 	@Override
 	protected void setupRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		stack.mulPose(Vector3f.YP.rotationDegrees(180 - rotationYaw));
+		stack.mulPose(Axis.YP.rotationDegrees(180 - rotationYaw));
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 {
   "pack": {
-    "pack_format": 9,
-    "description": "Resources for TwilightForest"
+    "description": "Resources for Twilight Forest",
+    "pack_format": 12,
+    "forge:resource_pack_format": 12,
+    "forge:data_pack_format": 10
   }
 }

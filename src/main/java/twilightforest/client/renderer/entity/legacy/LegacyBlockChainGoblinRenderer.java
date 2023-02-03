@@ -2,7 +2,8 @@ package twilightforest.client.renderer.entity.legacy;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -52,8 +53,8 @@ public class LegacyBlockChainGoblinRenderer<T extends BlockChainGoblin, M extend
 		stack.translate(blockInX, blockInY, blockInZ);
 
 		float pitch = goblin.xRotO + (goblin.getXRot() - goblin.xRotO) * partialTicks;
-		stack.mulPose(Vector3f.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
-		stack.mulPose(Vector3f.XP.rotationDegrees(pitch));
+		stack.mulPose(Axis.YP.rotationDegrees(180 - Mth.wrapDegrees(yaw)));
+		stack.mulPose(Axis.XP.rotationDegrees(pitch));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		this.model.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

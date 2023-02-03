@@ -1,11 +1,17 @@
 {
   "type": "minecraft:random_selector",
   "config": {
-    "default": "twilightforest:simple_well",
+    "default": {
+      "feature": "twilightforest:simple_well",
+      "placement": []
+    },
     "features": [
       {
         "chance": 0.05,
-        "feature": "twilightforest:fancy_well"
+        "feature": {
+          "feature": "twilightforest:fancy_well",
+          "placement": []
+        }
       }
     ]
   }

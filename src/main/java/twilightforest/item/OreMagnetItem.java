@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -257,19 +258,19 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem 
 		TwilightForestMod.LOGGER.info("GENERATING ORE TO BLOCK MAPPING");
 
 		//collect all tags
-		for (TagKey<Block> tag : Registry.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).collect(Collectors.toList())) {
+		for (TagKey<Block> tag : Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTagNames().filter(location -> location.location().getNamespace().equals("c")).collect(Collectors.toList())) {
 			//check if the tag is a valid ore tag
 			if (tag.location().getPath().contains("ores_in_ground/")) {
 				//grab the part after the slash for use later
 				String oreground = tag.location().getPath().substring(15);
 				//check if a tag for ore grounds matches up with our ores in ground tag
-				if (Registry.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
+				if (Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTagNames().filter(location -> location.location().getNamespace().equals("c")).anyMatch(blockTagKey -> blockTagKey.location().getPath().equals("ore_bearing_ground/" + oreground))) {
 					//add each ground type to each ore
-					Objects.requireNonNull(Registry.BLOCK.getTag(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", "ore_bearing_ground/" + oreground)))).get().forEach(groundHolder ->
-							Objects.requireNonNull(Registry.BLOCK.getTag(tag)).get().forEach(oreHolder -> {
+					Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTag(TagKey.create(Registries.BLOCK, new ResourceLocation("c", "ore_bearing_ground/" + oreground))).forEach(ground ->
+							Objects.requireNonNull(BuiltInRegistries.BLOCK.tags()).getTag(tag).forEach(ore -> {
 								//exclude ignored ores
-								if (!oreHolder.is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
-									ORE_TO_BLOCK_REPLACEMENTS.put(oreHolder.value(), groundHolder.value());
+								if (!ore.defaultBlockState().is(BlockTagGenerator.ORE_MAGNET_IGNORE)) {
+									ORE_TO_BLOCK_REPLACEMENTS.put(ore, ground);
 								}
 							}));
 				}

@@ -3,14 +3,21 @@ package twilightforest.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
+import twilightforest.init.TFBiomes;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
@@ -31,17 +38,24 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
     @Override
     public boolean isFoggyAt(int x, int y) { // true = nearFog
-        //TODO enable if the fog is fixed to smoothly transition. Otherwise the fog nearness just snaps and it's pretty janky tbh
-        /*Player player = Minecraft.getInstance().player;
+        Player player = Minecraft.getInstance().player;
 
-        if (player == null || player.isCreative() || player.isSpectator() || player.position().y > 42)
-            return false; // If player is above the dark forest then no need to make it so spooky. The darkwood leaves cover everything as low as y42.
+        if (player != null) {
+            Optional<ResourceKey<Biome>> biome = player.level.getBiome(new BlockPos(player.position())).unwrapKey();
+            if (biome.isPresent()) {
+                boolean spooky = biome.get() == TFBiomes.SPOOKY_FOREST;
 
-        ResourceKey<Biome> biome = Minecraft.getInstance().player.level.getBiome(new BlockPos(player.position())).unwrapKey().get();
+                if (player.position().y > 20 && !spooky) {
+                    return false; // If player is above the dark forest then no need to make it so spooky. The darkwood leaves cover everything as low as y42.
+                }
+
+                return spooky || biome.get() == TFBiomes.DARK_FOREST || biome.get() == TFBiomes.DARK_FOREST_CENTER;
+            }
+        }
+
+        return false;
 
         //Make the fog on these biomes much much darker, maybe pitch black even. Do we keep this harsher fog underground too?
-        return biome == BiomeKeys.DARK_FOREST || biome == BiomeKeys.DARK_FOREST_CENTER;*/
-        return false;
     }
 
 
@@ -60,5 +74,10 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
         Camera camera = context.camera();
         Vec3 pos = camera.getPosition();
         TFWeatherRenderer.renderSnowAndRain(level, partialTick, lightTexture, pos.x, pos.y, pos.z);
+    }
+
+    @Override
+    public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
+        return TFWeatherRenderer.tickRain(level, ticks, new BlockPos(camera.getPosition()));
     }
 }

@@ -1,18 +1,21 @@
 package twilightforest.data.custom;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import oshi.util.tuples.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
@@ -22,19 +25,18 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public abstract class CrumbleHornProvider implements DataProvider {
 
-	private final DataGenerator generator;
+	private final PackOutput output;
 	private final String modId;
 	private final ExistingFileHelper helper;
 	protected final Map<String, Pair<BlockState, BlockState>> builders = Maps.newLinkedHashMap();
 
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
-
-	public CrumbleHornProvider(DataGenerator generator, final String modId, final ExistingFileHelper helper) {
-		this.generator = generator;
+	public CrumbleHornProvider(PackOutput output, final String modId, final ExistingFileHelper helper) {
+		this.output = output;
 		this.modId = modId;
 		this.helper = helper;
 	}
@@ -42,13 +44,16 @@ public abstract class CrumbleHornProvider implements DataProvider {
 	public abstract void registerTransforms();
 
 	@Override
-	public void run(CachedOutput cache) {
+	public CompletableFuture<?> run(CachedOutput cache) {
 		this.builders.clear();
 		this.registerTransforms();
+
+		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
+
 		this.builders.forEach((name, transform) -> {
 			List<String> list = builders.keySet().stream()
-					.filter(s -> Registry.BLOCK.containsKey(Registry.BLOCK.getKey(transform.getA().getBlock())))
-					.filter(s -> Registry.BLOCK.containsKey(Registry.BLOCK.getKey(transform.getB().getBlock())))
+					.filter(s -> ForgeRegistries.BLOCKS.containsValue(transform.getA().getBlock()))
+					.filter(s -> ForgeRegistries.BLOCKS.containsValue(transform.getB().getBlock()))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
 					.collect(Collectors.toList());
@@ -58,43 +63,40 @@ public abstract class CrumbleHornProvider implements DataProvider {
 			} else {
 				JsonObject obj = serializeToJson(transform.getA(), transform.getB());
 				Path path = createPath(new ResourceLocation(modId, name));
-				try {
-					DataProvider.saveStable(cache, obj, path);
-				} catch (IOException e) {
-					TwilightForestMod.LOGGER.error("Couldn't save Crumble Transformation to {}", path, e);
-				}
+				futuresBuilder.add(DataProvider.saveStable(cache, obj, path));
 			}
 		});
+		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
 	}
 
 	private boolean missing(String name) {
-		return helper == null || !helper.exists(new ResourceLocation(modId, name), new ExistingFileHelper.ResourceType(net.minecraft.server.packs.PackType.SERVER_DATA, ".json", "crumble_horn/"));
+		return !this.helper.exists(new ResourceLocation(modId, name), new ExistingFileHelper.ResourceType(PackType.SERVER_DATA, ".json", "crumble_horn"));
 	}
 
 	private Path createPath(ResourceLocation name) {
-		return generator.getOutputFolder().resolve("data/" + name.getNamespace() + "/recipes/crumble_horn/" + name.getPath() + ".json");
+		return this.output.getOutputFolder().resolve("data/" + name.getNamespace() + "/recipes/crumble_horn/" + name.getPath() + ".json");
 	}
 
 	private JsonObject serializeToJson(BlockState transformFrom, BlockState transformTo) {
 		JsonObject jsonobject = new JsonObject();
 
-		jsonobject.addProperty("type", Registry.RECIPE_SERIALIZER.getKey(TFRecipes.CRUMBLE_SERIALIZER.get()).toString());
-		jsonobject.addProperty("from", Registry.BLOCK.getKey(transformFrom.getBlock()).toString());
-		jsonobject.addProperty("to", Registry.BLOCK.getKey(transformTo.getBlock()).toString());
+		jsonobject.addProperty("type", BuiltInRegistries.RECIPE_SERIALIZER.getKey(TFRecipes.CRUMBLE_SERIALIZER.get()).toString());
+		jsonobject.addProperty("from", BuiltInRegistries.BLOCK.getKey(transformFrom.getBlock()).toString());
+		jsonobject.addProperty("to", BuiltInRegistries.BLOCK.getKey(transformTo.getBlock()).toString());
 		return jsonobject;
 	}
 
 	@Override
 	public String getName() {
-		return modId + " Crumble Horn Transformations";
+		return this.modId + " Crumble Horn Transformations";
 	}
 
 	//helper methods
 	public void addTransform(Block from, Block to) {
-		builders.put(Registry.BLOCK.getKey(from).getPath() + "_to_" + Registry.BLOCK.getKey(to).getPath(), new Pair<>(from.defaultBlockState(), to.defaultBlockState()));
+		this.builders.put(BuiltInRegistries.BLOCK.getKey(from).getPath() + "_to_" + BuiltInRegistries.BLOCK.getKey(to).getPath(), new Pair<>(from.defaultBlockState(), to.defaultBlockState()));
 	}
 
 	public void addDissolve(Block dissolveBlock) {
-		builders.put("dissolve_" + Registry.BLOCK.getKey(dissolveBlock).getPath(), new Pair<>(dissolveBlock.defaultBlockState(), Blocks.AIR.defaultBlockState()));
+		this.builders.put("dissolve_" + BuiltInRegistries.BLOCK.getKey(dissolveBlock).getPath(), new Pair<>(dissolveBlock.defaultBlockState(), Blocks.AIR.defaultBlockState()));
 	}
 }

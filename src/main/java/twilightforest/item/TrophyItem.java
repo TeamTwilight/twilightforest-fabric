@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.core.Direction;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.block.Block;
 public class TrophyItem extends StandingAndWallBlockItem {
 
 	public TrophyItem(Block floorBlock, Block wallBlock, FabricItemSettings properties) {
-		super(floorBlock, wallBlock, properties.equipmentSlot(stack -> EquipmentSlot.HEAD));
+		super(floorBlock, wallBlock, properties.equipmentSlot(stack -> EquipmentSlot.HEAD), Direction.DOWN);
 		CuriosCharmItem.setupTrinket(this);
 	}
 

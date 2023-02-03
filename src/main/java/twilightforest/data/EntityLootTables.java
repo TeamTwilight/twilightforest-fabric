@@ -1,19 +1,15 @@
 package twilightforest.data;
 
 import com.google.common.collect.Sets;
-import io.github.fabricators_of_create.porting_lib.data.ModdedEntityLoot;
-import io.github.fabricators_of_create.porting_lib.extensions.INBTSerializable;
+import io.github.fabricators_of_create.porting_lib.data.ModdedEntityLootSubProvider;
 import net.minecraft.Util;
-import net.minecraft.advancements.critereon.DamageSourcePredicate;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.core.Registry;
-import net.minecraft.data.loot.EntityLoot;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -25,7 +21,9 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.functions.*;
-import net.minecraft.world.level.storage.loot.predicates.*;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithLootingCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import twilightforest.TwilightForestMod;
@@ -34,20 +32,19 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
 import twilightforest.loot.TFLootTables;
 import twilightforest.loot.conditions.IsMinion;
-import twilightforest.loot.conditions.ModExists;
-import twilightforest.loot.functions.ModItemSwap;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("deprecation")
-public class EntityLootTables extends ModdedEntityLoot {
+public class EntityLootTables extends ModdedEntityLootSubProvider {
+
+	protected EntityLootTables() {
+		super(FeatureFlags.REGISTRY.allFlags());
+	}
 
 	@Override
-	protected void addTables() {
+	public void generate() {
 		add(TFEntities.ADHERENT.get(), emptyLootTable());
 		add(TFEntities.LICH_MINION.get(), emptyLootTable());
 		add(TFEntities.LOYAL_ZOMBIE.get(), emptyLootTable());
@@ -72,22 +69,22 @@ public class EntityLootTables extends ModdedEntityLoot {
 		add(TFEntities.CARMINITE_GHASTGUARD.get(), fromEntityLootTable(EntityType.GHAST));
 		add(TFEntities.BIGHORN_SHEEP.get(), fromEntityLootTable(EntityType.SHEEP));
 		add(TFEntities.RISING_ZOMBIE.get(), fromEntityLootTable(EntityType.ZOMBIE));
-		add(TFLootTables.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_BLUE, sheepLootTableBuilderWithDrop(Blocks.BLUE_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_BROWN, sheepLootTableBuilderWithDrop(Blocks.BROWN_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_CYAN, sheepLootTableBuilderWithDrop(Blocks.CYAN_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_GRAY, sheepLootTableBuilderWithDrop(Blocks.GRAY_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_GREEN, sheepLootTableBuilderWithDrop(Blocks.GREEN_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_LIGHT_BLUE, sheepLootTableBuilderWithDrop(Blocks.LIGHT_BLUE_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_LIGHT_GRAY, sheepLootTableBuilderWithDrop(Blocks.LIGHT_GRAY_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_LIME, sheepLootTableBuilderWithDrop(Blocks.LIME_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_MAGENTA, sheepLootTableBuilderWithDrop(Blocks.MAGENTA_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_ORANGE, sheepLootTableBuilderWithDrop(Blocks.ORANGE_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_PINK, sheepLootTableBuilderWithDrop(Blocks.PINK_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_PURPLE, sheepLootTableBuilderWithDrop(Blocks.PURPLE_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_RED, sheepLootTableBuilderWithDrop(Blocks.RED_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_WHITE, sheepLootTableBuilderWithDrop(Blocks.WHITE_WOOL));
-		add(TFLootTables.BIGHORN_SHEEP_YELLOW, sheepLootTableBuilderWithDrop(Blocks.YELLOW_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_BLUE, sheepLootTableBuilderWithDrop(Blocks.BLUE_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_BROWN, sheepLootTableBuilderWithDrop(Blocks.BROWN_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_CYAN, sheepLootTableBuilderWithDrop(Blocks.CYAN_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_GRAY, sheepLootTableBuilderWithDrop(Blocks.GRAY_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_GREEN, sheepLootTableBuilderWithDrop(Blocks.GREEN_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_LIGHT_BLUE, sheepLootTableBuilderWithDrop(Blocks.LIGHT_BLUE_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_LIGHT_GRAY, sheepLootTableBuilderWithDrop(Blocks.LIGHT_GRAY_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_LIME, sheepLootTableBuilderWithDrop(Blocks.LIME_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_MAGENTA, sheepLootTableBuilderWithDrop(Blocks.MAGENTA_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_ORANGE, sheepLootTableBuilderWithDrop(Blocks.ORANGE_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_PINK, sheepLootTableBuilderWithDrop(Blocks.PINK_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_PURPLE, sheepLootTableBuilderWithDrop(Blocks.PURPLE_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_RED, sheepLootTableBuilderWithDrop(Blocks.RED_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_WHITE, sheepLootTableBuilderWithDrop(Blocks.WHITE_WOOL));
+		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_YELLOW, sheepLootTableBuilderWithDrop(Blocks.YELLOW_WOOL));
 
 		add(TFEntities.ARMORED_GIANT.get(),
 				LootTable.lootTable()
@@ -281,11 +278,11 @@ public class EntityLootTables extends ModdedEntityLoot {
 								.add(LootItem.lootTableItem(Items.BONE)
 										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))))
-								.withPool(LootPool.lootPool()
-										.setRolls(ConstantValue.exactly(1))
-										.add(LootItem.lootTableItem(TFItems.TORCHBERRIES.get())
-												.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-												.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
+						.withPool(LootPool.lootPool()
+								.setRolls(ConstantValue.exactly(1))
+								.add(LootItem.lootTableItem(TFItems.TORCHBERRIES.get())
+										.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+										.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))))));
 
 		add(TFEntities.DEER.get(),
 				LootTable.lootTable()
@@ -352,8 +349,8 @@ public class EntityLootTables extends ModdedEntityLoot {
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFBlocks.TOWERWOOD.get()))
-									.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
-									.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))));
+								.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+								.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))));
 
 		add(TFEntities.SLIME_BEETLE.get(),
 				LootTable.lootTable()
@@ -386,14 +383,14 @@ public class EntityLootTables extends ModdedEntityLoot {
 								.when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.005F))
 								.add(LootItem.lootTableItem(TFItems.MAGIC_MAP_FOCUS.get()))));
 
-		add(TFLootTables.DEATH_TOME_HURT,
+		add(TFEntities.DEATH_TOME.get(), TFLootTables.DEATH_TOME_HURT,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootTableReference.lootTableReference(BuiltInLootTables.EMPTY))
 								.add(LootItem.lootTableItem(Items.PAPER))));
 
-		add(TFLootTables.DEATH_TOME_BOOKS,
+		add(TFEntities.DEATH_TOME.get(), TFLootTables.DEATH_TOME_BOOKS,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -531,7 +528,7 @@ public class EntityLootTables extends ModdedEntityLoot {
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootItem.lootTableItem(TFBlocks.SNOW_QUEEN_TROPHY.get().asItem()))));
 
-		add(TFLootTables.QUESTING_RAM_REWARDS,
+		add(TFEntities.QUEST_RAM.get(), TFLootTables.QUESTING_RAM_REWARDS,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
@@ -543,22 +540,17 @@ public class EntityLootTables extends ModdedEntityLoot {
 											ListTag items = new ListTag();
 
 											// Do NOT overstuff the bag.
-											items.add(((INBTSerializable) (Object) new ItemStack(TFBlocks.QUEST_RAM_TROPHY.get())).serializeNBT());
-											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.COAL_BLOCK)).serializeNBT());
-											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.IRON_BLOCK)).serializeNBT());
-											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.COPPER_BLOCK)).serializeNBT());
-											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.LAPIS_BLOCK)).serializeNBT());
-											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.GOLD_BLOCK)).serializeNBT());
-											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.DIAMOND_BLOCK)).serializeNBT());
-											items.add(((INBTSerializable) (Object) new ItemStack(Blocks.EMERALD_BLOCK)).serializeNBT());
+											items.add(new ItemStack(TFBlocks.QUEST_RAM_TROPHY.get()).serializeNBT());
+											items.add(new ItemStack(Blocks.COAL_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.IRON_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.COPPER_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.LAPIS_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.GOLD_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.DIAMOND_BLOCK).serializeNBT());
+											items.add(new ItemStack(Blocks.EMERALD_BLOCK).serializeNBT());
 
 											nbt.put("Items", items);
 										}))))));
-
-		//Block entities are entities too, alright?
-		add(TFLootTables.CICADA_SQUISH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.GRAY_DYE))));
-		add(TFLootTables.FIREFLY_SQUISH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.GLOWSTONE_DUST))));
-		add(TFLootTables.MOONWORM_SQUISH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.LIME_DYE))));
 	}
 
 	public LootTable.Builder emptyLootTable() {
@@ -576,13 +568,9 @@ public class EntityLootTables extends ModdedEntityLoot {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(wool))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootTableReference.lootTableReference(EntityType.SHEEP.getDefaultLootTable())));
 	}
 
-	private LootItemCondition.Builder killedByFrog() {
-		return DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().source(EntityPredicate.Builder.entity().of(EntityType.FROG)));
-	}
-
 	@Override
-	public Set<EntityType<?>> getKnownEntities() {
-		return Registry.ENTITY_TYPE.stream().filter(entities -> Registry.ENTITY_TYPE.getKey(entities).getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toSet());
+	protected Stream<EntityType<?>> getKnownEntityTypes() {
+		return BuiltInRegistries.ENTITY_TYPE.stream().filter(entities -> BuiltInRegistries.ENTITY_TYPE.getKey(entities).getNamespace().equals(TwilightForestMod.ID));
 	}
 
 	@Override

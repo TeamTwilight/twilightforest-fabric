@@ -11,6 +11,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.SectionPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -33,7 +34,7 @@ public class ChangeBiomePacket implements S2CPacket {
 
 	public ChangeBiomePacket(FriendlyByteBuf buf) {
 		this.pos = new BlockPos(buf.readInt(), 0, buf.readInt());
-		this.biomeId = ResourceKey.create(Registry.BIOME_REGISTRY, buf.readResourceLocation());
+		this.biomeId = ResourceKey.create(Registries.BIOME, buf.readResourceLocation());
 	}
 
 	public void encode(FriendlyByteBuf buf) {
@@ -57,7 +58,7 @@ public class ChangeBiomePacket implements S2CPacket {
 					ClientLevel world = Minecraft.getInstance().level;
 					LevelChunk chunkAt = (LevelChunk) world.getChunk(message.pos);
 
-					Holder<Biome> biome = world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getHolderOrThrow(message.biomeId);
+					Holder<Biome> biome = world.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(message.biomeId);
 
 					int minY = QuartPos.fromBlock(world.getMinBuildHeight());
 					int maxY = minY + QuartPos.fromBlock(world.getHeight()) - 1;

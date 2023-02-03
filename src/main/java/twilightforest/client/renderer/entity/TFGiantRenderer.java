@@ -1,9 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
@@ -28,7 +27,6 @@ import twilightforest.client.model.entity.KoboldModel;
 import twilightforest.entity.monster.GiantMiner;
 import twilightforest.entity.monster.Kobold;
 
-@Environment(EnvType.CLIENT)
 public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, PlayerModel<T>> {
 	private final PlayerModel<T> normalModel;
 	private final PlayerModel<T> slimModel;
@@ -92,8 +90,8 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 			if (!stack.isEmpty()) {
 				ms.pushPose();
 				this.getParentModel().translateToHand(arm, ms);
-				ms.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
-				ms.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+				ms.mulPose(Axis.XP.rotationDegrees(-90.0F));
+				ms.mulPose(Axis.YP.rotationDegrees(180.0F));
 				boolean flag = arm == HumanoidArm.LEFT;
 				// TF - move item a bit to actually fit in the giant's hand (y and z changes)
 				ms.translate((float)(flag ? -1 : 1) / 16.0F, 0.0D, -0.5D);

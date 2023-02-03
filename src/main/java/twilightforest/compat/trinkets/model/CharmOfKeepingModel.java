@@ -44,7 +44,7 @@ public class CharmOfKeepingModel extends HumanoidModel<LivingEntity> {
 	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
 		stack.pushPose();
 		stack.scale(0.25F, 0.25F, 0.25F);
-		body.render(stack, consumer, light, overlay, red, green, blue, alpha);
+		this.body.render(stack, consumer, light, overlay, red, green, blue, alpha);
 		stack.popPose();
 	}
 }

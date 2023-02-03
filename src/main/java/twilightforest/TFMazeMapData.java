@@ -33,7 +33,7 @@ public class TFMazeMapData extends MapItemSavedData {
 		final boolean trackingPosition = !nbt.contains("trackingPosition", 1) || nbt.getBoolean("trackingPosition");
 		final boolean unlimitedTracking = nbt.getBoolean("unlimitedTracking");
 		final boolean locked = nbt.getBoolean("locked");
-		TFMazeMapData tfdata = new TFMazeMapData(data.x, data.z, data.scale, trackingPosition, unlimitedTracking, locked, data.dimension);
+		TFMazeMapData tfdata = new TFMazeMapData(data.centerX, data.centerZ, data.scale, trackingPosition, unlimitedTracking, locked, data.dimension);
 
 		tfdata.colors = data.colors;
 		tfdata.bannerMarkers.putAll(data.bannerMarkers);
@@ -60,8 +60,8 @@ public class TFMazeMapData extends MapItemSavedData {
 		if (world instanceof ServerLevel && TFGenerationSettings.usesTwilightChunkGenerator((ServerLevel) world)) {
 			if (LegacyLandmarkPlacements.getFeatureForRegion(x >> 4, z >> 4, (ServerLevel) world) == TFLandmark.LABYRINTH) {
 				BlockPos mc = LegacyLandmarkPlacements.getNearestCenterXZ(x >> 4, z >> 4);
-				this.x = mc.getX();
-				this.z = mc.getZ();
+				this.centerX = mc.getX();
+				this.centerZ = mc.getZ();
 			}
 		}
 	}

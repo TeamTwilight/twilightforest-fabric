@@ -26,19 +26,18 @@ public class SteeleafArmorItem extends ArmorItem implements ArmorTextureItem {
 		}
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			switch (this.getSlot()) {
-				case HEAD -> stack.enchant(Enchantments.PROJECTILE_PROTECTION, 2);
-				case CHEST -> stack.enchant(Enchantments.BLAST_PROTECTION, 2);
-				case LEGS -> stack.enchant(Enchantments.FIRE_PROTECTION, 2);
-				case FEET -> stack.enchant(Enchantments.FALL_PROTECTION, 2);
-				default -> {
-				}
-			}
-			items.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			switch (this.getSlot()) {
+//				case HEAD -> stack.enchant(Enchantments.PROJECTILE_PROTECTION, 2);
+//				case CHEST -> stack.enchant(Enchantments.BLAST_PROTECTION, 2);
+//				case LEGS -> stack.enchant(Enchantments.FIRE_PROTECTION, 2);
+//				case FEET -> stack.enchant(Enchantments.FALL_PROTECTION, 2);
+//				default -> {
+//				}
+//			}
+//			items.add(stack);
+//		}
+//	}
 }

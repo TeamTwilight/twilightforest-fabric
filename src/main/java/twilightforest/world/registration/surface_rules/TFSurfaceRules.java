@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
-import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
 
 public class TFSurfaceRules {
@@ -38,7 +38,7 @@ public class TFSurfaceRules {
 		SurfaceRules.RuleSource highlandsNoise = SurfaceRules.sequence(
 				//check if we're in the highlands
 				SurfaceRules.ifTrue(
-						SurfaceRules.isBiome(BiomeKeys.HIGHLANDS),
+						SurfaceRules.isBiome(TFBiomes.HIGHLANDS),
 						SurfaceRules.ifTrue(
 								//check if we're on the surface
 								SurfaceRules.ON_FLOOR,
@@ -51,7 +51,7 @@ public class TFSurfaceRules {
 		SurfaceRules.RuleSource deadrockLands = SurfaceRules.sequence(
 				SurfaceRules.ifTrue(
 						//check if we're in the deadrock biomes
-						SurfaceRules.isBiome(BiomeKeys.THORNLANDS, BiomeKeys.FINAL_PLATEAU),
+						SurfaceRules.isBiome(TFBiomes.THORNLANDS, TFBiomes.FINAL_PLATEAU),
 						//deadrock blocks replace everything
 						SurfaceRules.sequence(
 								SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, WEATHERED_DEADROCK),
@@ -66,7 +66,7 @@ public class TFSurfaceRules {
 		SurfaceRules.RuleSource snowyForest = SurfaceRules.sequence(
 				SurfaceRules.ifTrue(
 						//check if we're in the snowy forest
-						SurfaceRules.isBiome(BiomeKeys.SNOWY_FOREST),
+						SurfaceRules.isBiome(TFBiomes.SNOWY_FOREST),
 						//surface is snow
 						SurfaceRules.sequence(
 								SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, SNOW),
@@ -80,7 +80,7 @@ public class TFSurfaceRules {
 		SurfaceRules.RuleSource glacier = SurfaceRules.sequence(
 				SurfaceRules.ifTrue(
 						//check if we're in the glacier
-						SurfaceRules.isBiome(BiomeKeys.GLACIER),
+						SurfaceRules.isBiome(TFBiomes.GLACIER),
 						SurfaceRules.sequence(
 								//surface and under is gravel
 								SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, GRAVEL),
@@ -96,13 +96,13 @@ public class TFSurfaceRules {
 						SurfaceRules.sequence(
 								SurfaceRules.ifTrue(
 										//lakes and rivers get sand
-										SurfaceRules.isBiome(BiomeKeys.LAKE, BiomeKeys.STREAM),
+										SurfaceRules.isBiome(TFBiomes.LAKE, TFBiomes.STREAM),
 										SurfaceRules.sequence(
 												SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, SANDSTONE),
 												SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), SAND)),
 								//make sure the swamps always get grass, they had weird stone patches sometimes
 								SurfaceRules.ifTrue(
-										SurfaceRules.isBiome(BiomeKeys.SWAMP, BiomeKeys.FIRE_SWAMP),
+										SurfaceRules.isBiome(TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP),
 										SurfaceRules.sequence(
 										SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), DIRT)),
 								//make everything else grass

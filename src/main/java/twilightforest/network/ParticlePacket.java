@@ -9,6 +9,8 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
 
@@ -26,7 +28,7 @@ public class ParticlePacket implements S2CPacket {
 	public ParticlePacket(FriendlyByteBuf buf) {
 		int size = buf.readInt();
 		for (int i = 0; i < size; i++) {
-			ParticleType<?> type = Registry.PARTICLE_TYPE.byId(buf.readInt());
+			ParticleType<?> type = BuiltInRegistries.PARTICLE_TYPE.byId(buf.readInt());
 			if (type == null)
 				break; // Fail silently and end execution entirely. Due to Type serialization we now have completely unknown data in the pipeline without any way to safely read it all
 			this.queuedParticles.add(new QueuedParticle(readParticle(type, buf), buf.readBoolean(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble()));
@@ -42,7 +44,7 @@ public class ParticlePacket implements S2CPacket {
     public void encode(FriendlyByteBuf buf) {
         buf.writeInt(this.queuedParticles.size());
         for (QueuedParticle queuedParticle : this.queuedParticles) {
-            int d = Registry.PARTICLE_TYPE.getId(queuedParticle.particleOptions.getType());
+            int d = BuiltInRegistries.PARTICLE_TYPE.getId(queuedParticle.particleOptions.getType());
             buf.writeInt(d);
             queuedParticle.particleOptions.writeToNetwork(buf);
 			buf.writeBoolean(queuedParticle.b);

@@ -1,7 +1,8 @@
 package twilightforest.client.renderer.entity.legacy;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -60,8 +61,8 @@ public class LegacyKoboldRenderer extends TFBipedRenderer<Kobold, KoboldLegacyMo
 			if (!stack.isEmpty()) {
 				ms.pushPose();
 				this.getParentModel().translateToHand(handSide, ms);
-				ms.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
-				ms.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+				ms.mulPose(Axis.XP.rotationDegrees(-90.0F));
+				ms.mulPose(Axis.YP.rotationDegrees(180.0F));
 				boolean flag = handSide == HumanoidArm.LEFT;
 				ms.translate(0.05D, 0.125D, -0.35D);
 				this.handRenderer.renderItem(entity, stack, transform, flag, ms, buffers, light);

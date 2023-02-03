@@ -1,8 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
@@ -14,13 +13,12 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.MinoshroomModel;
 import twilightforest.entity.boss.Minoshroom;
 
 //old renderer had the head mushroom in a different spot - line is commented out
-@Environment(EnvType.CLIENT)
 public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, MinoshroomModel> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("minoshroomtaur.png");
@@ -47,16 +45,16 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Minoshro
 				int i = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
 				ms.pushPose();
 				ms.translate(0.2F, -0.35F, 0.5D);
-				ms.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
+				ms.mulPose(Axis.YP.rotationDegrees(-48.0F));
 				ms.scale(-1.0F, -1.0F, 1.0F);
 				ms.translate(-0.5D, -0.5D, -0.5D);
 				blockrendererdispatcher.renderSingleBlock(blockstate, ms, buffers, light, i);
 				ms.popPose();
 				ms.pushPose();
 				ms.translate(0.2F, -0.35F, 0.5D);
-				ms.mulPose(Vector3f.YP.rotationDegrees(42.0F));
+				ms.mulPose(Axis.YP.rotationDegrees(42.0F));
 				ms.translate(0.1F, 0.0D, -0.6F);
-				ms.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
+				ms.mulPose(Axis.YP.rotationDegrees(-48.0F));
 				ms.scale(-1.0F, -1.0F, 1.0F);
 				ms.translate(-0.5D, -0.5D, -0.5D);
 				blockrendererdispatcher.renderSingleBlock(blockstate, ms, buffers, light, i);
@@ -67,7 +65,7 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Minoshro
 				//old render
 				//ms.translate(0.0D, -0.9, 0.05);
 				ms.translate(0.0D, -1.1, 0.05);
-				ms.mulPose(Vector3f.YP.rotationDegrees(-78.0F));
+				ms.mulPose(Axis.YP.rotationDegrees(-78.0F));
 				ms.scale(-1.0F, -1.0F, 1.0F);
 				ms.translate(-0.5D, -0.5D, -0.5D);
 				blockrendererdispatcher.renderSingleBlock(blockstate, ms, buffers, light, i);

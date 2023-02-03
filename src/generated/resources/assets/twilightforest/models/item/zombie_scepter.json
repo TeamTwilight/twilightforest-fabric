@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "twilightforest:items/zombie_scepter"
+    "layer0": "twilightforest:item/zombie_scepter"
   }
 }

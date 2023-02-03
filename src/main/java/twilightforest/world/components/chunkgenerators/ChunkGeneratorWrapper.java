@@ -22,8 +22,8 @@ import java.util.concurrent.Executor;
 public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
     public final ChunkGenerator delegate;
 
-    public ChunkGeneratorWrapper(Registry<StructureSet> structures, Optional<HolderSet<StructureSet>> structureOverride, ChunkGenerator delegate) {
-        super(structures, structureOverride, delegate.getBiomeSource());
+    public ChunkGeneratorWrapper(ChunkGenerator delegate) {
+        super(delegate.getBiomeSource());
 
         this.delegate = delegate;
     }

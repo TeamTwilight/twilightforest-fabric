@@ -1,6 +1,11 @@
 {
+  "blocks": [
+    {
+      "block": "emerald_ore",
+      "weight": 1
+    }
+  ],
   "max_length": 3,
-  "ore": "minecraft:emerald_ore",
   "size_variation": 0.5,
   "weight": 15
 }

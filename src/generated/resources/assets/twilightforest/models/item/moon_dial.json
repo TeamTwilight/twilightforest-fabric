@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:item/util/readable",
+  "parent": "twilightforest:item/moon_dial_template",
   "overrides": [
     {
       "model": "twilightforest:item/moon_dial_full",
@@ -51,6 +51,6 @@
     }
   ],
   "textures": {
-    "layer0": "twilightforest:items/moon_dial/full"
+    "layer0": "twilightforest:item/moon_dial/full"
   }
 }

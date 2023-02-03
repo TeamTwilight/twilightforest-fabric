@@ -113,8 +113,6 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		RandomSource rand = ctx.random();
 
 		int flags = 16 | 2 | 1;
-		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
-		RandomSource random = world.getRandom();
 
 		StructureTemplateManager templatemanager = world.getLevel().getServer().getStructureManager();
 		StructureTemplate base = templatemanager.getOrCreate(GRAVEYARD);
@@ -132,10 +130,10 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		}
 
 		Rotation[] rotations = Rotation.values();
-		Rotation rotation = rotations[random.nextInt(rotations.length)];
+		Rotation rotation = rotations[rand.nextInt(rotations.length)];
 
 		Mirror[] mirrors = Mirror.values();
-		Mirror mirror = mirrors[random.nextInt(mirrors.length + 1) % mirrors.length];
+		Mirror mirror = mirrors[rand.nextInt(mirrors.length + 1) % mirrors.length];
 
 		Vec3i transformedSize = base.getSize(rotation);
 		Vec3i transformedGraveSize = graves.get(0).getValue().getSize(rotation);
@@ -143,7 +141,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		ChunkPos chunkpos = new ChunkPos(pos.offset(-8, 0, -8));
 		ChunkPos chunkendpos = new ChunkPos(pos.offset(-8, 0, -8).offset(transformedSize));
 		BoundingBox structureboundingbox = new BoundingBox(chunkpos.getMinBlockX() + 8, 0, chunkpos.getMinBlockZ() + 8, chunkendpos.getMaxBlockX() + 8, 255, chunkendpos.getMaxBlockZ() + 8);
-		StructurePlaceSettings placementsettings = (new StructurePlaceSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
+		StructurePlaceSettings placementsettings = (new StructurePlaceSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(rand);
 
 		BlockPos posSnap = chunkpos.getWorldPosition().offset(8, pos.getY() - 1, 8); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
 		BlockPos.MutableBlockPos startPos = new BlockPos.MutableBlockPos(posSnap.getX(), posSnap.getY(), posSnap.getZ());
@@ -156,7 +154,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		Vec3i size = transformedSize.offset(-1, 0, -1);
 		Vec3i graveSize = transformedGraveSize.offset(-1, 0, -1);
 
-		base.placeInWorld(world, placementPos, placementPos, placementsettings.addProcessor(new WebTemplateProcessor()), random, flags);
+		base.placeInWorld(world, placementPos, placementPos, placementsettings.addProcessor(new WebTemplateProcessor()), rand, flags);
 		List<StructureTemplate.StructureBlockInfo> data = new ArrayList<>(base.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 
 		BlockPos start = startPos.offset(1, 1, 0);
@@ -180,7 +178,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 
 		);
 		BlockPos fixedSize = innerSize.offset(-graveSize.getX(), 0, -graveSize.getZ());
-		BlockPos chestloc = new BlockPos(random.nextInt(2) - (mirror == Mirror.FRONT_BACK ? 1 : 0), 1, 0).rotate(rotation);
+		BlockPos chestloc = new BlockPos(rand.nextInt(2) - (mirror == Mirror.FRONT_BACK ? 1 : 0), 1, 0).rotate(rotation);
 
 		for (int x = 0; x <= fixedSize.getX(); x += (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90 ? 2 : 5)) {
 			for (int z = 0; z <= fixedSize.getZ(); z += (rotation == Rotation.NONE || rotation == Rotation.CLOCKWISE_180 ? 2 : 5)) {
@@ -188,13 +186,13 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 					continue;
 				BlockPos placement = fixed.offset(x, -2, z);
 				Pair<GraveType, StructureTemplate> grave = graves.get(rand.nextInt(graves.size()));
-				grave.getValue().placeInWorld(world, placement, placement, placementsettings, random, flags);
+				grave.getValue().placeInWorld(world, placement, placement, placementsettings, rand, flags);
 				data.addAll(grave.getValue().filterBlocks(placement, placementsettings, Blocks.STRUCTURE_BLOCK));
 				if (grave.getKey() == GraveType.Full) {
-					if (random.nextBoolean()) {
-						if (random.nextInt(3) == 0) {
+					if (rand.nextBoolean()) {
+						if (rand.nextInt(3) == 0) {
 							placement = placement.offset(new BlockPos(mirror == Mirror.FRONT_BACK ? 1 : -1, 0, mirror == Mirror.LEFT_RIGHT ? 1 : -1).rotate(rotation));
-							trap.placeInWorld(world, placement, placement, placementsettings, random, flags);
+							trap.placeInWorld(world, placement, placement, placementsettings, rand, flags);
 						}
 						data.addAll(trap.filterBlocks(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 						if (world.setBlock(placement.offset(chestloc), Blocks.TRAPPED_CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags)) {
@@ -216,11 +214,11 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 				BlockPos p = info.pos;
 				if ("spawner".equals(s)) {
 					world.removeBlock(p, false);
-					if (random.nextInt(4) == 0) {
+					if (rand.nextInt(4) == 0) {
 						if (world.setBlock(p, Blocks.SPAWNER.defaultBlockState(), 3)) {
 							SpawnerBlockEntity ms = (SpawnerBlockEntity) world.getBlockEntity(p);
 							if (ms != null)
-								ms.getSpawner().setEntityId(TFEntities.RISING_ZOMBIE.get());
+								ms.setEntityId(TFEntities.RISING_ZOMBIE.get(), rand);
 						}
 					}
 				}

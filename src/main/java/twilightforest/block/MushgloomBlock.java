@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.util.PlantType;
+import io.github.fabricators_of_create.porting_lib.common.util.PlantType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -17,7 +17,7 @@ public class MushgloomBlock extends MushroomBlock {
 	private static final VoxelShape MUSHGLOOM_SHAPE = box(2, 0, 2, 14, 8, 14);
 
 	public MushgloomBlock(Properties properties) {
-		super(properties, () -> TFConfiguredFeatures.BIG_MUSHGLOOM);
+		super(properties, TFConfiguredFeatures.BIG_MUSHGLOOM);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class MushgloomBlock extends MushroomBlock {
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter getter, BlockPos pos, BlockState state, boolean isClientSide) {
+	public boolean isValidBonemealTarget(LevelReader getter, BlockPos pos, BlockState state, boolean isClientSide) {
 		return false;
 	}
 

@@ -102,7 +102,7 @@ public class TFClientSetup implements ClientModInitializer {
             registerWoodType(TFBlocks.MINING);
             registerWoodType(TFBlocks.SORTING);
 
-			if(FabricLoader.getInstance().isModLoaded("trinkets")) {
+			if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 				ClientLifecycleEvents.CLIENT_STARTED.register(TrinketsCompat::registerCurioRenderers);
 			}
 //        });

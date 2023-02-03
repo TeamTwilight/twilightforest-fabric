@@ -3,9 +3,11 @@ package twilightforest.init;
 import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -81,7 +83,7 @@ public class TFBlockItems {
 //      register(blockItem(TFBlocks.LAPIS_BLOCK));
 		register(blockItem(TFBlocks.TWISTED_STONE));
 		register(blockItem(TFBlocks.TWISTED_STONE_PILLAR));
-		BlockItem keepsake = register(new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), TFItems.defaultBuilder().fireResistant()));
+		BlockItem keepsake = register(new BlockItem(TFBlocks.KEEPSAKE_CASKET.get(), new Item.Properties().fireResistant()));
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> ISTERItemRegistry.register(keepsake));
 		register(blockItem(TFBlocks.CANDELABRA));
 		register(blockItem(TFBlocks.BOLD_STONE_PILLAR));
@@ -92,8 +94,8 @@ public class TFBlockItems {
 		register(skullCandleItem(TFBlocks.WITHER_SKELE_SKULL_CANDLE, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE));
 		register(skullCandleItem(TFBlocks.CREEPER_SKULL_CANDLE, TFBlocks.CREEPER_WALL_SKULL_CANDLE));
 		register(skullCandleItem(TFBlocks.PLAYER_SKULL_CANDLE, TFBlocks.PLAYER_WALL_SKULL_CANDLE));
-		register(new HugeWaterLilyItem(TFBlocks.HUGE_WATER_LILY.get(), TFItems.defaultBuilder()));
-		register(new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), TFItems.defaultBuilder()));
+		register(new HugeWaterLilyItem(TFBlocks.HUGE_WATER_LILY.get(), new Item.Properties()));
+		register(new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), new Item.Properties()));
 		register(blockItem(TFBlocks.MAZESTONE));
 		register(blockItem(TFBlocks.MAZESTONE_BRICK));
 		register(blockItem(TFBlocks.CRACKED_MAZESTONE));
@@ -401,58 +403,57 @@ public class TFBlockItems {
 	}
 
 	private static <B extends Block> BlockItem hollowLog(RegistryObject<HollowLogHorizontal> horizontalLog, RegistryObject<HollowLogVertical> verticalLog, RegistryObject<HollowLogClimbable> climbable, String name) {
-		return new HollowLogItem(horizontalLog, verticalLog, climbable, TFItems.defaultBuilder());
+		return new HollowLogItem(horizontalLog, verticalLog, climbable, new Item.Properties());
 	}
 
 	private static <B extends Block> BlockItem blockItem(RegistryObject<B> block) {
-		return new BlockItem(block.get(), TFItems.defaultBuilder());
+		return new BlockItem(block.get(), new Item.Properties());
 	}
 
 	private static <B extends Block> BlockItem placeOnWaterBlockItem(RegistryObject<B> block) {
-		return new PlaceOnWaterBlockItem(block.get(), TFItems.defaultBuilder());
+		return new PlaceOnWaterBlockItem(block.get(), new Item.Properties());
 	}
 
 	private static <B extends Block> BlockItem fireImmuneBlock(RegistryObject<B> block) {
-		return new BlockItem(block.get(), TFItems.defaultBuilder().fireResistant());
+		return new BlockItem(block.get(), new Item.Properties().fireResistant());
 	}
 
 	private static <B extends AbstractSkullCandleBlock> BlockItem skullCandleItem(RegistryObject<B> floor, RegistryObject<B> wall) {
-		SkullCandleItem skullCandleItem = new SkullCandleItem(floor.get(), wall.get(), TFItems.defaultBuilder().rarity(Rarity.UNCOMMON));
+		SkullCandleItem skullCandleItem = new SkullCandleItem(floor.get(), wall.get(), new FabricItemSettings().rarity(Rarity.UNCOMMON));
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> ISTERItemRegistry.register(skullCandleItem));
 		return skullCandleItem;
 	}
 
 	private static <B extends Block> BlockItem burningItem(RegistryObject<B> block, int burntime) {
-		return new FurnaceFuelItem(block.get(), TFItems.defaultBuilder(), burntime);
+		return new FurnaceFuelItem(block.get(), new Item.Properties(), burntime);
 	}
 
 	private static <B extends Block, W extends Block> BlockItem trophyBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
-		TrophyItem trophyItem = new TrophyItem(block.get(), wallblock.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()));
+		var trophyItem = new TrophyItem(block.get(), wallblock.get(), new FabricItemSettings().rarity(TwilightForestMod.getRarity()));
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> ISTERItemRegistry.register(trophyItem));
 		return trophyItem;
 	}
 
 	private static <T extends Block, E extends BlockEntity> BlockItem wearableBlock(RegistryObject<T> block, RegistryObject<BlockEntityType<E>> tileentity) {
-		WearableItem wearableItem = new WearableItem(block.get(), TFItems.defaultBuilder());
+		var wearableItem = new WearableItem(block.get(), new FabricItemSettings());
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> ISTERItemRegistry.register(wearableItem));
 		return wearableItem;
 	}
 
 	private static <B extends Block> BlockItem tallBlock(RegistryObject<B> block) {
-		return new DoubleHighBlockItem(block.get(), TFItems.defaultBuilder());
+		return new DoubleHighBlockItem(block.get(), new Item.Properties());
 	}
 
 	private static <B extends Block, W extends Block> BlockItem signBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
-		return new SignItem(TFItems.defaultBuilder().stacksTo(16), block.get(), wallblock.get());
+		return new SignItem(new Item.Properties().stacksTo(16), block.get(), wallblock.get());
 	}
 
 	private static void makeBEWLRItem(RegistryObject<? extends Block> block) {
-		BlockItem blockItem = new BlockItem(block.get(), TFItems.defaultBuilder());
-		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> ISTERItemRegistry.register(blockItem));
-		register(blockItem);
+		var BEWLRItem = register(new BlockItem(block.get(), new Item.Properties()));
+		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> () -> ISTERItemRegistry.register(BEWLRItem));
 	}
 
 	private static BlockItem register(BlockItem item) {
-		return Registry.register(Registry.ITEM, Registry.BLOCK.getKey(item.getBlock()), item);
+		return Registry.register(BuiltInRegistries.ITEM, BuiltInRegistries.BLOCK.getKey(item.getBlock()), item);
 	}
 }

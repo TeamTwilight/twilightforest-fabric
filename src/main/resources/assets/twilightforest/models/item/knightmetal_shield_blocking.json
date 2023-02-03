@@ -1,5 +1,9 @@
 {
-  "parent": "twilightforest:item/knightmetal_shield",
+  "parent": "builtin/entity",
+  "gui_light": "front",
+  "textures": {
+    "particle": "twilightforest:block/towerwood"
+  },
   "display": {
     "thirdperson_righthand": {
       "rotation": [ 45, 135, 0 ],
@@ -23,7 +27,7 @@
     },
     "gui": {
       "rotation": [ 15, -25, -5 ],
-      "translation": [ 2, 3, 0 ],
+      "translation": [ 3, 2, 0 ],
       "scale": [ 0.65, 0.65, 0.65 ]
     }
   }

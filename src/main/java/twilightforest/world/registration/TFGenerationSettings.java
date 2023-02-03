@@ -2,8 +2,8 @@ package twilightforest.world.registration;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.SectionPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import twilightforest.init.TFBiomes;
 import twilightforest.init.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFLandmark;
@@ -34,7 +35,6 @@ import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.start.LegacyLandmark;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.init.BiomeKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,29 +48,29 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 	static {
 		// TODO make this data-driven
-		registerBiomeAdvancementRestriction(BiomeKeys.DARK_FOREST, TwilightForestMod.prefix("progress_lich"));
-		registerBiomeAdvancementRestriction(BiomeKeys.DARK_FOREST_CENTER, TwilightForestMod.prefix("progress_knights"));
-		registerBiomeAdvancementRestriction(BiomeKeys.FINAL_PLATEAU, TwilightForestMod.prefix("progress_troll"));
-		registerBiomeAdvancementRestriction(BiomeKeys.FIRE_SWAMP, TwilightForestMod.prefix("progress_labyrinth"));
-		registerBiomeAdvancementRestriction(BiomeKeys.GLACIER, TwilightForestMod.prefix("progress_yeti"));
-		registerBiomeAdvancementRestriction(BiomeKeys.HIGHLANDS, TwilightForestMod.prefix("progress_merge"));
-		registerBiomeAdvancementRestriction(BiomeKeys.SNOWY_FOREST, TwilightForestMod.prefix("progress_lich"));
-		registerBiomeAdvancementRestriction(BiomeKeys.SWAMP, TwilightForestMod.prefix("progress_lich"));
-		registerBiomeAdvancementRestriction(BiomeKeys.THORNLANDS, TwilightForestMod.prefix("progress_troll"));
+		registerBiomeAdvancementRestriction(TFBiomes.DARK_FOREST, TwilightForestMod.prefix("progress_lich"));
+		registerBiomeAdvancementRestriction(TFBiomes.DARK_FOREST_CENTER, TwilightForestMod.prefix("progress_knights"));
+		registerBiomeAdvancementRestriction(TFBiomes.FINAL_PLATEAU, TwilightForestMod.prefix("progress_troll"));
+		registerBiomeAdvancementRestriction(TFBiomes.FIRE_SWAMP, TwilightForestMod.prefix("progress_labyrinth"));
+		registerBiomeAdvancementRestriction(TFBiomes.GLACIER, TwilightForestMod.prefix("progress_yeti"));
+		registerBiomeAdvancementRestriction(TFBiomes.HIGHLANDS, TwilightForestMod.prefix("progress_merge"));
+		registerBiomeAdvancementRestriction(TFBiomes.SNOWY_FOREST, TwilightForestMod.prefix("progress_lich"));
+		registerBiomeAdvancementRestriction(TFBiomes.SWAMP, TwilightForestMod.prefix("progress_lich"));
+		registerBiomeAdvancementRestriction(TFBiomes.THORNLANDS, TwilightForestMod.prefix("progress_troll"));
 
-		registerBiomeProgressionEnforcement(BiomeKeys.DARK_FOREST, (player, world) -> {
+		registerBiomeProgressionEnforcement(TFBiomes.DARK_FOREST, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 0, false, true));
 				trySpawnHintMonster(player, world, TFLandmark.KNIGHT_STRONGHOLD);
 			}
 		});
-		registerBiomeProgressionEnforcement(BiomeKeys.DARK_FOREST_CENTER, (player, world) -> {
+		registerBiomeProgressionEnforcement(TFBiomes.DARK_FOREST_CENTER, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 0, false, true));
 				trySpawnHintMonster(player, world, TFLandmark.DARK_TOWER);
 			}
 		});
-		registerBiomeProgressionEnforcement(BiomeKeys.FINAL_PLATEAU, (player, world) -> {
+		registerBiomeProgressionEnforcement(TFBiomes.FINAL_PLATEAU, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 1.5F);
 				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -78,32 +78,32 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 				trySpawnHintMonster(player, world, TFLandmark.TROLL_CAVE);
 			}
 		});
-		registerBiomeProgressionEnforcement(BiomeKeys.FIRE_SWAMP, (player, world) -> {
+		registerBiomeProgressionEnforcement(TFBiomes.FIRE_SWAMP, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
 				player.setSecondsOnFire(8);
 			}
 			trySpawnHintMonster(player, world, TFLandmark.HYDRA_LAIR);
 		});
-		registerBiomeProgressionEnforcement(BiomeKeys.GLACIER, (player, world) -> {
+		registerBiomeProgressionEnforcement(TFBiomes.GLACIER, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 100, 3, false, true));
 			}
 			trySpawnHintMonster(player, world, TFLandmark.ICE_TOWER);
 		});
-		registerBiomeProgressionEnforcement(BiomeKeys.HIGHLANDS, (player, world) -> {
+		registerBiomeProgressionEnforcement(TFBiomes.HIGHLANDS, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 0.5F);
 				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 				trySpawnHintMonster(player, world, TFLandmark.TROLL_CAVE);
 			}
 		});
-		registerBiomeProgressionEnforcement(BiomeKeys.SNOWY_FOREST, (player, world) -> {
+		registerBiomeProgressionEnforcement(TFBiomes.SNOWY_FOREST, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 100, 2, false, true));
 				trySpawnHintMonster(player, world, TFLandmark.YETI_CAVE);
 			}
 		});
-		registerBiomeProgressionEnforcement(BiomeKeys.SWAMP, (player, world) -> {
+		registerBiomeProgressionEnforcement(TFBiomes.SWAMP, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 60 == 0) {
 				MobEffectInstance currentHunger = player.getEffect(MobEffects.HUNGER);
 
@@ -114,7 +114,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 				trySpawnHintMonster(player, world, TFLandmark.LABYRINTH);
 			}
 		});
-		registerBiomeProgressionEnforcement(BiomeKeys.THORNLANDS, (player, world) -> {
+		registerBiomeProgressionEnforcement(TFBiomes.THORNLANDS, (player, world) -> {
 			if (!world.isClientSide && player.tickCount % 5 == 0) {
 				player.hurt(DamageSource.MAGIC, 1.0F);
 				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -137,7 +137,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		Biome currentBiome = world.getBiome(player.blockPosition()).value();
 		if (isBiomeSafeFor(currentBiome, player))
 			return;
-		BiConsumer<Player, Level> exec = BIOME_PROGRESSION_ENFORCEMENT.get(world.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(currentBiome));
+		BiConsumer<Player, Level> exec = BIOME_PROGRESSION_ENFORCEMENT.get(world.registryAccess().registryOrThrow(Registries.BIOME).getKey(currentBiome));
 		if (exec != null)
 			exec.accept(player, world);
 	}
@@ -152,8 +152,8 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	public static final int SEALEVEL = 0;
 
 	public static final ResourceLocation DIMENSION = TwilightForestMod.prefix("twilight_forest");
-	public static final ResourceKey<LevelStem> WORLDGEN_KEY = ResourceKey.create(Registry.LEVEL_STEM_REGISTRY, DIMENSION);
-	public static final ResourceKey<Level> DIMENSION_KEY = ResourceKey.create(Registry.DIMENSION_REGISTRY, DIMENSION);
+	public static final ResourceKey<LevelStem> WORLDGEN_KEY = ResourceKey.create(Registries.LEVEL_STEM, DIMENSION);
+	public static final ResourceKey<Level> DIMENSION_KEY = ResourceKey.create(Registries.DIMENSION, DIMENSION);
 
 	// Checks if the world is linked by the default Twilight Portal.
 	// If you want to check if the world is a Twilight world, use usesTwilightChunkGenerator instead
@@ -178,7 +178,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
-		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.getLevel().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome));
+		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome));
 		if (advancements != null && entity instanceof Player)
 			return PlayerHelper.doesPlayerHaveRequiredAdvancements((Player) entity, advancements);
 		return true;
@@ -206,7 +206,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		int cz1 = Mth.floor((pos.getZ() - range) >> 4);
 		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
 
-		for (Structure structureFeature : world.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY).stream().toList()) {
+		for (Structure structureFeature : world.registryAccess().registryOrThrow(Registries.STRUCTURE).stream().toList()) {
 			if (!(structureFeature instanceof LegacyLandmark legacyData))
 				continue;
 			TFLandmark feature = legacyData.feature;

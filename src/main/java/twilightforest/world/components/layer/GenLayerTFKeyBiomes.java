@@ -1,12 +1,13 @@
 package twilightforest.world.components.layer;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.biome.Biome;
+import twilightforest.init.TFBiomes;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.area.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
-import twilightforest.init.BiomeKeys;
 
 import java.util.Random;
 
@@ -18,13 +19,13 @@ import java.util.Random;
 public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 	INSTANCE;
 
-	private Registry<Biome> registry;
+	private HolderGetter<Biome> registry;
 	private long seed;
 	private static final Random RANDOM = new Random();
 
 	GenLayerTFKeyBiomes() { }
 
-	public GenLayerTFKeyBiomes setup(Registry<Biome> registry, long seed) {
+	public GenLayerTFKeyBiomes setup(HolderGetter<Biome> registry, long seed) {
 		this.registry = registry;
 		this.seed = seed;
 		return this;
@@ -75,10 +76,10 @@ public enum GenLayerTFKeyBiomes implements AreaTransformer1 {
 		// do we need to shuffle this better?
 		// the current version just "rotates" the 4 key biomes
 		return switch ((index) & 0b11) {
-			case 1 -> TFBiomeProvider.getBiomeId(BiomeKeys.FIRE_SWAMP, registry);
-			case 2 -> TFBiomeProvider.getBiomeId(BiomeKeys.DARK_FOREST_CENTER, registry);
-			case 3 -> TFBiomeProvider.getBiomeId(BiomeKeys.FINAL_PLATEAU, registry);
-			default -> TFBiomeProvider.getBiomeId(BiomeKeys.GLACIER, registry);
+			case 1 -> TFBiomeProvider.getBiomeId(TFBiomes.FIRE_SWAMP, registry);
+			case 2 -> TFBiomeProvider.getBiomeId(TFBiomes.DARK_FOREST_CENTER, registry);
+			case 3 -> TFBiomeProvider.getBiomeId(TFBiomes.FINAL_PLATEAU, registry);
+			default -> TFBiomeProvider.getBiomeId(TFBiomes.GLACIER, registry);
 		};
 	}
 }

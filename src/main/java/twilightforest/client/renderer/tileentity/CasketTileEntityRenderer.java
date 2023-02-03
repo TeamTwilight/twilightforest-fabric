@@ -2,7 +2,8 @@ package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -89,7 +90,7 @@ public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidB
 
             matrixStackIn.translate(0.5, 0.0, 0.5);
             matrixStackIn.mulPose(facing.getRotation());
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
 
             DoubleBlockCombiner.NeighborCombineResult<? extends KeepsakeCasketBlockEntity> icallbackwrapper = DoubleBlockCombiner.Combiner::acceptNone;
             float f1 = icallbackwrapper.apply(KeepsakeCasketBlock.getLidRotationCallback(tileEntityIn)).get(partialTicks);

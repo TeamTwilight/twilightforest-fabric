@@ -1,39 +1,55 @@
 package twilightforest.init;
 
-import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
-import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
-import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.placements.BiomeForcedLandmarkPlacement;
 
-import java.util.function.Supplier;
-
 public class TFStructureSets {
-    public static final LazyRegistrar<StructureSet> STRUCTURE_SETS = LazyRegistrar.create(Registry.STRUCTURE_SET_REGISTRY, TwilightForestMod.ID);
 
-    public static final RegistryObject<StructureSet> HEDGE_MAZE = register(TFStructures.HEDGE_MAZE, () -> TFLandmark.HEDGE_MAZE);
-    public static final RegistryObject<StructureSet> QUEST_GROVE = register(TFStructures.QUEST_GROVE, () -> TFLandmark.QUEST_GROVE);
-    public static final RegistryObject<StructureSet> MUSHROOM_TOWER = register(TFStructures.MUSHROOM_TOWER, () -> TFLandmark.MUSHROOM_TOWER);
-    public static final RegistryObject<StructureSet> HOLLOW_HILL_SMALL = register(TFStructures.HOLLOW_HILL_SMALL, () -> TFLandmark.SMALL_HILL);
-    public static final RegistryObject<StructureSet> HOLLOW_HILL_MEDIUM = register(TFStructures.HOLLOW_HILL_MEDIUM, () -> TFLandmark.MEDIUM_HILL);
-    public static final RegistryObject<StructureSet> HOLLOW_HILL_LARGE = register(TFStructures.HOLLOW_HILL_LARGE, () -> TFLandmark.LARGE_HILL);
-    public static final RegistryObject<StructureSet> NAGA_COURTYARD = register(TFStructures.NAGA_COURTYARD, () -> TFLandmark.NAGA_COURTYARD);
-    public static final RegistryObject<StructureSet> LICH_TOWER = register(TFStructures.LICH_TOWER, () -> TFLandmark.LICH_TOWER);
-    public static final RegistryObject<StructureSet> LABYRINTH = register(TFStructures.LABYRINTH, () -> TFLandmark.LABYRINTH);
-    public static final RegistryObject<StructureSet> HYDRA_LAIR = register(TFStructures.HYDRA_LAIR, () -> TFLandmark.HYDRA_LAIR);
-    public static final RegistryObject<StructureSet> KNIGHT_STRONGHOLD = register(TFStructures.KNIGHT_STRONGHOLD, () -> TFLandmark.KNIGHT_STRONGHOLD);
-    public static final RegistryObject<StructureSet> DARK_TOWER = register(TFStructures.DARK_TOWER, () -> TFLandmark.DARK_TOWER);
-    public static final RegistryObject<StructureSet> YETI_CAVE = register(TFStructures.YETI_CAVE, () -> TFLandmark.YETI_CAVE);
-    public static final RegistryObject<StructureSet> AURORA_PALACE = register(TFStructures.AURORA_PALACE, () -> TFLandmark.ICE_TOWER);
-    public static final RegistryObject<StructureSet> TROLL_CAVE = register(TFStructures.TROLL_CAVE, () -> TFLandmark.TROLL_CAVE);
-    public static final RegistryObject<StructureSet> FINAL_CASTLE = register(TFStructures.FINAL_CASTLE, () -> TFLandmark.FINAL_CASTLE);
+	public static final ResourceKey<StructureSet> HEDGE_MAZE = registerKey("hedge_maze");
+	public static final ResourceKey<StructureSet> QUEST_GROVE = registerKey("quest_grove");
+	public static final ResourceKey<StructureSet> MUSHROOM_TOWER = registerKey("mushroom_tower");
+	public static final ResourceKey<StructureSet> HOLLOW_HILL_SMALL = registerKey("small_hollow_hill");
+	public static final ResourceKey<StructureSet> HOLLOW_HILL_MEDIUM = registerKey("medium_hollow_hill");
+	public static final ResourceKey<StructureSet> HOLLOW_HILL_LARGE = registerKey("large_hollow_hill");
+	public static final ResourceKey<StructureSet> NAGA_COURTYARD = registerKey("naga_courtyard");
+	public static final ResourceKey<StructureSet> LICH_TOWER = registerKey("lich_tower");
+	public static final ResourceKey<StructureSet> LABYRINTH = registerKey("labyrinth");
+	public static final ResourceKey<StructureSet> HYDRA_LAIR = registerKey("hydra_lair");
+	public static final ResourceKey<StructureSet> KNIGHT_STRONGHOLD = registerKey("knight_stronghold");
+	public static final ResourceKey<StructureSet> DARK_TOWER = registerKey("dark_tower");
+	public static final ResourceKey<StructureSet> YETI_CAVE = registerKey("yeti_cave");
+	public static final ResourceKey<StructureSet> AURORA_PALACE = registerKey("aurora_palace");
+	public static final ResourceKey<StructureSet> TROLL_CAVE = registerKey("troll_cave");
+	public static final ResourceKey<StructureSet> FINAL_CASTLE = registerKey("final_castle");
 
-    private static RegistryObject<StructureSet> register(RegistryObject<? extends Structure> structure, Supplier<TFLandmark> landmark) {
-        return TFStructureSets.STRUCTURE_SETS.register(structure.getId().getPath(), () -> new StructureSet(structure.getHolder().map(Holder::<Structure>hackyErase).get(), new BiomeForcedLandmarkPlacement(landmark.get(), 256)));
-    }
+
+	private static ResourceKey<StructureSet> registerKey(String name) {
+		return ResourceKey.create(Registries.STRUCTURE_SET, TwilightForestMod.prefix(name));
+	}
+
+	public static void bootstrap(BootstapContext<StructureSet> context) {
+		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
+		context.register(HEDGE_MAZE, new StructureSet(structures.getOrThrow(TFStructures.HEDGE_MAZE), new BiomeForcedLandmarkPlacement(TFLandmark.HEDGE_MAZE, 256)));
+		context.register(QUEST_GROVE, new StructureSet(structures.getOrThrow(TFStructures.QUEST_GROVE), new BiomeForcedLandmarkPlacement(TFLandmark.QUEST_GROVE, 256)));
+		context.register(MUSHROOM_TOWER, new StructureSet(structures.getOrThrow(TFStructures.MUSHROOM_TOWER), new BiomeForcedLandmarkPlacement(TFLandmark.MUSHROOM_TOWER, 256)));
+		context.register(HOLLOW_HILL_SMALL, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_SMALL), new BiomeForcedLandmarkPlacement(TFLandmark.SMALL_HILL, 256)));
+		context.register(HOLLOW_HILL_MEDIUM, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_MEDIUM), new BiomeForcedLandmarkPlacement(TFLandmark.MEDIUM_HILL, 256)));
+		context.register(HOLLOW_HILL_LARGE, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_LARGE), new BiomeForcedLandmarkPlacement(TFLandmark.LARGE_HILL, 256)));
+		context.register(NAGA_COURTYARD, new StructureSet(structures.getOrThrow(TFStructures.NAGA_COURTYARD), new BiomeForcedLandmarkPlacement(TFLandmark.NAGA_COURTYARD, 256)));
+		context.register(LICH_TOWER, new StructureSet(structures.getOrThrow(TFStructures.LICH_TOWER), new BiomeForcedLandmarkPlacement(TFLandmark.LICH_TOWER, 256)));
+		context.register(LABYRINTH, new StructureSet(structures.getOrThrow(TFStructures.LABYRINTH), new BiomeForcedLandmarkPlacement(TFLandmark.LABYRINTH, 256)));
+		context.register(HYDRA_LAIR, new StructureSet(structures.getOrThrow(TFStructures.HYDRA_LAIR), new BiomeForcedLandmarkPlacement(TFLandmark.HYDRA_LAIR, 256)));
+		context.register(KNIGHT_STRONGHOLD, new StructureSet(structures.getOrThrow(TFStructures.KNIGHT_STRONGHOLD), new BiomeForcedLandmarkPlacement(TFLandmark.KNIGHT_STRONGHOLD, 256)));
+		context.register(DARK_TOWER, new StructureSet(structures.getOrThrow(TFStructures.DARK_TOWER), new BiomeForcedLandmarkPlacement(TFLandmark.DARK_TOWER, 256)));
+		context.register(YETI_CAVE, new StructureSet(structures.getOrThrow(TFStructures.YETI_CAVE), new BiomeForcedLandmarkPlacement(TFLandmark.YETI_CAVE, 256)));
+		context.register(AURORA_PALACE, new StructureSet(structures.getOrThrow(TFStructures.AURORA_PALACE), new BiomeForcedLandmarkPlacement(TFLandmark.ICE_TOWER, 256)));
+		context.register(TROLL_CAVE, new StructureSet(structures.getOrThrow(TFStructures.TROLL_CAVE), new BiomeForcedLandmarkPlacement(TFLandmark.TROLL_CAVE, 256)));
+		context.register(FINAL_CASTLE, new StructureSet(structures.getOrThrow(TFStructures.FINAL_CASTLE), new BiomeForcedLandmarkPlacement(TFLandmark.FINAL_CASTLE, 256)));
+	}
 }

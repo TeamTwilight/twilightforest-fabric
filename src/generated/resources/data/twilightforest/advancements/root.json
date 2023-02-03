@@ -34,7 +34,7 @@
     },
     "show_toast": true,
     "title": {
-      "translate": "itemGroup.twilightforest"
+      "translate": "advancement.twilightforest.root"
     }
   },
   "requirements": [

@@ -15,6 +15,7 @@ import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -25,10 +26,6 @@ import java.util.function.BiConsumer;
  */
 public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 
-//	protected int minHeight = 20;
-
-	private final List<BlockPos> leaves = Lists.newArrayList();
-
 	public CanopyTreeFeature(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
@@ -36,6 +33,7 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	@Override
 	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
 		// determine a height
+		List<BlockPos> leaves = Lists.newArrayList();
 		int treeHeight = config.minHeight;
 		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
 			treeHeight += random.nextInt(5);
@@ -54,21 +52,21 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 			return false;
 		}
 
-		this.leaves.clear();
+		leaves.clear();
 
 		//okay build a tree!  Go up to the height
-		buildBranch(world, pos, trunkPlacer, 0, treeHeight, 0, 0, true, random, config);
+		buildBranch(world, leaves, pos, trunkPlacer, 0, treeHeight, 0, 0, true, random, config);
 
 		// make 3-4 branches
 		int numBranches = 3 + random.nextInt(2);
 		float offset = random.nextFloat();
 		for (int b = 0; b < numBranches; b++) {
-			buildBranch(world, pos, trunkPlacer, treeHeight - 10 + b, 9, 0.3 * b + offset, 0.2, false, random, config);
+			buildBranch(world, leaves, pos, trunkPlacer, treeHeight - 10 + b, 9, 0.3 * b + offset, 0.2, false, random, config);
 		}
 
 		// add the actual leaves
 		if (config.hasLeaves)
-			for (BlockPos leafPos : this.leaves) {
+			for (BlockPos leafPos : leaves) {
 				makeLeafBlob(world, leavesPlacer, random, leafPos, config);
 			}
 
@@ -98,7 +96,7 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
-	void buildBranch(LevelAccessor world, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, RandomSource treeRNG, TFTreeFeatureConfig config) {
+	void buildBranch(LevelAccessor world, List<BlockPos> leaves, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, RandomSource treeRNG, TFTreeFeatureConfig config) {
 		BlockPos src = pos.above(height);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
@@ -127,7 +125,7 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 //			setBlockAndNotifyAdequately(world, dest.north(), branchState);
 
 			// save leaf position for later
-			this.leaves.add(dest);
+			leaves.add(dest);
 		}
 	}
 }

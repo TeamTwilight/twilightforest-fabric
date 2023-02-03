@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -24,12 +23,12 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.util.EntityUtil;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
-public class HedgeBlock extends Block implements CustomPathNodeTypeBlock {
+public class HedgeBlock extends Block {
 
 	private static final VoxelShape HEDGE_BB = Shapes.create(new AABB(0, 0, 0, 1, 0.9375, 1));
 
@@ -46,7 +45,7 @@ public class HedgeBlock extends Block implements CustomPathNodeTypeBlock {
 	}
 
 	@Nullable
-	@Override
+//	@Override
 	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
 		return mob != null && this.shouldDamage(mob) ? BlockPathTypes.DANGER_CACTUS : null;
 	}

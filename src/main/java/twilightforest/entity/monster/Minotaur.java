@@ -1,6 +1,6 @@
 package twilightforest.entity.monster;
 
-import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.MobAccessor;
+import io.github.fabricators_of_create.porting_lib.mixin.accessors.common.accessor.MobAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

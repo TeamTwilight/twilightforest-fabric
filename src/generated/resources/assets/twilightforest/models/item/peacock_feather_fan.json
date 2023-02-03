@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "twilightforest:items/peacock_feather_fan"
+    "layer0": "twilightforest:item/peacock_feather_fan"
   }
 }

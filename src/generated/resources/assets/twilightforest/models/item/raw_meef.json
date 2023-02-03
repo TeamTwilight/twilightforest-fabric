@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/raw_meef"
+    "layer0": "twilightforest:item/raw_meef"
   }
 }

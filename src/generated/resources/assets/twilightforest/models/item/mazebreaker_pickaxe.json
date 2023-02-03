@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "twilightforest:items/mazebreaker_pickaxe"
+    "layer0": "twilightforest:item/mazebreaker_pickaxe"
   }
 }

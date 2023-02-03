@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/brittle_potion_flask_2",
-    "layer1": "twilightforest:items/brittle_potion_flask_cracked"
+    "layer0": "twilightforest:item/brittle_potion_flask_2",
+    "layer1": "twilightforest:item/brittle_potion_flask_cracked"
   }
 }

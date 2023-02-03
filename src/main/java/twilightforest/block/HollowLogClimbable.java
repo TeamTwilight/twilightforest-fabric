@@ -1,7 +1,7 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.tags.ToolTags;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -122,7 +122,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getItem() instanceof ShearsItem || stack.is(ToolTags.SHEARS)) {
+		if (stack.getItem() instanceof ShearsItem || stack.is(ConventionalItemTags.SHEARS)) {
 			HollowLogVariants.Climbable variant = state.getValue(VARIANT);
 			level.setBlock(pos, this.vertical.get().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, variant == HollowLogVariants.Climbable.LADDER_WATERLOGGED), 3);
 			level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);

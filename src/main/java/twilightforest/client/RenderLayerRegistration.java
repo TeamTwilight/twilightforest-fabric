@@ -5,8 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
-import io.github.fabricators_of_create.porting_lib.client.NamedRenderTypeManager;
-import io.github.fabricators_of_create.porting_lib.mixin.client.accessor.BlockModelAccessor;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.minecraft.client.renderer.RenderType;

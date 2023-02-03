@@ -1,11 +1,9 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
+import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -18,21 +16,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.FireJetBlockEntity;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.init.TFBlockEntities;
 
-import org.jetbrains.annotations.Nullable;
-
-public class FireJetBlock extends BaseEntityBlock implements CustomPathNodeTypeBlock {
+public class FireJetBlock extends BaseEntityBlock implements LandPathNodeTypesRegistry.StaticPathNodeTypeProvider {
 
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
 	public FireJetBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, FireJetVariant.IDLE));
+		LandPathNodeTypesRegistry.register(this, this);
 	}
 
 	@Override
@@ -48,7 +46,7 @@ public class FireJetBlock extends BaseEntityBlock implements CustomPathNodeTypeB
 
 	@Nullable
 	@Override
-	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
+	public BlockPathTypes getPathNodeType(BlockState state, boolean neighbor) {
 		return state.getValue(STATE) == FireJetVariant.IDLE ? null : BlockPathTypes.DAMAGE_FIRE;
 	}
 

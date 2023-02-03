@@ -1,13 +1,14 @@
 package twilightforest.world.components.layer;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.vanillalegacy.area.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer2;
 import twilightforest.world.components.layer.vanillalegacy.traits.DimensionOffset0Transformer;
-import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFBiomes;
 
 public enum GenLayerTFRiverMix implements AreaTransformer2, DimensionOffset0Transformer {
 
@@ -22,11 +23,11 @@ public enum GenLayerTFRiverMix implements AreaTransformer2, DimensionOffset0Tran
 //		this.riverLayer = riverLayer;
 //	}
 
-	private Registry<Biome> registry;
+	private HolderGetter<Biome> registry;
 
 	GenLayerTFRiverMix() { }
 
-	public GenLayerTFRiverMix setup(Registry<Biome> registry) {
+	public GenLayerTFRiverMix setup(HolderGetter<Biome> registry) {
 		this.registry = registry;
 		return this;
 	}
@@ -62,7 +63,7 @@ public enum GenLayerTFRiverMix implements AreaTransformer2, DimensionOffset0Tran
 		int biomeInputs = area1.get(this.getParentX(val1), this.getParentY(val2));
 		int riverInputs = area2.get(this.getParentX(val1), this.getParentY(val2));
 
-		int stream = TFBiomeProvider.getBiomeId(BiomeKeys.STREAM, registry);
+		int stream = TFBiomeProvider.getBiomeId(TFBiomes.STREAM, registry);
 
 		if (riverInputs == stream) {
 			return riverInputs;

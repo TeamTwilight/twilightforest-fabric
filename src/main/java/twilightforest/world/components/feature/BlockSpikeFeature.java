@@ -15,9 +15,11 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.util.FeatureLogic;
 
+import java.util.Map;
+
 public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 
-	public static final Stalactite STONE_STALACTITE = new Stalactite(Blocks.STONE, 0.25F, 11, 1);
+	public static final Stalactite STONE_STALACTITE = new Stalactite(Map.of(Blocks.STONE, 1), 0.25F, 11, 1);
 
 	public BlockSpikeFeature(Codec<NoneFeatureConfiguration> codec) {
 		super(codec);
@@ -32,10 +34,10 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 	public static boolean startSpike(WorldGenLevel level, BlockPos startPos, Stalactite config, RandomSource random, boolean hanging) {
 		UniformInt lengthBounds = UniformInt.of((int) (config.maxLength() * config.sizeVariation()), config.maxLength());
 
-		return startSpike(level, startPos, config.ore(), lengthBounds.sample(random), lengthBounds.getMinValue(), ConstantInt.of(4).sample(random), hanging, random);
+		return startSpike(level, startPos, config.ores(), lengthBounds.sample(random), lengthBounds.getMinValue(), ConstantInt.of(4).sample(random), hanging, random);
 	}
 
-	public static boolean startSpike(WorldGenLevel level, BlockPos startPos, Block ore, int length, int lengthMinimum, int clearance, boolean hang, RandomSource random) {
+	public static boolean startSpike(WorldGenLevel level, BlockPos startPos, Map<Block, Integer> ore, int length, int lengthMinimum, int clearance, boolean hang, RandomSource random) {
 		BlockPos.MutableBlockPos movingPos = startPos.mutable();
 		int clearedLength = 0;
 		int dY = hang ? -1 : 1;
@@ -70,11 +72,18 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 		return makeSpike(level, startPos, ore, finalLength, dY, random, hang);
 	}
 
-	private static boolean makeSpike(WorldGenLevel level, BlockPos startPos, Block ore, int length, int dY, RandomSource random, boolean hang) {
+	private static boolean makeSpike(WorldGenLevel level, BlockPos startPos, Map<Block, Integer> ore, int length, int dY, RandomSource random, boolean hang) {
 		int diameter = (int) (length / 4.5F); // diameter of the base
 
 		//only place spikes on solid ground, not on the tops of trees
 		if (!hang && !FeatureLogic.worldGenReplaceable(level.getBlockState(startPos.below()))) return false;
+
+		int highestWeight = 0;
+		if (ore.size() > 1) {
+			for (Map.Entry<Block, Integer> entry : ore.entrySet()) {
+				if (entry.getValue() > highestWeight) highestWeight = entry.getValue();
+			}
+		}
 
 		// let's see...
 		for (int dx = -diameter; dx <= diameter; dx++) {
@@ -92,7 +101,16 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 					BlockPos placement = startPos.offset(dx, i * dY, dz);
 
 					if (FeatureLogic.worldGenReplaceable(level.getBlockState(placement)) && (dY > 0 || placement.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, placement.getX(), placement.getZ()) - 1))
-						level.setBlock(placement, ore.defaultBlockState(), 3);
+						if (ore.size() == 1) {
+							level.setBlock(placement, ore.keySet().stream().toList().get(0).defaultBlockState(), 3);
+						} else {
+							for (Map.Entry<Block, Integer> entry : ore.entrySet()) {
+								if (random.nextInt(highestWeight) + 1 <= entry.getValue()) {
+									level.setBlock(placement, entry.getKey().defaultBlockState(), 3);
+									break;
+								}
+							}
+						}
 				}
 			}
 		}

@@ -12,6 +12,9 @@
           "above_bottom": 0
         }
       }
+    },
+    {
+      "type": "minecraft:in_square"
     }
   ]
 }

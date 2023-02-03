@@ -2,8 +2,9 @@ package twilightforest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.fabricmc.api.EnvType;
@@ -43,7 +44,7 @@ public class TFMagicMapData extends MapItemSavedData {
 		final boolean trackingPosition = !nbt.contains("trackingPosition", 1) || nbt.getBoolean("trackingPosition");
 		final boolean unlimitedTracking = nbt.getBoolean("unlimitedTracking");
 		final boolean locked = nbt.getBoolean("locked");
-		TFMagicMapData tfdata = new TFMagicMapData(data.x, data.z, data.scale, trackingPosition, unlimitedTracking, locked, data.dimension);
+		TFMagicMapData tfdata = new TFMagicMapData(data.centerX, data.centerZ, data.scale, trackingPosition, unlimitedTracking, locked, data.dimension);
 
 		tfdata.colors = data.colors;
 		tfdata.bannerMarkers.putAll(data.bannerMarkers);
@@ -78,8 +79,8 @@ public class TFMagicMapData extends MapItemSavedData {
 		List<TFMapDecoration> toAdd = new ArrayList<>();
 
 		for (TFMapDecoration coord : tfDecorations) {
-			int worldX = (coord.getX() << this.scale - 1) + this.x;
-			int worldZ = (coord.getY() << this.scale - 1) + this.z;
+			int worldX = (coord.getX() << this.scale - 1) + this.centerX;
+			int worldZ = (coord.getY() << this.scale - 1) + this.centerZ;
 
 			int trueId = TFMapDecoration.ICONS_FLIPPED.getInt(LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, (ServerLevel) world));
 			if (coord.featureId != trueId) {
@@ -189,7 +190,7 @@ public class TFMagicMapData extends MapItemSavedData {
 			if (ICONS.get(featureId).isStructureEnabled) {
 				RenderContext.stack.pushPose();
 				RenderContext.stack.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
-				RenderContext.stack.mulPose(Vector3f.ZP.rotationDegrees(getRot() * 360 / 16.0F));
+				RenderContext.stack.mulPose(Axis.ZP.rotationDegrees(getRot() * 360 / 16.0F));
 				RenderContext.stack.scale(4.0F, 4.0F, 3.0F);
 				RenderContext.stack.translate(-0.125D, 0.125D, 0.0D);
 				float f1 = featureId % 8 / 8.0F;

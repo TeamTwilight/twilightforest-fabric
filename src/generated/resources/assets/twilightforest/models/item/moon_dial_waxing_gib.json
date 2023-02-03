@@ -1,6 +1,6 @@
 {
-  "parent": "twilightforest:item/util/readable",
+  "parent": "twilightforest:item/moon_dial_template",
   "textures": {
-    "layer0": "twilightforest:items/moon_dial/waxing_gibbous"
+    "layer0": "twilightforest:item/moon_dial/waxing_gibbous"
   }
 }

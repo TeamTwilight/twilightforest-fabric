@@ -2,6 +2,7 @@ package twilightforest.data.helpers;
 
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
@@ -16,8 +17,8 @@ import static twilightforest.TwilightForestMod.prefix;
 
 public abstract class BlockModelBuilders extends BlockModelHelpers {
 
-	public BlockModelBuilders(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, helper);
+	public BlockModelBuilders(PackOutput output, ExistingFileHelper helper) {
+		super(output, helper);
 	}
 
 	protected BlockModelBuilder makeTintedBlockAll(String name, ResourceLocation renderType) {
@@ -58,12 +59,12 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 	protected BlockModelBuilder makeEmissiveBlock(String name, ResourceLocation renderType, int emissivity) {
 		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#north")
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
-				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(emissivity).tintindex(0).end()
-				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(emissivity).tintindex(0).end()
-				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(emissivity).tintindex(0).end()
-				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(emissivity).tintindex(0).end()
-				.face(Direction.UP).texture("#up").cullface(Direction.UP).emissivity(emissivity).tintindex(0).end()
-				.face(Direction.DOWN).texture("#down").cullface(Direction.DOWN).emissivity(emissivity).tintindex(0).end().end();
+				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.UP).texture("#up").cullface(Direction.UP).emissivity(emissivity, emissivity).tintindex(0).end()
+				.face(Direction.DOWN).texture("#down").cullface(Direction.DOWN).emissivity(emissivity, emissivity).tintindex(0).end().end();
 	}
 
 	protected BlockModelBuilder makeTintedFlippedBlockAll(String name) {
@@ -91,25 +92,25 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 	protected BlockModelBuilder make4x4x4SmallCube(String name) {
 		return models().withExistingParent(name, "minecraft:block/block").renderType(CUTOUT).texture("particle", "#all")
 				.element().from(6.0F, 6.0F, 6.0F).to(10.0F, 10.0F, 10.0F)
-				.face(Direction.NORTH).texture("#all").cullface(Direction.NORTH).emissivity(15).end()
-				.face(Direction.EAST).texture("#all").cullface(Direction.EAST).emissivity(15).end()
-				.face(Direction.SOUTH).texture("#all").cullface(Direction.SOUTH).emissivity(15).end()
-				.face(Direction.WEST).texture("#all").cullface(Direction.WEST).emissivity(15).end()
-				.face(Direction.UP).texture("#all").cullface(Direction.UP).emissivity(15).end()
-				.face(Direction.DOWN).texture("#all").cullface(Direction.DOWN).emissivity(15).end().end();
+				.face(Direction.NORTH).texture("#all").cullface(Direction.NORTH).emissivity(15, 15).end()
+				.face(Direction.EAST).texture("#all").cullface(Direction.EAST).emissivity(15, 15).end()
+				.face(Direction.SOUTH).texture("#all").cullface(Direction.SOUTH).emissivity(15, 15).end()
+				.face(Direction.WEST).texture("#all").cullface(Direction.WEST).emissivity(15, 15).end()
+				.face(Direction.UP).texture("#all").cullface(Direction.UP).emissivity(15, 15).end()
+				.face(Direction.DOWN).texture("#all").cullface(Direction.DOWN).emissivity(15, 15).end().end();
 	}
 
 	protected BlockModelBuilder makeCubeWithTopLayer(String name, ResourceLocation renderType, int layer1em, int layer2em) {
 		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#bottom")
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
-				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(layer1em).end()
-				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(layer1em).end()
-				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(layer1em).end()
-				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(layer1em).end()
-				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1em).end()
-				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1em).end().end()
+				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(layer1em, layer1em).end()
+				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(layer1em, layer1em).end()
+				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(layer1em, layer1em).end()
+				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(layer1em, layer1em).end()
+				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1em, layer1em).end()
+				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1em, layer1em).end().end()
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
-				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2em).end().end();
+				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2em, layer2em).end().end();
 	}
 
 	protected BlockModelBuilder make2LayerCubeAllSidesSame(String name, ResourceLocation renderType, int layer1em, int layer2em, boolean shade) {
@@ -127,36 +128,36 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 											   int layer2emN, int layer2emS, int layer2emW, int layer2emE, int layer2emU, int layer2emD, boolean shade) {
 		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#bottom")
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F).shade(shade)
-				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(layer1emN).end()
-				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(layer1emE).end()
-				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(layer1emS).end()
-				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(layer1emW).end()
-				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1emU).end()
-				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1emD).end().end()
-				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F).shade(shade)
-				.face(Direction.NORTH).texture("#north2").cullface(Direction.NORTH).emissivity(layer2emN).tintindex(0).end()
-				.face(Direction.EAST).texture("#east2").cullface(Direction.EAST).emissivity(layer2emE).tintindex(0).end()
-				.face(Direction.SOUTH).texture("#south2").cullface(Direction.SOUTH).emissivity(layer2emS).tintindex(0).end()
-				.face(Direction.WEST).texture("#west2").cullface(Direction.WEST).emissivity(layer2emW).tintindex(0).end()
-				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2emU).tintindex(0).end()
-				.face(Direction.DOWN).texture("#bottom2").cullface(Direction.DOWN).emissivity(layer2emD).tintindex(0).end().end();
+				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(layer1emN, layer1emN).end()
+				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(layer1emE, layer1emE).end()
+				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(layer1emS, layer1emS).end()
+				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(layer1emW, layer1emW).end()
+				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1emU, layer1emU).end()
+				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1emD, layer1emD).end().end()
+				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
+				.face(Direction.NORTH).texture("#north2").cullface(Direction.NORTH).emissivity(layer2emN, layer2emN).tintindex(0).end()
+				.face(Direction.EAST).texture("#east2").cullface(Direction.EAST).emissivity(layer2emE, layer2emE).tintindex(0).end()
+				.face(Direction.SOUTH).texture("#south2").cullface(Direction.SOUTH).emissivity(layer2emS, layer2emS).tintindex(0).end()
+				.face(Direction.WEST).texture("#west2").cullface(Direction.WEST).emissivity(layer2emW, layer2emW).tintindex(0).end()
+				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2emU, layer2emU).tintindex(0).end()
+				.face(Direction.DOWN).texture("#bottom2").cullface(Direction.DOWN).emissivity(layer2emD, layer2emD).tintindex(0).end().end();
 	}
 
 	protected BlockModelBuilder make2LayerCubeNoBottom(String name, ResourceLocation renderType, int layer1em, int layer2em, boolean shade) {
 		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#bottom")
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F).shade(shade)
-				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(layer1em).end()
-				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(layer1em).end()
-				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(layer1em).end()
-				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(layer1em).end()
-				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1em).end()
-				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1em).end().end()
+				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(layer1em, layer1em).end()
+				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(layer1em, layer1em).end()
+				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(layer1em, layer1em).end()
+				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(layer1em, layer1em).end()
+				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1em, layer1em).end()
+				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1em, layer1em).end().end()
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F).shade(shade)
-				.face(Direction.NORTH).texture("#north2").cullface(Direction.NORTH).emissivity(layer2em).end()
-				.face(Direction.EAST).texture("#east2").cullface(Direction.EAST).emissivity(layer2em).end()
-				.face(Direction.SOUTH).texture("#south2").cullface(Direction.SOUTH).emissivity(layer2em).end()
-				.face(Direction.WEST).texture("#west2").cullface(Direction.WEST).emissivity(layer2em).end()
-				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2em).end().end();
+				.face(Direction.NORTH).texture("#north2").cullface(Direction.NORTH).emissivity(layer2em, layer2em).end()
+				.face(Direction.EAST).texture("#east2").cullface(Direction.EAST).emissivity(layer2em, layer2em).end()
+				.face(Direction.SOUTH).texture("#south2").cullface(Direction.SOUTH).emissivity(layer2em, layer2em).end()
+				.face(Direction.WEST).texture("#west2").cullface(Direction.WEST).emissivity(layer2em, layer2em).end()
+				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2em, layer2em).end().end();
 	}
 
 	protected BlockModelBuilder make3LayerCubeAllSidesSame(String name, ResourceLocation renderType, int layer1em, int layer2em, int layer3em) {
@@ -178,26 +179,26 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 											   int layer3emN, int layer3emS, int layer3emW, int layer3emE, int layer3emU, int layer3emD) {
 		return models().withExistingParent(name, "minecraft:block/block").renderType(renderType).texture("particle", "#bottom")
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
-				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(layer1emN).end()
-				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(layer1emE).end()
-				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(layer1emS).end()
-				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(layer1emW).end()
-				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1emU).end()
-				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1emD).end().end()
+				.face(Direction.NORTH).texture("#north").cullface(Direction.NORTH).emissivity(layer1emN, layer1emN).end()
+				.face(Direction.EAST).texture("#east").cullface(Direction.EAST).emissivity(layer1emE, layer1emE).end()
+				.face(Direction.SOUTH).texture("#south").cullface(Direction.SOUTH).emissivity(layer1emS, layer1emS).end()
+				.face(Direction.WEST).texture("#west").cullface(Direction.WEST).emissivity(layer1emW, layer1emW).end()
+				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1emU, layer1emU).end()
+				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1emD, layer1emD).end().end()
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
-				.face(Direction.NORTH).texture("#north2").cullface(Direction.NORTH).emissivity(layer2emN).end()
-				.face(Direction.EAST).texture("#east2").cullface(Direction.EAST).emissivity(layer2emE).end()
-				.face(Direction.SOUTH).texture("#south2").cullface(Direction.SOUTH).emissivity(layer2emS).end()
-				.face(Direction.WEST).texture("#west2").cullface(Direction.WEST).emissivity(layer2emW).end()
-				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2emU).end()
-				.face(Direction.DOWN).texture("#bottom2").cullface(Direction.DOWN).emissivity(layer2emD).end().end()
+				.face(Direction.NORTH).texture("#north2").cullface(Direction.NORTH).emissivity(layer2emN, layer2emN).end()
+				.face(Direction.EAST).texture("#east2").cullface(Direction.EAST).emissivity(layer2emE, layer2emE).end()
+				.face(Direction.SOUTH).texture("#south2").cullface(Direction.SOUTH).emissivity(layer2emS, layer2emS).end()
+				.face(Direction.WEST).texture("#west2").cullface(Direction.WEST).emissivity(layer2emW, layer2emW).end()
+				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2emU, layer2emU).end()
+				.face(Direction.DOWN).texture("#bottom2").cullface(Direction.DOWN).emissivity(layer2emD, layer2emD).end().end()
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
-				.face(Direction.NORTH).texture("#north3").cullface(Direction.NORTH).emissivity(layer3emN).end()
-				.face(Direction.EAST).texture("#east3").cullface(Direction.EAST).emissivity(layer3emE).end()
-				.face(Direction.SOUTH).texture("#south3").cullface(Direction.SOUTH).emissivity(layer3emS).end()
-				.face(Direction.WEST).texture("#west3").cullface(Direction.WEST).emissivity(layer3emW).end()
-				.face(Direction.UP).texture("#top3").cullface(Direction.UP).emissivity(layer3emU).end()
-				.face(Direction.DOWN).texture("#bottom3").cullface(Direction.DOWN).emissivity(layer3emD).end().end();
+				.face(Direction.NORTH).texture("#north3").cullface(Direction.NORTH).emissivity(layer3emN, layer3emN).end()
+				.face(Direction.EAST).texture("#east3").cullface(Direction.EAST).emissivity(layer3emE, layer3emE).end()
+				.face(Direction.SOUTH).texture("#south3").cullface(Direction.SOUTH).emissivity(layer3emS, layer3emS).end()
+				.face(Direction.WEST).texture("#west3").cullface(Direction.WEST).emissivity(layer3emW, layer3emW).end()
+				.face(Direction.UP).texture("#top3").cullface(Direction.UP).emissivity(layer3emU, layer3emU).end()
+				.face(Direction.DOWN).texture("#bottom3").cullface(Direction.DOWN).emissivity(layer3emD, layer3emD).end().end();
 	}
 
 	protected BlockModelBuilder make3LayerCubeIdenticalSides1Bottom(String name, int layer1em, int layer2emTop, int layer2emSides, int layer3emTop, int layer3emSides) {
@@ -213,24 +214,24 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 																	int layer3emN, int layer3emS, int layer3emW, int layer3emE, int layer3emU) {
 		return models().withExistingParent(name, "minecraft:block/block").renderType(CUTOUT).texture("particle", "#bottom")
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
-				.face(Direction.NORTH).texture("#side").cullface(Direction.NORTH).emissivity(layer1emN).end()
-				.face(Direction.EAST).texture("#side").cullface(Direction.EAST).emissivity(layer1emE).end()
-				.face(Direction.SOUTH).texture("#side").cullface(Direction.SOUTH).emissivity(layer1emS).end()
-				.face(Direction.WEST).texture("#side").cullface(Direction.WEST).emissivity(layer1emW).end()
-				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1emU).end()
-				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1emD).end().end()
+				.face(Direction.NORTH).texture("#side").cullface(Direction.NORTH).emissivity(layer1emN, layer1emN).end()
+				.face(Direction.EAST).texture("#side").cullface(Direction.EAST).emissivity(layer1emE, layer1emE).end()
+				.face(Direction.SOUTH).texture("#side").cullface(Direction.SOUTH).emissivity(layer1emS, layer1emS).end()
+				.face(Direction.WEST).texture("#side").cullface(Direction.WEST).emissivity(layer1emW, layer1emW).end()
+				.face(Direction.UP).texture("#top").cullface(Direction.UP).emissivity(layer1emU, layer1emU).end()
+				.face(Direction.DOWN).texture("#bottom").cullface(Direction.DOWN).emissivity(layer1emD, layer1emD).end().end()
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
-				.face(Direction.NORTH).texture("#side2").cullface(Direction.NORTH).emissivity(layer2emN).end()
-				.face(Direction.EAST).texture("#side2").cullface(Direction.EAST).emissivity(layer2emE).end()
-				.face(Direction.SOUTH).texture("#side2").cullface(Direction.SOUTH).emissivity(layer2emS).end()
-				.face(Direction.WEST).texture("#side2").cullface(Direction.WEST).emissivity(layer2emW).end()
-				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2emU).end().end()
+				.face(Direction.NORTH).texture("#side2").cullface(Direction.NORTH).emissivity(layer2emN, layer2emN).end()
+				.face(Direction.EAST).texture("#side2").cullface(Direction.EAST).emissivity(layer2emE, layer1emE).end()
+				.face(Direction.SOUTH).texture("#side2").cullface(Direction.SOUTH).emissivity(layer2emS, layer1emS).end()
+				.face(Direction.WEST).texture("#side2").cullface(Direction.WEST).emissivity(layer2emW, layer1emW).end()
+				.face(Direction.UP).texture("#top2").cullface(Direction.UP).emissivity(layer2emU, layer1emU).end().end()
 				.element().from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 16.0F)
-				.face(Direction.NORTH).texture("#side3").cullface(Direction.NORTH).emissivity(layer3emN).end()
-				.face(Direction.EAST).texture("#side3").cullface(Direction.EAST).emissivity(layer3emE).end()
-				.face(Direction.SOUTH).texture("#side3").cullface(Direction.SOUTH).emissivity(layer3emS).end()
-				.face(Direction.WEST).texture("#side3").cullface(Direction.WEST).emissivity(layer3emW).end()
-				.face(Direction.UP).texture("#top3").cullface(Direction.UP).emissivity(layer3emU).end().end();
+				.face(Direction.NORTH).texture("#side3").cullface(Direction.NORTH).emissivity(layer3emN, layer1emN).end()
+				.face(Direction.EAST).texture("#side3").cullface(Direction.EAST).emissivity(layer3emE, layer3emE).end()
+				.face(Direction.SOUTH).texture("#side3").cullface(Direction.SOUTH).emissivity(layer3emS, layer3emS).end()
+				.face(Direction.WEST).texture("#side3").cullface(Direction.WEST).emissivity(layer3emW, layer3emW).end()
+				.face(Direction.UP).texture("#top3").cullface(Direction.UP).emissivity(layer3emU, layer3emU).end().end();
 	}
 
 	protected BlockModelBuilder make2layerCross(String name, ResourceLocation renderType, int layer1em, int layer2em) {
@@ -238,23 +239,23 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 				.element().from(0.8F, 0.0F, 8.0F).to(15.2F, 16.0F, 8.0F)
 				.rotation().origin(8.0F, 8.0F, 8.0F).axis(Direction.Axis.Y).angle(45.0F).rescale(true).end()
 				.shade(false)
-				.face(Direction.NORTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross").emissivity(layer1em).end()
-				.face(Direction.SOUTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross").emissivity(layer1em).end().end()
+				.face(Direction.NORTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross").emissivity(layer1em, layer1em).end()
+				.face(Direction.SOUTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross").emissivity(layer1em, layer1em).end().end()
 				.element().from(8.0F, 0.0F, 0.8F).to(8.0F, 16.0F, 15.2F)
 				.rotation().origin(8.0F, 8.0F, 8.0F).axis(Direction.Axis.Y).angle(45.0F).rescale(true).end()
 				.shade(false)
-				.face(Direction.WEST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross").emissivity(layer1em).end()
-				.face(Direction.EAST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross").emissivity(layer1em).end().end()
+				.face(Direction.WEST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross").emissivity(layer1em, layer1em).end()
+				.face(Direction.EAST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross").emissivity(layer1em, layer1em).end().end()
 				.element().from(0.8F, 0.0F, 8.0F).to(15.2F, 16.0F, 8.0F)
 				.rotation().origin(8.0F, 8.0F, 8.0F).axis(Direction.Axis.Y).angle(45.0F).rescale(true).end()
 				.shade(false)
-				.face(Direction.NORTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em).end()
-				.face(Direction.SOUTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em).end().end()
+				.face(Direction.NORTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em, layer2em).end()
+				.face(Direction.SOUTH).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em, layer2em).end().end()
 				.element().from(8.0F, 0.0F, 0.8F).to(8.0F, 16.0F, 15.2F)
 				.rotation().origin(8.0F, 8.0F, 8.0F).axis(Direction.Axis.Y).angle(45.0F).rescale(true).end()
 				.shade(false)
-				.face(Direction.WEST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em).end()
-				.face(Direction.EAST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em).end().end();
+				.face(Direction.WEST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em, layer2em).end()
+				.face(Direction.EAST).uvs(0.0F, 0.0F, 16.0F, 16.0F).texture("#cross2").emissivity(layer2em, layer2em).end().end();
 	}
 
 	protected ModelFile buildCandelabra(final int leftHeight, final int centerHeight, final int rightHeight) {
@@ -365,68 +366,68 @@ public abstract class BlockModelBuilders extends BlockModelHelpers {
 	protected BlockModelBuilder makePedestal(String name, boolean has2layers) {
 		BlockModelBuilder model = models().withExistingParent(name, "minecraft:block/block").renderType(TRANSLUCENT).texture("particle", "#end")
 				.element().from(2.0F, 3.0F, 2.0F).to(14.0F, 13.0F, 14.0F)
-				.face(Direction.NORTH).texture("#north").emissivity(0).end().face(Direction.SOUTH).texture("#south").emissivity(0).end()
-				.face(Direction.WEST).texture("#west").emissivity(0).end().face(Direction.EAST).texture("#east").emissivity(0).end().end()
+				.face(Direction.NORTH).texture("#north").emissivity(0, 0).end().face(Direction.SOUTH).texture("#south").emissivity(0, 0).end()
+				.face(Direction.WEST).texture("#west").emissivity(0, 0).end().face(Direction.EAST).texture("#east").emissivity(0, 0).end().end()
 				.element().from(1.0F, 0.0F, 1.0F).to(15.0F, 3.0F, 15.0F)
-				.face(Direction.UP).texture("#end").emissivity(0).end().face(Direction.DOWN).texture("#end").emissivity(0).cullface(Direction.DOWN).end()
-				.face(Direction.NORTH).texture("#north").emissivity(0).end().face(Direction.SOUTH).texture("#south").emissivity(0).end()
-				.face(Direction.WEST).texture("#west").emissivity(0).end().face(Direction.EAST).texture("#east").emissivity(0).end().end()
+				.face(Direction.UP).texture("#end").emissivity(0, 0).end().face(Direction.DOWN).texture("#end").emissivity(0, 0).cullface(Direction.DOWN).end()
+				.face(Direction.NORTH).texture("#north").emissivity(0, 0).end().face(Direction.SOUTH).texture("#south").emissivity(0, 0).end()
+				.face(Direction.WEST).texture("#west").emissivity(0, 0).end().face(Direction.EAST).texture("#east").emissivity(0, 0).end().end()
 				.element().from(1.0F, 13.0F, 1.0F).to(15.0F, 16.0F, 15.0F)
-				.face(Direction.UP).texture("#end").emissivity(0).cullface(Direction.UP).end().face(Direction.DOWN).texture("#end").emissivity(0).end()
-				.face(Direction.NORTH).texture("#north").emissivity(0).end().face(Direction.SOUTH).texture("#south").emissivity(0).end()
-				.face(Direction.WEST).texture("#west").emissivity(0).end().face(Direction.EAST).texture("#east").emissivity(0).end().end()
+				.face(Direction.UP).texture("#end").emissivity(0, 0).cullface(Direction.UP).end().face(Direction.DOWN).texture("#end").emissivity(0, 0).end()
+				.face(Direction.NORTH).texture("#north").emissivity(0, 0).end().face(Direction.SOUTH).texture("#south").emissivity(0, 0).end()
+				.face(Direction.WEST).texture("#west").emissivity(0, 0).end().face(Direction.EAST).texture("#east").emissivity(0, 0).end().end()
 				.element().from(1.0F, 12.0F, 1.0F).to(4.0F, 13.0F, 4.0F)
-				.face(Direction.DOWN).texture("#end").emissivity(0).end()
-				.face(Direction.NORTH).texture("#north").emissivity(0).end().face(Direction.SOUTH).texture("#south").emissivity(0).end()
-				.face(Direction.WEST).texture("#west").emissivity(0).end().face(Direction.EAST).texture("#east").emissivity(0).end().end()
+				.face(Direction.DOWN).texture("#end").emissivity(0, 0).end()
+				.face(Direction.NORTH).texture("#north").emissivity(0, 0).end().face(Direction.SOUTH).texture("#south").emissivity(0, 0).end()
+				.face(Direction.WEST).texture("#west").emissivity(0, 0).end().face(Direction.EAST).texture("#east").emissivity(0, 0).end().end()
 				.element().from(12.0F, 12.0F, 1.0F).to(15.0F, 13.0F, 4.0F)
-				.face(Direction.DOWN).texture("#end").emissivity(0).end()
-				.face(Direction.NORTH).texture("#north").emissivity(0).end().face(Direction.SOUTH).texture("#south").emissivity(0).end()
-				.face(Direction.WEST).texture("#west").emissivity(0).end().face(Direction.EAST).texture("#east").emissivity(0).end().end()
+				.face(Direction.DOWN).texture("#end").emissivity(0, 0).end()
+				.face(Direction.NORTH).texture("#north").emissivity(0, 0).end().face(Direction.SOUTH).texture("#south").emissivity(0, 0).end()
+				.face(Direction.WEST).texture("#west").emissivity(0, 0).end().face(Direction.EAST).texture("#east").emissivity(0, 0).end().end()
 				.element().from(1.0F, 12.0F, 12.0F).to(4.0F, 13.0F, 15.0F)
-				.face(Direction.DOWN).texture("#end").emissivity(0).end()
-				.face(Direction.NORTH).texture("#north").emissivity(0).end().face(Direction.SOUTH).texture("#south").emissivity(0).end()
-				.face(Direction.WEST).texture("#west").emissivity(0).end().face(Direction.EAST).texture("#east").emissivity(0).end().end()
+				.face(Direction.DOWN).texture("#end").emissivity(0, 0).end()
+				.face(Direction.NORTH).texture("#north").emissivity(0, 0).end().face(Direction.SOUTH).texture("#south").emissivity(0, 0).end()
+				.face(Direction.WEST).texture("#west").emissivity(0, 0).end().face(Direction.EAST).texture("#east").emissivity(0, 0).end().end()
 				.element().from(12.0F, 12.0F, 12.0F).to(15.0F, 13.0F, 15.0F)
-				.face(Direction.DOWN).texture("#end").emissivity(0).end()
-				.face(Direction.NORTH).texture("#north").emissivity(0).end().face(Direction.SOUTH).texture("#south").emissivity(0).end()
-				.face(Direction.WEST).texture("#west").emissivity(0).end().face(Direction.EAST).texture("#east").emissivity(0).end().end();
+				.face(Direction.DOWN).texture("#end").emissivity(0, 0).end()
+				.face(Direction.NORTH).texture("#north").emissivity(0, 0).end().face(Direction.SOUTH).texture("#south").emissivity(0, 0).end()
+				.face(Direction.WEST).texture("#west").emissivity(0, 0).end().face(Direction.EAST).texture("#east").emissivity(0, 0).end().end();
 
 		if (has2layers) {
 			model = model.element().from(2.0F, 3.0F, 2.0F).to(14.0F, 13.0F, 14.0F)
-					.face(Direction.NORTH).texture("#north2").emissivity(15).end()
-					.face(Direction.SOUTH).texture("#south2").emissivity(15).end()
-					.face(Direction.WEST).texture("#west2").emissivity(15).end()
-					.face(Direction.EAST).texture("#east2").emissivity(15).end().end()
+					.face(Direction.NORTH).texture("#north2").emissivity(15, 15).end()
+					.face(Direction.SOUTH).texture("#south2").emissivity(15, 15).end()
+					.face(Direction.WEST).texture("#west2").emissivity(15, 15).end()
+					.face(Direction.EAST).texture("#east2").emissivity(15, 15).end().end()
 					.element().from(1.0F, 0.0F, 1.0F).to(15.0F, 16.0F, 15.0F)
-					.face(Direction.DOWN).texture("#end2").emissivity(12).cullface(Direction.DOWN).end()
-					.face(Direction.UP).texture("#end2").emissivity(12).cullface(Direction.UP).end().end()
+					.face(Direction.DOWN).texture("#end2").emissivity(12, 12).cullface(Direction.DOWN).end()
+					.face(Direction.UP).texture("#end2").emissivity(12, 12).cullface(Direction.UP).end().end()
 					.element().from(1.0F, 12.0F, 1.0F).to(4.0F, 13.0F, 4.0F)
-					.face(Direction.NORTH).texture("#north2").emissivity(15).end()
-					.face(Direction.SOUTH).texture("#south2").emissivity(15).end()
-					.face(Direction.WEST).texture("#west2").emissivity(15).end()
-					.face(Direction.EAST).texture("#east2").emissivity(15).end().end()
+					.face(Direction.NORTH).texture("#north2").emissivity(15, 15).end()
+					.face(Direction.SOUTH).texture("#south2").emissivity(15, 15).end()
+					.face(Direction.WEST).texture("#west2").emissivity(15, 15).end()
+					.face(Direction.EAST).texture("#east2").emissivity(15, 15).end().end()
 					.element().from(12.0F, 12.0F, 1.0F).to(15.0F, 13.0F, 4.0F)
-					.face(Direction.NORTH).texture("#north2").emissivity(15).end()
-					.face(Direction.SOUTH).texture("#south2").emissivity(15).end()
-					.face(Direction.WEST).texture("#west2").emissivity(15).end()
-					.face(Direction.EAST).texture("#east2").emissivity(15).end().end()
+					.face(Direction.NORTH).texture("#north2").emissivity(15, 15).end()
+					.face(Direction.SOUTH).texture("#south2").emissivity(15, 15).end()
+					.face(Direction.WEST).texture("#west2").emissivity(15, 15).end()
+					.face(Direction.EAST).texture("#east2").emissivity(15, 15).end().end()
 					.element().from(1.0F, 12.0F, 12.0F).to(4.0F, 13.0F, 15.0F)
-					.face(Direction.NORTH).texture("#north2").emissivity(15).end()
-					.face(Direction.SOUTH).texture("#south2").emissivity(15).end()
-					.face(Direction.WEST).texture("#west2").emissivity(15).end()
-					.face(Direction.EAST).texture("#east2").emissivity(15).end().end()
+					.face(Direction.NORTH).texture("#north2").emissivity(15, 15).end()
+					.face(Direction.SOUTH).texture("#south2").emissivity(15, 15).end()
+					.face(Direction.WEST).texture("#west2").emissivity(15, 15).end()
+					.face(Direction.EAST).texture("#east2").emissivity(15, 15).end().end()
 					.element().from(12.0F, 12.0F, 12.0F).to(15.0F, 13.0F, 15.0F)
-					.face(Direction.NORTH).texture("#north2").emissivity(15).end()
-					.face(Direction.SOUTH).texture("#south2").emissivity(15).end()
-					.face(Direction.WEST).texture("#west2").emissivity(15).end()
-					.face(Direction.EAST).texture("#east2").emissivity(15).end().end();
+					.face(Direction.NORTH).texture("#north2").emissivity(15, 15).end()
+					.face(Direction.SOUTH).texture("#south2").emissivity(15, 15).end()
+					.face(Direction.WEST).texture("#west2").emissivity(15, 15).end()
+					.face(Direction.EAST).texture("#east2").emissivity(15, 15).end().end();
 
 			model = model.element().from(2.0F, 3.0F, 2.0F).to(14.0F, 13.0F, 14.0F)
-					.face(Direction.NORTH).texture("#north3").emissivity(10).end()
-					.face(Direction.SOUTH).texture("#south3").emissivity(10).end()
-					.face(Direction.WEST).texture("#west3").emissivity(10).end()
-					.face(Direction.EAST).texture("#east3").emissivity(10).end().end();
+					.face(Direction.NORTH).texture("#north3").emissivity(10, 10).end()
+					.face(Direction.SOUTH).texture("#south3").emissivity(10, 10).end()
+					.face(Direction.WEST).texture("#west3").emissivity(10, 10).end()
+					.face(Direction.EAST).texture("#east3").emissivity(10, 10).end().end();
 		}
 
 		return model;

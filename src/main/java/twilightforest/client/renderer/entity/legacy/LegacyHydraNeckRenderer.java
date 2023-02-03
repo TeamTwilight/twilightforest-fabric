@@ -1,7 +1,8 @@
 package twilightforest.client.renderer.entity.legacy;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +34,7 @@ public class LegacyHydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeck
 				}
 				float yaw2 = entityIn.yRotO + yawDiff * partialTicks;
 
-				matrixStackIn.mulPose(Vector3f.YN.rotationDegrees(yaw2 + 180));
+				matrixStackIn.mulPose(Axis.YN.rotationDegrees(yaw2 + 180));
 				super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, light);
 			}
 	}

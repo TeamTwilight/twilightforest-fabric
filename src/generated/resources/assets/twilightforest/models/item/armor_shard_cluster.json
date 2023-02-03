@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/armor_shard_cluster"
+    "layer0": "twilightforest:item/armor_shard_cluster"
   }
 }

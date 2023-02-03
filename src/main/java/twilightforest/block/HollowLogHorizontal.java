@@ -1,7 +1,7 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.tags.ToolTags;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -151,7 +151,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
-		} else if (stack.is(ToolTags.SHOVELS) || stack.getItem() instanceof ShovelItem) {
+		} else if (stack.is(ConventionalItemTags.SHOVELS) || stack.getItem() instanceof ShovelItem) {
 			if (variant == HollowLogVariants.Horizontal.SNOW) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), 3);
 				level.playSound(null, pos, SoundEvents.SNOW_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -162,7 +162,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
-		} else if (stack.is(ToolTags.SHEARS) || stack.getItem() instanceof ShearsItem) {
+		} else if (stack.is(ConventionalItemTags.SHEARS) || stack.getItem() instanceof ShearsItem) {
 			if (variant == HollowLogVariants.Horizontal.MOSS || variant == HollowLogVariants.Horizontal.MOSS_AND_GRASS) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), 3);
 				level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);

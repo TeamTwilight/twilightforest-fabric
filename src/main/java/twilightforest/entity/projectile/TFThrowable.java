@@ -41,9 +41,4 @@ public abstract class TFThrowable extends ThrowableProjectile implements ITFProj
 			this.getLevel().addParticle(particle, dx, dy, dz, r, g, b);
 		}
 	}
-
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
-	}
 }

@@ -5,9 +5,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -197,7 +199,7 @@ public class FallingIce extends Entity {
 			float dmg = (float) Math.min(Mth.floor((float) realDist * this.damagePerDifficulty[this.getLevel().getDifficulty().getId()]), this.fallDamageMax);
 			this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0F, 0.0F, 1.0F), EntitySelector.NO_SPECTATORS).forEach((entity) -> {
 				if (!(entity instanceof AlphaYeti)) {
-					entity.hurt(DamageSource.FALLING_BLOCK.bypassEnchantments(), dmg);
+					entity.hurt(DamageSource.fallingBlock(this).bypassEnchantments(), dmg);
 				}
 			});
 		}
@@ -227,7 +229,7 @@ public class FallingIce extends Entity {
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
-		this.blockState = NbtUtils.readBlockState(tag.getCompound("BlockState"));
+		this.blockState = NbtUtils.readBlockState(this.getLevel().holderLookup(Registries.BLOCK), tag.getCompound("BlockState"));
 		this.time = tag.getInt("Time");
 		if (tag.contains("BlockEntityData", 10)) {
 			this.blockData = tag.getCompound("BlockEntityData");
@@ -260,7 +262,7 @@ public class FallingIce extends Entity {
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return new ClientboundAddEntityPacket(this, Block.getId(this.getBlockState()));
 	}
 

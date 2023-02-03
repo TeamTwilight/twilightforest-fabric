@@ -1,8 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -14,11 +13,10 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.HumanoidArm;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import twilightforest.client.model.entity.KoboldModel;
 import twilightforest.entity.monster.Kobold;
 
-@Environment(EnvType.CLIENT)
 public class KoboldRenderer extends TFBipedRenderer<Kobold, KoboldModel> {
 
 	public KoboldRenderer(EntityRendererProvider.Context context, KoboldModel model, float shadowSize, String textureName) {
@@ -61,8 +59,8 @@ public class KoboldRenderer extends TFBipedRenderer<Kobold, KoboldModel> {
 			if (!stack.isEmpty()) {
 				ms.pushPose();
 				this.getParentModel().translateToHand(handSide, ms);
-				ms.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
-				ms.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+				ms.mulPose(Axis.XP.rotationDegrees(-90.0F));
+				ms.mulPose(Axis.YP.rotationDegrees(180.0F));
 				boolean flag = handSide == HumanoidArm.LEFT;
 				ms.translate(0.05D, 0.125D, -0.35D);
 				this.handRenderer.renderItem(entity, stack, transform, flag, ms, buffers, light);

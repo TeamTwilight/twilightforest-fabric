@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/ironwood_helmet"
+    "layer0": "twilightforest:item/ironwood_helmet"
   }
 }

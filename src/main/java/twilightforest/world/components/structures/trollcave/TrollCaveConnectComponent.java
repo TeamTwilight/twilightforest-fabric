@@ -25,8 +25,10 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.util.RotationUtil;
 
+import java.util.Map;
+
 public class TrollCaveConnectComponent extends TrollCaveMainComponent {
-	protected static final Stalactite STONE_STALACTITE_SMALL = new Stalactite(Blocks.STONE, 1.0F, 5, 1);
+	protected static final Stalactite STONE_STALACTITE_SMALL = new Stalactite(Map.of(Blocks.STONE, 1), 1.0F, 5, 1);
 
 	protected final boolean[] openingTowards = {false, false, true, false};
 

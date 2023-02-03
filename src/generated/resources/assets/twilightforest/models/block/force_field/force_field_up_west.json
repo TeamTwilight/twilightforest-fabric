@@ -5,7 +5,10 @@
     {
       "faces": {
         "north": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#pane",
           "uv": [
             0.0,
@@ -15,7 +18,10 @@
           ]
         },
         "south": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#pane",
           "uv": [
             9.0,
@@ -26,12 +32,18 @@
         },
         "up": {
           "cullface": "up",
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#pane"
         },
         "west": {
           "cullface": "west",
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#pane",
           "uv": [
             7.0,

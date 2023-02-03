@@ -173,7 +173,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	private boolean isMazeComplete(StructurePieceAccessor list, BlockState type) {
 		if (list instanceof StructurePiecesBuilder start) {
 			if (start.pieces.size() > 60) {
-				//TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", ForgeRegistries.BLOCKS.getKey(type.getBlock()).toString());
+				//TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", BuiltInRegistries.BLOCK.getKey(type.getBlock()).toString());
 			}
 			for (StructurePiece structurecomponent : start.pieces) {
 				BoundingBox boundingBox = structurecomponent.getBoundingBox();

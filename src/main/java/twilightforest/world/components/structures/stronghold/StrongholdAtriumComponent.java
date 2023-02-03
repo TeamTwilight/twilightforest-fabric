@@ -3,8 +3,10 @@ package twilightforest.world.components.structures.stronghold;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -136,7 +138,7 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 		BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isInside(pos)) {
-			Holder<ConfiguredFeature<TreeConfiguration, ?>> treeGen = switch (treeNum) {
+			ResourceKey<ConfiguredFeature<?, ?>> treeGen = switch (treeNum) {
 				case 1 ->
 						// jungle tree
 						TreeFeatures.JUNGLE_TREE;
@@ -151,10 +153,8 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 			};
 			// grow a tree
 
-			//TODO: All trees here grab configs from DefaultBiomeFeatures or TFBiomeDecorator, and will not have "minHeight"
-
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.value().place(world, generator, world.getRandom(), pos)) {
+				if (world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen).place(world, generator, world.getRandom(), pos)) {
 					break;
 				}
 			}

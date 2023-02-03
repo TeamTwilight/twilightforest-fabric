@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/time_sign"
+    "layer0": "twilightforest:item/time_sign"
   }
 }

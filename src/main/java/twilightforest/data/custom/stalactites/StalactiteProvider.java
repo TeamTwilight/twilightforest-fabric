@@ -1,45 +1,48 @@
 package twilightforest.data.custom.stalactites;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import twilightforest.TwilightForestMod;
+import net.minecraft.world.level.block.Block;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public abstract class StalactiteProvider implements DataProvider {
 
-	private final DataGenerator generator;
+	private final PackOutput generator;
 	private final String modid;
-	private final DataGenerator.PathProvider entryPath;
+	private final PackOutput.PathProvider entryPath;
 	protected final Map<Pair<ResourceLocation, Stalactite>, Stalactite.HollowHillType> builder = Maps.newLinkedHashMap();
 
-	public StalactiteProvider(DataGenerator generator, String modid) {
+	public StalactiteProvider(PackOutput generator, String modid) {
 		this.generator = generator;
 		this.modid = modid;
-		this.entryPath = generator.createPathProvider(DataGenerator.Target.DATA_PACK, "stalactites/entries");
+		this.entryPath = generator.createPathProvider(PackOutput.Target.DATA_PACK, "stalactites/entries");
 	}
 
 	@Override
-	public void run(CachedOutput output) throws IOException {
+	public CompletableFuture<?> run(CachedOutput output) {
 		Map<ResourceLocation, Stalactite> map = Maps.newHashMap();
 
 		Map<ResourceLocation, Stalactite> smallHillEntries = Maps.newHashMap();
 		Map<ResourceLocation, Stalactite> medHillEntries = Maps.newHashMap();
 		Map<ResourceLocation, Stalactite> largeHillEntries = Maps.newHashMap();
+
+		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
 
 		this.builder.clear();
 		this.createStalactites();
@@ -56,12 +59,8 @@ public abstract class StalactiteProvider implements DataProvider {
 
 		map.forEach((resourceLocation, stalactite) -> {
 			Path path = this.entryPath.json(resourceLocation);
+			futuresBuilder.add(DataProvider.saveStable(output, StalactiteReloadListener.serialize(stalactite), path));
 
-			try {
-				DataProvider.saveStable(output, StalactiteReloadListener.serialize(stalactite), path);
-			} catch (IOException ioexception) {
-				TwilightForestMod.LOGGER.error("Couldn't save stalactite entry {}", path, ioexception);
-			}
 		});
 
 		Gson hillGson = new GsonBuilder().setPrettyPrinting().create();
@@ -74,8 +73,9 @@ public abstract class StalactiteProvider implements DataProvider {
 			object.addProperty("replace", false);
 			object.add("stalactites", hillGson.toJsonTree(mapToUse.keySet().stream().map(ResourceLocation::toString).collect(Collectors.toList())));
 
-			DataProvider.saveStable(output, object, hillPath);
+			futuresBuilder.add(DataProvider.saveStable(output, object, hillPath));
 		}
+		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
 	}
 
 	protected abstract void createStalactites();
@@ -83,16 +83,19 @@ public abstract class StalactiteProvider implements DataProvider {
 	/**
 	 * Add a new Stalactite entry for hollow hills! This will allow your ores (or even blocks, I don't care what you do) to show up in hollow hills.
 	 *
-	 * @param stalactite the stalactite to make. Takes in a block to use, the size variation (a lower number typically means longer stalactites), a max length, and the weight of the entry.
+	 * @param stalactite the stalactite to make. Takes in list of blocks to use + their weights, the size variation (a lower number typically means longer stalactites), a max length, and the weight of the entry.
 	 * @param type       the type of hill this stalactite appears in.
 	 *                   <br>
 	 *                   Do note that this entry is the lowest tier it appears in, meaning if you add a stalactite to a small hill it will show up in all 3 hills.
 	 *                   <br>
 	 *                   Pick your weights wisely! All weights from lower tiers are transferred up, so if you want to see your spike more often in a given hill, give it a high weight!
 	 */
-
 	protected void makeStalactite(Stalactite stalactite, Stalactite.HollowHillType type) {
-		this.builder.putIfAbsent(Pair.of(new ResourceLocation(this.modid, Registry.BLOCK.getKey(stalactite.ore()).getPath() + "_stalactite"), stalactite), type);
+		String name = "";
+		for (Map.Entry<Block, Integer> entry : stalactite.ores().entrySet()) {
+			name = name + BuiltInRegistries.BLOCK.getKey(entry.getKey()).getPath() + "_";
+		}
+		this.builder.putIfAbsent(Pair.of(new ResourceLocation(this.modid, name + "stalactite"), stalactite), type);
 	}
 
 	@Override

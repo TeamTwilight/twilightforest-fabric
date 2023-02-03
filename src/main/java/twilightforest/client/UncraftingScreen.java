@@ -78,10 +78,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		//ingredient buttons
 		if(x > this.leftPos + 27 && x < this.leftPos + 33 && y > this.topPos + 56 && y < this.topPos + 69) {
 			if(direction > 0) {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(0));
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(2));
 				menu.ingredientsInCycle++;
 			} else {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(1));
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(3));
 				menu.ingredientsInCycle--;
 			}
 			menu.slotsChanged(menu.tinkerInput);
@@ -90,10 +90,10 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		//uncrafting recipe buttons
 		if(x > this.leftPos + 40 && x < this.leftPos + 54 && y > this.topPos + 22 && y < this.topPos + 64) {
 			if(direction > 0) {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(2));
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(0));
 				menu.unrecipeInCycle++;
 			} else {
-				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(3));
+				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(1));
 				menu.unrecipeInCycle--;
 			}
 			menu.slotsChanged(menu.tinkerInput);
@@ -108,7 +108,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 				TFPacketHandler.CHANNEL.sendToServer(new UncraftingGuiPacket(5));
 				menu.recipeInCycle--;
 			}
-			menu.slotsChanged(menu.tinkerInput);
+			menu.slotsChanged(menu.assemblyMatrix);
 		}
 
 		return scrolled;
@@ -209,7 +209,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		UncraftingMenu container = this.menu;
 
 		for (int i = 0; i < 9; i++) {
-			if (container.getCarried().isEmpty() && container.slots.get(2 + i).hasItem() && this.hoveredSlot == container.slots.get(11 + i)) {
+			if (container.getCarried().isEmpty() && container.slots.get(2 + i).hasItem() && this.hoveredSlot == container.slots.get(11 + i) && !container.slots.get(11 + i).hasItem()) {
 				this.renderTooltip(pPoseStack, container.slots.get(2 + i).getItem(), pX, pY);
 			}
 		}
@@ -226,7 +226,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		private final boolean up;
 
 		CycleButton(int x, int y, boolean up, OnPress onClick) {
-			super(x, y, 14, 9, Component.empty(), onClick);
+			super(x, y, 14, 9, Component.empty(), onClick, message -> Component.empty());
 			this.up = up;
 		}
 
@@ -235,7 +235,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 			if (this.visible) {
 				RenderSystem._setShaderTexture(0, UncraftingScreen.textureLoc);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+				this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
 				int textureX = 176;
 				int textureY = 0;
@@ -245,37 +245,16 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 				// what's up
 				if (!this.up) textureY += this.height;
 
-				this.blit(ms, this.x, this.y, textureX, textureY, this.width, this.height);
+				this.blit(ms, this.getX(), this.getY(), textureX, textureY, this.width, this.height);
 			}
 		}
 	}
-
-//	private static class ModeButton extends GuiButton {
-//		ModeButton(int buttonId, int x, int y) {
-//			super(buttonId, x, y, 18, 12, "");
-//		}
-
-//		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
-//			if (this.visible) {
-//				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
-//				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-//				this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-
-//				int textureX = 176;
-//				int textureY = 18;
-
-//				if (this.hovered) textureX += this.width;
-
-//				this.drawTexturedModalRect(this.x, this.y, textureX, textureY, this.width, this.height);
-//			}
-//		}
-//	}
 
 	private static class CycleButtonMini extends Button {
 		private final boolean up;
 
 		CycleButtonMini(int x, int y, boolean up, OnPress onClick) {
-			super(x, y, 8, 6, Component.empty(), onClick);
+			super(x, y, 8, 6, Component.empty(), onClick, message -> Component.empty());
 			this.up = up;
 		}
 
@@ -284,7 +263,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 			if (this.visible) {
 				RenderSystem._setShaderTexture(0, UncraftingScreen.textureLoc);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+				this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
 				int textureX = 176;
 				int textureY = 41;
@@ -294,29 +273,8 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 				// what's up
 				if (!this.up) textureY += this.height;
 
-				this.blit(ms, this.x, this.y, textureX, textureY, this.width, this.height);
+				this.blit(ms, this.getX(), this.getY(), textureX, textureY, this.width, this.height);
 			}
 		}
 	}
-
-//	static class RefreshButton extends GuiButton {
-//		RefreshButton(int buttonId, int x, int y) {
-//			super(buttonId, x, y, 8, 6, "");
-//		}
-
-//		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
-//			if (this.visible) {
-//				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
-//				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-//				this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-
-//				int textureX = 176;
-//				int textureY = 30;
-
-//				if (this.hovered) textureX += this.width;
-
-//				this.drawTexturedModalRect(this.x, this.y, textureX, textureY, this.width, this.height);
-//			}
-//		}
-//	}
 }

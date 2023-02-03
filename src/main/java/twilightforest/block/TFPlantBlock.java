@@ -1,9 +1,8 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.util.PlantType;
+import io.github.fabricators_of_create.porting_lib.common.util.PlantType;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
@@ -32,7 +31,7 @@ public abstract class TFPlantBlock extends BushBlock implements BonemealableBloc
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(BlockGetter getter, BlockPos pos, BlockState state, boolean client) {
+	public boolean isValidBonemealTarget(LevelReader reader, BlockPos pos, BlockState state, boolean client) {
 		return false;
 	}
 

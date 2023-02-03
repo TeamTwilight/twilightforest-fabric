@@ -4,7 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -233,7 +235,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	/**
 	 * Use the generator at the surface above specified coords
 	 */
-	protected <FC extends FeatureConfiguration> void generateAtSurface(WorldGenLevel world, ChunkGenerator generator, Holder<ConfiguredFeature<FC, ?>> feature, RandomSource rand, int x, int z, BoundingBox sbb) {
+	protected void generateAtSurface(WorldGenLevel world, ChunkGenerator generator, ResourceKey<ConfiguredFeature<?, ?>> feature, RandomSource rand, int x, int z, BoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getWorldX(x, z);
 		int dz = getWorldZ(x, z);
@@ -243,7 +245,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		for(int i = 0; i < 15; i++) {
 			pos.move(0, 1, 0);
 			if (sbb.isInside(pos) && world.getBlockState(pos.above()).isAir()) {
-				feature.value().place(world, generator, rand, pos);
+				world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(feature).place(world, generator, rand, pos);
 				break;
 			}
 		}

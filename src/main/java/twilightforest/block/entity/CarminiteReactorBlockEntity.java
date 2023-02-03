@@ -1,27 +1,19 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFSounds;
 import twilightforest.block.CarminiteReactorBlock;
-import twilightforest.init.TFBlocks;
 import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.CarminiteGhastling;
-import twilightforest.init.TFDamageSources;
-
-import java.util.Random;
+import twilightforest.init.*;
 
 public class CarminiteReactorBlockEntity extends BlockEntity {
 
@@ -55,7 +47,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 	public static void tick(Level level, BlockPos pos, BlockState state, CarminiteReactorBlockEntity te) {
 
-		if(state.getValue(CarminiteReactorBlock.ACTIVE)) {
+		if (state.getValue(CarminiteReactorBlock.ACTIVE)) {
 			te.counter++;
 
 			if (!level.isClientSide()) {
@@ -139,7 +131,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 				if (te.counter >= 350) {
 					// deactivate & explode
-					level.explode(null, TFDamageSources.REACTOR, null, pos.getX(), pos.getY(), pos.getZ(), 4.0F, true, Explosion.BlockInteraction.DESTROY);
+					level.explode(null, TFDamageSources.REACTOR, null, pos.getX(), pos.getY(), pos.getZ(), 4.0F, true, Level.ExplosionInteraction.BLOCK);
 					level.removeBlock(pos, false);
 
 					// spawn mini ghasts near the secondary & tertiary points
@@ -160,7 +152,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 	private void spawnGhastNear(int x, int y, int z) {
 		CarminiteGhastling ghast = TFEntities.CARMINITE_GHASTLING.get().create(this.getLevel());
-		ghast.moveTo(x - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, y - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, z - 1.5 + level.random.nextFloat() * 3.0, level.random.nextFloat() * 360F, 0.0F);
+		ghast.moveTo(x - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, y - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, z - 1.5 + this.getLevel().getRandom().nextFloat() * 3.0, this.getLevel().getRandom().nextFloat() * 360F, 0.0F);
 		ghast.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 200));
 		this.getLevel().addFreshEntity(ghast);
 	}
@@ -218,10 +210,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 		}
 
 		if (netherTransform && stateThere.getBlock() != Blocks.AIR) {
-			BlockState ore = Registry.BLOCK.getTag(BlockTagGenerator.CARMINITE_REACTOR_ORES)
-					.flatMap(tag -> tag.getRandomElement(this.getLevel().getRandom()))
-					.map(holder -> holder.value().defaultBlockState())
-					.orElse(Blocks.NETHERRACK.defaultBlockState());
+			BlockState ore = BuiltInRegistries.BLOCK.tags().getTag(BlockTagGenerator.CARMINITE_REACTOR_ORES).getRandomElement(this.getLevel().getRandom()).get().defaultBlockState();
 
 			this.getLevel().setBlock(pos, (this.getLevel().getRandom().nextInt(8) == 0 ? ore : Blocks.NETHERRACK.defaultBlockState()), 3);
 			// fire on top?

@@ -1,6 +1,5 @@
 package twilightforest.entity.passive;
 
-import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,14 +21,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -42,8 +41,6 @@ import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
-
-import java.util.List;
 
 public class QuestRam extends Animal implements EnforcedHomePoint {
 
@@ -154,19 +151,31 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 
 	@Nullable
 	public DyeColor guessColor(ItemStack stack) {
-		List<Item> wools = ImmutableList.of(
-				Blocks.WHITE_WOOL.asItem(), Blocks.ORANGE_WOOL.asItem(), Blocks.MAGENTA_WOOL.asItem(), Blocks.LIGHT_BLUE_WOOL.asItem(),
-				Blocks.YELLOW_WOOL.asItem(), Blocks.LIME_WOOL.asItem(), Blocks.PINK_WOOL.asItem(), Blocks.GRAY_WOOL.asItem(),
-				Blocks.LIGHT_GRAY_WOOL.asItem(), Blocks.CYAN_WOOL.asItem(), Blocks.PURPLE_WOOL.asItem(), Blocks.BLUE_WOOL.asItem(),
-				Blocks.BROWN_WOOL.asItem(), Blocks.GREEN_WOOL.asItem(), Blocks.RED_WOOL.asItem(), Blocks.BLACK_WOOL.asItem()
-		);
-		int i = wools.indexOf(stack.getItem());
-		if (i < 0) {
-			// todo 1.15 potentially do some guessing based on registry name for modded wools
-			return null;
-		} else {
-			return DyeColor.byId(i);
+		if (stack.getItem() instanceof BlockItem blockItem) {
+			Material material = blockItem.getBlock().material;
+			if (material.equals(Material.WOOL)) {
+				return switch (blockItem.getBlock().defaultMaterialColor().id) {
+					case 8 -> DyeColor.byId(0); //SNOW
+					case 15 -> DyeColor.byId(1); //COLOR_ORANGE
+					case 16 -> DyeColor.byId(2); //COLOR_MAGENTA
+					case 17 -> DyeColor.byId(3); //COLOR_LIGHT_BLUE
+					case 18 -> DyeColor.byId(4); //COLOR_YELLOW
+					case 19 -> DyeColor.byId(5); //COLOR_LIGHT_GREEN
+					case 20 -> DyeColor.byId(6); //COLOR_PINK
+					case 21 -> DyeColor.byId(7); //COLOR_GRAY
+					case 22 -> DyeColor.byId(8); //COLOR_LIGHT_GRAY
+					case 23 -> DyeColor.byId(9); //COLOR_CYAN
+					case 24 -> DyeColor.byId(10); //COLOR_PURPLE
+					case 25 -> DyeColor.byId(11); //COLOR_BLUE
+					case 26 -> DyeColor.byId(12); //COLOR_BROWN
+					case 27 -> DyeColor.byId(13); //COLOR_GREEN
+					case 28 -> DyeColor.byId(14); //COLOR_RED
+					case 29 -> DyeColor.byId(15); //COLOR_BLACK
+					default -> null;
+				};
+			}
 		}
+		return null;
 	}
 
 	@Override

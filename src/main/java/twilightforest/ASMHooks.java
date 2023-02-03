@@ -2,7 +2,6 @@ package twilightforest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.DataFixer;
-import com.mojang.math.Matrix4f;
 import com.mojang.serialization.Dynamic;
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
@@ -35,6 +34,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.client.TFClientSetup;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFFeatureModifiers;
@@ -53,11 +54,11 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.levelgen.WorldGenSettings#WorldGenSettings(long, boolean, boolean, net.minecraft.core.Registry, Optional)}<br>
+	 * {@link net.minecraft.world.level.levelgen.WorldOptions#WorldOptions(long, boolean, boolean, Optional)} <br>
 	 * [BEFORE FIRST PUTFIELD]
 	 */
 	public static long seed(long seed) {
-		TFFeatureModifiers.seed = seed;
+		TFDimensionSettings.seed = seed;
 		return seed;
 	}
 
@@ -67,7 +68,7 @@ public class ASMHooks {
 	 * [BEFORE FIRST ASTORE]
 	 */
 	public static Dynamic<Tag> seed(Dynamic<Tag> seed) {
-		TFFeatureModifiers.seed = ((CompoundTag) seed.getValue()).getLong("seed");
+		TFDimensionSettings.seed = ((CompoundTag) seed.getValue()).getLong("seed");
 		return seed;
 	}
 

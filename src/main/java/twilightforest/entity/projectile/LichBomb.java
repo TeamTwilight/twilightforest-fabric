@@ -77,7 +77,7 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 
 	private void explode() {
 		if (!this.getLevel().isClientSide()) {
-			this.getLevel().explode(this, TFDamageSources.LICH_BOMB, null, this.getX(), this.getY(), this.getZ(), 2.0F, false, Explosion.BlockInteraction.NONE);
+			this.getLevel().explode(this, TFDamageSources.LICH_BOMB, null, this.getX(), this.getY(), this.getZ(), 2.0F, false, Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
 	}

@@ -1,7 +1,8 @@
 package twilightforest.client.renderer.entity.legacy;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -31,8 +32,8 @@ public class LegacyNagaSegmentRenderer<T extends NagaSegment> extends TFPartRend
 			}
 			float yaw2 = entityIn.yRotO + yawDiff * partialTicks;
 
-			matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(yaw2));
-			matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(entityIn.getXRot()));
+			matrixStackIn.mulPose(Axis.YP.rotationDegrees(yaw2));
+			matrixStackIn.mulPose(Axis.XP.rotationDegrees(entityIn.getXRot()));
 
 			matrixStackIn.scale(2.0F, 2.0F, 2.0F);
 			matrixStackIn.translate(0.0D, -1.501F, 0.0D);

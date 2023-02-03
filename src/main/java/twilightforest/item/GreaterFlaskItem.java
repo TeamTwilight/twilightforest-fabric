@@ -46,12 +46,11 @@ public class GreaterFlaskItem extends BrittleFlaskItem {
 			tooltip.add(Component.translatable("item.twilightforest.flask_doses", stack.getTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			stack.getOrCreateTag().putInt("Uses", 0);
-			items.add(stack);
-		}
-	}
+//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+//		if (this.allowedIn(tab)) {
+//			ItemStack stack = new ItemStack(this);
+//			stack.getOrCreateTag().putInt("Uses", 0);
+//			items.add(stack);
+//		}
+//	}
 }

@@ -2,7 +2,6 @@ package twilightforest.world.components.feature.trees;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -19,24 +18,18 @@ import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiConsumer;
 
 @ParametersAreNonnullByDefault
 public class OakCanopyTreeFeature extends CanopyTreeFeature {
 
-	private final List<BlockPos> leaves;
-
 	public OakCanopyTreeFeature(Codec<TFTreeFeatureConfig> config) {
 		super(config);
-		if (FabricLoader.getInstance().isModLoaded("c2me"))
-			leaves = new CopyOnWriteArrayList<>();
-		else
-			leaves = Lists.newArrayList();
 	}
 
 	@Override
 	protected boolean generate(WorldGenLevel world, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, BiConsumer<BlockPos, BlockState> decorationPlacer, TFTreeFeatureConfig config) {
+		List<BlockPos> leaves = Lists.newArrayList();
 		// determine a height
 		int treeHeight = config.minHeight;
 		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
@@ -57,17 +50,17 @@ public class OakCanopyTreeFeature extends CanopyTreeFeature {
 			return false;
 		}
 
-		this.leaves.clear();
+		leaves.clear();
 
 		//okay build a tree!  Go up to the height
-		buildTrunk(world, trunkPlacer, random, pos, treeHeight, config);
+		buildTrunk(world, leaves, trunkPlacer, random, pos, treeHeight, config);
 
 		// make 12 - 20 branches
 		int numBranches = 12 + random.nextInt(9);
 		float bangle = random.nextFloat();
 		for (int b = 0; b < numBranches; b++) {
 			float btilt = 0.15F + (random.nextFloat() * 0.35F);
-			buildBranch(world, pos, trunkPlacer, treeHeight - 10 + (b / 2), 5, bangle, btilt, false, random, config);
+			buildBranch(world, leaves, pos, trunkPlacer, treeHeight - 10 + (b / 2), 5, bangle, btilt, false, random, config);
 
 			bangle += (random.nextFloat() * 0.4F);
 			if (bangle > 1.0F) {
@@ -108,7 +101,7 @@ public class OakCanopyTreeFeature extends CanopyTreeFeature {
 		}
 	}
 
-	private void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
+	private void buildTrunk(LevelAccessor world, List<BlockPos> leaves, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
 		for (int dy = 0; dy < treeHeight; dy++) {
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 0), config.trunkProvider);
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 0), config.trunkProvider);
@@ -130,14 +123,14 @@ public class OakCanopyTreeFeature extends CanopyTreeFeature {
 			}
 		}
 
-		this.leaves.add(pos.offset(0, treeHeight, 0));
+		leaves.add(pos.offset(0, treeHeight, 0));
 	}
 
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
 	@Override
-	void buildBranch(LevelAccessor world, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, RandomSource treeRNG, TFTreeFeatureConfig config) {
+	void buildBranch(LevelAccessor world, List<BlockPos> leaves, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, RandomSource treeRNG, TFTreeFeatureConfig config) {
 		BlockPos src = pos.above(height);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
@@ -167,6 +160,6 @@ public class OakCanopyTreeFeature extends CanopyTreeFeature {
 		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.north(), config.branchProvider);
 		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, treeRNG, dest.south(), config.branchProvider);
 
-		this.leaves.add(dest);
+		leaves.add(dest);
 	}
 }

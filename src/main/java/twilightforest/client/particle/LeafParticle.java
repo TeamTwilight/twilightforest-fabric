@@ -1,8 +1,9 @@
 package twilightforest.client.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -84,20 +85,20 @@ public class LeafParticle extends TextureSheetParticle {
 		float lerpx = (float) (Mth.lerp(partialTicks, this.xo, this.x) - pos.x());
 		float lerpy = (float) (Mth.lerp(partialTicks, this.yo, this.y) - pos.y());
 		float lerpz = (float) (Mth.lerp(partialTicks, this.zo, this.z) - pos.z());
-		Quaternion quaternion = new Quaternion(entity.rotation());
+		Quaternionf quaternion = new Quaternionf(entity.rotation());
 		if (this.roll != 0.0F) {
 			float roll = Mth.lerp(partialTicks, this.oRoll, this.roll);
-			quaternion.mul(Vector3f.ZP.rotation(roll));
+			quaternion.mul(Axis.ZP.rotation(roll));
 		}
-		quaternion.mul(Vector3f.YP.rotation(Mth.cos((float) Math.toRadians(rot % 360.0F))));
+		quaternion.mul(Axis.YP.rotation(Mth.cos((float) Math.toRadians(rot % 360.0F))));
 		Vector3f vec = new Vector3f(-1.0F, -1.0F, 0.0F);
-		vec.transform(quaternion);
+		vec.rotate(quaternion);
 		Vector3f[] vecList = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
 		float quadSize = this.getQuadSize(partialTicks);
 
 		for (int i = 0; i < 4; i++) {
 			Vector3f selectedVec = vecList[i];
-			selectedVec.transform(quaternion);
+			selectedVec.rotate(quaternion);
 			selectedVec.mul(quadSize);
 			selectedVec.add(lerpx, lerpy, lerpz);
 		}

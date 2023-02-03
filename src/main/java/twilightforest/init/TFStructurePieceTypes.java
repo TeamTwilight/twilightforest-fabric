@@ -3,6 +3,7 @@ package twilightforest.init;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.*;
@@ -23,7 +24,7 @@ import twilightforest.world.components.structures.trollcave.*;
 import java.util.Locale;
 
 public class TFStructurePieceTypes {
-    public static final LazyRegistrar<StructurePieceType> STRUCTURE_PIECE_TYPES = LazyRegistrar.create(Registry.STRUCTURE_PIECE, TwilightForestMod.ID);
+    public static final LazyRegistrar<StructurePieceType> STRUCTURE_PIECE_TYPES = LazyRegistrar.create(Registries.STRUCTURE_PIECE, TwilightForestMod.ID);
 
     // Single-Piece Structures
     //IStructurePieceTypes that can be referred to

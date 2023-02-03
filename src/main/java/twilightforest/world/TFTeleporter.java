@@ -1,11 +1,14 @@
 package twilightforest.world;
 
 import com.google.common.collect.Maps;
-import io.github.fabricators_of_create.porting_lib.extensions.ITeleporter;
+import io.github.fabricators_of_create.porting_lib.extensions.extensions.ITeleporter;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
@@ -27,6 +30,7 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.init.TFBlocks;
+import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
@@ -48,6 +52,54 @@ public class TFTeleporter implements ITeleporter {
 
 	public TFTeleporter(boolean locked) {
 		TFTeleporter.locked = locked;
+	}
+
+	public static CompoundTag saveLinks(CompoundTag tag) {
+		ListTag dcc = new ListTag();
+		destinationCoordinateCache.forEach((rl, map) -> {
+			CompoundTag ct = new CompoundTag();
+			ListTag links = new ListTag();
+			map.forEach((columnPos, portalPos) -> {
+				CompoundTag link = new CompoundTag();
+				CompoundTag column = new CompoundTag();
+				column.putInt("x", columnPos.x());
+				column.putInt("z", columnPos.z());
+				link.put("column", column);
+				CompoundTag portal = new CompoundTag();
+				portal.putLong("time", portalPos.lastUpdateTime);
+				portal.putLong("pos", portalPos.pos.asLong());
+				link.put("portal", portal);
+				links.add(link);
+			});
+			ct.put("links", links);
+			ct.putString("name", rl.toString());
+			dcc.add(ct);
+		});
+		tag.put("dest", dcc);
+		ListTag cm = new ListTag();
+		columnMap.forEach((columnPos, factor) -> {
+			CompoundTag column = new CompoundTag();
+			column.putInt("x", columnPos.x());
+			column.putInt("z", columnPos.z());
+			column.putLong("factor", factor);
+			cm.add(column);
+		});
+		tag.put("columns", cm);
+		return tag;
+	}
+
+	public static void loadLinks(CompoundTag tag) {
+		tag.getList("dest", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast).forEach(dest -> {
+			ResourceLocation name = new ResourceLocation(dest.getString("name"));
+			destinationCoordinateCache.putIfAbsent(name, Maps.newHashMapWithExpectedSize(4096));
+			dest.getList("links", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast).forEach(link -> {
+				CompoundTag column = link.getCompound("column");
+				CompoundTag portal = link.getCompound("portal");
+				destinationCoordinateCache.get(name).put(new ColumnPos(column.getInt("x"), column.getInt("z")), new PortalPosition(BlockPos.of(portal.getLong("pos")), portal.getLong("time")));
+			});
+		});
+		tag.getList("columns", Tag.TAG_COMPOUND).stream().map(CompoundTag.class::cast)
+				.forEach(column -> columnMap.put(new ColumnPos(column.getInt("x"), column.getInt("z")), column.getLong("factor")));
 	}
 
 	@Nullable
@@ -252,7 +304,7 @@ public class TFTeleporter implements ITeleporter {
 	private static boolean checkStructure(Level world, BlockPos pos) {
 		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
 		if (generator != null)
-			return !TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, pos, 0).isPresent();
+			return TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, pos, 0).isEmpty() && !LegacyLandmarkPlacements.blockNearLandmarkCenter(pos.getX(), pos.getZ(), 5);
 		return true;
 	}
 

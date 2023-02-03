@@ -1,6 +1,5 @@
 package twilightforest.entity.monster;
 
-import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.DamageSourceAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -81,7 +80,7 @@ public class LoyalZombie extends TamableAnimal {
 		// the effect here is that we die shortly after our 60 second lifespan
 		if (!this.getLevel().isClientSide() && this.getEffect(MobEffects.DAMAGE_BOOST) == null) {
 			if (this.tickCount % 20 == 0) {
-				this.hurt(((DamageSourceAccessor)((DamageSourceAccessor)new DamageSource(TFDamageSources.tfSource("expired")).bypassArmor()).port_lib$bypassMagic()).port_lib$bypassInvul().setMagic(), 2);
+				this.hurt(new DamageSource(TFDamageSources.tfSource("expired")).bypassArmor().bypassMagic().bypassInvul().setMagic(), 2);
 			}
 		}
 

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/alpha_yeti_fur"
+    "layer0": "twilightforest:item/alpha_yeti_fur"
   }
 }

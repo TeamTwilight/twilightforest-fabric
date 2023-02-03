@@ -1,6 +1,11 @@
 {
+  "blocks": [
+    {
+      "block": "diamond_ore",
+      "weight": 1
+    }
+  ],
   "max_length": 4,
-  "ore": "minecraft:diamond_ore",
   "size_variation": 0.5,
   "weight": 30
 }

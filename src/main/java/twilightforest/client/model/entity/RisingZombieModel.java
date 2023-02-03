@@ -2,7 +2,8 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ZombieModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -50,8 +51,8 @@ public class RisingZombieModel extends ZombieModel<RisingZombie> {
 				final float yOff = 1F;
 				stack.translate(0, yOff, 0);
 				// todo 1.15 ageInTicks/the entity only provided to setRotationAngles now, rework this entire render and move this transform there
-				stack.mulPose(Vector3f.XP.rotationDegrees(-120F * (80F - Math.min(80F, tick)) / 80F));
-				stack.mulPose(Vector3f.XP.rotationDegrees(30F * (40F - Math.min(40F, Math.max(0F, tick - 80F))) / 40F));
+				stack.mulPose(Axis.XP.rotationDegrees(-120F * (80F - Math.min(80F, tick)) / 80F));
+				stack.mulPose(Axis.XP.rotationDegrees(30F * (40F - Math.min(40F, Math.max(0F, tick - 80F))) / 40F));
 				stack.translate(0, -yOff, 0);
 				this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 				this.body.render(stack, builder, light, overlay, red, green, blue, scale);

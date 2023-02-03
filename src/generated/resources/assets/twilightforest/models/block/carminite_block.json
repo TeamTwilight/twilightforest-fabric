@@ -5,32 +5,50 @@
       "faces": {
         "down": {
           "cullface": "down",
-          "emissivity": 4,
+          "forge_data": {
+            "block_light": 4,
+            "sky_light": 4
+          },
           "texture": "#bottom"
         },
         "east": {
           "cullface": "east",
-          "emissivity": 4,
+          "forge_data": {
+            "block_light": 4,
+            "sky_light": 4
+          },
           "texture": "#east"
         },
         "north": {
           "cullface": "north",
-          "emissivity": 4,
+          "forge_data": {
+            "block_light": 4,
+            "sky_light": 4
+          },
           "texture": "#north"
         },
         "south": {
           "cullface": "south",
-          "emissivity": 4,
+          "forge_data": {
+            "block_light": 4,
+            "sky_light": 4
+          },
           "texture": "#south"
         },
         "up": {
           "cullface": "up",
-          "emissivity": 4,
+          "forge_data": {
+            "block_light": 4,
+            "sky_light": 4
+          },
           "texture": "#top"
         },
         "west": {
           "cullface": "west",
-          "emissivity": 4,
+          "forge_data": {
+            "block_light": 4,
+            "sky_light": 4
+          },
           "texture": "#west"
         }
       },
@@ -49,37 +67,55 @@
       "faces": {
         "down": {
           "cullface": "down",
-          "emissivity": 7,
+          "forge_data": {
+            "block_light": 7,
+            "sky_light": 7
+          },
           "texture": "#bottom2",
           "tintindex": 0
         },
         "east": {
           "cullface": "east",
-          "emissivity": 7,
+          "forge_data": {
+            "block_light": 7,
+            "sky_light": 7
+          },
           "texture": "#east2",
           "tintindex": 0
         },
         "north": {
           "cullface": "north",
-          "emissivity": 7,
+          "forge_data": {
+            "block_light": 7,
+            "sky_light": 7
+          },
           "texture": "#north2",
           "tintindex": 0
         },
         "south": {
           "cullface": "south",
-          "emissivity": 7,
+          "forge_data": {
+            "block_light": 7,
+            "sky_light": 7
+          },
           "texture": "#south2",
           "tintindex": 0
         },
         "up": {
           "cullface": "up",
-          "emissivity": 7,
+          "forge_data": {
+            "block_light": 7,
+            "sky_light": 7
+          },
           "texture": "#top2",
           "tintindex": 0
         },
         "west": {
           "cullface": "west",
-          "emissivity": 7,
+          "forge_data": {
+            "block_light": 7,
+            "sky_light": 7
+          },
           "texture": "#west2",
           "tintindex": 0
         }

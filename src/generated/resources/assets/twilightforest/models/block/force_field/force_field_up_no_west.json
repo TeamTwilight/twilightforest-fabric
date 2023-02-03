@@ -5,7 +5,10 @@
     {
       "faces": {
         "west": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#pane",
           "uv": [
             7.0,

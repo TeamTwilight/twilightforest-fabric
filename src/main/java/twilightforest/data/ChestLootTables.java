@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import net.minecraft.Util;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -27,10 +28,10 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 @SuppressWarnings("deprecation")
-public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, LootTable.Builder>> {
+public class ChestLootTables implements LootTableSubProvider {
 
 	@Override
-	public void accept(BiConsumer<ResourceLocation, LootTable.Builder> register) {
+	public void generate(BiConsumer<ResourceLocation, LootTable.Builder> register) {
 		register.accept(TFLootTables.USELESS_LOOT.lootTable,
 				LootTable.lootTable()
 						.withPool(LootPool.lootPool()

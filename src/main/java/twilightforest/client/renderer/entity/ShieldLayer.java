@@ -1,7 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -56,9 +57,9 @@ public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> exten
 
 			// perform the rotations, accounting for the fact that baked models are corner-based
 			stack.translate(0.5, 0.5, 0.5);
-			stack.mulPose(Vector3f.ZP.rotationDegrees(rotateAngleZ * (180F / (float) Math.PI)));
-			stack.mulPose(Vector3f.YP.rotationDegrees(rotateAngleY * (180F / (float) Math.PI) + (c * (360F / count))));
-			stack.mulPose(Vector3f.XP.rotationDegrees(rotateAngleX * (180F / (float) Math.PI)));
+			stack.mulPose(Axis.ZP.rotationDegrees(rotateAngleZ * (180F / (float) Math.PI)));
+			stack.mulPose(Axis.YP.rotationDegrees(rotateAngleY * (180F / (float) Math.PI) + (c * (360F / count))));
+			stack.mulPose(Axis.XP.rotationDegrees(rotateAngleX * (180F / (float) Math.PI)));
 			stack.translate(-0.5, -0.5, -0.5);
 
 			// push the shields outwards from the center of rotation

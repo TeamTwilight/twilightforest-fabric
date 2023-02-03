@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/knightmetal_ring"
+    "layer0": "twilightforest:item/knightmetal_ring"
   }
 }

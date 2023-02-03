@@ -2,7 +2,7 @@ package twilightforest.util;
 
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import io.github.fabricators_of_create.porting_lib.block.EntityDestroyBlock;
-import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.LivingEntityAccessor;
+import io.github.fabricators_of_create.porting_lib.mixin.accessors.common.accessor.LivingEntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;

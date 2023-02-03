@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "twilightforest:items/lifedrain_scepter"
+    "layer0": "twilightforest:item/lifedrain_scepter"
   }
 }

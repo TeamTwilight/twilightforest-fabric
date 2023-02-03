@@ -27,7 +27,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.ai.goal.BreathAttackGoal;
-import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFBiomes;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 
@@ -153,6 +153,6 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 
 	public static boolean canSpawnHere(EntityType<? extends WinterWolf> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		Optional<ResourceKey<Biome>> key = accessor.getBiome(pos).unwrapKey();
-		return accessor.getDifficulty() != Difficulty.PEACEFUL && Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST)) || Monster.isDarkEnoughToSpawn(accessor, pos, random);
+		return accessor.getDifficulty() != Difficulty.PEACEFUL && Objects.equals(key, Optional.of(TFBiomes.SNOWY_FOREST)) || Monster.isDarkEnoughToSpawn(accessor, pos, random);
 	}
 }

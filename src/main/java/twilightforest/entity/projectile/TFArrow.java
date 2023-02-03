@@ -1,7 +1,6 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -19,11 +18,6 @@ public abstract class TFArrow extends AbstractArrow implements ITFProjectile {
 		super(type, worldIn);
 		this.setOwner(shooter);
 		this.setPos(shooter.getX(), shooter.getEyeY() - 0.1D, shooter.getZ());
-	}
-
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
 	}
 
 	@Override

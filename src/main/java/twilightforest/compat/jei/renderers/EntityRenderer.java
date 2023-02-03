@@ -3,8 +3,7 @@ package twilightforest.compat.jei.renderers;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
@@ -19,6 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 import twilightforest.TwilightForestMod;
 
 import java.util.*;
@@ -111,12 +111,12 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 		PoseStack posestack1 = new PoseStack();
 		posestack1.translate(0.0D, 0.0D, 1000.0D);
 		posestack1.scale((float) scale, (float) scale, (float) scale);
-		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-		Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
+		Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
+		Quaternionf quaternion1 = Axis.XP.rotationDegrees(20.0F);
 		quaternion.mul(quaternion1);
 		posestack1.mulPose(quaternion);
-		posestack1.mulPose(Vector3f.XN.rotationDegrees(35.0F));
-		posestack1.mulPose(Vector3f.YN.rotationDegrees(145.0F));
+		posestack1.mulPose(Axis.XN.rotationDegrees(35.0F));
+		posestack1.mulPose(Axis.YN.rotationDegrees(145.0F));
 		float f2 = entity.yBodyRot;
 		float f3 = entity.getYRot();
 		float f4 = entity.getXRot();
@@ -129,19 +129,11 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 		entity.yHeadRotO = entity.getYRot();
 		Lighting.setupForEntityInInventory();
 		EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-		quaternion1.conj();
+		quaternion1.conjugate();
 		entityrenderdispatcher.overrideCameraOrientation(quaternion1);
 		entityrenderdispatcher.setRenderShadow(false);
 		MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-		RenderSystem.runAsFancy(() -> {
-			entityrenderdispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880);
-			if (entity instanceof MultiPartEntity multiPartEntity && multiPartEntity.isMultipartEntity()) {
-				Arrays.stream(multiPartEntity.getParts())
-						.filter(Objects::nonNull)
-						.forEach(partEntity ->
-								entityrenderdispatcher.render(partEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880));
-			}
-		});
+		RenderSystem.runAsFancy(() -> entityrenderdispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, posestack1, multibuffersource$buffersource, 15728880));
 		multibuffersource$buffersource.endBatch();
 		entityrenderdispatcher.setRenderShadow(true);
 		entity.yBodyRot = f2;

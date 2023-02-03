@@ -1,10 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.world.level.block.Blocks;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,9 +16,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.potions.FrostedEffect;
 
-import java.util.Random;
-
-@Environment(EnvType.CLIENT)
 public class IceLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 	private final RandomSource random = RandomSource.create();
 
@@ -47,12 +42,12 @@ public class IceLayer<T extends LivingEntity, M extends EntityModel<T>> extends 
 			float dz = ((this.random.nextFloat() * (entity.getBbWidth() * 2.0F)) - entity.getBbWidth()) * 0.1F;
 			stack.translate(dx, dy, dz);
 			stack.scale(0.5F, 0.5F, 0.5F);
-			stack.mulPose(Vector3f.XP.rotationDegrees(this.random.nextFloat() * 360F));
-			stack.mulPose(Vector3f.YP.rotationDegrees(this.random.nextFloat() * 360F));
-			stack.mulPose(Vector3f.ZP.rotationDegrees(this.random.nextFloat() * 360F));
+			stack.mulPose(Axis.XP.rotationDegrees(this.random.nextFloat() * 360F));
+			stack.mulPose(Axis.YP.rotationDegrees(this.random.nextFloat() * 360F));
+			stack.mulPose(Axis.ZP.rotationDegrees(this.random.nextFloat() * 360F));
 			stack.translate(-0.5F, -0.5F, -0.5F);
 
-			Minecraft.getInstance().getBlockRenderer().renderSingleBlock(Blocks.ICE.defaultBlockState(), stack, buffer, light, OverlayTexture.NO_OVERLAY);
+			Minecraft.getInstance().getBlockRenderer().renderSingleBlock(Blocks.ICE.defaultBlockState(), stack, buffer, light, OverlayTexture.NO_OVERLAY/*, ModelData.EMPTY, RenderType.translucent() TODO: PORT*/);
 			stack.popPose();
 		}
 	}

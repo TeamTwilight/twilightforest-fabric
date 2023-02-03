@@ -33,7 +33,7 @@ public class OptifineWarningScreen extends Screen {
 	@Override
 	protected void init() {
 		super.init();
-		this.exitButton = this.addRenderableWidget(new Button(this.width / 2 - 75, this.height * 3 / 4, 150, 20, CommonComponents.GUI_PROCEED, (pressed) -> Minecraft.getInstance().setScreen(this.lastScreen)));
+		this.exitButton = this.addRenderableWidget(Button.builder(CommonComponents.GUI_PROCEED, (pressed) -> Minecraft.getInstance().setScreen(this.lastScreen)).bounds(this.width / 2 - 75, this.height * 3 / 4, 150, 20).build());
 		this.exitButton.active = false;
 
 		this.message = MultiLineLabel.create(this.font, text, this.width - 50);

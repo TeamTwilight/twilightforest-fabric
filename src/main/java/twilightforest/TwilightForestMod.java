@@ -16,15 +16,19 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -83,43 +87,39 @@ public class TwilightForestMod implements ModInitializer {
 		}
 
 		CommandRegistrationCallback.EVENT.register(this::registerCommands);
+		MinecraftForge.EVENT_BUS.addGenericListener(Level.class, CapabilityList::attachLevelCapability);
+		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
 		Stalactite.reloadStalactites();
 
 		TFBannerPatterns.BANNER_PATTERNS.register();
-		BiomeKeys.BIOMES.register();
-		TFBlocks.BLOCKS.register();
 		TFBlockEntities.BLOCK_ENTITIES.register();
+		TFBlocks.BLOCKS.register();
 		TFLoot.CONDITIONS.register();
 		TFMenuTypes.CONTAINERS.register();
-		TFDimensionSettings.DIMENSION_TYPES.register();
 		TFEnchantments.ENCHANTMENTS.register();
 		TFEntities.ENTITIES.register();
 		TFFeatures.FEATURES.register();
 		TFFeatureModifiers.FOLIAGE_PLACERS.register();
 		TFLoot.FUNCTIONS.register();
-		TFSounds.SOUNDS.register();
 		TFItems.ITEMS.register();
 		TFLootModifiers.LOOT_MODIFIERS.register();
 		TFMobEffects.MOB_EFFECTS.register();
-		TFDimensionSettings.NOISE_GENERATORS.register();
 		TFParticleType.PARTICLE_TYPES.register();
 		TFFeatureModifiers.PLACEMENT_MODIFIERS.register();
 		TFRecipes.RECIPE_SERIALIZERS.register();
 		TFRecipes.RECIPE_TYPES.register();
-		//TFPotions.POTIONS.register(modbus);
+		TFSounds.SOUNDS.register();
 		TFEntities.SPAWN_EGGS.register();
 		TFStats.STATS.register();
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register();
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register();
 		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register();
-		// fabric: structure sets moved after structures to fix log errors
 		TFStructureTypes.STRUCTURE_TYPES.register();
-		TFStructures.STRUCTURES.register();
-		TFStructureSets.STRUCTURE_SETS.register();
 		TFFeatureModifiers.TREE_DECORATORS.register();
 		TFFeatureModifiers.TRUNK_PLACERS.register();
-		TFBlocks.registerItemblocks();
-		TFEntities.init();
+
+		DwarfRabbitVariant.DWARF_RABBITS.register();
+		TinyBirdVariant.TINY_BIRDS.register();
 
 		DwarfRabbitVariant.DWARF_RABBITS.register();
 		TinyBirdVariant.TINY_BIRDS.register();
@@ -135,7 +135,7 @@ public class TwilightForestMod implements ModInitializer {
 		registerSerializers();
 
 
-		new BiomeGrassColors();
+		BiomeGrassColors.init();
 
 		addClassicPack();
 		initEvents();
@@ -153,18 +153,21 @@ public class TwilightForestMod implements ModInitializer {
 		ToolEvents.init();
 	}
 
-	public static void addClassicPack() {
-		ModContainer tf = FabricLoader.getInstance().getModContainer(ID)
-				.orElseThrow(() -> new IllegalStateException("Twilight Forest's ModContainer couldn't be found!"));
-		ResourceLocation packId = prefix("classic");
-		ResourceManagerHelper.registerBuiltinResourcePack(packId, tf, "Twilight Classic", ResourcePackActivationType.NORMAL);
+	@SubscribeEvent
+	public static void addClassicPack(AddPackFindersEvent event) {
+		if (event.getPackType() == PackType.CLIENT_RESOURCES) {
+			var resourcePath = ModList.get().getModFileById(TwilightForestMod.ID).getFile().findResource("classic");
+			var pack = Pack.readMetaAndCreate("builtin/twilight_forest_classic_resources", Component.literal("Twilight Classic"), false,
+					path -> new PathPackResources(path, resourcePath, true), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN);
+			event.addRepositorySource(consumer -> consumer.accept(pack));
+		}
 	}
 
 	public static void registerSerializers() {
-			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
-			Registry.register(Registry.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
+			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
+			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
 
-			Registry.register(Registry.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
+			Registry.register(BuiltInRegistries.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
 	}
 
 	public static void init() {
@@ -175,7 +178,6 @@ public class TwilightForestMod implements ModInitializer {
 			TFBlocks.tfCompostables();
 			TFBlocks.tfBurnables();
 			TFBlocks.tfPots();
-			TFEntities.registerSpawnPlacements();
 			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();
 			TFStats.init();

@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.BossEvent;
@@ -22,8 +23,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.GhastguardHomedFlightGoal;
 import twilightforest.entity.ai.goal.UrGhastFlightGoal;
@@ -239,20 +240,22 @@ public class UrGhast extends CarminiteGhastguard {
 
 	private void startTantrum() {
 		this.setInTantrum(true);
-
-		// FIXME Use custom rain rendering instead like we do for blocking-off biomes, this is ridiculous especially for multiplayer
-		// start raining
-		//int rainTime = 300 * 20;
-
-		//PrimaryLevelData worldInfo = (PrimaryLevelData) level.getServer().getLevel(Level.OVERWORLD).getLevelData(); // grab the overworld to set weather properly
-
-		//worldInfo.setClearWeatherTime(0);
-		//worldInfo.setRainTime(rainTime);
-		//worldInfo.setThunderTime(rainTime);
-		//worldInfo.setRaining(true);
-		//worldInfo.setThundering(true);
-
+		if (this.level instanceof ServerLevel serverLevel) {
+			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
+			if (lightningbolt != null) {
+				BlockPos blockpos = serverLevel.findLightningTargetAround(new BlockPos(this.position().add(new Vec3(18, 0, 0).yRot((float) Math.toRadians(this.getRandom().nextInt(360))))));
+				lightningbolt.moveTo(Vec3.atBottomCenterOf(blockpos));
+				lightningbolt.setVisualOnly(true);
+				serverLevel.addFreshEntity(lightningbolt);
+			}
+		}
 		this.spawnGhastsAtTraps();
+	}
+
+	@Override
+	public void tick() {
+		if (this.level.isClientSide && !this.isDeadOrDying() && this.isInTantrum()) TFWeatherRenderer.urGhastAlive = true;
+		super.tick();
 	}
 
 	/**

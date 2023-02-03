@@ -1,7 +1,8 @@
 package twilightforest.compat.trinkets.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import dev.emi.trinkets.api.SlotReference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -21,7 +22,7 @@ public class CurioHeadRenderer {
 			matrixStack.pushPose();
 			headModel.getHead().translateAndRotate(matrixStack);
 			matrixStack.translate(0.0D, -0.25D, 0.0D);
-			matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+			matrixStack.mulPose(Axis.YP.rotationDegrees(180.0F));
 			matrixStack.scale(0.625F, -0.625F, -0.625F);
 			ItemInHandRenderer renderer = new ItemInHandRenderer(Minecraft.getInstance(), Minecraft.getInstance().getEntityRenderDispatcher(), Minecraft.getInstance().getItemRenderer());
 			renderer.renderItem(entity, stack, ItemTransforms.TransformType.HEAD, false, matrixStack, buffer, light);

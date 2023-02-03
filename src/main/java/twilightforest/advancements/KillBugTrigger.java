@@ -2,7 +2,6 @@ package twilightforest.advancements;
 
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.*;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
@@ -11,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
 
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 
 public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instance> {
 	public static final ResourceLocation ID = TwilightForestMod.prefix("kill_bug");
@@ -62,8 +62,8 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instan
 		@SuppressWarnings("deprecation")
 		public JsonObject serializeToJson(SerializationContext ctx) {
 			JsonObject object = super.serializeToJson(ctx);
-			if(bugType != null) {
-				object.addProperty("bug", Registry.BLOCK.getKey(this.bugType).toString());
+			if (bugType != null) {
+				object.addProperty("bug", BuiltInRegistries.BLOCK.getKey(this.bugType).toString());
 			}
 			return object;
 		}

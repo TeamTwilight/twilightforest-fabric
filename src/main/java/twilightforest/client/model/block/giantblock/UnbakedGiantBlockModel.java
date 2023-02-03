@@ -29,23 +29,4 @@ public record UnbakedGiantBlockModel(ResourceLocation parent, BlockModel ownerMo
 
 		return new GiantBlockModel(sprites, spriteGetter.apply(ownerModel.getMaterial("particle")), overrides, ownerModel.getTransforms());
 	}
-
-	@Override
-	public Collection<ResourceLocation> getDependencies() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public Collection<Material> getMaterials(Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-		if (ownerModel.hasTexture("all")) {
-			return List.of(ownerModel.getMaterial("all"), ownerModel.getMaterial("particle"));
-		} else {
-			ArrayList<Material> materials = new ArrayList<>();
-			for (Direction dir : Direction.values()) {
-				materials.add(ownerModel.getMaterial(dir.getName().toLowerCase(Locale.ROOT)));
-			}
-			materials.add(ownerModel.getMaterial("particle"));
-			return materials;
-		}
-	}
 }

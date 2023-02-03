@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "twilightforest:items/block_and_chain_thrown"
+    "layer0": "twilightforest:item/block_and_chain_thrown"
   }
 }

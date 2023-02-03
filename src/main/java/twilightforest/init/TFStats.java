@@ -3,6 +3,7 @@ package twilightforest.init;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.Stats;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class TFStats {
 
-	public static final LazyRegistrar<ResourceLocation> STATS = LazyRegistrar.create(Registry.CUSTOM_STAT, TwilightForestMod.ID);
+	public static final LazyRegistrar<ResourceLocation> STATS = LazyRegistrar.create(Registries.CUSTOM_STAT, TwilightForestMod.ID);
 	private static final List<Runnable> STAT_SETUP = new ArrayList<>();
 
 	public static final RegistryObject<ResourceLocation> BUGS_SQUISHED = makeTFStat("bugs_squished");

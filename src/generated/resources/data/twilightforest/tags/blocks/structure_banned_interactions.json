@@ -1,9 +1,8 @@
 {
-  "replace": false,
   "values": [
-    "#minecraft:buttons",
-    "#c:chests",
     "minecraft:lever",
-    "twilightforest:antibuilder"
+    "twilightforest:antibuilder",
+    "#minecraft:buttons",
+    "#forge:chests"
   ]
 }

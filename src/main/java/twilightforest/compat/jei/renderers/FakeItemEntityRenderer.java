@@ -3,8 +3,7 @@ package twilightforest.compat.jei.renderers;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -22,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.jei.FakeItemEntity;
 
@@ -86,14 +86,14 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 		PoseStack posestack1 = new PoseStack();
 		posestack1.translate(0.0D, 0.0D, 1000.0D);
 		posestack1.scale(50.0F, 50.0F, 50.0F);
-		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-		Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
+		Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
+		Quaternionf quaternion1 = Axis.XP.rotationDegrees(20.0F);
 		quaternion.mul(quaternion1);
 		posestack1.mulPose(quaternion);
-		posestack1.mulPose(Vector3f.XN.rotationDegrees(35.0F));
-		posestack1.mulPose(Vector3f.YN.rotationDegrees(145.0F));
+		posestack1.mulPose(Axis.XN.rotationDegrees(35.0F));
+		posestack1.mulPose(Axis.YN.rotationDegrees(145.0F));
 		Lighting.setupForEntityInInventory();
-		quaternion1.conj();
+		quaternion1.conjugate();
 		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 		ItemEntity item = EntityType.ITEM.create(level);
 		Objects.requireNonNull(item).setItem(stack);
@@ -114,7 +114,7 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 		float f2 = bakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
 		stack.translate(0.0D, f1 + 0.25F * f2, 0.0D);
 		float f3 = this.getSpin(partialTicks);
-		stack.mulPose(Vector3f.YP.rotation(f3));
+		stack.mulPose(Axis.YP.rotation(f3));
 
 		stack.pushPose();
 

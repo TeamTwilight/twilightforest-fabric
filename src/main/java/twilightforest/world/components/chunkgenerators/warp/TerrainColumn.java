@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.floats.Float2ObjectMap;
 import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 public final class TerrainColumn implements Comparable<TerrainColumn> {
     public static final Codec<TerrainColumn> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    RegistryFixedCodec.create(Registry.BIOME_REGISTRY).fieldOf("key_biome").forGetter(o -> o.keyBiome),
+                    RegistryFixedCodec.create(Registries.BIOME).fieldOf("key_biome").forGetter(o -> o.keyBiome),
                     Codecs.floatTreeCodec(Biome.CODEC).fieldOf("biome_layers").forGetter(o -> o.biomes),
                     Codec.FLOAT.fieldOf("depth").forGetter(o -> o.noiseDepth),
                     Codec.FLOAT.fieldOf("scale").forGetter(o -> o.noiseScale)

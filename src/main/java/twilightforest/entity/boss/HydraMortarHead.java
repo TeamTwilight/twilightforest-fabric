@@ -127,8 +127,7 @@ public class HydraMortarHead extends ThrowableProjectile {
 	private void detonate() {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
 		boolean flag = this.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-		Explosion.BlockInteraction flag1 = flag ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.NONE;
-		this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, flag1);
+		this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
 
 		DamageSource src = new IndirectEntityDamageSource("onFire", this, getOwner()).setProjectile();
 
@@ -184,10 +183,5 @@ public class HydraMortarHead extends ThrowableProjectile {
 	@Override
 	protected float getGravity() {
 		return 0.05F;
-	}
-
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
 	}
 }

@@ -1,11 +1,10 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.block.CustomPathNodeTypeBlock;
 import io.github.fabricators_of_create.porting_lib.block.PlayerDestroyBlock;
+import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -21,19 +20,15 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageSources;
 
-import org.jetbrains.annotations.Nullable;
-
-public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, CustomPathNodeTypeBlock, PlayerDestroyBlock {
+public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, PlayerDestroyBlock {
 
 	protected static final VoxelShape BASE_SHAPE = Block.box(3.0D, 3.0D, 3.0D, 13.0D, 13.0D, 13.0D);
 
@@ -54,6 +49,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 				.setValue(DOWN, false).setValue(UP, false)
 				.setValue(NORTH, false).setValue(SOUTH, false)
 				.setValue(WEST, false).setValue(EAST, false));
+		LandPathNodeTypesRegistry.register(this, (state, neighbor) -> BlockPathTypes.DAMAGE_CACTUS);
 	}
 
 	@Override
@@ -77,12 +73,6 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		if (state.getValue(EAST)) shape = Shapes.or(shape, EAST_SHAPE);
 
 		return shape;
-	}
-
-	@Nullable
-	@Override
-	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
-		return BlockPathTypes.DAMAGE_CACTUS;
 	}
 
 	@Override

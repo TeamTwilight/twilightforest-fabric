@@ -1,17 +1,15 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.CarminiteGolemModel;
 import twilightforest.entity.monster.CarminiteGolem;
 
-@Environment(EnvType.CLIENT)
 public class CarminiteGolemRenderer<T extends CarminiteGolem, M extends CarminiteGolemModel<T>> extends MobRenderer<T, M> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("carminitegolem.png");
@@ -31,7 +29,7 @@ public class CarminiteGolemRenderer<T extends CarminiteGolem, M extends Carminit
 			float f = 13.0F;
 			float f1 = entity.animationPosition - entity.animationSpeed * (1.0F - partialTicks) + 6.0F;
 			float f2 = (Math.abs(f1 % 13.0F - 6.5F) - 3.25F) / 3.25F;
-			ms.mulPose(Vector3f.ZP.rotationDegrees(6.5F * f2));
+			ms.mulPose(Axis.ZP.rotationDegrees(6.5F * f2));
 		}
 	}
 

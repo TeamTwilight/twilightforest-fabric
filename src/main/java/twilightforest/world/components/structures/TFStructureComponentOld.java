@@ -112,7 +112,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 			BlockEntity tileEntitySpawner = world.getBlockEntity(pos);
 			if (tileEntitySpawner instanceof SpawnerBlockEntity spawner) {
-				spawner.getSpawner().setEntityId(monsterID);
+				spawner.setEntityId(monsterID, world.getRandom());
 				spawnerModifier.accept(spawner);
 			}
 		}

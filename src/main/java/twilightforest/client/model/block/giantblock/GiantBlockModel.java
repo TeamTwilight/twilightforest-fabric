@@ -1,6 +1,6 @@
 package twilightforest.client.model.block.giantblock;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
@@ -46,9 +46,9 @@ public class GiantBlockModel implements BakedModel, FabricBakedModel {
 		for (Direction direction : Direction.values()) {
 			Vec2i coords = this.calculateOffset(direction, pos.offset(this.magicOffsetFromDir(direction)));
 
-			TextureAtlasSprite sprite = this.textures[this.textures.length > 1 ? direction.ordinal() : 0];
+			TextureAtlasSprite sprite = this.textures[this.textures.length > 1 ? side.ordinal() : 0];
 
-			emitter.fromVanilla(FACE_BAKERY.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(direction, direction.ordinal(), direction.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), sprite, direction, BlockModelRotation.X0_Y0, null, false, new ResourceLocation(sprite.getName().getNamespace(), sprite.getName().getPath() + "_" + direction.name().toLowerCase(Locale.ROOT))), RendererAccess.INSTANCE.getRenderer().materialFinder().find(), direction);
+			quads.add(FACE_BAKERY.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(side, side.ordinal(), side.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), sprite, side, BlockModelRotation.X0_Y0, null, false, new ResourceLocation(sprite.atlasLocation().getNamespace(), sprite.atlasLocation().getPath() + "_" + side.name().toLowerCase(Locale.ROOT))));
 			emitter.emit();
 		}
 

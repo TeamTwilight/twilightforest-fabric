@@ -17,8 +17,11 @@
       "value": {
         "additional_clearance": 0,
         "occupies_surface": true,
-        "occupies_underground": false
+        "occupies_underground": true
       }
+    },
+    {
+      "type": "minecraft:biome"
     }
   ]
 }

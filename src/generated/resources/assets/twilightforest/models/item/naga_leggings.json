@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/naga_leggings"
+    "layer0": "twilightforest:item/naga_leggings"
   }
 }

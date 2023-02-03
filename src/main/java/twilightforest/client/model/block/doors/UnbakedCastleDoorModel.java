@@ -2,7 +2,8 @@ package twilightforest.client.model.block.doors;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
+import net.minecraftforge.client.model.ForgeFaceData;
+import org.joml.Vector3f;
 import io.github.fabricators_of_create.porting_lib.model.SimpleModelState;
 import io.github.fabricators_of_create.porting_lib.model.geometry.IGeometryBakingContext;
 import io.github.fabricators_of_create.porting_lib.model.geometry.IUnbakedGeometry;
@@ -46,21 +47,18 @@ public class UnbakedCastleDoorModel implements UnbakedModel {
 			for (int quad = 0; quad < 4; quad++) {
 				Vec3i corner = face.getNormal().offset(planeDirections[quad].getNormal()).offset(planeDirections[(quad + 1) % 4].getNormal()).offset(1, 1, 1).multiply(8);
 				BlockElement element = new BlockElement(new Vector3f((float) Math.min(center.getX(), corner.getX()), (float) Math.min(center.getY(), corner.getY()), (float) Math.min(center.getZ(), corner.getZ())), new Vector3f((float) Math.max(center.getX(), corner.getX()), (float) Math.max(center.getY(), corner.getY()), (float) Math.max(center.getZ(), corner.getZ())), Map.of(), null, true);
-				this.baseElements[face.get3DDataValue()][quad] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, -1, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0))), null, true);
+				this.baseElements[face.get3DDataValue()][quad] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, -1, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0), null)), null, true);
 
 				for (ConnectionLogic connectionType : ConnectionLogic.values()) {
-					BlockElementFace elementFace = new BlockElementFace(face, 0, "", new BlockFaceUV(connectionType.remapUVs(element.uvsByFace(face)), 0));
-					elementFace.setEmissivity(15);
-					this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, elementFace), null, true);
+					this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, 0, "", new BlockFaceUV(connectionType.remapUVs(element.uvsByFace(face)), 0), new ForgeFaceData(0xFFFFFFFF, 15, 15, true))), null, true);
 				}
 			}
 		}
 	}
 
 	@Override
-	public BakedModel bake(ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ResourceLocation modelLocation) {
-		ItemOverrides overrides = ownerModel.getOverrides(bakery, ownerModel, spriteGetter);
-		Transformation transformation = ownerModel.getGeometry().getRootTransform();
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
+		Transformation transformation = context.getRootTransform();
 		if (!transformation.isIdentity()) {
 			modelState = new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
 		}
@@ -99,14 +97,5 @@ public class UnbakedCastleDoorModel implements UnbakedModel {
 	@Override
 	public Collection<ResourceLocation> getDependencies() {
 		return Collections.emptyList();
-	}
-
-	public Collection<Material> getMaterials(Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-		ArrayList<Material> materials = new ArrayList<>();
-		materials.add(ownerModel.getMaterial("base"));
-		materials.add(ownerModel.getMaterial("particle"));
-		materials.add(ownerModel.getMaterial("overlay"));
-		materials.add(ownerModel.getMaterial("overlay_connected"));
-		return materials;
 	}
 }

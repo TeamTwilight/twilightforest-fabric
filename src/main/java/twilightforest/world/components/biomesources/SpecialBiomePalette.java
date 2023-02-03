@@ -4,13 +4,18 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.fabricators_of_create.porting_lib.util.ServerLifecycleHooks;
 import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
 import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 import twilightforest.util.Codecs;
 
@@ -53,7 +58,7 @@ public record SpecialBiomePalette(Holder<Biome> river, Climate.ParameterList<Hol
 
     private static SpecialBiomePalette create() {
         // FIXME populate correct biomes
-        return create(Holder.direct(OverworldBiomes.theVoid()), new Climate.ParameterList<>(Collections.emptyList()), HolderSet.direct(), Collections.emptyList());
+        return create(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(Biomes.THE_VOID), new Climate.ParameterList<>(Collections.emptyList()), HolderSet.direct(), Collections.emptyList());
     }
 
     private static SpecialBiomePalette create(Holder<Biome> river, Climate.ParameterList<Holder<Biome>> common, HolderSet<Biome> rare, List<Float2ObjectSortedMap<Holder<Biome>>> clusters) {

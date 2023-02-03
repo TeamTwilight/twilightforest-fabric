@@ -3,8 +3,9 @@ package twilightforest.client.renderer;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.Camera;
@@ -59,8 +60,8 @@ public class TFSkyRenderer {
 		ms.pushPose();
 		float f11 = 1.0F - level.getRainLevel(partialTicks);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, f11);
-		ms.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
-		ms.mulPose(Vector3f.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F));
+		ms.mulPose(Axis.YP.rotationDegrees(-90.0F));
+		ms.mulPose(Axis.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F));
 		/* TF - snip out sun/moon
 		 * float f12 = 30.0F;
 		 * ...

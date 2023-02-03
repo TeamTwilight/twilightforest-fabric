@@ -3,7 +3,6 @@ package twilightforest.client.model.block.patch;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.realmsclient.util.JsonUtils;
-import io.github.fabricators_of_create.porting_lib.mixin.client.accessor.BlockModelAccessor;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
 import net.fabricmc.fabric.api.client.model.ModelResourceProvider;
 import net.minecraft.client.Minecraft;

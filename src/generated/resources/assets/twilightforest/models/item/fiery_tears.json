@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/fiery_tears"
+    "layer0": "twilightforest:item/fiery_tears"
   }
 }

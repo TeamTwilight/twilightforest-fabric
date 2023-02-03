@@ -296,7 +296,7 @@ public final class TFSounds {
 	public static final RegistryObject<SoundEvent> MUSIC_DISC_MOTION = createEvent("music_disc.twilightforest.motion");
 
 	private static RegistryObject<SoundEvent> createEvent(String sound) {
-		return SOUNDS.register(sound, () -> new SoundEvent(TwilightForestMod.prefix(sound)));
+		return SOUNDS.register(sound, () -> SoundEvent.createVariableRangeEvent(TwilightForestMod.prefix(sound)));
 	}
 
 	public static void registerParrotSounds() {

@@ -3,11 +3,12 @@ package twilightforest.init;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import twilightforest.TwilightForestMod;
 
 public class TFBannerPatterns {
-	public static final LazyRegistrar<BannerPattern> BANNER_PATTERNS = LazyRegistrar.create(Registry.BANNER_PATTERN, TwilightForestMod.ID);
+	public static final LazyRegistrar<BannerPattern> BANNER_PATTERNS = LazyRegistrar.create(Registries.BANNER_PATTERN, TwilightForestMod.ID);
 
 	public static final RegistryObject<BannerPattern> NAGA = BANNER_PATTERNS.register("naga", () -> new BannerPattern("tfn"));
 	public static final RegistryObject<BannerPattern> LICH = BANNER_PATTERNS.register("lich", () -> new BannerPattern("tfl"));

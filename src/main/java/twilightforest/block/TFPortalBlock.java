@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -62,6 +63,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	public static final BooleanProperty DISALLOW_RETURN = BooleanProperty.create("is_one_way");
 
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F));
+	private static ResourceKey<Level> cachedOriginDimension;
 
 	private static final int MIN_PORTAL_SIZE = 4;
 	private static final HashSet<ServerPlayer> playersNotified = new HashSet<>();
@@ -246,8 +248,9 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static ResourceKey<Level> getDestination(Entity entity) {
+		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
 		return !entity.getCommandSenderWorld().dimension().location().equals(TFGenerationSettings.DIMENSION)
-				? TFGenerationSettings.DIMENSION_KEY : ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())); // FIXME: cache this for gods sake
+				? TFGenerationSettings.DIMENSION_KEY : cachedOriginDimension;
 	}
 
 	public static void attemptSendEntity(Entity entity, boolean forcedEntry, boolean makeReturnPortal) {

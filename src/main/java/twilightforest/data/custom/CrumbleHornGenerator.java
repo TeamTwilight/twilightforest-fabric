@@ -1,16 +1,17 @@
 package twilightforest.data.custom;
 
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.data.ExistingFileHelper;
 //import quek.undergarden.registry.UGBlocks;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 
 public class CrumbleHornGenerator extends CrumbleHornProvider {
 
-	public CrumbleHornGenerator(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, TwilightForestMod.ID, helper);
+	public CrumbleHornGenerator(PackOutput output, ExistingFileHelper helper) {
+		super(output, TwilightForestMod.ID, helper);
 	}
 
 	@Override
@@ -51,15 +52,5 @@ public class CrumbleHornGenerator extends CrumbleHornProvider {
 		addDissolve(Blocks.ANDESITE);
 		addDissolve(Blocks.DIORITE);
 		addDissolve(Blocks.GRANITE);
-
-//		addTransform(UGBlocks.DEPTHROCK_BRICKS.get(), UGBlocks.CRACKED_DEPTHROCK_BRICKS.get());
-//		addTransform(UGBlocks.SHIVERSTONE_BRICKS.get(), UGBlocks.CRACKED_SHIVERSTONE_BRICKS.get());
-//		addTransform(UGBlocks.TREMBLECRUST_BRICKS.get(), UGBlocks.CRACKED_TREMBLECRUST_BRICKS.get());
-//		addTransform(UGBlocks.COARSE_DEEPSOIL.get(), UGBlocks.DEEPSOIL.get());
-//		addTransform(UGBlocks.DEEPTURF_BLOCK.get(), UGBlocks.DEEPSOIL.get());
-//		addTransform(UGBlocks.ASHEN_DEEPTURF_BLOCK.get(), UGBlocks.DEEPSOIL.get());
-//		addTransform(UGBlocks.FROZEN_DEEPTURF_BLOCK.get(), UGBlocks.DEEPSOIL.get());
-//		addDissolve(UGBlocks.DEEPSOIL.get());
-//		addDissolve(UGBlocks.SEDIMENT.get());
 	}
 }

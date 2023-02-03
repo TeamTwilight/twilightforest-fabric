@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import io.github.fabricators_of_create.porting_lib.tags.ToolTags;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -25,7 +25,7 @@ public class LiverootBlock extends Block {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if (player.getItemInHand(hand).is(ToolTags.AXES) || player.getItemInHand(hand).getItem() instanceof AxeItem) {
+		if (player.getItemInHand(hand).is(ConventionalItemTags.AXES) || player.getItemInHand(hand).getItem() instanceof AxeItem) {
 			level.setBlockAndUpdate(pos, TFBlocks.ROOT_BLOCK.get().defaultBlockState());
 			ItemEntity liveroot = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.LIVEROOT.get()));
 			level.addFreshEntity(liveroot);

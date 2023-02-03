@@ -7,6 +7,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -59,7 +60,7 @@ public class ThornFeature extends Feature<ThornsConfig> {
 								world.setBlock(dPos.relative(dir), TFBlocks.THORN_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1), 3);
 							} else {
 								// rose
-								world.setBlock(dPos.relative(dir), TFBlocks.THORN_ROSE.get().defaultBlockState(), 3);
+								world.setBlock(dPos.relative(dir), TFBlocks.THORN_ROSE.get().defaultBlockState().setValue(DirectionalBlock.FACING, dir), 3);
 							}
 						}
 					}

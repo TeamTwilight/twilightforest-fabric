@@ -216,11 +216,6 @@ public class SlideBlock extends Entity implements ExtraSpawnDataEntity {
 		return false;
 	}
 
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return ExtraSpawnDataEntity.createExtraDataSpawnPacket(this);
-	}
-
 	public BlockState getBlockState() {
 		return this.myState;
 	}

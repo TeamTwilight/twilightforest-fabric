@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import com.mojang.math.Vector3f;
 import io.github.fabricators_of_create.porting_lib.block.EntityDestroyBlock;
 import io.github.fabricators_of_create.porting_lib.block.ExplosionResistanceBlock;
 import net.minecraft.core.BlockPos;
@@ -26,6 +25,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import org.joml.Vector3f;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 

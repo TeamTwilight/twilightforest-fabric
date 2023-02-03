@@ -10,7 +10,9 @@ import twilightforest.TwilightForestMod;
 import java.util.Random;
 
 public class BiomeGrassColors {
-	private static final Random COLOR_RNG = new Random();
+
+	public static void init() {}
+
 	public static int getEnchantedColor(int x, int z) {
 		// center of the biome is at % 256 - 8
 		int cx = 256 * Math.round((x - 8) / 256F) + 8;

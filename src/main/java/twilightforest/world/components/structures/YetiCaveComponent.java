@@ -18,10 +18,12 @@ import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
+import java.util.Map;
+
 public class YetiCaveComponent extends HollowHillComponent {
-	private static final Stalactite BLUE_ICE_SPIKE = new Stalactite(Blocks.BLUE_ICE, 1.0F, 8, 1);
-	private static final Stalactite PACKED_ICE_SPIKE = new Stalactite(Blocks.PACKED_ICE, 0.5F, 9, 1);
-	private static final Stalactite ICE_SPIKE = new Stalactite(Blocks.ICE, 0.6F, 10, 1);
+	private static final Stalactite BLUE_ICE_SPIKE = new Stalactite(Map.of(Blocks.BLUE_ICE, 1), 1.0F, 8, 1);
+	private static final Stalactite PACKED_ICE_SPIKE = new Stalactite(Map.of(Blocks.PACKED_ICE, 1), 0.5F, 9, 1);
+	private static final Stalactite ICE_SPIKE = new Stalactite(Map.of(Blocks.ICE, 1), 0.6F, 10, 1);
 
 	public YetiCaveComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFYeti.get(), nbt);

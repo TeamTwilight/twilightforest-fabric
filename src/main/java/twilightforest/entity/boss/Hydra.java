@@ -5,7 +5,6 @@ import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerBossEvent;
@@ -24,6 +23,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
@@ -35,7 +35,6 @@ import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -345,14 +344,12 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint, MultiPartEnt
 		}
 	}
 
-	// TODO: make random
 	private int getRandomDeadHead() {
+		List<Integer> headIDs = new ArrayList<>();
 		for (int i = 0; i < this.numHeads; i++) {
-			if (this.hc[i].canRespawn()) {
-				return i;
-			}
+			if (this.hc[i].canRespawn()) headIDs.add(i);
 		}
-		return -1;
+		return headIDs.isEmpty() ? -1 : headIDs.get(this.random.nextInt(headIDs.size()));
 	}
 
 	/**

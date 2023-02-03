@@ -24,6 +24,7 @@ import net.fabricmc.api.Environment;
 import javax.annotation.Nonnull;
 import org.jetbrains.annotations.Nullable;
 
+@EnvironmentInterface(value = EnvType.CLIENT, itf = ItemSupplier.class)
 public class CharmEffect extends Entity implements ItemSupplier {
 	private static final EntityDataAccessor<Integer> DATA_OWNER = SynchedEntityData.defineId(CharmEffect.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<ItemStack> DATA_ITEMID = SynchedEntityData.defineId(CharmEffect.class, EntityDataSerializers.ITEM_STACK);
@@ -104,12 +105,6 @@ public class CharmEffect extends Entity implements ItemSupplier {
 		this.interpTargetYaw = yaw;
 		this.interpTargetPitch = pitch;
 		this.newPosRotationIncrements = posRotationIncrements;
-	}
-
-	@Nonnull
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
 	}
 
 	@Override

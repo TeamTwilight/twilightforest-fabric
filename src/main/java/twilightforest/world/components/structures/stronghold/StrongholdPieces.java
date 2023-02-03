@@ -26,7 +26,7 @@ public class StrongholdPieces {
 			new StrongholdPieceWeight(StrongholdAtriumComponent::new, 5, 2, 3),
 			new StrongholdPieceWeight(StrongholdFoundryComponent::new, 5, 1, 4),
 			new StrongholdPieceWeight(StrongholdTreasureRoomComponent::new, 5, 1, 4),
-			new StrongholdPieceWeight(StrongholdBossRoomComponent::new, 10, 1, 4)};
+			new StrongholdPieceWeight(StrongholdBossRoomComponent::new, 15, 1, 4)};
 
 	private List<StrongholdPieceWeight> pieceList;
 	static int totalWeight = 0;

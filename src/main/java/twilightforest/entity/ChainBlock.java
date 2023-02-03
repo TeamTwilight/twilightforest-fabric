@@ -364,9 +364,4 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 		}
 		this.setHand(buf.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
 	}
-
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return ExtraSpawnDataEntity.createExtraDataSpawnPacket(this);
-	}
 }

@@ -3,6 +3,7 @@ package twilightforest.item;
 import com.mojang.authlib.GameProfile;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -30,7 +31,7 @@ import java.util.List;
 public class SkullCandleItem extends StandingAndWallBlockItem {
 
 	public SkullCandleItem(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall, FabricItemSettings properties) {
-		super(floor, wall, properties.equipmentSlot(stack -> EquipmentSlot.HEAD));
+		super(floor, wall, properties.equipmentSlot(stack -> EquipmentSlot.HEAD), Direction.DOWN);
 		CuriosCharmItem.setupTrinket(this);
 	}
 
@@ -101,18 +102,6 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 			return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
 		} else {
 			return InteractionResultHolder.fail(itemstack);
-		}
-	}
-
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (this.allowedIn(tab)) {
-			ItemStack stack = new ItemStack(this);
-			CompoundTag tag = new CompoundTag();
-			tag.putInt("CandleAmount", 1);
-			tag.putInt("CandleColor", 0);
-			stack.addTagElement("BlockEntityTag", tag);
-			items.add(stack);
 		}
 	}
 }

@@ -82,9 +82,4 @@ public class ProtectionBox extends Entity {
 	protected boolean canRide(Entity entityIn) {
 		return false;
 	}
-
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		throw new IllegalStateException("Should never be spawned on server");
-	}
 }

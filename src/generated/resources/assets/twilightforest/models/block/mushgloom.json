@@ -4,7 +4,10 @@
     {
       "faces": {
         "north": {
-          "emissivity": 10,
+          "forge_data": {
+            "block_light": 10,
+            "sky_light": 10
+          },
           "texture": "#cross",
           "uv": [
             0.0,
@@ -14,7 +17,10 @@
           ]
         },
         "south": {
-          "emissivity": 10,
+          "forge_data": {
+            "block_light": 10,
+            "sky_light": 10
+          },
           "texture": "#cross",
           "uv": [
             0.0,
@@ -49,7 +55,10 @@
     {
       "faces": {
         "east": {
-          "emissivity": 10,
+          "forge_data": {
+            "block_light": 10,
+            "sky_light": 10
+          },
           "texture": "#cross",
           "uv": [
             0.0,
@@ -59,7 +68,10 @@
           ]
         },
         "west": {
-          "emissivity": 10,
+          "forge_data": {
+            "block_light": 10,
+            "sky_light": 10
+          },
           "texture": "#cross",
           "uv": [
             0.0,
@@ -94,7 +106,10 @@
     {
       "faces": {
         "north": {
-          "emissivity": 6,
+          "forge_data": {
+            "block_light": 6,
+            "sky_light": 6
+          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -104,7 +119,10 @@
           ]
         },
         "south": {
-          "emissivity": 6,
+          "forge_data": {
+            "block_light": 6,
+            "sky_light": 6
+          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -139,7 +157,10 @@
     {
       "faces": {
         "east": {
-          "emissivity": 6,
+          "forge_data": {
+            "block_light": 6,
+            "sky_light": 6
+          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -149,7 +170,10 @@
           ]
         },
         "west": {
-          "emissivity": 6,
+          "forge_data": {
+            "block_light": 6,
+            "sky_light": 6
+          },
           "texture": "#cross2",
           "uv": [
             0.0,

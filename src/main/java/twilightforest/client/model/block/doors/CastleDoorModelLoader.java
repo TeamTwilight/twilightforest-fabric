@@ -1,7 +1,6 @@
 package twilightforest.client.model.block.doors;
 
 import com.google.gson.JsonObject;
-import io.github.fabricators_of_create.porting_lib.mixin.client.accessor.BlockModelAccessor;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
 import net.fabricmc.fabric.api.client.model.ModelResourceProvider;
 import net.minecraft.client.Minecraft;

@@ -23,6 +23,6 @@
     }
   ],
   "textures": {
-    "layer0": "twilightforest:items/triple_bow"
+    "layer0": "twilightforest:item/triple_bow"
   }
 }

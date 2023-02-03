@@ -1,6 +1,6 @@
 {
-  "parent": "twilightforest:item/util/readable",
+  "parent": "twilightforest:item/moon_dial_template",
   "textures": {
-    "layer0": "twilightforest:items/moon_dial/waning_cresent"
+    "layer0": "twilightforest:item/moon_dial/waning_cresent"
   }
 }

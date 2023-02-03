@@ -1,15 +1,16 @@
 package twilightforest.data.custom;
 
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 
 public class TransformationPowderGenerator extends TransformationPowderProvider {
 
-	public TransformationPowderGenerator(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, TwilightForestMod.ID, helper);
+	public TransformationPowderGenerator(PackOutput output, ExistingFileHelper helper) {
+		super(output, TwilightForestMod.ID, helper);
 	}
 
 	@Override

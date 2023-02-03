@@ -23,7 +23,7 @@
     }
   ],
   "textures": {
-    "layer0": "twilightforest:items/ice_bow_solid",
-    "layer1": "twilightforest:items/ice_bow_clear"
+    "layer0": "twilightforest:item/ice_bow_solid",
+    "layer1": "twilightforest:item/ice_bow_clear"
   }
 }

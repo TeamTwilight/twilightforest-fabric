@@ -32,7 +32,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ThrowRiderGoal;
-import twilightforest.init.BiomeKeys;
+import twilightforest.init.TFBiomes;
 import twilightforest.init.TFSounds;
 
 import org.jetbrains.annotations.Nullable;
@@ -183,7 +183,7 @@ public class Yeti extends Monster implements IHostileMount {
 
 	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends Yeti> entityType, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
 		Optional<ResourceKey<Biome>> key = accessor.getBiome(pos).unwrapKey();
-		if (Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST))) {
+		if (Objects.equals(key, Optional.of(TFBiomes.SNOWY_FOREST))) {
 			return checkMobSpawnRules(entityType, accessor, reason, pos, random);
 		} else {
 			// normal EntityMob spawn check, checks light level
@@ -198,10 +198,10 @@ public class Yeti extends Monster implements IHostileMount {
 	public static boolean isValidLightLevel(ServerLevelAccessor accessor, BlockPos blockPos, RandomSource random) {
 		Optional<ResourceKey<Biome>> key = accessor.getBiome(blockPos).unwrapKey();
 		if (accessor.getBrightness(LightLayer.SKY, blockPos) > random.nextInt(32)) {
-			return Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
+			return Objects.equals(key, Optional.of(TFBiomes.SNOWY_FOREST));
 		} else {
 			int i = accessor.getLevel().isThundering() ? accessor.getMaxLocalRawBrightness(blockPos, 10) : accessor.getMaxLocalRawBrightness(blockPos);
-			return i <= random.nextInt(8) || Objects.equals(key, Optional.of(BiomeKeys.SNOWY_FOREST));
+			return i <= random.nextInt(8) || Objects.equals(key, Optional.of(TFBiomes.SNOWY_FOREST));
 		}
 	}
 

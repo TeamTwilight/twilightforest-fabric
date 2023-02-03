@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/cube_talisman"
+    "layer0": "twilightforest:item/cube_talisman"
   }
 }

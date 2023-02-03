@@ -2,6 +2,7 @@ package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.client.Minecraft;
@@ -10,7 +11,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.TFModelLayers;
@@ -39,9 +40,9 @@ public class MoonwormTileEntityRenderer implements BlockEntityRenderer<MoonwormB
 
 		ms.translate(0.5F, 0.5F, 0.5F);
 		ms.mulPose(facing.getRotation());
-		ms.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
-		ms.mulPose(Vector3f.YP.rotationDegrees(180.0F + randRot));
-		ms.mulPose(Vector3f.YN.rotationDegrees(yaw));
+		ms.mulPose(Axis.ZP.rotationDegrees(180.0F));
+		ms.mulPose(Axis.YP.rotationDegrees(180.0F + randRot));
+		ms.mulPose(Axis.YN.rotationDegrees(yaw));
 
 		VertexConsumer builder = buffer.getBuffer(this.moonwormModel.renderType(textureLoc));
 		this.moonwormModel.setRotationAngles(te, partialTicks);

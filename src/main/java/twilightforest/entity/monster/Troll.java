@@ -1,6 +1,7 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -177,7 +178,7 @@ public class Troll extends Monster implements RangedAttackMob {
 		super.readAdditionalSaveData(compound);
 		this.setHasRock(compound.getBoolean("HasRock"));
 		this.rockCooldown = compound.getInt("RockCooldown");
-		this.rock = NbtUtils.readBlockState(compound.getCompound("RockState"));
+		this.rock = NbtUtils.readBlockState(this.getLevel().holderLookup(Registries.BLOCK), compound.getCompound("RockState"));
 	}
 
 	private void setCombatTask() {

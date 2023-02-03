@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/dark_door"
+    "layer0": "twilightforest:item/dark_door"
   }
 }

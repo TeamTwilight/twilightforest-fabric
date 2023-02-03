@@ -1,31 +1,28 @@
 package twilightforest.data;
 
 import com.google.gson.JsonObject;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 
+import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 import static twilightforest.TwilightForestMod.prefix;
 
-public class StonecuttingGenerator extends FabricRecipeProvider {
-	public StonecuttingGenerator(FabricDataGenerator generator) {
-		super(generator);
-	}
+public class StonecuttingGenerator {
 
-	@Override
-	protected void generateRecipes(Consumer<FinishedRecipe> consumer) {
+	protected static void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		consumer.accept(stonecutting(TFBlocks.CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));
 		consumer.accept(stonecutting(TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));
 		consumer.accept(stonecutting(TFBlocks.WORN_CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get()));
@@ -116,11 +113,6 @@ public class StonecuttingGenerator extends FabricRecipeProvider {
 		consumer.accept(stonecutting(TFBlocks.UNDERBRICK.get(), TFBlocks.UNDERBRICK_FLOOR.get()));
 	}
 
-	@Override
-	public String getName() {
-		return "Twilight Forest stonecutting recipes";
-	}
-
 	private static Wrapper stonecutting(ItemLike input, ItemLike output) {
 		return stonecutting(input, output, 1);
 	}
@@ -130,7 +122,7 @@ public class StonecuttingGenerator extends FabricRecipeProvider {
 	}
 
 	private static ResourceLocation getIdFor(Item input, Item output) {
-		String path = String.format("stonecutting/%s/%s", Registry.ITEM.getKey(input).getPath(), Registry.ITEM.getKey(output).getPath());
+		String path = String.format("stonecutting/%s/%s", BuiltInRegistries.ITEM.getKey(input).getPath(), BuiltInRegistries.ITEM.getKey(output).getPath());
 		return prefix(path);
 	}
 

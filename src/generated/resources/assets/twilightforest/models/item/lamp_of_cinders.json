@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "twilightforest:items/lamp_of_cinders"
+    "layer0": "twilightforest:item/lamp_of_cinders"
   }
 }

@@ -212,19 +212,31 @@
     {
       "faces": {
         "east": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#east2"
         },
         "north": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#north2"
         },
         "south": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#south2"
         },
         "west": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#west2"
         }
       },
@@ -243,12 +255,18 @@
       "faces": {
         "down": {
           "cullface": "down",
-          "emissivity": 12,
+          "forge_data": {
+            "block_light": 12,
+            "sky_light": 12
+          },
           "texture": "#end2"
         },
         "up": {
           "cullface": "up",
-          "emissivity": 12,
+          "forge_data": {
+            "block_light": 12,
+            "sky_light": 12
+          },
           "texture": "#end2"
         }
       },
@@ -266,19 +284,31 @@
     {
       "faces": {
         "east": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#east2"
         },
         "north": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#north2"
         },
         "south": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#south2"
         },
         "west": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#west2"
         }
       },
@@ -296,19 +326,31 @@
     {
       "faces": {
         "east": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#east2"
         },
         "north": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#north2"
         },
         "south": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#south2"
         },
         "west": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#west2"
         }
       },
@@ -326,19 +368,31 @@
     {
       "faces": {
         "east": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#east2"
         },
         "north": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#north2"
         },
         "south": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#south2"
         },
         "west": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#west2"
         }
       },
@@ -356,19 +410,31 @@
     {
       "faces": {
         "east": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#east2"
         },
         "north": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#north2"
         },
         "south": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#south2"
         },
         "west": {
-          "emissivity": 15,
+          "forge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
           "texture": "#west2"
         }
       },
@@ -386,19 +452,31 @@
     {
       "faces": {
         "east": {
-          "emissivity": 10,
+          "forge_data": {
+            "block_light": 10,
+            "sky_light": 10
+          },
           "texture": "#east3"
         },
         "north": {
-          "emissivity": 10,
+          "forge_data": {
+            "block_light": 10,
+            "sky_light": 10
+          },
           "texture": "#north3"
         },
         "south": {
-          "emissivity": 10,
+          "forge_data": {
+            "block_light": 10,
+            "sky_light": 10
+          },
           "texture": "#south3"
         },
         "west": {
-          "emissivity": 10,
+          "forge_data": {
+            "block_light": 10,
+            "sky_light": 10
+          },
           "texture": "#west3"
         }
       },

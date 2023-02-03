@@ -221,7 +221,7 @@
   "block.twilightforest.builder.create": { "subtitle": "subtitles.twilightforest.block.builder.create", "sounds": ["random/click"] },
   "block.twilightforest.casket.open": { "subtitle": "subtitles.twilightforest.block.casket.open", "sounds": [ "twilightforest:random/casket/open" ] },
   "block.twilightforest.casket.close": { "subtitle": "subtitles.twilightforest.block.casket.close", "sounds": [ "twilightforest:random/casket/close" ] },
-  "block.twilightforest.casket.locked": { "subtitle": "subtitles.twilightforest.block.casket.locked", "sounds": [ "block/wooden_door/close", "block/wooden_door/open" ] },
+  "block.twilightforest.casket.locked": { "subtitle": "subtitles.twilightforest.block.casket.locked", "sounds": [ "block/chest/close_locked", "block/chest/open_locked" ] },
   "block.twilightforest.casket.repair": { "subtitle": "subtitles.twilightforest.block.casket.repair", "sounds": [ "twilightforest:random/casket/repair" ] },
   "block.twilightforest.core.time": { "subtitle": "subtitles.twilightforest.block.core.time", "sounds": ["random/click"] },
   "block.twilightforest.core.transformation": { "subtitle": "subtitles.twilightforest.block.core.transformation", "sounds": ["note/harp2"] },

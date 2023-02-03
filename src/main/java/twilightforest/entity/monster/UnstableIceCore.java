@@ -73,11 +73,10 @@ public class UnstableIceCore extends BaseIceMob {
 	protected void tickDeath() {
 		++this.deathTime;
 
-		if (this.deathTime == 60) // delay until 3 seconds
-		{
+		if (this.deathTime == 60) { // delay until 3 seconds
 			if (!this.getLevel().isClientSide()) {
 				boolean mobGriefing = level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-				this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, mobGriefing ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.NONE);
+				this.getLevel().explode(this, this.getX(), this.getY(), this.getZ(), UnstableIceCore.EXPLOSION_RADIUS, Level.ExplosionInteraction.MOB);
 
 				if (mobGriefing) {
 					this.transformBlocks();

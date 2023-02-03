@@ -23,6 +23,6 @@
     }
   ],
   "textures": {
-    "layer0": "twilightforest:items/seeker_bow"
+    "layer0": "twilightforest:item/seeker_bow"
   }
 }

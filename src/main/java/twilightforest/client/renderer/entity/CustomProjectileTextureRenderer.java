@@ -2,11 +2,10 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import com.mojang.math.Axis;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -19,7 +18,6 @@ import twilightforest.entity.projectile.TFThrowable;
  * This renderer serves as a way to render item textures on a projectile without needing an actual item registered for it.
  * Consider using {@link net.minecraft.client.renderer.entity.ThrownItemRenderer} if your projectile is an existing item already.
  */
-@Environment(EnvType.CLIENT)
 public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable> {
 
 	private final ResourceLocation TEXTURE;
@@ -35,7 +33,7 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable>
 		ms.pushPose();
 		ms.scale(0.5F, 0.5F, 0.5F);
 		ms.mulPose(this.entityRenderDispatcher.cameraOrientation());
-		ms.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+		ms.mulPose(Axis.YP.rotationDegrees(180.0F));
 		PoseStack.Pose posestack$pose = ms.last();
 		Matrix4f matrix4f = posestack$pose.pose();
 		Matrix3f matrix3f = posestack$pose.normal();

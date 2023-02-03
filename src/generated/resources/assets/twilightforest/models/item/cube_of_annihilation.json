@@ -9,6 +9,6 @@
     }
   ],
   "textures": {
-    "layer0": "twilightforest:items/cube_of_annihilation"
+    "layer0": "twilightforest:item/cube_of_annihilation"
   }
 }

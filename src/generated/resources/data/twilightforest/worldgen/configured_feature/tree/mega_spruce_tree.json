@@ -1,5 +1,5 @@
 {
-  "type": "twilightforest:anywhere_tree",
+  "type": "minecraft:tree",
   "config": {
     "decorators": [],
     "dirt_provider": {

@@ -133,6 +133,6 @@
   ],
   "textures": {
     "layer0": "twilightforest:block/stone_twist/twist_blank",
-    "layer1": "twilightforest:items/brittle_potion_flask"
+    "layer1": "twilightforest:item/brittle_potion_flask"
   }
 }

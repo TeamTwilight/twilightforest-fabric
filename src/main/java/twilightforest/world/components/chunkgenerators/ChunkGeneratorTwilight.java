@@ -1,16 +1,17 @@
 package twilightforest.world.components.chunkgenerators;
 
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.fabricators_of_create.porting_lib.mixin.common.accessor.ChunkGeneratorAccessor;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.Util;
 import net.minecraft.core.*;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.resources.RegistryOps;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
@@ -24,10 +25,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.chunk.LevelChunkSection;
-import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -35,20 +33,21 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.Vec2i;
+import twilightforest.init.TFLandmark;
 import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.util.Vec2i;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.warp.*;
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.placements.BiomeForcedLandmarkPlacement;
 import twilightforest.world.components.structures.start.LegacyLandmark;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.init.TFLandmark;
 import twilightforest.world.registration.TFGenerationSettings;
-import twilightforest.init.BiomeKeys;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -59,12 +58,10 @@ import java.util.function.Predicate;
 public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	public static final Codec<ChunkGeneratorTwilight> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			ChunkGenerator.CODEC.fieldOf("wrapped_generator").forGetter(o -> o.delegate),
-			RegistryOps.retrieveRegistry(Registry.STRUCTURE_SET_REGISTRY).forGetter(o -> o.structureSets),
-			RegistryCodecs.homogeneousList(Registry.STRUCTURE_SET_REGISTRY).fieldOf("structures_placements").forGetter(o -> o.structureOverrides),
 			NoiseGeneratorSettings.CODEC.fieldOf("noise_generation_settings").forGetter(o -> o.noiseGeneratorSettings),
 			Codec.BOOL.fieldOf("generate_dark_forest_canopy").forGetter(o -> o.genDarkForestCanopy),
 			Codec.INT.optionalFieldOf("dark_forest_canopy_height").forGetter(o -> o.darkForestCanopyHeight),
-			Codec.unboundedMap(ResourceKey.codec(Registry.BIOME_REGISTRY), TFLandmark.CODEC.listOf().xmap(ImmutableSet::copyOf, ImmutableList::copyOf)).fieldOf("landmark_placement_allowed_biomes").forGetter(o -> o.biomeLandmarkOverrides)
+			Codec.unboundedMap(ResourceKey.codec(Registries.BIOME), TFLandmark.CODEC.listOf().xmap(ImmutableSet::copyOf, ImmutableList::copyOf)).fieldOf("landmark_placement_allowed_biomes").forGetter(o -> o.biomeLandmarkOverrides)
 	).apply(instance, ChunkGeneratorTwilight::new));
 
 	private final Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides;
@@ -78,22 +75,19 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	private final Optional<Climate.Sampler> surfaceNoiseGetter;
 	private final Optional<TFTerrainWarp> warper;
 
-	private final HolderSet<StructureSet> structureOverrides;
-
 	private static final BlockState[] EMPTY_COLUMN = new BlockState[0];
 
-	public ChunkGeneratorTwilight(ChunkGenerator delegate, Registry<StructureSet> structures, HolderSet<StructureSet> structureOverrides, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, Optional<Integer> darkForestCanopyHeight, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
-		super(structures, Optional.of(structureOverrides), delegate);
-		this.structureOverrides = structureOverrides;
+	public ChunkGeneratorTwilight(ChunkGenerator delegate, Holder<NoiseGeneratorSettings> noiseGenSettings, boolean genDarkForestCanopy, Optional<Integer> darkForestCanopyHeight, Map<ResourceKey<Biome>, ImmutableSet<TFLandmark>> biomeLandmarkOverrides) {
+		super(delegate);
 
 		this.biomeLandmarkOverrides = biomeLandmarkOverrides;
 		this.noiseGeneratorSettings = noiseGenSettings;
 		this.genDarkForestCanopy = genDarkForestCanopy;
 		this.darkForestCanopyHeight = darkForestCanopyHeight;
 
-		if (delegate instanceof NoiseBasedChunkGenerator noiseGen) {
-			this.defaultBlock = noiseGen.defaultBlock;
-			this.defaultFluid = noiseGenSettings.value().defaultFluid();
+		if (delegate instanceof NoiseBasedChunkGenerator noiseGen && noiseGen.generatorSettings().isBound()) {
+			this.defaultBlock = noiseGen.generatorSettings().get().defaultBlock();
+			this.defaultFluid = noiseGen.generatorSettings().get().defaultFluid();
 			this.surfaceNoiseGetter = Optional.empty();//Optional.of(noiseGen.sampler);
 		} else {
 			this.defaultBlock = Blocks.STONE.defaultBlockState();
@@ -102,26 +96,30 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		}
 
 		//BIOME_FEATURES = new ImmutableMap.Builder<ResourceLocation, TFLandmark>()
-		//		.put(BiomeKeys.DARK_FOREST.location(), TFLandmark.KNIGHT_STRONGHOLD)
-		//		.put(BiomeKeys.DARK_FOREST_CENTER.location(), TFLandmark.DARK_TOWER)
-		//		//.put(BiomeKeys.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
-		//		.put(BiomeKeys.ENCHANTED_FOREST.location(), TFLandmark.QUEST_GROVE)
-		//		.put(BiomeKeys.FINAL_PLATEAU.location(), TFLandmark.FINAL_CASTLE)
-		//		.put(BiomeKeys.FIRE_SWAMP.location(), TFLandmark.HYDRA_LAIR)
-		//		.put(BiomeKeys.GLACIER.location(), TFLandmark.ICE_TOWER)
-		//		.put(BiomeKeys.HIGHLANDS.location(), TFLandmark.TROLL_CAVE)
-		//		.put(BiomeKeys.SNOWY_FOREST.location(), TFLandmark.YETI_CAVE)
-		//		.put(BiomeKeys.SWAMP.location(), TFLandmark.LABYRINTH)
-		//		.put(BiomeKeys.LAKE.location(), TFLandmark.QUEST_ISLAND)
+		//		.put(TFBiomes.DARK_FOREST.location(), TFLandmark.KNIGHT_STRONGHOLD)
+		//		.put(TFBiomes.DARK_FOREST_CENTER.location(), TFLandmark.DARK_TOWER)
+		//		//.put(TFBiomes.DENSE_MUSHROOM_FOREST.location(), MUSHROOM_TOWER)
+		//		.put(TFBiomes.ENCHANTED_FOREST.location(), TFLandmark.QUEST_GROVE)
+		//		.put(TFBiomes.FINAL_PLATEAU.location(), TFLandmark.FINAL_CASTLE)
+		//		.put(TFBiomes.FIRE_SWAMP.location(), TFLandmark.HYDRA_LAIR)
+		//		.put(TFBiomes.GLACIER.location(), TFLandmark.ICE_TOWER)
+		//		.put(TFBiomes.HIGHLANDS.location(), TFLandmark.TROLL_CAVE)
+		//		.put(TFBiomes.SNOWY_FOREST.location(), TFLandmark.YETI_CAVE)
+		//		.put(TFBiomes.SWAMP.location(), TFLandmark.LABYRINTH)
+		//		.put(TFBiomes.LAKE.location(), TFLandmark.QUEST_ISLAND)
 		//		.build();
 
-//FIXME Watch this space, make sure it worked
-		NoiseSettings settings = noiseGenSettings.value().noiseSettings();
-		if (delegate.getBiomeSource() instanceof TFBiomeProvider source) {
-			WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
-			TFBlendedNoise blendedNoise = new TFBlendedNoise(random);
-			NoiseModifier modifier = NoiseModifier.PASS;
-			this.warper = Optional.of(new TFTerrainWarp(settings.getCellWidth(), settings.getCellHeight(), settings.height() / settings.getCellHeight(), source, new NoiseSlider(-10.0D, 3, 0), new NoiseSlider(15.0D, 3, 0), settings, blendedNoise, modifier));
+		//FIXME Watch this space, make sure it worked
+		if (noiseGenSettings.isBound()) {
+			NoiseSettings settings = noiseGenSettings.value().noiseSettings();
+			if (delegate.getBiomeSource() instanceof TFBiomeProvider source) {
+				WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
+				TFBlendedNoise blendedNoise = new TFBlendedNoise(random);
+				NoiseModifier modifier = NoiseModifier.PASS;
+				this.warper = Optional.of(new TFTerrainWarp(settings.getCellWidth(), settings.getCellHeight(), settings.height() / settings.getCellHeight(), source, new NoiseSlider(-10.0D, 3, 0), new NoiseSlider(15.0D, 3, 0), settings, blendedNoise, modifier));
+			} else {
+				this.warper = Optional.empty();
+			}
 		} else {
 			this.warper = Optional.empty();
 		}
@@ -215,7 +213,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Override
-	public CompletableFuture<ChunkAccess> createBiomes(Registry<Biome> biomes, Executor executor, RandomState random, Blender blender, StructureManager manager, ChunkAccess chunkAccess) {
+	public CompletableFuture<ChunkAccess> createBiomes(Executor executor, RandomState random, Blender blender, StructureManager manager, ChunkAccess chunkAccess) {
 		//Mimic behaviour of ChunkGenerator, NoiseBasedChunkGenerator does weird things
 		return CompletableFuture.supplyAsync(Util.wrapThreadWithTaskName("init_biomes", () -> {
 			chunkAccess.fillBiomesFromNoise(this.getBiomeSource(), Climate.empty());
@@ -269,7 +267,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		ChunkPos chunkpos = access.getPos();
 		int minX = chunkpos.getMinBlockX();
 		int minZ = chunkpos.getMinBlockZ();
-		TFNoiseInterpolator interpolator = new TFNoiseInterpolator(cellCountX, max, cellCountZ, chunkpos, min, this::fillNoiseColumn);
+		TFNoiseInterpolator interpolator = new TFNoiseInterpolator(cellCountX, max, cellCountZ, chunkpos, min, (columns, x, z, min1, max1, max12) -> fillNoiseColumn(x, z, min1, max1, max12));
 		List<TFNoiseInterpolator> list = Lists.newArrayList(interpolator);
 		list.forEach(noiseint -> noiseint.initialiseFirstX(random));
 		BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
@@ -336,12 +334,12 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	private double[] makeAndFillNoiseColumn(RandomState state, int x, int z, int min, int max) {
 		double[] columns = new double[max + 1];
-		this.fillNoiseColumn(state, columns, x, z, min, max);
+		this.fillNoiseColumn(columns, x, z, min, max);
 		return columns;
 	}
 
-	private void fillNoiseColumn(RandomState state, double[] columns, int x, int z, int min, int max) {
-		this.warper.get().fillNoiseColumn(state, columns, x, z, this.getSeaLevel(), min, max);
+	private void fillNoiseColumn(double[] columns, int x, int z, int min, int max) {
+		this.warper.get().fillNoiseColumn(columns, x, z, min, max);
 	}
 
 	//Logic based on 1.16. Will only ever get the default Block, Fluid, or Air
@@ -379,7 +377,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 				Optional<ResourceKey<Biome>> biome = primer.getBiome(primer.getCenter().getWorldPosition().offset(x, 0, z)).unwrapKey();
-				if (biome.isEmpty() || !BiomeKeys.GLACIER.location().equals(biome.get().location())) continue;
+				if (biome.isEmpty() || !TFBiomes.GLACIER.location().equals(biome.get().location())) continue;
 
 				// find the (current) top block
 				int gBase = -1;
@@ -495,7 +493,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		// sets the ground level to the maze height, but dont move anything in rivers
 		for (int y = 0; y < mazeHeight; y++) {
 			BlockState b = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y));
-			if(!primer.getBiome(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).is(BiomeKeys.STREAM)) {
+			if(!primer.getBiome(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).is(TFBiomes.STREAM)) {
 				if (b.isAir() || b.getMaterial().isLiquid()) {
 					primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), Blocks.STONE.defaultBlockState(), 3);
 				}
@@ -504,7 +502,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		for (int y = mazeHeight; y <= 127; y++) {
 			BlockState b = primer.getBlockState(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y));
-			if(!primer.getBiome(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).is(BiomeKeys.STREAM)) {
+			if(!primer.getBiome(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y)).is(TFBiomes.STREAM)) {
 				if (!b.isAir() && !b.getMaterial().isLiquid()) {
 					primer.setBlock(withY(primer.getCenter().getWorldPosition().offset(x, 0, z), y), Blocks.AIR.defaultBlockState(), 3);
 				}
@@ -735,7 +733,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = blockpos.offset((dX + bx) << 2, 0, (dZ + bz) << 2);
 						Biome biome = biomeSource.getNoiseBiome(p.getX() >> 2, 256, p.getZ() >> 2, null).value();
-						if (BiomeKeys.DARK_FOREST.location().equals(primer.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome)) || BiomeKeys.DARK_FOREST_CENTER.location().equals(primer.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY).getKey(biome))) {
+						if (TFBiomes.DARK_FOREST.location().equals(primer.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome)) || TFBiomes.DARK_FOREST_CENTER.location().equals(primer.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome))) {
 							thicks[dX + dZ * 5]++;
 							biomeFound = true;
 						}
@@ -837,7 +835,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	@Nullable
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
-		for (Structure structure : structureManager.registryAccess().ownedRegistryOrThrow(Registry.STRUCTURE_REGISTRY)) {
+		for (Structure structure : structureManager.registryAccess().registryOrThrow(Registries.STRUCTURE)) {
 			if (structure instanceof LegacyLandmark landmark) {
 				StructureStart start = structureManager.getStructureAt(pos, landmark);
 				if (!start.isValid())
@@ -889,17 +887,77 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		return this.biomeLandmarkOverrides.getOrDefault(biome, ImmutableSet.of()).contains(landmark);
 	}
 
+	//copy of ChunkGenerator.createStructures, we just need to allow TF structures to correctly spawn
+	@Override
+	public void createStructures(RegistryAccess access, ChunkGeneratorStructureState state, StructureManager manager, ChunkAccess chunk, StructureTemplateManager templateManager) {
+		ChunkPos chunkpos = chunk.getPos();
+		SectionPos sectionpos = SectionPos.bottomOf(chunk);
+		RandomState randomstate = state.randomState();
+		state.possibleStructureSets().forEach((p_255564_) -> {
+			StructurePlacement structureplacement = p_255564_.value().placement();
+			List<StructureSet.StructureSelectionEntry> list = p_255564_.value().structures();
+
+			for(StructureSet.StructureSelectionEntry structureset$structureselectionentry : list) {
+				StructureStart structurestart = manager.getStartForStructure(sectionpos, structureset$structureselectionentry.structure().value(), chunk);
+				if (structurestart != null && structurestart.isValid()) {
+					return;
+				}
+			}
+
+			//TF: check if we're trying to add a TF structure and handle that accordingly. We need to still feed the chunk generator into the placement method, so we absolutely have to do this
+			//stupid mojang always changing everything
+			if ((structureplacement instanceof BiomeForcedLandmarkPlacement forced && forced.isTFPlacementChunk(this, state, chunkpos.x, chunkpos.z)) || structureplacement.isStructureChunk(state, chunkpos.x, chunkpos.z)) {
+				if (list.size() == 1) {
+					this.tryGenerateStructure(list.get(0), manager, access, randomstate, templateManager, state.getLevelSeed(), chunk, chunkpos, sectionpos);
+				} else {
+					ArrayList<StructureSet.StructureSelectionEntry> arraylist = new ArrayList<>(list.size());
+					arraylist.addAll(list);
+					WorldgenRandom worldgenrandom = new WorldgenRandom(new LegacyRandomSource(0L));
+					worldgenrandom.setLargeFeatureSeed(state.getLevelSeed(), chunkpos.x, chunkpos.z);
+					int i = 0;
+
+					for(StructureSet.StructureSelectionEntry structureset$structureselectionentry1 : arraylist) {
+						i += structureset$structureselectionentry1.weight();
+					}
+
+					while(!arraylist.isEmpty()) {
+						int j = worldgenrandom.nextInt(i);
+						int k = 0;
+
+						for(StructureSet.StructureSelectionEntry structureset$structureselectionentry2 : arraylist) {
+							j -= structureset$structureselectionentry2.weight();
+							if (j < 0) {
+								break;
+							}
+
+							++k;
+						}
+
+						StructureSet.StructureSelectionEntry structureset$structureselectionentry3 = arraylist.get(k);
+						if (this.tryGenerateStructure(structureset$structureselectionentry3, manager, access, randomstate, templateManager, state.getLevelSeed(), chunk, chunkpos, sectionpos)) {
+							return;
+						}
+
+						arraylist.remove(k);
+						i -= structureset$structureselectionentry3.weight();
+					}
+
+				}
+			}
+		});
+	}
+
 	@Nullable
 	@Override
 	public Pair<BlockPos, Holder<Structure>> findNearestMapStructure(ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
-		RandomState randomState = level.getChunkSource().randomState();
+		ChunkGeneratorStructureState state = level.getChunkSource().getGeneratorState();
 
 		@Nullable
 		Pair<BlockPos, Holder<Structure>> nearest = super.findNearestMapStructure(level, targetStructures, pos, searchRadius, skipKnownStructures);
 
 		Map<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> placementSetMap = new Object2ObjectArrayMap<>();
 		for (Holder<Structure> holder : targetStructures) {
-			for (StructurePlacement structureplacement : ((ChunkGeneratorAccessor)this).port_lib$getPlacementsForStructure(holder, randomState)) {
+			for (StructurePlacement structureplacement : state.getPlacementsForStructure(holder)) {
 				if (structureplacement instanceof BiomeForcedLandmarkPlacement landmarkPlacement) {
 					placementSetMap.computeIfAbsent(landmarkPlacement, v -> new ObjectArraySet<>()).add(holder);
 				}
@@ -912,7 +970,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		for (BlockPos landmarkCenterPosition : LegacyLandmarkPlacements.landmarkCenterScanner(pos, Mth.ceil(Mth.sqrt(searchRadius)))) {
 			for (Map.Entry<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> landmarkPlacement : placementSetMap.entrySet()) {
-				if (!landmarkPlacement.getKey().isPlacementChunk(this, randomState, randomState.legacyLevelSeed(), landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4)) continue;
+				if (!landmarkPlacement.getKey().isTFPlacementChunk(this, state, landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4)) continue;
 
 				for (Holder<Structure> targetStructure : targetStructures) {
 					if (landmarkPlacement.getValue().contains(targetStructure)) {

@@ -30,7 +30,7 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 			this.doEnchantDamageEffects((LivingEntity) this.getOwner(), result.getEntity());
 
 			boolean flag = this.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-			this.getLevel().explode(null, this.getX(), this.getY(), this.getZ(), this.power, flag, flag ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.NONE);
+			this.getLevel().explode(null, this.getX(), this.getY(), this.getZ(), this.power, flag, Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
 	}
@@ -40,7 +40,7 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 		super.onHitBlock(result);
 		//explode and leave fire when hitting a block, but dont destroy them
 		boolean flag = this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-		this.getLevel().explode(null, this.getX(), this.getY(), this.getZ(), (float) this.power, flag, Explosion.BlockInteraction.NONE);
+		this.getLevel().explode(null, this.getX(), this.getY(), this.getZ(), (float) this.power, flag, Level.ExplosionInteraction.NONE);
 		this.discard();
 	}
 

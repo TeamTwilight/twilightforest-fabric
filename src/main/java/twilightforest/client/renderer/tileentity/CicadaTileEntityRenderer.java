@@ -2,7 +2,8 @@ package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
+import org.joml.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -36,9 +37,9 @@ public class CicadaTileEntityRenderer implements BlockEntityRenderer<CicadaBlock
 
 		ms.translate(0.5F, 0.5F, 0.5F);
 		ms.mulPose(facing.getRotation());
-		ms.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
-		ms.mulPose(Vector3f.YP.rotationDegrees(180.0F + randRot));
-		ms.mulPose(Vector3f.YN.rotationDegrees(yaw));
+		ms.mulPose(Axis.ZP.rotationDegrees(180.0F));
+		ms.mulPose(Axis.YP.rotationDegrees(180.0F + randRot));
+		ms.mulPose(Axis.YN.rotationDegrees(yaw));
 
 		VertexConsumer vertex = buffers.getBuffer(cicadaModel.renderType(textureLoc));
 		cicadaModel.renderToBuffer(ms, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);

@@ -1,7 +1,7 @@
 package twilightforest.block;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
