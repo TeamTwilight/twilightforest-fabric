@@ -1,6 +1,9 @@
 package twilightforest.data;
 
-import net.minecraft.data.PackOutput;
+import io.github.tropheusj.serialization_hooks.ingredient.CombinedIngredient;
+import me.alphamode.forgetags.Tags;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
@@ -18,12 +21,12 @@ import twilightforest.init.TFRecipes;
 import java.util.function.Consumer;
 
 public class CraftingGenerator extends CraftingDataHelper {
-	public CraftingGenerator(PackOutput output) {
+	public CraftingGenerator(FabricDataOutput output) {
 		super(output);
 	}
 
 	@Override
-	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+	public void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		StonecuttingGenerator.buildRecipes(consumer);
 
 		// The Recipe Builder currently doesn't support enchantment-resulting recipes, those must be manually created.
@@ -326,17 +329,17 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.COBBLESTONE, 64)
 				.requires(TFBlocks.GIANT_COBBLESTONE.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_COBBLESTONE.getId().getPath() + "_to_" + Registry.ITEM.getKey(Items.COBBLESTONE).getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_COBBLESTONE.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.COBBLESTONE).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_PLANKS, 64)
 				.requires(TFBlocks.GIANT_LOG.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_LOG.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + Registry.ITEM.getKey(Items.OAK_PLANKS).getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_PLANKS).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_LEAVES, 64)
 				.requires(TFBlocks.GIANT_LEAVES.get())
 				.unlockedBy("has_item", has(TFBlocks.GIANT_LEAVES.get()))
-				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + Registry.ITEM.getKey(Items.OAK_LEAVES).getPath()));
+				.save(consumer, TwilightForestMod.prefix(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_LEAVES).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.BLOCK_AND_CHAIN.get())
 				.requires(Ingredient.of(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL))
@@ -694,14 +697,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), 2)
 				.requires(Ingredient.of(Tags.Items.RODS_BLAZE))
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
-				.save(consumer, locEquip("fiery_" + Registry.ITEM.getKey(Items.IRON_SWORD).getPath()));
+				.save(consumer, locEquip("fiery_" + BuiltInRegistries.ITEM.getKey(Items.IRON_SWORD).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, TFItems.FIERY_PICKAXE.get())
 				.requires(Items.IRON_PICKAXE)
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), 3)
 				.requires(Ingredient.of(Tags.Items.RODS_BLAZE), 2)
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
-				.save(consumer, locEquip("fiery_" + Registry.ITEM.getKey(Items.IRON_PICKAXE).getPath()));
+				.save(consumer, locEquip("fiery_" + BuiltInRegistries.ITEM.getKey(Items.IRON_PICKAXE).getPath()));
 	}
 
 	private void cookingRecipes(Consumer<FinishedRecipe> consumer, String processName, RecipeSerializer<? extends AbstractCookingRecipe> process, int smeltingTime) {

@@ -2,16 +2,16 @@ package twilightforest.init;
 
 import com.mojang.serialization.Codec;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
+import net.minecraft.core.registries.Registries;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.*;
 import twilightforest.client.particle.data.LeafParticleData;
@@ -19,7 +19,7 @@ import twilightforest.client.particle.data.PinnedFireflyData;
 
 public class TFParticleType {
 
-	public static final LazyRegistrar<ParticleType<?>> PARTICLE_TYPES = LazyRegistrar.create(Registry.PARTICLE_TYPE, TwilightForestMod.ID);
+	public static final LazyRegistrar<ParticleType<?>> PARTICLE_TYPES = LazyRegistrar.create(Registries.PARTICLE_TYPE, TwilightForestMod.ID);
 
 	public static final RegistryObject<SimpleParticleType> LARGE_FLAME = PARTICLE_TYPES.register("large_flame", () -> new SimpleParticleType(false));
 	public static final RegistryObject<SimpleParticleType> LEAF_RUNE = PARTICLE_TYPES.register("leaf_rune", () -> new SimpleParticleType(false));

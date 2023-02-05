@@ -1,6 +1,6 @@
 package twilightforest;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -328,10 +328,10 @@ public class TFConfig {
 
 	private static Optional<Block> parseBlock(String string) {
 		ResourceLocation id = ResourceLocation.tryParse(string);
-		if (id == null || !Registry.BLOCK.containsKey(id)) {
+		if (id == null || !BuiltInRegistries.BLOCK.containsKey(id)) {
 			return Optional.empty();
 		} else {
-			return Optional.ofNullable(Registry.BLOCK.get(id));
+			return Optional.ofNullable(BuiltInRegistries.BLOCK.get(id));
 		}
 	}
 }

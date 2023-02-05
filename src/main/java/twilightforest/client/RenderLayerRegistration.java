@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -27,7 +28,7 @@ public class RenderLayerRegistration {
 		ModelLoadingRegistry.INSTANCE.registerVariantProvider(resourceManager -> (modelId, context) -> {
 			if (!modelId.getNamespace().equals(TwilightForestMod.ID))
 				return null;
-			Block block = Registry.BLOCK.get(new ResourceLocation(modelId.getNamespace(), modelId.getPath()));
+			Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(modelId.getNamespace(), modelId.getPath()));
 			Optional<Resource> optionalResource = resourceManager.getResource(new ResourceLocation(modelId.getNamespace(), "blockstates/" + modelId.getPath() + ".json"));
 			optionalResource.ifPresent(resource -> {
 				try {

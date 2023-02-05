@@ -2,7 +2,7 @@ package twilightforest.data.custom.stalactites.entry;
 
 import com.google.gson.*;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.util.GsonHelper;
@@ -43,7 +43,7 @@ public record Stalactite(Map<Block, Integer> ores, float sizeVariation, int maxL
 			JsonArray array = GsonHelper.getAsJsonArray(json, "blocks");
 			Map<Block, Integer> map = new HashMap<>();
 			array.forEach(jsonElement -> {
-				map.put(BuiltInRegistries.BLOCK.getValue(ResourceLocation.tryParse(GsonHelper.getAsString(jsonElement.getAsJsonObject(), "block"))), GsonHelper.getAsInt(jsonElement.getAsJsonObject(), "weight"));
+				map.put(BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(jsonElement.getAsJsonObject(), "block"))), GsonHelper.getAsInt(jsonElement.getAsJsonObject(), "weight"));
 			});
 			return map;
 		}
@@ -54,7 +54,7 @@ public record Stalactite(Map<Block, Integer> ores, float sizeVariation, int maxL
 			JsonArray array = new JsonArray();
 			for (Map.Entry<Block, Integer> entry : stalactite.ores().entrySet()) {
 				JsonObject entryObject = new JsonObject();
-				entryObject.add("block", context.serialize(Registry.BLOCK.getKey(entry.getKey()).getPath()));
+				entryObject.add("block", context.serialize(BuiltInRegistries.BLOCK.getKey(entry.getKey()).getPath()));
 				entryObject.add("weight", context.serialize(entry.getValue()));
 				array.add(entryObject);
 			}

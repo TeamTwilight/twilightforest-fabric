@@ -1,8 +1,8 @@
 package twilightforest.client.model.block.doors;
 
-import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
-import net.minecraftforge.client.model.generators.ModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.models.generators.CustomLoaderBuilder;
+import io.github.fabricators_of_create.porting_lib.models.generators.ModelBuilder;
 import twilightforest.TwilightForestMod;
 
 public class CastleDoorBuilder<T extends ModelBuilder<T>> extends CustomLoaderBuilder<T> {

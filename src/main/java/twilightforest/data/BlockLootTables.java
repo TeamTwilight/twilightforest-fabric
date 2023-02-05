@@ -1,8 +1,11 @@
 package twilightforest.data;
 
+import io.github.fabricators_of_create.porting_lib.data.ModdedBlockLootSubProvider;
+import me.alphamode.forgetags.Tags;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
@@ -42,7 +45,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.function.BiConsumer;
 
-public class BlockLootTables extends BlockLootSubProvider {
+public class BlockLootTables extends ModdedBlockLootSubProvider {
 	// [VanillaCopy] of BlockLoot fields, just changed shears to work with modded ones
 	private static final float[] DEFAULT_SAPLING_DROP_RATES = new float[]{0.05F, 0.0625F, 0.083333336F, 0.1F};
 	private static final float[] RARE_SAPLING_DROP_RATES = new float[]{0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F};
@@ -53,7 +56,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 	}
 
 	@Override
-	protected void generate() {
+	public void generate() {
 		registerEmpty(TFBlocks.EXPERIMENT_115.get());
 		registerEmpty(TFBlocks.SLIDER.get());
 		registerEmpty(TFBlocks.INFESTED_TOWERWOOD.get());
@@ -592,30 +595,8 @@ public class BlockLootTables extends BlockLootSubProvider {
 		add(b, LootTable.lootTable());
 	}
 
-//	@Override
-	protected Iterable<Block> getKnownBlocks() {
-		return Registry.BLOCK.stream().filter(block -> Registry.BLOCK.getKey(block).getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toList());
-	}
-
 	@Override
-	public void accept(BiConsumer<ResourceLocation, LootTable.Builder> p_124179_) {
-		this.addTables();
-		Set<ResourceLocation> set = Sets.newHashSet();
-
-		for(Block block : getKnownBlocks()) {
-			ResourceLocation resourcelocation = block.getLootTable();
-			if (resourcelocation != BuiltInLootTables.EMPTY && set.add(resourcelocation)) {
-				LootTable.Builder loottable$builder = this.map.remove(resourcelocation);
-				if (loottable$builder == null) {
-					throw new IllegalStateException(String.format("Missing loottable '%s' for '%s'", resourcelocation, Registry.BLOCK.getKey(block)));
-				}
-
-				p_124179_.accept(resourcelocation, loottable$builder);
-			}
-		}
-
-		if (!this.map.isEmpty()) {
-			throw new IllegalStateException("Created block loot tables for non-blocks: " + this.map.keySet());
-		}
+	protected Iterable<Block> getKnownBlocks() {
+		return BuiltInRegistries.BLOCK.stream().filter(block -> BuiltInRegistries.BLOCK.getKey(block).getNamespace().equals(TwilightForestMod.ID)).collect(Collectors.toList());
 	}
 }

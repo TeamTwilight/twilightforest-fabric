@@ -37,7 +37,8 @@
       "twilightforest.asm.TFASM"
     ],
     "cardinal-components": [
-      "twilightforest.capabilities.CapabilityList"
+      "twilightforest.capabilities.CapabilityList::attachLevelCapability",
+      "twilightforest.capabilities.CapabilityList::attachEntityCapability"
     ],
     "rei_client": [
       "twilightforest.compat.rei.TwilightForestREIClientPlugin"
@@ -76,15 +77,11 @@
   },
   "custom": {
     "cardinal-components": [
+      "twilightforest:teleporter_cache",
       "twilightforest:cap_shield",
       "twilightforest:cap_feather_fan_fall",
       "twilightforest:cap_thrown",
       "twilightforest:giant_pick_mine"
-    ],
-    "porting_lib:provided_loaders": [
-      "twilightforest:patch",
-      "twilightforest:giant_block",
-      "twilightforest:castle_door"
     ],
     "banner": "twilightforest_logo.png"
   }

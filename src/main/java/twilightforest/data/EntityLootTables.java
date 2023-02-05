@@ -1,14 +1,11 @@
 package twilightforest.data;
 
-import com.google.common.collect.Sets;
 import io.github.fabricators_of_create.porting_lib.data.ModdedEntityLootSubProvider;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -33,7 +30,6 @@ import twilightforest.init.TFItems;
 import twilightforest.loot.TFLootTables;
 import twilightforest.loot.conditions.IsMinion;
 
-import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 @SuppressWarnings("deprecation")
@@ -571,33 +567,5 @@ public class EntityLootTables extends ModdedEntityLootSubProvider {
 	@Override
 	protected Stream<EntityType<?>> getKnownEntityTypes() {
 		return BuiltInRegistries.ENTITY_TYPE.stream().filter(entities -> BuiltInRegistries.ENTITY_TYPE.getKey(entities).getNamespace().equals(TwilightForestMod.ID));
-	}
-
-	@Override
-	public void accept(BiConsumer<ResourceLocation, LootTable.Builder> p_124377_) {
-		this.addTables();
-		Set<ResourceLocation> set = Sets.newHashSet();
-
-		for(EntityType<?> entitytype : getKnownEntities()) {
-			ResourceLocation resourcelocation = entitytype.getDefaultLootTable();
-			if (isNonLiving(entitytype)) {
-				if (resourcelocation != BuiltInLootTables.EMPTY && this.map.remove(resourcelocation) != null) {
-					throw new IllegalStateException(String.format("Weird loottable '%s' for '%s', not a LivingEntity so should not have loot", resourcelocation, Registry.ENTITY_TYPE.getKey(entitytype)));
-				}
-			} else if (resourcelocation != BuiltInLootTables.EMPTY && set.add(resourcelocation)) {
-				LootTable.Builder loottable$builder = this.map.remove(resourcelocation);
-				if (loottable$builder == null) {
-					throw new IllegalStateException(String.format("Missing loottable '%s' for '%s'", resourcelocation, Registry.ENTITY_TYPE.getKey(entitytype)));
-				}
-
-				p_124377_.accept(resourcelocation, loottable$builder);
-			}
-		}
-
-		this.map.forEach(p_124377_);
-	}
-
-	protected boolean isNonLiving(EntityType<?> entitytype) {
-		return !SPECIAL_LOOT_TABLE_TYPES.contains(entitytype) && entitytype.getCategory() == MobCategory.MISC;
 	}
 }

@@ -5,6 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback.RegistrationHelper;
@@ -67,6 +68,7 @@ public class TFClientSetup implements ClientModInitializer {
 		clientSetup();
 		registerEntityRenderer();
 		LivingEntityFeatureRendererRegistrationCallback.EVENT.register(TFClientSetup::attachRenderLayers);
+		BuiltinItemRendererRegistry.INSTANCE.register(TFItems.KNIGHTMETAL_SHIELD.get(), new ISTER());
 	}
 
 	public static class FabricEvents {

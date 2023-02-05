@@ -14,7 +14,7 @@ import java.util.function.Function;
 public record UnbakedGiantBlockModel(ResourceLocation parent, BlockModel ownerModel) implements UnbakedModel {
 
 	@Override
-	public BakedModel bake(ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ResourceLocation modelLocation) {
+	public BakedModel bake(ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ResourceLocation modelLocation) {
 		ItemOverrides overrides = ownerModel().getOverrides(bakery, ownerModel, spriteGetter);
 		TextureAtlasSprite[] sprites;
 		if (ownerModel.hasTexture("all")) {

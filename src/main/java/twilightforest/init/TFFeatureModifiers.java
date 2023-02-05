@@ -18,8 +18,8 @@ import java.util.function.Supplier;
 
 public final class TFFeatureModifiers {
 
-	public static final LazyRegistrar<FoliagePlacerType<?>> FOLIAGE_PLACERS = LazyRegistrar.create(ForgeRegistries.FOLIAGE_PLACER_TYPES, TwilightForestMod.ID);
-	public static final LazyRegistrar<TreeDecoratorType<?>> TREE_DECORATORS = LazyRegistrar.create(ForgeRegistries.TREE_DECORATOR_TYPES, TwilightForestMod.ID);
+	public static final LazyRegistrar<FoliagePlacerType<?>> FOLIAGE_PLACERS = LazyRegistrar.create(Registries.FOLIAGE_PLACER_TYPE, TwilightForestMod.ID);
+	public static final LazyRegistrar<TreeDecoratorType<?>> TREE_DECORATORS = LazyRegistrar.create(Registries.TREE_DECORATOR_TYPE, TwilightForestMod.ID);
 	public static final LazyRegistrar<PlacementModifierType<?>> PLACEMENT_MODIFIERS = LazyRegistrar.create(Registries.PLACEMENT_MODIFIER_TYPE, TwilightForestMod.ID);
 	public static final LazyRegistrar<TrunkPlacerType<?>> TRUNK_PLACERS = LazyRegistrar.create(Registries.TRUNK_PLACER_TYPE, TwilightForestMod.ID);
 

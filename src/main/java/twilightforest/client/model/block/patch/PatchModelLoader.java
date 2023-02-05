@@ -6,6 +6,7 @@ import com.mojang.realmsclient.util.JsonUtils;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
 import net.fabricmc.fabric.api.client.model.ModelResourceProvider;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -25,7 +26,7 @@ public final class PatchModelLoader implements ModelResourceProvider {
     public UnbakedModel loadModelResource(ResourceLocation resourceId, ModelProviderContext context) {
         if(!resourceId.getNamespace().equals(TwilightForestMod.ID))
             return null;
-        JsonObject object = BlockModelAccessor.port_lib$GSON().fromJson(getModelJson(resourceId), JsonObject.class);
+        JsonObject object = BlockModel.GSON.fromJson(getModelJson(resourceId), JsonObject.class);
         if(object.has("loader")) {
             if(!object.get("loader").getAsString().equals("twilightforest:patch"))
                 return null;

@@ -1,17 +1,14 @@
 package twilightforest.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBannerPatterns;
 
@@ -20,17 +17,17 @@ import java.util.concurrent.CompletableFuture;
 //a place to hold all custom tags, since I imagine we wont have a lot of them
 public class CustomTagGenerator {
 
-	public static class EnchantmentTagGenerator extends TagsProvider<Enchantment> {
+	public static class EnchantmentTagGenerator extends FabricTagProvider.EnchantmentTagProvider {
 
 		public static final TagKey<Enchantment> PHANTOM_ARMOR_BANNED_ENCHANTS = TagKey.create(Registries.ENCHANTMENT, TwilightForestMod.prefix("phantom_armor_banned_enchants"));
 
-		public EnchantmentTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
-			super(output, Registries.ENCHANTMENT, provider, TwilightForestMod.ID, helper);
+		public EnchantmentTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+			super(output, provider);
 		}
 
 		@Override
 		protected void addTags(HolderLookup.Provider provider) {
-			tag(PHANTOM_ARMOR_BANNED_ENCHANTS).add(ForgeRegistries.ENCHANTMENTS.getResourceKey(Enchantments.VANISHING_CURSE).get(), ForgeRegistries.ENCHANTMENTS.getResourceKey(Enchantments.BINDING_CURSE).get());
+			tag(PHANTOM_ARMOR_BANNED_ENCHANTS).add(BuiltInRegistries.ENCHANTMENT.getResourceKey(Enchantments.VANISHING_CURSE).get(), BuiltInRegistries.ENCHANTMENT.getResourceKey(Enchantments.BINDING_CURSE).get());
 		}
 
 		@Override
@@ -39,7 +36,7 @@ public class CustomTagGenerator {
 		}
 	}
 
-	public static class BannerPatternTagGenerator extends TagsProvider<BannerPattern> {
+	public static class BannerPatternTagGenerator extends FabricTagProvider<BannerPattern> {
 
 		public static final TagKey<BannerPattern> NAGA_BANNER_PATTERN = create("pattern_item/naga");
 		public static final TagKey<BannerPattern> LICH_BANNER_PATTERN = create("pattern_item/lich");
@@ -51,8 +48,8 @@ public class CustomTagGenerator {
 		public static final TagKey<BannerPattern> SNOW_QUEEN_BANNER_PATTERN = create("pattern_item/snow_queen");
 		public static final TagKey<BannerPattern> QUEST_RAM_BANNER_PATTERN = create("pattern_item/quest_ram");
 
-		public BannerPatternTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
-			super(output, Registries.BANNER_PATTERN, provider, TwilightForestMod.ID, existingFileHelper);
+		public BannerPatternTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+			super(output, Registries.BANNER_PATTERN, provider);
 		}
 
 		@Override

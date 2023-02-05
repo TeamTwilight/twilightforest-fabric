@@ -2,19 +2,19 @@ package twilightforest.data;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.models.generators.ConfiguredModel;
+import io.github.fabricators_of_create.porting_lib.models.generators.ModelFile;
+import io.github.fabricators_of_create.porting_lib.models.generators.block.BlockModelBuilder;
+import io.github.fabricators_of_create.porting_lib.models.generators.block.MultiPartBlockStateBuilder;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.minecraftforge.client.model.generators.loaders.CompositeModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
@@ -1181,7 +1181,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	}
 
 	private void castleDoor(Block b) {
-		ModelFile vanished = models().withExistingParent(Registry.BLOCK.getKey(b).getPath() + "_vanished", "block/block")
+		ModelFile vanished = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath() + "_vanished", "block/block")
 				.texture("base", TwilightForestMod.prefix("block/castle_door_vanished"))
 				.texture("particle", TwilightForestMod.prefix("block/castle_door_vanished"))
 				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))
@@ -1189,7 +1189,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.renderType(CUTOUT)
 				.customLoader(CastleDoorBuilder::begin).end();
 
-		ModelFile main = models().withExistingParent(Registry.BLOCK.getKey(b).getPath(), "block/block")
+		ModelFile main = models().withExistingParent(BuiltInRegistries.BLOCK.getKey(b).getPath(), "block/block")
 				.texture("base", TwilightForestMod.prefix("block/castle_door"))
 				.texture("particle", TwilightForestMod.prefix("block/castle_door"))
 				.texture("overlay", TwilightForestMod.prefix("block/castle_door_rune_corners"))

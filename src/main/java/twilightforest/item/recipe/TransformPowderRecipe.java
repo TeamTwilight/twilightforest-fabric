@@ -1,7 +1,7 @@
 package twilightforest.item.recipe;
 
 import com.google.gson.JsonObject;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -12,9 +12,8 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFRecipes;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFRecipes;
 
 public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> input, EntityType<?> result, boolean isReversible) implements Recipe<Container> {
 
@@ -57,8 +56,8 @@ public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> inp
 
 		@Override
 		public TransformPowderRecipe fromJson(ResourceLocation id, JsonObject object) {
-			EntityType<?> input = Registry.ENTITY_TYPE.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
-			EntityType<?> output = Registry.ENTITY_TYPE.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
+			EntityType<?> input = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
+			EntityType<?> output = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
 			boolean reversible = GsonHelper.getAsBoolean(object, "reversible");
 			if (input != null && output != null) {
 				return new TransformPowderRecipe(id, input, output, reversible);
@@ -69,16 +68,16 @@ public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> inp
 		@Nullable
 		@Override
 		public TransformPowderRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
-			EntityType<?> input = Registry.ENTITY_TYPE.get(buffer.readResourceLocation());
-			EntityType<?> output = Registry.ENTITY_TYPE.get(buffer.readResourceLocation());
+			EntityType<?> input = BuiltInRegistries.ENTITY_TYPE.get(buffer.readResourceLocation());
+			EntityType<?> output = BuiltInRegistries.ENTITY_TYPE.get(buffer.readResourceLocation());
 			boolean reversible = buffer.readBoolean();
 			return new TransformPowderRecipe(id, input, output, reversible);
 		}
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, TransformPowderRecipe recipe) {
-			buffer.writeResourceLocation(Registry.ENTITY_TYPE.getKey(recipe.input));
-			buffer.writeResourceLocation(Registry.ENTITY_TYPE.getKey(recipe.result));
+			buffer.writeResourceLocation(BuiltInRegistries.ENTITY_TYPE.getKey(recipe.input));
+			buffer.writeResourceLocation(BuiltInRegistries.ENTITY_TYPE.getKey(recipe.result));
 			buffer.writeBoolean(recipe.isReversible());
 		}
 	}

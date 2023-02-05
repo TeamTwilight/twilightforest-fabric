@@ -1,18 +1,18 @@
 package twilightforest.enums;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ArrayUtil;
 import twilightforest.util.FeaturePlacers;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -116,7 +116,7 @@ public enum StructureWoodVariant implements StringRepresentable {
 		Block block = stateIn.getBlock();
 		WoodShapes shape = getWoodShapeFromBlock(block);
 
-		ResourceLocation blockRegName = Registry.BLOCK.getKey(block);
+		ResourceLocation blockRegName = BuiltInRegistries.BLOCK.getKey(block);
 
 		if (blockRegName == null) return stateIn;
 

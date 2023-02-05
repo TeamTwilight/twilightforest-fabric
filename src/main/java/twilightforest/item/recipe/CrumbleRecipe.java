@@ -1,7 +1,7 @@
 package twilightforest.item.recipe;
 
 import com.google.gson.JsonObject;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -14,7 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFRecipes;
 
@@ -59,8 +58,8 @@ public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockSt
 
 		@Override
 		public CrumbleRecipe fromJson(ResourceLocation id, JsonObject object) {
-			Block input = Registry.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
-			Block output = Registry.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
+			Block input = BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "from")));
+			Block output = BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(object, "to")));
 			if (input != null && output != null) {
 				return new CrumbleRecipe(id, input.defaultBlockState(), output.defaultBlockState());
 			}
@@ -70,15 +69,15 @@ public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockSt
 		@Nullable
 		@Override
 		public CrumbleRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
-			Block input = Registry.BLOCK.get(buffer.readResourceLocation());
-			Block output = Registry.BLOCK.get(buffer.readResourceLocation());
+			Block input = BuiltInRegistries.BLOCK.get(buffer.readResourceLocation());
+			Block output = BuiltInRegistries.BLOCK.get(buffer.readResourceLocation());
 			return new CrumbleRecipe(id, input.defaultBlockState(), output.defaultBlockState());
 		}
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, CrumbleRecipe recipe) {
-			buffer.writeResourceLocation(Registry.BLOCK.getKey(recipe.input.getBlock()));
-			buffer.writeResourceLocation(Registry.BLOCK.getKey(recipe.result.getBlock()));
+			buffer.writeResourceLocation(BuiltInRegistries.BLOCK.getKey(recipe.input.getBlock()));
+			buffer.writeResourceLocation(BuiltInRegistries.BLOCK.getKey(recipe.result.getBlock()));
 		}
 	}
 }

@@ -2,7 +2,7 @@ package twilightforest.loot.functions;
 
 import com.google.common.collect.Maps;
 import com.google.gson.*;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.EnchantedBookItem;
@@ -77,7 +77,7 @@ public class Enchant extends LootItemConditionalFunction {
 				JsonObject obj = new JsonObject();
 
 				for (Map.Entry<Enchantment, Short> e : function.enchantments.entrySet()) {
-					obj.addProperty(Registry.ENCHANTMENT.getKey(e.getKey()).toString(), e.getValue());
+					obj.addProperty(BuiltInRegistries.ENCHANTMENT.getKey(e.getKey()).toString(), e.getValue());
 				}
 
 				object.add("enchantments", obj);
@@ -93,16 +93,16 @@ public class Enchant extends LootItemConditionalFunction {
 
 				for (Map.Entry<String, JsonElement> e : enchantObj.entrySet()) {
 					ResourceLocation id = new ResourceLocation(e.getKey());
-					if (!Registry.ENCHANTMENT.containsKey(id)) {
+					if (!BuiltInRegistries.ENCHANTMENT.containsKey(id)) {
 						throw new JsonSyntaxException("Can't find enchantment " + e.getKey());
 					}
 
-					Enchantment ench = Registry.ENCHANTMENT.get(id);
+					Enchantment ench = BuiltInRegistries.ENCHANTMENT.get(id);
 					short lvl = e.getValue().getAsShort();
 
 					for (Enchantment other : enchantments.keySet()) {
 						if (!ench.isCompatibleWith(other)) {
-							throw new JsonParseException(String.format("Enchantments %s and %s conflict", Registry.ENCHANTMENT.getKey(ench), Registry.ENCHANTMENT.getKey(other)));
+							throw new JsonParseException(String.format("Enchantments %s and %s conflict", BuiltInRegistries.ENCHANTMENT.getKey(ench), BuiltInRegistries.ENCHANTMENT.getKey(other)));
 						}
 					}
 

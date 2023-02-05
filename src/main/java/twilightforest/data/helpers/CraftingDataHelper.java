@@ -2,14 +2,14 @@ package twilightforest.data.helpers;
 
 import io.github.fabricators_of_create.porting_lib.crafting.PartialNBTIngredient;
 import me.alphamode.forgetags.Tags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.Util;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.*;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -29,7 +29,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class CraftingDataHelper extends FabricRecipeProvider {
-	public CraftingDataHelper(PackOutput output) {
+	public CraftingDataHelper(FabricDataOutput output) {
 		super(output);
 	}
 
@@ -44,7 +44,7 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 	public final PartialNBTIngredient potion(Potion potion) {
 		return PartialNBTIngredient.of(Items.POTION, Util.make(() -> {
 			CompoundTag nbt = new CompoundTag();
-			nbt.putString("Potion", Registry.POTION.getKey(potion).toString());
+			nbt.putString("Potion", BuiltInRegistries.POTION.getKey(potion).toString());
 			return nbt;
 		}));
 	}
@@ -62,7 +62,7 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 				.pattern("##")
 				.define('#', Ingredient.of(ingredients))
 				.unlockedBy("has_castle_brick", has(TFBlocks.CASTLE_BRICK.get()))
-				.save(consumer, locCastle(Registry.BLOCK.getKey(result.get()).getPath()));
+				.save(consumer, locCastle(BuiltInRegistries.BLOCK.getKey(result.get()).getPath()));
 	}
 
 	protected final void stairsBlock(Consumer<FinishedRecipe> consumer, ResourceLocation loc, Supplier<? extends Block> result, Supplier<? extends Block> criteria, ItemLike... ingredients) {
@@ -309,7 +309,7 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 				.requires(armor)
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), vials)
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
-				.save(consumer, locEquip("fiery_" + Registry.ITEM.getKey(result.get()).getPath()));
+				.save(consumer, locEquip("fiery_" + BuiltInRegistries.ITEM.getKey(result.get()).getPath()));
 	}
 
 	protected final ResourceLocation locCastle(String name) {

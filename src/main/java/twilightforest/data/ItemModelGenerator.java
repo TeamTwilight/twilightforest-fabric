@@ -1,5 +1,9 @@
 package twilightforest.data;
 
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.models.generators.ModelFile;
+import io.github.fabricators_of_create.porting_lib.models.generators.item.ItemModelBuilder;
+import io.github.fabricators_of_create.porting_lib.models.generators.item.ItemModelProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -9,12 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.ForgeRenderTypes;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.loaders.ItemLayerModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.HollowLogHorizontal;

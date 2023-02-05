@@ -2,7 +2,7 @@ package twilightforest.init;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.animal.Parrot;
@@ -10,7 +10,7 @@ import twilightforest.TwilightForestMod;
 
 public final class TFSounds {
 	
-	public static final LazyRegistrar<SoundEvent> SOUNDS = LazyRegistrar.create(Registry.SOUND_EVENT, TwilightForestMod.ID);
+	public static final LazyRegistrar<SoundEvent> SOUNDS = LazyRegistrar.create(Registries.SOUND_EVENT, TwilightForestMod.ID);
 
 	public static final RegistryObject<SoundEvent> ACID_RAIN_BURNS = createEvent("entity.twilightforest.acid_rain");
 	public static final RegistryObject<SoundEvent> ALPHAYETI_ALERT = createEvent("entity.twilightforest.alphayeti.alert");

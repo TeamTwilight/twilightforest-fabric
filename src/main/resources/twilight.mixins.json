@@ -13,6 +13,7 @@
     "client.SheetsMixin"
   ],
   "mixins": [
+    "BlockModelAccessor",
     "ConnectionMixin",
     "DispenserBlockAccessor",
     "PlayerListMixin",

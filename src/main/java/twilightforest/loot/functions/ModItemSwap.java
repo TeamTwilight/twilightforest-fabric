@@ -4,9 +4,9 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.util.GsonHelper;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -74,10 +74,10 @@ public class ModItemSwap extends LootItemConditionalFunction {
 		@Override
 		public void serialize(JsonObject object, ModItemSwap function, JsonSerializationContext serializationContext) {
 			if (function.success)
-				object.addProperty("item", Registry.ITEM.getKey(function.item).toString());
+				object.addProperty("item", BuiltInRegistries.ITEM.getKey(function.item).toString());
 			else
-				object.addProperty("default", Registry.ITEM.getKey(function.item).toString());
-			object.addProperty("default", Registry.ITEM.getKey(function.oldItem).toString());
+				object.addProperty("default", BuiltInRegistries.ITEM.getKey(function.item).toString());
+			object.addProperty("default", BuiltInRegistries.ITEM.getKey(function.oldItem).toString());
 		}
 
 		@Override

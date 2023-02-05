@@ -19,11 +19,9 @@ import twilightforest.TwilightForestMod;
 import java.util.Collection;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFCreativeTabs {
 
-	@SubscribeEvent
-	public static void registerTFBlocksTab(CreativeModeTabEvent.Register event) {
+	public static void registerTFBlocksTab() {
 		CreativeModeTab BLOCKS = FabricItemGroup.builder(TwilightForestMod.prefix("blocks"))
 				.title(Component.translatable("itemGroup.twilightforest.blocks"))
 				.icon(() -> new ItemStack(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get()))
@@ -374,7 +372,7 @@ public class TFCreativeTabs {
 					output.accept(TFBlocks.IRON_LADDER.get());
 				}).build();
 
-		CreativeModeTab ITEMS = FabricItemGroup.builder(TwilightForestMod.prefix("items"), List.of(), List.of(BLOCKS), builder -> builder
+		CreativeModeTab ITEMS = FabricItemGroup.builder(TwilightForestMod.prefix("items"))
 				.title(Component.translatable("itemGroup.twilightforest.items"))
 				.icon(() -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()))
 				.displayItems((featureFlag, output, operator) -> {
@@ -442,9 +440,9 @@ public class TFCreativeTabs {
 					output.accept(TFItems.SNOW_QUEEN_BANNER_PATTERN.get());
 					output.accept(TFItems.QUEST_RAM_BANNER_PATTERN.get());
 					createSpawnEggsAlphabetical(output);
-				}));
+				}).build();
 
-		event.registerCreativeModeTab(TwilightForestMod.prefix("equipment"), List.of(), List.of(ITEMS), builder -> builder
+		FabricItemGroup.builder(TwilightForestMod.prefix("equipment"))
 				.title(Component.translatable("itemGroup.twilightforest.equipment"))
 				.icon(() -> new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()))
 				.displayItems((featureFlag, output, operator) -> {
@@ -517,7 +515,7 @@ public class TFCreativeTabs {
 					output.accept(TFItems.CUBE_OF_ANNIHILATION.get());
 					tfEnchants(output, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
 					tfEnchants(output, CreativeModeTab.TabVisibility.SEARCH_TAB_ONLY);
-				}));
+				}).build();
 	}
 
 	private static void tfEnchants(CreativeModeTab.Output output, CreativeModeTab.TabVisibility visibility) {

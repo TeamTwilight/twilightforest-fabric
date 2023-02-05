@@ -3,16 +3,13 @@ package twilightforest.advancements;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.advancements.critereon.*;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.TwilightForestMod;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 
 public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.Instance> {
 
@@ -28,7 +25,7 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 		Potion potion = null;
 		if (json.has("potion")) {
 			ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(json, "potion"));
-			potion = ForgeRegistries.POTIONS.getValue(resourcelocation);
+			potion = BuiltInRegistries.POTION.get(resourcelocation);
 		}
 		if(json.has("doses") && GsonHelper.getAsInt(json, "doses") > 4) throw new JsonSyntaxException("DrinkFromFlaskTrigger: can't have more than 4 doses.");
 		MinMaxBounds.Ints doses = MinMaxBounds.Ints.fromJson(json.get("doses"));
@@ -64,7 +61,7 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 			JsonObject object = super.serializeToJson(ctx);
 			object.add("doses", this.doses.serializeToJson());
 			if (this.potion != null) {
-				object.addProperty("potion", ForgeRegistries.POTIONS.getKey(this.potion).toString());
+				object.addProperty("potion", BuiltInRegistries.POTION.getKey(this.potion).toString());
 			}
 			return object;
 		}

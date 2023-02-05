@@ -2,20 +2,21 @@ package twilightforest.init;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.*;
-import twilightforest.world.components.feature.config.*;
+import twilightforest.world.components.feature.config.HollowLogConfig;
+import twilightforest.world.components.feature.config.RootConfig;
+import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
+import twilightforest.world.components.feature.config.ThornsConfig;
 import twilightforest.world.components.feature.templates.*;
 import twilightforest.world.components.feature.trees.*;
-import twilightforest.world.components.feature.trees.SnowTreeFeature;
-import twilightforest.world.components.feature.trees.SnowUnderTreeFeature;
 
 public class TFFeatures {
 
-	public static final LazyRegistrar<Feature<?>> FEATURES = LazyRegistrar.create(Registry.FEATURE, TwilightForestMod.ID);
+	public static final LazyRegistrar<Feature<?>> FEATURES = LazyRegistrar.create(Registries.FEATURE, TwilightForestMod.ID);
 	
 	public static final RegistryObject<Feature<HugeMushroomFeatureConfiguration>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () -> new BigMushgloomFeature(HugeMushroomFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<HugeMushroomFeatureConfiguration>> CANOPY_BROWN_MUSHROOM = FEATURES.register("canopy_brown_mushroom", () -> new BrownCanopyMushroomFeature(HugeMushroomFeatureConfiguration.CODEC));

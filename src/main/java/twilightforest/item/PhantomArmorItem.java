@@ -3,6 +3,8 @@ package twilightforest.item;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -11,7 +13,7 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -26,8 +28,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
 public class PhantomArmorItem extends ArmorItem implements CustomEnchantingBehaviorItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.phantom_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
@@ -55,14 +54,14 @@ public class PhantomArmorItem extends ArmorItem implements CustomEnchantingBehav
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return !Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(enchantment)) && CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
+		return !BuiltInRegistries.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get().contains(Holder.direct(enchantment)) && CustomEnchantingBehaviorItem.super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
 		AtomicBoolean badEnchant = new AtomicBoolean();
 		EnchantmentHelper.getEnchantments(book).forEach((enchantment, integer) -> {
-			for (Holder<Enchantment> banned : Registry.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get()) {
+			for (Holder<Enchantment> banned : BuiltInRegistries.ENCHANTMENT.getTag(CustomTagGenerator.EnchantmentTagGenerator.PHANTOM_ARMOR_BANNED_ENCHANTS).get()) {
 				if (Objects.equals(banned.value(), enchantment)) {
 					badEnchant.set(true);
 					break;

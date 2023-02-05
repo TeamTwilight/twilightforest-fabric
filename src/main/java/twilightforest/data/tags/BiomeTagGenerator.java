@@ -1,19 +1,18 @@
 package twilightforest.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BiomeTagGenerator extends FabricTagProvider.DynamicRegistryTagProvider<Biome> {
+public class BiomeTagGenerator extends FabricTagProvider<Biome> {
 
 	public static final TagKey<Biome> IS_TWILIGHT = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("in_twilight_forest"));
 
@@ -34,12 +33,12 @@ public class BiomeTagGenerator extends FabricTagProvider.DynamicRegistryTagProvi
 	public static final TagKey<Biome> VALID_TROLL_CAVE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_troll_cave_biomes"));
 	public static final TagKey<Biome> VALID_FINAL_CASTLE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_final_castle_biomes"));
 
-	public BiomeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper helper) {
-		super(output, provider, TwilightForestMod.ID, helper);
+	public BiomeTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+		super(output, Registries.BIOME, provider);
 	}
 
 	@Override
-	protected void generateTags(HolderLookup.Provider provider) {
+	protected void addTags(HolderLookup.Provider provider) {
 
 		tag(IS_TWILIGHT).add(
 				TFBiomes.CLEARING, TFBiomes.DENSE_FOREST,

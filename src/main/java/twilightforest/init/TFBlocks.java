@@ -3,6 +3,7 @@ package twilightforest.init;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.fabricmc.fabric.api.object.builder.v1.sign.SignTypeRegistry;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -23,7 +24,7 @@ import java.util.Objects;
 @SuppressWarnings({"WeakerAccess", "unused", "deprecation"})
 @Nonnull
 public class TFBlocks {
-	public static final LazyRegistrar<Block> BLOCKS = LazyRegistrar.create(Registry.BLOCK, TwilightForestMod.ID);
+	public static final LazyRegistrar<Block> BLOCKS = LazyRegistrar.create(Registries.BLOCK, TwilightForestMod.ID);
 
 	public static final RegistryObject<TFPortalBlock> TWILIGHT_PORTAL = BLOCKS.register("twilight_portal", () -> new TFPortalBlock(BlockBehaviour.Properties.of(Material.PORTAL).strength(-1.0F).sound(SoundType.GLASS).lightLevel((state) -> 11).noCollission().noOcclusion().noLootTable()));
 

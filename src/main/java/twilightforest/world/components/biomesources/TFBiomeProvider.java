@@ -64,7 +64,7 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	public static int getBiomeId(ResourceKey<Biome> biome, HolderGetter<Biome> registry) {
-		return ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BIOME).getId(registry.get(biome).get().get());
+		return ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BIOME).getId(registry.get(biome).get().value());
 	}
 
 	private static <T extends Area, C extends BigContext<T>> AreaFactory<T> makeLayers(LongFunction<C> seed, HolderGetter<Biome> registry, long rawSeed) {

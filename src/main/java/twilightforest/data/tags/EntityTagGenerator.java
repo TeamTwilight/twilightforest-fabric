@@ -1,5 +1,8 @@
 package twilightforest.data.tags;
 
+import me.alphamode.forgetags.Tags;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -8,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
@@ -23,12 +25,12 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
 	public static final TagKey<EntityType<?>> DONT_KILL_BUGS = create(TwilightForestMod.prefix("dont_kill_bugs"));
 	public static final TagKey<EntityType<?>> SORTABLE_ENTITIES = create(TwilightForestMod.prefix("sortable_entities"));
 
-	public EntityTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
-		super(output, provider, TwilightForestMod.ID, helper);
+	public EntityTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+		super(output, provider);
 	}
 
 	@Override
-	protected void generateTags(HolderLookup.Provider provider) {
+	protected void addTags(HolderLookup.Provider provider) {
 		tag(EntityTypeTags.SKELETONS).add(TFEntities.SKELETON_DRUID.get());
 		tag(EntityTypeTags.ARROWS).add(TFEntities.ICE_ARROW.get(), TFEntities.SEEKER_ARROW.get());
 		tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(TFEntities.FIRE_BEETLE.get());

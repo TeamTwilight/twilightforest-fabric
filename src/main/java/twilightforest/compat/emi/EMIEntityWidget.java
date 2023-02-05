@@ -3,8 +3,7 @@ package twilightforest.compat.emi;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import dev.emi.emi.EmiRenderHelper;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.widget.Bounds;
@@ -17,11 +16,13 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import org.joml.Quaternionf;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class EMIEntityWidget extends Widget {
 		FormattedCharSequence typeName = type.getDescription().getVisualOrderText();
 		tooltip.add(ClientTooltipComponent.create(typeName));
 		if (Minecraft.getInstance().options.advancedItemTooltips) {
-			String id = Registry.ENTITY_TYPE.getKey(type).toString();
+			String id = BuiltInRegistries.ENTITY_TYPE.getKey(type).toString();
 			FormattedCharSequence text = Component.literal(id).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText();
 			tooltip.add(ClientTooltipComponent.create(text));
 		}
@@ -89,12 +90,12 @@ public class EMIEntityWidget extends Widget {
 					RenderSystem.enableDepthTest();
 				}
 			} catch (Exception e) {
-				TwilightForestMod.LOGGER.error("Error drawing entity " + Registry.ENTITY_TYPE.getKey(type), e);
+				TwilightForestMod.LOGGER.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
 				this.invalid = true;
 			}
 		} else {
 			// not living, so might as well skip next time
-			TwilightForestMod.LOGGER.error("Error drawing entity %s: not a LivingEntity".formatted(Registry.ENTITY_TYPE.getKey(type)));
+			TwilightForestMod.LOGGER.error("Error drawing entity %s: not a LivingEntity".formatted(BuiltInRegistries.ENTITY_TYPE.getKey(type)));
 			this.invalid = true;
 		}
 	}
@@ -110,12 +111,12 @@ public class EMIEntityWidget extends Widget {
 		PoseStack posestack1 = new PoseStack();
 		posestack1.translate(0.0D, 0.0D, 1000.0D);
 		posestack1.scale((float) scale, (float) scale, (float) scale);
-		Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-		Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
+		Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
+		Quaternionf quaternion1 = Axis.XP.rotationDegrees(20.0F);
 		quaternion.mul(quaternion1);
 		posestack1.mulPose(quaternion);
-		posestack1.mulPose(Vector3f.XN.rotationDegrees(35.0F));
-		posestack1.mulPose(Vector3f.YN.rotationDegrees(145.0F));
+		posestack1.mulPose(Axis.XN.rotationDegrees(35.0F));
+		posestack1.mulPose(Axis.YN.rotationDegrees(145.0F));
 		float f2 = entity.yBodyRot;
 		float f3 = entity.getYRot();
 		float f4 = entity.getXRot();

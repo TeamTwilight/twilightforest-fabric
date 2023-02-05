@@ -2,18 +2,14 @@ package twilightforest.client.model.block.doors;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
-import net.minecraftforge.client.model.ForgeFaceData;
 import org.joml.Vector3f;
-import io.github.fabricators_of_create.porting_lib.model.SimpleModelState;
-import io.github.fabricators_of_create.porting_lib.model.geometry.IGeometryBakingContext;
-import io.github.fabricators_of_create.porting_lib.model.geometry.IUnbakedGeometry;
-import io.github.fabricators_of_create.porting_lib.model.geometry.UnbakedGeometryHelper;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
+import twilightforest.mixin.BlockModelAccessor;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -57,7 +53,7 @@ public class UnbakedCastleDoorModel implements UnbakedModel {
 	}
 
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
+	public BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ResourceLocation modelLocation) {
 		Transformation transformation = context.getRootTransform();
 		if (!transformation.isIdentity()) {
 			modelState = new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
@@ -72,7 +68,7 @@ public class UnbakedCastleDoorModel implements UnbakedModel {
 			baseQuads[dir] = new ArrayList<>();
 
 			for (BlockElement element : this.baseElements[dir]) {
-				baseQuads[dir].add(UnbakedGeometryHelper.bakeElementFace(element, element.faces.values().iterator().next(), baseTexture, Direction.values()[dir], modelState, modelLocation));
+				baseQuads[dir].add(BlockModel.bakeFace(element, element.faces.values().iterator().next(), baseTexture, Direction.values()[dir], modelState, modelLocation));
 			}
 		}
 
@@ -86,16 +82,21 @@ public class UnbakedCastleDoorModel implements UnbakedModel {
 			for (int quad = 0; quad < 4; quad++) {
 				for (int type = 0; type < 5; type++) {
 					BlockElement element = this.faceElements[dir][quad][type];
-					quads[dir][quad][type] = UnbakedGeometryHelper.bakeElementFace(element, element.faces.values().iterator().next(), ConnectionLogic.values()[type].chooseTexture(sprites), Direction.values()[dir], modelState, modelLocation);
+					quads[dir][quad][type] = BlockModel.bakeFace(element, element.faces.values().iterator().next(), ConnectionLogic.values()[type].chooseTexture(sprites), Direction.values()[dir], modelState, modelLocation);
 				}
 			}
 		}
 
-		return new CastleDoorModel(baseQuads, quads, spriteGetter.apply(ownerModel.getMaterial("particle")), overrides, ownerModel.getTransforms());
+		return new CastleDoorModel(baseQuads, quads, spriteGetter.apply(ownerModel.getMaterial("particle")), ((BlockModelAccessor)ownerModel).tf$callGetItemOverrides(baker, ownerModel), ownerModel.getTransforms());
 	}
 
 	@Override
 	public Collection<ResourceLocation> getDependencies() {
 		return Collections.emptyList();
+	}
+
+	@Override
+	public void resolveParents(Function<ResourceLocation, UnbakedModel> models) {
+		ownerModel.resolveParents(models);
 	}
 }

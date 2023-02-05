@@ -1,6 +1,8 @@
 package twilightforest.init;
 
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
@@ -22,8 +24,8 @@ public class TFCaveCarvers {
 
 	//this one has to stay, configured versions dont work otherwise
 	public static void register() {
-		Registry.register(Registry.CARVER, TwilightForestMod.prefix("tf_caves"), TFCAVES);
-		Registry.register(Registry.CARVER, TwilightForestMod.prefix("highland_caves"), HIGHLANDCAVES);
+		Registry.register(BuiltInRegistries.CARVER, TwilightForestMod.prefix("tf_caves"), TFCAVES);
+		Registry.register(BuiltInRegistries.CARVER, TwilightForestMod.prefix("highland_caves"), HIGHLANDCAVES);
 	}
 
 	public static final ResourceKey<ConfiguredWorldCarver<?>> TFCAVES_CONFIGURED = registerKey("tf_caves");

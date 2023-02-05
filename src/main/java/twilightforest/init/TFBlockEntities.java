@@ -1,22 +1,21 @@
 package twilightforest.init;
 
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.*;
-import twilightforest.init.TFBlocks;
 import twilightforest.block.entity.spawner.*;
 import twilightforest.client.renderer.tileentity.*;
 
 public class TFBlockEntities {
 
-	public static final LazyRegistrar<BlockEntityType<?>> BLOCK_ENTITIES = LazyRegistrar.create(Registry.BLOCK_ENTITY_TYPE, TwilightForestMod.ID);
+	public static final LazyRegistrar<BlockEntityType<?>> BLOCK_ENTITIES = LazyRegistrar.create(Registries.BLOCK_ENTITY_TYPE, TwilightForestMod.ID);
 
 	public static final RegistryObject<BlockEntityType<AntibuilderBlockEntity>> ANTIBUILDER = BLOCK_ENTITIES.register("antibuilder", () ->
 			BlockEntityType.Builder.of(AntibuilderBlockEntity::new, TFBlocks.ANTIBUILDER.get()).build(null));

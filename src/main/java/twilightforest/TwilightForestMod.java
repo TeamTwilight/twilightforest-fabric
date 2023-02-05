@@ -3,6 +3,7 @@ package twilightforest;
 import com.chocohead.mm.api.ClassTinkerers;
 import com.google.common.collect.Maps;
 import com.mojang.brigadier.CommandDispatcher;
+import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
@@ -17,20 +18,12 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.PathPackResources;
-import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
-import net.minecraft.server.packs.repository.Pack;
-import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.properties.WoodType;
-import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
@@ -39,7 +32,6 @@ import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.trinkets.TrinketsCompat;
-import twilightforest.compat.top.TopCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.events.*;
@@ -51,10 +43,8 @@ import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.registration.ConfiguredWorldCarvers;
 import twilightforest.world.registration.TFStructureProcessors;
 
-import java.io.IOException;
 import java.util.Locale;
 
 public class TwilightForestMod implements ModInitializer {
@@ -77,18 +67,16 @@ public class TwilightForestMod implements ModInitializer {
 	public void onInitialize() {
 		{
 			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
-			ModLoadingContext.registerConfig(ID, ModConfig.Type.COMMON, specPair.getRight());
+			ForgeConfigRegistry.INSTANCE.register(ID, ModConfig.Type.COMMON, specPair.getRight());
 			TFConfig.COMMON_CONFIG = specPair.getLeft();
 		}
 		{
 			final Pair<TFConfig.Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Client::new);
-			ModLoadingContext.registerConfig(ID, ModConfig.Type.CLIENT, specPair.getRight());
+			ForgeConfigRegistry.INSTANCE.register(ID, ModConfig.Type.CLIENT, specPair.getRight());
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
 
 		CommandRegistrationCallback.EVENT.register(this::registerCommands);
-		MinecraftForge.EVENT_BUS.addGenericListener(Level.class, CapabilityList::attachLevelCapability);
-		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityList::attachEntityCapability);
 		Stalactite.reloadStalactites();
 
 		TFBannerPatterns.BANNER_PATTERNS.register();
@@ -128,7 +116,6 @@ public class TwilightForestMod implements ModInitializer {
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			TrinketsCompat.init();
 		}
-		ConfiguredWorldCarvers.register();
 		TFConfiguredFeatures.init();
 		TFPlacedFeatures.init();
 		TFStructureProcessors.init();
@@ -140,6 +127,8 @@ public class TwilightForestMod implements ModInitializer {
 		addClassicPack();
 		initEvents();
 		init();
+
+		TFCreativeTabs.registerTFBlocksTab();
 	}
 
 	public static void initEvents() {
@@ -153,14 +142,11 @@ public class TwilightForestMod implements ModInitializer {
 		ToolEvents.init();
 	}
 
-	@SubscribeEvent
-	public static void addClassicPack(AddPackFindersEvent event) {
-		if (event.getPackType() == PackType.CLIENT_RESOURCES) {
-			var resourcePath = ModList.get().getModFileById(TwilightForestMod.ID).getFile().findResource("classic");
-			var pack = Pack.readMetaAndCreate("builtin/twilight_forest_classic_resources", Component.literal("Twilight Classic"), false,
-					path -> new PathPackResources(path, resourcePath, true), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN);
-			event.addRepositorySource(consumer -> consumer.accept(pack));
-		}
+	public static void addClassicPack() {
+		ModContainer tf = FabricLoader.getInstance().getModContainer(ID)
+				.orElseThrow(() -> new IllegalStateException("Twilight Forest's ModContainer couldn't be found!"));
+		ResourceLocation packId = prefix("classic");
+		ResourceManagerHelper.registerBuiltinResourcePack(packId, tf, Component.literal("Twilight Classic"), ResourcePackActivationType.NORMAL);
 	}
 
 	public static void registerSerializers() {

@@ -5,7 +5,7 @@ import io.github.fabricators_of_create.porting_lib.block.LightEmissiveBlock;
 import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -80,7 +80,7 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock im
 	//input one of the enum names to convert it into a candle block
 	public static Block candleColorToCandle(String candleName) {
 		if (!candleName.equals(CandleColors.PLAIN.getSerializedName())) {
-			return Objects.requireNonNull(Registry.BLOCK.get(new ResourceLocation(candleName + "_candle")));
+			return Objects.requireNonNull(BuiltInRegistries.BLOCK.get(new ResourceLocation(candleName + "_candle")));
 		}
 		return Blocks.CANDLE;
 	}
@@ -88,7 +88,7 @@ public abstract class AbstractSkullCandleBlock extends AbstractLightableBlock im
 	//inverse of above
 	public static CandleColors candleToCandleColor(Item candle) {
 		if (!(candle == Blocks.CANDLE.asItem())) {
-			return CandleColors.valueOf(Registry.ITEM.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
+			return CandleColors.valueOf(BuiltInRegistries.ITEM.getKey(candle).getPath().replace("_candle", "").replace("\"", "").toUpperCase(Locale.ROOT));
 		}
 		return CandleColors.PLAIN;
 	}

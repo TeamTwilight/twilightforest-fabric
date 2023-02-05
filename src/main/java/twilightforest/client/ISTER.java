@@ -69,11 +69,6 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 
 	@Override
-	public void onResourceManagerReload(ResourceManager manager) {
-		this.shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
-	}
-
-	@Override
 	public void render(ItemStack stack, ItemTransforms.TransformType camera, PoseStack ms, MultiBufferSource buffers, int light, int overlay) {
 		Item item = stack.getItem();
 		if (item instanceof BlockItem blockItem) {

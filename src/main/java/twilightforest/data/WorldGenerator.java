@@ -1,11 +1,10 @@
 package twilightforest.data;
 
+import io.github.fabricators_of_create.porting_lib.data.DatapackBuiltinEntriesProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.*;
 

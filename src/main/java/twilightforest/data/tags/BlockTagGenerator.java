@@ -1,6 +1,7 @@
 package twilightforest.data.tags;
 
 import com.google.common.collect.ImmutableSet;
+import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;

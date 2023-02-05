@@ -86,8 +86,8 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		this.darkForestCanopyHeight = darkForestCanopyHeight;
 
 		if (delegate instanceof NoiseBasedChunkGenerator noiseGen && noiseGen.generatorSettings().isBound()) {
-			this.defaultBlock = noiseGen.generatorSettings().get().defaultBlock();
-			this.defaultFluid = noiseGen.generatorSettings().get().defaultFluid();
+			this.defaultBlock = noiseGen.generatorSettings().value().defaultBlock();
+			this.defaultFluid = noiseGen.generatorSettings().value().defaultFluid();
 			this.surfaceNoiseGetter = Optional.empty();//Optional.of(noiseGen.sampler);
 		} else {
 			this.defaultBlock = Blocks.STONE.defaultBlockState();

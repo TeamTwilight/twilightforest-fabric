@@ -85,7 +85,7 @@ public class TFItems {
 	public static final RegistryObject<Item> STEELEAF_HOE = ITEMS.register("steeleaf_hoe", () -> new HoeItem(TwilightItemTier.STEELEAF, -3, -0.5F, new Item.Properties()));
 	public static final RegistryObject<Item> GOLDEN_MINOTAUR_AXE = ITEMS.register("gold_minotaur_axe", () -> new MinotaurAxeItem(Tiers.GOLD, new Item.Properties().rarity(Rarity.COMMON)));
 	public static final RegistryObject<Item> DIAMOND_MINOTAUR_AXE = ITEMS.register("diamond_minotaur_axe", () -> new MinotaurAxeItem(Tiers.DIAMOND, new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> MAZEBREAKER_PICKAXE = ITEMS.register("mazebreaker_pickaxe", () -> new MazebreakerPickItem(Tiers.DIAMOND, new Item.Properties().setNoRepair().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MAZEBREAKER_PICKAXE = ITEMS.register("mazebreaker_pickaxe", () -> new MazebreakerPickItem(Tiers.DIAMOND, new Item.Properties()/*.setNoRepair()*/.rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> RED_THREAD = ITEMS.register("red_thread", () -> new BlockItem(TFBlocks.RED_THREAD.get(), new Item.Properties()));
 	public static final RegistryObject<Item> TRANSFORMATION_POWDER = ITEMS.register("transformation_powder", () -> new TransformPowderItem(new Item.Properties()));
 	public static final RegistryObject<Item> RAW_MEEF = ITEMS.register("raw_meef", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.3F).meat().build())));
@@ -95,7 +95,7 @@ public class TFItems {
 	public static final RegistryObject<Item> ORE_MAGNET = ITEMS.register("ore_magnet", () -> new OreMagnetItem(new Item.Properties().durability(64)));
 	public static final RegistryObject<Item> CRUMBLE_HORN = ITEMS.register("crumble_horn", () -> new CrumbleHornItem(new Item.Properties().durability(1024).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> PEACOCK_FEATHER_FAN = ITEMS.register("peacock_feather_fan", () -> new PeacockFanItem(new Item.Properties().durability(1024).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> MOONWORM_QUEEN = ITEMS.register("moonworm_queen", () -> new MoonwormQueenItem(new Item.Properties().setNoRepair().durability(256).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> MOONWORM_QUEEN = ITEMS.register("moonworm_queen", () -> new MoonwormQueenItem(new Item.Properties()/*.setNoRepair()*/.durability(256).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> BRITTLE_FLASK = ITEMS.register("brittle_potion_flask", () -> new BrittleFlaskItem(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> GREATER_FLASK = ITEMS.register("greater_potion_flask", () -> new GreaterFlaskItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant()));
 	public static final RegistryObject<Item> CHARM_OF_LIFE_1 = ITEMS.register("charm_of_life_1", () -> new CuriosCharmItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
@@ -138,7 +138,7 @@ public class TFItems {
 	public static final RegistryObject<Item> ICE_BOW = ITEMS.register("ice_bow", () -> new IceBowItem(new Item.Properties().rarity(Rarity.UNCOMMON).durability(384)));
 	public static final RegistryObject<Item> ENDER_BOW = ITEMS.register("ender_bow", () -> new EnderBowItem(new Item.Properties().rarity(Rarity.UNCOMMON).durability(384)));
 	public static final RegistryObject<Item> ICE_SWORD = ITEMS.register("ice_sword", () -> new IceSwordItem(TwilightItemTier.ICE, new Item.Properties()));
-	public static final RegistryObject<Item> GLASS_SWORD = ITEMS.register("glass_sword", () -> new GlassSwordItem(TwilightItemTier.GLASS, new Item.Properties().setNoRepair().rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> GLASS_SWORD = ITEMS.register("glass_sword", () -> new GlassSwordItem(TwilightItemTier.GLASS, new Item.Properties()/*.setNoRepair()*/.rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> MAGIC_BEANS = ITEMS.register("magic_beans", () -> new MagicBeansItem(new Item.Properties()));
 	public static final RegistryObject<Item> GIANT_PICKAXE = ITEMS.register("giant_pickaxe", () -> new GiantPickItem(TwilightItemTier.GIANT, new Item.Properties()));
 	public static final RegistryObject<Item> GIANT_SWORD = ITEMS.register("giant_sword", () -> new GiantSwordItem(TwilightItemTier.GIANT, new Item.Properties()));

@@ -24,7 +24,7 @@ public class ThornRoseBlock extends BushBlock {
 	}
 
 	@Override
-	protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+	public boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
 		return true;
 	}
 

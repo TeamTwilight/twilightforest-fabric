@@ -1,15 +1,21 @@
 package twilightforest.data.helpers;
 
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.models.generators.ConfiguredModel;
+import io.github.fabricators_of_create.porting_lib.models.generators.ModelFile;
+import io.github.fabricators_of_create.porting_lib.models.generators.block.BlockModelBuilder;
+import io.github.fabricators_of_create.porting_lib.models.generators.block.BlockStateProvider;
+import io.github.fabricators_of_create.porting_lib.models.generators.block.MultiPartBlockStateBuilder;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.properties.*;
-import net.minecraftforge.client.model.generators.*;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
 
@@ -396,7 +402,7 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 	}
 
 	protected ResourceLocation key(Block block) {
-		return Registry.BLOCK.getKey(block);
+		return BuiltInRegistries.BLOCK.getKey(block);
 	}
 
 	protected String name(Block block) {

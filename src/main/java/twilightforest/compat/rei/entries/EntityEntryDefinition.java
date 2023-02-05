@@ -4,8 +4,7 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import dev.architectury.utils.Env;
 import dev.architectury.utils.EnvExecutor;
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
@@ -32,6 +31,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -45,6 +45,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -89,7 +90,7 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
 
     @Override
     public @Nullable ResourceLocation getIdentifier(EntryStack<Entity> entry, Entity value) {
-        return Registry.ENTITY_TYPE.getKey(value.getType());
+        return BuiltInRegistries.ENTITY_TYPE.getKey(value.getType());
     }
 
     @Override
@@ -163,7 +164,7 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
                 SEARCH_BLACKLISTED.add((EntityType<Entity>) value.getType());
             }
         try {
-            return Component.literal(I18n.get("entity." + Registry.ENTITY_TYPE.getKey(value.getType()).toString().replace(":", ".")));
+            return Component.literal(I18n.get("entity." + BuiltInRegistries.ENTITY_TYPE.getKey(value.getType()).toString().replace(":", ".")));
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -245,7 +246,7 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
                 try {
                     this.renderTheEntity(this.size / 2, this.size - 2, scale, (LivingEntity) entity);
                 } catch (Exception e) {
-                    TwilightForestMod.LOGGER.error("Error drawing entity " + Registry.ENTITY_TYPE.getKey(entity.getType()), e);
+                    TwilightForestMod.LOGGER.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()), e);
 //                    IGNORED_ENTITIES.add(type);
 //                    this.ENTITY_MAP.remove(type);
                 }
@@ -268,12 +269,12 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
             PoseStack posestack1 = new PoseStack();
             posestack1.translate(0.0D, 0.0D, 1000.0D);
             posestack1.scale((float) scale, (float) scale, (float) scale);
-            Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-            Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
+            Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
+            Quaternionf quaternion1 = Axis.XP.rotationDegrees(20.0F);
             quaternion.mul(quaternion1);
             posestack1.mulPose(quaternion);
-            posestack1.mulPose(Vector3f.XN.rotationDegrees(35.0F));
-            posestack1.mulPose(Vector3f.YN.rotationDegrees(145.0F));
+            posestack1.mulPose(Axis.XN.rotationDegrees(35.0F));
+            posestack1.mulPose(Axis.YN.rotationDegrees(145.0F));
             float f2 = entity.yBodyRot;
             float f3 = entity.getYRot();
             float f4 = entity.getXRot();
@@ -323,7 +324,7 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
             List<Component> components = tryGetEntityToolTip(entry, entry.getValue(), context);
 
             if (context.getFlag().isAdvanced()) {
-                components.add(Component.literal(Objects.requireNonNull(Registry.ENTITY_TYPE.getKey(entity)).toString()).withStyle(ChatFormatting.DARK_GRAY));
+                components.add(Component.literal(Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(entity)).toString()).withStyle(ChatFormatting.DARK_GRAY));
             }
 
             if (!components.isEmpty()) tooltip.addAll(components.get(0));
@@ -385,7 +386,7 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
             tooltip.add(item.getItem().getDescription());
 
             if (context.getFlag().isAdvanced()) {
-                tooltip.add(Component.literal(Objects.requireNonNull(Registry.ITEM.getKey(item.getItem())).toString()).withStyle(ChatFormatting.DARK_GRAY));
+                tooltip.add(Component.literal(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.getItem())).toString()).withStyle(ChatFormatting.DARK_GRAY));
             }
 
             return Tooltip.create(context.getPoint(), tooltip);
@@ -403,13 +404,13 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
             posestack1.translate(0.0D, 0.0D, 1000.0D);
             posestack1.scale(50.0F, 50.0F, 50.0F);
 
-            Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-            Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
+            Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
+            Quaternionf quaternion1 = Axis.XP.rotationDegrees(20.0F);
             quaternion.mul(quaternion1);
 
             posestack1.mulPose(quaternion);
-            posestack1.mulPose(Vector3f.XN.rotationDegrees(35.0F));
-            posestack1.mulPose(Vector3f.YN.rotationDegrees(145.0F));
+            posestack1.mulPose(Axis.XN.rotationDegrees(35.0F));
+            posestack1.mulPose(Axis.YN.rotationDegrees(145.0F));
 
             Lighting.setupForEntityInInventory();
 
@@ -435,7 +436,7 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
             float f2 = bakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
             stack.translate(0.0D, f1 + 0.25F * f2, 0.0D);
             float f3 = this.getSpin(partialTicks);
-            stack.mulPose(Vector3f.YP.rotation(f3));
+            stack.mulPose(Axis.YP.rotation(f3));
 
             stack.pushPose();
 

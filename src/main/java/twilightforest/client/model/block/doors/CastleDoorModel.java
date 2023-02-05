@@ -1,12 +1,9 @@
 package twilightforest.client.model.block.doors;
 
-import io.github.fabricators_of_create.porting_lib.model.data.ModelData;
-import io.github.fabricators_of_create.porting_lib.model.data.ModelProperty;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -38,7 +35,6 @@ public class CastleDoorModel implements BakedModel, FabricBakedModel {
 	private final ItemTransforms transforms;
 	//if we ever expand this model to be more flexible, I think we'll need a list of blocks that can connect together defined in the json instead of hardcoding this (tags may be nice for this)
 	private final Block[] validConnectors = {TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()};
-	private static final ModelProperty<CastleDoorData> DATA = new ModelProperty<>();
 
 	public CastleDoorModel(@Nullable List<BakedQuad>[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms) {
 		this.baseQuads = baseQuads;
@@ -59,7 +55,7 @@ public class CastleDoorModel implements BakedModel, FabricBakedModel {
 
 		for (Direction side : Direction.values()) {
 			int faceIndex = side.get3DDataValue();
-			CastleDoorData data = getModelData(blockView, pos).get(DATA);
+			CastleDoorData data = getModelData(blockView, pos);
 			ArrayList<BakedQuad> quads = new ArrayList<>(4 + (this.baseQuads != null ? 4 : 0));
 			if (this.baseQuads != null) {
 				quads.addAll(this.baseQuads[faceIndex]);
@@ -68,7 +64,7 @@ public class CastleDoorModel implements BakedModel, FabricBakedModel {
 			for (int quad = 0; quad < 4; ++quad) {
 				//if our model data is null (I really hope it isn't) we can skip connected textures since we dont have the info we need
 				//i'd rather do this than crash the game or skip rendering the block entirely
-				ConnectionLogic connectionType = data != null ? data.logic[faceIndex][quad] : ConnectionLogic.NONE;
+				ConnectionLogic connectionType = data.logic[faceIndex][quad];
 				quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);
 			}
 
@@ -85,7 +81,7 @@ public class CastleDoorModel implements BakedModel, FabricBakedModel {
 	}
 
 	@NotNull
-	public ModelData getModelData(@NotNull BlockAndTintGetter getter, @NotNull BlockPos pos) {
+	public CastleDoorData getModelData(@NotNull BlockAndTintGetter getter, @NotNull BlockPos pos) {
 		CastleDoorData data = new CastleDoorData();
 
 		for (Direction face : Direction.values()) {
@@ -108,7 +104,7 @@ public class CastleDoorModel implements BakedModel, FabricBakedModel {
 			}
 		}
 
-		return ModelData.builder().with(DATA, data).build();
+		return data;
 	}
 
 	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side) {
