@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -72,7 +72,7 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 		List<Component> tooltip = new ArrayList<>();
 		tooltip.add(item.stack().getItem().getDescription());
 		if (flag.isAdvanced()) {
-			tooltip.add(Component.literal(Objects.requireNonNull(Registry.ITEM.getKey(item.stack().getItem())).toString()).withStyle(ChatFormatting.DARK_GRAY));
+			tooltip.add(Component.literal(Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(item.stack().getItem())).toString()).withStyle(ChatFormatting.DARK_GRAY));
 		}
 		return tooltip;
 	}

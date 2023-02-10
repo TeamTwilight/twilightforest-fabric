@@ -69,7 +69,7 @@ public class SlimeProjectile extends TFThrowable implements ItemSupplier {
 			//damage armor pieces
 			if (target instanceof Player player) {
 				for (ItemStack stack : player.getArmorSlots())
-					stack.hurtAndBreak(this.random.nextInt(1), player, (user) -> user.broadcastBreakEvent(((ItemExtensions) stack.getItem()).fabric_getEquipmentSlotProvider().getPreferredEquipmentSlot(stack) != null ? stack.getEquipmentSlot() : EquipmentSlot.HEAD));
+					stack.hurtAndBreak(this.random.nextInt(1), player, (user) -> user.broadcastBreakEvent(((ItemExtensions) stack.getItem()).fabric_getEquipmentSlotProvider().getPreferredEquipmentSlot(stack) != null ? ((ItemExtensions) stack.getItem()).fabric_getEquipmentSlotProvider().getPreferredEquipmentSlot(stack) : EquipmentSlot.HEAD));
 			}
 		}
 	}

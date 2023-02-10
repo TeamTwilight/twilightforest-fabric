@@ -1,6 +1,7 @@
 package twilightforest.client.model.block.patch;
 
 import com.mojang.math.Transformation;
+import io.github.fabricators_of_create.porting_lib.models.SimpleModelState;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

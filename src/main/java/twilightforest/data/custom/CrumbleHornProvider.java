@@ -52,8 +52,6 @@ public abstract class CrumbleHornProvider implements DataProvider {
 
 		this.builders.forEach((name, transform) -> {
 			List<String> list = builders.keySet().stream()
-					.filter(s -> ForgeRegistries.BLOCKS.containsValue(transform.getA().getBlock()))
-					.filter(s -> ForgeRegistries.BLOCKS.containsValue(transform.getB().getBlock()))
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
 					.collect(Collectors.toList());

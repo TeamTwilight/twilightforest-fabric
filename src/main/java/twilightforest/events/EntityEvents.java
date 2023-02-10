@@ -3,16 +3,11 @@ package twilightforest.events;
 import com.mojang.authlib.GameProfile;
 import io.github.fabricators_of_create.porting_lib.event.common.ItemCraftedCallback;
 import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
-import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -49,17 +44,14 @@ import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFMobEffects;
 import twilightforest.init.TFStats;
 import twilightforest.item.FieryArmorItem;
-import twilightforest.item.MazebreakerPickItem;
 import twilightforest.item.YetiArmorItem;
 
-import javax.annotation.Nonnull;
 import java.util.UUID;
 
 public class EntityEvents {
@@ -68,7 +60,7 @@ public class EntityEvents {
 
 	public static void init() {
 		ItemCraftedCallback.EVENT.register(EntityEvents::onCrafting);
-		LivingEntityEvents.ACTUALLY_HURT.register(EntityEvents::entityHurts);
+		LivingEntityEvents.HURT.register(EntityEvents::entityHurts);
 		UseBlockCallback.EVENT.register(EntityEvents::createSkullCandle);
 		PlayerBlockBreakEvents.BEFORE.register(EntityEvents::onCasketBreak);
 	}
@@ -164,8 +156,8 @@ public class EntityEvents {
 		BlockPos pos = hitResult.getBlockPos();
 		BlockState state = world.getBlockState(pos);
 		if (!TFConfig.COMMON_CONFIG.disableSkullCandles.get()) {
-			if (stack.is(ItemTags.CANDLES) && Registry.ITEM.getKey(stack.getItem()).getNamespace().equals("minecraft") && !player.isShiftKeyDown()) {
-				if (state.getBlock() instanceof AbstractSkullBlock skull && Registry.BLOCK.getKey(state.getBlock()).getNamespace().equals("minecraft")) {
+			if (stack.is(ItemTags.CANDLES) && BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("minecraft") && !player.isShiftKeyDown()) {
+				if (state.getBlock() instanceof AbstractSkullBlock skull && BuiltInRegistries.BLOCK.getKey(state.getBlock()).getNamespace().equals("minecraft")) {
 					SkullBlock.Types type = (SkullBlock.Types) skull.getType();
 					boolean wall = state.getBlock() instanceof WallSkullBlock;
 					switch (type) {

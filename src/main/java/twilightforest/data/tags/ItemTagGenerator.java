@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +20,7 @@ import twilightforest.init.TFItems;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
+public class ItemTagGenerator extends ItemTagsProvider {
 	public static final TagKey<Item> TWILIGHT_OAK_LOGS = TagKey.create(Registries.ITEM, TwilightForestMod.prefix("twilight_oak_logs"));
 	public static final TagKey<Item> CANOPY_LOGS = TagKey.create(Registries.ITEM, TwilightForestMod.prefix("canopy_logs"));
 	public static final TagKey<Item> MANGROVE_LOGS = TagKey.create(Registries.ITEM, TwilightForestMod.prefix("mangrove_logs"));
@@ -73,7 +72,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 	private static final TagKey<Item> NECKLACES = TagKey.create(Registries.ITEM, new ResourceLocation("trinkets", "chest/necklace"));
 	private static final TagKey<Item> HATS = TagKey.create(Registries.ITEM, new ResourceLocation("trinkets", "head/hat"));
 
-	public ItemTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> future, FabricTagProvider.BlockTagProvider provider) {
+	public ItemTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> future, TagsProvider<Block> provider) {
 		super(output, future, provider);
 	}
 
@@ -162,7 +161,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		tag(ORES_IRONWOOD).add(TFItems.RAW_IRONWOOD.get());
 		tag(ORES_KNIGHTMETAL).add(TFItems.ARMOR_SHARD_CLUSTER.get());
 
-		getOrCreateTagBuilder(PORTAL_ACTIVATOR).forceAddTag(Tags.Items.GEMS_DIAMOND);
+		tag(PORTAL_ACTIVATOR).addTag(Tags.Items.GEMS_DIAMOND);
 
 		tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(
 				TFItems.FIERY_HELMET.get(),
@@ -224,7 +223,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFItems.TRANSFORMATION_POWDER.get());
 
 		tag(BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.get().asItem());
-		getOrCreateTagBuilder(UNCRAFTING_IGNORES_COST).forceAddTag(Tags.Items.RODS_WOODEN);
+		tag(UNCRAFTING_IGNORES_COST).addTag(Tags.Items.RODS_WOODEN);
 
 		tag(KEPT_ON_DEATH).add(TFItems.TOWER_KEY.get(), TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 

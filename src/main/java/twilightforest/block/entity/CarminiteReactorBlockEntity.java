@@ -1,6 +1,8 @@
 package twilightforest.block.entity;
 
+import me.alphamode.forgetags.TagHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -210,7 +212,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 		}
 
 		if (netherTransform && stateThere.getBlock() != Blocks.AIR) {
-			BlockState ore = BuiltInRegistries.BLOCK.tags().getTag(BlockTagGenerator.CARMINITE_REACTOR_ORES).getRandomElement(this.getLevel().getRandom()).get().defaultBlockState();
+			BlockState ore = TagHelper.getRandomElement(BuiltInRegistries.BLOCK, BlockTagGenerator.CARMINITE_REACTOR_ORES, this.getLevel().getRandom()).get().defaultBlockState();
 
 			this.getLevel().setBlock(pos, (this.getLevel().getRandom().nextInt(8) == 0 ? ore : Blocks.NETHERRACK.defaultBlockState()), 3);
 			// fire on top?

@@ -129,7 +129,7 @@ public class EMIEntityWidget extends Widget {
 		entity.yHeadRotO = entity.getYRot();
 		Lighting.setupForEntityInInventory();
 		EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-		quaternion1.conj();
+		quaternion1.conjugate();
 		entityrenderdispatcher.overrideCameraOrientation(quaternion1);
 		entityrenderdispatcher.setRenderShadow(false);
 		MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();

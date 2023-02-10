@@ -65,8 +65,8 @@ public class MiscEvents {
 			}
 		}
 
-		if (event.getEntity() != null && !living.level.isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.get().asItem())) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(event::getEntity), new CreateMovingCicadaSoundPacket(event.getEntity().getId()));
+		if (living != null && !living.level.isClientSide() && slot == EquipmentSlot.HEAD && to.is(TFBlocks.CICADA.get().asItem())) {
+			TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new CreateMovingCicadaSoundPacket(living.getId()), living);
 		}
 	}
 }

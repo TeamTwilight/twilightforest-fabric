@@ -1,7 +1,10 @@
 package twilightforest.client.model.block.doors;
 
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
+import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -27,16 +30,17 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
 public class CastleDoorModel implements BakedModel, FabricBakedModel {
+	private static final RenderMaterial MATERIAL = RendererAccess.INSTANCE.getRenderer().materialFinder().emissive(0, true).find();
 	@Nullable
-	private final List<BakedQuad>[] baseQuads;
-	private final BakedQuad[][][] quads;
+	private final Mesh[] baseQuads;
+	private final QuadView[][][] quads;
 	private final TextureAtlasSprite particle;
 	private final ItemOverrides overrides;
 	private final ItemTransforms transforms;
 	//if we ever expand this model to be more flexible, I think we'll need a list of blocks that can connect together defined in the json instead of hardcoding this (tags may be nice for this)
 	private final Block[] validConnectors = {TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()};
 
-	public CastleDoorModel(@Nullable List<BakedQuad>[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms) {
+	public CastleDoorModel(@Nullable Mesh[] baseQuads, QuadView[][][] quads, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms) {
 		this.baseQuads = baseQuads;
 		this.quads = quads;
 		this.particle = particle;
@@ -56,22 +60,15 @@ public class CastleDoorModel implements BakedModel, FabricBakedModel {
 		for (Direction side : Direction.values()) {
 			int faceIndex = side.get3DDataValue();
 			CastleDoorData data = getModelData(blockView, pos);
-			ArrayList<BakedQuad> quads = new ArrayList<>(4 + (this.baseQuads != null ? 4 : 0));
-			if (this.baseQuads != null) {
-				quads.addAll(this.baseQuads[faceIndex]);
-			}
+			context.meshConsumer().accept(this.baseQuads[faceIndex]);
 
 			for (int quad = 0; quad < 4; ++quad) {
 				//if our model data is null (I really hope it isn't) we can skip connected textures since we dont have the info we need
 				//i'd rather do this than crash the game or skip rendering the block entirely
 				ConnectionLogic connectionType = data.logic[faceIndex][quad];
-				quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);
+				this.quads[faceIndex][quad][connectionType.ordinal()].copyTo(emitter);
+				emitter.material(MATERIAL);
 			}
-
-			quads.forEach(bakedQuad -> {
-				emitter.fromVanilla(bakedQuad,  RendererAccess.INSTANCE.getRenderer().materialFinder().find(), side);
-				emitter.emit();
-			});
 		}
 	}
 

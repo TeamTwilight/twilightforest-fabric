@@ -25,10 +25,11 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageSources;
 
-public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, PlayerDestroyBlock {
+public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, PlayerDestroyBlock, LandPathNodeTypesRegistry.StaticPathNodeTypeProvider {
 
 	protected static final VoxelShape BASE_SHAPE = Block.box(3.0D, 3.0D, 3.0D, 13.0D, 13.0D, 13.0D);
 
@@ -49,7 +50,12 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 				.setValue(DOWN, false).setValue(UP, false)
 				.setValue(NORTH, false).setValue(SOUTH, false)
 				.setValue(WEST, false).setValue(EAST, false));
-		LandPathNodeTypesRegistry.register(this, (state, neighbor) -> BlockPathTypes.DAMAGE_CACTUS);
+		LandPathNodeTypesRegistry.register(this, this);
+	}
+
+	@Override
+	public BlockPathTypes getPathNodeType(BlockState state, boolean neighbor) {
+		return BlockPathTypes.DAMAGE_CACTUS;
 	}
 
 	@Override

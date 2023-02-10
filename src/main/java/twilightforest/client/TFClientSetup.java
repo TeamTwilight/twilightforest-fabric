@@ -55,7 +55,6 @@ public class TFClientSetup implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		TFShaders.init();
-		RenderLayerRegistration.init();
 
 		TFLayerDefinitions.registerLayers();
 		ColorHandler.registerBlockColors();

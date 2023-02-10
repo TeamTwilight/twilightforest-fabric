@@ -3,7 +3,7 @@ package twilightforest.compat.jei.renderers;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
@@ -26,12 +26,12 @@ public class EntityHelper implements IIngredientHelper<EntityType> {
 
 	@Override
 	public String getUniqueId(EntityType type, UidContext context) {
-		return Objects.requireNonNull(Registry.ENTITY_TYPE.getKey(type)).toString();
+		return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type)).toString();
 	}
 
 	@Override
 	public ResourceLocation getResourceLocation(EntityType type) {
-		return Objects.requireNonNull(Registry.ENTITY_TYPE.getKey(type));
+		return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type));
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class EntityHelper implements IIngredientHelper<EntityType> {
 		if (type == null) {
 			return "null";
 		}
-		ResourceLocation name = Registry.ENTITY_TYPE.getKey(type);
+		ResourceLocation name = BuiltInRegistries.ENTITY_TYPE.getKey(type);
 		if (name == null) {
 			return "unnamed sadface :(";
 		}

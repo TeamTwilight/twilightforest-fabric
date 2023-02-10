@@ -4,13 +4,12 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -77,7 +76,7 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 						modelView.popPose();
 						RenderSystem.applyModelViewMatrix();
 					} catch (Exception e) {
-						TwilightForestMod.LOGGER.error("Error drawing entity " + Registry.ENTITY_TYPE.getKey(type), e);
+						TwilightForestMod.LOGGER.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
 						IGNORED_ENTITIES.add(type);
 						this.ENTITY_MAP.remove(type);
 					}
@@ -95,7 +94,7 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 		List<Component> tooltip = new ArrayList<>();
 		tooltip.add(type.getDescription());
 		if (flag.isAdvanced()) {
-			tooltip.add(Component.literal(Objects.requireNonNull(Registry.ENTITY_TYPE.getKey(type)).toString()).withStyle(ChatFormatting.DARK_GRAY));
+			tooltip.add(Component.literal(Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type)).toString()).withStyle(ChatFormatting.DARK_GRAY));
 		}
 		return tooltip;
 	}

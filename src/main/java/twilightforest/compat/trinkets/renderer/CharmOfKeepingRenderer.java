@@ -9,13 +9,13 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.item.CuriosCharmItem;
 import twilightforest.compat.trinkets.model.CharmOfKeepingModel;
+import twilightforest.item.CuriosCharmItem;
 
 public abstract class CharmOfKeepingRenderer {
 
@@ -30,7 +30,7 @@ public abstract class CharmOfKeepingRenderer {
 			model = new CharmOfKeepingModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.CHARM_OF_KEEPING));
 		CuriosCharmItem charm = (CuriosCharmItem) stack.getItem();
 		TrinketRenderer.followBodyRotations(slotContext.inventory().getComponent().getEntity(), model);
-		VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(TwilightForestMod.getModelTexture("curios/" + Registry.ITEM.getKey(charm).getPath() + ".png")));
+		VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(TwilightForestMod.getModelTexture("curios/" + BuiltInRegistries.ITEM.getKey(charm).getPath() + ".png")));
 		model.renderToBuffer(ms, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

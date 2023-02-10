@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
@@ -48,7 +49,7 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
 				TFEntities.PLATEAU_BOSS.get()
 		);
 
-		tag(EntityTypeTags.IMPACT_PROJECTILES).add(
+		getOrCreateTagBuilder(EntityTypeTags.IMPACT_PROJECTILES).add(
 				TFEntities.NATURE_BOLT.get(),
 				TFEntities.LICH_BOLT.get(),
 				TFEntities.WAND_BOLT.get(),
@@ -125,6 +126,11 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
 				EntityType.MULE);
 
 		tag(Tags.EntityTypes.BOSSES).addTag(BOSSES);
+	}
+
+	@Override
+	protected FabricTagProvider.FabricTagBuilder tag(TagKey<EntityType<?>> tag) {
+		return getOrCreateTagBuilder(tag);
 	}
 
 	private static TagKey<EntityType<?>> create(ResourceLocation rl) {

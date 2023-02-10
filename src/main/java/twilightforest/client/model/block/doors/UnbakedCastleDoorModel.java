@@ -2,6 +2,14 @@ package twilightforest.client.model.block.doors;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
+import io.github.fabricators_of_create.porting_lib.models.SimpleModelState;
+import net.fabricmc.fabric.api.renderer.v1.Renderer;
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
+import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
+import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
 import org.joml.Vector3f;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -43,10 +51,10 @@ public class UnbakedCastleDoorModel implements UnbakedModel {
 			for (int quad = 0; quad < 4; quad++) {
 				Vec3i corner = face.getNormal().offset(planeDirections[quad].getNormal()).offset(planeDirections[(quad + 1) % 4].getNormal()).offset(1, 1, 1).multiply(8);
 				BlockElement element = new BlockElement(new Vector3f((float) Math.min(center.getX(), corner.getX()), (float) Math.min(center.getY(), corner.getY()), (float) Math.min(center.getZ(), corner.getZ())), new Vector3f((float) Math.max(center.getX(), corner.getX()), (float) Math.max(center.getY(), corner.getY()), (float) Math.max(center.getZ(), corner.getZ())), Map.of(), null, true);
-				this.baseElements[face.get3DDataValue()][quad] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, -1, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0), null)), null, true);
+				this.baseElements[face.get3DDataValue()][quad] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, -1, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0))), null, true);
 
 				for (ConnectionLogic connectionType : ConnectionLogic.values()) {
-					this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, 0, "", new BlockFaceUV(connectionType.remapUVs(element.uvsByFace(face)), 0), new ForgeFaceData(0xFFFFFFFF, 15, 15, true))), null, true);
+					this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, 0, "", new BlockFaceUV(connectionType.remapUVs(element.uvsByFace(face)), 0))), null, true);
 				}
 			}
 		}
@@ -54,35 +62,43 @@ public class UnbakedCastleDoorModel implements UnbakedModel {
 
 	@Override
 	public BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ResourceLocation modelLocation) {
-		Transformation transformation = context.getRootTransform();
+		Transformation transformation = Transformation.identity();
 		if (!transformation.isIdentity()) {
 			modelState = new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
 		}
 
+		Renderer renderer = RendererAccess.INSTANCE.getRenderer();
+		RenderMaterial material = renderer.materialFinder().find();
 		//making an array list like this is cursed, would not recommend
 		@SuppressWarnings("unchecked") //this is fine, I hope
-		List<BakedQuad>[] baseQuads = (List<BakedQuad>[]) Array.newInstance(List.class, 6);
+		Mesh[] baseQuads = new Mesh[6];
 		TextureAtlasSprite baseTexture = spriteGetter.apply(ownerModel.getMaterial("base"));
 
 		for (int dir = 0; dir < 6; dir++) {
-			baseQuads[dir] = new ArrayList<>();
+			MeshBuilder builder = renderer.meshBuilder();
 
 			for (BlockElement element : this.baseElements[dir]) {
-				baseQuads[dir].add(BlockModel.bakeFace(element, element.faces.values().iterator().next(), baseTexture, Direction.values()[dir], modelState, modelLocation));
+				QuadEmitter emitter = builder.getEmitter();
+				emitter.fromVanilla(BlockModel.bakeFace(element, element.faces.values().iterator().next(), baseTexture, Direction.values()[dir], modelState, modelLocation), material, Direction.values()[dir]);
+				emitter.emit();
 			}
+
+			baseQuads[dir] = builder.build();
 		}
 
 		//we'll use this to figure out which texture to use with the Connected Texture logic
 		//NONE uses the first one, everything else uses the 2nd one
 		TextureAtlasSprite[] sprites = new TextureAtlasSprite[]{spriteGetter.apply(ownerModel.getMaterial("overlay")), spriteGetter.apply(ownerModel.getMaterial("overlay_connected"))};
 
-		BakedQuad[][][] quads = new BakedQuad[6][4][5];
+		QuadView[][][] quads = new QuadView[6][4][5];
+		QuadEmitter emitter = renderer.meshBuilder().getEmitter();
 
 		for (int dir = 0; dir < 6; dir++) {
 			for (int quad = 0; quad < 4; quad++) {
 				for (int type = 0; type < 5; type++) {
 					BlockElement element = this.faceElements[dir][quad][type];
-					quads[dir][quad][type] = BlockModel.bakeFace(element, element.faces.values().iterator().next(), ConnectionLogic.values()[type].chooseTexture(sprites), Direction.values()[dir], modelState, modelLocation);
+					quads[dir][quad][type] = emitter.fromVanilla(BlockModel.bakeFace(element, element.faces.values().iterator().next(), ConnectionLogic.values()[type].chooseTexture(sprites), Direction.values()[dir], modelState, modelLocation), material, Direction.values()[dir]);
+					emitter.emit();
 				}
 			}
 		}

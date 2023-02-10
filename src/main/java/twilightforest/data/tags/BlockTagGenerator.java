@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
@@ -21,9 +22,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
 public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
-	public static final TagKey<Block> TOWERWOOD = BlockTags.create(TwilightForestMod.prefix("towerwood"));
-	public static final TagKey<Block> MAZESTONE = BlockTags.create(TwilightForestMod.prefix("mazestone"));
-	public static final TagKey<Block> CASTLE_BLOCKS = BlockTags.create(TwilightForestMod.prefix("castle_blocks"));
+	public static final TagKey<Block> TOWERWOOD = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("towerwood"));
+	public static final TagKey<Block> MAZESTONE = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("mazestone"));
+	public static final TagKey<Block> CASTLE_BLOCKS = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("castle_blocks"));
 
 	public static final TagKey<Block> TWILIGHT_OAK_LOGS = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("twilight_oak_logs"));
 	public static final TagKey<Block> CANOPY_LOGS = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("canopy_logs"));
@@ -84,12 +85,12 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 	public static final TagKey<Block> GIANTS_SPAWNABLE_ON = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("giants_spawnable_on"));
 
 	public BlockTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> future) {
-		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key(), TwilightForestMod.ID);
+		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void generateTags(HolderLookup.Provider provider) {
+	protected void addTags(HolderLookup.Provider provider) {
 		tag(TWILIGHT_OAK_LOGS)
 				.add(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get());
 		tag(CANOPY_LOGS)
@@ -366,9 +367,9 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 		tag(FIRE_JET_FUEL).add(Blocks.LAVA);
 
-		getOrCreateTagBuilder(ICE_BOMB_REPLACEABLES)
+		tag(ICE_BOMB_REPLACEABLES)
 				.add(TFBlocks.MAYAPPLE.get(), TFBlocks.FIDDLEHEAD.get(), Blocks.GRASS, Blocks.TALL_GRASS, Blocks.FERN, Blocks.LARGE_FERN)
-				.forceAddTag(BlockTags.FLOWERS);
+				.addTags(BlockTags.FLOWERS);
 
 		tag(PLANTS_HANG_ON)
 				.addTag(BlockTags.DIRT)
@@ -448,19 +449,20 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				.add(TFBlocks.KEEPSAKE_CASKET.get())
 				.addOptional(new ResourceLocation("gravestone", "gravestone"));
 
-		getOrCreateTagBuilder(ORE_MAGNET_SAFE_REPLACE_BLOCK)
-				.forceAddTag(BlockTags.DIRT)
-				.forceAddTag(Tags.Blocks.GRAVEL)
-				.forceAddTag(Tags.Blocks.SAND)
-				.forceAddTag(BlockTags.NYLIUM)
-				.forceAddTag(BlockTags.BASE_STONE_OVERWORLD)
-				.forceAddTag(BlockTags.BASE_STONE_NETHER)
-				.forceAddTag(Tags.Blocks.END_STONES)
-				.forceAddTag(BlockTags.DEEPSLATE_ORE_REPLACEABLES)
-				.forceAddTag(BlockTags.STONE_ORE_REPLACEABLES)
-				.addTag(ROOT_GROUND);
+		tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTags(
+				BlockTags.DIRT,
+				Tags.Blocks.GRAVEL,
+				Tags.Blocks.SAND,
+				BlockTags.NYLIUM,
+				BlockTags.BASE_STONE_OVERWORLD,
+				BlockTags.BASE_STONE_NETHER,
+				Tags.Blocks.END_STONES,
+				BlockTags.DEEPSLATE_ORE_REPLACEABLES,
+				BlockTags.STONE_ORE_REPLACEABLES,
+				ROOT_GROUND
+		);
 
-		getOrCreateTagBuilder(ORE_MAGNET_IGNORE).forceAddTag(BlockTags.COAL_ORES);
+		tag(ORE_MAGNET_IGNORE).addTags(BlockTags.COAL_ORES);
 
 		tag(ROOT_GROUND).add(TFBlocks.ROOT_BLOCK.get());
 		tag(ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.get());
@@ -472,7 +474,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 		tag(BlockTags.FEATURES_CANNOT_REPLACE).addTag(COMMON_PROTECTIONS).add(TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get());
 		// For anything that permits replacement during Worldgen
-		getOrCreateTagBuilder(WORLDGEN_REPLACEABLES).forceAddTag(BlockTags.LUSH_GROUND_REPLACEABLE).forceAddTag(BlockTags.REPLACEABLE_PLANTS);
+		tag(WORLDGEN_REPLACEABLES).addTags(BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.REPLACEABLE_PLANTS);
 
 		tag(ROOT_TRACE_SKIP).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get()).addTags(BlockTags.FEATURES_CANNOT_REPLACE);
 
@@ -665,8 +667,8 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 	}
 
 	private static Block[] getAllMinecraftOrTwilightBlocks(Predicate<Block> predicate) {
-		return Registry.BLOCK.stream()
-				.filter(b -> Registry.BLOCK.getKey(b) != null && (Registry.BLOCK.getKey(b).getNamespace().equals(TwilightForestMod.ID) || Registry.BLOCK.getKey(b).getNamespace().equals("minecraft")) && predicate.test(b))
+		return BuiltInRegistries.BLOCK.stream()
+				.filter(b -> BuiltInRegistries.BLOCK.getKey(b) != null && (BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(TwilightForestMod.ID) || BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals("minecraft")) && predicate.test(b))
 				.toArray(Block[]::new);
 	}
 

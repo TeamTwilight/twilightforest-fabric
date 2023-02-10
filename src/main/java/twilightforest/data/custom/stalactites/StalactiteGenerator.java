@@ -1,5 +1,6 @@
 package twilightforest.data.custom.stalactites;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
@@ -8,7 +9,7 @@ import twilightforest.data.custom.stalactites.entry.Stalactite;
 import java.util.Map;
 
 public class StalactiteGenerator extends StalactiteProvider {
-	public StalactiteGenerator(PackOutput output) {
+	public StalactiteGenerator(FabricDataOutput output) {
 		super(output, TwilightForestMod.ID);
 	}
 

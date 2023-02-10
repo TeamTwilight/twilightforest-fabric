@@ -32,8 +32,8 @@ import twilightforest.item.OreMagnetItem;
 public class ToolEvents {
 
 	public static void init() {
-		LivingEntityEvents.ACTUALLY_HURT.register(ToolEvents::onMinotaurAxeCharge);
-		LivingEntityEvents.ACTUALLY_HURT.register(ToolEvents::onKnightmetalToolDamage);
+		LivingEntityEvents.HURT.register(ToolEvents::onMinotaurAxeCharge);
+		LivingEntityEvents.HURT.register(ToolEvents::onKnightmetalToolDamage);
 		AttackEntityCallback.EVENT.register(ToolEvents::fieryToolSetFire);
 		ProjectileImpactCallback.EVENT.register(ToolEvents::onEnderBowHit);
 		BlockEvents.BLOCK_BREAK.register(ToolEvents::damageToolsExtra);

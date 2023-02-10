@@ -1,14 +1,14 @@
 package twilightforest.data.custom;
 
 import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
-import net.minecraft.data.PackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import twilightforest.TwilightForestMod;
 
 public class UncraftingRecipeGenerator extends UncraftingRecipeProvider {
 
-	public UncraftingRecipeGenerator(PackOutput output, ExistingFileHelper helper) {
+	public UncraftingRecipeGenerator(FabricDataOutput output, ExistingFileHelper helper) {
 		super(output, TwilightForestMod.ID, helper);
 	}
 

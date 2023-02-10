@@ -1,21 +1,34 @@
 package twilightforest.client.model.block.giantblock;
 
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import twilightforest.mixin.BlockModelAccessor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Locale;
 import java.util.function.Function;
 
 public record UnbakedGiantBlockModel(ResourceLocation parent, BlockModel ownerModel) implements UnbakedModel {
 
 	@Override
+	public Collection<ResourceLocation> getDependencies() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public void resolveParents(Function<ResourceLocation, UnbakedModel> models) {
+		ownerModel.resolveParents(models);
+	}
+
+	@Override
 	public BakedModel bake(ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ResourceLocation modelLocation) {
-		ItemOverrides overrides = ownerModel().getOverrides(bakery, ownerModel, spriteGetter);
+		ItemOverrides overrides = ((BlockModelAccessor)ownerModel()).tf$callGetItemOverrides(bakery, ownerModel);
 		TextureAtlasSprite[] sprites;
 		if (ownerModel.hasTexture("all")) {
 			sprites = new TextureAtlasSprite[]{spriteGetter.apply(ownerModel.getMaterial("all"))};

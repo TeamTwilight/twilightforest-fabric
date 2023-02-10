@@ -22,7 +22,7 @@ public class GiantBlockModelLoader implements ModelResourceProvider {
 	public UnbakedModel loadModelResource(ResourceLocation resourceId, ModelProviderContext context) {
 		if(!resourceId.getNamespace().equals(TwilightForestMod.ID))
 			return null;
-		JsonObject object = BlockModelAccessor.port_lib$GSON().fromJson(getModelJson(resourceId), JsonObject.class);
+		JsonObject object = BlockModel.GSON.fromJson(getModelJson(resourceId), JsonObject.class);
 		if(object.has("loader")) {
 			if(!object.get("loader").getAsString().equals("twilightforest:giant_block"))
 				return null;
