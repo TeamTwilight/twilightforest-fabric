@@ -184,7 +184,7 @@ public class TFASM implements Runnable {
             });
         });
                              // LevelRenderer.renderLevel
-        String renderLevel = mapM("class_761.method_22710(Lnet/minecraft/class_4587;FJZLnet/minecraft/class_4184;Lnet/minecraft/class_757;Lnet/minecraft/class_765;Lnet/minecraft/class_1159;)V");
+        String renderLevel = mapM("class_761.method_22710(Lnet/minecraft/class_4587;FJZLnet/minecraft/class_4184;Lnet/minecraft/class_757;Lnet/minecraft/class_765;Lorg/joml/Matrix4f;)V");
                                       // entitiesForRendering
         String entitiesForRendering = mapM("class_638.method_18112()Ljava/lang/Iterable;");
                                          // LevelRenderer
