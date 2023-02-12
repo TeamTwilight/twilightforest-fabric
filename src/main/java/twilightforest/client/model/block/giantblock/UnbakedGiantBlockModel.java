@@ -23,7 +23,6 @@ public record UnbakedGiantBlockModel(ResourceLocation parent, BlockModel ownerMo
 
 	@Override
 	public void resolveParents(Function<ResourceLocation, UnbakedModel> models) {
-		ownerModel.resolveParents(models);
 	}
 
 	@Override

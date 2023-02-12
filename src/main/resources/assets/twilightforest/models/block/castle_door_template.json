@@ -1,5 +1,5 @@
 {
-  "loader": "forge:composite",
+  "loader": "porting_lib:composite",
   "parent": "block/block",
   "children": {
     "main": {

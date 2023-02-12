@@ -5,6 +5,7 @@ import com.mojang.math.Transformation;
 import io.github.fabricators_of_create.porting_lib.models.SimpleModelState;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
@@ -26,7 +27,7 @@ import java.util.function.Function;
 //for now, im keeping this hardcoded to a 2 layer block, with the overlay layer being fullbright and tinted.
 //It might be worth expanding this in the future to be more flexible for other kinds of blocks (1 layer blocks, determining emissivity and tinting per layer, maybe >2 layer blocks?) but for now, I see no point.
 //I only wanted this system for castle doors after all!
-public class UnbakedCastleDoorModel implements UnbakedModel {
+public class UnbakedCastleDoorModel extends BlockModel {
 
 	private final BlockElement[][] baseElements;
 	private final BlockElement[][][] faceElements;
@@ -34,6 +35,7 @@ public class UnbakedCastleDoorModel implements UnbakedModel {
 	private final BlockModel ownerModel;
 
 	public UnbakedCastleDoorModel(BlockModel ownerModel) {
+		super(ownerModel.parentLocation, ownerModel.getElements(), ownerModel.textureMap, ownerModel.hasAmbientOcclusion(), ownerModel.getGuiLight(), ownerModel.getTransforms(), ownerModel.getOverrides());
 		this.ownerModel = ownerModel;
 		//base elements - the base block. No Connected Textures on this bit.
 		//the array is made of the directions and quads
@@ -68,7 +70,7 @@ public class UnbakedCastleDoorModel implements UnbakedModel {
 		}
 
 		Renderer renderer = RendererAccess.INSTANCE.getRenderer();
-		RenderMaterial material = renderer.materialFinder().find();
+		RenderMaterial material = renderer.materialFinder().blendMode(0, BlendMode.CUTOUT).find();
 		//making an array list like this is cursed, would not recommend
 		@SuppressWarnings("unchecked") //this is fine, I hope
 		Mesh[] baseQuads = new Mesh[6];
@@ -90,15 +92,13 @@ public class UnbakedCastleDoorModel implements UnbakedModel {
 		//NONE uses the first one, everything else uses the 2nd one
 		TextureAtlasSprite[] sprites = new TextureAtlasSprite[]{spriteGetter.apply(ownerModel.getMaterial("overlay")), spriteGetter.apply(ownerModel.getMaterial("overlay_connected"))};
 
-		QuadView[][][] quads = new QuadView[6][4][5];
-		QuadEmitter emitter = renderer.meshBuilder().getEmitter();
+		BakedQuad[][][] quads = new BakedQuad[6][4][5];
 
 		for (int dir = 0; dir < 6; dir++) {
 			for (int quad = 0; quad < 4; quad++) {
 				for (int type = 0; type < 5; type++) {
 					BlockElement element = this.faceElements[dir][quad][type];
-					quads[dir][quad][type] = emitter.fromVanilla(BlockModel.bakeFace(element, element.faces.values().iterator().next(), ConnectionLogic.values()[type].chooseTexture(sprites), Direction.values()[dir], modelState, modelLocation), material, Direction.values()[dir]);
-					emitter.emit();
+					quads[dir][quad][type] = BlockModel.bakeFace(element, element.faces.values().iterator().next(), ConnectionLogic.values()[type].chooseTexture(sprites), Direction.values()[dir], modelState, modelLocation);
 				}
 			}
 		}
@@ -113,6 +113,5 @@ public class UnbakedCastleDoorModel implements UnbakedModel {
 
 	@Override
 	public void resolveParents(Function<ResourceLocation, UnbakedModel> models) {
-		ownerModel.resolveParents(models);
 	}
 }

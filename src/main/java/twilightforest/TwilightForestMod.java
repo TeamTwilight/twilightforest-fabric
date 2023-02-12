@@ -40,6 +40,7 @@ import twilightforest.init.custom.DwarfRabbitVariant;
 import twilightforest.init.custom.TinyBirdVariant;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.world.components.BiomeGrassColors;
+import twilightforest.world.components.TFCavesCarver;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
@@ -80,8 +81,9 @@ public class TwilightForestMod implements ModInitializer {
 		Stalactite.reloadStalactites();
 
 		TFBannerPatterns.BANNER_PATTERNS.register();
-		TFBlockEntities.BLOCK_ENTITIES.register();
+		TFSounds.SOUNDS.register();
 		TFBlocks.BLOCKS.register();
+		TFBlockEntities.BLOCK_ENTITIES.register();
 		TFLoot.CONDITIONS.register();
 		TFMenuTypes.CONTAINERS.register();
 		TFEnchantments.ENCHANTMENTS.register();
@@ -96,7 +98,6 @@ public class TwilightForestMod implements ModInitializer {
 		TFFeatureModifiers.PLACEMENT_MODIFIERS.register();
 		TFRecipes.RECIPE_SERIALIZERS.register();
 		TFRecipes.RECIPE_TYPES.register();
-		TFSounds.SOUNDS.register();
 		TFEntities.SPAWN_EGGS.register();
 		TFStats.STATS.register();
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register();
@@ -109,9 +110,6 @@ public class TwilightForestMod implements ModInitializer {
 		DwarfRabbitVariant.DWARF_RABBITS.register();
 		TinyBirdVariant.TINY_BIRDS.register();
 
-		DwarfRabbitVariant.DWARF_RABBITS.register();
-		TinyBirdVariant.TINY_BIRDS.register();
-
 		TFStructures.register();
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			TrinketsCompat.init();
@@ -119,6 +117,9 @@ public class TwilightForestMod implements ModInitializer {
 		TFConfiguredFeatures.init();
 		TFPlacedFeatures.init();
 		TFStructureProcessors.init();
+		TFBlocks.registerItemblocks();
+		TFEntities.init();
+		TFCaveCarvers.register();
 		registerSerializers();
 
 

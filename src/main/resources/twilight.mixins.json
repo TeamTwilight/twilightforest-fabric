@@ -8,9 +8,7 @@
   "client": [
     "client.GuiMixin",
     "client.ItemBlockRenderTypesMixin",
-    "client.MapRendererMapInstanceMixin",
-    "client.ModelLayersMixin",
-    "client.SheetsMixin"
+    "client.MapRendererMapInstanceMixin"
   ],
   "mixins": [
     "BlockModelAccessor",

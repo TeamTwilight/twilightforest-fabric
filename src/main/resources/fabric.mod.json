@@ -36,9 +36,11 @@
     "mm:early_risers": [
       "twilightforest.asm.TFASM"
     ],
-    "cardinal-components": [
-      "twilightforest.capabilities.CapabilityList::attachLevelCapability",
+    "cardinal-components-entity": [
       "twilightforest.capabilities.CapabilityList::attachEntityCapability"
+    ],
+    "cardinal-components-world": [
+      "twilightforest.capabilities.CapabilityList::attachLevelCapability"
     ],
     "rei_client": [
       "twilightforest.compat.rei.TwilightForestREIClientPlugin"
