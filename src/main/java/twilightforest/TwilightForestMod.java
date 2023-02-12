@@ -4,6 +4,7 @@ import com.chocohead.mm.api.ClassTinkerers;
 import com.google.common.collect.Maps;
 import com.mojang.brigadier.CommandDispatcher;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
@@ -141,6 +142,9 @@ public class TwilightForestMod implements ModInitializer {
 		HostileMountEvents.init();
 		CharmEvents.init();
 		ToolEvents.init();
+
+		ModConfigEvents.reloading(ID).register(TFConfig::onConfigReload);
+
 	}
 
 	public static void addClassicPack() {

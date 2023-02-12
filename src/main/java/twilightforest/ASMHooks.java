@@ -185,7 +185,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}<br>
 	 * [BEFORE IRETURN]
 	 */
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public static int foliage(int o, Biome biome, double x, double z) {
 		return FoliageColorHandler.get(o, biome, x, z);
 	}

@@ -94,7 +94,7 @@ public abstract class StalactiteProvider implements DataProvider {
 	protected void makeStalactite(Stalactite stalactite, Stalactite.HollowHillType type) {
 		var nameBuilder = new StringJoiner("_", "", "_stalactite");
 
-		for (ResourceLocation entry : stalactite.ores().keySet().stream().map(ForgeRegistries.BLOCKS::getKey).sorted().toList())
+		for (ResourceLocation entry : stalactite.ores().keySet().stream().map(BuiltInRegistries.BLOCK::getKey).sorted().toList())
 			nameBuilder.add(entry.getPath());
 
 		this.builder.putIfAbsent(Pair.of(new ResourceLocation(this.modid, nameBuilder.toString()), stalactite), type);

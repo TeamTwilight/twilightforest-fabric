@@ -117,9 +117,6 @@ public class REIUncraftingCategory implements DisplayCategory<REIUncraftingDispl
 
     //Mostly copies from Uncrafting Menu
     private static int calculateUncraftingCost(CraftingRecipe recipe, List<Ingredient> outputs) {
-        //disable the uncrafting cost if the config option says to
-        if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingXpCost.get()) return 0;
-
         // we don't want to display anything if there is anything in the assembly grid
 
         int customCost = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCost() : -1;

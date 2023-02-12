@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import twilightforest.TFConfig;
 import twilightforest.events.CapabilityEvents;
 import twilightforest.events.ProgressionEvents;
 
@@ -16,5 +17,6 @@ public class PlayerListMixin {
 	private void twilightforest$onLoginTail(Connection netManager, ServerPlayer player, CallbackInfo ci) {
 		CapabilityEvents.playerLogsIn(player);
 		ProgressionEvents.playerLogsIn(player);
+		TFConfig.ConfigSync.syncConfigOnLogin(player);
 	}
 }

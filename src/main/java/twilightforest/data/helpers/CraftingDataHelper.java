@@ -21,6 +21,7 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFChestBlock;
 import twilightforest.data.tags.ItemTagGenerator;

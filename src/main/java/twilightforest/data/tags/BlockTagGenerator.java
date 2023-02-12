@@ -55,7 +55,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 	public static final TagKey<Block> PORTAL_EDGE = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("portal/edge"));
 	public static final TagKey<Block> PORTAL_POOL = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("portal/fluid"));
 	public static final TagKey<Block> PORTAL_DECO = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("portal/decoration"));
-	public static final TagKey<Block> GENERATED_PORTAL_DECO = BlockTags.create(TwilightForestMod.prefix("portal/generated_decoration"));
+	public static final TagKey<Block> GENERATED_PORTAL_DECO = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("portal/generated_decoration"));
 
 	public static final TagKey<Block> DARK_TOWER_ALLOWED_POTS = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("dark_tower_allowed_pots"));
 	public static final TagKey<Block> TROPHIES = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("trophies"));

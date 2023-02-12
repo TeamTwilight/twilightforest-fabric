@@ -1,11 +1,15 @@
 package twilightforest;
 
+import io.github.fabricators_of_create.porting_lib.util.ServerLifecycleHooks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.config.ModConfig;
+import twilightforest.network.SyncUncraftingTableConfigPacket;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.util.PlayerHelper;
 
 import javax.annotation.Nullable;
@@ -334,12 +338,11 @@ public class TFConfig {
 		return COMMON_CONFIG.portalLockingAdvancement;
 	}
 
-	@SubscribeEvent
-	public static void onConfigReload(final ModConfigEvent.Reloading event) {
+	public static void onConfigReload(final ModConfig config) {
 		//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things dont desync.
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null && server.isDedicatedServer()) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncUncraftingTableConfigPacket(
+			TFPacketHandler.CHANNEL.sendToClientsInServer(new SyncUncraftingTableConfigPacket(
 					COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
@@ -347,21 +350,19 @@ public class TFConfig {
 					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
+					COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()), server);
 		}
 		//sets cached portal locking advancement to null just in case it changed
 		COMMON_CONFIG.portalLockingAdvancement = null;
 	}
 
 	//damn forge events
-	@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 	public static class ConfigSync {
 		//sends uncrafting settings to a player on a server when they log in. This prevents desyncs when the configs dont match up between the player and the server.
-		@SubscribeEvent
-		public static void syncConfigOnLogin(PlayerEvent.PlayerLoggedInEvent event) {
+		public static void syncConfigOnLogin(ServerPlayer player) {
 			MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-			if (server != null && server.isDedicatedServer() && event.getEntity() instanceof ServerPlayer player) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SyncUncraftingTableConfigPacket(
+			if (server != null && server.isDedicatedServer()) {
+				TFPacketHandler.CHANNEL.sendToClient(new SyncUncraftingTableConfigPacket(
 						COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
@@ -369,7 +370,7 @@ public class TFConfig {
 						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
-						COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
+						COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()), player);
 			}
 		}
 	}

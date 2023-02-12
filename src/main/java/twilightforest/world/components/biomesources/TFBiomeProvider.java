@@ -12,6 +12,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
 import twilightforest.init.TFDimensionSettings;
+import twilightforest.util.ComparableResourceKey;
 import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
 import twilightforest.world.components.layer.*;
 import twilightforest.world.components.layer.vanillalegacy.Layer;
@@ -42,7 +43,7 @@ public class TFBiomeProvider extends BiomeSource {
 	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
 	private final HolderGetter<Biome> registry;
-	private final Map<ResourceKey<Biome>, TerrainColumn> biomeList;
+	private final Map<ComparableResourceKey<Biome>, TerrainColumn> biomeList;
 	private final Layer genBiomes;
 	private final long seed;
 	private final float baseOffset;
@@ -52,7 +53,7 @@ public class TFBiomeProvider extends BiomeSource {
 		this(seed, registry, list.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), offset, factor);
 	}
 
-	public TFBiomeProvider(long seed, HolderGetter<Biome> registryIn, Map<ResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
+	public TFBiomeProvider(long seed, HolderGetter<Biome> registryIn, Map<ComparableResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
 		super(list.values().stream().flatMap(TerrainColumn::getBiomes));
 
 		this.seed = seed;

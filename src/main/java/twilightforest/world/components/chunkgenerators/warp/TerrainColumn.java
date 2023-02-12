@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.util.Codecs;
+import twilightforest.util.ComparableResourceKey;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -77,8 +78,8 @@ public final class TerrainColumn implements Comparable<TerrainColumn> {
         return this.noiseScale;
     }
 
-    public ResourceKey<Biome> getResourceKey() {
-        return this.resourceKey;
+    public ComparableResourceKey<Biome> getResourceKey() {
+        return ComparableResourceKey.of(this.resourceKey);
     }
 
     @Override

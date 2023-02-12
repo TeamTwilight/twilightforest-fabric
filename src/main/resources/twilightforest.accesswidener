@@ -91,6 +91,7 @@ accessible method net/minecraft/world/entity/Entity unsetRemoved ()V
 extendable class net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator
 accessible method net/minecraft/world/level/block/BushBlock mayPlaceOn (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z
 accessible field net/minecraft/world/entity/monster/Slime wasOnGround Z
+extendable method net/minecraft/resources/ResourceKey <init> (Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/resources/ResourceLocation;)V
 extendable class net/minecraft/world/item/crafting/Ingredient
 accessible method net/minecraft/world/item/crafting/Ingredient <init> (Ljava/util/stream/Stream;)V
 accessible class net/minecraft/world/item/crafting/Ingredient$Value

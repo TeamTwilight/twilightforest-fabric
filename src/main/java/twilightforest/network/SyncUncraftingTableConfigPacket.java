@@ -1,14 +1,19 @@
 package twilightforest.network;
 
+import me.pepperbell.simplenetworking.S2CPacket;
+import me.pepperbell.simplenetworking.SimpleChannel;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import twilightforest.TFConfig;
 
 import java.util.List;
-import java.util.function.Supplier;
 
-public class SyncUncraftingTableConfigPacket {
+public class SyncUncraftingTableConfigPacket implements S2CPacket {
 
 	private final double uncraftingMultiplier;
 	private final double repairingMultiplier;
@@ -43,6 +48,7 @@ public class SyncUncraftingTableConfigPacket {
 		this.flipModidList = buf.readBoolean();
 	}
 
+	@Override
 	public void encode(FriendlyByteBuf buf) {
 		buf.writeDouble(this.uncraftingMultiplier);
 		buf.writeDouble(this.repairingMultiplier);
@@ -54,21 +60,18 @@ public class SyncUncraftingTableConfigPacket {
 		buf.writeBoolean(this.flipModidList);
 	}
 
-	public static class Handler {
 
-		public static boolean onMessage(SyncUncraftingTableConfigPacket message, Supplier<NetworkEvent.Context> ctx) {
-			ctx.get().enqueueWork(() -> {
-				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.set(message.uncraftingMultiplier);
-				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.set(message.repairingMultiplier);
-				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.set(message.allowShapeless);
-				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.set(message.disabled);
-				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.set(message.disabledRecipes);
-				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.set(message.flipRecipeList);
-				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.set(message.disabledModids);
-				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.set(message.flipModidList);
-			});
-			ctx.get().setPacketHandled(true);
-			return true;
-		}
+	@Override
+	public void handle(Minecraft client, ClientPacketListener packetListener, PacketSender sender, SimpleChannel channel) {
+		client.execute(() -> {
+			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.set(this.uncraftingMultiplier);
+			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.set(this.repairingMultiplier);
+			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.set(this.allowShapeless);
+			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.set(this.disabled);
+			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.set(this.disabledRecipes);
+			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.set(this.flipRecipeList);
+			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.set(this.disabledModids);
+			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.set(this.flipModidList);
+		});
 	}
 }

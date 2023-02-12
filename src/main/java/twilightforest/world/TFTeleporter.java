@@ -1,8 +1,11 @@
 package twilightforest.world;
 
 import com.google.common.collect.Maps;
+import io.github.fabricators_of_create.porting_lib.extensions.extensions.ITeleporter;
+import me.alphamode.forgetags.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -16,7 +19,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -536,7 +538,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static BlockState randNatureBlock(RandomSource random) {
-		return ForgeRegistries.BLOCKS.tags().getTag(BlockTagGenerator.GENERATED_PORTAL_DECO).getRandomElement(random).get().defaultBlockState();
+		return TagHelper.getRandomElement(BuiltInRegistries.BLOCK, BlockTagGenerator.GENERATED_PORTAL_DECO, random).get().defaultBlockState();
 	}
 
 	private static boolean isOkayForPortal(ServerLevel world, BlockPos pos) {

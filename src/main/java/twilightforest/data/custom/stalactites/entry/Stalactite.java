@@ -2,6 +2,8 @@ package twilightforest.data.custom.stalactites.entry;
 
 import com.google.gson.*;
 import it.unimi.dsi.fastutil.Pair;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.util.GsonHelper;
@@ -55,7 +57,7 @@ public record Stalactite(Map<Block, Integer> ores, float sizeVariation, int maxL
 			JsonArray array = new JsonArray();
 
 			List<Pair<ResourceLocation, Integer>> blockWeights = stalactite.ores().entrySet().stream()
-					.map(e -> Pair.of(ForgeRegistries.BLOCKS.getKey(e.getKey()), e.getValue()))
+					.map(e -> Pair.of(BuiltInRegistries.BLOCK.getKey(e.getKey()), e.getValue()))
 					.sorted(Comparator.comparing(Pair::left)) // Compare only the resource locations
 					.toList();
 
