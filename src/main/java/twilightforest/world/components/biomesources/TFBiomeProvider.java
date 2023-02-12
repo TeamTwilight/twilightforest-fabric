@@ -23,6 +23,7 @@ import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensionSettings.seed).forGetter(o -> o.seed),
 			RegistryOps.retrieveGetter(Registries.BIOME),
-			TerrainColumn.CODEC.listOf().fieldOf("biome_landscape").xmap(l -> l.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), m -> List.copyOf(m.values())).forGetter(o -> o.biomeList),
+			TerrainColumn.CODEC.listOf().fieldOf("biome_landscape").xmap(l -> l.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), m -> m.values().stream().sorted(Comparator.comparing(TerrainColumn::getResourceKey)).toList()).forGetter(o -> o.biomeList),
 			Codec.FLOAT.fieldOf("base_offset").forGetter(o -> o.baseOffset),
 			Codec.FLOAT.fieldOf("base_factor").forGetter(o -> o.baseFactor)
 	).apply(instance, instance.stable(TFBiomeProvider::new)));

@@ -2,15 +2,15 @@ package twilightforest;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec;
 import twilightforest.util.PlayerHelper;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class TFConfig {
 
@@ -86,21 +86,21 @@ public class TFConfig {
 					comment("Settings for all things related to the uncrafting table.").
 					push("Uncrafting Table");
 			{
-				UNCRAFTING_STUFFS.disableUncraftingXpCost = builder.
+				UNCRAFTING_STUFFS.uncraftingXpCostMultiplier = builder.
 						worldRestart().
 						translation(config + "uncrafting_xp_cost").
 						comment("""
-								Setting this to true will make it so you dont have to pay XP to uncraft stuff. This will only affect uncrafting.
-								If you want to disable the xp cost for repairing and recrafting, see the below option.""").
-						define("disableUncraftingXpCost", false);
-				UNCRAFTING_STUFFS.disableRepairingXpCost = builder.
+								Multiplies the total XP cost of uncrafting an item and rounds up.
+								Higher values means the recipe will cost more to uncraft, lower means less. Set to 0 to disable the cost altogether.
+								Note that this only affects reversed crafting recipes, uncrafting recipes will still use the same cost as they normally would.""").
+						defineInRange("uncraftingXpCostMultiplier", 1.0D, 0.0D, Double.MAX_VALUE);
+				UNCRAFTING_STUFFS.repairingXpCostMultiplier = builder.
 						worldRestart().
 						translation(config + "repairing_xp_cost").
 						comment("""
-								Setting this to true will make it so you dont have to pay XP to repair and recraft stuff in the uncrafting table. This wont affect uncrafting cost.
-								If you're confused about what repairing and recrafting are, you can read about them here: http://benimatic.com/tfwiki/index.php?title=Uncrafting_Table
-								If you want to disable the xp cost for uncrafting, see the above option.""").
-						define("disableRepairingXpCost", false);
+								Multiplies the total XP cost of repairing an item and rounds up.
+								Higher values means the recipe will cost more to repair, lower means less. Set to 0 to disable the cost altogether.""").
+						defineInRange("repairingXpCostMultiplier", 1.0D, 0.0D, Double.MAX_VALUE);
 				UNCRAFTING_STUFFS.disableUncraftingRecipes = builder.
 						worldRestart().
 						translation(config + "uncrafting_recipes").
@@ -129,6 +129,13 @@ public class TFConfig {
 						translation(config + "uncrafting_mod_id_flip").
 						comment("If true, this will invert the above option from a blacklist to a whitelist.").
 						define("flipIdList", false);
+				UNCRAFTING_STUFFS.allowShapelessUncrafting = builder.
+						worldRestart().
+						translation(config + "shapeless_uncrafting").
+						comment("""
+								If true, the uncrafting table will also be allowed to uncraft shapeless recipes.
+								The table was originally intended to only take shaped recipes, but this option remains for people who wish to keep the functionality.""").
+						define("enableShapelessCrafting", false);
 				UNCRAFTING_STUFFS.disableUncrafting = builder.
 						worldRestart().
 						translation(config + "uncrafting").
@@ -244,8 +251,9 @@ public class TFConfig {
 		public UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
 
 		public static class UncraftingStuff {
-			public ForgeConfigSpec.BooleanValue disableUncraftingXpCost;
-			public ForgeConfigSpec.BooleanValue disableRepairingXpCost;
+			public ForgeConfigSpec.DoubleValue uncraftingXpCostMultiplier;
+			public ForgeConfigSpec.DoubleValue repairingXpCostMultiplier;
+			public ForgeConfigSpec.BooleanValue allowShapelessUncrafting;
 			public ForgeConfigSpec.BooleanValue disableUncrafting;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
 			public ForgeConfigSpec.BooleanValue reverseRecipeBlacklist;
@@ -326,12 +334,43 @@ public class TFConfig {
 		return COMMON_CONFIG.portalLockingAdvancement;
 	}
 
-	private static Optional<Block> parseBlock(String string) {
-		ResourceLocation id = ResourceLocation.tryParse(string);
-		if (id == null || !BuiltInRegistries.BLOCK.containsKey(id)) {
-			return Optional.empty();
-		} else {
-			return Optional.ofNullable(BuiltInRegistries.BLOCK.get(id));
+	@SubscribeEvent
+	public static void onConfigReload(final ModConfigEvent.Reloading event) {
+		//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things dont desync.
+		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+		if (server != null && server.isDedicatedServer()) {
+			TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new SyncUncraftingTableConfigPacket(
+					COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
+		}
+		//sets cached portal locking advancement to null just in case it changed
+		COMMON_CONFIG.portalLockingAdvancement = null;
+	}
+
+	//damn forge events
+	@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+	public static class ConfigSync {
+		//sends uncrafting settings to a player on a server when they log in. This prevents desyncs when the configs dont match up between the player and the server.
+		@SubscribeEvent
+		public static void syncConfigOnLogin(PlayerEvent.PlayerLoggedInEvent event) {
+			MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+			if (server != null && server.isDedicatedServer() && event.getEntity() instanceof ServerPlayer player) {
+				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SyncUncraftingTableConfigPacket(
+						COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()));
+			}
 		}
 	}
 }

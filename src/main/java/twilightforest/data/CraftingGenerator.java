@@ -610,6 +610,15 @@ public class CraftingGenerator extends CraftingDataHelper {
 		chestBlock(consumer, "transformation", TFBlocks.TRANSFORMATION_CHEST, TFBlocks.TRANSFORMATION_PLANKS);
 		chestBlock(consumer, "mining", TFBlocks.MINING_CHEST, TFBlocks.MINING_PLANKS);
 		chestBlock(consumer, "sorting", TFBlocks.SORTING_CHEST, TFBlocks.SORTING_PLANKS);
+
+		buildBoats(consumer, TFItems.TWILIGHT_OAK_BOAT, TFItems.TWILIGHT_OAK_CHEST_BOAT, TFBlocks.TWILIGHT_OAK_PLANKS);
+		buildBoats(consumer, TFItems.CANOPY_BOAT, TFItems.CANOPY_CHEST_BOAT, TFBlocks.CANOPY_PLANKS);
+		buildBoats(consumer, TFItems.MANGROVE_BOAT, TFItems.MANGROVE_CHEST_BOAT, TFBlocks.MANGROVE_PLANKS);
+		buildBoats(consumer, TFItems.DARKWOOD_BOAT, TFItems.DARKWOOD_CHEST_BOAT, TFBlocks.DARK_PLANKS);
+		buildBoats(consumer, TFItems.TIME_BOAT, TFItems.TIME_CHEST_BOAT, TFBlocks.TIME_PLANKS);
+		buildBoats(consumer, TFItems.TRANSFORMATION_BOAT, TFItems.TRANSFORMATION_CHEST_BOAT, TFBlocks.TRANSFORMATION_PLANKS);
+		buildBoats(consumer, TFItems.MINING_BOAT, TFItems.MINING_CHEST_BOAT, TFBlocks.MINING_PLANKS);
+		buildBoats(consumer, TFItems.SORTING_BOAT, TFItems.SORTING_CHEST_BOAT, TFBlocks.SORTING_PLANKS);
 	}
 
 	private void nagastoneRecipes(Consumer<FinishedRecipe> consumer) {

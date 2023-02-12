@@ -232,10 +232,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:sharpness": 4
+                "minecraft:sharpness": 4.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",
@@ -245,10 +246,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:power": 4
+                "minecraft:power": 4.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",
@@ -258,10 +260,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:punch": 2
+                "minecraft:punch": 2.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",
@@ -271,10 +274,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:unbreaking": 2
+                "minecraft:unbreaking": 2.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",
@@ -297,10 +301,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:infinity": 1
+                "minecraft:infinity": 1.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",

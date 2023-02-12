@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.CustomTagGenerator;
+import twilightforest.entity.TwilightBoat;
 import twilightforest.enums.TwilightArmorMaterial;
 import twilightforest.item.*;
 import twilightforest.util.TwilightItemTier;
@@ -146,6 +147,23 @@ public class TFItems {
 	public static final RegistryObject<Item> CUBE_TALISMAN = ITEMS.register("cube_talisman", () -> new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> CUBE_OF_ANNIHILATION = ITEMS.register("cube_of_annihilation", () -> new CubeOfAnnihilationItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> MOON_DIAL = ITEMS.register("moon_dial", () -> new MoonDialItem(new Item.Properties()));
+
+	public static final RegistryObject<Item> TWILIGHT_OAK_BOAT = ITEMS.register("twilight_oak_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.TWILIGHT_OAK, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> TWILIGHT_OAK_CHEST_BOAT = ITEMS.register("twilight_oak_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.TWILIGHT_OAK, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> CANOPY_BOAT = ITEMS.register("canopy_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.CANOPY, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> CANOPY_CHEST_BOAT = ITEMS.register("canopy_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.CANOPY, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> MANGROVE_BOAT = ITEMS.register("mangrove_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.MANGROVE, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> MANGROVE_CHEST_BOAT = ITEMS.register("mangrove_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.MANGROVE, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> DARKWOOD_BOAT = ITEMS.register("darkwood_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.DARKWOOD, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> DARKWOOD_CHEST_BOAT = ITEMS.register("darkwood_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.DARKWOOD, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> TIME_BOAT = ITEMS.register("time_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.TIME, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> TIME_CHEST_BOAT = ITEMS.register("time_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.TIME, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> TRANSFORMATION_BOAT = ITEMS.register("transformation_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.TRANSFORMATION, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> TRANSFORMATION_CHEST_BOAT = ITEMS.register("transformation_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.TRANSFORMATION, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> MINING_BOAT = ITEMS.register("mining_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.MINING, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> MINING_CHEST_BOAT = ITEMS.register("mining_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.MINING, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> SORTING_BOAT = ITEMS.register("sorting_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.SORTING, new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> SORTING_CHEST_BOAT = ITEMS.register("sorting_chest_boat", () -> new TwilightBoatItem(true, TwilightBoat.Type.SORTING, new Item.Properties().stacksTo(1)));
 
 	public static final RegistryObject<Item> MUSIC_DISC_RADIANCE = ITEMS.register("music_disc_radiance", () -> new RecordItem(15, TFSounds.MUSIC_DISC_RADIANCE.get(), new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 123 * 20));
 	public static final RegistryObject<Item> MUSIC_DISC_STEPS = ITEMS.register("music_disc_steps", () -> new RecordItem(15, TFSounds.MUSIC_DISC_STEPS.get(), new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 195 * 20));

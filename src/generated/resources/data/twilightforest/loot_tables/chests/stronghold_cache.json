@@ -231,10 +231,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:bane_of_arthropods": 4
+                "minecraft:bane_of_arthropods": 4.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",
@@ -244,10 +245,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:sharpness": 4
+                "minecraft:sharpness": 4.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",
@@ -257,10 +259,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:smite": 4
+                "minecraft:smite": 4.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",
@@ -270,10 +273,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:unbreaking": 2
+                "minecraft:unbreaking": 2.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",
@@ -283,10 +287,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:protection": 3
+                "minecraft:protection": 3.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",
@@ -296,10 +301,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:projectile_protection": 3
+                "minecraft:projectile_protection": 3.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",
@@ -322,10 +328,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:feather_falling": 3
+                "minecraft:feather_falling": 3.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:enchanted_book",

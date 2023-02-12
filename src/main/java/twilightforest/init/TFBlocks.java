@@ -423,7 +423,6 @@ public class TFBlocks {
 	public static final RegistryObject<SaplingBlock> SORTING_SAPLING = BLOCKS.register("sorting_sapling", () -> new SaplingBlock(new SortingTreeGrower(), BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.GRASS).noCollission().randomTicks()));
 	public static final RegistryObject<SaplingBlock> RAINBOW_OAK_SAPLING = BLOCKS.register("rainbow_oak_sapling", () -> new SaplingBlock(new RainboakTreeGrower(), BlockBehaviour.Properties.of(Material.PLANT).instabreak().sound(SoundType.GRASS).noCollission().randomTicks()));
 
-	// TODO boats
 	public static final RegistryObject<Block> TWILIGHT_OAK_PLANKS = BLOCKS.register("twilight_oak_planks", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<StairBlock> TWILIGHT_OAK_STAIRS = BLOCKS.register("twilight_oak_stairs", () -> new StairBlock(TWILIGHT_OAK_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(TWILIGHT_OAK_PLANKS.get())));
 	public static final RegistryObject<Block> TWILIGHT_OAK_SLAB = BLOCKS.register("twilight_oak_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(TWILIGHT_OAK_PLANKS.get())));

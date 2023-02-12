@@ -1,4 +1,4 @@
-// 1.19.3	2023-01-15T14:22:23.2833686	Twilight Forest Item Tags
+// 1.19.3	2023-02-09T23:54:46.2317257	Twilight Forest Item Tags
 3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/items/charm.json
 28506418ae14efe13cfbe34765fa39ba5d6e03e7 data/curios/tags/items/head.json
 017a0eae9dcb1c009506ab7fb1bf5ed2867507aa data/forge/tags/items/armors/boots.json
@@ -37,6 +37,8 @@ b696524eda9e607bebc1b307e19c2b1633b8b0b1 data/forge/tags/items/tools/hoes.json
 1b205b8add451aa431d3db9121828f233c2cbad2 data/forge/tags/items/tools/shields.json
 c962432d898202b279bf401da90ab10b601de742 data/forge/tags/items/tools/shovels.json
 931bc115353e6c267d36d480a5891285fde13487 data/forge/tags/items/tools/swords.json
+8e9f31da301ccc99b43ea3375837252b3c23aa5c data/minecraft/tags/items/boats.json
+27e06c12717248b03522d992502582b32b433c6f data/minecraft/tags/items/chest_boats.json
 e66649b3248e051912913e282cb83d3b5006cde0 data/minecraft/tags/items/freeze_immune_wearables.json
 30b260e82242a2b548549ed7a4f89117c8d2c3c3 data/minecraft/tags/items/leaves.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/items/logs.json

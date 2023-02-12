@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -26,6 +27,8 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -382,7 +385,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		}
 
 		// decorate?
-		decorateThisTower(worldIn, sbb);
+		decorateThisTower(worldIn, generator, sbb);
 
 		// windows
 		makeWindows(worldIn, sbb, size < 4);
@@ -429,7 +432,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Add some appropriate decorations to this tower
 	 */
-	protected void decorateThisTower(WorldGenLevel world, BoundingBox sbb) {
+	protected void decorateThisTower(WorldGenLevel world, ChunkGenerator generator, BoundingBox sbb) {
 		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) * (this.boundingBox.minZ() * 756839L));
 
 		if (size > 3) {
@@ -438,7 +441,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 				decorateDeadEnd(world, decoRNG, sbb);
 			} else {
 				// for now we'll just assume that any tower with more than one exit is a stair tower
-				decorateStairTower(world, decoRNG, sbb);
+				decorateStairTower(world, generator, decoRNG, sbb);
 			}
 		}
 	}
@@ -1001,7 +1004,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * or we can divide the tower into the "stair" section on the bottom and the
 	 * "attic" section at the top and decorate those seperately.
 	 */
-	protected void decorateStairTower(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
+	protected void decorateStairTower(WorldGenLevel world, ChunkGenerator generator, RandomSource rand, BoundingBox sbb) {
 
 		// if it's tall enough, consider adding extra floors onto the top.
 		if (height - highestOpening > 8) {
@@ -1072,7 +1075,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			}
 		}
 
-		decorateStairFloor(world, rand, sbb);
+		decorateStairFloor(world, generator, rand, sbb);
 	}
 
 	/**
@@ -1080,14 +1083,14 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * <p>
 	 * This is for towers with stairs at the bottom, not towers divided into floors
 	 */
-	protected void decorateStairFloor(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
+	protected void decorateStairFloor(WorldGenLevel world, ChunkGenerator generator, RandomSource rand, BoundingBox sbb) {
 		// decorate the bottom
 		if (size > 5) {
 			if (rand.nextInt(3) == 0) {
 				decorateStairWell(world, rand, sbb);
 			} else if (rand.nextInt(3) > 0 || this.size >= 15) {
 				// a few empty bottoms
-				decoratePlanter(world, rand, sbb);
+				decoratePlanter(world, generator, rand, sbb);
 			}
 		}
 	}
@@ -1251,7 +1254,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * Makes a planter.  Depending on the situation, it can be filled with trees, flowers, or crops
 	 */
-	protected void decoratePlanter(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
+	protected void decoratePlanter(WorldGenLevel world, ChunkGenerator generator, RandomSource rand, BoundingBox sbb) {
 		int cx = size / 2;
 
 		surroundBlockCardinal(world, TFStructureHelper.stoneSlab, cx, 1, cx, sbb);
@@ -1264,24 +1267,16 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		placeBlock(world, Blocks.GRASS_BLOCK.defaultBlockState(), cx, 1, cx, sbb);
 
 		int i = rand.nextInt(6);
-		boolean isTree = i > 4;
-		final BlockState plant = isTree ? TFStructureHelper.randomSapling(i) : TFStructureHelper.randomMushroom(i);
+		final BlockState plant = TFStructureHelper.randomPlant(i);
 
-
-		placeBlock(world, plant, cx, 2, cx, sbb);
 		final BlockPos pos = getBlockPosWithOffset(cx, 2, cx);
 
-		// FIXME: we CANNOT use world.getWorld in structure generation, we CANNOT cast to ServerWorld either. Saplings require a ServerWorld.....
-		/*if(isTree) //grow tree
-			((SaplingBlock) Blocks.OAK_SAPLING).grow(world, world.getRandom(), pos, plant);
-		else //grow sapling
-			plant.getBlock().randomTick(plant, world, pos, world.getRandom());*/
-
-
-		// otherwise, place the block into a flowerpot
-		BlockState whatHappened = this.getBlock(world, cx, 2, cx, sbb);
-		if (whatHappened.getBlock() == plant.getBlock() || whatHappened.getBlock() == Blocks.AIR)
-			placeBlock(world, Blocks.FLOWER_POT.defaultBlockState(), cx, 2, cx, sbb);
+		if (i > 4 && !world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(TFStructureHelper.randomTree(rand.nextInt(4))).place(world, generator, world.getRandom(), pos)) {
+			//if tree placement fails, place the potted sapling
+			this.placeBlock(world, plant, cx, 2, cx, sbb);
+		} else {
+			this.placeBlock(world, plant, cx, 2, cx, sbb);
+		}
 	}
 
 	/**

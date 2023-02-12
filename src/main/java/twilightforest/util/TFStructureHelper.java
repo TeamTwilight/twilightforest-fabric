@@ -1,10 +1,14 @@
 package twilightforest.util;
 
+import net.minecraft.data.worldgen.features.TreeFeatures;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 
 /**
  * Created by Joseph on 7/16/2017.
@@ -35,20 +39,29 @@ public class TFStructureHelper {
 
     public static BlockState randomPlant(int i) {
         if(i < 4) return randomSapling(i);
-        else return randomMushroom(i-4);
+        else return randomMushroom(i - 4);
     }
 
     public static BlockState randomSapling(int i) {
 		return switch (i) {
-			case 1 -> Blocks.SPRUCE_SAPLING.defaultBlockState();
-			case 2 -> Blocks.BIRCH_SAPLING.defaultBlockState();
-			case 3 -> Blocks.JUNGLE_SAPLING.defaultBlockState();
-			default -> Blocks.OAK_SAPLING.defaultBlockState();
+			case 1 -> Blocks.POTTED_SPRUCE_SAPLING.defaultBlockState();
+			case 2 -> Blocks.POTTED_BIRCH_SAPLING.defaultBlockState();
+			case 3 -> Blocks.POTTED_JUNGLE_SAPLING.defaultBlockState();
+			default -> Blocks.POTTED_OAK_SAPLING.defaultBlockState();
 		};
     }
 
+    public static ResourceKey<ConfiguredFeature<?, ?>> randomTree(int i) {
+        return switch (i) {
+            case 1 -> TreeFeatures.SPRUCE;
+            case 2 -> TreeFeatures.BIRCH;
+            case 3 -> TreeFeatures.JUNGLE_TREE_NO_VINE;
+            default -> TreeFeatures.OAK;
+        };
+    }
+
     public static BlockState randomMushroom(int i) {
-        if(i == 0) return Blocks.RED_MUSHROOM.defaultBlockState();
-        else return Blocks.BROWN_MUSHROOM.defaultBlockState();
+        if (i == 0) return Blocks.POTTED_RED_MUSHROOM.defaultBlockState();
+        else return Blocks.POTTED_BROWN_MUSHROOM.defaultBlockState();
     }
 }

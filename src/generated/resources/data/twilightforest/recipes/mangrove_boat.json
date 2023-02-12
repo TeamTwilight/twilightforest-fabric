@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "boat",
+  "key": {
+    "P": {
+      "item": "twilightforest:mangrove_planks"
+    }
+  },
+  "pattern": [
+    "P P",
+    "PPP"
+  ],
+  "result": {
+    "item": "twilightforest:mangrove_boat"
+  }
+}

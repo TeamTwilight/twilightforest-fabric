@@ -116,13 +116,13 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 			// see if there is a recipe for the input
 			ItemStack inputStack = tinkerInput.getItem(0);
-			CraftingRecipe[] recipes = getRecipesFor(inputStack, this.level);
+			Recipe<?>[] recipes = getRecipesFor(inputStack, this.level);
 
 			int size = recipes.length;
 
 			if (size > 0 && !inputStack.is(ItemTagGenerator.BANNED_UNCRAFTABLES)) {
 
-				CraftingRecipe recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
+				Recipe<?> recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
 				this.customCost = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCost() : -1;
 				ItemStack[] recipeItems = getIngredients(recipe);
 
@@ -283,7 +283,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	}
 
 	private static boolean isIngredientProblematic(ItemStack ingredient) {
-		return !ingredient.isEmpty() && ingredient.getItem().hasCraftingRemainingItem();
+		return (!ingredient.isEmpty() && ingredient.getItem().hasCraftingRemainingItem()) || ingredient.is(Items.BARRIER);
 	}
 
 	private static ItemStack normalizeIngredient(ItemStack ingredient) {
@@ -293,19 +293,20 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		return ingredient;
 	}
 
-	private static CraftingRecipe[] getRecipesFor(ItemStack inputStack, Level world) {
+	private static Recipe<?>[] getRecipesFor(ItemStack inputStack, Level world) {
 
-		List<CraftingRecipe> recipes = new ArrayList<>();
+		List<Recipe<?>> recipes = new ArrayList<>();
 
 		if (!inputStack.isEmpty()) {
 			for (Recipe<?> recipe : world.getRecipeManager().getRecipes()) {
-				if (recipe instanceof CraftingRecipe rec &&
+				if (isRecipeSupported(recipe) &&
+						!recipe.isIncomplete() &&
 						recipe.canCraftInDimensions(3, 3) &&
 						!recipe.getIngredients().isEmpty() &&
 						matches(inputStack, recipe.getResultItem()) &&
 						TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString())) {
 					if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) {
-						recipes.add(rec);
+						recipes.add(recipe);
 					}
 				}
 			}
@@ -314,7 +315,11 @@ public class UncraftingMenu extends AbstractContainerMenu {
 			}
 		}
 
-		return recipes.toArray(new CraftingRecipe[0]);
+		return recipes.toArray(new Recipe<?>[0]);
+	}
+
+	private static boolean isRecipeSupported(Recipe<?> recipe) {
+		return TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get() ? recipe instanceof CraftingRecipe : recipe instanceof ShapedRecipe;
 	}
 
 	private static boolean matches(ItemStack input, ItemStack output) {
@@ -397,15 +402,12 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	}
 
 	/**
-	 * Calculate the cost of uncrafting, if any.  Return 0 if uncrafting is not available at this time
+	 * Calculate the cost of uncrafting, if any. Return 0 if uncrafting is not available at this time
 	 */
 	private int calculateUncraftingCost() {
-		//disable the uncrafting cost if the config option says to
-		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingXpCost.get()) return 0;
-
 		// we don't want to display anything if there is anything in the assembly grid
 		if (this.assemblyMatrix.isEmpty()) {
-			return this.customCost >= 0 ? this.customCost : countDamageableParts(this.uncraftingMatrix);
+			return this.customCost >= 0 ? this.customCost : (int) Math.round(countDamageableParts(this.uncraftingMatrix) * TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get());
 		} else return 0;
 	}
 
@@ -413,9 +415,6 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Return the cost of recrafting, if any.  Return 0 if recrafting is not available at this time
 	 */
 	private int calculateRecraftingCost() {
-
-		//disable the recrafting/repairing cost if the config option says to
-		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableRepairingXpCost.get()) return 0;
 
 		ItemStack input = this.tinkerInput.getItem(0);
 		ItemStack output = this.tinkerResult.getItem(0);
@@ -445,7 +444,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		// minimum cost of 1 if we're even calling this part
 		cost = Math.max(1, cost);
 
-		return cost;
+		return (int) Math.round(cost * TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get());
 	}
 
 	private static int countTotalEnchantmentCost(ItemStack stack) {
@@ -616,7 +615,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		});
 	}
 
-	private ItemStack[] getIngredients(CraftingRecipe recipe) {
+	private ItemStack[] getIngredients(Recipe<?> recipe) {
 		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 
 		for (int i = 0; i < recipe.getIngredients().size(); i++) {

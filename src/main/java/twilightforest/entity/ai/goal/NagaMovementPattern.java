@@ -59,8 +59,10 @@ public class NagaMovementPattern extends Goal {
 		switch (this.state) {
 			case INTIMIDATE -> {
 				this.naga.getNavigation().stop();
-				this.naga.getLookControl().setLookAt(this.naga.getTarget(), 30.0F, 30.0F);
-				this.naga.lookAt(this.naga.getTarget(), 30.0F, 30.0F);
+				if (naga.getTarget() != null) {
+					this.naga.getLookControl().setLookAt(this.naga.getTarget(), 30.0F, 30.0F);
+					this.naga.lookAt(this.naga.getTarget(), 30.0F, 30.0F);
+				}
 				this.naga.zza = 0.1f;
 			}
 			case CRUMBLE -> {
@@ -69,8 +71,10 @@ public class NagaMovementPattern extends Goal {
 				this.crumbleBelowTarget(3);
 			}
 			case CHARGE -> {
-				BlockPos tpoint = this.findCirclePoint(clockwise, 14, Math.PI);
-				this.naga.getNavigation().moveTo(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1.0D);
+				if (naga.getTarget() != null) {
+					BlockPos tpoint = this.findCirclePoint(clockwise, 14, Math.PI);
+					this.naga.getNavigation().moveTo(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1.0D);
+				}
 				this.naga.setCharging(true);
 			}
 			case CIRCLE -> {
@@ -88,8 +92,10 @@ public class NagaMovementPattern extends Goal {
 					rotation = 0.1D;
 				}
 
-				BlockPos tpoint = this.findCirclePoint(this.clockwise, radius, rotation);
-				this.naga.getNavigation().moveTo(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1.0D);
+				if (naga.getTarget() != null) {
+					BlockPos tpoint = this.findCirclePoint(this.clockwise, radius, rotation);
+					this.naga.getNavigation().moveTo(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1.0D);
+				}
 			}
 			case DAZE -> {
 				this.naga.getNavigation().stop();
@@ -111,7 +117,7 @@ public class NagaMovementPattern extends Goal {
 			case INTIMIDATE -> {
 				this.clockwise = !this.clockwise;
 
-				if (this.naga.getTarget().getBoundingBox().minY > this.naga.getBoundingBox().maxY) {
+				if (naga.getTarget() != null && this.naga.getTarget().getBoundingBox().minY > this.naga.getBoundingBox().maxY) {
 					this.doCrumblePlayer();
 				} else {
 					this.doCharge();
@@ -160,7 +166,7 @@ public class NagaMovementPattern extends Goal {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!this.naga.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) return;
+		if (!this.naga.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || naga.getTarget() == null) return;
 
 		int floor = (int) this.naga.getBoundingBox().minY;
 		int targetY = (int) this.naga.getTarget().getBoundingBox().minY;

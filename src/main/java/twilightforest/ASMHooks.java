@@ -35,10 +35,9 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import twilightforest.init.TFDimensionSettings;
 import twilightforest.client.TFClientSetup;
+import twilightforest.init.TFDimensionSettings;
 import twilightforest.entity.TFPart;
-import twilightforest.init.TFFeatureModifiers;
 import twilightforest.init.TFItems;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
@@ -186,6 +185,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}<br>
 	 * [BEFORE IRETURN]
 	 */
+	@OnlyIn(Dist.CLIENT)
 	public static int foliage(int o, Biome biome, double x, double z) {
 		return FoliageColorHandler.get(o, biome, x, z);
 	}

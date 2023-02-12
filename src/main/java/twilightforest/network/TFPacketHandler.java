@@ -27,6 +27,7 @@ public class TFPacketHandler {
 		CHANNEL.registerS2CPacket(SpawnFallenLeafFromPacket.class, id++);
 		CHANNEL.registerS2CPacket(StructureProtectionClearPacket.class, id++);
 		CHANNEL.registerS2CPacket(StructureProtectionPacket.class, id++);
+		CHANNEL.registerMessage(id++, SyncUncraftingTableConfigPacket.class, SyncUncraftingTableConfigPacket::encode, SyncUncraftingTableConfigPacket::new, SyncUncraftingTableConfigPacket.Handler::onMessage);
 		CHANNEL.registerS2CPacket(ThrowPlayerPacket.class, id++);
 		CHANNEL.registerC2SPacket(UncraftingGuiPacket.class, id++);
 		CHANNEL.registerS2CPacket(UpdateFeatherFanFallPacket.class, id++);

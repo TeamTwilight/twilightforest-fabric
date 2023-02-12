@@ -173,11 +173,12 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:efficiency": 1,
-                "minecraft:fortune": 1
+                "minecraft:efficiency": 1.0,
+                "minecraft:fortune": 1.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "twilightforest:ironwood_pickaxe",

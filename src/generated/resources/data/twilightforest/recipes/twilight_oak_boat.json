@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "boat",
+  "key": {
+    "P": {
+      "item": "twilightforest:twilight_oak_planks"
+    }
+  },
+  "pattern": [
+    "P P",
+    "PPP"
+  ],
+  "result": {
+    "item": "twilightforest:twilight_oak_boat"
+  }
+}

@@ -24,7 +24,6 @@ public class FinalCastleRoof13CrenellatedComponent extends TFStructureComponentO
 		super(TFStructurePieceTypes.TFFCRo13Cr.get(), nbt);
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
 	public FinalCastleRoof13CrenellatedComponent(TFLandmark feature, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
 		super(TFStructurePieceTypes.TFFCRo13Cr.get(), feature, i, x, y, z);
 

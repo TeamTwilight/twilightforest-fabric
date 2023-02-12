@@ -55,6 +55,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 	public static final TagKey<Block> PORTAL_EDGE = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("portal/edge"));
 	public static final TagKey<Block> PORTAL_POOL = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("portal/fluid"));
 	public static final TagKey<Block> PORTAL_DECO = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("portal/decoration"));
+	public static final TagKey<Block> GENERATED_PORTAL_DECO = BlockTags.create(TwilightForestMod.prefix("portal/generated_decoration"));
 
 	public static final TagKey<Block> DARK_TOWER_ALLOWED_POTS = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("dark_tower_allowed_pots"));
 	public static final TagKey<Block> TROPHIES = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("trophies"));
@@ -338,6 +339,18 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				.add(Blocks.BAMBOO)
 				.add(getAllMinecraftOrTwilightBlocks(b -> (b.material == Material.PLANT || b.material == Material.REPLACEABLE_PLANT || b.material == Material.LEAVES) && !plants.contains(b)))
 				.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS);
+
+		tag(GENERATED_PORTAL_DECO)
+				.add(Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM,
+						Blocks.GRASS, Blocks.FERN,
+						Blocks.BLUE_ORCHID, Blocks.AZURE_BLUET,
+						Blocks.LILY_OF_THE_VALLEY, Blocks.OXEYE_DAISY,
+						Blocks.ALLIUM, Blocks.CORNFLOWER,
+						Blocks.WHITE_TULIP, Blocks.PINK_TULIP,
+						Blocks.ORANGE_TULIP, Blocks.RED_TULIP,
+						TFBlocks.MUSHGLOOM.get(),
+						TFBlocks.MAYAPPLE.get(),
+						TFBlocks.FIDDLEHEAD.get());
 
 		tag(DARK_TOWER_ALLOWED_POTS)
 				.add(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), TFBlocks.POTTED_CANOPY_SAPLING.get(), TFBlocks.POTTED_MANGROVE_SAPLING.get(),

@@ -439,6 +439,22 @@ public class TFCreativeTabs {
 					output.accept(TFItems.ALPHA_YETI_BANNER_PATTERN.get());
 					output.accept(TFItems.SNOW_QUEEN_BANNER_PATTERN.get());
 					output.accept(TFItems.QUEST_RAM_BANNER_PATTERN.get());
+					output.accept(TFItems.TWILIGHT_OAK_BOAT.get());
+					output.accept(TFItems.CANOPY_BOAT.get());
+					output.accept(TFItems.MANGROVE_BOAT.get());
+					output.accept(TFItems.DARKWOOD_BOAT.get());
+					output.accept(TFItems.TIME_BOAT.get());
+					output.accept(TFItems.TRANSFORMATION_BOAT.get());
+					output.accept(TFItems.MINING_BOAT.get());
+					output.accept(TFItems.SORTING_BOAT.get());
+					output.accept(TFItems.TWILIGHT_OAK_CHEST_BOAT.get());
+					output.accept(TFItems.CANOPY_CHEST_BOAT.get());
+					output.accept(TFItems.MANGROVE_CHEST_BOAT.get());
+					output.accept(TFItems.DARKWOOD_CHEST_BOAT.get());
+					output.accept(TFItems.TIME_CHEST_BOAT.get());
+					output.accept(TFItems.TRANSFORMATION_CHEST_BOAT.get());
+					output.accept(TFItems.MINING_CHEST_BOAT.get());
+					output.accept(TFItems.SORTING_CHEST_BOAT.get());
 					createSpawnEggsAlphabetical(output);
 				}).build();
 

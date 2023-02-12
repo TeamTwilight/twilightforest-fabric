@@ -52,7 +52,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	}
 
 	public static Map<BossVariant, GenericTrophyModel> createTrophyRenderers(EntityModelSet set) {
-		BooleanSupplier legacy = () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_legacy_resources");
+		BooleanSupplier legacy = () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_classic_resources");
 		ImmutableMap.Builder<BossVariant, GenericTrophyModel> trophyList = ImmutableMap.builder();
 		trophyList.put(BossVariant.NAGA, new NagaTrophyModel(set.bakeLayer(TFModelLayers.NAGA_TROPHY)));
 		trophyList.put(BossVariant.LICH, new LichTrophyModel(set.bakeLayer(TFModelLayers.LICH_TROPHY)));
@@ -88,7 +88,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	}
 
 	public static void render(@Nullable Direction directionIn, float y, GenericTrophyModel trophy, BossVariant variant, float animationProgress, PoseStack matrixStackIn, MultiBufferSource buffer, int combinedLight, ItemTransforms.TransformType camera) {
-		BooleanSupplier legacy = () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_legacy_resources");
+		BooleanSupplier legacy = () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_classic_resources");
 		matrixStackIn.pushPose();
 		if (directionIn == null || variant == BossVariant.UR_GHAST) {
 			matrixStackIn.translate(0.5D, 0.01D, 0.5D);

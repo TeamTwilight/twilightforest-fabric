@@ -18,12 +18,13 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:efficiency": 4,
-                "minecraft:fortune": 2,
-                "minecraft:unbreaking": 3
+                "minecraft:efficiency": 4.0,
+                "minecraft:fortune": 2.0,
+                "minecraft:unbreaking": 3.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "twilightforest:mazebreaker_pickaxe"

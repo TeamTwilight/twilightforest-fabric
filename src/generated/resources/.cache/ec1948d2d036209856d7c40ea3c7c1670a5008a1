@@ -1,4 +1,4 @@
-// 1.19.3	2023-01-15T13:18:21.088854	Twilight Forest Hollow Hill Stalactites
+// 1.19.3	2023-02-09T17:41:53.1059613	Twilight Forest Hollow Hill Stalactites
 f396119325e0cc93e4100c5a79703f932cbfcbb3 data/twilightforest/stalactites/entries/coal_ore_stalactite.json
 f8d4189d7149b02298cb0091beed9faeb78fdd7d data/twilightforest/stalactites/entries/copper_ore_raw_copper_block_stalactite.json
 e3db1ece64965a8aa26db009758f4a55985d55f1 data/twilightforest/stalactites/entries/diamond_ore_stalactite.json
@@ -8,6 +8,6 @@ e3db1ece64965a8aa26db009758f4a55985d55f1 data/twilightforest/stalactites/entries
 250e6ff041503b86c6ad40c80347a48f4e69ecf9 data/twilightforest/stalactites/entries/iron_ore_raw_iron_block_stalactite.json
 ca9aade3436da12abb7a41eb31b6ef990087aee6 data/twilightforest/stalactites/entries/lapis_ore_stalactite.json
 0910e0188a106a0a4a22d0be05be0c182aee77e8 data/twilightforest/stalactites/entries/redstone_ore_stalactite.json
-a977c8aa411afbab492a810c16ac144654b1c36b data/twilightforest/stalactites/large_hollow_hill.json
+44af623337e718b17d18658fb8baf3f3a3c01cb4 data/twilightforest/stalactites/large_hollow_hill.json
 abd5c475063d3a9c2ed314c2b4d06842f7dece9c data/twilightforest/stalactites/medium_hollow_hill.json
-bb7df2fdf1425ba85b6fdbaba1d76e574ca096d1 data/twilightforest/stalactites/small_hollow_hill.json
+d4e52c2cfb9057a08fe855ce11adbd138a394af7 data/twilightforest/stalactites/small_hollow_hill.json

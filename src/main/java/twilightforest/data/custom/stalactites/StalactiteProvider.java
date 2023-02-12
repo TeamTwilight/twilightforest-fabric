@@ -18,6 +18,7 @@ import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -71,7 +72,7 @@ public abstract class StalactiteProvider implements DataProvider {
 
 			JsonObject object = new JsonObject();
 			object.addProperty("replace", false);
-			object.add("stalactites", hillGson.toJsonTree(mapToUse.keySet().stream().map(ResourceLocation::toString).collect(Collectors.toList())));
+			object.add("stalactites", hillGson.toJsonTree(mapToUse.keySet().stream().map(ResourceLocation::toString).sorted().collect(Collectors.toList())));
 
 			futuresBuilder.add(DataProvider.saveStable(output, object, hillPath));
 		}
@@ -91,11 +92,12 @@ public abstract class StalactiteProvider implements DataProvider {
 	 *                   Pick your weights wisely! All weights from lower tiers are transferred up, so if you want to see your spike more often in a given hill, give it a high weight!
 	 */
 	protected void makeStalactite(Stalactite stalactite, Stalactite.HollowHillType type) {
-		String name = "";
-		for (Map.Entry<Block, Integer> entry : stalactite.ores().entrySet()) {
-			name = name + BuiltInRegistries.BLOCK.getKey(entry.getKey()).getPath() + "_";
-		}
-		this.builder.putIfAbsent(Pair.of(new ResourceLocation(this.modid, name + "stalactite"), stalactite), type);
+		var nameBuilder = new StringJoiner("_", "", "_stalactite");
+
+		for (ResourceLocation entry : stalactite.ores().keySet().stream().map(ForgeRegistries.BLOCKS::getKey).sorted().toList())
+			nameBuilder.add(entry.getPath());
+
+		this.builder.putIfAbsent(Pair.of(new ResourceLocation(this.modid, nameBuilder.toString()), stalactite), type);
 	}
 
 	@Override

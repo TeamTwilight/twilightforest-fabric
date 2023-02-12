@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -81,17 +82,21 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 		return mapdata;
 	}
 
-	private static TFMagicMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension) {
-		int i = level.getFreeMapId();
-
+	public static ColumnPos getMagicMapCenter(int x, int z) {
 		// magic maps are aligned to the key biome grid so that 0,0 -> 2048,2048 is the covered area
 		int mapSize = 2048;
 		int roundX = (int) Math.round((double) (x - 1024) / mapSize);
 		int roundZ = (int) Math.round((double) (z - 1024) / mapSize);
 		int scaledX = roundX * mapSize + 1024;
 		int scaledZ = roundZ * mapSize + 1024;
+		return new ColumnPos(scaledX, scaledZ);
+	}
 
-		TFMagicMapData mapdata = new TFMagicMapData(scaledX, scaledZ, (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
+	private static TFMagicMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension) {
+		int i = level.getFreeMapId();
+		ColumnPos pos = getMagicMapCenter(x, z);
+
+		TFMagicMapData mapdata = new TFMagicMapData(pos.x(), pos.z(), (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
 		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(i)); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
 		return mapdata;

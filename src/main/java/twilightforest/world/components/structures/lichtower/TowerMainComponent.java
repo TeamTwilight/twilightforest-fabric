@@ -191,7 +191,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		makeOpenings(world, sbb);
 
 		// decorate?
-		decorateStairFloor(world, rand, sbb);
+		decorateStairFloor(world, generator, rand, sbb);
 
 		// stairway crossings
 		makeStairwayCrossings(world, rand, sbb);

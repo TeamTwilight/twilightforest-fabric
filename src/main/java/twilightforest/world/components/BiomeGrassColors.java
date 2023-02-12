@@ -36,9 +36,15 @@ public class BiomeGrassColors {
 	// FIXME Flat color, resolve
 	public static final GrassColorModifier SWAMP = get("TWILIGHTFOREST_SWAMP");
 	// FIXME Flat color, resolve
-	public static final GrassColorModifier DARK_FOREST = get("TWILIGHTFOREST_DARK_FOREST");
-	public static final GrassColorModifier DARK_FOREST_CENTER = get("TWILIGHTFOREST_DARK_FOREST_CENTER");
-	public static final GrassColorModifier SPOOKY_FOREST = get("TWILIGHTFOREST_SPOOKY_FOREST");
+	public static final GrassColorModifier DARK_FOREST = make("dark_forest", (x, z, color) -> ((GrassColor.get(0.7F, 0.8F) & 0xFEFEFE) + 0x1E0E4E) / 2);
+	public static final GrassColorModifier DARK_FOREST_CENTER = make("dark_forest_center", (x, z, color) -> {
+		double d0 = Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false); //TODO: Check
+		return d0 < -0.2D ? 0x667540 : 0x554114;
+	});
+	public static final GrassColorModifier SPOOKY_FOREST = make("spooky_forest", (x, z, color) -> {
+		double noise = (Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false) + 1D) / 2D;
+		return blendColors(0xc43323, 0x5BC423, noise > 0.6D ? noise * 0.1D : noise);
+	});
 
 	public static int blendColors(int a, int b, double ratio) {
 		int mask1 = 0x00FF00FF;

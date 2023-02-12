@@ -1,4 +1,4 @@
-// 1.19.3	2022-12-12T18:59:12.1675021	Twilight Forest Block Tags
+// 1.19.3	2023-02-09T10:00:14.5890382	Twilight Forest Block Tags
 ecd49500e139b2c558855b3b009c1f94d5c20a47 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -81,6 +81,7 @@ d82abba18e7ff90d2c891453ddff813ffdb8e55d data/twilightforest/tags/blocks/ore_mag
 ca2da58ac844c0b5f325b693b24710f1b72fff3a data/twilightforest/tags/blocks/portal/decoration.json
 17f5f40a39ad2e8e8411db23ecf39507a1131725 data/twilightforest/tags/blocks/portal/edge.json
 cf3608bd187922aeb48c566c19e8482b0dca34c7 data/twilightforest/tags/blocks/portal/fluid.json
+44dc958d8a99b82a63e4cc95f42038fdd4e2909c data/twilightforest/tags/blocks/portal/generated_decoration.json
 58275c15a8c2699ac23fb5057a9ef14b13b733d9 data/twilightforest/tags/blocks/progression_allow_breaking.json
 e40d95a628eb206ce0b4bac90782bccc789cf8dc data/twilightforest/tags/blocks/sortwood_logs.json
 894142a18566c008a63daa05efba2dde1ef6eb26 data/twilightforest/tags/blocks/storage_blocks/arctic_fur.json

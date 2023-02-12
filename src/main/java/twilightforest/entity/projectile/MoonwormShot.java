@@ -3,6 +3,7 @@ package twilightforest.entity.projectile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -24,6 +25,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
 
 public class MoonwormShot extends TFThrowable {
 
@@ -76,7 +78,7 @@ public class MoonwormShot extends TFThrowable {
 		if (currentState.getMaterial().isReplaceable() && !currentState.is(BlockTags.FIRE) && !currentState.is(Blocks.LAVA)) {
 			this.getLevel().setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState().setValue(DirectionalBlock.FACING, result.getDirection()));
 			this.gameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
-			// todo sound
+			this.getLevel().playSound(null, result.getBlockPos(), TFSounds.MOONWORM_SQUISH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 		} else {
 			ItemEntity squish = new ItemEntity(this.getLevel(), pos.getX(), pos.getY(), pos.getZ(), Items.LIME_DYE.getDefaultInstance());
 			squish.spawnAtLocation(squish.getItem());

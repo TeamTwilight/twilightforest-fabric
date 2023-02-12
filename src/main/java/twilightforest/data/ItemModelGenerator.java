@@ -604,6 +604,24 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.MUSIC_DISC_THREAD);
 		singleTex(TFItems.MUSIC_DISC_WAYFARER);
 
+		singleTex(TFItems.TWILIGHT_OAK_BOAT);
+		singleTex(TFItems.CANOPY_BOAT);
+		singleTex(TFItems.MANGROVE_BOAT);
+		singleTex(TFItems.DARKWOOD_BOAT);
+		singleTex(TFItems.TIME_BOAT);
+		singleTex(TFItems.TRANSFORMATION_BOAT);
+		singleTex(TFItems.MINING_BOAT);
+		singleTex(TFItems.SORTING_BOAT);
+
+		singleTex(TFItems.TWILIGHT_OAK_CHEST_BOAT);
+		singleTex(TFItems.CANOPY_CHEST_BOAT);
+		singleTex(TFItems.MANGROVE_CHEST_BOAT);
+		singleTex(TFItems.DARKWOOD_CHEST_BOAT);
+		singleTex(TFItems.TIME_CHEST_BOAT);
+		singleTex(TFItems.TRANSFORMATION_CHEST_BOAT);
+		singleTex(TFItems.MINING_CHEST_BOAT);
+		singleTex(TFItems.SORTING_CHEST_BOAT);
+
 		generated(TFItems.NAGA_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
 		generated(TFItems.LICH_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));
 		generated(TFItems.MINOSHROOM_BANNER_PATTERN.getId().getPath(), prefix("item/tf_banner_pattern"));

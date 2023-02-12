@@ -8,15 +8,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -57,7 +60,10 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, AttributeModifier.Operation.ADDITION);
 	private static final AttributeModifier NON_CHARGING_ARMOR_MODIFIER = new AttributeModifier("Inactive Armor boost", 4.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
 
+	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
+
 	private int number;
+	private int totalKnownKnights = 1;
 	private int ticksProgress;
 	private Formation currentFormation;
 	private BlockPos chargePos = BlockPos.ZERO;
@@ -69,6 +75,25 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 		this.currentFormation = Formation.HOVER;
 		this.xpReward = 93;
 		this.moveControl = new NoClipMoveControl(this);
+	}
+
+	@Override
+	public void setCustomName(@Nullable Component name) {
+		super.setCustomName(name);
+		this.bossInfo.setName(this.getDisplayName());
+	}
+
+	@Override
+	public void startSeenByPlayer(ServerPlayer player) {
+		super.startSeenByPlayer(player);
+		if (getNumber() == 0)
+			this.bossInfo.addPlayer(player);
+	}
+
+	@Override
+	public void stopSeenByPlayer(ServerPlayer player) {
+		super.stopSeenByPlayer(player);
+		this.bossInfo.removePlayer(player);
 	}
 
 	@Nullable
@@ -148,6 +173,22 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	public void aiStep() {
 		super.aiStep();
 
+		if (!this.getLevel().isClientSide() && getNumber() == 0) {
+			float health = 0F;
+			float maxHealth = 0F;
+			int amount = 0;
+			for (KnightPhantom nearbyKnight : getNearbyKnights()) {
+				health += nearbyKnight.getHealth();
+				maxHealth += nearbyKnight.getMaxHealth();
+				amount++;
+			}
+			int remaining = totalKnownKnights - amount;
+			if (remaining > 0) {
+				maxHealth += (getMaxHealth() * (float) remaining);
+			}
+			this.bossInfo.setProgress(health / maxHealth);
+		}
+
 		if (this.isChargingAtPlayer()) {
 			// make particles
 			for (int i = 0; i < 4; ++i) {
@@ -176,35 +217,40 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 		super.die(cause);
 
-		if (this.getLevel() instanceof ServerLevel serverLevel && this.getNearbyKnights().isEmpty() && cause != DamageSource.OUT_OF_WORLD) {
+		if (this.getLevel() instanceof ServerLevel serverLevel) {
+			List<KnightPhantom> knights = getNearbyKnights();
+			if (!knights.isEmpty()) {
+				knights.forEach(KnightPhantom::updateMyNumber);
+			} else if (cause != DamageSource.OUT_OF_WORLD) {
 
-			BlockPos treasurePos = this.hasHome() ? this.getRestrictCenter().below() : this.blockPosition();
+				BlockPos treasurePos = this.hasHome() ? this.getRestrictCenter().below() : this.blockPosition();
 
-			// make treasure for killing the last knight
-			// This one won't receive the same loot treatment like the other bosses because this chest is supposed to reward for all of them instead of just the last one killed
-			TFLootTables.STRONGHOLD_BOSS.generateChest(serverLevel, treasurePos, Direction.NORTH, false);
+				// make treasure for killing the last knight
+				// This one won't receive the same loot treatment like the other bosses because this chest is supposed to reward for all of them instead of just the last one killed
+				TFLootTables.STRONGHOLD_BOSS.generateChest(serverLevel, treasurePos, Direction.NORTH, false);
 
-			//trigger criteria for killing every phantom in a group
-			if(cause.getEntity() instanceof ServerPlayer player) {
-				TFAdvancements.KILL_ALL_PHANTOMS.trigger(player);
-			}
+				//trigger criteria for killing every phantom in a group
+				if (cause.getEntity() instanceof ServerPlayer player) {
+					TFAdvancements.KILL_ALL_PHANTOMS.trigger(player);
+				}
 
-			// mark the stronghold as defeated
-			TFGenerationSettings.markStructureConquered(this.getLevel(), treasurePos, TFLandmark.KNIGHT_STRONGHOLD);
+				// mark the stronghold as defeated
+				TFGenerationSettings.markStructureConquered(this.getLevel(), treasurePos, TFLandmark.KNIGHT_STRONGHOLD);
 
-			for(ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
-			}
+				for (ServerPlayer player : this.hurtBy) {
+					TFAdvancements.HURT_BOSS.trigger(player, this);
+				}
 
-			for(ServerPlayer player : this.getLevel().getEntitiesOfClass(ServerPlayer.class, new AABB(this.homePosition).inflate(10.0D))) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
+				for (ServerPlayer player : this.getLevel().getEntitiesOfClass(ServerPlayer.class, new AABB(this.homePosition).inflate(64.0D))) {
+					TFAdvancements.HURT_BOSS.trigger(player, this);
+				}
 			}
 		}
 	}
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		if(this.isDamageSourceBlocked(source)){
+		if(this.isDamageSourceBlocked(source)) {
 			this.playSound(SoundEvents.SHIELD_BLOCK, 1.0F, 0.8F + this.getLevel().getRandom().nextFloat() * 0.4F);
 		}
 
@@ -270,21 +316,23 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 	}
 
 	public List<KnightPhantom> getNearbyKnights() {
-		return this.getLevel().getEntitiesOfClass(KnightPhantom.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D), LivingEntity::isAlive);
+		return this.getLevel().getEntitiesOfClass(KnightPhantom.class, getBoundingBox().inflate(64.0D), LivingEntity::isAlive);
 	}
 
 	private void updateMyNumber() {
 		List<Integer> nums = Lists.newArrayList();
 		List<KnightPhantom> knights = getNearbyKnights();
 		for (KnightPhantom knight : knights) {
-			if (knight == this)
+			if (knight == this || !knight.isAlive())
 				continue;
 			nums.add(knight.getNumber());
 			if (knight.getNumber() == 0)
 				restrictTo(knight.getRestrictCenter(), 20);
 		}
-		if (nums.isEmpty())
+		if (nums.isEmpty()) {
+			setNumber(0);
 			return;
+		}
 		int[] n = Ints.toArray(nums);
 		Arrays.sort(n);
 		int smallest = n[0];
@@ -300,6 +348,8 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 				}
 			}
 		}
+		if (totalKnownKnights < largest)
+			totalKnownKnights = largest;
 		if (this.number > smallestUnused || nums.contains(this.number))
 			setNumber(smallestUnused);
 	}
@@ -390,6 +440,8 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 	public void setNumber(int number) {
 		this.number = number;
+		if (number == 0)
+			getLevel().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(64D)).forEach(this::startSeenByPlayer);
 
 		// set weapon per number
 		switch (number % 3) {
@@ -416,6 +468,10 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 		this.setNumber(compound.getInt("MyNumber"));
 		this.switchToFormationByNumber(compound.getInt("Formation"));
 		this.setTicksProgress(compound.getInt("TicksProgress"));
+
+		if (this.hasCustomName()) {
+			this.bossInfo.setName(this.getDisplayName());
+		}
 	}
 
 	public enum Formation {

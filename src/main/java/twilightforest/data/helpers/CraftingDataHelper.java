@@ -12,6 +12,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -310,6 +311,23 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL), vials)
 				.unlockedBy("has_item", has(ItemTagGenerator.FIERY_VIAL))
 				.save(consumer, locEquip("fiery_" + BuiltInRegistries.ITEM.getKey(result.get()).getPath()));
+	}
+
+	protected final void buildBoats(Consumer<FinishedRecipe> consumer, Supplier<? extends Item> boat, Supplier<? extends Item> chestBoat, Supplier<? extends Block> planks) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, boat.get())
+				.pattern("P P")
+				.pattern("PPP")
+				.define('P', planks.get())
+				.group("boat")
+				.unlockedBy("in_water", insideOf(Blocks.WATER))
+				.save(consumer);
+
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, chestBoat.get())
+				.requires(boat.get())
+				.requires(Tags.Items.CHESTS_WOODEN)
+				.group("chest_boat")
+				.unlockedBy("has_boat", has(ItemTags.BOATS))
+				.save(consumer);
 	}
 
 	protected final ResourceLocation locCastle(String name) {

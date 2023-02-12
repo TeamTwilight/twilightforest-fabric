@@ -352,7 +352,6 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 			this.hitNearbyEntities();
 		}
 
-		//TODO: Return value?
 		return super.causeFallDamage(distance, multiplier, source);
 	}
 

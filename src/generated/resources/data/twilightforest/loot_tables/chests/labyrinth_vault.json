@@ -104,11 +104,12 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:infinity": 1,
-                "minecraft:punch": 2
+                "minecraft:infinity": 1.0,
+                "minecraft:punch": 2.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:bow"
@@ -117,11 +118,12 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:flame": 1,
-                "minecraft:power": 3
+                "minecraft:flame": 1.0,
+                "minecraft:power": 3.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "minecraft:bow"
@@ -157,11 +159,12 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:efficiency": 4,
-                "minecraft:unbreaking": 2
+                "minecraft:efficiency": 4.0,
+                "minecraft:unbreaking": 2.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "twilightforest:steeleaf_shovel"
@@ -170,10 +173,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:efficiency": 5
+                "minecraft:efficiency": 5.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "twilightforest:steeleaf_axe"
@@ -182,10 +186,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:protection": 3
+                "minecraft:protection": 3.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "twilightforest:steeleaf_chestplate"
@@ -194,10 +199,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:protection": 2
+                "minecraft:protection": 2.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "twilightforest:steeleaf_boots"
@@ -206,10 +212,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:fire_protection": 4
+                "minecraft:fire_protection": 4.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "twilightforest:steeleaf_leggings"
@@ -218,10 +225,11 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:respiration": 3
+                "minecraft:respiration": 3.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "twilightforest:steeleaf_helmet"
@@ -244,11 +252,12 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:efficiency": 4,
-                "minecraft:silk_touch": 1
+                "minecraft:efficiency": 4.0,
+                "minecraft:silk_touch": 1.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "twilightforest:steeleaf_pickaxe"
@@ -257,11 +266,12 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:knockback": 2,
-                "minecraft:sharpness": 4
+                "minecraft:knockback": 2.0,
+                "minecraft:sharpness": 4.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "twilightforest:steeleaf_sword"
@@ -270,11 +280,12 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "add": false,
               "enchantments": {
-                "minecraft:bane_of_arthropods": 5,
-                "minecraft:fire_aspect": 2
+                "minecraft:bane_of_arthropods": 5.0,
+                "minecraft:fire_aspect": 2.0
               },
-              "function": "twilightforest:enchant"
+              "function": "minecraft:set_enchantments"
             }
           ],
           "name": "twilightforest:steeleaf_sword"
