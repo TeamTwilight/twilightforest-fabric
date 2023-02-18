@@ -1,17 +1,16 @@
 package twilightforest.data;
 
-import com.mojang.serialization.Lifecycle;
 import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.biome.Biomes;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
 import twilightforest.data.custom.UncraftingRecipeGenerator;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
+import twilightforest.init.*;
 
 public class DataGenerators implements DataGeneratorEntrypoint {
 
@@ -44,6 +43,14 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 
 	@Override
 	public void buildRegistry(RegistrySetBuilder registryBuilder) {
-		registryBuilder.add(Registries.BIOME, Lifecycle.stable(), Biomes::bootstrap);
+		registryBuilder.add(Registries.CONFIGURED_FEATURE, TFConfiguredFeatures::bootstrap)
+				.add(Registries.PLACED_FEATURE, TFPlacedFeatures::bootstrap)
+				.add(Registries.STRUCTURE, TFStructures::bootstrap)
+				.add(Registries.STRUCTURE_SET, TFStructureSets::bootstrap)
+				.add(Registries.CONFIGURED_CARVER, TFCaveCarvers::bootstrap)
+				.add(Registries.NOISE_SETTINGS, TFDimensionSettings::bootstrapNoise)
+				.add(Registries.DIMENSION_TYPE, TFDimensionSettings::bootstrapType)
+				.add(Registries.LEVEL_STEM, TFDimensionSettings::bootstrapStem)
+				.add(Registries.BIOME, TFBiomes::bootstrap);
 	}
 }

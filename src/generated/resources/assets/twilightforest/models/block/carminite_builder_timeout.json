@@ -43,50 +43,26 @@
       "faces": {
         "down": {
           "cullface": "down",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#bottom2"
         },
         "east": {
           "cullface": "east",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#east2"
         },
         "north": {
           "cullface": "north",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#north2"
         },
         "south": {
           "cullface": "south",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#south2"
         },
         "up": {
           "cullface": "up",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#top2"
         },
         "west": {
           "cullface": "west",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#west2"
         }
       },
@@ -105,50 +81,26 @@
       "faces": {
         "down": {
           "cullface": "down",
-          "forge_data": {
-            "block_light": 7,
-            "sky_light": 7
-          },
           "texture": "#bottom3"
         },
         "east": {
           "cullface": "east",
-          "forge_data": {
-            "block_light": 7,
-            "sky_light": 7
-          },
           "texture": "#east3"
         },
         "north": {
           "cullface": "north",
-          "forge_data": {
-            "block_light": 7,
-            "sky_light": 7
-          },
           "texture": "#north3"
         },
         "south": {
           "cullface": "south",
-          "forge_data": {
-            "block_light": 7,
-            "sky_light": 7
-          },
           "texture": "#south3"
         },
         "up": {
           "cullface": "up",
-          "forge_data": {
-            "block_light": 7,
-            "sky_light": 7
-          },
           "texture": "#top3"
         },
         "west": {
           "cullface": "west",
-          "forge_data": {
-            "block_light": 7,
-            "sky_light": 7
-          },
           "texture": "#west3"
         }
       },

@@ -37,13 +37,13 @@ public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensionSettings.seed).forGetter(o -> o.seed),
 			RegistryOps.retrieveGetter(Registries.BIOME),
-			TerrainColumn.CODEC.listOf().fieldOf("biome_landscape").xmap(l -> l.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), m -> m.values().stream().sorted(Comparator.comparing(TerrainColumn::getResourceKey)).toList()).forGetter(o -> o.biomeList),
+			TerrainColumn.CODEC.listOf().fieldOf("biome_landscape").xmap(l -> l.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), m -> m.values().stream().sorted(Comparator.comparing(terrainColumn -> ComparableResourceKey.of(terrainColumn.getResourceKey()))).toList()).forGetter(o -> o.biomeList),
 			Codec.FLOAT.fieldOf("base_offset").forGetter(o -> o.baseOffset),
 			Codec.FLOAT.fieldOf("base_factor").forGetter(o -> o.baseFactor)
 	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
 	private final HolderGetter<Biome> registry;
-	private final Map<ComparableResourceKey<Biome>, TerrainColumn> biomeList;
+	private final Map<ResourceKey<Biome>, TerrainColumn> biomeList;
 	private final Layer genBiomes;
 	private final long seed;
 	private final float baseOffset;
@@ -53,7 +53,7 @@ public class TFBiomeProvider extends BiomeSource {
 		this(seed, registry, list.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), offset, factor);
 	}
 
-	public TFBiomeProvider(long seed, HolderGetter<Biome> registryIn, Map<ComparableResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
+	public TFBiomeProvider(long seed, HolderGetter<Biome> registryIn, Map<ResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
 		super(list.values().stream().flatMap(TerrainColumn::getBiomes));
 
 		this.seed = seed;

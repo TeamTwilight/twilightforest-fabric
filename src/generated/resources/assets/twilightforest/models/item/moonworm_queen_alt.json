@@ -1,18 +1,13 @@
 {
   "parent": "minecraft:item/handheld",
-  "forge_data": {
+  "loader": "porting_lib:item_layers",
+  "render_materials": {
     "layers": {
       "0": {
-        "block_light": 15,
-        "sky_light": 15
+        "blendMode": "twilightforest:forge_entity_unsorted_translucent",
+        "emissive": true
       }
     }
-  },
-  "loader": "forge:item_layers",
-  "render_types": {
-    "twilightforest:forge_entity_unsorted_translucent": [
-      0
-    ]
   },
   "textures": {
     "layer0": "twilightforest:item/moonworm_queen_alt"

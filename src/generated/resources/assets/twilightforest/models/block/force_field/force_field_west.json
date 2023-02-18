@@ -6,10 +6,6 @@
       "faces": {
         "west": {
           "cullface": "west",
-          "forge_data": {
-            "block_light": 15,
-            "sky_light": 15
-          },
           "texture": "#pane"
         }
       },

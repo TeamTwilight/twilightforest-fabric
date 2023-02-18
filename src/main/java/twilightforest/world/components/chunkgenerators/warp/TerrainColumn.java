@@ -6,16 +6,13 @@ import it.unimi.dsi.fastutil.floats.Float2ObjectAVLTreeMap;
 import it.unimi.dsi.fastutil.floats.Float2ObjectMap;
 import it.unimi.dsi.fastutil.floats.Float2ObjectSortedMap;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.util.Codecs;
-import twilightforest.util.ComparableResourceKey;
 
-import java.util.Comparator;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.stream.Stream;
@@ -78,8 +75,8 @@ public final class TerrainColumn implements Comparable<TerrainColumn> {
         return this.noiseScale;
     }
 
-    public ComparableResourceKey<Biome> getResourceKey() {
-        return ComparableResourceKey.of(this.resourceKey);
+    public ResourceKey<Biome> getResourceKey() {
+        return this.resourceKey;
     }
 
     @Override

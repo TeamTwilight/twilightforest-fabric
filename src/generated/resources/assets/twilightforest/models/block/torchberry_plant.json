@@ -90,10 +90,6 @@
     {
       "faces": {
         "north": {
-          "forge_data": {
-            "block_light": 15,
-            "sky_light": 15
-          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -103,10 +99,6 @@
           ]
         },
         "south": {
-          "forge_data": {
-            "block_light": 15,
-            "sky_light": 15
-          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -141,10 +133,6 @@
     {
       "faces": {
         "east": {
-          "forge_data": {
-            "block_light": 15,
-            "sky_light": 15
-          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -154,10 +142,6 @@
           ]
         },
         "west": {
-          "forge_data": {
-            "block_light": 15,
-            "sky_light": 15
-          },
           "texture": "#cross2",
           "uv": [
             0.0,

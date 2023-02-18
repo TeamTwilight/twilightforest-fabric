@@ -5,18 +5,10 @@
     {
       "faces": {
         "down": {
-          "forge_data": {
-            "block_light": 15,
-            "sky_light": 15
-          },
           "texture": "#pane"
         },
         "east": {
           "cullface": "east",
-          "forge_data": {
-            "block_light": 15,
-            "sky_light": 15
-          },
           "texture": "#pane",
           "uv": [
             0.0,
@@ -27,10 +19,6 @@
         },
         "north": {
           "cullface": "north",
-          "forge_data": {
-            "block_light": 15,
-            "sky_light": 15
-          },
           "texture": "#pane",
           "uv": [
             9.0,
@@ -40,10 +28,6 @@
           ]
         },
         "up": {
-          "forge_data": {
-            "block_light": 15,
-            "sky_light": 15
-          },
           "texture": "#pane",
           "uv": [
             0.0,

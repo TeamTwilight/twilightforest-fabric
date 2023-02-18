@@ -44,55 +44,31 @@
       "faces": {
         "down": {
           "cullface": "down",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#bottom2",
           "tintindex": 0
         },
         "east": {
           "cullface": "east",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#east2",
           "tintindex": 0
         },
         "north": {
           "cullface": "north",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#north2",
           "tintindex": 0
         },
         "south": {
           "cullface": "south",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#south2",
           "tintindex": 0
         },
         "up": {
           "cullface": "up",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#top2",
           "tintindex": 0
         },
         "west": {
           "cullface": "west",
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#west2",
           "tintindex": 0
         }

@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.models.builders.ItemLayerModelBuilder;
 import io.github.fabricators_of_create.porting_lib.models.generators.ModelFile;
 import io.github.fabricators_of_create.porting_lib.models.generators.item.ItemModelBuilder;
 import io.github.fabricators_of_create.porting_lib.models.generators.item.ItemModelProvider;
@@ -660,9 +661,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
-		throw new RuntimeException("TODO: Generating Item Layer Models is not support yet!");
-//		if (emissivity > 0) builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(emissivity, emissivity, 0).renderType("forge_entity_unsorted_translucent", 0).end();
-//		return builder;
+		assert false;
+		if (emissivity > 0) builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(emissivity == 15, 0).renderType("forge_entity_unsorted_translucent", 0).end();
+		return builder;
 	}
 
 	private ItemModelBuilder forcefield(String name, ResourceLocation... layers) {
@@ -670,9 +671,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
-		throw new RuntimeException("TODO: Generating Item Layer Models is not support yet!");
-//		builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType(new ResourceLocation("translucent"), 0).end();
-//		return builder;
+		builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(true, 0).renderType(new ResourceLocation("translucent"), 0).end();
+		return builder;
 	}
 
 	private void singleTexFullbright(RegistryObject<Item> item) {

@@ -1,14 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
-  "forge_data": {
-    "layers": {
-      "0": {
-        "block_light": 15,
-        "sky_light": 15
-      }
-    }
-  },
-  "loader": "forge:item_layers",
+  "loader": "porting_lib:item_layers",
   "overrides": [
     {
       "model": "twilightforest:item/moonworm_queen_alt",
@@ -17,10 +9,13 @@
       }
     }
   ],
-  "render_types": {
-    "twilightforest:forge_entity_unsorted_translucent": [
-      0
-    ]
+  "render_materials": {
+    "layers": {
+      "0": {
+        "blendMode": "twilightforest:forge_entity_unsorted_translucent",
+        "emissive": true
+      }
+    }
   },
   "textures": {
     "layer0": "twilightforest:item/moonworm_queen"

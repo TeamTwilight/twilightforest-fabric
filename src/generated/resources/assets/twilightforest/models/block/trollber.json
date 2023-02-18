@@ -4,10 +4,6 @@
     {
       "faces": {
         "north": {
-          "forge_data": {
-            "block_light": 1,
-            "sky_light": 1
-          },
           "texture": "#cross",
           "uv": [
             0.0,
@@ -17,10 +13,6 @@
           ]
         },
         "south": {
-          "forge_data": {
-            "block_light": 1,
-            "sky_light": 1
-          },
           "texture": "#cross",
           "uv": [
             0.0,
@@ -55,10 +47,6 @@
     {
       "faces": {
         "east": {
-          "forge_data": {
-            "block_light": 1,
-            "sky_light": 1
-          },
           "texture": "#cross",
           "uv": [
             0.0,
@@ -68,10 +56,6 @@
           ]
         },
         "west": {
-          "forge_data": {
-            "block_light": 1,
-            "sky_light": 1
-          },
           "texture": "#cross",
           "uv": [
             0.0,
@@ -106,10 +90,6 @@
     {
       "faces": {
         "north": {
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -119,10 +99,6 @@
           ]
         },
         "south": {
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -157,10 +133,6 @@
     {
       "faces": {
         "east": {
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#cross2",
           "uv": [
             0.0,
@@ -170,10 +142,6 @@
           ]
         },
         "west": {
-          "forge_data": {
-            "block_light": 10,
-            "sky_light": 10
-          },
           "texture": "#cross2",
           "uv": [
             0.0,
