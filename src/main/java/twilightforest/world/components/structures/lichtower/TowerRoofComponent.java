@@ -11,9 +11,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 public class TowerRoofComponent extends TFStructureComponentOld {
 
@@ -30,8 +29,8 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("roofHeight");
 	}
 
-	public TowerRoofComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
-		super(type, feature, i, x, y, z);
+	public TowerRoofComponent(StructurePieceType type, int i, int x, int y, int z) {
+		super(type, i, x, y, z);
 
 		this.spawnListIndex = -1;
 

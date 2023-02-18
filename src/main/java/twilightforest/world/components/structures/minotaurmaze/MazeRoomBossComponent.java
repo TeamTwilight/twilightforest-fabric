@@ -13,9 +13,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.loot.TFLootTables;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.loot.TFLootTables;
 
 
 public class MazeRoomBossComponent extends MazeRoomComponent {
@@ -24,8 +23,8 @@ public class MazeRoomBossComponent extends MazeRoomComponent {
 		super(TFStructurePieceTypes.TFMMRB.get(), nbt);
 	}
 
-	public MazeRoomBossComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMRB.get(), feature, i, rand, x, y, z);
+	public MazeRoomBossComponent(int i, RandomSource rand, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMRB.get(), i, rand, x, y, z);
 
 		//get the fuck outta here
 		this.spawnListIndex = Integer.MAX_VALUE;

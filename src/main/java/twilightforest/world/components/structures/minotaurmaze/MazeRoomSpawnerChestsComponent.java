@@ -14,9 +14,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFLootTables;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.loot.TFLootTables;
 
 
 public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
@@ -25,8 +24,8 @@ public class MazeRoomSpawnerChestsComponent extends MazeRoomComponent {
 		super(TFStructurePieceTypes.TFMMRSC.get(), nbt);
 	}
 
-	public MazeRoomSpawnerChestsComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMRSC.get(), feature, i, rand, x, y, z);
+	public MazeRoomSpawnerChestsComponent(int i, RandomSource rand, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMRSC.get(), i, rand, x, y, z);
 	}
 
 	@Override

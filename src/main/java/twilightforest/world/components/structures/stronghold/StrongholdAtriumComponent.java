@@ -2,7 +2,6 @@ package twilightforest.world.components.structures.stronghold;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
@@ -16,14 +15,12 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFConfiguredFeatures;
+import twilightforest.init.TFStructurePieceTypes;
 
 
 
@@ -36,8 +33,8 @@ public class StrongholdAtriumComponent extends StructureTFStrongholdComponent {
 		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
-	public StrongholdAtriumComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSAt.get(), feature, i, facing, x, y, z);
+	public StrongholdAtriumComponent(int i, Direction facing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSAt.get(), i, facing, x, y, z);
 	}
 
 	@Override

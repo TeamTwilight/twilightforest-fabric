@@ -6,7 +6,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerBossBridgeComponent extends DarkTowerBridgeComponent {
@@ -15,8 +14,8 @@ public class DarkTowerBossBridgeComponent extends DarkTowerBridgeComponent {
 		super(TFStructurePieceTypes.TFDTBB.get(), nbt);
 	}
 
-	protected DarkTowerBossBridgeComponent(TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFDTBB.get(), feature, i, x, y, z, pSize, pHeight, direction);
+	protected DarkTowerBossBridgeComponent(int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(TFStructurePieceTypes.TFDTBB.get(), i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override
@@ -26,7 +25,7 @@ public class DarkTowerBossBridgeComponent extends DarkTowerBridgeComponent {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
-		DarkTowerBossTrapComponent wing = new DarkTowerBossTrapComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		DarkTowerBossTrapComponent wing = new DarkTowerBossTrapComponent(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		list.addPiece(wing);
 		wing.addChildren(this, list, rand);
 		addOpening(x, y, z, rotation);

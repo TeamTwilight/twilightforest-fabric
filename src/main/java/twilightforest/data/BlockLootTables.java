@@ -14,24 +14,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.MatchTool;
+import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -75,8 +70,6 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.CICADA.get());
 		dropSelf(TFBlocks.MOONWORM.get());
 		dropSelf(TFBlocks.TROPHY_PEDESTAL.get());
-		//registerDropSelfLootTable(TFBlocks.TERRORCOTTA_CIRCLE.get());
-		//registerDropSelfLootTable(TFBlocks.TERRORCOTTA_DIAGONAL.get());
 		dropSelf(TFBlocks.AURORA_BLOCK.get());
 		dropSelf(TFBlocks.AURORA_PILLAR.get());
 		add(TFBlocks.AURORA_SLAB.get(), createSlabItemTable(TFBlocks.AURORA_SLAB.get()));
@@ -167,7 +160,7 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.MUSHGLOOM.get());
 		add(TFBlocks.TORCHBERRY_PLANT.get(), torchberryPlant(TFBlocks.TORCHBERRY_PLANT.get()));
 		add(TFBlocks.ROOT_STRAND.get(), block -> createShearsDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F))))));
-		add(TFBlocks.FALLEN_LEAVES.get(), createShearsOnlyDrop(TFBlocks.FALLEN_LEAVES.get()));
+		add(TFBlocks.FALLEN_LEAVES.get(), this.fallenLeaves());
 		dropSelf(TFBlocks.SMOKER.get());
 		dropSelf(TFBlocks.ENCASED_SMOKER.get());
 		dropSelf(TFBlocks.FIRE_JET.get());
@@ -524,18 +517,12 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 	private LootTable.Builder particleSpawner() {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
 						.add(this.applyExplosionDecay(TFBlocks.FIREFLY_SPAWNER.get(), LootItem.lootTableItem(TFBlocks.FIREFLY_SPAWNER.get()))))
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-						.add(LootItem.lootTableItem(TFBlocks.FIREFLY.get())
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(0.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 1))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 2))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(2.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 3))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(3.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 4))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(4.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 5))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(5.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 6))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(6.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 7))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(7.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 8))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(8.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 9))))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(9.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(AbstractParticleSpawnerBlock.RADIUS, 10))))));
+				.withPool(LootPool.lootPool()
+						.add(AlternativesEntry.alternatives(AlternativesEntry.alternatives(FireflySpawnerBlock.RADIUS.getPossibleValues(), layer ->
+								LootItem.lootTableItem(TFBlocks.FIREFLY.get())
+										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FireflySpawnerBlock.RADIUS, layer)))
+										.apply(SetItemCountFunction.setCount(ConstantValue.exactly((float)layer.intValue() - 1)))))));
 	}
 
 	protected LootTable.Builder torchberryPlant(Block pBlock) {
@@ -576,6 +563,15 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 												.setProperties(StatePropertiesPredicate.Builder.properties()
 														.hasProperty(PipeBlock.DOWN, true))))
 								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
+	}
+
+	protected LootTable.Builder fallenLeaves() {
+		return LootTable.lootTable().withPool(LootPool.lootPool()
+				.add(AlternativesEntry.alternatives(AlternativesEntry.alternatives(FallenLeavesBlock.LAYERS.getPossibleValues(), layer ->
+						LootItem.lootTableItem(TFBlocks.FALLEN_LEAVES.get())
+								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FALLEN_LEAVES.get())
+										.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FallenLeavesBlock.LAYERS, layer)))
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly((float)layer.intValue())))).when(HAS_SHEARS))));
 	}
 
 	//[VanillaCopy] of a few different methods from BlockLoot. These are here just so we can use the modded shears thing

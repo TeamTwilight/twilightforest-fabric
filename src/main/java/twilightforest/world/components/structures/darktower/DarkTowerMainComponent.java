@@ -3,9 +3,6 @@ package twilightforest.world.components.structures.darktower;
 import me.alphamode.forgetags.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +22,6 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -41,7 +37,6 @@ import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFMaze;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TFStructureDecorator;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.TFConfiguredFeatures;
 
@@ -55,12 +50,12 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		super(TFStructurePieceTypes.TFDTMai.get(), nbt);
 	}
 
-	public DarkTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z) {
-		this(feature, rand, index, x + 10, y, z + 10, Direction.NORTH);
+	public DarkTowerMainComponent(RandomSource rand, int index, int x, int y, int z) {
+		this(rand, index, x + 10, y, z + 10, Direction.NORTH);
 	}
 
-	public DarkTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFDTMai.get(), feature, index, x, y, z, 19, 56 + ((rand.nextInt(32) / 5) * 5), rotation);
+	public DarkTowerMainComponent(RandomSource rand, int index, int x, int y, int z, Direction rotation) {
+		super(TFStructurePieceTypes.TFDTMai.get(), index, x, y, z, 19, 56 + ((rand.nextInt(32) / 5) * 5), rotation);
 
 		// check to make sure we can build the whole tower
 		if (this.boundingBox.maxY() > 245) {
@@ -194,7 +189,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
-		DarkTowerBridgeComponent bridge = new DarkTowerEntranceBridgeComponent(getFeatureType(), index, dx[0], dx[1], dx[2], childSize, childHeight, direction);
+		DarkTowerBridgeComponent bridge = new DarkTowerEntranceBridgeComponent(index, dx[0], dx[1], dx[2], childSize, childHeight, direction);
 		// if I'm doing this right, the main towers can't intersect
 		list.addPiece(bridge);
 		bridge.addChildren(this, list, rand);
@@ -213,7 +208,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
-		DarkTowerMainBridgeComponent bridge = new DarkTowerMainBridgeComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		DarkTowerMainBridgeComponent bridge = new DarkTowerMainBridgeComponent(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// if I'm doing this right, the main towers can't intersect
 		list.addPiece(bridge);
 		bridge.addChildren(this, list, rand);
@@ -233,7 +228,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
-		DarkTowerBossBridgeComponent bridge = new DarkTowerBossBridgeComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		DarkTowerBossBridgeComponent bridge = new DarkTowerBossBridgeComponent(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// if I'm doing this right, the main towers can't intersect
 		list.addPiece(bridge);
 		bridge.addChildren(this, list, rand);

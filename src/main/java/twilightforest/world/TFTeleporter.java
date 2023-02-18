@@ -96,11 +96,17 @@ public class TFTeleporter implements ITeleporter {
 	@Override
 	public PortalInfo getPortalInfo(Entity entity, ServerLevel dest, Function<ServerLevel, PortalInfo> defaultPortalInfo) {
 		PortalInfo pos;
-		if ((pos = placeInExistingPortal(dest, entity, entity.blockPosition())) == null) {
-			pos = moveToSafeCoords(dest, entity);
+
+		// Scale the coords based on the dimension type coordinate_scale
+		double scale = dest.dimensionType().coordinateScale();
+		BlockPos destPos = dest.getWorldBorder().clampToBounds(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
+
+		if ((pos = placeInExistingPortal(dest, entity, destPos)) == null) {
+			pos = moveToSafeCoords(dest, entity, destPos);
 			makePortal(entity, dest, pos.pos);
 			pos = placeInExistingPortal(dest, entity, new BlockPos(pos.pos));
 		}
+
 		return pos == null ? ITeleporter.super.getPortalInfo(entity, dest, defaultPortalInfo) : pos;
 	}
 
@@ -237,14 +243,13 @@ public class TFTeleporter implements ITeleporter {
 		return isPortal(world.getBlockState(pos));
 	}
 
-	private static PortalInfo moveToSafeCoords(ServerLevel world, Entity entity) {
+	private static PortalInfo moveToSafeCoords(ServerLevel world, Entity entity, BlockPos pos) {
 		// if we're in enforced progression mode, check the biomes for safety
 		boolean checkProgression = TFGenerationSettings.isProgressionEnforced(world);
 
-		BlockPos pos = entity.blockPosition();
 		if (isSafeAround(world, pos, entity, checkProgression)) {
 			TwilightForestMod.LOGGER.debug("Portal destination looks safe!");
-			return makePortalInfo(entity, entity.position());
+			return makePortalInfo(entity, Vec3.atCenterOf(pos));
 		}
 
 		TwilightForestMod.LOGGER.debug("Portal destination looks unsafe, rerouting!");
@@ -281,7 +286,7 @@ public class TFTeleporter implements ITeleporter {
 
 		TwilightForestMod.LOGGER.warn("Still did not find a safe portal spot.");
 
-		return makePortalInfo(entity, entity.position());
+		return makePortalInfo(entity, Vec3.atCenterOf(pos));
 	}
 
 	private static BlockPos moveTowardsCenter(BlockPos pos, float lerp) {

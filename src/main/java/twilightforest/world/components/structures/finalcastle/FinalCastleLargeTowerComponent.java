@@ -26,12 +26,12 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 		super(TFStructurePieceTypes.TFFCLaTo.get(), nbt);
 	}
 
-	public FinalCastleLargeTowerComponent(TFLandmark feature, int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFFCLaTo.get(), feature, i, x, y, z);
+	public FinalCastleLargeTowerComponent(int i, int x, int y, int z, Direction rotation) {
+		super(TFStructurePieceTypes.TFFCLaTo.get(), i, x, y, z);
 		this.setOrientation(rotation);
 		this.size = 13;
 		this.height = 61;
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -6, 0, -6, 12, 60, 12, Direction.SOUTH);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -6, 0, -6, 12, 60, 12, Direction.SOUTH, false);
 
 	}
 
@@ -41,7 +41,7 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 		// add crown
-		FinalCastleRoof9CrenellatedComponent roof = new FinalCastleRoof9CrenellatedComponent(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleRoof9CrenellatedComponent roof = new FinalCastleRoof9CrenellatedComponent(4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 	}

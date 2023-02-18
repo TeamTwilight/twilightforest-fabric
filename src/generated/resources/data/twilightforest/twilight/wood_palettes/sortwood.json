@@ -1,0 +1,10 @@
+{
+  "banister": "twilightforest:sorting_banister",
+  "button": "twilightforest:sorting_button",
+  "fence": "twilightforest:sorting_fence",
+  "gate": "twilightforest:sorting_fence_gate",
+  "planks": "twilightforest:sorting_planks",
+  "plate": "twilightforest:sorting_pressure_plate",
+  "slab": "twilightforest:sorting_slab",
+  "stairs": "twilightforest:sorting_stairs"
+}

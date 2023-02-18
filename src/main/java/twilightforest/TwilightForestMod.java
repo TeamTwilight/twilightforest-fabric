@@ -38,8 +38,10 @@ import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.events.*;
 import twilightforest.init.*;
 import twilightforest.init.custom.DwarfRabbitVariant;
+import twilightforest.init.custom.WoodPalettes;
 import twilightforest.init.custom.TinyBirdVariant;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.TFCavesCarver;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
@@ -52,6 +54,7 @@ import java.util.Locale;
 public class TwilightForestMod implements ModInitializer {
 
 	public static final String ID = "twilightforest";
+	public static final String REGISTRY_NAMESPACE = "twilight";
 
 	private static final String MODEL_DIR = "textures/model/";
 	private static final String GUI_DIR = "textures/gui/";
@@ -110,6 +113,7 @@ public class TwilightForestMod implements ModInitializer {
 
 		DwarfRabbitVariant.DWARF_RABBITS.register();
 		TinyBirdVariant.TINY_BIRDS.register();
+		WoodPalettes.WOOD_PALETTES.register(modbus);
 
 		TFStructures.register();
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
@@ -145,6 +149,11 @@ public class TwilightForestMod implements ModInitializer {
 
 		ModConfigEvents.reloading(ID).register(TFConfig::onConfigReload);
 
+	}
+
+	@SubscribeEvent
+	public static void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
+		event.dataPackRegistry(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC);
 	}
 
 	public static void addClassicPack() {
@@ -214,6 +223,10 @@ public class TwilightForestMod implements ModInitializer {
 
 	public static ResourceLocation prefix(String name) {
 		return new ResourceLocation(ID, name.toLowerCase(Locale.ROOT));
+	}
+
+	public static ResourceLocation namedRegistry(String name) {
+		return new ResourceLocation(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
 	}
 
 	public static ResourceLocation getModelTexture(String name) {

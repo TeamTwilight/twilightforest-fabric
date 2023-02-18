@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -20,8 +19,8 @@ public class TowerRoofAttachedSlabComponent extends TowerRoofSlabComponent {
 		super(TFStructurePieceTypes.TFLTRAS.get(), nbt);
 	}
 
-	public TowerRoofAttachedSlabComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFLTRAS.get(), feature, i, wing, x, y, z);
+	public TowerRoofAttachedSlabComponent(int i, TowerWingComponent wing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFLTRAS.get(), i, wing, x, y, z);
 	}
 
 	/**

@@ -7,33 +7,19 @@ import com.mojang.serialization.DataResult;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.world.components.structures.*;
 import twilightforest.world.components.structures.courtyard.CourtyardMain;
 import twilightforest.world.components.structures.darktower.DarkTowerMainComponent;
@@ -47,15 +33,13 @@ import twilightforest.world.components.structures.trollcave.TrollCaveMainCompone
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
 import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.DecorationClearance;
-import twilightforest.world.components.structures.util.StructureHints;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class TFLandmark implements StructureHints, AdvancementLockedStructure, DecorationClearance, ControlledSpawns {
-	public static final TFLandmark NOTHING = new TFLandmark( 0, "no_feature"       , false, null, TerrainAdjustment.NONE) { { this.enableDecorations().disableStructure(); } };
-	public static final TFLandmark SMALL_HILL = new TFLandmark( 1, "small_hollow_hill", true, BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES, TerrainAdjustment.NONE, true) {
+public class TFLandmark implements AdvancementLockedStructure, DecorationClearance, ControlledSpawns {
+	public static final TFLandmark NOTHING = new TFLandmark( 0, "no_feature") { { this.enableDecorations().disableStructure(); } };
+	public static final TFLandmark SMALL_HILL = new TFLandmark( 1, "small_hollow_hill", true) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
@@ -69,10 +53,10 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 3, y - 2, z - 3);
+			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, size, x - 3, y - 2, z - 3);
 		}
 	};
-	public static final TFLandmark MEDIUM_HILL = new TFLandmark( 2, "medium_hollow_hill", true, BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES, TerrainAdjustment.NONE, true ) {
+	public static final TFLandmark MEDIUM_HILL = new TFLandmark( 2, "medium_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
@@ -91,10 +75,10 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 7, y - 5, z - 7);
+			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, size, x - 7, y - 5, z - 7);
 		}
 	};
-	public static final TFLandmark LARGE_HILL = new TFLandmark( 3, "large_hollow_hill", true, BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES, TerrainAdjustment.NONE, true ) {
+	public static final TFLandmark LARGE_HILL = new TFLandmark( 3, "large_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
@@ -114,10 +98,10 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), this, 0, size, x - 11, y - 5, z - 11);
+			return new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, size, x - 11, y - 5, z - 11);
 		}
 	};
-	public static final TFLandmark HEDGE_MAZE = new TFLandmark( 2, "hedge_maze", true, BiomeTagGenerator.VALID_HEDGE_MAZE_BIOMES, TerrainAdjustment.BEARD_THIN) {
+	public static final TFLandmark HEDGE_MAZE = new TFLandmark( 2, "hedge_maze") {
 		{
 			this.enableTerrainAlterations();
 
@@ -125,10 +109,10 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HedgeMazeComponent(this, 0, x + 1, chunkGenerator.getSeaLevel() + 8, z + 1);
+			return new HedgeMazeComponent(0, x + 1, chunkGenerator.getSeaLevel() + 8, z + 1);
 		}
 	};
-	public static final TFLandmark QUEST_GROVE = new TFLandmark( 1, "quest_grove" , true, BiomeTagGenerator.VALID_QUEST_GROVE_BIOMES, TerrainAdjustment.BEARD_THIN) {
+	public static final TFLandmark QUEST_GROVE = new TFLandmark( 1, "quest_grove") {
 		{
 			this.enableTerrainAlterations();
 
@@ -140,7 +124,7 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 			return new QuestGrove(structureManager, new BlockPos(x - 12, chunkGenerator.getSeaLevel() + 5, z - 12));
 		}
 	};
-	public static final TFLandmark NAGA_COURTYARD = new TFLandmark( 3, "naga_courtyard", true, BiomeTagGenerator.VALID_NAGA_COURTYARD_BIOMES, TerrainAdjustment.BEARD_THIN) {
+	public static final TFLandmark NAGA_COURTYARD = new TFLandmark( 3, "naga_courtyard") {
 		{
 			this.enableTerrainAlterations();
 
@@ -149,10 +133,10 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new CourtyardMain(this, rand, 0, x + 1, chunkGenerator.getSeaLevel() + 5, z + 1, structureManager);
+			return new CourtyardMain(rand, 0, x + 1, chunkGenerator.getSeaLevel() + 5, z + 1, structureManager);
 		}
 	};
-	public static final TFLandmark LICH_TOWER = new TFLandmark( 1, "lich_tower", true, BiomeTagGenerator.VALID_LICH_TOWER_BIOMES, TerrainAdjustment.BEARD_THIN, TwilightForestMod.prefix("progress_naga") ) {
+	public static final TFLandmark LICH_TOWER = new TFLandmark( 1, "lich_tower", TwilightForestMod.prefix("progress_naga") ) {
 		{
 			this.addMonster(EntityType.ZOMBIE, 10, 1, 2)
 					.addMonster(EntityType.SKELETON, 10, 1, 2)
@@ -165,42 +149,22 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 
 		@Override
-		public void addBookInformation(ItemStack book, ListTag bookPages) {
-
-			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.lichtower", 4);
-
-			book.addTagElement("pages", bookPages);
-			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.lichtower"));
-		}
-
-		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new TowerMainComponent(this, rand, 0, x, y, z);
+			return new TowerMainComponent(rand, 0, x, y, z);
 		}
 	};
-	public static final TFLandmark HYDRA_LAIR = new TFLandmark( 2, "hydra_lair"    , true, BiomeTagGenerator.VALID_HYDRA_LAIR_BIOMES, TerrainAdjustment.NONE, true, TwilightForestMod.prefix("progress_labyrinth") ) {
+	public static final TFLandmark HYDRA_LAIR = new TFLandmark( 2, "hydra_lair"    , true, TwilightForestMod.prefix("progress_labyrinth") ) {
 		{
 			this.enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
 		}
 
 		@Override
-		public void addBookInformation(ItemStack book, ListTag bookPages) {
-
-			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.hydralair", 4);
-
-			book.addTagElement("pages", bookPages);
-			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.hydralair"));
-		}
-
-		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new HydraLairComponent(this, 0, x - 7, y, z - 7);
+			return new HydraLairComponent(0, x - 7, y, z - 7);
 		}
 	};
-	public static final TFLandmark LABYRINTH = new TFLandmark( 3, "labyrinth", true, BiomeTagGenerator.VALID_LABYRINTH_BIOMES, TerrainAdjustment.BURY, TwilightForestMod.prefix("progress_lich") ) {
+	public static final TFLandmark LABYRINTH = new TFLandmark( 3, "labyrinth", TwilightForestMod.prefix("progress_lich") ) {
 		{
 			this.enableDecorations();
 			this.undergroundDecoAllowed = false;
@@ -216,26 +180,12 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 
 		@Override
-		public void addBookInformation(ItemStack book, ListTag bookPages) {
-
-			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.labyrinth", 5);
-
-			book.addTagElement("pages", bookPages);
-			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.labyrinth"));
-		}
-
-		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new MazeRuinsComponent(this, 0, x, y, z);
+			return new MazeRuinsComponent(0, x, y, z);
 		}
 
-		@Override
-		public GenerationStep.Decoration getDecorationStage() {
-			return GenerationStep.Decoration.UNDERGROUND_STRUCTURES;
-		}
 	};
-	public static final TFLandmark DARK_TOWER = new TFLandmark( 1, "dark_tower", true, BiomeTagGenerator.VALID_DARK_TOWER_BIOMES, TerrainAdjustment.BEARD_THIN, TwilightForestMod.prefix("progress_knights") ) {
+	public static final TFLandmark DARK_TOWER = new TFLandmark( 1, "dark_tower", TwilightForestMod.prefix("progress_knights") ) {
 		{
 			this.addMonster(TFEntities.CARMINITE_GOLEM.get(), 10, 1, 2)
 					.addMonster(EntityType.SKELETON, 10, 1, 2)
@@ -254,21 +204,11 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 
 		@Override
-		public void addBookInformation(ItemStack book, ListTag bookPages) {
-
-			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.darktower", 3);
-
-			book.addTagElement("pages", bookPages);
-			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.darktower"));
-		}
-
-		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new DarkTowerMainComponent(this, rand, 0, x, y, z);
+			return new DarkTowerMainComponent(rand, 0, x, y, z);
 		}
 	};
-	public static final TFLandmark KNIGHT_STRONGHOLD = new TFLandmark( 3, "knight_stronghold", true, BiomeTagGenerator.VALID_KNIGHT_STRONGHOLD_BIOMES, TerrainAdjustment.BURY, TwilightForestMod.prefix("progress_trophy_pedestal") ) {
+	public static final TFLandmark KNIGHT_STRONGHOLD = new TFLandmark( 3, "knight_stronghold", TwilightForestMod.prefix("progress_trophy_pedestal") ) {
 		{
 			this.enableDecorations().disableProtectionAura();
 			this.undergroundDecoAllowed = false;
@@ -284,26 +224,12 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 
 		@Override
-		public void addBookInformation(ItemStack book, ListTag bookPages) {
-
-			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.tfstronghold", 5);
-
-			book.addTagElement("pages", bookPages);
-			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.tfstronghold"));
-		}
-
-		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new StrongholdEntranceComponent(this, 0, x, y + 5, z);
+			return new StrongholdEntranceComponent(0, x, y + 5, z);
 		}
 
-		@Override
-		public GenerationStep.Decoration getDecorationStage() {
-			return GenerationStep.Decoration.UNDERGROUND_STRUCTURES;
-		}
 	};
-	public static final TFLandmark YETI_CAVE = new TFLandmark( 2, "yeti_lairs", true, BiomeTagGenerator.VALID_YETI_CAVE_BIOMES, TerrainAdjustment.BURY, true, TwilightForestMod.prefix("progress_lich") ) {
+	public static final TFLandmark YETI_CAVE = new TFLandmark( 2, "yeti_lairs", true, TwilightForestMod.prefix("progress_lich") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
@@ -312,21 +238,11 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 
 		@Override
-		public void addBookInformation(ItemStack book, ListTag bookPages) {
-
-			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.yeticave", 3);
-
-			book.addTagElement("pages" , bookPages);
-			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.yeticave"));
-		}
-
-		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new YetiCaveComponent(this, 0, x, y, z);
+			return new YetiCaveComponent(0, x, y, z);
 		}
 	};
-	public static final TFLandmark ICE_TOWER = new TFLandmark( 2, "ice_tower", true, BiomeTagGenerator.VALID_AURORA_PALACE_BIOMES, TerrainAdjustment.NONE, TwilightForestMod.prefix("progress_yeti") ) {
+	public static final TFLandmark ICE_TOWER = new TFLandmark( 2, "ice_tower", TwilightForestMod.prefix("progress_yeti") ) {
 		{
 			this.addMonster(TFEntities.SNOW_GUARDIAN.get(), 10, 1, 2)
 					.addMonster(TFEntities.STABLE_ICE_CORE.get(), 10, 1, 2)
@@ -334,22 +250,12 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 
 		@Override
-		public void addBookInformation(ItemStack book, ListTag bookPages) {
-
-			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.icetower", 3);
-
-			book.addTagElement("pages", bookPages);
-			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.icetower"));
-		}
-
-		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new IceTowerMainComponent(this, rand, 0, x, y, z);
+			return new IceTowerMainComponent(rand, 0, x, y, z);
 		}
 	};
 	// TODO split cloud giants from this
-	public static final TFLandmark TROLL_CAVE = new TFLandmark( 4, "troll_lairs", true, BiomeTagGenerator.VALID_TROLL_CAVE_BIOMES, TerrainAdjustment.BURY, TwilightForestMod.prefix("progress_merge") ) {
+	public static final TFLandmark TROLL_CAVE = new TFLandmark( 4, "troll_lairs", TwilightForestMod.prefix("progress_merge") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
 
@@ -363,26 +269,11 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		}
 
 		@Override
-		public void addBookInformation(ItemStack book, ListTag bookPages) {
-
-			StructureHints.addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.trollcave", 3);
-
-			book.addTagElement("pages", bookPages);
-			book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-			book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.trollcave"));
-		}
-
-		@Override
-		public GenerationStep.Decoration getDecorationStage() {
-			return GenerationStep.Decoration.UNDERGROUND_STRUCTURES;
-		}
-
-		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.get(), this, 0, x, y, z);
+			return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.get(), 0, x, y, z);
 		}
 	};
-	public static final TFLandmark FINAL_CASTLE = new TFLandmark( 4, "final_castle", true, BiomeTagGenerator.VALID_FINAL_CASTLE_BIOMES, TerrainAdjustment.BEARD_THIN, TwilightForestMod.prefix("progress_troll") ) {
+	public static final TFLandmark FINAL_CASTLE = new TFLandmark( 4, "final_castle", TwilightForestMod.prefix("progress_troll") ) {
 //		{
 //			// plain parts of the castle, like the tower maze
 //			this.addMonster(TFEntities.KOBOLD.get(), 10, 1, 2)
@@ -402,10 +293,10 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new FinalCastleMainComponent(this, 0, x, y, z);
+			return new FinalCastleMainComponent(0, x, y, z);
 		}
 	};
-	public static final TFLandmark MUSHROOM_TOWER = new TFLandmark( 2, "mushroom_tower", true, BiomeTagGenerator.VALID_MUSHROOM_TOWER_BIOMES, TerrainAdjustment.NONE ) {
+	public static final TFLandmark MUSHROOM_TOWER = new TFLandmark( 2, "mushroom_tower") {
 		{
 			// FIXME Incomplete
 			this.disableStructure();
@@ -415,10 +306,10 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 		@Override
 		public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
-			return new MushroomTowerMainComponent(this, rand, 0, x, y, z);
+			return new MushroomTowerMainComponent(rand, 0, x, y, z);
 		}
 	};
-	public static final TFLandmark QUEST_ISLAND = new TFLandmark( 1, "quest_island", false, BiomeTagGenerator.VALID_QUEST_GROVE_BIOMES, TerrainAdjustment.NONE ) { { this.disableStructure(); } };
+	public static final TFLandmark QUEST_ISLAND = new TFLandmark( 1, "quest_island") { { this.disableStructure(); } };
 	//public static final TFFeature DRUID_GROVE    = new TFFeature( 1, "druid_grove"   , false ) { { this.disableStructure(); } };
 	//public static final TFFeature FLOATING_RUINS = new TFFeature( 3, "floating_ruins", false ) { { this.disableStructure(); } };
 	//public static final TFFeature WORLD_TREE = new TFFeature( 3, "world_tree", false ) { { this.disableStructure(); } };
@@ -430,8 +321,6 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 	protected boolean undergroundDecoAllowed = true;
 	public boolean isStructureEnabled = true;
 	public boolean requiresTerraforming = false; // TODO Terraforming Type? Envelopment vs Flattening maybe?
-	private final TagKey<Biome> biomeTag;
-	private final TerrainAdjustment beardifierContribution;
 	private final ImmutableList<ResourceLocation> requiredAdvancements;
 	public boolean hasProtectionAura = true;
 	protected boolean adjustToTerrainHeight = false;
@@ -444,15 +333,13 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 
 	private long lastSpawnedHintMonsterTime;
 
-	private TFLandmark(int size, String name, boolean featureGenerator, @Nullable TagKey<Biome> biomeTag, TerrainAdjustment beardifierContribution, ResourceLocation... requiredAdvancements) {
-		this(size, name, featureGenerator, biomeTag, beardifierContribution, false, requiredAdvancements);
+	private TFLandmark(int size, String name, ResourceLocation... requiredAdvancements) {
+		this(size, name, false, requiredAdvancements);
 	}
 
-	private TFLandmark(int size, String name, boolean featureGenerator, TagKey<Biome> biomeTag, TerrainAdjustment beardifierContribution, boolean centerBounds, ResourceLocation... requiredAdvancements) {
+	private TFLandmark(int size, String name, boolean centerBounds, ResourceLocation... requiredAdvancements) {
 		this.size = size;
 		this.name = name;
-		this.biomeTag = biomeTag;
-		this.beardifierContribution = beardifierContribution;
 
 		this.requiredAdvancements = ImmutableList.copyOf(requiredAdvancements);
 
@@ -543,15 +430,6 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		return this;
 	}
 
-	@Nullable
-	public TagKey<Biome> getBiomeTag() {
-		return this.biomeTag;
-	}
-
-	public TerrainAdjustment getBeardifierContribution() {
-		return this.beardifierContribution;
-	}
-
 	@Override
 	public List<MobSpawnSettings.SpawnerData> getCombinedMonsterSpawnableList() {
 		List<MobSpawnSettings.SpawnerData> list = new ArrayList<>();
@@ -598,79 +476,25 @@ public class TFLandmark implements StructureHints, AdvancementLockedStructure, D
 		return this.spawnableMonsterLists;
 	}
 
-	public List<MobSpawnSettings.SpawnerData> getAmbientCreatureList() {
-		return this.ambientCreatureList;
-	}
-
-	public List<MobSpawnSettings.SpawnerData> getWaterCreatureList() {
-		return this.waterCreatureList;
-	}
-
 	@Override
 	public List<ResourceLocation> getRequiredAdvancements() {
 		return this.requiredAdvancements;
 	}
 
-	/**
-	 * Try several times to spawn a hint monster
-	 */
-	@Override
-	public void trySpawnHintMonster(Level world, Player player, BlockPos pos) {
-		// check if the timer is valid
-		long currentTime = world.getGameTime();
-
-		// if someone set the time backwards, fix the spawn timer
-		if (currentTime < this.lastSpawnedHintMonsterTime) {
-			this.lastSpawnedHintMonsterTime = 0;
-		}
-
-		if (currentTime - this.lastSpawnedHintMonsterTime > 1200) {
-			// okay, time is good, try several times to spawn one
-			for (int i = 0; i < 20; i++) {
-				if (didSpawnHintMonster(world, player, pos)) {
-					this.lastSpawnedHintMonsterTime = currentTime;
-					break;
-				}
-			}
-		}
-	}
-
+	@Deprecated // TODO Deleting this method will break maps - best to wait until new MC version before committing to it.
 	@Nullable
 	public StructurePiece provideFirstPiece(StructureTemplateManager structureManager, ChunkGenerator chunkGenerator, RandomSource rand, int x, int y, int z) {
 		return null;
 	}
 
-	public Optional<Structure.GenerationStub> generateStub(Structure.GenerationContext context) {
-		ChunkPos chunkPos = context.chunkPos();
-
-		boolean dontCenter = this == TFLandmark.LICH_TOWER || this == TFLandmark.TROLL_CAVE || this == TFLandmark.YETI_CAVE;
-		int x = (chunkPos.x << 4) + (dontCenter ? 0 : 7);
-		int z = (chunkPos.z << 4) + (dontCenter ? 0 : 7);
-		int y = this.shouldAdjustToTerrain()
-				? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7)
-				: context.chunkGenerator().getSeaLevel();
-
-		return Optional.ofNullable(this.provideFirstPiece(context.structureTemplateManager(), context.chunkGenerator(), RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), x, y, z)).map(piece -> this.getStructurePieceGenerationStubFunction(piece, context, x, y, z));
+	@Deprecated
+	public final BoundingBox getComponentToAddBoundingBoxDELETE(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir) {
+		return getComponentToAddBoundingBox(x, y, z, minX, minY, minZ, spanX, spanY, spanZ, dir, this.centerBounds);
 	}
 
 	@NotNull
-	private Structure.GenerationStub getStructurePieceGenerationStubFunction(StructurePiece startingPiece, Structure.GenerationContext context, int x, int y, int z) {
-		return new Structure.GenerationStub(new BlockPos(x, y, z), structurePiecesBuilder -> {
-			structurePiecesBuilder.addPiece(startingPiece);
-			startingPiece.addChildren(startingPiece, structurePiecesBuilder, context.random());
-
-			structurePiecesBuilder.pieces.stream()
-					.filter(TFStructureComponentTemplate.class::isInstance)
-					.map(TFStructureComponentTemplate.class::cast)
-					.forEach(t -> t.LAZY_TEMPLATE_LOADER.run());
-		});
-	}
-
-	public GenerationStep.Decoration getDecorationStage() {
-		return GenerationStep.Decoration.SURFACE_STRUCTURES;
-	}
-
-	public final BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir) {
+	public static BoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int spanX, int spanY, int spanZ, @Nullable Direction dir, boolean centerBounds) {
+		// CenterBounds is true for ONLY Hollow Hills, Hydra Lair, & Yeti Caves
 		if(centerBounds) {
 			x += (spanX + minX) / 4;
 			y += (spanY + minY) / 4;

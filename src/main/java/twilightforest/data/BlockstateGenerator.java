@@ -1055,7 +1055,23 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		getVariantBuilder(TFBlocks.TORCHBERRY_PLANT.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(s.getValue(TorchberryPlantBlock.HAS_BERRIES) ? berry : noBerry).build());
 
 		simpleBlockExisting(TFBlocks.ROOT_STRAND.get());
-		simpleBlockExisting(TFBlocks.FALLEN_LEAVES.get());
+
+		getVariantBuilder(TFBlocks.FALLEN_LEAVES.get()).partialState()
+				.with(FallenLeavesBlock.LAYERS, 1).setModels(new ConfiguredModel(buildFallenLeaves(1)));
+		getVariantBuilder(TFBlocks.FALLEN_LEAVES.get()).partialState()
+				.with(FallenLeavesBlock.LAYERS, 2).setModels(new ConfiguredModel(buildFallenLeaves(2)));
+		getVariantBuilder(TFBlocks.FALLEN_LEAVES.get()).partialState()
+				.with(FallenLeavesBlock.LAYERS, 3).setModels(new ConfiguredModel(buildFallenLeaves(3)));
+		getVariantBuilder(TFBlocks.FALLEN_LEAVES.get()).partialState()
+				.with(FallenLeavesBlock.LAYERS, 4).setModels(new ConfiguredModel(buildFallenLeaves(4)));
+		getVariantBuilder(TFBlocks.FALLEN_LEAVES.get()).partialState()
+				.with(FallenLeavesBlock.LAYERS, 5).setModels(new ConfiguredModel(buildFallenLeaves(5)));
+		getVariantBuilder(TFBlocks.FALLEN_LEAVES.get()).partialState()
+				.with(FallenLeavesBlock.LAYERS, 6).setModels(new ConfiguredModel(buildFallenLeaves(6)));
+		getVariantBuilder(TFBlocks.FALLEN_LEAVES.get()).partialState()
+				.with(FallenLeavesBlock.LAYERS, 7).setModels(new ConfiguredModel(buildFallenLeaves(7)));
+		getVariantBuilder(TFBlocks.FALLEN_LEAVES.get()).partialState()
+				.with(FallenLeavesBlock.LAYERS, 8).setModels(new ConfiguredModel(buildFallenLeaves(8)));
 	}
 
 	private void registerWoodBlocks() {

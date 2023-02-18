@@ -11,6 +11,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBannerPatterns;
+import twilightforest.init.custom.WoodPalettes;
+import twilightforest.util.WoodPalette;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -72,6 +74,35 @@ public class CustomTagGenerator {
 		@Override
 		public String getName() {
 			return "Twilight Forest Banner Pattern Tags";
+		}
+	}
+
+	public static class WoodPaletteTagGenerator extends TagsProvider<WoodPalette> {
+		public static final TagKey<WoodPalette> WELL_SWIZZLE_MASK = WoodPalettes.WOOD_PALETTES.createTagKey(TwilightForestMod.prefix("well_swizzle_mask"));
+		public static final TagKey<WoodPalette> DRUID_HUT_SWIZZLE_MASK = WoodPalettes.WOOD_PALETTES.createTagKey(TwilightForestMod.prefix("druid_hut_swizzle_mask"));
+		public static final TagKey<WoodPalette> COMMON_PALETTES = WoodPalettes.WOOD_PALETTES.createTagKey(TwilightForestMod.prefix("common"));
+		public static final TagKey<WoodPalette> UNCOMMON_PALETTES = WoodPalettes.WOOD_PALETTES.createTagKey(TwilightForestMod.prefix("uncommon"));
+		public static final TagKey<WoodPalette> RARE_PALETTES = WoodPalettes.WOOD_PALETTES.createTagKey(TwilightForestMod.prefix("rare"));
+		public static final TagKey<WoodPalette> TREASURE_PALETTES = WoodPalettes.WOOD_PALETTES.createTagKey(TwilightForestMod.prefix("treasure"));
+
+		public WoodPaletteTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
+			super(output, WoodPalettes.WOOD_PALETTE_TYPE_KEY, provider, TwilightForestMod.ID, helper);
+		}
+
+		@Override
+		protected void addTags(HolderLookup.Provider provider) {
+			tag(WELL_SWIZZLE_MASK).add(WoodPalettes.OAK);
+			tag(DRUID_HUT_SWIZZLE_MASK).add(WoodPalettes.OAK, WoodPalettes.SPRUCE, WoodPalettes.BIRCH);
+
+			tag(COMMON_PALETTES).add(WoodPalettes.SPRUCE, WoodPalettes.CANOPY);
+			tag(UNCOMMON_PALETTES).add(WoodPalettes.OAK, WoodPalettes.DARKWOOD, WoodPalettes.TWILIGHT_OAK);
+			tag(RARE_PALETTES).add(WoodPalettes.BIRCH, WoodPalettes.JUNGLE, WoodPalettes.MANGROVE);
+			tag(TREASURE_PALETTES).add(WoodPalettes.TIMEWOOD, WoodPalettes.TRANSWOOD, WoodPalettes.MINEWOOD, WoodPalettes.SORTWOOD);
+		}
+
+		@Override
+		public String getName() {
+			return "Twilight Forest Wood Palette Tags";
 		}
 	}
 }

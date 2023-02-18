@@ -9,12 +9,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Component {
@@ -23,8 +21,8 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 		super(TFStructurePieceTypes.TFFCEnTo.get(), nbt);
 	}
 
-	public FinalCastleEntranceTowerComponent(TFLandmark feature, int i, int x, int y, int z, Direction direction) {
-		super(TFStructurePieceTypes.TFFCEnTo.get(), feature, i, x, y, z, 3, 2, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
+	public FinalCastleEntranceTowerComponent(int i, int x, int y, int z, Direction direction) {
+		super(TFStructurePieceTypes.TFFCEnTo.get(), i, x, y, z, 3, 2, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 	}
 
 	@Override
@@ -34,12 +32,12 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add roof
-		TFStructureComponentOld roof = new FinalCastleRoof13PeakedComponent(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		TFStructureComponentOld roof = new FinalCastleRoof13PeakedComponent(4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 
@@ -65,7 +63,7 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 		}
 
 		// add bottom tower
-		FinalCastleEntranceBottomTowerComponent eTower = new FinalCastleEntranceBottomTowerComponent(getFeatureType(), this.getGenDepth() + 1, this.boundingBox.minX() + 6, this.boundingBox.minY() - (middleFloors * 8), this.boundingBox.minZ() + 6, bottomFloors + 1, bottomFloors, facing.getOpposite());
+		FinalCastleEntranceBottomTowerComponent eTower = new FinalCastleEntranceBottomTowerComponent(this.getGenDepth() + 1, this.boundingBox.minX() + 6, this.boundingBox.minY() - (middleFloors * 8), this.boundingBox.minZ() + 6, bottomFloors + 1, bottomFloors, facing.getOpposite());
 		list.addPiece(eTower);
 		eTower.addChildren(this, list, rand);
 
@@ -74,7 +72,7 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 		opening = opening.below(middleFloors * 8);
 
 		BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
-		FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
+		FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
 		list.addPiece(bridge);
 		bridge.addChildren(this, list, rand);
 	}
@@ -85,7 +83,7 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 		// build towards
 		BlockPos tc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), howFar, facing);
 
-		FinalCastleEntranceSideTowerComponent eTower = new FinalCastleEntranceSideTowerComponent(getFeatureType(), this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), middleFloors, middleFloors - 1, facing);
+		FinalCastleEntranceSideTowerComponent eTower = new FinalCastleEntranceSideTowerComponent(this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), middleFloors, middleFloors - 1, facing);
 
 		BoundingBox largerBB = BoundingBoxUtils.cloneWithAdjustments(eTower.getBoundingBox(), -6, 0, -6, 6, 0, 6);
 
@@ -96,7 +94,7 @@ public class FinalCastleEntranceTowerComponent extends FinalCastleMazeTower13Com
 			eTower.addChildren(this, list, rand);
 			// add bridge
 			BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
-			FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
+			FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
 			list.addPiece(bridge);
 			bridge.addChildren(this, list, rand);
 

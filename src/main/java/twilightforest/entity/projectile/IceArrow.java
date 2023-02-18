@@ -1,18 +1,16 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.EntityHitResult;
+import twilightforest.enchantment.ChillAuraEnchantment;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFMobEffects;
 
 public class IceArrow extends TFArrow {
 
@@ -39,8 +37,7 @@ public class IceArrow extends TFArrow {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		if (!this.getLevel().isClientSide() && result.getEntity() instanceof LivingEntity living) {
-			int chillLevel = 2;
-			living.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 20 * 10, chillLevel));
+			ChillAuraEnchantment.doChillAuraEffect(living, 200, 2, true);
 		}
 	}
 }

@@ -16,10 +16,9 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -32,8 +31,8 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCBoGaz.get(), nbt);
 	}
 
-	public FinalCastleBossGazeboComponent(TFLandmark feature, int i, TFStructureComponentOld keep, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCBoGaz.get(), feature, i, x, y, z);
+	public FinalCastleBossGazeboComponent(int i, TFStructureComponentOld keep, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFFCBoGaz.get(), i, x, y, z);
 		this.spawnListIndex = -1; // no monsters
 
 		this.setOrientation(keep.getOrientation());

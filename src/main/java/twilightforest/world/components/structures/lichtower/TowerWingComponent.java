@@ -4,10 +4,8 @@ import com.google.common.collect.Lists;
 import io.github.fabricators_of_create.porting_lib.mixin.accessors.common.accessor.PaintingAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -27,8 +25,6 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.ProtoChunk;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -85,13 +81,13 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	protected int highestOpening;
 	protected boolean[] openingTowards = new boolean[]{false, false, true, false};
 
-	protected TowerWingComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
-		super(type, feature, i, x, y, z);
+	protected TowerWingComponent(StructurePieceType type, int i, int x, int y, int z) {
+		super(type, i, x, y, z);
 		this.highestOpening = 0;
 	}
 
-	protected TowerWingComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(type, feature, i, x, y, z);
+	protected TowerWingComponent(StructurePieceType type, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(type, i, x, y, z);
 
 		this.size = pSize;
 		this.height = pHeight;
@@ -99,7 +95,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		this.highestOpening = 0;
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
 	}
 
 	/**
@@ -185,7 +181,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			// I think there are very few circumstances where we can make a wing and not a bridge
 		}
 
-		TowerWingComponent wing = new TowerWingComponent(TFStructurePieceTypes.TFLTWin.get(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		TowerWingComponent wing = new TowerWingComponent(TFStructurePieceTypes.TFLTWin.get(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(wing.boundingBox);
 		if (intersect == null || intersect == this) {
@@ -212,7 +208,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (wingSize == 3 && wingHeight > 10) {
 			wingHeight = 6 + rand.nextInt(5);
 		}
-		TowerBridgeComponent bridge = new TowerBridgeComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		TowerBridgeComponent bridge = new TowerBridgeComponent(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(bridge.boundingBox);
 		if (intersect == null || intersect == this) {
@@ -259,9 +255,9 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		int index = this.getGenDepth();
 		TowerBeardComponent beard;
 		if (attached) {
-			beard = new TowerBeardAttachedComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			beard = new TowerBeardAttachedComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		} else {
-			beard = new TowerBeardComponent(TFStructurePieceTypes.TFLTBea.get(), getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			beard = new TowerBeardComponent(TFStructurePieceTypes.TFLTBea.get(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		}
 		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
@@ -293,25 +289,25 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		// this is our preferred roof type:
 		if (roofType == null && rand.nextInt(32) != 0) {
-			tryToFitRoof(list, rand, new TowerRoofGableForwardsComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
+			tryToFitRoof(list, rand, new TowerRoofGableForwardsComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 		}
 
 		// this is for roofs that don't fit.
 		if (roofType == null && rand.nextInt(8) != 0) {
-			tryToFitRoof(list, rand, new TowerRoofSlabForwardsComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
+			tryToFitRoof(list, rand, new TowerRoofSlabForwardsComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 		}
 
 		// finally, if we're cramped for space, try this
 		if (roofType == null && rand.nextInt(32) != 0) {
 			// fall through to this next roof
-			roof = new TowerRoofAttachedSlabComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofAttachedSlabComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// last resort
 		if (roofType == null) {
 			// fall through to this next roof
-			roof = new TowerRoofFenceComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofFenceComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 	}
@@ -335,31 +331,31 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		// most roofs that fit fancy roofs will be this
 		if (roofType == null && rand.nextInt(8) != 0) {
-			roof = new TowerRoofPointyOverhangComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofPointyOverhangComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// don't pass by this one if it fits
 		if (roofType == null) {
-			roof = new TowerRoofStairsOverhangComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofStairsOverhangComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// don't pass by this one if it fits
 		if (roofType == null) {
-			roof = new TowerRoofStairsComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofStairsComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		if (roofType == null && rand.nextInt(53) != 0) {
 			// fall through to this next roof
-			roof = new TowerRoofSlabComponent(TFStructurePieceTypes.TFLTRS.get(), getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofSlabComponent(TFStructurePieceTypes.TFLTRS.get(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		if (roofType == null) {
 			// fall through to this next roof
-			roof = new TowerRoofFenceComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofFenceComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 	}

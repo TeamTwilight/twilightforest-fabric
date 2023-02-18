@@ -33,8 +33,8 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		this.warriorPlaced = nbt.getBoolean("warriorPlaced");
 	}
 
-	public CloudCastleComponent(TFLandmark feature, int index, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFClCa.get(), feature, index, x, y, z);
+	public CloudCastleComponent(int index, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFClCa.get(), index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// round to nearest mult of 4
@@ -45,7 +45,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		// spawn list!
 		this.spawnListIndex = 1;
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH, false);
 	}
 
 	@Override
@@ -61,14 +61,14 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		// tree in x direction
 		boolean plus = rand.nextBoolean();
 		int offset = rand.nextInt(5) - rand.nextInt(5);
-		CloudTreeComponent treeX = new CloudTreeComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.minX() + 8 + (plus ? 32 : -16), 168, boundingBox.minZ() + (offset * 4));
+		CloudTreeComponent treeX = new CloudTreeComponent(this.getGenDepth() + 1, boundingBox.minX() + 8 + (plus ? 32 : -16), 168, boundingBox.minZ() + (offset * 4));
 		list.addPiece(treeX);
 		treeX.addChildren(this, list, rand);
 
 		// tree in z direction
 		plus = rand.nextBoolean();
 		offset = rand.nextInt(5) - rand.nextInt(5);
-		CloudTreeComponent treeZ = new CloudTreeComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.minX() + (offset * 4), 168, boundingBox.minZ() + 8 + (plus ? 32 : -16));
+		CloudTreeComponent treeZ = new CloudTreeComponent(this.getGenDepth() + 1, boundingBox.minX() + (offset * 4), 168, boundingBox.minZ() + 8 + (plus ? 32 : -16));
 		list.addPiece(treeZ);
 		treeZ.addChildren(this, list, rand);
 

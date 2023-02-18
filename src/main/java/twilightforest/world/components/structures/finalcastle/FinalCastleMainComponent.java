@@ -33,15 +33,15 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCMain.get(), nbt);
 	}
 
-	public FinalCastleMainComponent(TFLandmark feature, int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCMain.get(), feature, i, x, y, z);
+	public FinalCastleMainComponent(int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFFCMain.get(), i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
 
 		x = ((x + 127) >> 8) << 8;
 		z = ((z + 127) >> 8) << 8;
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH, false);
 
 		BlockPos cc = LegacyLandmarkPlacements.getNearestCenterXZ(x >> 4, z >> 4);
 
@@ -60,35 +60,35 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		// add foundation
-		FinalCastleFoundation48Component foundation = new FinalCastleFoundation48Component(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation48Component foundation = new FinalCastleFoundation48Component(4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add roof
-		TFStructureComponentOld roof = new FinalCastleRoof48CrenellatedComponent(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		TFStructureComponentOld roof = new FinalCastleRoof48CrenellatedComponent(4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 
 		// boss gazebo on roof
-		TFStructureComponentOld gazebo = new FinalCastleBossGazeboComponent(getFeatureType(), 5, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		TFStructureComponentOld gazebo = new FinalCastleBossGazeboComponent(5, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(gazebo);
 		gazebo.addChildren(this, list, rand);
 
 
 		// build 4 towers on sides
-		FinalCastleStairTowerComponent tower0 = new FinalCastleStairTowerComponent(getFeatureType(), 3, boundingBox.minX(), boundingBox.minY() + 3, boundingBox.minZ(), Direction.NORTH);
+		FinalCastleStairTowerComponent tower0 = new FinalCastleStairTowerComponent(3, boundingBox.minX(), boundingBox.minY() + 3, boundingBox.minZ(), Direction.NORTH);
 		list.addPiece(tower0);
 		tower0.addChildren(this, list, rand);
 
-		FinalCastleLargeTowerComponent tower1 = new FinalCastleLargeTowerComponent(getFeatureType(), 3, boundingBox.maxX(), boundingBox.minY() + 3, boundingBox.minZ(), Direction.EAST);
+		FinalCastleLargeTowerComponent tower1 = new FinalCastleLargeTowerComponent(3, boundingBox.maxX(), boundingBox.minY() + 3, boundingBox.minZ(), Direction.EAST);
 		list.addPiece(tower1);
 		tower1.addChildren(this, list, rand);
 
-		FinalCastleStairTowerComponent tower2 = new FinalCastleStairTowerComponent(getFeatureType(), 3, boundingBox.minX(), boundingBox.minY() + 3, boundingBox.maxZ(), Direction.WEST);
+		FinalCastleStairTowerComponent tower2 = new FinalCastleStairTowerComponent(3, boundingBox.minX(), boundingBox.minY() + 3, boundingBox.maxZ(), Direction.WEST);
 		list.addPiece(tower2);
 		tower2.addChildren(this, list, rand);
 
-		FinalCastleStairTowerComponent tower3 = new FinalCastleStairTowerComponent(getFeatureType(), 3, boundingBox.maxX(), boundingBox.minY() + 3, boundingBox.maxZ(), Direction.SOUTH);
+		FinalCastleStairTowerComponent tower3 = new FinalCastleStairTowerComponent(3, boundingBox.maxX(), boundingBox.minY() + 3, boundingBox.maxZ(), Direction.SOUTH);
 		list.addPiece(tower3);
 		tower3.addChildren(this, list, rand);
 
@@ -103,7 +103,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 
 		// initial stairs down towards dungeon
-		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(getFeatureType(), 5, boundingBox.minX() + 18, boundingBox.minY() + 1, boundingBox.minZ() + 18, Direction.SOUTH);
+		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(5, boundingBox.minX() + 18, boundingBox.minY() + 1, boundingBox.minZ() + 18, Direction.SOUTH);
 		list.addPiece(steps0);
 		steps0.addChildren(this, list, rand);
 
@@ -117,13 +117,13 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 		// mural on front
 		BlockPos mc = this.offsetTowerCCoords(48, 23, 25, 1, Direction.SOUTH);
-		FinalCastleMuralComponent mural0 = new FinalCastleMuralComponent(getFeatureType(), 7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, Direction.SOUTH);
+		FinalCastleMuralComponent mural0 = new FinalCastleMuralComponent(7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, Direction.SOUTH);
 		list.addPiece(mural0);
 		mural0.addChildren(this, list, rand);
 
 		// mural inside
 		BlockPos mc1 = this.offsetTowerCCoords(48, 33, 24, -1, Direction.SOUTH);
-		FinalCastleMuralComponent mural1 = new FinalCastleMuralComponent(getFeatureType(), 7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, Direction.NORTH);
+		FinalCastleMuralComponent mural1 = new FinalCastleMuralComponent(7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, Direction.NORTH);
 		list.addPiece(mural1);
 		mural1.addChildren(this, list, rand);
 
@@ -143,11 +143,11 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 				// build
 				BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
-				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), getFeatureType(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
+				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
 
 				// add bridge
 				BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
-				FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
+				FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, direction);
 
 				list.addPiece(bridge);
 				bridge.addChildren(this, list, rand);

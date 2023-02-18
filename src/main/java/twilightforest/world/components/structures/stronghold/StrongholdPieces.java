@@ -4,8 +4,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +63,7 @@ public class StrongholdPieces {
 		return flag;
 	}
 
-	public StructureTFStrongholdComponent getNextComponent(StructurePiece parent, StructurePieceAccessor list, RandomSource random, TFLandmark feature, int index, Direction facing, int x, int y, int z) {
+	public StructureTFStrongholdComponent getNextComponent(StructurePiece parent, StructurePieceAccessor list, RandomSource random, int index, Direction facing, int x, int y, int z) {
 		if (!hasMoreLimitedPieces()) {
 			return null;
 		} else {
@@ -83,7 +81,7 @@ public class StrongholdPieces {
 						}
 
 						// we're here!
-						StructureTFStrongholdComponent component = piece.factory.newInstance(feature, index, facing, x, y, z);
+						StructureTFStrongholdComponent component = piece.factory.newInstance(index, facing, x, y, z);
 
 						if (list.findCollisionPiece(component.getBoundingBox()) == null) {
 							++piece.instancesSpawned;
@@ -102,7 +100,7 @@ public class StrongholdPieces {
 		}
 
 		// dead end?
-		StructureTFStrongholdComponent deadEnd = new StrongholdDeadEndComponent(parent instanceof TFStructureComponentOld ? ((TFStructureComponentOld) parent).getFeatureType() : TFLandmark.NOTHING, index, facing, x, y, z);
+		StructureTFStrongholdComponent deadEnd = new StrongholdDeadEndComponent(index, facing, x, y, z);
 
 		if (list.findCollisionPiece(deadEnd.getBoundingBox()) == null) {
 			return deadEnd;

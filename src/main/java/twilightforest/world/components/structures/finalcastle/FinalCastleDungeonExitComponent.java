@@ -16,10 +16,9 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Component {
@@ -28,8 +27,8 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 		super(TFStructurePieceTypes.TFFCDunEx.get(), nbt);
 	}
 
-	public FinalCastleDungeonExitComponent(TFLandmark feature, int i, int x, int y, int z, Direction direction, int level) {
-		super(TFStructurePieceTypes.TFFCDunEx.get(), feature, i, x, y, z, direction, level);
+	public FinalCastleDungeonExitComponent(int i, int x, int y, int z, Direction direction, int level) {
+		super(TFStructurePieceTypes.TFFCDunEx.get(), i, x, y, z, direction, level);
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 		// add stairway down
 		Rotation bestDir = this.findStairDirectionTowards(parent.getBoundingBox().minX(), parent.getBoundingBox().minZ());
 
-		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(getFeatureType(), 5, boundingBox.minZ() + 15, boundingBox.minY(), boundingBox.minZ() + 15, bestDir.rotate(Direction.SOUTH));
+		FinalCastleDungeonStepsComponent steps0 = new FinalCastleDungeonStepsComponent(5, boundingBox.minZ() + 15, boundingBox.minY(), boundingBox.minZ() + 15, bestDir.rotate(Direction.SOUTH));
 		list.addPiece(steps0);
 		steps0.addChildren(this, list, rand);
 

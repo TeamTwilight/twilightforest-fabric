@@ -14,9 +14,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class MazeMoundComponent extends TFStructureComponentOld {
@@ -30,8 +29,8 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 
 	private MazeUpperEntranceComponent mazeAbove;
 
-	public MazeMoundComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMMound.get(), feature, i, new BoundingBox(x, y, z, x + DIAMETER, y + 12, z + DIAMETER));
+	public MazeMoundComponent(int i, RandomSource rand, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMMound.get(), i, new BoundingBox(x, y, z, x + DIAMETER, y + 12, z + DIAMETER));
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 	}
 
@@ -43,7 +42,7 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 		super.addChildren(structurecomponent, list, random);
 
 		// add aboveground maze entrance building
-		mazeAbove = new MazeUpperEntranceComponent(getFeatureType(), 3, random, boundingBox.minX() + 10, boundingBox.minY(), boundingBox.minZ() + 10);
+		mazeAbove = new MazeUpperEntranceComponent(3, random, boundingBox.minX() + 10, boundingBox.minY(), boundingBox.minZ() + 10);
 		list.addPiece(mazeAbove);
 		mazeAbove.addChildren(this, list, random);
 	}

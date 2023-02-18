@@ -20,12 +20,11 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 
 public class IceTowerWingComponent extends TowerWingComponent {
@@ -46,8 +45,8 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		this.treasureFloor = nbt.getInt("treasureFloor");
 	}
 
-	protected IceTowerWingComponent(StructurePieceType piece, TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
+	protected IceTowerWingComponent(StructurePieceType piece, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(piece, i, x, y, z, pSize, pHeight, direction);
 
 		// decorator
 		if (this.deco == null) {
@@ -142,7 +141,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			return false;
 		}
 
-		IceTowerWingComponent wing = new IceTowerWingComponent(TFStructurePieceTypes.TFITWin.get(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		IceTowerWingComponent wing = new IceTowerWingComponent(TFStructurePieceTypes.TFITWin.get(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
@@ -165,7 +164,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
-		IceTowerWingComponent wing = new IceTowerBossWingComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		IceTowerWingComponent wing = new IceTowerBossWingComponent(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
@@ -686,7 +685,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	@Override
 	public void makeARoof(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		int index = this.getGenDepth();
-		tryToFitRoof(list, rand, new IceTowerRoofComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
+		tryToFitRoof(list, rand, new IceTowerRoofComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 	}
 
 	/**
@@ -696,7 +695,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		int index = this.getGenDepth();
 		IceTowerBeardComponent beard;
-		beard = new IceTowerBeardComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		beard = new IceTowerBeardComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
 	}

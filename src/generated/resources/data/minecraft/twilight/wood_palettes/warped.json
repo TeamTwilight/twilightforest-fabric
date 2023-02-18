@@ -1,0 +1,10 @@
+{
+  "banister": "twilightforest:warped_banister",
+  "button": "minecraft:warped_button",
+  "fence": "minecraft:warped_fence",
+  "gate": "minecraft:warped_fence_gate",
+  "planks": "minecraft:warped_planks",
+  "plate": "minecraft:warped_pressure_plate",
+  "slab": "minecraft:warped_slab",
+  "stairs": "minecraft:warped_stairs"
+}

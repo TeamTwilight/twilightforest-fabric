@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -17,9 +16,9 @@ public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeCompone
 		super(TFStructurePieceTypes.TFMTMB.get(), nbt);
 	}
 
-	protected MushroomTowerMainBridgeComponent(TFLandmark feature, int i, int x, int y, int z, int pHeight, Direction direction) {
+	protected MushroomTowerMainBridgeComponent(int i, int x, int y, int z, int pHeight, Direction direction) {
 		// bridge only 11 long
-		super(TFStructurePieceTypes.TFMTMB.get(), feature, i, x, y, z, 11, pHeight, direction);
+		super(TFStructurePieceTypes.TFMTMB.get(), i, x, y, z, 11, pHeight, direction);
 	}
 
 	@Override
@@ -32,7 +31,7 @@ public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeCompone
 		// adjust coordinates to fit an existing tower
 		dx = adjustCoordinates(dx[0], dx[1], dx[2], 15, direction, list);
 
-		MushroomTowerMainComponent wing = new MushroomTowerMainComponent(getFeatureType(), index, dx[0], dx[1], dx[2], 15, wingHeight, direction);
+		MushroomTowerMainComponent wing = new MushroomTowerMainComponent(index, dx[0], dx[1], dx[2], 15, wingHeight, direction);
 
 		list.addPiece(wing);
 		if (list instanceof StructurePiecesBuilder start) {

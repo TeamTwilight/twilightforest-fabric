@@ -9,9 +9,8 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class TowerBeardAttachedComponent extends TowerBeardComponent {
@@ -20,8 +19,8 @@ public class TowerBeardAttachedComponent extends TowerBeardComponent {
 		super(TFStructurePieceTypes.TFLTBA.get(), nbt);
 	}
 
-	public TowerBeardAttachedComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFLTBA.get(), feature, i, wing, x, y, z);
+	public TowerBeardAttachedComponent(int i, TowerWingComponent wing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFLTBA.get(), i, wing, x, y, z);
 
 		// just hang out at the very bottom of the tower
 		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX(), wing.getBoundingBox().minY() - this.height - 1, wing.getBoundingBox().minZ(), wing.getBoundingBox().maxX(), wing.getBoundingBox().maxY() - 1, wing.getBoundingBox().maxZ());

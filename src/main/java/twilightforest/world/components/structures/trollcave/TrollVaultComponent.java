@@ -24,8 +24,8 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFTCVa.get(), nbt);
 	}
 
-	public TrollVaultComponent(TFLandmark feature, int index, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFTCVa.get(), feature, index, x, y, z);
+	public TrollVaultComponent(int index, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFTCVa.get(), index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// adjust x, y, z
@@ -36,7 +36,7 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 		// spawn list!
 		this.spawnListIndex = -1;
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 12, 12, 12, Direction.SOUTH);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 12, 12, 12, Direction.SOUTH, false);
 	}
 
 	@Override

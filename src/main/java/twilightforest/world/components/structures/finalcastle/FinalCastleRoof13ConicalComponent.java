@@ -12,10 +12,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 
 /**
@@ -30,8 +29,8 @@ public class FinalCastleRoof13ConicalComponent extends TFStructureComponentOld {
 		this.slope = nbt.getInt("slope");
 	}
 
-	public FinalCastleRoof13ConicalComponent(TFLandmark feature, RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCRo13Con.get(), feature, i, x, y, z);
+	public FinalCastleRoof13ConicalComponent(RandomSource rand, int i, TFStructureComponentOld sideTower, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFFCRo13Con.get(), i, x, y, z);
 
 		this.slope = 2 + rand.nextInt(3) + rand.nextInt(3);
 

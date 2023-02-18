@@ -1,0 +1,10 @@
+{
+  "banister": "twilightforest:time_banister",
+  "button": "twilightforest:time_button",
+  "fence": "twilightforest:time_fence",
+  "gate": "twilightforest:time_fence_gate",
+  "planks": "twilightforest:time_planks",
+  "plate": "twilightforest:time_pressure_plate",
+  "slab": "twilightforest:time_slab",
+  "stairs": "twilightforest:time_stairs"
+}

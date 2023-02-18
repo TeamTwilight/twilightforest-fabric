@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -23,8 +22,8 @@ public class StrongholdUpperRightTurnComponent extends StructureTFStrongholdComp
 		super(TFStructurePieceTypes.TFSURT.get(), nbt);
 	}
 
-	public StrongholdUpperRightTurnComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSURT.get(), feature, i, facing, x, y, z);
+	public StrongholdUpperRightTurnComponent(int i, Direction facing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSURT.get(), i, facing, x, y, z);
 	}
 
 	@Override

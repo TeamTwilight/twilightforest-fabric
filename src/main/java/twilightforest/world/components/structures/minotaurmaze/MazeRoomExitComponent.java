@@ -11,7 +11,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -21,8 +20,8 @@ public class MazeRoomExitComponent extends MazeRoomComponent {
 		super(TFStructurePieceTypes.TFMMRE.get(), nbt);
 	}
 
-	public MazeRoomExitComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMRE.get(), feature, i, rand, x, y, z);
+	public MazeRoomExitComponent(int i, RandomSource rand, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMRE.get(), i, rand, x, y, z);
 	}
 
 	@Override

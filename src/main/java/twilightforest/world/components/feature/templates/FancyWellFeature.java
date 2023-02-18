@@ -11,24 +11,22 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.properties.StructureMode;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFLootTables;
-import twilightforest.world.components.processors.CobblePlankSwizzler;
+import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 import twilightforest.world.components.processors.StoneBricksVariants;
 
-import org.jetbrains.annotations.Nullable;
-
-public class FancyWellFeature extends TemplateFeature<NoneFeatureConfiguration> {
+public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
     private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/fancy_well_top");
     private static final ResourceLocation WELL_BOTTOM = TwilightForestMod.prefix("feature/well/fancy_well_bottom");
 
-    public FancyWellFeature(Codec<NoneFeatureConfiguration> config) {
+    public FancyWellFeature(Codec<SwizzleConfig> config) {
         super(config);
     }
 
@@ -39,12 +37,14 @@ public class FancyWellFeature extends TemplateFeature<NoneFeatureConfiguration> 
     }
 
     @Override
-    protected void modifySettings(StructurePlaceSettings settings, RandomSource random) {
-        settings.addProcessor(new CobblePlankSwizzler(random)).addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
+    protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
+        config.buildAddProcessors(settings, random);
+
+        settings.addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
     }
 
     @Override
-    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
+    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
         StructureTemplate template = templateManager.getOrCreate(WELL_BOTTOM);
 
         if (template == null) return;

@@ -11,6 +11,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -18,10 +20,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import twilightforest.TwilightForestMod;
-import twilightforest.init.TFEntities;
-
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
+
+import java.util.Optional;
 
 public interface StructureHints {
     String BOOK_AUTHOR = TwilightForestMod.ID + ".book.author";
@@ -37,11 +41,17 @@ public interface StructureHints {
     }
 
     default void addBookInformation(ItemStack book, ListTag bookPages) {
-        addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.unknown", 2);
+        addBookInformationStatic(book, bookPages, "unknown", 2);
+    }
+
+    static void addBookInformationStatic(ItemStack book, ListTag bookPages, @Nullable String name, int pageCount) {
+        String key = name == null ? "unknown" : name;
+
+        addTranslatedPages(bookPages, TwilightForestMod.ID + ".book." + key, pageCount);
 
         book.addTagElement("pages", bookPages);
         book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
-        book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book.unknown"));
+        book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book." + key));
     }
 
     static void addTranslatedPages(ListTag bookPages, String translationKey, int pageCount) {
@@ -60,6 +70,15 @@ public interface StructureHints {
      * Try several times to spawn a hint monster
      */
     void trySpawnHintMonster(Level world, Player player, BlockPos pos);
+
+    static void tryHintForStructure(Player player, ServerLevel level, ResourceKey<Structure> forStructure) {
+        Optional<Registry<Structure>> optStructureReg = level.registryAccess().registry(Registries.STRUCTURE);
+
+        if (optStructureReg.isEmpty() || !(optStructureReg.get().get(forStructure) instanceof StructureHints structureHints))
+            return;
+
+        structureHints.trySpawnHintMonster(level, player);
+    }
 
     /**
      * Try once to spawn a hint monster near the player.  Return true if we did.
@@ -94,9 +113,7 @@ public interface StructureHints {
     }
 
     @Nullable
-    default Mob createHintMonster(Level world) {
-        return TFEntities.KOBOLD.get().create(world);
-    }
+    Mob createHintMonster(Level world);
 
     record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
         public static MapCodec<HintConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(

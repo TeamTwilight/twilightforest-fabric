@@ -13,11 +13,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 
 public class TowerRoofMushroomComponent extends TowerRoofComponent {
@@ -26,8 +25,8 @@ public class TowerRoofMushroomComponent extends TowerRoofComponent {
 		super(TFStructurePieceTypes.TFMTRoofMush.get(), nbt);
 	}
 
-	public TowerRoofMushroomComponent(TFLandmark feature, int i, TowerWingComponent wing, float pHang, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMTRoofMush.get(), feature, i, x, y, z);
+	public TowerRoofMushroomComponent(int i, TowerWingComponent wing, float pHang, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMTRoofMush.get(), i, x, y, z);
 		this.height = wing.size;
 		int overhang = (int) (height * pHang);
 		this.size = height + (overhang * 2);

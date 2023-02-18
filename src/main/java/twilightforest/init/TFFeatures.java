@@ -24,7 +24,7 @@ public class TFFeatures {
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> CANOPY_OAK = FEATURES.register("canopy_oak", () -> new OakCanopyTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> CAVE_STALACTITE = FEATURES.register("block_spike", () -> new BlockSpikeFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<TreeConfiguration>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () -> new DarkCanopyTreeFeature(TreeConfiguration.CODEC));
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> DRUID_HUT = FEATURES.register("druid_hut", () -> new DruidHutFeature(NoneFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<SwizzleConfig>> DRUID_HUT = FEATURES.register("druid_hut", () -> new DruidHutFeature(SwizzleConfig.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_HOLLOW_LOG = FEATURES.register("fallen_hollow_log", () -> new FallenHollowLogFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_LEAVES = FEATURES.register("fallen_leaves", () -> new FallenLeavesFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<HollowLogConfig>> FALLEN_SMALL_LOG = FEATURES.register("fallen_small_log", () -> new SmallFallenLogFeature(HollowLogConfig.CODEC));
@@ -47,8 +47,8 @@ public class TFFeatures {
 	public static final RegistryObject<Feature<ThornsConfig>> THORNS = FEATURES.register("thorns", () -> new ThornFeature(ThornsConfig.CODEC));
 	public static final RegistryObject<Feature<TFTreeFeatureConfig>> TREE_OF_TIME = FEATURES.register("tree_of_time", () -> new TimeTreeFeature(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WEBS = FEATURES.register("webs", () -> new WebFeature(NoneFeatureConfiguration.CODEC));
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SIMPLE_WELL = FEATURES.register("simple_well", () -> new SimpleWellFeature(NoneFeatureConfiguration.CODEC));
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> FANCY_WELL = FEATURES.register("fancy_well", () -> new FancyWellFeature(NoneFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<SwizzleConfig>> SIMPLE_WELL = FEATURES.register("simple_well", () -> new SimpleWellFeature(SwizzleConfig.CODEC));
+	public static final RegistryObject<Feature<SwizzleConfig>> FANCY_WELL = FEATURES.register("fancy_well", () -> new FancyWellFeature(SwizzleConfig.CODEC));
 	public static final RegistryObject<Feature<RootConfig>> WOOD_ROOTS = FEATURES.register("wood_roots", () -> new WoodRootFeature(RootConfig.CODEC));
 	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SNOW_UNDER_TREES = FEATURES.register("snow_under_trees", () -> new SnowUnderTreeFeature(NoneFeatureConfiguration.CODEC));
 	public static final RegistryObject<Feature<TreeConfiguration>> SNOW_TREE = FEATURES.register("anywhere_tree", () -> new SnowTreeFeature(TreeConfiguration.CODEC));

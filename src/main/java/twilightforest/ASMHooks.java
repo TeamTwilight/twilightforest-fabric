@@ -18,30 +18,40 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import twilightforest.client.TFClientSetup;
+import twilightforest.events.ToolEvents;
 import twilightforest.init.TFDimensionSettings;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFItems;
+import twilightforest.item.GiantItem;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateTFMultipartPacket;
-import twilightforest.world.components.structures.start.TFStructureStart;
+import twilightforest.world.components.structures.util.CustomStructureData;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.ArrayList;
@@ -192,12 +202,12 @@ public class ASMHooks {
 
 	/**
 	 * Injection Point:<br>
-	 * {@link net.minecraft.world.level.levelgen.feature.StructureFeature#loadStaticStart(ServerLevel, CompoundTag, long)} <br>
-	 * [AFTER {@link net.minecraft.world.level.levelgen.feature.StructureFeature#createStart(ChunkPos, int, long)}]
+	 * {@link net.minecraft.world.level.levelgen.structure.StructureStart#loadStaticStart(StructurePieceSerializationContext, CompoundTag, long)} <br>
+	 * [AFTER INVOKESPECIAL {@link net.minecraft.world.level.levelgen.structure.StructureStart#StructureStart(Structure, ChunkPos, int, PiecesContainer)}]
 	 */
-	public static StructureStart conquered(StructureStart start, CompoundTag nbt) {
-		if (start instanceof TFStructureStart<?> s)
-			s.load(nbt);
+	public static StructureStart conquered(StructureStart start, PiecesContainer piecesContainer, CompoundTag nbt) {
+		if (start.getStructure() instanceof CustomStructureData s)
+			return s.forDeserialization(start.getStructure(), start.getChunkPos(), start.getReferences(), piecesContainer, nbt);
 		return start;
 	}
 
@@ -222,4 +232,61 @@ public class ASMHooks {
 			return Component.translatable(component.getString());
 		} else return component;
 	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.item.Item#getPlayerPOVHitResult(Level, Player, ClipContext.Fluid)}<br>
+	 * [BEFORE ARETURN]
+	 */
+	public static BlockHitResult reach(BlockHitResult o, Level level, Player player, ClipContext.Fluid fluidMode) {
+		InteractionHand hand = ToolEvents.INTERACTION_HAND;
+		if (hand != null) {
+			BlockHitResult hitResult = interactionTooFar(level, player, hand, fluidMode);
+			if (hitResult != null) {
+				return hitResult;
+			}
+		}
+		return o;
+	}
+
+	@Nullable
+	private static BlockHitResult interactionTooFar(Level level, Player player, InteractionHand hand, ClipContext.Fluid fluidMode) {
+		ItemStack heldStack = player.getItemInHand(hand);
+		if (ToolEvents.hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
+			UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
+			AttributeInstance reachDistance = player.getAttribute(ForgeMod.REACH_DISTANCE.get());
+			if (reachDistance != null) {
+				AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
+				if (giantModifier != null) {
+					reachDistance.removeModifier(giantModifier);
+					double reach = player.getAttributeValue(ForgeMod.REACH_DISTANCE.get());
+					double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
+					BlockHitResult result = getPlayerPOVHitResultForReach(level, player, trueReach, fluidMode);
+					reachDistance.addTransientModifier(giantModifier);
+					return result;
+				}
+			}
+		}
+		return null;
+	}
+
+	/*
+		[VANILLA COPY]
+		Copied from Item#getPlayerPOVHitResult(Level, Player, ClipContext.Fluid).
+		Uses a parameter for reach in assigning vec31 instead of using IForgePlayer#getReachDistance().
+	 */
+	private static BlockHitResult getPlayerPOVHitResultForReach(Level level, Player player, double reach, ClipContext.Fluid fluidClip) {
+		float f = player.getXRot();
+		float f1 = player.getYRot();
+		Vec3 vec3 = player.getEyePosition();
+		float f2 = Mth.cos(-f1 * ((float) Math.PI / 180.0F) - (float) Math.PI);
+		float f3 = Mth.sin(-f1 * ((float) Math.PI / 180.0F) - (float) Math.PI);
+		float f4 = -Mth.cos(-f * ((float) Math.PI / 180.0F));
+		float f5 = Mth.sin(-f * ((float) Math.PI / 180.0F));
+		float f6 = f3 * f4;
+		float f7 = f2 * f4;
+		Vec3 vec31 = vec3.add((double) f6 * reach, (double) f5 * reach, (double) f7 * reach);
+		return level.clip(new ClipContext(vec3, vec31, ClipContext.Block.OUTLINE, fluidClip, player));
+	}
+
 }

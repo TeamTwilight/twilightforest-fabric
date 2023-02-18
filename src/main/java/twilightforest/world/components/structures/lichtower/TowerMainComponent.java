@@ -23,10 +23,9 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 public class TowerMainComponent extends TowerWingComponent {
 
@@ -34,9 +33,9 @@ public class TowerMainComponent extends TowerWingComponent {
 		super(TFStructurePieceTypes.TFLTMai.get(), nbt);
 	}
 
-	public TowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z) {
+	public TowerMainComponent(RandomSource rand, int index, int x, int y, int z) {
 		// some of these are subject to change if the ground level is > 30.
-		super(TFStructurePieceTypes.TFLTMai.get(), feature, index, x, y + 1, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
+		super(TFStructurePieceTypes.TFLTMai.get(), index, x, y + 1, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
 	}
 
 	@Override
@@ -145,7 +144,7 @@ public class TowerMainComponent extends TowerWingComponent {
 	public boolean makeTowerOutbuilding(StructurePieceAccessor list, RandomSource rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
-		TowerOutbuildingComponent outbuilding = new TowerOutbuildingComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		TowerOutbuildingComponent outbuilding = new TowerOutbuildingComponent(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(outbuilding.getBoundingBox());
 		if (intersect == null) {

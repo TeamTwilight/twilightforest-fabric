@@ -10,9 +10,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 import java.util.ArrayList;
 
@@ -23,8 +22,8 @@ public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerCom
 		super(TFStructurePieceTypes.TFFCWrT.get(), nbt);
 	}
 
-	public FinalCastleWreckedTowerComponent(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
-		super(TFStructurePieceTypes.TFFCWrT.get(), feature, rand, i, x, y, z, direction);
+	public FinalCastleWreckedTowerComponent(RandomSource rand, int i, int x, int y, int z, Direction direction) {
+		super(TFStructurePieceTypes.TFFCWrT.get(), rand, i, x, y, z, direction);
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerCom
 //    		foundation.buildComponent(this, list, rand);
 
 		// add thorns
-		FinalCastleFoundation13Component thorns = new FinalCastleFoundation13ComponentThorns(getFeatureType(), 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component thorns = new FinalCastleFoundation13ComponentThorns(0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(thorns);
 		thorns.addChildren(this, list, rand);
 

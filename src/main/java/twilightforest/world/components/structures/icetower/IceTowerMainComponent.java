@@ -11,7 +11,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -23,12 +22,12 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		this.hasBossWing = nbt.getBoolean("hasBossWing");
 	}
 
-	public IceTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z) {
-		this(feature, rand, index, x + SIZE, y + 40, z + SIZE, Direction.NORTH);
+	public IceTowerMainComponent(RandomSource rand, int index, int x, int y, int z) {
+		this(rand, index, x + SIZE, y + 40, z + SIZE, Direction.NORTH);
 	}
 
-	public IceTowerMainComponent(TFLandmark feature, RandomSource rand, int index, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFITMai.get(), feature, index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
+	public IceTowerMainComponent(RandomSource rand, int index, int x, int y, int z, Direction rotation) {
+		super(TFStructurePieceTypes.TFITMai.get(), index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
 
 		// decorator
 		if (this.deco == null) {
@@ -83,7 +82,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, 5, direction);
 
-		IceTowerBridgeComponent bridge = new IceTowerBridgeComponent(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), length, direction);
+		IceTowerBridgeComponent bridge = new IceTowerBridgeComponent(index, dest.getX(), dest.getY(), dest.getZ(), length, direction);
 
 		list.addPiece(bridge);
 		if (list instanceof StructurePiecesBuilder start) {
@@ -95,7 +94,7 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
-		IceTowerWingComponent entrance = new IceTowerEntranceComponent(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		IceTowerWingComponent entrance = new IceTowerEntranceComponent(index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 
 		list.addPiece(entrance);
 		if (list instanceof StructurePiecesBuilder start) {

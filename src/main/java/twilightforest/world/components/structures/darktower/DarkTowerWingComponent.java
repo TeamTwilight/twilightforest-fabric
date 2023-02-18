@@ -21,13 +21,12 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TFStructureDecorator;
 import twilightforest.world.components.structures.lichtower.*;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.ArrayList;
 
@@ -46,8 +45,8 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		this.readDoorsTypesFromArray(nbt.getIntArray("doorTypeInts"));
 	}
 
-	protected DarkTowerWingComponent(StructurePieceType piece, TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
+	protected DarkTowerWingComponent(StructurePieceType piece, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(piece, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	/**
@@ -131,10 +130,10 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		int index = this.getGenDepth();
 
 		TowerRoofComponent roof = switch (rand.nextInt(5)) {
-			case 2 -> new DarkTowerRoofCactusComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
-			case 3 -> new DarkTowerRoofRingsComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
-			case 4 -> new DarkTowerRoofFourPostComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
-			default -> new DarkTowerRoofAntennaComponent(getFeatureType(), index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			case 2 -> new DarkTowerRoofCactusComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			case 3 -> new DarkTowerRoofRingsComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			case 4 -> new DarkTowerRoofFourPostComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			default -> new DarkTowerRoofAntennaComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		};
 
 		list.addPiece(roof);
@@ -149,25 +148,25 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 		// this is our preferred roof type:
 		if (roofType == null && rand.nextInt(32) != 0) {
-			tryToFitRoof(list, rand, new TowerRoofGableForwardsComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
+			tryToFitRoof(list, rand, new TowerRoofGableForwardsComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 		}
 
 		// this is for roofs that don't fit.
 		if (roofType == null && rand.nextInt(8) != 0) {
-			tryToFitRoof(list, rand, new TowerRoofSlabForwardsComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
+			tryToFitRoof(list, rand, new TowerRoofSlabForwardsComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()));
 		}
 
 		// finally, if we're cramped for space, try this
 		if (roofType == null && rand.nextInt(32) != 0) {
 			// fall through to this next roof
-			roof = new TowerRoofAttachedSlabComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofAttachedSlabComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
 		// last resort
 		if (roofType == null) {
 			// fall through to this next roof
-			roof = new TowerRoofFenceComponent(getFeatureType(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofFenceComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 	}
@@ -177,7 +176,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	 */
 	@Override
 	public void makeABeard(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
-		DarkTowerBeardComponent beard = new DarkTowerBeardComponent(getFeatureType(), this.getGenDepth() + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		DarkTowerBeardComponent beard = new DarkTowerBeardComponent(this.getGenDepth() + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
 	}
@@ -200,7 +199,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 			return false;
 		}
 
-		DarkTowerBridgeComponent bridge = new DarkTowerBridgeComponent(TFStructurePieceTypes.TFDTBri.get(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		DarkTowerBridgeComponent bridge = new DarkTowerBridgeComponent(TFStructurePieceTypes.TFDTBri.get(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(bridge.getBoundingBox());
 		if (intersect == null || intersect == this) {
@@ -222,7 +221,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 5, direction);
 
-		DarkTowerBalconyComponent balcony = new DarkTowerBalconyComponent(getFeatureType(), index, dx[0], dx[1], dx[2], direction);
+		DarkTowerBalconyComponent balcony = new DarkTowerBalconyComponent(index, dx[0], dx[1], dx[2], direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(balcony.getBoundingBox());
 		if (intersect == null || intersect == this) {

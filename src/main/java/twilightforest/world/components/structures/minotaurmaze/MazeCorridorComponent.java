@@ -12,9 +12,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class MazeCorridorComponent extends TFStructureComponentOld {
@@ -27,8 +26,8 @@ public class MazeCorridorComponent extends TFStructureComponentOld {
 		super(piece, nbt);
 	}
 
-	public MazeCorridorComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, Direction rotation) {
-		super(type, feature, i, x, y, z);
+	public MazeCorridorComponent(StructurePieceType type, int i, int x, int y, int z, Direction rotation) {
+		super(type, i, x, y, z);
 		this.setOrientation(rotation);
 		this.boundingBox = new BoundingBox(x, y, z, x + 5, y + 5, z + 5);
 	}

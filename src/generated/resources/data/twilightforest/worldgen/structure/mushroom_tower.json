@@ -1,28 +1,9 @@
 {
-  "type": "twilightforest:legacy_landmark",
+  "type": "twilightforest:mushroom_tower",
   "adjust_structure_elevation": true,
-  "advancements_required": [],
   "allow_biome_surface_decorations": true,
   "allow_biome_underground_decorations": true,
-  "ambient_spawns": [],
   "biomes": "#twilightforest:valid_mushroom_tower_biomes",
-  "hint_item": {
-    "Count": 1,
-    "id": "minecraft:written_book",
-    "tag": {
-      "author": "twilightforest.book.author",
-      "pages": [
-        "{\"translate\":\"twilightforest.book.unknown.1\"}",
-        "{\"translate\":\"twilightforest.book.unknown.2\"}"
-      ],
-      "title": "twilightforest.book.unknown",
-      "twilightforest:book": 1
-    }
-  },
-  "hint_mob": "twilightforest:kobold",
-  "labelled_monster_spawns": {},
-  "legacy_landmark_start": "mushroom_tower",
   "spawn_overrides": {},
-  "step": "surface_structures",
-  "water_spawns": []
+  "step": "surface_structures"
 }

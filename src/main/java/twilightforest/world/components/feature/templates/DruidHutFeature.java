@@ -20,12 +20,12 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 import twilightforest.loot.TFLootTables;
-import twilightforest.world.components.processors.CobblePlankSwizzler;
+import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;
 
-public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
-	public DruidHutFeature(Codec<NoneFeatureConfiguration> config) {
+public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
+	public DruidHutFeature(Codec<SwizzleConfig> config) {
 		super(config);
 	}
 
@@ -35,14 +35,14 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
     }
 
     @Override
-    protected void modifySettings(StructurePlaceSettings settings, RandomSource random) {
-        settings.addProcessor(new CobblePlankSwizzler(random)).addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
+    protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
+        config.buildAddProcessors(settings, random);
+
+        settings.addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
     }
 
-    
-
     @Override
-    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
+    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
         if (random.nextBoolean()) {
             StructureTemplate template = templateManager.getOrCreate(DruidHutFeature.BasementType.values()[random.nextInt(DruidHutFeature.BasementType.size)].getBasement(random.nextBoolean()));
 
@@ -50,7 +50,11 @@ public class DruidHutFeature extends TemplateFeature<NoneFeatureConfiguration> {
 
             placementPos = placementPos.below(12).relative(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-            template.placeInWorld(world, placementPos, placementPos, placementSettings.clearProcessors().addProcessor(new CobblePlankSwizzler(random)).addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), random, 20);
+            placementSettings.clearProcessors();
+            config.buildAddProcessors(placementSettings, random);
+            placementSettings.addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
+
+            template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
 
             for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
                 if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA)

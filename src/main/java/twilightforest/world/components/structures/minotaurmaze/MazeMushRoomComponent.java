@@ -13,9 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.util.HugeMushroomUtil;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.HugeMushroomUtil;
 
 
 public class MazeMushRoomComponent extends MazeRoomComponent {
@@ -24,8 +23,8 @@ public class MazeMushRoomComponent extends MazeRoomComponent {
 		super(TFStructurePieceTypes.TFMMMR.get(), nbt);
 	}
 
-	public MazeMushRoomComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMMR.get(), feature, i, rand, x, y, z);
+	public MazeMushRoomComponent(int i, RandomSource rand, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMMR.get(), i, rand, x, y, z);
 
 		this.setOrientation(Direction.SOUTH); // let's just make this easy on us?
 	}

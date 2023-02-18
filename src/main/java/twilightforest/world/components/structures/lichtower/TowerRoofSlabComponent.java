@@ -12,7 +12,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -26,8 +25,8 @@ public class TowerRoofSlabComponent extends TowerRoofComponent {
 		super(piece, nbt);
 	}
 
-	public TowerRoofSlabComponent(StructurePieceType piece, TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(piece, feature, i, x, y, z);
+	public TowerRoofSlabComponent(StructurePieceType piece, int i, TowerWingComponent wing, int x, int y, int z) {
+		super(piece, i, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

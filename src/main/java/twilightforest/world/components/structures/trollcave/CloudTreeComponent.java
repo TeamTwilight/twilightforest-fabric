@@ -22,8 +22,8 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFClTr.get(), nbt);
 	}
 
-	public CloudTreeComponent(TFLandmark feature, int index, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFClTr.get(), feature, index, x, y, z);
+	public CloudTreeComponent(int index, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFClTr.get(), index, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 
@@ -32,7 +32,7 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 		y = (y >> 2) << 2;
 		z = (z >> 2) << 2;
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, Direction.SOUTH);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, Direction.SOUTH, false);
 
 		// spawn list!
 		this.spawnListIndex = 1;

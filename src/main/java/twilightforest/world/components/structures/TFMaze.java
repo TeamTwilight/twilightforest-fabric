@@ -363,7 +363,9 @@ public class TFMaze {
 
 		// only place it if we're actually generating the chunk the tree is in (or at least the middle of the tree)
 		if (sbb.isInside(pos)) {
-			world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(TFConfiguredFeatures.CANOPY_TREE).place(world, generator, rand, pos);
+			if (!world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(TFConfiguredFeatures.CANOPY_TREE).place(world, generator, rand, pos)) {
+				makeWallThing(world, y, component, sbb, x, z, 0, 0);
+			}
 		}
 	}
 

@@ -9,9 +9,8 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 
 public class DarkTowerRoofCactusComponent extends DarkTowerRoofComponent {
 
@@ -19,8 +18,8 @@ public class DarkTowerRoofCactusComponent extends DarkTowerRoofComponent {
 		super(TFStructurePieceTypes.TFDTRC.get(), nbt);
 	}
 
-	public DarkTowerRoofCactusComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFDTRC.get(), feature, i, wing, x, y, z);
+	public DarkTowerRoofCactusComponent(int i, TowerWingComponent wing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFDTRC.get(), i, wing, x, y, z);
 	}
 
 	@Override

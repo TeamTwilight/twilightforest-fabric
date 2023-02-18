@@ -11,10 +11,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerBeardComponent extends TFStructureComponentOld {
 
@@ -27,8 +26,8 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("beardHeight");
 	}
 
-	public DarkTowerBeardComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFDTBea.get(), feature, i, x, y, z);
+	public DarkTowerBeardComponent(int i, TowerWingComponent wing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFDTBea.get(), i, x, y, z);
 
 		this.setOrientation(wing.getOrientation());
 		this.size = wing.size;

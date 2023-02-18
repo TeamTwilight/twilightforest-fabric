@@ -46,8 +46,8 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		this(TFStructurePieceTypes.TFFCSiTo.get(), nbt);
 	}
 
-	public FinalCastleMazeTower13Component(StructurePieceType piece, TFLandmark feature, RandomSource rand, int i, int x, int y, int z, BlockState color, Direction direction) {
-		super(piece, feature, i, x, y, z);
+	public FinalCastleMazeTower13Component(StructurePieceType piece, RandomSource rand, int i, int x, int y, int z, BlockState color, Direction direction) {
+		super(piece, i, x, y, z);
 		this.setOrientation(direction);
 		this.color = color;
 		this.size = 13;
@@ -70,9 +70,19 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 			entranceFloor = floors - 1;
 		}
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -6, -(entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -6, -(entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH, false);
 
 		// we should have a door where we started
+		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
+	}
+
+	public FinalCastleMazeTower13Component(StructurePieceType piece, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
+		super(piece, i, x, y, z);
+		this.setOrientation(direction);
+		this.color = color;
+		this.size = 13;
+		this.height = floors * 8 + 1;
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -6, -(entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH, false);
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
 	}
 
@@ -82,16 +92,6 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		tagCompound.put("color", NbtUtils.writeBlockState(color));
 	}
 
-	public FinalCastleMazeTower13Component(StructurePieceType piece, TFLandmark feature, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
-		super(piece, feature, i, x, y, z);
-		this.setOrientation(direction);
-		this.color = color;
-		this.size = 13;
-		this.height = floors * 8 + 1;
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -6, -(entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
-		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
-	}
-
 	@Override
 	public void addChildren(StructurePiece parent,StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
@@ -99,12 +99,12 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add roof
-		TFStructureComponentOld roof = rand.nextBoolean() ? new FinalCastleRoof13ConicalComponent(getFeatureType(), rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()) : new FinalCastleRoof13CrenellatedComponent(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		TFStructureComponentOld roof = rand.nextBoolean() ? new FinalCastleRoof13ConicalComponent(rand, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ()) : new FinalCastleRoof13CrenellatedComponent(4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 	}
@@ -259,7 +259,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 			if (isWithinRange(centerX, centerZ, tc.getX(), tc.getZ(), 128)) {
 
-				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
+				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
 
 				BoundingBox largerBB = new BoundingBox(
 						sTower.getBoundingBox().minX() - 6, 0, sTower.getBoundingBox().minZ() - 6,
@@ -275,7 +275,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 					// add bridge
 					BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
-					FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
+					FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
 					list.addPiece(bridge);
 					bridge.addChildren(this, list, rand);
 
@@ -315,7 +315,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 			eTower.addChildren(this, list, rand);
 			// add bridge
 			BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
-			FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
+			FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
 			list.addPiece(bridge);
 			bridge.addChildren(this, list, rand);
 
@@ -330,7 +330,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	protected FinalCastleMazeTower13Component makeNewDamagedTower(RandomSource rand, Direction facing, BlockPos tc) {
-		return new FinalCastleDamagedTowerComponent(TFStructurePieceTypes.TFFCDamT.get(), getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
+		return new FinalCastleDamagedTowerComponent(TFStructurePieceTypes.TFFCDamT.get(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 
 	private int adjustOpening(int posY, BlockPos dest) {
@@ -365,9 +365,9 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		// what color of tower?
 		FinalCastleMazeTower13Component eTower;
 		if (this.color == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
-			eTower = new FinalCastleEntranceTowerComponent(getFeatureType(), this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
+			eTower = new FinalCastleEntranceTowerComponent(this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 		} else {
-			eTower = new FinalCastleBellTower21Component(getFeatureType(), this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
+			eTower = new FinalCastleBellTower21Component(this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 		}
 
 		BoundingBox largerBB = BoundingBoxUtils.cloneWithAdjustments(eTower.getBoundingBox(), -6, 0, -6, 6, 0, 6);
@@ -380,7 +380,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 			eTower.addChildren(this, list, rand);
 			// add bridge
 			BlockPos bc = this.offsetTowerCCoords(opening.getX(), opening.getY(), opening.getZ(), 1, facing);
-			FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(getFeatureType(), this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
+			FinalCastleBridgeComponent bridge = new FinalCastleBridgeComponent(this.getGenDepth() + 1, bc.getX(), bc.getY(), bc.getZ(), howFar - 7, facing);
 			list.addPiece(bridge);
 			bridge.addChildren(this, list, rand);
 

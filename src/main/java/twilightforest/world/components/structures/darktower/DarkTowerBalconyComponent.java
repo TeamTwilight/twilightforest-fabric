@@ -13,10 +13,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 public class DarkTowerBalconyComponent extends TowerWingComponent {
 
@@ -24,8 +23,8 @@ public class DarkTowerBalconyComponent extends TowerWingComponent {
 		super(TFStructurePieceTypes.TFDTBal.get(), nbt);
 	}
 
-	protected DarkTowerBalconyComponent(TFLandmark feature, int i, int x, int y, int z, Direction direction) {
-		super(TFStructurePieceTypes.TFDTBal.get(), feature, i, x, y, z, 5, 5, direction);
+	protected DarkTowerBalconyComponent(int i, int x, int y, int z, Direction direction) {
+		super(TFStructurePieceTypes.TFDTBal.get(), i, x, y, z, 5, 5, direction);
 	}
 
 	@Override

@@ -15,7 +15,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -25,8 +24,8 @@ public class TowerOutbuildingComponent extends TowerWingComponent {
 		super(TFStructurePieceTypes.TFLTOut.get(), nbt);
 	}
 
-	protected TowerOutbuildingComponent(TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFLTOut.get(), feature, i, x, y, z, pSize, pHeight, direction);
+	protected TowerOutbuildingComponent(int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(TFStructurePieceTypes.TFLTOut.get(), i, x, y, z, pSize, pHeight, direction);
 	}
 
 	/**

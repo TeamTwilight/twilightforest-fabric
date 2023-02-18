@@ -2,16 +2,16 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
+import twilightforest.block.FallenLeavesBlock;
 import twilightforest.init.TFBlocks;
 
 public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
@@ -24,24 +24,35 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 
 	@Override
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-		WorldGenLevel worldIn = ctx.level();
-		ChunkGenerator generator = ctx.chunkGenerator();
-		BlockPos position = ctx.origin();
+		WorldGenLevel level = ctx.level();
+		BlockPos position = level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, ctx.origin());
 		RandomSource rand = ctx.random();
 
-		do {
-			if (canPlace(position, worldIn)) break;
-			position = position.below();
-		} while (position.getY() > generator.getSpawnHeight(worldIn));
+		if (this.canPlace(position, level)) {
+			if (!level.getFluidState(position.below()).isEmpty()) {
+				return this.generateFlatPileOnWater(level, position, rand);
+			} else {
+				int startHeight = rand.nextInt(6) + 1;
+				level.setBlock(position, this.state.setValue(FallenLeavesBlock.LAYERS, startHeight), 16 | 2);
+				for (int i = 0; i < startHeight; i++) {
+					this.generateCircleOfLeaves(level, position, rand, i, startHeight - i - 1);
+					if (rand.nextInt(3) == 0) i++;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 
-		for (int x = 0; x < 5; x++)
+	private boolean generateFlatPileOnWater(WorldGenLevel level, BlockPos pos, RandomSource random) {
+		for (int x = 0; x < 5; x++) {
 			for (int z = 0; z < 5; z++) {
-				if (rand.nextInt(3) != 0)
+				if (random.nextInt(3) != 0)
 					continue;
 				boolean flag = false;
 				int y = 2;
 				do {
-					if (canPlace(position.offset(x, y, z), worldIn)) {
+					if (this.canPlace(pos.offset(x, y, z), level)) {
 						flag = true;
 						break;
 					}
@@ -49,16 +60,49 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 				} while (y >= -2);
 				if (!flag)
 					continue;
-				BlockPos pos = position.offset(x, y, z);
-				if (((BushBlock) state.getBlock()).canSurvive(state, worldIn, pos))
-					worldIn.setBlock(pos, state, 16 | 2);
+				BlockPos finalPos = pos.offset(x, y, z);
+				if (this.state.canSurvive(level, finalPos))
+					level.setBlock(finalPos, this.state, 16 | 2);
 			}
-
+		}
 		return true;
 	}
 
-	private static boolean canPlace(BlockPos pos, WorldGenLevel worldIn) {
-		BlockState state = worldIn.getBlockState(pos.below());
-		return worldIn.isEmptyBlock(pos) && (state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT || state.getMaterial() == Material.ICE || worldIn.getFluidState(pos.below()).getType() == Fluids.WATER);
+	private void generateCircleOfLeaves(WorldGenLevel level, BlockPos origin, RandomSource random, int radius, int height) {
+		for(int i1 = origin.getX() - radius; i1 <= origin.getX() + radius; ++i1) {
+			for(int j1 = origin.getZ() - radius; j1 <= origin.getZ() + radius; ++j1) {
+				int k1 = i1 - origin.getX();
+				int l1 = j1 - origin.getZ();
+				if (k1 * k1 + l1 * l1 <= radius * radius) {
+					BlockPos newPos = new BlockPos(i1, origin.getY(), j1);
+					int trueHeight = height - random.nextInt(3);
+					if (trueHeight > 0) {
+						this.checkAndGenerateLeafPile(level, newPos, trueHeight);
+					}
+				}
+			}
+		}
+	}
+
+	private void checkAndGenerateLeafPile(WorldGenLevel level, BlockPos pos, int pileLayer) {
+		boolean flag = false;
+		int y = 0;
+		do {
+			if (this.canPlace(pos.offset(0, y, 0), level)) {
+				flag = true;
+				break;
+			}
+			y--;
+		} while (y >= -2);
+		if (!flag)
+			return;
+		BlockPos finalPos = pos.offset(0, y, 0);
+		if (this.state.getBlock().canSurvive(this.state, level, finalPos))
+			level.setBlock(finalPos, this.state.setValue(FallenLeavesBlock.LAYERS, pileLayer), 16 | 2);
+	}
+
+	private boolean canPlace(BlockPos pos, WorldGenLevel level) {
+		BlockState state = level.getBlockState(pos.below());
+		return !level.getBlockState(pos).is(this.state.getBlock()) && (level.isEmptyBlock(pos) || level.getBlockState(pos).is(TFBlocks.MAYAPPLE.get()) || level.getBlockState(pos).canBeReplaced()) && (state.is(BlockTags.DIRT) || level.getFluidState(pos.below()).is(Fluids.WATER));
 	}
 }

@@ -14,11 +14,10 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.structures.TFStructureComponentTemplate;
-import twilightforest.init.TFLandmark;
 
 public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureComponentTemplate {
 
@@ -34,8 +33,8 @@ public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureCom
     }
 
     @SuppressWarnings("WeakerAccess")
-    public NagaCourtyardHedgeAbstractComponent(StructureTemplateManager manager, StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation hedge, ResourceLocation hedgeBig) {
-        super(manager, type, feature, i, x, y, z, rotation);
+    public NagaCourtyardHedgeAbstractComponent(StructureTemplateManager manager, StructurePieceType type, int i, int x, int y, int z, Rotation rotation, ResourceLocation hedge, ResourceLocation hedgeBig) {
+        super(manager, type, i, x, y, z, rotation);
         this.HEDGE = hedge;
         this.HEDGE_BIG = hedgeBig;
     }

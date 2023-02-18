@@ -14,9 +14,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.init.TFBlocks;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 import java.util.ArrayList;
 
@@ -31,8 +30,8 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 		super(piece, nbt);
 	}
 
-	public FinalCastleDamagedTowerComponent(StructurePieceType piece, TFLandmark feature, RandomSource rand, int i, int x, int y, int z, Direction direction) {
-		super(piece, feature, rand, i, x, y, z, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);  //TODO: change rune color
+	public FinalCastleDamagedTowerComponent(StructurePieceType piece, RandomSource rand, int i, int x, int y, int z, Direction direction) {
+		super(piece, rand, i, x, y, z, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);  //TODO: change rune color
 	}
 
 	@Override
@@ -42,12 +41,12 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), getFeatureType(), 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add thorns
-		FinalCastleFoundation13Component thorns = new FinalCastleFoundation13ComponentThorns(getFeatureType(), 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component thorns = new FinalCastleFoundation13ComponentThorns(0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(thorns);
 		thorns.addChildren(this, list, rand);
 
@@ -63,7 +62,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 
 	@Override
 	protected FinalCastleMazeTower13Component makeNewDamagedTower(RandomSource rand, Direction facing, BlockPos tc) {
-		return new FinalCastleWreckedTowerComponent(getFeatureType(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
+		return new FinalCastleWreckedTowerComponent(rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 
 	@Override

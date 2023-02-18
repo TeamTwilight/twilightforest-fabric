@@ -9,6 +9,9 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -204,7 +207,7 @@ public class TFBlockItems {
 		register(blockItem(TFBlocks.MUSHGLOOM));
 		register(blockItem(TFBlocks.TORCHBERRY_PLANT));
 		register(blockItem(TFBlocks.ROOT_STRAND));
-		register(placeOnWaterBlockItem(TFBlocks.FALLEN_LEAVES));
+		register(placeOnWaterBlockItemReplaceable(TFBlocks.FALLEN_LEAVES));
 		register(wearableBlock(TFBlocks.FIREFLY, TFBlockEntities.FIREFLY));
 		register(wearableBlock(TFBlocks.CICADA, TFBlockEntities.CICADA));
 		register(wearableBlock(TFBlocks.MOONWORM, TFBlockEntities.MOONWORM));
@@ -412,6 +415,22 @@ public class TFBlockItems {
 
 	private static <B extends Block> BlockItem placeOnWaterBlockItem(RegistryObject<B> block) {
 		return new PlaceOnWaterBlockItem(block.get(), new Item.Properties());
+	}
+
+	private static <B extends Block> BlockItem placeOnWaterBlockItemReplaceable(RegistryObject<B> block) {
+		return new BlockItem(block.get(), new Item.Properties()) {
+			@Override
+			public InteractionResult useOn(UseOnContext context) {
+				return context.getLevel().getBlockState(context.getClickedPos()).is(block.get()) ? super.useOn(context) : InteractionResult.PASS;
+			}
+			@Override
+			public InteractionResultHolder<ItemStack> use(Level p_220231_, Player p_220232_, InteractionHand p_220233_) {
+				BlockHitResult blockhitresult = getPlayerPOVHitResult(p_220231_, p_220232_, ClipContext.Fluid.SOURCE_ONLY);
+				BlockHitResult blockhitresult1 = blockhitresult.withPosition(blockhitresult.getBlockPos().above());
+				InteractionResult interactionresult = super.useOn(new UseOnContext(p_220232_, p_220233_, blockhitresult1));
+				return new InteractionResultHolder<>(interactionresult, p_220232_.getItemInHand(p_220233_));
+			}
+		};
 	}
 
 	private static <B extends Block> BlockItem fireImmuneBlock(RegistryObject<B> block) {

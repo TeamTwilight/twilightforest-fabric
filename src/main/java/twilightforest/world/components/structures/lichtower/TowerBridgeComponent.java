@@ -27,8 +27,8 @@ public class TowerBridgeComponent extends TowerWingComponent {
 		super(TFStructurePieceTypes.TFLTBri.get(), nbt);
 	}
 
-	protected TowerBridgeComponent(TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFLTBri.get(), feature, i, x, y, z, 3, 3, direction);
+	protected TowerBridgeComponent(int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(TFStructurePieceTypes.TFLTBri.get(), i, x, y, z, 3, 3, direction);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;
@@ -47,7 +47,7 @@ public class TowerBridgeComponent extends TowerWingComponent {
 	 */
 	public BoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(2, 1, 1, dSize, this.getOrientation());
-		return getFeatureType().getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getOrientation());
+		return TFLandmark.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getOrientation(), false);
 	}
 
 	@Override

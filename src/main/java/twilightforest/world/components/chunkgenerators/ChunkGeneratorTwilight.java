@@ -28,10 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
-import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructureSet;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
@@ -44,8 +41,10 @@ import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.warp.*;
 import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.placements.BiomeForcedLandmarkPlacement;
-import twilightforest.world.components.structures.start.LegacyLandmark;
+import twilightforest.world.components.structures.type.HollowHillStructure;
 import twilightforest.world.components.structures.start.TFStructureStart;
+import twilightforest.init.TFLandmark;
+import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.*;
@@ -836,15 +835,21 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	@Nullable
 	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
 		for (Structure structure : structureManager.registryAccess().registryOrThrow(Registries.STRUCTURE)) {
-			if (structure instanceof LegacyLandmark landmark) {
-				StructureStart start = structureManager.getStructureAt(pos, landmark);
+			if (structure instanceof ControlledSpawns landmark) {
+				StructureStart start = structureManager.getStructureAt(pos, structure);
 				if (!start.isValid())
 					continue;
 
 				if (classification != MobCategory.MONSTER)
 					return landmark.getSpawnableList(classification);
-				if ((start instanceof TFStructureStart<?> s && s.isConquered()))
+
+				if (start instanceof TFStructureStart s && s.isConquered())
 					return null;
+
+				// FIXME Make interface for this method?
+				if (structure instanceof HollowHillStructure hollowHill && !hollowHill.canSpawnMob(pos, start.getBoundingBox()))
+					return null;
+
 				final int index = getSpawnListIndexAt(start, pos);
 				if (index < 0)
 					return null;

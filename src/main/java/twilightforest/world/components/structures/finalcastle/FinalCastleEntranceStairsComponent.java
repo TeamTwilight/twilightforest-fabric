@@ -13,9 +13,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 /**
@@ -27,8 +26,8 @@ public class FinalCastleEntranceStairsComponent extends TFStructureComponentOld 
 		super(TFStructurePieceTypes.TFFCEnSt.get(), nbt);
 	}
 
-	public FinalCastleEntranceStairsComponent(TFLandmark feature, int index, int x, int y, int z, Direction direction) {
-		super(TFStructurePieceTypes.TFFCEnSt.get(), feature, index, x, y, z);
+	public FinalCastleEntranceStairsComponent(int index, int x, int y, int z, Direction direction) {
+		super(TFStructurePieceTypes.TFFCEnSt.get(), index, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
 	}

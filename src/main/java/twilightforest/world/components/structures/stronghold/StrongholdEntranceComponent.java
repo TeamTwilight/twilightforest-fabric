@@ -1,23 +1,22 @@
 package twilightforest.world.components.structures.stronghold;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import twilightforest.util.BoundingBoxUtils;
-import twilightforest.init.TFLandmark;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.BoundingBoxUtils;
 
 import java.util.List;
 
@@ -34,8 +33,8 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 		lowerPieces = new StrongholdPieces();
 	}
 
-	public StrongholdEntranceComponent(TFLandmark feature, int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSEnter.get(), feature, i, Direction.SOUTH, x, y - 10, z);
+	public StrongholdEntranceComponent(int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSEnter.get(), i, Direction.SOUTH, x, y - 10, z);
 
 		this.deco = new StrongholdDecorator();
 
@@ -107,7 +106,7 @@ public class StrongholdEntranceComponent extends StructureTFStrongholdComponent 
 //		list.add(shield);
 
 			// add the upper stronghold
-			StructureTFStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(getFeatureType(), 2, this.getOrientation(), boundingBox.minX() + 8, boundingBox.minY() + 7, boundingBox.minZ() + 4);
+			StructureTFStrongholdComponent accessChamber = new StrongholdAccessChamberComponent(2, this.getOrientation(), boundingBox.minX() + 8, boundingBox.minY() + 7, boundingBox.minZ() + 4);
 			list.add(accessChamber);
 			accessChamber.addChildren(this, old, random);
 		}

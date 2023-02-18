@@ -7,7 +7,7 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.structures.start.LegacyLandmark;
+import twilightforest.world.components.structures.type.*;
 
 public class TFStructures {
 
@@ -34,22 +34,22 @@ public class TFStructures {
 
 	@SuppressWarnings("deprecation")
 	public static void bootstrap(BootstapContext<Structure> context) {
-		context.register(HEDGE_MAZE, LegacyLandmark.extractLandmark(context, TFLandmark.HEDGE_MAZE));
-		context.register(QUEST_GROVE, LegacyLandmark.extractLandmark(context, TFLandmark.QUEST_GROVE));
-		context.register(MUSHROOM_TOWER, LegacyLandmark.extractLandmark(context, TFLandmark.MUSHROOM_TOWER));
-		context.register(HOLLOW_HILL_SMALL, LegacyLandmark.extractLandmark(context, TFLandmark.SMALL_HILL));
-		context.register(HOLLOW_HILL_MEDIUM, LegacyLandmark.extractLandmark(context, TFLandmark.MEDIUM_HILL));
-		context.register(HOLLOW_HILL_LARGE, LegacyLandmark.extractLandmark(context, TFLandmark.LARGE_HILL));
-		context.register(NAGA_COURTYARD, LegacyLandmark.extractLandmark(context, TFLandmark.NAGA_COURTYARD));
-		context.register(LICH_TOWER, LegacyLandmark.extractLandmark(context, TFLandmark.LICH_TOWER));
-		context.register(LABYRINTH, LegacyLandmark.extractLandmark(context, TFLandmark.LABYRINTH));
-		context.register(HYDRA_LAIR, LegacyLandmark.extractLandmark(context, TFLandmark.HYDRA_LAIR));
-		context.register(KNIGHT_STRONGHOLD, LegacyLandmark.extractLandmark(context, TFLandmark.KNIGHT_STRONGHOLD));
-		context.register(DARK_TOWER, LegacyLandmark.extractLandmark(context, TFLandmark.DARK_TOWER));
-		context.register(YETI_CAVE, LegacyLandmark.extractLandmark(context, TFLandmark.YETI_CAVE));
-		context.register(AURORA_PALACE, LegacyLandmark.extractLandmark(context, TFLandmark.ICE_TOWER));
-		context.register(TROLL_CAVE, LegacyLandmark.extractLandmark(context, TFLandmark.TROLL_CAVE));
-		context.register(FINAL_CASTLE, LegacyLandmark.extractLandmark(context, TFLandmark.FINAL_CASTLE));
+		context.register(HEDGE_MAZE, HedgeMazeStructure.buildStructureConfig(context));
+		context.register(QUEST_GROVE, QuestGroveStructure.buildStructureConfig(context));
+		context.register(MUSHROOM_TOWER, MushroomTowerStructure.buildStructureConfig(context));
+		context.register(HOLLOW_HILL_SMALL, HollowHillStructure.buildSmallHillConfig(context));
+		context.register(HOLLOW_HILL_MEDIUM, HollowHillStructure.buildMediumHillConfig(context));
+		context.register(HOLLOW_HILL_LARGE, HollowHillStructure.buildLargeHillConfig(context));
+		context.register(NAGA_COURTYARD, NagaCourtyardStructure.buildStructureConfig(context));
+		context.register(LICH_TOWER, LegacyStructure.buildLichTowerConfig(context));
+		context.register(LABYRINTH, LegacyStructure.buildLabyrinthConfig(context));
+		context.register(HYDRA_LAIR, LegacyStructure.buildHydraLairConfig(context));
+		context.register(KNIGHT_STRONGHOLD, LegacyStructure.buildKnightStrongholdConfig(context));
+		context.register(DARK_TOWER, LegacyStructure.buildDarkTowerConfig(context));
+		context.register(YETI_CAVE, LegacyStructure.buildYetiCaveConfig(context));
+		context.register(AURORA_PALACE, LegacyStructure.buildAuroraPalaceConfig(context));
+		context.register(TROLL_CAVE, LegacyStructure.buildTrollCaveConfig(context));
+		context.register(FINAL_CASTLE, LegacyStructure.buildFinalCastleConfig(context));
 	}
 
 	public static void register() {}

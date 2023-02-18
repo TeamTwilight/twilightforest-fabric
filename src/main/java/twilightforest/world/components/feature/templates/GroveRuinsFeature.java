@@ -27,7 +27,7 @@ public class GroveRuinsFeature extends TemplateFeature<NoneFeatureConfiguration>
     }
 
     @Override
-    protected void modifySettings(StructurePlaceSettings settings, RandomSource random) {
+    protected void modifySettings(StructurePlaceSettings settings, RandomSource random, NoneFeatureConfiguration config) {
         settings.addProcessor(StoneBricksVariants.INSTANCE);
     }
 }

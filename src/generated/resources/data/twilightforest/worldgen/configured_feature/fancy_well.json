@@ -1,4 +1,24 @@
 {
   "type": "twilightforest:fancy_well",
-  "config": {}
+  "config": {
+    "palette_choices": [
+      {
+        "data": "#twilightforest:common",
+        "weight": 8
+      },
+      {
+        "data": "#twilightforest:uncommon",
+        "weight": 4
+      },
+      {
+        "data": "#twilightforest:rare",
+        "weight": 3
+      },
+      {
+        "data": "#twilightforest:treasure",
+        "weight": 1
+      }
+    ],
+    "target_palettes": "#twilightforest:well_swizzle_mask"
+  }
 }

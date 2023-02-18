@@ -10,10 +10,9 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 
 public class IceTowerRoofComponent extends TowerRoofComponent {
@@ -22,8 +21,8 @@ public class IceTowerRoofComponent extends TowerRoofComponent {
 		super(TFStructurePieceTypes.TFITRoof.get(), nbt);
 	}
 
-	public IceTowerRoofComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFITRoof.get(), feature, i, x, y, z);
+	public IceTowerRoofComponent(int i, TowerWingComponent wing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFITRoof.get(), i, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

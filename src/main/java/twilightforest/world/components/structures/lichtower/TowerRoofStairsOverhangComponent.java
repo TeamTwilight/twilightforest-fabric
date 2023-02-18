@@ -1,19 +1,18 @@
 package twilightforest.world.components.structures.lichtower;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -23,8 +22,8 @@ public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 		super(TFStructurePieceTypes.TFLTRStO.get(), nbt);
 	}
 
-	public TowerRoofStairsOverhangComponent(TFLandmark feature, int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFLTRStO.get(), feature, i, x, y, z);
+	public TowerRoofStairsOverhangComponent(int i, TowerWingComponent wing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFLTRStO.get(), i, x, y, z);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
 		this.setOrientation(Direction.SOUTH);

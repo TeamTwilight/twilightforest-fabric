@@ -15,7 +15,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -30,8 +29,8 @@ public class StrongholdFoundryComponent extends StructureTFStrongholdComponent {
 		this.entranceLevel = nbt.getInt("entranceLevel");
 	}
 
-	public StrongholdFoundryComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSFo.get(), feature, i, facing, x, y, z);
+	public StrongholdFoundryComponent(int i, Direction facing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSFo.get(), i, facing, x, y, z);
 	}
 
 	@Override

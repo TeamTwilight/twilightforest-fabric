@@ -81,17 +81,17 @@ public class UrGhastFlightGoal extends Goal {
 			// make a copy of the trap locations list
 			potentialPoints.addAll(this.ghast.getTrapLocations());
 		} else {
-			potentialPoints.add(pos.offset(20, -HOVER_ALTITUDE, 0));
-			potentialPoints.add(pos.offset(0, -HOVER_ALTITUDE, -20));
-			potentialPoints.add(pos.offset(-20, -HOVER_ALTITUDE, 0));
-			potentialPoints.add(pos.offset(0, -HOVER_ALTITUDE, 20));
+			potentialPoints.add(pos.offset(20, 0, 0));
+			potentialPoints.add(pos.offset(0, 0, -20));
+			potentialPoints.add(pos.offset(-20, 0, 0));
+			potentialPoints.add(pos.offset(0, 0, 20));
 		}
 
 		Collections.shuffle(potentialPoints);
 
 		if (this.ghast.isInNoTrapMode()) {
 			// if in no trap mode, head back to the middle when we're done
-			potentialPoints.add(pos.below(HOVER_ALTITUDE));
+			potentialPoints.add(pos);
 		}
 
 		return potentialPoints;

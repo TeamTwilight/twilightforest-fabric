@@ -32,13 +32,13 @@ public class CourtyardMain extends StructureMazeGenerator {
 		super(ctx.structureTemplateManager(), TFStructurePieceTypes.TFNCMn.get(), nbt);
 	}
 
-	public CourtyardMain(TFLandmark feature, RandomSource rand, int i, int x, int y, int z, StructureTemplateManager structureManager) {
-		super(TFStructurePieceTypes.TFNCMn.get(), feature, rand, i, ROW_OF_CELLS, ROW_OF_CELLS, x, y, z, structureManager);
+	public CourtyardMain(RandomSource rand, int i, int x, int y, int z, StructureTemplateManager structureManager) {
+		super(TFStructurePieceTypes.TFNCMn.get(), rand, i, ROW_OF_CELLS, ROW_OF_CELLS, x, y, z, structureManager);
 
 		this.setOrientation(Direction.NORTH);
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -RADIUS/2, -1, -RADIUS/2, RADIUS, 10, RADIUS, this.getOrientation());
-		this.sizeConstraints = feature.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getOrientation());
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -RADIUS/2, -1, -RADIUS/2, RADIUS, 10, RADIUS, this.getOrientation(), false);
+		this.sizeConstraints = TFLandmark.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getOrientation(), false);
 	}
 
 	@Override

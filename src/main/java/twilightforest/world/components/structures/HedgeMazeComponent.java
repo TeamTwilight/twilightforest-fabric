@@ -35,13 +35,13 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		this.boundingBox = BoundingBoxUtils.NBTToBoundingBox(nbt);
 	}
 
-	public HedgeMazeComponent(TFLandmark feature, int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFHedge.get(), feature, i, x, y, z);
+	public HedgeMazeComponent(int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFHedge.get(), i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 
 		// the maze is 50 x 50 for now
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH, false);
 	}
 
 	@Override
@@ -66,10 +66,10 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 			}
 		}
 
-		BlockState northJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.NORTH);
-		BlockState southJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.SOUTH);
-		BlockState westJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.WEST);
-		BlockState eastJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.EAST);
+		BlockState northJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.SOUTH);
+		BlockState southJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.NORTH);
+		BlockState westJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.EAST);
+		BlockState eastJacko = Blocks.JACK_O_LANTERN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, Direction.WEST);
 
 		// plunk down some jack-o-lanterns outside for decoration
 		placeBlock(world, westJacko, 0, FLOOR_LEVEL, 24, sbb);

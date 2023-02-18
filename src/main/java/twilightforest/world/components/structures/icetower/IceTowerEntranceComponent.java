@@ -12,9 +12,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.world.components.structures.TFStructureComponent;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponent;
 
 
 public class IceTowerEntranceComponent extends IceTowerWingComponent {
@@ -23,8 +22,8 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 		super(TFStructurePieceTypes.TFITEnt.get(), nbt);
 	}
 
-	public IceTowerEntranceComponent(TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFITEnt.get(), feature, i, x, y, z, pSize, pHeight, direction);
+	public IceTowerEntranceComponent(int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(TFStructurePieceTypes.TFITEnt.get(), i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override
@@ -63,7 +62,7 @@ public class IceTowerEntranceComponent extends IceTowerWingComponent {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dx = offsetTowerCCoords(x, y, z, this.size, direction);
 
-		IceTowerStairsComponent entrance = new IceTowerStairsComponent(getFeatureType(), index, dx.getX(), dx.getY(), dx.getZ(), this.size, this.height, direction);
+		IceTowerStairsComponent entrance = new IceTowerStairsComponent(index, dx.getX(), dx.getY(), dx.getZ(), this.size, this.height, direction);
 
 		list.addPiece(entrance);
 		entrance.addChildren(this, list, rand);

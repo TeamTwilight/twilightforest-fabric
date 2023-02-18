@@ -3,14 +3,22 @@ package twilightforest.world.components.structures.util;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.Structure;
 
 public interface DecorationClearance {
     boolean isSurfaceDecorationsAllowed();
 
     boolean isUndergroundDecoAllowed();
 
-    @Deprecated // Method exists for the logic transition. Ultimately this logic should be handled by vanilla.
     boolean shouldAdjustToTerrain();
+
+    default int adjustForTerrain(Structure.GenerationContext context, int x, int z) {
+        return this.shouldAdjustToTerrain()
+                ? Mth.clamp(context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()), context.chunkGenerator().getSeaLevel() + 1, context.chunkGenerator().getSeaLevel() + 7)
+                : context.chunkGenerator().getSeaLevel();
+    }
 
     record DecorationConfig(boolean surfaceDecorations, boolean undergroundDecorations, @Deprecated boolean adjustElevation) {
         public static MapCodec<DecorationConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(

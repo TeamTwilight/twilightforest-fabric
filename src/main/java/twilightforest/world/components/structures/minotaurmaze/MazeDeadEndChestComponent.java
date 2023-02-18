@@ -13,9 +13,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.init.TFBlocks;
-import twilightforest.loot.TFLootTables;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.loot.TFLootTables;
 
 
 public class MazeDeadEndChestComponent extends MazeDeadEndComponent {
@@ -28,8 +27,8 @@ public class MazeDeadEndChestComponent extends MazeDeadEndComponent {
 		super(piece, nbt);
 	}
 
-	public MazeDeadEndChestComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, Direction rotation) {
-		super(type, feature, i, x, y, z, rotation);
+	public MazeDeadEndChestComponent(StructurePieceType type, int i, int x, int y, int z, Direction rotation) {
+		super(type, i, x, y, z, rotation);
 		this.setOrientation(rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns

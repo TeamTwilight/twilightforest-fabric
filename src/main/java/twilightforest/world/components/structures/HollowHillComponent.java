@@ -42,8 +42,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		this.hdiam = (hillSize * 2 + 1) * 16;
 	}
 
-	public HollowHillComponent(StructurePieceType piece, TFLandmark feature, int i, int size, int x, int y, int z) {
-		super(piece, feature, i, x, y, z);
+	public HollowHillComponent(StructurePieceType piece, int i, int size, int x, int y, int z) {
+		super(piece, i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 
@@ -53,7 +53,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		this.hdiam = (hillSize * 2 + 1) * 16;
 
 		// can we determine the size here?
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / (hillSize == 1 ? 2 : hillSize), radius * 2, Direction.SOUTH);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / (hillSize == 1 ? 2 : hillSize), radius * 2, Direction.SOUTH, true);
 	}
 
 	@Override

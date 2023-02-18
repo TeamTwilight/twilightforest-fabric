@@ -15,10 +15,9 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 
 public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Component {
@@ -29,8 +28,8 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		super(TFStructurePieceTypes.TFFCBelTo.get(), nbt);
 	}
 
-	public FinalCastleBellTower21Component(TFLandmark feature, int i, int x, int y, int z, Direction direction) {
-		super(TFStructurePieceTypes.TFFCBelTo.get(), feature, i, x, y, z, FLOORS, 1, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
+	public FinalCastleBellTower21Component(int i, int x, int y, int z, Direction direction) {
+		super(TFStructurePieceTypes.TFFCBelTo.get(), i, x, y, z, FLOORS, 1, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 		this.size = 21;
 		this.height = FLOORS * 8 + 1;
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, -6, -8, -this.size / 2, this.size - 1, this.height, this.size - 1, direction);
@@ -45,12 +44,12 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		}
 
 		// add foundation
-		FinalCastleBellFoundation21Component foundation = new FinalCastleBellFoundation21Component(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleBellFoundation21Component foundation = new FinalCastleBellFoundation21Component(4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
 		// add roof
-		TFStructureComponentOld roof = new FinalCastleRoof13CrenellatedComponent(getFeatureType(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		TFStructureComponentOld roof = new FinalCastleRoof13CrenellatedComponent(4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 	}

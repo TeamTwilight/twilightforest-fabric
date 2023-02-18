@@ -28,8 +28,8 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFMMRuins.get(), nbt);
 	}
 
-	public MazeRuinsComponent(TFLandmark feature, int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMRuins.get(), feature, i, feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH));
+	public MazeRuinsComponent(int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMRuins.get(), i, TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH, false));
 		this.setOrientation(Direction.SOUTH);
 	}
 
@@ -41,17 +41,17 @@ public class MazeRuinsComponent extends TFStructureComponentOld {
 		super.addChildren(structurecomponent, list, random);
 
 		// add a maze
-		MinotaurMazeComponent maze = new MinotaurMazeComponent(getFeatureType(), 1, boundingBox.minX(), boundingBox.minY() - 14, boundingBox.minZ(), 1);
+		MinotaurMazeComponent maze = new MinotaurMazeComponent(1, boundingBox.minX(), boundingBox.minY() - 14, boundingBox.minZ(), 1);
 		list.addPiece(maze);
 		maze.addChildren(this, list, random);
 
 		// add maze entrance shaft
-		MazeEntranceShaftComponent mazeEnter = new MazeEntranceShaftComponent(getFeatureType(), 2, random, boundingBox.minX() + 1, boundingBox.minY(), boundingBox.minZ() + 1);
+		MazeEntranceShaftComponent mazeEnter = new MazeEntranceShaftComponent(2, random, boundingBox.minX() + 1, boundingBox.minY(), boundingBox.minZ() + 1);
 		list.addPiece(mazeEnter);
 		mazeEnter.addChildren(this, list, random);
 
 		// add aboveground maze entrance building
-		MazeMoundComponent mazeAbove = new MazeMoundComponent(getFeatureType(), 2, random, boundingBox.minX() - 14, boundingBox.maxY(), boundingBox.minZ() - 14);
+		MazeMoundComponent mazeAbove = new MazeMoundComponent(2, random, boundingBox.minX() - 14, boundingBox.maxY(), boundingBox.minZ() - 14);
 		list.addPiece(mazeAbove);
 		mazeAbove.addChildren(this, list, random);
 	}

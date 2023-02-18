@@ -2,7 +2,6 @@ package twilightforest.world.components.structures.trollcave;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +15,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -51,8 +49,8 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.height = nbt.getInt("height");
 	}
 
-	public TrollCaveMainComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
-		super(type, feature, i, x, y, z);
+	public TrollCaveMainComponent(StructurePieceType type, int i, int x, int y, int z) {
+		super(type, i, x, y, z);
 		this.setOrientation(Direction.SOUTH); // DEPTH_AVERAGE
 
 		// adjust y
@@ -62,7 +60,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.height = 20;
 
 		int radius = this.size / 2;
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH, false);
 	}
 
 	@Override
@@ -81,12 +79,12 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		}
 
 		// add cloud castle
-		CloudCastleComponent castle = new CloudCastleComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2), 168, boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2));
+		CloudCastleComponent castle = new CloudCastleComponent(this.getGenDepth() + 1, boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2), 168, boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2));
 		list.addPiece(castle);
 		castle.addChildren(this, list, rand);
 
 		// add vault
-		TrollVaultComponent vault = new TrollVaultComponent(getFeatureType(), this.getGenDepth() + 1, boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2), boundingBox.minY(), boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2));
+		TrollVaultComponent vault = new TrollVaultComponent(this.getGenDepth() + 1, boundingBox.minX() + ((boundingBox.maxX() - boundingBox.minX()) / 2), boundingBox.minY(), boundingBox.minZ() + ((boundingBox.maxZ() - boundingBox.minZ()) / 2));
 		list.addPiece(vault);
 		vault.addChildren(this, list, rand);
 	}
@@ -95,7 +93,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 
-		TrollCaveConnectComponent cave = new TrollCaveConnectComponent(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
+		TrollCaveConnectComponent cave = new TrollCaveConnectComponent(index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(cave.getBoundingBox());
 		if (intersect == null || intersect == this) {

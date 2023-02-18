@@ -548,8 +548,10 @@ public class TFCreativeTabs {
 
 	private static void generateGearWithEnchants(CreativeModeTab.Output output, Item item, EnchantmentInstance... instances) {
 		ItemStack stack = new ItemStack(item);
-		for (EnchantmentInstance enchant : instances) {
-			stack.enchant(enchant.enchantment, enchant.level);
+		if (TFConfig.COMMON_CONFIG.defaultItemEnchants.get()) {
+			for (EnchantmentInstance enchant : instances) {
+				stack.enchant(enchant.enchantment, enchant.level);
+			}
 		}
 		output.accept(stack);
 	}

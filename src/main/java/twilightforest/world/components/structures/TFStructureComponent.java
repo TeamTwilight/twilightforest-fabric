@@ -22,19 +22,16 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.material.FluidState;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
-import twilightforest.init.TFLandmark;
 
 import java.util.Set;
 
 @Deprecated
 // We keep rehashing Vanillacopies and they'll keep breaking between ports, we should be adding TwilightFeature to the
 //  StructurePiece classes we actually use. This class will take quite a while to dismantle
-public abstract class TFStructureComponent extends StructurePiece implements LegacyLandmarkGetter {
+public abstract class TFStructureComponent extends StructurePiece {
 
 	public TFStructureDecorator deco = null;
 	public int spawnListIndex = 0;
-	@Deprecated // Serves no purpose
-	private TFLandmark feature = TFLandmark.NOTHING;
 	private static final Set<Block> BLOCKS_NEEDING_POSTPROCESSING = ImmutableSet.<Block>builder()
 			.add(Blocks.NETHER_BRICK_FENCE)
 			.add(Blocks.TORCH)
@@ -88,20 +85,8 @@ public abstract class TFStructureComponent extends StructurePiece implements Leg
 	}
 
 	@Deprecated // FIXME Boundingbox
-	public TFStructureComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
+	public TFStructureComponent(StructurePieceType type, int i, int x, int y, int z) {
 		this(type, i, new BoundingBox(x, y, z, x, y, z));
-		this.feature = feature;
-	}
-
-	@Deprecated
-	@Override
-	public TFLandmark getFeatureType() {
-		return feature;
-	}
-
-	@Override // Don't expect this to stay around
-	public void setFeature(TFLandmark type) {
-		this.feature = type;
 	}
 
 	protected static boolean shouldDebug() {

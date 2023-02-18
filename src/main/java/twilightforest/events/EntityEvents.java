@@ -12,12 +12,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -44,6 +40,7 @@ import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.WallSkullCandleBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.enchantment.ChillAuraEnchantment;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -52,6 +49,7 @@ import twilightforest.init.TFStats;
 import twilightforest.item.FieryArmorItem;
 import twilightforest.item.YetiArmorItem;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class EntityEvents {
@@ -73,12 +71,12 @@ public class EntityEvents {
 			int fireLevel = getGearCoverage(living, false) * 5;
 			int chillLevel = getGearCoverage(living, true);
 
-			if (fireLevel > 0 && living.getRandom().nextInt(25) < fireLevel) {
+			if (fireLevel > 0 && living.getRandom().nextInt(25) < fireLevel && !trueSource.fireImmune()) {
 				trueSource.setSecondsOnFire(fireLevel / 2);
 			}
 
-			if (chillLevel > 0 && trueSource instanceof LivingEntity target) {
-				target.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), chillLevel * 5 + 5, chillLevel));
+			if (trueSource instanceof LivingEntity target) {
+				ChillAuraEnchantment.doChillAuraEffect(target, chillLevel * 5 + 5, chillLevel, chillLevel > 0);
 			}
 		}
 
@@ -117,6 +115,22 @@ public class EntityEvents {
 			player.getInventory().placeItemBackInInventory(new ItemStack(Items.OAK_PLANKS, 64));
 			player.getInventory().placeItemBackInInventory(new ItemStack(Items.OAK_PLANKS, 64));
 			player.getInventory().placeItemBackInInventory(new ItemStack(Items.OAK_PLANKS, 64));
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLivingHurtEvent(LivingHurtEvent event) {
+		LivingEntity living = event.getEntity();
+		if (living != null) {
+			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.get())).ifPresent(mobEffectInstance -> {
+				if (event.getSource() == DamageSource.FREEZE) {
+					event.setAmount(event.getAmount() + (float)(mobEffectInstance.getAmplifier() / 2));
+				} else if (event.getSource().isFire()) {
+					living.removeEffect(TFMobEffects.FROSTY.get());
+					mobEffectInstance.amplifier -= 1;
+					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
+				}
+			});
 		}
 	}
 

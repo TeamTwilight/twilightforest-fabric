@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -23,8 +22,8 @@ public class MazeCorridorShroomsComponent extends MazeCorridorComponent {
 		super(TFStructurePieceTypes.TFMMCS.get(), nbt);
 	}
 
-	public MazeCorridorShroomsComponent(TFLandmark feature, int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMCS.get(), feature, i, x, y, z, rotation);
+	public MazeCorridorShroomsComponent(int i, int x, int y, int z, Direction rotation) {
+		super(TFStructurePieceTypes.TFMMCS.get(), i, x, y, z, rotation);
 	}
 
 	@Override

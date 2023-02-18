@@ -12,7 +12,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 
@@ -23,8 +22,8 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 		super(TFStructurePieceTypes.TFMMRV.get(), nbt);
 	}
 
-	public MazeRoomVaultComponent(TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMRV.get(), feature, i, rand, x, y, z);
+	public MazeRoomVaultComponent(int i, RandomSource rand, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFMMRV.get(), i, rand, x, y, z);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;

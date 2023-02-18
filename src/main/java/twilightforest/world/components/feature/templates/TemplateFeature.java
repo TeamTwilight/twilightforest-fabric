@@ -36,6 +36,7 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		WorldGenLevel world = ctx.level();
 		BlockPos pos = ctx.origin();
 		RandomSource random = world.getRandom();
+        T config = ctx.config();
 
 		StructureTemplateManager templateManager = world.getLevel().getServer().getStructureManager();
 		StructureTemplate template = this.getTemplate(templateManager, random);
@@ -65,7 +66,7 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
 
         StructurePlaceSettings placementSettings = (new StructurePlaceSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureMask).setRandom(random);
-        this.modifySettings(placementSettings.clearProcessors(), random);
+        this.modifySettings(placementSettings.clearProcessors(), random, config);
 
 		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
 
@@ -73,7 +74,7 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
             if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA)
                 this.processMarkers(info, world, rotation, mirror, random);
 
-        this.postPlacement(world, random, templateManager, rotation, mirror, placementSettings, placementPos);
+        this.postPlacement(world, random, templateManager, rotation, mirror, placementSettings, placementPos, config);
 
 		return true;
 	}
@@ -81,13 +82,13 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
     @Nullable
 	protected abstract StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random);
 
-	protected void modifySettings(StructurePlaceSettings settings, RandomSource random) {
+	protected void modifySettings(StructurePlaceSettings settings, RandomSource random, T config) {
     }
 
 	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
     }
 
-    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
+    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, T config) {
     }
 
     protected int yLevelOffset() {

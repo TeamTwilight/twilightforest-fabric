@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -23,8 +22,8 @@ public class StrongholdSmallHallwayComponent extends StructureTFStrongholdCompon
 		super(TFStructurePieceTypes.TFSSH.get(), nbt);
 	}
 
-	public StrongholdSmallHallwayComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSSH.get(), feature, i, facing, x, y, z);
+	public StrongholdSmallHallwayComponent(int i, Direction facing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSSH.get(), i, facing, x, y, z);
 	}
 
 	@Override

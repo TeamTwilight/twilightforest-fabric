@@ -24,12 +24,8 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.init.TFBlocks;
 
 import java.util.List;
-import java.util.UUID;
 
-public class GiantPickItem extends PickaxeItem {
-
-	public static final UUID GIANT_REACH_MODIFIER = UUID.fromString("7f10172d-de69-49d7-81bd-9594286a6827");
-	public static final UUID GIANT_RANGE_MODIFIER = UUID.fromString("cafc02ed-392f-4bf4-b745-42beff107ec4");
+public class GiantPickItem extends PickaxeItem implements GiantItem {
 
 	public GiantPickItem(Tier material, Properties properties) {
 		super(material, 8, -3.5F, properties);

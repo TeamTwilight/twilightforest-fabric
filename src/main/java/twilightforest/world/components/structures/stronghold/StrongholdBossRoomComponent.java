@@ -15,7 +15,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -25,8 +24,8 @@ public class StrongholdBossRoomComponent extends StructureTFStrongholdComponent 
 		super(TFStructurePieceTypes.TFSBR.get(), nbt);
 	}
 
-	public StrongholdBossRoomComponent(TFLandmark feature, int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSBR.get(), feature, i, facing, x, y, z);
+	public StrongholdBossRoomComponent(int i, Direction facing, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFSBR.get(), i, facing, x, y, z);
 		this.spawnListIndex = Integer.MAX_VALUE;
 	}
 

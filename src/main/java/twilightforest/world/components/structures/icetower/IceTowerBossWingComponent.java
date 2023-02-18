@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 
 
@@ -22,8 +21,8 @@ public class IceTowerBossWingComponent extends IceTowerWingComponent {
 		this.spawnListIndex = -1;
 	}
 
-	public IceTowerBossWingComponent(TFLandmark feature, int index, int x, int y, int z, int wingSize, int wingHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFITBoss.get(), feature, index, x, y, z, wingSize, wingHeight, direction);
+	public IceTowerBossWingComponent(int index, int x, int y, int z, int wingSize, int wingHeight, Direction direction) {
+		super(TFStructurePieceTypes.TFITBoss.get(), index, x, y, z, wingSize, wingHeight, direction);
 		// no spawns
 		this.spawnListIndex = -1;
 	}

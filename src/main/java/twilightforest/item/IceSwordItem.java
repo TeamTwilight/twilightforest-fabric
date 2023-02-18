@@ -2,7 +2,6 @@ package twilightforest.item;
 
 import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -10,7 +9,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import twilightforest.init.TFMobEffects;
+import twilightforest.enchantment.ChillAuraEnchantment;
 import twilightforest.init.TFParticleType;
 
 import java.util.Objects;
@@ -44,7 +43,7 @@ public class IceSwordItem extends SwordItem implements CustomEnchantingBehaviorI
 		boolean result = super.hurtEnemy(stack, target, attacker);
 
 		if (result) {
-			target.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 20 * 10, 2));
+			ChillAuraEnchantment.doChillAuraEffect(target, 200, 2, true);
 			for (int i = 0; i < 20; i++) {
 				((ServerLevel) target.getLevel()).sendParticles(TFParticleType.SNOW.get(), target.getX(), target.getY() + target.getBbHeight() * 0.5F, target.getZ(), 1, target.getBbWidth() * 0.5, target.getBbHeight() * 0.5, target.getBbWidth() * 0.5, 0);
 			}

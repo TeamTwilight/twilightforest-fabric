@@ -27,12 +27,12 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 		this.length = nbt.getInt("bridgeLength");
 	}
 
-	public IceTowerBridgeComponent(TFLandmark feature, int index, int x, int y, int z, int length, Direction direction) {
-		super(TFStructurePieceTypes.TFITBri.get(), feature, index, x, y, z);
+	public IceTowerBridgeComponent(int index, int x, int y, int z, int length, Direction direction) {
+		super(TFStructurePieceTypes.TFITBri.get(), index, x, y, z);
 		this.length = length;
 		this.setOrientation(direction);
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, 6, 5, direction);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, 6, 5, direction, false);
 	}
 
 	@Override

@@ -8,23 +8,21 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.StructureMode;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFLootTables;
-import twilightforest.world.components.processors.CobblePlankSwizzler;
+import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 
-import org.jetbrains.annotations.Nullable;
-
-public class SimpleWellFeature extends TemplateFeature<NoneFeatureConfiguration> {
+public class SimpleWellFeature extends TemplateFeature<SwizzleConfig> {
     private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/simple_well_top");
     private static final ResourceLocation WELL_BOTTOM = TwilightForestMod.prefix("feature/well/simple_well_bottom");
 
-    public SimpleWellFeature(Codec<NoneFeatureConfiguration> config) {
+    public SimpleWellFeature(Codec<SwizzleConfig> config) {
         super(config);
     }
 
@@ -40,12 +38,14 @@ public class SimpleWellFeature extends TemplateFeature<NoneFeatureConfiguration>
     }
 
     @Override
-    protected void modifySettings(StructurePlaceSettings settings, RandomSource random) {
-        settings.addProcessor(new CobblePlankSwizzler(random)).addProcessor(CobbleVariants.INSTANCE);
+    protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
+        config.buildAddProcessors(settings, random);
+
+        settings.addProcessor(CobbleVariants.INSTANCE);
     }
 
     @Override
-    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos) {
+    protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
         StructureTemplate template = templateManager.getOrCreate(WELL_BOTTOM);
 
         if (template == null) return;

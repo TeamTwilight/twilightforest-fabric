@@ -13,9 +13,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.loot.TFLootTables;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.loot.TFLootTables;
 
 
 public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
@@ -24,8 +23,8 @@ public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 		super(TFStructurePieceTypes.TFMMDETrC.get(), nbt);
 	}
 
-	public MazeDeadEndTrappedChestComponent(TFLandmark feature, int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMDETrC.get(), feature, i, x, y, z, rotation);
+	public MazeDeadEndTrappedChestComponent(int i, int x, int y, int z, Direction rotation) {
+		super(TFStructurePieceTypes.TFMMDETrC.get(), i, x, y, z, rotation);
 		this.setOrientation(rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns

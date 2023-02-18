@@ -32,8 +32,8 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 	private int dSize;
 	private int dHeight;
 
-	protected DarkTowerBridgeComponent(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(type, feature, i, x, y, z, 5, 5, direction);
+	protected DarkTowerBridgeComponent(StructurePieceType type, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(type, i, x, y, z, 5, 5, direction);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;
@@ -62,7 +62,7 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
 			return false;
 		}
 
-		TowerWingComponent wing = new DarkTowerWingComponent(TFStructurePieceTypes.TFDTWin.get(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		TowerWingComponent wing = new DarkTowerWingComponent(TFStructurePieceTypes.TFDTWin.get(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
@@ -101,6 +101,6 @@ public class DarkTowerBridgeComponent extends TowerWingComponent {
      */
 	public BoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(4, 1, 2, dSize, this.getOrientation());
-		return getFeatureType().getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getOrientation());
+		return TFLandmark.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getOrientation(), false);
 	}
 }

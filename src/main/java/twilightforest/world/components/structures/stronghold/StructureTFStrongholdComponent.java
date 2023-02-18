@@ -16,9 +16,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.material.Material;
-import twilightforest.TFConfig;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -34,8 +32,8 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 		this.readOpeningsFromArray(nbt.getIntArray("doorInts"));
 	}
 
-	public StructureTFStrongholdComponent(StructurePieceType type, TFLandmark feature, int i, Direction facing, int x, int y, int z) {
-		super(type, feature, i, x, y, z);
+	public StructureTFStrongholdComponent(StructurePieceType type, int i, Direction facing, int x, int y, int z) {
+		super(type, i, x, y, z);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setOrientation(facing);
 	}
@@ -118,7 +116,7 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 
 		StrongholdPieces pieceList = ((StrongholdEntranceComponent) entrance).lowerPieces;
 
-		StructurePiece nextComponent = pieceList.getNextComponent(entrance, list, random, getFeatureType(), index, nFacing, nx, ny, nz);
+		StructurePiece nextComponent = pieceList.getNextComponent(entrance, list, random, index, nFacing, nx, ny, nz);
 
 		// is it clear?
 		if (nextComponent != null) {
@@ -161,11 +159,11 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 
 		// find a new component
 		attempted = switch (random.nextInt(5)) {
-			case 1 -> new StrongholdUpperLeftTurnComponent(getFeatureType(), index, nFacing, nx, ny, nz);
-			case 2 -> new StrongholdUpperRightTurnComponent(getFeatureType(), index, nFacing, nx, ny, nz);
-			case 3 -> new StrongholdUpperCorridorComponent(getFeatureType(), index, nFacing, nx, ny, nz);
-			case 4 -> new StrongholdUpperAscenderComponent(getFeatureType(), index, nFacing, nx, ny, nz);
-			default -> new StrongholdUpperTIntersectionComponent(getFeatureType(), index, nFacing, nx, ny, nz);
+			case 1 -> new StrongholdUpperLeftTurnComponent(index, nFacing, nx, ny, nz);
+			case 2 -> new StrongholdUpperRightTurnComponent(index, nFacing, nx, ny, nz);
+			case 3 -> new StrongholdUpperCorridorComponent(index, nFacing, nx, ny, nz);
+			case 4 -> new StrongholdUpperAscenderComponent(index, nFacing, nx, ny, nz);
+			default -> new StrongholdUpperTIntersectionComponent(index, nFacing, nx, ny, nz);
 		};
 
 		// is it clear?
@@ -502,7 +500,6 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 	}
 
 	public interface Factory<T extends StructureTFStrongholdComponent> {
-
-		T newInstance(TFLandmark feature, int i, Direction facing, int x, int y, int z);
+		T newInstance(int i, Direction facing, int x, int y, int z);
 	}
 }

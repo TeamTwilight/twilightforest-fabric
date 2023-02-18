@@ -14,7 +14,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
@@ -29,8 +28,8 @@ public class YetiCaveComponent extends HollowHillComponent {
 		super(TFStructurePieceTypes.TFYeti.get(), nbt);
 	}
 
-	public YetiCaveComponent(TFLandmark feature, int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFYeti.get(), feature, i, 2, x, y, z);
+	public YetiCaveComponent(int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFYeti.get(), i, 2, x, y, z);
 	}
 
 	/**

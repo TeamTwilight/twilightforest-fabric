@@ -28,6 +28,7 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import twilightforest.world.components.structures.util.StructureHints;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class ProgressionEvents {
 			Optional<StructureStart> struct = TFGenerationSettings.locateTFStructureInRange((ServerLevel) level, pos, 0);
 			if (struct.isPresent()) {
 				StructureStart structure = struct.get();
-				if (structure.getBoundingBox().isInside(pos)) {
+				if (structure.getBoundingBox().isInside(pos) && structure instanceof StructureHints structureHints) {
 					// what feature is nearby?  is it one the player has not unlocked?
 					TFLandmark nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), (ServerLevel) level);
 
@@ -114,7 +115,7 @@ public class ProgressionEvents {
 						sendAreaProtectionPacket(level, pos, boxes);
 
 						// send a hint monster?
-						nearbyFeature.trySpawnHintMonster(level, player, pos);
+						structureHints.trySpawnHintMonster(level, player, pos);
 
 						return true;
 					}

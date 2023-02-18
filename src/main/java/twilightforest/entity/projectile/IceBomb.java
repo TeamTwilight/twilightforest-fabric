@@ -6,7 +6,6 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -17,11 +16,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.HitResult;
 import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.enchantment.ChillAuraEnchantment;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.entity.monster.Yeti;
 import twilightforest.init.TFDamageSources;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFMobEffects;
 
 import java.util.List;
 
@@ -144,7 +143,7 @@ public class IceBomb extends TFThrowable {
 				} else {
 					if (!entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
 						entity.hurt(TFDamageSources.frozen(this, (LivingEntity) this.getOwner()), entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5 : 1);
-						entity.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 20 * 5));
+						ChillAuraEnchantment.doChillAuraEffect(entity, 100, 0, true);
 					}
 				}
 			}

@@ -15,9 +15,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import twilightforest.init.TFBlocks;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 public class MazeRoomComponent extends TFStructureComponentOld {
 
@@ -29,8 +28,8 @@ public class MazeRoomComponent extends TFStructureComponentOld {
 		super(piece, nbt);
 	}
 
-	public MazeRoomComponent(StructurePieceType type, TFLandmark feature, int i, RandomSource rand, int x, int y, int z) {
-		super(type, feature, i, x, y, z);
+	public MazeRoomComponent(StructurePieceType type, int i, RandomSource rand, int x, int y, int z) {
+		super(type, i, x, y, z);
 		this.setOrientation(Direction.Plane.HORIZONTAL.getRandomDirection(rand));
 
 		this.boundingBox = new BoundingBox(x, y, z, x + 15, y + 4, z + 15);

@@ -12,9 +12,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class FinalCastleMuralComponent extends TFStructureComponentOld {
@@ -29,8 +28,8 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		super(TFStructurePieceTypes.TFFCMur.get(), nbt);
 	}
 
-	public FinalCastleMuralComponent(TFLandmark feature, int i, int x, int y, int z, int width, int height, Direction direction) {
-		super(TFStructurePieceTypes.TFFCMur.get(), feature, i, x, y, z);
+	public FinalCastleMuralComponent(int i, int x, int y, int z, int width, int height, Direction direction) {
+		super(TFStructurePieceTypes.TFFCMur.get(), i, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
 	}

@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
@@ -24,8 +23,8 @@ public class HydraLairComponent extends HollowHillComponent {
 		super(TFStructurePieceTypes.TFHydra.get(), nbt);
 	}
 
-	public HydraLairComponent(TFLandmark feature, int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFHydra.get(), feature, i, 2, x, y + 2, z);
+	public HydraLairComponent(int i, int x, int y, int z) {
+		super(TFStructurePieceTypes.TFHydra.get(), i, 2, x, y + 2, z);
 	}
 
 	@Override

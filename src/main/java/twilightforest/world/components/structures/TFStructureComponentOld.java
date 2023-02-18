@@ -24,12 +24,11 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.init.TFLandmark;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -46,14 +45,12 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	}
 
 	@Deprecated // Use Below
-	public TFStructureComponentOld(StructurePieceType type, TFLandmark feature, int i, int x, int y, int z) {
+	public TFStructureComponentOld(StructurePieceType type, int i, int x, int y, int z) {
 		super(type, i, new BoundingBox(x, y, z, x, y, z));
-		setFeature(feature);
 	}
 
-	public TFStructureComponentOld(StructurePieceType type, TFLandmark feature, int i, BoundingBox box) {
+	public TFStructureComponentOld(StructurePieceType type, int i, BoundingBox box) {
 		super(type, i, box);
-		setFeature(feature);
 	}
 
 	//Let's not use vanilla's weird rotation+mirror thing...

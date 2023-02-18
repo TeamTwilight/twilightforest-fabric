@@ -10,9 +10,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFBlocks;
-import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTower13Component {
@@ -21,8 +20,8 @@ public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTowe
 		super(TFStructurePieceTypes.TFFCEnBoTo.get(), nbt);
 	}
 
-	public FinalCastleEntranceBottomTowerComponent(TFLandmark feature, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
-		super(TFStructurePieceTypes.TFFCEnBoTo.get(), feature, i, x, y, z, floors, entranceFloor, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
+	public FinalCastleEntranceBottomTowerComponent(int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
+		super(TFStructurePieceTypes.TFFCEnBoTo.get(), i, x, y, z, floors, entranceFloor, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
 
     }
 
@@ -49,7 +48,7 @@ public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTowe
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dx = offsetTowerCCoords(x, y, z, 0, direction);
 
-		FinalCastleEntranceStairsComponent stairs = new FinalCastleEntranceStairsComponent(getFeatureType(), index, dx.getX(), dx.getY(), dx.getZ(), direction);
+		FinalCastleEntranceStairsComponent stairs = new FinalCastleEntranceStairsComponent(index, dx.getX(), dx.getY(), dx.getZ(), direction);
 
 		list.addPiece(stairs);
 		if (list instanceof StructurePiecesBuilder start) {

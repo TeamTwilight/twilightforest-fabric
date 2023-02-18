@@ -40,12 +40,12 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		this.openingTowards[3] = nbt.getBoolean("openingTowards3");
 	}
 
-	public TrollCaveConnectComponent(TFLandmark feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFTCCon.get(), feature, index, x, y, z);
+	public TrollCaveConnectComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
+		super(TFStructurePieceTypes.TFTCCon.get(), index, x, y, z);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
 	}
 
 	@Override
@@ -245,7 +245,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 
-		TrollCaveMainComponent cave = new TrollCaveGardenComponent(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
+		TrollCaveMainComponent cave = new TrollCaveGardenComponent(index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(cave.getBoundingBox());
 		StructurePiece otherGarden = findNearbyGarden(list, cave.getBoundingBox());

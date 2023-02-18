@@ -1,5 +1,6 @@
 package twilightforest.enchantment;
 
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -44,22 +45,25 @@ public class ChillAuraEnchantment extends LootOnlyEnchantment {
 
 	@Override
 	public void doPostHurt(LivingEntity user, Entity attacker, int level) {
-		RandomSource random = user.getRandom();
-		if (attacker != null && shouldHit(level, random)) {
-			if (attacker instanceof LivingEntity entity) {
-				if (!entity.getItemBySlot(EquipmentSlot.HEAD).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
-						!entity.getItemBySlot(EquipmentSlot.CHEST).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
-						!entity.getItemBySlot(EquipmentSlot.LEGS).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
-						!entity.getItemBySlot(EquipmentSlot.FEET).is(ItemTags.FREEZE_IMMUNE_WEARABLES)) {
-					if (entity instanceof Player player && !player.isCreative()) {
-						entity.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 200, level - 1));
-					}
+		if (attacker instanceof LivingEntity entity) {
+			doChillAuraEffect(entity, 200, level - 1, this.shouldHit(level, user.getRandom()));
+		}
+	}
+
+	public static void doChillAuraEffect(LivingEntity victim, int duration, int amplifier, boolean shouldHit) {
+		if (shouldHit && !victim.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
+			if (!victim.getItemBySlot(EquipmentSlot.HEAD).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
+					!victim.getItemBySlot(EquipmentSlot.CHEST).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
+					!victim.getItemBySlot(EquipmentSlot.LEGS).is(ItemTags.FREEZE_IMMUNE_WEARABLES) &&
+					!victim.getItemBySlot(EquipmentSlot.FEET).is(ItemTags.FREEZE_IMMUNE_WEARABLES)) {
+				if (!(victim instanceof Player player) || !player.isCreative()) {
+					victim.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), duration, amplifier));
 				}
 			}
 		}
 	}
 
-	public static boolean shouldHit(int level, RandomSource pRnd) {
+	private boolean shouldHit(int level, RandomSource pRnd) {
 		if (level <= 0) {
 			return false;
 		} else {

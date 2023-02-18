@@ -33,12 +33,12 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 		super(TFStructurePieceTypes.TFTCGard.get(), nbt);
 	}
 
-	public TrollCaveGardenComponent(TFLandmark feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFTCGard.get(), feature, index, x, y, z);
+	public TrollCaveGardenComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
+		super(TFStructurePieceTypes.TFTCGard.get(), index, x, y, z);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction, false);
 	}
 
 	@Override

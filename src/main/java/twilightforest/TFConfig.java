@@ -85,6 +85,14 @@ public class TFConfig {
 					translation(config + "disable_skull_candles").
 					comment("If true, disables the ability to make Skull Candles by right clicking a vanilla skull with a candle. Turn this on if you're having mod conflict issues for some reason.").
 					define("skull_candles", false);
+			defaultItemEnchants = builder.
+					translation(config + "default_item_enchantments").
+					worldRestart().
+					comment("""
+							If false, items that come enchanted when you craft them (such as ironwood or steeleaf gear) will not show this way in the creative inventory.
+							Please note that this doesnt affect the crafting recipes themselves, you will need a datapack to change those.
+							""").
+					define("default_item_enchantments", true);
 
 			builder.
 					comment("Settings for all things related to the uncrafting table.").
@@ -238,6 +246,7 @@ public class TFConfig {
 		public ForgeConfigSpec.IntValue maxPortalSize;
 		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
 		public ForgeConfigSpec.BooleanValue disableSkullCandles;
+		public ForgeConfigSpec.BooleanValue defaultItemEnchants;
 
 		public MagicTrees MAGIC_TREES = new MagicTrees();
 

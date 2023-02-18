@@ -36,10 +36,10 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 		this.dHeight = nbt.getInt("destHeight");
 	}
 
-	protected MushroomTowerBridgeComponent(StructurePieceType piece, TFLandmark feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
+	protected MushroomTowerBridgeComponent(StructurePieceType piece, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(piece, i, x, y, z, pSize, pHeight, direction);
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction, false);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;
@@ -69,7 +69,7 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 
 	public BoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(dSize - 1, 1, 1, dSize, this.getOrientation());
-		return getFeatureType().getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getOrientation());
+		return TFLandmark.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getOrientation(), false);
 	}
 
 	@Override
