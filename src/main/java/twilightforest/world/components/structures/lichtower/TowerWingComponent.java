@@ -1788,6 +1788,8 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			// get some random coordinates on the wall in the chunk
 			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
+			if (pCoords == null) continue;
+
 			// initialize a painting object
 			ResourceKey<PaintingVariant> art = getPaintingOfSize(rand, minSize);
 			Painting painting = new Painting(EntityType.PAINTING, world.getLevel());
@@ -1876,6 +1878,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	/**
 	 * This returns the real-world coordinates of a possible painting or torch spot on the specified wall of this tower.
 	 */
+	@Nullable
 	protected BlockPos getRandomWallSpot(RandomSource rand, int floorLevel, Direction direction, BoundingBox sbb) {
 		int minX = this.boundingBox.minX() + 2;
 		int maxX = this.boundingBox.maxX() - 2;

@@ -25,6 +25,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "canopy_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:canopy_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "canopy_bookshelf": {
       "conditions": {
         "items": [
@@ -55,6 +67,18 @@
           {
             "items": [
               "twilightforest:canopy_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "canopy_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:canopy_chest_boat"
             ]
           }
         ]
@@ -385,12 +409,36 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "darkwood_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:darkwood_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "darkwood_chest": {
       "conditions": {
         "items": [
           {
             "items": [
               "twilightforest:darkwood_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "darkwood_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:darkwood_chest_boat"
             ]
           }
         ]
@@ -493,48 +541,48 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_canopy_log_horizontal": {
+    "hollow_canopy_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_canopy_log_vertical"
+              "twilightforest:hollow_canopy_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_dark_log_horizontal": {
+    "hollow_dark_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_dark_log_vertical"
+              "twilightforest:hollow_dark_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_mangrove_log_horizontal": {
+    "hollow_mangrove_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_mangrove_log_vertical"
+              "twilightforest:hollow_mangrove_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_mining_log_horizontal": {
+    "hollow_mining_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_mining_log_vertical"
+              "twilightforest:hollow_mining_log"
             ]
           }
         ]
@@ -553,48 +601,48 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_sorting_log_horizontal": {
+    "hollow_sorting_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_sorting_log_vertical"
+              "twilightforest:hollow_sorting_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_time_log_horizontal": {
+    "hollow_time_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_time_log_vertical"
+              "twilightforest:hollow_time_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_transformation_log_horizontal": {
+    "hollow_transformation_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_transformation_log_vertical"
+              "twilightforest:hollow_transformation_log"
             ]
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "hollow_twilight_oak_log_horizontal": {
+    "hollow_twilight_oak_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "twilightforest:hollow_twilight_oak_log_vertical"
+              "twilightforest:hollow_twilight_oak_log"
             ]
           }
         ]
@@ -649,6 +697,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "mangrove_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mangrove_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "mangrove_button": {
       "conditions": {
         "items": [
@@ -667,6 +727,18 @@
           {
             "items": [
               "twilightforest:mangrove_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mangrove_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mangrove_chest_boat"
             ]
           }
         ]
@@ -853,6 +925,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "mining_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mining_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "mining_button": {
       "conditions": {
         "items": [
@@ -871,6 +955,18 @@
           {
             "items": [
               "twilightforest:mining_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mining_chest_boat"
             ]
           }
         ]
@@ -1105,6 +1201,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "sorting_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:sorting_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "sorting_button": {
       "conditions": {
         "items": [
@@ -1123,6 +1231,18 @@
           {
             "items": [
               "twilightforest:sorting_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:sorting_chest_boat"
             ]
           }
         ]
@@ -1513,6 +1633,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "time_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "time_button": {
       "conditions": {
         "items": [
@@ -1531,6 +1663,18 @@
           {
             "items": [
               "twilightforest:time_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "time_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_chest_boat"
             ]
           }
         ]
@@ -1717,6 +1861,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "transformation_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:transformation_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "transformation_button": {
       "conditions": {
         "items": [
@@ -1735,6 +1891,18 @@
           {
             "items": [
               "twilightforest:transformation_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transformation_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:transformation_chest_boat"
             ]
           }
         ]
@@ -1909,6 +2077,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "twilight_oak_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:twilight_oak_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "twilight_oak_button": {
       "conditions": {
         "items": [
@@ -1927,6 +2107,18 @@
           {
             "items": [
               "twilightforest:twilight_oak_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "twilight_oak_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:twilight_oak_chest_boat"
             ]
           }
         ]
@@ -2119,7 +2311,7 @@
       "stripped_twilight_oak_wood"
     ],
     [
-      "hollow_twilight_oak_log_horizontal"
+      "hollow_twilight_oak_log"
     ],
     [
       "twilight_oak_leaves"
@@ -2164,6 +2356,12 @@
       "twilight_oak_banister"
     ],
     [
+      "twilight_oak_boat"
+    ],
+    [
+      "twilight_oak_chest_boat"
+    ],
+    [
       "canopy_log"
     ],
     [
@@ -2176,7 +2374,7 @@
       "stripped_canopy_wood"
     ],
     [
-      "hollow_canopy_log_horizontal"
+      "hollow_canopy_log"
     ],
     [
       "canopy_leaves"
@@ -2227,6 +2425,12 @@
       "empty_canopy_bookshelf"
     ],
     [
+      "canopy_boat"
+    ],
+    [
+      "canopy_chest_boat"
+    ],
+    [
       "mangrove_log"
     ],
     [
@@ -2239,7 +2443,7 @@
       "stripped_mangrove_wood"
     ],
     [
-      "hollow_mangrove_log_horizontal"
+      "hollow_mangrove_log"
     ],
     [
       "mangrove_leaves"
@@ -2284,6 +2488,12 @@
       "mangrove_banister"
     ],
     [
+      "mangrove_boat"
+    ],
+    [
+      "mangrove_chest_boat"
+    ],
+    [
       "dark_log"
     ],
     [
@@ -2296,7 +2506,7 @@
       "stripped_dark_wood"
     ],
     [
-      "hollow_dark_log_horizontal"
+      "hollow_dark_log"
     ],
     [
       "dark_leaves"
@@ -2341,6 +2551,12 @@
       "darkwood_banister"
     ],
     [
+      "darkwood_boat"
+    ],
+    [
+      "darkwood_chest_boat"
+    ],
+    [
       "time_log"
     ],
     [
@@ -2353,7 +2569,7 @@
       "stripped_time_wood"
     ],
     [
-      "hollow_time_log_horizontal"
+      "hollow_time_log"
     ],
     [
       "time_leaves"
@@ -2398,6 +2614,12 @@
       "time_banister"
     ],
     [
+      "time_boat"
+    ],
+    [
+      "time_chest_boat"
+    ],
+    [
       "transformation_log"
     ],
     [
@@ -2410,7 +2632,7 @@
       "stripped_transformation_wood"
     ],
     [
-      "hollow_transformation_log_horizontal"
+      "hollow_transformation_log"
     ],
     [
       "transformation_leaves"
@@ -2455,6 +2677,12 @@
       "transformation_banister"
     ],
     [
+      "transformation_boat"
+    ],
+    [
+      "transformation_chest_boat"
+    ],
+    [
       "mining_log"
     ],
     [
@@ -2467,7 +2695,7 @@
       "stripped_mining_wood"
     ],
     [
-      "hollow_mining_log_horizontal"
+      "hollow_mining_log"
     ],
     [
       "mining_leaves"
@@ -2512,6 +2740,12 @@
       "mining_banister"
     ],
     [
+      "mining_boat"
+    ],
+    [
+      "mining_chest_boat"
+    ],
+    [
       "sorting_log"
     ],
     [
@@ -2524,7 +2758,7 @@
       "stripped_sorting_wood"
     ],
     [
-      "hollow_sorting_log_horizontal"
+      "hollow_sorting_log"
     ],
     [
       "sorting_leaves"
@@ -2569,6 +2803,12 @@
       "sorting_banister"
     ],
     [
+      "sorting_boat"
+    ],
+    [
+      "sorting_chest_boat"
+    ],
+    [
       "towerwood"
     ],
     [
@@ -2588,6 +2828,9 @@
     ],
     [
       "liveroot_block"
+    ],
+    [
+      "liveroot"
     ],
     [
       "hollow_oak_sapling"
@@ -2624,9 +2867,6 @@
     ],
     [
       "mangrove_root"
-    ],
-    [
-      "liveroot"
     ]
   ],
   "rewards": {
