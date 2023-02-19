@@ -1,6 +1,7 @@
 package twilightforest.init.custom;
 
 import com.mojang.serialization.Codec;
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -8,7 +9,6 @@ import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.WoodPalette;
@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class WoodPalettes {
 	public static final ResourceKey<Registry<WoodPalette>> WOOD_PALETTE_TYPE_KEY = ResourceKey.createRegistryKey(TwilightForestMod.namedRegistry("wood_palettes"));
-	public static final DeferredRegister<WoodPalette> WOOD_PALETTES = DeferredRegister.create(WOOD_PALETTE_TYPE_KEY, TwilightForestMod.ID);
+	public static final LazyRegistrar<WoodPalette> WOOD_PALETTES = LazyRegistrar.create(WOOD_PALETTE_TYPE_KEY, TwilightForestMod.ID);
 	public static final Codec<Holder<WoodPalette>> CODEC = RegistryFileCodec.create(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC, false);
 
 	public static final ResourceKey<WoodPalette> OAK = makeKey(new ResourceLocation("oak"));

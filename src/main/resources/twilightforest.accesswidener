@@ -142,3 +142,5 @@ accessible method net/minecraft/server/level/ServerLevel findLightningTargetArou
 accessible method net/minecraft/core/Holder$Reference bindKey (Lnet/minecraft/resources/ResourceKey;)V
 accessible method net/minecraft/world/level/chunk/ChunkGenerator tryGenerateStructure (Lnet/minecraft/world/level/levelgen/structure/StructureSet$StructureSelectionEntry;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/core/RegistryAccess;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplateManager;JLnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/core/SectionPos;)Z
 accessible field net/minecraft/client/renderer/block/model/BlockModel textureMap Ljava/util/Map;
+
+accessible field net/minecraft/world/effect/MobEffectInstance amplifier I

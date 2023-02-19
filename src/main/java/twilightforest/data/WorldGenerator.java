@@ -1,12 +1,15 @@
 package twilightforest.data;
 
 import io.github.fabricators_of_create.porting_lib.data.DatapackBuiltinEntriesProvider;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.*;
@@ -30,15 +33,15 @@ public class WorldGenerator extends DatapackBuiltinEntriesProvider {
 			.add(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalettes::bootstrap);
 
 	// Use addProviders() instead
-	private WorldGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+	private WorldGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, provider, BUILDER, Set.of("minecraft", TwilightForestMod.ID));
 	}
 
-	public static void addProviders(boolean isServer, DataGenerator generator, PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper helper) {
-		generator.addProvider(isServer, new WorldGenerator(output, provider));
+	public static void addProviders(FabricDataGenerator.Pack generator, @Nullable ExistingFileHelper helper) {
+		generator.addProvider(WorldGenerator::new);
 		// This is needed here because Minecraft Forge doesn't properly support tagging custom registries, without problems.
 		// If you think this looks fixable, please ensure the fixes are tested in runData & runClient as these current issues exist entirely within Forge's internals.
-		generator.addProvider(isServer, new CustomTagGenerator.WoodPaletteTagGenerator(output, provider.thenApply(r -> append(r, BUILDER)), helper));
+		generator.addProvider((output, provider) -> new CustomTagGenerator.WoodPaletteTagGenerator(output, provider.thenApply(r -> append(r, BUILDER)), helper));
 	}
 
 	private static HolderLookup.Provider append(HolderLookup.Provider original, RegistrySetBuilder builder) {

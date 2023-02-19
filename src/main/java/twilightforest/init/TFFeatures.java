@@ -7,10 +7,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.feature.*;
-import twilightforest.world.components.feature.config.HollowLogConfig;
-import twilightforest.world.components.feature.config.RootConfig;
-import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
-import twilightforest.world.components.feature.config.ThornsConfig;
+import twilightforest.world.components.feature.config.*;
 import twilightforest.world.components.feature.templates.*;
 import twilightforest.world.components.feature.trees.*;
 

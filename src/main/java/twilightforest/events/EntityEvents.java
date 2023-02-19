@@ -3,6 +3,7 @@ package twilightforest.events;
 import com.mojang.authlib.GameProfile;
 import io.github.fabricators_of_create.porting_lib.event.common.ItemCraftedCallback;
 import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
+import io.github.fabricators_of_create.porting_lib.event.common.ProjectileImpactCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.loader.api.FabricLoader;
@@ -12,6 +13,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -33,6 +37,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.block.AbstractLightableBlock;
 import twilightforest.block.AbstractSkullCandleBlock;
@@ -51,6 +56,7 @@ import twilightforest.item.YetiArmorItem;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class EntityEvents {
 
@@ -61,6 +67,8 @@ public class EntityEvents {
 		LivingEntityEvents.HURT.register(EntityEvents::entityHurts);
 		UseBlockCallback.EVENT.register(EntityEvents::createSkullCandle);
 		PlayerBlockBreakEvents.BEFORE.register(EntityEvents::onCasketBreak);
+		LivingEntityEvents.HURT.register(EntityEvents::onLivingHurtEvent);
+		ProjectileImpactCallback.EVENT.register(EntityEvents::onParryProjectile);
 	}
 
 	public static float entityHurts(DamageSource source, LivingEntity living, float amount) {
@@ -118,20 +126,20 @@ public class EntityEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onLivingHurtEvent(LivingHurtEvent event) {
-		LivingEntity living = event.getEntity();
+	public static float onLivingHurtEvent(DamageSource source, @Nullable LivingEntity living, float amount) {
+		AtomicReference<Float> netAmount = new AtomicReference<>(amount);
 		if (living != null) {
 			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.get())).ifPresent(mobEffectInstance -> {
-				if (event.getSource() == DamageSource.FREEZE) {
-					event.setAmount(event.getAmount() + (float)(mobEffectInstance.getAmplifier() / 2));
-				} else if (event.getSource().isFire()) {
+				if (source == DamageSource.FREEZE) {
+					netAmount.set(amount + (float)(mobEffectInstance.getAmplifier() / 2));
+				} else if (source.isFire()) {
 					living.removeEffect(TFMobEffects.FROSTY.get());
 					mobEffectInstance.amplifier -= 1;
 					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
 				}
 			});
 		}
+		return netAmount.get();
 	}
 
 	// Parrying

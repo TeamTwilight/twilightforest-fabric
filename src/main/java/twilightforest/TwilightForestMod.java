@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.mojang.brigadier.CommandDispatcher;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
+import io.github.fabricators_of_create.porting_lib.registries.RegistryEvents;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
@@ -20,6 +21,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Rarity;
@@ -113,7 +115,7 @@ public class TwilightForestMod implements ModInitializer {
 
 		DwarfRabbitVariant.DWARF_RABBITS.register();
 		TinyBirdVariant.TINY_BIRDS.register();
-		WoodPalettes.WOOD_PALETTES.register(modbus);
+		WoodPalettes.WOOD_PALETTES.register();
 
 		TFStructures.register();
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
@@ -148,12 +150,11 @@ public class TwilightForestMod implements ModInitializer {
 		ToolEvents.init();
 
 		ModConfigEvents.reloading(ID).register(TFConfig::onConfigReload);
-
+		RegistryEvents.NEW_DATAPACK_REGISTRY.register(TwilightForestMod::setRegistriesForDatapack);
 	}
 
-	@SubscribeEvent
-	public static void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
-		event.dataPackRegistry(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC);
+	public static void setRegistriesForDatapack(RegistryEvents.NewDatapackRegistry event) {
+		event.register(new RegistryDataLoader.RegistryData<>(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC));
 	}
 
 	public static void addClassicPack() {
