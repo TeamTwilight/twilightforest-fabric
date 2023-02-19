@@ -1,5 +1,5 @@
 {
-  "type": "twilightforest:legacy_landmark",
+  "type": "twilightforest:aurora_palace",
   "adjust_structure_elevation": false,
   "advancements_required": [
     "twilightforest:progress_yeti"
@@ -45,7 +45,6 @@
       }
     ]
   },
-  "legacy_landmark_start": "ice_tower",
   "spawn_overrides": {},
   "step": "surface_structures",
   "water_spawns": []

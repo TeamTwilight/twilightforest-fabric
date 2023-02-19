@@ -1,13 +1,11 @@
 package twilightforest.init;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +17,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.*;
 import twilightforest.world.components.structures.courtyard.CourtyardMain;
 import twilightforest.world.components.structures.darktower.DarkTowerMainComponent;
@@ -30,14 +27,13 @@ import twilightforest.world.components.structures.minotaurmaze.MazeRuinsComponen
 import twilightforest.world.components.structures.mushroomtower.MushroomTowerMainComponent;
 import twilightforest.world.components.structures.stronghold.StrongholdEntranceComponent;
 import twilightforest.world.components.structures.trollcave.TrollCaveMainComponent;
-import twilightforest.world.components.structures.util.AdvancementLockedStructure;
 import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.DecorationClearance;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TFLandmark implements AdvancementLockedStructure, DecorationClearance, ControlledSpawns {
+public class TFLandmark implements DecorationClearance, ControlledSpawns {
 	public static final TFLandmark NOTHING = new TFLandmark( 0, "no_feature") { { this.enableDecorations().disableStructure(); } };
 	public static final TFLandmark SMALL_HILL = new TFLandmark( 1, "small_hollow_hill", true) {
 		{
@@ -136,7 +132,7 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 			return new CourtyardMain(rand, 0, x + 1, chunkGenerator.getSeaLevel() + 5, z + 1, structureManager);
 		}
 	};
-	public static final TFLandmark LICH_TOWER = new TFLandmark( 1, "lich_tower", TwilightForestMod.prefix("progress_naga") ) {
+	public static final TFLandmark LICH_TOWER = new TFLandmark( 1, "lich_tower" ) {
 		{
 			this.addMonster(EntityType.ZOMBIE, 10, 1, 2)
 					.addMonster(EntityType.SKELETON, 10, 1, 2)
@@ -153,7 +149,7 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 			return new TowerMainComponent(rand, 0, x, y, z);
 		}
 	};
-	public static final TFLandmark HYDRA_LAIR = new TFLandmark( 2, "hydra_lair"    , true, TwilightForestMod.prefix("progress_labyrinth") ) {
+	public static final TFLandmark HYDRA_LAIR = new TFLandmark( 2, "hydra_lair" ) {
 		{
 			this.enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
@@ -164,7 +160,7 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 			return new HydraLairComponent(0, x - 7, y, z - 7);
 		}
 	};
-	public static final TFLandmark LABYRINTH = new TFLandmark( 3, "labyrinth", TwilightForestMod.prefix("progress_lich") ) {
+	public static final TFLandmark LABYRINTH = new TFLandmark( 3, "labyrinth" ) {
 		{
 			this.enableDecorations();
 			this.undergroundDecoAllowed = false;
@@ -185,7 +181,7 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 		}
 
 	};
-	public static final TFLandmark DARK_TOWER = new TFLandmark( 1, "dark_tower", TwilightForestMod.prefix("progress_knights") ) {
+	public static final TFLandmark DARK_TOWER = new TFLandmark( 1, "dark_tower" ) {
 		{
 			this.addMonster(TFEntities.CARMINITE_GOLEM.get(), 10, 1, 2)
 					.addMonster(EntityType.SKELETON, 10, 1, 2)
@@ -208,7 +204,7 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 			return new DarkTowerMainComponent(rand, 0, x, y, z);
 		}
 	};
-	public static final TFLandmark KNIGHT_STRONGHOLD = new TFLandmark( 3, "knight_stronghold", TwilightForestMod.prefix("progress_trophy_pedestal") ) {
+	public static final TFLandmark KNIGHT_STRONGHOLD = new TFLandmark( 3, "knight_stronghold" ) {
 		{
 			this.enableDecorations().disableProtectionAura();
 			this.undergroundDecoAllowed = false;
@@ -229,7 +225,7 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 		}
 
 	};
-	public static final TFLandmark YETI_CAVE = new TFLandmark( 2, "yeti_lairs", true, TwilightForestMod.prefix("progress_lich") ) {
+	public static final TFLandmark YETI_CAVE = new TFLandmark( 2, "yeti_lairs" ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 			this.undergroundDecoAllowed = false;
@@ -242,7 +238,7 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 			return new YetiCaveComponent(0, x, y, z);
 		}
 	};
-	public static final TFLandmark ICE_TOWER = new TFLandmark( 2, "ice_tower", TwilightForestMod.prefix("progress_yeti") ) {
+	public static final TFLandmark ICE_TOWER = new TFLandmark( 2, "ice_tower" ) {
 		{
 			this.addMonster(TFEntities.SNOW_GUARDIAN.get(), 10, 1, 2)
 					.addMonster(TFEntities.STABLE_ICE_CORE.get(), 10, 1, 2)
@@ -255,7 +251,7 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 		}
 	};
 	// TODO split cloud giants from this
-	public static final TFLandmark TROLL_CAVE = new TFLandmark( 4, "troll_lairs", TwilightForestMod.prefix("progress_merge") ) {
+	public static final TFLandmark TROLL_CAVE = new TFLandmark( 4, "troll_lairs" ) {
 		{
 			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
 
@@ -273,7 +269,7 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 			return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.get(), 0, x, y, z);
 		}
 	};
-	public static final TFLandmark FINAL_CASTLE = new TFLandmark( 4, "final_castle", TwilightForestMod.prefix("progress_troll") ) {
+	public static final TFLandmark FINAL_CASTLE = new TFLandmark( 4, "final_castle" ) {
 //		{
 //			// plain parts of the castle, like the tower maze
 //			this.addMonster(TFEntities.KOBOLD.get(), 10, 1, 2)
@@ -321,7 +317,6 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 	protected boolean undergroundDecoAllowed = true;
 	public boolean isStructureEnabled = true;
 	public boolean requiresTerraforming = false; // TODO Terraforming Type? Envelopment vs Flattening maybe?
-	private final ImmutableList<ResourceLocation> requiredAdvancements;
 	public boolean hasProtectionAura = true;
 	protected boolean adjustToTerrainHeight = false;
 
@@ -331,17 +326,13 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 	private final List<MobSpawnSettings.SpawnerData> ambientCreatureList = new ArrayList<>();
 	private final List<MobSpawnSettings.SpawnerData> waterCreatureList = new ArrayList<>();
 
-	private long lastSpawnedHintMonsterTime;
-
-	private TFLandmark(int size, String name, ResourceLocation... requiredAdvancements) {
-		this(size, name, false, requiredAdvancements);
+	private TFLandmark(int size, String name) {
+		this(size, name, false);
 	}
 
-	private TFLandmark(int size, String name, boolean centerBounds, ResourceLocation... requiredAdvancements) {
+	private TFLandmark(int size, String name, boolean centerBounds) {
 		this.size = size;
 		this.name = name;
-
-		this.requiredAdvancements = ImmutableList.copyOf(requiredAdvancements);
 
 		this.centerBounds = centerBounds;
 
@@ -474,11 +465,6 @@ public class TFLandmark implements AdvancementLockedStructure, DecorationClearan
 
 	public List<List<MobSpawnSettings.SpawnerData>> getSpawnableMonsterLists() {
 		return this.spawnableMonsterLists;
-	}
-
-	@Override
-	public List<ResourceLocation> getRequiredAdvancements() {
-		return this.requiredAdvancements;
 	}
 
 	@Deprecated // TODO Deleting this method will break maps - best to wait until new MC version before committing to it.

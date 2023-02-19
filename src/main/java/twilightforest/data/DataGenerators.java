@@ -34,6 +34,7 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		pack.addProvider(CraftingGenerator::new);
 		pack.addProvider(LootModifierGenerator::new);
 		WorldGenerator.addProviders(pack, helper);
+		generator.addProvider(event.includeServer(), new StructureTagGenerator(output, provider, helper));
 
 		pack.addProvider((output, provider) -> new CrumbleHornGenerator(output, helper));
 		pack.addProvider((output, provider) -> new TransformationPowderGenerator(output, helper));

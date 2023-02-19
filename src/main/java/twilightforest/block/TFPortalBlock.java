@@ -6,7 +6,6 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -48,6 +47,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
@@ -110,7 +110,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			if (recursivelyValidatePortal(level, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
 
 				if (TFConfig.COMMON_CONFIG.checkPortalDestination.get()) {
-					boolean checkProgression = TFGenerationSettings.isProgressionEnforced(catalyst.level);
+					boolean checkProgression = LandmarkUtil.isProgressionEnforced(catalyst.level);
 					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {

@@ -5,7 +5,7 @@ import io.github.fabricators_of_create.porting_lib.extensions.extensions.ITelepo
 import me.alphamode.forgetags.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
@@ -31,16 +32,12 @@ import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.item.MagicMapItem;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
-import twilightforest.util.WorldUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -245,7 +242,7 @@ public class TFTeleporter implements ITeleporter {
 
 	private static PortalInfo moveToSafeCoords(ServerLevel world, Entity entity, BlockPos pos) {
 		// if we're in enforced progression mode, check the biomes for safety
-		boolean checkProgression = TFGenerationSettings.isProgressionEnforced(world);
+		boolean checkProgression = LandmarkUtil.isProgressionEnforced(world);
 
 		if (isSafeAround(world, pos, entity, checkProgression)) {
 			TwilightForestMod.LOGGER.debug("Portal destination looks safe!");
@@ -322,10 +319,11 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean checkStructure(Level world, BlockPos pos) {
-		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
-		if (generator != null)
-			return TFGenerationSettings.locateTFStructureInRange((ServerLevel) world, pos, 0).isEmpty() && !LegacyLandmarkPlacements.blockNearLandmarkCenter(pos.getX(), pos.getZ(), 5);
-		return true;
+		boolean outsideLandmarkRange = !LegacyLandmarkPlacements.blockNearLandmarkCenter(pos.getX(), pos.getZ(), 5);
+		if (!outsideLandmarkRange) return false;
+
+		Optional<StructureStart> possibleNearLandmark = LandmarkUtil.locateNearestLandmarkStart(world, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+		return possibleNearLandmark.isEmpty() || possibleNearLandmark.get().getBoundingBox().isInside(pos);
 	}
 
 	private static boolean checkBiome(Level world, BlockPos pos, Entity entity) {

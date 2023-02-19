@@ -41,15 +41,15 @@ public class TFStructures {
 		context.register(HOLLOW_HILL_MEDIUM, HollowHillStructure.buildMediumHillConfig(context));
 		context.register(HOLLOW_HILL_LARGE, HollowHillStructure.buildLargeHillConfig(context));
 		context.register(NAGA_COURTYARD, NagaCourtyardStructure.buildStructureConfig(context));
-		context.register(LICH_TOWER, LegacyStructure.buildLichTowerConfig(context));
-		context.register(LABYRINTH, LegacyStructure.buildLabyrinthConfig(context));
-		context.register(HYDRA_LAIR, LegacyStructure.buildHydraLairConfig(context));
-		context.register(KNIGHT_STRONGHOLD, LegacyStructure.buildKnightStrongholdConfig(context));
-		context.register(DARK_TOWER, LegacyStructure.buildDarkTowerConfig(context));
-		context.register(YETI_CAVE, LegacyStructure.buildYetiCaveConfig(context));
-		context.register(AURORA_PALACE, LegacyStructure.buildAuroraPalaceConfig(context));
-		context.register(TROLL_CAVE, LegacyStructure.buildTrollCaveConfig(context));
-		context.register(FINAL_CASTLE, LegacyStructure.buildFinalCastleConfig(context));
+		context.register(LICH_TOWER, LichTowerStructure.buildLichTowerConfig(context));
+		context.register(LABYRINTH, LabyrinthStructure.buildLabyrinthConfig(context));
+		context.register(HYDRA_LAIR, HydraLairStructure.buildHydraLairConfig(context));
+		context.register(KNIGHT_STRONGHOLD, KnightStrongholdStructure.buildKnightStrongholdConfig(context));
+		context.register(DARK_TOWER, DarkTowerStructure.buildDarkTowerConfig(context));
+		context.register(YETI_CAVE, YetiCaveStructure.buildYetiCaveConfig(context));
+		context.register(AURORA_PALACE, AuroraPalaceStructure.buildAuroraPalaceConfig(context));
+		context.register(TROLL_CAVE, TrollCaveStructure.buildTrollCaveConfig(context));
+		context.register(FINAL_CASTLE, FinalCastleStructure.buildFinalCastleConfig(context));
 	}
 
 	public static void register() {}

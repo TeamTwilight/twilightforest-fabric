@@ -1,5 +1,5 @@
 {
-  "type": "twilightforest:legacy_landmark",
+  "type": "twilightforest:troll_cave",
   "adjust_structure_elevation": false,
   "advancements_required": [
     "twilightforest:progress_merge"
@@ -65,7 +65,6 @@
       }
     ]
   },
-  "legacy_landmark_start": "troll_lairs",
   "spawn_overrides": {},
   "step": "underground_structures",
   "terrain_adaptation": "bury",

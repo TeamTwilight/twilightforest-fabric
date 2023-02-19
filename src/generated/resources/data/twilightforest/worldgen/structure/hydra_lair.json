@@ -1,12 +1,11 @@
 {
-  "type": "twilightforest:legacy_landmark",
+  "type": "twilightforest:hydra_lair",
   "adjust_structure_elevation": false,
   "advancements_required": [
     "twilightforest:progress_labyrinth"
   ],
   "allow_biome_surface_decorations": false,
   "allow_biome_underground_decorations": false,
-  "ambient_spawns": [],
   "biomes": "#twilightforest:valid_hydra_lair_biomes",
   "hint_item": {
     "Count": 1,
@@ -24,9 +23,6 @@
     }
   },
   "hint_mob": "twilightforest:kobold",
-  "labelled_monster_spawns": {},
-  "legacy_landmark_start": "hydra_lair",
   "spawn_overrides": {},
-  "step": "surface_structures",
-  "water_spawns": []
+  "step": "surface_structures"
 }

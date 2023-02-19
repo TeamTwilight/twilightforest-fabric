@@ -1,5 +1,5 @@
 {
-  "type": "twilightforest:legacy_landmark",
+  "type": "twilightforest:knight_stronghold",
   "adjust_structure_elevation": false,
   "advancements_required": [
     "twilightforest:progress_trophy_pedestal"
@@ -77,7 +77,6 @@
       }
     ]
   },
-  "legacy_landmark_start": "knight_stronghold",
   "spawn_overrides": {},
   "step": "underground_structures",
   "terrain_adaptation": "bury",

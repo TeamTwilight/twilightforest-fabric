@@ -1,5 +1,5 @@
 {
-  "type": "twilightforest:legacy_landmark",
+  "type": "twilightforest:yeti_cave",
   "adjust_structure_elevation": false,
   "advancements_required": [
     "twilightforest:progress_lich"
@@ -33,7 +33,6 @@
       }
     ]
   },
-  "legacy_landmark_start": "yeti_lairs",
   "spawn_overrides": {},
   "step": "surface_structures",
   "terrain_adaptation": "bury",

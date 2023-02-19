@@ -1,5 +1,5 @@
 {
-  "type": "twilightforest:legacy_landmark",
+  "type": "twilightforest:lich_tower",
   "adjust_structure_elevation": true,
   "advancements_required": [
     "twilightforest:progress_naga"
@@ -64,7 +64,6 @@
       }
     ]
   },
-  "legacy_landmark_start": "lich_tower",
   "spawn_overrides": {},
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin",

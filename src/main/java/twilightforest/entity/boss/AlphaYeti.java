@@ -45,8 +45,8 @@ import twilightforest.entity.projectile.IceBomb;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -368,7 +368,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 		super.die(cause);
 		// mark the lair as defeated
 		if (!this.getLevel().isClientSide()) {
-			TFGenerationSettings.markStructureConquered(this.getLevel(), new BlockPos(this.blockPosition()), TFLandmark.YETI_CAVE);
+			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.YETI_CAVE, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

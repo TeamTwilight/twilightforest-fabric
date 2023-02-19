@@ -37,6 +37,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.Random;
@@ -84,7 +85,7 @@ public class TFWeatherRenderer {
 		// do normal weather rendering
 		renderNormalWeather(lightmap, level, partialTicks, camX, camY, camZ, Math.max(urGhastRain, level.getRainLevel(partialTicks)));
 
-		if (TFGenerationSettings.isProgressionEnforced(level) && mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator()) {
+		if (LandmarkUtil.isProgressionEnforced(level) && mc.player != null && !mc.player.isCreative() && !mc.player.isSpectator()) {
 			// locked biome weather effects
 			renderLockedBiome(partialTicks, level, mc, lightmap, mc.player, camX, camY, camZ);
 

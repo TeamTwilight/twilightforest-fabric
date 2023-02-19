@@ -34,7 +34,7 @@ import twilightforest.entity.projectile.UrGhastFireball;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.util.LandmarkUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -512,7 +512,7 @@ public class UrGhast extends CarminiteGhastguard {
 		super.die(cause);
 		// mark the tower as defeated
 		if (!this.getLevel().isClientSide()) {
-			TFGenerationSettings.markStructureConquered(this.getLevel(), this.findChestCoords(), TFLandmark.DARK_TOWER);
+			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.DARK_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

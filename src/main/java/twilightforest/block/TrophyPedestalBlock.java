@@ -29,8 +29,8 @@ import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -94,7 +94,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 		level.updateNeighbourForOutputSignal(pos, this);
 		if (level.isClientSide() || state.getValue(ACTIVE) || !isTrophyOnTop(level, pos)) return;
 
-		if (TFGenerationSettings.isProgressionEnforced(level)) {
+		if (LandmarkUtil.isProgressionEnforced(level)) {
 			if (this.areNearbyPlayersEligible(level, pos)) {
 				this.doPedestalEffect(level, pos, state);
 			}

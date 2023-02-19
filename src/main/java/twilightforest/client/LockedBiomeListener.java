@@ -10,6 +10,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.world.registration.TFGenerationSettings;
 
 public class LockedBiomeListener {
@@ -24,7 +25,7 @@ public class LockedBiomeListener {
 
 		//attempt to send a biome locked toast if our player is in a locked biome, only every 5 ticks
 		if(world.isClientSide && player.tickCount % 5 == 0
-				&& TFGenerationSettings.isProgressionEnforced(world)
+				&& LandmarkUtil.isProgressionEnforced(world)
 				&& !player.isCreative() && !player.isSpectator() && !TFConfig.CLIENT_CONFIG.disableLockedBiomeToasts.get()) {
 			if (!TFGenerationSettings.isBiomeSafeFor(world.getBiome(player.blockPosition()).value(), player)) {
 				timeUntilToast--;

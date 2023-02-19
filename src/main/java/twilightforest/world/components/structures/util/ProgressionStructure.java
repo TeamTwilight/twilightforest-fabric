@@ -21,8 +21,8 @@ public abstract class ProgressionStructure extends LandmarkStructure implements 
         ).and(landmarkCodec(instance));
     }
 
-    final AdvancementLockConfig advancementLockConfig;
-    final HintConfig hintConfig;
+    protected final AdvancementLockConfig advancementLockConfig;
+    protected final HintConfig hintConfig;
 
     public ProgressionStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
         super(decorationConfig, structureSettings);

@@ -52,8 +52,8 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -330,7 +330,7 @@ public class Lich extends Monster implements EnforcedHomePoint {
 		super.die(cause);
 		// mark the tower as defeated
 		if (!this.getLevel().isClientSide() && !this.isShadowClone()) {
-			TFGenerationSettings.markStructureConquered(this.getLevel(), this.blockPosition(), TFLandmark.LICH_TOWER);
+			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.LICH_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

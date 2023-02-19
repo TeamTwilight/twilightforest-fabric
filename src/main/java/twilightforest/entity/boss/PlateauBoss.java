@@ -1,26 +1,25 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.BossEvent;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerBossEvent;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFBlocks;
-import twilightforest.world.registration.TFGenerationSettings;
+import twilightforest.init.TFStructures;
+import twilightforest.util.LandmarkUtil;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +77,7 @@ public class PlateauBoss extends Monster implements EnforcedHomePoint {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		if (!this.getLevel().isClientSide()) {
-			TFGenerationSettings.markStructureConquered(this.getLevel(), this.blockPosition(), TFLandmark.FINAL_CASTLE);
+			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.FINAL_CASTLE, true);
 			for(ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

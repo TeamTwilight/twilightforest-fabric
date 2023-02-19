@@ -1,8 +1,8 @@
 package twilightforest.world.components.structures.start;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
@@ -29,7 +29,7 @@ public class TFStructureStart extends StructureStart {
 		this.conquered = nbt.getBoolean("conquered");
 	}
 
-	public final void setConquered(boolean flag, ServerLevel level) {
+	public final void setConquered(boolean flag, LevelAccessor level) {
 		if (this.conquered != flag) {
 			ChunkPos chunkPos = this.getChunkPos();
 			level.getChunk(chunkPos.x, chunkPos.z).setUnsaved(true);

@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -25,10 +26,11 @@ import twilightforest.init.TFLandmark;
 import twilightforest.network.AreaProtectionPacket;
 import twilightforest.network.EnforceProgressionStatusPacket;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.components.structures.util.StructureHints;
+import twilightforest.world.components.structures.util.ProgressionStructure;
 import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.ArrayList;
@@ -85,21 +87,20 @@ public class ProgressionEvents {
 	private static boolean isAreaProtected(Level level, Player player, BlockPos pos) {
 
 		if (player.getAbilities().instabuild || player.isSpectator() ||
-				!TFGenerationSettings.isProgressionEnforced(level) || (player instanceof ServerPlayer && player.getClass() != ServerPlayer.class)) {
+				!LandmarkUtil.isProgressionEnforced(level) || (player instanceof ServerPlayer && player.getClass() != ServerPlayer.class)) {
 			return false;
 		}
 
 		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(level);
 
 		if (chunkGenerator != null) {
-			Optional<StructureStart> struct = TFGenerationSettings.locateTFStructureInRange((ServerLevel) level, pos, 0);
+			Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 			if (struct.isPresent()) {
-				StructureStart structure = struct.get();
-				if (structure.getBoundingBox().isInside(pos) && structure instanceof StructureHints structureHints) {
-					// what feature is nearby?  is it one the player has not unlocked?
-					TFLandmark nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), (ServerLevel) level);
-
-					if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
+				StructureStart structureStart = struct.get();
+				if (structureStart.getBoundingBox().isInside(pos) && structureStart.getStructure() instanceof ProgressionStructure structureHints) {
+					if (!structureHints.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
+						// what feature is nearby?  is it one the player has not unlocked?
+						TFLandmark nearbyFeature = LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), (ServerLevel) level);
 
 						// TODO: This is terrible but *works* for now.. proper solution is to figure out why the stronghold bounding box is going so high
 						if (nearbyFeature == TFLandmark.KNIGHT_STRONGHOLD && pos.getY() >= TFGenerationSettings.SEALEVEL)
@@ -107,7 +108,7 @@ public class ProgressionEvents {
 
 						// send protection packet
 						List<BoundingBox> boxes = new ArrayList<>();
-						structure.getPieces().forEach(piece -> {
+						structureStart.getPieces().forEach(piece -> {
 							if (piece.getBoundingBox().isInside(pos))
 								boxes.add(piece.getBoundingBox());
 						});
@@ -142,14 +143,14 @@ public class ProgressionEvents {
 	public static void playerPortals(ServerPlayer player, ServerLevel origin, ServerLevel destination) {
 		if (!player.getLevel().isClientSide()) {
 			if (TFGenerationSettings.usesTwilightChunkGenerator(player.getLevel())) {
-				sendEnforcedProgressionStatus(player, TFGenerationSettings.isProgressionEnforced(player.getLevel()));
+				sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(player.getLevel()));
 			}
 		}
 	}
 
 	public static void playerLogsIn(ServerPlayer player) {
 		if (!player.getLevel().isClientSide()) {
-			sendEnforcedProgressionStatus(player, TFGenerationSettings.isProgressionEnforced(player.getLevel()));
+			sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(player.getLevel()));
 		}
 	}
 

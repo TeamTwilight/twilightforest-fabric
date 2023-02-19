@@ -1,42 +1,32 @@
 package twilightforest.world.registration;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.init.*;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.init.TFBiomes;
+import twilightforest.init.TFMobEffects;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFStructures;
 import twilightforest.util.PlayerHelper;
-import twilightforest.util.WorldUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.components.structures.type.LegacyStructure;
-import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.StructureHints;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public class TFGenerationSettings /*extends GenerationSettings*/ {
@@ -165,60 +155,10 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		return world.getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight;
 	}
 
-	public static boolean isProgressionEnforced(Level world) {
-		return world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
-	}
-
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
 		ResourceLocation[] advancements = BIOME_ADVANCEMENTS.get(entity.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome));
 		if (advancements != null && entity instanceof Player)
 			return PlayerHelper.doesPlayerHaveRequiredAdvancements((Player) entity, advancements);
 		return true;
-	}
-
-	public static void markStructureConquered(Level world, BlockPos pos, TFLandmark feature) {
-		ChunkGeneratorTwilight generator = WorldUtil.getChunkGenerator(world);
-		if (generator != null && world instanceof ServerLevel serverLevel && LegacyLandmarkPlacements.pickLandmarkAtBlock(pos.getX(), pos.getZ(), serverLevel) == feature) {
-			Optional<StructureStart> structureStart = locateTFStructureInRange(serverLevel, feature, pos, 0);
-
-			if (structureStart.isPresent() && structureStart.get() instanceof TFStructureStart s) {
-				s.setConquered(true, serverLevel);
-			}
-		}
-	}
-
-	public static Optional<StructureStart> locateTFStructureInRange(WorldGenLevel world, BlockPos pos, int range) {
-		TFLandmark featureCheck = LegacyLandmarkPlacements.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
-
-		return locateTFStructureInRange(world, featureCheck, pos, range);
-	}
-
-	public static Optional<StructureStart> locateTFStructureInRange(WorldGenLevel world, TFLandmark featureCheck, BlockPos pos, int range) {
-		int cx1 = Mth.floor((pos.getX() - range) >> 4);
-		int cx2 = Mth.ceil((pos.getX() + range) >> 4);
-		int cz1 = Mth.floor((pos.getZ() - range) >> 4);
-		int cz2 = Mth.ceil((pos.getZ() + range) >> 4);
-
-		for (Structure structureFeature : world.registryAccess().registryOrThrow(Registries.STRUCTURE).stream().toList()) {
-			if (!(structureFeature instanceof LegacyStructure legacyData))
-				continue;
-			TFLandmark feature = legacyData.feature;
-			if (feature != featureCheck)
-				continue;
-
-			for (int x = cx1; x <= cx2; ++x) {
-				for (int z = cz1; z <= cz2; ++z) {
-					Optional<StructureStart> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_STARTS).getReferencesForStructure(structureFeature).stream().
-							map((longVal) -> SectionPos.of(new ChunkPos(longVal), 0)).map((sectionPos) -> world.
-									hasChunk(sectionPos.x(), sectionPos.z()) ? world.
-									getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS).getStartForStructure(structureFeature) : null).
-							filter((structureStart) -> structureStart != null && structureStart.isValid()).
-							findFirst();
-					if (structure.isPresent())
-						return structure;
-				}
-			}
-		}
-		return Optional.empty();
 	}
 }

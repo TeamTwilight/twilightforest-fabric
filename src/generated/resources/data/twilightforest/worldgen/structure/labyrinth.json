@@ -1,5 +1,5 @@
 {
-  "type": "twilightforest:legacy_landmark",
+  "type": "twilightforest:labyrinth",
   "adjust_structure_elevation": false,
   "advancements_required": [
     "twilightforest:progress_lich"
@@ -77,7 +77,6 @@
       }
     ]
   },
-  "legacy_landmark_start": "labyrinth",
   "spawn_overrides": {},
   "step": "underground_structures",
   "terrain_adaptation": "bury",

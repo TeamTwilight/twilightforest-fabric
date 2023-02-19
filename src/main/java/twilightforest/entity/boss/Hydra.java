@@ -28,12 +28,12 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
+import twilightforest.init.TFStructures;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -705,7 +705,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint, MultiPartEnt
 		super.die(cause);
 		// mark the lair as defeated
 		if (!this.getLevel().isClientSide()) {
-			TFGenerationSettings.markStructureConquered(this.getLevel(), new BlockPos(this.blockPosition()), TFLandmark.HYDRA_LAIR);
+			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.HYDRA_LAIR, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

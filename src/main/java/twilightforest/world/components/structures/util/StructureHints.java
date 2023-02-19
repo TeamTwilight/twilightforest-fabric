@@ -129,5 +129,16 @@ public interface StructureHints {
             //noinspection unchecked
             return DataResult.success((EntityType<? extends Mob>) entityType);
         }
+
+        public static ItemStack defaultBook() {
+            return book("unknown", 2);
+        }
+
+        public static ItemStack book(String name, int pageCount) {
+            ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
+            book.getOrCreateTag().putBoolean(TwilightForestMod.ID + ":book", true);
+            StructureHints.addBookInformationStatic(book, new ListTag(), name, pageCount);
+            return book;
+        }
     }
 }

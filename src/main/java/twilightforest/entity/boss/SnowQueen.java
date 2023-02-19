@@ -5,7 +5,6 @@ import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -25,7 +24,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -50,10 +48,9 @@ import twilightforest.entity.monster.IceCrystal;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.EntityUtil;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -262,7 +259,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 		super.die(cause);
 		// mark the tower as defeated
 		if (!this.getLevel().isClientSide()) {
-			TFGenerationSettings.markStructureConquered(this.getLevel(), this.blockPosition(), TFLandmark.ICE_TOWER);
+			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.AURORA_PALACE, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}

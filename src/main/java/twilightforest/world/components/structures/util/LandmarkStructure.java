@@ -21,7 +21,7 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
         );
     }
 
-    final DecorationConfig decorationConfig;
+    protected final DecorationConfig decorationConfig;
 
     public LandmarkStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
         super(structureSettings);
