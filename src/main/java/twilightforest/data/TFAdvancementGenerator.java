@@ -533,7 +533,7 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 
 	private Advancement.Builder addDendrologistBlock(Advancement.Builder builder) {
 		for (ItemLike dendrologistBlock : DENDROLOGIST_BLOCKS) {
-			builder.addCriterion(ForgeRegistries.ITEMS.getKey(dendrologistBlock.asItem()).getPath(), InventoryChangeTrigger.TriggerInstance.hasItems(dendrologistBlock));
+			builder.addCriterion(BuiltInRegistries.ITEM.getKey(dendrologistBlock.asItem()).getPath(), InventoryChangeTrigger.TriggerInstance.hasItems(dendrologistBlock));
 		}
 		return builder;
 	}
