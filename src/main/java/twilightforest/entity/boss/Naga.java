@@ -42,6 +42,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.TFPart;

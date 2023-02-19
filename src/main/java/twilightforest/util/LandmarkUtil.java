@@ -40,7 +40,7 @@ public final class LandmarkUtil {
     }
 
     public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, HolderSet<Structure> matching, int chunkX, int chunkZ) {
-        Set<Structure> structures = matching.stream().map(Holder::get).collect(Collectors.toSet());
+        Set<Structure> structures = matching.stream().map(Holder::value).collect(Collectors.toSet());
         return locateNearestMatchingLandmark(level, structures::contains, chunkX, chunkZ);
     }
 

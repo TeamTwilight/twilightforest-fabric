@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -18,7 +19,6 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraftforge.fml.loading.FMLLoader;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -51,7 +51,7 @@ public class InfoCommand {
 
 		ResourceLocation key = possibleStructureRegistry.get().getKey(landmarkStructure);
 
-		if (FMLLoader.isProduction())
+		if (!FabricLoader.getInstance().isDevelopmentEnvironment())
 			source.sendSuccess(Component.translatable("This command is still WIP, some things may still be broken.").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
 
 		// nearest feature
