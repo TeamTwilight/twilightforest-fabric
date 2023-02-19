@@ -14,7 +14,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -33,11 +32,10 @@ public class MagicBeansItem extends Item {
 		Level level = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 		Player player = context.getPlayer();
-		Block blockAt = level.getBlockState(pos).getBlock();
 		ItemStack stack = context.getItemInHand();
 
 		int maxY = Math.max(pos.getY() + 100, 175);
-		if (pos.getY() < maxY && blockAt == TFBlocks.UBEROUS_SOIL.get()) {
+		if (pos.getY() < maxY && level.getBlockState(pos).is(TFBlocks.UBEROUS_SOIL.get()) && level.getBlockState(pos.above()).isAir()) {
 			if (!level.isClientSide()) {
 				stack.shrink(1);
 				level.setBlockAndUpdate(pos.above(), TFBlocks.BEANSTALK_GROWER.get().defaultBlockState());
