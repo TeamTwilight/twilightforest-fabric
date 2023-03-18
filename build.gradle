@@ -44,6 +44,7 @@ repositories {
         }
     }
     maven { url = "https://maven.wispforest.io"}
+    maven {url "https://maven.vram.io"}
 }
 
 dependencies {
@@ -114,6 +115,7 @@ dependencies {
     // test mods
 //    modRuntimeOnly "net.darkhax.botanypots:BotanyPots-Fabric-1.19.2:9.0.3"
 //    modLocalRuntime "io.wispforest:owo-lib:0.8.5+1.19"
+//    modRuntimeOnly "io.vram:canvas-fabric-mc119:1.0.2515-SNAPSHOT"
 }
 
 loom {

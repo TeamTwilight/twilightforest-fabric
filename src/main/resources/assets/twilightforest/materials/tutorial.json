@@ -1,0 +1,8 @@
+{
+  "layers": [
+    {
+      "vertexSource": "twilightforest:shaders/material/tutorial.vert",
+      "fragmentSource": "twilightforest:shaders/material/tutorial.frag"
+    }
+  ]
+}
