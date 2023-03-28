@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class TFGenerationSettings /*extends GenerationSettings*/ {
+public class TFGenerationSettings {
 
 	private static final Map<ResourceLocation, ResourceLocation[]> BIOME_ADVANCEMENTS = new HashMap<>();
 	private static final Map<ResourceLocation, BiConsumer<Player, ServerLevel>> BIOME_PROGRESSION_ENFORCEMENT = new HashMap<>();
@@ -46,69 +46,69 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		registerBiomeAdvancementRestriction(TFBiomes.SWAMP, TwilightForestMod.prefix("progress_lich"));
 		registerBiomeAdvancementRestriction(TFBiomes.THORNLANDS, TwilightForestMod.prefix("progress_troll"));
 
-		registerBiomeProgressionEnforcement(TFBiomes.DARK_FOREST, (player, world) -> {
-			if (!world.isClientSide && player.tickCount % 60 == 0) {
+		registerBiomeProgressionEnforcement(TFBiomes.DARK_FOREST, (player, level) -> {
+			if (!level.isClientSide() && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 0, false, true));
-				StructureHints.tryHintForStructure(player, world, TFStructures.KNIGHT_STRONGHOLD);
+				StructureHints.tryHintForStructure(player, level, TFStructures.KNIGHT_STRONGHOLD);
 			}
 		});
-		registerBiomeProgressionEnforcement(TFBiomes.DARK_FOREST_CENTER, (player, world) -> {
-			if (!world.isClientSide && player.tickCount % 60 == 0) {
+		registerBiomeProgressionEnforcement(TFBiomes.DARK_FOREST_CENTER, (player, level) -> {
+			if (!level.isClientSide() && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 200, 0, false, true));
-				StructureHints.tryHintForStructure(player, world, TFStructures.DARK_TOWER);
+				StructureHints.tryHintForStructure(player, level, TFStructures.DARK_TOWER);
 			}
 		});
-		registerBiomeProgressionEnforcement(TFBiomes.FINAL_PLATEAU, (player, world) -> {
-			if (!world.isClientSide && player.tickCount % 5 == 0) {
-				player.hurt(DamageSource.MAGIC, 1.5F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+		registerBiomeProgressionEnforcement(TFBiomes.FINAL_PLATEAU, (player, level) -> {
+			if (!level.isClientSide() && player.tickCount % 5 == 0) {
+				player.hurt(level.damageSources().magic(), 1.5F);
+				level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 				// TODO: change this when there's a book for the castle
-				StructureHints.tryHintForStructure(player, world, TFStructures.TROLL_CAVE);
+				StructureHints.tryHintForStructure(player, level, TFStructures.TROLL_CAVE);
 			}
 		});
-		registerBiomeProgressionEnforcement(TFBiomes.FIRE_SWAMP, (player, world) -> {
-			if (!world.isClientSide && player.tickCount % 60 == 0) {
+		registerBiomeProgressionEnforcement(TFBiomes.FIRE_SWAMP, (player, level) -> {
+			if (!level.isClientSide() && player.tickCount % 60 == 0) {
 				player.setSecondsOnFire(8);
 			}
-			StructureHints.tryHintForStructure(player, world, TFStructures.HYDRA_LAIR);
+			StructureHints.tryHintForStructure(player, level, TFStructures.HYDRA_LAIR);
 		});
-		registerBiomeProgressionEnforcement(TFBiomes.GLACIER, (player, world) -> {
-			if (!world.isClientSide && player.tickCount % 60 == 0) {
+		registerBiomeProgressionEnforcement(TFBiomes.GLACIER, (player, level) -> {
+			if (!level.isClientSide() && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 100, 3, false, true));
 			}
-			StructureHints.tryHintForStructure(player, world, TFStructures.AURORA_PALACE);
+			StructureHints.tryHintForStructure(player, level, TFStructures.AURORA_PALACE);
 		});
-		registerBiomeProgressionEnforcement(TFBiomes.HIGHLANDS, (player, world) -> {
-			if (!world.isClientSide && player.tickCount % 5 == 0) {
-				player.hurt(DamageSource.MAGIC, 0.5F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-				StructureHints.tryHintForStructure(player, world, TFStructures.TROLL_CAVE);
+		registerBiomeProgressionEnforcement(TFBiomes.HIGHLANDS, (player, level) -> {
+			if (!level.isClientSide() && player.tickCount % 5 == 0) {
+				player.hurt(level.damageSources().magic(), 0.5F);
+				level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+				StructureHints.tryHintForStructure(player, level, TFStructures.TROLL_CAVE);
 			}
 		});
-		registerBiomeProgressionEnforcement(TFBiomes.SNOWY_FOREST, (player, world) -> {
-			if (!world.isClientSide && player.tickCount % 60 == 0) {
+		registerBiomeProgressionEnforcement(TFBiomes.SNOWY_FOREST, (player, level) -> {
+			if (!level.isClientSide() && player.tickCount % 60 == 0) {
 				player.addEffect(new MobEffectInstance(TFMobEffects.FROSTY.get(), 100, 2, false, true));
-				StructureHints.tryHintForStructure(player, world, TFStructures.YETI_CAVE);
+				StructureHints.tryHintForStructure(player, level, TFStructures.YETI_CAVE);
 			}
 		});
-		registerBiomeProgressionEnforcement(TFBiomes.SWAMP, (player, world) -> {
-			if (!world.isClientSide && player.tickCount % 60 == 0) {
+		registerBiomeProgressionEnforcement(TFBiomes.SWAMP, (player, level) -> {
+			if (!level.isClientSide() && player.tickCount % 60 == 0) {
 				MobEffectInstance currentHunger = player.getEffect(MobEffects.HUNGER);
 
 				int hungerLevel = currentHunger != null ? currentHunger.getAmplifier() + 1 : 1;
 
 				player.addEffect(new MobEffectInstance(MobEffects.HUNGER, 100, hungerLevel, false, true));
 
-				StructureHints.tryHintForStructure(player, world, TFStructures.LABYRINTH);
+				StructureHints.tryHintForStructure(player, level, TFStructures.LABYRINTH);
 			}
 		});
-		registerBiomeProgressionEnforcement(TFBiomes.THORNLANDS, (player, world) -> {
-			if (!world.isClientSide && player.tickCount % 5 == 0) {
-				player.hurt(DamageSource.MAGIC, 1.0F);
-				world.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+		registerBiomeProgressionEnforcement(TFBiomes.THORNLANDS, (player, level) -> {
+			if (!level.isClientSide() && player.tickCount % 5 == 0) {
+				player.hurt(level.damageSources().magic(), 1.0F);
+				level.playSound(null, player.getX(), player.getY(), player.getZ(), TFSounds.ACID_RAIN_BURNS.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
 				// hint monster?
-				StructureHints.tryHintForStructure(player, world, TFStructures.TROLL_CAVE);
+				StructureHints.tryHintForStructure(player, level, TFStructures.TROLL_CAVE);
 			}
 		});
 	}
@@ -121,13 +121,13 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		BIOME_PROGRESSION_ENFORCEMENT.put(biome.location(), exec);
 	}
 
-	public static void enforceBiomeProgression(Player player, ServerLevel world) {
-		Biome currentBiome = world.getBiome(player.blockPosition()).value();
+	public static void enforceBiomeProgression(Player player, ServerLevel level) {
+		Biome currentBiome = level.getBiome(player.blockPosition()).value();
 		if (isBiomeSafeFor(currentBiome, player))
 			return;
-		BiConsumer<Player, ServerLevel> exec = BIOME_PROGRESSION_ENFORCEMENT.get(world.registryAccess().registryOrThrow(Registries.BIOME).getKey(currentBiome));
+		BiConsumer<Player, ServerLevel> exec = BIOME_PROGRESSION_ENFORCEMENT.get(level.registryAccess().registryOrThrow(Registries.BIOME).getKey(currentBiome));
 		if (exec != null)
-			exec.accept(player, world);
+			exec.accept(player, level);
 	}
 
 	@Deprecated // Used in places where we can't access the sea level FIXME Resolve
@@ -140,19 +140,19 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	// Checks if the world is linked by the default Twilight Portal.
 	// If you want to check if the world is a Twilight world, use usesTwilightChunkGenerator instead
 	// Only use this method if you need to know if a world is a destination for portals!
-	public static boolean isTwilightPortalDestination(Level world) {
-		return DIMENSION.equals(world.dimension().location());
+	public static boolean isTwilightPortalDestination(Level level) {
+		return DIMENSION.equals(level.dimension().location());
 	}
 
 	// Checks if the world is a qualified Twilight world by checking against its namespace or if it's a portal destination
 	@Environment(EnvType.CLIENT)
-	public static boolean isTwilightWorldOnClient(Level world) {
-		return TwilightForestMod.ID.equals(Minecraft.getInstance().level.dimension().location().getNamespace()) || isTwilightPortalDestination(world);
+	public static boolean isTwilightWorldOnClient(Level level) {
+		return TwilightForestMod.ID.equals(Minecraft.getInstance().level.dimension().location().getNamespace()) || isTwilightPortalDestination(level);
 	}
 
 	// Checks if the world is *a* Twilight world on the Server side.
-	public static boolean usesTwilightChunkGenerator(ServerLevel world) {
-		return world.getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight;
+	public static boolean usesTwilightChunkGenerator(ServerLevel level) {
+		return level.getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight;
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {

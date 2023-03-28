@@ -14,5 +14,6 @@
   "result": {
     "count": 8,
     "item": "twilightforest:dark_stairs"
-  }
+  },
+  "show_notification": true
 }

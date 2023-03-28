@@ -26,7 +26,7 @@ public class TFCreativeTabs {
 		CreativeModeTab BLOCKS = FabricItemGroup.builder(TwilightForestMod.prefix("blocks"))
 				.title(Component.translatable("itemGroup.twilightforest.blocks"))
 				.icon(() -> new ItemStack(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get()))
-				.displayItems((featureFlag, output, operator) -> {
+				.displayItems((parameters, output) -> {
 					output.accept(TFBlocks.TWILIGHT_OAK_PLANKS.get());
 					output.accept(TFBlocks.CANOPY_PLANKS.get());
 					output.accept(TFBlocks.MANGROVE_PLANKS.get());
@@ -376,7 +376,7 @@ public class TFCreativeTabs {
 		CreativeModeTab ITEMS = FabricItemGroup.builder(TwilightForestMod.prefix("items"))
 				.title(Component.translatable("itemGroup.twilightforest.items"))
 				.icon(() -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()))
-				.displayItems((featureFlag, output, operator) -> {
+				.displayItems((parameters, output) -> {
 					output.accept(TFItems.TORCHBERRIES.get());
 					output.accept(TFItems.RAVEN_FEATHER.get());
 					output.accept(TFItems.MAGIC_MAP_FOCUS.get());
@@ -462,7 +462,7 @@ public class TFCreativeTabs {
 		FabricItemGroup.builder(TwilightForestMod.prefix("equipment"))
 				.title(Component.translatable("itemGroup.twilightforest.equipment"))
 				.icon(() -> new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()))
-				.displayItems((featureFlag, output, operator) -> {
+				.displayItems((parameters, output) -> {
 					generateGearWithEnchants(output, TFItems.IRONWOOD_HELMET.get(), new EnchantmentInstance(Enchantments.AQUA_AFFINITY, 1));
 					generateGearWithEnchants(output, TFItems.IRONWOOD_CHESTPLATE.get(), new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 1));
 					generateGearWithEnchants(output, TFItems.IRONWOOD_LEGGINGS.get(), new EnchantmentInstance(Enchantments.ALL_DAMAGE_PROTECTION, 1));

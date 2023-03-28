@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.entity.boss.Lich;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
 public class LichBolt extends TFThrowable {
@@ -104,7 +104,7 @@ public class LichBolt extends TFThrowable {
 
 		if (!this.getLevel().isClientSide()) {
 			if (hit instanceof LivingEntity) {
-				hit.hurt(TFDamageSources.LICH_BOLT, 6);
+				hit.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.LICH_BOLT, TFEntities.LICH.get()), 6);
 			}
 			this.getLevel().broadcastEntityEvent(this, (byte) 3);
 			this.discard();

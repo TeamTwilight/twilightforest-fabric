@@ -41,7 +41,7 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
         Player player = Minecraft.getInstance().player;
 
         if (player != null) {
-            Optional<ResourceKey<Biome>> biome = player.level.getBiome(new BlockPos(player.position())).unwrapKey();
+            Optional<ResourceKey<Biome>> biome = player.level.getBiome(player.blockPosition()).unwrapKey();
             if (biome.isPresent()) {
                 boolean spooky = biome.get() == TFBiomes.SPOOKY_FOREST;
 
@@ -78,6 +78,6 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
     @Override
     public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
-        return TFWeatherRenderer.tickRain(level, ticks, new BlockPos(camera.getPosition()));
+        return TFWeatherRenderer.tickRain(level, ticks, camera.getBlockPosition());
     }
 }

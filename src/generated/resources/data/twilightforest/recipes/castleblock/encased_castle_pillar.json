@@ -41,5 +41,6 @@
   "result": {
     "count": 6,
     "item": "twilightforest:encased_castle_brick_pillar"
-  }
+  },
+  "show_notification": true
 }

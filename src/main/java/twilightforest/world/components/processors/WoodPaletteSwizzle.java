@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.WoodPalette;
-import twilightforest.world.registration.TFStructureProcessors;
+import twilightforest.init.TFStructureProcessors;
 
 import org.jetbrains.annotations.Nullable;
 

@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -34,7 +35,7 @@ public class SnowQueenIceShieldLayer<T extends SnowQueenIceShield> extends Entit
 			Level world = entityIn.level;
 			if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
 				matrixStackIn.pushPose();
-				BlockPos blockpos = new BlockPos(entityIn.getX(), entityIn.getBoundingBox().maxY, entityIn.getZ());
+				BlockPos blockpos = BlockPos.containing(entityIn.getX(), entityIn.getBoundingBox().maxY, entityIn.getZ());
 				matrixStackIn.translate(-0.5D, 0.0D, -0.5D);
 				BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 				var model = dispatcher.getBlockModel(blockstate);
@@ -49,6 +50,6 @@ public class SnowQueenIceShieldLayer<T extends SnowQueenIceShield> extends Entit
 
 	@Override
 	public ResourceLocation getTextureLocation(T entity) {
-		return TextureAtlas.LOCATION_BLOCKS;
+		return InventoryMenu.BLOCK_ATLAS;
 	}
 }

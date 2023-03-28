@@ -19,6 +19,148 @@
         "weight": 1
       }
     ],
+    "preprocessing_rules": [
+      {
+        "input_predicate": {
+          "block": "minecraft:cobblestone",
+          "predicate_type": "minecraft:random_block_match",
+          "probability": 0.5
+        },
+        "location_predicate": {
+          "predicate_type": "minecraft:always_true"
+        },
+        "output_state": {
+          "Name": "minecraft:mossy_cobblestone"
+        }
+      },
+      {
+        "input_predicate": {
+          "block": "minecraft:cobblestone_stairs",
+          "predicate_type": "minecraft:random_block_match",
+          "probability": 0.5
+        },
+        "location_predicate": {
+          "predicate_type": "minecraft:always_true"
+        },
+        "output_state": {
+          "Name": "minecraft:mossy_cobblestone_stairs",
+          "Properties": {
+            "facing": "north",
+            "half": "bottom",
+            "shape": "straight",
+            "waterlogged": "false"
+          }
+        }
+      },
+      {
+        "input_predicate": {
+          "block": "minecraft:cobblestone_slab",
+          "predicate_type": "minecraft:random_block_match",
+          "probability": 0.5
+        },
+        "location_predicate": {
+          "predicate_type": "minecraft:always_true"
+        },
+        "output_state": {
+          "Name": "minecraft:mossy_cobblestone_slab",
+          "Properties": {
+            "type": "bottom",
+            "waterlogged": "false"
+          }
+        }
+      },
+      {
+        "input_predicate": {
+          "block": "minecraft:cobblestone_wall",
+          "predicate_type": "minecraft:random_block_match",
+          "probability": 0.5
+        },
+        "location_predicate": {
+          "predicate_type": "minecraft:always_true"
+        },
+        "output_state": {
+          "Name": "minecraft:mossy_cobblestone_wall",
+          "Properties": {
+            "east": "none",
+            "north": "none",
+            "south": "none",
+            "up": "true",
+            "waterlogged": "false",
+            "west": "none"
+          }
+        }
+      },
+      {
+        "input_predicate": {
+          "block": "minecraft:stone_bricks",
+          "predicate_type": "minecraft:random_block_match",
+          "probability": 0.5
+        },
+        "location_predicate": {
+          "predicate_type": "minecraft:always_true"
+        },
+        "output_state": {
+          "Name": "minecraft:mossy_stone_bricks"
+        }
+      },
+      {
+        "input_predicate": {
+          "block": "minecraft:stone_brick_stairs",
+          "predicate_type": "minecraft:random_block_match",
+          "probability": 0.5
+        },
+        "location_predicate": {
+          "predicate_type": "minecraft:always_true"
+        },
+        "output_state": {
+          "Name": "minecraft:mossy_stone_brick_stairs",
+          "Properties": {
+            "facing": "north",
+            "half": "bottom",
+            "shape": "straight",
+            "waterlogged": "false"
+          }
+        }
+      },
+      {
+        "input_predicate": {
+          "block": "minecraft:stone_brick_slab",
+          "predicate_type": "minecraft:random_block_match",
+          "probability": 0.5
+        },
+        "location_predicate": {
+          "predicate_type": "minecraft:always_true"
+        },
+        "output_state": {
+          "Name": "minecraft:mossy_stone_brick_slab",
+          "Properties": {
+            "type": "bottom",
+            "waterlogged": "false"
+          }
+        }
+      },
+      {
+        "input_predicate": {
+          "block": "minecraft:stone_brick_wall",
+          "predicate_type": "minecraft:random_block_match",
+          "probability": 0.5
+        },
+        "location_predicate": {
+          "predicate_type": "minecraft:always_true"
+        },
+        "output_state": {
+          "Name": "minecraft:mossy_stone_brick_wall",
+          "Properties": {
+            "east": "none",
+            "north": "none",
+            "south": "none",
+            "up": "true",
+            "waterlogged": "false",
+            "west": "none"
+          }
+        }
+      }
+    ],
     "target_palettes": "#twilightforest:well_swizzle_mask"
   }
 }

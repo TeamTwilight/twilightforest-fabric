@@ -37,27 +37,4 @@ public class GlassSwordItem extends SwordItem {
 		});
 		return true;
 	}
-
-
-//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-//		super.fillItemCategory(tab, items);
-//
-//		if (this.allowedIn(tab)) {
-//			ItemStack stack = new ItemStack(this);
-//			CompoundTag tags = new CompoundTag();
-//			tags.putBoolean("Unbreakable", true);
-//
-//			ListTag lore = new ListTag();
-//			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.1\",\"italic\":false,\"color\":\"gray\"}"));
-//			// uncomment if someone asks if this will ever generate as loot
-////			lore.add(StringTag.valueOf("{\"translate\":\"item.twilightforest.glass_sword.tooltip.2\",\"italic\":false,\"color\":\"gray\"}"));
-//
-//			CompoundTag display = new CompoundTag();
-//			display.put("Lore", lore);
-//
-//			tags.put("display", display);
-//			stack.setTag(tags);
-//			items.add(stack);
-//		}
-//	}
 }

@@ -4,16 +4,19 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
+import twilightforest.init.TFFeatureModifiers;
+import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFFeatureModifiers;
+import twilightforest.world.components.structures.util.DecorationClearance;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class AvoidLandmarkModifier extends PlacementModifier {
@@ -48,20 +51,22 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 
 	@Override
 	public Stream<BlockPos> getPositions(PlacementContext worldDecoratingHelper, RandomSource random, BlockPos blockPos) {
-		if (!(worldDecoratingHelper.getLevel().getLevel().getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight tfChunkGen))
+		if (!(worldDecoratingHelper.getLevel().getLevel().getChunkSource().getGenerator() instanceof ChunkGeneratorTwilight))
 			return Stream.of(blockPos);
 
 		// Feature Center
 		BlockPos.MutableBlockPos featurePos = LegacyLandmarkPlacements.getNearestCenterXZ(blockPos.getX() >> 4, blockPos.getZ() >> 4).mutable();
 
-		final TFLandmark landmark = tfChunkGen.pickLandmarkForChunk(new ChunkPos(featurePos), worldDecoratingHelper.getLevel());
+		Optional<StructureStart> possibleStructureStart = LandmarkUtil.locateNearestLandmarkStart(worldDecoratingHelper.getLevel(), SectionPos.blockToSectionCoord(featurePos.getX()), SectionPos.blockToSectionCoord(featurePos.getZ()));
+		if (possibleStructureStart.isEmpty() || !(possibleStructureStart.get().getStructure() instanceof DecorationClearance decorationClearance))
+			return Stream.of(blockPos);
 
-		if ((!occupiesSurface || landmark.isSurfaceDecorationsAllowed()) && (!occupiesUnderground || landmark.isUndergroundDecoAllowed()))
+		if ((!this.occupiesSurface || decorationClearance.isSurfaceDecorationsAllowed()) && (!this.occupiesUnderground || decorationClearance.isUndergroundDecoAllowed()))
 			return Stream.of(blockPos);
 
 		// Turn Feature Center into Feature Offset
 		featurePos.set(Math.abs(featurePos.getX() - blockPos.getX()), 0, Math.abs(featurePos.getZ() - blockPos.getZ()));
-		int size = landmark.size * 16 + additionalClearance;
+		int size = decorationClearance.chunkClearanceRadius() * 16 + this.additionalClearance;
 
 		return featurePos.getX() < size && featurePos.getZ() < size ? Stream.empty() : Stream.of(blockPos);
 	}
@@ -72,6 +77,6 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 	}
 
 	private static DataResult<AvoidLandmarkModifier> validate(AvoidLandmarkModifier config) {
-		return config.occupiesSurface || config.occupiesUnderground ? DataResult.success(config) : DataResult.error("Feature Decorator cannot occupy neither surface nor underground");
+		return config.occupiesSurface || config.occupiesUnderground ? DataResult.success(config) : DataResult.error(() -> "Feature Decorator cannot occupy neither surface nor underground");
 	}
 }

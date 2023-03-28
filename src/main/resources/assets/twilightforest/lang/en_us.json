@@ -1377,8 +1377,8 @@
   "death.attack.twilightforest.knightmetal.player": "%1$s was spiked by a knightmetal block while escaping %2$s",
   "death.attack.twilightforest.fiery": "%1$s walked onto a fiery block",
   "death.attack.twilightforest.fiery.player": "%1$s walked onto a fiery block while escaping %2$s",
-  "death.attack.twilightforest.thrown_block": "%1$s was squashed by a thrown block",
-  "death.attack.twilightforest.thrown_block.player": "%1$s was squashed by a thrown block while escaping %2$s",
+  "death.attack.twilightforest.thrownBlock": "%1$s was squashed by a thrown block",
+  "death.attack.twilightforest.thrownBlock.player": "%1$s was squashed by a thrown block while escaping %2$s",
   "death.attack.twilightforest.expired": "%1$s's life expired",
   "death.attack.twilightforest.expired.player": "%1$s's life expired",
 

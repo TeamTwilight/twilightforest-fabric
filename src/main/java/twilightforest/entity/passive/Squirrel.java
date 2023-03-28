@@ -25,7 +25,7 @@ public class Squirrel extends Animal {
 
 	public Squirrel(EntityType<? extends Squirrel> type, Level world) {
 		super(type, world);
-		this.maxUpStep = 1.0F;
+		setMaxUpStep(1.0F);
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public class Squirrel extends Animal {
 	}
 
 	@Override
-	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
-		return false;
+	public float getStepHeight() {
+		return 1.0F;
 	}
 
 	@Override

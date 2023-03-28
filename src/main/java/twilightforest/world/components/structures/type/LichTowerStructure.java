@@ -5,7 +5,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -15,10 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.lichtower.TowerMainComponent;
-import twilightforest.world.components.structures.util.ControlledSpawns;
+import twilightforest.world.components.structures.util.ConquerableStructure;
 
 import java.util.List;
 import java.util.Map;
@@ -43,12 +44,24 @@ public class LichTowerStructure extends ConquerableStructure {
         return TFStructureTypes.LICH_TOWER.get();
     }
 
+    @Override
+    protected boolean dontCenter() {
+        return true;
+    }
+
     public static LichTowerStructure buildLichTowerConfig(BootstapContext<Structure> context) {
         return new LichTowerStructure(
-                ControlledSpawns.ControlledSpawningConfig.create(TFLandmark.LICH_TOWER.getSpawnableMonsterLists(), List.of(), List.of()),
+                ControlledSpawningConfig.firstIndexMonsters(
+                        new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1, 1),
+                        new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME.get(), 10, 2, 3),
+                        new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1)
+                ),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_naga"))),
                 new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD.get()),
-                new DecorationConfig(false, true, true),
+                new DecorationConfig(1, false, true, true),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_LICH_TOWER_BIOMES),
                         Map.of(), // Landmarks have Controlled Mob spawning

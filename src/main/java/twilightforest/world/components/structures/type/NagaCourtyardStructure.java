@@ -37,7 +37,7 @@ public class NagaCourtyardStructure extends LandmarkStructure {
 
     public static NagaCourtyardStructure buildStructureConfig(BootstapContext<Structure> context) {
         return new NagaCourtyardStructure(
-                new DecorationConfig(false, true, true),
+                new DecorationConfig(3, false, true, true),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_NAGA_COURTYARD_BIOMES),
                         Map.of(), // Landmarks have Controlled Mob spawning

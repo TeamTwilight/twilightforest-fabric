@@ -120,7 +120,7 @@ public class TFTerrainWarp {
     }
 
     protected double applySlide(double density, int height) {
-        int i = Mth.intFloorDiv(this.noiseSettings.minY(), this.cellHeight);
+        int i = Math.floorDiv(this.noiseSettings.minY(), this.cellHeight);
         int j = height - i;
         density = this.topSlide.applySlide(density, this.cellCountY - j);
         density = this.bottomSlide.applySlide(density, j);

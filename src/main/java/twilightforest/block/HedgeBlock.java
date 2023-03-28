@@ -47,21 +47,21 @@ public class HedgeBlock extends Block {
 	@Nullable
 //	@Override
 	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
-		return mob != null && this.shouldDamage(mob) ? BlockPathTypes.DANGER_CACTUS : null;
+		return mob != null && this.shouldDamage(mob) ? BlockPathTypes.DANGER_OTHER : null;
 	}
 
 	@Override
 	@Deprecated
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (this.shouldDamage(entity)) {
-			entity.hurt(DamageSource.CACTUS, DAMAGE);
+			entity.hurt(level.damageSources().cactus(), DAMAGE);
 		}
 	}
 
 	@Override
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
 		if (this.shouldDamage(entity)) {
-			entity.hurt(DamageSource.CACTUS, DAMAGE);
+			entity.hurt(level.damageSources().cactus(), DAMAGE);
 		}
 	}
 
@@ -73,9 +73,9 @@ public class HedgeBlock extends Block {
 	}
 
 	@Override
-	public void playerDestroy(Level world, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
-		super.playerDestroy(world, player, pos, state, te, stack);
-		player.hurt(DamageSource.CACTUS, DAMAGE);
+	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
+		super.playerDestroy(level, player, pos, state, te, stack);
+		player.hurt(level.damageSources().cactus(), DAMAGE);
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class HedgeBlock extends Block {
 				// are they pointing at this block?
 				if (ray.getType() == HitResult.Type.BLOCK && pos.equals(ray.getBlockPos())) {
 					// prick them!  prick them hard!
-					player.hurt(DamageSource.CACTUS, DAMAGE);
+					player.hurt(level.damageSources().cactus(), DAMAGE);
 
 					// trigger this again!
 					level.scheduleTick(pos, this, 10);

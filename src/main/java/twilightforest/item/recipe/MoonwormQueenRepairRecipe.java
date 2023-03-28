@@ -1,5 +1,6 @@
 package twilightforest.item.recipe;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
@@ -40,7 +41,7 @@ public class MoonwormQueenRepairRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer inv) {
+	public ItemStack assemble(CraftingContainer inv, RegistryAccess access) {
 		List<Item> berries = new ArrayList<>();
 		ItemStack queen = null;
 		for(int i = 0; i < inv.getContainerSize(); ++i) {

@@ -190,7 +190,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 		if (this.items.get(0).isEmpty()) {
 			return false;
 		} else {
-			ItemStack itemstack = recipe.getResultItem();
+			ItemStack itemstack = recipe.getResultItem(this.getLevel().registryAccess());
 
 			if (itemstack.isEmpty()) {
 				return false;
@@ -219,7 +219,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 	public void smeltItem(Recipe<?> recipe) {
 		if (this.canBurn(recipe)) {
 			ItemStack itemstack = this.items.get(0);
-			ItemStack itemstack1 = recipe.getResultItem();
+			ItemStack itemstack1 = recipe.getResultItem(this.getLevel().registryAccess());
 			itemstack1.setCount(itemstack1.getCount() * this.getCurrentSmeltMultiplier());
 			ItemStack itemstack2 = this.items.get(2);
 

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -151,7 +152,7 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
-		} else if (stack.is(ConventionalItemTags.SHOVELS) || stack.getItem() instanceof ShovelItem) {
+		} else if (stack.is(ItemTags.SHOVELS) || stack.getItem() instanceof ShovelItem) {
 			if (variant == HollowLogVariants.Horizontal.SNOW) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), 3);
 				level.playSound(null, pos, SoundEvents.SNOW_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);

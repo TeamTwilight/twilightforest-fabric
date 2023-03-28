@@ -26,8 +26,8 @@ import java.util.function.Consumer;
 
 public class KnightmetalArmorItem extends ArmorItem {
 
-	public KnightmetalArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
-		super(material, slot, properties);
+	public KnightmetalArmorItem(ArmorMaterial material, Type type, Properties properties) {
+		super(material, type, properties);
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> this::initializeClient);
 	}
 

@@ -8,6 +8,7 @@
   "allow_biome_underground_decorations": false,
   "ambient_spawns": [],
   "biomes": "#twilightforest:valid_yeti_cave_biomes",
+  "chunk_clearance_radius": 2,
   "hint_item": {
     "Count": 1,
     "id": "minecraft:written_book",

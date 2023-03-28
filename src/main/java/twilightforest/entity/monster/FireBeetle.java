@@ -26,7 +26,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.ai.goal.BreathAttackGoal;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 
 public class FireBeetle extends Monster implements IBreathAttacker {
@@ -141,7 +141,7 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		if (!target.fireImmune() && target.hurt(TFDamageSources.scorched(this), BREATH_DAMAGE)) {
+		if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE)) {
 			target.setSecondsOnFire(BREATH_DURATION);
 		}
 	}
@@ -149,7 +149,7 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (this.isBreathing()) {
-			entity.hurt(TFDamageSources.scorched(this), BREATH_DAMAGE);
+			entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE);
 		}
 		return super.doHurtTarget(entity);
 	}

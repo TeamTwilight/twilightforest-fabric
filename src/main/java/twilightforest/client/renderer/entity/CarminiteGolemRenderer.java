@@ -25,9 +25,9 @@ public class CarminiteGolemRenderer<T extends CarminiteGolem, M extends Carminit
 	protected void setupRotations(T entity, PoseStack ms, float ageInTicks, float rotationYaw, float partialTicks) {
 		super.setupRotations(entity, ms, ageInTicks, rotationYaw, partialTicks);
 
-		if (!(entity.animationSpeed < 0.01D)) {
+		if (!(entity.walkAnimation.speed() < 0.01D)) {
 			float f = 13.0F;
-			float f1 = entity.animationPosition - entity.animationSpeed * (1.0F - partialTicks) + 6.0F;
+			float f1 = entity.walkAnimation.position() - entity.walkAnimation.speed() * (1.0F - partialTicks) + 6.0F;
 			float f2 = (Math.abs(f1 % 13.0F - 6.5F) - 3.25F) / 3.25F;
 			ms.mulPose(Axis.ZP.rotationDegrees(6.5F * f2));
 		}

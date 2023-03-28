@@ -8,6 +8,7 @@
   "allow_biome_underground_decorations": true,
   "ambient_spawns": [],
   "biomes": "#twilightforest:valid_dark_tower_biomes",
+  "chunk_clearance_radius": 1,
   "hint_item": {
     "Count": 1,
     "id": "minecraft:written_book",

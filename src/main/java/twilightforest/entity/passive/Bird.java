@@ -59,15 +59,6 @@ public abstract class Bird extends Animal {
 	}
 
 	@Override
-	protected void checkFallDamage(double y, boolean onGroundIn, @Nonnull BlockState state, @Nonnull BlockPos pos) {
-	}
-
-	@Override
-	public boolean causeFallDamage(float dist, float damageMultiplier, DamageSource source) {
-		return false;
-	}
-
-	@Override
 	public boolean isSteppingCarefully() {
 		return false;
 	}

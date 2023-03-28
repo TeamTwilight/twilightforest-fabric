@@ -92,6 +92,26 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
 				TFEntities.YETI.get()
 		).addTag(BOSSES);
 
+		tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
+				TFEntities.NAGA.get(),
+				TFEntities.SQUIRREL.get(),
+				TFEntities.WRAITH.get(),
+				TFEntities.CARMINITE_GOLEM.get(),
+				TFEntities.DEATH_TOME.get(),
+				TFEntities.UR_GHAST.get(),
+				TFEntities.CARMINITE_GHASTLING.get(),
+				TFEntities.KNIGHT_PHANTOM.get(),
+				TFEntities.SNOW_QUEEN.get(),
+				TFEntities.PENGUIN.get(),
+				TFEntities.RAVEN.get(),
+				TFEntities.SNOW_GUARDIAN.get(),
+				TFEntities.STABLE_ICE_CORE.get(),
+				TFEntities.MOSQUITO_SWARM.get(),
+				TFEntities.UNSTABLE_ICE_CORE.get(),
+				TFEntities.ICE_CRYSTAL.get(),
+				TFEntities.CARMINITE_GHASTGUARD.get(),
+				TFEntities.TINY_BIRD.get());
+
 		tag(LICH_POPPABLES).addTag(EntityTypeTags.SKELETONS).add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER.get());
 
 		tag(LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).add(

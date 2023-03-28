@@ -5,6 +5,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.stack.ListEmiIngredient;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -32,7 +33,7 @@ public class EMIUncraftingRecipe extends TFEmiRecipe<CraftingRecipe> {
         if (recipe instanceof UncraftingRecipe uncraftingRecipe) {
             inputs.add(EmiIngredient.of(uncraftingRecipe.getIngredient(), uncraftingRecipe.count()));//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack
         } else {
-            inputs.add(EmiStack.of(recipe.getResultItem()));//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
+            inputs.add(EmiStack.of(recipe.getResultItem(Minecraft.getInstance().level.registryAccess())));//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
         }
     }
 

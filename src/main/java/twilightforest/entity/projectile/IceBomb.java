@@ -19,7 +19,7 @@ import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enchantment.ChillAuraEnchantment;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.entity.monster.Yeti;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
 import java.util.List;
@@ -135,14 +135,14 @@ public class IceBomb extends TFThrowable {
 			if (entity != this.getOwner()) {
 				if (entity instanceof Yeti) {
 					// TODO: make "frozen yeti" entity?
-					BlockPos pos = new BlockPos(entity.xOld, entity.yOld, entity.zOld);
+					BlockPos pos = BlockPos.containing(entity.xOld, entity.yOld, entity.zOld);
 					this.getLevel().setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
 					this.getLevel().setBlockAndUpdate(pos.above(), Blocks.ICE.defaultBlockState());
 
 					entity.discard();
 				} else {
 					if (!entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
-						entity.hurt(TFDamageSources.frozen(this, (LivingEntity) this.getOwner()), entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5 : 1);
+						entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.FROZEN, this.getOwner(), this), entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5 : 1);
 						ChillAuraEnchantment.doChillAuraEffect(entity, 100, 0, true);
 					}
 				}

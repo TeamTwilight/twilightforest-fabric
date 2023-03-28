@@ -9,6 +9,7 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.world.components.structures.util.ConquerableStructure;
 
 @Deprecated
 public class LegacyStructure extends ConquerableStructure {

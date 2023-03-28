@@ -9,7 +9,6 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.legacy.*;
-import twilightforest.compat.trinkets.model.CharmOfKeepingModel;
 import twilightforest.compat.trinkets.model.CharmOfLife1NecklaceModel;
 import twilightforest.compat.trinkets.model.CharmOfLife2NecklaceModel;
 import twilightforest.client.model.tileentity.*;
@@ -165,7 +164,6 @@ public class TFLayerDefinitions {
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_LIFE_1, CharmOfLife1NecklaceModel::create);
 			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_LIFE_2, CharmOfLife2NecklaceModel::create);
-			EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_KEEPING, CharmOfKeepingModel::create);
 		}
 	}
 }

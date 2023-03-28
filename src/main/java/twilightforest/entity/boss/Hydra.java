@@ -14,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -572,7 +573,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint, MultiPartEnt
 
 	public boolean attackEntityFromPart(HydraPart part, DamageSource source, float damage) {
 		// if we're in a wall, kill that wall
-		if (!this.getLevel().isClientSide() && source == DamageSource.IN_WALL) {
+		if (!this.getLevel().isClientSide() && source.is(DamageTypes.IN_WALL)) {
 			this.destroyBlocksInAABB(part.getBoundingBox());
 		}
 
@@ -633,7 +634,7 @@ public class Hydra extends Mob implements Enemy, EnforcedHomePoint, MultiPartEnt
 		if (src.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
 			this.hurtBy.add(player);
 		}
-		return src == DamageSource.OUT_OF_WORLD && super.hurt(src, damage);
+		return src.is(DamageTypes.OUT_OF_WORLD) && super.hurt(src, damage);
 	}
 
 	@Override

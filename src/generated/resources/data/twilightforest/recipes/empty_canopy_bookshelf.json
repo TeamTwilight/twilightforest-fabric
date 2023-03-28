@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "twilightforest:empty_canopy_bookshelf"
-  }
+  },
+  "show_notification": true
 }

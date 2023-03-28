@@ -42,7 +42,7 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 
 				if (blockstate != world.getBlockState(entity.blockPosition()) && blockstate.getRenderShape() != RenderShape.INVISIBLE) {
 					stack.pushPose();
-					BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
+					BlockPos blockpos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
 					// spin
 					if (blockstate.getProperties().contains(RotatedPillarBlock.AXIS)) {
 						Direction.Axis axis = blockstate.getValue(RotatedPillarBlock.AXIS);

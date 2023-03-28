@@ -14,11 +14,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,6 +46,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
+import twilightforest.data.tags.DamageTypeTagGenerator;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.*;
 import twilightforest.entity.monster.LichMinion;
@@ -276,11 +279,11 @@ public class Lich extends Monster implements EnforcedHomePoint {
 	@Override
 	public boolean hurt(DamageSource src, float damage) {
 		// if we're in a wall, teleport for gosh sakes
-		if (src == DamageSource.IN_WALL && this.getTarget() != null) {
+		if (src.is(DamageTypes.IN_WALL) && this.getTarget() != null) {
 			teleportToSightOfEntity(this.getTarget());
 		}
 
-		if (this.isShadowClone() && src != DamageSource.OUT_OF_WORLD) {
+		if (this.isShadowClone() && !src.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
 			this.playSound(TFSounds.LICH_CLONE_HURT.get(), 1.0F, this.getVoicePitch() * 2.0F);
 			return false;
 		}
@@ -291,8 +294,8 @@ public class Lich extends Monster implements EnforcedHomePoint {
 		}
 
 		// if our shield is up, ignore any damage that can be blocked.
-		if (src != DamageSource.OUT_OF_WORLD && this.getShieldStrength() > 0) {
-			if (src.isMagic() && damage > 2) {
+		if (!src.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && this.getShieldStrength() > 0) {
+			if (src.is(DamageTypeTagGenerator.BREAKS_LICH_SHIELDS) && damage > 2) {
 				// reduce shield for magic damage greater than 1 heart
 				if (this.getShieldStrength() > 0) {
 					this.setShieldStrength(this.getShieldStrength() - 1);
@@ -322,6 +325,17 @@ public class Lich extends Monster implements EnforcedHomePoint {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	@Override
+	public void lavaHurt() {
+		if (!this.fireImmune()) {
+			this.setSecondsOnFire(5);
+			if (this.hurt(this.damageSources().lava(), 4F)) {
+				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
+				EntityUtil.killLavaAround(this);
+			}
 		}
 	}
 

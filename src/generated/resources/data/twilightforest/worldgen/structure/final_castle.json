@@ -8,6 +8,7 @@
   "allow_biome_underground_decorations": true,
   "ambient_spawns": [],
   "biomes": "#twilightforest:valid_final_castle_biomes",
+  "chunk_clearance_radius": 4,
   "hint_item": {
     "Count": 1,
     "id": "minecraft:written_book",
@@ -22,7 +23,12 @@
     }
   },
   "hint_mob": "twilightforest:kobold",
-  "labelled_monster_spawns": {},
+  "labelled_monster_spawns": {
+    "0": [],
+    "1": [],
+    "2": [],
+    "3": []
+  },
   "spawn_overrides": {},
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin",

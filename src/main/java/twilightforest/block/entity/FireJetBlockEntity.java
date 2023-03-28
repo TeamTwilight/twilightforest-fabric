@@ -14,7 +14,7 @@ import twilightforest.block.FireJetBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.init.TFParticleType;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 
 import java.util.List;
 
@@ -102,7 +102,7 @@ public class FireJetBlockEntity extends BlockEntity {
 				// fire!
 				for (Entity entity : entitiesInRange) {
 					if (!entity.fireImmune()) {
-						entity.hurt(TFDamageSources.FIRE_JET, 2);
+						entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.FIRE_JET), 2);
 						entity.setSecondsOnFire(15);
 					}
 				}

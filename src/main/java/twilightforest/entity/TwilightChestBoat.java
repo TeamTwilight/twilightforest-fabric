@@ -69,13 +69,13 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 	@Override
 	public void destroy(DamageSource damageSource) {
 		super.destroy(damageSource);
-		this.chestVehicleDestroyed(damageSource, this.level, this);
+		this.chestVehicleDestroyed(damageSource, this.getLevel(), this);
 	}
 
 	@Override
 	public void remove(Entity.RemovalReason reason) {
-		if (!this.level.isClientSide && reason.shouldDestroy()) {
-			Containers.dropContents(this.level, this, this);
+		if (!this.getLevel().isClientSide() && reason.shouldDestroy()) {
+			Containers.dropContents(this.getLevel(), this, this);
 		}
 
 		super.remove(reason);
@@ -83,13 +83,23 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
-		return this.canAddPassenger(player) && !player.isSecondaryUseActive() ? super.interact(player, hand) : this.interactWithChestVehicle(this::gameEvent, player);
+		if (this.canAddPassenger(player) && !player.isSecondaryUseActive()) {
+			return super.interact(player, hand);
+		} else {
+			InteractionResult interactionresult = this.interactWithContainerVehicle(player);
+			if (interactionresult.consumesAction()) {
+				this.gameEvent(GameEvent.CONTAINER_OPEN, player);
+				PiglinAi.angerNearbyPiglins(player, true);
+			}
+
+			return interactionresult;
+		}
 	}
 
 	@Override
 	public void openCustomInventoryScreen(Player player) {
 		player.openMenu(this);
-		if (!player.level.isClientSide) {
+		if (!player.getLevel().isClientSide()) {
 			this.gameEvent(GameEvent.CONTAINER_OPEN, player);
 			PiglinAi.angerNearbyPiglins(player, true);
 		}

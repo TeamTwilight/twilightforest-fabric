@@ -19,7 +19,7 @@ import twilightforest.init.TFStructurePieceTypes;
 
 public class CourtyardPathPiece extends TwilightTemplateStructurePiece {
     public CourtyardPathPiece(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-        super(TFStructurePieceTypes.TFNCPa.get(), nbt, ctx, readSettings(nbt));
+        super(TFStructurePieceTypes.TFNCPa.get(), nbt, ctx, readSettings(nbt).addProcessor(NagastoneVariants.INSTANCE));
     }
 
     public CourtyardPathPiece(int i, int x, int y, int z, StructureTemplateManager structureManager) {

@@ -13,7 +13,7 @@ import net.minecraft.world.phys.HitResult;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.entity.boss.KnightPhantom;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 
 public class ThrownWep extends TFThrowable {
@@ -76,7 +76,7 @@ public class ThrownWep extends TFThrowable {
 		}
 
 		if (!this.getLevel().isClientSide()) {
-			result.getEntity().hurt(this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get() ? TFDamageSources.THROWN_PICKAXE : TFDamageSources.THROWN_AXE, projectileDamage);
+			result.getEntity().hurt(TFDamageTypes.getDamageSource(this.getLevel(), this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get() ? TFDamageTypes.THROWN_PICKAXE : TFDamageTypes.THROWN_AXE), this.projectileDamage);
 		}
 	}
 

@@ -1,20 +1,20 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import twilightforest.entity.boss.Lich;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
 public class LichBomb extends TFThrowable implements ItemSupplier {
@@ -67,7 +67,7 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 		super.hurt(source, amount);
 
 		if (source.getDirectEntity() != null) {
-			if (!source.isExplosion())
+			if (!source.is(DamageTypeTags.IS_EXPLOSION))
 				this.explode();
 			return true;
 		} else {
@@ -77,7 +77,7 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 
 	private void explode() {
 		if (!this.getLevel().isClientSide()) {
-			this.getLevel().explode(this, TFDamageSources.LICH_BOMB, null, this.getX(), this.getY(), this.getZ(), 2.0F, false, Level.ExplosionInteraction.NONE);
+			this.getLevel().explode(this, TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.LICH_BOMB, TFEntities.LICH.get()), null, this.getX(), this.getY(), this.getZ(), 2.0F, false, Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
 	}

@@ -20,5 +20,6 @@
   "result": {
     "count": 8,
     "item": "twilightforest:vanishing_block"
-  }
+  },
+  "show_notification": true
 }

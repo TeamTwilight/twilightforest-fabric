@@ -35,7 +35,6 @@ public class TFSkyRenderer {
 	public static boolean renderSky(ClientLevel level, float partialTicks, PoseStack ms, Camera camera) {
 		LevelRenderer levelRenderer = Minecraft.getInstance().levelRenderer;
 
-		RenderSystem.disableTexture();
 		Vec3 vec3 = level.getSkyColor(camera.getPosition(), partialTicks);
 		float f = (float) vec3.x();
 		float f1 = (float) vec3.y();
@@ -99,7 +98,6 @@ public class TFSkyRenderer {
 			RenderSystem.setShaderColor(f, f1, f2, 1.0F);
 		}
 
-		RenderSystem.enableTexture();
 		RenderSystem.depthMask(true);
 		return true;
 	}

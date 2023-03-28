@@ -16,7 +16,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = ItemSupplier.class)
@@ -67,7 +67,7 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 		super.onHitEntity(result);
 		Entity target = result.getEntity();
 		if (!this.getLevel().isClientSide() && target instanceof LivingEntity) {
-			target.hurt(TFDamageSources.snowballFight(this, (LivingEntity) this.getOwner()), DAMAGE);
+			target.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.SNOWBALL_FIGHT, this.getOwner(), this), DAMAGE);
 			//damage armor pieces
 			if (target instanceof Player) {
 				for (ItemStack stack : target.getArmorSlots())

@@ -27,6 +27,8 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.mutable.MutableInt;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
@@ -37,7 +39,6 @@ import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -96,13 +97,16 @@ public class TFTeleporter implements ITeleporter {
 		PortalInfo pos;
 
 		// Scale the coords based on the dimension type coordinate_scale
-		double scale = dest.dimensionType().coordinateScale();
+		ServerLevel tfDim = dest.getServer().getLevel(TFGenerationSettings.DIMENSION_KEY);
+		double scale = tfDim == null ? 0.125D : tfDim.dimensionType().coordinateScale();
+		scale = dest.dimension().equals(TFGenerationSettings.DIMENSION_KEY) ? 1F / scale : scale;
 		BlockPos destPos = dest.getWorldBorder().clampToBounds(entity.blockPosition().getX() * scale, entity.blockPosition().getY(), entity.blockPosition().getZ() * scale);
 
 		if ((pos = placeInExistingPortal(dest, entity, destPos)) == null) {
+			TwilightForestMod.LOGGER.debug("Did not find existing portal, making a new one.");
 			pos = moveToSafeCoords(dest, entity, destPos);
 			makePortal(entity, dest, pos.pos);
-			pos = placeInExistingPortal(dest, entity, new BlockPos(pos.pos));
+			pos = placeInExistingPortal(dest, entity, BlockPos.containing(pos.pos));
 		}
 
 		return pos == null ? ITeleporter.super.getPortalInfo(entity, dest, defaultPortalInfo) : pos;
@@ -119,17 +123,35 @@ public class TFTeleporter implements ITeleporter {
 			blockpos = portalPosition.pos;
 			portalPosition.lastUpdateTime = destDim.getGameTime();
 			flag = false;
+			// Validate that the Portal still exists
+			TwilightForestMod.LOGGER.debug("Using cache, validating. {}", blockpos);
+			if (blockpos == null || !destDim.getBlockState(blockpos).is(TFBlocks.TWILIGHT_PORTAL.get())) {
+				// Portal was broken, we need to recreate it.
+				TwilightForestMod.LOGGER.debug("Portal Invalid, recreating.");
+				blockpos = null;
+				destinationCoordinateCache.get(destDim.dimension().location()).remove(columnPos);
+			}
 		} else {
 			//BlockPos blockpos3 = new BlockPos(entity);
 			blockpos = getPortalPosition(destDim, pos);
 		}
 
-		if (blockpos.equals(BlockPos.ZERO)) {
+		if (blockpos == null) {
 			return null;
 		} else {
-			if (flag && !blockpos.equals(BlockPos.ZERO)) {
+			if (flag) {
+				TwilightForestMod.LOGGER.debug("Caching Src Portal Blocks to {}", blockpos);
 				destinationCoordinateCache.putIfAbsent(destDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
-				destinationCoordinateCache.get(destDim.dimension().location()).put(columnPos, new PortalPosition(blockpos, destDim.getGameTime()));
+				Map<BlockPos, Boolean> portalBlocks = new HashMap<>();
+				portalBlocks.put(entity.blockPosition(), true);
+				TFPortalBlock.recursivelyValidatePortal(entity.getLevel(), entity.blockPosition(), portalBlocks, new MutableInt(0), entity.getLevel().getBlockState(entity.blockPosition()));
+				BlockPos finalBlockpos = blockpos;
+				portalBlocks.forEach((blockPos, b) -> {
+					if (b) {
+						TwilightForestMod.LOGGER.debug("Caching {}", blockPos);
+						destinationCoordinateCache.get(destDim.dimension().location()).put(new ColumnPos(blockPos.getX(), blockPos.getZ()), new PortalPosition(finalBlockpos, destDim.getGameTime()));
+					}
+				});
 				// the last param is just an object for tracking, don't worry about it using columnPos instead of blockpos
 				destDim.getChunkSource().addRegionTicket(TicketType.PORTAL, new ChunkPos(blockpos), 3, new BlockPos(columnPos.x(), blockpos.getY(), columnPos.z()));
 			}
@@ -146,10 +168,11 @@ public class TFTeleporter implements ITeleporter {
 		}
 	}
 
+	@Nullable
 	private static BlockPos getPortalPosition(ServerLevel destDim, BlockPos pos) {
 		int i = 200; // scan radius up to 200, and also un-inline this variable back into below
 		double d0 = Double.MAX_VALUE;
-		BlockPos result = BlockPos.ZERO;
+		BlockPos result = null;
 
 		for (int i1 = -i; i1 <= i; ++i1) {
 			BlockPos blockpos2;
@@ -293,7 +316,7 @@ public class TFTeleporter implements ITeleporter {
 		float vz = centerPos.z() - pos.getZ();
 		float nx = pos.getX() + vx * lerp;
 		float nz = pos.getZ() + vz * lerp;
-		return new BlockPos(nx, pos.getY(), nz);
+		return BlockPos.containing(nx, pos.getY(), nz);
 	}
 
 	public static boolean isSafeAround(Level world, BlockPos pos, Entity entity, boolean checkProgression) {
@@ -312,7 +335,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean isSafe(Level world, BlockPos pos, Entity entity, boolean checkProgression) {
-		return checkPos(world, pos) && (!checkProgression || checkBiome(world, pos, entity)) && checkStructure(world, pos);
+		return !world.dimension().equals(TFGenerationSettings.DIMENSION_KEY) || (checkPos(world, pos) && (!checkProgression || checkBiome(world, pos, entity)) && checkStructure(world, pos));
 	}
 
 	private static boolean checkPos(Level world, BlockPos pos) {
@@ -384,7 +407,7 @@ public class TFTeleporter implements ITeleporter {
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor(world);
 		// modified copy of base Teleporter method:
-		cacheNewPortalCoords(src, makePortalAt(world, new BlockPos(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())), entity.blockPosition());
+		cacheNewPortalCoords(src, makePortalAt(world, BlockPos.containing(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())), entity.blockPosition());
 	}
 
 	private static void loadSurroundingArea(ServerLevel world, Vec3 pos) {
@@ -454,6 +477,9 @@ public class TFTeleporter implements ITeleporter {
 		if (srcDim == null)
 			return;
 		BlockPos exitPos = getPortalPosition(srcDim, srcPos);
+		if (exitPos == null)
+			return;
+		TwilightForestMod.LOGGER.debug("Caching Dest Portal Blocks to {}", exitPos);
 		destinationCoordinateCache.putIfAbsent(srcDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
 		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.getX(), pos.getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
 		destinationCoordinateCache.get(srcDim.dimension().location()).put(new ColumnPos(pos.south().getX(), pos.south().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));

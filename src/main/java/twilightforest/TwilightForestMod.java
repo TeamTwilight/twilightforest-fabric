@@ -49,7 +49,7 @@ import twilightforest.world.components.TFCavesCarver;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.world.registration.TFStructureProcessors;
+import twilightforest.init.TFStructureProcessors;
 
 import java.util.Locale;
 
@@ -101,6 +101,7 @@ public class TwilightForestMod implements ModInitializer {
 		TFLootModifiers.LOOT_MODIFIERS.register();
 		TFMobEffects.MOB_EFFECTS.register();
 		TFParticleType.PARTICLE_TYPES.register();
+		TFPOITypes.POIS.register();
 		TFFeatureModifiers.PLACEMENT_MODIFIERS.register();
 		TFRecipes.RECIPE_SERIALIZERS.register();
 		TFRecipes.RECIPE_TYPES.register();
@@ -182,15 +183,6 @@ public class TwilightForestMod implements ModInitializer {
 			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();
 			TFStats.init();
-
-			WoodType.register(TFBlocks.TWILIGHT_OAK);
-			WoodType.register(TFBlocks.CANOPY);
-			WoodType.register(TFBlocks.MANGROVE);
-			WoodType.register(TFBlocks.DARKWOOD);
-			WoodType.register(TFBlocks.TIMEWOOD);
-			WoodType.register(TFBlocks.TRANSFORMATION);
-			WoodType.register(TFBlocks.MINING);
-			WoodType.register(TFBlocks.SORTING);
 
 			CauldronInteraction.WATER.put(TFItems.ARCTIC_HELMET.get(), CauldronInteraction.DYED_ITEM);
 			CauldronInteraction.WATER.put(TFItems.ARCTIC_CHESTPLATE.get(), CauldronInteraction.DYED_ITEM);

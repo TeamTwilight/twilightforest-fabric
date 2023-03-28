@@ -40,7 +40,7 @@ public class WanderingFireflyParticle extends TextureSheetParticle {
 
 	@Override
 	public void tick() {
-		if(!fromJar && this.level.getBrightness(LightLayer.SKY, new BlockPos(this.x, this.y, this.z)) < 1) {
+		if(!this.fromJar && this.level.getBrightness(LightLayer.SKY, BlockPos.containing(this.x, this.y, this.z)) < 1) {
 			this.remove();
 		}
 		super.tick();

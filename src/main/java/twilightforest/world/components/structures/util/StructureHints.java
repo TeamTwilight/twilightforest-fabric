@@ -125,7 +125,7 @@ public interface StructureHints {
         @SuppressWarnings("unchecked")
         private static DataResult<EntityType<? extends Mob>> checkCastMob(EntityType<?> entityType) {
             if (!entityType.getBaseClass().isAssignableFrom(Mob.class))
-                return DataResult.error("Configured Hint Entity " + entityType.toShortString() + " does not have a `Mob` superclass!");
+                return DataResult.error(() -> "Configured Hint Entity " + entityType.toShortString() + " does not have a `Mob` superclass!");
             //noinspection unchecked
             return DataResult.success((EntityType<? extends Mob>) entityType);
         }

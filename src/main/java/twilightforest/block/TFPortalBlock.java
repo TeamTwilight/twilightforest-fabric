@@ -158,7 +158,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		}
 	}
 
-	private static boolean recursivelyValidatePortal(Level level, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState poolBlock) {
+	public static boolean recursivelyValidatePortal(Level level, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState poolBlock) {
 		if (portalSize.incrementAndGet() > TFConfig.COMMON_CONFIG.maxPortalSize.get()) return false;
 
 		boolean isPoolProbablyEnclosed = true;

@@ -7,6 +7,7 @@ import io.github.fabricators_of_create.porting_lib.mixin.accessors.client.access
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -49,9 +50,9 @@ public class TFOverlays {
 					ItemStack stack = player.getInventory().getItem(player.getInventory().selected);
 					if (!stack.isEmpty() && stack.is(ItemTags.WOOL)) {
 						if (ram.guessColor(stack) != null && !ram.isColorPresent(Objects.requireNonNull(ram.guessColor(stack)))) {
-							gui.blit(poseStack, k, j, 0, 0, 7, 7);
+							GuiComponent.blit(poseStack, k, j, 0, 0, 7, 7);
 						} else {
-							gui.blit(poseStack, k, j, 7, 0, 7, 7);
+							GuiComponent.blit(poseStack, k, j, 7, 0, 7, 7);
 						}
 					}
 				}

@@ -2,12 +2,15 @@ package twilightforest.world.components.structures.lichtower;
 
 import com.google.common.collect.Lists;
 import io.github.fabricators_of_create.porting_lib.mixin.accessors.common.accessor.PaintingAccessor;
+import io.github.fabricators_of_create.porting_lib.util.TagUtil;
+import me.alphamode.forgetags.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -31,17 +34,17 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
-import org.jetbrains.annotations.Nullable;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
@@ -1812,7 +1815,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	protected ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
 		List<ResourceKey<PaintingVariant>> valid = new ArrayList<>();
 
-		for (PaintingVariant art : BuiltInRegistries.PAINTING_VARIANT) {
+		for (PaintingVariant art : TagHelper.getContents(BuiltInRegistries.PAINTING_VARIANT, PaintingVariantTags.PLACEABLE)) {
 			if (art.getWidth() >= minSize || art.getHeight() >= minSize) {
 				valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(BuiltInRegistries.PAINTING_VARIANT.getKey(art))));
 			}

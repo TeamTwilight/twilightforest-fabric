@@ -10,6 +10,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -29,7 +30,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 import twilightforest.util.EntityUtil;
 
@@ -149,7 +150,7 @@ public class LifedrainScepterItem extends Item implements CustomEnchantingBehavi
 					this.makeRedMagicTrail(level, living, target.getEyePosition());
 				}
 
-				if (target.hurt(TFDamageSources.lifedrain(living, living), 1)) {
+				if (target.hurt(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), 1)) {
 					// make it explode
 					if (!level.isClientSide()) {
 						if (target.getHealth() <= 1) {
@@ -161,12 +162,15 @@ public class LifedrainScepterItem extends Item implements CustomEnchantingBehavi
 								mob.spawnAnim();
 							}
 							target.playSound(TFSounds.SCEPTER_DRAIN.get(), 1.0F, living.getVoicePitch());
-							level.playSound(null, target.blockPosition(), EntityUtil.getDeathSound(target), SoundSource.HOSTILE, 1.0F, target.getVoicePitch());
+							SoundEvent deathSound = EntityUtil.getDeathSound(target);
+							if (deathSound != null) {
+								level.playSound(null, target.blockPosition(), deathSound, SoundSource.HOSTILE, 1.0F, target.getVoicePitch());
+							}
 							if (!target.isDeadOrDying()) {
 								if (target instanceof Player) {
-									target.hurt(TFDamageSources.lifedrain(living, living), Float.MAX_VALUE);
+									target.hurt(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living), Float.MAX_VALUE);
 								} else {
-									target.die(TFDamageSources.lifedrain(living, living));
+									target.die(TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living));
 									target.discard();
 								}
 							}

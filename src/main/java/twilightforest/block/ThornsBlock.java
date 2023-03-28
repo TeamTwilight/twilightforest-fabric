@@ -27,7 +27,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 
 public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, PlayerDestroyBlock, LandPathNodeTypesRegistry.StaticPathNodeTypeProvider {
 
@@ -54,11 +54,6 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	}
 
 	@Override
-	public BlockPathTypes getPathNodeType(BlockState state, boolean neighbor) {
-		return BlockPathTypes.DAMAGE_CACTUS;
-	}
-
-	@Override
 	public boolean canConnectTo(BlockState state, boolean solidSide) {
 		return (state.getBlock() instanceof ThornsBlock
 						|| state.getBlock().equals(TFBlocks.THORN_ROSE.get())
@@ -81,10 +76,16 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		return shape;
 	}
 
+	@Nullable
+	@Override
+	public BlockPathTypes getPathNodeType(BlockState state, boolean neighbor) {
+		return BlockPathTypes.DAMAGE_OTHER;
+	}
+
 	@Override
 	@SuppressWarnings("deprecation")
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		entity.hurt(TFDamageSources.THORNS, THORN_DAMAGE);
+		entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.THORNS), THORN_DAMAGE);
 	}
 
 	@Override

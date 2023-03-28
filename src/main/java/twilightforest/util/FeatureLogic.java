@@ -58,10 +58,11 @@ public final class FeatureLogic {
         double rangle = angle * 2.0D * Math.PI;
         double rtilt = tilt * Math.PI;
 
+        //TODO verify if casting to int is the right play here
         return pos.offset(
-                Math.round(Math.sin(rangle) * Math.sin(rtilt) * distance),
-                Math.round(Math.cos(rtilt) * distance),
-                Math.round(Math.cos(rangle) * Math.sin(rtilt) * distance)
+                (int) Math.round(Math.sin(rangle) * Math.sin(rtilt) * distance),
+                (int) Math.round(Math.cos(rtilt) * distance),
+                (int) Math.round(Math.cos(rangle) * Math.sin(rtilt) * distance)
         );
     }
 

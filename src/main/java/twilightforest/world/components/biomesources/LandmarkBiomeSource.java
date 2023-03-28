@@ -8,6 +8,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
 
+import java.util.stream.Stream;
+
 public class LandmarkBiomeSource extends BiomeSource {
     public static final Codec<LandmarkBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.LONG.fieldOf("seed").forGetter(o -> o.seed),
@@ -26,7 +28,7 @@ public class LandmarkBiomeSource extends BiomeSource {
     private final SpecialBiomePalette palette;
 
     protected LandmarkBiomeSource(long seed, SpecialBiomePalette palette) {
-        super(palette.allBiomes().stream());
+        super();
 
         this.seed = seed;
         this.palette = palette;
@@ -35,6 +37,11 @@ public class LandmarkBiomeSource extends BiomeSource {
     @Override
     protected Codec<LandmarkBiomeSource> codec() {
         return LandmarkBiomeSource.CODEC;
+    }
+
+    @Override
+    protected Stream<Holder<Biome>> collectPossibleBiomes() {
+        return this.palette.allBiomes().stream();
     }
 
     @Override

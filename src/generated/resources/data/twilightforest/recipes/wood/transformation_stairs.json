@@ -14,5 +14,6 @@
   "result": {
     "count": 8,
     "item": "twilightforest:transformation_stairs"
-  }
+  },
+  "show_notification": true
 }

@@ -1,5 +1,6 @@
 package twilightforest.item.recipe;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -16,6 +17,7 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 		super(id, category);
 	}
 
+	@Override
 	public boolean matches(CraftingContainer container, Level level) {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
@@ -42,7 +44,8 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 		return !itemstack.isEmpty() && i > 0;
 	}
 
-	public ItemStack assemble(CraftingContainer container) {
+	@Override
+	public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 

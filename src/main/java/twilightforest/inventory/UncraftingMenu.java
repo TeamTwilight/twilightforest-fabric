@@ -174,7 +174,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 				}
 
 				// store number of items this recipe produces (and thus how many input items are required for uncrafting)
-				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCount() : recipe.getResultItem().getCount();//Uncrafting recipes need this method call
+				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCount() : recipe.getResultItem(this.level.registryAccess()).getCount();//Uncrafting recipes need this method call
 				this.uncraftingMatrix.uncraftingCost = this.calculateUncraftingCost();
 				this.uncraftingMatrix.recraftingCost = 0;
 
@@ -303,7 +303,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 						!recipe.isIncomplete() &&
 						recipe.canCraftInDimensions(3, 3) &&
 						!recipe.getIngredients().isEmpty() &&
-						matches(inputStack, recipe.getResultItem()) &&
+						matches(inputStack, recipe.getResultItem(world.registryAccess())) &&
 						TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString())) {
 					if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) {
 						recipes.add(recipe);
@@ -343,7 +343,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 		if (recipe != null && (recipe.isSpecial() || !this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe))) {
 			this.tinkerResult.setRecipeUsed(recipe);
-			this.tinkerResult.setItem(0, recipe.assemble(inventory));
+			this.tinkerResult.setItem(0, recipe.assemble(inventory, this.level.registryAccess()));
 		} else {
 			this.tinkerResult.setItem(0, ItemStack.EMPTY);
 		}
@@ -379,18 +379,10 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		}
 
 		if (inputStack.is(Tags.Items.ARMORS) && resultStack.is(Tags.Items.ARMORS)) {
-			return getSlot(inputStack) == getSlot(resultStack);
+			return inputStack.getEquipmentSlot() == resultStack.getEquipmentSlot();
 		}
 
 		return false;
-	}
-
-	@Nullable
-	private static EquipmentSlot getSlot(ItemStack stack) {
-		if (stack.getItem() instanceof ArmorItem armor) {
-			return armor.getSlot();
-		}
-		return ((ItemExtensions)stack.getItem()).fabric_getEquipmentSlotProvider().getPreferredEquipmentSlot(stack);
 	}
 
 	public int getUncraftingCost() {

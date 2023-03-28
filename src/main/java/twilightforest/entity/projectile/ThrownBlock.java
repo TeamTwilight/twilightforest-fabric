@@ -19,7 +19,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import twilightforest.entity.monster.Troll;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
 import org.jetbrains.annotations.Nullable;
@@ -67,7 +67,7 @@ public class ThrownBlock extends TFThrowable {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		if (result.getEntity() instanceof LivingEntity living && !(living instanceof Troll) && !this.getLevel().isClientSide()) {
-			living.hurt(TFDamageSources.THROWN_BLOCK, 6);
+			living.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.THROWN_BLOCK), 6);
 
 			this.getLevel().broadcastEntityEvent(this, (byte) 3);
 			this.discard();

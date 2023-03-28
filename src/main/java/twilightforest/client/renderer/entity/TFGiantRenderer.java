@@ -2,7 +2,6 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
@@ -12,7 +11,6 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -22,10 +20,9 @@ import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.client.model.entity.KoboldModel;
 import twilightforest.entity.monster.GiantMiner;
-import twilightforest.entity.monster.Kobold;
 
 public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, PlayerModel<T>> {
 	private final PlayerModel<T> normalModel;
@@ -37,7 +34,7 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 		slimModel = new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER_SLIM), true);
 
 		this.addLayer(new GiantItemInHandLayer<>(this, context.getItemInHandRenderer()));
-		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
 	}
 
 	@Override
@@ -80,13 +77,13 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 					stack.scale(0.5F, 0.5F, 0.5F);
 				}
 
-				this.renderArmWithItem(entity, itemstack1, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, HumanoidArm.RIGHT, stack, buffer, light);
-				this.renderArmWithItem(entity, itemstack, ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND, HumanoidArm.LEFT, stack, buffer, light);
+				this.renderArmWithItem(entity, itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, HumanoidArm.RIGHT, stack, buffer, light);
+				this.renderArmWithItem(entity, itemstack, ItemDisplayContext.THIRD_PERSON_LEFT_HAND, HumanoidArm.LEFT, stack, buffer, light);
 				stack.popPose();
 			}
 		}
 
-		protected void renderArmWithItem(LivingEntity entity, ItemStack stack, ItemTransforms.TransformType type, HumanoidArm arm, PoseStack ms, MultiBufferSource buffer, int light) {
+		protected void renderArmWithItem(LivingEntity entity, ItemStack stack, ItemDisplayContext type, HumanoidArm arm, PoseStack ms, MultiBufferSource buffer, int light) {
 			if (!stack.isEmpty()) {
 				ms.pushPose();
 				this.getParentModel().translateToHand(arm, ms);

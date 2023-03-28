@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -15,9 +16,9 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.YetiCaveComponent;
+import twilightforest.world.components.structures.util.ConquerableStructure;
 
 import java.util.List;
 import java.util.Map;
@@ -41,12 +42,17 @@ public class YetiCaveStructure extends ConquerableStructure {
         return TFStructureTypes.YETI_CAVE.get();
     }
 
+    @Override
+    protected boolean dontCenter() {
+        return true;
+    }
+
     public static YetiCaveStructure buildYetiCaveConfig(BootstapContext<Structure> context) {
         return new YetiCaveStructure(
-                ControlledSpawningConfig.create(TFLandmark.YETI_CAVE.getSpawnableMonsterLists(), List.of(), List.of()),
+                ControlledSpawningConfig.firstIndexMonsters(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 5, 1, 2)),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
                 new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD.get()),
-                new DecorationConfig(true, false, false),
+                new DecorationConfig(2, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_YETI_CAVE_BIOMES),
                         Map.of(), // Landmarks have Controlled Mob spawning

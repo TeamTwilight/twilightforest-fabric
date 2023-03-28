@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -302,7 +303,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (this.getCurrentPhase() == Phase.DROP) {
-			return entity.hurt(TFDamageSources.SQUISH, (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+			return entity.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.SQUISH, TFEntities.SNOW_QUEEN.get()), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		}
 		return super.doHurtTarget(entity);
 	}
@@ -338,6 +339,17 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	}
 
+	@Override
+	public void lavaHurt() {
+		if (!this.fireImmune()) {
+			this.setSecondsOnFire(5);
+			if (this.hurt(this.damageSources().lava(), 4F)) {
+				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
+				EntityUtil.killLavaAround(this);
+			}
+		}
+	}
+
 	private Vec3 getIceShieldPosition(int idx) {
 		return this.getIceShieldPosition(this.getIceShieldAngle(idx), 1.0F);
 	}
@@ -355,11 +367,6 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	private double getShieldYOffset() {
 		return 0.1F;
-	}
-
-	@Override
-	public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource cause) {
-		return false;
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
@@ -454,7 +461,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		target.hurt(TFDamageSources.CHILLING_BREATH, BREATH_DAMAGE);
+		target.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.CHILLING_BREATH, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
 		// TODO: slow target?
 	}
 

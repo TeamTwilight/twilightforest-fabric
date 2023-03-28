@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -268,7 +269,7 @@ public class UpperGoblinKnight extends Monster {
 	@Override
 	public boolean hurt(DamageSource damageSource, float amount) {
 		// don't take suffocation damage while riding
-		if (damageSource == DamageSource.IN_WALL && this.getVehicle() != null) {
+		if (damageSource.is(DamageTypes.IN_WALL) && this.getVehicle() != null) {
 			return false;
 		}
 

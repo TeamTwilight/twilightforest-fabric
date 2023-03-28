@@ -27,7 +27,7 @@ public class NagaSegment extends TFPart<Naga> {
 	public NagaSegment(Naga naga) {
 		super(naga);
 		this.setPos(naga.getX(), naga.getY(), naga.getZ());
-		this.maxUpStep = getStepHeight();
+		setMaxUpStep(getStepHeight());
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class NagaSegment extends TFPart<Naga> {
 				attackStrength *= 3;
 			}
 
-			entity.hurt(DamageSource.mobAttack(this.getParent()), attackStrength);
+			entity.hurt(entity.getLevel().damageSources().mobAttack(this.getParent()), attackStrength);
 		}
 	}
 

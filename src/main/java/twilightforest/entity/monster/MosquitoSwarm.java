@@ -25,7 +25,7 @@ public class MosquitoSwarm extends Monster {
 
 	public MosquitoSwarm(EntityType<? extends MosquitoSwarm> type, Level world) {
 		super(type, world);
-		this.maxUpStep = 2.1F;
+		setMaxUpStep(2.1F);
 	}
 
 	@Override

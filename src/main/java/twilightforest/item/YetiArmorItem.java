@@ -43,8 +43,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class YetiArmorItem extends ArmorItem implements CustomEnchantingBehaviorItem, WalkOnSnowItem {
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.yeti_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
-	public YetiArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
-		super(material, slot, properties);
+	public YetiArmorItem(ArmorMaterial material, Type type, Properties properties) {
+		super(material, type, properties);
 		EnvExecutor.runWhenOn(EnvType.CLIENT, () -> this::initializeClient);
 	}
 

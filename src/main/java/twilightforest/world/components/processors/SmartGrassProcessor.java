@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.RotationUtil;
-import twilightforest.world.registration.TFStructureProcessors;
+import twilightforest.init.TFStructureProcessors;
 
 import org.jetbrains.annotations.Nullable;
 

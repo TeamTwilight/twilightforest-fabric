@@ -14,5 +14,6 @@
   "result": {
     "count": 8,
     "item": "twilightforest:mossy_nagastone_stairs_left"
-  }
+  },
+  "show_notification": true
 }

@@ -15,9 +15,9 @@ import twilightforest.entity.monster.SnowGuardian;
 @Environment(EnvType.CLIENT)
 public class SnowGuardianRenderer extends TFBipedRenderer<SnowGuardian, NoopModel<SnowGuardian>> {
 
-	public SnowGuardianRenderer(EntityRendererProvider.Context manager, NoopModel<SnowGuardian> model) {
-		super(manager, model, new NoopModel<>(manager.bakeLayer(TFModelLayers.NOOP)), new NoopModel<>(manager.bakeLayer(TFModelLayers.NOOP)), 0.25F, "textures/entity/zombie/zombie.png");
-		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(manager.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
+	public SnowGuardianRenderer(EntityRendererProvider.Context context, NoopModel<SnowGuardian> model) {
+		super(context, model, new NoopModel<>(context.bakeLayer(TFModelLayers.NOOP)), new NoopModel<>(context.bakeLayer(TFModelLayers.NOOP)), 0.25F, "textures/entity/zombie/zombie.png");
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
 	}
 
 	@Override

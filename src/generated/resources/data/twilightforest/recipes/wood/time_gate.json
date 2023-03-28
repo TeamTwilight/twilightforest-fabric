@@ -15,5 +15,6 @@
   ],
   "result": {
     "item": "twilightforest:time_fence_gate"
-  }
+  },
+  "show_notification": true
 }

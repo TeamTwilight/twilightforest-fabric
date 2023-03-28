@@ -42,6 +42,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -433,14 +434,14 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
             ItemStack itemstack = entity.getItem();
             BakedModel bakedmodel = Minecraft.getInstance().getItemRenderer().getModel(itemstack, entity.getLevel(), null, entity.getId());
             float f1 = Mth.sin((Objects.requireNonNull(Minecraft.getInstance().level).getGameTime() + partialTicks) / 10.0F + this.bobOffs) * 0.1F + 0.1F;
-            float f2 = bakedmodel.getTransforms().getTransform(ItemTransforms.TransformType.GROUND).scale.y();
+            float f2 = bakedmodel.getTransforms().getTransform(ItemDisplayContext.GROUND).scale.y();
             stack.translate(0.0D, f1 + 0.25F * f2, 0.0D);
             float f3 = this.getSpin(partialTicks);
             stack.mulPose(Axis.YP.rotation(f3));
 
             stack.pushPose();
 
-            Minecraft.getInstance().getItemRenderer().render(itemstack, ItemTransforms.TransformType.GROUND, false, stack, buffer, light, OverlayTexture.NO_OVERLAY, bakedmodel);
+            Minecraft.getInstance().getItemRenderer().render(itemstack, ItemDisplayContext.GROUND, false, stack, buffer, light, OverlayTexture.NO_OVERLAY, bakedmodel);
             stack.popPose();
 
 

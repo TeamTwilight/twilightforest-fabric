@@ -12,5 +12,6 @@
   ],
   "result": {
     "item": "twilightforest:arctic_boots"
-  }
+  },
+  "show_notification": true
 }

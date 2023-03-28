@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.feature.config.SwizzleConfig;
-import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 
 public class SimpleWellFeature extends TemplateFeature<SwizzleConfig> {
@@ -40,8 +39,6 @@ public class SimpleWellFeature extends TemplateFeature<SwizzleConfig> {
     @Override
     protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
         config.buildAddProcessors(settings, random);
-
-        settings.addProcessor(CobbleVariants.INSTANCE);
     }
 
     @Override

@@ -11,8 +11,8 @@ import twilightforest.TwilightForestMod;
 
 public class IronwoodArmorItem extends ArmorItem implements ArmorTextureItem {
 
-	public IronwoodArmorItem(ArmorMaterial armorMaterial, EquipmentSlot armorType, Properties properties) {
-		super(armorMaterial, armorType, properties);
+	public IronwoodArmorItem(ArmorMaterial armorMaterial, Type type, Properties properties) {
+		super(armorMaterial, type, properties);
 	}
 
 	@Override

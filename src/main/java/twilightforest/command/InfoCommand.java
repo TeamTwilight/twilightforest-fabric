@@ -41,7 +41,7 @@ public class InfoCommand {
 			throw TFCommand.NOT_IN_TF.create();
 		}
 
-		BlockPos pos = new BlockPos(source.getPosition());
+		BlockPos pos = BlockPos.containing(source.getPosition());
 
 		Optional<Registry<Structure>> possibleStructureRegistry = level.registryAccess().registry(Registries.STRUCTURE);
 		Optional<StructureStart> possibleNearLandmark = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));

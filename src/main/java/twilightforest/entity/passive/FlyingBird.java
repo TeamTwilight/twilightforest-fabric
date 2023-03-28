@@ -115,7 +115,7 @@ public abstract class FlyingBird extends Bird {
 			if (this.targetPosition == null || this.getRandom().nextInt(30) == 0 || this.targetPosition.closerToCenterThan(this.position(), 2.0D)) {
 				// TF - modify shift factor of Y
 				int yTarget = this.currentFlightTime < 100 ? 2 : 4;
-				this.targetPosition = new BlockPos(
+				this.targetPosition = BlockPos.containing(
 						this.getX() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7),
 						this.getY() + (double) this.getRandom().nextInt(6) - yTarget,
 						this.getZ() + (double) this.getRandom().nextInt(7) - (double) this.getRandom().nextInt(7));

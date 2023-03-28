@@ -38,7 +38,7 @@ public class HedgeMazeStructure extends LandmarkStructure {
 
     public static HedgeMazeStructure buildStructureConfig(BootstapContext<Structure> context) {
         return new HedgeMazeStructure(
-                new DecorationClearance.DecorationConfig(false, true, true),
+                new DecorationClearance.DecorationConfig(2, false, true, true),
                 new Structure.StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HEDGE_MAZE_BIOMES),
                         Map.of(), // Landmarks have Controlled Mob spawning

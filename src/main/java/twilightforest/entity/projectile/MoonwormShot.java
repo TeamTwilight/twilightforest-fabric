@@ -5,7 +5,6 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -92,7 +91,8 @@ public class MoonwormShot extends TFThrowable {
 		if (result.getEntity() instanceof Player player && !player.hasItemInSlot(EquipmentSlot.HEAD)) {
 			player.setItemSlot(EquipmentSlot.HEAD, new ItemStack(TFBlocks.MOONWORM.get()));
 		} else {
-			result.getEntity().hurt(new IndirectEntityDamageSource("moonworm", this, this), this.random.nextInt(3) == 0 ? 1 : 0);
+			//FIXME custom damage source
+			//result.getEntity().hurt(new IndirectEntityDamageSource("moonworm", this, this), this.random.nextInt(3) == 0 ? 1 : 0);
 		}
 	}
 

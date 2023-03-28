@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.HumanoidArm;
 import org.joml.Vector3f;
@@ -49,13 +50,13 @@ public class KoboldRenderer extends TFBipedRenderer<Kobold, KoboldModel> {
 					ms.scale(0.5F, 0.5F, 0.5F);
 				}
 
-				this.renderItem(living, itemstack1, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, HumanoidArm.RIGHT, ms, buffers, light);
-				this.renderItem(living, itemstack, ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND, HumanoidArm.LEFT, ms, buffers, light);
+				this.renderItem(living, itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, HumanoidArm.RIGHT, ms, buffers, light);
+				this.renderItem(living, itemstack, ItemDisplayContext.THIRD_PERSON_LEFT_HAND, HumanoidArm.LEFT, ms, buffers, light);
 				ms.popPose();
 			}
 		}
 
-		private void renderItem(LivingEntity entity, ItemStack stack, ItemTransforms.TransformType transform, HumanoidArm handSide, PoseStack ms, MultiBufferSource buffers, int light) {
+		private void renderItem(LivingEntity entity, ItemStack stack, ItemDisplayContext transform, HumanoidArm handSide, PoseStack ms, MultiBufferSource buffers, int light) {
 			if (!stack.isEmpty()) {
 				ms.pushPose();
 				this.getParentModel().translateToHand(handSide, ms);

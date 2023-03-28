@@ -1,6 +1,5 @@
 package twilightforest.events;
 
-import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import io.github.fabricators_of_create.porting_lib.event.common.BlockEvents;
 import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
 import io.github.fabricators_of_create.porting_lib.event.common.ProjectileImpactCallback;
@@ -10,14 +9,11 @@ import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -28,13 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFItems;
-import twilightforest.item.EnderBowItem;
-import twilightforest.item.GiantItem;
-import twilightforest.item.MazebreakerPickItem;
-import twilightforest.item.MinotaurAxeItem;
-import twilightforest.item.OreMagnetItem;
-
-import java.util.UUID;
+import twilightforest.item.*;
 
 public class ToolEvents {
 

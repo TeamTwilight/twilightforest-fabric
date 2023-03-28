@@ -6,25 +6,32 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.WoodPalette;
+import twilightforest.world.components.processors.StateTransfiguringProcessor;
 import twilightforest.world.components.processors.WoodPaletteSwizzle;
 
-public record SwizzleConfig(HolderSet<WoodPalette> targets, WeightedRandomList<WeightedEntry.Wrapper<HolderSet<WoodPalette>>> paletteChoices) implements FeatureConfiguration {
+import java.util.Collections;
+import java.util.List;
+
+public record SwizzleConfig(HolderSet<WoodPalette> targets, WeightedRandomList<WeightedEntry.Wrapper<HolderSet<WoodPalette>>> paletteChoices, List<ProcessorRule> preprocessingRules) implements FeatureConfiguration {
     public static final Codec<SwizzleConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             RegistryCodecs.homogeneousList(WoodPalettes.WOOD_PALETTE_TYPE_KEY).fieldOf("target_palettes").forGetter(SwizzleConfig::targets),
-            WeightedRandomList.codec(WeightedEntry.Wrapper.codec(RegistryCodecs.homogeneousList(WoodPalettes.WOOD_PALETTE_TYPE_KEY))).fieldOf("palette_choices").forGetter(SwizzleConfig::paletteChoices)
+            WeightedRandomList.codec(WeightedEntry.Wrapper.codec(RegistryCodecs.homogeneousList(WoodPalettes.WOOD_PALETTE_TYPE_KEY))).fieldOf("palette_choices").forGetter(SwizzleConfig::paletteChoices),
+            ProcessorRule.CODEC.listOf().fieldOf("preprocessing_rules").orElseGet(Collections::emptyList).forGetter(SwizzleConfig::preprocessingRules)
     ).apply(instance, SwizzleConfig::new));
 
     @NotNull
-    public static WeightedRandomList<WeightedEntry.Wrapper<HolderSet<WoodPalette>>> buildPaletteChoices(HolderGetter<WoodPalette> paletteHolders) {
+    public static WeightedRandomList<WeightedEntry.Wrapper<HolderSet<WoodPalette>>> buildRarityPalette(HolderGetter<WoodPalette> paletteHolders) {
         // Old code with chances:
         //  getRandomWeighted(RandomSource random) {
         //	  int randomVal = random.nextInt();
@@ -46,15 +53,15 @@ public record SwizzleConfig(HolderSet<WoodPalette> targets, WeightedRandomList<W
         return WeightedRandomList.create(common, uncommon, rare, treasure);
     }
 
-    public static SwizzleConfig generateForWell(HolderGetter<WoodPalette> paletteHolders, WeightedRandomList<WeightedEntry.Wrapper<HolderSet<WoodPalette>>> paletteChoices) {
-        return new SwizzleConfig(paletteHolders.get(CustomTagGenerator.WoodPaletteTagGenerator.WELL_SWIZZLE_MASK).get(), paletteChoices);
-    }
-
-    public static SwizzleConfig generateForHut(HolderGetter<WoodPalette> paletteHolders, WeightedRandomList<WeightedEntry.Wrapper<HolderSet<WoodPalette>>> paletteChoices) {
-        return new SwizzleConfig(paletteHolders.get(CustomTagGenerator.WoodPaletteTagGenerator.DRUID_HUT_SWIZZLE_MASK).get(), paletteChoices);
+    public static SwizzleConfig generate(HolderGetter<WoodPalette> paletteHolders, TagKey<WoodPalette> swizzleMask, WeightedRandomList<WeightedEntry.Wrapper<HolderSet<WoodPalette>>> paletteChoices, ProcessorRule... postProcessingRules) {
+        return new SwizzleConfig(paletteHolders.getOrThrow(swizzleMask), paletteChoices, List.of(postProcessingRules));
     }
 
     public void buildAddProcessors(StructurePlaceSettings settings, RandomSource random) {
+        // If there's no rules then don't even bother adding the processor for them
+        if (!this.preprocessingRules().isEmpty())
+            settings.addProcessor(new StateTransfiguringProcessor(this.preprocessingRules()));
+
         for (Holder<WoodPalette> targetPalette : this.targets) {
             settings.addProcessor(new WoodPaletteSwizzle(targetPalette, this.paletteChoices().getRandom(random).get().getData().getRandomElement(random).get()));
         }

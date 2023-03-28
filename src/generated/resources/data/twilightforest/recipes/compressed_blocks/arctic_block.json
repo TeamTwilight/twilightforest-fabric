@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "twilightforest:arctic_fur_block"
-  }
+  },
+  "show_notification": true
 }

@@ -5,7 +5,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -15,10 +17,10 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.minotaurmaze.MazeRuinsComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
+import twilightforest.world.components.structures.util.ConquerableStructure;
 
 import java.util.List;
 import java.util.Map;
@@ -49,10 +51,19 @@ public class LabyrinthStructure extends ConquerableStructure implements Configur
 
     public static LabyrinthStructure buildLabyrinthConfig(BootstapContext<Structure> context) {
         return new LabyrinthStructure(
-                ControlledSpawningConfig.create(TFLandmark.LABYRINTH.getSpawnableMonsterLists(), List.of(), List.of()),
+                ControlledSpawningConfig.firstIndexMonsters(
+                        new MobSpawnSettings.SpawnerData(TFEntities.MINOTAUR.get(), 20, 2, 3),
+                        new MobSpawnSettings.SpawnerData(EntityType.CAVE_SPIDER, 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.MAZE_SLIME.get(), 10, 2, 4),
+                        new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.get(), 10, 1, 1)
+                ),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
                 new HintConfig(HintConfig.book("labyrinth", 5), TFEntities.KOBOLD.get()),
-                new DecorationConfig(true, false, false),
+                new DecorationConfig(3, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_LABYRINTH_BIOMES),
                         Map.of(), // Landmarks have Controlled Mob spawning

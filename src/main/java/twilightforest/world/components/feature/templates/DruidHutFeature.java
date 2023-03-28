@@ -4,8 +4,12 @@ import com.mojang.serialization.Codec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.PaintingVariantTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -13,13 +17,13 @@ import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.StructureMode;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 import twilightforest.loot.TFLootTables;
+import twilightforest.util.EntityUtil;
 import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.StoneBricksVariants;
@@ -37,8 +41,6 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
     @Override
     protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
         config.buildAddProcessors(settings, random);
-
-        settings.addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
     }
 
     @Override
@@ -106,6 +108,27 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
             };
 
             TFLootTables.BASEMENT.generateLootContainer(world, blockPos, chest, 16 | 2);
+        } else if (s.startsWith("painting")) {
+            world.removeBlock(blockPos, false);
+
+
+            Direction direction = rotation.rotate(mirror.mirror(switch (s.substring(8, 9)) {
+                case "W" -> Direction.WEST;
+                case "E" -> Direction.EAST;
+                case "S" -> Direction.SOUTH;
+                default -> Direction.NORTH;
+            }));
+
+            String widthS = s.substring(9, 10);
+            int paintingWidth = widthS.matches("\\d+") ? Integer.parseInt(widthS) << 4 : 16;
+
+            @Deprecated //TODO Replace PLACEABLE TagKey for config
+            TagKey<PaintingVariant> allowed = PaintingVariantTags.PLACEABLE;
+
+            boolean hasFlipped = mirror != Mirror.NONE;
+            BlockPos hangPos = hasFlipped ? blockPos.relative(direction.getClockWise()) : blockPos;
+
+            EntityUtil.tryHangPainting(world, hangPos, direction, paintingWidth, paintingWidth == 32 || paintingWidth == 64 ? 32 : 16, BuiltInRegistries.PAINTING_VARIANT, allowed, random);
         }
     }
 

@@ -61,7 +61,7 @@
       "twilightforest:spruce_fallen_log"
     ]
   ],
-  "precipitation": "rain",
+  "has_precipitation": true,
   "spawn_costs": {},
   "spawners": {
     "ambient": [],

@@ -77,4 +77,9 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
     public boolean shouldAdjustToTerrain() {
         return this.decorationConfig.adjustElevation();
     }
+
+    @Override
+    public int chunkClearanceRadius() {
+        return this.decorationConfig.chunkClearanceRadius();
+    }
 }

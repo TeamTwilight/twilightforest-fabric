@@ -48,7 +48,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 					float x = (pos.getX() + level.getRandom().nextFloat()) + level.getRandom().nextInt(5) * (level.getRandom().nextBoolean() ? -1 : 1);
 					float z = (pos.getZ() + level.getRandom().nextFloat()) + level.getRandom().nextInt(5) * (level.getRandom().nextBoolean() ? -1 : 1);
 
-					BlockState underState = level.getBlockState(new BlockPos(x, pos.below().getY(), z));
+					BlockState underState = level.getBlockState(BlockPos.containing(x, pos.below().getY(), z));
 					if (underState.getMaterial().isSolid()) {
 						level.addAlwaysVisibleParticle(
 								new BlockParticleOption(ParticleTypes.BLOCK, underState),

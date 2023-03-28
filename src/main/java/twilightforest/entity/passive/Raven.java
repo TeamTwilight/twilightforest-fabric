@@ -14,7 +14,7 @@ public class Raven extends FlyingBird {
 
 	public Raven(EntityType<? extends Raven> type, Level world) {
 		super(type, world);
-		this.maxUpStep = 1.0F;
+		setMaxUpStep(1.0F);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {

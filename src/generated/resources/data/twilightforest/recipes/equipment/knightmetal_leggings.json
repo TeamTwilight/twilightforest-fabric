@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "twilightforest:knightmetal_leggings"
-  }
+  },
+  "show_notification": true
 }

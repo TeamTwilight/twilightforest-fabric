@@ -2,6 +2,7 @@ package twilightforest.compat.trinkets.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.world.item.ItemDisplayContext;
 import org.joml.Vector3f;
 import dev.emi.trinkets.api.SlotReference;
 import net.minecraft.client.Minecraft;
@@ -17,7 +18,7 @@ import java.util.Objects;
 
 public class CurioHeadRenderer {
 
-	public static void render(ItemStack stack, SlotReference slotContext, EntityModel<? extends LivingEntity> contextModel, PoseStack matrixStack, MultiBufferSource buffer, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
+	public static void render(ItemStack stack, SlotReference slotContext, EntityModel<? extends LivingEntity> contextModel, PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
 		if (contextModel instanceof HeadedModel headModel) {
 			matrixStack.pushPose();
 			headModel.getHead().translateAndRotate(matrixStack);
@@ -25,7 +26,7 @@ public class CurioHeadRenderer {
 			matrixStack.mulPose(Axis.YP.rotationDegrees(180.0F));
 			matrixStack.scale(0.625F, -0.625F, -0.625F);
 			ItemInHandRenderer renderer = new ItemInHandRenderer(Minecraft.getInstance(), Minecraft.getInstance().getEntityRenderDispatcher(), Minecraft.getInstance().getItemRenderer());
-			renderer.renderItem(entity, stack, ItemTransforms.TransformType.HEAD, false, matrixStack, buffer, light);
+			renderer.renderItem(entity, stack, ItemDisplayContext.HEAD, false, matrixStack, renderTypeBuffer, light);
 			matrixStack.popPose();
 		}
 	}

@@ -3,9 +3,9 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobType;
@@ -83,7 +83,7 @@ public class TowerwoodBorer extends Monster {
 		if (this.isInvulnerableTo(source)) {
 			return false;
 		} else {
-			if ((source instanceof EntityDamageSource || source == DamageSource.MAGIC) && this.summonBorers != null) {
+			if ((source.getEntity() != null || source.is(DamageTypeTags.ALWAYS_TRIGGERS_SILVERFISH)) && this.summonBorers != null) {
 				this.summonBorers.notifyHurt();
 			}
 
@@ -129,7 +129,7 @@ public class TowerwoodBorer extends Monster {
 
 				if (random.nextInt(10) == 0 && this.mob.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 					this.facing = Direction.getRandom(random);
-					BlockPos blockpos = (new BlockPos(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ())).relative(this.facing);
+					BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.facing);
 					BlockState state = this.mob.getLevel().getBlockState(blockpos);
 
 					// TF - Change block check
@@ -155,7 +155,7 @@ public class TowerwoodBorer extends Monster {
 				super.start();
 			} else {
 				Level level = this.mob.getLevel();
-				BlockPos blockpos = (new BlockPos(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ())).relative(this.facing);
+				BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.facing);
 				BlockState state = level.getBlockState(blockpos);
 
 				// TF - Change block check

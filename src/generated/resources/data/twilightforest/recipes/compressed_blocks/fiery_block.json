@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "twilightforest:fiery_block"
-  }
+  },
+  "show_notification": true
 }

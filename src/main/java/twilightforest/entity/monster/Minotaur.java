@@ -28,7 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.entity.boss.Minoshroom;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
@@ -118,7 +118,7 @@ public class Minotaur extends Monster implements ITFCharger {
 		}
 
 		//TF: change damage source to minotaur one
-		boolean flag = entity.hurt(TFDamageSources.axing(this), f);
+		boolean flag = entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.AXING, this), f);
 		if (flag) {
 			if (f1 > 0.0F && entity instanceof LivingEntity living) {
 				living.knockback(f1 * 0.5F, Mth.sin(this.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(this.getYRot() * Mth.DEG_TO_RAD));
@@ -151,7 +151,7 @@ public class Minotaur extends Monster implements ITFCharger {
 		super.aiStep();
 
 		if (this.isCharging()) {
-			this.animationSpeed += 0.6;
+			this.walkAnimation.setSpeed(this.walkAnimation.speed() + 0.6F);
 		}
 	}
 

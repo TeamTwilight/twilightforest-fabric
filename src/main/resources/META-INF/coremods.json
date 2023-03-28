@@ -7,5 +7,6 @@
   "mount": "META-INF/asm/mount.js",
   "book": "META-INF/asm/book.js",
   "conquered": "META-INF/asm/conquered.js",
-  "reach": "META-INF/asm/reach.js"
+  "reach": "META-INF/asm/reach.js",
+  "shroom": "META-INF/asm/shroom.js"
 }

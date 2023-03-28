@@ -19,5 +19,6 @@
   "result": {
     "count": 8,
     "item": "twilightforest:encased_castle_brick_stairs"
-  }
+  },
+  "show_notification": true
 }

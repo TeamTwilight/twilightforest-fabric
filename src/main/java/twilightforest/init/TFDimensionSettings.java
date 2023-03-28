@@ -150,7 +150,6 @@ public class TFDimensionSettings {
 
 		NoiseBasedChunkGenerator wrappedChunkGenerator = new NoiseBasedChunkGenerator(
 				new TFBiomeProvider(
-						0L,
 						biomeRegistry,
 						BiomeMaker.makeBiomeList(biomeRegistry, biomeRegistry.getOrThrow(TFBiomes.UNDERGROUND)),
 						-1.25F,

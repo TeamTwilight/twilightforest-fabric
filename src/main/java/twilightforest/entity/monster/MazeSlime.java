@@ -116,7 +116,7 @@ public class MazeSlime extends Slime {
 		this.decreaseSquish();
 	}
 
-	protected boolean spawnCustomParticles() {
+	public boolean spawnCustomParticles() {
 		// [VanillaCopy] from super tick with own particles
 		int i = getSize();
 		for (int j = 0; j < i * 8; ++j) {

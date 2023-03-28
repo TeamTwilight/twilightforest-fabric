@@ -45,7 +45,7 @@ public class HydraLairStructure extends ProgressionStructure {
         return new HydraLairStructure(
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_labyrinth"))),
                 new HintConfig(HintConfig.book("hydralair", 4), TFEntities.KOBOLD.get()),
-                new DecorationConfig(false, false, false),
+                new DecorationConfig(2, false, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HYDRA_LAIR_BIOMES),
                         Map.of(), // Landmarks have Controlled Mob spawning

@@ -40,6 +40,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.AlphaYeti;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFParticleType;
 
@@ -199,7 +200,7 @@ public class FallingIce extends Entity {
 			float dmg = (float) Math.min(Mth.floor((float) realDist * this.damagePerDifficulty[this.getLevel().getDifficulty().getId()]), this.fallDamageMax);
 			this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0F, 0.0F, 1.0F), EntitySelector.NO_SPECTATORS).forEach((entity) -> {
 				if (!(entity instanceof AlphaYeti)) {
-					entity.hurt(DamageSource.fallingBlock(this).bypassEnchantments(), dmg);
+					entity.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.FALLING_ICE), dmg);
 				}
 			});
 		}

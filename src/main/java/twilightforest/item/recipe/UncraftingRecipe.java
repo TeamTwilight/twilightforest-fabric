@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -30,17 +31,17 @@ import java.util.Set;
 public record UncraftingRecipe(ResourceLocation recipeID, int cost, int width, int height, Ingredient ingredient, int count, NonNullList<Ingredient> resultItems) implements IUncraftingRecipe {
 
     @Override //This method is never used, but it has to be implemented
-    public boolean matches(CraftingContainer pContainer, Level pLevel) {
+    public boolean matches(CraftingContainer container, Level level) {
         return false;
     }
 
     @Override //We have to implement this method, can't really be used since we have multiple outputs
-    public ItemStack assemble(CraftingContainer pContainer) {
+    public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
         return ItemStack.EMPTY;
     }
 
     @Override //We have to implement this method, returns the count just in case
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess access) {
         return new ItemStack(Items.AIR, this.count);
     }
 

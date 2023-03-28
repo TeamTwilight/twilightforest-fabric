@@ -37,7 +37,7 @@ public class MushroomTowerStructure extends LandmarkStructure {
 
     public static MushroomTowerStructure buildStructureConfig(BootstapContext<Structure> context) {
         return new MushroomTowerStructure(
-                new DecorationConfig(true, true, true),
+                new DecorationConfig(2, true, true, true),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_MUSHROOM_TOWER_BIOMES),
                         Map.of(), // Landmarks have Controlled Mob spawning

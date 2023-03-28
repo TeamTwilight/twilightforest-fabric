@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "twilightforest:carminite_builder"
-  }
+  },
+  "show_notification": true
 }

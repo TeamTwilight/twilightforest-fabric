@@ -18,7 +18,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 
 import java.util.List;
@@ -90,7 +90,7 @@ public class GiantMiner extends Monster {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		entity.hurt(TFDamageSources.ant(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.ANT, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return super.doHurtTarget(entity);
 	}
 

@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "twilightforest:carminite_reactor"
-  }
+  },
+  "show_notification": true
 }

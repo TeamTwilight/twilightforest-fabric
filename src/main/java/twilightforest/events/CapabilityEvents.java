@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,7 +44,7 @@ public class CapabilityEvents {
 	public static boolean livingAttack(LivingEntity living, DamageSource source, float damage) {
 		// shields
 		AtomicBoolean cancel = new AtomicBoolean(false);
-		if (!living.getLevel().isClientSide() && !source.isBypassArmor()) {
+		if (!living.getLevel().isClientSide() && !source.is(DamageTypeTags.BYPASSES_ARMOR)) {
 			CapabilityList.SHIELDS.maybeGet(living).ifPresent(cap -> {
 				if (cap.shieldsLeft() > 0) {
 					cap.breakShield();

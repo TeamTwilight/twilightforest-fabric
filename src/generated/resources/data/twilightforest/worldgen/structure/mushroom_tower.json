@@ -4,6 +4,7 @@
   "allow_biome_surface_decorations": true,
   "allow_biome_underground_decorations": true,
   "biomes": "#twilightforest:valid_mushroom_tower_biomes",
+  "chunk_clearance_radius": 2,
   "spawn_overrides": {},
   "step": "surface_structures"
 }

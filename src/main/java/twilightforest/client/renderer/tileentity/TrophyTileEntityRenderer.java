@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -83,11 +84,11 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 		if (variant == BossVariant.UR_GHAST) {
 			((UrGhastTrophyModel)trophy).setTranslate(matrixStackIn, 0F, 1.0F, 0F);
 		}
-		render(direction, f1, trophy, variant, f, matrixStackIn, bufferIn, combinedLightIn, ItemTransforms.TransformType.NONE);
+		render(direction, f1, trophy, variant, f, matrixStackIn, bufferIn, combinedLightIn, ItemDisplayContext.NONE);
 		matrixStackIn.popPose();
 	}
 
-	public static void render(@Nullable Direction directionIn, float y, GenericTrophyModel trophy, BossVariant variant, float animationProgress, PoseStack matrixStackIn, MultiBufferSource buffer, int combinedLight, ItemTransforms.TransformType camera) {
+	public static void render(@Nullable Direction directionIn, float y, GenericTrophyModel trophy, BossVariant variant, float animationProgress, PoseStack matrixStackIn, MultiBufferSource buffer, int combinedLight, ItemDisplayContext camera) {
 		BooleanSupplier legacy = () -> Minecraft.getInstance().getResourcePackRepository().getSelectedIds().contains("builtin/twilight_forest_classic_resources");
 		matrixStackIn.pushPose();
 		if (directionIn == null || variant == BossVariant.UR_GHAST) {
@@ -99,7 +100,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 		switch (variant) {
 			case HYDRA -> {
 				matrixStackIn.scale(0.25F, 0.25F, 0.25F);
-				if (camera == ItemTransforms.TransformType.GUI) {
+				if (camera == ItemDisplayContext.GUI) {
 					trophy.openMouthForTrophy(0.35F);
 				}
 				trophy.setRotations(animationProgress * 4.5F, y, 0.0F);

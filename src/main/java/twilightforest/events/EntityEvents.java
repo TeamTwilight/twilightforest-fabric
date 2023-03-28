@@ -12,12 +12,14 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -75,7 +77,7 @@ public class EntityEvents {
 		Entity trueSource = source.getEntity();
 
 		// fire react and chill aura
-		if (source instanceof EntityDamageSource && trueSource != null && amount > 0) {
+		if (source.getEntity() != null && trueSource != null && amount > 0) {
 			int fireLevel = getGearCoverage(living, false) * 5;
 			int chillLevel = getGearCoverage(living, true);
 
@@ -130,9 +132,9 @@ public class EntityEvents {
 		AtomicReference<Float> netAmount = new AtomicReference<>(amount);
 		if (living != null) {
 			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.get())).ifPresent(mobEffectInstance -> {
-				if (source == DamageSource.FREEZE) {
-					netAmount.set(amount + (float)(mobEffectInstance.getAmplifier() / 2));
-				} else if (source.isFire()) {
+				if (event.getSource().is(DamageTypes.FREEZE)) {
+					event.setAmount(event.getAmount() + (float)(mobEffectInstance.getAmplifier() / 2));
+				} else if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
 					living.removeEffect(TFMobEffects.FROSTY.get());
 					mobEffectInstance.amplifier -= 1;
 					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);

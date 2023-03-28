@@ -222,7 +222,7 @@ public class NagaMovementPattern extends Goal {
 		double dy = Math.min(this.naga.getBoundingBox().minY, toCircle.getY());
 
 		// add that to the target entity's position, and we have our destination
-		return new BlockPos(toCircle.getX() + dx, dy, toCircle.getZ() + dz);
+		return BlockPos.containing(toCircle.getX() + dx, dy, toCircle.getZ() + dz);
 	}
 
 	public MovementState getState() {

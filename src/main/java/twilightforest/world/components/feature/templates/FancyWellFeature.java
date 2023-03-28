@@ -18,9 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.feature.config.SwizzleConfig;
-import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.SmartGrassProcessor;
-import twilightforest.world.components.processors.StoneBricksVariants;
 
 public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
     private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/fancy_well_top");
@@ -39,8 +37,6 @@ public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
     @Override
     protected void modifySettings(StructurePlaceSettings settings, RandomSource random, SwizzleConfig config) {
         config.buildAddProcessors(settings, random);
-
-        settings.addProcessor(CobbleVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE);
     }
 
     @Override

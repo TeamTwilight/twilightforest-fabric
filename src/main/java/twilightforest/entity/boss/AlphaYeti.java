@@ -10,7 +10,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -147,7 +149,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 				}
 
 				// also swing limbs
-				this.animationSpeed += 0.6;
+				this.walkAnimation.setSpeed(this.walkAnimation.speed() + 0.6F);
 			}
 
 			if (this.isTired()) {
@@ -176,7 +178,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
 		// no arrow damage when in ranged mode
-		if (!this.canRampage && !this.isTired() && source.isProjectile()) {
+		if (!this.canRampage && !this.isTired() && source.is(DamageTypeTags.IS_PROJECTILE)) {
 			return false;
 		}
 
@@ -185,6 +187,17 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 			this.hurtBy.add(player);
 		}
 		return super.hurt(source, amount);
+	}
+
+	@Override
+	public void lavaHurt() {
+		if (!this.fireImmune()) {
+			this.setSecondsOnFire(5);
+			if (this.hurt(this.damageSources().lava(), 4F)) {
+				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
+				EntityUtil.killLavaAround(this);
+			}
+		}
 	}
 
 	@Nullable
@@ -357,7 +370,7 @@ public class AlphaYeti extends Monster implements RangedAttackMob, IHostileMount
 
 	private void hitNearbyEntities() {
 		for (LivingEntity entity : this.getLevel().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5, 0, 5))) {
-			if (entity != this && entity.hurt(DamageSource.mobAttack(this), 5F)) {
+			if (entity != this && entity.hurt(this.damageSources().mobAttack(this), 5F)) {
 				entity.push(0, 0.4, 0);
 			}
 		}

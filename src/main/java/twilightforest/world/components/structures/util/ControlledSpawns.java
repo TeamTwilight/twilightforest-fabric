@@ -36,6 +36,10 @@ public interface ControlledSpawns {
 
         public static final ControlledSpawningConfig EMPTY = create(Map.of(), List.of(), List.of());
 
+        public static ControlledSpawningConfig firstIndexMonsters(MobSpawnSettings.SpawnerData... spawnableMonsterList) {
+            return create(List.of(List.of(spawnableMonsterList)), List.of(), List.of());
+        }
+
         public static ControlledSpawningConfig create(List<List<MobSpawnSettings.SpawnerData>> spawnableMonsterLists, List<MobSpawnSettings.SpawnerData> ambientCreatureList, List<MobSpawnSettings.SpawnerData> waterCreatureList) {
             return create(convertMonsterList(spawnableMonsterLists), ambientCreatureList, waterCreatureList);
         }

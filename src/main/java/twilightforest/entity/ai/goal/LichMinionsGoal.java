@@ -93,7 +93,7 @@ public class LichMinionsGoal extends Goal {
 			// put a clone there
 			LichMinion minion = new LichMinion(this.lich.getLevel(), this.lich);
 			minion.setPos(minionSpot.x(), minionSpot.y(), minionSpot.z());
-			minion.finalizeSpawn(accessor, this.lich.getLevel().getCurrentDifficultyAt(new BlockPos(minionSpot)), MobSpawnType.MOB_SUMMONED, null, null);
+			minion.finalizeSpawn(accessor, this.lich.getLevel().getCurrentDifficultyAt(BlockPos.containing(minionSpot)), MobSpawnType.MOB_SUMMONED, null, null);
 			this.lich.getLevel().addFreshEntity(minion);
 
 			minion.setTarget(targetedEntity);

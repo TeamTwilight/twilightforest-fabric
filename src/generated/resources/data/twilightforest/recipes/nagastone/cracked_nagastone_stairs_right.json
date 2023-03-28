@@ -14,5 +14,6 @@
   "result": {
     "count": 8,
     "item": "twilightforest:cracked_nagastone_stairs_right"
-  }
+  },
+  "show_notification": true
 }

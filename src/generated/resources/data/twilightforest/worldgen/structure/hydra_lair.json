@@ -7,6 +7,7 @@
   "allow_biome_surface_decorations": false,
   "allow_biome_underground_decorations": false,
   "biomes": "#twilightforest:valid_hydra_lair_biomes",
+  "chunk_clearance_radius": 2,
   "hint_item": {
     "Count": 1,
     "id": "minecraft:written_book",

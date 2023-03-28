@@ -1,6 +1,7 @@
 package twilightforest.entity.ai.goal;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Mob;
@@ -61,7 +62,10 @@ public class LichPopMobsGoal extends Goal {
 					//rain particles
 					LifedrainScepterItem.animateTargetShatter((ServerLevel) this.lich.getLevel(), mob);
 					// play death sound
-					this.lich.getLevel().playSound(null, mob.blockPosition(), EntityUtil.getDeathSound(mob), SoundSource.HOSTILE, 1.0F, mob.getVoicePitch());
+					SoundEvent deathSound = EntityUtil.getDeathSound(mob);
+					if (deathSound != null) {
+						this.lich.getLevel().playSound(null, mob.blockPosition(), deathSound, SoundSource.HOSTILE, 1.0F, mob.getVoicePitch());
+					}
 					//funny pop sound
 					this.lich.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
 					mob.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);

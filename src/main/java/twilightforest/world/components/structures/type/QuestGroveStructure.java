@@ -38,7 +38,7 @@ public class QuestGroveStructure extends LandmarkStructure {
 
     public static QuestGroveStructure buildStructureConfig(BootstapContext<Structure> context) {
         return new QuestGroveStructure(
-                new DecorationConfig(false, true, true),
+                new DecorationConfig(1, false, true, true),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_QUEST_GROVE_BIOMES),
                         Map.of(), // Landmarks have Controlled Mob spawning

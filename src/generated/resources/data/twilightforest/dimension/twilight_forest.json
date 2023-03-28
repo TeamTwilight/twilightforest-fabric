@@ -219,8 +219,7 @@
             "key_biome": "twilightforest:thornlands",
             "scale": 0.1
           }
-        ],
-        "seed": 0
+        ]
       },
       "settings": "twilightforest:twilight_noise_gen"
     }

@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 
 public class PinchBeetle extends Monster implements IHostileMount {
@@ -102,7 +102,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 				entity.startRiding(this, true);
 			}
 		}
-		entity.hurt(TFDamageSources.clamped(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.CLAMPED, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return super.doHurtTarget(entity);
 	}
 

@@ -28,6 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -69,7 +70,7 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 	private KnightmetalShieldModel shield;
 
 	@Override
-	public void render(ItemStack stack, ItemTransforms.TransformType camera, PoseStack ms, MultiBufferSource buffers, int light, int overlay) {
+	public void render(ItemStack stack, ItemDisplayContext camera, PoseStack ms, MultiBufferSource buffers, int light, int overlay) {
 		if (shield == null)
 			shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 		Item item = stack.getItem();
@@ -79,7 +80,7 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 				BossVariant variant = trophyBlock.getVariant();
 				GenericTrophyModel trophy = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels()).get(variant);
 
-				if (camera == ItemTransforms.TransformType.GUI) {
+				if (camera == ItemDisplayContext.GUI) {
 					ModelResourceLocation back = new ModelResourceLocation(TwilightForestMod.prefix(((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()), "inventory");
 					BakedModel modelBack = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getModelManager().getModel(back);
 
@@ -89,7 +90,7 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 					Lighting.setupForFlatItems();
 					ms.translate(0.5F, 0.5F, -1.5F);
 					modelBack.getTransforms().getTransform(camera).apply(false, ms); // applyTransform
-					Minecraft.getInstance().getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemTransforms.TransformType.GUI, false, ms, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, modelBack);
+					Minecraft.getInstance().getItemRenderer().render(TrophyTileEntityRenderer.stack, ItemDisplayContext.GUI, false, ms, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, modelBack);
 					ms.popPose();
 					bufferSource.endBatch();
 					Lighting.setupFor3DItems();

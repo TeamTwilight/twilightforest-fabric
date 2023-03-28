@@ -57,11 +57,6 @@ public class BrittleFlaskItem extends Item {
 	}
 
 	@Override
-	public boolean isFoil(ItemStack stack) {
-		return !PotionUtils.getMobEffects(stack).isEmpty();
-	}
-
-	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
 		CompoundTag flaskTag = stack.getTag();
 		CompoundTag potionTag = other.getTag();
@@ -214,15 +209,4 @@ public class BrittleFlaskItem extends Item {
 		}
 		return 0;
 	}
-
-
-//	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-//		if (this.allowedIn(tab)) {
-//			ItemStack stack = new ItemStack(this);
-//			stack.getOrCreateTag().putInt("Uses", 0);
-//			stack.getOrCreateTag().putInt("Breakage", 0);
-//			stack.getOrCreateTag().putBoolean("Refillable", true);
-//			items.add(stack);
-//		}
-//	}
 }

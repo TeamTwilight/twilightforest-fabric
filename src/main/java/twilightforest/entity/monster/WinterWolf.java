@@ -148,7 +148,7 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		target.hurt(DamageSource.mobAttack(this), BREATH_DAMAGE);
+		target.hurt(this.damageSources().mobAttack(this), BREATH_DAMAGE);
 	}
 
 	public static boolean canSpawnHere(EntityType<? extends WinterWolf> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {

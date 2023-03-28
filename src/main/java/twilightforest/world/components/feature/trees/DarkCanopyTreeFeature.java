@@ -100,15 +100,21 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			set1.add(p_160548_.immutable());
 			reader.setBlock(p_160548_, p_160549_, 19);
 		};
-		BiConsumer<BlockPos, BlockState> biconsumer2 = (p_160543_, p_160544_) -> {
-			set2.add(p_160543_.immutable());
-			reader.setBlock(p_160543_, p_160544_, 19);
+		FoliagePlacer.FoliageSetter setter = new FoliagePlacer.FoliageSetter() {
+			public void set(BlockPos pos, BlockState state) {
+				set2.add(pos.immutable());
+				reader.setBlock(pos, state, 19);
+			}
+
+			public boolean isSet(BlockPos p_272999_) {
+				return set2.contains(p_272999_);
+			}
 		};
 		BiConsumer<BlockPos, BlockState> biconsumer3 = (p_225290_, p_225291_) -> {
 			set3.add(p_225290_.immutable());
 			reader.setBlock(p_225290_, p_225291_, 19);
 		};
-		boolean flag = this.doPlace(reader, rand, pos, validPos, biconsumer, biconsumer1, biconsumer2, treeconfiguration);
+		boolean flag = this.doPlace(reader, rand, pos, validPos, biconsumer, biconsumer1, setter, treeconfiguration);
 		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
 			if (!treeconfiguration.decorators.isEmpty()) {
 				TreeDecorator.Context treedecorator$context = new TreeDecorator.Context(reader, biconsumer3, rand, set1, set2, set);
@@ -128,7 +134,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 	}
 
 	//Mostly [VanillaCopy] of TreeFeature.doPlace, edits noted
-	private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BlockPos validPos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, BiConsumer<BlockPos, BlockState> consumer2, TreeConfiguration config) {
+	private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BlockPos validPos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, FoliagePlacer.FoliageSetter foliageSetter, TreeConfiguration config) {
 		//set our blockpos to the valid dirt pos, not highest ground
 		pos = new BlockPos(pos.getX(), validPos.getY(), pos.getZ());
 		int i = config.trunkPlacer.getTreeHeight(random);
@@ -148,7 +154,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 				} else {
 					List<FoliagePlacer.FoliageAttachment> list = config.trunkPlacer.placeTrunk(level, consumer1, random, k1, blockpos, config);
 					list.forEach((attachment) -> {
-						config.foliagePlacer.createFoliage(level, consumer2, random, config, k1, attachment, j, l);
+						config.foliagePlacer.createFoliage(level, foliageSetter, random, config, k1, attachment, j, l);
 					});
 					return true;
 				}

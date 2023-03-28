@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.level.Level;
@@ -176,7 +177,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 					ghast.setDeltaMovement(mx, my, mz);
 
 					if (te.rand.nextInt(10) == 0) {
-						ghast.hurt(DamageSource.GENERIC, 7);
+						ghast.hurt(level.damageSources().generic(), 7);
 						urghast.resetDamageUntilNextPhase();
 					}
 
@@ -188,7 +189,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 					ghast.setDeltaMovement(mx, my, mz);
 
 					if (te.rand.nextInt(10) == 0) {
-						ghast.hurt(DamageSource.GENERIC, 10);
+						ghast.hurt(level.damageSources().generic(), 10);
 					}
 				}
 

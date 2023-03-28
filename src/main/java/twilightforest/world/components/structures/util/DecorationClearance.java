@@ -8,6 +8,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
 public interface DecorationClearance {
+    int chunkClearanceRadius();
+
     boolean isSurfaceDecorationsAllowed();
 
     boolean isUndergroundDecoAllowed();
@@ -20,8 +22,9 @@ public interface DecorationClearance {
                 : context.chunkGenerator().getSeaLevel();
     }
 
-    record DecorationConfig(boolean surfaceDecorations, boolean undergroundDecorations, @Deprecated boolean adjustElevation) {
+    record DecorationConfig(int chunkClearanceRadius, boolean surfaceDecorations, boolean undergroundDecorations, @Deprecated boolean adjustElevation) {
         public static MapCodec<DecorationConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                Codec.intRange(1, 8).fieldOf("chunk_clearance_radius").orElse(1).forGetter(DecorationConfig::chunkClearanceRadius),
                 Codec.BOOL.fieldOf("allow_biome_surface_decorations").forGetter(DecorationConfig::surfaceDecorations),
                 Codec.BOOL.fieldOf("allow_biome_underground_decorations").forGetter(DecorationConfig::undergroundDecorations),
                 Codec.BOOL.fieldOf("adjust_structure_elevation").forGetter(DecorationConfig::adjustElevation)

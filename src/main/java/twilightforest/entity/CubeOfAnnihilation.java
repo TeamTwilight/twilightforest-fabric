@@ -78,11 +78,11 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	private DamageSource getDamageSource() {
 		LivingEntity thrower = (LivingEntity) this.getOwner();
 		if (thrower instanceof Player) {
-			return DamageSource.playerAttack((Player) thrower);
+			return this.damageSources().playerAttack((Player) thrower);
 		} else if (thrower != null) {
-			return DamageSource.mobAttack(thrower);
+			return this.damageSources().mobAttack(thrower);
 		} else {
-			return DamageSource.thrown(this, null);
+			return this.damageSources().thrown(this, null);
 		}
 	}
 

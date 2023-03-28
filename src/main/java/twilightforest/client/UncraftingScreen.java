@@ -137,7 +137,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		RenderSystem._setShaderTexture(0, textureLoc);
 		int frameX = (this.width - this.imageWidth) / 2;
 		int frameY = (this.height - this.imageHeight) / 2;
-		this.blit(ms, frameX, frameY, 0, 0, this.imageWidth, this.imageHeight);
+		blit(ms, frameX, frameY, 0, 0, this.imageWidth, this.imageHeight);
 
 		UncraftingMenu tfContainer = this.menu;
 
@@ -186,13 +186,12 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 
 	private void drawSlotAsBackground(PoseStack ms, Slot backgroundSlot, Slot appearSlot) {
 
-		int screenX = appearSlot.x + leftPos;
-		int screenY = appearSlot.y + topPos;
+		int screenX = appearSlot.x;
+		int screenY = appearSlot.y;
 		ItemStack itemStackToRender = backgroundSlot.getItem();
-		itemRenderer.blitOffset = 50.0F;
 
-        itemRenderer.renderGuiItem(itemStackToRender, screenX, screenY);
-        itemRenderer.renderGuiItemDecorations(this.font, itemStackToRender, screenX, screenY, "");
+        itemRenderer.renderGuiItem(ms, itemStackToRender, screenX, screenY);
+        itemRenderer.renderGuiItemDecorations(ms, this.font, itemStackToRender, screenX, screenY, "");
 
 		boolean itemBroken = UncraftingMenu.isMarked(itemStackToRender);
 
@@ -200,8 +199,6 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		RenderSystem.disableDepthTest();
 		GuiComponent.fill(ms, appearSlot.x, appearSlot.y, appearSlot.x + 16, appearSlot.y + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
 		RenderSystem.enableDepthTest();
-
-        itemRenderer.blitOffset = 0.0F;
 	}
 
 	@Override
@@ -231,7 +228,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		}
 
 		@Override
-		public void renderButton(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+		public void renderWidget(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				RenderSystem._setShaderTexture(0, UncraftingScreen.textureLoc);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -245,7 +242,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 				// what's up
 				if (!this.up) textureY += this.height;
 
-				this.blit(ms, this.getX(), this.getY(), textureX, textureY, this.width, this.height);
+				blit(ms, this.getX(), this.getY(), textureX, textureY, this.width, this.height);
 			}
 		}
 	}
@@ -259,7 +256,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		}
 
 		@Override
-		public void renderButton(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+		public void renderWidget(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				RenderSystem._setShaderTexture(0, UncraftingScreen.textureLoc);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -273,7 +270,7 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 				// what's up
 				if (!this.up) textureY += this.height;
 
-				this.blit(ms, this.getX(), this.getY(), textureX, textureY, this.width, this.height);
+				blit(ms, this.getX(), this.getY(), textureX, textureY, this.width, this.height);
 			}
 		}
 	}

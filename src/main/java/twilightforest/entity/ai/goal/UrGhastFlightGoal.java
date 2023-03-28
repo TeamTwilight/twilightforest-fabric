@@ -3,6 +3,7 @@ package twilightforest.entity.ai.goal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.UrGhast;
 
 import java.util.ArrayList;
@@ -16,12 +17,11 @@ public class UrGhastFlightGoal extends Goal {
 	private static final int HOVER_ALTITUDE = 20; // how far, relatively, do we hover over ghast traps?
 	private final UrGhast ghast;
 
-	private final List<BlockPos> pointsToVisit;
+	private List<BlockPos> pointsToVisit;
 	private int currentPoint = 0;
 
 	public UrGhastFlightGoal(UrGhast ghast) {
 		this.ghast = ghast;
-		this.pointsToVisit = createPath();
 		setFlags(EnumSet.of(Flag.MOVE));
 	}
 
@@ -29,6 +29,8 @@ public class UrGhastFlightGoal extends Goal {
 	@Override
 	public boolean canUse() {
 		MoveControl entitymovehelper = this.ghast.getMoveControl();
+		this.pointsToVisit = this.createPath();
+		if (this.pointsToVisit.isEmpty()) return false;
 
 		if (!entitymovehelper.hasWanted()) {
 			return true;
@@ -48,8 +50,9 @@ public class UrGhastFlightGoal extends Goal {
 
 	@Override
 	public void start() {
+
 		if (this.pointsToVisit.isEmpty()) {
-			this.pointsToVisit.addAll(createPath());
+			this.pointsToVisit.addAll(this.createPath());
 		} else {
 			if (this.currentPoint >= this.pointsToVisit.size()) {
 				this.currentPoint = 0;
@@ -63,7 +66,7 @@ public class UrGhastFlightGoal extends Goal {
 			// TODO reintroduce wanderFactor somehow? Would need to change move helper or add extra fields here
 
 			double x = this.pointsToVisit.get(this.currentPoint).getX();
-			double y = this.pointsToVisit.get(this.currentPoint).getY() + HOVER_ALTITUDE;
+			double y = this.pointsToVisit.get(this.currentPoint).getY() + (this.ghast.hasRestriction() ? HOVER_ALTITUDE : 0);
 			double z = this.pointsToVisit.get(this.currentPoint).getZ();
 			this.ghast.getMoveControl().setWantedPosition(x, y, z, 1.0F);
 			this.currentPoint++;
@@ -75,9 +78,9 @@ public class UrGhastFlightGoal extends Goal {
 
 	private List<BlockPos> createPath() {
 		List<BlockPos> potentialPoints = new ArrayList<>();
-		BlockPos pos = new BlockPos(this.ghast.blockPosition());
+		BlockPos pos = new BlockPos(this.ghast.getLogicalScanPoint());
 
-		if (!this.ghast.isInNoTrapMode()) {
+		if (!this.ghast.getTrapLocations().isEmpty()) {
 			// make a copy of the trap locations list
 			potentialPoints.addAll(this.ghast.getTrapLocations());
 		} else {
@@ -89,7 +92,7 @@ public class UrGhastFlightGoal extends Goal {
 
 		Collections.shuffle(potentialPoints);
 
-		if (this.ghast.isInNoTrapMode()) {
+		if (this.ghast.getTrapLocations().isEmpty()) {
 			// if in no trap mode, head back to the middle when we're done
 			potentialPoints.add(pos);
 		}

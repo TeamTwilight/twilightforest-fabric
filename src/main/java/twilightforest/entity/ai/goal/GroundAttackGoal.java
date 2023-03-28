@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import twilightforest.entity.boss.Minoshroom;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 
 import java.util.EnumSet;
@@ -88,7 +88,7 @@ public class GroundAttackGoal extends Goal {
 			for (Entity entity : hit) {
 				if (entity.isOnGround()) {
 					entity.push(0.0D, 0.23D, 0.0D);
-					entity.hurt(TFDamageSources.axing(this.attacker).bypassArmor(), (float) (this.attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F));
+					entity.hurt(TFDamageTypes.getEntityDamageSource(this.attacker.getLevel(), TFDamageTypes.SLAM, this.attacker), (float) (this.attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F));
 				}
 			}
 		}

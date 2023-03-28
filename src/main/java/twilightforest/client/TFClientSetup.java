@@ -44,6 +44,7 @@ import twilightforest.entity.boss.HydraNeck;
 import twilightforest.entity.boss.NagaSegment;
 import twilightforest.entity.boss.SnowQueenIceShield;
 import twilightforest.init.*;
+import twilightforest.util.TFWoodTypes;
 
 import java.util.HashMap;
 import java.util.HashMap;
@@ -99,14 +100,14 @@ public class TFClientSetup implements ClientModInitializer {
         TFMenuTypes.renderScreens();
 
 //        evt.enqueueWork(() -> {
-            registerWoodType(TFBlocks.TWILIGHT_OAK);
-            registerWoodType(TFBlocks.CANOPY);
-            registerWoodType(TFBlocks.MANGROVE);
-            registerWoodType(TFBlocks.DARKWOOD);
-            registerWoodType(TFBlocks.TIMEWOOD);
-            registerWoodType(TFBlocks.TRANSFORMATION);
-            registerWoodType(TFBlocks.MINING);
-            registerWoodType(TFBlocks.SORTING);
+            registerWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
+            registerWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
+            registerWoodType(TFWoodTypes.MANGROVE_WOOD_TYPE);
+            registerWoodType(TFWoodTypes.DARKWOOD_WOOD_TYPE);
+            registerWoodType(TFWoodTypes.TIMEWOOD_WOOD_TYPE);
+            registerWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
+            registerWoodType(TFWoodTypes.MINING_WOOD_TYPE);
+            registerWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
 
 			if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 				ClientLifecycleEvents.CLIENT_STARTED.register(TrinketsCompat::registerCurioRenderers);

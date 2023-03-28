@@ -4,6 +4,7 @@
   "allow_biome_surface_decorations": false,
   "allow_biome_underground_decorations": true,
   "biomes": "#twilightforest:valid_quest_grove_biomes",
+  "chunk_clearance_radius": 1,
   "spawn_overrides": {},
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin"

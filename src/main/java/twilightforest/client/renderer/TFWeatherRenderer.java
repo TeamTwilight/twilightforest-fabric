@@ -127,7 +127,7 @@ public class TFWeatherRenderer {
 					double d1 = (double)rainzs[l1] * 0.5D;
 					blockpos$mutableblockpos.set(k1, 0, j1);
 					Biome biome = level.getBiome(blockpos$mutableblockpos).value();
-					if (biome.getPrecipitation() != Biome.Precipitation.NONE) {
+					if (biome.hasPrecipitation()) {
 						int i2 = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos$mutableblockpos).getY();
 						int j2 = j - range;
 						int k2 = j + range;
@@ -567,7 +567,7 @@ public class TFWeatherRenderer {
 				int l = randomsource.nextInt(21) - 10;
 				BlockPos blockpos2 = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos.offset(k, 0, l));
 				Biome biome = level.getBiome(blockpos2).value();
-				if (blockpos2.getY() > level.getMinBuildHeight() && blockpos2.getY() <= blockpos.getY() + 10 && blockpos2.getY() >= blockpos.getY() - 10 && biome.getPrecipitation() == Biome.Precipitation.RAIN && biome.warmEnoughToRain(blockpos2)) {
+				if (blockpos2.getY() > level.getMinBuildHeight() && blockpos2.getY() <= blockpos.getY() + 10 && blockpos2.getY() >= blockpos.getY() - 10 && biome.hasPrecipitation() && biome.warmEnoughToRain(blockpos2)) {
 					blockpos1 = blockpos2.below();
 					if (Minecraft.getInstance().options.particles().get() == ParticleStatus.MINIMAL) {
 						break;

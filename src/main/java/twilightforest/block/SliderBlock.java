@@ -27,7 +27,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.entity.SlideBlock;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
 import org.jetbrains.annotations.Nullable;
@@ -144,7 +144,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	@Override
 	@Deprecated
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		entity.hurt(TFDamageSources.SLIDER, BLOCK_DAMAGE);
+		entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.SLIDER), BLOCK_DAMAGE);
 		if (entity instanceof LivingEntity living) {
 			double kx = (pos.getX() + 0.5 - entity.getX()) * 2.0;
 			double kz = (pos.getZ() + 0.5 - entity.getZ()) * 2.0;

@@ -1,12 +1,12 @@
 package twilightforest.entity;
 
 import io.github.fabricators_of_create.porting_lib.block.EntityDestroyBlock;
+import io.github.fabricators_of_create.porting_lib.common.util.ToolActions;
 import io.github.fabricators_of_create.porting_lib.entity.ExtraSpawnDataEntity;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -33,7 +33,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.monster.BlockChainGoblin;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
@@ -133,8 +133,14 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getMobType());
 			}
 
+			//properly disable shields
+			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
+				player.getUseItem().hurtAndBreak(5, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
+				player.disableShield(true);
+			}
+
 			if (damage > 0.0F) {
-				if (result.getEntity().hurt(TFDamageSources.spiked(this, this.getOwner()), damage)) {
+				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.SPIKED, this.getOwner(), this), damage)) {
 					this.playSound(TFSounds.BLOCKCHAIN_HIT.get(), 1.0f, this.random.nextFloat());
 					// age when we hit a monster so that we go back to the player faster
 					this.hitEntity = true;

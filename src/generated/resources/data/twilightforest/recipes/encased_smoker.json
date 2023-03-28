@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "twilightforest:encased_smoker"
-  }
+  },
+  "show_notification": true
 }

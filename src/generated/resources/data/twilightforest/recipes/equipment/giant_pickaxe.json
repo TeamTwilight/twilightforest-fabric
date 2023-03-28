@@ -16,5 +16,6 @@
   ],
   "result": {
     "item": "twilightforest:giant_pickaxe"
-  }
+  },
+  "show_notification": true
 }

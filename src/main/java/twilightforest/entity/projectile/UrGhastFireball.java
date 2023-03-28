@@ -45,7 +45,7 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 	protected void onHitEntity(EntityHitResult result) {
 		if (!this.getLevel().isClientSide() && !(result.getEntity() instanceof AbstractHurtingProjectile)) {
 			// TF - up damage by 10
-			result.getEntity().hurt(DamageSource.fireball(this, this.getOwner()), 16.0F);
+			result.getEntity().hurt(this.damageSources().fireball(this, this.getOwner()), 16.0F);
 			this.doEnchantDamageEffects((LivingEntity) this.getOwner(), result.getEntity());
 
 			boolean flag = this.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);

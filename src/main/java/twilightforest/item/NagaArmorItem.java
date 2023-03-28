@@ -9,8 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import twilightforest.TwilightForestMod;
 
 public class NagaArmorItem extends ArmorItem implements ArmorTextureItem {
-	public NagaArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
-		super(material, slot, properties);
+	public NagaArmorItem(ArmorMaterial material, Type type, Properties properties) {
+		super(material, type, properties);
 	}
 
 	@Override

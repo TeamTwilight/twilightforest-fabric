@@ -13,5 +13,6 @@
   ],
   "result": {
     "item": "twilightforest:ironwood_block"
-  }
+  },
+  "show_notification": true
 }

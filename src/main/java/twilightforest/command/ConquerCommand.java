@@ -35,7 +35,7 @@ public class ConquerCommand {
 		// are you in a structure?
 		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(source.getLevel());
 
-		BlockPos pos = new BlockPos(source.getPosition());
+		BlockPos pos = BlockPos.containing(source.getPosition());
 		if (chunkGenerator != null) {
 			Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(source.getLevel(), SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 

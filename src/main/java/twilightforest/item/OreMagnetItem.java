@@ -140,7 +140,7 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem 
 		Vec3 lookVec = getOffsetLook(living, yawOffset, pitchOffset);
 		Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
 
-		return doMagnet(level, new BlockPos(srcVec), new BlockPos(destVec));
+		return doMagnet(level, BlockPos.containing(srcVec), BlockPos.containing(destVec));
 	}
 
 	public static int doMagnet(Level level, BlockPos usePos, BlockPos destPos) {

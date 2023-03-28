@@ -29,7 +29,7 @@ import twilightforest.entity.SpikeBlock;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.goal.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.goal.ThrowSpikeBlockGoal;
-import twilightforest.init.TFDamageSources;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 
 import java.util.List;
@@ -153,7 +153,7 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		this.swing(InteractionHand.MAIN_HAND);
-		entity.hurt(TFDamageSources.spiked(this.block, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.SPIKED, this, this.block), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return false;
 	}
 

@@ -89,7 +89,7 @@ public class ChargeAttackGoal extends Goal {
 
 				this.charger.getNavigation().moveTo(this.chargePos.x(), this.chargePos.y(), this.chargePos.z(), this.speed);
 			} else {
-				this.charger.animationSpeed += 0.8;
+				this.charger.walkAnimation.setSpeed(this.charger.walkAnimation.speed() + 0.8F);
 
 				if (this.charger instanceof ITFCharger chargeMob) {
 					chargeMob.setCharging(true);

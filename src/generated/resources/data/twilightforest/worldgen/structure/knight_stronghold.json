@@ -8,6 +8,7 @@
   "allow_biome_underground_decorations": false,
   "ambient_spawns": [],
   "biomes": "#twilightforest:valid_knight_stronghold_biomes",
+  "chunk_clearance_radius": 3,
   "hint_item": {
     "Count": 1,
     "id": "minecraft:written_book",

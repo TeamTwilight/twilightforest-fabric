@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -15,9 +16,9 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.icetower.IceTowerMainComponent;
+import twilightforest.world.components.structures.util.ConquerableStructure;
 
 import java.util.List;
 import java.util.Map;
@@ -43,10 +44,14 @@ public class AuroraPalaceStructure extends ConquerableStructure {
 
     public static AuroraPalaceStructure buildAuroraPalaceConfig(BootstapContext<Structure> context) {
         return new AuroraPalaceStructure(
-                ControlledSpawningConfig.create(TFLandmark.ICE_TOWER.getSpawnableMonsterLists(), List.of(), List.of()),
+                ControlledSpawningConfig.firstIndexMonsters(
+                        new MobSpawnSettings.SpawnerData(TFEntities.SNOW_GUARDIAN.get(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.STABLE_ICE_CORE.get(), 10, 1, 2),
+                        new MobSpawnSettings.SpawnerData(TFEntities.UNSTABLE_ICE_CORE.get(), 5, 1, 2)
+                ),
                 new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_yeti"))),
                 new HintConfig(HintConfig.book("icetower", 3), TFEntities.KOBOLD.get()),
-                new DecorationConfig(false, true, false),
+                new DecorationConfig(2, false, true, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_AURORA_PALACE_BIOMES),
                         Map.of(), // Landmarks have Controlled Mob spawning

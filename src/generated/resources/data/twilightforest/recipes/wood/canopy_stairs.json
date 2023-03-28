@@ -14,5 +14,6 @@
   "result": {
     "count": 8,
     "item": "twilightforest:canopy_stairs"
-  }
+  },
+  "show_notification": true
 }

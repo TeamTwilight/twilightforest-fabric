@@ -46,7 +46,12 @@ public final class LandmarkUtil {
 
     public static Optional<StructureStart> locateNearestMatchingLandmark(LevelAccessor level, Predicate<Structure> filter, int chunkX, int chunkZ) {
         BlockPos nearestFeature = LegacyLandmarkPlacements.getNearestCenterXZ(chunkX, chunkZ);
-        ChunkAccess chunkAccess = level.getChunk(SectionPos.blockToSectionCoord(nearestFeature.getX()), SectionPos.blockToSectionCoord(nearestFeature.getZ()), ChunkStatus.STRUCTURE_STARTS);
+        int centerX = SectionPos.blockToSectionCoord(nearestFeature.getX());
+        int centerZ =  SectionPos.blockToSectionCoord(nearestFeature.getZ());
+
+        if (!level.hasChunk(centerX, centerZ)) return Optional.empty();
+
+        ChunkAccess chunkAccess = level.getChunk(centerX, centerZ, ChunkStatus.STRUCTURE_STARTS);
 
         for (Map.Entry<Structure, StructureStart> structureEntry : chunkAccess.getAllStarts().entrySet())
             if (filter.test(structureEntry.getKey()))

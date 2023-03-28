@@ -31,11 +31,11 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.LongFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Deprecated
 public class TFBiomeProvider extends BiomeSource {
 	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensionSettings.seed).forGetter(o -> o.seed),
 			RegistryOps.retrieveGetter(Registries.BIOME),
 			TerrainColumn.CODEC.listOf().fieldOf("biome_landscape").xmap(l -> l.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), m -> m.values().stream().sorted(Comparator.comparing(terrainColumn -> ComparableResourceKey.of(terrainColumn.getResourceKey()))).toList()).forGetter(o -> o.biomeList),
 			Codec.FLOAT.fieldOf("base_offset").forGetter(o -> o.baseOffset),
@@ -44,25 +44,28 @@ public class TFBiomeProvider extends BiomeSource {
 
 	private final HolderGetter<Biome> registry;
 	private final Map<ResourceKey<Biome>, TerrainColumn> biomeList;
-	private final Layer genBiomes;
-	private final long seed;
 	private final float baseOffset;
 	private final float baseFactor;
 
-	public TFBiomeProvider(long seed, HolderGetter<Biome> registry, List<TerrainColumn> list, float offset, float factor) {
-		this(seed, registry, list.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), offset, factor);
+	private Layer genBiomes;
+
+	public TFBiomeProvider(HolderGetter<Biome> registry, List<TerrainColumn> list, float offset, float factor) {
+		this(registry, list.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), offset, factor);
 	}
 
-	public TFBiomeProvider(long seed, HolderGetter<Biome> registryIn, Map<ResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
-		super(list.values().stream().flatMap(TerrainColumn::getBiomes));
+	public TFBiomeProvider(HolderGetter<Biome> registryIn, Map<ResourceKey<Biome>, TerrainColumn> list, float offset, float factor) {
+		super();
 
-		this.seed = seed;
 		this.baseOffset = offset;
 		this.baseFactor = factor;
 
 		this.registry = registryIn;
 		this.biomeList = list;
-		this.genBiomes = makeLayers(seed, registryIn);
+	}
+
+	@Override
+	protected Stream<Holder<Biome>> collectPossibleBiomes() {
+		return this.biomeList.values().stream().flatMap(TerrainColumn::getBiomes);
 	}
 
 	public static int getBiomeId(ResourceKey<Biome> biome, HolderGetter<Biome> registry) {
@@ -167,6 +170,7 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	public float getBiomeDepth(int x, int z) {
+		lazyLoadGenBiomes();
 		return this.getBiomeDepth(this.genBiomes.get(this.registry, x, z));
 	}
 
@@ -175,6 +179,7 @@ public class TFBiomeProvider extends BiomeSource {
 	}
 
 	public Optional<TerrainColumn> getTerrainColumn(int x, int z) {
+		lazyLoadGenBiomes();
 		return this.getTerrainColumn(this.genBiomes.get(this.registry, x, z));
 	}
 
@@ -192,7 +197,13 @@ public class TFBiomeProvider extends BiomeSource {
 		//  That method already calls this method, resulting in search-space duplication
 
 		// FIXME Hacky double-dipping of biomes
+		lazyLoadGenBiomes();
 		Holder<Biome> columnBiome = this.genBiomes.get(this.registry, x, z);
 		return this.biomeList.get(columnBiome.unwrapKey().get()).getBiome(y, columnBiome);
+	}
+
+	private void lazyLoadGenBiomes() {
+		if (genBiomes == null)
+			this.genBiomes = makeLayers(TFDimensionSettings.seed, registry);
 	}
 }

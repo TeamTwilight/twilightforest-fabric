@@ -19,13 +19,14 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		FabricDataGenerator.Pack pack = generator.createPack();
 		ExistingFileHelper helper = ExistingFileHelper.withResourcesFromArg();
 
-		pack.addProvider(TFAdvancementProvider::new);
+		pack.addProvider(TFAdvancementGenerator::new);
 		pack.addProvider((output, provider) -> new BlockstateGenerator(output, helper));
 		pack.addProvider((output, provider) -> new ItemModelGenerator(output, helper));
-		pack.addProvider((output, provider) -> new AtlasGenerator(output));
+		pack.addProvider(AtlasGenerator::new);
 		pack.addProvider(BiomeTagGenerator::new);
 		pack.addProvider(CustomTagGenerator.BannerPatternTagGenerator::new);
 		BlockTagGenerator blocktags = pack.addProvider(BlockTagGenerator::new);
+		//generator.addProvider(event.includeServer(), new DamageTypeTagGenerator(output, provider, helper));
 		pack.addProvider(FluidTagGenerator::new);
 		pack.addProvider((output, provider) -> new ItemTagGenerator(output, provider, blocktags));
 		pack.addProvider(EntityTagGenerator::new);
@@ -33,7 +34,7 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		pack.addProvider(LootGenerator::new);
 		pack.addProvider(CraftingGenerator::new);
 		pack.addProvider(LootModifierGenerator::new);
-		WorldGenerator.addProviders(pack, helper);
+		RegistryDataGenerator.addProviders(pack, helper);
 		pack.addProvider(StructureTagGenerator::new);
 
 		pack.addProvider((output, provider) -> new CrumbleHornGenerator(output, helper));

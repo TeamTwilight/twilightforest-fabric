@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -89,7 +90,7 @@ public class Naga extends Monster implements EnforcedHomePoint, MultiPartEntity 
 
 	public Naga(EntityType<? extends Naga> type, Level level) {
 		super(type, level);
-		this.maxUpStep = getStepHeight();
+		setMaxUpStep(getStepHeight());
 		this.xpReward = 217;
 		this.noCulling = true;
 
@@ -353,7 +354,7 @@ public class Naga extends Monster implements EnforcedHomePoint, MultiPartEntity 
 	public boolean isInvulnerableTo(DamageSource src) {
 		return src.getEntity() != null && !this.isEntityWithinHomeArea(src.getEntity()) // reject damage from outside of our home radius
 				|| src.getDirectEntity() != null && !this.isEntityWithinHomeArea(src.getDirectEntity())
-				|| src.isFire() || src.isExplosion() || super.isInvulnerableTo(src);
+				|| src.is(DamageTypeTags.IS_FIRE) || src.is(DamageTypeTags.IS_EXPLOSION) || super.isInvulnerableTo(src);
 	}
 
 	@Override
@@ -363,7 +364,7 @@ public class Naga extends Monster implements EnforcedHomePoint, MultiPartEntity 
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		if (source != DamageSource.FALL && super.hurt(source, amount)) {
+		if (source.is(DamageTypeTags.IS_FALL) && super.hurt(source, amount)) {
 			this.ticksSinceDamaged = 0;
 			if (source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
 				this.hurtBy.add(player);
@@ -384,7 +385,7 @@ public class Naga extends Monster implements EnforcedHomePoint, MultiPartEntity 
 				player.getUseItem().hurtAndBreak(5, player, user -> user.broadcastBreakEvent(player.getUsedItemHand()));
 				TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket(motion.x() * 3.0D,  motion.y() + 0.75D, motion.z() * 3.0D), player);
 			}
-			this.hurt(DamageSource.GENERIC, 4.0F);
+			this.hurt(this.damageSources().generic(), 4.0F);
 			this.getLevel().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK, SoundSource.PLAYERS, 1.0F, 0.8F + this.getLevel().getRandom().nextFloat() * 0.4F);
 			this.movementAI.doDaze();
 			return false;
@@ -593,7 +594,7 @@ public class Naga extends Monster implements EnforcedHomePoint, MultiPartEntity 
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
-//	@Override
+//	@Override TODO: PORT
 	public float getStepHeight() {
 		return 2.0F;
 	}

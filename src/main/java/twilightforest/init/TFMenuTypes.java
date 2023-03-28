@@ -6,6 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
@@ -16,7 +17,7 @@ public class TFMenuTypes {
 	public static final LazyRegistrar<MenuType<?>> CONTAINERS = LazyRegistrar.create(Registries.MENU, TwilightForestMod.ID);
 
 	public static final RegistryObject<MenuType<UncraftingMenu>> UNCRAFTING = CONTAINERS.register("uncrafting",
-			() -> new MenuType<>(UncraftingMenu::fromNetwork));
+			() -> new MenuType<>(UncraftingMenu::fromNetwork, FeatureFlags.REGISTRY.allFlags()));
 
 	@Environment(EnvType.CLIENT)
 	public static void renderScreens() {

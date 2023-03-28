@@ -57,7 +57,7 @@ public class ZombieWandItem extends Item implements CustomEnchantingBehaviorItem
 				zombie.setOwnerUUID(player.getUUID());
 				zombie.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 1));
 				level.addFreshEntity(zombie);
-				level.gameEvent(player, GameEvent.ENTITY_PLACE, new BlockPos(result.getLocation()));
+				level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
 
 				stack.hurt(1, level.getRandom(), null);
 				zombie.playSound(TFSounds.LOYAL_ZOMBIE_SUMMON.get(), 1.0F, zombie.getVoicePitch());

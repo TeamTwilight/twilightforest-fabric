@@ -11,12 +11,16 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
+import net.minecraft.world.entity.ai.village.poi.PoiRecord;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -38,7 +42,10 @@ import twilightforest.util.LandmarkUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 //ghastguards already set home points so theres no need to here
 public class UrGhast extends CarminiteGhastguard {
@@ -49,7 +56,6 @@ public class UrGhast extends CarminiteGhastguard {
 	private int nextTantrumCry;
 
 	private float damageUntilNextPhase = 10; // how much damage can we take before we toggle tantrum mode
-	private boolean noTrapMode; // are there no traps nearby?  just float around
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS);
 	private final List<ServerPlayer> hurtBy = new ArrayList<>();
 
@@ -83,10 +89,6 @@ public class UrGhast extends CarminiteGhastguard {
 
 	public List<BlockPos> getTrapLocations() {
 		return this.trapLocations;
-	}
-
-	public boolean isInNoTrapMode() {
-		return this.noTrapMode;
 	}
 
 	@Override
@@ -176,7 +178,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 	@Override
 	public boolean isInvulnerableTo(DamageSource src) {
-		return src == DamageSource.IN_WALL || src == DamageSource.IN_FIRE || src == DamageSource.ON_FIRE || super.isInvulnerableTo(src);
+		return src.is(DamageTypes.IN_WALL) || src.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(src);
 	}
 
 	@Override
@@ -196,7 +198,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 		if ("fireball".equals(source.getMsgId()) && source.getEntity() instanceof Player) {
 			// 'hide' fireball attacks so that we don't take 1000 damage.
-			attackSuccessful = super.hurt(DamageSource.thrown(source.getEntity(), source.getDirectEntity()), damage);
+			attackSuccessful = super.hurt(this.damageSources().thrown(source.getEntity(), source.getDirectEntity()), damage);
 		} else {
 			attackSuccessful = super.hurt(source, damage);
 		}
@@ -239,7 +241,7 @@ public class UrGhast extends CarminiteGhastguard {
 		if (this.level instanceof ServerLevel serverLevel) {
 			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
 			if (lightningbolt != null) {
-				BlockPos blockpos = serverLevel.findLightningTargetAround(new BlockPos(this.position().add(new Vec3(18, 0, 0).yRot((float) Math.toRadians(this.getRandom().nextInt(360))))));
+				BlockPos blockpos = serverLevel.findLightningTargetAround(BlockPos.containing(this.position().add(new Vec3(18, 0, 0).yRot((float) Math.toRadians(this.getRandom().nextInt(360))))));
 				lightningbolt.moveTo(Vec3.atBottomCenterOf(blockpos));
 				lightningbolt.setVisualOnly(true);
 				serverLevel.addFreshEntity(lightningbolt);
@@ -311,7 +313,6 @@ public class UrGhast extends CarminiteGhastguard {
 	@Override
 	protected void customServerAiStep() {
 		super.customServerAiStep();
-		this.hasRestriction();
 
 		// despawn mini ghasts that are in our AABB
 		for (CarminiteGhastling ghast : this.getLevel().getEntitiesOfClass(CarminiteGhastling.class, this.getBoundingBox().inflate(1.0D))) {
@@ -320,12 +321,16 @@ public class UrGhast extends CarminiteGhastguard {
 			this.heal(2);
 		}
 
-		// trap locations?
-		if (this.getTrapLocations().isEmpty() && !this.isInNoTrapMode()) {
-			this.scanForTrapsTwice();
+		if (this.tickCount % 60 == 0 && !this.getTrapLocations().isEmpty()) {
+			//validate traps positions are still actually usable traps. If not, remove them
+			this.getTrapLocations().removeIf(pos -> !this.getLevel().getBlockState(pos).is(TFBlocks.GHAST_TRAP.get()) || !this.getLevel().canSeeSky(pos.above()));
+		}
 
-			if (this.getTrapLocations().isEmpty()) {
-				this.noTrapMode = true;
+		if (this.firstTick || this.tickCount % 100 == 0) {
+			List<BlockPos> addedPositions = this.scanForTraps((ServerLevel) this.getLevel());
+			addedPositions.removeIf(pos -> this.getTrapLocations().contains(pos));
+			if (!addedPositions.isEmpty()) {
+				this.getTrapLocations().addAll(addedPositions);
 			}
 		}
 
@@ -334,7 +339,7 @@ public class UrGhast extends CarminiteGhastguard {
 
 			// cry?
 			if (--this.nextTantrumCry <= 0) {
-				this.playSound(this.getHurtSound(null), this.getSoundVolume(), this.getVoicePitch());
+				this.playHurtSound(this.damageSources().generic());
 				this.nextTantrumCry = 20 + this.getRandom().nextInt(30);
 			}
 
@@ -344,13 +349,31 @@ public class UrGhast extends CarminiteGhastguard {
 		}
 	}
 
+	//If we have a home position, use that for scanning, otherwise use our current position
+	public BlockPos getLogicalScanPoint() {
+		return this.getRestrictionCenter() == BlockPos.ZERO ? this.blockPosition() : this.getRestrictionCenter();
+	}
+
+	private List<BlockPos> scanForTraps(ServerLevel level) {
+		PoiManager poimanager = level.getPoiManager();
+		Stream<PoiRecord> stream = poimanager.getInRange(type ->
+				type.is(TFPOITypes.GHAST_TRAP.getKey()),
+				this.getLogicalScanPoint(),
+				(int)(this.getRestrictRadius() == -1 ? 32 : this.getRestrictRadius()),
+				PoiManager.Occupancy.ANY);
+		return stream.map(PoiRecord::getPos)
+				.filter(trapPos -> level.canSeeSky(trapPos.above()))
+				.sorted(Comparator.comparingDouble(trapPos -> trapPos.distSqr(this.getLogicalScanPoint())))
+				.collect(Collectors.toList());
+	}
+
 	private void doTantrumDamageEffects() {
 		// harm player below
 		AABB below = this.getBoundingBox().move(0, -16, 0).inflate(0, 16, 0);
 
 		for (Player player : this.getLevel().getEntitiesOfClass(Player.class, below)) {
 			if (this.getLevel().canSeeSkyFromBelowWater(player.blockPosition())) {
-				player.hurt(TFDamageSources.GHAST_TEAR, 3);
+				player.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.GHAST_TEAR, TFEntities.UR_GHAST.get()), 3);
 			}
 		}
 
@@ -404,51 +427,6 @@ public class UrGhast extends CarminiteGhastguard {
 			);
 			this.getLevel().addFreshEntity(entityFireball);
 		}
-	}
-
-	/**
-	 * Scan a few chunks around us for ghast trap blocks and if we find any, add them to our list
-	 */
-	private void scanForTrapsTwice() {
-		int scanRangeXZ = 48;
-		int scanRangeY = 32;
-
-		this.scanForTraps(scanRangeXZ, scanRangeY, this.blockPosition());
-
-		if (this.getTrapLocations().size() > 0) {
-			// average the location of the traps we've found, and scan again from there
-			int ax = 0, ay = 0, az = 0;
-
-			for (BlockPos trapCoords : this.getTrapLocations()) {
-				ax += trapCoords.getX();
-				ay += trapCoords.getY();
-				az += trapCoords.getZ();
-			}
-
-			ax /= this.getTrapLocations().size();
-			ay /= this.getTrapLocations().size();
-			az /= this.getTrapLocations().size();
-
-			this.scanForTraps(scanRangeXZ, scanRangeY, new BlockPos(ax, ay, az));
-		}
-	}
-
-	private void scanForTraps(int scanRangeXZ, int scanRangeY, BlockPos pos) {
-		for (int sx = -scanRangeXZ; sx <= scanRangeXZ; sx++) {
-			for (int sz = -scanRangeXZ; sz <= scanRangeXZ; sz++) {
-				for (int sy = -scanRangeY; sy <= scanRangeY; sy++) {
-					BlockPos trapCoords = pos.offset(sx, sy, sz);
-					if (this.isTrapAt(trapCoords)) {
-						this.getTrapLocations().add(trapCoords);
-					}
-				}
-			}
-		}
-	}
-
-	private boolean isTrapAt(BlockPos pos) {
-		return this.getLevel().hasChunkAt(pos)
-				&& (this.getLevel().getBlockState(pos).is(TFBlocks.GHAST_TRAP.get()));
 	}
 
 	@Override

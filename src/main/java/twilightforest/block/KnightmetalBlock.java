@@ -29,8 +29,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import twilightforest.init.TFDamageTypes;
+
 import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFDamageSources;
 
 import java.util.List;
 
@@ -83,13 +84,13 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock, L
 	@Nullable
 	@Override
 	public BlockPathTypes getPathNodeType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable boolean entity) {
-		return BlockPathTypes.DAMAGE_CACTUS;
+		return BlockPathTypes.DAMAGE_OTHER;
 	}
 
 	@Override
 	@Deprecated
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		entity.hurt(TFDamageSources.KNIGHTMETAL, BLOCK_DAMAGE);
+		entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.KNIGHTMETAL), BLOCK_DAMAGE);
 	}
 
 	@Override

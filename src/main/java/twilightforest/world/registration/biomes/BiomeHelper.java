@@ -549,7 +549,7 @@ public abstract class BiomeHelper {
 
 	public static Biome.BiomeBuilder biomeWithDefaults(BiomeSpecialEffects.Builder biomeAmbience, MobSpawnSettings.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
 		return new Biome.BiomeBuilder()
-				.precipitation(Biome.Precipitation.RAIN)
+				.hasPrecipitation(true)
 				.temperature(0.5F)
 				.downfall(0.5F)
 				.specialEffects(biomeAmbience.build())

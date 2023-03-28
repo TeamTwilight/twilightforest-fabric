@@ -23,6 +23,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -48,6 +49,7 @@ import twilightforest.entity.ai.goal.PhantomUpdateFormationAndMoveGoal;
 import twilightforest.entity.ai.goal.PhantomWatchAndAttackGoal;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
+import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
 import java.util.ArrayList;
@@ -154,7 +156,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 
 	@Override
 	public boolean isInvulnerableTo(DamageSource src) {
-		return src == DamageSource.IN_WALL || super.isInvulnerableTo(src);
+		return src.is(DamageTypes.IN_WALL) || super.isInvulnerableTo(src);
 	}
 
 	@Override
@@ -221,7 +223,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 			List<KnightPhantom> knights = getNearbyKnights();
 			if (!knights.isEmpty()) {
 				knights.forEach(KnightPhantom::updateMyNumber);
-			} else if (cause != DamageSource.OUT_OF_WORLD) {
+			} else if (!cause.is(DamageTypes.OUT_OF_WORLD)) {
 
 				BlockPos treasurePos = this.hasHome() ? this.getRestrictCenter().below() : this.blockPosition();
 
@@ -260,6 +262,17 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 		return super.hurt(source, amount);
 	}
 
+	@Override
+	public void lavaHurt() {
+		if (!this.fireImmune()) {
+			this.setSecondsOnFire(5);
+			if (this.hurt(this.damageSources().lava(), 4F)) {
+				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
+				EntityUtil.killLavaAround(this);
+			}
+		}
+	}
+
 	// [VanillaCopy] Exact copy of Mob.doHurtTarget, but change the damage source
 	@Override
 	public boolean doHurtTarget(Entity entity) {
@@ -276,7 +289,7 @@ public class KnightPhantom extends FlyingMob implements Enemy, EnforcedHomePoint
 			entity.setSecondsOnFire(i * 4);
 		}
 
-		boolean flag = entity.hurt(TFDamageSources.haunt(this), f);
+		boolean flag = entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.HAUNT, this), f);
 		if (flag) {
 			if (f1 > 0.0F && entity instanceof LivingEntity living) {
 				living.knockback(f1 * 0.5F, Mth.sin(this.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float)Math.PI / 180F)));

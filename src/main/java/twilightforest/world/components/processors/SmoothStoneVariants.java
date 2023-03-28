@@ -10,10 +10,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.util.FeaturePlacers;
-import twilightforest.world.registration.TFStructureProcessors;
+import twilightforest.init.TFStructureProcessors;
 
 import org.jetbrains.annotations.Nullable;
-import java.util.Random;
 
 public class SmoothStoneVariants extends StructureProcessor {
     public static final SmoothStoneVariants INSTANCE = new SmoothStoneVariants();
