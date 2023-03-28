@@ -111,7 +111,7 @@ steps:
                   },
                   {
                       \"name\": \"Commit\",
-                      \"value\": \"[${BUILD_SOURCEVERSION:0:6}]${BUILD_REPOSITORY_URI}/commit/${BUILD_SOURCEVERSION}\"
+                      \"value\": \"${BUILD_REPOSITORY_URI}/commit/${BUILD_SOURCEVERSION}\"
                   }"
       if [ "${jobResult}" = "Succeeded" ]
       then
