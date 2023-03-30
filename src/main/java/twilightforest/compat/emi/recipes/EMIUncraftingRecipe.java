@@ -81,7 +81,7 @@ public class EMIUncraftingRecipe extends TFEmiRecipe<CraftingRecipe> {
             for (int i = 0; i < stacks.length; i++) stackedStacks[i] = new ItemStack(stacks[0].getItem(), uncraftingRecipe.count());
             widgets.addSlot(new ListEmiIngredient(List.of(stackedStacks).stream().map(EmiStack::of).toList(), uncraftingRecipe.count()), 5, 19);//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack
         } else {
-            widgets.addSlot(EmiStack.of(recipe.getResultItem()), 5, 14).output(true).recipeContext(this); //Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
+            widgets.addSlot(EmiStack.of(recipe.getResultItem(Minecraft.getInstance().level.registryAccess())), 5, 14).output(true).recipeContext(this); //Set the outputs as inputs and draw the item you're uncrafting in the right spot as well
         }
     }
 

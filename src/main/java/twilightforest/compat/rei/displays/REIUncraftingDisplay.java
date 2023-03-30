@@ -6,6 +6,8 @@ import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.registry.RecipeManagerContext;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -28,9 +30,10 @@ public class REIUncraftingDisplay extends DefaultCraftingDisplay<CraftingRecipe>
 
     public static REIUncraftingDisplay of(CraftingRecipe craftingRecipe){
         boolean isUncraftingRecipe = craftingRecipe instanceof UncraftingRecipe;
+        RegistryAccess registryAccess = registryAccess();
 
-        List<EntryIngredient> inputs = isUncraftingRecipe ? EntryIngredients.ofIngredients(craftingRecipe.getIngredients()) : List.of(EntryIngredients.of(craftingRecipe.getResultItem()));
-        List<EntryIngredient> outputs = isUncraftingRecipe ? List.of(EntryIngredients.of(craftingRecipe.getResultItem())) : EntryIngredients.ofIngredients(craftingRecipe.getIngredients());
+        List<EntryIngredient> inputs = isUncraftingRecipe ? EntryIngredients.ofIngredients(craftingRecipe.getIngredients()) : List.of(EntryIngredients.of(craftingRecipe.getResultItem(registryAccess)));
+        List<EntryIngredient> outputs = isUncraftingRecipe ? List.of(EntryIngredients.of(craftingRecipe.getResultItem(registryAccess))) : EntryIngredients.ofIngredients(craftingRecipe.getIngredients());
 
         return new REIUncraftingDisplay(inputs, outputs, craftingRecipe);
     }

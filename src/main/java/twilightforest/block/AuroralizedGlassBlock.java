@@ -1,12 +1,13 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.block.BeaconColorMultiplierBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.AbstractGlassBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.util.ColorUtil;
 
-public class AuroralizedGlassBlock extends AbstractGlassBlock {
+public class AuroralizedGlassBlock extends AbstractGlassBlock implements BeaconColorMultiplierBlock {
 
 	public AuroralizedGlassBlock(Properties props) {
 		super(props);

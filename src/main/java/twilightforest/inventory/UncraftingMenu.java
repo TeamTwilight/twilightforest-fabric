@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -379,7 +380,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		}
 
 		if (inputStack.is(Tags.Items.ARMORS) && resultStack.is(Tags.Items.ARMORS)) {
-			return inputStack.getEquipmentSlot() == resultStack.getEquipmentSlot();
+			return LivingEntity.getEquipmentSlotForItem(inputStack) == LivingEntity.getEquipmentSlotForItem(resultStack);
 		}
 
 		return false;

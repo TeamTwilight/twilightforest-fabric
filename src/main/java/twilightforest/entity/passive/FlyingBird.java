@@ -54,7 +54,7 @@ public abstract class FlyingBird extends Bird {
 	}
 
 	@Override
-	public float getStepHeight() {
+	public float maxUpStep() {
 		return 1.0F;
 	}
 

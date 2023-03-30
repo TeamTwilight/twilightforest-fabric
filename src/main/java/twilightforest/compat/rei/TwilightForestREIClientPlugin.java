@@ -15,6 +15,7 @@ import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -67,12 +68,14 @@ public class TwilightForestREIClientPlugin implements REIClientPlugin {
 
     @Override
     public void registerDisplays(DisplayRegistry registry) {
+        RegistryAccess registryAccess = Minecraft.getInstance().level.registryAccess();
+
         registry.registerFiller(UncraftingRecipe.class, REIUncraftingDisplay::of);
         registry.registerRecipeFiller(CraftingRecipe.class, RecipeType.CRAFTING, recipe -> {
             TFConfig.Common.UncraftingStuff nestedConfig = TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS;
 
-            if(recipe.getResultItem().isEmpty() ||
-                    recipe.getResultItem().is(ItemTagGenerator.BANNED_UNCRAFTABLES) ||
+            if(recipe.getResultItem(registryAccess).isEmpty() ||
+                    recipe.getResultItem(registryAccess).is(ItemTagGenerator.BANNED_UNCRAFTABLES) ||
                     nestedConfig.disableUncraftingRecipes.get().contains(recipe.getId().toString()) ||
                     nestedConfig.flipUncraftingModIdList.get() != nestedConfig.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())){
                 return null;

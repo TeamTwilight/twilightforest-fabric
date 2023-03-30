@@ -132,9 +132,9 @@ public class EntityEvents {
 		AtomicReference<Float> netAmount = new AtomicReference<>(amount);
 		if (living != null) {
 			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.get())).ifPresent(mobEffectInstance -> {
-				if (event.getSource().is(DamageTypes.FREEZE)) {
-					event.setAmount(event.getAmount() + (float)(mobEffectInstance.getAmplifier() / 2));
-				} else if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
+				if (source.is(DamageTypes.FREEZE)) {
+					netAmount.set(amount + (float)(mobEffectInstance.getAmplifier() / 2));
+				} else if (source.is(DamageTypeTags.IS_FIRE)) {
 					living.removeEffect(TFMobEffects.FROSTY.get());
 					mobEffectInstance.amplifier -= 1;
 					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
