@@ -1,14 +1,10 @@
 accessWidener	v1	named
 accessible field net/minecraft/world/entity/Entity yRot F
 accessible field net/minecraft/world/entity/Entity xRot F
-accessible method net/minecraft/world/damagesource/DamageSource bypassArmor ()Lnet/minecraft/world/damagesource/DamageSource;
-accessible method net/minecraft/world/damagesource/DamageSource <init> (Ljava/lang/String;)V
 accessible field net/minecraft/world/entity/animal/Parrot MOB_SOUND_MAP Ljava/util/Map;
 mutable field net/minecraft/world/level/saveddata/maps/MapItemSavedData centerX I
 mutable field net/minecraft/world/level/saveddata/maps/MapItemSavedData centerZ I
 accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData <init> (IIBZZZLnet/minecraft/resources/ResourceKey;)V
-accessible method net/minecraft/world/level/block/state/properties/WoodType register (Lnet/minecraft/world/level/block/state/properties/WoodType;)Lnet/minecraft/world/level/block/state/properties/WoodType;
-accessible method net/minecraft/world/level/block/state/properties/WoodType <init> (Ljava/lang/String;)V
 accessible method net/minecraft/client/renderer/item/ItemProperties register (Lnet/minecraft/world/item/Item;Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/item/ClampedItemPropertyFunction;)V
 accessible field net/minecraft/world/item/AxeItem STRIPPABLES Ljava/util/Map;
 accessible method net/minecraft/core/particles/SimpleParticleType <init> (Z)V
@@ -21,7 +17,6 @@ accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEnti
 accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity cookingProgress I
 accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity cookingTotalTime I
 accessible method net/minecraft/client/renderer/blockentity/BlockEntityRenderers register (Lnet/minecraft/world/level/block/entity/BlockEntityType;Lnet/minecraft/client/renderer/blockentity/BlockEntityRendererProvider;)V
-accessible method net/minecraft/world/inventory/MenuType <init> (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;)V
 mutable field net/minecraft/world/item/AxeItem STRIPPABLES Ljava/util/Map;
 accessible method net/minecraft/world/item/RecordItem <init> (ILnet/minecraft/sounds/SoundEvent;Lnet/minecraft/world/item/Item$Properties;I)V
 accessible field net/minecraft/client/renderer/DimensionSpecialEffects EFFECTS Lit/unimi/dsi/fastutil/objects/Object2ObjectMap;
@@ -35,7 +30,6 @@ accessible method net/minecraft/client/renderer/Sheets createSignMaterial (Lnet/
 accessible field net/minecraft/server/packs/repository/PackRepository sources Ljava/util/Set;
 accessible method net/minecraft/client/renderer/entity/ItemRenderer renderQuadList (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;Ljava/util/List;Lnet/minecraft/world/item/ItemStack;II)V
 accessible method net/minecraft/world/inventory/MenuType$MenuSupplier create (ILnet/minecraft/world/entity/player/Inventory;)Lnet/minecraft/world/inventory/AbstractContainerMenu;
-accessible method net/minecraft/world/damagesource/DamageSource setIsFire ()Lnet/minecraft/world/damagesource/DamageSource;
 accessible field net/minecraft/world/entity/item/FallingBlockEntity fallDamagePerDistance F
 accessible field net/minecraft/world/entity/item/FallingBlockEntity fallDamageMax I
 accessible field net/minecraft/world/entity/item/FallingBlockEntity hurtEntities Z
@@ -113,7 +107,6 @@ accessible field net/minecraft/world/level/levelgen/synth/BlendedNoise minLimitN
 accessible field net/minecraft/world/level/levelgen/synth/BlendedNoise maxLimitNoise Lnet/minecraft/world/level/levelgen/synth/PerlinNoise;
 accessible method net/minecraft/server/level/ChunkMap generator ()Lnet/minecraft/world/level/chunk/ChunkGenerator;
 accessible method net/minecraft/world/entity/decoration/HangingEntity setDirection (Lnet/minecraft/core/Direction;)V
-accessible method net/minecraft/world/damagesource/DamageSource damageHelmet ()Lnet/minecraft/world/damagesource/DamageSource;
 accessible field net/minecraft/client/renderer/item/ItemProperties PROPERTIES Ljava/util/Map;
 accessible method net/minecraft/world/level/block/FlowerPotBlock isEmpty ()Z
 accessible method net/minecraft/world/level/block/ComposterBlock add (FLnet/minecraft/world/level/ItemLike;)V
