@@ -133,7 +133,7 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	 * @param height
 	 */
 	protected void buildFullCrown(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource  random, BlockPos pos, int diameter, int height, TFTreeFeatureConfig config) {
-		int crownRadius = diameter * 4 + 3;
+		int crownRadius = diameter * 4 + 2;
 		int bvar = diameter + 2;
 
 		// okay, let's do 3-5 main branches starting at the bottom of the crown
@@ -171,7 +171,7 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 			}
 
 			if (size == 2) {
-				makeLargeBranch(world, trunkPlacer, leavesPlacer, random, pos, diameter, dHeight, length - 2, i * branchRotation + branchOffset, tilt, leafy, config);
+				makeLargeBranch(world, trunkPlacer, leavesPlacer, random, pos, diameter, dHeight, length - 3, i * branchRotation + branchOffset, tilt, leafy, config);
 			} else if (size == 1) {
 				makeMedBranch(world, trunkPlacer, leavesPlacer, random, pos, diameter, dHeight, length - 1, i * branchRotation + branchOffset, tilt, leafy, config);
 			} else if (size == 3) {

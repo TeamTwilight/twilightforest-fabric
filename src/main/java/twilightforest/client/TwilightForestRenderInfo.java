@@ -1,7 +1,6 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -13,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.init.TFBiomes;
@@ -58,22 +58,14 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
         //Make the fog on these biomes much much darker, maybe pitch black even. Do we keep this harsher fog underground too?
     }
 
-
-    public void renderSky(WorldRenderContext context) {
-        ClientLevel level = context.world();
-        float partialTick = context.tickDelta();
-        PoseStack poseStack = context.matrixStack();
-        Camera camera = context.camera();
-        TFSkyRenderer.renderSky(level, partialTick, poseStack, camera);
+    @Override
+    public boolean renderSky(ClientLevel level, int ticks, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
+        return TFSkyRenderer.renderSky(level, partialTick, poseStack, camera, projectionMatrix, setupFog);
     }
 
-    public void renderSnowAndRain(WorldRenderContext context) {
-        ClientLevel level = context.world();
-        float partialTick = context.tickDelta();
-        LightTexture lightTexture = context.lightmapTextureManager();
-        Camera camera = context.camera();
-        Vec3 pos = camera.getPosition();
-        TFWeatherRenderer.renderSnowAndRain(level, partialTick, lightTexture, pos.x, pos.y, pos.z);
+    @Override
+    public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lightTexture, double camX, double camY, double camZ) {
+        return TFWeatherRenderer.renderSnowAndRain(level, ticks, partialTick, lightTexture, camX, camY, camZ);
     }
 
     @Override

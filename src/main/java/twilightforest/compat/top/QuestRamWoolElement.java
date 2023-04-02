@@ -56,7 +56,7 @@ public class QuestRamWoolElement implements IElement {
                     colum++;
                 }
 
-                itemRenderer.renderGuiItem(new ItemStack(entry.getValue()), x + (colum * 15), y + (row * 15));
+                itemRenderer.renderGuiItem(poseStack, new ItemStack(entry.getValue()), x + (colum * 15), y + (row * 15));
 
                 getRenderedWools++;
             }

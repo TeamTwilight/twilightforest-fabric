@@ -6,18 +6,14 @@ import io.github.fabricators_of_create.porting_lib.util.TagUtil;
 import me.alphamode.forgetags.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Painting;
-import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -41,17 +37,14 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
+import twilightforest.util.EntityUtil;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @SuppressWarnings({"deprecation", "unused"})
 public class TowerWingComponent extends TFStructureComponentOld {
@@ -1792,90 +1785,9 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
 			if (pCoords == null) continue;
-
 			// initialize a painting object
-			ResourceKey<PaintingVariant> art = getPaintingOfSize(rand, minSize);
-			Painting painting = new Painting(EntityType.PAINTING, world.getLevel());
-			painting.setDirection(direction);
-			((PaintingAccessor)painting).porting_lib$setVariant(BuiltInRegistries.PAINTING_VARIANT.getHolderOrThrow(art));
-			painting.setPos(pCoords.getX(), pCoords.getY(), pCoords.getZ()); // this is done to refresh the bounding box after changing the art
-
-			// check if we can fit a painting there
-			if (checkPainting(world, painting)) {
-				// place the painting
-				world.addFreshEntity(painting);
-			}
+			EntityUtil.tryHangPainting(world, pCoords, direction, EntityUtil.getPaintingOfSize(rand, minSize));
 		}
-	}
-
-	/**
-	 * At least one of the painting's parameters must be the specified size or greater
-	 */
-	@Nullable
-	protected ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
-		List<ResourceKey<PaintingVariant>> valid = new ArrayList<>();
-
-		for (PaintingVariant art : TagHelper.getContents(BuiltInRegistries.PAINTING_VARIANT, PaintingVariantTags.PLACEABLE)) {
-			if (art.getWidth() >= minSize || art.getHeight() >= minSize) {
-				valid.add(ResourceKey.create(Registries.PAINTING_VARIANT, Objects.requireNonNull(BuiltInRegistries.PAINTING_VARIANT.getKey(art))));
-			}
-		}
-
-		if (valid.size() > 0) {
-			return valid.get(rand.nextInt(valid.size()));
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * This is similar to PaintingEntity.isOnValidSurface, except that it does not check for a solid wall behind the painting.
-	 */
-	protected boolean checkPainting(WorldGenLevel world, @Nullable Painting painting) {
-
-		if (painting == null) {
-			return false;
-		}
-
-		final AABB largerBox = painting.getBoundingBox();
-
-		if (!world.noCollision(painting, largerBox)) {
-			return false;
-		} else {
-			List<Entity> collidingEntities = getEntitiesInAABB(world, largerBox);
-
-			for (Entity entityOnList : collidingEntities) {
-				if (entityOnList instanceof HangingEntity) {
-					return false;
-				}
-			}
-
-			return true;
-		}
-	}
-
-	public List<Entity> getEntitiesInAABB(WorldGenLevel world, AABB boundingBox) {
-		List<Entity> list = Lists.newArrayList();
-		int i = Mth.floor((boundingBox.minX - 2) / 16.0D);
-		int j = Mth.floor((boundingBox.maxX + 2) / 16.0D);
-		int k = Mth.floor((boundingBox.minZ - 2) / 16.0D);
-		int l = Mth.floor((boundingBox.maxZ + 2) / 16.0D);
-
-		for (int i1 = i; i1 <= j; ++i1) {
-			for (int j1 = k; j1 <= l; ++j1) {
-				ChunkAccess chunk = world.getChunk(i1, j1, ChunkStatus.STRUCTURE_STARTS);
-				if (chunk instanceof ProtoChunk) {
-					((ProtoChunk) chunk).getEntities().forEach(nbt -> {
-						Entity entity = EntityType.loadEntityRecursive(nbt, world.getLevel(), e -> e);
-						if (entity != null && boundingBox.intersects(entity.getBoundingBox())) {
-							list.add(entity);
-						}
-					});
-				}
-			}
-		}
-
-		return list;
 	}
 
 	/**

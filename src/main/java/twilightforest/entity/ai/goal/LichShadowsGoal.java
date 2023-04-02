@@ -77,7 +77,7 @@ public class LichShadowsGoal extends Goal {
 		if (this.lich.getMasterLich() == null) {
 			this.findNewMaster();
 		}
-		if (!this.lich.getLevel().isClientSide() && (this.lich.getMasterLich() == null || !this.lich.getMasterLich().isAlive())) {
+		if (!this.lich.getLevel().isClientSide() && (this.lich.getMasterLich() == null || !this.lich.getMasterLich().isAlive() || this.lich.getMasterLich().getPhase() != 1)) {
 			this.lich.discard();
 		}
 	}

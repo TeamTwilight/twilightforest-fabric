@@ -4,12 +4,8 @@ import com.mojang.serialization.Codec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.PaintingVariantTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -122,13 +118,10 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
             String widthS = s.substring(9, 10);
             int paintingWidth = widthS.matches("\\d+") ? Integer.parseInt(widthS) << 4 : 16;
 
-            @Deprecated //TODO Replace PLACEABLE TagKey for config
-            TagKey<PaintingVariant> allowed = PaintingVariantTags.PLACEABLE;
-
             boolean hasFlipped = mirror != Mirror.NONE;
             BlockPos hangPos = hasFlipped ? blockPos.relative(direction.getClockWise()) : blockPos;
 
-            EntityUtil.tryHangPainting(world, hangPos, direction, paintingWidth, paintingWidth == 32 || paintingWidth == 64 ? 32 : 16, BuiltInRegistries.PAINTING_VARIANT, allowed, random);
+            EntityUtil.tryHangPainting(world, hangPos, direction, EntityUtil.getPaintingOfSize(random, paintingWidth, paintingWidth == 32 || paintingWidth == 64 ? 32 : 16, true));
         }
     }
 

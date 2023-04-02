@@ -119,8 +119,6 @@ public class TFClientEvents {
 			ResourceLocation id = TwilightForestMod.prefix("renderer");
 			TwilightForestRenderInfo info = new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false);
 			DimensionRenderingRegistry.registerDimensionEffects(id, info);
-			DimensionRenderingRegistry.registerSkyRenderer(TFGenerationSettings.DIMENSION_KEY, info::renderSky);
-			DimensionRenderingRegistry.registerWeatherRenderer(TFGenerationSettings.DIMENSION_KEY, info::renderSnowAndRain);
 		}
 	}
 

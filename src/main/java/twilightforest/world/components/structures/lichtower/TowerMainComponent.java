@@ -24,6 +24,7 @@ import net.minecraft.world.phys.AABB;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.EntityUtil;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
@@ -460,7 +461,7 @@ public class TowerMainComponent extends TowerWingComponent {
 			BlockState aboveBlockState = world.getBlockState(tCoords.above());
 			if (blockState.getMaterial() == Material.AIR &&
 					aboveBlockState.getMaterial() == Material.AIR &&
-					getEntitiesInAABB(world, new AABB(tCoords)).size() == 0) {
+					EntityUtil.getEntitiesInAABB(world, new AABB(tCoords)).size() == 0) {
 				// if not, place a torch
 				world.setBlock(tCoords, Blocks.OAK_FENCE.defaultBlockState().setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()), true), 2);
 				world.setBlock(tCoords.above(), Blocks.TORCH.defaultBlockState(), 2);

@@ -80,7 +80,7 @@ public class TFWeatherRenderer {
 	}
 
 	//Helpful tip: x, y, and z relate to the looking entity's position.
-	public static boolean renderSnowAndRain(ClientLevel level, float partialTicks, LightTexture lightmap, double camX, double camY, double camZ) {
+	public static boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTicks, LightTexture lightmap, double camX, double camY, double camZ) {
 		Minecraft mc = Minecraft.getInstance();
 		// do normal weather rendering
 		renderNormalWeather(lightmap, level, partialTicks, camX, camY, camZ, Math.max(urGhastRain, level.getRainLevel(partialTicks)));

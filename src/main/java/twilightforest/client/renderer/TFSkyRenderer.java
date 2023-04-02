@@ -4,10 +4,11 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -16,10 +17,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public class TFSkyRenderer {
@@ -32,36 +30,36 @@ public class TFSkyRenderer {
 
 
 	// [VanillaCopy] LevelRenderer.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
-	public static boolean renderSky(ClientLevel level, float partialTicks, PoseStack ms, Camera camera) {
+	public static boolean renderSky(ClientLevel level, float partialTicks, PoseStack stack, Camera camera, Matrix4f projectionMatrix, Runnable setupFog) {
 		LevelRenderer levelRenderer = Minecraft.getInstance().levelRenderer;
 
+		setupFog.run();
 		Vec3 vec3 = level.getSkyColor(camera.getPosition(), partialTicks);
 		float f = (float) vec3.x();
 		float f1 = (float) vec3.y();
 		float f2 = (float) vec3.z();
-
 		FogRenderer.levelFogColor();
+		//BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder(); TF - Unused
 		RenderSystem.depthMask(false);
 		RenderSystem.setShaderColor(f, f1, f2, 1.0F);
-
 		ShaderInstance shaderinstance = RenderSystem.getShader();
 		levelRenderer.skyBuffer.bind();
-		levelRenderer.skyBuffer.drawWithShader(ms.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
+		levelRenderer.skyBuffer.drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
 		VertexBuffer.unbind();
 		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
 		/* TF - snip out sunrise/sunset since that doesn't happen here
-		 * float[] afloat = ...
+		 * float[] afloat = level.effects().getSunriseColor(level.getTimeOfDay(partialTicks), partialTicks);
 		 * if (afloat != null) ...
 		 */
 
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-		ms.pushPose();
+		stack.pushPose();
 		float f11 = 1.0F - level.getRainLevel(partialTicks);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, f11);
-		ms.mulPose(Axis.YP.rotationDegrees(-90.0F));
-		ms.mulPose(Axis.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F));
+		stack.mulPose(Axis.YP.rotationDegrees(-90.0F));
+		stack.mulPose(Axis.XP.rotationDegrees(level.getTimeOfDay(partialTicks) * 360.0F));
 		/* TF - snip out sun/moon
+		 * Matrix4f matrix4f1 = stack.last().pose();
 		 * float f12 = 30.0F;
 		 * ...
 		 * BufferUploader.drawWithShader(bufferbuilder.end());
@@ -70,34 +68,30 @@ public class TFSkyRenderer {
 
 		//if (f10 > 0.0F) { Always true
 		RenderSystem.setShaderColor(f10, f10, f10, f10);
-
+		RenderSystem.setShaderColor(f10, f10, f10, f10);
+		FogRenderer.setupNoFog();
 		starBuffer.bind();
-		starBuffer.drawWithShader(ms.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
+		starBuffer.drawWithShader(stack.last().pose(), projectionMatrix, GameRenderer.getPositionShader());
 		VertexBuffer.unbind();
+		setupFog.run();
 		//}
 
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.disableBlend();
-		ms.popPose();
+		RenderSystem.defaultBlendFunc();
+		stack.popPose();
 		RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
-		double d0 = camera.getEntity().getEyePosition(partialTicks).y() + (level.getSeaLevel() - 10);
-
+		double d0 = camera.getEntity().getEyePosition(partialTicks).y() - level.getLevelData().getHorizonHeight(level);
 		if (d0 < 0.0D) {
-			ms.pushPose();
-			ms.translate(0.0D, 12.0D, 0.0D);
-
+			stack.pushPose();
+			stack.translate(0.0F, 12.0F, 0.0F);
 			levelRenderer.darkBuffer.bind();
-			levelRenderer.darkBuffer.drawWithShader(ms.last().pose(), RenderSystem.getProjectionMatrix(), shaderinstance);
+			levelRenderer.darkBuffer.drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
 			VertexBuffer.unbind();
-			ms.popPose();
+			stack.popPose();
 		}
 
-		if (level.effects().hasGround()) {
-			RenderSystem.setShaderColor(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F, 1.0F);
-		} else {
-			RenderSystem.setShaderColor(f, f1, f2, 1.0F);
-		}
-
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.depthMask(true);
 		return true;
 	}
