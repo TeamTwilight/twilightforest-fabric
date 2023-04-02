@@ -65,12 +65,6 @@
     "twilight.mixins.json"
   ],
   "accessWidener": "twilightforest.accesswidener",
-  "depends": {
-    "fabricloader": ">=${loader_version}",
-    "fabric-api": ">=${fabric_version}",
-    "minecraft": ">=${minecraft_version}",
-    "java": ">=${java_version}"
-  },
   "breaks": {
     "c2me": "*"
   },

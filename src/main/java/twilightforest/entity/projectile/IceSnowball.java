@@ -1,7 +1,6 @@
 package twilightforest.entity.projectile;
 
 import net.fabricmc.api.EnvironmentInterface;
-import net.fabricmc.fabric.impl.item.ItemExtensions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -71,7 +70,7 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 			//damage armor pieces
 			if (target instanceof Player) {
 				for (ItemStack stack : target.getArmorSlots())
-					stack.hurtAndBreak(this.random.nextInt(1), ((Player) target), (user) -> user.broadcastBreakEvent(((ItemExtensions) stack.getItem()).fabric_getEquipmentSlotProvider().getPreferredEquipmentSlot(stack)));
+					stack.hurtAndBreak(this.random.nextInt(1), ((Player) target), (user) -> user.broadcastBreakEvent(LivingEntity.getEquipmentSlotForItem(stack)));
 			}
 		}
 	}

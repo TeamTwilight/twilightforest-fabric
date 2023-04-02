@@ -1,8 +1,6 @@
 //file:noinspection GradlePackageVersionRange
 plugins {
-    id "fabric-loom" version "1.1.+"
-    id "io.github.juuxel.loom-quiltflower" version "1.+"
-    id "org.quiltmc.quilt-mappings-on-loom" version "4.2.0"
+    id "org.quiltmc.loom" version "1.1.+"
     id "maven-publish"
 }
 
@@ -54,15 +52,14 @@ dependencies {
 			it.parchment("org.parchmentmc.data:parchment-1.19.3:${project.parchment_version}@zip")
         it.officialMojangMappings { nameSyntheticMembers = false }
     })
-    modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
+    modImplementation("org.quiltmc:quilt-loader:${project.loader_version}")
 
     modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") { exclude(group: "net.fabricmc.fabric-api") }
     modLocalRuntime("maven.modrinth:suggestion-tweaker:${project.suggestion_tweaker_version}+fabric")
     modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") { exclude(group: "net.fabricmc.fabric-api") } // for Suggestion Tweaker
 
     // dependencies
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-    modImplementation(include(fabricApi.module("fabric-data-generation-api-v1", project.fabric_version))) // include datagen api since FAPI fatjar doesn't
+    modImplementation("org.quiltmc.quilted-fabric-api:quilted-fabric-api:${project.fabric_version}-${project.minecraft_version}")
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:porting-lib:${project.port_lib_version}+${project.minecraft_version}"))
     modImplementation(include("io.github.tropheusj:serialization-hooks:${project.serialization_hooks_version}"))
     modImplementation(include("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.config_api_version}"))
