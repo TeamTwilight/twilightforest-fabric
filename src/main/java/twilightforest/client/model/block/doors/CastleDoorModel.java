@@ -123,7 +123,7 @@ public class CastleDoorModel implements BakedModel, FabricBakedModel {
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState blockState, @Nullable Direction direction, RandomSource randomSource) {
-		return null;
+		return List.of();
 	}
 
 	@Override
