@@ -21,21 +21,6 @@ Keep in touch with development on our [Discord server](https://discord.gg/6v3z26
 ## Translation
 Submitting translations for Twilight Forest can be done via our [Crowdin page](https://crowdin.com/project/twilight-forest). Consider helping us out if you're fluent in any language at all! Alternatively, translations can still be submitted via pull requests. 
 
-## Maven
-https://modmaven.dev/teamtwilight/twilightforest/
-
-```
-repositories {
-    maven {
-        url = "https://modmaven.dev/"
-    }
-}
-
-dependencies {
-    implementation fg.deobf("teamtwilight:twilightforest:{version}:universal")
-}
-```
-
 ## YourKit
 ![](https://www.yourkit.com/images/yklogo.png)
 
