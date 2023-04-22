@@ -14,6 +14,9 @@ public class TFASM implements Runnable {
     @Override
     public void run() {
         extendEnums();
+        shroom();
+        reach();
+        conquered();
         foliage();
         music();
         multipart();
@@ -37,6 +40,107 @@ public class TFASM implements Runnable {
         ClassTinkerers.enumBuilder(mapC("class_1814"), "L" + mapC("class_124") + ";")  // Rarity // ChatFormatting
                 .addEnum("TWILIGHT", () -> new Object[] { ChatFormatting.DARK_GREEN })
                 .build();
+    }
+
+    private static void shroom() {
+        String levelReaderClass = mapC("class_4538").replace('.', '/');
+        String blockPosClass = mapC("class_2338").replace('.', '/');
+                                        // MushroomBlock
+        ClassTinkerers.addTransformation(mapC("class_2420"), classNode -> {
+            classNode.methods.forEach(methodNode -> {
+                if (!methodNode.name.equals(mapM("class_4970.method_9558(Lnet/minecraft/class_2680;Lnet/minecraft/class_4538;Lnet/minecraft/class_2338;)Z"))) // BlockBehaviour#canSurvive
+                    return;
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insert(
+                        ASM.findFirstMethodCall(
+                                methodNode,
+                                ASM.MethodType.INTERFACE,
+                                levelReaderClass,
+                                mapM("class_1920.method_22335(Lnet/minecraft/class_2338;I)I"), // getRawBrightness
+                                "(L" + blockPosClass + ";I)I"
+                        ),
+                        ASM.listOf(
+                                new VarInsnNode(Opcodes.ALOAD, 2),
+                                new VarInsnNode(Opcodes.ALOAD, 3),
+                                new MethodInsnNode(
+                                        Opcodes.INVOKESTATIC,
+                                        "twilightforest/ASMHooks",
+                                        "shroom",
+                                        "(IL" + levelReaderClass + ";L" + blockPosClass + ";)I",
+                                        false
+                                )
+                        )
+                );
+            });
+        });
+    }
+
+    private static void reach() {
+        String levelClass = mapC("class_1937").replace('.', '/');
+        String blockHitResultClass = mapC("class_3965").replace('.', '/');
+        String playerClass = mapC("class_1657").replace('.', '/');
+        String fluidClipContext = mapC("class_3959$class_242").replace('.', '/');
+
+        ClassTinkerers.addTransformation(mapC("class_1792"), classNode -> {
+            classNode.methods.forEach(methodNode -> {
+                if (!methodNode.name.equals(mapM("class_1792.method_7872(Lnet/minecraft/class_1937;Lnet/minecraft/class_1657;Lnet/minecraft/class_3959$class_242;)Lnet/minecraft/class_3965;")))
+                    return;
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insertBefore(
+                        ASM.findFirstInstruction(methodNode, Opcodes.ARETURN),
+                        ASM.listOf(
+                                new VarInsnNode(Opcodes.ALOAD, 0),
+                                new VarInsnNode(Opcodes.ALOAD, 1),
+                                new VarInsnNode(Opcodes.ALOAD, 2),
+                                new MethodInsnNode(
+                                        Opcodes.INVOKESTATIC,
+                                        "twilightforest/ASMHooks",
+                                        "reach",
+                                        "(L" + blockHitResultClass + ";L" + levelClass + ";L" + playerClass + ";L" + fluidClipContext + ";)L" + blockHitResultClass + ";",
+                                        false
+                                )
+                        )
+                );
+            });
+        });
+    }
+
+    private static void conquered() {
+                                    // StructureStart
+        String structureStartClass = mapC("class_3449").replace('.', '/');
+        String piecesContainerClass = mapC("class_6624").replace('.', '/');
+        String chunkPosClass = mapC("class_1923").replace('.', '/');
+        String structureClass = mapC("class_3195").replace('.', '/');
+        String compoundTagClass = mapC("class_2487").replace('.', '/');
+        String loadStaticStartMethod = mapM("class_3449.method_41621(Lnet/minecraft/class_6625;Lnet/minecraft/class_2487;J)Lnet/minecraft/class_3449;");
+
+        ClassTinkerers.addTransformation(mapC("class_3449"), classNode -> {
+            classNode.methods.forEach(methodNode -> {
+                if (!methodNode.name.equals(loadStaticStartMethod))
+                    return;
+                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
+                instructions.insert(
+                        ASM.findFirstMethodCall(
+                                methodNode,
+                                ASM.MethodType.SPECIAL,
+                                structureStartClass,
+                                "<init>",
+                                "(L" + structureClass + ";L" + chunkPosClass + ";IL" + piecesContainerClass + ";)V"
+                        ),
+                        ASM.listOf(
+                                new VarInsnNode(Opcodes.ALOAD, 10),
+                                new VarInsnNode(Opcodes.ALOAD, 1),
+                                new MethodInsnNode(
+                                        Opcodes.INVOKESTATIC,
+                                        "twilightforest/ASMHooks",
+                                        "conquered",
+                                        "(L" + structureStartClass + ";L" + piecesContainerClass + ";L" + compoundTagClass + ";)L" + structureStartClass +";",
+                                        false
+                                )
+                        )
+                );
+            });
+        });
     }
 
     private static void foliage() {
@@ -486,7 +590,7 @@ public class TFASM implements Runnable {
     }
 
     private static void seed() {
-                                         // WorldGenSettings
+                                         // WorldOptions
         ClassTinkerers.addTransformation(mapC("class_5285"), classNode -> {
             classNode.methods.forEach(methodNode -> {
                 if ((!methodNode.name.equals("<init>")))
@@ -502,29 +606,6 @@ public class TFASM implements Runnable {
                                         "twilightforest/ASMHooks",
                                         "seed",
                                         "(J)J",
-                                        false
-                                )
-                        )
-                );
-            });
-        });
-
-                                      // LevelStorageSource.readWorldGenSettings
-        String readWorldGenSettings = mapM("class_32.method_29010(Lcom/mojang/serialization/Dynamic;Lcom/mojang/datafixers/DataFixer;I)Lcom/mojang/datafixers/util/Pair;");
-                                         // LevelStorageSource
-        ClassTinkerers.addTransformation(mapC("class_32"), classNode -> {
-            classNode.methods.forEach(methodNode -> {
-                if (!methodNode.name.equals(readWorldGenSettings))
-                    return;
-                var /*org.objectweb.asm.tree.InsnList*/ instructions = methodNode.instructions;
-                instructions.insertBefore(
-                        ASM.findFirstInstruction(methodNode, Opcodes.ASTORE),
-                        ASM.listOf(
-                                new MethodInsnNode(
-                                        Opcodes.INVOKESTATIC,
-                                        "twilightforest/ASMHooks",
-                                        "seed",
-                                        "(Lcom/mojang/serialization/Dynamic;)Lcom/mojang/serialization/Dynamic;",
                                         false
                                 )
                         )
