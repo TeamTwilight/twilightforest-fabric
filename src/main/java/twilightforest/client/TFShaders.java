@@ -1,23 +1,21 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import io.github.fabricators_of_create.porting_lib.client_events.event.client.RegisterShadersCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 import java.io.IOException;
-import java.util.function.Consumer;
 
 public class TFShaders {
 
 	public static ShaderInstance RED_THREAD;
 
 	public static void init() {
-		RegisterShadersCallback.EVENT.register((resourceProvider, event) -> {
+		CoreShaderRegistrationCallback.EVENT.register(context -> {
 			try {
-				event.registerShader(new ShaderInstance(resourceProvider, new ResourceLocation(TwilightForestMod.ID, "red_thread/red_thread").toString(), DefaultVertexFormat.
-						BLOCK), shader -> RED_THREAD = shader);
+				context.register(new ResourceLocation(TwilightForestMod.ID, "red_thread/red_thread"), DefaultVertexFormat.BLOCK, i -> RED_THREAD = i);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
