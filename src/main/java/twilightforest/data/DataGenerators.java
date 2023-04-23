@@ -11,6 +11,7 @@ import twilightforest.data.custom.UncraftingRecipeGenerator;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
 import twilightforest.init.*;
+import twilightforest.init.custom.WoodPalettes;
 
 public class DataGenerators implements DataGeneratorEntrypoint {
 
@@ -23,7 +24,7 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		pack.addProvider((output, provider) -> new BlockstateGenerator(output, helper));
 		pack.addProvider((output, provider) -> new ItemModelGenerator(output, helper));
 		pack.addProvider(AtlasGenerator::new);
-		pack.addProvider(BiomeTagGenerator::new);
+		pack.addProvider((output, registriesFuture) -> new BiomeTagGenerator(output, registriesFuture, helper));
 		pack.addProvider(CustomTagGenerator.BannerPatternTagGenerator::new);
 		BlockTagGenerator blocktags = pack.addProvider(BlockTagGenerator::new);
 		//generator.addProvider(event.includeServer(), new DamageTypeTagGenerator(output, provider, helper));
@@ -45,14 +46,16 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 
 	@Override
 	public void buildRegistry(RegistrySetBuilder registryBuilder) {
-		registryBuilder.add(Registries.CONFIGURED_FEATURE, TFConfiguredFeatures::bootstrap)
-				.add(Registries.PLACED_FEATURE, TFPlacedFeatures::bootstrap)
-				.add(Registries.STRUCTURE, TFStructures::bootstrap)
-				.add(Registries.STRUCTURE_SET, TFStructureSets::bootstrap)
-				.add(Registries.CONFIGURED_CARVER, TFCaveCarvers::bootstrap)
-				.add(Registries.NOISE_SETTINGS, TFDimensionSettings::bootstrapNoise)
-				.add(Registries.DIMENSION_TYPE, TFDimensionSettings::bootstrapType)
-				.add(Registries.LEVEL_STEM, TFDimensionSettings::bootstrapStem)
-				.add(Registries.BIOME, TFBiomes::bootstrap);
+//			registryBuilder.add(Registries.CONFIGURED_FEATURE, TFConfiguredFeatures::bootstrap)
+//				.add(Registries.PLACED_FEATURE, TFPlacedFeatures::bootstrap)
+//				.add(Registries.STRUCTURE, TFStructures::bootstrap)
+//				.add(Registries.STRUCTURE_SET, TFStructureSets::bootstrap)
+//				.add(Registries.CONFIGURED_CARVER, TFCaveCarvers::bootstrap)
+//				.add(Registries.NOISE_SETTINGS, TFDimensionSettings::bootstrapNoise)
+//				.add(Registries.DIMENSION_TYPE, TFDimensionSettings::bootstrapType)
+//				.add(Registries.LEVEL_STEM, TFDimensionSettings::bootstrapStem)
+//				.add(Registries.BIOME, TFBiomes::bootstrap)
+//				.add(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalettes::bootstrap)
+//				.add(Registries.DAMAGE_TYPE, TFDamageTypes::bootstrap);
 	}
 }

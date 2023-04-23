@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import com.mojang.brigadier.CommandDispatcher;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
-import io.github.fabricators_of_create.porting_lib.registries.RegistryEvents;
+import io.github.fabricators_of_create.porting_lib.registries.DynamicRegistryHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
@@ -26,7 +26,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
@@ -40,16 +39,14 @@ import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.events.*;
 import twilightforest.init.*;
 import twilightforest.init.custom.DwarfRabbitVariant;
-import twilightforest.init.custom.WoodPalettes;
 import twilightforest.init.custom.TinyBirdVariant;
+import twilightforest.init.custom.WoodPalettes;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WoodPalette;
 import twilightforest.world.components.BiomeGrassColors;
-import twilightforest.world.components.TFCavesCarver;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
-import twilightforest.init.TFStructureProcessors;
 
 import java.util.Locale;
 
@@ -116,7 +113,7 @@ public class TwilightForestMod implements ModInitializer {
 
 		DwarfRabbitVariant.DWARF_RABBITS.register();
 		TinyBirdVariant.TINY_BIRDS.register();
-		WoodPalettes.WOOD_PALETTES.register();
+//		WoodPalettes.WOOD_PALETTES.register(); We don't need this on fabric or even on forge really
 
 		TFStructures.register();
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
@@ -151,11 +148,11 @@ public class TwilightForestMod implements ModInitializer {
 		ToolEvents.init();
 
 		ModConfigEvents.reloading(ID).register(TFConfig::onConfigReload);
-		RegistryEvents.NEW_DATAPACK_REGISTRY.register(TwilightForestMod::setRegistriesForDatapack);
+		TwilightForestMod.setRegistriesForDatapack();
 	}
 
-	public static void setRegistriesForDatapack(RegistryEvents.NewDatapackRegistry event) {
-		event.register(new RegistryDataLoader.RegistryData<>(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC));
+	public static void setRegistriesForDatapack() {
+		DynamicRegistryHandler.register(new RegistryDataLoader.RegistryData<>(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC));
 	}
 
 	public static void addClassicPack() {

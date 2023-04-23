@@ -1,7 +1,8 @@
 package twilightforest.data.tags;
 
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.data.PortingLibTagsProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BiomeTags;
@@ -12,7 +13,7 @@ import twilightforest.init.TFBiomes;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BiomeTagGenerator extends FabricTagProvider<Biome> {
+public class BiomeTagGenerator extends PortingLibTagsProvider<Biome> {
 
 	public static final TagKey<Biome> IS_TWILIGHT = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("in_twilight_forest"));
 
@@ -33,8 +34,8 @@ public class BiomeTagGenerator extends FabricTagProvider<Biome> {
 	public static final TagKey<Biome> VALID_TROLL_CAVE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_troll_cave_biomes"));
 	public static final TagKey<Biome> VALID_FINAL_CASTLE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_final_castle_biomes"));
 
-	public BiomeTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, Registries.BIOME, provider);
+	public BiomeTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper helper) {
+		super(output, Registries.BIOME, provider, helper);
 	}
 
 	@Override

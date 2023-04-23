@@ -47,7 +47,7 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 		generator.addProvider((output, provider) -> new DamageTypeTagGenerator(output, provider.thenApply(r -> append(r, BUILDER))));
 	}
 
-	private static HolderLookup.Provider append(HolderLookup.Provider original, RegistrySetBuilder builder) {
+	public static HolderLookup.Provider append(HolderLookup.Provider original, RegistrySetBuilder builder) {
 		return builder.buildPatch(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY), original);
 	}
 }
