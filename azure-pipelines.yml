@@ -111,14 +111,14 @@ steps:
                   },
                   {
                       \"name\": \"Commit\",
-                      \"value\": \"${BUILD_REPOSITORY_URI}/commit/${BUILD_SOURCEVERSION}\"
+                      \"value\": \"[${BUILD_SOURCEVERSION:0:6}](${BUILD_REPOSITORY_URI}/commit/${BUILD_SOURCEVERSION})\"
                   }"
       if [ "${jobResult}" = "Succeeded" ]
       then
       json="${json},
                   {
                       \"name\": \"Download\",
-                      \"value\": \"${downloadUrl}\"
+                      \"value\": \"[${downloadUrl#*"subPath=%2F"}](${downloadUrl})\"
                   }"
       fi
       json="${json}
