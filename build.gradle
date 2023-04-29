@@ -56,6 +56,7 @@ dependencies {
     })
     modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 
+//    modLocalRuntime("maven.modrinth:ctm-refabricated:1.0.1+1.19")
     modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") { exclude(group: "net.fabricmc.fabric-api") }
     modLocalRuntime("maven.modrinth:lazydfu:0.1.2")
     modLocalRuntime("maven.modrinth:suggestion-tweaker:${project.suggestion_tweaker_version}+fabric")
