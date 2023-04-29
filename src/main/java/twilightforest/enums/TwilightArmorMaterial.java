@@ -41,7 +41,6 @@ public enum TwilightArmorMaterial implements ArmorMaterial {
 		this.repairMaterial = repairMaterial;
 	}
 
-	@Environment(EnvType.CLIENT)
 	@Override
 	public String getName() {
 		return name;
