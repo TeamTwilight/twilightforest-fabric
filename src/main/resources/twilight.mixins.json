@@ -16,6 +16,7 @@
     "ConnectionMixin",
     "DispenserBlockAccessor",
     "PlayerListMixin",
+    "ServerPlayerMixin",
     "UncraftingMenuAccessor"
   ],
   "injectors": {
