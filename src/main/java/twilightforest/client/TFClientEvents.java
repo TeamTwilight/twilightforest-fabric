@@ -85,6 +85,7 @@ public class TFClientEvents {
 
 		@Deprecated // tterrag said this would become deprecated soon in favor of above method
 		public static void modelBake(ModelManager manager, Map<ResourceLocation, BakedModel> models, ModelBakery loader) {
+			TFItems.addItemModelProperties();
 			// TODO Unhardcode, into using Model Deserializers and load from JSON instead
 			fullbrightItem(models, TFItems.FIERY_INGOT);
 			fullbrightItem(models, TFItems.FIERY_BOOTS);

@@ -90,7 +90,6 @@ public class TFClientSetup implements ClientModInitializer {
 		} catch (ClassNotFoundException e) {
 			optifinePresent = false;
 		}
-		TFItems.addItemModelProperties();
 
         RenderLayerRegistration.init();
         TFBlockEntities.registerTileEntityRenders();
