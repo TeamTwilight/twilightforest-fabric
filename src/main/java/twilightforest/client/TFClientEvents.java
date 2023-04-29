@@ -38,6 +38,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -113,7 +114,9 @@ public class TFClientEvents {
 						.map(Material::texture)
 						.forEach(spriteAdder::accept);
 
-			spriteAdder.accept(TwilightForestMod.prefix("block/mosspatch"));
+			if (InventoryMenu.BLOCK_ATLAS.equals(map.location())) {
+				spriteAdder.accept(TwilightForestMod.prefix("block/mosspatch"));
+			}
 		}
 
 		public static void registerModels() {
