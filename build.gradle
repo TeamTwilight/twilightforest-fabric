@@ -1,8 +1,7 @@
 //file:noinspection GradlePackageVersionRange
 plugins {
-    id "fabric-loom" version "1.1.+"
-    id "io.github.juuxel.loom-quiltflower" version "1.+"
-    id "org.quiltmc.quilt-mappings-on-loom" version "4.2.0"
+    id "fabric-loom" version "1.3.+"
+    id "io.github.juuxel.loom-vineflower" version "1.+"
     id "maven-publish"
 }
 
@@ -34,7 +33,6 @@ repositories {
     maven { url = "https://maven.ladysnake.org/releases" } // Cardinal Components API
     maven { url = "https://maven.parchmentmc.net/" } // Parchment
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
-    maven { url = "https://jitpack.io" } // Fabric ASM, Mixin Extras
     maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
     maven { url 'https://maven.blamejared.com' } // Botany Pots, Bookself
     maven { // Jade
@@ -44,6 +42,7 @@ repositories {
         }
     }
     maven { url = "https://maven.wispforest.io"}
+    maven { url = "https://jitpack.io" } // Fabric ASM, Mixin Extras
 }
 
 dependencies {
@@ -51,7 +50,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings(loom.layered {
         it.mappings("org.quiltmc:quilt-mappings:${project.minecraft_version}+build.${project.qm_version}:intermediary-v2")
-			it.parchment("org.parchmentmc.data:parchment-1.19.3:${project.parchment_version}@zip")
+		it.parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip")
         it.officialMojangMappings { nameSyntheticMembers = false }
     })
     modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
@@ -61,10 +60,11 @@ dependencies {
     modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") { exclude(group: "net.fabricmc.fabric-api") } // for Suggestion Tweaker
 
     // dependencies
+    for (String module in port_lib_modules.split(",")) {
+        modApi(include("io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version"))
+    }
+
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-    modImplementation(include(fabricApi.module("fabric-data-generation-api-v1", project.fabric_version))) // include datagen api since FAPI fatjar doesn't
-    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:Porting-Lib:${project.port_lib_version}+${project.minecraft_version}"))
-    modImplementation(include("io.github.tropheusj:serialization-hooks:${project.serialization_hooks_version}"))
     modImplementation(include("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.config_api_version}"))
     modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"))
     modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}"))
