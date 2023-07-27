@@ -74,7 +74,6 @@ accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings isAq
 accessible method net/minecraft/world/level/levelgen/NoiseGeneratorSettings disableMobGeneration ()Z
 accessible field net/minecraft/world/level/levelgen/carver/CaveCarverConfiguration floorLevel Lnet/minecraft/util/valueproviders/FloatProvider;
 accessible method net/minecraft/world/entity/monster/AbstractSkeleton getStepSound ()Lnet/minecraft/sounds/SoundEvent;
-accessible field net/minecraft/world/level/block/state/BlockBehaviour material Lnet/minecraft/world/level/material/Material;
 accessible class net/minecraft/server/level/ServerLevel$EntityCallbacks
 accessible class net/minecraft/client/gui/MapRenderer$MapInstance
 accessible field net/minecraft/client/gui/MapRenderer MAP_ICONS Lnet/minecraft/client/renderer/RenderType;
