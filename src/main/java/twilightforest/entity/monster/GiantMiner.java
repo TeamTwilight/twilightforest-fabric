@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
+import twilightforest.util.EntityUtil;
 
 import java.util.List;
 
@@ -90,8 +91,7 @@ public class GiantMiner extends Monster {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.ANT, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		return super.doHurtTarget(entity);
+		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.ANT, this));
 	}
 
 	@Override

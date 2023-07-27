@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.thenether",
+  "name": "museumcurator.thenether.warpedbotany",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:warped_stem",
+      "placement": "before",
+      "items": [
+        "twilightforest:hollow_warped_stem"
+      ]
+    }
+  ]
+}

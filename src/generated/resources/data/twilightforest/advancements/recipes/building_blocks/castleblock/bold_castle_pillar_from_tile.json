@@ -30,5 +30,6 @@
     "recipes": [
       "twilightforest:castleblock/bold_castle_pillar_from_tile"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

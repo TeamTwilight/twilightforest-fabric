@@ -10,8 +10,8 @@ import net.minecraft.client.model.geom.builders.*;
 public class HydraTrophyModel extends GenericTrophyModel {
 
 	public final ModelPart head;
-	public ModelPart plate;
-	public ModelPart mouth;
+	public final ModelPart plate;
+	public final ModelPart mouth;
 
 	public HydraTrophyModel(ModelPart part) {
 		this.head = part.getChild("head");

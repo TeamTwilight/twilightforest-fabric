@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.metallurgy",
+  "name": "museumcurator.metallurgy.twilightforest.knightmetal",
+  "relativeTo": "museumcurator.metallurgy.twilightforest.ironwood",
+  "items": [
+    "twilightforest:armor_shard",
+    "twilightforest:armor_shard_cluster",
+    "twilightforest:knightmetal_ingot",
+    "twilightforest:knightmetal_ring",
+    "twilightforest:block_and_chain",
+    "twilightforest:knightmetal_block"
+  ]
+}

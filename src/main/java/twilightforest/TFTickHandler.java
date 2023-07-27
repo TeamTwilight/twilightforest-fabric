@@ -4,6 +4,7 @@ import io.github.fabricators_of_create.porting_lib.event.common.PlayerTickEvents
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -18,6 +19,8 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFStructures;
+import twilightforest.init.custom.Enforcement;
 import twilightforest.item.BrittleFlaskItem;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionClearPacket;
@@ -41,7 +44,7 @@ public class TFTickHandler {
 
 	public static void playerTick(Player eventPlayer) {
 		if (!(eventPlayer instanceof ServerPlayer player)) return;
-		if (!(player.level instanceof ServerLevel world)) return;
+		if (!(player.level() instanceof ServerLevel world)) return;
 
 		// check for portal creation, at least if it's not disabled
 		if (!TFConfig.COMMON_CONFIG.disablePortalCreation.get() && player.tickCount % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
@@ -64,14 +67,14 @@ public class TFTickHandler {
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
 		if (player.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(world) && TFGenerationSettings.usesTwilightChunkGenerator(world) && !player.isCreative() && !player.isSpectator()) {
-			TFGenerationSettings.enforceBiomeProgression(player, world);
+			Enforcement.enforceBiomeProgression(player, world);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
 		if (player.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(world)) {
 			if (TFGenerationSettings.usesTwilightChunkGenerator(world)) {
 				if (player.isCreative() || player.isSpectator()) {
-					sendAllClearPacket(world, player);
+					sendAllClearPacket(player);
 				} else {
 					checkForLockedStructuresSendPacket(player, world);
 				}
@@ -79,20 +82,20 @@ public class TFTickHandler {
 		}
 	}
 
-	private static void sendStructureProtectionPacket(Level world, Player player, BoundingBox sbb) {
+	private static void sendStructureProtectionPacket(Player player, BoundingBox sbb) {
 		if (player instanceof ServerPlayer serverPlayer) {
 			TFPacketHandler.CHANNEL.sendToClient(new StructureProtectionPacket(sbb), serverPlayer);
 		}
 	}
 
-	private static void sendAllClearPacket(Level world, Player player) {
+	private static void sendAllClearPacket(Player player) {
 		if (player instanceof ServerPlayer serverPlayer) {
 			TFPacketHandler.CHANNEL.sendToClient(new StructureProtectionClearPacket(), serverPlayer);
 		}
 	}
 
 	@SuppressWarnings("UnusedReturnValue")
-	private static boolean checkForLockedStructuresSendPacket(Player player, Level world) {
+	private static boolean checkForLockedStructuresSendPacket(Player player, ServerLevel world) {
 		ChunkGeneratorTwilight chunkGenerator = WorldUtil.getChunkGenerator(world);
 		if (chunkGenerator == null)
 			return false;
@@ -100,16 +103,20 @@ public class TFTickHandler {
 		ChunkPos chunkPlayer = player.chunkPosition();
 		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x, chunkPlayer.z).map(structureStart -> {
 			if (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && !advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player)) {
-				sendStructureProtectionPacket(world, player, structureStart.getBoundingBox());
+				//FIXME this is a gross hack. For some reason the stronghold locked effect doesnt properly lock to the structure after 1.19.2 and I have no idea why.
+				// I really dont feel like looking into this right now, someone else can if they feel so inclined.
+				if (structureStart.getStructure().equals(world.registryAccess().registryOrThrow(Registries.STRUCTURE).get(TFStructures.KNIGHT_STRONGHOLD)) && player.blockPosition().getY() > TFGenerationSettings.SEALEVEL) {
+					return false;
+				}
+				sendStructureProtectionPacket(player, structureStart.getBoundingBox());
 				return true;
 			}
 
-			sendAllClearPacket(world, player);
+			sendAllClearPacket(player);
 			return false;
 		}).orElse(false);
 	}
 
-	private static final Component PORTAL_UNWORTHY = Component.translatable(TwilightForestMod.ID + ".ui.portal.unworthy");
 	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
 		if (world.dimension().location().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
 				|| TFGenerationSettings.isTwilightPortalDestination(world)
@@ -133,7 +140,7 @@ public class TFTickHandler {
 			if (!player.isCreative() && !player.isSpectator() && TFConfig.getPortalLockingAdvancement(player) != null) {
 				Advancement requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFConfig.getPortalLockingAdvancement(player)));
 				if (requirement != null && !PlayerHelper.doesPlayerHaveRequiredAdvancement(player, requirement)) {
-					player.displayClientMessage(PORTAL_UNWORTHY, true);
+					player.displayClientMessage(TFPortalBlock.PORTAL_UNWORTHY, true);
 
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`

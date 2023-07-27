@@ -56,26 +56,26 @@ public class WoodPalette {
 		return blocks.contains(block);
 	}
 
-	public StructureTemplate.StructureBlockInfo modifyBlockWithType(WoodPalette targetPalette, StructureTemplate.StructureBlockInfo stateIn) {
-		BlockState state = stateIn.state;
+	public StructureTemplate.StructureBlockInfo modifyBlockWithType(WoodPalette targetPalette, StructureTemplate.StructureBlockInfo state) {
+		BlockState newState = state.state();
 
-		if (targetPalette.contains(state.getBlock()))
-			return new StructureTemplate.StructureBlockInfo(stateIn.pos, this.modifyBlockWithType(targetPalette, state), stateIn.nbt);
+		if (targetPalette.contains(newState.getBlock()))
+			return new StructureTemplate.StructureBlockInfo(state.pos(), this.modifyBlockWithType(targetPalette, newState), state.nbt());
 
-		return stateIn;
+		return state;
 	}
 
-	public BlockState modifyBlockWithType(WoodPalette targetPalette, BlockState stateIn) {
-		return switch (targetPalette.getWoodShapeFromBlock(stateIn.getBlock())) {
+	public BlockState modifyBlockWithType(WoodPalette targetPalette, BlockState state) {
+		return switch (targetPalette.getWoodShapeFromBlock(state.getBlock())) {
 			case BLOCK -> this.planks.defaultBlockState();
-			case STAIRS -> FeaturePlacers.transferAllStateKeys(stateIn, this.stairs);
-			case SLAB -> FeaturePlacers.transferAllStateKeys(stateIn, this.slab);
-			case FENCE -> FeaturePlacers.transferAllStateKeys(stateIn, this.fence);
-			case GATE -> FeaturePlacers.transferAllStateKeys(stateIn, this.gate);
-			case BUTTON -> FeaturePlacers.transferAllStateKeys(stateIn, this.button);
-			case PLATE -> FeaturePlacers.transferAllStateKeys(stateIn, this.plate);
-			case BANISTER -> FeaturePlacers.transferAllStateKeys(stateIn, this.banister);
-			default -> stateIn;
+			case STAIRS -> FeaturePlacers.transferAllStateKeys(state, this.stairs);
+			case SLAB -> FeaturePlacers.transferAllStateKeys(state, this.slab);
+			case FENCE -> FeaturePlacers.transferAllStateKeys(state, this.fence);
+			case GATE -> FeaturePlacers.transferAllStateKeys(state, this.gate);
+			case BUTTON -> FeaturePlacers.transferAllStateKeys(state, this.button);
+			case PLATE -> FeaturePlacers.transferAllStateKeys(state, this.plate);
+			case BANISTER -> FeaturePlacers.transferAllStateKeys(state, this.banister);
+			default -> state;
 		};
 	}
 

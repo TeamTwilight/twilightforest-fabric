@@ -55,7 +55,7 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int j = 0; j < 8; ++j) {
-				this.getLevel().addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -66,8 +66,8 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		Entity target = result.getEntity();
-		if (!this.getLevel().isClientSide() && target instanceof LivingEntity) {
-			target.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.SNOWBALL_FIGHT, this.getOwner(), this), DAMAGE);
+		if (!this.level().isClientSide() && target instanceof LivingEntity) {
+			target.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SNOWBALL_FIGHT, this.getOwner(), this), DAMAGE);
 			//damage armor pieces
 			if (target instanceof Player) {
 				for (ItemStack stack : target.getArmorSlots())
@@ -83,8 +83,8 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	}
 
 	private void die() {
-		if (!this.getLevel().isClientSide()) {
-			this.getLevel().broadcastEntityEvent(this, (byte) 3);
+		if (!this.level().isClientSide()) {
+			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
 	}

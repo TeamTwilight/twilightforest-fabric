@@ -1,0 +1,15 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.shrubbery",
+  "items": [
+    "twilightforest:huge_lily_pad",
+    "twilightforest:huge_water_lily",
+    "twilightforest:hedge",
+    "twilightforest:mayapple",
+    "twilightforest:fiddlehead",
+    "twilightforest:moss_patch",
+    "twilightforest:fallen_leaves",
+    "twilightforest:thorn_leaves",
+    "twilightforest:thorn_rose"
+  ]
+}

@@ -6,6 +6,7 @@ import io.github.fabricators_of_create.porting_lib.entity.ExtraSpawnDataEntity;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -86,19 +87,19 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 		this.chain5 = new Chain(this);
 		this.partsArray = new BlockChainGoblin.MultipartGenericsAreDumb[]{this.chain1, this.chain2, this.chain3, this.chain4, this.chain5};
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
-		this.entityData.set(IS_FOIL, stack.hasFoil());
+		this.getEntityData().set(IS_FOIL, stack.hasFoil());
 	}
 
 	private void setHand(InteractionHand hand) {
-		this.entityData.set(HAND, hand == InteractionHand.MAIN_HAND);
+		this.getEntityData().set(HAND, hand == InteractionHand.MAIN_HAND);
 	}
 
 	public InteractionHand getHand() {
-		return this.entityData.get(HAND) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+		return this.getEntityData().get(HAND) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 	}
 
 	public boolean isFoil() {
-		return this.entityData.get(IS_FOIL);
+		return this.getEntityData().get(IS_FOIL);
 	}
 
 	@Override
@@ -125,7 +126,7 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		// only hit living things
-		if (!this.getLevel().isClientSide() && result.getEntity() != this.getOwner()) {
+		if (!this.level().isClientSide() && result.getEntity() != this.getOwner()) {
 			float damage = 0.0F;
 			if (result.getEntity() instanceof LivingEntity living) {
 				damage = 10 + EnchantmentHelper.getDamageBonus(this.stack, living.getMobType());
@@ -140,8 +141,8 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 			}
 
 			if (damage > 0.0F) {
-				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.SPIKED, this.getOwner(), this), damage)) {
-					this.playSound(TFSounds.BLOCKCHAIN_HIT.get(), 1.0f, this.random.nextFloat());
+				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this.getOwner(), this), damage)) {
+					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0f, this.random.nextFloat());
 					// age when we hit a monster so that we go back to the player faster
 					this.hitEntity = true;
 					this.isReturning = true;
@@ -157,10 +158,10 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		if (!this.getLevel().isClientSide() && !this.getLevel().isEmptyBlock(result.getBlockPos())) {
-			if (!this.stack.isCorrectToolForDrops(this.getLevel().getBlockState(result.getBlockPos()))) {
+		if (!this.level().isClientSide() && !this.level().isEmptyBlock(result.getBlockPos())) {
+			if (!this.stack.isCorrectToolForDrops(this.level().getBlockState(result.getBlockPos()))) {
 				if (!this.isReturning && !this.hitEntity) {
-					this.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
+					this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125f, this.random.nextFloat());
 					this.gameEvent(GameEvent.HIT_GROUND);
 				}
 
@@ -242,14 +243,14 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 			boolean creative = player.getAbilities().instabuild;
 
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-				BlockState state = this.getLevel().getBlockState(pos);
+				BlockState state = this.level().getBlockState(pos);
 				Block block = state.getBlock();
 
-				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && canEntityDestroy(block, state, this.getLevel(), pos, this)) {
-					if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(level, player, pos, state, null)) {
-						if (!state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state)) {
-							this.getLevel().destroyBlock(pos, false);
-							if (!creative) block.playerDestroy(this.getLevel(), player, pos, state, this.getLevel().getBlockEntity(pos), player.getItemInHand(this.getHand()));
+				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.level(), pos, this)) {
+					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player))) {
+						if (ForgeEventFactory.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state))) {
+							this.level().destroyBlock(pos, false);
+							if (!creative) block.playerDestroy(this.level(), player, pos, state, this.level().getBlockEntity(pos), player.getItemInHand(this.getHand()));
 							this.blocksSmashed++;
 							if (this.blocksSmashed > MAX_SMASH) {
 								break;
@@ -280,7 +281,7 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	public void tick() {
 		super.tick();
 
-		if (this.getLevel().isClientSide()) {
+		if (this.level().isClientSide()) {
 			this.chain1.tick();
 			this.chain2.tick();
 			this.chain3.tick();
@@ -343,8 +344,8 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 
 	@Override
 	protected void defineSynchedData() {
-		this.entityData.define(HAND, true);
-		this.entityData.define(IS_FOIL, false);
+		this.getEntityData().define(HAND, true);
+		this.getEntityData().define(IS_FOIL, false);
 	}
 
 	@Override
@@ -357,6 +358,20 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 	}
 
 	@Override
+	protected void readAdditionalSaveData(CompoundTag pCompound) {
+		super.readAdditionalSaveData(pCompound);
+		if (pCompound.contains("BlockAndChainStack", 10)) {
+			this.stack = ItemStack.of(pCompound.getCompound("BlockAndChainStack"));
+		}
+	}
+
+	@Override
+	protected void addAdditionalSaveData(CompoundTag pCompound) {
+		super.addAdditionalSaveData(pCompound);
+		pCompound.put("BlockAndChainStack", this.stack.save(new CompoundTag()));
+	}
+
+	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeInt(this.getOwner() != null ? this.getOwner().getId() : -1);
 		buffer.writeBoolean(this.getHand() == InteractionHand.MAIN_HAND);
@@ -364,7 +379,7 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 
 	@Override
 	public void readSpawnData(FriendlyByteBuf buf) {
-		Entity e = this.getLevel().getEntity(buf.readInt());
+		Entity e = this.level().getEntity(buf.readInt());
 		if (e instanceof LivingEntity) {
 			this.setOwner(e);
 		}

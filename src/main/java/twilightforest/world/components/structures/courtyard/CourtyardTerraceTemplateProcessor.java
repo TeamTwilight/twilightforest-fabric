@@ -36,24 +36,24 @@ public final class CourtyardTerraceTemplateProcessor extends StructureProcessor 
     @Nullable
     @Override
     public StructureTemplate.StructureBlockInfo processBlock(LevelReader world, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldinfo, StructureTemplate.StructureBlockInfo newInfo, StructurePlaceSettings settings) {
-        BlockState newState = newInfo.state;
+        BlockState newState = newInfo.state();
 
         if (newState.getBlock() == Blocks.SANDSTONE_SLAB) {
-            BlockState stateAt = world.getBlockState(newInfo.pos);
+            BlockState stateAt = world.getBlockState(newInfo.pos());
 
             if (newState == Blocks.SANDSTONE_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE)) {
                 if (BLOCKS_REPLACE_TO_SLAB.contains(stateAt))
-                    return new StructureTemplate.StructureBlockInfo(newInfo.pos, Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
+                    return new StructureTemplate.StructureBlockInfo(newInfo.pos(), Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
                 else if (stateAt.isAir())
                     return null;
                 else
-                    return new StructureTemplate.StructureBlockInfo(newInfo.pos, Blocks.STONE_BRICKS.defaultBlockState(), null);
+                    return new StructureTemplate.StructureBlockInfo(newInfo.pos(), Blocks.STONE_BRICKS.defaultBlockState(), null);
             }
 
             if (stateAt.isAir())
                 return null;
             else
-                return new StructureTemplate.StructureBlockInfo(newInfo.pos, Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
+                return new StructureTemplate.StructureBlockInfo(newInfo.pos(), Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
         }
 
         return newInfo;

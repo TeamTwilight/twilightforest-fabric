@@ -38,21 +38,21 @@ public class ThrownWep extends TFThrowable {
 
 	@Override
 	protected void defineSynchedData() {
-		this.entityData.define(DATA_ITEMSTACK, ItemStack.EMPTY);
-		this.entityData.define(DATA_VELOCITY, 0.001F);
+		this.getEntityData().define(DATA_ITEMSTACK, ItemStack.EMPTY);
+		this.getEntityData().define(DATA_VELOCITY, 0.001F);
 	}
 
 	public ThrownWep setItem(ItemStack stack) {
-		this.entityData.set(DATA_ITEMSTACK, stack);
+		this.getEntityData().set(DATA_ITEMSTACK, stack);
 		return this;
 	}
 
 	public ItemStack getItem() {
-		return this.entityData.get(DATA_ITEMSTACK);
+		return this.getEntityData().get(DATA_ITEMSTACK);
 	}
 
 	public ThrownWep setVelocity(float velocity) {
-		this.entityData.set(DATA_VELOCITY, velocity);
+		this.getEntityData().set(DATA_VELOCITY, velocity);
 		return this;
 	}
 
@@ -61,7 +61,7 @@ public class ThrownWep extends TFThrowable {
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.getLevel().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -75,16 +75,16 @@ public class ThrownWep extends TFThrowable {
 			return;
 		}
 
-		if (!this.getLevel().isClientSide()) {
-			result.getEntity().hurt(TFDamageTypes.getDamageSource(this.getLevel(), this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get() ? TFDamageTypes.THROWN_PICKAXE : TFDamageTypes.THROWN_AXE), this.projectileDamage);
+		if (!this.level().isClientSide()) {
+			result.getEntity().hurt(TFDamageTypes.getDamageSource(this.level(), this.getItem().getItem() == TFItems.KNIGHTMETAL_PICKAXE.get() ? TFDamageTypes.THROWN_PICKAXE : TFDamageTypes.THROWN_AXE), this.projectileDamage);
 		}
 	}
 
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result);
-		if (!this.getLevel().isClientSide()) {
-			this.getLevel().broadcastEntityEvent(this, (byte) 3);
+		if (!this.level().isClientSide()) {
+			this.level().broadcastEntityEvent(this, (byte) 3);
 			discard();
 		}
 	}
@@ -101,6 +101,6 @@ public class ThrownWep extends TFThrowable {
 
 	@Override
 	protected float getGravity() {
-		return this.entityData.get(DATA_VELOCITY);
+		return this.getEntityData().get(DATA_VELOCITY);
 	}
 }

@@ -35,7 +35,7 @@ public class EmptyMazeMapItem extends ComplexItem {
 			}
 
 			player.awardStat(Stats.ITEM_USED.get(this));
-			player.getLevel().playSound(null, player, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, player.getSoundSource(), 1.0F, 1.0F);
+			player.level().playSound(null, player, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, player.getSoundSource(), 1.0F, 1.0F);
 			return InteractionResultHolder.success(itemstack1);
 		}
 	}

@@ -17,13 +17,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
 
@@ -42,27 +40,12 @@ public class SnowTreeFeature extends Feature<TreeConfiguration> {
         return reader.isStateAtPosition(pos, (state) -> state.is(Blocks.VINE));
     }
 
-    public static boolean isBlockWater(LevelSimulatedReader reader, BlockPos pos) {
-        return reader.isStateAtPosition(pos, (p_225297_) -> p_225297_.is(Blocks.WATER));
-    }
-
-    public static boolean isAirOrLeaves(LevelSimulatedReader reader, BlockPos pos) {
-        return reader.isStateAtPosition(pos, (p_225295_) -> p_225295_.isAir() || p_225295_.is(BlockTags.LEAVES));
-    }
-
-    private static boolean isReplaceablePlant(LevelSimulatedReader reader, BlockPos pos) {
-        return reader.isStateAtPosition(pos, (p_225293_) -> {
-            Material material = p_225293_.getMaterial();
-            return material == Material.REPLACEABLE_PLANT || material == Material.REPLACEABLE_WATER_PLANT || material == Material.REPLACEABLE_FIREPROOF_PLANT;
-        });
-    }
-
     private static void setBlockKnownShape(LevelWriter p_67257_, BlockPos p_67258_, BlockState p_67259_) {
         p_67257_.setBlock(p_67258_, p_67259_, 19);
     }
 
     public static boolean validTreePos(LevelSimulatedReader reader, BlockPos pos) {
-        return reader.isStateAtPosition(pos, state -> state.is(Blocks.SNOW_BLOCK)) || isAirOrLeaves(reader, pos) || isReplaceablePlant(reader, pos) || isBlockWater(reader, pos);
+        return reader.isStateAtPosition(pos, (state) -> state.isAir() || state.is(BlockTags.REPLACEABLE_BY_TREES));
     }
 
     private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, FoliagePlacer.FoliageSetter setter, TreeConfiguration config) {
@@ -76,7 +59,7 @@ public class SnowTreeFeature extends Feature<TreeConfiguration> {
         if (i1 >= level.getMinBuildHeight() + 1 && j1 <= level.getMaxBuildHeight()) {
             OptionalInt optionalint = config.minimumSize.minClippedHeight();
             int k1 = this.getMaxFreeTreeHeight(level, i, blockpos, config);
-            if (k1 >= i || !optionalint.isEmpty() && k1 >= optionalint.getAsInt()) {
+            if (k1 >= i || optionalint.isPresent() && k1 >= optionalint.getAsInt()) {
                 if (config.rootPlacer.isPresent() && !config.rootPlacer.get().placeRoots(level, consumer, random, pos, blockpos, config)) {
                     return false;
                 } else {

@@ -61,5 +61,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:entities/alpha_yeti"
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "twilightforest:magic_map"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

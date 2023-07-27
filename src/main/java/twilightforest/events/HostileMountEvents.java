@@ -31,7 +31,7 @@ public class HostileMountEvents {
 		}
 
 		if (damageSource.is(DamageTypes.FALL) && CapabilityList.YETI_THROWN.maybeGet(living).map(YetiThrowCapability::getThrown).orElse(false)) {
-			living.hurt(TFDamageTypes.getEntityDamageSource(living.getLevel(), TFDamageTypes.YEETED, CapabilityList.YETI_THROWN.maybeGet(living).get().getThrower()), amount);
+			living.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.YEETED, CapabilityList.YETI_THROWN.maybeGet(living).get().getThrower()), amount);
 			return true;
 		}
 
@@ -46,7 +46,7 @@ public class HostileMountEvents {
 	}
 
 	public static InteractionResult preventMountDismount(Entity mounted, Entity mounting, boolean isMounting) {
-		if (!mounted.getLevel().isClientSide() &&
+		if (!mounted.level().isClientSide() &&
 				!isMounting && mounted.isAlive() &&
 				mounting instanceof Player player && player.isAlive() &&
 				isRidingUnfriendly(player) && !allowDismount && !player.getAbilities().invulnerable)

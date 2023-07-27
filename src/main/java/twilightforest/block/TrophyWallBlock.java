@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.enums.BossVariant;
@@ -28,7 +27,7 @@ public class TrophyWallBlock extends AbstractTrophyBlock {
 			.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.box(3.25D, 4.0D, 8.5D, 12.75D, 14.5D, 16.0D), Direction.SOUTH, Block.box(3.25D, 4.0D, 0.0D, 12.75D, 14.5D, 7.5D), Direction.EAST, Block.box(0.0D, 4.0D, 3.25D, 7.5D, 14.5D, 12.75D), Direction.WEST, Block.box(8.5D, 4.0D, 3.25D, 16.0D, 14.5D, 12.75D)));
 
 	public TrophyWallBlock(BossVariant variant) {
-		super(variant, 0, Properties.of(Material.DECORATION).instabreak());
+		super(variant, 0, Properties.of().instabreak());
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
 	}
 

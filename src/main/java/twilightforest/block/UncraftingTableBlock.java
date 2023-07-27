@@ -12,25 +12,23 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.inventory.UncraftingMenu;
-
-import org.jetbrains.annotations.Nullable;
 
 public class UncraftingTableBlock extends Block {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public UncraftingTableBlock() {
-		super(Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD));
+	public UncraftingTableBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(POWERED, false));
 	}
 
@@ -67,8 +65,8 @@ public class UncraftingTableBlock extends Block {
 	@Nullable
 	@Override
 	public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-		return new SimpleMenuProvider((id, inv, player) -> new UncraftingMenu(id, inv, player.getLevel(), ContainerLevelAccess.create(level, pos)),
-				Component.translatable("container.uncrafting_table"));
+		return new SimpleMenuProvider((id, inv, player) -> new UncraftingMenu(id, inv, player.level(), ContainerLevelAccess.create(level, pos)),
+				Component.translatable("container.twilightforest.uncrafting_table"));
 	}
 
 	@Override

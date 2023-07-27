@@ -95,5 +95,6 @@
     [
       "snow_queen"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

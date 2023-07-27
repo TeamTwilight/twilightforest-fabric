@@ -68,7 +68,7 @@ public class StableIceCore extends BaseIceMob implements RangedAttackMob {
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
-		IceSnowball snowball = new IceSnowball(this.getLevel(), this);
+		IceSnowball snowball = new IceSnowball(this.level(), this);
 		snowball.setPos(this.getX(), this.getY() + this.getEyeHeight(), this.getZ());
 
 		// [VanillaCopy] Adapted from SlowGolem
@@ -81,6 +81,6 @@ public class StableIceCore extends BaseIceMob implements RangedAttackMob {
 		snowball.shoot(d1, d2 + f, d3, 1.6F, 6.0F);
 
 		this.playSound(TFSounds.ICE_CORE_SHOOT.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-		this.getLevel().addFreshEntity(snowball);
+		this.level().addFreshEntity(snowball);
 	}
 }

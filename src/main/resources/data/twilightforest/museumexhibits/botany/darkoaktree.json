@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.darkoaktree",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:dark_oak_log",
+      "placement": "before",
+      "items": [
+        "twilightforest:hollow_dark_oak_log"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "collection": "museumcurator.collection.technology",
+  "name": "museumcurator.technology.navigation",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:map",
+      "placement": "after",
+      "items": [
+        "twilightforest:magic_map",
+        "twilightforest:maze_map",
+        "twilightforest:ore_map"
+      ]
+    },
+    {
+      "relativeTo": "minecraft:filled_map",
+      "placement": "after",
+      "items": [
+        "twilightforest:filled_magic_map",
+        "twilightforest:filled_maze_map",
+        "twilightforest:filled_ore_map"
+      ]
+    }
+  ]
+}

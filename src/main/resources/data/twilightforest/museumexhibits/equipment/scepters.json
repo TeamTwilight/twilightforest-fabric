@@ -1,0 +1,10 @@
+{
+  "collection": "museumcurator.collection.equipment",
+  "name": "museumcurator.equipment.twilightforest.scepters",
+  "items": [
+    "twilightforest:twilight_scepter",
+    "twilightforest:lifedrain_scepter",
+    "twilightforest:zombie_scepter",
+    "twilightforest:fortification_scepter"
+  ]
+}

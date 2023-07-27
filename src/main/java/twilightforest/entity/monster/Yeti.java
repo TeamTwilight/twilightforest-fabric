@@ -84,7 +84,7 @@ public class Yeti extends Monster implements IHostileMount {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(ANGER_FLAG, false);
+		this.getEntityData().define(ANGER_FLAG, false);
 	}
 
 	@Override
@@ -114,13 +114,13 @@ public class Yeti extends Monster implements IHostileMount {
 	}
 
 	public boolean isAngry() {
-		return this.entityData.get(ANGER_FLAG);
+		return this.getEntityData().get(ANGER_FLAG);
 	}
 
 	public void setAngry(boolean anger) {
-		this.entityData.set(ANGER_FLAG, anger);
+		this.getEntityData().set(ANGER_FLAG, anger);
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (anger) {
 				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ANGRY_MODIFIER)) {
 					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ANGRY_MODIFIER);
@@ -147,9 +147,9 @@ public class Yeti extends Monster implements IHostileMount {
 	 * Put the player out in front of where we are
 	 */
 	@Override
-	public void positionRider(Entity passenger) {
+	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
 		Vec3 riderPos = this.getRiderPosition(passenger);
-		passenger.setPos(riderPos.x(), riderPos.y(), riderPos.z());
+		callback.accept(passenger, riderPos.x(), riderPos.y(), riderPos.z());
 	}
 
 	/**

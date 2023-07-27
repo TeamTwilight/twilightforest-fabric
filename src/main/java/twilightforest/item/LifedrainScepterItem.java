@@ -131,9 +131,7 @@ public class LifedrainScepterItem extends Item implements CustomEnchantingBehavi
 	}
 
 	@Override
-	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
-		Level level = living.getLevel();
-
+	public void onUseTick(Level level, LivingEntity living, ItemStack stack, int count) {
 		if (stack.getDamageValue() == this.getMaxDamage(/*stack*/)) {
 			// do not use
 			living.stopUsingItem();
@@ -239,6 +237,6 @@ public class LifedrainScepterItem extends Item implements CustomEnchantingBehavi
 	@Environment(EnvType.CLIENT)
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
 		super.appendHoverText(stack, level, tooltip, flags);
-		tooltip.add(Component.translatable("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable("item.twilightforest.scepter.desc", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
 	}
 }

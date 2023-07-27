@@ -42,5 +42,6 @@
       "in_tf",
       "make_portal"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

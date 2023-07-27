@@ -277,5 +277,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:chests/tree_cache"
 }

@@ -1,0 +1,8 @@
+{
+  "collection": "museumcurator.collection.equipment",
+  "name": "museumcurator.equipment.shovels",
+  "items": [
+    "twilightforest:ironwood_shovel",
+    "twilightforest:steeleaf_shovel"
+  ]
+}

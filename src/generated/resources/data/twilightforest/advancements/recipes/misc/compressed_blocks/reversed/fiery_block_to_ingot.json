@@ -28,5 +28,6 @@
     "recipes": [
       "twilightforest:compressed_blocks/reversed/fiery_block_to_ingot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

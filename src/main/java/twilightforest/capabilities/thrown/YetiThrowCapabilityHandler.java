@@ -26,8 +26,8 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 
 	@Override
 	public void update() {
-		if (this.getThrown()) {
-			if (this.host.isOnGround() || this.host.isSwimming()) {
+		if (this.host instanceof Player player && this.getThrown()) {
+			if (player.onGround() || player.isSwimming() || player.isInWater()) {
 				this.setThrown(false, null);
 			}
 		} else {
@@ -66,7 +66,7 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 	}
 
 	private void sendUpdatePacket() {
-		if (!this.host.getLevel().isClientSide()) {
+		if (!this.host.level().isClientSide()) {
 			if (this.host instanceof ServerPlayer serverPlayer && serverPlayer.connection != null)
 				TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateThrownPacket(this.host, this), this.host);
 		}

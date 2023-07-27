@@ -28,29 +28,29 @@ public class HydraHead extends HydraPart {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_MOUTH_POSITION, 0F);
-		this.entityData.define(DATA_MOUTH_POSITION_LAST, 0F);
-		this.entityData.define(DATA_STATE, (byte) 0);
+		this.getEntityData().define(DATA_MOUTH_POSITION, 0F);
+		this.getEntityData().define(DATA_MOUTH_POSITION_LAST, 0F);
+		this.getEntityData().define(DATA_STATE, (byte) 0);
 	}
 
 	public float getMouthOpen() {
-		return this.entityData.get(DATA_MOUTH_POSITION);
+		return this.getEntityData().get(DATA_MOUTH_POSITION);
 	}
 
 	public float getMouthOpenLast() {
-		return this.entityData.get(DATA_MOUTH_POSITION_LAST);
+		return this.getEntityData().get(DATA_MOUTH_POSITION_LAST);
 	}
 
 	public HydraHeadContainer.State getState() {
-		return HydraHeadContainer.State.values()[this.entityData.get(DATA_STATE)];
+		return HydraHeadContainer.State.values()[this.getEntityData().get(DATA_STATE)];
 	}
 
 	public void setMouthOpen(float openness) {
-		this.entityData.set(DATA_MOUTH_POSITION_LAST, getMouthOpen());
-		this.entityData.set(DATA_MOUTH_POSITION, openness);
+		this.getEntityData().set(DATA_MOUTH_POSITION_LAST, getMouthOpen());
+		this.getEntityData().set(DATA_MOUTH_POSITION, openness);
 	}
 
 	public void setState(HydraHeadContainer.State state) {
-		this.entityData.set(DATA_STATE, (byte) state.ordinal());
+		this.getEntityData().set(DATA_STATE, (byte) state.ordinal());
 	}
 }

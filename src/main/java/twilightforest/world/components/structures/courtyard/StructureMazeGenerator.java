@@ -18,7 +18,7 @@ import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponent;
 
 public abstract class StructureMazeGenerator extends TFStructureComponent {
-    protected int[][] maze;
+    protected final int[][] maze;
     private final int[][] cornerClipping = new int[4][2];
     private final int widthInCellCount;
     private final int heightInCellCount;

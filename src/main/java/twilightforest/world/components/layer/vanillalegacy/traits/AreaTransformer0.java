@@ -1,17 +1,18 @@
 package twilightforest.world.components.layer.vanillalegacy.traits;
 
-import twilightforest.world.components.layer.vanillalegacy.area.Area;
-import twilightforest.world.components.layer.vanillalegacy.area.AreaFactory;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
+import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 
 public interface AreaTransformer0 {
-	default <R extends Area> AreaFactory<R> run(BigContext<R> p_76985_) {
-		return () -> p_76985_.createResult((p_164642_, p_164643_) -> {
-			p_76985_.initRandom(p_164642_, p_164643_);
-			return this.applyPixel(p_76985_, p_164642_, p_164643_);
+	default <R extends Area> R run(BigContext<R> context) {
+		return context.createResult((x, z) -> {
+			context.initRandom(x, z);
+			return this.applyPixel(context, x, z);
 		});
 	}
 
-	int applyPixel(Context p_76990_, int p_76991_, int p_76992_);
+	ResourceKey<Biome> applyPixel(Context context, int x, int z);
 }

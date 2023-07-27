@@ -1,0 +1,8 @@
+{
+  "collection": "museumcurator.collection.lithology",
+  "name": "museumcurator.lithology.stone",
+  "items": [
+    "twilightforest:bold_stone_pillar",
+    "twilightforest:twisted_stone"
+  ]
+}

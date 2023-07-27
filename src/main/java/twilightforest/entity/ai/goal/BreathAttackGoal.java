@@ -111,7 +111,7 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 		Vec3 lookVec = this.entityHost.getViewVector(1.0F);
 		Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
 		float var9 = 0.5F;
-		List<Entity> possibleList = this.entityHost.getLevel().getEntities(this.entityHost, this.entityHost.getBoundingBox().move(lookVec.x() * offset, lookVec.y() * offset, lookVec.z() * offset).inflate(var9, var9, var9));
+		List<Entity> possibleList = this.entityHost.level().getEntities(this.entityHost, this.entityHost.getBoundingBox().move(lookVec.x() * offset, lookVec.y() * offset, lookVec.z() * offset).inflate(var9, var9, var9));
 		double hitDist = 0;
 
 		if(this.entityHost instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity())

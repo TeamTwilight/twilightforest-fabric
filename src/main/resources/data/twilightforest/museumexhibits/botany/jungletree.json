@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.jungletree",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:jungle_log",
+      "placement": "before",
+      "items": [
+        "twilightforest:hollow_jungle_log"
+      ]
+    }
+  ]
+}

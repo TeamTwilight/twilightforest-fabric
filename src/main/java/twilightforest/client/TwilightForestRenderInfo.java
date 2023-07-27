@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
@@ -41,7 +40,7 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
         Player player = Minecraft.getInstance().player;
 
         if (player != null) {
-            Optional<ResourceKey<Biome>> biome = player.level.getBiome(player.blockPosition()).unwrapKey();
+            Optional<ResourceKey<Biome>> biome = player.level().getBiome(player.blockPosition()).unwrapKey();
             if (biome.isPresent()) {
                 boolean spooky = biome.get() == TFBiomes.SPOOKY_FOREST;
 

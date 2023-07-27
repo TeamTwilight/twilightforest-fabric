@@ -23,7 +23,7 @@ public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
 	}
 
 	protected void addTags(HolderLookup.Provider provider) {
-		this.tag(DamageTypeTags.BYPASSES_ARMOR).add(TFDamageTypes.GHAST_TEAR, TFDamageTypes.SLAM, TFDamageTypes.LICH_BOLT, TFDamageTypes.LICH_BOMB, TFDamageTypes.LEAF_BRAIN, TFDamageTypes.LOST_WORDS, TFDamageTypes.SCHOOLED, TFDamageTypes.LIFEDRAIN, TFDamageTypes.EXPIRED, TFDamageTypes.YEETED);
+		this.tag(DamageTypeTags.BYPASSES_ARMOR).add(TFDamageTypes.GHAST_TEAR, TFDamageTypes.SLAM, TFDamageTypes.LICH_BOLT, TFDamageTypes.LICH_BOMB, TFDamageTypes.LEAF_BRAIN, TFDamageTypes.LOST_WORDS, TFDamageTypes.SCHOOLED, TFDamageTypes.LIFEDRAIN, TFDamageTypes.EXPIRED, TFDamageTypes.YEETED, TFDamageTypes.ACID_RAIN);
 		this.tag(DamageTypeTags.DAMAGES_HELMET).add(TFDamageTypes.GHAST_TEAR, TFDamageTypes.THROWN_BLOCK);
 		this.tag(DamageTypeTags.IS_PROJECTILE).add(TFDamageTypes.TWILIGHT_SCEPTER, TFDamageTypes.LICH_BOLT, TFDamageTypes.LICH_BOMB, TFDamageTypes.THROWN_PICKAXE, TFDamageTypes.THROWN_AXE, TFDamageTypes.THROWN_BLOCK, TFDamageTypes.LEAF_BRAIN, TFDamageTypes.LOST_WORDS, TFDamageTypes.SCHOOLED, TFDamageTypes.SNOWBALL_FIGHT, TFDamageTypes.LIFEDRAIN);
 		this.tag(DamageTypeTags.IS_FIRE).add(TFDamageTypes.HYDRA_MORTAR, TFDamageTypes.HYDRA_FIRE);
@@ -33,8 +33,8 @@ public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
 		this.tag(DamageTypeTags.NO_ANGER).add(TFDamageTypes.SLAM);
 		this.tag(DamageTypeTags.BYPASSES_INVULNERABILITY).add(TFDamageTypes.EXPIRED);
 		this.tag(DamageTypeTags.BYPASSES_ENCHANTMENTS).add(TFDamageTypes.FALLING_ICE);
-		this.tag(DamageTypeTags.WITCH_RESISTANT_TO).add(TFDamageTypes.LICH_BOMB, TFDamageTypes.LICH_BOLT, TFDamageTypes.LEAF_BRAIN, TFDamageTypes.LOST_WORDS, TFDamageTypes.SCHOOLED);
-		this.tag(BREAKS_LICH_SHIELDS).add(DamageTypes.MAGIC, DamageTypes.INDIRECT_MAGIC, DamageTypes.SONIC_BOOM, TFDamageTypes.LICH_BOLT);
+		this.tag(DamageTypeTags.WITCH_RESISTANT_TO).add(TFDamageTypes.LICH_BOMB, TFDamageTypes.LICH_BOLT, TFDamageTypes.LEAF_BRAIN, TFDamageTypes.LOST_WORDS, TFDamageTypes.SCHOOLED, TFDamageTypes.ACID_RAIN);
+		this.tag(BREAKS_LICH_SHIELDS).add(DamageTypes.MAGIC, DamageTypes.INDIRECT_MAGIC, DamageTypes.SONIC_BOOM, TFDamageTypes.LICH_BOLT, TFDamageTypes.TWILIGHT_SCEPTER);
 	}
 
 	private static TagKey<DamageType> create(String name) {

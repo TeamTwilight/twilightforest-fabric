@@ -1,0 +1,18 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.twilightforest.sortingtree",
+  "relativeTo": "museumcurator.botany.sprucetree",
+  "placement" : "before",
+  "items": [
+    "twilightforest:sorting_sapling",
+    "twilightforest:sorting_leaves",
+    "twilightforest:hollow_sorting_log",
+    "twilightforest:sorting_log",
+    "twilightforest:stripped_sorting_log",
+    "twilightforest:sorting_wood",
+    "twilightforest:stripped_sorting_wood",
+    "twilightforest:sorting_planks",
+    "twilightforest:sorting_slab",
+    "twilightforest:sorting_stairs"
+  ]
+}

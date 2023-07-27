@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.machinery",
+  "name": "museumcurator.machinery.gadgets",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:clock",
+      "placement": "after",
+      "items": [
+        "twilightforest:moon_dial"
+      ]
+    }
+  ]
+}

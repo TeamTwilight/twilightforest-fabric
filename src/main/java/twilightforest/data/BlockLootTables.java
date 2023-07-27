@@ -7,7 +7,6 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +15,6 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
@@ -52,14 +50,10 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 
 	@Override
 	public void generate() {
-		registerEmpty(TFBlocks.EXPERIMENT_115.get());
-		registerEmpty(TFBlocks.SLIDER.get());
-		registerEmpty(TFBlocks.INFESTED_TOWERWOOD.get());
 		dropSelf(TFBlocks.TOWERWOOD.get());
 		dropSelf(TFBlocks.ENCASED_TOWERWOOD.get());
 		dropSelf(TFBlocks.CRACKED_TOWERWOOD.get());
 		dropSelf(TFBlocks.MOSSY_TOWERWOOD.get());
-		registerEmpty(TFBlocks.ANTIBUILDER.get());
 		dropSelf(TFBlocks.CARMINITE_BUILDER.get());
 		dropSelf(TFBlocks.GHAST_TRAP.get());
 		dropSelf(TFBlocks.CARMINITE_REACTOR.get());
@@ -87,6 +81,8 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.TROLLSTEINN.get());
 		dropWhenSilkTouch(TFBlocks.WISPY_CLOUD.get());
 		dropSelf(TFBlocks.FLUFFY_CLOUD.get());
+		dropSelf(TFBlocks.RAINY_CLOUD.get());
+		dropSelf(TFBlocks.SNOWY_CLOUD.get());
 		dropSelf(TFBlocks.GIANT_COBBLESTONE.get());
 		dropSelf(TFBlocks.GIANT_LOG.get());
 		dropSelf(TFBlocks.GIANT_LEAVES.get());
@@ -209,14 +205,14 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		add(TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.CREEPER_HEAD));
 		add(TFBlocks.PLAYER_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
 		add(TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PLAYER_HEAD).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SkullOwner", "SkullOwner")));
+		add(TFBlocks.PIGLIN_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PIGLIN_HEAD));
+		add(TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), createSingleItemTable(Blocks.PIGLIN_HEAD));
 
 		dropSelf(TFBlocks.IRON_LADDER.get());
 		dropSelf(TFBlocks.TWISTED_STONE.get());
 		dropSelf(TFBlocks.TWISTED_STONE_PILLAR.get());
 		dropSelf(TFBlocks.BOLD_STONE_PILLAR.get());
-		registerEmpty(TFBlocks.DEATH_TOME_SPAWNER.get());
 		dropWhenSilkTouch(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get());
-		//registerDropSelfLootTable(TFBlocks.LAPIS_BLOCK.get());
 		add(TFBlocks.KEEPSAKE_CASKET.get(), casketInfo(TFBlocks.KEEPSAKE_CASKET.get()));
 		dropSelf(TFBlocks.CANDELABRA.get());
 		dropPottedContents(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get());
@@ -245,6 +241,8 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.CRIMSON_BANISTER.get());
 		dropSelf(TFBlocks.WARPED_BANISTER.get());
 		dropSelf(TFBlocks.VANGROVE_BANISTER.get());
+		dropSelf(TFBlocks.BAMBOO_BANISTER.get());
+		dropSelf(TFBlocks.CHERRY_BANISTER.get());
 
 		add(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get()));
@@ -255,6 +253,7 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		add(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get()));
+		add(TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get()));
 		add(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get()));
@@ -273,6 +272,7 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		add(TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_VERTICAL.get()));
 		add(TFBlocks.HOLLOW_WARPED_STEM_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_WARPED_STEM_VERTICAL.get()));
 		add(TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_VANGROVE_LOG_VERTICAL.get()));
+		add(TFBlocks.HOLLOW_CHERRY_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_CHERRY_LOG_VERTICAL.get()));
 		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL.get()));
 		add(TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL.get()));
 		add(TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get(), verticalHollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL.get()));
@@ -291,6 +291,7 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		add(TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get()));
 		add(TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get()));
 		add(TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get()));
+		add(TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE.get()));
 		add(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get()));
 		add(TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get()));
 		add(TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(), hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get()));
@@ -321,6 +322,8 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.TWILIGHT_OAK_TRAPDOOR.get());
 		add(TFBlocks.TWILIGHT_OAK_SIGN.get(), createSingleItemTable(TFBlocks.TWILIGHT_OAK_SIGN.get().asItem()));
 		add(TFBlocks.TWILIGHT_WALL_SIGN.get(), createSingleItemTable(TFBlocks.TWILIGHT_OAK_SIGN.get().asItem()));
+		add(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.TWILIGHT_OAK_BANISTER.get());
 		dropSelf(TFBlocks.TWILIGHT_OAK_CHEST.get());
 
@@ -341,6 +344,8 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.CANOPY_TRAPDOOR.get());
 		add(TFBlocks.CANOPY_SIGN.get(), createSingleItemTable(TFBlocks.CANOPY_SIGN.get().asItem()));
 		add(TFBlocks.CANOPY_WALL_SIGN.get(), createSingleItemTable(TFBlocks.CANOPY_SIGN.get().asItem()));
+		add(TFBlocks.CANOPY_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.CANOPY_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.CANOPY_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.CANOPY_HANGING_SIGN.get().asItem()));
 		add(TFBlocks.CANOPY_BOOKSHELF.get(), createSingleItemTableWithSilkTouch(TFBlocks.CANOPY_BOOKSHELF.get(), Items.BOOK, ConstantValue.exactly(2.0F)));
 		dropSelf(TFBlocks.CANOPY_BANISTER.get());
 		dropSelf(TFBlocks.CANOPY_CHEST.get());
@@ -362,6 +367,8 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.MANGROVE_TRAPDOOR.get());
 		add(TFBlocks.MANGROVE_SIGN.get(), createSingleItemTable(TFBlocks.MANGROVE_SIGN.get().asItem()));
 		add(TFBlocks.MANGROVE_WALL_SIGN.get(), createSingleItemTable(TFBlocks.MANGROVE_SIGN.get().asItem()));
+		add(TFBlocks.MANGROVE_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.MANGROVE_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.MANGROVE_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.MANGROVE_BANISTER.get());
 		dropSelf(TFBlocks.MANGROVE_CHEST.get());
 
@@ -381,10 +388,12 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.DARK_PLATE.get());
 		add(TFBlocks.DARK_DOOR.get(), createSinglePropConditionTable(TFBlocks.DARK_DOOR.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		dropSelf(TFBlocks.DARK_TRAPDOOR.get());
-		add(TFBlocks.DARKWOOD_SIGN.get(), createSingleItemTable(TFBlocks.DARKWOOD_SIGN.get().asItem()));
-		add(TFBlocks.DARKWOOD_WALL_SIGN.get(), createSingleItemTable(TFBlocks.DARKWOOD_SIGN.get().asItem()));
-		dropSelf(TFBlocks.DARKWOOD_BANISTER.get());
-		dropSelf(TFBlocks.DARKWOOD_CHEST.get());
+		add(TFBlocks.DARK_SIGN.get(), createSingleItemTable(TFBlocks.DARK_SIGN.get().asItem()));
+		add(TFBlocks.DARK_WALL_SIGN.get(), createSingleItemTable(TFBlocks.DARK_SIGN.get().asItem()));
+		add(TFBlocks.DARK_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.DARK_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.DARK_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.DARK_HANGING_SIGN.get().asItem()));
+		dropSelf(TFBlocks.DARK_BANISTER.get());
+		dropSelf(TFBlocks.DARK_CHEST.get());
 
 		dropSelf(TFBlocks.TIME_LOG.get());
 		dropSelf(TFBlocks.STRIPPED_TIME_LOG.get());
@@ -404,6 +413,8 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.TIME_TRAPDOOR.get());
 		add(TFBlocks.TIME_SIGN.get(), createSingleItemTable(TFBlocks.TIME_SIGN.get().asItem()));
 		add(TFBlocks.TIME_WALL_SIGN.get(), createSingleItemTable(TFBlocks.TIME_SIGN.get().asItem()));
+		add(TFBlocks.TIME_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TIME_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.TIME_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TIME_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.TIME_BANISTER.get());
 		dropSelf(TFBlocks.TIME_CHEST.get());
 
@@ -425,6 +436,8 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.TRANSFORMATION_TRAPDOOR.get());
 		add(TFBlocks.TRANSFORMATION_SIGN.get(), createSingleItemTable(TFBlocks.TRANSFORMATION_SIGN.get().asItem()));
 		add(TFBlocks.TRANSFORMATION_WALL_SIGN.get(), createSingleItemTable(TFBlocks.TRANSFORMATION_SIGN.get().asItem()));
+		add(TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TRANSFORMATION_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.TRANSFORMATION_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.TRANSFORMATION_BANISTER.get());
 		dropSelf(TFBlocks.TRANSFORMATION_CHEST.get());
 
@@ -446,6 +459,8 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.MINING_TRAPDOOR.get());
 		add(TFBlocks.MINING_SIGN.get(), createSingleItemTable(TFBlocks.MINING_SIGN.get().asItem()));
 		add(TFBlocks.MINING_WALL_SIGN.get(), createSingleItemTable(TFBlocks.MINING_SIGN.get().asItem()));
+		add(TFBlocks.MINING_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.MINING_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.MINING_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.MINING_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.MINING_BANISTER.get());
 		dropSelf(TFBlocks.MINING_CHEST.get());
 
@@ -467,6 +482,8 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropSelf(TFBlocks.SORTING_TRAPDOOR.get());
 		add(TFBlocks.SORTING_SIGN.get(), createSingleItemTable(TFBlocks.SORTING_SIGN.get().asItem()));
 		add(TFBlocks.SORTING_WALL_SIGN.get(), createSingleItemTable(TFBlocks.SORTING_SIGN.get().asItem()));
+		add(TFBlocks.SORTING_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.SORTING_HANGING_SIGN.get().asItem()));
+		add(TFBlocks.SORTING_WALL_HANGING_SIGN.get(), createSingleItemTable(TFBlocks.SORTING_HANGING_SIGN.get().asItem()));
 		dropSelf(TFBlocks.SORTING_BANISTER.get());
 		dropSelf(TFBlocks.SORTING_CHEST.get());
 
@@ -522,7 +539,7 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 								LootItem.lootTableItem(TFBlocks.FIREFLY.get())
 										.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FIREFLY_SPAWNER.get())
 												.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FireflySpawnerBlock.RADIUS, layer)))
-										.apply(SetItemCountFunction.setCount(ConstantValue.exactly((float)layer.intValue() - 1)))))));
+										.apply(SetItemCountFunction.setCount(ConstantValue.exactly(layer - 1)))))));
 	}
 
 	protected LootTable.Builder torchberryPlant(Block pBlock) {
@@ -571,7 +588,7 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 						LootItem.lootTableItem(TFBlocks.FALLEN_LEAVES.get())
 								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FALLEN_LEAVES.get())
 										.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FallenLeavesBlock.LAYERS, layer)))
-								.apply(SetItemCountFunction.setCount(ConstantValue.exactly((float)layer.intValue())))).when(HAS_SHEARS))));
+								.apply(SetItemCountFunction.setCount(ConstantValue.exactly(layer)))).when(HAS_SHEARS))));
 	}
 
 	//[VanillaCopy] of a few different methods from BlockLoot. These are here just so we can use the modded shears thing
@@ -585,10 +602,6 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 
 	public static LootTable.Builder createShearsOnlyDrop(ItemLike p_124287_) {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).when(HAS_SHEARS).add(LootItem.lootTableItem(p_124287_)));
-	}
-
-	private void registerEmpty(Block b) {
-		add(b, LootTable.lootTable());
 	}
 
 	@Override

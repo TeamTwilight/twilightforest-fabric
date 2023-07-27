@@ -3,10 +3,14 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -15,9 +19,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
+import twilightforest.util.LegacyLandmarkPlacements;
 
 public class HostileWolf extends Monster {
 
@@ -46,6 +53,17 @@ public class HostileWolf extends Monster {
 		if (entity != null && entity != this.getTarget())
 			this.playSound(this.getTargetSound(), 4F, this.getVoicePitch());
 		super.setTarget(entity);
+	}
+
+	public static boolean checkWolfSpawnRules(EntityType<? extends HostileWolf> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+		return accessor.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(accessor, pos, random) && checkMobSpawnRules(entity, accessor, reason, pos, random);
+	}
+
+	public static boolean isValidLightLevel(ServerLevelAccessor accessor, BlockPos pos, RandomSource random) {
+		int chunkX = Mth.floor(pos.getX()) >> 4;
+		int chunkZ = Mth.floor(pos.getZ()) >> 4;
+		// We're allowed to spawn in bright light only in hedge mazes.
+		return LegacyLandmarkPlacements.getNearestLandmark(chunkX, chunkZ, accessor.getLevel()) == TFLandmark.HEDGE_MAZE || Monster.isDarkEnoughToSpawn(accessor, pos, random);
 	}
 
 	protected SoundEvent getTargetSound() {

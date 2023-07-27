@@ -6,7 +6,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 
 // TODO Split into FeatureLogic and FeaturePlacers
 @Deprecated
@@ -28,9 +27,9 @@ public final class FeatureUtil {
 				// check if the blocks even exist?
 				if (world.hasChunkAt(pos_)) {
 					// is there grass, dirt or stone below?
-					Material m = world.getBlockState(pos_.below()).getMaterial();
-					if (m != Material.DIRT && m != Material.GRASS && m != Material.STONE && m != Material.SNOW && m != Material.SAND) {
-						if(underwaterAllowed && m == Material.WATER) {
+					BlockState state = world.getBlockState(pos_.below());
+					if (!state.isSolidRender(world, pos_)) {
+						if (underwaterAllowed && state.liquid()) {
 							continue;
 						}
 						flag = false;
@@ -38,8 +37,8 @@ public final class FeatureUtil {
 
 					for (int cy = 0; cy < height; cy++) {
 						// blank space above?
-						if (!world.isEmptyBlock(pos_.above(cy)) && !world.getBlockState(pos_.above(cy)).getMaterial().isReplaceable()) {
-							if(underwaterAllowed && world.getBlockState(pos_.above(cy)).getMaterial() == Material.WATER) {
+						if (!world.isEmptyBlock(pos_.above(cy)) && !world.getBlockState(pos_.above(cy)).canBeReplaced()) {
+							if(underwaterAllowed && world.getBlockState(pos_.above(cy)).liquid()) {
 								continue;
 							}
 							flag = false;
@@ -109,7 +108,7 @@ public final class FeatureUtil {
 	public static boolean isNearSolid(LevelReader world, BlockPos pos) {
 		for (Direction e : Direction.values()) {
 			if (world.hasChunkAt(pos.relative(e))
-					&& world.getBlockState(pos.relative(e)).getMaterial().isSolid()) {
+					&& world.getBlockState(pos.relative(e)).isSolid()) {
 				return true;
 			}
 		}

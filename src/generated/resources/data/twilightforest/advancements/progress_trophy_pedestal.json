@@ -47,5 +47,6 @@
     [
       "kill_lich"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

@@ -1,0 +1,16 @@
+{
+  "collection": "museumcurator.collection.culinary",
+  "name": "museumcurator.culinary.baked",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:cooked_beef",
+      "placement": "after",
+      "items": [
+        "twilightforest:cooked_venison",
+        "twilightforest:cooked_meef",
+        "twilightforest:maze_wafer",
+        "twilightforest:hydra_chop"
+      ]
+    }
+  ]
+}

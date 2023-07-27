@@ -2,6 +2,7 @@ package twilightforest.entity.passive;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -28,8 +29,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
@@ -42,10 +43,13 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 
+import java.util.Optional;
+
 public class QuestRam extends Animal implements EnforcedHomePoint {
 
 	private static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Boolean> DATA_REWARDED = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
 	private int randomTickDivider;
 
@@ -65,6 +69,13 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 	}
 
+
+
+	@Override
+	public boolean isFood(ItemStack stack) {
+		return false;
+	}
+
 	@Nullable
 	@Override
 	public Animal getBreedOffspring(ServerLevel level, AgeableMob mate) {
@@ -80,8 +91,9 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_COLOR, 0);
-		this.entityData.define(DATA_REWARDED, false);
+		this.getEntityData().define(DATA_COLOR, 0);
+		this.getEntityData().define(DATA_REWARDED, false);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -104,19 +116,13 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		super.customServerAiStep();
 	}
 
-	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		if (type == MobSpawnType.STRUCTURE) this.restrictTo(this.blockPosition(), 13);
-		return super.finalizeSpawn(accessor, difficulty, type, data, tag);
-	}
-
 	private void rewardQuest() {
 		// todo flesh the context out more
-		LootContext ctx = new LootContext.Builder((ServerLevel) this.getLevel()).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.PIGLIN_BARTER);
-		ObjectArrayList<ItemStack> rewards = this.getLevel().getServer().getLootTables().get(TFLootTables.QUESTING_RAM_REWARDS).getRandomItems(ctx);
+		LootParams ctx = new LootParams.Builder((ServerLevel) this.level()).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.PIGLIN_BARTER);
+		ObjectArrayList<ItemStack> rewards = this.level().getServer().getLootData().getLootTable(TFLootTables.QUESTING_RAM_REWARDS).getRandomItems(ctx);
 		rewards.forEach(stack -> this.spawnAtLocation(stack, 1.0F));
 
-		for (ServerPlayer player : this.getLevel().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
+		for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
 			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
 		}
 	}
@@ -138,7 +144,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 
 	public boolean tryAccept(ItemStack stack) {
 		if (stack.is(ItemTags.WOOL)) {
-			DyeColor color = guessColor(stack);
+			DyeColor color = this.guessColor(stack);
 			if (color != null && !this.isColorPresent(color)) {
 				this.setColorPresent(color);
 				this.animateAddColor(color, 50);
@@ -151,28 +157,12 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 
 	@Nullable
 	public DyeColor guessColor(ItemStack stack) {
-		if (stack.getItem() instanceof BlockItem blockItem) {
-			Material material = blockItem.getBlock().material;
-			if (material.equals(Material.WOOL)) {
-				return switch (blockItem.getBlock().defaultMaterialColor().id) {
-					case 8 -> DyeColor.byId(0); //SNOW
-					case 15 -> DyeColor.byId(1); //COLOR_ORANGE
-					case 16 -> DyeColor.byId(2); //COLOR_MAGENTA
-					case 17 -> DyeColor.byId(3); //COLOR_LIGHT_BLUE
-					case 18 -> DyeColor.byId(4); //COLOR_YELLOW
-					case 19 -> DyeColor.byId(5); //COLOR_LIGHT_GREEN
-					case 20 -> DyeColor.byId(6); //COLOR_PINK
-					case 21 -> DyeColor.byId(7); //COLOR_GRAY
-					case 22 -> DyeColor.byId(8); //COLOR_LIGHT_GRAY
-					case 23 -> DyeColor.byId(9); //COLOR_CYAN
-					case 24 -> DyeColor.byId(10); //COLOR_PURPLE
-					case 25 -> DyeColor.byId(11); //COLOR_BLUE
-					case 26 -> DyeColor.byId(12); //COLOR_BROWN
-					case 27 -> DyeColor.byId(13); //COLOR_GREEN
-					case 28 -> DyeColor.byId(14); //COLOR_RED
-					case 29 -> DyeColor.byId(15); //COLOR_BLACK
-					default -> null;
-				};
+		if (stack.is(ItemTags.WOOL) && stack.getItem() instanceof BlockItem blockItem) {
+			MapColor color = blockItem.getBlock().defaultMapColor();
+			for (DyeColor dye : DyeColor.values()) {
+				if (color == dye.getMapColor()) {
+					return dye;
+				}
 			}
 		}
 		return null;
@@ -191,15 +181,15 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		super.readAdditionalSaveData(compound);
 		this.setColorFlags(compound.getInt("ColorFlags"));
 		this.setRewarded(compound.getBoolean("Rewarded"));
-		this.loadHomePointFromNbt(compound, 13);
+		this.loadHomePointFromNbt(compound);
 	}
 
 	public int getColorFlags() {
-		return this.entityData.get(DATA_COLOR);
+		return this.getEntityData().get(DATA_COLOR);
 	}
 
 	private void setColorFlags(int flags) {
-		this.entityData.set(DATA_COLOR, flags);
+		this.getEntityData().set(DATA_COLOR, flags);
 	}
 
 	public boolean isColorPresent(DyeColor color) {
@@ -211,11 +201,11 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	public boolean getRewarded() {
-		return this.entityData.get(DATA_REWARDED);
+		return this.getEntityData().get(DATA_REWARDED);
 	}
 
 	public void setRewarded(boolean rewarded) {
-		this.entityData.set(DATA_REWARDED, rewarded);
+		this.getEntityData().set(DATA_REWARDED, rewarded);
 	}
 
 	private void animateAddColor(DyeColor color, int iterations) {
@@ -224,8 +214,8 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 		float green = colorVal[1];
 		float blue = colorVal[2];
 
-		if (!this.getLevel().isClientSide()) {
-			for (ServerPlayer serverplayer : ((ServerLevel) this.getLevel()).players()) {
+		if (!this.level().isClientSide()) {
+			for (ServerPlayer serverplayer : ((ServerLevel) this.level()).players()) {
 				if (serverplayer.distanceToSqr(Vec3.atCenterOf(this.blockPosition())) < 4096.0D) {
 					ParticlePacket packet = new ParticlePacket();
 
@@ -278,12 +268,17 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
 	}
 
 	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 13;
 	}
 }

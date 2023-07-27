@@ -1,0 +1,9 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.fungi",
+  "items": [
+    "twilightforest:mushgloom",
+    "twilightforest:huge_mushgloom",
+    "twilightforest:huge_mushgloom_stem"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.twilightforest.mangrovetree",
+  "relativeTo": "museumcurator.botany.mangrovetree",
+  "placement" : "before",
+  "items": [
+    "twilightforest:mangrove_sapling",
+    "twilightforest:mangrove_leaves",
+    "twilightforest:hollow_mangrove_log",
+    "twilightforest:mangrove_log",
+    "twilightforest:stripped_mangrove_log",
+    "twilightforest:mangrove_wood",
+    "twilightforest:stripped_mangrove_wood",
+    "twilightforest:mangrove_planks",
+    "twilightforest:mangrove_slab",
+    "twilightforest:mangrove_stairs",
+    "twilightforest:mangrove_root"
+  ]
+}

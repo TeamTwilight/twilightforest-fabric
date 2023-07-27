@@ -5,7 +5,6 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -89,10 +88,10 @@ public class CharmEffect extends Entity implements ItemSupplier {
 			double dy = getY() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
 			double dz = getZ() + 0.25 * (this.random.nextDouble() - this.random.nextDouble());
 
-			this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
+			this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
 		}
 
-		if (!this.getLevel().isClientSide() && (this.tickCount > 200 || (orbiting != null && !orbiting.isAlive()))) {
+		if (!this.level().isClientSide() && (this.tickCount > 200 || (orbiting != null && !orbiting.isAlive()))) {
 			this.discard();
 		}
 	}
@@ -109,28 +108,28 @@ public class CharmEffect extends Entity implements ItemSupplier {
 
 	@Override
 	protected void defineSynchedData() {
-		this.entityData.define(DATA_ITEMID, ItemStack.EMPTY);
-		this.entityData.define(DATA_OWNER, -1);
+		this.getEntityData().define(DATA_ITEMID, ItemStack.EMPTY);
+		this.getEntityData().define(DATA_OWNER, -1);
 	}
 
 	public void setOwner(LivingEntity owner) {
-		this.entityData.set(DATA_OWNER, owner.getId());
+		this.getEntityData().set(DATA_OWNER, owner.getId());
 	}
 
 	@Nullable
 	public LivingEntity getOwner() {
-		Entity e = this.getLevel().getEntity(this.entityData.get(DATA_OWNER));
+		Entity e = this.level().getEntity(this.getEntityData().get(DATA_OWNER));
 		if (e instanceof LivingEntity living)
 			return living;
 		else return null;
 	}
 
 	public ItemStack getItemID() {
-		return this.entityData.get(DATA_ITEMID);
+		return this.getEntityData().get(DATA_ITEMID);
 	}
 
 	public void setItemID(Item item) {
-		this.entityData.set(DATA_ITEMID, new ItemStack(item));
+		this.getEntityData().set(DATA_ITEMID, new ItemStack(item));
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import twilightforest.init.TFSounds;
 
 //[VanillaCopy] of ProjectileDispenseBehavior, but it damages the stack instead of using it up every shot
 public abstract class DamageableStackDispenseBehavior extends DefaultDispenseItemBehavior {

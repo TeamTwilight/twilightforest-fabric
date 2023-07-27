@@ -7,7 +7,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.PushReaction;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -68,12 +67,6 @@ public class GiantBlock extends Block {
 			}
 		}
 		return true;
-	}
-
-	@Override
-	@Deprecated
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 
 	public static Iterable<BlockPos> getVolume(BlockPos pos) {

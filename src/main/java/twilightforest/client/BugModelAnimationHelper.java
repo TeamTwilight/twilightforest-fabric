@@ -2,8 +2,6 @@ package twilightforest.client;
 
 import net.minecraft.util.RandomSource;
 
-import java.util.Random;
-
 public class BugModelAnimationHelper {
 
     private static final RandomSource rand = RandomSource.create();

@@ -12,9 +12,7 @@
       ],
       "recipe": {
         "type": "jeed:effect_provider",
-        "effect": {
-          "id": "minecraft:blindness"
-        },
+        "effect": "minecraft:blindness",
         "providers": [
           {
             "item": "twilightforest:mist_wolf_spawn_egg"

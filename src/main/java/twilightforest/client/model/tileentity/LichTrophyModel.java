@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.*;
 public class LichTrophyModel extends GenericTrophyModel {
 
 	public final ModelPart head;
-	public ModelPart crown;
+	public final ModelPart crown;
 
 	public LichTrophyModel(ModelPart part) {
 		this.head = part.getChild("head");

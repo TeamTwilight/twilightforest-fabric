@@ -1,22 +1,17 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -27,19 +22,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.GhastguardAttackGoal;
 import twilightforest.entity.ai.goal.GhastguardHomedFlightGoal;
 import twilightforest.entity.ai.goal.GhastguardRandomFlyGoal;
 import twilightforest.entity.boss.UrGhast;
-import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
+
+import java.util.Optional;
 
 public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 	// 0 = idle, 1 = eyes open / tracking player, 2 = shooting fireball
 	private static final EntityDataAccessor<Byte> ATTACK_STATUS = SynchedEntityData.defineId(CarminiteGhastguard.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> ATTACK_TIMER = SynchedEntityData.defineId(CarminiteGhastguard.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> ATTACK_PREVTIMER = SynchedEntityData.defineId(CarminiteGhastguard.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(CarminiteGhastguard.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
 	private GhastguardAttackGoal attackAI;
 	protected float wanderFactor;
@@ -55,9 +53,10 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(ATTACK_STATUS, (byte) 0);
-		this.entityData.define(ATTACK_TIMER, (byte) 0);
-		this.entityData.define(ATTACK_PREVTIMER, (byte) 0);
+		this.getEntityData().define(ATTACK_STATUS, (byte) 0);
+		this.getEntityData().define(ATTACK_TIMER, (byte) 0);
+		this.getEntityData().define(ATTACK_PREVTIMER, (byte) 0);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -85,25 +84,25 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.GHASTGUARD_AMBIENT.get();
+		return TFSounds.CARMINITE_GHASTGUARD_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.GHASTGUARD_HURT.get();
+		return TFSounds.CARMINITE_GHASTGUARD_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.GHASTGUARD_DEATH.get();
+		return TFSounds.CARMINITE_GHASTGUARD_DEATH.get();
 	}
 
 	public SoundEvent getFireSound() {
-		return TFSounds.GHASTGUARD_SHOOT.get();
+		return TFSounds.CARMINITE_GHASTGUARD_SHOOT.get();
 	}
 
 	public SoundEvent getWarnSound() {
-		return TFSounds.GHASTGUARD_WARN.get();
+		return TFSounds.CARMINITE_GHASTGUARD_WARN.get();
 	}
 
 	@Override
@@ -124,7 +123,7 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 	@Override
 	public void aiStep() {
 		if (this.getRandom().nextBoolean()) {
-			this.getLevel().addParticle(DustParticleOptions.REDSTONE, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * this.getBbHeight() - 0.25D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), 0, 0, 0);
+			this.level().addParticle(DustParticleOptions.REDSTONE, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * this.getBbHeight() - 0.25D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), 0, 0, 0);
 		}
 
 		super.aiStep();
@@ -140,21 +139,21 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 
 		int status = getTarget() != null && this.shouldAttack(this.getTarget()) ? 1 : 0;
 
-		this.entityData.set(ATTACK_STATUS, (byte) status);
-		this.entityData.set(ATTACK_TIMER, (byte) attackAI.attackTimer);
-		this.entityData.set(ATTACK_PREVTIMER, (byte) attackAI.prevAttackTimer);
+		this.getEntityData().set(ATTACK_STATUS, (byte) status);
+		this.getEntityData().set(ATTACK_TIMER, (byte) attackAI.attackTimer);
+		this.getEntityData().set(ATTACK_PREVTIMER, (byte) attackAI.prevAttackTimer);
 	}
 
 	public int getAttackStatus() {
-		return this.entityData.get(ATTACK_STATUS);
+		return this.getEntityData().get(ATTACK_STATUS);
 	}
 
 	public int getAttackTimer() {
-		return this.entityData.get(ATTACK_TIMER);
+		return this.getEntityData().get(ATTACK_TIMER);
 	}
 
 	public int getPrevAttackTimer() {
-		return this.entityData.get(ATTACK_PREVTIMER);
+		return this.getEntityData().get(ATTACK_PREVTIMER);
 	}
 
 	public boolean shouldAttack(LivingEntity living) {
@@ -179,9 +178,9 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 		double d2 = this.getTarget().getX() - (this.getX() + vec3d.x() * 4.0D);
 		double d3 = this.getTarget().getBoundingBox().minY + this.getTarget().getBbHeight() / 2.0F - (0.5D + this.getY() + this.getBbHeight() / 2.0F);
 		double d4 = this.getTarget().getZ() - (this.getZ() + vec3d.z() * 4.0D);
-		LargeFireball entitylargefireball = new LargeFireball(this.getLevel(), this, d2, d3, d4, this.getExplosionPower());
+		LargeFireball entitylargefireball = new LargeFireball(this.level(), this, d2, d3, d4, this.getExplosionPower());
 		entitylargefireball.setPos(this.getX() + vec3d.x() * 4.0D, this.getY() + this.getBbHeight() / 2.0F + 0.5D, this.getZ() + vec3d.z() * 4.0D);
-		this.getLevel().addFreshEntity(entitylargefireball);
+		this.level().addFreshEntity(entitylargefireball);
 
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
 		if (this.getRandom().nextInt(6) == 0) {
@@ -199,16 +198,14 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 	}
 
 	@Override
-	public boolean isWithinRestriction(BlockPos pos) {
+	public boolean isMobWithinHomeArea(Entity entity) {
+		if (!this.isRestrictionPointValid(entity.level().dimension())) return true;
 		// TF - restrict valid y levels
 		// Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
-		if (this.getRestrictRadius() == -1.0F) {
-			return true;
-		} else {
-			return pos.getY() > this.getLevel().getMinBuildHeight() + 64 &&
-					pos.getY() < this.getLevel().getMaxBuildHeight() - 64 &&
-					this.getRestrictCenter().distSqr(pos) < (double)(this.getRestrictRadius() * this.getRestrictRadius());
-		}
+		return entity.blockPosition().getY() > this.level().getMinBuildHeight() + 64 &&
+				entity.blockPosition().getY() < this.level().getMaxBuildHeight() - 64 &&
+				this.getRestrictionPoint().pos().distSqr(entity.blockPosition()) < (double) (this.getHomeRadius() * this.getHomeRadius());
+
 	}
 
 	@Override
@@ -220,17 +217,22 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.loadHomePointFromNbt(compound, 64);
+		this.loadHomePointFromNbt(compound);
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
 	}
 
 	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 64;
 	}
 }
 

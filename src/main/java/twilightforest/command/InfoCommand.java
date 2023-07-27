@@ -52,27 +52,27 @@ public class InfoCommand {
 		ResourceLocation key = possibleStructureRegistry.get().getKey(landmarkStructure);
 
 		if (!FabricLoader.getInstance().isDevelopmentEnvironment())
-			source.sendSuccess(Component.translatable("This command is still WIP, some things may still be broken.").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
+			source.sendSuccess(() -> Component.translatable("This command is still WIP, some things may still be broken.").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
 
 		// nearest feature
 		String structureName = Component.translatable("structure." + key.getNamespace() + "." + key.getPath()).getString();
-		source.sendSuccess(Component.translatable("commands.tffeature.nearest", structureName), false);
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.nearest", structureName), false);
 
 		if (structureStart.getBoundingBox().isInside(pos)) {
-			source.sendSuccess(Component.translatable("commands.tffeature.structure.inside").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
+			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.inside").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
 
 			if (structureStart instanceof TFStructureStart tfStructureStart) {
-				source.sendSuccess(Component.translatable("commands.tffeature.structure.conquer.status", tfStructureStart.isConquered()).withStyle(ChatFormatting.BOLD, tfStructureStart.isConquered() ? ChatFormatting.GREEN : ChatFormatting.RED), false);
+				source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.conquer.status", tfStructureStart.isConquered()).withStyle(ChatFormatting.BOLD, tfStructureStart.isConquered() ? ChatFormatting.GREEN : ChatFormatting.RED), false);
 			}
 
 			// what is the spawn list
 			List<MobSpawnSettings.SpawnerData> spawnList = ChunkGeneratorTwilight.gatherPotentialSpawns(level.structureManager(), MobCategory.MONSTER, pos);
-			source.sendSuccess(Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);
+			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);
 			if (spawnList != null)
 				for (MobSpawnSettings.SpawnerData entry : spawnList)
-					source.sendSuccess(Component.translatable("commands.tffeature.structure.spawn_info", entry.type.getDescription().getString(), entry.getWeight().asInt()), false);
+					source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_info", entry.type.getDescription().getString(), entry.getWeight().asInt()), false);
 		} else {
-			source.sendSuccess(Component.translatable("commands.tffeature.structure.outside").withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
+			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.outside").withStyle(ChatFormatting.BOLD, ChatFormatting.RED), false);
 		}
 
 		return Command.SINGLE_SUCCESS;

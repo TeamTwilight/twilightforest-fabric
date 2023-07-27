@@ -12,9 +12,7 @@
       ],
       "recipe": {
         "type": "jeed:effect_provider",
-        "effect": {
-          "id": "minecraft:slowness"
-        },
+        "effect": "minecraft:slowness",
         "providers": [
           {
             "item": "twilightforest:lifedrain_scepter"

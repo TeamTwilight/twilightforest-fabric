@@ -6,7 +6,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec2;
-import snownee.jade.Jade;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -28,9 +27,9 @@ public enum QuestRamWoolProvider implements IEntityComponentProvider {
 			for (Map.Entry<DyeColor, Block> entry : ColorUtil.WOOL_TO_DYE_IN_RAM_ORDER.entrySet()) {
 				if (!ram.isColorPresent(entry.getKey())) {
 					if (getRenderedWools % 8 == 0) {
-						tooltip.add(Jade.smallItem(tooltip.getElementHelper(), new ItemStack(entry.getValue())).size(new Vec2(4.0F, 4.0F)));
+						tooltip.add(tooltip.getElementHelper().smallItem(new ItemStack(entry.getValue())).size(new Vec2(4.0F, 4.0F)));
 					} else {
-						tooltip.append(Jade.smallItem(tooltip.getElementHelper(), new ItemStack(entry.getValue())).size(new Vec2(4.0F, 4.0F)));
+						tooltip.append(tooltip.getElementHelper().smallItem(new ItemStack(entry.getValue())).size(new Vec2(4.0F, 4.0F)));
 					}
 					tooltip.append(Component.literal(" "));
 					getRenderedWools++;

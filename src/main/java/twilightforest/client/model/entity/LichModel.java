@@ -117,5 +117,15 @@ public class LichModel extends HumanoidModel<Lich> {
 
 		head.y = -4.0F;
 		hat.y = -4.0F;
+
+		boolean flag = entity.deathTime > 50;
+		this.body.skipDraw = flag;
+		this.leftArm.skipDraw = flag;
+		this.rightArm.skipDraw = flag;
+		this.leftLeg.skipDraw = flag;
+		this.rightLeg.skipDraw = flag;
+		this.cloak.skipDraw = flag;
+		this.collar.skipDraw = flag;
+		this.head.skipDraw = flag;
 	}
 }

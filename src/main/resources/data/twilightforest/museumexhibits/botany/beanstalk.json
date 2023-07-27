@@ -1,0 +1,11 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.twilightforest.beanstalk",
+  "items": [
+    "twilightforest:magic_beans",
+    "twilightforest:huge_stalk",
+    "twilightforest:beanstalk_leaves",
+    "twilightforest:wispy_cloud",
+    "twilightforest:fluffy_cloud"
+  ]
+}

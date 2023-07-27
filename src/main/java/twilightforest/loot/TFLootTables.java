@@ -7,8 +7,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
@@ -16,8 +18,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
 import java.util.Collections;
@@ -27,7 +32,7 @@ public class TFLootTables {
 	// For easy testing:
 	// /give @p chest{BlockEntityTag:{LootTable:"twilightforest:all_bosses",CustomName:'{"text":"Master Loot Crate"}'}} 1
 	private static final Set<ResourceLocation> TF_LOOT_TABLES = Sets.newHashSet();
-	private static final int DEFAULT_PLACE_FLAG = 2;
+	public static final int DEFAULT_PLACE_FLAG = 2;
 	
 	public static final TFLootTables SMALL_HOLLOW_HILL = new TFLootTables("hill_1");
 	public static final TFLootTables MEDIUM_HOLLOW_HILL = new TFLootTables("hill_2");
@@ -130,13 +135,15 @@ public class TFLootTables {
 		}
 	}
 
-	public static void entityDropsIntoContainer(LivingEntity entity, LootContext lootContext, BlockState blockContaining, BlockPos placement) {
-		if (entity.getLevel() instanceof ServerLevel serverLevel
+	@Deprecated //move to using IBossLootBuffer.saveDropsIntoBoss instead
+	public static void entityDropsIntoContainer(LivingEntity entity, DamageSource source, BlockState blockContaining, BlockPos placement) {
+		if (entity.level() instanceof ServerLevel serverLevel && TFConfig.COMMON_CONFIG.bossDropChests.get()
 				&& serverLevel.setBlock(placement, blockContaining, DEFAULT_PLACE_FLAG)
 				&& serverLevel.getBlockEntity(placement) instanceof Container container) {
-			LootTable table = serverLevel.getServer().getLootTables().get(entity.getLootTable());
-			ObjectArrayList<ItemStack> stacks = table.getRandomItems(lootContext);
-			table.fill(container, lootContext);
+			LootTable table = serverLevel.getServer().getLootData().getLootTable(entity.getLootTable());
+			LootParams params = createLootParams(entity, true, source).create(LootContextParamSets.ENTITY);
+			ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
+			table.fill(container, params, serverLevel.getSeed());
 			//if our loot stack size is bigger than the chest, drop everything else outside of it. Dont want to lose any loot now do we?
 			if (stacks.size() > 27) {
 				for (ItemStack stack : stacks.subList(28, stacks.size())) {
@@ -147,6 +154,15 @@ public class TFLootTables {
 				}
 			}
 		}
+	}
+
+	public static LootParams.Builder createLootParams(LivingEntity entity, boolean checkPlayerKill, DamageSource source) {
+		LootParams.Builder lootcontext$builder = (new LootParams.Builder((ServerLevel)entity.level())).withParameter(LootContextParams.THIS_ENTITY, entity).withParameter(LootContextParams.ORIGIN, entity.position()).withParameter(LootContextParams.DAMAGE_SOURCE, source).withOptionalParameter(LootContextParams.KILLER_ENTITY, source.getEntity()).withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, source.getDirectEntity());
+		if (checkPlayerKill && entity.getKillCredit() instanceof Player player) {
+			lootcontext$builder = lootcontext$builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player).withLuck(player.getLuck());
+		}
+
+		return lootcontext$builder;
 	}
 
 	public static Set<ResourceLocation> allBuiltin() {

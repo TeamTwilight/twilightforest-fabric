@@ -1,13 +1,13 @@
 package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import twilightforest.init.TFBlocks;
 
@@ -44,6 +44,6 @@ public class HugeWaterLilyFeature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	private boolean shouldPlacePadAt(LevelAccessor world, BlockPos pos) {
-		return world.isEmptyBlock(pos) && world.getBlockState(pos.below()).getMaterial() == Material.WATER;
+		return world.isEmptyBlock(pos) && world.getBlockState(pos.below()).is(Blocks.WATER);
 	}
 }

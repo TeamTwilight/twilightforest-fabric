@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.culinary",
+  "name": "museumcurator.culinary.desserts",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:cake",
+      "placement": "after",
+      "items": [
+        "twilightforest:experiment_115"
+      ]
+    }
+  ]
+}

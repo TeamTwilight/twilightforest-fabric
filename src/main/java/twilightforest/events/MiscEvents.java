@@ -65,7 +65,7 @@ public class MiscEvents {
 			}
 		}
 
-		if (living != null && !living.level.isClientSide() && slot == EquipmentSlot.HEAD && to.is(TFBlocks.CICADA.get().asItem())) {
+		if (living != null && !living.level().isClientSide() && slot == EquipmentSlot.HEAD && to.is(TFBlocks.CICADA.get().asItem())) {
 			TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new CreateMovingCicadaSoundPacket(living.getId()), living);
 		}
 	}

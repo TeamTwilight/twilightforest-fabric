@@ -40,7 +40,7 @@ public class FlockToSameKindGoal extends Goal {
 			return false;
 		}
 
-		List<? extends Mob> flockList = this.flockCreature.getLevel().getEntitiesOfClass(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().inflate(16.0D, 4.0D, 16.0D));
+		List<? extends Mob> flockList = this.flockCreature.level().getEntitiesOfClass(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().inflate(16.0D, 4.0D, 16.0D));
 
 		if (flockList.size() > 5) {
 			return false;

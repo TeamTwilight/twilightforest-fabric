@@ -28,5 +28,6 @@
     "recipes": [
       "twilightforest:carminite_reactor"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

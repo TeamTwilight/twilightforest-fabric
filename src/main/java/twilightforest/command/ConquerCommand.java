@@ -40,7 +40,7 @@ public class ConquerCommand {
 			Optional<StructureStart> struct = LandmarkUtil.locateNearestLandmarkStart(source.getLevel(), SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 
 			if (struct.isPresent() && struct.get().getBoundingBox().isInside(pos) && struct.get() instanceof TFStructureStart TFStructureStart) {
-				source.sendSuccess(Component.translatable("commands.tffeature.structure.conquer.update", TFStructureStart.isConquered(), flag), true);
+				source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.conquer.update", TFStructureStart.isConquered(), flag), true);
 
 				TFStructureStart.setConquered(flag, source.getLevel());
 			} else {

@@ -7,7 +7,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -70,17 +69,17 @@ public class TinyBird extends FlyingBird {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return this.getRandom().nextInt(20) == 0 ? TFSounds.TINYBIRD_SONG.get() : TFSounds.TINYBIRD_CHIRP.get();
+		return this.getRandom().nextInt(20) == 0 ? TFSounds.TINY_BIRD_SONG.get() : TFSounds.TINY_BIRD_CHIRP.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TINYBIRD_HURT.get();
+		return TFSounds.TINY_BIRD_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TINYBIRD_HURT.get();
+		return TFSounds.TINY_BIRD_HURT.get();
 	}
 
 	@Override
@@ -91,7 +90,7 @@ public class TinyBird extends FlyingBird {
 	@Override
 	public boolean isSpooked() {
 		if (this.getLastHurtByMob() != null) return true;
-		Player closestPlayer = this.getLevel().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 4.0D, true);
+		Player closestPlayer = this.level().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 4.0D, true);
 		return closestPlayer != null
 				&& !SEEDS.test(closestPlayer.getMainHandItem())
 				&& !SEEDS.test(closestPlayer.getOffhandItem());

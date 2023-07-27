@@ -51,18 +51,18 @@ public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
         template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
 
         for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
-            if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA)
+            if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
                 this.processMarkers(info, world, rotation, mirror, random);
     }
 
     @Override
     protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
-        String s = info.nbt.getString("metadata");
+        String s = info.nbt().getString("metadata");
 
         if (!s.startsWith("loot")) return;
 
-        world.removeBlock(info.pos, false);
+        world.removeBlock(info.pos(), false);
 
-        TFLootTables.FANCY_WELL.generateLootContainer(world, info.pos, Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2);
+        TFLootTables.FANCY_WELL.generateLootContainer(world, info.pos(), Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2);
     }
 }

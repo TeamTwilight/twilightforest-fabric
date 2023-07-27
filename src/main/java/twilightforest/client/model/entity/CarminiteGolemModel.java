@@ -33,7 +33,7 @@ public class CarminiteGolemModel<T extends CarminiteGolem> extends HierarchicalM
 						.addBox(-4F, -6F, -3.5F, 8, 4, 6),
 				PartPose.offset(0F, -11F, -2F));
 
-		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
 						.texOffs(0, 26)
 						.addBox(-8F, 0F, -5F, 16, 10, 10),
 				PartPose.offset(0F, -13F, 0F));

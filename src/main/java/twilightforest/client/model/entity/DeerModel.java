@@ -1,116 +1,118 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.entity.passive.Deer;
 
-/**
- * ModelWildDeer - MCVinnyq
- * Created using Tabula 8.0.0
- */
-@Environment(EnvType.CLIENT)
 public class DeerModel extends QuadrupedModel<Deer> {
-    private final ModelPart neck;
-    private final ModelPart realHead;
 
-    public DeerModel(ModelPart root) {
-        super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 10);
+	public DeerModel(ModelPart root) {
+		super(root, false, 4.0F, 4.0F, 2.0F, 2.0F, 10);
+	}
 
-        this.neck = root.getChild("neck");
-        //cant assign a value to the head since its final so lets make a workaround
-        this.realHead = neck.getChild("head");
-    }
+	public static LayerDefinition create() {
+		MeshDefinition mesh = QuadrupedModel.createBodyMesh(0, CubeDeformation.NONE);
+		PartDefinition partRoot = mesh.getRoot();
 
-    public static LayerDefinition create() {
-        MeshDefinition mesh = QuadrupedModel.createBodyMesh(12, CubeDeformation.NONE);
-        PartDefinition partRoot = mesh.getRoot();
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 5)
+						.addBox(-2.0F, -8.0F, -6.0F, 4.0F, 6.0F, 6.0F)
+						.texOffs(52, 0)
+						.addBox(-1.5F, -5.0F, -9.0F, 3.0F, 3.0F, 3.0F),
+				PartPose.offset(0.0F, 4.0F, -7.0F));
 
-        var neck = partRoot.addOrReplaceChild("neck", CubeListBuilder.create()
-                        .texOffs(22, 14)
-                        .addBox(-1.5F, -8.0F, -2.0F, 3.0F, 9.0F, 4.0F),
-                PartPose.offsetAndRotation(0.0F, 8.0F, -5.0F, 0.4363323129985824F, 0.0F, 0.0F));
+		head.addOrReplaceChild("left_antler", CubeListBuilder.create()
+				.texOffs(20, 0)
+				.addBox(-3.0F, -10.0F, -2.0F, 2.0F, 2.0F, 2.0F)
+				.addBox(-3.0F, -10.0F, -2.0F, 2.0F, 2.0F, 2.0F)
+				.addBox(-4.0F, -10.0F, -1.0F, 1.0F, 1.0F, 3.0F)
+				.addBox(-5.0F, -11.0F, 1.0F, 1.0F, 1.0F, 5.0F)
+				.addBox(-5.0F, -14.0F, 2.0F, 1.0F, 4.0F, 1.0F)
+				.addBox(-6.0F, -17.0F, 3.0F, 1.0F, 4.0F, 1.0F)
+				.addBox(-6.0F, -13.0F, 0.0F, 1.0F, 1.0F, 3.0F)
+				.addBox(-6.0F, -14.0F, -3.0F, 1.0F, 1.0F, 4.0F)
+				.addBox(-7.0F, -15.0F, -6.0F, 1.0F, 1.0F, 4.0F)
+				.addBox(-6.0F, -16.0F, -9.0F, 1.0F, 1.0F, 4.0F)
+				.addBox(-7.0F, -18.0F, -1.0F, 1.0F, 5.0F, 1.0F)
+				.addBox(-6.0F, -19.0F, -6.0F, 1.0F, 5.0F, 1.0F),
+				PartPose.ZERO);
 
-        var head = neck.addOrReplaceChild("head", CubeListBuilder.create()
-                        .texOffs(24, 2)
-                        .addBox(-2.0F, -4.0F, -4.0F, 4.0F, 6.0F, 6.0F)
-                        .texOffs(52, 0)
-                        .addBox(-1.5F, -1.0F, -7.0F, 3.0F, 3.0F, 3.0F),
-                PartPose.offsetAndRotation(0.0F, -9.0F, 0.0F, -0.4363323129985824F, 0.0F, 0.0F));
+		head.addOrReplaceChild("right_antler", CubeListBuilder.create()
+						.texOffs(20, 0)
+						.addBox(1.0F, -10.0F, -2.0F, 2.0F, 2.0F, 2.0F)
+						.addBox(3.0F, -10.0F, -1.0F, 1.0F, 1.0F, 3.0F)
+						.addBox(4.0F, -11.0F, 1.0F, 1.0F, 1.0F, 5.0F)
+						.addBox(4.0F, -14.0F, 2.0F, 1.0F, 4.0F, 1.0F)
+						.addBox(5.0F, -17.0F, 3.0F, 1.0F, 4.0F, 1.0F)
+						.addBox(5.0F, -13.0F, 0.0F, 1.0F, 1.0F, 3.0F)
+						.addBox(5.0F, -14.0F, -3.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(6.0F, -15.0F, -6.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(5.0F, -16.0F, -9.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(6.0F, -18.0F, -1.0F, 1.0F, 5.0F, 1.0F)
+						.addBox(5.0F, -19.0F, -6.0F, 1.0F, 5.0F, 1.0F),
+				PartPose.ZERO);
 
-        head.addOrReplaceChild("right_antler", CubeListBuilder.create()
-                        .texOffs(0, 16)
-                        .addBox(0.0F, -16.0F, -8.0F, 0.0F, 16.0F, 16.0F),
-                PartPose.offsetAndRotation(-1.0F, -4.0F, 0.0F, 0.0F, -0.39269908169872414F, -0.39269908169872414F));
+		var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(36, 6)
+						.addBox(-4F, -10F, -7F, 6, 18, 8),
+				PartPose.offsetAndRotation(1F, 5F, 2F, 1.570796F, 0.0F, 0.0F));
 
-        head.addOrReplaceChild("left_antler", CubeListBuilder.create()
-                        .texOffs(32, 16)
-                        .addBox(0.0F, -16.0F, -8.0F, 0.0F, 16.0F, 16.0F),
-                PartPose.offsetAndRotation(1.0F, -4.0F, 0.0F, 0.0F, 0.39269908169872414F, 0.39269908169872414F));
+		body.addOrReplaceChild("neck", CubeListBuilder.create()
+						.texOffs(10, 19)
+						.addBox(-2.5F, -8, -11F, 3, 9, 4),
+				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 4.974188f, 0.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-                        .texOffs(36, 6)
-                        .addBox(-3.0F, -14.0F, -2.0F, 6.0F, 18.0F, 8.0F),
-                PartPose.offsetAndRotation(0.0F, 10.0F, 7.0F, 1.5707963267948966F, 0.0F, 0.0F));
+		partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
+						.texOffs(0, 17)
+						.addBox(-3F, 0F, -2F, 2, 12, 3),
+				PartPose.offset(0F, 12F, 9F));
 
-        partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
-                        .texOffs(0, 15)
-                        .addBox(-1.0F, 0.0F, -1.5F, 2.0F, 12.0F, 3.0F),
-                PartPose.offset(-2.0F, 12.0F, 9.5F));
+		partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
+						.texOffs(0, 17)
+						.addBox(-1F, 0F, -2F, 2, 12, 3),
+				PartPose.offset(2F, 12F, 9F));
 
-        partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
-                        .texOffs(10, 15)
-                        .addBox(-1.0F, 0.0F, -1.5F, 2.0F, 12.0F, 3.0F),
-                PartPose.offset(2.0F, 12.0F, 9.5F));
+		partRoot.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
+						.texOffs(0, 17)
+						.addBox(-3F, 0F, -2F, 2, 12, 3),
+				PartPose.offset(0F, 12F, -5F));
 
-        partRoot.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
-                        .addBox(-1.0F, 0.0F, -1.5F, 2.0F, 12.0F, 3.0F),
-                PartPose.offset(-2.0F, 12.0F, -4.5F));
+		partRoot.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
+						.texOffs(0, 17)
+						.addBox(-1F, 0F, -2F, 2, 12, 3),
+				PartPose.offset(2F, 12F, -5F));
 
-        partRoot.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
-                        .texOffs(10, 0)
-                        .addBox(-1.0F, 0.0F, -1.5F, 2.0F, 12.0F, 3.0F),
-                PartPose.offset(2.0F, 12.0F, -4.5F));
+		return LayerDefinition.create(mesh, 64, 32);
+	}
 
-        return LayerDefinition.create(mesh, 64, 48);
-    }
+	@Override
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+		if (young) {
+			stack.pushPose();
+			stack.scale(0.75F, 0.75F, 0.75F);
+			stack.translate(0F, 0.95F, 0.15F);
+			this.headParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			stack.popPose();
 
-    @Override
-    protected Iterable<ModelPart> headParts() {
-        return ImmutableList.of(this.neck);
-    }
+			stack.pushPose();
+			stack.scale(0.5F, 0.5F, 0.5F);
+			stack.translate(0F, 1.5F, 0.0F);
+			this.bodyParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			stack.popPose();
+		} else {
+			this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+		}
+	}
 
-    @Override
-    public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
-        if (this.young) {
-            stack.pushPose();
-            stack.scale(0.75F, 0.75F, 0.75F);
-            stack.translate(0.0F, 0.95F, 0.15F);
-            this.headParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, red, green, blue, scale));
-            stack.popPose();
-
-            stack.pushPose();
-            stack.scale(0.5F, 0.5F, 0.5F);
-            stack.translate(0.0F, 1.5F, 0.0F);
-            this.bodyParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, red, green, blue, scale));
-            stack.popPose();
-        } else {
-            this.headParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-            this.bodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-        }
-    }
-
-    public void setupAnim(Deer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.realHead.getChild("right_antler").visible = !entity.isBaby();
-        this.realHead.getChild("left_antler").visible = !entity.isBaby();
-        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        this.realHead.xRot = head.xRot;
-        this.realHead.yRot = head.yRot;
-    }
+	@Override
+	public void setupAnim(Deer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.head.getChild("right_antler").visible = !entity.isBaby();
+		this.head.getChild("left_antler").visible = !entity.isBaby();
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	}
 }

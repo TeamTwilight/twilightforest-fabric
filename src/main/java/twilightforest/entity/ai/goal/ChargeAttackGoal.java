@@ -51,7 +51,7 @@ public class ChargeAttackGoal extends Goal {
 			double minoshroomBonus = this.charger instanceof Minoshroom ? 9.0D : 0.0D;
 			if (distance < MIN_RANGE_SQ + minoshroomBonus || distance > MAX_RANGE_SQ + minoshroomBonus) {
 				return false;
-			} else if (!this.charger.isOnGround()) {
+			} else if (!this.charger.onGround()) {
 				return false;
 			} else {
 				Vec3 chargePos = findChargePoint(this.charger, this.chargeTarget);
@@ -96,7 +96,7 @@ public class ChargeAttackGoal extends Goal {
 				}
 			}
 		} else if (this.canBreak) {
-			if (!this.charger.getLevel().isClientSide() && this.charger.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+			if (!this.charger.level().isClientSide() && this.charger.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 
 				AABB bb = this.charger.getBoundingBox();
 				int minx = Mth.floor(bb.minX - 0.75D);
@@ -109,10 +109,10 @@ public class ChargeAttackGoal extends Goal {
 				BlockPos min = new BlockPos(minx, miny, minz);
 				BlockPos max = new BlockPos(maxx, maxy, maxz);
 
-				if (this.charger.getLevel().hasChunksAt(min, max)) {
+				if (this.charger.level().hasChunksAt(min, max)) {
 					for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
-						if (EntityUtil.canDestroyBlock(this.charger.getLevel(), pos, this.charger) && this.charger.getLevel().getBlockEntity(pos) == null) {
-							this.charger.getLevel().destroyBlock(pos, true);
+						if (EntityUtil.canDestroyBlock(this.charger.level(), pos, this.charger) && this.charger.level().getBlockEntity(pos) == null) {
+							this.charger.level().destroyBlock(pos, true);
 						}
 					}
 				}

@@ -25,25 +25,25 @@ public final class CobbleVariants extends StructureProcessor {
 
 	@Override
 	public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_215194_3_, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
-		RandomSource random = settings.getRandom(modifiedBlockInfo.pos);
+		RandomSource random = settings.getRandom(modifiedBlockInfo.pos());
 
 		// We use nextBoolean in other processors so this lets us re-seed deterministically
 		random.setSeed(random.nextLong() * 2);
 
-		BlockState state = modifiedBlockInfo.state;
+		BlockState state = modifiedBlockInfo.state();
 		Block block = state.getBlock();
 
 		if (block == Blocks.COBBLESTONE && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos, Blocks.MOSSY_COBBLESTONE.defaultBlockState(), null);
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), null);
 
 		if (block == Blocks.COBBLESTONE_STAIRS && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos, FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_STAIRS), null);
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_STAIRS), null);
 
 		if (block == Blocks.COBBLESTONE_SLAB && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos, FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_SLAB), null);
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_SLAB), null);
 
 		if (block == Blocks.COBBLESTONE_WALL && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos, FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_WALL), null);
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_WALL), null);
 
 		return modifiedBlockInfo;
 	}

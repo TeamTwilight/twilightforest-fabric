@@ -271,11 +271,6 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Called to decorate each floor.  This is responsible for adding a ladder up, the stub of the ladder going down, then picking a theme for each floor and executing it.
 	 *
-	 * @param floor
-	 * @param bottom
-	 * @param top
-	 * @param ladderUpDir
-	 * @param ladderDownDir
 	 */
 	@Override
 	@SuppressWarnings("fallthrough")

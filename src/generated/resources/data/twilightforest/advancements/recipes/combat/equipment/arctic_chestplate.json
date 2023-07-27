@@ -28,5 +28,6 @@
     "recipes": [
       "twilightforest:equipment/arctic_chestplate"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

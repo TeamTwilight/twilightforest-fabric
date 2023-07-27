@@ -16,10 +16,9 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.HollowLogHorizontal;
 import twilightforest.init.TFBlocks;
-import twilightforest.item.Experiment115Item;
 import twilightforest.init.TFItems;
+import twilightforest.item.Experiment115Item;
 
 import static twilightforest.TwilightForestMod.prefix;
 
@@ -73,6 +72,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 						.texture("all", prefix("block/trollsteinn"));
 		toBlock(TFBlocks.WISPY_CLOUD.get());
 		toBlock(TFBlocks.FLUFFY_CLOUD.get());
+		toBlock(TFBlocks.RAINY_CLOUD.get());
+		toBlock(TFBlocks.SNOWY_CLOUD.get());
 		toBlockModel(TFBlocks.GIANT_COBBLESTONE.get(), new ResourceLocation("block/cobblestone"));
 		toBlockModel(TFBlocks.GIANT_LOG.get(), new ResourceLocation("block/oak_log"));
 		toBlockModel(TFBlocks.GIANT_LEAVES.get(), new ResourceLocation("block/oak_leaves"));
@@ -143,21 +144,21 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.MOSSY_MAZESTONE.get());
 		toBlock(TFBlocks.MAZESTONE_MOSAIC.get());
 		toBlock(TFBlocks.MAZESTONE_BORDER.get());
-		singleTex(TFItems.RED_THREAD);
+		singleTex(TFBlocks.RED_THREAD);
 		toBlock(TFBlocks.HEDGE.get());
 		toBlock(TFBlocks.ROOT_BLOCK.get());
 		toBlock(TFBlocks.LIVEROOT_BLOCK.get());
 		toBlock(TFBlocks.MANGROVE_ROOT.get());
 		toBlock(TFBlocks.UNCRAFTING_TABLE.get());
-		toBlockModel(TFBlocks.NAGA_BOSS_SPAWNER.get(), new ResourceLocation("block/spawner"));
-		toBlockModel(TFBlocks.LICH_BOSS_SPAWNER.get(), new ResourceLocation("block/spawner"));
-		toBlockModel(TFBlocks.HYDRA_BOSS_SPAWNER.get(), new ResourceLocation("block/spawner"));
-		toBlockModel(TFBlocks.UR_GHAST_BOSS_SPAWNER.get(), new ResourceLocation("block/spawner"));
-		toBlockModel(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), new ResourceLocation("block/spawner"));
-		toBlockModel(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get(), new ResourceLocation("block/spawner"));
-		toBlockModel(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), new ResourceLocation("block/spawner"));
-		toBlockModel(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), new ResourceLocation("block/spawner"));
-		toBlockModel(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.NAGA_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.LICH_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.HYDRA_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.UR_GHAST_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
+		toBlockModel(TFBlocks.FINAL_BOSS_BOSS_SPAWNER.get(), prefix("block/boss_spawner"));
 		toBlock(TFBlocks.FIREFLY_JAR.get());
 		toBlock(TFBlocks.FIREFLY_SPAWNER.get());
 		toBlock(TFBlocks.CICADA_JAR.get());
@@ -187,7 +188,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get());
 		toBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get());
 		toBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get());
-		toBlockModel(TFBlocks.SPIRAL_BRICKS.get(), prefix("block/spiral_bricks/x_spiral_bottom_right"));
+		toBlockModel(TFBlocks.SPIRAL_BRICKS.get(), prefix("block/spiral_bricks/z_spiral_bottom_right"));
 		toBlock(TFBlocks.TWISTED_STONE.get());
 		toBlockModel(TFBlocks.TWISTED_STONE_PILLAR.get(), prefix("block/pillar/pillar_inventory"));
 		toBlock(TFBlocks.BOLD_STONE_PILLAR.get());
@@ -205,6 +206,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		withExistingParent(TFBlocks.CRIMSON_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/crimson_planks");
 		withExistingParent(TFBlocks.WARPED_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/warped_planks");
 		withExistingParent(TFBlocks.VANGROVE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/mangrove_planks");
+		withExistingParent(TFBlocks.BAMBOO_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/bamboo_planks");
+		withExistingParent(TFBlocks.CHERRY_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/cherry_planks");
 
 		toBlock(TFBlocks.TWILIGHT_OAK_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());
@@ -222,7 +225,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlock(TFBlocks.TWILIGHT_OAK_GATE.get(), "fence_gate/twilight_oak");
 		woodBlock(TFBlocks.TWILIGHT_OAK_PLATE.get(), "pressure_plate/twilight_oak");
 		woodBlockModel(TFBlocks.TWILIGHT_OAK_TRAPDOOR.get(), "twilight_oak_trapdoor_bottom", "trapdoor/twilight_oak");
-		generated(TFBlocks.TWILIGHT_OAK_SIGN.getId().getPath(), prefix("item/" + TFBlocks.TWILIGHT_OAK_SIGN.getId().getPath()));
+		singleTex(TFItems.TWILIGHT_OAK_SIGN);
+		singleTex(TFItems.TWILIGHT_OAK_HANGING_SIGN);
 		withExistingParent(TFBlocks.TWILIGHT_OAK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_twilight_oak_0");
 		generated(TFBlocks.TWILIGHT_OAK_DOOR.getId().getPath(), prefix("item/" + TFBlocks.TWILIGHT_OAK_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.TWILIGHT_OAK_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_twilight_oak_0"));
@@ -241,7 +245,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlock(TFBlocks.CANOPY_GATE.get(), "fence_gate/canopy");
 		woodBlock(TFBlocks.CANOPY_PLATE.get(), "pressure_plate/canopy");
 		woodBlockModel(TFBlocks.CANOPY_TRAPDOOR.get(), "canopy_trapdoor_bottom", "trapdoor/canopy");
-		generated(TFBlocks.CANOPY_SIGN.getId().getPath(), prefix("item/" + TFBlocks.CANOPY_SIGN.getId().getPath()));
+		singleTex(TFItems.CANOPY_SIGN);
+		singleTex(TFItems.CANOPY_HANGING_SIGN);
 		withExistingParent(TFBlocks.CANOPY_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_canopy_0");
 		generated(TFBlocks.CANOPY_DOOR.getId().getPath(), prefix("item/" + TFBlocks.CANOPY_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.CANOPY_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_canopy_0"));
@@ -260,7 +265,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlock(TFBlocks.MANGROVE_GATE.get(), "fence_gate/mangrove");
 		woodBlock(TFBlocks.MANGROVE_PLATE.get(), "pressure_plate/mangrove");
 		woodBlockModel(TFBlocks.MANGROVE_TRAPDOOR.get(), "mangrove_trapdoor_bottom", "trapdoor/mangrove");
-		generated(TFBlocks.MANGROVE_SIGN.getId().getPath(), prefix("item/" + TFBlocks.MANGROVE_SIGN.getId().getPath()));
+		singleTex(TFItems.MANGROVE_SIGN);
+		singleTex(TFItems.MANGROVE_HANGING_SIGN);
 		withExistingParent(TFBlocks.MANGROVE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_mangrove_0");
 		generated(TFBlocks.MANGROVE_DOOR.getId().getPath(), prefix("item/" + TFBlocks.MANGROVE_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.MANGROVE_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mangrove_0"));
@@ -279,11 +285,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlock(TFBlocks.DARK_GATE.get(), "fence_gate/darkwood");
 		woodBlock(TFBlocks.DARK_PLATE.get(), "pressure_plate/darkwood");
 		woodBlockModel(TFBlocks.DARK_TRAPDOOR.get(), "darkwood_trapdoor_bottom", "trapdoor/darkwood");
-		generated(TFBlocks.DARKWOOD_SIGN.getId().getPath(), prefix("item/" + TFBlocks.DARKWOOD_SIGN.getId().getPath()));
-		withExistingParent(TFBlocks.DARKWOOD_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_darkwood_0");
+		singleTex(TFItems.DARK_SIGN);
+		singleTex(TFItems.DARK_HANGING_SIGN);
+		withExistingParent(TFBlocks.DARK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_darkwood_0");
 		generated(TFBlocks.DARK_DOOR.getId().getPath(), prefix("item/" + TFBlocks.DARK_DOOR.getId().getPath()));
 		generated(TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath()));
-		withExistingParent(TFBlocks.DARKWOOD_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_darkwood_0"));
+		withExistingParent(TFBlocks.DARK_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_darkwood_0"));
 		
 		toBlock(TFBlocks.TIME_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TIME_LOG.get());
@@ -300,7 +307,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlock(TFBlocks.TIME_GATE.get(), "fence_gate/time");
 		woodBlock(TFBlocks.TIME_PLATE.get(), "pressure_plate/time");
 		woodBlockModel(TFBlocks.TIME_TRAPDOOR.get(), "time_trapdoor_bottom", "trapdoor/time");
-		generated(TFBlocks.TIME_SIGN.getId().getPath(), prefix("item/" + TFBlocks.TIME_SIGN.getId().getPath()));
+		singleTex(TFItems.TIME_SIGN);
+		singleTex(TFItems.TIME_HANGING_SIGN);
 		withExistingParent(TFBlocks.TIME_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_time_0");
 		generated(TFBlocks.TIME_DOOR.getId().getPath(), prefix("item/" + TFBlocks.TIME_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.TIME_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_time_0"));
@@ -320,7 +328,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlock(TFBlocks.TRANSFORMATION_GATE.get(), "fence_gate/trans");
 		woodBlock(TFBlocks.TRANSFORMATION_PLATE.get(), "pressure_plate/trans");
 		woodBlockModel(TFBlocks.TRANSFORMATION_TRAPDOOR.get(), "trans_trapdoor_bottom", "trapdoor/trans");
-		generated(TFBlocks.TRANSFORMATION_SIGN.getId().getPath(), prefix("item/" + TFBlocks.TRANSFORMATION_SIGN.getId().getPath()));
+		singleTex(TFItems.TRANSFORMATION_SIGN);
+		singleTex(TFItems.TRANSFORMATION_HANGING_SIGN);
 		withExistingParent(TFBlocks.TRANSFORMATION_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_trans_0");
 		generated(TFBlocks.TRANSFORMATION_DOOR.getId().getPath(), prefix("item/" + TFBlocks.TRANSFORMATION_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.TRANSFORMATION_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_trans_0"));
@@ -340,7 +349,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlock(TFBlocks.MINING_GATE.get(), "fence_gate/mine");
 		woodBlock(TFBlocks.MINING_PLATE.get(), "pressure_plate/mine");
 		woodBlockModel(TFBlocks.MINING_TRAPDOOR.get(), "mine_trapdoor_bottom", "trapdoor/mine");
-		generated(TFBlocks.MINING_SIGN.getId().getPath(), prefix("item/" + TFBlocks.MINING_SIGN.getId().getPath()));
+		singleTex(TFItems.MINING_SIGN);
+		singleTex(TFItems.MINING_HANGING_SIGN);
 		withExistingParent(TFBlocks.MINING_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_mine_0");
 		generated(TFBlocks.MINING_DOOR.getId().getPath(), prefix("item/" + TFBlocks.MINING_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.MINING_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_mine_0"));
@@ -360,43 +370,46 @@ public class ItemModelGenerator extends ItemModelProvider {
 		woodBlock(TFBlocks.SORTING_GATE.get(), "fence_gate/sort");
 		woodBlock(TFBlocks.SORTING_PLATE.get(), "pressure_plate/sort");
 		woodBlockModel(TFBlocks.SORTING_TRAPDOOR.get(), "sort_trapdoor_bottom", "trapdoor/sort");
-		generated(TFBlocks.SORTING_SIGN.getId().getPath(), prefix("item/" + TFBlocks.SORTING_SIGN.getId().getPath()));
+		singleTex(TFItems.SORTING_SIGN);
+		singleTex(TFItems.SORTING_HANGING_SIGN);
 		withExistingParent(TFBlocks.SORTING_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "block/wood/planks_sort_0");
 		generated(TFBlocks.SORTING_DOOR.getId().getPath(), prefix("item/" + TFBlocks.SORTING_DOOR.getId().getPath()));
 		withExistingParent(TFBlocks.SORTING_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_sort_0"));
 
-		withExistingParent(TFBlocks.NAGA_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFBlocks.LICH_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFBlocks.MINOSHROOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFBlocks.HYDRA_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFBlocks.KNIGHT_PHANTOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.NAGA_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.LICH_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.MINOSHROOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.HYDRA_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.KNIGHT_PHANTOM_TROPHY.getId().toString(), prefix("item/template_trophy"));
 		//ur-ghast and alpha yeti need special transforms
-		withExistingParent(TFBlocks.SNOW_QUEEN_TROPHY.getId().toString(), prefix("item/template_trophy"));
-		withExistingParent(TFBlocks.QUEST_RAM_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.SNOW_QUEEN_TROPHY.getId().toString(), prefix("item/template_trophy"));
+		withExistingParent(TFItems.QUEST_RAM_TROPHY.getId().toString(), prefix("item/template_trophy"));
 
-		withExistingParent(TFBlocks.CREEPER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFBlocks.PLAYER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFBlocks.SKELETON_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFBlocks.WITHER_SKELE_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
-		withExistingParent(TFBlocks.ZOMBIE_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.CREEPER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.PIGLIN_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.PLAYER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.SKELETON_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.WITHER_SKELETON_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
+		withExistingParent(TFItems.ZOMBIE_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
 
-		hollowLog(TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL);
-		hollowLog(TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL);
+		hollowLog(TFItems.HOLLOW_OAK_LOG);
+		hollowLog(TFItems.HOLLOW_SPRUCE_LOG);
+		hollowLog(TFItems.HOLLOW_BIRCH_LOG);
+		hollowLog(TFItems.HOLLOW_JUNGLE_LOG);
+		hollowLog(TFItems.HOLLOW_ACACIA_LOG);
+		hollowLog(TFItems.HOLLOW_DARK_OAK_LOG);
+		hollowLog(TFItems.HOLLOW_CRIMSON_STEM);
+		hollowLog(TFItems.HOLLOW_WARPED_STEM);
+		hollowLog(TFItems.HOLLOW_VANGROVE_LOG);
+		hollowLog(TFItems.HOLLOW_CHERRY_LOG);
+		hollowLog(TFItems.HOLLOW_TWILIGHT_OAK_LOG);
+		hollowLog(TFItems.HOLLOW_CANOPY_LOG);
+		hollowLog(TFItems.HOLLOW_MANGROVE_LOG);
+		hollowLog(TFItems.HOLLOW_DARK_LOG);
+		hollowLog(TFItems.HOLLOW_TIME_LOG);
+		hollowLog(TFItems.HOLLOW_TRANSFORMATION_LOG);
+		hollowLog(TFItems.HOLLOW_MINING_LOG);
+		hollowLog(TFItems.HOLLOW_SORTING_LOG);
 
 		singleTex(TFItems.NAGA_SCALE);
 		singleTex(TFItems.NAGA_CHESTPLATE);
@@ -608,7 +621,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.TWILIGHT_OAK_BOAT);
 		singleTex(TFItems.CANOPY_BOAT);
 		singleTex(TFItems.MANGROVE_BOAT);
-		singleTex(TFItems.DARKWOOD_BOAT);
+		singleTex(TFItems.DARK_BOAT);
 		singleTex(TFItems.TIME_BOAT);
 		singleTex(TFItems.TRANSFORMATION_BOAT);
 		singleTex(TFItems.MINING_BOAT);
@@ -617,7 +630,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.TWILIGHT_OAK_CHEST_BOAT);
 		singleTex(TFItems.CANOPY_CHEST_BOAT);
 		singleTex(TFItems.MANGROVE_CHEST_BOAT);
-		singleTex(TFItems.DARKWOOD_CHEST_BOAT);
+		singleTex(TFItems.DARK_CHEST_BOAT);
 		singleTex(TFItems.TIME_CHEST_BOAT);
 		singleTex(TFItems.TRANSFORMATION_CHEST_BOAT);
 		singleTex(TFItems.MINING_CHEST_BOAT);
@@ -687,7 +700,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		return tool(item.getId().getPath(), prefix("item/" + item.getId().getPath()));
 	}
 
-	private ItemModelBuilder singleTex(RegistryObject<Item> item) {
+	private ItemModelBuilder singleTex(RegistryObject<?> item) {
 		return generated(item.getId().getPath(), prefix("item/" + item.getId().getPath()));
 	}
 
@@ -737,8 +750,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 						.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
-	private void hollowLog(RegistryObject<HollowLogHorizontal> hollowLog) {
-		getBuilder(BuiltInRegistries.ITEM.getKey(hollowLog.get().asItem()).getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath()), this.existingFileHelper));
+	private void hollowLog(RegistryObject<Item> hollowLog) {
+		getBuilder(BuiltInRegistries.ITEM.getKey(hollowLog.get().asItem()).getPath()).parent(new ModelFile.ExistingModelFile(TwilightForestMod.prefix("block/" + hollowLog.getId().getPath() + "_horizontal"), this.existingFileHelper));
 	}
 
 	private void toBlock(Block b) {

@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.sprucetree",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:spruce_log",
+      "placement": "before",
+      "items": [
+        "twilightforest:hollow_spruce_log"
+      ]
+    }
+  ]
+}

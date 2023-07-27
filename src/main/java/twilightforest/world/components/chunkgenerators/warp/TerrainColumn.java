@@ -54,13 +54,13 @@ public final class TerrainColumn implements Comparable<TerrainColumn> {
         return this.keyBiome.is(biome);
     }
 
-    public Holder<Biome> getBiome(int biomeElevation, Holder<Biome> other) {
+    public Holder<Biome> getBiome(int biomeElevation) {
         return this.reduce((a, b) -> {
             float aDelta = a.getFloatKey() - biomeElevation;
             float bDelta = b.getFloatKey() - biomeElevation;
 
             return Math.abs(aDelta) <= Math.abs(bDelta) ? a : b;
-        }, other);
+        }, this.keyBiome);
     }
 
     private Holder<Biome> reduce(BinaryOperator<Float2ObjectMap.Entry<Holder<Biome>>> reducer, Holder<Biome> other) {

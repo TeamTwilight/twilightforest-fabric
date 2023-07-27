@@ -40,7 +40,7 @@ public class IceBowItem extends BowItem implements CustomArrowItem, CustomEnchan
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow) {
-		return new IceArrow(arrow.getLevel(), arrow.getOwner());
+		return new IceArrow(arrow.level(), arrow.getOwner());
 	}
 
 	@Override

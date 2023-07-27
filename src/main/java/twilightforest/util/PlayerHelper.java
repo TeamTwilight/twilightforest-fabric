@@ -39,11 +39,11 @@ public class PlayerHelper {
 
 	@Nullable
 	public static Advancement getAdvancement(Player player, ResourceLocation advancementLocation) {
-		if (player.level.isClientSide() && player instanceof LocalPlayer localPlayer) {
+		if (player.level().isClientSide() && player instanceof LocalPlayer localPlayer) {
 			ClientAdvancements manager = localPlayer.connection.getAdvancements();
 			return manager.getAdvancements().get(advancementLocation);
 		} else if (player instanceof ServerPlayer serverPlayer) {
-			ServerLevel world = serverPlayer.getLevel();
+			ServerLevel world = (ServerLevel) serverPlayer.level();
 			return world.getServer().getAdvancements().getAdvancement(advancementLocation);
 		}
 
@@ -51,7 +51,7 @@ public class PlayerHelper {
 	}
 
 	public static boolean doesPlayerHaveRequiredAdvancement(Player player, Advancement advancement) {
-		if (player.level.isClientSide()) {
+		if (player.level().isClientSide()) {
 			if (player instanceof LocalPlayer) {
 				ClientAdvancements manager = ((LocalPlayer) player).connection.getAdvancements();
 				if (advancement == null) return false;
@@ -68,25 +68,8 @@ public class PlayerHelper {
 		}
 	}
 
-	public static boolean doesPlayerHaveRequiredAdvancement(Player player, ResourceLocation advancementLocation) {
-		if (player.level.isClientSide()) {
-			if (player instanceof LocalPlayer) {
-				ClientAdvancements manager = ((LocalPlayer) player).connection.getAdvancements();
-				Advancement adv = manager.getAdvancements().get(advancementLocation);
-				if (adv == null) return false;
-
-				AdvancementProgress progress = manager.progress.get(adv);
-				return progress != null && progress.isDone();
-			}
-			return false;
-		} else {
-			if (player instanceof ServerPlayer) {
-				ServerLevel world = ((ServerPlayer) player).getLevel();
-				Advancement adv = world.getServer().getAdvancements().getAdvancement(advancementLocation);
-				return adv != null && ((ServerPlayer) player).getAdvancements().getOrStartProgress(adv).isDone();
-			}
-			return false;
-		}
+	public static boolean doesPlayerHaveRequiredAdvancements(Player player, List<ResourceLocation> requiredAdvancements) {
+		return PlayerHelper.playerHasRequiredAdvancements(player, requiredAdvancements);
 	}
 
 	public static boolean doesPlayerHaveRequiredAdvancements(Player player, ResourceLocation... requiredAdvancements) {
@@ -95,24 +78,23 @@ public class PlayerHelper {
 
 	public static boolean playerHasRequiredAdvancements(Player player, Iterable<ResourceLocation> requiredAdvancements) {
 		for (ResourceLocation advancementLocation : requiredAdvancements) {
-			if (player.level.isClientSide()) {
-				if (player instanceof LocalPlayer) {
-					ClientAdvancements manager = ((LocalPlayer) player).connection.getAdvancements();
+			if (player.level().isClientSide()) {
+				if (player instanceof LocalPlayer local) {
+					ClientAdvancements manager = local.connection.getAdvancements();
 					Advancement adv = manager.getAdvancements().get(advancementLocation);
 					if (adv == null)
 						return false;
 					AdvancementProgress progress = manager.progress.get(adv);
 					return progress != null && progress.isDone();
 				}
-				return false;
 			} else {
-				if (player instanceof ServerPlayer) {
-					ServerLevel world = ((ServerPlayer) player).getLevel();
+				if (player instanceof ServerPlayer sp) {
+					ServerLevel world = (ServerLevel) player.level();
 					Advancement adv = world.getServer().getAdvancements().getAdvancement(advancementLocation);
-					return adv != null && ((ServerPlayer) player).getAdvancements().getOrStartProgress(adv).isDone();
+					return adv != null && sp.getAdvancements().getOrStartProgress(adv).isDone();
 				}
-				return false;
 			}
+			return false;
 		}
 		return true;
 	}

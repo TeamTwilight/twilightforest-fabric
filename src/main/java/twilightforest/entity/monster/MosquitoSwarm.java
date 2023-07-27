@@ -1,9 +1,6 @@
 package twilightforest.entity.monster;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -18,7 +15,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import twilightforest.init.TFSounds;
 
 public class MosquitoSwarm extends Monster {
@@ -63,7 +59,7 @@ public class MosquitoSwarm extends Monster {
 	public boolean doHurtTarget(Entity entity) {
 		if (super.doHurtTarget(entity)) {
 			if (entity instanceof LivingEntity living) {
-				int duration = switch (this.getLevel().getDifficulty()) {
+				int duration = switch (this.level().getDifficulty()) {
 					case EASY -> 7;
 					case HARD -> 30;
 					default -> 15;

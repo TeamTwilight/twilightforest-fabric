@@ -28,14 +28,14 @@ public abstract class HydraPart extends TFPart<Hydra> {
 
 	@Override
 	protected void defineSynchedData() {
-		this.entityData.define(DATA_SIZEACTIVE, true);
+		this.getEntityData().define(DATA_SIZEACTIVE, true);
 	}
 
 	@Override
 	public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
 		super.onSyncedDataUpdated(accessor);
 		if (accessor == DATA_SIZEACTIVE) {
-			if (this.entityData.get(DATA_SIZEACTIVE))
+			if (this.getEntityData().get(DATA_SIZEACTIVE))
 				this.activate();
 			else
 				this.deactivate();
@@ -46,7 +46,7 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	public boolean canEntityBeSeen(Entity entity) {
 		Vec3 vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
 		Vec3 vector3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
-		return this.getLevel().clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+		return this.level().clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
 	}
 
 	public HydraPart(Hydra parent, float width, float height) {
@@ -116,11 +116,11 @@ public abstract class HydraPart extends TFPart<Hydra> {
 
 	public void activate() {
 		this.dimensions = this.cacheSize;
-		this.entityData.set(DATA_SIZEACTIVE, true);
+		this.getEntityData().set(DATA_SIZEACTIVE, true);
 	}
 
 	public void deactivate() {
 		this.dimensions = EntityDimensions.scalable(0, 0);
-		this.entityData.set(DATA_SIZEACTIVE, false);
+		this.getEntityData().set(DATA_SIZEACTIVE, false);
 	}
 }

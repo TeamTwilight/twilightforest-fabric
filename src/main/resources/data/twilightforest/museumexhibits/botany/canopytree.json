@@ -1,0 +1,18 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.twilightforest.canopytree",
+  "relativeTo": "museumcurator.botany.cherrytree",
+  "placement" : "before",
+  "items": [
+    "twilightforest:canopy_sapling",
+    "twilightforest:canopy_leaves",
+    "twilightforest:hollow_canopy_log",
+    "twilightforest:canopy_log",
+    "twilightforest:stripped_canopy_log",
+    "twilightforest:canopy_wood",
+    "twilightforest:stripped_canopy_wood",
+    "twilightforest:canopy_planks",
+    "twilightforest:canopy_slab",
+    "twilightforest:canopy_stairs"
+  ]
+}

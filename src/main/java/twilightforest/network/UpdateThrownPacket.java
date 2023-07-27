@@ -58,7 +58,8 @@ public class UpdateThrownPacket implements S2CPacket {
 				if (entity instanceof LivingEntity) {
 					CapabilityList.YETI_THROWN.maybeGet(entity).ifPresent(cap -> {
 						LivingEntity thrower = message.thrower != 0 ? (LivingEntity) Minecraft.getInstance().level.getEntity(message.thrower) : null;
-						cap.setThrown(message.thrown, thrower);
+						if (entity instanceof Player)
+							cap.setThrown(message.thrown, thrower);
 						cap.setThrowCooldown(message.throwCooldown);
 					});
 				}

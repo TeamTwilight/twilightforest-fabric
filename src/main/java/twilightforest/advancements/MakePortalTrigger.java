@@ -1,10 +1,7 @@
 package twilightforest.advancements;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import twilightforest.TwilightForestMod;
@@ -19,7 +16,7 @@ public class MakePortalTrigger extends SimpleCriterionTrigger<MakePortalTrigger.
     }
 
     @Override
-    public Instance createInstance(JsonObject json, EntityPredicate.Composite player, DeserializationContext condition) {
+    public Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext condition) {
 		return new MakePortalTrigger.Instance(player);
     }
 
@@ -29,12 +26,12 @@ public class MakePortalTrigger extends SimpleCriterionTrigger<MakePortalTrigger.
 
     public static class Instance extends AbstractCriterionTriggerInstance {
 
-        public Instance(EntityPredicate.Composite player) {
+        public Instance(ContextAwarePredicate player) {
             super(MakePortalTrigger.ID, player);
         }
 
         public static Instance makePortal() {
-            return new Instance(EntityPredicate.Composite.ANY);
+            return new Instance(ContextAwarePredicate.ANY);
         }
     }
 }

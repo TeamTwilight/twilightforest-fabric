@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.data.tags.EntityTagGenerator;
@@ -86,7 +87,8 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 
 			if (rider instanceof LivingEntity entity) {
 				CapabilityList.YETI_THROWN.maybeGet(entity).ifPresent(cap -> {
-					cap.setThrown(true, this.mob);
+					if (entity instanceof Player)
+						cap.setThrown(true, this.mob);
 					//make it so other yetis wont try to pick us up for a bit, 10 seconds seems fair
 					cap.setThrowCooldown(200);
 				});

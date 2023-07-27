@@ -30,5 +30,6 @@
     "recipes": [
       "twilightforest:vanishing_block"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

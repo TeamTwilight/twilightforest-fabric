@@ -66,8 +66,8 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 	private static final VoxelShape SOLID_X = Shapes.or(SOLID, TOPPER_X);
 	private static final VoxelShape SOLID_Z = Shapes.or(SOLID, TOPPER_Z);
 
-	public KeepsakeCasketBlock() {
-		super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).noOcclusion().requiresCorrectToolForDrops().strength(50.0F, 1200.0F).sound(SoundType.NETHERITE_BLOCK).lightLevel(state -> state.getValue(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.LAVA ? 15 : 0).explosionResistance(Float.MAX_VALUE));
+	public KeepsakeCasketBlock(BlockBehaviour.Properties properties) {
+		super(properties); // FIXME PORT 1.20: .explosionResistance(Float.MAX_VALUE)
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(BREAKAGE, 0));
 	}
 
@@ -230,11 +230,6 @@ public class KeepsakeCasketBlock extends BaseEntityBlock implements BlockLogging
 				}
 			}
 		}
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -44,6 +47,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.AbstractLightableBlock;
 import twilightforest.data.tags.DamageTypeTagGenerator;
@@ -61,13 +65,17 @@ import twilightforest.util.WorldUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
-public class Lich extends Monster implements EnforcedHomePoint {
+public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer {
 
 	private static final EntityDataAccessor<Boolean> IS_CLONE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> SHIELD_STRENGTH = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> MINIONS_LEFT = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> ATTACK_TYPE = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Lich.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+
+	private final NonNullList<ItemStack> dyingInventory = NonNullList.withSize(27, ItemStack.EMPTY);
 
 	public static final int MAX_SHADOW_CLONES = 2;
 	public static final int INITIAL_SHIELD_STRENGTH = 6;
@@ -109,10 +117,11 @@ public class Lich extends Monster implements EnforcedHomePoint {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(IS_CLONE, false);
-		this.entityData.define(SHIELD_STRENGTH, INITIAL_SHIELD_STRENGTH);
-		this.entityData.define(MINIONS_LEFT, INITIAL_MINIONS_TO_SUMMON);
-		this.entityData.define(ATTACK_TYPE, 0);
+		this.getEntityData().define(IS_CLONE, false);
+		this.getEntityData().define(SHIELD_STRENGTH, INITIAL_SHIELD_STRENGTH);
+		this.getEntityData().define(MINIONS_LEFT, INITIAL_MINIONS_TO_SUMMON);
+		this.getEntityData().define(ATTACK_TYPE, 0);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -154,13 +163,15 @@ public class Lich extends Monster implements EnforcedHomePoint {
 		compound.putBoolean("ShadowClone", this.isShadowClone());
 		compound.putInt("ShieldStrength", this.getShieldStrength());
 		compound.putInt("MinionsToSummon", this.getMinionsToSummon());
+		this.addDeathItemsSaveData(compound);
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.loadHomePointFromNbt(compound, 20);
+		this.readDeathItemsSaveData(compound);
+		this.loadHomePointFromNbt(compound);
 		this.setShadowClone(compound.getBoolean("ShadowClone"));
 		this.setShieldStrength(compound.getInt("ShieldStrength"));
 		this.setMinionsToSummon(compound.getInt("MinionsToSummon"));
@@ -190,6 +201,23 @@ public class Lich extends Monster implements EnforcedHomePoint {
 
 	@Override
 	public void aiStep() {
+		if (!this.level().isClientSide()) {
+			if (this.getPhase() == 1) {
+				this.bossInfo.setProgress((float) (this.getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
+			} else {
+				this.bossInfo.setOverlay(BossEvent.BossBarOverlay.PROGRESS);
+				this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
+				if (this.getPhase() == 2)
+					this.bossInfo.setColor(BossEvent.BossBarColor.PURPLE);
+				else
+					this.bossInfo.setColor(BossEvent.BossBarColor.RED);
+			}
+		}
+
+		super.aiStep();
+
+		if (this.isDeadOrDying()) return;
+
 		// determine the hand position
 		float angle = ((this.yBodyRot * Mth.PI) / 180F);
 
@@ -220,30 +248,15 @@ public class Lich extends Monster implements EnforcedHomePoint {
 				blu = 0.00F * sparkle;
 			}
 
-			this.getLevel().addParticle(ParticleTypes.ENTITY_EFFECT, dx + (this.getRandom().nextGaussian() * 0.025), dy + (this.getRandom().nextGaussian() * 0.025), dz + (this.getRandom().nextGaussian() * 0.025), red, grn, blu);
+			this.level().addParticle(ParticleTypes.ENTITY_EFFECT, dx + (this.getRandom().nextGaussian() * 0.025), dy + (this.getRandom().nextGaussian() * 0.025), dz + (this.getRandom().nextGaussian() * 0.025), red, grn, blu);
 		}
 
 		if (this.getPhase() == 3)
-			this.getLevel().addParticle(ParticleTypes.ANGRY_VILLAGER,
+			this.level().addParticle(ParticleTypes.ANGRY_VILLAGER,
 					this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
 					this.getY() + 1.0D + this.getRandom().nextFloat() * this.getBbHeight(),
 					this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F - this.getBbWidth(),
 					this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D, this.getRandom().nextGaussian() * 0.02D);
-
-		if (!this.getLevel().isClientSide()) {
-			if (this.getPhase() == 1) {
-				this.bossInfo.setProgress((float) (this.getShieldStrength()) / (float) (INITIAL_SHIELD_STRENGTH));
-			} else {
-				this.bossInfo.setOverlay(BossEvent.BossBarOverlay.PROGRESS);
-				this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
-				if (this.getPhase() == 2)
-					this.bossInfo.setColor(BossEvent.BossBarColor.PURPLE);
-				else
-					this.bossInfo.setColor(BossEvent.BossBarColor.RED);
-			}
-		}
-
-		super.aiStep();
 	}
 
 	@Override
@@ -343,21 +356,132 @@ public class Lich extends Monster implements EnforcedHomePoint {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the tower as defeated
-		if (!this.getLevel().isClientSide() && !this.isShadowClone()) {
-			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.LICH_TOWER, true);
+		if (this.level() instanceof ServerLevel serverLevel && !this.isShadowClone()) {
+			this.bossInfo.setProgress(0.0F);
+			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.LICH_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+			IBossLootBuffer.saveDropsIntoBoss(this, TFLootTables.createLootParams(this, true, cause).create(LootContextParamSets.ENTITY), serverLevel);
+		}
+	}
+
+	private static final ItemParticleOption BONE_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, Items.BONE.getDefaultInstance());
+
+	@Override
+	protected void tickDeath() {
+		++this.deathTime;
+
+		if (this.level() instanceof ServerLevel) {
+			int maxDeath = 175;//How many ticks until the body disappears
+			if (this.deathTime <= 50) {
+				boolean done = this.deathTime == 50;
+				boolean hurt = this.deathTime % 17 == 0;
+
+				if (hurt) this.playHurtSound(this.damageSources().generic());
+				if (done) {
+					SoundEvent soundevent = this.getDeathSound();
+					if (soundevent != null) {
+						this.playSound(soundevent, this.getSoundVolume(), this.getVoicePitch());
+					}
+				}
+
+				Vec3 pos = this.position();
+				ParticlePacket particlePacket = new ParticlePacket();
+
+				for (int i = 0; i < (hurt ? 12 : 3); i++) {
+					double x = (this.random.nextDouble() - 0.5D) * 0.7D;
+					double y = this.random.nextDouble() * this.getBbHeight();
+					double z = (this.random.nextDouble() - 0.5D) * 0.7D;
+					particlePacket.queueParticle(this.random.nextBoolean() || hurt ? BONE_PARTICLE : ParticleTypes.SMOKE, false, pos.add(x, y, z), Vec3.ZERO);
+				}
+
+				if (hurt) {
+					double x = (this.random.nextDouble() - 0.5D) * 0.7D;
+					double y = this.random.nextDouble() * this.getBbHeight();
+					double z = (this.random.nextDouble() - 0.5D) * 0.7D;
+					for (int i = 0; i < 7; i++) {
+						double x1 = x + (this.random.nextDouble() - 0.5D) * 0.1D;
+						double y1 = y + (this.random.nextDouble() - 0.5D) * 0.1D;
+						double z1 = z + (this.random.nextDouble() - 0.5D) * 0.1D;
+						particlePacket.queueParticle(this.random.nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.add(x1, y1, z1), Vec3.ZERO);
+					}
+				}
+
+				if (done) {
+					for (int i = 0; i < 32; i++) {
+						double x = (this.random.nextDouble() - 0.5D) * 0.7D;
+						double y = this.random.nextDouble() * this.getBbHeight();
+						double z = (this.random.nextDouble() - 0.5D) * 0.7D;
+						particlePacket.queueParticle(this.random.nextBoolean() ? BONE_PARTICLE : ParticleTypes.CLOUD, false, pos.add(x, y, z), Vec3.ZERO);
+					}
+				}
+
+				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+			} else if (this.deathTime == 70) {
+				ParticlePacket particlePacket = new ParticlePacket();
+				for (int i = 0; i < 3; i++) {
+					double x = (this.random.nextDouble() - 0.5D) * 0.75D;
+					double z = (this.random.nextDouble() - 0.5D) * 0.75D;
+					particlePacket.queueParticle(ParticleTypes.CLOUD, false, this.position().add(x, 0.0D, z), Vec3.ZERO);
+				}
+
+				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+			} else if (this.deathTime > 70) {
+				boolean flag = this.deathTime >= maxDeath && !this.isRemoved();
+
+				Vec3 start = this.position().add(0.0D, 0.45F, 0.0D);
+				Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
+				int deathTime2 = this.deathTime - 70;
+				double factor = (double) deathTime2 / 105.0D;
+				double powFactor = Math.pow(factor, 2.0D) * 2.0D;
+				double expandFactor = (Math.cos((factor + 0.5D) * Math.PI * 2) + 1.0D) * 0.5D;
+				Vec3 particlePos = start.add(end.subtract(start).scale(Math.min(((double) deathTime2 / 70.0D) * 1.25D, 1.0D)));
+				ParticlePacket particlePacket = new ParticlePacket();
+				if (this.deathTime >= maxDeath - 3) {
+					for (int i = 0; i < 40; i++) {
+						double x = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+						double y = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+						double z = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+						particlePacket.queueParticle(this.random.nextBoolean() ? TFParticleType.OMINOUS_FLAME.get() : ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
+					}
+				}
+				if (flag) {
+					for (int i = 0; i < 16; i++) {
+						double x = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+						double y = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+						double z = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+						particlePacket.queueParticle(ParticleTypes.POOF, false, start.add(x, y, z), Vec3.ZERO);
+					}
+				}
+				for (double i = 0.0D; i < 1.0D; i += 0.2D) {
+					double x = Math.sin((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
+					double z = Math.cos((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.25D;
+					particlePacket.queueParticle(TFParticleType.OMINOUS_FLAME.get(), false, particlePos.add(x, -0.25D, z), Vec3.ZERO);
+				}
+
+				TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+
+				if (flag) this.remove(RemovalReason.KILLED);
+			}
 		}
 	}
 
 	@Override
+	public void remove(RemovalReason removalReason) {
+		if (removalReason.equals(RemovalReason.KILLED) && this.level() instanceof ServerLevel serverLevel) {
+			IBossLootBuffer.depositDropsIntoChest(this, this.random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState() : TFBlocks.CANOPY_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
+		}
+		super.remove(removalReason);
+	}
+
+	@Override
 	public void checkDespawn() {
-		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL && !this.isShadowClone()) {
-			if (this.hasRestriction()) {
-				this.getLevel().setBlockAndUpdate(getRestrictCenter(), TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState());
+		if (this.level().getDifficulty() == Difficulty.PEACEFUL && !this.isShadowClone()) {
+			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -384,7 +508,7 @@ public class Lich extends Monster implements EnforcedHomePoint {
 		projectile.moveTo(sx, sy, sz, getYRot(), getXRot());
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 
-		this.getLevel().addFreshEntity(projectile);
+		this.level().addFreshEntity(projectile);
 	}
 
 	public boolean wantsNewClone(Lich clone) {
@@ -405,7 +529,7 @@ public class Lich extends Monster implements EnforcedHomePoint {
 	}
 
 	public List<? extends Lich> getNearbyLiches() {
-		return this.getLevel().getEntitiesOfClass(getClass(), new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D));
+		return this.level().getEntitiesOfClass(getClass(), new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D));
 	}
 
 	public boolean wantsNewMinion() {
@@ -413,7 +537,7 @@ public class Lich extends Monster implements EnforcedHomePoint {
 	}
 
 	public int countMyMinions() {
-		return (int) this.getLevel().getEntitiesOfClass(LichMinion.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D))
+		return (int) this.level().getEntitiesOfClass(LichMinion.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D))
 				.stream()
 				.filter(m -> m.master == this)
 				.count();
@@ -483,7 +607,7 @@ public class Lich extends Monster implements EnforcedHomePoint {
 		this.teleportTo(destX, destY, destZ);
 
 		this.makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
-		this.getLevel().playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT.get(), this.getSoundSource(), 1.0F, 1.0F);
+		this.level().playSound(null, srcX, srcY, srcZ, TFSounds.LICH_TELEPORT.get(), this.getSoundSource(), 1.0F, 1.0F);
 		this.playSound(TFSounds.LICH_TELEPORT.get(), 1.0F, 1.0F);
 		this.gameEvent(GameEvent.TELEPORT);
 
@@ -506,14 +630,14 @@ public class Lich extends Monster implements EnforcedHomePoint {
 			double tx = srcX + (destX - srcX) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
 			double ty = srcY + (destY - srcY) * trailFactor + this.getRandom().nextDouble() * this.getBbHeight();
 			double tz = srcZ + (destZ - srcZ) * trailFactor + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 2D;
-			this.getLevel().addParticle(ParticleTypes.EFFECT, tx, ty, tz, f, f1, f2);
+			this.level().addParticle(ParticleTypes.EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
 
 	public void makeMagicTrail(Vec3 source, Vec3 target, float red, float green, float blue) {
 		int particles = 60;
-		if (!this.getLevel().isClientSide()) {
-			for (ServerPlayer serverplayer : ((ServerLevel) this.getLevel()).players()) {
+		if (!this.level().isClientSide()) {
+			for (ServerPlayer serverplayer : ((ServerLevel) this.level()).players()) {
 				if (serverplayer.distanceToSqr(source) < 4096.0D) {
 					ParticlePacket packet = new ParticlePacket();
 
@@ -533,12 +657,12 @@ public class Lich extends Monster implements EnforcedHomePoint {
 
 	private void extinguishNearbyCandles() {
 		for (BlockPos pos : WorldUtil.getAllAround(this.blockPosition(), 10)) {
-			if (level.getBlockState(pos).getBlock() instanceof AbstractCandleBlock && level.getBlockState(pos).getValue(BlockStateProperties.LIT)) {
-				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(BlockStateProperties.LIT, false));
-				level.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 1.0F);
-			} else if (level.getBlockState(pos).getBlock() instanceof AbstractLightableBlock && level.getBlockState(pos).getValue(AbstractLightableBlock.LIGHTING) == AbstractLightableBlock.Lighting.NORMAL) {
-				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(AbstractLightableBlock.LIGHTING, AbstractLightableBlock.Lighting.OMINOUS));
-				level.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 0.75F);
+			if (this.level().getBlockState(pos).getBlock() instanceof AbstractCandleBlock && this.level().getBlockState(pos).getValue(BlockStateProperties.LIT)) {
+				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(BlockStateProperties.LIT, false));
+				this.level().playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 1.0F);
+			} else if (this.level().getBlockState(pos).getBlock() instanceof AbstractLightableBlock && this.level().getBlockState(pos).getValue(AbstractLightableBlock.LIGHTING) == AbstractLightableBlock.Lighting.NORMAL) {
+				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(AbstractLightableBlock.LIGHTING, AbstractLightableBlock.Lighting.OMINOUS));
+				this.level().playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 0.75F);
 			}
 		}
 	}
@@ -607,36 +731,36 @@ public class Lich extends Monster implements EnforcedHomePoint {
 	}
 
 	public boolean isShadowClone() {
-		return this.entityData.get(IS_CLONE);
+		return this.getEntityData().get(IS_CLONE);
 	}
 
 	public void setShadowClone(boolean shadowClone) {
 		this.bossInfo.setVisible(!shadowClone);
-		this.entityData.set(IS_CLONE, shadowClone);
+		this.getEntityData().set(IS_CLONE, shadowClone);
 	}
 
 	public int getShieldStrength() {
-		return this.entityData.get(SHIELD_STRENGTH);
+		return this.getEntityData().get(SHIELD_STRENGTH);
 	}
 
 	public void setShieldStrength(int shieldStrength) {
-		this.entityData.set(SHIELD_STRENGTH, shieldStrength);
+		this.getEntityData().set(SHIELD_STRENGTH, shieldStrength);
 	}
 
 	public int getMinionsToSummon() {
-		return this.entityData.get(MINIONS_LEFT);
+		return this.getEntityData().get(MINIONS_LEFT);
 	}
 
 	public void setMinionsToSummon(int minionsToSummon) {
-		this.entityData.set(MINIONS_LEFT, minionsToSummon);
+		this.getEntityData().set(MINIONS_LEFT, minionsToSummon);
 	}
 
 	public int getNextAttackType() {
-		return this.entityData.get(ATTACK_TYPE);
+		return this.getEntityData().get(ATTACK_TYPE);
 	}
 
 	public void setNextAttackType(int attackType) {
-		this.entityData.set(ATTACK_TYPE, attackType);
+		this.getEntityData().set(ATTACK_TYPE, attackType);
 	}
 
 
@@ -656,7 +780,7 @@ public class Lich extends Monster implements EnforcedHomePoint {
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.LICH_DEATH.get();
+		return this.deathTime > 1 ? TFSounds.LICH_DEATH.get() : TFSounds.LICH_HURT.get();
 	}
 
 	@Override
@@ -671,8 +795,12 @@ public class Lich extends Monster implements EnforcedHomePoint {
 
 	@Override
 	protected boolean shouldDropLoot() {
-		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
-		return false;
+		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
+	}
+
+	@Override
+	public boolean displayFireAnimation() {
+		return this.deathTime <= 0 && super.displayFireAnimation();
 	}
 
 	//as funny as left handed liches are, it would be better if it always holds its scepter/sword in the correct hand
@@ -707,12 +835,22 @@ public class Lich extends Monster implements EnforcedHomePoint {
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
+	public NonNullList<ItemStack> getItemStacks() {
+		return this.dyingInventory;
 	}
 
 	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
+	}
+
+	@Override
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 20;
 	}
 }

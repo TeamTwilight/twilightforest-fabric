@@ -10,12 +10,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -27,7 +24,6 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
@@ -71,7 +67,7 @@ public class Troll extends Monster implements RangedAttackMob {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Troll.class));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			this.setCombatTask();
 		}
 	}
@@ -86,7 +82,7 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 
 			if (!this.hasRock() && this.getTarget() != null) {
 				if (this.rockCooldown > 0) {
@@ -94,7 +90,7 @@ public class Troll extends Monster implements RangedAttackMob {
 				} else {
 					//copied from EnderMan.EndermanTakeBlockGoal.tick()
 					RandomSource random = this.getRandom();
-					Level level = this.level;
+					Level level = this.level();
 					int i = Mth.floor(this.getX() - 2.0D + random.nextDouble() * 4.0D);
 					int j = Mth.floor(this.getY() + random.nextDouble() * 3.0D);
 					int k = Mth.floor(this.getZ() - 2.0D + random.nextDouble() * 4.0D);
@@ -127,25 +123,25 @@ public class Troll extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	public void positionRider(Entity entity) {
-		super.positionRider(entity);
+	public void positionRider(Entity entity, Entity.MoveFunction callback) {
+		super.positionRider(entity, callback);
 		entity.setXRot(this.getXRot());
 	}
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(ROCK_FLAG, false);
+		this.getEntityData().define(ROCK_FLAG, false);
 	}
 
 	public boolean hasRock() {
-		return this.entityData.get(ROCK_FLAG);
+		return this.getEntityData().get(ROCK_FLAG);
 	}
 
 	public void setHasRock(boolean rock) {
-		this.entityData.set(ROCK_FLAG, rock);
+		this.getEntityData().set(ROCK_FLAG, rock);
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (rock) {
 				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ROCK_MODIFIER)) {
 					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ROCK_MODIFIER);
@@ -159,7 +155,6 @@ public class Troll extends Monster implements RangedAttackMob {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		swing(InteractionHand.MAIN_HAND);
 		return super.doHurtTarget(entity);
 	}
 
@@ -178,7 +173,7 @@ public class Troll extends Monster implements RangedAttackMob {
 		super.readAdditionalSaveData(compound);
 		this.setHasRock(compound.getBoolean("HasRock"));
 		this.rockCooldown = compound.getInt("RockCooldown");
-		this.rock = NbtUtils.readBlockState(this.getLevel().holderLookup(Registries.BLOCK), compound.getCompound("RockState"));
+		this.rock = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), compound.getCompound("RockState"));
 	}
 
 	private void setCombatTask() {
@@ -209,26 +204,26 @@ public class Troll extends Monster implements RangedAttackMob {
 	}
 
 	private void ripenBer(int offset, BlockPos pos) {
-		if (this.getLevel().getBlockState(pos).getBlock() == TFBlocks.UNRIPE_TROLLBER.get() && this.getRandom().nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
-			this.getLevel().setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
-			this.getLevel().levelEvent(2004, pos, 0);
+		if (this.level().getBlockState(pos).getBlock() == TFBlocks.UNRIPE_TROLLBER.get() && this.getRandom().nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
+			this.level().setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
+			this.level().levelEvent(2004, pos, 0);
 		}
 	}
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (this.hasRock()) {
-			ThrownBlock blocc = new ThrownBlock(this.getLevel(), this, this.rock);
+			ThrownBlock blocc = new ThrownBlock(this.level(), this, this.rock);
 
 			double d0 = target.getX() - this.getX();
 			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - blocc.getY();
 			double d2 = target.getZ() - this.getZ();
 			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
-			blocc.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 4 - this.getLevel().getDifficulty().getId());
+			blocc.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 4 - this.level().getDifficulty().getId());
 
 			this.playSound(TFSounds.TROLL_THROWS_ROCK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.gameEvent(GameEvent.PROJECTILE_SHOOT);
-			this.getLevel().addFreshEntity(blocc);
+			this.level().addFreshEntity(blocc);
 			this.setHasRock(false);
 			if (!this.getPassengers().isEmpty() && Objects.requireNonNull(this.getFirstPassenger()).getType() == TFEntities.THROWN_BLOCK.get()) {
 				this.getFirstPassenger().discard();

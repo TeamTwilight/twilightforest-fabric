@@ -1,0 +1,11 @@
+{
+  "collection": "museumcurator.collection.architecture",
+  "name": "museumcurator.architecture.twilightforest.giantblocks",
+  "relativeTo": "museumcurator.architecture.twilightforest.castlebrick",
+  "items": [
+    "twilightforest:giant_log",
+    "twilightforest:giant_leaves",
+    "twilightforest:giant_cobblestone",
+    "twilightforest:giant_obsidian"
+  ]
+}

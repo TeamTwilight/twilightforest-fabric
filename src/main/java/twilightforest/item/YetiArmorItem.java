@@ -41,7 +41,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class YetiArmorItem extends ArmorItem implements CustomEnchantingBehaviorItem, WalkOnSnowItem {
-	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.yeti_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.yeti_armor.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public YetiArmorItem(ArmorMaterial material, Type type, Properties properties) {
 		super(material, type, properties);
@@ -69,7 +69,7 @@ public class YetiArmorItem extends ArmorItem implements CustomEnchantingBehavior
 	}
 
 	public static String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String layer) {
-		if (slot == EquipmentSlot.LEGS || slot == EquipmentSlot.CHEST) {
+		if (slot == EquipmentSlot.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "yetiarmor_2.png";
 		} else {
 			return TwilightForestMod.ARMOR_DIR + "yetiarmor_1.png";
@@ -99,6 +99,7 @@ public class YetiArmorItem extends ArmorItem implements CustomEnchantingBehavior
 
 		@Override
 		public void render(PoseStack matrices, MultiBufferSource vertexConsumers, ItemStack itemStack, LivingEntity entityLiving, EquipmentSlot armorSlot, int light, HumanoidModel<LivingEntity> parentModel) {
+			// FIXME PORT 1.20 caching
 			EntityModelSet models = Minecraft.getInstance().getEntityModels();
 			ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.YETI_ARMOR_INNER : TFModelLayers.YETI_ARMOR_OUTER);
 			armorModel = new YetiArmorModel(armorSlot, root);

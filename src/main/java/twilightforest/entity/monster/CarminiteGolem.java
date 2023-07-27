@@ -2,11 +2,8 @@ package twilightforest.entity.monster;
 
 import org.joml.Vector3f;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,7 +19,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -57,11 +53,11 @@ public class CarminiteGolem extends Monster {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		this.attackTimer = 10;
-		this.getLevel().broadcastEntityEvent(this, (byte) 4);
 		boolean attackSuccess = super.doHurtTarget(entity);
 
 		if (attackSuccess) {
+			this.attackTimer = 10;
+			this.level().broadcastEntityEvent(this, (byte) 4);
 			entity.push(0.0D, 0.4D, 0.0D);
 		}
 
@@ -91,21 +87,8 @@ public class CarminiteGolem extends Monster {
 			--this.attackTimer;
 		}
 
-		// [VanillaCopy] last half of IronGolem.aiStep
-		if (this.getDeltaMovement().x() * this.getDeltaMovement().x() + this.getDeltaMovement().z() * this.getDeltaMovement().z() > 2.500000277905201E-7D && this.getRandom().nextInt(5) == 0) {
-			int i = Mth.floor(this.getX());
-			int j = Mth.floor(this.getY() - 0.2D);
-			int k = Mth.floor(this.getZ());
-			BlockState state = this.getLevel().getBlockState(new BlockPos(i, j, k));
-
-			if (state.getMaterial() != Material.AIR) {
-				this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), this.getX() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), this.getBoundingBox().minY + 0.1D, this.getZ() + (this.getRandom().nextFloat() - 0.5D) * this.getBbWidth(), 4.0D * (this.getRandom().nextFloat() - 0.5D), 0.5D, (this.getRandom().nextFloat() - 0.5D) * 4.0D);
-			}
-		}
-		// End copy
-
 		if (this.getRandom().nextBoolean()) {
-			this.getLevel().addParticle(new DustParticleOptions(new Vector3f(1.0F, 0.0F, 0.0F), 1.0F), this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * this.getBbHeight() - 0.25D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), 0, 0, 0);
+			this.level().addParticle(new DustParticleOptions(new Vector3f(1.0F, 0.0F, 0.0F), 1.0F), this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * this.getBbHeight() - 0.25D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), 0, 0, 0);
 		}
 	}
 
@@ -127,5 +110,10 @@ public class CarminiteGolem extends Monster {
 	@Override
 	public int getMaxSpawnClusterSize() {
 		return 2;
+	}
+
+	@Override
+	public boolean canSpawnSprintParticle() {
+		return this.getDeltaMovement().horizontalDistanceSqr() > (double)2.5000003E-7F && this.getRandom().nextInt(5) == 0;
 	}
 }

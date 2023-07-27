@@ -1,10 +1,7 @@
 package twilightforest.advancements;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
@@ -20,7 +17,7 @@ public class StructureClearedTrigger extends SimpleCriterionTrigger<StructureCle
 	}
 
 	@Override
-	public Instance createInstance(JsonObject json, EntityPredicate.Composite player, DeserializationContext condition) {
+	public Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext condition) {
 		String structureName = GsonHelper.getAsString(json, "structure");
 		return new StructureClearedTrigger.Instance(player, structureName);
 	}
@@ -33,13 +30,13 @@ public class StructureClearedTrigger extends SimpleCriterionTrigger<StructureCle
 
 		private final String structureName;
 
-		public Instance(EntityPredicate.Composite player, String structureName) {
+		public Instance(ContextAwarePredicate player, String structureName) {
 			super(StructureClearedTrigger.ID, player);
 			this.structureName = structureName;
 		}
 
 		public static Instance clearedStructure(String name) {
-			return new Instance(EntityPredicate.Composite.ANY, name);
+			return new Instance(ContextAwarePredicate.ANY, name);
 		}
 
 		boolean test(String structureName) {

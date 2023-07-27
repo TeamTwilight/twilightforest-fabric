@@ -9,14 +9,10 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFSounds;
 
@@ -61,18 +57,18 @@ public abstract class FlyingBird extends Bird {
 	@Override
 	public float getWalkTargetValue(BlockPos pos) {
 		// prefer standing on leaves
-		Material underMaterial = this.getLevel().getBlockState(pos.below()).getMaterial();
-		if (underMaterial == Material.LEAVES) {
+		BlockState state = this.level().getBlockState(pos.below());
+		if (state.is(BlockTags.LEAVES)) {
 			return 200.0F;
 		}
-		if (underMaterial == Material.WOOD) {
+		if (state.is(BlockTags.LOGS)) {
 			return 15.0F;
 		}
-		if (underMaterial == Material.GRASS) {
+		if (state.is(BlockTags.DIRT)) {
 			return 9.0F;
 		}
 		// default to just preferring lighter areas
-		return this.getLevel().getMaxLocalRawBrightness(pos) - 0.5F;
+		return this.level().getMaxLocalRawBrightness(pos) - 0.5F;
 	}
 
 	@Override
@@ -92,22 +88,22 @@ public abstract class FlyingBird extends Bird {
 			this.currentFlightTime = 0;
 
 			boolean flag = this.isSilent();
-			if (this.isSpooked() || this.isInWater() || !this.getLevel().getBlockState(this.blockPosition().below()).getFluidState().isEmpty() || (this.getRandom().nextInt(200) == 0 && !this.isLandableBlock(this.blockPosition().below()))) {
+			if (this.isSpooked() || this.isInWater() || !this.level().getBlockState(this.blockPosition().below()).getFluidState().isEmpty() || (this.getRandom().nextInt(200) == 0 && !this.isLandableBlock(this.blockPosition().below()))) {
 				this.setIsBirdLanded(false);
 				if (!flag) {
-					this.playSound(TFSounds.TINYBIRD_TAKEOFF.get(), 0.05F, this.getVoicePitch());
+					this.playSound(TFSounds.TINY_BIRD_TAKEOFF.get(), 0.05F, this.getVoicePitch());
 				}
 			}
 		} else {
 			this.currentFlightTime++;
 
 			// [VanillaCopy] Modified version of last half of Bat.customServerAiStep(). Edits noted
-			if (this.targetPosition != null && (!this.getLevel().isEmptyBlock(this.targetPosition) || this.targetPosition.getY() <= this.getLevel().getMinBuildHeight())) {
+			if (this.targetPosition != null && (!this.level().isEmptyBlock(this.targetPosition) || this.targetPosition.getY() <= this.level().getMinBuildHeight())) {
 				this.targetPosition = null;
 			}
 
 			//TF - no drowning birds
-			if (this.isInWater() || !this.getLevel().getBlockState(this.blockPosition().below()).getFluidState().isEmpty()) {
+			if (this.isInWater() || !this.level().getBlockState(this.blockPosition().below()).getFluidState().isEmpty()) {
 				this.currentFlightTime = 0; // reset timer for MAX FLIGHT :v
 				this.setDeltaMovement(this.getDeltaMovement().x(), 0.1F, this.getDeltaMovement().z());
 			}
@@ -142,9 +138,9 @@ public abstract class FlyingBird extends Bird {
 	}
 
 	public boolean isLandableBlock(BlockPos pos) {
-		BlockState state = this.getLevel().getBlockState(pos);
+		BlockState state = this.level().getBlockState(pos);
 		return !state.isAir()
-				&& (state.is(BlockTags.LEAVES) || state.isFaceSturdy(this.getLevel(), pos, Direction.UP));
+				&& (state.is(BlockTags.LEAVES) || state.isFaceSturdy(this.level(), pos, Direction.UP));
 	}
 
 	@Override

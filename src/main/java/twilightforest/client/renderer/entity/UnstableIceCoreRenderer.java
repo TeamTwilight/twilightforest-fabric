@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
-import org.joml.Vector3f;
 import twilightforest.client.model.entity.UnstableIceCoreModel;
 import twilightforest.entity.monster.UnstableIceCore;
 

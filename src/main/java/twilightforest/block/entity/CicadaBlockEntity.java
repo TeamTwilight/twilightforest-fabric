@@ -19,7 +19,7 @@ public class CicadaBlockEntity extends BlockEntity {
 	private int singDuration;
 	private boolean singing;
 	private int singDelay;
-	public float randRot = RandomSource.create().nextInt(4) * 90.0F;
+	public final float randRot = RandomSource.create().nextInt(4) * 90.0F;
 
 	public CicadaBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.CICADA.get(), pos, state);
@@ -57,7 +57,7 @@ public class CicadaBlockEntity extends BlockEntity {
 					te.singing = false;
 					te.singDuration = 0;
 				}
-				if (te.singing && te.singDuration < 100) {
+				if (te.singing) {
 					te.singDuration++;
 					te.doSingAnimation();
 				}

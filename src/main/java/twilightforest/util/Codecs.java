@@ -16,6 +16,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 public final class Codecs {
@@ -45,6 +46,10 @@ public final class Codecs {
         } catch (Throwable e) {
             return DataResult.error(e::getMessage);
         }
+    }
+
+    public static <E> DataResult<Pair<E, E>> arrayToPair(List<E> list) {
+        return Util.fixedSize(list, 2).map(l -> Pair.of(l.get(0), l.get(1)));
     }
 
     private Codecs() {}

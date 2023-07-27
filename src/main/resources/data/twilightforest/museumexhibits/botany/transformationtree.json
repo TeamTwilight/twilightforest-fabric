@@ -1,0 +1,17 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.twilightforest.transformationtree",
+  "relativeTo": "museumcurator.botany.twilightforest.timetree",
+  "items": [
+    "twilightforest:transformation_sapling",
+    "twilightforest:transformation_leaves",
+    "twilightforest:hollow_transformation_log",
+    "twilightforest:transformation_log",
+    "twilightforest:stripped_transformation_log",
+    "twilightforest:transformation_wood",
+    "twilightforest:stripped_transformation_wood",
+    "twilightforest:transformation_planks",
+    "twilightforest:transformation_slab",
+    "twilightforest:transformation_stairs"
+  ]
+}

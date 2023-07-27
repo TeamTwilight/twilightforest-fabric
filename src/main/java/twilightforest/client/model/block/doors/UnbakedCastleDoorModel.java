@@ -1,6 +1,5 @@
 package twilightforest.client.model.block.doors;
 
-import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
 import io.github.fabricators_of_create.porting_lib.models.SimpleModelState;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;

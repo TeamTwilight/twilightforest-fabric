@@ -18,7 +18,7 @@
       "max_delay": 12000,
       "min_delay": 1200,
       "replace_current_music": true,
-      "sound": "twilightforest:music.bg"
+      "sound": "twilightforest:music.twilightforest.twilight_forest"
     },
     "sky_color": 8466,
     "water_color": 9811295,
@@ -85,7 +85,16 @@
     ]
   ],
   "has_precipitation": true,
-  "spawn_costs": {},
+  "spawn_costs": {
+    "minecraft:zombie": {
+      "charge": 0.75,
+      "energy_budget": 0.2
+    },
+    "twilightforest:mosquito_swarm": {
+      "charge": 0.75,
+      "energy_budget": 0.2
+    }
+  },
   "spawners": {
     "ambient": [],
     "axolotls": [],

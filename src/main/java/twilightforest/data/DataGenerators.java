@@ -1,61 +1,73 @@
 package twilightforest.data;
 
-import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
-import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.DetectedVersion;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.metadata.PackMetadataGenerator;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.CrumbleHornGenerator;
 import twilightforest.data.custom.TransformationPowderGenerator;
 import twilightforest.data.custom.UncraftingRecipeGenerator;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
-import twilightforest.init.*;
-import twilightforest.init.custom.WoodPalettes;
 
-public class DataGenerators implements DataGeneratorEntrypoint {
+import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-	@Override
-	public void onInitializeDataGenerator(FabricDataGenerator generator) {
-		FabricDataGenerator.Pack pack = generator.createPack();
-		ExistingFileHelper helper = ExistingFileHelper.withResourcesFromArg();
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class DataGenerators {
 
-		pack.addProvider(TFAdvancementGenerator::new);
-		pack.addProvider((output, provider) -> new BlockstateGenerator(output, helper));
-		pack.addProvider((output, provider) -> new ItemModelGenerator(output, helper));
-		pack.addProvider(AtlasGenerator::new);
-		pack.addProvider((output, registriesFuture) -> new BiomeTagGenerator(output, registriesFuture, helper));
-		pack.addProvider(CustomTagGenerator.BannerPatternTagGenerator::new);
-		BlockTagGenerator blocktags = pack.addProvider(BlockTagGenerator::new);
-		//generator.addProvider(event.includeServer(), new DamageTypeTagGenerator(output, provider, helper));
-		pack.addProvider(FluidTagGenerator::new);
-		pack.addProvider((output, provider) -> new ItemTagGenerator(output, provider, blocktags));
-		pack.addProvider(EntityTagGenerator::new);
-		pack.addProvider(CustomTagGenerator.EnchantmentTagGenerator::new);
-		pack.addProvider(LootGenerator::new);
-		pack.addProvider(CraftingGenerator::new);
-		pack.addProvider(LootModifierGenerator::new);
-		RegistryDataGenerator.addProviders(pack, helper);
-		pack.addProvider(StructureTagGenerator::new);
+	@SubscribeEvent
+	public static void gatherData(GatherDataEvent event) {
+		DataGenerator generator = event.getGenerator();
+		PackOutput output = event.getGenerator().getPackOutput();
+		CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
+		ExistingFileHelper helper = event.getExistingFileHelper();
 
-		pack.addProvider((output, provider) -> new CrumbleHornGenerator(output, helper));
-		pack.addProvider((output, provider) -> new TransformationPowderGenerator(output, helper));
-		pack.addProvider((output, provider) -> new UncraftingRecipeGenerator(output, helper));
-		pack.addProvider(StalactiteGenerator::new);
-	}
+		generator.addProvider(event.includeServer(), new TFAdvancementProvider(output, provider, helper));
+		generator.addProvider(event.includeClient(), new BlockstateGenerator(output, helper));
+		generator.addProvider(event.includeClient(), new ItemModelGenerator(output, helper));
+		generator.addProvider(event.includeClient(), new AtlasGenerator(output, helper));
+		generator.addProvider(event.includeClient(), new LangGenerator(output));
+		generator.addProvider(event.includeClient(), new SoundGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.BannerPatternTagGenerator(output, provider, helper));
+		BlockTagGenerator blocktags = new BlockTagGenerator(output, provider, helper);
+		generator.addProvider(event.includeServer(), blocktags);
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.BlockEntityTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new FluidTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, provider, blocktags.contentsGetter(), helper));
+		generator.addProvider(event.includeServer(), new EntityTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.EnchantmentTagGenerator(output, provider, helper));
+		generator.addProvider(event.includeServer(), new LootGenerator(output));
+		generator.addProvider(event.includeServer(), new CraftingGenerator(output));
+		generator.addProvider(event.includeServer(), new LootModifierGenerator(output));
 
-	@Override
-	public void buildRegistry(RegistrySetBuilder registryBuilder) {
-//			registryBuilder.add(Registries.CONFIGURED_FEATURE, TFConfiguredFeatures::bootstrap)
-//				.add(Registries.PLACED_FEATURE, TFPlacedFeatures::bootstrap)
-//				.add(Registries.STRUCTURE, TFStructures::bootstrap)
-//				.add(Registries.STRUCTURE_SET, TFStructureSets::bootstrap)
-//				.add(Registries.CONFIGURED_CARVER, TFCaveCarvers::bootstrap)
-//				.add(Registries.NOISE_SETTINGS, TFDimensionSettings::bootstrapNoise)
-//				.add(Registries.DIMENSION_TYPE, TFDimensionSettings::bootstrapType)
-//				.add(Registries.LEVEL_STEM, TFDimensionSettings::bootstrapStem)
-//				.add(Registries.BIOME, TFBiomes::bootstrap)
-//				.add(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalettes::bootstrap)
-//				.add(Registries.DAMAGE_TYPE, TFDamageTypes::bootstrap);
+		DatapackBuiltinEntriesProvider datapackProvider = new RegistryDataGenerator(output, provider);
+		CompletableFuture<HolderLookup.Provider> lookupProvider = datapackProvider.getRegistryProvider();
+		generator.addProvider(event.includeServer(), datapackProvider);
+		generator.addProvider(event.includeServer(), new CustomTagGenerator.WoodPaletteTagGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new BiomeTagGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new DamageTypeTagGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new StructureTagGenerator(output, lookupProvider, helper));
+
+		generator.addProvider(event.includeServer(), new CrumbleHornGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new TransformationPowderGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new UncraftingRecipeGenerator(output, helper));
+		generator.addProvider(event.includeServer(), new StalactiteGenerator(output));
+		generator.addProvider(true, new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
+						Component.literal("Resources for Twilight Forest"),
+						DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
+						Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
 	}
 }

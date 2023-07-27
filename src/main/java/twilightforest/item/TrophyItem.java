@@ -13,7 +13,9 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
-public class TrophyItem extends StandingAndWallBlockItem {
+import java.util.function.Consumer;
+
+public class TrophyItem extends StandingAndWallBlockItem implements CurioItem {
 
 	public TrophyItem(Block floorBlock, Block wallBlock, FabricItemSettings properties) {
 		super(floorBlock, wallBlock, properties.equipmentSlot(stack -> EquipmentSlot.HEAD), Direction.DOWN);
@@ -35,5 +37,16 @@ public class TrophyItem extends StandingAndWallBlockItem {
 		} else {
 			return InteractionResultHolder.fail(itemstack);
 		}
+	}
+
+	@Override
+	public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
+		return slot == EquipmentSlot.HEAD;
+	}
+
+	@Override
+	@Nullable
+	public EquipmentSlot getEquipmentSlot(ItemStack stack) {
+		return EquipmentSlot.HEAD;
 	}
 }

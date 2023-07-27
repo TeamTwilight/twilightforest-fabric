@@ -1,5 +1,7 @@
 package twilightforest.client.model.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -8,184 +10,208 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.vehicle.Boat;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.entity.monster.UpperGoblinKnight;
 
-/**
- * ModelTFGoblinKnightUpper - MCVinnyq
- * Created using Tabula 8.0.0
- */
-@Environment(EnvType.CLIENT)
 public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
-    public final ModelPart breastplate;
-    public ModelPart spear;
-    public ModelPart shield;
 
-    public UpperGoblinKnightModel(ModelPart root) {
-        super(root);
+	public final ModelPart breastplate;
 
-        this.breastplate = this.body.getChild("breastplate");
-        this.spear = this.rightArm.getChild("spear");
-        this.shield = this.leftArm.getChild("shield");
-    }
+	public final ModelPart shield;
+	public final ModelPart spear;
 
-    public static LayerDefinition create() {
-        MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+	public UpperGoblinKnightModel(ModelPart root) {
+		super(root);
+		this.breastplate = root.getChild("breastplate");
+		this.shield = leftArm.getChild("shield");
+		this.spear = rightArm.getChild("spear");
+	}
 
-        var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-                        .texOffs(28, 0)
-                        .addBox(-8.0F, -14.0F, -1.9F, 16.0F, 14.0F, 2.0F)
-                        .texOffs(116, 0)
-                        .addBox(-6.0F, -12.0F, -0.9F, 4.0F, 2.0F, 2.0F)
-                        .texOffs(116, 4)
-                        .addBox(2.0F, -12.0F, -1.0F, 4.0F, 2.0F, 2.0F),
-                PartPose.offsetAndRotation(0.0F, 12.0F, 0.0F, 0.0F, -0.7853981633974483F, 0.0F));
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
 
-        partRoot.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create(),
+				PartPose.offset(0.0F, 12.0F, 0.0F));
 
-        //turns out, putting this as the hat doesnt allow us to rotate it at a 45 degree angle, so we have to make it its own piece
-        head.addOrReplaceChild("helm", CubeListBuilder.create()
-                        .texOffs(0, 0)
-                        .addBox(-3.5F, 0.0F, -3.5F, 7.0F, 11.0F, 7.0F),
-                PartPose.offsetAndRotation(0.0F, -11.0F, 0.0F, 0.0F, 0.7853981633974483F, 0.0F));
+		var hat = partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
+				PartPose.offset(0.0F, 12.0F, 0.0F));
 
-        var body = partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-                        .texOffs(0, 18)
-                        .addBox(-5.5F, 0.0F, -2.0F, 11.0F, 8.0F, 4.0F),
-                PartPose.offset(0.0F, 12.0F, 0.0F));
+		var helm = hat.addOrReplaceChild("helmet", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-3.5F, -11.0F, -3.5F, 7, 11, 7),
+				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 45F / (180F / Mth.PI), 0.0F));
 
-        body.addOrReplaceChild("breastplate", CubeListBuilder.create()
-                        .texOffs(64, 0)
-                        .addBox(-6.5F, 0.0F, -3.0F, 13.0F, 12.0F, 6.0F),
-                PartPose.offset(0.0F, -0.5F, 0.0F));
+		var rightHorn = hat.addOrReplaceChild("right_horn_1", CubeListBuilder.create()
+						.texOffs(28, 0)
+						.addBox(-6F, -1.5F, -1.5F, 7, 3, 3),
+				PartPose.offsetAndRotation(-3.5F, -9F, 0.0F, 0.0F, 15F / (180F / Mth.PI), 10F / (180F / Mth.PI)));
 
-        var rightArm = partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
-                        .texOffs(44, 16)
-                        .addBox(-4.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-                PartPose.offsetAndRotation(-5.5F, 14.0F, 0.0F, -2.3876104699914644F, 0.0F, 0.10000736647217022F));
+		rightHorn.addOrReplaceChild("right_horn_2", CubeListBuilder.create()
+						.texOffs(28, 6)
+						.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2),
+				PartPose.offsetAndRotation(-5.5F, 0.0F, 0.0F, 0.0F, 0.0F, 10F / (180F / Mth.PI)));
 
-        var leftArm = partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
-                        .texOffs(44, 32)
-                        .addBox(0.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F),
-                PartPose.offsetAndRotation(5.5F, 14.0F, 0.0F, 0.20001473294434044F, 0.0F, 0.10000736647217022F));
+		var leftHorn = hat.addOrReplaceChild("left_horn_1", CubeListBuilder.create().mirror()
+						.texOffs(28, 0)
+						.addBox(-1F, -1.5F, -1.5F, 7, 3, 3),
+				PartPose.offsetAndRotation(3.5F, -9F, 0.0F, 0.0F, -15F / (180F / Mth.PI), -10F / (180F / Mth.PI)));
 
-        rightArm.addOrReplaceChild("spear", CubeListBuilder.create()
-                        .texOffs(108, 0)
-                        .addBox(-1.0F, -19.0F, -1.0F, 2.0F, 40.0F, 2.0F),
-                PartPose.offsetAndRotation(-2.0F, 8.5F, 0.0F, 1.5707963267948966F, 0.0F, 0.0F));
+		leftHorn.addOrReplaceChild("left_horn_2", CubeListBuilder.create().mirror()
+						.texOffs(28, 6)
+						.addBox(0.0F, -1.0F, -1.0F, 3, 2, 2),
+				PartPose.offsetAndRotation(5.5F, 0.0F, 0.0F, 0.0F, 0.0F, -10F / (180F / Mth.PI)));
 
-        leftArm.addOrReplaceChild("shield", CubeListBuilder.create()
-                        .texOffs(63, 36)
-                        .addBox(-6.0F, -6.0F, -2.0F, 12.0F, 20.0F, 2.0F),
-                PartPose.offsetAndRotation(0.0F, 12.0F, 0.0F, 6.083185105107944F, 0.0F, 0.0F));
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(0, 18)
+						.addBox(-5.5F, 0.0F, -2.0F, 11, 8, 4)
+						.texOffs(30, 24)
+						.addBox(-6.5F, 0F, -2F, 1, 4, 4)
+						.texOffs(30, 24)
+						.addBox(5.5F, 0F, -2F, 1, 4, 4),
+				PartPose.offset(0.0F, 12.0F, 0.0F));
 
-        partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
-                        .texOffs(30, 24)
-                        .addBox(-1.5F, 0.0F, -2.0F, 3.0F, 4.0F, 4.0F),
-                PartPose.offset(-4.0F, 20.0F, 0.0F));
+		partRoot.addOrReplaceChild("breastplate", CubeListBuilder.create()
+						.texOffs(64, 0)
+						.addBox(-6.5F, 0.0F, -3.0F, 13, 12, 6),
+				PartPose.offset(0F, 11.5F, 0.0F));
 
-        partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
-                        .texOffs(30, 16)
-                        .addBox(-1.5F, 0.0F, -2.0F, 3.0F, 4.0F, 4.0F),
-                PartPose.offset(4.0F, 20.0F, 0.0F));
+		var rightArm = partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
+						.texOffs(44, 16)
+						.addBox(-4.0F, -2.0F, -2.0F, 4, 12, 4),
+				PartPose.offset(-6.5F, 14.0F, 0.0F));
 
+		rightArm.addOrReplaceChild("spear", CubeListBuilder.create()
+						.texOffs(108, 0)
+						.addBox(-1.0F, -19.0F, -1.0F, 2, 40, 2),
+				PartPose.offsetAndRotation(-2F, 8.5F, 0.0F, 90F / (180F / Mth.PI), 0.0F, 0.0F));
 
-        return LayerDefinition.create(mesh, 128, 64);
-    }
+		var leftArm = partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create()
+						.texOffs(44, 16)
+						.addBox(0.0F, -2.0F, -2.0F, 4, 12, 4),
+				PartPose.offset(6.5F, 14.0F, 0.0F));
 
-    @Override
-    public void setupAnim(UpperGoblinKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        boolean hasShield = entity.hasShield();
-        boolean boat = entity.getVehicle() instanceof Boat;
+		leftArm.addOrReplaceChild("shield", CubeListBuilder.create()
+						.texOffs(63, 36)
+						.addBox(-6.0F, -6.0F, -2.0F, 12, 20, 2),
+				PartPose.offsetAndRotation(0F, 12F, 0.0F, 90F / (180F / Mth.PI), 0.0F, 0.0F));
 
-        this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
-        this.head.xRot = headPitch / (180F / (float) Math.PI);
-        this.head.zRot = 0;
-        this.hat.yRot = this.head.yRot;
-        this.hat.xRot = this.head.xRot;
-        this.hat.zRot = this.head.zRot;
+		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
+						.texOffs(30, 16)
+						.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4),
+				PartPose.offset(-4F, 20.0F, 0.0F));
 
-        this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
+		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create()
+						.texOffs(30, 16)
+						.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4),
+				PartPose.offset(4F, 20.0F, 0.0F));
 
-        float leftConstraint = hasShield ? -0.2F : limbSwingAmount;
+		return LayerDefinition.create(mesh, 128, 64);
+	}
 
-        if (entity.isShieldDisabled()) {
-            this.leftArm.zRot = ((float)(Math.cos((double)entity.tickCount * 3.25D) * Math.PI * (double)0.4F) * Mth.DEG_TO_RAD) - 0.4F;
-        } else {
-            this.leftArm.zRot = 0.0F;
-        }
+	/**
+	 * Sets the models various rotation angles then renders the model.
+	 */
+	@Override
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+		super.renderToBuffer(stack, builder, light, overlay, red, green, blue, scale);
 
-        this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * leftConstraint * 0.5F;
-        this.rightArm.zRot = 0.0F;
+		this.breastplate.render(stack, builder, light, overlay, red, green, blue, scale);
+	}
 
-        this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        this.rightLeg.yRot = 0.0F;
-        this.leftLeg.yRot = 0.0F;
+	@Override
+	public void setupAnim(UpperGoblinKnight entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		boolean hasShield = entity.hasShield();
 
-        if (this.riding && boat) {
-            this.rightArm.xRot += (-(float)Math.PI / 5F);
-            this.leftArm.xRot += (-(float)Math.PI / 5F);
-            this.rightLeg.xRot = -1.4137167F;
-            this.rightLeg.yRot = ((float)Math.PI / 10F);
-            this.rightLeg.zRot = 0.07853982F;
-            this.leftLeg.xRot = -1.4137167F;
-            this.leftLeg.yRot = (-(float)Math.PI / 10F);
-            this.leftLeg.zRot = -0.07853982F;
-        }
+		this.head.yRot = netHeadYaw / (180F / (float) Math.PI);
+		this.head.xRot = headPitch / (180F / (float) Math.PI);
+		this.head.zRot = 0;
+		this.hat.yRot = this.head.yRot;
+		this.hat.xRot = this.head.xRot;
+		this.hat.zRot = this.head.zRot;
 
-        this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float) Math.PI / 10F);
+		this.rightArm.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
 
-        this.rightArm.xRot -= (Math.PI * 0.66);
+		float leftConstraint = hasShield ? 0.2F : limbSwingAmount;
 
-        // during swing move arm forward
-        if (entity.heavySpearTimer > 0) {
-            this.rightArm.xRot -= this.getArmRotationDuringSwing(60 - entity.heavySpearTimer) / (180F / (float) Math.PI);
-        }
+		if (entity.isShieldDisabled()) {
+			this.leftArm.zRot = ((float)(Math.cos((double)entity.tickCount * 3.25D) * Math.PI * (double)0.4F) * Mth.DEG_TO_RAD) - 0.4F;
+		} else {
+			this.leftArm.zRot = 0.0F;
+		}
 
-        this.rightArm.yRot = 0.0F;
-        this.leftArm.yRot = 0.0F;
+		this.leftArm.xRot = Mth.cos(limbSwing * 0.6662F) * 2.0F * leftConstraint * 0.5F;
+		this.rightArm.zRot = 0.0F;
 
-        this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-        this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-        this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
-        this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		this.rightLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.leftLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+		this.rightLeg.yRot = 0.0F;
+		this.leftLeg.yRot = 0.0F;
 
-        // fix shield so that it's always perpendicular to the floor
-        this.shield.xRot = (float) (Math.PI * 2 - this.leftArm.xRot);
+		if (this.riding) {
+			this.rightArm.xRot -= ((float) Math.PI / 5F);
+			this.leftArm.xRot -= ((float) Math.PI / 5F);
+			this.rightLeg.xRot = 0;
+			this.leftLeg.xRot = 0;
+//            this.bipedRightLeg.rotateAngleY = ((float)Math.PI / 10F);
+//            this.bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
+		}
 
-        this.breastplate.visible = entity.hasArmor();
-        this.shield.visible = entity.hasShield();
-    }
+		if (this.leftArmPose != ArmPose.EMPTY) {
+			this.leftArm.xRot = this.leftArm.xRot * 0.5F - ((float) Math.PI / 10F);
+		}
 
-    /**
-     *
-     */
-    private float getArmRotationDuringSwing(float attackTime) {
-        if (attackTime <= 10) {
-            // rock back
-            return attackTime;
-        }
-        if (attackTime > 10 && attackTime <= 30) {
-            // hang back
-            return 10F;
-        }
-        if (attackTime > 30 && attackTime <= 33) {
-            // slam forward
-            return (attackTime - 30) * -8F + 10F;
-        }
-        if (attackTime > 33 && attackTime <= 50) {
-            // stay forward
-            return -15F;
-        }
-        if (attackTime > 50 && attackTime <= 60) {
-            // back to normal
-            return (10 - (attackTime - 50)) * -1.5F;
-        }
+		this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float) Math.PI / 10F);
 
-        return 0;
-    }
+		rightArm.xRot -= (Math.PI * 0.66);
+
+		// during swing move arm forward
+		if (entity.heavySpearTimer > 0) {
+			rightArm.xRot -= this.getArmRotationDuringSwing(60 - entity.heavySpearTimer) / (180F / (float) Math.PI);
+		}
+
+		this.rightArm.yRot = 0.0F;
+		this.leftArm.yRot = 0.0F;
+
+		this.rightArm.zRot += Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.leftArm.zRot -= Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.rightArm.xRot += Mth.sin(ageInTicks * 0.067F) * 0.05F;
+		this.leftArm.xRot -= Mth.sin(ageInTicks * 0.067F) * 0.05F;
+
+		// shield arm points somewhat inward
+		this.leftArm.zRot = -this.leftArm.zRot;
+
+		// fix shield so that it's always perpendicular to the floor
+		this.shield.xRot = (float) (Math.PI * 2 - this.leftArm.xRot);
+
+		this.breastplate.visible = entity.hasArmor();
+		this.shield.visible = entity.hasShield();
+	}
+
+	/**
+	 *
+	 */
+	private float getArmRotationDuringSwing(float attackTime) {
+		if (attackTime <= 10) {
+			// rock back
+			return attackTime;
+		}
+		if (attackTime > 10 && attackTime <= 30) {
+			// hang back
+			return 10F;
+		}
+		if (attackTime > 30 && attackTime <= 33) {
+			// slam forward
+			return (attackTime - 30) * -8F + 10F;
+		}
+		if (attackTime > 33 && attackTime <= 50) {
+			// stay forward
+			return -15F;
+		}
+		if (attackTime > 50 && attackTime <= 60) {
+			// back to normal
+			return (10 - (attackTime - 50)) * -1.5F;
+		}
+
+		return 0;
+	}
 }

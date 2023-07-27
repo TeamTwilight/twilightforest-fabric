@@ -30,5 +30,6 @@
     "recipes": [
       "twilightforest:wood/transformation_chest"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

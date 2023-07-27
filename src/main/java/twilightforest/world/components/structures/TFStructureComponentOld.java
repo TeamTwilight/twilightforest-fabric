@@ -103,6 +103,10 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 
+		setSpawnerInWorld(world, sbb, monsterID, spawnerModifier, pos);
+	}
+
+	protected static void setSpawnerInWorld(WorldGenLevel world, BoundingBox sbb, EntityType<?> monsterID, Consumer<SpawnerBlockEntity> spawnerModifier, BlockPos pos) {
 		if (sbb.isInside(pos)) {
 			if (world.getBlockState(pos).getBlock() != Blocks.SPAWNER)
 				world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 2);
@@ -145,7 +149,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	/**
 	 * Place a treasure chest at the specified coordinates
 	 *
-	 * @param treasureType
 	 */
 	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFLootTables treasureType, BoundingBox sbb) {
 		this.placeTreasureAtCurrentPosition(world, x, y, z, treasureType, false, sbb);
@@ -154,22 +157,23 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	/**
 	 * Place a treasure chest at the specified coordinates
 	 *
-	 * @param treasureType
 	 */
 	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
 		int dx = getWorldX(x, z);
 		int dy = getWorldY(y);
 		int dz = getWorldZ(x, z);
-		BlockPos pos = new BlockPos(dx, dy, dz);
+		this.placeTreasureAtWorldPosition(world, treasureType, trapped, sbb, new BlockPos(dx, dy, dz));
+	}
+
+	protected void placeTreasureAtWorldPosition(WorldGenLevel world, TFLootTables treasureType, boolean trapped, BoundingBox sbb, BlockPos pos) {
 		if (sbb.isInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world, pos, getOrientation(), trapped);
+			treasureType.generateChest(world, pos, this.getOrientation(), trapped);
 		}
 	}
 
 	/**
 	 * Place a treasure chest at the specified coordinates
 	 *
-	 * @param treasureType
 	 */
 	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFLootTables treasureType, BoundingBox sbb) {
 		this.placeTreasureRotated(world, x, y, z, facing, rotation, treasureType, false, sbb);
@@ -178,7 +182,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	/**
 	 * Place a treasure chest at the specified coordinates
 	 *
-	 * @param treasureType
 	 */
 	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
 		if(facing == null) {
@@ -227,7 +230,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 	/**
 	 * Places a tripwire.
-	 *
+	 * <p>
 	 * Tries to delay notifying tripwire blocks of placement so they won't
 	 * scan unloaded chunks looking for connections.
 	 *
@@ -259,8 +262,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 			SignBlockEntity teSign = (SignBlockEntity) world.getBlockEntity(pos);
 			if (teSign != null) {
-				teSign.setMessage(1, Component.literal(string0));
-				teSign.setMessage(2, Component.literal(string1));
+				teSign.getFrontText().setMessage(1, Component.literal(string0));
+				teSign.getFrontText().setMessage(2, Component.literal(string1));
 			}
 		}
 	}

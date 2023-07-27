@@ -2,13 +2,10 @@ package twilightforest.data.custom;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -17,10 +14,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import oshi.util.tuples.Pair;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +49,7 @@ public abstract class CrumbleHornProvider implements DataProvider {
 			List<String> list = builders.keySet().stream()
 					.filter(s -> !this.builders.containsKey(s))
 					.filter(this::missing)
-					.collect(Collectors.toList());
+					.toList();
 
 			if (!list.isEmpty()) {
 				throw new IllegalArgumentException(String.format("Duplicate Crumble Horn Transformations: %s", list.stream().map(Objects::toString).collect(Collectors.joining(", "))));

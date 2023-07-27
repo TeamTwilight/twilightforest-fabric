@@ -13,6 +13,6 @@ public class SeekerBowItem extends BowItem implements CustomArrowItem {
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow) {
-		return new SeekerArrow(arrow.getLevel(), arrow.getOwner());
+		return new SeekerArrow(arrow.level(), arrow.getOwner());
 	}
 }

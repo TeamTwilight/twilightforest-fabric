@@ -150,7 +150,7 @@ public class LegacyLandmarkPlacements {
 
     /**
      * Returns the feature nearest to the specified chunk coordinates.
-     *
+     * <p>
      * If a non-null {@code center} is provided and a valid feature is found,
      * it will be set to relative block coordinates indicating the center of
      * that feature relative to the current chunk block coordinate system.
@@ -229,7 +229,7 @@ public class LegacyLandmarkPlacements {
         int regionX = (chunkX + 8) >> 4;
         int regionZ = (chunkZ + 8) >> 4;
 
-        long seed = regionX * 3129871 ^ regionZ * 116129781L;
+        long seed = regionX * 3129871L ^ regionZ * 116129781L;
         seed = seed * seed * 42317861L + seed * 7L;
 
         int num0 = (int) (seed >> 12 & 3L);

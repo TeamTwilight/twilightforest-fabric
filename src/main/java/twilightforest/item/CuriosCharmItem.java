@@ -4,7 +4,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.Item;
 import twilightforest.compat.trinkets.TrinketsCompat;
 
-public class CuriosCharmItem extends Item {
+public class CuriosCharmItem extends Item implements CurioItem {
 
 	public CuriosCharmItem(Properties props) {
 		super(props);

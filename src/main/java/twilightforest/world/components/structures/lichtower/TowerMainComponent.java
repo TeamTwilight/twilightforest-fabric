@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
@@ -459,9 +458,7 @@ public class TowerMainComponent extends TowerWingComponent {
 			// is there a painting or another torch there?
 			BlockState blockState = world.getBlockState(tCoords);
 			BlockState aboveBlockState = world.getBlockState(tCoords.above());
-			if (blockState.getMaterial() == Material.AIR &&
-					aboveBlockState.getMaterial() == Material.AIR &&
-					EntityUtil.getEntitiesInAABB(world, new AABB(tCoords)).size() == 0) {
+			if (blockState.isAir() && aboveBlockState.isAir() && EntityUtil.getEntitiesInAABB(world, new AABB(tCoords)).size() == 0) {
 				// if not, place a torch
 				world.setBlock(tCoords, Blocks.OAK_FENCE.defaultBlockState().setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()), true), 2);
 				world.setBlock(tCoords.above(), Blocks.TORCH.defaultBlockState(), 2);

@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
@@ -46,9 +46,8 @@ public class HugeWaterLilyItem extends PlaceOnWaterBlockItem {
 
 				BlockPos blockpos1 = blockpos.above();
 				BlockState blockstate = level.getBlockState(blockpos);
-				Material material = blockstate.getMaterial();
 				FluidState ifluidstate = level.getFluidState(blockpos);
-				if ((ifluidstate.getType() == Fluids.WATER || material == Material.ICE) && level.isEmptyBlock(blockpos1)) {
+				if ((ifluidstate.getType() == Fluids.WATER || blockstate.is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1)) {
 
 					// special case for handling block placement with water lilies
 					BlockSnapshot blocksnapshot = BlockSnapshot.create(level.dimension(), level, blockpos1);

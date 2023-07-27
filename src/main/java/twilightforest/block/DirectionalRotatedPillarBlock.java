@@ -9,12 +9,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
-public abstract class DirectionalRotatedPillarBlock extends RotatedPillarBlock {
+public class DirectionalRotatedPillarBlock extends RotatedPillarBlock {
 
 	public static final BooleanProperty REVERSED = BooleanProperty.create("reversed");
 
 	public DirectionalRotatedPillarBlock(Properties properties) {
 		super(properties);
+		this.registerDefaultState(this.getStateDefinition().any().setValue(AXIS, Direction.Axis.Y).setValue(REVERSED, false));
 	}
 
 	@Override

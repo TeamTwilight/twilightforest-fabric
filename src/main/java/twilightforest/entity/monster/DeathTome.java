@@ -6,7 +6,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,9 +22,8 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.projectile.TomeBolt;
@@ -80,12 +78,12 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		super.aiStep();
 
 		Vec3 vel = this.getDeltaMovement();
-		if (!this.isOnGround() && vel.y() < 0.0D) {
+		if (!this.onGround() && vel.y() < 0.0D) {
 			this.setDeltaMovement(vel.multiply(1.0D, 0.6D, 1.0D));
 		}
 
 		for (int i = 0; i < 1; ++i) {
-			this.getLevel().addParticle(ParticleTypes.ENCHANT, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(),
+			this.level().addParticle(ParticleTypes.ENCHANT, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(),
 					0.0D, 0.5D, 0.0D);
 		}
 	}
@@ -98,10 +96,10 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 		if (super.hurt(src, damage)) {
 			if (damage > 0) {
-				if (!this.getLevel().isClientSide()) {
-					LootContext ctx = createLootContext(true, src).create(LootContextParamSets.ENTITY);
+				if (!this.level().isClientSide()) {
+					LootParams ctx = TFLootTables.createLootParams(this, true, src).create(LootContextParamSets.ENTITY);
 
-					Objects.requireNonNull(this.getLevel().getServer()).getLootTables().get(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+					Objects.requireNonNull(this.level().getServer()).getLootData().getLootTable(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
 				}
 			}
 			return true;
@@ -118,28 +116,28 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.TOME_AMBIENT.get();
+		return TFSounds.DEATH_TOME_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TOME_HURT.get();
+		return TFSounds.DEATH_TOME_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TOME_DEATH.get();
+		return TFSounds.DEATH_TOME_DEATH.get();
 	}
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
-		ThrowableProjectile projectile = new TomeBolt(TFEntities.TOME_BOLT.get(), this.getLevel(), this);
+		ThrowableProjectile projectile = new TomeBolt(TFEntities.TOME_BOLT.get(), this.level(), this);
 		double tx = target.getX() - this.getX();
 		double ty = target.getY() + target.getEyeHeight() - 1.1D - projectile.getY();
 		double tz = target.getZ() - this.getZ();
 		float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.2F;
 		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.gameEvent(GameEvent.PROJECTILE_SHOOT);
-		this.getLevel().addFreshEntity(projectile);
+		this.level().addFreshEntity(projectile);
 	}
 }

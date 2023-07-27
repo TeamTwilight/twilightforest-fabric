@@ -22,9 +22,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.minecraft.world.level.material.Material;
 
 import org.jetbrains.annotations.Nullable;
+import twilightforest.util.FeatureLogic;
 
 public abstract class TemplateFeature<T extends FeatureConfiguration> extends Feature<T> {
 	public TemplateFeature(Codec<T> config) {
@@ -71,7 +71,7 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
 
 		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
-            if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA)
+            if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
                 this.processMarkers(info, world, rotation, mirror, random);
 
         this.postPlacement(world, random, templateManager, rotation, mirror, placementSettings, placementPos, config);
@@ -108,8 +108,8 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 
                 while (y >= 0) {
                     BlockState state = world.getBlockState(new BlockPos(x, y, z));
-                    if (isBlockNotOk(state)) return false;
-                    if (isBlockOk(state)) break;
+                    if (FeatureLogic.isBlockNotOk(state)) return false;
+                    if (FeatureLogic.isBlockOk(state)) break;
                     y--;
                 }
 
@@ -133,24 +133,14 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 
     private static boolean isAreaClear(LevelAccessor world, BlockPos min, BlockPos max) {
         for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
-            if (!world.getBlockState(pos).getMaterial().isReplaceable()) {
+            if (!world.getBlockState(pos).canBeReplaced()) {
                 return false;
             }
         }
         return true;
     }
 
-    private static boolean isBlockOk(BlockState state) {
-        Material material = state.getMaterial();
-        return material == Material.STONE || material == Material.DIRT || material == Material.GRASS || material == Material.SAND;
-    }
-
-    private static boolean isBlockNotOk(BlockState state) {
-        Material material = state.getMaterial();
-        return material == Material.WATER || material == Material.LAVA || state.getBlock() == Blocks.BEDROCK;
-    }
-
     private static boolean isDataBlock(StructureTemplate.StructureBlockInfo info) {
-	    return StructureMode.DATA.name().equals(info.nbt.getString("mode"));
+	    return StructureMode.DATA.name().equals(info.nbt().getString("mode"));
     }
 }

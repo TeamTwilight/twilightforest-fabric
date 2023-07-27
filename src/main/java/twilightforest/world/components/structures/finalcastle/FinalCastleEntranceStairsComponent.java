@@ -65,8 +65,7 @@ public class FinalCastleEntranceStairsComponent extends TFStructureComponentOld 
 	}
 
 	private void placeStairs(WorldGenLevel world, BoundingBox sbb, int x, int y, int z, Direction facing) {
-		if (this.getBlock(world, x, y, z, sbb).getMaterial().isReplaceable()) { //TODO: Probably doesn't support replaceable blocks
-			//this.setBlockState(world, deco.blockState, x, y, z, sbb);
+		if (this.getBlock(world, x, y, z, sbb).canBeReplaced()) {
 			this.placeBlock(world, deco.stairState.setValue(StairBlock.FACING, facing), x, y, z, sbb);
 			this.fillColumnDown(world, deco.blockState, x, y - 1, z, sbb);
 		}

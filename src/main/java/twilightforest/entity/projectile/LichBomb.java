@@ -43,7 +43,7 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 			double dy = this.getY() + sy;
 			double dz = this.getZ() + sz;
 
-			this.getLevel().addParticle(ParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
+			this.level().addParticle(ParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
 		}
 	}
 
@@ -76,8 +76,8 @@ public class LichBomb extends TFThrowable implements ItemSupplier {
 	}
 
 	private void explode() {
-		if (!this.getLevel().isClientSide()) {
-			this.getLevel().explode(this, TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.LICH_BOMB, TFEntities.LICH.get()), null, this.getX(), this.getY(), this.getZ(), 2.0F, false, Level.ExplosionInteraction.NONE);
+		if (!this.level().isClientSide()) {
+			this.level().explode(this, TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.LICH_BOMB, TFEntities.LICH.get()), null, this.getX(), this.getY(), this.getZ(), 2.0F, false, Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
 	}

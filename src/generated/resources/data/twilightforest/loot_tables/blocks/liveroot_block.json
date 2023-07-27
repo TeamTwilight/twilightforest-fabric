@@ -47,5 +47,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:blocks/liveroot_block"
 }

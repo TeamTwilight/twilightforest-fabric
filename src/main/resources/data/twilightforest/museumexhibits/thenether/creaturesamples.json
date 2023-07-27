@@ -1,0 +1,21 @@
+{
+  "collection": "museumcurator.collection.thenether",
+  "name": "museumcurator.thenether.creaturesamples",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:wither_skeleton_skull",
+      "placement": "after",
+      "items": [
+        {
+          "id": "twilightforest:wither_skeleton_skull_candle",
+          "tags": {
+            "BlockEntityTag": {
+              "CandleColor": 0,
+              "CandleAmount": 1
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

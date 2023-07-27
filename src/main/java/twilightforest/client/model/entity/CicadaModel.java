@@ -14,11 +14,11 @@ import net.minecraft.client.model.geom.ModelPart;
 public class CicadaModel extends Model {
 
 	public final ModelPart legs;
-	public ModelPart fatbody;
-	public ModelPart skinnybody;
-	public ModelPart eye1;
-	public ModelPart eye2;
-	public ModelPart wings;
+	public final ModelPart fatbody;
+	public final ModelPart skinnybody;
+	public final ModelPart eye1;
+	public final ModelPart eye2;
+	public final ModelPart wings;
 
 	public CicadaModel(ModelPart root) {
 		super(RenderType::entityCutoutNoCull);

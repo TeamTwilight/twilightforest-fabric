@@ -163,8 +163,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 		// go through list.  if there are any same size towers within wingSize, return their xyz instead
 		if (list instanceof StructurePiecesBuilder start) {
 			for (StructurePiece obj : start.pieces) {
-				if (obj instanceof TowerWingComponent && !(obj instanceof MushroomTowerBridgeComponent)) {
-					TowerWingComponent otherWing = (TowerWingComponent) obj;
+				if (obj instanceof TowerWingComponent otherWing && !(obj instanceof MushroomTowerBridgeComponent)) {
 
 					if (wingSize == otherWing.size && otherWing.getBoundingBox().intersects(x - 3, z - 3, x + 3, z + 3)) {
 						return switch (direction) {
@@ -195,8 +194,7 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 
 		if (list instanceof StructurePiecesBuilder start) {
 			for (StructurePiece obj : start.pieces) {
-				if (this != obj && obj instanceof TowerWingComponent && !(obj instanceof MushroomTowerBridgeComponent)) {
-					TowerWingComponent otherWing = (TowerWingComponent) obj;
+				if (this != obj && obj instanceof TowerWingComponent otherWing && !(obj instanceof MushroomTowerBridgeComponent)) {
 
 					if (size == otherWing.size && otherWing.getBoundingBox().intersects(boxAbove)) {
 						return false;
@@ -410,11 +408,6 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Called to decorate each floor.  This is responsible for adding a ladder up, the stub of the ladder going down, then picking a theme for each floor and executing it.
 	 *
-	 * @param floor
-	 * @param bottom
-	 * @param top
-	 * @param ladderUpDir
-	 * @param ladderDownDir
 	 */
 	@Override
 	protected void decorateFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {

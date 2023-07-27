@@ -1,0 +1,10 @@
+{
+  "collection": "museumcurator.collection.metallurgy",
+  "name": "museumcurator.metallurgy.twilightforest.ironwood",
+  "items": [
+    "twilightforest:liveroot",
+    "twilightforest:raw_ironwood",
+    "twilightforest:ironwood_ingot",
+    "twilightforest:ironwood_block"
+  ]
+}

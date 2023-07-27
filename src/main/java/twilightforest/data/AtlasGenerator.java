@@ -10,6 +10,7 @@ import twilightforest.client.renderer.tileentity.TwilightChestRenderer;
 import java.util.Optional;
 
 public class AtlasGenerator extends SpriteSourceProvider {
+
 	public AtlasGenerator(FabricDataOutput output) {
 		super(output, TwilightForestMod.ID);
 	}

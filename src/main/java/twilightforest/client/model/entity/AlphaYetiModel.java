@@ -154,8 +154,8 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> {
 			this.leftArm.zRot = 0.0F;
 
 			// legs out
-			this.rightArm.xRot += -((float) Math.PI / 5F);
-			this.leftArm.xRot += -((float) Math.PI / 5F);
+			this.rightArm.xRot -= ((float) Math.PI / 5F);
+			this.leftArm.xRot -= ((float) Math.PI / 5F);
 			this.rightLeg.xRot = -((float) Math.PI * 2F / 5F);
 			this.leftLeg.xRot = -((float) Math.PI * 2F / 5F);
 			this.rightLeg.yRot = ((float) Math.PI / 10F);

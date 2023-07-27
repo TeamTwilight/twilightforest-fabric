@@ -33,7 +33,7 @@ public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 	public void render(FallingIce entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
 		BlockState blockstate = entity.getBlockState();
 		if (blockstate.getRenderShape() == RenderShape.MODEL) {
-			Level world = entity.getLevel();
+			Level world = entity.level();
 			if (blockstate != world.getBlockState(entity.blockPosition()) && blockstate.getRenderShape() != RenderShape.INVISIBLE) {
 				stack.pushPose();
 				BlockPos blockpos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());

@@ -1,0 +1,10 @@
+{
+  "collection": "museumcurator.collection.lithology",
+  "name": "museumcurator.lithology.twilightforest.deadrock",
+  "relativeTo": "museumcurator.lithology.twilightforest.mazestone",
+  "items": [
+    "twilightforest:deadrock",
+    "twilightforest:cracked_deadrock",
+    "twilightforest:weathered_deadrock"
+  ]
+}

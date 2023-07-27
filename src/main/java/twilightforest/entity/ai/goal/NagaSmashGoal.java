@@ -1,6 +1,7 @@
 package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.GameRules;
@@ -18,13 +19,13 @@ public class NagaSmashGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		return this.naga.horizontalCollision && this.naga.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+		return this.naga.horizontalCollision && this.naga.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
 	}
 
 	@Override
 	public void start() {
 		// NAGA SMASH!
-		if (this.naga.getLevel().isClientSide()) return;
+		if (this.naga.level().isClientSide()) return;
 
 		AABB bb = this.naga.getBoundingBox();
 
@@ -38,10 +39,11 @@ public class NagaSmashGoal extends Goal {
 		BlockPos min = new BlockPos(minx, miny, minz);
 		BlockPos max = new BlockPos(maxx, maxy, maxz);
 
-		if (this.naga.level.hasChunksAt(min, max)) {
+		if (this.naga.level().hasChunksAt(min, max)) {
 			for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
-				if (EntityUtil.canDestroyBlock(this.naga.getLevel(), pos, this.naga)) {
-					this.naga.getLevel().destroyBlock(pos, true);
+				BlockState state = this.naga.level().getBlockState(pos);
+				if (state.is(BlockTags.LEAVES) || (this.naga.shouldDestroyAllBlocks() && EntityUtil.canDestroyBlock(this.naga.level(), pos, this.naga))) {
+					this.naga.level().destroyBlock(pos, !state.is(BlockTags.LEAVES));
 				}
 			}
 		}

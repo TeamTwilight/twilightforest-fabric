@@ -31,7 +31,7 @@ public class PanicOnFlockDeathGoal extends Goal {
 		boolean yikes = fleeTimer > 0;
 
 		// check if any of us is dead within 4 squares
-		List<? extends PathfinderMob> flockList = this.flockCreature.level.getEntitiesOfClass(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().inflate(4.0D, 2.0D, 4.0D));
+		List<? extends PathfinderMob> flockList = this.flockCreature.level().getEntitiesOfClass(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().inflate(4.0D, 2.0D, 4.0D));
 		for (LivingEntity flocker : flockList) {
 			if (flocker.deathTime > 0) {
 				yikes = true;

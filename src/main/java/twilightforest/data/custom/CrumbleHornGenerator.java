@@ -4,7 +4,6 @@ import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
-//import quek.undergarden.registry.UGBlocks;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 

@@ -2,12 +2,14 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -76,7 +78,11 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 		int diameter = (int) (length / 4.5F); // diameter of the base
 
 		//only place spikes on solid ground, not on the tops of trees
-		if (!hang && !FeatureLogic.worldGenReplaceable(level.getBlockState(startPos.below()))) return false;
+		if (!hang) {
+			BlockPos below = startPos.below(2);
+			BlockState belowState = level.getBlockState(below);
+			if (!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP)) return false;
+		}
 
 		int highestWeight = 0;
 		if (ore.size() > 1) {

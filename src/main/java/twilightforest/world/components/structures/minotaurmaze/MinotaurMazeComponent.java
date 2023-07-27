@@ -23,8 +23,8 @@ import twilightforest.init.TFStructurePieceTypes;
 
 public class MinotaurMazeComponent extends TFStructureComponentOld {
 
-	TFMaze maze;
-	int[] rcoords;
+	final TFMaze maze;
+	final int[] rcoords;
 	private final int level;
 
 	public MinotaurMazeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
@@ -153,8 +153,6 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 	/**
 	 * Find dead ends and put something there
 	 *
-	 * @param random
-	 * @param list
 	 */
 	protected void decorateDeadEndsCorridors(RandomSource random, StructurePieceAccessor list) {
 		for (int x = 0; x < maze.width; x++) {

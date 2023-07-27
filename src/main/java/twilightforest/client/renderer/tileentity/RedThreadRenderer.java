@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
-import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -27,7 +26,6 @@ import twilightforest.client.TFShaders;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.RedThreadModel;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFItems;
 
 public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockEntityRenderer<T> {
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("red_thread.png");
@@ -50,7 +48,7 @@ public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockE
 	@Override
 	public void render(T thread, float ticks, PoseStack poseStack, MultiBufferSource source, int light, int overlay) {
 		BlockState state = thread.getBlockState();
-		boolean glow = Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFItems.RED_THREAD.get());
+		boolean glow = Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFBlocks.RED_THREAD.get().asItem());
 
 		for (Direction face : Direction.values()) {
 			if (state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face))) {

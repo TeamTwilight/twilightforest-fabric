@@ -31,5 +31,6 @@
     [
       "eat_experiment_115"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

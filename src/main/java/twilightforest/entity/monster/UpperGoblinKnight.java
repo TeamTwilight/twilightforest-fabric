@@ -99,7 +99,7 @@ public class UpperGoblinKnight extends Monster {
 		byte otherFlags = this.getEntityData().get(DATA_EQUIP);
 		this.getEntityData().set(DATA_EQUIP, flag ? (byte) (otherFlags | 1) : (byte) (otherFlags & ~1));
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (flag) {
 				if (!Objects.requireNonNull(getAttribute(Attributes.ARMOR)).hasModifier(ARMOR_MODIFIER)) {
 					Objects.requireNonNull(getAttribute(Attributes.ARMOR)).addTransientModifier(ARMOR_MODIFIER);
@@ -137,12 +137,12 @@ public class UpperGoblinKnight extends Monster {
 	public void aiStep() {
 		super.aiStep();
 		// Must be decremented on client as well for rendering
-		if ((this.getLevel().isClientSide() || !this.isNoAi()) && this.heavySpearTimer > 0) {
+		if ((this.level().isClientSide() || !this.isNoAi()) && this.heavySpearTimer > 0) {
 			--this.heavySpearTimer;
 		}
 
 		if (this.isShieldDisabled()) {
-			this.getLevel().addParticle(ParticleTypes.SPLASH,
+			this.level().addParticle(ParticleTypes.SPLASH,
 					this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
 					this.getY() + this.getEyeHeight(),
 					this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.25D,
@@ -206,7 +206,7 @@ public class UpperGoblinKnight extends Monster {
 		double pz = this.getZ() + vector.z() * dist;
 
 
-		if (this.getLevel() instanceof ServerLevel server) {
+		if (this.level() instanceof ServerLevel server) {
 			for (int i = 0; i < 50; i++) {
 				server.sendParticles(
 						ParticleTypes.LARGE_SMOKE, px, py, pz, 1,
@@ -221,7 +221,7 @@ public class UpperGoblinKnight extends Monster {
 
 		AABB spearBB = new AABB(px - radius, py - radius, pz - radius, px + radius, py + radius, pz + radius);
 
-		List<Entity> inBox = this.getLevel().getEntities(this, spearBB, e -> e != this.getVehicle());
+		List<Entity> inBox = this.level().getEntities(this, spearBB, e -> e != this.getVehicle());
 
 		for (Entity entity : inBox) {
 			super.doHurtTarget(entity);
@@ -258,7 +258,7 @@ public class UpperGoblinKnight extends Monster {
 
 		if (this.getRandom().nextInt(2) == 0) {
 			this.heavySpearTimer = HEAVY_SPEAR_TIMER_START;
-			this.getLevel().broadcastEntityEvent(this, (byte) 4);
+			this.level().broadcastEntityEvent(this, (byte) 4);
 			return false;
 		}
 
@@ -301,12 +301,12 @@ public class UpperGoblinKnight extends Monster {
 	}
 
 	private void breakArmor() {
-		this.getLevel().broadcastEntityEvent(this, (byte) 5);
+		this.level().broadcastEntityEvent(this, (byte) 5);
 		this.setHasArmor(false);
 	}
 
 	private void breakShield() {
-		this.getLevel().broadcastEntityEvent(this, (byte) 5);
+		this.level().broadcastEntityEvent(this, (byte) 5);
 		this.setHasShield(false);
 	}
 
@@ -317,16 +317,16 @@ public class UpperGoblinKnight extends Monster {
 	public boolean takeHitOnShield(DamageSource source, float amount) {
 		if (this.isShieldDisabled()) return false;
 
-		if (source.getEntity() instanceof LivingEntity living && living.getMainHandItem().getItem() instanceof AxeItem && !this.getLevel().isClientSide()) {
+		if (source.getEntity() instanceof LivingEntity living && living.getMainHandItem().getItem() instanceof AxeItem && !this.level().isClientSide()) {
 			this.getEntityData().set(SHIELD_DISABLED, true);
-			this.playSound(SoundEvents.SHIELD_BREAK, 1.0F, 0.8F + this.getLevel().getRandom().nextFloat() * 0.4F);
+			this.playSound(SoundEvents.SHIELD_BREAK, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 			return true;
 		}
 
-		if (amount > SHIELD_DAMAGE_THRESHOLD && !this.getLevel().isClientSide()) {
+		if (amount > SHIELD_DAMAGE_THRESHOLD && !this.level().isClientSide()) {
 			this.damageShield();
 		} else {
-			this.playSound(SoundEvents.SHIELD_BLOCK, 1.0F, 0.8F + this.getLevel().getRandom().nextFloat() * 0.4F);
+			this.playSound(SoundEvents.SHIELD_BLOCK, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 		}
 
 		// knock back slightly
@@ -357,7 +357,7 @@ public class UpperGoblinKnight extends Monster {
 
 		this.shieldHits++;
 
-		if (!this.getLevel().isClientSide() && this.shieldHits >= 3) {
+		if (!this.level().isClientSide() && this.shieldHits >= 3) {
 			this.breakShield();
 		}
 	}

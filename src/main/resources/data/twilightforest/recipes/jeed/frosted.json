@@ -12,9 +12,7 @@
       ],
       "recipe": {
         "type": "jeed:effect_provider",
-        "effect": {
-          "id": "twilightforest:frosted"
-        },
+        "effect": "twilightforest:frosted",
         "providers": [
           {
             "item": "twilightforest:alpha_yeti_spawn_egg"

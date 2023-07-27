@@ -31,6 +31,7 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 	public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
 
 	protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
+	protected static final VoxelShape PIGLIN_SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 8.0D, 13.0D);
 	protected static final VoxelShape ONE_CANDLE = Block.box(7.0D, 8.0D, 7.0D, 9.0D, 14.0D, 9.0D);
 	protected static final VoxelShape TWO_CANDLE = Block.box(5.0D, 8.0D, 6.0D, 11.0D, 14.0D, 9.0D);
 	protected static final VoxelShape THREE_CANDLE = Block.box(5.0D, 8.0D, 6.0D, 10.0D, 14.0D, 11.0D);
@@ -39,6 +40,11 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 	protected static final VoxelShape SKULL_WITH_TWO = Shapes.or(SHAPE, TWO_CANDLE);
 	protected static final VoxelShape SKULL_WITH_THREE = Shapes.or(SHAPE, THREE_CANDLE);
 	protected static final VoxelShape SKULL_WITH_FOUR = Shapes.or(SHAPE, FOUR_CANDLE);
+
+	protected static final VoxelShape PIGLIN_SKULL_WITH_ONE = Shapes.or(PIGLIN_SHAPE, ONE_CANDLE);
+	protected static final VoxelShape PIGLIN_SKULL_WITH_TWO = Shapes.or(PIGLIN_SHAPE, TWO_CANDLE);
+	protected static final VoxelShape PIGLIN_SKULL_WITH_THREE = Shapes.or(PIGLIN_SHAPE, THREE_CANDLE);
+	protected static final VoxelShape PIGLIN_SKULL_WITH_FOUR = Shapes.or(PIGLIN_SHAPE, FOUR_CANDLE);
 
 	private static final Int2ObjectMap<List<Vec3>> PARTICLE_OFFSETS = Util.make(() -> {
 		Int2ObjectMap<List<Vec3>> var0 = new Int2ObjectOpenHashMap<>();
@@ -57,17 +63,18 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext ctx) {
-		return switch (getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc ? sc.candleAmount : 1) {
-			default -> SKULL_WITH_ONE;
-			case 2 -> SKULL_WITH_TWO;
-			case 3 -> SKULL_WITH_THREE;
-			case 4 -> SKULL_WITH_FOUR;
+		boolean piglin = this.getType() == SkullBlock.Types.PIGLIN;
+		return switch (getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc ? sc.getCandleAmount() : 1) {
+			default -> piglin ? PIGLIN_SKULL_WITH_ONE : SKULL_WITH_ONE;
+			case 2 -> piglin ? PIGLIN_SKULL_WITH_TWO : SKULL_WITH_TWO;
+			case 3 -> piglin ? PIGLIN_SKULL_WITH_THREE : SKULL_WITH_THREE;
+			case 4 -> piglin ? PIGLIN_SKULL_WITH_FOUR : SKULL_WITH_FOUR;
 		};
 	}
 
 	@Override
 	protected Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
-		return PARTICLE_OFFSETS.get(accessor.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc ? sc.candleAmount : 1);
+		return PARTICLE_OFFSETS.get(accessor.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc ? sc.getCandleAmount() : 1);
 	}
 
 	@Override

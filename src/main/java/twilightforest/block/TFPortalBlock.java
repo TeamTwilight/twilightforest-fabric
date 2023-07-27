@@ -20,7 +20,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -41,7 +40,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
+import twilightforest.client.MissingAdvancementToast;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -65,6 +64,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	private static final VoxelShape AABB = Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F));
 	private static ResourceKey<Level> cachedOriginDimension;
 
+	public static final Component PORTAL_UNWORTHY = Component.translatable("misc.twilightforest.portal_unworthy");
 	private static final int MIN_PORTAL_SIZE = 4;
 	private static final HashSet<ServerPlayer> playersNotified = new HashSet<>();
 
@@ -110,11 +110,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			if (recursivelyValidatePortal(level, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
 
 				if (TFConfig.COMMON_CONFIG.checkPortalDestination.get()) {
-					boolean checkProgression = LandmarkUtil.isProgressionEnforced(catalyst.level);
+					boolean checkProgression = LandmarkUtil.isProgressionEnforced(catalyst.level());
 					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
-							player.displayClientMessage(Component.translatable(TwilightForestMod.ID + ".twilight_portal.unsafe"), true);
+							player.displayClientMessage(Component.translatable("misc.twilightforest.portal_unsafe"), true);
 						}
 						return false;
 					}
@@ -212,8 +212,6 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		}
 	}
 
-	private static final Component PORTAL_UNWORTHY = Component.translatable(TwilightForestMod.ID + ".ui.portal.unworthy");
-
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (state == this.defaultBlockState()) {
@@ -226,7 +224,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.getDisplay();
-						TFPacketHandler.CHANNEL.sendToClient(info == null ? new MissingAdvancementToastPacket(Component.translatable(".ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()), player);
+						TFPacketHandler.CHANNEL.sendToClient(info == null ? MissingAdvancementToast.FALLBACK : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()), player);
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
@@ -254,7 +252,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	public static void attemptSendEntity(Entity entity, boolean forcedEntry, boolean makeReturnPortal) {
-		if (!entity.isAlive() || entity.getLevel().isClientSide()) {
+		if (!entity.isAlive() || entity.level().isClientSide()) {
 			return;
 		}
 
@@ -285,7 +283,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if (state.getValue(DISALLOW_RETURN) && random < 80) return;
 
 		if (random == 0) {
-			level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.PORTAL_WOOSH.get(), SoundSource.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
+			level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.PORTAL_WHOOSH.get(), SoundSource.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
 		}
 
 		for (int i = 0; i < 4; ++i) {

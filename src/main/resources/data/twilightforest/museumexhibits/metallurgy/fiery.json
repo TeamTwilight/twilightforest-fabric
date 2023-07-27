@@ -1,0 +1,11 @@
+{
+  "collection": "museumcurator.collection.metallurgy",
+  "name": "museumcurator.metallurgy.twilightforest.fiery",
+  "relativeTo": "museumcurator.metallurgy.twilightforest.knightmetal",
+  "items": [
+    "twilightforest:fiery_blood",
+    "twilightforest:fiery_tears",
+    "twilightforest:fiery_ingot",
+    "twilightforest:fiery_block"
+  ]
+}

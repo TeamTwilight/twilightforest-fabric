@@ -2,7 +2,6 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -38,7 +37,7 @@ public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 			BlockState blockstate = entity.getBlockState();
 
 			if (blockstate.getRenderShape() == RenderShape.MODEL) {
-				Level world = entity.level;
+				Level world = entity.level();
 
 				if (blockstate != world.getBlockState(entity.blockPosition()) && blockstate.getRenderShape() != RenderShape.INVISIBLE) {
 					stack.pushPose();

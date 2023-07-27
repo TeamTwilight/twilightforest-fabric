@@ -3,7 +3,6 @@ package twilightforest.client.renderer.tileentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import org.joml.Vector3f;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -38,7 +37,7 @@ import twilightforest.client.model.TFModelLayers;
 @Environment(EnvType.CLIENT)
 public class CasketTileEntityRenderer<T extends KeepsakeCasketBlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
     public final ModelPart base;
-    public ModelPart lid;
+    public final ModelPart lid;
 
     public CasketTileEntityRenderer(BlockEntityRendererProvider.Context renderer) {
         var root = renderer.bakeLayer(TFModelLayers.KEEPSAKE_CASKET);

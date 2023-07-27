@@ -4,7 +4,6 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -26,8 +25,8 @@ import twilightforest.TwilightForestMod;
 
 public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTemplateStructurePiece {
     protected final ResourceLocation templateOverlayLocation;
-    protected StructureTemplate templateOverlay;
-    protected StructurePlaceSettings placeSettingsOverlay;
+    protected final StructureTemplate templateOverlay;
+    protected final StructurePlaceSettings placeSettingsOverlay;
 
     public TwilightDoubleTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings rl2SettingsFunction, StructurePlaceSettings placeSettingsOverlay) {
         super(structurePieceType, compoundTag, ctx, rl2SettingsFunction);
@@ -61,30 +60,30 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
         //  placeSettings -> placeSettingsOverlay
         if (this.templateOverlay.placeInWorld(worldGenLevel, this.templatePosition, blockPos, this.placeSettingsOverlay, random, 2)) {
             for(StructureTemplate.StructureBlockInfo structureBlockInfo : this.templateOverlay.filterBlocks(this.templatePosition, this.placeSettingsOverlay, Blocks.STRUCTURE_BLOCK)) {
-                if (structureBlockInfo.nbt != null) {
-                    StructureMode structureMode = StructureMode.valueOf(structureBlockInfo.nbt.getString("mode"));
+                if (structureBlockInfo.nbt() != null) {
+                    StructureMode structureMode = StructureMode.valueOf(structureBlockInfo.nbt().getString("mode"));
 
                     if (structureMode == StructureMode.DATA)
-                        this.handleDataMarker(structureBlockInfo.nbt.getString("metadata"), structureBlockInfo.pos, worldGenLevel, random, boundingBox);
+                        this.handleDataMarker(structureBlockInfo.nbt().getString("metadata"), structureBlockInfo.pos(), worldGenLevel, random, boundingBox);
                 }
             }
 
             for(StructureTemplate.StructureBlockInfo structureBlockInfo : this.templateOverlay.filterBlocks(this.templatePosition, this.placeSettingsOverlay, Blocks.JIGSAW)) {
-                if (structureBlockInfo.nbt != null) {
-                    String s = structureBlockInfo.nbt.getString("final_state");
+                if (structureBlockInfo.nbt() != null) {
+                    String s = structureBlockInfo.nbt().getString("final_state");
                     BlockState blockState = Blocks.AIR.defaultBlockState();
                     try {
                         BlockState parserState = BlockStateParser.parseForBlock(worldGenLevel.holderLookup(Registries.BLOCK), new StringReader(s), false).blockState();
                         if (parserState != null) {
                             blockState = parserState;
                         } else {
-                            TwilightForestMod.LOGGER.error("Error while parsing blockstate {} in jigsaw block @ {}", s, structureBlockInfo.pos);
+                            TwilightForestMod.LOGGER.error("Error while parsing blockstate {} in jigsaw block @ {}", s, structureBlockInfo.pos());
                         }
                     } catch (CommandSyntaxException e) {
-                        TwilightForestMod.LOGGER.error("Error while parsing blockstate {} in jigsaw block @ {}", s, structureBlockInfo.pos);
+                        TwilightForestMod.LOGGER.error("Error while parsing blockstate {} in jigsaw block @ {}", s, structureBlockInfo.pos());
                     }
 
-                    worldGenLevel.setBlock(structureBlockInfo.pos, blockState, 3);
+                    worldGenLevel.setBlock(structureBlockInfo.pos(), blockState, 3);
                 }
             }
         }

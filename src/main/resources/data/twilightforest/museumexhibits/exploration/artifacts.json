@@ -1,0 +1,32 @@
+{
+  "collection": "museumcurator.collection.technology",
+  "name": "museumcurator.technology.artifacts",
+  "items": [
+    "twilightforest:transformation_powder",
+    "twilightforest:maze_map_focus",
+    "twilightforest:red_thread",
+    "twilightforest:steeleaf_ingot",
+    "twilightforest:steeleaf_block",
+    "twilightforest:trophy_pedestal",
+    "twilightforest:tower_key",
+    "twilightforest:ice_bomb",
+    "twilightforest:ore_magnet",
+    "twilightforest:crumble_horn",
+    "twilightforest:moonworm_queen",
+    "twilightforest:peacock_feather_fan",
+    "twilightforest:lamp_of_cinders"
+  ],
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:totem_of_undying",
+      "placement": "after",
+      "items": [
+        "twilightforest:charm_of_life_1",
+        "twilightforest:charm_of_life_2",
+        "twilightforest:charm_of_keeping_1",
+        "twilightforest:charm_of_keeping_2",
+        "twilightforest:charm_of_keeping_3"
+      ]
+    }
+  ]
+}

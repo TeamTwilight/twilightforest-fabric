@@ -40,20 +40,20 @@ public class RisingZombie extends Zombie {
 	public void aiStep() {
 		this.setDeltaMovement(new Vec3(0, 0, 0));
 		super.aiStep();
-		if (!this.getLevel().isClientSide() && this.tickCount % 130 == 0) {
+		if (!this.level().isClientSide() && this.tickCount % 130 == 0) {
 			this.discard();
-			Zombie zombie = new Zombie(this.getLevel());
+			Zombie zombie = new Zombie(this.level());
 			zombie.teleportTo(this.getX(), this.getY(), this.getZ());
 			Objects.requireNonNull(zombie.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(this.getMaxHealth());
 			zombie.setHealth(this.getHealth());
 			zombie.setBaby(this.isBaby());
-			this.getLevel().addFreshEntity(zombie);
-			if (this.getRandom().nextBoolean() && this.getLevel().getBlockState(blockPosition().below()).is(Blocks.GRASS_BLOCK))
-				this.getLevel().setBlockAndUpdate(blockPosition().below(), Blocks.DIRT.defaultBlockState());
+			this.level().addFreshEntity(zombie);
+			if (this.getRandom().nextBoolean() && this.level().getBlockState(blockPosition().below()).is(Blocks.GRASS_BLOCK))
+				this.level().setBlockAndUpdate(blockPosition().below(), Blocks.DIRT.defaultBlockState());
 		}
-		if (this.getLevel().isClientSide() && !this.getLevel().isEmptyBlock(blockPosition().below())) {
+		if (this.level().isClientSide() && !this.level().isEmptyBlock(blockPosition().below())) {
 			for (int i = 0; i < 5; i++)
-				this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.getLevel().getBlockState(blockPosition().below())), getX() + this.getRandom().nextGaussian() * 0.01F, getY() + this.getRandom().nextGaussian() * 0.01F, getZ() + this.getRandom().nextGaussian() * 0.01F, 0, 0, 0);
+				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.level().getBlockState(blockPosition().below())), getX() + this.getRandom().nextGaussian() * 0.01F, getY() + this.getRandom().nextGaussian() * 0.01F, getZ() + this.getRandom().nextGaussian() * 0.01F, 0, 0, 0);
 		}
 	}
 

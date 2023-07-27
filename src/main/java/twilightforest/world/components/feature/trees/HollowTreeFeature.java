@@ -129,8 +129,6 @@ public class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	/**
 	 * Build the crown of the tree
 	 *
-	 * @param diameter
-	 * @param height
 	 */
 	protected void buildFullCrown(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource  random, BlockPos pos, int diameter, int height, TFTreeFeatureConfig config) {
 		int crownRadius = diameter * 4 + 2;

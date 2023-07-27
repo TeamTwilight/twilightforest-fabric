@@ -67,5 +67,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:entities/death_tome"
 }

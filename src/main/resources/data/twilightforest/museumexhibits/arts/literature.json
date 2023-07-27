@@ -1,0 +1,49 @@
+{
+  "collection": "museumcurator.collection.arts",
+  "name": "museumcurator.arts.literature",
+  "items": [
+    {
+      "id": "minecraft:enchanted_book",
+      "tags": {
+        "StoredEnchantments": [
+          {
+            "lvl": 3,
+            "id": "twilightforest:fire_react"
+          }
+        ]
+      }
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "tags": {
+        "StoredEnchantments": [
+          {
+            "lvl": 3,
+            "id": "twilightforest:chill_aura"
+          }
+        ]
+      }
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "tags": {
+        "StoredEnchantments": [
+          {
+            "lvl": 3,
+            "id": "twilightforest:destruction"
+          }
+        ]
+      }
+    }
+  ],
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:bookshelf",
+      "placement": "after",
+      "items": [
+        "twilightforest:empty_canopy_bookshelf",
+        "twilightforest:canopy_bookshelf"
+      ]
+    }
+  ]
+}

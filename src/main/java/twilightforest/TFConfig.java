@@ -94,6 +94,14 @@ public class TFConfig {
 							""").
 					define("default_item_enchantments", true);
 
+			bossDropChests = builder.
+					translation(config + "boss_drop_chests").
+					comment("""
+							If true, Twilight Forest's bosses will put their drops inside of a chest where they originally spawned instead of dropping the loot directly.
+							Note that the Knight Phantoms are not affected by this as their drops work differently.
+							""").
+					define("boss_drop_chests", true);
+
 			builder.
 					comment("Settings for all things related to the uncrafting table.").
 					push("Uncrafting Table");
@@ -226,7 +234,7 @@ public class TFConfig {
 			builder.pop();
 		}
 
-		public Dimension DIMENSION = new Dimension();
+		public final Dimension DIMENSION = new Dimension();
 
 		public static class Dimension {
 
@@ -235,20 +243,21 @@ public class TFConfig {
 
 		}
 
-		public ForgeConfigSpec.ConfigValue<String> originDimension;
-		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
-		public ForgeConfigSpec.BooleanValue adminOnlyPortals;
-		public ForgeConfigSpec.BooleanValue disablePortalCreation;
-		public ForgeConfigSpec.BooleanValue checkPortalDestination;
-		public ForgeConfigSpec.BooleanValue portalLightning;
-		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
-		public ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
-		public ForgeConfigSpec.IntValue maxPortalSize;
-		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
-		public ForgeConfigSpec.BooleanValue disableSkullCandles;
-		public ForgeConfigSpec.BooleanValue defaultItemEnchants;
+		public final ForgeConfigSpec.ConfigValue<String> originDimension;
+		public final ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
+		public final ForgeConfigSpec.BooleanValue adminOnlyPortals;
+		public final ForgeConfigSpec.BooleanValue disablePortalCreation;
+		public final ForgeConfigSpec.BooleanValue checkPortalDestination;
+		public final ForgeConfigSpec.BooleanValue portalLightning;
+		public final ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
+		public final ForgeConfigSpec.ConfigValue<String> portalAdvancementLock;
+		public final ForgeConfigSpec.IntValue maxPortalSize;
+		public final ForgeConfigSpec.BooleanValue casketUUIDLocking;
+		public final ForgeConfigSpec.BooleanValue disableSkullCandles;
+		public final ForgeConfigSpec.BooleanValue defaultItemEnchants;
+		public final ForgeConfigSpec.BooleanValue bossDropChests;
 
-		public MagicTrees MAGIC_TREES = new MagicTrees();
+		public final MagicTrees MAGIC_TREES = new MagicTrees();
 
 		public static class MagicTrees {
 			public ForgeConfigSpec.BooleanValue disableTime;
@@ -261,7 +270,7 @@ public class TFConfig {
 			public ForgeConfigSpec.IntValue sortingRange;
 		}
 
-		public UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
+		public final UncraftingStuff UNCRAFTING_STUFFS = new UncraftingStuff();
 
 		public static class UncraftingStuff {
 			public ForgeConfigSpec.DoubleValue uncraftingXpCostMultiplier;
@@ -274,7 +283,7 @@ public class TFConfig {
 			public ForgeConfigSpec.BooleanValue flipUncraftingModIdList;
 		}
 
-		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
+		public final ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
 		@Nullable
 		public ResourceLocation portalLockingAdvancement;
 
@@ -316,18 +325,29 @@ public class TFConfig {
 					translation(config + "ram_indicator").
 					comment("Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.").
 					define("questRamWoolIndicator", true);
+			cloudBlockPrecipitationRender = builder.
+					translation(config + "cloud_block_precipitation_render").
+					comment("Renders rain and snow underneath cloud blocks. Turn this off if you're experiencing poor performance.").
+					define("cloudBlockPrecipitationRender", true);
+			cloudBlockRainParticles = builder.
+					translation(config + "cloud_block_rain_particles").
+					comment("Spawns rain particles underneath cloud blocks. Turn this off if you're experiencing poor performance.").
+					define("cloudBlockRainParticles", true);
+
 		}
 
-		public ForgeConfigSpec.BooleanValue silentCicadas;
-		public ForgeConfigSpec.BooleanValue silentCicadasOnHead;
-		public ForgeConfigSpec.BooleanValue firstPersonEffects;
-		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
-		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
-		public ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
-		public ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
+		public final ForgeConfigSpec.BooleanValue silentCicadas;
+		public final ForgeConfigSpec.BooleanValue silentCicadasOnHead;
+		public final ForgeConfigSpec.BooleanValue firstPersonEffects;
+		public final ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
+		public final ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
+		public final ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
+		public final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
+		public final ForgeConfigSpec.BooleanValue cloudBlockPrecipitationRender;
+		public final ForgeConfigSpec.BooleanValue cloudBlockRainParticles;
 	}
 
-	private static final String config = TwilightForestMod.ID + ".config.";
+	private static final String config =  "config." + TwilightForestMod.ID;
 
 	@Nullable
 	public static ResourceLocation getPortalLockingAdvancement(Player player) {

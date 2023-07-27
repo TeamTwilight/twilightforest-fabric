@@ -12,9 +12,7 @@
       ],
       "recipe": {
         "type": "jeed:effect_provider",
-        "effect": {
-          "id": "minecraft:regeneration"
-        },
+        "effect": "minecraft:regeneration",
         "providers": [
           {
             "item": "twilightforest:charm_of_life_1"

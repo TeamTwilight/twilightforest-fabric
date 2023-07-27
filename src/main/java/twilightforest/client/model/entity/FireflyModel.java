@@ -14,9 +14,9 @@ import net.minecraft.client.renderer.RenderType;
 public class FireflyModel extends Model {
 	//fields
 	public final ModelPart legs;
-	public ModelPart fatbody;
-	public ModelPart skinnybody;
-	public ModelPart glow;
+	public final ModelPart fatbody;
+	public final ModelPart skinnybody;
+	public final ModelPart glow;
 
 	public FireflyModel(ModelPart root) {
 		super(RenderType::entityCutoutNoCull);

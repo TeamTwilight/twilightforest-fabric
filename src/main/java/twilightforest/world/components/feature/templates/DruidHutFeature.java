@@ -55,16 +55,16 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
             template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
 
             for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
-                if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA)
+                if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
                     this.processMarkers(info, world, rotation, mirror, random);
         }
     }
 
 	@Override
 	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
-        String s = info.nbt.getString("metadata");
-        BlockPos blockPos = info.pos;
-        /**
+        String s = info.nbt().getString("metadata");
+        BlockPos blockPos = info.pos();
+        /*
          `spawner` will place a Druid spawner.
 
          `loot` will place a chest facing the was-North.

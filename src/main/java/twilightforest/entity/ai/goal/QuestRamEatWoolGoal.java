@@ -30,8 +30,8 @@ public class QuestRamEatWoolGoal extends Goal {
 	public boolean canUse() {
 		//sort through valid items, get the closest one
 		//we want to check if the item is valid and not in the air, that the ram can see it, and that its actually wool
-		List<ItemEntity> items = this.ram.getLevel().getEntitiesOfClass(ItemEntity.class, this.ram.getBoundingBox().inflate(16.0D), item ->
-				(item.isOnGround() || item.isInWater()) && item.isAlive() &&
+		List<ItemEntity> items = this.ram.level().getEntitiesOfClass(ItemEntity.class, this.ram.getBoundingBox().inflate(16.0D), item ->
+				(item.onGround() || item.isInWater()) && item.isAlive() &&
 						!item.getItem().isEmpty() && this.ram.hasLineOfSight(item) && this.isTempting(item.getItem()));
 		items.sort(Comparator.comparingDouble(this.ram::distanceToSqr));
 
@@ -68,7 +68,7 @@ public class QuestRamEatWoolGoal extends Goal {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.ram.getLevel().isClientSide()) {
+		if (!this.ram.level().isClientSide()) {
 			if (this.targetItem != null && this.isTempting(this.targetItem.getItem())) {
 				this.ram.getLookControl().setLookAt(this.targetItem, this.ram.getMaxHeadYRot() + 20, this.ram.getMaxHeadXRot());
 				if (this.ram.distanceToSqr(this.targetItem.position()) < 6.25D && this.ram.tryAccept(this.targetItem.getItem())) {

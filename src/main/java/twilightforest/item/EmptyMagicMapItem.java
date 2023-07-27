@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ComplexItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.registration.TFGenerationSettings;
 
 public class EmptyMagicMapItem extends ComplexItem {
@@ -26,7 +25,7 @@ public class EmptyMagicMapItem extends ComplexItem {
 		if (level.isClientSide())
 			return InteractionResultHolder.pass(emptyMapStack);
 		if(level instanceof ServerLevel server && !TFGenerationSettings.usesTwilightChunkGenerator(server)) {
-			player.displayClientMessage(Component.translatable(TwilightForestMod.ID + ".ui.magicmap.fail"), true);
+			player.displayClientMessage(Component.translatable("misc.twilightforest.magic_map_fail"), true);
 			return InteractionResultHolder.fail(emptyMapStack);
 		}
 		// TF - scale at 4
@@ -43,7 +42,7 @@ public class EmptyMagicMapItem extends ComplexItem {
 			}
 
 			player.awardStat(Stats.ITEM_USED.get(this));
-			player.getLevel().playSound(null, player, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, player.getSoundSource(), 1.0F, 1.0F);
+			player.level().playSound(null, player, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, player.getSoundSource(), 1.0F, 1.0F);
 			return InteractionResultHolder.success(emptyMapStack);
 		}
 	}

@@ -15,12 +15,12 @@ import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.Container;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.decoration.PaintingVariant;
@@ -40,6 +40,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.entity.EnforcedHomePoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +49,8 @@ import java.util.function.DoubleUnaryOperator;
 
 public class EntityUtil {
 
-	public static BlockPos bossChestLocation(Mob boss) {
-		return boss.getRestrictCenter() == BlockPos.ZERO ? boss.blockPosition() : boss.getRestrictCenter().below();
+	public static <T extends Mob & EnforcedHomePoint> BlockPos bossChestLocation(T boss) {
+		return !boss.isRestrictionPointValid(boss.level().dimension()) ? boss.blockPosition() : boss.getRestrictionPoint().pos().below();
 	}
 
 	public static boolean canDestroyBlock(Level world, BlockPos pos, Entity entity) {
@@ -60,22 +61,10 @@ public class EntityUtil {
 		float hardness = state.getDestroySpeed(world, pos);
 		/* rude type limit */
 		return hardness >= 0f && hardness < 50f && !state.isAir()
-				&& canEntityDestroyBlock(state, world, pos, entity);
-	}
-
-	public static boolean canEntityDestroyBlock(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
-		if (state.getBlock() instanceof EntityDestroyBlock destroyBlock)
-			return destroyBlock.canEntityDestroy(state, level, pos, entity);
-		if (entity instanceof EnderDragon) {
-			return !state.getBlock().defaultBlockState().is(BlockTags.DRAGON_IMMUNE);
-		}
-		else if ((entity instanceof WitherBoss) ||
-				(entity instanceof WitherSkull))
-		{
-			return state.isAir() || WitherBoss.canDestroy(state);
-		}
-
-		return true;
+				&& !(world.getBlockEntity(pos) instanceof Container)
+				&& state.getBlock().canEntityDestroy(state, world, pos, entity)
+				&& (/* rude type limit */!(entity instanceof LivingEntity)
+				|| ForgeEventFactory.onEntityDestroyBlock((LivingEntity) entity, pos, state));
 	}
 
 	/**
@@ -85,7 +74,7 @@ public class EntityUtil {
 		Vec3 position = entity.getEyePosition(1.0F);
 		Vec3 look = entity.getViewVector(1.0F);
 		Vec3 dest = position.add(look.x * range, look.y * range, look.z * range);
-		return entity.level.clip(new ClipContext(position, dest, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
+		return entity.level().clip(new ClipContext(position, dest, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
 	}
 
 	public static BlockHitResult rayTrace(Player player) {
@@ -93,7 +82,7 @@ public class EntityUtil {
 	}
 
 	public static BlockHitResult rayTrace(Player player, @Nullable DoubleUnaryOperator modifier) {
-		double range = player.getAttribute(PortingLibAttributes.REACH_DISTANCE).getValue();
+		double range = player.getAttribute(ForgeMod.BLOCK_REACH.get()).getValue();
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}
 
@@ -107,13 +96,45 @@ public class EntityUtil {
 			for (double z = bounds.minZ; z < bounds.maxZ; z++) {
 				for (double y = bounds.minY; y < bounds.maxY; y++) {
 					BlockPos pos = BlockPos.containing(x, y, z);
-					BlockState state = entity.getLevel().getBlockState(pos);
+					BlockState state = entity.level().getBlockState(pos);
 					if (state.is(Blocks.LAVA)) {
-						entity.getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+						entity.level().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 					}
 				}
 			}
 		}
+	}
+
+	//copy of Mob.doHurtTarget, allows for using a custom DamageSource instead of the generic Mob Attack one
+	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source) {
+		float f = (float)entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		float f1 = (float)entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		if (victim instanceof LivingEntity) {
+			f += EnchantmentHelper.getDamageBonus(entity.getMainHandItem(), ((LivingEntity)victim).getMobType());
+			f1 += (float)EnchantmentHelper.getKnockbackBonus(entity);
+		}
+
+		int i = EnchantmentHelper.getFireAspect(entity);
+		if (i > 0) {
+			victim.setSecondsOnFire(i * 4);
+		}
+
+		boolean flag = victim.hurt(source, f);
+		if (flag) {
+			if (f1 > 0.0F && victim instanceof LivingEntity) {
+				((LivingEntity)victim).knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(entity.getYRot() * ((float)Math.PI / 180F)));
+				entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
+			}
+
+			if (victim instanceof Player player) {
+				entity.maybeDisableShield(player, entity.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
+			}
+
+			entity.doEnchantDamageEffects(entity, victim);
+			entity.setLastHurtMob(victim);
+		}
+
+		return flag;
 	}
 
 	// [VanillaCopy] with modifications: StructureTemplate.createEntityIgnoreException

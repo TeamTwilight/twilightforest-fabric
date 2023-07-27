@@ -53,7 +53,7 @@ public class SlimeProjectile extends TFThrowable implements ItemSupplier {
 	public void handleEntityEvent(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.getLevel().addParticle(ParticleTypes.ITEM_SLIME, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
+				this.level().addParticle(ParticleTypes.ITEM_SLIME, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -64,7 +64,7 @@ public class SlimeProjectile extends TFThrowable implements ItemSupplier {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		Entity target = result.getEntity();
-		if (!this.getLevel().isClientSide() && target instanceof LivingEntity) {
+		if (!this.level().isClientSide() && target instanceof LivingEntity) {
 			target.hurt(this.damageSources().thrown(this, this.getOwner()), 4);
 			//damage armor pieces
 			if (target instanceof Player player) {
@@ -81,10 +81,10 @@ public class SlimeProjectile extends TFThrowable implements ItemSupplier {
 	}
 
 	private void die() {
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			this.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 1.0F / (this.random.nextFloat() * 0.4F + 0.8F));
 			this.discard();
-			this.getLevel().broadcastEntityEvent(this, (byte) 3);
+			this.level().broadcastEntityEvent(this, (byte) 3);
 		}
 	}
 

@@ -142,5 +142,6 @@
     [
       "kill_naga"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

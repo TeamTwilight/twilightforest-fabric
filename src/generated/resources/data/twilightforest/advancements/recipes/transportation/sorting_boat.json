@@ -24,5 +24,6 @@
     "recipes": [
       "twilightforest:sorting_boat"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

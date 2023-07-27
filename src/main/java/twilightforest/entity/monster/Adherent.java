@@ -44,7 +44,7 @@ public class Adherent extends Monster implements RangedAttackMob, ITFCharger {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(CHARGE_FLAG, false);
+		this.getEntityData().define(CHARGE_FLAG, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -55,7 +55,7 @@ public class Adherent extends Monster implements RangedAttackMob, ITFCharger {
 
 	@Override
 	public void performRangedAttack(LivingEntity attackTarget, float extraDamage) {
-		NatureBolt natureBolt = new NatureBolt(this.getLevel(), this);
+		NatureBolt natureBolt = new NatureBolt(this.level(), this);
 		this.playSound(SoundEvents.GHAST_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 
 		// [VanillaCopy] adapted from EntitySnowman, with lower velocity and inaccuracy calculation
@@ -64,9 +64,9 @@ public class Adherent extends Monster implements RangedAttackMob, ITFCharger {
 		double d2 = d0 - natureBolt.getY();
 		double d3 = attackTarget.getZ() - this.getZ();
 		float f = Mth.sqrt((float) (d1 * d1 + d3 * d3)) * 0.2F;
-		natureBolt.shoot(d1, d2 + f, d3, 0.6F, 10 - this.getLevel().getDifficulty().getId() * 4);
+		natureBolt.shoot(d1, d2 + f, d3, 0.6F, 10 - this.level().getDifficulty().getId() * 4);
 
-		this.getLevel().addFreshEntity(natureBolt);
+		this.level().addFreshEntity(natureBolt);
 
 	}
 
@@ -77,11 +77,11 @@ public class Adherent extends Monster implements RangedAttackMob, ITFCharger {
 
 	@Override
 	public boolean isCharging() {
-		return this.entityData.get(CHARGE_FLAG);
+		return this.getEntityData().get(CHARGE_FLAG);
 	}
 
 	@Override
 	public void setCharging(boolean flag) {
-		this.entityData.set(CHARGE_FLAG, flag);
+		this.getEntityData().set(CHARGE_FLAG, flag);
 	}
 }

@@ -2,7 +2,7 @@ package twilightforest.entity.passive;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -12,11 +12,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Material;
-
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class Squirrel extends Animal {
@@ -63,18 +63,23 @@ public class Squirrel extends Animal {
 	@Override
 	public float getWalkTargetValue(BlockPos pos) {
 		// prefer standing on leaves
-		Material underMaterial = this.getLevel().getBlockState(pos.below()).getMaterial();
-		if (underMaterial == Material.LEAVES) {
+		BlockState state = this.level().getBlockState(pos.below());
+		if (state.is(BlockTags.LEAVES)) {
 			return 12.0F;
 		}
-		if (underMaterial == Material.WOOD) {
+		if (state.is(BlockTags.LOGS)) {
 			return 15.0F;
 		}
-		if (underMaterial == Material.GRASS) {
+		if (state.is(BlockTags.DIRT)) {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas
-		return this.getLevel().getMaxLocalRawBrightness(pos) - 0.5F;
+		return this.level().getMaxLocalRawBrightness(pos) - 0.5F;
+	}
+
+	@Override
+	public boolean isFood(ItemStack stack) {
+		return false;
 	}
 
 	@Nullable

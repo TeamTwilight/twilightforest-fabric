@@ -14,10 +14,10 @@ import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraMortarModel;
-import twilightforest.entity.boss.HydraMortarHead;
+import twilightforest.entity.boss.HydraMortar;
 
 @Environment(EnvType.CLIENT)
-public class HydraMortarRenderer extends EntityRenderer<HydraMortarHead> {
+public class HydraMortarRenderer extends EntityRenderer<HydraMortar> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydramortar.png");
 	private final HydraMortarModel mortarModel;
@@ -29,7 +29,7 @@ public class HydraMortarRenderer extends EntityRenderer<HydraMortarHead> {
 	}
 
 	@Override
-	public void render(HydraMortarHead mortar, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffers, int light) {
+	public void render(HydraMortar mortar, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffers, int light) {
 		stack.pushPose();
 		float blink;
 		// [VanillaCopy] TNTRenderer
@@ -56,7 +56,7 @@ public class HydraMortarRenderer extends EntityRenderer<HydraMortarHead> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(HydraMortarHead entity) {
+	public ResourceLocation getTextureLocation(HydraMortar entity) {
 		return textureLoc;
 	}
 }

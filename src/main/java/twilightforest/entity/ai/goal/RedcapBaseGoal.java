@@ -40,7 +40,7 @@ public abstract class RedcapBaseGoal extends Goal {
 		for (int x = -range; x <= range; x++) {
 			for (int y = -range; y <= range; y++) {
 				for (int z = -range; z <= range; z++) {
-					if (this.redcap.getLevel().getBlockState(entityPos.offset(x, y, z)).getBlock() == Blocks.TNT) {
+					if (this.redcap.level().getBlockState(entityPos.offset(x, y, z)).getBlock() == Blocks.TNT) {
 						return entityPos.offset(x, y, z);
 					}
 				}
@@ -52,6 +52,6 @@ public abstract class RedcapBaseGoal extends Goal {
 
 	public boolean isLitTNTNearby(int range) {
 		AABB expandedBox = this.redcap.getBoundingBox().inflate(range, range, range);
-		return !this.redcap.getLevel().getEntitiesOfClass(PrimedTnt.class, expandedBox).isEmpty();
+		return !this.redcap.level().getEntitiesOfClass(PrimedTnt.class, expandedBox).isEmpty();
 	}
 }

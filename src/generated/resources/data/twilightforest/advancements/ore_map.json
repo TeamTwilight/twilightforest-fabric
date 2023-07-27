@@ -38,5 +38,6 @@
     [
       "ore_map"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

@@ -30,5 +30,6 @@
     "recipes": [
       "twilightforest:wood/dark_oak_banister"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

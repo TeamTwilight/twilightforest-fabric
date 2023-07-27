@@ -15,11 +15,9 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import twilightforest.TFConfig;
-import twilightforest.init.TFSounds;
-import twilightforest.network.ChangeBiomePacket;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.util.WorldUtil;
 import twilightforest.init.TFBiomes;
+import twilightforest.init.TFSounds;
+import twilightforest.util.WorldUtil;
 
 import java.util.List;
 
@@ -59,7 +57,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 			LevelChunk chunkAt = level.getChunk(dPos.getX() >> 4, dPos.getZ() >> 4);
 			for (LevelChunkSection section : chunkAt.getSections()) {
 				for (int sy = 0; sy < 16; sy += 4) {
-					int y = Mth.clamp(QuartPos.fromBlock(section.bottomBlockY() + sy), minY, maxY);
+					int y = Mth.clamp(QuartPos.fromBlock(chunkAt.getMinSection() + sy), minY, maxY);
 					if (section.getBiomes().get(x & 3, y & 3, z & 3).is(target))
 						continue;
 					if (section.getBiomes() instanceof PalettedContainer<Holder<Biome>> container)
@@ -73,14 +71,6 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 			}
 			break;
 		}
-	}
-
-	/**
-	 * Send a tiny update packet to the client to inform it of the changed biome
-	 */
-	private void sendChangedBiome(LevelChunk chunk, BlockPos pos, ResourceKey<Biome> biome) {
-		ChangeBiomePacket message = new ChangeBiomePacket(pos, biome);
-		TFPacketHandler.CHANNEL.sendToClientsTracking(message, (ServerLevel) chunk.getLevel(), chunk.getPos());
 	}
 
 	@Override

@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.architecture",
+  "name": "museumcurator.architecture.fittingsanddecorations",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:ladder",
+      "placement": "after",
+      "items": [
+        "twilightforest:iron_ladder"
+      ]
+    }
+  ]
+}

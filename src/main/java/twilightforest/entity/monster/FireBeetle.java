@@ -52,7 +52,7 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(BREATHING, false);
+		this.getEntityData().define(BREATHING, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -79,12 +79,12 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 
 	@Override
 	public boolean isBreathing() {
-		return this.entityData.get(BREATHING);
+		return this.getEntityData().get(BREATHING);
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-		this.entityData.set(BREATHING, flag);
+		this.getEntityData().set(BREATHING, flag);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 				dy *= velocity;
 				dz *= velocity;
 
-				this.getLevel().addParticle(ParticleTypes.FLAME, px, py, pz, dx, dy, dz);
+				this.level().addParticle(ParticleTypes.FLAME, px, py, pz, dx, dy, dz);
 			}
 
 			playSound(TFSounds.FIRE_BEETLE_SHOOT.get(), this.getRandom().nextFloat() * 0.5F, this.getRandom().nextFloat() * 0.5F);
@@ -141,7 +141,7 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE)) {
+		if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE)) {
 			target.setSecondsOnFire(BREATH_DURATION);
 		}
 	}
@@ -149,7 +149,7 @@ public class FireBeetle extends Monster implements IBreathAttacker {
 	@Override
 	public boolean doHurtTarget(Entity entity) {
 		if (this.isBreathing()) {
-			entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE);
+			return entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE);
 		}
 		return super.doHurtTarget(entity);
 	}

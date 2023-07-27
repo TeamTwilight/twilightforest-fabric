@@ -18,7 +18,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,10 +40,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
-import twilightforest.block.AbstractLightableBlock;
-import twilightforest.block.AbstractSkullCandleBlock;
-import twilightforest.block.SkullCandleBlock;
-import twilightforest.block.WallSkullCandleBlock;
+import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.enchantment.ChillAuraEnchantment;
@@ -71,6 +67,13 @@ public class EntityEvents {
 		PlayerBlockBreakEvents.BEFORE.register(EntityEvents::onCasketBreak);
 		LivingEntityEvents.HURT.register(EntityEvents::onLivingHurtEvent);
 		ProjectileImpactCallback.EVENT.register(EntityEvents::onParryProjectile);
+	}
+
+	@SubscribeEvent
+	public static void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
+		if (event.getAdvancement().getId().equals(TwilightForestMod.prefix("progression_end"))) {
+			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/twilightforest")))));
+		}
 	}
 
 	public static float entityHurts(DamageSource source, LivingEntity living, float amount) {
@@ -205,6 +208,10 @@ public class EntityEvents {
 							if (wall) makeWallSkull(stack, pos, world, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get());
 							else makeFloorSkull(stack, pos, world, TFBlocks.CREEPER_SKULL_CANDLE.get());
 						}
+						case PIGLIN -> {
+							if (wall) makeWallSkull(event, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get());
+							else makeFloorSkull(event, TFBlocks.PIGLIN_SKULL_CANDLE.get());
+						}
 						default -> {
 							return InteractionResult.PASS;
 						}
@@ -266,5 +273,26 @@ public class EntityEvents {
 		}
 
 		return amount;
+	}
+
+	@SubscribeEvent
+	public static void onLivingTickEvent(LivingEvent.LivingTickEvent event) {
+		LivingEntity living = event.getEntity();
+		if (living != null && canSpawnCloudParticles(living)) {
+			CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, false);
+		}
+	}
+
+	public static boolean canSpawnCloudParticles(LivingEntity living) {
+		if (living.getDeltaMovement().x == 0.0D && living.getDeltaMovement().z == 0.0D && living.getRandom().nextInt(20) != 0) return false;
+		return living.tickCount % 2 == 0 && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock;
+	}
+
+	@SubscribeEvent
+	public static void onLivingJumpEvent(LivingEvent.LivingJumpEvent event) {
+		LivingEntity living = event.getEntity();
+		if (living != null && living.level().isClientSide() && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock) {
+			for (int i = 0; i < 12; i++) CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
+		}
 	}
 }

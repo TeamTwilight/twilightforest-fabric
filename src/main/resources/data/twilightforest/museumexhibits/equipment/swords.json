@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.equipment",
+  "name": "museumcurator.equipment.swords",
+  "items": [
+    "twilightforest:ironwood_sword",
+    "twilightforest:steeleaf_sword",
+    "twilightforest:knightmetal_sword",
+    "twilightforest:fiery_sword",
+    "twilightforest:giant_sword",
+    "twilightforest:ice_sword",
+    "twilightforest:glass_sword"
+  ]
+}

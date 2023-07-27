@@ -28,5 +28,6 @@
     "recipes": [
       "twilightforest:compressed_blocks/reversed/ironwood_block_ingot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

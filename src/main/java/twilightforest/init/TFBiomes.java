@@ -73,7 +73,7 @@ public class TFBiomes {
 		context.register(DARK_FOREST_CENTER, biomeWithDefaults(defaultAmbientBuilder().skyColor(0x000000).fogColor(0x493000).grassColorOverride(0x667540).foliageColorOverride(0xF9821E).grassColorModifier(BiomeGrassColors.DARK_FOREST_CENTER), new MobSpawnSettings.Builder(), darkForestCenterGen(featureGetter, carverGetter)).build());
 
 		context.register(SNOWY_FOREST, biomeWithDefaults(defaultAmbientBuilder().skyColor(0x808080).fogColor(0xFFFFFF).foliageColorOverride(0xFFFFFF).grassColorOverride(0xFFFFFF), snowForestSpawning(), snowyForestGen(featureGetter, carverGetter)).hasPrecipitation(true).temperature(0.09F).downfall(0.9F).build());
-		context.register(GLACIER, biomeWithDefaults(defaultAmbientBuilder().skyColor(0x130D28).fogColor(0x361F88), penguinSpawning(), glacierGen(featureGetter, carverGetter)).temperature(0.8F).downfall(0.1F).hasPrecipitation(true).build());
+		context.register(GLACIER, biomeWithDefaults(defaultAmbientBuilder().skyColor(0x130D28).fogColor(0x361F88), penguinSpawning(), glacierGen(featureGetter, carverGetter)).temperature(0.08F).downfall(0.1F).hasPrecipitation(true).build());
 
 		context.register(HIGHLANDS, biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), highlandsGen(featureGetter, carverGetter)).temperature(0.4F).downfall(0.7F).build());
 		context.register(THORNLANDS, biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnSettings.Builder(), thornlandsGen(featureGetter, carverGetter)).temperature(0.3F).downfall(0.2F).build());

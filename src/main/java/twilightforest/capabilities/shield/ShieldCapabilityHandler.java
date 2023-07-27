@@ -18,94 +18,94 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	private int breakTimer;
 
 	public ShieldCapabilityHandler(LivingEntity entity) {
-		host = entity;
+		this.host = entity;
 	}
 
 	@Override
 	public void update() {
-		if (!host.level.isClientSide && temporaryShieldsLeft() > 0 && timer-- <= 0 && breakTimer <= 0 && (!(host instanceof Player) || !((Player) host).isCreative()))
+		if (!this.host.level().isClientSide() && temporaryShieldsLeft() > 0 && this.timer-- <= 0 && this.breakTimer <= 0 && (!(this.host instanceof Player player) || !player.isCreative()))
 			breakShield();
-		if (breakTimer > 0)
-			breakTimer--;
+		if (this.breakTimer > 0)
+			this.breakTimer--;
 	}
 
 	@Override
 	public int shieldsLeft() {
-		return temporaryShields + permanentShields;
+		return this.temporaryShields + this.permanentShields;
 	}
 
 	@Override
 	public int temporaryShieldsLeft() {
-		return temporaryShields;
+		return this.temporaryShields;
 	}
 
 	@Override
 	public int permanentShieldsLeft() {
-		return permanentShields;
+		return this.permanentShields;
 	}
 
 	@Override
 	public void breakShield() {
-		if (breakTimer <= 0) {
+		if (this.breakTimer <= 0) {
 			// Temp shields should break first before permanent ones. Reset time each time a temp shield is busted.
-			if (temporaryShields > 0) {
-				temporaryShields--;
-				resetTimer();
-			} else if (permanentShields > 0) {
-				permanentShields--;
+			if (this.temporaryShields > 0) {
+				this.temporaryShields--;
+				this.resetTimer();
+			} else if (this.permanentShields > 0) {
+				this.permanentShields--;
 			}
 
-			if (host instanceof ServerPlayer player)
+			if (this.host instanceof ServerPlayer player)
 				player.awardStat(TFStats.TF_SHIELDS_BROKEN.get());
-			sendUpdatePacket();
-			host.level.playSound(null, host.blockPosition(), TFSounds.SHIELD_BREAK.get(), SoundSource.PLAYERS, 1.0F, ((host.getRandom().nextFloat() - host.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
-			breakTimer = 20;
+			this.sendUpdatePacket();
+			this.host.level().playSound(null, this.host.blockPosition(), TFSounds.SHIELD_BREAK.get(), SoundSource.PLAYERS, 1.0F, ((this.host.getRandom().nextFloat() - this.host.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			this.breakTimer = 20;
 		}
 	}
 
 	@Override
 	public void replenishShields() {
-		setShields(5, true);
-		host.level.playSound(null, host.blockPosition(), TFSounds.SHIELD_ADD.get(), SoundSource.PLAYERS, 1.0F, (host.getRandom().nextFloat() - host.getRandom().nextFloat()) * 0.2F + 1.0F);
+		this.setShields(5, true);
+		this.host.level().playSound(null, this.host.blockPosition(), TFSounds.SHIELD_ADD.get(), SoundSource.PLAYERS, 1.0F, (this.host.getRandom().nextFloat() - this.host.getRandom().nextFloat()) * 0.2F + 1.0F);
 	}
 
 	@Override
 	public void setShields(int amount, boolean temp) {
 		if (temp) {
-			temporaryShields = Math.max(amount, 0);
-			resetTimer();
+			this.temporaryShields = Math.max(amount, 0);
+			this.resetTimer();
 		} else {
-			permanentShields = Math.max(amount, 0);
+			this.permanentShields = Math.max(amount, 0);
 		}
 
-		sendUpdatePacket();
+		this.sendUpdatePacket();
 	}
 
 	@Override
 	public void addShields(int amount, boolean temp) {
 		if (temp) {
-			if (temporaryShields <= 0)
-				resetTimer(); // Since we add new shields to the stack instead of setting them, no timer reset is needed, unless they start from 0 shields.
-			temporaryShields = Math.max(temporaryShields + amount, 0);
+			if (this.temporaryShields <= 0)
+				this.resetTimer(); // Since we add new shields to the stack instead of setting them, no timer reset is needed, unless they start from 0 shields.
+			this.temporaryShields = Math.max(this.temporaryShields + amount, 0);
 		} else {
-			permanentShields = Math.max(permanentShields + amount, 0);
+			this.permanentShields = Math.max(this.permanentShields + amount, 0);
 		}
 
 		sendUpdatePacket();
 	}
 
 	void initShields(int temporary, int permanent) {
-		temporaryShields = Math.max(temporary, 0);
-		permanentShields = Math.max(permanent, 0);
-		resetTimer();
+		this.temporaryShields = Math.max(temporary, 0);
+		this.permanentShields = Math.max(permanent, 0);
+		this.resetTimer();
 	}
 
 	private void resetTimer() {
-		timer = 240;
+		this.timer = 240;
 	}
 
 	private void sendUpdatePacket() {
-		if (host instanceof ServerPlayer)
+		if (this.host instanceof ServerPlayer)
 			TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateShieldPacket(host, this), host);
 	}
 

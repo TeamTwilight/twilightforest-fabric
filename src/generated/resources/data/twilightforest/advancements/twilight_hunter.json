@@ -1010,5 +1010,6 @@
       "yeti",
       "alpha_yeti"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

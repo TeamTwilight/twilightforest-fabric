@@ -27,5 +27,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:entities/questing_ram_rewards"
 }

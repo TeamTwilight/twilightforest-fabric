@@ -2,18 +2,17 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.resources.ResourceLocation;
-import org.joml.Vector3f;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.MinoshroomModel;
 import twilightforest.entity.boss.Minoshroom;
@@ -29,7 +28,7 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Minoshro
 	}
 
 	/**
-	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.MooshroomMushroomLayer}
+	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.MushroomCowMushroomLayer}
 	 */
 	static class LayerMinoshroomMushroom extends RenderLayer<Minoshroom, MinoshroomModel> {
 
@@ -62,9 +61,7 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Minoshro
 				ms.pushPose();
 				this.getParentModel().head.translateAndRotate(ms);
 				// TF - adjust head shroom
-				//old render
-				//ms.translate(0.0D, -0.9, 0.05);
-				ms.translate(0.0D, -1.1, 0.05);
+				ms.translate(0.0D, -0.9, 0.05);
 				ms.mulPose(Axis.YP.rotationDegrees(-78.0F));
 				ms.scale(-1.0F, -1.0F, 1.0F);
 				ms.translate(-0.5D, -0.5D, -0.5D);

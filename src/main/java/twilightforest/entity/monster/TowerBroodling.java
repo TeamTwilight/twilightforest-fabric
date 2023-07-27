@@ -37,37 +37,37 @@ public class TowerBroodling extends SwarmSpider {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.BROODLING_AMBIENT.get();
+		return TFSounds.CARMINITE_BROODLING_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.BROODLING_HURT.get();
+		return TFSounds.CARMINITE_BROODLING_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.BROODLING_DEATH.get();
+		return TFSounds.CARMINITE_BROODLING_DEATH.get();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.BROODLING_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.CARMINITE_BROODLING_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override
 	protected boolean spawnAnother() {
-		SwarmSpider another = new TowerBroodling(TFEntities.CARMINITE_BROODLING.get(), this.getLevel(), false);
+		SwarmSpider another = new TowerBroodling(TFEntities.CARMINITE_BROODLING.get(), this.level(), false);
 
 		double sx = getX() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
 		double sy = getY();
 		double sz = getZ() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
 		another.moveTo(sx, sy, sz, this.getRandom().nextFloat() * 360.0F, 0.0F);
-		if (!another.checkSpawnRules(this.getLevel(), MobSpawnType.MOB_SUMMONED)) {
+		if (!another.checkSpawnRules(this.level(), MobSpawnType.MOB_SUMMONED)) {
 			another.discard();
 			return false;
 		}
-		this.getLevel().addFreshEntity(another);
+		this.level().addFreshEntity(another);
 		another.spawnAnim();
 
 		return true;

@@ -22,11 +22,13 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.client.ISTER;
 import twilightforest.init.TFBlocks;
 
 import java.util.List;
+import java.util.function.Consumer;
 
-public class SkullCandleItem extends StandingAndWallBlockItem {
+public class SkullCandleItem extends StandingAndWallBlockItem implements CurioItem {
 
 	public SkullCandleItem(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall, FabricItemSettings properties) {
 		super(floor, wall, properties.equipmentSlot(stack -> EquipmentSlot.HEAD), Direction.DOWN);
@@ -101,5 +103,16 @@ public class SkullCandleItem extends StandingAndWallBlockItem {
 		} else {
 			return InteractionResultHolder.fail(itemstack);
 		}
+	}
+
+	@Override
+	public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
+		return slot == EquipmentSlot.HEAD;
+	}
+
+	@Override
+	@Nullable
+	public EquipmentSlot getEquipmentSlot(ItemStack stack) {
+		return EquipmentSlot.HEAD;
 	}
 }

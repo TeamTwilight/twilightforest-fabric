@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "twilightforest:transformation_log"
+      "tag": "twilightforest:transwood_logs"
     }
   ],
   "result": {

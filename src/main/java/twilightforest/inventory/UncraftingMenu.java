@@ -6,13 +6,15 @@ import net.fabricmc.fabric.impl.item.ItemExtensions;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -45,9 +47,9 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	// Inaccessible grid, for uncrafting logic
 	private final UncraftingContainer uncraftingMatrix = new UncraftingContainer();
 	// Accessible grid, for actual crafting
-	public final CraftingContainer assemblyMatrix = new CraftingContainer(this, 3, 3);
+	public final CraftingContainer assemblyMatrix = new TransientCraftingContainer(this, 3, 3);
 	// Inaccessible grid, for recrafting logic
-	private final CraftingContainer combineMatrix = new CraftingContainer(this, 3, 3);
+	private final CraftingContainer combineMatrix = new TransientCraftingContainer(this, 3, 3);
 
 	// Input slot for uncrafting
 	public final Container tinkerInput = new UncraftingInputContainer(this);
@@ -67,7 +69,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	private int customCost;
 
 	public static UncraftingMenu fromNetwork(int id, Inventory inventory) {
-		return new UncraftingMenu(id, inventory, inventory.player.getLevel(), ContainerLevelAccess.NULL);
+		return new UncraftingMenu(id, inventory, inventory.player.level(), ContainerLevelAccess.NULL);
 	}
 
 	public UncraftingMenu(int id, Inventory inventory, Level level, ContainerLevelAccess positionData) {
@@ -354,19 +356,19 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Checks if the result is a valid match for the input. Currently, only accepts armor or tools that are the same type as the input
 	 */
 	private static boolean isValidMatchForInput(ItemStack inputStack, ItemStack resultStack) {
-		if (inputStack.is(Tags.Items.TOOLS_PICKAXES) && resultStack.is(Tags.Items.TOOLS_PICKAXES)) {
+		if (inputStack.is(ItemTags.PICKAXES) && resultStack.is(ItemTags.PICKAXES)) {
 			return true;
 		}
-		if (inputStack.is(Tags.Items.TOOLS_AXES) && resultStack.is(Tags.Items.TOOLS_AXES)) {
+		if (inputStack.is(ItemTags.AXES) && resultStack.is(ItemTags.AXES)) {
 			return true;
 		}
-		if (inputStack.is(Tags.Items.TOOLS_SHOVELS) && resultStack.is(Tags.Items.TOOLS_SHOVELS)) {
+		if (inputStack.is(ItemTags.SHOVELS) && resultStack.is(ItemTags.SHOVELS)) {
 			return true;
 		}
-		if (inputStack.is(Tags.Items.TOOLS_HOES) && resultStack.is(Tags.Items.TOOLS_HOES)) {
+		if (inputStack.is(ItemTags.HOES) && resultStack.is(ItemTags.HOES)) {
 			return true;
 		}
-		if (inputStack.is(Tags.Items.TOOLS_SWORDS) && resultStack.is(Tags.Items.TOOLS_SWORDS)) {
+		if (inputStack.is(ItemTags.SWORDS) && resultStack.is(ItemTags.SWORDS)) {
 			return true;
 		}
 		if (inputStack.is(Tags.Items.TOOLS_BOWS) && resultStack.is(Tags.Items.TOOLS_BOWS)) {

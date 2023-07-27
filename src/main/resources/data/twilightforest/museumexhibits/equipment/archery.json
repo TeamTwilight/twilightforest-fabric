@@ -1,0 +1,16 @@
+{
+  "collection": "museumcurator.collection.equipment",
+  "name": "museumcurator.equipment.archery",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:bow",
+      "placement": "after",
+      "items": [
+        "twilightforest:triple_bow",
+        "twilightforest:seeker_bow",
+        "twilightforest:ice_bow",
+        "twilightforest:ender_bow"
+      ]
+    }
+  ]
+}

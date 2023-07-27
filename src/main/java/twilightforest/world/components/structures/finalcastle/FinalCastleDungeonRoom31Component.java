@@ -18,7 +18,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import net.minecraft.world.level.material.Material;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
@@ -161,15 +160,14 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
-		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, state -> state.getMaterial() == Material.STONE);
+		//TODO add a deadrock tag, or a tag for castle replaceables
+		Predicate<BlockState> replacing = state -> state.isAir() || state.is(TFBlocks.DEADROCK.get()) || state.is(TFBlocks.CRACKED_DEADROCK.get()) || state.is(TFBlocks.WEATHERED_DEADROCK.get());
+
+
+		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, replacing);
 
 		BlockState floor = TFBlocks.CASTLE_BRICK.get().defaultBlockState();
 		BlockState border = TFBlocks.THICK_CASTLE_BRICK.get().defaultBlockState();
-
-		Predicate<BlockState> replacing = state -> {
-			Material material = state.getMaterial();
-			return material == Material.STONE || material == Material.AIR;
-		};
 
 		final int cs = 7;
 

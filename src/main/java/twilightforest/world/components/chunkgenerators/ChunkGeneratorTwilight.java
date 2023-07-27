@@ -277,7 +277,8 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			list.forEach((noiseint) -> noiseint.advanceX(random, advX));
 
 			for (int cellZ = 0; cellZ < cellCountZ; cellZ++) {
-				LevelChunkSection section = access.getSection(access.getSectionsCount() - 1);
+				int sections = access.getSectionsCount() - 1;
+				LevelChunkSection section = access.getSection(sections);
 
 				for (int cellY = max - 1; cellY >= 0; cellY--) {
 					int advY = cellY;
@@ -289,7 +290,8 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 						int mincellY = minheight & 15;
 						int minindexY = access.getSectionIndex(minheight);
 
-						if (access.getSectionIndex(section.bottomBlockY()) != minindexY) {
+						if (sections != minindexY) {
+							sections = minindexY;
 							section = access.getSection(minindexY);
 						}
 
@@ -311,11 +313,6 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 								BlockState state = this.generateBaseState(noiseval, minheight);
 
 								if (state != Blocks.AIR.defaultBlockState()) {
-									if (state.getLightEmission() != 0 && access instanceof ProtoChunk proto) {
-										mutable.set(minwidthX, minheight, minwidthZ);
-										proto.addLight(mutable);
-									}
-
 									section.setBlockState(mincellX, mincellY, mincellZ, state, false);
 									oceanfloor.update(mincellX, minheight, mincellZ, state);
 									surface.update(mincellX, minheight, mincellZ, state);
@@ -500,7 +497,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			BlockState b = primer.getBlockState(old2.atY(y));
 			BlockPos old1 = primer.getCenter().getWorldPosition().offset(x, 0, z);
 			if(!primer.getBiome(old1.atY(y)).is(TFBiomes.STREAM)) {
-				if (b.isAir() || b.getMaterial().isLiquid()) {
+				if (b.isAir() || b.liquid()) {
 					BlockPos old = primer.getCenter().getWorldPosition().offset(x, 0, z);
 					primer.setBlock(old.atY(y), Blocks.STONE.defaultBlockState(), 3);
 				}
@@ -512,7 +509,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			BlockState b = primer.getBlockState(old2.atY(y));
 			BlockPos old1 = primer.getCenter().getWorldPosition().offset(x, 0, z);
 			if(!primer.getBiome(old1.atY(y)).is(TFBiomes.STREAM)) {
-				if (!b.isAir() && !b.getMaterial().isLiquid()) {
+				if (!b.isAir() && !b.liquid()) {
 					BlockPos old = primer.getCenter().getWorldPosition().offset(x, 0, z);
 					primer.setBlock(old.atY(y), Blocks.AIR.defaultBlockState(), 3);
 				}
@@ -792,7 +789,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					BlockPos pos = primer.getCenter().getWorldPosition().offset(dX, dY, dZ);
 
 					// Skip any blocks over water
-					if (chunk.getBlockState(pos).getMaterial().isLiquid())
+					if (chunk.getBlockState(pos).liquid())
 						continue;
 
 					// just use the same noise generator as the terrain uses for stones

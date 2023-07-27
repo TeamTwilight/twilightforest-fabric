@@ -58,7 +58,7 @@ public class IceTowerStairsComponent extends TowerWingComponent {
 	}
 
 	private void placeStairs(WorldGenLevel world, BoundingBox sbb, int x, int y, int z) {
-		if (this.getBlock(world, x, y, z, sbb).getMaterial().isReplaceable()) {
+		if (this.getBlock(world, x, y, z, sbb).canBeReplaced()) {
 			this.placeBlock(world, deco.blockState, x, y, z, sbb);
 			this.placeBlock(world, deco.blockState, x, y - 1, z, sbb);
 		}

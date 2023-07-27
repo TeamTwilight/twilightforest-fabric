@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -36,7 +35,7 @@ public class ThrownBlockRenderer extends EntityRenderer<ThrownBlock> {
 	public void render(ThrownBlock entity, float yaw, float partialTicks, PoseStack ms, MultiBufferSource buffers, int light) {
 		BlockState blockstate = entity.getBlockState();
 		if (blockstate.getRenderShape() == RenderShape.MODEL) {
-			Level world = entity.getLevel();
+			Level world = entity.level();
 			if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
 				ms.pushPose();
 				BlockPos blockpos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());

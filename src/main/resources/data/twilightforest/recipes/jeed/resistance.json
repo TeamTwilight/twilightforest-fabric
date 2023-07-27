@@ -12,9 +12,7 @@
       ],
       "recipe": {
         "type": "jeed:effect_provider",
-        "effect": {
-          "id": "minecraft:resistance"
-        },
+        "effect": "minecraft:resistance",
         "providers": [
           {
             "item": "twilightforest:charm_of_life_2"

@@ -130,7 +130,7 @@ function initializeCoreMod() {
                         new MethodInsnNode(
                             Opcodes.INVOKESTATIC,
                             'twilightforest/ASMHooks',
-                            'renderMutiparts',
+                            'renderMultiparts',
                             '(Ljava/lang/Iterable;)Ljava/lang/Iterable;',
                             false
                             )

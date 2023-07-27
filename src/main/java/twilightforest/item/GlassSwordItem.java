@@ -13,7 +13,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.init.TFSounds;
 
 public class GlassSwordItem extends SwordItem {
-	protected BlockParticleOption whiteGlass = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.defaultBlockState());
+	protected final BlockParticleOption whiteGlass = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.defaultBlockState());
 
 	public GlassSwordItem(Tier toolMaterial, Properties properties) {
 		super(toolMaterial, 3, -2.4F, properties);
@@ -21,7 +21,7 @@ public class GlassSwordItem extends SwordItem {
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if(target.getLevel() instanceof ServerLevel server) {
+		if(target.level() instanceof ServerLevel server) {
 			for (int i = 0; i < 20; i++) {
 				double px = target.getX() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
 				double py = target.getY() + target.getRandom().nextFloat() * target.getBbHeight();
@@ -31,7 +31,7 @@ public class GlassSwordItem extends SwordItem {
 		}
 
 		stack.hurtAndBreak(stack.getMaxDamage() + 1, attacker, (user) -> {
-			user.getLevel().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.get(), attacker.getSoundSource(), 1F, 0.5F);
+			user.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), TFSounds.GLASS_SWORD_BREAK.get(), attacker.getSoundSource(), 1F, 0.5F);
 			user.broadcastBreakEvent(InteractionHand.MAIN_HAND);
 			user.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
 		});

@@ -252,5 +252,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:blocks/hollow_warped_stem_horizontal"
 }

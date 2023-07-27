@@ -52,7 +52,7 @@ public class RootStrandBlock extends TFPlantBlock {
 			mutable.move(Direction.DOWN);
 		} while (getter.getBlockState(mutable).is(this));
 
-		return getter.getBlockState(mutable).isAir() || getter.getBlockState(mutable).getMaterial().isReplaceable();
+		return getter.getBlockState(mutable).isAir() || getter.getBlockState(mutable).canBeReplaced();
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class RootStrandBlock extends TFPlantBlock {
 			mutable.move(Direction.DOWN);
 		} while (level.getBlockState(mutable).is(this));
 
-		if (level.getBlockState(mutable).isAir() || level.getBlockState(mutable).getMaterial().isReplaceable()) {
+		if (level.getBlockState(mutable).isAir() || level.getBlockState(mutable).canBeReplaced()) {
 			level.setBlockAndUpdate(mutable, this.defaultBlockState());
 		}
 	}

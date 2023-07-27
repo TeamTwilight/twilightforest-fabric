@@ -19,7 +19,7 @@
       "max_delay": 12000,
       "min_delay": 1200,
       "replace_current_music": true,
-      "sound": "twilightforest:music.bg"
+      "sound": "twilightforest:music.twilightforest.twilight_forest"
     },
     "sky_color": 2105930,
     "water_color": 12355671,
@@ -79,7 +79,20 @@
     ]
   ],
   "has_precipitation": true,
-  "spawn_costs": {},
+  "spawn_costs": {
+    "minecraft:skeleton": {
+      "charge": 0.85,
+      "energy_budget": 0.25
+    },
+    "minecraft:spider": {
+      "charge": 0.75,
+      "energy_budget": 0.25
+    },
+    "twilightforest:skeleton_druid": {
+      "charge": 0.95,
+      "energy_budget": 0.25
+    }
+  },
   "spawners": {
     "ambient": [
       {

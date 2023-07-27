@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -26,10 +27,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.GroundAttackGoal;
@@ -44,10 +45,14 @@ import twilightforest.util.LandmarkUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Minoshroom extends Minotaur implements EnforcedHomePoint {
+
 	private static final EntityDataAccessor<Boolean> GROUND_ATTACK = SynchedEntityData.defineId(Minoshroom.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> GROUND_CHARGE = SynchedEntityData.defineId(Minoshroom.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Minoshroom.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+
 	private float prevClientSideChargeAnimation;
 	private float clientSideChargeAnimation;
 	private boolean groundSmashState = false;
@@ -70,16 +75,17 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(GROUND_ATTACK, false);
-		this.entityData.define(GROUND_CHARGE, 0);
+		this.getEntityData().define(GROUND_ATTACK, false);
+		this.getEntityData().define(GROUND_CHARGE, 0);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	public boolean isGroundAttackCharge() {
-		return this.entityData.get(GROUND_ATTACK);
+		return this.getEntityData().get(GROUND_ATTACK);
 	}
 
 	public void setGroundAttackCharge(boolean flag) {
-		this.entityData.set(GROUND_ATTACK, flag);
+		this.getEntityData().set(GROUND_ATTACK, flag);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -121,7 +127,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.loadHomePointFromNbt(compound, 20);
+		this.loadHomePointFromNbt(compound);
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -130,22 +136,22 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.getLevel().isClientSide()) {
+		if (this.level().isClientSide()) {
 			this.prevClientSideChargeAnimation = this.clientSideChargeAnimation;
 			if (this.isGroundAttackCharge()) {
-				this.clientSideChargeAnimation = Mth.clamp(this.clientSideChargeAnimation + (1.0F / ((float) this.entityData.get(GROUND_CHARGE)) * 6.0F), 0.0F, 6.0F);
+				this.clientSideChargeAnimation = Mth.clamp(this.clientSideChargeAnimation + (1.0F / ((float) this.getEntityData().get(GROUND_CHARGE)) * 6.0F), 0.0F, 6.0F);
 				this.groundSmashState = true;
 			} else {
 				this.clientSideChargeAnimation = Mth.clamp(this.clientSideChargeAnimation - 1.0F, 0.0F, 6.0F);
 				if (this.groundSmashState) {
-					BlockState block = this.getLevel().getBlockState(this.blockPosition().below());
+					BlockState block = this.level().getBlockState(this.blockPosition().below());
 
 					for (int i = 0; i < 80; i++) {
-						double cx = this.blockPosition().getX() + this.getLevel().getRandom().nextFloat() * 10.0F - 5.0F;
-						double cy = this.getBoundingBox().minY + 0.1F + getLevel().getRandom().nextFloat() * 0.3F;
-						double cz = this.blockPosition().getZ() + this.getLevel().getRandom().nextFloat() * 10.0F - 5.0F;
+						double cx = this.blockPosition().getX() + this.level().getRandom().nextFloat() * 10.0F - 5.0F;
+						double cy = this.getBoundingBox().minY + 0.1F + level().getRandom().nextFloat() * 0.3F;
+						double cz = this.blockPosition().getZ() + this.level().getRandom().nextFloat() * 10.0F - 5.0F;
 
-						this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), cx, cy, cz, 0.0D, 0.0D, 0.0D);
+						this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), cx, cy, cz, 0.0D, 0.0D, 0.0D);
 					}
 					this.groundSmashState = false;
 				}
@@ -184,7 +190,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	}
 
 	public void setMaxCharge(int charge) {
-		this.entityData.set(GROUND_CHARGE, charge);
+		this.getEntityData().set(GROUND_CHARGE, charge);
 	}
 
 	@Override
@@ -215,20 +221,20 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if (!this.getLevel().isClientSide()) {
-			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.LABYRINTH, true);
+		if (!this.level().isClientSide()) {
+			this.bossInfo.setProgress(0.0F);
+			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.LABYRINTH, true);
 			for(ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.MANGROVE_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 
 	@Override
 	protected boolean shouldDropLoot() {
-		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
-		return false;
+		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
 	}
 
 	@Override
@@ -238,9 +244,9 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 
 	@Override
 	public void checkDespawn() {
-		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.hasRestriction()) {
-				this.getLevel().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.MINOSHROOM_BOSS_SPAWNER.get().defaultBlockState());
+		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
+			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.MINOSHROOM_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -269,12 +275,17 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
 	}
 
 	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 20;
 	}
 }

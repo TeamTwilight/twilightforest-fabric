@@ -5,15 +5,21 @@ import io.github.fabricators_of_create.porting_lib.data.PortingLibTagsProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BannerPattern;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBannerPatterns;
+import twilightforest.init.TFBlockEntities;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.WoodPalette;
 
@@ -41,6 +47,50 @@ public class CustomTagGenerator {
 		}
 	}
 
+	public static class BlockEntityTagGenerator extends TagsProvider<BlockEntityType<?>> {
+
+		public static final TagKey<BlockEntityType<?>> RELOCATION_NOT_SUPPORTED = TagKey.create(Registries.BLOCK_ENTITY_TYPE, new ResourceLocation("forge", "relocation_not_supported"));
+		public static final TagKey<BlockEntityType<?>> IMMOVABLE = TagKey.create(Registries.BLOCK_ENTITY_TYPE, new ResourceLocation("forge", "immovable"));
+
+		public BlockEntityTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
+			super(output, Registries.BLOCK_ENTITY_TYPE, provider, TwilightForestMod.ID, helper);
+		}
+
+		@Override
+		protected void addTags(HolderLookup.Provider provider) {
+			this.tag(RELOCATION_NOT_SUPPORTED).add(
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.ANTIBUILDER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.BEANSTALK_GROWER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.NAGA_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.LICH_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.MINOSHROOM_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.HYDRA_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.UR_GHAST_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.ALPHA_YETI_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.SNOW_QUEEN_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.FINAL_BOSS_SPAWNER.get()).get());
+
+			this.tag(IMMOVABLE).add(
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.ANTIBUILDER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.BEANSTALK_GROWER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.NAGA_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.LICH_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.MINOSHROOM_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.HYDRA_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.UR_GHAST_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.ALPHA_YETI_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.SNOW_QUEEN_SPAWNER.get()).get(),
+					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.FINAL_BOSS_SPAWNER.get()).get());
+		}
+
+		@Override
+		public String getName() {
+			return "Twilight Forest Block Entity Tags";
+		}
+	}
+
 	public static class BannerPatternTagGenerator extends FabricTagProvider<BannerPattern> {
 
 		public static final TagKey<BannerPattern> NAGA_BANNER_PATTERN = create("pattern_item/naga");
@@ -59,15 +109,15 @@ public class CustomTagGenerator {
 
 		@Override
 		protected void addTags(HolderLookup.Provider provider) {
-			tag(NAGA_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.NAGA.get()).get());
-			tag(LICH_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.LICH.get()).get());
-			tag(MINOSHROOM_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.MINOSHROOM.get()).get());
-			tag(HYDRA_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.HYDRA.get()).get());
-			tag(KNIGHT_PHANTOM_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.KNIGHT_PHANTOM.get()).get());
-			tag(UR_GHAST_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.UR_GHAST.get()).get());
-			tag(ALPHA_YETI_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.ALPHA_YETI.get()).get());
-			tag(SNOW_QUEEN_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.SNOW_QUEEN.get()).get());
-			tag(QUEST_RAM_BANNER_PATTERN).add(BuiltInRegistries.BANNER_PATTERN.getResourceKey(TFBannerPatterns.QUEST_RAM.get()).get());
+			tag(NAGA_BANNER_PATTERN).add(TFBannerPatterns.NAGA.getKey());
+			tag(LICH_BANNER_PATTERN).add(TFBannerPatterns.LICH.getKey());
+			tag(MINOSHROOM_BANNER_PATTERN).add(TFBannerPatterns.MINOSHROOM.getKey());
+			tag(HYDRA_BANNER_PATTERN).add(TFBannerPatterns.HYDRA.getKey());
+			tag(KNIGHT_PHANTOM_BANNER_PATTERN).add(TFBannerPatterns.KNIGHT_PHANTOM.getKey());
+			tag(UR_GHAST_BANNER_PATTERN).add(TFBannerPatterns.UR_GHAST.getKey());
+			tag(ALPHA_YETI_BANNER_PATTERN).add(TFBannerPatterns.ALPHA_YETI.getKey());
+			tag(SNOW_QUEEN_BANNER_PATTERN).add(TFBannerPatterns.SNOW_QUEEN.getKey());
+			tag(QUEST_RAM_BANNER_PATTERN).add(TFBannerPatterns.QUEST_RAM.getKey());
 		}
 
 		private static TagKey<BannerPattern> create(String name) {

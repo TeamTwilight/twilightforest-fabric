@@ -1,6 +1,8 @@
 package twilightforest.world.components.layer;
 
-import twilightforest.world.components.layer.vanillalegacy.area.Area;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
+import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
@@ -11,20 +13,20 @@ import twilightforest.world.components.layer.vanillalegacy.traits.DimensionOffse
  * TODO: Verify the logic
  */
 public interface IThornsTransformer extends AreaTransformer1, DimensionOffset1Transformer {
-	int apply(Context noise, int north, int west, int south, int east, int middle, int nw, int sw, int se, int ne);
+	ResourceKey<Biome> apply(Context noise, ResourceKey<Biome> north, ResourceKey<Biome> west, ResourceKey<Biome> south, ResourceKey<Biome> east, ResourceKey<Biome> middle, ResourceKey<Biome> nw, ResourceKey<Biome> sw, ResourceKey<Biome> se, ResourceKey<Biome> ne);
 
 	@Override
-	default int applyPixel(BigContext<?> noise, Area area, int width, int depth) {
-		return this.apply(noise,
-				area.get(this.getParentX(width + 1), this.getParentY(depth)),
-				area.get(this.getParentX(width + 2), this.getParentY(depth + 1)),
-				area.get(this.getParentX(width + 1), this.getParentY(depth + 2)),
-				area.get(this.getParentX(width), this.getParentY(depth + 1)),
-				area.get(this.getParentX(width + 1), this.getParentY(depth + 1)),
-				area.get(this.getParentX(width + 2), this.getParentY(depth)),
-				area.get(this.getParentX(width + 2), this.getParentY(depth + 2)),
-				area.get(this.getParentX(width), this.getParentY(depth + 2)),
-				area.get(this.getParentX(width), this.getParentY(depth))
+	default ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
+		return this.apply(context,
+				layer.getBiome(this.getParentX(x + 1), this.getParentY(z)),
+				layer.getBiome(this.getParentX(x + 2), this.getParentY(z + 1)),
+				layer.getBiome(this.getParentX(x + 1), this.getParentY(z + 2)),
+				layer.getBiome(this.getParentX(x), this.getParentY(z + 1)),
+				layer.getBiome(this.getParentX(x + 1), this.getParentY(z + 1)),
+				layer.getBiome(this.getParentX(x + 2), this.getParentY(z)),
+				layer.getBiome(this.getParentX(x + 2), this.getParentY(z + 2)),
+				layer.getBiome(this.getParentX(x), this.getParentY(z + 2)),
+				layer.getBiome(this.getParentX(x), this.getParentY(z))
 		);
 	}
 }

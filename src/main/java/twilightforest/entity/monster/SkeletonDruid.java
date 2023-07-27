@@ -74,7 +74,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 
 	@Override
 	public void reassessWeaponGoal() {
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			this.goalSelector.removeGoal(this.rangedAttackGoal);
 
 			if (this.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof HoeItem) {
@@ -99,7 +99,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 	@Override
 	public void performRangedAttack(LivingEntity attackTarget, float extraDamage) {
 		if (this.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof HoeItem) {
-			NatureBolt natureBolt = new NatureBolt(this.getLevel(), this);
+			NatureBolt natureBolt = new NatureBolt(this.level(), this);
 			playSound(TFSounds.SKELETON_DRUID_SHOOT.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 
 			double tx = attackTarget.getX() - this.getX();
@@ -107,7 +107,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 			double tz = attackTarget.getZ() - this.getZ();
 			float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.2F;
 			natureBolt.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
-			this.getLevel().addFreshEntity(natureBolt);
+			this.level().addFreshEntity(natureBolt);
 		} else if (!this.getItemInHand(InteractionHand.MAIN_HAND).is(Items.STICK)) {
 			super.performRangedAttack(attackTarget, extraDamage);
 		}
@@ -161,7 +161,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 	@Override
 	public void setBaby(boolean shouldBaby) {
 		this.getEntityData().set(DATA_BABY_ID, shouldBaby);
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
 			attributeinstance.removeModifier(SPEED_MODIFIER_BABY);
 			if (shouldBaby) {

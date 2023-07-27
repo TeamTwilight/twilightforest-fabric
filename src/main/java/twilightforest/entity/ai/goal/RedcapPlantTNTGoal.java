@@ -12,8 +12,8 @@ import twilightforest.entity.monster.Redcap;
 
 public class RedcapPlantTNTGoal extends RedcapBaseGoal {
 
-	public RedcapPlantTNTGoal(Redcap entityTFRedcap) {
-		super(entityTFRedcap);
+	public RedcapPlantTNTGoal(Redcap redcap) {
+		super(redcap);
 	}
 
 	@Override
@@ -22,10 +22,10 @@ public class RedcapPlantTNTGoal extends RedcapBaseGoal {
 		return attackTarget != null
 				&& !this.redcap.heldTNT.isEmpty()
 				&& this.redcap.distanceToSqr(attackTarget) < 25
-				&& !isTargetLookingAtMe(attackTarget)
-				&& this.redcap.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)
-				&& !isLitTNTNearby(8)
-				&& findBlockTNTNearby(5) == null;
+				&& !this.isTargetLookingAtMe(attackTarget)
+				&& this.redcap.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)
+				&& !this.isLitTNTNearby(8)
+				&& this.findBlockTNTNearby(5) == null;
 	}
 
 	@Override
@@ -34,10 +34,10 @@ public class RedcapPlantTNTGoal extends RedcapBaseGoal {
 
 		this.redcap.setItemSlot(EquipmentSlot.MAINHAND, this.redcap.heldTNT);
 
-		if (this.redcap.getLevel().isEmptyBlock(entityPos)) {
+		if (this.redcap.level().isEmptyBlock(entityPos)) {
 			this.redcap.heldTNT.shrink(1);
 			this.redcap.playAmbientSound();
-			this.redcap.getLevel().setBlockAndUpdate(entityPos, Blocks.TNT.defaultBlockState());
+			this.redcap.level().setBlockAndUpdate(entityPos, Blocks.TNT.defaultBlockState());
 			this.redcap.gameEvent(GameEvent.BLOCK_PLACE);
 		}
 	}

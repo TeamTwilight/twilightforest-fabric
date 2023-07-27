@@ -1,5 +1,5 @@
 {
-  "parent": "twilightforest:troll",
+  "parent": "twilightforest:progress_merge",
   "criteria": {
     "beans": {
       "conditions": {
@@ -15,18 +15,26 @@
     },
     "use_beans": {
       "conditions": {
-        "item": {
-          "items": [
-            "twilightforest:magic_beans"
-          ]
-        },
-        "location": {
-          "block": {
-            "blocks": [
-              "twilightforest:uberous_soil"
-            ]
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "twilightforest:uberous_soil"
+                ]
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "items": [
+                "twilightforest:magic_beans"
+              ]
+            }
           }
-        }
+        ]
       },
       "trigger": "minecraft:item_used_on_block"
     }
@@ -58,5 +66,6 @@
     [
       "use_beans"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

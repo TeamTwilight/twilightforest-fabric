@@ -30,16 +30,16 @@ import java.util.function.Consumer;
 public class TFAdvancementGenerator extends FabricAdvancementProvider {
 
 	private static final EntityType<?>[] TF_KILLABLE = new EntityType<?>[]{TFEntities.ADHERENT.get(), TFEntities.ARMORED_GIANT.get(), TFEntities.BIGHORN_SHEEP.get(), TFEntities.BLOCKCHAIN_GOBLIN.get(), TFEntities.DWARF_RABBIT.get(), TFEntities.DEATH_TOME.get(), TFEntities.DEER.get(), TFEntities.FIRE_BEETLE.get(), TFEntities.GIANT_MINER.get(), TFEntities.LOWER_GOBLIN_KNIGHT.get(), TFEntities.UPPER_GOBLIN_KNIGHT.get(), TFEntities.HARBINGER_CUBE.get(), TFEntities.HEDGE_SPIDER.get(), TFEntities.HELMET_CRAB.get(), TFEntities.HOSTILE_WOLF.get(), TFEntities.HYDRA.get(), TFEntities.KING_SPIDER.get(), TFEntities.KNIGHT_PHANTOM.get(), TFEntities.KOBOLD.get(), TFEntities.LICH.get(), TFEntities.LICH_MINION.get(), TFEntities.MAZE_SLIME.get(), TFEntities.CARMINITE_GHASTLING.get(), TFEntities.MINOSHROOM.get(), TFEntities.MINOTAUR.get(), TFEntities.MIST_WOLF.get(), TFEntities.MOSQUITO_SWARM.get(), TFEntities.NAGA.get(), TFEntities.PENGUIN.get(), TFEntities.PINCH_BEETLE.get(), TFEntities.PLATEAU_BOSS.get(), TFEntities.QUEST_RAM.get(), TFEntities.RAVEN.get(), TFEntities.REDCAP.get(), TFEntities.REDCAP_SAPPER.get(), TFEntities.SKELETON_DRUID.get(), TFEntities.SLIME_BEETLE.get(), TFEntities.SNOW_GUARDIAN.get(), TFEntities.SNOW_QUEEN.get(), TFEntities.SQUIRREL.get(), TFEntities.STABLE_ICE_CORE.get(), TFEntities.SWARM_SPIDER.get(), TFEntities.TINY_BIRD.get(), TFEntities.CARMINITE_BROODLING.get(), TFEntities.CARMINITE_GHASTGUARD.get(), TFEntities.CARMINITE_GOLEM.get(), TFEntities.TOWERWOOD_BORER.get(), TFEntities.TROLL.get(), TFEntities.UNSTABLE_ICE_CORE.get(), TFEntities.UR_GHAST.get(), TFEntities.BOAR.get(), TFEntities.WINTER_WOLF.get(), TFEntities.WRAITH.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get()};
-	//man this is a pain
+
 	private static final ItemLike[] DENDROLOGIST_BLOCKS = new ItemLike[]{
-			TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.TWILIGHT_OAK_SAPLING.get(), TFBlocks.TWILIGHT_OAK_PLANKS.get(), TFBlocks.TWILIGHT_OAK_SLAB.get(), TFBlocks.TWILIGHT_OAK_STAIRS.get(), TFBlocks.TWILIGHT_OAK_BUTTON.get(), TFBlocks.TWILIGHT_OAK_FENCE.get(), TFBlocks.TWILIGHT_OAK_GATE.get(), TFBlocks.TWILIGHT_OAK_PLATE.get(), TFBlocks.TWILIGHT_OAK_DOOR.get(), TFBlocks.TWILIGHT_OAK_TRAPDOOR.get(), TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.TWILIGHT_OAK_BANISTER.get(), TFItems.TWILIGHT_OAK_BOAT.get(), TFItems.TWILIGHT_OAK_CHEST_BOAT.get(),
-			TFBlocks.CANOPY_LOG.get(), TFBlocks.CANOPY_WOOD.get(), TFBlocks.STRIPPED_CANOPY_LOG.get(), TFBlocks.STRIPPED_CANOPY_WOOD.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.CANOPY_LEAVES.get(), TFBlocks.CANOPY_SAPLING.get(), TFBlocks.CANOPY_PLANKS.get(), TFBlocks.CANOPY_SLAB.get(), TFBlocks.CANOPY_STAIRS.get(), TFBlocks.CANOPY_BUTTON.get(), TFBlocks.CANOPY_FENCE.get(), TFBlocks.CANOPY_GATE.get(), TFBlocks.CANOPY_PLATE.get(), TFBlocks.CANOPY_DOOR.get(), TFBlocks.CANOPY_TRAPDOOR.get(), TFBlocks.CANOPY_SIGN.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.CANOPY_BANISTER.get(), TFBlocks.CANOPY_BOOKSHELF.get(), TFBlocks.EMPTY_CANOPY_BOOKSHELF.get(), TFItems.CANOPY_BOAT.get(), TFItems.CANOPY_CHEST_BOAT.get(),
-			TFBlocks.MANGROVE_LOG.get(), TFBlocks.MANGROVE_WOOD.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get(), TFBlocks.STRIPPED_MANGROVE_WOOD.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.MANGROVE_SAPLING.get(), TFBlocks.MANGROVE_PLANKS.get(), TFBlocks.MANGROVE_SLAB.get(), TFBlocks.MANGROVE_STAIRS.get(), TFBlocks.MANGROVE_BUTTON.get(), TFBlocks.MANGROVE_FENCE.get(), TFBlocks.MANGROVE_GATE.get(), TFBlocks.MANGROVE_PLATE.get(), TFBlocks.MANGROVE_DOOR.get(), TFBlocks.MANGROVE_TRAPDOOR.get(), TFBlocks.MANGROVE_SIGN.get(), TFBlocks.MANGROVE_CHEST.get(), TFBlocks.MANGROVE_BANISTER.get(), TFItems.MANGROVE_BOAT.get(), TFItems.MANGROVE_CHEST_BOAT.get(),
-			TFBlocks.DARK_LOG.get(), TFBlocks.DARK_WOOD.get(), TFBlocks.STRIPPED_DARK_LOG.get(), TFBlocks.STRIPPED_DARK_WOOD.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.DARKWOOD_SAPLING.get(), TFBlocks.DARK_PLANKS.get(), TFBlocks.DARK_SLAB.get(), TFBlocks.DARK_STAIRS.get(), TFBlocks.DARK_BUTTON.get(), TFBlocks.DARK_FENCE.get(), TFBlocks.DARK_GATE.get(), TFBlocks.DARK_PLATE.get(), TFBlocks.DARK_DOOR.get(), TFBlocks.DARK_TRAPDOOR.get(), TFBlocks.DARKWOOD_SIGN.get(), TFBlocks.DARKWOOD_CHEST.get(), TFBlocks.DARKWOOD_BANISTER.get(), TFItems.DARKWOOD_BOAT.get(), TFItems.DARKWOOD_CHEST_BOAT.get(),
-			TFBlocks.TIME_LOG.get(), TFBlocks.TIME_WOOD.get(), TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.STRIPPED_TIME_WOOD.get(), TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.TIME_LEAVES.get(), TFBlocks.TIME_SAPLING.get(), TFBlocks.TIME_PLANKS.get(), TFBlocks.TIME_SLAB.get(), TFBlocks.TIME_STAIRS.get(), TFBlocks.TIME_BUTTON.get(), TFBlocks.TIME_FENCE.get(), TFBlocks.TIME_GATE.get(), TFBlocks.TIME_PLATE.get(), TFBlocks.TIME_DOOR.get(), TFBlocks.TIME_TRAPDOOR.get(), TFBlocks.TIME_SIGN.get(), TFBlocks.TIME_CHEST.get(), TFBlocks.TIME_BANISTER.get(), TFItems.TIME_BOAT.get(), TFItems.TIME_CHEST_BOAT.get(),
-			TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.TRANSFORMATION_WOOD.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.TRANSFORMATION_LEAVES.get(), TFBlocks.TRANSFORMATION_SAPLING.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), TFBlocks.TRANSFORMATION_SLAB.get(), TFBlocks.TRANSFORMATION_STAIRS.get(), TFBlocks.TRANSFORMATION_BUTTON.get(), TFBlocks.TRANSFORMATION_FENCE.get(), TFBlocks.TRANSFORMATION_GATE.get(), TFBlocks.TRANSFORMATION_PLATE.get(), TFBlocks.TRANSFORMATION_DOOR.get(), TFBlocks.TRANSFORMATION_TRAPDOOR.get(), TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TRANSFORMATION_CHEST.get(), TFBlocks.TRANSFORMATION_BANISTER.get(), TFItems.TRANSFORMATION_BOAT.get(), TFItems.TRANSFORMATION_CHEST_BOAT.get(),
-			TFBlocks.MINING_LOG.get(), TFBlocks.MINING_WOOD.get(), TFBlocks.STRIPPED_MINING_LOG.get(), TFBlocks.STRIPPED_MINING_WOOD.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.MINING_LEAVES.get(), TFBlocks.MINING_SAPLING.get(), TFBlocks.MINING_PLANKS.get(), TFBlocks.MINING_SLAB.get(), TFBlocks.MINING_STAIRS.get(), TFBlocks.MINING_BUTTON.get(), TFBlocks.MINING_FENCE.get(), TFBlocks.MINING_GATE.get(), TFBlocks.MINING_PLATE.get(), TFBlocks.MINING_DOOR.get(), TFBlocks.MINING_TRAPDOOR.get(), TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_CHEST.get(), TFBlocks.MINING_BANISTER.get(), TFItems.MINING_BOAT.get(), TFItems.MINING_CHEST_BOAT.get(),
-			TFBlocks.SORTING_LOG.get(), TFBlocks.SORTING_WOOD.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_WOOD.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(), TFBlocks.SORTING_LEAVES.get(), TFBlocks.SORTING_SAPLING.get(), TFBlocks.SORTING_PLANKS.get(), TFBlocks.SORTING_SLAB.get(), TFBlocks.SORTING_STAIRS.get(), TFBlocks.SORTING_BUTTON.get(), TFBlocks.SORTING_FENCE.get(), TFBlocks.SORTING_GATE.get(), TFBlocks.SORTING_PLATE.get(), TFBlocks.SORTING_DOOR.get(), TFBlocks.SORTING_TRAPDOOR.get(), TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_CHEST.get(), TFBlocks.SORTING_BANISTER.get(), TFItems.SORTING_BOAT.get(), TFItems.SORTING_CHEST_BOAT.get(),
+			TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get(), TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.TWILIGHT_OAK_SAPLING.get(), TFBlocks.TWILIGHT_OAK_PLANKS.get(), TFBlocks.TWILIGHT_OAK_SLAB.get(), TFBlocks.TWILIGHT_OAK_STAIRS.get(), TFBlocks.TWILIGHT_OAK_BUTTON.get(), TFBlocks.TWILIGHT_OAK_FENCE.get(), TFBlocks.TWILIGHT_OAK_GATE.get(), TFBlocks.TWILIGHT_OAK_PLATE.get(), TFBlocks.TWILIGHT_OAK_DOOR.get(), TFBlocks.TWILIGHT_OAK_TRAPDOOR.get(), TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.TWILIGHT_OAK_BANISTER.get(), TFItems.TWILIGHT_OAK_BOAT.get(), TFItems.TWILIGHT_OAK_CHEST_BOAT.get(),
+			TFBlocks.CANOPY_LOG.get(), TFBlocks.CANOPY_WOOD.get(), TFBlocks.STRIPPED_CANOPY_LOG.get(), TFBlocks.STRIPPED_CANOPY_WOOD.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.CANOPY_LEAVES.get(), TFBlocks.CANOPY_SAPLING.get(), TFBlocks.CANOPY_PLANKS.get(), TFBlocks.CANOPY_SLAB.get(), TFBlocks.CANOPY_STAIRS.get(), TFBlocks.CANOPY_BUTTON.get(), TFBlocks.CANOPY_FENCE.get(), TFBlocks.CANOPY_GATE.get(), TFBlocks.CANOPY_PLATE.get(), TFBlocks.CANOPY_DOOR.get(), TFBlocks.CANOPY_TRAPDOOR.get(), TFBlocks.CANOPY_SIGN.get(), TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.CANOPY_BANISTER.get(), TFBlocks.CANOPY_BOOKSHELF.get(), TFBlocks.EMPTY_CANOPY_BOOKSHELF.get(), TFItems.CANOPY_BOAT.get(), TFItems.CANOPY_CHEST_BOAT.get(),
+			TFBlocks.MANGROVE_LOG.get(), TFBlocks.MANGROVE_WOOD.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get(), TFBlocks.STRIPPED_MANGROVE_WOOD.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.MANGROVE_SAPLING.get(), TFBlocks.MANGROVE_PLANKS.get(), TFBlocks.MANGROVE_SLAB.get(), TFBlocks.MANGROVE_STAIRS.get(), TFBlocks.MANGROVE_BUTTON.get(), TFBlocks.MANGROVE_FENCE.get(), TFBlocks.MANGROVE_GATE.get(), TFBlocks.MANGROVE_PLATE.get(), TFBlocks.MANGROVE_DOOR.get(), TFBlocks.MANGROVE_TRAPDOOR.get(), TFBlocks.MANGROVE_SIGN.get(), TFBlocks.MANGROVE_HANGING_SIGN.get(), TFBlocks.MANGROVE_CHEST.get(), TFBlocks.MANGROVE_BANISTER.get(), TFItems.MANGROVE_BOAT.get(), TFItems.MANGROVE_CHEST_BOAT.get(),
+			TFBlocks.DARK_LOG.get(), TFBlocks.DARK_WOOD.get(), TFBlocks.STRIPPED_DARK_LOG.get(), TFBlocks.STRIPPED_DARK_WOOD.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.DARKWOOD_SAPLING.get(), TFBlocks.DARK_PLANKS.get(), TFBlocks.DARK_SLAB.get(), TFBlocks.DARK_STAIRS.get(), TFBlocks.DARK_BUTTON.get(), TFBlocks.DARK_FENCE.get(), TFBlocks.DARK_GATE.get(), TFBlocks.DARK_PLATE.get(), TFBlocks.DARK_DOOR.get(), TFBlocks.DARK_TRAPDOOR.get(), TFBlocks.DARK_SIGN.get(), TFBlocks.DARK_HANGING_SIGN.get(), TFBlocks.DARK_CHEST.get(), TFBlocks.DARK_BANISTER.get(), TFItems.DARK_BOAT.get(), TFItems.DARK_CHEST_BOAT.get(),
+			TFBlocks.TIME_LOG.get(), TFBlocks.TIME_WOOD.get(), TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.STRIPPED_TIME_WOOD.get(), TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.TIME_LEAVES.get(), TFBlocks.TIME_SAPLING.get(), TFBlocks.TIME_PLANKS.get(), TFBlocks.TIME_SLAB.get(), TFBlocks.TIME_STAIRS.get(), TFBlocks.TIME_BUTTON.get(), TFBlocks.TIME_FENCE.get(), TFBlocks.TIME_GATE.get(), TFBlocks.TIME_PLATE.get(), TFBlocks.TIME_DOOR.get(), TFBlocks.TIME_TRAPDOOR.get(), TFBlocks.TIME_SIGN.get(), TFBlocks.TIME_HANGING_SIGN.get(), TFBlocks.TIME_CHEST.get(), TFBlocks.TIME_BANISTER.get(), TFItems.TIME_BOAT.get(), TFItems.TIME_CHEST_BOAT.get(),
+			TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.TRANSFORMATION_WOOD.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.TRANSFORMATION_LEAVES.get(), TFBlocks.TRANSFORMATION_SAPLING.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), TFBlocks.TRANSFORMATION_SLAB.get(), TFBlocks.TRANSFORMATION_STAIRS.get(), TFBlocks.TRANSFORMATION_BUTTON.get(), TFBlocks.TRANSFORMATION_FENCE.get(), TFBlocks.TRANSFORMATION_GATE.get(), TFBlocks.TRANSFORMATION_PLATE.get(), TFBlocks.TRANSFORMATION_DOOR.get(), TFBlocks.TRANSFORMATION_TRAPDOOR.get(), TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), TFBlocks.TRANSFORMATION_CHEST.get(), TFBlocks.TRANSFORMATION_BANISTER.get(), TFItems.TRANSFORMATION_BOAT.get(), TFItems.TRANSFORMATION_CHEST_BOAT.get(),
+			TFBlocks.MINING_LOG.get(), TFBlocks.MINING_WOOD.get(), TFBlocks.STRIPPED_MINING_LOG.get(), TFBlocks.STRIPPED_MINING_WOOD.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.MINING_LEAVES.get(), TFBlocks.MINING_SAPLING.get(), TFBlocks.MINING_PLANKS.get(), TFBlocks.MINING_SLAB.get(), TFBlocks.MINING_STAIRS.get(), TFBlocks.MINING_BUTTON.get(), TFBlocks.MINING_FENCE.get(), TFBlocks.MINING_GATE.get(), TFBlocks.MINING_PLATE.get(), TFBlocks.MINING_DOOR.get(), TFBlocks.MINING_TRAPDOOR.get(), TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_HANGING_SIGN.get(), TFBlocks.MINING_CHEST.get(), TFBlocks.MINING_BANISTER.get(), TFItems.MINING_BOAT.get(), TFItems.MINING_CHEST_BOAT.get(),
+			TFBlocks.SORTING_LOG.get(), TFBlocks.SORTING_WOOD.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_WOOD.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get(), TFBlocks.SORTING_LEAVES.get(), TFBlocks.SORTING_SAPLING.get(), TFBlocks.SORTING_PLANKS.get(), TFBlocks.SORTING_SLAB.get(), TFBlocks.SORTING_STAIRS.get(), TFBlocks.SORTING_BUTTON.get(), TFBlocks.SORTING_FENCE.get(), TFBlocks.SORTING_GATE.get(), TFBlocks.SORTING_PLATE.get(), TFBlocks.SORTING_DOOR.get(), TFBlocks.SORTING_TRAPDOOR.get(), TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_CHEST.get(), TFBlocks.SORTING_BANISTER.get(), TFItems.SORTING_BOAT.get(), TFItems.SORTING_CHEST_BOAT.get(),
 			TFBlocks.TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get(), TFBlocks.MOSSY_TOWERWOOD.get(), TFBlocks.ENCASED_TOWERWOOD.get(),
 			TFBlocks.ROOT_BLOCK.get(), TFBlocks.ROOT_STRAND.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFItems.LIVEROOT.get(), TFBlocks.HOLLOW_OAK_SAPLING.get(), TFBlocks.RAINBOW_OAK_SAPLING.get(), TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.GIANT_LOG.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.HUGE_STALK.get(), TFBlocks.BEANSTALK_LEAVES.get(), TFBlocks.THORN_LEAVES.get(), TFBlocks.THORN_ROSE.get(), TFBlocks.HEDGE.get(), TFBlocks.FALLEN_LEAVES.get(), TFBlocks.MANGROVE_ROOT.get(),
 	};
@@ -131,7 +131,7 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 						Component.translatable("advancement.twilightforest.progress_trophy_pedestal"),
 						Component.translatable("advancement.twilightforest.progress_trophy_pedestal.desc"),
 						null, FrameType.GOAL, true, true, false)
-				.addCriterion("trophy_pedestal", new TrophyPedestalTrigger.Instance(EntityPredicate.Composite.ANY))
+				.addCriterion("trophy_pedestal", new TrophyPedestalTrigger.Instance(ContextAwarePredicate.ANY))
 				.addCriterion("kill_lich", this.advancementTrigger(lich))
 				.requirements(RequirementsStrategy.AND)
 				.save(consumer, "twilightforest:progress_trophy_pedestal");
@@ -212,7 +212,7 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 				.addCriterion("snow_queen", this.advancementTrigger(snow_queen))
 				.save(consumer, "twilightforest:progress_merge");
 
-		Advancement troll = Advancement.Builder.advancement().parent(merge).display(
+		Advancement.Builder.advancement().parent(merge).display(
 						TFItems.MAGIC_BEANS.get(),
 						Component.translatable("advancement.twilightforest.troll"),
 						Component.translatable("advancement.twilightforest.troll.desc",
@@ -221,14 +221,14 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 				.addCriterion("troll", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.TROLL.get()).located(LocationPredicate.inStructure(TFStructures.TROLL_CAVE))))
 				.save(consumer, "twilightforest:troll");
 
-		Advancement beanstalk = Advancement.Builder.advancement().parent(troll).display(
+		Advancement beanstalk = Advancement.Builder.advancement().parent(merge).display(
 						TFBlocks.HUGE_STALK.get(),
 						Component.translatable("advancement.twilightforest.beanstalk"),
 						Component.translatable("advancement.twilightforest.beanstalk.desc",
 								Component.translatable(TFItems.MAGIC_BEANS.get().getDescriptionId())),
 						null, FrameType.GOAL, true, true, false)
 				.addCriterion("beans", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.MAGIC_BEANS.get()))
-				.addCriterion("use_beans", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(TFBlocks.UBEROUS_SOIL.get()).build()), ItemPredicate.Builder.item().of(TFItems.MAGIC_BEANS.get())))
+				.addCriterion("use_beans", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(TFBlocks.UBEROUS_SOIL.get()).build()), ItemPredicate.Builder.item().of(TFItems.MAGIC_BEANS.get())))
 				.save(consumer, "twilightforest:beanstalk");
 
 		Advancement giants = Advancement.Builder.advancement().parent(beanstalk).display(
@@ -252,23 +252,32 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 				.addCriterion("previous_progression", this.advancementTrigger(merge))
 				.save(consumer, "twilightforest:progress_troll");
 
-		Advancement thornlands = Advancement.Builder.advancement().parent(lamp).display(
-						TFBlocks.BROWN_THORNS.get(),
-						Component.translatable("advancement.twilightforest.progress_thorns"),
-						Component.translatable("advancement.twilightforest.progress_thorns.desc"),
-						null, FrameType.GOAL, true, true, false)
-				.addCriterion("castle", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(TFStructures.FINAL_CASTLE)))
+		Advancement.Builder.advancement().parent(lamp).display(
+				Items.STRUCTURE_VOID,
+				Component.translatable("advancement.twilightforest.progression_end"),
+				Component.translatable("advancement.twilightforest.progression_end.desc"),
+				null, FrameType.GOAL, true, false, false)
 				.addCriterion("previous_progression", this.advancementTrigger(lamp))
-				.save(consumer, "twilightforest:progress_thorns");
+				.addCriterion("plateau", PlayerTrigger.TriggerInstance.located(LocationPredicate.inBiome(TFBiomes.FINAL_PLATEAU)))
+				.save(consumer, "twilightforest:progression_end");
 
-		Advancement.Builder.advancement().parent(thornlands).display(
-						TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
-						Component.translatable("advancement.twilightforest.progress_castle"),
-						Component.translatable("advancement.twilightforest.progress_castle.desc"),
-						null, FrameType.GOAL, true, true, false)
-				.addCriterion("castle", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(TFStructures.FINAL_CASTLE)))
-				.addCriterion("previous_progression", this.advancementTrigger(thornlands))
-				.save(consumer, "twilightforest:progress_castle");
+//		Advancement thornlands = Advancement.Builder.advancement().parent(lamp).display(
+//						TFBlocks.BROWN_THORNS.get(),
+//						Component.translatable("advancement.twilightforest.progress_thorns"),
+//						Component.translatable("advancement.twilightforest.progress_thorns.desc"),
+//						null, FrameType.GOAL, true, true, false)
+//				.addCriterion("castle", PlayerTrigger.TriggerInstance.located(LocationPredicate.inBiome(TFBiomes.FINAL_PLATEAU)))
+//				.addCriterion("previous_progression", this.advancementTrigger(lamp))
+//				.save(consumer, "twilightforest:progress_thorns");
+//
+//		Advancement.Builder.advancement().parent(thornlands).display(
+//						TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
+//						Component.translatable("advancement.twilightforest.progress_castle"),
+//						Component.translatable("advancement.twilightforest.progress_castle.desc"),
+//						null, FrameType.GOAL, true, true, false)
+//				.addCriterion("castle", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(TFStructures.FINAL_CASTLE)))
+//				.addCriterion("previous_progression", this.advancementTrigger(thornlands))
+//				.save(consumer, "twilightforest:progress_castle");
 
 		Advancement.Builder.advancement().parent(root).display(
 						TFBlocks.QUEST_RAM_TROPHY.get(),
@@ -285,7 +294,7 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 						Component.translatable("advancement.twilightforest.kill_cicada"),
 						Component.translatable("advancement.twilightforest.kill_cicada.desc",
 								Component.translatable(TFBlocks.CICADA.get().getDescriptionId())),
-						null, FrameType.TASK, true, true, true)
+						null, FrameType.TASK, true, false, true)
 				.addCriterion("kill_cicada", KillBugTrigger.Instance.killBug(TFBlocks.CICADA.get()))
 				.save(consumer, "twilightforest:kill_cicada");
 
@@ -469,7 +478,7 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 						Component.translatable("advancement.twilightforest.experiment_115_2"),
 						Component.translatable("advancement.twilightforest.experiment_115_2.desc"),
 						null, FrameType.CHALLENGE, true, true, true)
-				.addCriterion("place_complete_e115", ItemInteractWithBlockTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(TFBlocks.EXPERIMENT_115.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(Experiment115Block.REGENERATE, true).build()).build()), ItemPredicate.Builder.item().of(Items.REDSTONE)))
+				.addCriterion("place_complete_e115", ItemUsedOnLocationTrigger.TriggerInstance.itemUsedOnBlock(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(TFBlocks.EXPERIMENT_115.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(Experiment115Block.REGENERATE, true).build()).build()), ItemPredicate.Builder.item().of(Items.REDSTONE)))
 				.save(consumer, "twilightforest:experiment_115_self_replenishing");
 
 		Advancement.Builder.advancement().parent(yeti).display(
@@ -549,6 +558,6 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 	}
 
 	private PlayerTrigger.TriggerInstance advancementTrigger(String name) {
-		return new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), EntityPredicate.Composite.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()));
+		return new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), ContextAwarePredicate.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()));
 	}
 }

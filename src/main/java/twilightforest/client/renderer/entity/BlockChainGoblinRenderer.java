@@ -3,9 +3,6 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import org.joml.Vector3f;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -22,9 +19,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
-import twilightforest.client.model.entity.BlockChainGoblinModel;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
+import twilightforest.client.model.entity.BlockChainGoblinModel;
 import twilightforest.entity.monster.BlockChainGoblin;
 
 @Environment(EnvType.CLIENT)
@@ -62,11 +59,10 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Bloc
 		this.model.renderToBuffer(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.popPose();
 
-		if (goblin.isAlive()) {
-			BlockChainRenderer.renderChain(goblin, goblin.chain1, yaw, partialTicks, stack, buffer, light, chainModel);
-			BlockChainRenderer.renderChain(goblin, goblin.chain2, yaw, partialTicks, stack, buffer, light, chainModel);
-			BlockChainRenderer.renderChain(goblin, goblin.chain3, yaw, partialTicks, stack, buffer, light, chainModel);
-		}
+		BlockChainRenderer.renderChain(goblin, goblin.chain1, yaw, partialTicks, stack, buffer, light, chainModel);
+		BlockChainRenderer.renderChain(goblin, goblin.chain2, yaw, partialTicks, stack, buffer, light, chainModel);
+		BlockChainRenderer.renderChain(goblin, goblin.chain3, yaw, partialTicks, stack, buffer, light, chainModel);
+
 		//when you allowed debugBoundingBox, you can see Hitbox
 		if (this.entityRenderDispatcher.shouldRenderHitBoxes() && !goblin.block.isInvisible() && !Minecraft.getInstance().showOnlyReducedInfo()) {
 			stack.pushPose();

@@ -38,6 +38,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
@@ -47,6 +48,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import twilightforest.block.CloudBlock;
 import twilightforest.client.TFClientSetup;
 import twilightforest.events.ToolEvents;
 import twilightforest.init.TFBlocks;
@@ -173,7 +175,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(PoseStack, float, long, boolean, Camera, GameRenderer, LightTexture, Matrix4f)}<br>
 	 * [AFTER {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
-	public static Iterable<Entity> renderMutiparts(Iterable<Entity> iter) {
+	public static Iterable<Entity> renderMultiparts(Iterable<Entity> iter) {
 		List<Entity> list = new ArrayList<>();
 		iter.forEach(entity -> {
 			list.add(entity);
@@ -251,12 +253,12 @@ public class ASMHooks {
 		ItemStack heldStack = player.getItemInHand(hand);
 		if (ToolEvents.hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 			UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
-			AttributeInstance reachDistance = player.getAttribute(PortingLibAttributes.REACH_DISTANCE);
+			AttributeInstance reachDistance = player.getAttribute(ForgeMod.BLOCK_REACH.get());
 			if (reachDistance != null) {
 				AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
 				if (giantModifier != null) {
 					reachDistance.removeModifier(giantModifier);
-					double reach = player.getAttributeValue(PortingLibAttributes.REACH_DISTANCE);
+					double reach = player.getAttributeValue(ForgeMod.BLOCK_REACH.get());
 					double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
 					BlockHitResult result = getPlayerPOVHitResultForReach(level, player, trueReach, fluidMode);
 					reachDistance.addTransientModifier(giantModifier);
@@ -303,4 +305,24 @@ public class ASMHooks {
 		return o;
 	}
 
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.level.Level#isRainingAt(BlockPos)}<br>
+	 * [BEFORE ALOAD]
+	 */
+	public static boolean cloud(boolean isRaining, Level level, BlockPos pos) {
+		if (!isRaining) {
+			for (int y = pos.getY(); y < level.getMaxBuildHeight(); y++) {
+				BlockPos newPos = pos.atY(y);
+				BlockState state = level.getBlockState(newPos);
+				if (state.getBlock() instanceof CloudBlock cloudBlock && cloudBlock.getCurrentPrecipitation(newPos, level, level.getRainLevel(1.0F)).getLeft() == Biome.Precipitation.RAIN) {
+					return true;
+				}
+				if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(level.getBlockState(newPos))) {
+					return false;
+				}
+			}
+		}
+		return isRaining;
+	}
 }

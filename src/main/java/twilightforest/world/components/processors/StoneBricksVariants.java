@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -25,25 +24,24 @@ public final class StoneBricksVariants extends StructureProcessor {
 
 	@Override
 	public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo originalBlock, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
-		RandomSource random = settings.getRandom(modifiedBlockInfo.pos);
+		RandomSource random = settings.getRandom(modifiedBlockInfo.pos());
 
 		// We use nextBoolean in other processors so this lets us re-seed deterministically
 		random.setSeed(random.nextLong() * 3);
 
-		BlockState state = modifiedBlockInfo.state;
-		Block block = state.getBlock();
+		BlockState state = modifiedBlockInfo.state();
 
-		if (block == Blocks.STONE_BRICKS && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos, random.nextBoolean() ? Blocks.MOSSY_STONE_BRICKS.defaultBlockState() : Blocks.CRACKED_STONE_BRICKS.defaultBlockState(), null);
+		if (state.is(Blocks.STONE_BRICKS) && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), random.nextBoolean() ? Blocks.MOSSY_STONE_BRICKS.defaultBlockState() : Blocks.CRACKED_STONE_BRICKS.defaultBlockState(), null);
 
-		if (block == Blocks.STONE_BRICK_STAIRS && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos, FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_STONE_BRICK_STAIRS), null);
+		if (state.is(Blocks.STONE_BRICK_STAIRS) && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_STONE_BRICK_STAIRS), null);
 
-		if (block == Blocks.STONE_BRICK_SLAB && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos, FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_STONE_BRICK_SLAB), null);
+		if (state.is(Blocks.STONE_BRICK_SLAB) && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_STONE_BRICK_SLAB), null);
 
-		if (block == Blocks.STONE_BRICK_WALL && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos, FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_STONE_BRICK_WALL), null);
+		if (state.is(Blocks.STONE_BRICK_WALL) && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_STONE_BRICK_WALL), null);
 
 		return modifiedBlockInfo;
 	}

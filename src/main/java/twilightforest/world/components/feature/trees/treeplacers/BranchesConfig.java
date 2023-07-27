@@ -3,7 +3,8 @@ package twilightforest.world.components.feature.trees.treeplacers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public final class BranchesConfig {
+public record BranchesConfig(int branchCount, int randomAddBranches, double length, double randomAddLength,
+                             double spacingYaw, double downwardsPitch) {
     public static final Codec<BranchesConfig> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.intRange(0, 16).fieldOf("count_minimum").forGetter(o -> o.branchCount),
@@ -17,52 +18,4 @@ public final class BranchesConfig {
             ).apply(instance, BranchesConfig::new)
     );
 
-    public final int branchCount;
-    public final int randomAddBranches;
-    public final double length;
-    public final double randomAddLength;
-    public final double spacingYaw;
-    public final double downwardsPitch;
-
-    public BranchesConfig(int branchCount, int randomAddBranches, double length, double randomAddLength, double spacingYaw, double downwardsPitch) {
-        this.branchCount = branchCount;
-        this.randomAddBranches = randomAddBranches;
-        this.length = length;
-        this.randomAddLength = randomAddLength;
-        this.spacingYaw = spacingYaw;
-        this.downwardsPitch = downwardsPitch;
-    }
-
-    public BranchesConfig(int branchCount, double length) {
-        this.branchCount = branchCount;
-        this.randomAddBranches = 0;
-        this.length = length;
-        this.randomAddLength = 0d;
-        this.spacingYaw = 0.3d;
-        this.downwardsPitch = 0.2d;
-    }
-
-    /*public int getBranchCount() {
-        return branchCount;
-    }
-
-    public int getRandomAddBranches() {
-        return randomAddBranches;//.orElse(0);
-    }
-
-    public double getLength() {
-        return length;
-    }
-
-    public double getRandomAddLength() {
-        return randomAddLength;//.orElse(0d);
-    }
-
-    public double getBranchRadians() {
-        return branchRadians;//.orElse(0.3d);
-    }
-
-    public double getBranchPitch() {
-        return branchPitch;//.orElse(0.2d);
-    }*/
 }

@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.util.LegacyLandmarkPlacements;
+import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.structures.start.TFStructureStart;
 
 import java.util.Optional;
@@ -35,7 +36,7 @@ public abstract class ConquerableStructure extends ProgressionStructure implemen
 
     @Override
     public StructureStart generate(RegistryAccess registryAccess, ChunkGenerator chunkGen, BiomeSource biomeSource, RandomState randomState, StructureTemplateManager templateManager, long seed, ChunkPos chunkPos, int references, LevelHeightAccessor heightAccessor, Predicate<Holder<Biome>> isValidBiome) {
-        return LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkPos) ? this.generateCustom(registryAccess, chunkGen, biomeSource, randomState, templateManager, seed, chunkPos, references, heightAccessor, isValidBiome) : StructureStart.INVALID_START;
+        return !(chunkGen.getBiomeSource() instanceof TFBiomeProvider) || LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkPos) ? this.generateCustom(registryAccess, chunkGen, biomeSource, randomState, templateManager, seed, chunkPos, references, heightAccessor, isValidBiome) : StructureStart.INVALID_START;
     }
 
     // [VANILLA COPY] Structure.generate

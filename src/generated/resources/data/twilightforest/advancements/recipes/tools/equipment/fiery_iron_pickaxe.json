@@ -28,5 +28,6 @@
     "recipes": [
       "twilightforest:equipment/fiery_iron_pickaxe"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

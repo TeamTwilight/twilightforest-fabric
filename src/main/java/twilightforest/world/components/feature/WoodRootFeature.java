@@ -14,8 +14,6 @@ import twilightforest.util.FeaturePlacers;
 import twilightforest.util.VoxelBresenhamIterator;
 import twilightforest.world.components.feature.config.RootConfig;
 
-import java.util.Random;
-
 public class WoodRootFeature extends Feature<RootConfig> {
 	public WoodRootFeature(Codec<RootConfig> configIn) {
 		super(configIn);

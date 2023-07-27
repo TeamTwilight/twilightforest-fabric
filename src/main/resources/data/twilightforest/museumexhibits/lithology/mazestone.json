@@ -1,0 +1,15 @@
+{
+  "collection": "museumcurator.collection.lithology",
+  "name": "museumcurator.lithology.twilightforest.mazestone",
+  "relativeTo": "museumcurator.lithology.twilightforest.nagastone",
+  "items": [
+    "twilightforest:mazestone",
+    "twilightforest:mazestone_brick",
+    "twilightforest:cracked_mazestone",
+    "twilightforest:mossy_mazestone",
+    "twilightforest:decorative_mazestone",
+    "twilightforest:cut_mazestone",
+    "twilightforest:mazestone_mosaic",
+    "twilightforest:mazestone_border"
+  ]
+}

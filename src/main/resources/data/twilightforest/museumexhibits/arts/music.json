@@ -1,0 +1,21 @@
+{
+  "collection": "museumcurator.collection.arts",
+  "name": "museumcurator.arts.music",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:jukebox",
+      "placement": "before",
+      "items": [
+        "twilightforest:music_disc_thread",
+        "twilightforest:music_disc_findings",
+        "twilightforest:music_disc_radiance",
+        "twilightforest:music_disc_steps",
+        "twilightforest:music_disc_motion",
+        "twilightforest:music_disc_wayfarer",
+        "twilightforest:music_disc_home",
+        "twilightforest:music_disc_maker",
+        "twilightforest:music_disc_superstitious"
+      ]
+    }
+  ]
+}

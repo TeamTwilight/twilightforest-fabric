@@ -35,35 +35,35 @@ import java.util.Map;
 public class MapBiomesCommand {
 	private static final DecimalFormat numberFormat = new DecimalFormat("#.00");
 
-	private static final HashMap<ResourceLocation, MapColor> BIOME2COLOR = new HashMap<>();
+	private static final HashMap<ResourceLocation, BiomeMapColor> BIOME2COLOR = new HashMap<>();
 
 	private static void init() {
 
 
-        BIOME2COLOR.put(TFBiomes.STREAM.location(), new MapColor(0, 0, 255));
-		BIOME2COLOR.put(TFBiomes.LAKE.location(), new MapColor(0, 0, 255));
-		BIOME2COLOR.put(TFBiomes.CLEARING.location(), new MapColor(132, 245, 130));
-		BIOME2COLOR.put(TFBiomes.OAK_SAVANNAH.location(), new MapColor(239, 245, 130));
-		BIOME2COLOR.put(TFBiomes.FOREST.location(), new MapColor(0, 255, 0));
-		BIOME2COLOR.put(TFBiomes.DENSE_FOREST.location(), new MapColor(0, 170, 0));
-		BIOME2COLOR.put(TFBiomes.FIREFLY_FOREST.location(), new MapColor(88, 252, 102));
-		BIOME2COLOR.put(TFBiomes.ENCHANTED_FOREST.location(), new MapColor(0, 255, 255));
-		BIOME2COLOR.put(TFBiomes.SPOOKY_FOREST.location(), new MapColor(119, 0, 255));
-		BIOME2COLOR.put(TFBiomes.MUSHROOM_FOREST.location(), new MapColor(204, 0, 139));
-		BIOME2COLOR.put(TFBiomes.DENSE_MUSHROOM_FOREST.location(), new MapColor(184, 48, 184));
+        BIOME2COLOR.put(TFBiomes.STREAM.location(), new BiomeMapColor(0, 0, 255));
+		BIOME2COLOR.put(TFBiomes.LAKE.location(), new BiomeMapColor(0, 0, 255));
+		BIOME2COLOR.put(TFBiomes.CLEARING.location(), new BiomeMapColor(132, 245, 130));
+		BIOME2COLOR.put(TFBiomes.OAK_SAVANNAH.location(), new BiomeMapColor(239, 245, 130));
+		BIOME2COLOR.put(TFBiomes.FOREST.location(), new BiomeMapColor(0, 255, 0));
+		BIOME2COLOR.put(TFBiomes.DENSE_FOREST.location(), new BiomeMapColor(0, 170, 0));
+		BIOME2COLOR.put(TFBiomes.FIREFLY_FOREST.location(), new BiomeMapColor(88, 252, 102));
+		BIOME2COLOR.put(TFBiomes.ENCHANTED_FOREST.location(), new BiomeMapColor(0, 255, 255));
+		BIOME2COLOR.put(TFBiomes.SPOOKY_FOREST.location(), new BiomeMapColor(119, 0, 255));
+		BIOME2COLOR.put(TFBiomes.MUSHROOM_FOREST.location(), new BiomeMapColor(204, 0, 139));
+		BIOME2COLOR.put(TFBiomes.DENSE_MUSHROOM_FOREST.location(), new BiomeMapColor(184, 48, 184));
 
-		BIOME2COLOR.put(TFBiomes.SWAMP.location(), new MapColor(0, 204, 187));
-		BIOME2COLOR.put(TFBiomes.FIRE_SWAMP.location(), new MapColor(140, 0, 0));
+		BIOME2COLOR.put(TFBiomes.SWAMP.location(), new BiomeMapColor(0, 204, 187));
+		BIOME2COLOR.put(TFBiomes.FIRE_SWAMP.location(), new BiomeMapColor(140, 0, 0));
 
-		BIOME2COLOR.put(TFBiomes.DARK_FOREST.location(), new MapColor(25, 61, 13));
-		BIOME2COLOR.put(TFBiomes.DARK_FOREST_CENTER.location(), new MapColor(157, 79, 0));
+		BIOME2COLOR.put(TFBiomes.DARK_FOREST.location(), new BiomeMapColor(25, 61, 13));
+		BIOME2COLOR.put(TFBiomes.DARK_FOREST_CENTER.location(), new BiomeMapColor(157, 79, 0));
 
-		BIOME2COLOR.put(TFBiomes.SNOWY_FOREST.location(), new MapColor(255, 255, 255));
-		BIOME2COLOR.put(TFBiomes.GLACIER.location(), new MapColor(130, 191, 245));
+		BIOME2COLOR.put(TFBiomes.SNOWY_FOREST.location(), new BiomeMapColor(255, 255, 255));
+		BIOME2COLOR.put(TFBiomes.GLACIER.location(), new BiomeMapColor(130, 191, 245));
 
-		BIOME2COLOR.put(TFBiomes.HIGHLANDS.location(), new MapColor(100, 65, 0));
-		BIOME2COLOR.put(TFBiomes.THORNLANDS.location(), new MapColor(128, 100, 90));
-		BIOME2COLOR.put(TFBiomes.FINAL_PLATEAU.location(), new MapColor(128, 128, 128));
+		BIOME2COLOR.put(TFBiomes.HIGHLANDS.location(), new BiomeMapColor(100, 65, 0));
+		BIOME2COLOR.put(TFBiomes.THORNLANDS.location(), new BiomeMapColor(128, 100, 90));
+		BIOME2COLOR.put(TFBiomes.FINAL_PLATEAU.location(), new BiomeMapColor(128, 128, 128));
 	}
 
 	public static LiteralArgumentBuilder<CommandSourceStack> register() {
@@ -100,7 +100,7 @@ public class MapBiomesCommand {
 				ServerLevel level = source.getLevel();
 				Biome b = level.getNoiseBiome(x - (img.getWidth() / 2), 0, z - (img.getHeight() / 2)).value();
 				ResourceLocation key = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b);
-				MapColor color = BIOME2COLOR.get(key);
+				BiomeMapColor color = BIOME2COLOR.get(key);
 
 				if (color == null) {
 					int colorInt = MagicMapItem.getBiomeColor(source.getLevel(), b);
@@ -108,7 +108,7 @@ public class MapBiomesCommand {
 					if (colorInt == 0)
 						colorInt = b.getGrassColor(0, 0);
 
-					BIOME2COLOR.put(key, color = new MapColor(colorInt | 0xFF000000));
+					BIOME2COLOR.put(key, color = new BiomeMapColor(colorInt | 0xFF000000));
 				}
 
 				if (!biomeCount.containsKey(b)) {
@@ -123,14 +123,15 @@ public class MapBiomesCommand {
 
 			//send a progress update to let people know the server isn't dying
 			if (x % progressUpdate == 0) {
-				source.sendSuccess(Component.translatable(((double) x / img.getHeight()) * 100 + "% Done mapping"), false);
+				int finalX = x;
+				source.sendSuccess(() -> Component.translatable(((double) finalX / img.getHeight()) * 100 + "% Done mapping"), false);
 			}
 		}
 
 		if (showBiomePercents) {
-			source.sendSuccess(Component.literal("Approximate biome-block counts within a " + (width + "x" + height) + " region"), false);
+			source.sendSuccess(() -> Component.literal("Approximate biome-block counts within a " + (width + "x" + height) + " region"), false);
 			int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
-			biomeCount.forEach((biome, integer) -> source.sendSuccess(Component.literal(
+			biomeCount.forEach((biome, integer) -> source.sendSuccess(() -> Component.literal(
 							source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome).toString())
 					.append(": " + (integer) + ChatFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), false));
 		}
@@ -149,27 +150,27 @@ public class MapBiomesCommand {
 			return 0;
 		}
 
-		source.sendSuccess(Component.literal("Image saved!"), false);
+		source.sendSuccess(() -> Component.literal("Image saved!"), false);
 
 		return Command.SINGLE_SUCCESS;
 	}
 
-	public static class MapColor {
+	public static class BiomeMapColor {
 
 		private final int value;
 
-		public MapColor(int r, int g, int b) {
+		public BiomeMapColor(int r, int g, int b) {
 			this(r, g, b, 255);
 		}
 
-		public MapColor(int r, int g, int b, int a) {
+		public BiomeMapColor(int r, int g, int b, int a) {
 			this.value = ((a & 0xFF) << 24) |
 					((r & 0xFF) << 16) |
 					((g & 0xFF) << 8) |
 					((b & 0xFF));
 		}
 
-		public MapColor(int rgb) {
+		public BiomeMapColor(int rgb) {
 			this.value = 0xFF000000 | rgb;
 		}
 

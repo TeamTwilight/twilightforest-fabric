@@ -54,5 +54,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:blocks/hollow_oak_log_vertical"
 }

@@ -32,7 +32,7 @@ import twilightforest.init.TFItems;
 import java.util.List;
 
 public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, WalkOnSnowItem {
-	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.arctic_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.arctic_armor.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public ArcticArmorItem(ArmorMaterial armorMaterial, Type type, Properties properties) {
 		super(armorMaterial, type, properties);
@@ -60,12 +60,7 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, Wa
 
 	@Override
 	public void clearColor(ItemStack stack) {
-		this.removeColor(stack, 1);
-	}
-
-	@Override
-	public void setColor(ItemStack stack, int color) {
-		this.setColor(stack, color, 1);
+		this.removeColor(stack);
 	}
 
 	public int getColor(ItemStack stack, int type) {
@@ -87,7 +82,7 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, Wa
 		return color;
 	}
 
-	public void removeColor(ItemStack stack, int type) {
+	public void removeColor(ItemStack stack) {
 		String string = "";
 		CompoundTag stackTagCompound = stack.getTag();
 
@@ -102,7 +97,8 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, Wa
 		}
 	}
 
-	public void setColor(ItemStack stack, int color, int type) {
+	@Override
+	public void setColor(ItemStack stack, int color) {
 		String string = "";
 		CompoundTag stackTagCompound = stack.getTag();
 

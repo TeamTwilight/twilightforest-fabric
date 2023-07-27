@@ -197,7 +197,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 			} else {
 				ItemStack itemstack1 = this.items.get(2);
 				if (itemstack1.isEmpty()) return true;
-				if (!itemstack1.sameItem(itemstack)) return false;
+				if (!itemstack1.is(itemstack.getItem())) return false;
 				int result = itemstack1.getCount() + getMaxOutputStacks(items.get(0), itemstack); // TF - account for multiplying
 				return result <= this.getMaxStackSize() && result <= itemstack1.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
 			}

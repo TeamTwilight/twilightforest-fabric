@@ -27,7 +27,7 @@ public class ThrowSpikeBlockGoal extends Goal {
 			this.cooldown--;
 			return false;
 		} else {
-			return this.attacker.isAlive() && this.attacker.hasLineOfSight(target) && this.attacker.getLevel().getRandom().nextInt(56) == 0;
+			return this.attacker.isAlive() && this.attacker.hasLineOfSight(target) && this.attacker.level().getRandom().nextInt(56) == 0;
 		}
 	}
 
@@ -39,7 +39,7 @@ public class ThrowSpikeBlockGoal extends Goal {
 	@Override
 	public void start() {
 		this.attacker.setThrowing(true);
-		this.cooldown = 100 + this.attacker.getLevel().getRandom().nextInt(100);
+		this.cooldown = 100 + this.attacker.level().getRandom().nextInt(100);
 		this.attacker.gameEvent(GameEvent.PROJECTILE_SHOOT);
 	}
 }

@@ -1,16 +1,15 @@
 package twilightforest.enums;
 
-import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.block.entity.spawner.BossSpawnerBlockEntity;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.block.entity.spawner.BossSpawnerBlockEntity;
+import twilightforest.init.TFBlockEntities;
+
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public enum BossVariant implements StringRepresentable, SkullBlock.Type {
+public enum BossVariant implements StringRepresentable {
 
 	NAGA          (TrophyType.GOLD    , TFBlockEntities.NAGA_SPAWNER::get),
 	LICH          (TrophyType.GOLD    , TFBlockEntities.LICH_SPAWNER::get),
@@ -25,8 +24,6 @@ public enum BossVariant implements StringRepresentable, SkullBlock.Type {
 
 	private final TrophyType trophyType;
 	private final Supplier<BlockEntityType<? extends BossSpawnerBlockEntity<?>>> blockEntityType;
-
-	public static final BossVariant[] VARIANTS = values();
 
 	BossVariant(TrophyType trophyType, @Nullable Supplier<BlockEntityType<? extends BossSpawnerBlockEntity<?>>> blockEntityType) {
 		this.trophyType = trophyType;

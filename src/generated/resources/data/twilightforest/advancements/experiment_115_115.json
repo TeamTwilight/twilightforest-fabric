@@ -47,5 +47,6 @@
     [
       "eat_115_e115"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

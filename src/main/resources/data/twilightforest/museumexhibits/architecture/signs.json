@@ -1,0 +1,22 @@
+{
+  "collection": "museumcurator.collection.architecture",
+  "name": "museumcurator.architecture.signs",
+  "items": [
+    "twilightforest:twilight_oak_sign",
+    "twilightforest:twilight_oak_hanging_sign",
+    "twilightforest:canopy_sign",
+    "twilightforest:canopy_hanging_sign",
+    "twilightforest:mangrove_sign",
+    "twilightforest:mangrove_hanging_sign",
+    "twilightforest:dark_sign",
+    "twilightforest:dark_hanging_sign",
+    "twilightforest:time_sign",
+    "twilightforest:time_hanging_sign",
+    "twilightforest:transformation_sign",
+    "twilightforest:transformation_hanging_sign",
+    "twilightforest:mining_sign",
+    "twilightforest:mining_hanging_sign",
+    "twilightforest:sorting_sign",
+    "twilightforest:sorting_hanging_sign"
+  ]
+}

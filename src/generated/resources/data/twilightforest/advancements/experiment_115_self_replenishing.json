@@ -3,21 +3,29 @@
   "criteria": {
     "place_complete_e115": {
       "conditions": {
-        "item": {
-          "items": [
-            "minecraft:redstone"
-          ]
-        },
-        "location": {
-          "block": {
-            "blocks": [
-              "twilightforest:experiment_115"
-            ],
-            "state": {
-              "regenerate": "true"
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "twilightforest:experiment_115"
+                ],
+                "state": {
+                  "regenerate": "true"
+                }
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "items": [
+                "minecraft:redstone"
+              ]
             }
           }
-        }
+        ]
       },
       "trigger": "minecraft:item_used_on_block"
     }
@@ -42,5 +50,6 @@
     [
       "place_complete_e115"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

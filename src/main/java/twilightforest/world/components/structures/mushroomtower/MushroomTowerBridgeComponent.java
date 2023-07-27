@@ -24,7 +24,7 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 
 	final int dSize;
-	int dHeight;
+	final int dHeight;
 
 	public MushroomTowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(TFStructurePieceTypes.TFMTBri.get(), nbt);

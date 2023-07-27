@@ -16,7 +16,7 @@
       "max_delay": 12000,
       "min_delay": 1200,
       "replace_current_music": true,
-      "sound": "twilightforest:music.bg"
+      "sound": "twilightforest:music.twilightforest.twilight_forest"
     },
     "sky_color": 1248552,
     "water_color": 4159204,
@@ -68,5 +68,5 @@
     "water_ambient": [],
     "water_creature": []
   },
-  "temperature": 0.8
+  "temperature": 0.08
 }

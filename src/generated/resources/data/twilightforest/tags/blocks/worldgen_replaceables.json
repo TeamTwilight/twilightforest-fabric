@@ -2,6 +2,6 @@
   "replace": false,
   "values": [
     "#minecraft:lush_ground_replaceable",
-    "#minecraft:replaceable_plants"
+    "#minecraft:replaceable_by_trees"
   ]
 }

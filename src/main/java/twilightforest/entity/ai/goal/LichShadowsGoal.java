@@ -57,9 +57,9 @@ public class LichShadowsGoal extends Goal {
 
 		if (this.lich.getSensing().hasLineOfSight(targetedEntity) && this.lich.getAttackCooldown() == 0 && dist < 20F) {
 			if (this.lich.getNextAttackType() == 0) {
-				this.lich.launchProjectileAt(new LichBolt(this.lich.getLevel(), this.lich));
+				this.lich.launchProjectileAt(new LichBolt(this.lich.level(), this.lich));
 			} else {
-				this.lich.launchProjectileAt(new LichBomb(this.lich.getLevel(), this.lich));
+				this.lich.launchProjectileAt(new LichBomb(this.lich.level(), this.lich));
 			}
 
 			this.lich.swing(InteractionHand.MAIN_HAND);
@@ -77,7 +77,7 @@ public class LichShadowsGoal extends Goal {
 		if (this.lich.getMasterLich() == null) {
 			this.findNewMaster();
 		}
-		if (!this.lich.getLevel().isClientSide() && (this.lich.getMasterLich() == null || !this.lich.getMasterLich().isAlive() || this.lich.getMasterLich().getPhase() != 1)) {
+		if (!this.lich.level().isClientSide() && (this.lich.getMasterLich() == null || !this.lich.getMasterLich().isAlive() || this.lich.getMasterLich().getPhase() != 1)) {
 			this.lich.discard();
 		}
 	}
@@ -96,9 +96,9 @@ public class LichShadowsGoal extends Goal {
 
 		if (cloneSpot != null) {
 			// put a clone there
-			Lich newClone = new Lich(this.lich.getLevel(), this.lich);
+			Lich newClone = new Lich(this.lich.level(), this.lich);
 			newClone.setPos(cloneSpot.x(), cloneSpot.y(), cloneSpot.z());
-			this.lich.getLevel().addFreshEntity(newClone);
+			this.lich.level().addFreshEntity(newClone);
 
 			newClone.setTarget(targetedEntity);
 			newClone.setAttackCooldown(60 + this.lich.getRandom().nextInt(3) - this.lich.getRandom().nextInt(3));

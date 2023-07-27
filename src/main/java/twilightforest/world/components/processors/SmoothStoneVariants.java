@@ -23,16 +23,16 @@ public class SmoothStoneVariants extends StructureProcessor {
 
     @Override
     public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
-        RandomSource random = settings.getRandom(modifiedBlockInfo.pos);
+        RandomSource random = settings.getRandom(modifiedBlockInfo.pos());
 
         // We use nextBoolean in other processors so this lets us re-seed deterministically
         random.setSeed(random.nextLong() * 4);
 
-        if (modifiedBlockInfo.state.getBlock() == Blocks.SMOOTH_STONE_SLAB && random.nextBoolean())
-            return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos, FeaturePlacers.transferAllStateKeys(modifiedBlockInfo.state, Blocks.COBBLESTONE_SLAB), null);
+        if (modifiedBlockInfo.state().is(Blocks.SMOOTH_STONE_SLAB) && random.nextBoolean())
+            return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(modifiedBlockInfo.state(), Blocks.COBBLESTONE_SLAB), null);
 
-        if (modifiedBlockInfo.state.getBlock() == Blocks.SMOOTH_STONE && random.nextBoolean())
-            return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos, Blocks.COBBLESTONE.defaultBlockState(), null);
+        if (modifiedBlockInfo.state().is(Blocks.SMOOTH_STONE) && random.nextBoolean())
+            return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.COBBLESTONE.defaultBlockState(), null);
 
         return modifiedBlockInfo;
     }

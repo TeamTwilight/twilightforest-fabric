@@ -11,10 +11,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ColumnPos;
+import net.minecraft.server.level.FullChunkStatus;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.TicketType;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +25,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -34,6 +34,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.custom.Restrictions;
 import twilightforest.item.MagicMapItem;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.LegacyLandmarkPlacements;
@@ -144,7 +145,7 @@ public class TFTeleporter implements ITeleporter {
 				destinationCoordinateCache.putIfAbsent(destDim.dimension().location(), Maps.newHashMapWithExpectedSize(4096));
 				Map<BlockPos, Boolean> portalBlocks = new HashMap<>();
 				portalBlocks.put(entity.blockPosition(), true);
-				TFPortalBlock.recursivelyValidatePortal(entity.getLevel(), entity.blockPosition(), portalBlocks, new MutableInt(0), entity.getLevel().getBlockState(entity.blockPosition()));
+				TFPortalBlock.recursivelyValidatePortal(entity.level(), entity.blockPosition(), portalBlocks, new MutableInt(0), entity.level().getBlockState(entity.blockPosition()));
 				BlockPos finalBlockpos = blockpos;
 				portalBlocks.forEach((blockPos, b) -> {
 					if (b) {
@@ -188,7 +189,7 @@ public class TFTeleporter implements ITeleporter {
 				LevelChunk chunk = destDim.getChunkSource().getChunkNow(chunkPos.x, chunkPos.z);
 
 				// skip chunks that aren't generated
-				if (chunk == null || chunk.getFullStatus() == ChunkHolder.FullChunkStatus.INACCESSIBLE) {
+				if (chunk == null || chunk.getFullStatus() == FullChunkStatus.INACCESSIBLE) {
 					continue;
 				}
 
@@ -231,6 +232,8 @@ public class TFTeleporter implements ITeleporter {
 
 	private static int getScanHeight(ServerLevel world, int x, int z) {
 		int worldHeight = world.getMaxBuildHeight() - 1;
+		//FIXME find an alternative to getHighestSectionPosition, its marked for removal
+		@SuppressWarnings("removal")
 		int chunkHeight = world.getChunk(x >> 4, z >> 4).getHighestSectionPosition() + 15;
 		return Math.min(worldHeight, chunkHeight);
 	}
@@ -351,7 +354,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static boolean checkBiome(Level world, BlockPos pos, Entity entity) {
-		return TFGenerationSettings.isBiomeSafeFor(world.getBiome(pos).value(), entity);
+		return Restrictions.isBiomeSafeFor(world.getBiome(pos).value(), entity);
 	}
 
 	@Nullable
@@ -370,7 +373,7 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private void makePortal(Entity entity, ServerLevel world, Vec3 pos) {
-		ServerLevel src = entity.getLevel() instanceof ServerLevel serverLevel ? serverLevel : null;
+		ServerLevel src = entity.level() instanceof ServerLevel serverLevel ? serverLevel : null;
 
 		// ensure area is populated first
 		loadSurroundingArea(world, pos);
@@ -492,8 +495,8 @@ public class TFTeleporter implements ITeleporter {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
 				for (int potentialY = 0; potentialY < 4; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
-					Material material = world.getBlockState(tPos).getMaterial();
-					if (potentialY == 0 && material != Material.GRASS || potentialY >= 1 && !material.isReplaceable()) {
+					BlockState state = world.getBlockState(tPos);
+					if (potentialY == 0 && !state.is(BlockTags.DIRT) || potentialY >= 1 && !state.canBeReplaced()) {
 						return false;
 					}
 				}
@@ -576,8 +579,8 @@ public class TFTeleporter implements ITeleporter {
 			for (int potentialX = 0; potentialX < 4; potentialX++) {
 				for (int potentialY = 0; potentialY < 4; potentialY++) {
 					BlockPos tPos = pos.offset(potentialX - 1, potentialY, potentialZ - 1);
-					Material material = world.getBlockState(tPos).getMaterial();
-					if (potentialY == 0 && !material.isSolid() && !material.isLiquid() || potentialY >= 1 && !material.isReplaceable()) {
+					BlockState state = world.getBlockState(tPos);
+					if (potentialY == 0 && !state.isSolid() && !state.liquid() || potentialY >= 1 && !state.canBeReplaced()) {
 						return false;
 					}
 				}

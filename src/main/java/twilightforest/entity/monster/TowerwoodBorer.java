@@ -36,7 +36,7 @@ public class TowerwoodBorer extends Monster {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new ClimbOnTopOfPowderSnowGoal(this, this.level));
+		this.goalSelector.addGoal(1, new ClimbOnTopOfPowderSnowGoal(this, this.level()));
 		this.goalSelector.addGoal(3, this.summonBorers = new SummonBorersGoal(this));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(5, new HideInTowerwoodGoal(this));
@@ -64,17 +64,17 @@ public class TowerwoodBorer extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.TERMITE_AMBIENT.get();
+		return TFSounds.TOWERWOOD_BORER_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TERMITE_HURT.get();
+		return TFSounds.TOWERWOOD_BORER_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TERMITE_DEATH.get();
+		return TFSounds.TOWERWOOD_BORER_DEATH.get();
 	}
 
 	// [VanillaCopy] Silverfish.hurt
@@ -93,7 +93,7 @@ public class TowerwoodBorer extends Monster {
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(TFSounds.TERMITE_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.TOWERWOOD_BORER_STEP.get(), 0.15F, 1.0F);
 	}
 
 	@Override
@@ -127,10 +127,10 @@ public class TowerwoodBorer extends Monster {
 			} else {
 				RandomSource random = this.mob.getRandom();
 
-				if (random.nextInt(10) == 0 && this.mob.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+				if (random.nextInt(10) == 0 && this.mob.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 					this.facing = Direction.getRandom(random);
 					BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.facing);
-					BlockState state = this.mob.getLevel().getBlockState(blockpos);
+					BlockState state = this.mob.level().getBlockState(blockpos);
 
 					// TF - Change block check
 					if (state.is(TFBlocks.TOWERWOOD.get())) {
@@ -154,7 +154,7 @@ public class TowerwoodBorer extends Monster {
 			if (!this.doMerge) {
 				super.start();
 			} else {
-				Level level = this.mob.getLevel();
+				Level level = this.mob.level();
 				BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.facing);
 				BlockState state = level.getBlockState(blockpos);
 
@@ -197,7 +197,7 @@ public class TowerwoodBorer extends Monster {
 
 			if (this.lookForFriends <= 0) {
 
-				Level world = this.borer.getLevel();
+				Level world = this.borer.level();
 				RandomSource random = this.borer.getRandom();
 				BlockPos pos = new BlockPos(this.borer.blockPosition());
 

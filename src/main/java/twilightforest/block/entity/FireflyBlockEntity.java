@@ -17,7 +17,7 @@ public class FireflyBlockEntity extends BlockEntity {
 	public float glowIntensity;
 	private boolean glowing;
 	private int glowDelay;
-	public float randRot = RandomSource.create().nextInt(4) * 90.0F;
+	public final float randRot = RandomSource.create().nextInt(4) * 90.0F;
 
 	public FireflyBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.FIREFLY.get(), pos, state);

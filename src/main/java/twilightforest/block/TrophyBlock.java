@@ -1,24 +1,20 @@
 package twilightforest.block;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.enums.BossVariant;
-
-//[VanillaCopy] of SkullBlock but we add a shape for the ur-ghast and we use BossVariant instead of ISkullType
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class TrophyBlock extends AbstractTrophyBlock {
 
@@ -30,7 +26,7 @@ public class TrophyBlock extends AbstractTrophyBlock {
 	protected static final VoxelShape YETI_CORNER_SHAPE = Block.box(4.5D, 0.0D, 4.5D, 11.5D, 10.0D, 11.5D);
 
 	public TrophyBlock(BossVariant variant, int value) {
-		super(variant, value, Properties.of(Material.DECORATION).instabreak());
+		super(variant, value, Properties.of().instabreak());
 		this.registerDefaultState(this.getStateDefinition().any().setValue(TrophyBlock.ROTATION, 0));
 	}
 

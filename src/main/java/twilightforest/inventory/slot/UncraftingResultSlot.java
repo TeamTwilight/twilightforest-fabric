@@ -30,8 +30,8 @@ public class UncraftingResultSlot extends ResultSlot {
 		// let's see, if the assembly matrix can produce this item, then it's a normal recipe, if not, it's combined.  Will that work?
 		boolean combined = true;
 
-		for (Recipe<CraftingContainer> recipe : player.getLevel().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix, this.player.getLevel())) {
-			if (ItemStack.isSameItemSameTags(recipe.getResultItem(player.getLevel().registryAccess()), stack)) {
+		for (Recipe<CraftingContainer> recipe : player.level().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, this.assemblyMatrix, this.player.level())) {
+			if (ItemStack.isSameItemSameTags(recipe.getResultItem(player.level().registryAccess()), stack)) {
 				combined = false;
 				break;
 			}
@@ -54,7 +54,7 @@ public class UncraftingResultSlot extends ResultSlot {
 		this.checkTakeAchievements(stack);
 
 //		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(player);
-		NonNullList<ItemStack> remainingItems = player.level.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, this.assemblyMatrix, player.level);
+		NonNullList<ItemStack> remainingItems = player.level().getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, this.assemblyMatrix, player.level());
 //		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
 
 		for(int i = 0; i < remainingItems.size(); ++i) {

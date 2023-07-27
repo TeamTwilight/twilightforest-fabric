@@ -12,6 +12,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.biomes.BiomeMaker;
@@ -23,7 +24,7 @@ import java.util.OptionalLong;
 
 public class TFDimensionSettings {
 
-	public static long seed; //used for seed ASM
+	public static long seed; //Minecraft Overworld seed - used for seed ASM
 
 	public static final ResourceKey<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("twilight_noise_gen"));
 	public static final ResourceKey<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("skylight_noise_gen"));
@@ -150,10 +151,11 @@ public class TFDimensionSettings {
 
 		NoiseBasedChunkGenerator wrappedChunkGenerator = new NoiseBasedChunkGenerator(
 				new TFBiomeProvider(
-						biomeRegistry,
 						BiomeMaker.makeBiomeList(biomeRegistry, biomeRegistry.getOrThrow(TFBiomes.UNDERGROUND)),
 						-1.25F,
-						2.5F),
+						2.5F,
+						context.lookup(BiomeLayerStack.BIOME_STACK_KEY).getOrThrow(BiomeLayerStack.BIOMES_ALONG_STREAMS)
+				),
 				noiseGenSettings.getOrThrow(TFDimensionSettings.TWILIGHT_NOISE_GEN));
 
 		LevelStem stem = new LevelStem(

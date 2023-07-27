@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.stronghold;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -15,7 +16,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import net.minecraft.world.level.material.Material;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 import java.nio.IntBuffer;
@@ -25,7 +25,7 @@ import java.util.List;
 
 public abstract class StructureTFStrongholdComponent extends TFStructureComponentOld {
 
-	public List<BlockPos> doors = new ArrayList<>();
+	public final List<BlockPos> doors = new ArrayList<>();
 
 	public StructureTFStrongholdComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
@@ -478,10 +478,9 @@ public abstract class StructureTFStrongholdComponent extends TFStructureComponen
 				for (int z = sz; z <= dz; ++z) {
 					boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
 					BlockState state = this.getBlock(world, x, y, z, sbb);
-					Block blockID = state.getBlock();
 
-					if ((blockID != Blocks.AIR && (state.getMaterial() == Material.STONE || state.getMaterial() == Material.GRASS || state.getMaterial() == Material.DIRT))
-							|| (blockID == Blocks.AIR && rand.nextInt(3) == 0) && this.getBlock(world, x, y - 1, z, sbb).getBlock() == Blocks.STONE_BRICKS) {
+					if ((!state.isAir() && (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.DIRT)))
+							|| (state.isAir() && rand.nextInt(3) == 0) && this.getBlock(world, x, y - 1, z, sbb).getBlock() == Blocks.STONE_BRICKS) {
 						if (y == sy || y == dy) {
 							// do stronghold bricks for floor/ceiling
 							StructurePiece.BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();

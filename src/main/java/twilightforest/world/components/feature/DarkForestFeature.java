@@ -2,16 +2,14 @@ package twilightforest.world.components.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
-import net.minecraft.world.level.material.Material;
 import twilightforest.util.WorldUtil;
-
-import java.util.Random;
 
 //Places single block features in patches around the dark forest
 public class DarkForestFeature extends Feature<RandomPatchConfiguration> {
@@ -27,16 +25,15 @@ public class DarkForestFeature extends Feature<RandomPatchConfiguration> {
         RandomPatchConfiguration config = ctx.config();
 
         boolean foundDirt = false;
-        Material materialUnder;
 
-        if(pos.getY() <= 40) {
+        if (pos.getY() <= 40) {
             for (int dy = pos.getY(); dy >= WorldUtil.getSeaLevel(ctx.chunkGenerator()); dy--) {
-                materialUnder = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
-                if ((materialUnder == Material.GRASS || materialUnder == Material.DIRT) && reader.getBlockState(pos) == Blocks.AIR.defaultBlockState()) {
+                BlockState state = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ()));
+                if (state.is(BlockTags.DIRT) && reader.getBlockState(pos).canBeReplaced()) {
                     foundDirt = true;
                     pos = new BlockPos(pos.getX(), dy, pos.getZ());
                     break;
-                } else if (materialUnder == Material.STONE || materialUnder == Material.SAND) {
+                } else if (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.SAND)) {
                     break;
                 }
             }

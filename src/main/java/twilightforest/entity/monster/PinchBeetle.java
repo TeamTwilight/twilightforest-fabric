@@ -102,7 +102,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 				entity.startRiding(this, true);
 			}
 		}
-		entity.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.CLAMPED, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CLAMPED, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return super.doHurtTarget(entity);
 	}
 
@@ -112,11 +112,10 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	}
 
 	@Override
-	public void positionRider(Entity passenger) {
+	public void positionRider(Entity passenger, Entity.MoveFunction callback) {
 		if (!this.getPassengers().isEmpty()) {
 			Vec3 riderPos = this.getRiderPosition();
-
-			this.getPassengers().get(0).setPos(riderPos.x(), riderPos.y(), riderPos.z());
+			callback.accept(passenger, riderPos.x(), riderPos.y(), riderPos.z());
 		}
 	}
 

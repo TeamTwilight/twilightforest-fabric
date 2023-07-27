@@ -13,10 +13,10 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 public class SnowQueenTrophyModel extends GenericTrophyModel {
 
 	public final ModelPart head;
-	public ModelPart crownFront;
-	public ModelPart crownBack;
-	public ModelPart crownRight;
-	public ModelPart crownLeft;
+	public final ModelPart crownFront;
+	public final ModelPart crownBack;
+	public final ModelPart crownRight;
+	public final ModelPart crownLeft;
 
 	public SnowQueenTrophyModel(ModelPart part) {
 		this.head = part.getChild("head");

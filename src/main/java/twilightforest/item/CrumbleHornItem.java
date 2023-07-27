@@ -50,15 +50,15 @@ public class CrumbleHornItem extends Item implements ReequipAnimationItem, Conti
 	}
 
 	@Override
-	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
-		if (count > 10 && count % 5 == 0 && !living.getLevel().isClientSide()) {
-			int crumbled = doCrumble(living.getLevel(), living);
+	public void onUseTick(Level level, LivingEntity living, ItemStack stack, int count) {
+		if (count > 10 && count % 5 == 0 && !living.level().isClientSide()) {
+			int crumbled = doCrumble(living.level(), living);
 
 			if (crumbled > 0) {
 				stack.hurtAndBreak(crumbled, living, (user) -> user.broadcastBreakEvent(living.getUsedItemHand()));
 			}
 
-			living.getLevel().playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.get(), living.getSoundSource(), 1.0F, 0.8F);
+			living.level().playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.get(), living.getSoundSource(), 1.0F, 0.8F);
 		}
 	}
 

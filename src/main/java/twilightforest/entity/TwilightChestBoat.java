@@ -69,13 +69,13 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 	@Override
 	public void destroy(DamageSource damageSource) {
 		super.destroy(damageSource);
-		this.chestVehicleDestroyed(damageSource, this.getLevel(), this);
+		this.chestVehicleDestroyed(damageSource, this.level(), this);
 	}
 
 	@Override
 	public void remove(Entity.RemovalReason reason) {
-		if (!this.getLevel().isClientSide() && reason.shouldDestroy()) {
-			Containers.dropContents(this.getLevel(), this, this);
+		if (!this.level().isClientSide() && reason.shouldDestroy()) {
+			Containers.dropContents(this.level(), this, this);
 		}
 
 		super.remove(reason);
@@ -99,7 +99,7 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 	@Override
 	public void openCustomInventoryScreen(Player player) {
 		player.openMenu(this);
-		if (!player.getLevel().isClientSide()) {
+		if (!player.level().isClientSide()) {
 			this.gameEvent(GameEvent.CONTAINER_OPEN, player);
 			PiglinAi.angerNearbyPiglins(player, true);
 		}
@@ -112,7 +112,7 @@ public class TwilightChestBoat extends TwilightBoat implements HasCustomInventor
 			case TWILIGHT_OAK -> TFItems.TWILIGHT_OAK_CHEST_BOAT.get();
 			case CANOPY -> TFItems.CANOPY_CHEST_BOAT.get();
 			case MANGROVE -> TFItems.MANGROVE_CHEST_BOAT.get();
-			case DARKWOOD -> TFItems.DARKWOOD_CHEST_BOAT.get();
+			case DARKWOOD -> TFItems.DARK_CHEST_BOAT.get();
 			case TIME -> TFItems.TIME_CHEST_BOAT.get();
 			case TRANSFORMATION -> TFItems.TRANSFORMATION_CHEST_BOAT.get();
 			case MINING -> TFItems.MINING_CHEST_BOAT.get();

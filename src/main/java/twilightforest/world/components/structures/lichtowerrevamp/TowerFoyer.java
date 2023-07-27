@@ -72,6 +72,10 @@ public final class TowerFoyer extends TwilightTemplateStructurePiece {
             // Prime for next placement
             climbingRotation = climbingRotation.getRotated(this.mirror == Mirror.NONE ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90);
         }
+
+		BossRoom bossRoom = new BossRoom(this.structureManager, climbingRotation, cuttingProcessor, StructureTemplate.getZeroPositionWithTransform(centralTowerOrigin, Mirror.NONE, climbingRotation, BossRoom.SIDE_LENGTH, BossRoom.SIDE_LENGTH).above(randomCountTowerSegments * 4).west(7).north(7));
+		bossRoom.addChildren(this, structureStart, random);
+		structureStart.addPiece(bossRoom);
     }
 
     private void beginSideTowers(StructurePieceAccessor structureStart, RandomSource random, int totalSegments, int segmentStart, Direction front, Rotation fromFront, BlockPos centralTowerOrigin, Map<BlockPos, Direction> sideTowerStarts) {

@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
@@ -49,6 +50,7 @@ public interface StructureHints {
         addTranslatedPages(bookPages, TwilightForestMod.ID + ".book." + key, pageCount);
 
         book.addTagElement("pages", bookPages);
+        book.addTagElement("generation", IntTag.valueOf(3));
         book.addTagElement("author", StringTag.valueOf(BOOK_AUTHOR));
         book.addTagElement("title", StringTag.valueOf(TwilightForestMod.ID + ".book." + key));
     }
@@ -115,7 +117,7 @@ public interface StructureHints {
     Mob createHintMonster(Level world);
 
     record HintConfig(ItemStack hintItem, EntityType<? extends Mob> hintMob) {
-        public static MapCodec<HintConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        public static final MapCodec<HintConfig> FLAT_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemStack.CODEC.fieldOf("hint_item").forGetter(HintConfig::hintItem),
                 BuiltInRegistries.ENTITY_TYPE.byNameCodec().comapFlatMap(HintConfig::checkCastMob, entityType -> entityType).fieldOf("hint_mob").forGetter(HintConfig::hintMob)
         ).apply(instance, HintConfig::new));

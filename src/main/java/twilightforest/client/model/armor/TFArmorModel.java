@@ -15,8 +15,7 @@ public class TFArmorModel extends HumanoidModel<LivingEntity> {
 	public void setupAnim(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// [VanillaCopy] ModelArmorStandArmor
 		// this prevents helmets from always facing south, and the armor "breathing" on the stand
-		if (entityIn instanceof ArmorStand) {
-			ArmorStand entityarmorstand = (ArmorStand) entityIn;
+		if (entityIn instanceof ArmorStand entityarmorstand) {
 			this.head.xRot = 0.017453292F * entityarmorstand.getHeadPose().getX();
 			this.head.yRot = 0.017453292F * entityarmorstand.getHeadPose().getY();
 			this.head.zRot = 0.017453292F * entityarmorstand.getHeadPose().getZ();

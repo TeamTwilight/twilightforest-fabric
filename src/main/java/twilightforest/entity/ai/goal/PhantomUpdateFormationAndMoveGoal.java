@@ -1,5 +1,6 @@
 package twilightforest.entity.ai.goal;
 
+import net.minecraft.core.GlobalPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +18,7 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 	private final KnightPhantom boss;
 
 	public PhantomUpdateFormationAndMoveGoal(KnightPhantom entity) {
-		boss = entity;
+		this.boss = entity;
 	}
 
 	@Override
@@ -30,15 +31,15 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 		this.boss.noPhysics = this.boss.getTicksProgress() % 20 != 0;
 		this.boss.setTicksProgress(this.boss.getTicksProgress() + 1);
 		if (this.boss.getTicksProgress() >= this.boss.getMaxTicksForFormation())
-			switchToNextFormation();
-		Vec3 dest = getDestination();
+			this.switchToNextFormation();
+		Vec3 dest = this.getDestination();
 		this.boss.getMoveControl().setWantedPosition(dest.x(), dest.y(), dest.z(), this.boss.isChargingAtPlayer() ? 2 : 1);
 	}
 
 	public Vec3 getDestination() {
 
-		if (!this.boss.hasHome())
-			this.boss.restrictTo(this.boss.blockPosition(), 20);
+		if (this.boss.getRestrictionPoint() == null)
+			this.boss.setRestrictionPoint(GlobalPos.of(this.boss.level().dimension(), this.boss.blockPosition()));
 
 		return switch (this.boss.getCurrentFormation()) {
 			case LARGE_CLOCKWISE -> this.getCirclePosition(CIRCLE_LARGE_RADIUS, true);
@@ -177,9 +178,9 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 			offset1 *= -1;
 		}
 
-		double dx = this.boss.getRestrictCenter().getX() + (alongX ? offset0 : offset1);
-		double dy = this.boss.getRestrictCenter().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
-		double dz = this.boss.getRestrictCenter().getZ() + (alongX ? offset1 : offset0);
+		double dx = this.boss.getRestrictionPoint().pos().getX() + (alongX ? offset0 : offset1);
+		double dy = this.boss.getRestrictionPoint().pos().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
+		double dz = this.boss.getRestrictionPoint().pos().getZ() + (alongX ? offset1 : offset0);
 		return new Vec3(dx, dy, dz);
 	}
 
@@ -192,9 +193,9 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 
 		angle += (60F * this.boss.getNumber());
 
-		double dx = this.boss.getRestrictCenter().getX() + Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double dy = this.boss.getRestrictCenter().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
-		double dz = this.boss.getRestrictCenter().getZ() + Math.sin((angle) * Math.PI / 180.0D) * distance;
+		double dx = this.boss.getRestrictionPoint().pos().getX() + Math.cos((angle) * Math.PI / 180.0D) * distance;
+		double dy = this.boss.getRestrictionPoint().pos().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
+		double dz = this.boss.getRestrictionPoint().pos().getZ() + Math.sin((angle) * Math.PI / 180.0D) * distance;
 		return new Vec3(dx, dy, dz);
 	}
 
@@ -202,28 +203,28 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 		// bound this by distance so we don't hover in walls if we get knocked into them
 
 		double dx = this.boss.xOld;
-		double dy = this.boss.getRestrictCenter().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
+		double dy = this.boss.getRestrictionPoint().pos().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
 		double dz = this.boss.zOld;
 
 		// let's just bound this by 2D distance
-		double ox = (this.boss.getRestrictCenter().getX() - dx);
-		double oz = (this.boss.getRestrictCenter().getZ() - dz);
+		double ox = (this.boss.getRestrictionPoint().pos().getX() - dx);
+		double oz = (this.boss.getRestrictionPoint().pos().getZ() - dz);
 		double dDist = Math.sqrt(ox * ox + oz * oz);
 
 		if (dDist > distance) {
 			// normalize back to boundaries
 
-			dx = this.boss.getRestrictCenter().getX() + (ox / dDist * distance);
-			dz = this.boss.getRestrictCenter().getZ() + (oz / dDist * distance);
+			dx = this.boss.getRestrictionPoint().pos().getX() + (ox / dDist * distance);
+			dz = this.boss.getRestrictionPoint().pos().getZ() + (oz / dDist * distance);
 		}
 
 		return new Vec3(dx, dy, dz);
 	}
 
 	private Vec3 getLoiterPosition() {
-		double dx = this.boss.getRestrictCenter().getX();
-		double dy = this.boss.getRestrictCenter().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
-		double dz = this.boss.getRestrictCenter().getZ();
+		double dx = this.boss.getRestrictionPoint().pos().getX();
+		double dy = this.boss.getRestrictionPoint().pos().getY() + Math.cos(this.boss.getTicksProgress() / 7F + this.boss.getNumber());
+		double dz = this.boss.getRestrictionPoint().pos().getZ();
 		return new Vec3(dx, dy, dz);
 	}
 
@@ -231,7 +232,7 @@ public class PhantomUpdateFormationAndMoveGoal extends Goal {
 		if (this.boss.isSwordKnight()) {
 			return Vec3.atLowerCornerOf(this.boss.getChargePos());
 		} else {
-			return getHoverPosition(CIRCLE_LARGE_RADIUS);
+			return this.getHoverPosition(CIRCLE_LARGE_RADIUS);
 		}
 
 	}

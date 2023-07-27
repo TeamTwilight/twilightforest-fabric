@@ -30,5 +30,6 @@
     "recipes": [
       "twilightforest:equipment/fortification_scepter"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

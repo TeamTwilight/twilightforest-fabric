@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:mangrove_log"
-            ]
+            "tag": "twilightforest:mangrove_logs"
           }
         ]
       },
@@ -30,5 +28,6 @@
     "recipes": [
       "twilightforest:wood/mangrove_planks"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

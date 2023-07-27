@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "twilightforest:mining_log"
+      "tag": "twilightforest:mining_logs"
     }
   ],
   "result": {

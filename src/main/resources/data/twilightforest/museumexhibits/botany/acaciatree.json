@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.acaciatree",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:acacia_log",
+      "placement": "before",
+      "items": [
+        "twilightforest:hollow_acacia_log"
+      ]
+    }
+  ]
+}

@@ -7,9 +7,9 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import twilightforest.entity.boss.HydraMortarHead;
+import twilightforest.entity.boss.HydraMortar;
 
-public class HydraMortarModel extends HierarchicalModel<HydraMortarHead> {
+public class HydraMortarModel extends HierarchicalModel<HydraMortar> {
 
 	public final ModelPart root;
 
@@ -35,5 +35,5 @@ public class HydraMortarModel extends HierarchicalModel<HydraMortarHead> {
 	}
 
 	@Override
-	public void setupAnim(HydraMortarHead entity, float v, float v1, float v2, float v3, float v4) { }
+	public void setupAnim(HydraMortar entity, float v, float v1, float v2, float v3, float v4) { }
 }

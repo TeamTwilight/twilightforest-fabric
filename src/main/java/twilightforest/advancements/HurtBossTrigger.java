@@ -13,8 +13,8 @@ public class HurtBossTrigger extends SimpleCriterionTrigger<HurtBossTrigger.Inst
 	public static final ResourceLocation ID = TwilightForestMod.prefix("hurt_boss");
 
 	@Override
-	protected Instance createInstance(JsonObject json, EntityPredicate.Composite player, DeserializationContext ctx) {
-		EntityPredicate.Composite composite = EntityPredicate.Composite.fromJson(json, "hurt_entity", ctx);
+	protected Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext ctx) {
+		ContextAwarePredicate composite = EntityPredicate.fromJson(json, "hurt_entity", ctx);
 		return new Instance(player, composite);
 	}
 
@@ -29,9 +29,9 @@ public class HurtBossTrigger extends SimpleCriterionTrigger<HurtBossTrigger.Inst
 	}
 
 	public static class Instance extends AbstractCriterionTriggerInstance {
-		private final EntityPredicate.Composite hurt;
+		private final ContextAwarePredicate hurt;
 
-		public Instance(EntityPredicate.Composite player, EntityPredicate.Composite hurt) {
+		public Instance(ContextAwarePredicate player, ContextAwarePredicate hurt) {
 			super(ID, player);
 			this.hurt = hurt;
 		}
@@ -41,7 +41,7 @@ public class HurtBossTrigger extends SimpleCriterionTrigger<HurtBossTrigger.Inst
 		}
 
 		public static Instance hurtBoss(EntityPredicate.Builder hurt) {
-			return new Instance(EntityPredicate.Composite.ANY, EntityPredicate.Composite.wrap(hurt.build()));
+			return new Instance(ContextAwarePredicate.ANY, EntityPredicate.wrap(hurt.build()));
 		}
 
 		@Override

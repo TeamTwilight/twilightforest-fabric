@@ -232,5 +232,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:blocks/firefly_particle_spawner"
 }

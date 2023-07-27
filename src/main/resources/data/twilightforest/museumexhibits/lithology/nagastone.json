@@ -1,0 +1,22 @@
+{
+  "collection": "museumcurator.collection.lithology",
+  "name": "museumcurator.lithology.twilightforest.nagastone",
+  "relativeTo": "museumcurator.lithology.stone",
+  "items": [
+    "twilightforest:nagastone_head",
+    "twilightforest:nagastone",
+    "twilightforest:spiral_bricks",
+    "twilightforest:etched_nagastone",
+    "twilightforest:cracked_etched_nagastone",
+    "twilightforest:mossy_etched_nagastone",
+    "twilightforest:nagastone_pillar",
+    "twilightforest:cracked_nagastone_pillar",
+    "twilightforest:mossy_nagastone_pillar",
+    "twilightforest:nagastone_stairs_left",
+    "twilightforest:cracked_nagastone_stairs_left",
+    "twilightforest:mossy_nagastone_stairs_left",
+    "twilightforest:nagastone_stairs_right",
+    "twilightforest:cracked_nagastone_stairs_right",
+    "twilightforest:mossy_nagastone_stairs_right"
+  ]
+}

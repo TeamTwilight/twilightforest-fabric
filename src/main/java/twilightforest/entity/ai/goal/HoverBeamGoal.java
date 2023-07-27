@@ -140,7 +140,7 @@ public class HoverBeamGoal extends HoverBaseGoal<SnowQueen> {
 		Vec3 srcVec = new Vec3(this.attacker.getX(), this.attacker.getY() + 0.25, this.attacker.getZ());
 		Vec3 lookVec = this.attacker.getViewVector(1.0F);
 		Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
-		List<Entity> possibleList = this.attacker.getLevel().getEntities(this.attacker, this.attacker.getBoundingBox().move(lookVec.x() * offset, lookVec.y() * offset, lookVec.z() * offset).inflate(range, range, range));
+		List<Entity> possibleList = this.attacker.level().getEntities(this.attacker, this.attacker.getBoundingBox().move(lookVec.x() * offset, lookVec.y() * offset, lookVec.z() * offset).inflate(range, range, range));
 		double hitDist = 0;
 
 		if (this.attacker.isMultipartEntity())

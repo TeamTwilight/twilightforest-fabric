@@ -7,9 +7,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -24,7 +24,13 @@ public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetle, SlimeBeetleMod
 
 	public SlimeBeetleRenderer(EntityRendererProvider.Context manager, SlimeBeetleModel model, float shadowSize) {
 		super(manager, model, shadowSize);
-		this.addLayer(new LayerInner(this, manager));
+		addLayer(new LayerInner(this, manager));
+	}
+
+	@Override
+	public void render(SlimeBeetle entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+		if(this.model.riding) matrixStackIn.translate(0, -0.5F, 0);
+		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
 	@Override
@@ -37,7 +43,7 @@ public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetle, SlimeBeetleMod
 
 		public LayerInner(RenderLayerParent<SlimeBeetle, SlimeBeetleModel> renderer, EntityRendererProvider.Context manager) {
 			super(renderer);
-			innerModel =  new SlimeBeetleModel(manager.bakeLayer(TFModelLayers.SLIME_BEETLE_TAIL));
+			innerModel =  new SlimeBeetleModel(manager.bakeLayer(TFModelLayers.NEW_SLIME_BEETLE_TAIL));
 		}
 
 		@Override

@@ -121,6 +121,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "canopy_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:canopy_hanging_sign"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "canopy_leaves": {
       "conditions": {
         "items": [
@@ -253,12 +265,60 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "dark_banister": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_banister"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_boat"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "dark_button": {
       "conditions": {
         "items": [
           {
             "items": [
               "twilightforest:dark_button"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_chest_boat": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_chest_boat"
             ]
           }
         ]
@@ -295,6 +355,18 @@
           {
             "items": [
               "twilightforest:dark_fence_gate"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_hanging_sign"
             ]
           }
         ]
@@ -349,6 +421,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "dark_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:dark_sign"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "dark_slab": {
       "conditions": {
         "items": [
@@ -397,72 +481,12 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "darkwood_banister": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:darkwood_banister"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "darkwood_boat": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:darkwood_boat"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "darkwood_chest": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:darkwood_chest"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "darkwood_chest_boat": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:darkwood_chest_boat"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "darkwood_sapling": {
       "conditions": {
         "items": [
           {
             "items": [
               "twilightforest:darkwood_sapling"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "darkwood_sign": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "twilightforest:darkwood_sign"
             ]
           }
         ]
@@ -781,6 +805,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "mangrove_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mangrove_hanging_sign"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "mangrove_leaves": {
       "conditions": {
         "items": [
@@ -1003,6 +1039,18 @@
           {
             "items": [
               "twilightforest:mining_fence_gate"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "mining_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:mining_hanging_sign"
             ]
           }
         ]
@@ -1279,6 +1327,18 @@
           {
             "items": [
               "twilightforest:sorting_fence_gate"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorting_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:sorting_hanging_sign"
             ]
           }
         ]
@@ -1717,6 +1777,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "time_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:time_hanging_sign"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "time_leaves": {
       "conditions": {
         "items": [
@@ -1945,6 +2017,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "transformation_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:transformation_hanging_sign"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "transformation_leaves": {
       "conditions": {
         "items": [
@@ -2161,6 +2245,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "twilight_oak_hanging_sign": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "twilightforest:twilight_oak_hanging_sign"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "twilight_oak_leaves": {
       "conditions": {
         "items": [
@@ -2350,6 +2446,9 @@
       "twilight_oak_sign"
     ],
     [
+      "twilight_oak_hanging_sign"
+    ],
+    [
       "twilight_oak_chest"
     ],
     [
@@ -2411,6 +2510,9 @@
     ],
     [
       "canopy_sign"
+    ],
+    [
+      "canopy_hanging_sign"
     ],
     [
       "canopy_chest"
@@ -2482,6 +2584,9 @@
       "mangrove_sign"
     ],
     [
+      "mangrove_hanging_sign"
+    ],
+    [
       "mangrove_chest"
     ],
     [
@@ -2542,19 +2647,22 @@
       "dark_trapdoor"
     ],
     [
-      "darkwood_sign"
+      "dark_sign"
     ],
     [
-      "darkwood_chest"
+      "dark_hanging_sign"
     ],
     [
-      "darkwood_banister"
+      "dark_chest"
     ],
     [
-      "darkwood_boat"
+      "dark_banister"
     ],
     [
-      "darkwood_chest_boat"
+      "dark_boat"
+    ],
+    [
+      "dark_chest_boat"
     ],
     [
       "time_log"
@@ -2606,6 +2714,9 @@
     ],
     [
       "time_sign"
+    ],
+    [
+      "time_hanging_sign"
     ],
     [
       "time_chest"
@@ -2671,6 +2782,9 @@
       "transformation_sign"
     ],
     [
+      "transformation_hanging_sign"
+    ],
+    [
       "transformation_chest"
     ],
     [
@@ -2734,6 +2848,9 @@
       "mining_sign"
     ],
     [
+      "mining_hanging_sign"
+    ],
+    [
       "mining_chest"
     ],
     [
@@ -2795,6 +2912,9 @@
     ],
     [
       "sorting_sign"
+    ],
+    [
+      "sorting_hanging_sign"
     ],
     [
       "sorting_chest"
@@ -2871,5 +2991,6 @@
   ],
   "rewards": {
     "experience": 1000
-  }
+  },
+  "sends_telemetry_event": true
 }

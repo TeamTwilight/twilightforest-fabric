@@ -1,13 +1,16 @@
 package twilightforest.world.components.layer.vanillalegacy.traits;
 
-import twilightforest.world.components.layer.vanillalegacy.area.Area;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
+import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.Context;
 
-public interface CastleTransformer  extends AreaTransformer1, DimensionOffset1Transformer {
-	int apply(Context p_77059_, int p_77060_, int p_77061_, int p_77062_, int p_77063_, int p_77064_);
+public interface CastleTransformer extends AreaTransformer1, DimensionOffset1Transformer {
+	ResourceKey<Biome> apply(Context context, ResourceKey<Biome> up, ResourceKey<Biome> right, ResourceKey<Biome> down, ResourceKey<Biome> left, ResourceKey<Biome> center);
 
-	default int applyPixel(BigContext<?> p_77055_, Area p_77056_, int p_77057_, int p_77058_) {
-		return this.apply(p_77055_, p_77056_.get(this.getParentX(p_77057_ + 1), this.getParentY(p_77058_)), p_77056_.get(this.getParentX(p_77057_ + 2), this.getParentY(p_77058_ + 1)), p_77056_.get(this.getParentX(p_77057_ + 1), this.getParentY(p_77058_ + 2)), p_77056_.get(this.getParentX(p_77057_), this.getParentY(p_77058_ + 1)), p_77056_.get(this.getParentX(p_77057_ + 1), this.getParentY(p_77058_ + 1)));
+	@Override
+	default ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
+		return this.apply(context, layer.getBiome(this.getParentX(x + 1), this.getParentY(z)), layer.getBiome(this.getParentX(x + 2), this.getParentY(z + 1)), layer.getBiome(this.getParentX(x + 1), this.getParentY(z + 2)), layer.getBiome(this.getParentX(x), this.getParentY(z + 1)), layer.getBiome(this.getParentX(x + 1), this.getParentY(z + 1)));
 	}
 }

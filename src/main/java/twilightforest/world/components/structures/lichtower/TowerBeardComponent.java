@@ -17,7 +17,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class TowerBeardComponent extends TFStructureComponentOld {
 
 	final int size;
-	int height;
+	final int height;
 
 	public TowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(TFStructurePieceTypes.TFLTBea.get(), nbt);

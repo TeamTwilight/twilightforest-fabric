@@ -44,7 +44,7 @@ public class CapabilityEvents {
 	public static boolean livingAttack(LivingEntity living, DamageSource source, float damage) {
 		// shields
 		AtomicBoolean cancel = new AtomicBoolean(false);
-		if (!living.getLevel().isClientSide() && !source.is(DamageTypeTags.BYPASSES_ARMOR)) {
+		if (!living.level().isClientSide() && !source.is(DamageTypeTags.BYPASSES_ARMOR)) {
 			CapabilityList.SHIELDS.maybeGet(living).ifPresent(cap -> {
 				if (cap.shieldsLeft() > 0) {
 					cap.breakShield();

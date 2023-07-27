@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.mangrovetree",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:mangrove_log",
+      "placement": "before",
+      "items": [
+        "twilightforest:hollow_vangrove_log"
+      ]
+    }
+  ]
+}

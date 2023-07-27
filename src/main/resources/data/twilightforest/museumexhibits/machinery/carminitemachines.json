@@ -1,0 +1,16 @@
+{
+  "collection": "museumcurator.collection.machinery",
+  "name": "museumcurator.machinery.twilightforest.carminitemachines",
+  "relativeTo": "museumcurator.machinery.gadgets",
+  "placement" : "before",
+  "items": [
+    "twilightforest:encased_towerwood",
+    "twilightforest:encased_smoker",
+    "twilightforest:encased_fire_jet",
+    "twilightforest:ghast_trap",
+    "twilightforest:vanishing_block",
+    "twilightforest:reappearing_block",
+    "twilightforest:carminite_builder",
+    "twilightforest:carminite_reactor"
+  ]
+}

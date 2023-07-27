@@ -73,12 +73,12 @@ public class CubeMoveToRedstoneSymbolsGoal extends Goal {
 	}
 
 	private boolean isRedstoneSymbol(BlockPos pos) {
-		if (!this.myCube.getLevel().hasChunkAt(pos) || !this.myCube.getLevel().isEmptyBlock(pos)) {
+		if (!this.myCube.level().hasChunkAt(pos) || !this.myCube.level().isEmptyBlock(pos)) {
 			return false;
 		} else {
 			// we found an air block, is it surrounded by redstone?
 			for (Direction e : Direction.values()) {
-				if (this.myCube.getLevel().getBlockState(pos.relative(e)).getBlock() != Blocks.REDSTONE_WIRE) {
+				if (this.myCube.level().getBlockState(pos.relative(e)).getBlock() != Blocks.REDSTONE_WIRE) {
 					return false;
 				}
 			}

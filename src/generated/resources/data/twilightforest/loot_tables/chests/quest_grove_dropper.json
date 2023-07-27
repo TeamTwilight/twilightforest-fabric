@@ -71,5 +71,6 @@
       ],
       "rolls": 4.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:chests/quest_grove_dropper"
 }

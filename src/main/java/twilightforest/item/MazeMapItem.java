@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
@@ -113,7 +113,7 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 							boolean shouldFuzz = xPixelDist * xPixelDist + zPixelDist * zPixelDist > (viewRadiusPixels - 2) * (viewRadiusPixels - 2);
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
-							Multiset<MaterialColor> multiset = HashMultiset.create();
+							Multiset<MapColor> multiset = HashMultiset.create();
 							LevelChunk chunk = level.getChunkAt(new BlockPos(worldX, 0, worldZ));
 
 							int brightness = 1;
@@ -161,28 +161,28 @@ public class MazeMapItem extends MapItem implements CustomMapItem {
 									if (mapOres) {
 										// recolor ores
 										if (state.is(BlockTags.COAL_ORES)) {
-											multiset.add(MaterialColor.COLOR_BLACK, 1000);
+											multiset.add(MapColor.COLOR_BLACK, 1000);
 										} else if (state.is(BlockTags.GOLD_ORES)) {
-											multiset.add(MaterialColor.GOLD, 1000);
+											multiset.add(MapColor.GOLD, 1000);
 										} else if (state.is(BlockTags.IRON_ORES)) {
-											multiset.add(MaterialColor.METAL, 1000);
+											multiset.add(MapColor.METAL, 1000);
 										} else if (state.is(BlockTags.LAPIS_ORES)) {
-											multiset.add(MaterialColor.LAPIS, 1000);
+											multiset.add(MapColor.LAPIS, 1000);
 										} else if (state.is(BlockTags.REDSTONE_ORES)) {
-											multiset.add(MaterialColor.COLOR_RED, 1000);
+											multiset.add(MapColor.COLOR_RED, 1000);
 										} else if (state.is(BlockTags.DIAMOND_ORES)) {
-											multiset.add(MaterialColor.DIAMOND, 1000);
+											multiset.add(MapColor.DIAMOND, 1000);
 										} else if (state.is(BlockTags.EMERALD_ORES)) {
-											multiset.add(MaterialColor.EMERALD, 1000);
+											multiset.add(MapColor.EMERALD, 1000);
 										} else if (state.is(BlockTags.COPPER_ORES)) {
-											multiset.add(MaterialColor.COLOR_ORANGE, 1000);
+											multiset.add(MapColor.COLOR_ORANGE, 1000);
 										} else if (state.getBlock() != Blocks.AIR && state.is(Tags.Blocks.ORES)) {
-											multiset.add(MaterialColor.COLOR_PINK, 1000);
+											multiset.add(MapColor.COLOR_PINK, 1000);
 										}
 									}
 								}
 
-								MaterialColor mapcolor = Iterables.getFirst(Multisets.copyHighestCountFirst(multiset), MaterialColor.NONE);
+								MapColor mapcolor = Iterables.getFirst(Multisets.copyHighestCountFirst(multiset), MapColor.NONE);
 
 								if (zPixel >= 0 && xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels && (!shouldFuzz || (xPixel + zPixel & 1) != 0)) {
 									byte b0 = data.colors[xPixel + zPixel * 128];

@@ -1,0 +1,18 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.twilightforest.darkwoodtree",
+  "relativeTo": "museumcurator.botany.jungletree",
+  "placement" : "before",
+  "items": [
+    "twilightforest:darkwood_sapling",
+    "twilightforest:dark_leaves",
+    "twilightforest:hollow_dark_log",
+    "twilightforest:dark_log",
+    "twilightforest:stripped_dark_log",
+    "twilightforest:dark_wood",
+    "twilightforest:stripped_dark_wood",
+    "twilightforest:dark_planks",
+    "twilightforest:dark_slab",
+    "twilightforest:dark_stairs"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.thenether",
+  "name": "museumcurator.thenether.crimsonbotany",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:crimson_stem",
+      "placement": "before",
+      "items": [
+        "twilightforest:hollow_crimson_stem"
+      ]
+    }
+  ]
+}

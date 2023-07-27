@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "twilightforest:time_log"
+      "tag": "twilightforest:timewood_logs"
     }
   ],
   "result": {

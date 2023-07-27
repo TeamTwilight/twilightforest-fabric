@@ -56,5 +56,6 @@
       "hedge_spider",
       "swarm_spider"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

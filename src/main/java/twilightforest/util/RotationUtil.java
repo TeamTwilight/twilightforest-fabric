@@ -4,8 +4,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 
-import java.util.Random;
-
 public final class RotationUtil {
 	public static final Rotation[] ROTATIONS = Rotation.values();
 	public static final Direction[] CARDINALS = { Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST };

@@ -9,8 +9,6 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 public class AnnihilateParticle extends TextureSheetParticle {
 
-	private final float initialParticleScale;
-
 	public AnnihilateParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(level, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.xd *= 0.1D;
@@ -22,7 +20,6 @@ public class AnnihilateParticle extends TextureSheetParticle {
 		this.rCol = this.gCol = this.bCol = 1.0F;
 		this.quadSize *= 0.75F;
 		this.quadSize *= scale;
-		this.initialParticleScale = this.quadSize;
 		this.lifetime = (int) (60.0D / (Math.random() * 0.8D + 0.6D));
 		this.lifetime = (int) (this.lifetime * scale);
 		this.hasPhysics = true;

@@ -56,10 +56,10 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 
         leafAttachments.add(new FoliagePlacer.FoliageAttachment(startPos.above(height), 0, false));
 
-        int numBranches = this.branchesConfig.branchCount + random.nextInt(this.branchesConfig.randomAddBranches + 1);
+        int numBranches = this.branchesConfig.branchCount() + random.nextInt(this.branchesConfig.randomAddBranches() + 1);
         float offset = random.nextFloat();
         for (int b = 0; b < numBranches; b++) {
-            buildBranch(worldReader, worldPlacer, startPos, leafAttachments, height - this.branchDownwardOffset + b, this.branchesConfig.length, this.branchesConfig.spacingYaw * b + offset, this.branchesConfig.downwardsPitch, random, treeConfig, this.perpendicularBranches);
+            buildBranch(worldReader, worldPlacer, startPos, leafAttachments, height - this.branchDownwardOffset + b, this.branchesConfig.length(), this.branchesConfig.spacingYaw() * b + offset, this.branchesConfig.downwardsPitch(), random, treeConfig, this.perpendicularBranches);
         }
 
         return leafAttachments;

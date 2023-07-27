@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.HitResult;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enchantment.ChillAuraEnchantment;
@@ -71,22 +70,22 @@ public class IceBomb extends TFThrowable {
 	 * Freeze water, put snow on snowable surfaces
 	 */
 	private void doTerrainEffect(BlockPos pos) {
-		BlockState state = this.getLevel().getBlockState(pos);
-		if (!this.getLevel().isClientSide()) {
-			if (state.getMaterial() == Material.WATER) {
-				this.getLevel().setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
+		BlockState state = this.level().getBlockState(pos);
+		if (!this.level().isClientSide()) {
+			if (state.is(Blocks.WATER)) {
+				this.level().setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
 			}
 			if (state == Blocks.LAVA.defaultBlockState()) {
-				this.getLevel().setBlockAndUpdate(pos, Blocks.OBSIDIAN.defaultBlockState());
+				this.level().setBlockAndUpdate(pos, Blocks.OBSIDIAN.defaultBlockState());
 			}
-			if (this.getLevel().isEmptyBlock(pos) && Blocks.SNOW.defaultBlockState().canSurvive(this.getLevel(), pos)) {
-				this.getLevel().setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState());
+			if (this.level().isEmptyBlock(pos) && Blocks.SNOW.defaultBlockState().canSurvive(this.level(), pos)) {
+				this.level().setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState());
 			}
 			if (state.is(BlockTagGenerator.ICE_BOMB_REPLACEABLES)) {
-				this.getLevel().setBlock(pos, Blocks.SNOW.defaultBlockState().canSurvive(this.getLevel(), pos) ? Blocks.SNOW.defaultBlockState() : Blocks.AIR.defaultBlockState(), 3);
+				this.level().setBlock(pos, Blocks.SNOW.defaultBlockState().canSurvive(this.level(), pos) ? Blocks.SNOW.defaultBlockState() : Blocks.AIR.defaultBlockState(), 3);
 			}
 			if (state.is(Blocks.SNOW) && state.getValue(SnowLayerBlock.LAYERS) < 8) {
-				this.getLevel().setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, state.getValue(SnowLayerBlock.LAYERS) + 1));
+				this.level().setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, state.getValue(SnowLayerBlock.LAYERS) + 1));
 			}
 		}
 	}
@@ -101,8 +100,8 @@ public class IceBomb extends TFThrowable {
 			this.zoneTimer--;
 			this.makeIceZone();
 
-			if (!this.getLevel().isClientSide() && this.zoneTimer <= 0) {
-				this.getLevel().levelEvent(2001, new BlockPos(this.blockPosition()), Block.getId(Blocks.ICE.defaultBlockState()));
+			if (!this.level().isClientSide() && this.zoneTimer <= 0) {
+				this.level().levelEvent(2001, new BlockPos(this.blockPosition()), Block.getId(Blocks.ICE.defaultBlockState()));
 				this.discard();
 			}
 		} else {
@@ -111,7 +110,7 @@ public class IceBomb extends TFThrowable {
 	}
 
 	private void makeIceZone() {
-		if (this.getLevel().isClientSide()) {
+		if (this.level().isClientSide()) {
 			// sparkles
 			BlockState stateId = Blocks.SNOW.defaultBlockState();
 			for (int i = 0; i < 15; i++) {
@@ -119,7 +118,7 @@ public class IceBomb extends TFThrowable {
 				double dy = this.getY() + (this.random.nextFloat() - this.random.nextFloat()) * 3.0F;
 				double dz = this.getZ() + (this.random.nextFloat() - this.random.nextFloat()) * 3.0F;
 
-				this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, stateId), dx, dy, dz, 0, 0, 0);
+				this.level().addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, stateId), dx, dy, dz, 0, 0, 0);
 			}
 		} else {
 			if (this.zoneTimer % 20 == 0) {
@@ -129,20 +128,20 @@ public class IceBomb extends TFThrowable {
 	}
 
 	private void hitNearbyEntities() {
-		List<LivingEntity> nearby = this.getLevel().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3, 2, 3));
+		List<LivingEntity> nearby = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3, 2, 3));
 
 		for (LivingEntity entity : nearby) {
 			if (entity != this.getOwner()) {
 				if (entity instanceof Yeti) {
 					// TODO: make "frozen yeti" entity?
 					BlockPos pos = BlockPos.containing(entity.xOld, entity.yOld, entity.zOld);
-					this.getLevel().setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
-					this.getLevel().setBlockAndUpdate(pos.above(), Blocks.ICE.defaultBlockState());
+					this.level().setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
+					this.level().setBlockAndUpdate(pos.above(), Blocks.ICE.defaultBlockState());
 
 					entity.discard();
 				} else {
 					if (!entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
-						entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.FROZEN, this.getOwner(), this), entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5 : 1);
+						entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.FROZEN, this.getOwner(), this), entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5 : 1);
 						ChillAuraEnchantment.doChillAuraEffect(entity, 100, 0, true);
 					}
 				}

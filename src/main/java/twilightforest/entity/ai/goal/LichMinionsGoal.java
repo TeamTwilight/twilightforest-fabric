@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.boss.Lich;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBolt;
@@ -55,9 +56,9 @@ public class LichMinionsGoal extends Goal {
 				this.lich.setAttackCooldown(20);
 			} else if (dist < 20F && this.lich.getSensing().hasLineOfSight(targetedEntity)) {
 				if (this.lich.getNextAttackType() == 0) {
-					this.lich.launchProjectileAt(new LichBolt(this.lich.getLevel(), this.lich));
+					this.lich.launchProjectileAt(new LichBolt(this.lich.level(), this.lich));
 				} else {
-					this.lich.launchProjectileAt(new LichBomb(this.lich.getLevel(), this.lich));
+					this.lich.launchProjectileAt(new LichBomb(this.lich.level(), this.lich));
 				}
 
 				this.lich.swing(InteractionHand.MAIN_HAND);
@@ -73,7 +74,7 @@ public class LichMinionsGoal extends Goal {
 	}
 
 	private void checkAndSpawnMinions() {
-		if (!this.lich.getLevel().isClientSide() && this.lich.getMinionsToSummon() > 0) {
+		if (!this.lich.level().isClientSide() && this.lich.getMinionsToSummon() > 0) {
 			int minions = this.lich.countMyMinions();
 
 			// if not, spawn one!
@@ -89,12 +90,12 @@ public class LichMinionsGoal extends Goal {
 		LivingEntity targetedEntity = this.lich.getTarget();
 		Vec3 minionSpot = this.lich.findVecInLOSOf(targetedEntity);
 
-		if (minionSpot != null && this.lich.getLevel() instanceof ServerLevelAccessor accessor) {
+		if (minionSpot != null && this.lich.level() instanceof ServerLevelAccessor accessor) {
 			// put a clone there
-			LichMinion minion = new LichMinion(this.lich.getLevel(), this.lich);
+			LichMinion minion = new LichMinion(this.lich.level(), this.lich);
 			minion.setPos(minionSpot.x(), minionSpot.y(), minionSpot.z());
-			minion.finalizeSpawn(accessor, this.lich.getLevel().getCurrentDifficultyAt(BlockPos.containing(minionSpot)), MobSpawnType.MOB_SUMMONED, null, null);
-			this.lich.getLevel().addFreshEntity(minion);
+			ForgeEventFactory.onFinalizeSpawn(minion, accessor, this.lich.level().getCurrentDifficultyAt(BlockPos.containing(minionSpot)), MobSpawnType.MOB_SUMMONED, null, null);
+			this.lich.level().addFreshEntity(minion);
 
 			minion.setTarget(targetedEntity);
 

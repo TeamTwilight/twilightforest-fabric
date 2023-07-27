@@ -5,11 +5,10 @@ import me.alphamode.forgetags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.Util;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -212,10 +211,10 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 				.save(consumer, locWood(name + "_gate"));
 	}
 
-	protected final void planksBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+	protected final void planksBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, TagKey<Item> material) {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result.get(), 4)
-				.requires(material.get())
-				.unlockedBy("has_item", has(material.get()))
+				.requires(material)
+				.unlockedBy("has_item", has(material))
 				.save(consumer, locWood(name + "_planks"));
 	}
 
@@ -270,7 +269,7 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 				.save(consumer, locWood(name + "_stripped_wood"));
 	}
 
-	protected final void signBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+	protected final void signBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Block> material) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result.get(), 3)
 				.pattern("###")
 				.pattern("###")
@@ -278,7 +277,18 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 				.define('#', material.get())
 				.define('-', Tags.Items.RODS_WOODEN)
 				.unlockedBy("has_item", has(material.get()))
-				.save(consumer, locWood(name + "_wood"));
+				.save(consumer, locWood(name + "_sign"));
+	}
+
+	protected final void hangingSignBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result.get(), 6)
+				.pattern("| |")
+				.pattern("###")
+				.pattern("###")
+				.define('#', material.get())
+				.define('|', Items.CHAIN)
+				.unlockedBy("has_item", has(material.get()))
+				.save(consumer, locWood(name + "_hanging_sign"));
 	}
 
 	protected final void banisterBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {

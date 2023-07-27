@@ -73,7 +73,7 @@ public class IceCrystal extends BaseIceMob {
 	public void aiStep() {
 		super.aiStep();
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			this.crystalAge++;
 			if (this.maxCrystalAge > 0 && this.crystalAge >= this.maxCrystalAge) {
 				this.discard();

@@ -41,7 +41,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem {
 
@@ -185,7 +184,7 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem 
 				BlockPos replacePos = coord.offset(offX, offY, offZ);
 				BlockState replaceState = level.getBlockState(replacePos);
 
-				if (isReplaceable(replaceState) || replaceState.getMaterial().isReplaceable() || replaceState.isAir()) {
+				if (isReplaceable(replaceState) || replaceState.canBeReplaced() || replaceState.isAir()) {
 					level.setBlock(coord, replacementBlock, 2);
 
 					// set close to ore material

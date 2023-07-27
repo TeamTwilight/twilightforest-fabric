@@ -193,5 +193,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:chests/aurora_room"
 }

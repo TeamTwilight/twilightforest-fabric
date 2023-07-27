@@ -15,7 +15,6 @@ import twilightforest.util.FeaturePlacers;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.components.feature.config.TFTreeFeatureConfig;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 

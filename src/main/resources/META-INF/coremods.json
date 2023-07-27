@@ -8,5 +8,6 @@
   "book": "META-INF/asm/book.js",
   "conquered": "META-INF/asm/conquered.js",
   "reach": "META-INF/asm/reach.js",
-  "shroom": "META-INF/asm/shroom.js"
+  "shroom": "META-INF/asm/shroom.js",
+  "cloud": "META-INF/asm/cloud.js"
 }

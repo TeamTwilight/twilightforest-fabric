@@ -70,17 +70,17 @@ public class LowerGoblinKnight extends Monster {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(ARMOR, false);
+		this.getEntityData().define(ARMOR, false);
 	}
 
 	public boolean hasArmor() {
-		return this.entityData.get(ARMOR);
+		return this.getEntityData().get(ARMOR);
 	}
 
 	private void setHasArmor(boolean flag) {
-		this.entityData.set(ARMOR, flag);
+		this.getEntityData().set(ARMOR, flag);
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (flag) {
 				if (!Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).hasModifier(ARMOR_MODIFIER)) {
 					Objects.requireNonNull(this.getAttribute(Attributes.ARMOR)).addTransientModifier(ARMOR_MODIFIER);
@@ -108,7 +108,7 @@ public class LowerGoblinKnight extends Monster {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
 
-		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.getLevel());
+		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.level());
 		upper.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 		upper.finalizeSpawn(accessor, difficulty, MobSpawnType.NATURAL, data, tag);
 		upper.startRiding(this);
@@ -191,9 +191,9 @@ public class LowerGoblinKnight extends Monster {
 	}
 
 	@Override
-	public void positionRider(Entity entity) {
-		super.positionRider(entity);
-		if(entity instanceof UpperGoblinKnight goblin) {
+	public void positionRider(Entity entity, Entity.MoveFunction callback) {
+		super.positionRider(entity, callback);
+		if (entity instanceof UpperGoblinKnight goblin) {
 			goblin.setYBodyRot(this.getYRot());
 			goblin.setYHeadRot(this.getYRot());
 			goblin.setYRot(this.getYRot());
@@ -214,7 +214,7 @@ public class LowerGoblinKnight extends Monster {
 	}
 
 	private void breakArmor() {
-		this.getLevel().broadcastEntityEvent(this, (byte) 5);
+		this.level().broadcastEntityEvent(this, (byte) 5);
 		this.setHasArmor(false);
 	}
 }

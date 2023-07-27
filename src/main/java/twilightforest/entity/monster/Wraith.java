@@ -2,7 +2,11 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -18,33 +22,32 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.control.NoClipMoveControl;
+import twilightforest.entity.ai.goal.SimplifiedAttackGoal;
 import twilightforest.init.TFDamageTypes;
-import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
 import java.util.EnumSet;
+import java.util.Optional;
 
 public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
-	public Wraith(EntityType<? extends Wraith> type, Level world) {
-		super(type, world);
-		moveControl = new NoClipMoveControl(this);
-		noPhysics = true;
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Wraith.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+
+	public Wraith(EntityType<? extends Wraith> type, Level level) {
+		super(type, level);
+		this.moveControl = new NoClipMoveControl(this);
+		this.noPhysics = true;
 	}
 
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(2, new MoveTowardsHomeGoal(this, 0.85D));
-		this.goalSelector.addGoal(4, new MeleeAttackGoal(this));
+		this.goalSelector.addGoal(4, new SimplifiedAttackGoal(this));
 		this.goalSelector.addGoal(5, new FlyTowardsTargetGoal(this));
 		this.goalSelector.addGoal(6, new RandomFloatAroundGoal(this));
 		this.goalSelector.addGoal(7, new LookAroundGoal(this));
@@ -59,53 +62,14 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	}
 
 	@Override
-	public boolean isSteppingCarefully() {
-		return true;
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
-	// [VanillaCopy] Mob.doHurtTarget. This whole inheritance hierarchy makes me sad.
 	@Override
-	public boolean doHurtTarget(Entity entityIn) {
-		float f = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
-		int i = 0;
-
-		if (entityIn instanceof LivingEntity) {
-			f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity) entityIn).getMobType());
-			i += EnchantmentHelper.getKnockbackBonus(this);
-		}
-
-		boolean flag = entityIn.hurt(TFDamageTypes.getEntityDamageSource(this.getLevel(), TFDamageTypes.HAUNT, this, TFEntities.WRAITH.get()), f);
-
-		if (flag) {
-			if (i > 0) {
-				((LivingEntity) entityIn).knockback(i * 0.5F, Mth.sin(this.getYRot() * 0.017453292F), (-Mth.cos(this.getYRot() * 0.017453292F)));
-				this.setDeltaMovement(getDeltaMovement().x() * 0.6D, getDeltaMovement().y(), getDeltaMovement().z() * 0.6D);
-			}
-
-			int j = EnchantmentHelper.getFireAspect(this);
-
-			if (j > 0) {
-				entityIn.setSecondsOnFire(j * 4);
-			}
-
-			if (entityIn instanceof Player entityplayer) {
-				ItemStack itemstack = this.getMainHandItem();
-				ItemStack itemstack1 = entityplayer.isUsingItem() ? entityplayer.getUseItem() : ItemStack.EMPTY;
-
-				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof AxeItem && itemstack1.getItem() == Items.SHIELD) {
-					float f1 = 0.25F + EnchantmentHelper.getBlockEfficiency(this) * 0.05F;
-
-					if (this.getRandom().nextFloat() < f1) {
-						entityplayer.getCooldowns().addCooldown(Items.SHIELD, 100);
-						this.getLevel().broadcastEntityEvent(entityplayer, (byte) 30);
-					}
-				}
-			}
-
-			this.doEnchantDamageEffects(this, entityIn);
-		}
-
-		return flag;
+	public boolean isSteppingCarefully() {
+		return true;
 	}
 
 	@Override
@@ -127,6 +91,12 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean doHurtTarget(Entity entity) {
+		entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HAUNT, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+		return super.doHurtTarget(entity);
 	}
 
 	@Override
@@ -155,7 +125,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		if (type == MobSpawnType.STRUCTURE || type == MobSpawnType.SPAWNER) this.restrictTo(this.blockPosition(), 20);
+		if (type == MobSpawnType.STRUCTURE || type == MobSpawnType.SPAWNER) this.setRestrictionPoint(GlobalPos.of(accessor.getLevel().dimension(), this.blockPosition()));
 		return super.finalizeSpawn(accessor, difficulty, type, data, tag);
 	}
 
@@ -168,30 +138,35 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.loadHomePointFromNbt(tag, 20);
+		this.loadHomePointFromNbt(tag);
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
 	}
 
 	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 20;
 	}
 
 	static class FlyTowardsTargetGoal extends Goal {
-		private final Wraith taskOwner;
+		private final Wraith wraith;
 
 		FlyTowardsTargetGoal(Wraith wraith) {
-			this.taskOwner = wraith;
+			this.wraith = wraith;
 			this.setFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		@Override
 		public boolean canUse() {
-			return taskOwner.getTarget() != null;
+			return wraith.getTarget() != null;
 		}
 
 		@Override
@@ -201,68 +176,29 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 		@Override
 		public void start() {
-			LivingEntity target = taskOwner.getTarget();
+			LivingEntity target = wraith.getTarget();
 			if (target != null)
-				taskOwner.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 0.5F);
-		}
-	}
-
-	// Similar to MeleeAttackGoal but simpler (no pathfinding)
-	static class MeleeAttackGoal extends Goal {
-		private final Wraith taskOwner;
-		private int attackTick = 20;
-
-		MeleeAttackGoal(Wraith taskOwner) {
-			this.taskOwner = taskOwner;
-		}
-
-		@Override
-		public boolean canUse() {
-			LivingEntity target = taskOwner.getTarget();
-
-			return target != null
-					&& target.getBoundingBox().maxY > this.taskOwner.getBoundingBox().minY
-					&& target.getBoundingBox().minY < this.taskOwner.getBoundingBox().maxY
-					&& this.taskOwner.distanceToSqr(target) <= 4.0D;
-		}
-
-		@Override
-		public void tick() {
-			if (this.attackTick > 0) {
-				this.attackTick--;
-			}
-		}
-
-		@Override
-		public void stop() {
-			this.attackTick = 20;
-		}
-
-		@Override
-		public void start() {
-			if (this.taskOwner.getTarget() != null)
-				this.taskOwner.doHurtTarget(this.taskOwner.getTarget());
-			this.attackTick = 20;
+				wraith.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 0.5F);
 		}
 	}
 
 	// [VanillaCopy] Ghast.RandomFloatAroundGoal
 	static class RandomFloatAroundGoal extends Goal {
-		private final Wraith parentEntity;
+		private final Wraith wraith;
 
 		public RandomFloatAroundGoal(Wraith wraith) {
-			this.parentEntity = wraith;
+			this.wraith = wraith;
 			this.setFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		@Override
 		public boolean canUse() {
-			if (this.parentEntity.getTarget() != null || !this.parentEntity.isWithinRestriction())
+			if (this.wraith.getTarget() != null || !this.wraith.isMobWithinHomeArea(this.wraith))
 				return false;
-			MoveControl entitymovehelper = this.parentEntity.getMoveControl();
-			double d0 = entitymovehelper.getWantedX() - this.parentEntity.getX();
-			double d1 = entitymovehelper.getWantedY() - this.parentEntity.getY();
-			double d2 = entitymovehelper.getWantedZ() - this.parentEntity.getZ();
+			MoveControl control = this.wraith.getMoveControl();
+			double d0 = control.getWantedX() - this.wraith.getX();
+			double d1 = control.getWantedY() - this.wraith.getY();
+			double d2 = control.getWantedZ() - this.wraith.getZ();
 			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 			return d3 < 1.0D || d3 > 3600.0D;
 		}
@@ -274,20 +210,20 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 		@Override
 		public void start() {
-			RandomSource random = this.parentEntity.getRandom();
-			double d0 = this.parentEntity.getX() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
-			double d1 = this.parentEntity.getY() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
-			double d2 = this.parentEntity.getZ() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
-			this.parentEntity.getMoveControl().setWantedPosition(d0, d1, d2, 0.5D);
+			RandomSource random = this.wraith.getRandom();
+			double d0 = this.wraith.getX() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
+			double d1 = this.wraith.getY() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
+			double d2 = this.wraith.getZ() + (random.nextFloat() * 2.0F - 1.0F) * 16.0F;
+			this.wraith.getMoveControl().setWantedPosition(d0, d1, d2, 0.5D);
 		}
 	}
 
 	// [VanillaCopy] Ghast.GhastLookGoal
 	public static class LookAroundGoal extends Goal {
-		private final Wraith parentEntity;
+		private final Wraith wraith;
 
 		public LookAroundGoal(Wraith wraith) {
-			this.parentEntity = wraith;
+			this.wraith = wraith;
 			this.setFlags(EnumSet.of(Flag.LOOK));
 		}
 
@@ -298,17 +234,17 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 		@Override
 		public void tick() {
-			if (this.parentEntity.getTarget() == null) {
-				this.parentEntity.setYRot(-((float) Mth.atan2(this.parentEntity.getDeltaMovement().x(), this.parentEntity.getDeltaMovement().z())) * (180F / (float) Math.PI));
-				this.parentEntity.setYBodyRot(this.parentEntity.getYRot());
+			if (this.wraith.getTarget() == null) {
+				this.wraith.setYRot(-((float) Mth.atan2(this.wraith.getDeltaMovement().x(), this.wraith.getDeltaMovement().z())) * (180F / (float) Math.PI));
+				this.wraith.setYBodyRot(this.wraith.getYRot());
 			} else {
-				LivingEntity entitylivingbase = this.parentEntity.getTarget();
+				LivingEntity entitylivingbase = this.wraith.getTarget();
 
-				if (entitylivingbase.distanceToSqr(this.parentEntity) < 4096.0D) {
-					double d1 = entitylivingbase.getX() - this.parentEntity.getX();
-					double d2 = entitylivingbase.getZ() - this.parentEntity.getZ();
-					this.parentEntity.setYRot(-((float) Mth.atan2(d1, d2)) * (180F / (float) Math.PI));
-					this.parentEntity.setYBodyRot(this.parentEntity.getYRot());
+				if (entitylivingbase.distanceToSqr(this.wraith) < 4096.0D) {
+					double d1 = entitylivingbase.getX() - this.wraith.getX();
+					double d2 = entitylivingbase.getZ() - this.wraith.getZ();
+					this.wraith.setYRot(-((float) Mth.atan2(d1, d2)) * (180F / (float) Math.PI));
+					this.wraith.setYBodyRot(this.wraith.getYRot());
 				}
 			}
 		}
@@ -316,26 +252,26 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 
 	//modified version of MoveTowardsRestrictionGoal. We're limited with what we can use since Wraiths arent PathfinderMobs
 	public static class MoveTowardsHomeGoal extends Goal {
-		private final FlyingMob mob;
+		private final Wraith mob;
 		private double wantedX;
 		private double wantedY;
 		private double wantedZ;
 		private final double speedModifier;
 
-		public MoveTowardsHomeGoal(FlyingMob mob, double speedModifier) {
+		public MoveTowardsHomeGoal(Wraith mob, double speedModifier) {
 			this.mob = mob;
 			this.speedModifier = speedModifier;
 			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
 		}
 
 		public boolean canUse() {
-			if (this.mob.isWithinRestriction() || this.mob.getTarget() != null) {
+			if (this.mob.isMobWithinHomeArea(this.mob) || this.mob.getTarget() != null) {
 				return false;
 			} else {
-				BlockPos pos = this.mob.getRestrictCenter()
+				BlockPos pos = this.mob.getRestrictionPoint().pos()
 						.relative(Direction.getRandom(this.mob.getRandom()))
 						.offset(this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5), this.mob.getRandom().nextInt(5));
-				if (pos == null || !this.mob.getLevel().isLoaded(pos)) {
+				if (!this.mob.level().isLoaded(pos)) {
 					return false;
 				} else {
 					this.wantedX = pos.getX();

@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "twilightforest:canopy_log"
+      "tag": "twilightforest:canopy_logs"
     }
   ],
   "result": {

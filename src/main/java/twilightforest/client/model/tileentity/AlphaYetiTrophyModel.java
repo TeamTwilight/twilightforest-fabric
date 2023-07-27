@@ -11,37 +11,9 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class AlphaYetiTrophyModel extends GenericTrophyModel {
 	public final ModelPart main;
-	
-	public final ModelPart leftHorn1;
-	public final ModelPart leftHorn1Top;
-	public final ModelPart leftHorn2;
-	public final ModelPart leftHorn2Top;
-	public final ModelPart leftHorn3;
-	public final ModelPart leftHorn3Top;
-
-	public final ModelPart rightHorn1;
-	public final ModelPart rightHorn1Top;
-	public final ModelPart rightHorn2;
-	public final ModelPart rightHorn2Top;
-	public final ModelPart rightHorn3;
-	public final ModelPart rightHorn3Top;
 
 	public AlphaYetiTrophyModel(ModelPart part) {
 		this.main = part.getChild("main");
-
-		this.leftHorn1 = this.main.getChild("left_horn_1");
-		this.leftHorn1Top = this.leftHorn1.getChild("left_horn_1_top");
-		this.leftHorn2 = this.main.getChild("left_horn_2");
-		this.leftHorn2Top = this.leftHorn2.getChild("left_horn_2_top");
-		this.leftHorn3 = this.main.getChild("left_horn_3");
-		this.leftHorn3Top = this.leftHorn3.getChild("left_horn_3_top");
-
-		this.rightHorn1 = this.main.getChild("right_horn_1");
-		this.rightHorn1Top = this.rightHorn1.getChild("right_horn_1_top");
-		this.rightHorn2 = this.main.getChild("right_horn_2");
-		this.rightHorn2Top = this.rightHorn2.getChild("right_horn_2_top");
-		this.rightHorn3 = this.main.getChild("right_horn_3");
-		this.rightHorn3Top = this.rightHorn3.getChild("right_horn_3_top");
 	}
 
 	public static LayerDefinition createHead() {
@@ -128,11 +100,5 @@ public class AlphaYetiTrophyModel extends GenericTrophyModel {
 	@Override
 	public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
 		this.main.render(matrixStack, buffer, packedLight, packedOverlay);
-	}
-
-	public void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {
-		modelRenderer.xRot = x;
-		modelRenderer.yRot = y;
-		modelRenderer.zRot = z;
 	}
 }

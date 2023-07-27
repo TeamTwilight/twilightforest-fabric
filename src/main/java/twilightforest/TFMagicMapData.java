@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.fabricmc.api.EnvType;
@@ -193,7 +192,7 @@ public class TFMagicMapData extends MapItemSavedData {
 				RenderContext.stack.mulPose(Axis.ZP.rotationDegrees(getRot() * 360 / 16.0F));
 				RenderContext.stack.scale(4.0F, 4.0F, 3.0F);
 				RenderContext.stack.translate(-0.125D, 0.125D, 0.0D);
-				float f1 = featureId % 8 / 8.0F;
+				float f1 = featureId % 8.0F / 8.0F;
 				float f2 = featureId / 8 / 8.0F;
 				float f3 = (featureId % 8 + 1) / 8.0F;
 				float f4 = (featureId / 8 + 1) / 8.0F;

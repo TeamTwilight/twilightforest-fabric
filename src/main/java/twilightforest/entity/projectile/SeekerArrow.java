@@ -14,7 +14,6 @@ import twilightforest.init.TFEntities;
 
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SeekerArrow extends TFArrow {
 
@@ -38,19 +37,19 @@ public class SeekerArrow extends TFArrow {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(TARGET, -1);
+		this.getEntityData().define(TARGET, -1);
 	}
 
 	@Override
 	public void tick() {
 		if (isThisArrowFlying()) {
-			if (!this.getLevel().isClientSide()) {
+			if (!this.level().isClientSide()) {
 				this.updateTarget();
 			}
 
-			if (this.getLevel().isClientSide() && !this.inGround) {
+			if (this.level().isClientSide() && !this.inGround) {
 				for (int i = 0; i < 4; ++i) {
-					this.getLevel().addParticle(ParticleTypes.WITCH, this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());
+					this.level().addParticle(ParticleTypes.WITCH, this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());
 				}
 			}
 
@@ -74,7 +73,7 @@ public class SeekerArrow extends TFArrow {
 
 					this.setDeltaMovement(newMotion.add(0, 0.045F, 0));
 
-				} else if (!this.getLevel().isClientSide()) {
+				} else if (!this.level().isClientSide()) {
 					// too inaccurate for our intended target, give up on it
 					this.setTarget(null);
 				}
@@ -109,8 +108,8 @@ public class SeekerArrow extends TFArrow {
 			double closestDot = -1.0;
 			Entity closestTarget = null;
 
-			List<LivingEntity> entityList = this.getLevel().getEntitiesOfClass(LivingEntity.class, targetBB);
-			List<LivingEntity> monsters = entityList.stream().filter(l -> l instanceof Monster).collect(Collectors.toList());
+			List<LivingEntity> entityList = this.level().getEntitiesOfClass(LivingEntity.class, targetBB);
+			List<LivingEntity> monsters = entityList.stream().filter(l -> l instanceof Monster).toList();
 
 			if (!monsters.isEmpty()) {
 				for (LivingEntity monster : monsters) {
@@ -165,11 +164,11 @@ public class SeekerArrow extends TFArrow {
 
 	@Nullable
 	private Entity getTarget() {
-		return this.getLevel().getEntity(this.entityData.get(TARGET));
+		return this.level().getEntity(this.getEntityData().get(TARGET));
 	}
 
 	private void setTarget(@Nullable Entity e) {
-		this.entityData.set(TARGET, e == null ? -1 : e.getId());
+		this.getEntityData().set(TARGET, e == null ? -1 : e.getId());
 	}
 
 	private boolean isThisArrowFlying() {

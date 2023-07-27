@@ -9,7 +9,7 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
+    "announce_to_chat": false,
     "description": {
       "translate": "advancement.twilightforest.kill_cicada.desc",
       "with": [
@@ -32,5 +32,6 @@
     [
       "kill_cicada"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

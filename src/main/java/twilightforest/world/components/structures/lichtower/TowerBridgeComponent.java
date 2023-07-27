@@ -43,7 +43,6 @@ public class TowerBridgeComponent extends TowerWingComponent {
 	/**
 	 * Gets the bounding box of the tower wing we would like to make.
 	 *
-	 * @return
 	 */
 	public BoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(2, 1, 1, dSize, this.getOrientation());

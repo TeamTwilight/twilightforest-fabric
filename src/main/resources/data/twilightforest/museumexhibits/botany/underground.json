@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.underground",
+  "items": [
+    "twilightforest:torchberry_plant",
+    "twilightforest:torchberries",
+    "twilightforest:root_strand",
+    "twilightforest:trollsteinn",
+    "twilightforest:trollvidr",
+    "twilightforest:unripe_trollber",
+    "twilightforest:trollber"
+  ]
+}

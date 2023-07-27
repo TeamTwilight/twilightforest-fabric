@@ -74,8 +74,6 @@ public class YetiCaveComponent extends HollowHillComponent {
 	}
 
 	/**
-	 * @param cx
-	 * @param cz
 	 * @return true if the coordinates would be inside the hill on the "floor" of the hill
 	 */
 	@Override

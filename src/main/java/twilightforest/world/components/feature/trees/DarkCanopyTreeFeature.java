@@ -12,7 +12,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -23,10 +22,8 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.BitSetDiscreteVoxelShape;
 import net.minecraft.world.phys.shapes.DiscreteVoxelShape;
-import twilightforest.init.TFBlocks;
 
 import java.util.List;
 import java.util.OptionalInt;
@@ -54,17 +51,14 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
-		BlockPos validPos = BlockPos.ZERO;
-		Material materialUnder;
 		for (int dy = pos.getY(); dy >= reader.getMinBuildHeight(); dy--) {
-			materialUnder = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
-			if (materialUnder == Material.GRASS || materialUnder == Material.DIRT) {
+			BlockState state = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ()));
+			if (state.is(BlockTags.DIRT)) {
 				// yes!
 				foundDirt = true;
 				pos = new BlockPos(pos.getX(), dy, pos.getZ());
-				validPos = pos;
 				break;
-			} else if (materialUnder == Material.STONE || materialUnder == Material.SAND) {
+			} else if (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.SAND)) {
 				// nope
 				break;
 			}
@@ -82,7 +76,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 
 		// do not grow next to another tree
 		for (Direction e : Direction.Plane.HORIZONTAL) {
-			if (reader.getBlockState(pos.relative(e)).getMaterial() == Material.WOOD)
+			if (reader.getBlockState(pos.relative(e)).is(BlockTags.LOGS))
 				return false;
 		}
 
@@ -114,7 +108,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			set3.add(p_225290_.immutable());
 			reader.setBlock(p_225290_, p_225291_, 19);
 		};
-		boolean flag = this.doPlace(reader, rand, pos, validPos, biconsumer, biconsumer1, setter, treeconfiguration);
+		boolean flag = this.doPlace(reader, rand, pos, biconsumer, biconsumer1, setter, treeconfiguration);
 		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
 			if (!treeconfiguration.decorators.isEmpty()) {
 				TreeDecorator.Context treedecorator$context = new TreeDecorator.Context(reader, biconsumer3, rand, set1, set2, set);
@@ -134,21 +128,18 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 	}
 
 	//Mostly [VanillaCopy] of TreeFeature.doPlace, edits noted
-	private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BlockPos validPos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, FoliagePlacer.FoliageSetter foliageSetter, TreeConfiguration config) {
-		//set our blockpos to the valid dirt pos, not highest ground
-		pos = new BlockPos(pos.getX(), validPos.getY(), pos.getZ());
+	private boolean doPlace(WorldGenLevel level, RandomSource random, BlockPos pos, BiConsumer<BlockPos, BlockState> consumer, BiConsumer<BlockPos, BlockState> consumer1, FoliagePlacer.FoliageSetter foliageSetter, TreeConfiguration config) {
 		int i = config.trunkPlacer.getTreeHeight(random);
 		int j = config.foliagePlacer.foliageHeight(random, i, config);
 		int k = i - j;
 		int l = config.foliagePlacer.foliageRadius(random, k);
-		BlockPos finalPos = pos;
-		BlockPos blockpos = config.rootPlacer.map((placer) -> placer.getTrunkOrigin(finalPos, random)).orElse(pos);
+		BlockPos blockpos = config.rootPlacer.map((placer) -> placer.getTrunkOrigin(pos, random)).orElse(pos);
 		int i1 = Math.min(pos.getY(), blockpos.getY());
 		int j1 = Math.max(pos.getY(), blockpos.getY()) + i + 1;
 		if (i1 >= level.getMinBuildHeight() + 1 && j1 <= level.getMaxBuildHeight()) {
 			OptionalInt optionalint = config.minimumSize.minClippedHeight();
 			int k1 = this.getMaxFreeTreeHeight(level, i, blockpos, config);
-			if (k1 >= i || !optionalint.isEmpty() && k1 >= optionalint.getAsInt()) {
+			if (k1 >= i || optionalint.isPresent() && k1 >= optionalint.getAsInt()) {
 				if (config.rootPlacer.isPresent() && !config.rootPlacer.get().placeRoots(level, consumer, random, pos, blockpos, config)) {
 					return false;
 				} else {
@@ -176,7 +167,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 			for(int k = -j; k <= j; ++k) {
 				for(int l = -j; l <= j; ++l) {
 					mutable.setWithOffset(pos, k, i, l);
-					if (!isFree(level, mutable) || !config.ignoreVines) {
+					if (!validTreePos(level, mutable) || !config.ignoreVines) {
 						return i - 2;
 					}
 				}
@@ -264,26 +255,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		return discretevoxelshape;
 	}
 
-	public static boolean isFree(LevelSimulatedReader pLevel, BlockPos pPos) {
-		return validTreePos(pLevel, pPos) || pLevel.isStateAtPosition(pPos, (p_67281_) -> p_67281_.is(BlockTags.LOGS));
-	}
-
-	private static boolean isBlockWater(LevelSimulatedReader pLevel, BlockPos pPos) {
-		return pLevel.isStateAtPosition(pPos, (p_67271_) -> p_67271_.is(Blocks.WATER));
-	}
-
-	public static boolean isAirOrLeaves(LevelSimulatedReader pLevel, BlockPos pPos) {
-		return pLevel.isStateAtPosition(pPos, (p_67266_) -> p_67266_.isAir() || p_67266_.is(BlockTags.LEAVES) || p_67266_.is(TFBlocks.HARDENED_DARK_LEAVES.get()));
-	}
-
-	private static boolean isReplaceablePlant(LevelSimulatedReader pLevel, BlockPos pPos) {
-		return pLevel.isStateAtPosition(pPos, (p_160551_) -> {
-			Material material = p_160551_.getMaterial();
-			return material == Material.REPLACEABLE_PLANT;
-		});
-	}
-
-	public static boolean validTreePos(LevelSimulatedReader pLevel, BlockPos pPos) {
-		return isAirOrLeaves(pLevel, pPos) || isReplaceablePlant(pLevel, pPos) || isBlockWater(pLevel, pPos);
+	public static boolean validTreePos(LevelSimulatedReader reader, BlockPos pos) {
+		return reader.isStateAtPosition(pos, (state) -> state.isAir() || state.is(BlockTags.REPLACEABLE_BY_TREES));
 	}
 }

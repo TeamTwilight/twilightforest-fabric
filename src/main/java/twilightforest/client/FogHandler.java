@@ -57,7 +57,7 @@ public class FogHandler {
 
 
 	public static boolean renderFog(FogRenderer.FogMode mode, FogType type, Camera camera, float partialTick, float renderDistance, float nearDistance, float farDistance, FogShape shape, FogEvents.FogData fogData) {
-		if (type.equals(FogType.NONE) && Minecraft.getInstance().cameraEntity instanceof LocalPlayer player && player.level instanceof ClientLevel clientLevel && clientLevel.effects() instanceof TwilightForestRenderInfo) {
+		if (type.equals(FogType.NONE) && Minecraft.getInstance().cameraEntity instanceof LocalPlayer player && player.level() instanceof ClientLevel clientLevel && clientLevel.effects() instanceof TwilightForestRenderInfo) {
 			if (mode.equals(FogRenderer.FogMode.FOG_SKY)) {
 				if (SKY_CHUNK_LOADED) {
 					boolean spooky = isSpooky(clientLevel, player);

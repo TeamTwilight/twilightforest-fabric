@@ -90,5 +90,6 @@
     [
       "previous_progression"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

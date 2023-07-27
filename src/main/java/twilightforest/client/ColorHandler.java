@@ -261,19 +261,19 @@ public final class ColorHandler {
 				}
 				red &= 255;
 
-				blue = pos.getY() * 32 + pos.getZ() * 16;
-				if ((blue & 256) != 0) {
-					blue = 255 - (blue & 255);
-				}
-				blue ^= 255;
-
-				green = pos.getX() * 16 + pos.getZ() * 32;
+				green = pos.getY() * 32 + pos.getZ() * 16;
 				if ((green & 256) != 0) {
 					green = 255 - (green & 255);
 				}
-				green &= 255;
+				green ^= 255;
 
-				return red << 16 | blue << 8 | green;
+				blue = pos.getX() * 16 + pos.getZ() * 32;
+				if ((blue & 256) != 0) {
+					blue = 255 - (blue & 255);
+				}
+				blue &= 255;
+
+				return red << 16 | green << 8 | blue;
 			}
 		}, TFBlocks.RAINBOW_OAK_LEAVES.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> FoliageColor.getEvergreenColor(), TFBlocks.BEANSTALK_LEAVES.get(), TFBlocks.THORN_LEAVES.get());

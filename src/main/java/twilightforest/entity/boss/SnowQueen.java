@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,10 +36,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.IBreathAttacker;
@@ -55,12 +56,15 @@ import twilightforest.util.WorldUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomePoint, MultiPartEntity {
 
 	private static final int MAX_SUMMONS = 6;
 	private static final EntityDataAccessor<Boolean> BEAM_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Byte> PHASE_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
+
 	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
 	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
 	private static final float BREATH_DAMAGE = 4.0F;
@@ -123,6 +127,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 		super.defineSynchedData();
 		this.getEntityData().define(BEAM_FLAG, false);
 		this.getEntityData().define(PHASE_FLAG, (byte) 0);
+		this.getEntityData().define(HOME_POINT, Optional.empty());
 	}
 
 	@Override
@@ -143,7 +148,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	@Override
 	public void aiStep() {
 		super.aiStep();
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 		} else {
 			this.spawnParticles();
@@ -157,7 +162,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 			float py = this.getEyeHeight() + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
 			float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
 
-			this.getLevel().addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+			this.level().addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 		}
 
 		// during drop phase, all the ice blocks should make particles
@@ -167,7 +172,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 				float py = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
 				float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
 
-				this.getLevel().addParticle(TFParticleType.SNOW_WARNING.get(), ice.xOld + px, ice.yOld + py, ice.zOld + pz, 0, 0, 0);
+				this.level().addParticle(TFParticleType.SNOW_WARNING.get(), ice.xOld + px, ice.yOld + py, ice.zOld + pz, 0, 0, 0);
 			}
 		}
 
@@ -196,7 +201,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 				dy *= velocity;
 				dz *= velocity;
 
-				this.getLevel().addParticle(TFParticleType.ICE_BEAM.get(), px, py, pz, dx, dy, dz);
+				this.level().addParticle(TFParticleType.ICE_BEAM.get(), px, py, pz, dx, dy, dz);
 			}
 		}
 	}
@@ -220,7 +225,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 			this.iceArray[i].setYRot(this.getIceShieldAngle(i));
 
 			// collide things with the block
-			if (!this.getLevel().isClientSide()) {
+			if (!this.level().isClientSide()) {
 				this.applyShieldCollisions(this.iceArray[i]);
 			}
 		}
@@ -231,7 +236,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 				double d = this.getRandom().nextGaussian() * 0.02D;
 				double d1 = this.getRandom().nextGaussian() * 0.02D;
 				double d2 = this.getRandom().nextGaussian() * 0.02D;
-				this.getLevel().addParticle(this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
+				this.level().addParticle(this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
 						(this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
 						this.getY() + this.getRandom().nextFloat() * this.getBbHeight(),
 						(this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(), d, d1, d2);
@@ -246,9 +251,9 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	@Override
 	public void checkDespawn() {
-		if (this.getLevel().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.getRestrictCenter() != BlockPos.ZERO) {
-				this.getLevel().setBlockAndUpdate(this.getRestrictCenter(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get().defaultBlockState());
+		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
+			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
+				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get().defaultBlockState());
 			}
 			this.discard();
 		} else {
@@ -260,24 +265,24 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the tower as defeated
-		if (!this.getLevel().isClientSide()) {
-			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.AURORA_PALACE, true);
+		if (!this.level().isClientSide()) {
+			this.bossInfo.setProgress(0.0F);
+			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.AURORA_PALACE, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
+			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
 		}
 	}
 
 	@Override
 	protected boolean shouldDropLoot() {
-		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
-		return false;
+		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
 	}
 
 	private void applyShieldCollisions(Entity collider) {
-		List<Entity> list = this.getLevel().getEntities(collider, collider.getBoundingBox().inflate(-0.2F, -0.2F, -0.2F));
+		List<Entity> list = this.level().getEntities(collider, collider.getBoundingBox().inflate(-0.2F, -0.2F, -0.2F));
 
 		for (Entity collided : list) {
 			if (collided.isPushable()) {
@@ -302,10 +307,8 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		if (this.getCurrentPhase() == Phase.DROP) {
-			return entity.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.SQUISH, TFEntities.SNOW_QUEEN.get()), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		}
-		return super.doHurtTarget(entity);
+		DamageSource source = this.getCurrentPhase() == Phase.DROP ? TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.SQUISH, TFEntities.SNOW_QUEEN.get()) : this.level().damageSources().mobAttack(this);
+		return EntityUtil.properlyApplyCustomDamageSource(this, entity, source);
 	}
 
 	@Override
@@ -370,11 +373,11 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
-		if (this.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+		if (this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-				BlockState state = this.getLevel().getBlockState(pos);
+				BlockState state = this.level().getBlockState(pos);
 				if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {
-					this.getLevel().destroyBlock(pos, false);
+					this.level().destroyBlock(pos, false);
 					this.gameEvent(GameEvent.BLOCK_DESTROY);
 				}
 			}
@@ -383,20 +386,20 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	@Override
 	public boolean isBreathing() {
-		return this.entityData.get(BEAM_FLAG);
+		return this.getEntityData().get(BEAM_FLAG);
 	}
 
 	@Override
 	public void setBreathing(boolean flag) {
-		this.entityData.set(BEAM_FLAG, flag);
+		this.getEntityData().set(BEAM_FLAG, flag);
 	}
 
 	public Phase getCurrentPhase() {
-		return Phase.values()[this.entityData.get(PHASE_FLAG)];
+		return Phase.values()[this.getEntityData().get(PHASE_FLAG)];
 	}
 
 	public void setCurrentPhase(Phase currentPhase) {
-		this.entityData.set(PHASE_FLAG, (byte) currentPhase.ordinal());
+		this.getEntityData().set(PHASE_FLAG, (byte) currentPhase.ordinal());
 
 		// set variables for current phase
 		if (currentPhase == Phase.SUMMON) {
@@ -420,17 +423,17 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	}
 
 	public void summonMinionAt(LivingEntity targetedEntity) {
-		IceCrystal minion = new IceCrystal(this.getLevel());
+		IceCrystal minion = new IceCrystal(this.level());
 		minion.absMoveTo(this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F);
 
-		this.getLevel().addFreshEntity(minion);
+		this.level().addFreshEntity(minion);
 
 		for (int i = 0; i < 100; i++) {
 			double attemptX;
 			double attemptY;
 			double attemptZ;
-			if (getRestrictCenter() != BlockPos.ZERO) {
-				BlockPos home = getRestrictCenter();
+			if (this.isRestrictionPointValid(this.level().dimension())) {
+				BlockPos home = this.getRestrictionPoint().pos();
 				attemptX = home.getX() + this.getRandom().nextGaussian() * 3.0D;
 				attemptY = home.getY() + this.getRandom().nextGaussian() * 2.0D;
 				attemptZ = home.getZ() + this.getRandom().nextGaussian() * 3.0D;
@@ -452,7 +455,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	}
 
 	public int countMyMinions() {
-		return this.getLevel().getEntitiesOfClass(IceCrystal.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D)).size();
+		return this.level().getEntitiesOfClass(IceCrystal.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D)).size();
 	}
 
 	public void incrementSuccessfulDrops() {
@@ -461,7 +464,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		target.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.CHILLING_BREATH, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
+		target.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.CHILLING_BREATH, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
 		// TODO: slow target?
 	}
 
@@ -492,7 +495,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		this.loadHomePointFromNbt(compound, 20);
+		this.loadHomePointFromNbt(compound);
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -539,12 +542,17 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 	}
 
 	@Override
-	public BlockPos getRestrictionCenter() {
-		return this.getRestrictCenter();
+	public @Nullable GlobalPos getRestrictionPoint() {
+		return this.getEntityData().get(HOME_POINT).orElse(null);
 	}
 
 	@Override
-	public void setRestriction(BlockPos pos, int dist) {
-		this.restrictTo(pos, dist);
+	public void setRestrictionPoint(@Nullable GlobalPos pos) {
+		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
+	}
+
+	@Override
+	public int getHomeRadius() {
+		return 20;
 	}
 }

@@ -78,9 +78,9 @@ public class LoyalZombie extends TamableAnimal {
 	public void aiStep() {
 		// once our damage boost effect wears out, start to decay
 		// the effect here is that we die shortly after our 60 second lifespan
-		if (!this.getLevel().isClientSide() && this.getEffect(MobEffects.DAMAGE_BOOST) == null) {
+		if (!this.level().isClientSide() && this.getEffect(MobEffects.DAMAGE_BOOST) == null) {
 			if (this.tickCount % 20 == 0) {
-				this.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.EXPIRED), 2);
+				this.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.EXPIRED), 2);
 			}
 		}
 
@@ -96,7 +96,7 @@ public class LoyalZombie extends TamableAnimal {
 			this.heal(1.0F);
 			this.playSound(SoundEvents.ZOMBIE_INFECT, this.getSoundVolume(), this.getVoicePitch());
 			if (!player.getAbilities().instabuild) player.getItemInHand(hand).shrink(1);
-			return InteractionResult.sidedSuccess(this.getLevel().isClientSide());
+			return InteractionResult.sidedSuccess(this.level().isClientSide());
 		}
 
 		return super.interactAt(player, vec3, hand);

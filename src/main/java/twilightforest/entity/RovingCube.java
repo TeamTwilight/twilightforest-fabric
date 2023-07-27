@@ -44,13 +44,13 @@ public class RovingCube extends Monster {
 	public void aiStep() {
 		super.aiStep();
 
-		if (this.getLevel().isClientSide()) {
+		if (this.level().isClientSide()) {
 			for (int i = 0; i < 3; i++) {
 				float px = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 2.0F;
 				float py = this.getEyeHeight() - 0.25F + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 2.0F;
 				float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 2.0F;
 
-				this.getLevel().addParticle(TFParticleType.ANNIHILATE.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+				this.level().addParticle(TFParticleType.ANNIHILATE.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 			}
 		}
 	}

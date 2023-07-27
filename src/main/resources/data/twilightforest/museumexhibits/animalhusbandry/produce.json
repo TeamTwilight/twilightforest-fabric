@@ -1,0 +1,25 @@
+{
+  "collection": "museumcurator.collection.animalhusbandry",
+  "name": "museumcurator.animalhusbandry.produce",
+  "items": [
+    "twilightforest:raven_feather",
+    "twilightforest:magic_map_focus",
+    "twilightforest:naga_scale",
+    "twilightforest:borer_essence",
+    "twilightforest:carminite",
+    "twilightforest:carminite_block",
+    "twilightforest:arctic_fur",
+    "twilightforest:arctic_fur_block",
+    "twilightforest:alpha_yeti_fur"
+  ],
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:beef",
+      "placement": "after",
+      "items": [
+        "twilightforest:raw_venison",
+        "twilightforest:raw_meef"
+      ]
+    }
+  ]
+}

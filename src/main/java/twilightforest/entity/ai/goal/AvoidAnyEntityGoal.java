@@ -58,7 +58,7 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 
 	@Override
 	public boolean canUse() {
-		List<T> list = this.entity.getLevel().getEntitiesOfClass(this.classToAvoid, this.entity.getBoundingBox().inflate(this.avoidDistance, 3.0D, this.avoidDistance), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(this.builtTargetSelector).and(this.avoidTargetSelector));
+		List<T> list = this.entity.level().getEntitiesOfClass(this.classToAvoid, this.entity.getBoundingBox().inflate(this.avoidDistance, 3.0D, this.avoidDistance), EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(this.builtTargetSelector).and(this.avoidTargetSelector));
 
 		if (!list.isEmpty()) {
 			this.avoidTarget = list.get(0);

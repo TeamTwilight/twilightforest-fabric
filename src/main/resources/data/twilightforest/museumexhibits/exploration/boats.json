@@ -1,0 +1,22 @@
+{
+  "collection": "museumcurator.collection.technology",
+  "name": "museumcurator.technology.boats",
+  "items": [
+    "twilightforest:twilight_oak_boat",
+    "twilightforest:twilight_oak_chest_boat",
+    "twilightforest:canopy_boat",
+    "twilightforest:canopy_chest_boat",
+    "twilightforest:mangrove_boat",
+    "twilightforest:mangrove_chest_boat",
+    "twilightforest:dark_boat",
+    "twilightforest:dark_chest_boat",
+    "twilightforest:time_boat",
+    "twilightforest:time_chest_boat",
+    "twilightforest:transformation_boat",
+    "twilightforest:transformation_chest_boat",
+    "twilightforest:mining_boat",
+    "twilightforest:mining_chest_boat",
+    "twilightforest:sorting_boat",
+    "twilightforest:sorting_chest_boat"
+  ]
+}

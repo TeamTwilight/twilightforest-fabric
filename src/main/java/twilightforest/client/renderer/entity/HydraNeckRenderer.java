@@ -5,20 +5,18 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.joml.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraNeckModel;
-import twilightforest.entity.boss.HydraNeck;
 import twilightforest.entity.boss.HydraHeadContainer;
+import twilightforest.entity.boss.HydraNeck;
 
 public class HydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeckModel> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
-
 	public HydraNeckRenderer(EntityRendererProvider.Context manager) {
-		super(manager, new HydraNeckModel(manager.bakeLayer(TFModelLayers.HYDRA_NECK)));
+		super(manager, new HydraNeckModel(manager.bakeLayer(TFModelLayers.NEW_HYDRA_NECK)));
 	}
 
 	@Override

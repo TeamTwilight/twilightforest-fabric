@@ -28,5 +28,6 @@
     "recipes": [
       "twilightforest:equipment/knightmetal_leggings"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

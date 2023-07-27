@@ -1,0 +1,21 @@
+{
+  "collection": "museumcurator.collection.lithology",
+  "name": "museumcurator.lithology.dirt",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:grass_block",
+      "placement": "after",
+      "items": [
+        "twilightforest:smoker",
+        "twilightforest:fire_jet"
+      ]
+    },
+    {
+      "relativeTo": "minecraft:podzol",
+      "placement": "after",
+      "items": [
+        "twilightforest:uberous_soil"
+      ]
+    }
+  ]
+}

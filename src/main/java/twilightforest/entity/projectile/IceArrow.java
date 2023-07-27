@@ -25,10 +25,10 @@ public class IceArrow extends TFArrow {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.getLevel().isClientSide() && !this.inGround) {
+		if (this.level().isClientSide() && !this.inGround) {
 			BlockState stateId = Blocks.SNOW.defaultBlockState();
 			for (int i = 0; i < 4; ++i) {
-				this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, stateId), this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());
+				this.level().addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, stateId), this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());
 			}
 		}
 	}
@@ -36,7 +36,7 @@ public class IceArrow extends TFArrow {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (!this.getLevel().isClientSide() && result.getEntity() instanceof LivingEntity living) {
+		if (!this.level().isClientSide() && result.getEntity() instanceof LivingEntity living) {
 			ChillAuraEnchantment.doChillAuraEffect(living, 200, 2, true);
 		}
 	}

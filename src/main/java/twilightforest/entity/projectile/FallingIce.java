@@ -52,8 +52,8 @@ public class FallingIce extends Entity {
 	private int hangTime = 100; //TF: add hangTime. This defines how long the block should exist before falling.
 	private BlockState blockState = Blocks.PACKED_ICE.defaultBlockState(); //TF: change default block to packed ice
 	public int time;
-	protected int fallDamageMax = 100; //TF: change max damage to 100 damage from 40
-	public float[] damagePerDifficulty = { 1.0F, 1.0F, 3.0F, 6.0F }; //TF: change the damage done per block fallen based on difficulty
+	protected final int fallDamageMax = 100; //TF: change max damage to 100 damage from 40
+	public final float[] damagePerDifficulty = { 0.0F, 0.5F, 1.0F, 2.0F }; //TF: change the damage done per block fallen based on difficulty
 	@Nullable
 	public CompoundTag blockData;
 	protected static final EntityDataAccessor<BlockPos> DATA_START_POS = SynchedEntityData.defineId(FallingIce.class, EntityDataSerializers.BLOCK_POS);
@@ -76,11 +76,11 @@ public class FallingIce extends Entity {
 	}
 
 	public void setStartPos(BlockPos pos) {
-		this.entityData.set(DATA_START_POS, pos);
+		this.getEntityData().set(DATA_START_POS, pos);
 	}
 
 	public BlockPos getStartPos() {
-		return this.entityData.get(DATA_START_POS);
+		return this.getEntityData().get(DATA_START_POS);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class FallingIce extends Entity {
 
 	@Override
 	protected void defineSynchedData() {
-		this.entityData.define(DATA_START_POS, BlockPos.ZERO);
+		this.getEntityData().define(DATA_START_POS, BlockPos.ZERO);
 	}
 
 	@Override
@@ -115,41 +115,41 @@ public class FallingIce extends Entity {
 			}
 
 			this.move(MoverType.SELF, this.getDeltaMovement());
-			if (!this.getLevel().isClientSide()) {
+			if (!this.level().isClientSide()) {
 				BlockPos blockpos = this.blockPosition();
 				boolean flag = this.blockState.getBlock() instanceof ConcretePowderBlock;
-				boolean flag1 = flag;// && this.blockState.canBeHydrated(this.level, blockpos, this.level.getFluidState(blockpos), blockpos);
+				boolean flag1 = flag;// && this.blockState.canBeHydrated(this.level(), blockpos, this.level().getFluidState(blockpos), blockpos);
 				double d0 = this.getDeltaMovement().lengthSqr();
 //				if (flag && d0 > 1.0D) { TODO: there is no use for this since fabric doesn't have this method
-//					BlockHitResult blockhitresult = this.level.clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
-//					if (blockhitresult.getType() != HitResult.Type.MISS && this.blockState.canBeHydrated(this.getLevel(), blockpos, this.getLevel().getFluidState(blockhitresult.getBlockPos()), blockhitresult.getBlockPos())) {
+//					BlockHitResult blockhitresult = this.level().clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
+//					if (blockhitresult.getType() != HitResult.Type.MISS && this.blockState.canBeHydrated(this.level(), blockpos, this.level().getFluidState(blockhitresult.getBlockPos()), blockhitresult.getBlockPos())) {
 //						blockpos = blockhitresult.getBlockPos();
 //						flag1 = true;
 //					}
 //				}
 
-				if (!this.onGround && !flag1) {
-					if (!this.getLevel().isClientSide() && (this.time > 100 && (blockpos.getY() <= this.getLevel().getMinBuildHeight() || blockpos.getY() > this.getLevel().getMaxBuildHeight()) || this.time > 1000)) {
+				if (!this.onGround() && !flag1) {
+					if (!this.level().isClientSide() && (this.time > 100 && (blockpos.getY() <= this.level().getMinBuildHeight() || blockpos.getY() > this.level().getMaxBuildHeight()) || this.time > 1000)) {
 						this.discard();
 					}
 				} else {
-					BlockState blockstate = this.getLevel().getBlockState(blockpos);
+					BlockState blockstate = this.level().getBlockState(blockpos);
 					this.setDeltaMovement(this.getDeltaMovement().multiply(0.7D, -0.5D, 0.7D));
 					if (!blockstate.is(Blocks.MOVING_PISTON)) {
-						boolean flag2 = blockstate.canBeReplaced(new DirectionalPlaceContext(this.getLevel(), blockpos, Direction.DOWN, ItemStack.EMPTY, Direction.UP));
-						boolean flag3 = FallingBlock.isFree(this.getLevel().getBlockState(blockpos.below())) && (!flag || !flag1);
-						boolean flag4 = this.blockState.canSurvive(this.getLevel(), blockpos) && !flag3;
+						boolean flag2 = blockstate.canBeReplaced(new DirectionalPlaceContext(this.level(), blockpos, Direction.DOWN, ItemStack.EMPTY, Direction.UP));
+						boolean flag3 = FallingBlock.isFree(this.level().getBlockState(blockpos.below())) && (!flag || !flag1);
+						boolean flag4 = this.blockState.canSurvive(this.level(), blockpos) && !flag3;
 						if (flag2 && flag4) {
-							if (this.blockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.getLevel().getFluidState(blockpos).getType() == Fluids.WATER) {
+							if (this.blockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level().getFluidState(blockpos).getType() == Fluids.WATER) {
 								this.blockState = this.blockState.setValue(BlockStateProperties.WATERLOGGED, true);
 							}
 
-							if (this.getLevel().setBlock(blockpos, this.blockState, 3)) {
-								((ServerLevel) this.getLevel()).getChunkSource().chunkMap.broadcast(this, new ClientboundBlockUpdatePacket(blockpos, this.getLevel().getBlockState(blockpos)));
+							if (this.level().setBlock(blockpos, this.blockState, 3)) {
+								((ServerLevel) this.level()).getChunkSource().chunkMap.broadcast(this, new ClientboundBlockUpdatePacket(blockpos, this.level().getBlockState(blockpos)));
 								this.discard();
 
 								if (this.blockData != null && this.blockState.hasBlockEntity()) {
-									BlockEntity blockentity = this.getLevel().getBlockEntity(blockpos);
+									BlockEntity blockentity = this.level().getBlockEntity(blockpos);
 									if (blockentity != null) {
 										CompoundTag compoundtag = blockentity.saveWithoutMetadata();
 
@@ -174,20 +174,20 @@ public class FallingIce extends Entity {
 				}
 			} else {
 				//TF: add ice trail
-				this.makeTrail();
+				this.makeWarningTrail();
 			}
 
 			this.setDeltaMovement(this.getDeltaMovement().scale(0.98D));
 		}
 	}
 
-	private void makeTrail() {
-		for (int i = 0; i < 3; i++) {
+	private void makeWarningTrail() {
+		for (int i = 0; i < 10; i++) {
 			double dx = this.getX() + 1.5F * (this.random.nextFloat() - this.random.nextFloat());
 			double dy = this.getY() - 4.0F * (this.random.nextFloat() - this.random.nextFloat()) - 3.0F;
 			double dz = this.getZ() + 1.5F * (this.random.nextFloat() - this.random.nextFloat());
 
-			this.getLevel().addAlwaysVisibleParticle(TFParticleType.EXTENDED_SNOW_WARNING.get(), dx, dy, dz, 0.0D, -1.0D, 0.0D);
+			this.level().addAlwaysVisibleParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.blockState), dx, dy, dz, 0.0D, -1.0D, 0.0D);
 		}
 	}
 
@@ -195,12 +195,12 @@ public class FallingIce extends Entity {
 	@Override
 	public boolean causeFallDamage(float dist, float multiplier, DamageSource source) {
 
-		int realDist = Mth.ceil(dist - 1.0F);
+		int realDist = Mth.ceil(dist - 5.0F);
 		if (realDist >= 0) {
-			float dmg = (float) Math.min(Mth.floor((float) realDist * this.damagePerDifficulty[this.getLevel().getDifficulty().getId()]), this.fallDamageMax);
-			this.getLevel().getEntities(this, this.getBoundingBox().inflate(1.0F, 0.0F, 1.0F), EntitySelector.NO_SPECTATORS).forEach((entity) -> {
+			float dmg = (float) Math.min(Mth.floor((float) realDist * this.damagePerDifficulty[this.level().getDifficulty().getId()]), this.fallDamageMax);
+			this.level().getEntities(this, this.getBoundingBox().inflate(1.0F, 0.0F, 1.0F), EntitySelector.NO_SPECTATORS).forEach((entity) -> {
 				if (!(entity instanceof AlphaYeti)) {
-					entity.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.FALLING_ICE), dmg);
+					entity.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.FALLING_ICE), dmg);
 				}
 			});
 		}
@@ -211,10 +211,10 @@ public class FallingIce extends Entity {
 			double dy = this.getY() + 5.0F * (this.random.nextFloat() - this.random.nextFloat());
 			double dz = this.getZ() + 3.0F * (this.random.nextFloat() - this.random.nextFloat());
 
-			this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.blockState), dx, dy, dz, 0, 0, 0);
+			this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.blockState), dx, dy, dz, 0, 0, 0);
 		}
 
-		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.defaultBlockState()/*, this.getLevel(), blockPosition(), null*/).getBreakSound(), 3.0F, 0.5F);
+		this.playSound(Blocks.PACKED_ICE.defaultBlockState().getSoundType().getBreakSound(), 3.0F, 0.5F);
 		return false;
 	}
 
@@ -230,7 +230,7 @@ public class FallingIce extends Entity {
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
-		this.blockState = NbtUtils.readBlockState(this.getLevel().holderLookup(Registries.BLOCK), tag.getCompound("BlockState"));
+		this.blockState = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), tag.getCompound("BlockState"));
 		this.time = tag.getInt("Time");
 		if (tag.contains("BlockEntityData", 10)) {
 			this.blockData = tag.getCompound("BlockEntityData");

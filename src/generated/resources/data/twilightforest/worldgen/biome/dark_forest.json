@@ -19,7 +19,7 @@
       "max_delay": 12000,
       "min_delay": 1200,
       "replace_current_music": true,
-      "sound": "twilightforest:music.bg"
+      "sound": "twilightforest:music.twilightforest.twilight_forest"
     },
     "sky_color": 0,
     "water_color": 4159204,
@@ -62,7 +62,40 @@
     ]
   ],
   "has_precipitation": true,
-  "spawn_costs": {},
+  "spawn_costs": {
+    "minecraft:enderman": {
+      "charge": 0.75,
+      "energy_budget": 0.15
+    },
+    "minecraft:skeleton": {
+      "charge": 0.85,
+      "energy_budget": 0.15
+    },
+    "minecraft:witch": {
+      "charge": 0.75,
+      "energy_budget": 0.11
+    },
+    "minecraft:zombie": {
+      "charge": 0.75,
+      "energy_budget": 0.15
+    },
+    "twilightforest:king_spider": {
+      "charge": 1.0,
+      "energy_budget": 0.5
+    },
+    "twilightforest:kobold": {
+      "charge": 0.7,
+      "energy_budget": 0.11
+    },
+    "twilightforest:mist_wolf": {
+      "charge": 0.5,
+      "energy_budget": 0.35
+    },
+    "twilightforest:skeleton_druid": {
+      "charge": 0.85,
+      "energy_budget": 0.4
+    }
+  },
   "spawners": {
     "ambient": [],
     "axolotls": [],
@@ -73,7 +106,7 @@
         "type": "minecraft:enderman",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 1
+        "weight": 2
       },
       {
         "type": "minecraft:zombie",
@@ -91,19 +124,19 @@
         "type": "twilightforest:mist_wolf",
         "maxCount": 1,
         "minCount": 1,
-        "weight": 10
+        "weight": 5
       },
       {
         "type": "twilightforest:skeleton_druid",
-        "maxCount": 2,
+        "maxCount": 1,
         "minCount": 1,
-        "weight": 10
+        "weight": 5
       },
       {
         "type": "twilightforest:king_spider",
         "maxCount": 1,
         "minCount": 1,
-        "weight": 5
+        "weight": 1
       },
       {
         "type": "twilightforest:kobold",
@@ -115,7 +148,7 @@
         "type": "minecraft:witch",
         "maxCount": 1,
         "minCount": 1,
-        "weight": 1
+        "weight": 2
       }
     ],
     "underground_water_creature": [],

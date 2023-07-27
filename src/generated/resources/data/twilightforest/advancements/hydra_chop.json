@@ -30,5 +30,6 @@
     [
       "hydra_chop"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

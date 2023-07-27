@@ -15,17 +15,27 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
+import twilightforest.util.RectangleLatticeIterator;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 public class HollowHillComponent extends TFStructureComponentOld {
-	private final static int[] stalactitesForSizes = {0, 128, 256, 512};
-	private final static int[] spawnersForSizes = {0, 1, 4, 9};
-	private final static int[] chestsForSizes = {0, 2, 6, 12};
+	// Triangle-grid settings for placing features inside (Stalactites, Stalagmites, Chests, & Spawners)
+	private static final float SPACING = 3.75f;
+	private static final float X_OFFSET = Mth.cos(Mth.PI/6f) * SPACING;
+	private static final float Z_OFFSET = Mth.sin(Mth.PI/6f) * SPACING;
+	private static final float X_SPACING = X_OFFSET * 2f;
+	private static final float Z_SPACING = SPACING;
+
+	private static final float CHEST_SPAWN_CHANCE = 0.025f;
+	private static final float SPAWNER_SPAWN_CHANCE = 0.025f;
+	private static final float SPECIAL_SPAWN_CHANCE = CHEST_SPAWN_CHANCE + SPAWNER_SPAWN_CHANCE;
+	private static final float ORE_STALACTITE_CHANCE = 0.85f;
 
 	private final int hillSize;
 	final int radius;
@@ -66,83 +76,74 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		int stalactiteCount = stalactitesForSizes[this.hillSize]; // number of stalactites mga = {0, 3, 9, 18}
+	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox writeableBounds, ChunkPos chunkPosIn, BlockPos blockPos) {
+		BlockPos locatorPos = this.getLocatorPosition();
+		float shortenedRadiusSq = this.radius * this.radius * 0.85f;
 
-		// fill in features
+		// Use two rectangle-grid lattices to simulate a triangular-grid lattice, simulating an optimal hexagonal-packing pattern for filling this structure
+		// with stalactites, stalagmites, chests, and spawners
 
-		// ore or glowing stalactites! (smaller, less plentiful)
-		for (int i = 0; i < stalactiteCount; i++) {
-			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, this.radius);
-			this.generateOreStalactite(world, dest.move(0, 1, 0), sbb);
-		}
-		// stone stalactites!
-		for (int i = 0; i < stalactiteCount; i++) {
-			BlockPos.MutableBlockPos dest = this.randomCeilingCoordinates(rand, this.radius);
-			this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb, true);
-			//this.setBlockStateRotated(world, Blocks.BEACON.defaultBlockState(), dest.getX(), dest.getY(), dest.getZ(), Rotation.NONE, sbb);
-		}
-		// stone stalagmites!
-		for (int i = 0; i < stalactiteCount; i++) {
-			BlockPos.MutableBlockPos dest = this.randomFloorCoordinates(rand, this.radius);
-			this.generateBlockSpike(world, BlockSpikeFeature.STONE_STALACTITE, dest.getX(), dest.getY(), dest.getZ(), sbb, false);
-			//this.setBlockStateRotated(world, Blocks.SCAFFOLDING.defaultBlockState(), dest.getX(), dest.getY(), dest.getZ(), Rotation.NONE, sbb);
+		// RectangleLatticeIterator enables for approximately-even spacing across chunks
+		for (BlockPos.MutableBlockPos latticePos : RectangleLatticeIterator.boundedGrid(writeableBounds, 0, X_SPACING, Z_SPACING, 0, 0)) {
+			int distSq = getDistSqFromCenter(locatorPos, latticePos);
+
+			if (distSq > shortenedRadiusSq) continue;
+
+			this.setFeatures(world, rand, writeableBounds, latticePos, distSq);
 		}
 
-		// Place these important blocks last so they don't get overwritten by generation
+		for (BlockPos.MutableBlockPos latticePos : RectangleLatticeIterator.boundedGrid(writeableBounds, 0, X_SPACING, Z_SPACING, X_OFFSET, Z_OFFSET)) {
+			int distSq = getDistSqFromCenter(locatorPos, latticePos);
 
-		// monster generators!
-		for (int i = 0; i < spawnersForSizes[this.hillSize]; i++) {
-			BlockPos.MutableBlockPos dest = this.randomFloorCoordinates(rand, this.radius);
-			EntityType<?> mobID = this.getMobID(rand);
+			if (distSq > shortenedRadiusSq) continue;
 
-			this.setSpawner(world, dest.move(0, 1, 0), sbb, mobID);
+			this.setFeatures(world, rand, writeableBounds, latticePos, distSq);
 		}
-		// treasure chests!!
-		for (int i = 0; i < chestsForSizes[this.hillSize]; i++) {
-			BlockPos.MutableBlockPos dest = this.randomFloorCoordinates(rand, this.radius);
-			this.generateTreasureChest(world, dest.move(0, 1, 0), sbb);
-		}
-
-		//DEBUG
-//		this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), this.radius, 3, this.radius, Rotation.NONE, sbb);
-//		this.setBlockStateRotated(world, Blocks.SEA_LANTERN.defaultBlockState(), this.boundingBox.getXSpan()/2, 4, this.boundingBox.getZSpan()/2, Rotation.NONE, sbb);
-//
-//		for (int i = 0; i < 30; i++) {
-//			this.setBlockStateRotated(world, Blocks.WHITE_GLAZED_TERRACOTTA.defaultBlockState(), 0, i, 0, Rotation.NONE, sbb);
-//			this.setBlockStateRotated(world, Blocks.ORANGE_GLAZED_TERRACOTTA.defaultBlockState(), this.boundingBox.maxX() - this.boundingBox.minX(), i, 0, Rotation.NONE, sbb);
-//			this.setBlockStateRotated(world, Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA.defaultBlockState(), 0, i, this.boundingBox.maxZ() - this.boundingBox.minZ(), Rotation.NONE, sbb);
-//			this.setBlockStateRotated(world, Blocks.MAGENTA_GLAZED_TERRACOTTA.defaultBlockState(), this.boundingBox.maxX() - this.boundingBox.minX(), i, this.boundingBox.maxZ() - this.boundingBox.minZ(), Rotation.NONE, sbb);
-//		}
-//
-//		for (int i = 1; i < this.boundingBox.maxX() - this.boundingBox.minX(); i++) {
-//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), i, this.boundingBox.maxY(), 0, Rotation.NONE, sbb);
-//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), i, this.boundingBox.maxY(), this.boundingBox.maxZ() - this.boundingBox.minZ(), Rotation.NONE, sbb);
-//		}
-//
-//		for (int i = 1; i < this.boundingBox.maxZ() - this.boundingBox.minZ(); i++) {
-//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), 0, this.boundingBox.maxY(), i, Rotation.NONE, sbb);
-//			this.setBlockStateRotated(world, Blocks.GLOWSTONE.defaultBlockState(), this.boundingBox.maxX() - this.boundingBox.minX(), this.boundingBox.maxY(), i, Rotation.NONE, sbb);
-//		}
 	}
 
-	/**
-	 * Make an RNG and attempt to use it to place a treasure chest
-	 */
-
-	protected void generateTreasureChest(WorldGenLevel world, Vec3i pos, BoundingBox sbb) {
-		generateTreasureChest(world, pos.getX(), pos.getY(), pos.getZ(), sbb);
+	private void setFeatures(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds, BlockPos.MutableBlockPos pos, int distSq) {
+		rand.setSeed(rand.nextLong() ^ pos.asLong());
+		this.placeCeilingFeature(world, rand, pos, distSq);
+		this.placeFloorFeature(world, rand, writeableBounds, pos, distSq);
 	}
 
-	protected void generateTreasureChest(WorldGenLevel world, int x, int y, int z, BoundingBox sbb) {
-		// generate an RNG for this chest
-		RandomSource chestRNG = RandomSource.create(world.getSeed() + (long) x * z);
+	private void placeFloorFeature(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds, BlockPos.MutableBlockPos pos, int distSq) {
 
-		// try placing it
-		placeTreasureAtCurrentPosition(world, x, y, z, this.hillSize == 3 ? TFLootTables.LARGE_HOLLOW_HILL : (this.hillSize == 2 ? TFLootTables.MEDIUM_HOLLOW_HILL : TFLootTables.SMALL_HOLLOW_HILL), sbb);
+		int y = this.getWorldY(Mth.floor(this.getFloorHeight(Mth.sqrt(distSq)) + 0.25f));
 
-		// make something for it to stand on, if necessary
-		placeBlock(world, Blocks.COBBLESTONE.defaultBlockState(), x, y - 1, z, sbb);
+		float floatChance = rand.nextFloat();
+
+		if (floatChance < SPECIAL_SPAWN_CHANCE) {
+			// Random direction for offset from lattice-grid, this isn't applied to stalagmites to reduce chances of burying these
+			float angle = rand.nextFloat() * Mth.TWO_PI;
+			int x = Math.round(Mth.cos(angle) * Mth.SQRT_OF_TWO) + pos.getX();
+			int z = Math.round(Mth.sin(angle) * Mth.SQRT_OF_TWO) + pos.getZ();
+			pos.set(x, y, z);
+
+			if (floatChance < SPAWNER_SPAWN_CHANCE) {
+				setSpawnerInWorld(world, writeableBounds, this.getMobID(rand), v -> {}, pos.above());
+			} else {
+				this.placeTreasureAtWorldPosition(world, this.getTreasureType(), false, writeableBounds, pos.above());
+			}
+
+			world.setBlock(pos.below(), Blocks.COBBLESTONE.defaultBlockState(), 50);
+			world.setBlock(pos, Blocks.COBBLESTONE.defaultBlockState(), 50);
+		} else {
+			pos.setY(y);
+			BlockSpikeFeature.startSpike(world, pos, BlockSpikeFeature.STONE_STALACTITE, rand, false);
+		}
+	}
+
+	private void placeCeilingFeature(WorldGenLevel world, RandomSource rand, BlockPos.MutableBlockPos pos, int distSq) {
+		BlockPos ceiling = pos.atY(this.getWorldY(Mth.ceil(this.getCeilingHeight(Mth.sqrt(distSq)))));
+
+		Stalactite stalag = rand.nextFloat() < ORE_STALACTITE_CHANCE ? BlockSpikeFeature.makeRandomOreStalactite(rand, this.hillSize) : BlockSpikeFeature.STONE_STALACTITE;
+		BlockSpikeFeature.startSpike(world, ceiling, stalag, rand, true);
+	}
+
+	@NotNull
+	private TFLootTables getTreasureType() {
+		return this.hillSize == 3 ? TFLootTables.LARGE_HOLLOW_HILL : (this.hillSize == 2 ? TFLootTables.MEDIUM_HOLLOW_HILL : TFLootTables.SMALL_HOLLOW_HILL);
 	}
 
 	protected void generateOreStalactite(WorldGenLevel world, Vec3i pos, BoundingBox sbb) {
@@ -184,8 +185,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	}
 
 	/**
-	 * @param cx
-	 * @param cz
 	 * @return true if the coordinates would be inside the hill on the "floor" of the hill
 	 */
 	boolean isInHill(int cx, int cz) {
@@ -218,9 +217,13 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		float radius = rand.nextFloat() * 0.9f * maximumRadius;
 		// Nonetheless the floor-carving curve is one-third the top-level terrain curve
 		float dist = Mth.sqrt(radius * radius);
-		float height = (this.hillSize * 2) - Mth.cos(dist / this.hdiam * Mth.PI) * (this.hdiam / 20f) + 1;
+		float height = this.getFloorHeight(dist);
 
 		return new BlockPos.MutableBlockPos(maximumRadius - Mth.cos(degree) * radius, height, maximumRadius - Mth.sin(degree) * radius);
+	}
+
+	private float getFloorHeight(float dist) {
+		return (this.hillSize * 2) - Mth.cos(dist / this.hdiam * Mth.PI) * (this.hdiam / 20f) + 1;
 	}
 
 	BlockPos.MutableBlockPos randomCeilingCoordinates(RandomSource rand, float maximumRadius) {
@@ -229,9 +232,13 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		float radius = rand.nextFloat() * 0.9f * maximumRadius;
 		// Nonetheless the floor-carving curve is one-third the top-level terrain curve
 		float dist = Mth.sqrt(radius * radius);
-		float height = Mth.cos(dist / this.hdiam * Mth.PI) * (this.hdiam / 4f);
+		float height = getCeilingHeight(dist);
 
 		return new BlockPos.MutableBlockPos(maximumRadius - Mth.cos(degree) * radius, height, maximumRadius - Mth.sin(degree) * radius);
+	}
+
+	private float getCeilingHeight(float dist) {
+		return Mth.cos(dist / this.hdiam * Mth.PI) * (this.hdiam / 4f);
 	}
 
 	/**
@@ -244,8 +251,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 	/**
 	 * Gets the id of a mob appropriate to the specified hill size.
 	 *
-	 * @param level
-	 * @return
 	 */
 	protected EntityType<?> getMobID(RandomSource rand, int level) {
 		if (level == 1) {
@@ -300,5 +305,12 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			case 9 -> EntityType.CREEPER;
 			default -> TFEntities.WRAITH.get();
 		};
+	}
+
+	public static int getDistSqFromCenter(BlockPos center, BlockPos to) {
+		int x = to.getX() - center.getX();
+		int z = to.getZ() - center.getZ();
+
+		return x * x + z * z;
 	}
 }

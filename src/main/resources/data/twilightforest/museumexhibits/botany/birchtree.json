@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.birchtree",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:birch_log",
+      "placement": "before",
+      "items": [
+        "twilightforest:hollow_birch_log"
+      ]
+    }
+  ]
+}

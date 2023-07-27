@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 public class DarkTowerWingComponent extends TowerWingComponent {
 	protected boolean keyTower = false;
-	protected ArrayList<EnumDarkTowerDoor> openingTypes = new ArrayList<>();
+	protected final ArrayList<EnumDarkTowerDoor> openingTypes = new ArrayList<>();
 
 	public DarkTowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(TFStructurePieceTypes.TFDTWin.get(), nbt);
@@ -469,7 +469,6 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Dark tower treasure rooms!
 	 *
-	 * @param myDeco
 	 */
 	protected void decorateTreasureRoom(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y, int spacing, TFStructureDecorator myDeco) {
 		//treasure chest!
@@ -854,7 +853,6 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 	/**
 	 * Generate walls for the tower with the distinct pattern of blocks and accent blocks
 	 *
-	 * @param rand
 	 */
 	protected void makeEncasedWalls(WorldGenLevel world, RandomSource rand, BoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 
@@ -982,7 +980,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		// nullify sky light
 //		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
-		final BlockState inactiveVanish = TFBlocks.VANISHING_BLOCK.get().defaultBlockState();
+		final BlockState inactiveVanish = TFBlocks.UNBREAKABLE_VANISHING_BLOCK.get().defaultBlockState();
 
 		// clear the door
 		if (dx == 0 || dx == size - 1) {
@@ -1024,7 +1022,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 		// clear the door
 		final BlockState lockedVanish = TFBlocks.LOCKED_VANISHING_BLOCK.get().defaultBlockState();
-		final BlockState inactiveVanish = TFBlocks.VANISHING_BLOCK.get().defaultBlockState();
+		final BlockState inactiveVanish = TFBlocks.UNBREAKABLE_VANISHING_BLOCK.get().defaultBlockState();
 
 		if (dx == 0 || dx == size - 1) {
 			this.generateBox(world, sbb, dx, dy - 1, dz - 2, dx, dy + 3, dz + 2, deco.accentState, AIR, false);

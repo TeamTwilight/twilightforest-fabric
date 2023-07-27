@@ -340,7 +340,7 @@ public class HydraHeadContainer {
 		setDifficultyVariables();
 
 		// only actually do these things on the server
-		if (!this.hydra.getLevel().isClientSide()) {
+		if (!this.hydra.level().isClientSide()) {
 			// make sure this is set up
 			if (this.isActive() && this.headEntity.dimensions.width == 0) {
 				this.headEntity.activate();
@@ -424,10 +424,10 @@ public class HydraHeadContainer {
 
 	private void doExplosionOn(HydraPart part, boolean large) {
 		for (int i = 0; i < 5; ++i) {
-			double vx = part.getLevel().getRandom().nextGaussian() * 0.02D;
-			double vy = part.getLevel().getRandom().nextGaussian() * 0.02D;
-			double vz = part.getLevel().getRandom().nextGaussian() * 0.02D;
-			part.getLevel().addParticle((part.getLevel().getRandom().nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION : ParticleTypes.POOF), part.getX() + part.getLevel().getRandom().nextFloat() * 2.0F, part.getY() + part.getLevel().getRandom().nextFloat() * 2.0F, part.getZ() + part.getLevel().getRandom().nextFloat() * 2.0F, vx, vy, vz);
+			double vx = part.level().getRandom().nextGaussian() * 0.02D;
+			double vy = part.level().getRandom().nextGaussian() * 0.02D;
+			double vz = part.level().getRandom().nextGaussian() * 0.02D;
+			part.level().addParticle((part.level().getRandom().nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION : ParticleTypes.POOF), part.getX() + part.level().getRandom().nextFloat() * 2.0F, part.getY() + part.level().getRandom().nextFloat() * 2.0F, part.getZ() + part.level().getRandom().nextFloat() * 2.0F, vx, vy, vz);
 		}
 	}
 
@@ -542,8 +542,8 @@ public class HydraHeadContainer {
 		double pz = this.headEntity.getZ() + vector.z() * dist;
 
 		if (this.headEntity.getState() == State.FLAME_BEGINNING) {
-			this.headEntity.getLevel().addAlwaysVisibleParticle(ParticleTypes.FLAME, px + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, py + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, pz + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, 0, 0, 0);
-			this.headEntity.getLevel().addAlwaysVisibleParticle(ParticleTypes.SMOKE, px + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, py + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, pz + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, 0, 0, 0);
+			this.headEntity.level().addAlwaysVisibleParticle(ParticleTypes.FLAME, px + this.headEntity.level().getRandom().nextDouble() - 0.5, py + this.headEntity.level().getRandom().nextDouble() - 0.5, pz + this.headEntity.level().getRandom().nextDouble() - 0.5, 0, 0, 0);
+			this.headEntity.level().addAlwaysVisibleParticle(ParticleTypes.SMOKE, px + this.headEntity.level().getRandom().nextDouble() - 0.5, py + this.headEntity.level().getRandom().nextDouble() - 0.5, pz + this.headEntity.level().getRandom().nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (this.headEntity.getState() == State.FLAMING) {
@@ -553,42 +553,42 @@ public class HydraHeadContainer {
 				double dy = look.y();
 				double dz = look.z();
 
-				double spread = 5.0D + this.headEntity.getLevel().getRandom().nextDouble() * 2.5D;
-				double velocity = 1.0D + this.headEntity.getLevel().getRandom().nextDouble();
+				double spread = 5.0D + this.headEntity.level().getRandom().nextDouble() * 2.5D;
+				double velocity = 1.0D + this.headEntity.level().getRandom().nextDouble();
 
 				// spread flame
-				dx += this.headEntity.getLevel().getRandom().nextGaussian() * 0.0075D * spread;
-				dy += this.headEntity.getLevel().getRandom().nextGaussian() * 0.0075D * spread;
-				dz += this.headEntity.getLevel().getRandom().nextGaussian() * 0.0075D * spread;
+				dx += this.headEntity.level().getRandom().nextGaussian() * 0.0075D * spread;
+				dy += this.headEntity.level().getRandom().nextGaussian() * 0.0075D * spread;
+				dz += this.headEntity.level().getRandom().nextGaussian() * 0.0075D * spread;
 				dx *= velocity;
 				dy *= velocity;
 				dz *= velocity;
 
-				this.headEntity.getLevel().addAlwaysVisibleParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
+				this.headEntity.level().addAlwaysVisibleParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
 			}
 		}
 
 		if (this.headEntity.getState() == State.BITE_BEGINNING || this.headEntity.getState() == State.BITE_READY) {
-			this.headEntity.getLevel().addAlwaysVisibleParticle(ParticleTypes.SPLASH, px + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, py + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, pz + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, 0, 0, 0);
+			this.headEntity.level().addAlwaysVisibleParticle(ParticleTypes.SPLASH, px + this.headEntity.level().getRandom().nextDouble() - 0.5, py + this.headEntity.level().getRandom().nextDouble() - 0.5, pz + this.headEntity.level().getRandom().nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (this.headEntity.getState() == State.MORTAR_BEGINNING) {
-			this.headEntity.getLevel().addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, px + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, py + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, pz + this.headEntity.getLevel().getRandom().nextDouble() - 0.5, 0, 0, 0);
+			this.headEntity.level().addAlwaysVisibleParticle(ParticleTypes.LARGE_SMOKE, px + this.headEntity.level().getRandom().nextDouble() - 0.5, py + this.headEntity.level().getRandom().nextDouble() - 0.5, pz + this.headEntity.level().getRandom().nextDouble() - 0.5, 0, 0, 0);
 		}
 	}
 
 	private void playSounds() {
 		if (this.headEntity.getState() == State.FLAMING && this.headEntity.tickCount % 5 == 0) {
 			// fire breathing!
-			this.headEntity.playSound(TFSounds.HYDRA_SHOOT_FIRE.get(), 0.5F + this.headEntity.getLevel().getRandom().nextFloat(), this.headEntity.getLevel().getRandom().nextFloat() * 0.7F + 0.3F);
+			this.headEntity.playSound(TFSounds.HYDRA_SHOOT_FIRE.get(), 0.5F + this.headEntity.level().getRandom().nextFloat(), this.headEntity.level().getRandom().nextFloat() * 0.7F + 0.3F);
 			this.headEntity.gameEvent(GameEvent.PROJECTILE_SHOOT);
 		}
 		if (this.headEntity.getState() == State.ROAR_RAWR) {
-			this.headEntity.playSound(TFSounds.HYDRA_ROAR.get(), 1.25F, this.headEntity.getLevel().getRandom().nextFloat() * 0.3F + 0.7F);
+			this.headEntity.playSound(TFSounds.HYDRA_ROAR.get(), 1.25F, this.headEntity.level().getRandom().nextFloat() * 0.3F + 0.7F);
 			this.headEntity.gameEvent(GameEvent.ENTITY_ROAR);
 		}
 		if (this.headEntity.getState() == State.BITE_READY && this.ticksProgress == 60) {
-			this.headEntity.playSound(TFSounds.HYDRA_WARN.get(), 2.0F, this.headEntity.getLevel().getRandom().nextFloat() * 0.3F + 0.7F);
+			this.headEntity.playSound(TFSounds.HYDRA_WARN.get(), 2.0F, this.headEntity.level().getRandom().nextFloat() * 0.3F + 0.7F);
 		}
 	}
 
@@ -670,37 +670,38 @@ public class HydraHeadContainer {
 
 	private void executeAttacks() {
 		if (this.currentState == State.MORTAR_SHOOTING && this.ticksProgress % 10 == 0) {
-			HydraMortarHead mortar = new HydraMortarHead(TFEntities.HYDRA_MORTAR.get(), this.headEntity.getLevel(), this.headEntity);
+			HydraMortar mortar = new HydraMortar(TFEntities.HYDRA_MORTAR.get(), this.headEntity.level(), this.headEntity);
 
 			// launch blasting mortars if the player is hiding
 			if (this.targetEntity != null && !this.headEntity.canEntityBeSeen(this.targetEntity)) {
 				mortar.setToBlasting();
 			}
 
-			this.headEntity.playSound(TFSounds.HYDRA_SHOOT.get(), 10.0F, (this.headEntity.getLevel().getRandom().nextFloat() - this.headEntity.getLevel().getRandom().nextFloat()) * 0.2F + 1.0F);
-			this.headEntity.getLevel().addFreshEntity(mortar);
+			this.headEntity.playSound(TFSounds.HYDRA_SHOOT.get(), 10.0F, (this.headEntity.level().getRandom().nextFloat() - this.headEntity.level().getRandom().nextFloat()) * 0.2F + 1.0F);
+			this.headEntity.level().addFreshEntity(mortar);
 
 		}
 		if (this.headEntity.getState() == State.BITING) {
 			// damage nearby things
-			List<Entity> nearbyList = this.headEntity.getLevel().getEntities(this.headEntity, this.headEntity.getBoundingBox().inflate(0.0, 1.0, 0.0));
+			List<Entity> nearbyList = this.headEntity.level().getEntities(this.headEntity, this.headEntity.getBoundingBox().inflate(0.0, 1.0, 0.0));
 
 			for (Entity nearby : nearbyList) {
 				if (nearby instanceof LivingEntity living && nearby != this.hydra) {
 					//is a player holding a shield? Let's do some extra stuff!
-					if (nearby instanceof Player player && player.isUsingItem() && player.getUseItem().getItem() instanceof ShieldItem) {
+					if (nearby instanceof Player player && player.isBlocking()) {
 						if (!player.getCooldowns().isOnCooldown(player.getUseItem().getItem())) {
 							//cause severe damage and play a shatter sound
-							this.headEntity.getLevel().playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS.get() : TFSounds.METAL_SHIELD_SHATTERS.get(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
+							this.headEntity.level().playSound(null, player.blockPosition(), player.getUseItem().is(Items.SHIELD) ? TFSounds.WOOD_SHIELD_SHATTERS.get() : TFSounds.METAL_SHIELD_SHATTERS.get(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
 							player.getUseItem().hurtAndBreak(112, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
 						}
 						//add cooldown and knockback
 						player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
+						player.stopUsingItem();
 						TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.15F, -this.headEntity.getDirection().getStepZ() * 0.5F), (ServerPlayer) player);
 					}
 
 					// bite it!
-					nearby.hurt(TFDamageTypes.getDamageSource(living.getLevel(), TFDamageTypes.HYDRA_BITE, TFEntities.HYDRA.get()), BITE_DAMAGE);
+					nearby.hurt(TFDamageTypes.getDamageSource(living.level(), TFDamageTypes.HYDRA_BITE, TFEntities.HYDRA.get()), BITE_DAMAGE);
 
 					//knockback!
 					if (living instanceof Player player) {
@@ -716,7 +717,7 @@ public class HydraHeadContainer {
 			Entity target = getHeadLookTarget();
 
 			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent())) {
-				if (!target.fireImmune() && target.hurt(TFDamageTypes.getDamageSource(target.getLevel(), TFDamageTypes.HYDRA_FIRE, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
+				if (!target.fireImmune() && target.hurt(TFDamageTypes.getDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
 					target.setSecondsOnFire(FLAME_BURN_FACTOR);
 				}
 			}
@@ -724,7 +725,7 @@ public class HydraHeadContainer {
 	}
 
 	private void setDifficultyVariables() {
-		if (this.hydra.getLevel().getDifficulty() != Difficulty.HARD) {
+		if (this.hydra.level().getDifficulty() != Difficulty.HARD) {
 			HydraHeadContainer.FLAME_BREATH_TRACKING_SPEED = 0.04D;
 		} else {
 			// hard mode!
@@ -740,14 +741,14 @@ public class HydraHeadContainer {
 		double range = 30.0D;
 		Vec3 srcVec = new Vec3(this.headEntity.getX(), this.headEntity.getY() + 1.0, this.headEntity.getZ());
 		Vec3 lookVec = this.headEntity.getViewVector(1.0F);
-		BlockHitResult raytrace = this.headEntity.getLevel().clip(new ClipContext(srcVec, srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range), ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, this.headEntity));
+		BlockHitResult raytrace = this.headEntity.level().clip(new ClipContext(srcVec, srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range), ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, this.headEntity));
 		BlockPos hitpos = raytrace != null ? raytrace.getBlockPos() : null;
 		double rx = hitpos == null ? range : Math.min(range, Math.abs(this.headEntity.getX() - hitpos.getX()));
 		double ry = hitpos == null ? range : Math.min(range, Math.abs(this.headEntity.getY() - hitpos.getY()));
 		double rz = hitpos == null ? range : Math.min(range, Math.abs(this.headEntity.getZ() - hitpos.getZ()));
 		Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
 		float var9 = 3.0F;
-		List<Entity> possibleList = this.headEntity.getLevel().getEntities(this.headEntity, this.headEntity.getBoundingBox().move(lookVec.x() * rx, lookVec.y() * ry, lookVec.z() * rz).inflate(var9, var9, var9));
+		List<Entity> possibleList = this.headEntity.level().getEntities(this.headEntity, this.headEntity.getBoundingBox().move(lookVec.x() * rx, lookVec.y() * ry, lookVec.z() * rz).inflate(var9, var9, var9));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {

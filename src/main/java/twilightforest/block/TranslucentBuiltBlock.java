@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.PushReaction;
 import twilightforest.init.TFSounds;
 
 public class TranslucentBuiltBlock extends Block {
@@ -38,10 +37,5 @@ public class TranslucentBuiltBlock extends Block {
 				BuilderBlock.activateBuiltBlocks(level, pos.relative(e));
 			}
 		}
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 }

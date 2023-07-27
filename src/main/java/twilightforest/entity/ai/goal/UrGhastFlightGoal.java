@@ -3,7 +3,6 @@ package twilightforest.entity.ai.goal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.UrGhast;
 
 import java.util.ArrayList;
@@ -66,7 +65,7 @@ public class UrGhastFlightGoal extends Goal {
 			// TODO reintroduce wanderFactor somehow? Would need to change move helper or add extra fields here
 
 			double x = this.pointsToVisit.get(this.currentPoint).getX();
-			double y = this.pointsToVisit.get(this.currentPoint).getY() + (this.ghast.hasRestriction() ? HOVER_ALTITUDE : 0);
+			double y = this.pointsToVisit.get(this.currentPoint).getY() + (this.ghast.getRestrictionPoint() != null ? HOVER_ALTITUDE : 0);
 			double z = this.pointsToVisit.get(this.currentPoint).getZ();
 			this.ghast.getMoveControl().setWantedPosition(x, y, z, 1.0F);
 			this.currentPoint++;

@@ -64,6 +64,6 @@ public abstract class HoverBaseGoal<T extends Mob> extends Goal {
 	protected boolean isPositionOccupied(double hx, double hy, double hz) {
 		float radius = this.attacker.getBbWidth() / 2F;
 		AABB aabb = new AABB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.getBbHeight(), hz + radius);
-		return !this.attacker.getLevel().isUnobstructed(attacker, Shapes.create(aabb)) || !this.attacker.getLevel().noCollision(attacker, aabb);
+		return !this.attacker.level().isUnobstructed(attacker, Shapes.create(aabb)) || !this.attacker.level().noCollision(attacker, aabb);
 	}
 }

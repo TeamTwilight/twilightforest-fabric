@@ -6,7 +6,7 @@
     "extra": {
       "connect_inside": true,
       "connect_to": [{
-        "block": "twilightforest:twisted_stone_pillar",
+        "block": "twilightforest:stone_twist_thin",
         "predicate": [
           { "axis": "y" },
           { "up": false }

@@ -39,5 +39,6 @@
     "loot": [
       "twilightforest:glass_sword"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

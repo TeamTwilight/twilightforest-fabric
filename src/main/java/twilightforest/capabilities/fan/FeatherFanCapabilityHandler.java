@@ -8,7 +8,7 @@ import twilightforest.network.UpdateFeatherFanFallPacket;
 
 public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 
-	private LivingEntity host;
+	private Player host;
 	private boolean falling;
 
 	public FeatherFanCapabilityHandler(LivingEntity entity) {
@@ -16,18 +16,18 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 	}
 
 	@Override
-	public void setEntity(LivingEntity entity) {
+	public void setEntity(Player entity) {
 		this.host = entity;
 	}
 
 	@Override
 	public void update() {
 		if (this.getFalling()) {
-			if (!this.host.isOnGround()) {
+			if (!this.host.onGround()) {
 				this.host.resetFallDistance();
 			}
 
-			if (this.host.isOnGround() || this.host.isSwimming()) {
+			if (this.host.onGround() || this.host.isSwimming()) {
 				this.setFalling(false);
 			}
 		}
@@ -36,7 +36,7 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 	@Override
 	public void setFalling(boolean falling) {
 		this.falling = falling;
-		if (!this.host.getLevel().isClientSide()) {
+		if (!this.host.level().isClientSide()) {
 			if (this.host instanceof ServerPlayer serverPlayer && serverPlayer.connection != null)
 				TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new UpdateFeatherFanFallPacket(this.host.getId(), this), this.host);
 		}

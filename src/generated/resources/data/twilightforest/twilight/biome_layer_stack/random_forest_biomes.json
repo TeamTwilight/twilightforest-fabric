@@ -1,0 +1,91 @@
+{
+  "parent": {
+    "parent": {
+      "parent": {
+        "parent": {
+          "parent": {
+            "parent": {
+              "parent": {
+                "parent": {
+                  "parent": {
+                    "parent": {
+                      "common_biomes": [
+                        "twilightforest:forest",
+                        "twilightforest:dense_forest",
+                        "twilightforest:mushroom_forest",
+                        "twilightforest:oak_savannah",
+                        "twilightforest:firefly_forest"
+                      ],
+                      "layer_type": "twilightforest:random_biomes",
+                      "rare_biome_chance": 15,
+                      "rare_biomes": [
+                        "twilightforest:lake",
+                        "twilightforest:dense_mushroom_forest",
+                        "twilightforest:enchanted_forest",
+                        "twilightforest:clearing",
+                        "twilightforest:spooky_forest"
+                      ],
+                      "salt": 1
+                    },
+                    "key_biomes": [
+                      "twilightforest:glacier",
+                      "twilightforest:fire_swamp",
+                      "twilightforest:dark_forest_center",
+                      "twilightforest:final_plateau"
+                    ],
+                    "layer_type": "twilightforest:key_biomes",
+                    "salt": 1000
+                  },
+                  "keys_to_companions": [
+                    {
+                      "companion": "twilightforest:swamp",
+                      "key": "twilightforest:fire_swamp"
+                    },
+                    {
+                      "companion": "twilightforest:snowy_forest",
+                      "key": "twilightforest:glacier"
+                    },
+                    {
+                      "companion": "twilightforest:dark_forest",
+                      "key": "twilightforest:dark_forest_center"
+                    },
+                    {
+                      "companion": "twilightforest:highlands",
+                      "key": "twilightforest:final_plateau"
+                    }
+                  ],
+                  "layer_type": "twilightforest:companion_biomes",
+                  "salt": 1000
+                },
+                "fuzzy": false,
+                "layer_type": "twilightforest:zoom",
+                "salt": 1000
+              },
+              "fuzzy": false,
+              "layer_type": "twilightforest:zoom",
+              "salt": 1001
+            },
+            "layer_type": "twilightforest:stabilize",
+            "salt": 700
+          },
+          "bordering_biome": "twilightforest:thornlands",
+          "layer_type": "twilightforest:border",
+          "salt": 500,
+          "target_biome": "twilightforest:final_plateau"
+        },
+        "fuzzy": false,
+        "layer_type": "twilightforest:zoom",
+        "salt": 1002
+      },
+      "fuzzy": false,
+      "layer_type": "twilightforest:zoom",
+      "salt": 1003
+    },
+    "fuzzy": false,
+    "layer_type": "twilightforest:zoom",
+    "salt": 1004
+  },
+  "fuzzy": false,
+  "layer_type": "twilightforest:zoom",
+  "salt": 1005
+}

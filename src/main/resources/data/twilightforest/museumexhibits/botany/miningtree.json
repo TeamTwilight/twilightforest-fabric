@@ -1,0 +1,17 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.twilightforest.miningtree",
+  "relativeTo": "museumcurator.botany.oaktree",
+  "items": [
+    "twilightforest:mining_sapling",
+    "twilightforest:mining_leaves",
+    "twilightforest:hollow_mining_log",
+    "twilightforest:mining_log",
+    "twilightforest:stripped_mining_log",
+    "twilightforest:mining_wood",
+    "twilightforest:stripped_mining_wood",
+    "twilightforest:mining_planks",
+    "twilightforest:mining_slab",
+    "twilightforest:mining_stairs"
+  ]
+}

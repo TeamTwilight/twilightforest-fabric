@@ -4,8 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.level.Level;
@@ -23,7 +21,6 @@ import twilightforest.entity.monster.CarminiteGhastling;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class GhastTrapBlockEntity extends BlockEntity {
 
@@ -73,7 +70,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, TFSounds.GHAST_TRAP_AMBIENT.get(), SoundSource.BLOCKS, 1.2F, 0.8F, false);
 				}
 			}
-			if (chargeLevel >= 3) {
+			if (chargeLevel == 3) {
 				level.addParticle(ParticleTypes.LARGE_SMOKE, pos.getX() + 0.1 + te.rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + te.rand.nextFloat() * 0.8, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05, 0.05, (te.rand.nextFloat() - te.rand.nextFloat()) * 0.05);
 				TFBlocks.GHAST_TRAP.get().sparkle(level, pos);
 				if (te.counter % 5 == 0) {

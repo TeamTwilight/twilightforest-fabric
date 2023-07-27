@@ -1,10 +1,7 @@
 package twilightforest.advancements;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import twilightforest.TwilightForestMod;
@@ -19,7 +16,7 @@ public class KillAllPhantomsTrigger extends SimpleCriterionTrigger<KillAllPhanto
 	}
 
 	@Override
-	protected Instance createInstance(JsonObject json, EntityPredicate.Composite player, DeserializationContext ctx) {
+	protected Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext ctx) {
 		return new Instance(player);
 	}
 
@@ -28,12 +25,12 @@ public class KillAllPhantomsTrigger extends SimpleCriterionTrigger<KillAllPhanto
 	}
 
 	public static class Instance extends AbstractCriterionTriggerInstance {
-		public Instance(EntityPredicate.Composite player) {
+		public Instance(ContextAwarePredicate player) {
 			super(KillAllPhantomsTrigger.ID, player);
 		}
 
 		public static Instance killThemAll() {
-			return new Instance(EntityPredicate.Composite.ANY);
+			return new Instance(ContextAwarePredicate.ANY);
 		}
 	}
 }

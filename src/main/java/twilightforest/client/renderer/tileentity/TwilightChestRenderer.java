@@ -6,8 +6,6 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
@@ -17,7 +15,6 @@ import twilightforest.block.entity.TwilightChestEntity;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class TwilightChestRenderer<T extends TwilightChestEntity> extends ChestRenderer<T> implements MaterialChest {
     public static final Map<Block, EnumMap<ChestType, Material>> MATERIALS;
@@ -28,15 +25,13 @@ public class TwilightChestRenderer<T extends TwilightChestEntity> extends ChestR
         builder.put(TFBlocks.TWILIGHT_OAK_CHEST.get(), chestMaterial("twilight"));
         builder.put(TFBlocks.CANOPY_CHEST.get(), chestMaterial("canopy"));
         builder.put(TFBlocks.MANGROVE_CHEST.get(), chestMaterial("mangrove"));
-        builder.put(TFBlocks.DARKWOOD_CHEST.get(), chestMaterial("darkwood"));
+        builder.put(TFBlocks.DARK_CHEST.get(), chestMaterial("darkwood"));
         builder.put(TFBlocks.TIME_CHEST.get(), chestMaterial("time"));
         builder.put(TFBlocks.TRANSFORMATION_CHEST.get(), chestMaterial("trans"));
         builder.put(TFBlocks.MINING_CHEST.get(), chestMaterial("mining"));
         builder.put(TFBlocks.SORTING_CHEST.get(), chestMaterial("sort"));
 
         MATERIALS = builder.build();
-
-        //ModelBakery.UNREFERENCED_TEXTURES.addAll(MATERIALS.values().stream().flatMap(e -> e.values().stream()).collect(Collectors.toList()));
     }
 
     public TwilightChestRenderer(BlockEntityRendererProvider.Context context) {

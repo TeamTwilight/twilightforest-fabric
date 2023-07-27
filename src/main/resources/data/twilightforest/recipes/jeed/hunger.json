@@ -12,9 +12,7 @@
       ],
       "recipe": {
         "type": "jeed:effect_provider",
-        "effect": {
-          "id": "minecraft:hunger"
-        },
+        "effect": "minecraft:hunger",
         "providers": [
           {
             "item": "twilightforest:mosquito_swarm_spawn_egg"

@@ -3,19 +3,19 @@ package twilightforest.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.data.tags.BlockTagGenerator;
 
-import java.util.Random;
 import java.util.function.Predicate;
 
 /**
  * Feature Utility methods that don't invoke placement. For placement see FeaturePlacers
  */
 public final class FeatureLogic {
-    public static final Predicate<BlockState> IS_REPLACEABLE_AIR = state -> state.getMaterial().isReplaceable() || state.isAir();
+    public static final Predicate<BlockState> IS_REPLACEABLE_AIR = state -> state.canBeReplaced() || state.isAir();
     public static final Predicate<BlockState> ROOT_SHOULD_SKIP = state -> state.is(BlockTagGenerator.ROOT_TRACE_SKIP);
     public static boolean hasEmptyHorizontalNeighbor(LevelSimulatedReader worldReader, BlockPos pos) {
         return worldReader.isStateAtPosition(pos.north(), IS_REPLACEABLE_AIR)
@@ -45,7 +45,7 @@ public final class FeatureLogic {
     }
 
     public static boolean worldGenReplaceable(BlockState state) {
-        return (state.getMaterial().isReplaceable() || state.is(BlockTagGenerator.WORLDGEN_REPLACEABLES)) && !state.is(BlockTags.FEATURES_CANNOT_REPLACE);
+        return (state.canBeReplaced() || state.is(BlockTagGenerator.WORLDGEN_REPLACEABLES)) && !state.is(BlockTags.FEATURES_CANNOT_REPLACE);
     }
 
     /**
@@ -58,7 +58,6 @@ public final class FeatureLogic {
         double rangle = angle * 2.0D * Math.PI;
         double rtilt = tilt * Math.PI;
 
-        //TODO verify if casting to int is the right play here
         return pos.offset(
                 (int) Math.round(Math.sin(rangle) * Math.sin(rtilt) * distance),
                 (int) Math.round(Math.cos(rtilt) * distance),
@@ -72,5 +71,27 @@ public final class FeatureLogic {
     @Deprecated // Determine if we can actually remove this one and delegate to StructureProcessor
     public static BlockState randStone(RandomSource rand, int howMuch) {
         return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE.defaultBlockState() : Blocks.MOSSY_COBBLESTONE.defaultBlockState();
+    }
+
+    //private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.DIRT, Material.GRASS, Material.LEAVES, Material.WOOD, Material.PLANT, Material.STONE);
+
+    //FIXME turn this into a tag list, see MATERIAL_WHITELIST
+    //turn isSolid into said tag
+    public static boolean isAreaClear(BlockGetter world, BlockPos min, BlockPos max) {
+        for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
+            BlockState state = world.getBlockState(pos);
+            if (!state.canBeReplaced() && state.isSolid() && !state.liquid()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isBlockOk(BlockState state) {
+        return state.isSolid();
+    }
+
+    public static boolean isBlockNotOk(BlockState state) {
+        return state.liquid() || state.is(Blocks.BEDROCK);
     }
 }

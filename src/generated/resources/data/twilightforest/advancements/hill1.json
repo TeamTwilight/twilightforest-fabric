@@ -44,5 +44,6 @@
     [
       "redcap"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

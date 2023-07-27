@@ -48,7 +48,7 @@ public class TwilightWandBolt extends TFThrowable {
 			double s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
 			double s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
 
-			this.getLevel().addParticle(ParticleTypes.ENTITY_EFFECT, dx, dy, dz, s1, s2, s3);
+			this.level().addParticle(ParticleTypes.ENTITY_EFFECT, dx, dy, dz, s1, s2, s3);
 		}
 	}
 
@@ -63,7 +63,7 @@ public class TwilightWandBolt extends TFThrowable {
 		if (id == 3) {
 			ParticleOptions particle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.ENDER_PEARL));
 			for (int i = 0; i < 8; i++) {
-				this.getLevel().addParticle(particle, false, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
+				this.level().addParticle(particle, false, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -73,10 +73,10 @@ public class TwilightWandBolt extends TFThrowable {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (!this.getLevel().isClientSide()) {
-			result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.TWILIGHT_SCEPTER, this.getOwner(), this), 6);
+		if (!this.level().isClientSide()) {
+			result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.TWILIGHT_SCEPTER, this.getOwner(), this), 6);
 
-			this.getLevel().broadcastEntityEvent(this, (byte) 3);
+			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
 	}
@@ -84,9 +84,9 @@ public class TwilightWandBolt extends TFThrowable {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 
-			this.getLevel().broadcastEntityEvent(this, (byte) 3);
+			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
 	}
@@ -95,7 +95,7 @@ public class TwilightWandBolt extends TFThrowable {
 	public boolean hurt(DamageSource source, float amount) {
 		super.hurt(source, amount);
 
-		if (!this.getLevel().isClientSide() && source.getEntity() != null) {
+		if (!this.level().isClientSide() && source.getEntity() != null) {
 			Vec3 vec3d = source.getEntity().getLookAngle();
 			// reflect faster and more accurately
 			this.shoot(vec3d.x(), vec3d.y(), vec3d.z(), 1.5F, 0.1F);

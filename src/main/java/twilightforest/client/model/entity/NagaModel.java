@@ -11,69 +11,58 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.boss.Naga;
 import twilightforest.entity.boss.NagaSegment;
 
-/**
- * ModelNagaHead - Undefined
- * Created using Tabula 8.0.0
- */
-@Environment(EnvType.CLIENT)
 public class NagaModel<T extends Entity> extends ListModel<T> {
 
-    public final ModelPart root;
-    public final ModelPart head;
-    public ModelPart body;
-    private T entity;
+	public final ModelPart head;
+	public final ModelPart body;
+	@Nullable
+	private T entity;
 
-    public NagaModel(ModelPart root) {
-        this.root = root;
+	public NagaModel(ModelPart root) {
+		this.head = root.getChild("head");
+		this.body = root.getChild("body");
+	}
 
-        this.head = root.getChild("head");
-        this.body = root.getChild("body");
-    }
+	public static LayerDefinition create() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition partRoot = mesh.getRoot();
 
-    public static LayerDefinition create() {
-        MeshDefinition mesh = new MeshDefinition();
-        PartDefinition partRoot = mesh.getRoot();
+		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-8.0F, -12.0F, -8.0F, 16.0F, 16.0F, 16.0F),
+				PartPose.ZERO);
 
-        var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-                        .texOffs(0, 0)
-                        .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F),
-                PartPose.offset(0.0F, 8.0F, 0.0F));
+		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-8.0F, -12.0F, -8.0F, 16.0F, 16.0F, 16.0F),
+				PartPose.ZERO);
 
-        head.addOrReplaceChild("tongue", CubeListBuilder.create()
-                        .texOffs(84, 0)
-                        .addBox(-6.0F, 0.0F, -12.0F, 12.0F, 0.0F, 12.0F),
-                PartPose.offsetAndRotation(0.0F, 10.0F, -16.0F, 0.4363323129985824F, 0.0F, 0.0F));
+		return LayerDefinition.create(mesh, 64, 32);
+	}
 
-        partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-                        .texOffs(0, 0)
-                        .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F),
-                PartPose.offset(0.0F, 8.0F, 0.0F));
+	@Override
+	public Iterable<ModelPart> parts() {
+		return ImmutableList.of(this.head, this.body);
+	}
 
-        return LayerDefinition.create(mesh, 128, 64);
-    }
+	@Override
+	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float scale) {
+		if (this.entity instanceof Naga naga) {
+			this.head.render(stack, builder, light, overlay, red, green - naga.stunlessRedOverlayProgress, blue - naga.stunlessRedOverlayProgress, scale * 2);
+		} else if (this.entity instanceof NagaSegment) {
+			this.body.render(stack, builder, light, overlay, red, green, blue, scale * 2);
+		} else {
+			this.head.render(stack, builder, light, overlay, red, green, blue, scale * 2);
+		}
+		this.entity = null;
+	}
 
-    @Override
-    public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, float red, float green, float blue, float alpha) {
-        if (entity instanceof Naga) {
-            head.render(stack, builder, light, overlay, red, green, blue, alpha * 2);
-        } else if (entity instanceof NagaSegment) {
-            body.render(stack, builder, light, overlay, red, green, blue, alpha * 2);
-        } else {
-            head.render(stack, builder, light, overlay, red, green, blue, alpha * 2);
-        }
-    }
-
-    @Override
-    public Iterable<ModelPart> parts() {
-        return ImmutableList.of(head, body);
-    }
-
-    @Override
-    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
+	@Override
+	public void setupAnim(T entity, float v, float v1, float v2, float v3, float v4) {
+		this.entity = entity;
+	}
 }

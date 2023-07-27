@@ -56,7 +56,7 @@ public class LichBolt extends TFThrowable {
 	public boolean hurt(DamageSource damagesource, float amount) {
 		super.hurt(damagesource, amount);
 
-		if (!this.getLevel().isClientSide() && damagesource.getEntity() != null) {
+		if (!this.level().isClientSide() && damagesource.getEntity() != null) {
 			Vec3 vec3d = damagesource.getEntity().getLookAngle();
 			// reflect faster and more accurately
 			this.shoot(vec3d.x(), vec3d.y(), vec3d.z(), 1.5F, 0.1F);  // reflect faster and more accurately
@@ -81,7 +81,7 @@ public class LichBolt extends TFThrowable {
 		if (id == 3) {
 			ItemStack itemId = new ItemStack(Items.ENDER_PEARL);
 			for (int i = 0; i < 8; ++i) {
-				this.getLevel().addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemId), this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
+				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemId), this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -91,7 +91,7 @@ public class LichBolt extends TFThrowable {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		this.getLevel().broadcastEntityEvent(this, (byte) 3);
+		this.level().broadcastEntityEvent(this, (byte) 3);
 		this.discard();
 	}
 
@@ -102,11 +102,11 @@ public class LichBolt extends TFThrowable {
 			return;
 		}
 
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (hit instanceof LivingEntity) {
-				hit.hurt(TFDamageTypes.getDamageSource(this.getLevel(), TFDamageTypes.LICH_BOLT, TFEntities.LICH.get()), 6);
+				hit.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.LICH_BOLT, TFEntities.LICH.get()), 6);
 			}
-			this.getLevel().broadcastEntityEvent(this, (byte) 3);
+			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
 	}

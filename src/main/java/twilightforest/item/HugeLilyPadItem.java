@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import twilightforest.block.HugeLilyPadBlock;
@@ -53,13 +53,12 @@ public class HugeLilyPadItem extends PlaceOnWaterBlockItem {
 
 				BlockPos blockpos1 = blockpos.above();
 				BlockState blockstate = level.getBlockState(blockpos);
-				Material material = blockstate.getMaterial();
 				FluidState ifluidstate = level.getFluidState(blockpos);
-				if ((ifluidstate.getType() == Fluids.WATER || material == Material.ICE) && level.isEmptyBlock(blockpos1)
+				if ((ifluidstate.getType() == Fluids.WATER || blockstate.is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1)
 						// TF - check east, south, southeast as well
-						&& (level.getFluidState(blockpos.east()).getType() == Fluids.WATER || level.getBlockState(blockpos.east()).getMaterial() == Material.ICE) && level.isEmptyBlock(blockpos1.east())
-						&& (level.getFluidState(blockpos.south()).getType() == Fluids.WATER || level.getBlockState(blockpos.south()).getMaterial() == Material.ICE) && level.isEmptyBlock(blockpos1.south())
-						&& (level.getFluidState(blockpos.east().south()).getType() == Fluids.WATER || level.getBlockState(blockpos.east().south()).getMaterial() == Material.ICE) && level.isEmptyBlock(blockpos1.east().south())
+						&& (level.getFluidState(blockpos.east()).getType() == Fluids.WATER || level.getBlockState(blockpos.east()).is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1.east())
+						&& (level.getFluidState(blockpos.south()).getType() == Fluids.WATER || level.getBlockState(blockpos.south()).is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1.south())
+						&& (level.getFluidState(blockpos.east().south()).getType() == Fluids.WATER || level.getBlockState(blockpos.east().south()).is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1.east().south())
 				) {
 					// TF - use our own block. dispense with the blocksnapshot stuff for now due to complexity. FIXME: Implement it
 					final BlockState lilypad = getBlock().defaultBlockState().setValue(FACING, player.getDirection());

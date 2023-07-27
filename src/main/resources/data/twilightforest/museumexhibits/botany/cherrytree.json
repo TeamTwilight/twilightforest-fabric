@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.cherrytree",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:cherry_log",
+      "placement": "before",
+      "items": [
+        "twilightforest:hollow_cherry_log"
+      ]
+    }
+  ]
+}

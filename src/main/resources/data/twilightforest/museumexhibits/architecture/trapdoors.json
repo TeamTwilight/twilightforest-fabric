@@ -1,0 +1,14 @@
+{
+  "collection": "museumcurator.collection.architecture",
+  "name": "museumcurator.architecture.trapdoors",
+  "items": [
+    "twilightforest:twilight_oak_trapdoor",
+    "twilightforest:canopy_trapdoor",
+    "twilightforest:mangrove_trapdoor",
+    "twilightforest:dark_trapdoor",
+    "twilightforest:time_trapdoor",
+    "twilightforest:transformation_trapdoor",
+    "twilightforest:mining_trapdoor",
+    "twilightforest:sorting_trapdoor"
+  ]
+}

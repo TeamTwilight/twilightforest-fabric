@@ -1,0 +1,44 @@
+{
+  "fallback_layer": "twilightforest:random_forest_biomes",
+  "filtered_layer": {
+    "parent": {
+      "parent": "twilightforest:random_forest_biomes",
+      "dividing_biome": "twilightforest:stream",
+      "excluded_biome_intersections": [
+        [
+          "twilightforest:snowy_forest",
+          "twilightforest:glacier"
+        ],
+        [
+          "twilightforest:mushroom_forest",
+          "twilightforest:dense_mushroom_forest"
+        ],
+        [
+          "twilightforest:swamp",
+          "twilightforest:fire_swamp"
+        ],
+        [
+          "twilightforest:dark_forest",
+          "twilightforest:dark_forest_center"
+        ],
+        [
+          "twilightforest:highlands",
+          "twilightforest:final_plateau"
+        ]
+      ],
+      "excluded_neighbor_biomes": [
+        "twilightforest:lake",
+        "twilightforest:thornlands",
+        "twilightforest:clearing",
+        "twilightforest:oak_savannah"
+      ],
+      "layer_type": "twilightforest:seam",
+      "salt": 1
+    },
+    "layer_type": "twilightforest:smooth",
+    "salt": 7000
+  },
+  "keep_biome": "twilightforest:stream",
+  "layer_type": "twilightforest:filtered",
+  "salt": 100
+}

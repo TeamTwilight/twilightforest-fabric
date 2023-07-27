@@ -18,7 +18,7 @@ import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 public class DarkTowerBeardComponent extends TFStructureComponentOld {
 
 	protected final int size;
-	protected int height;
+	protected final int height;
 
 	public DarkTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFDTBea.get(), nbt);

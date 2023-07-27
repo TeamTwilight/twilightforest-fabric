@@ -39,7 +39,7 @@ public class LampostFeature extends Feature<BlockStateConfiguration> {
 		// is it air or replaceable above our grass block
 		for (int dy = 0; dy <= height; dy++) {
 			BlockState state = world.getBlockState(pos.above(dy));
-			if (!state.isAir() && !state.getMaterial().isReplaceable()) {
+			if (!state.isAir() && !state.canBeReplaced()) {
 				return false;
 			}
 		}

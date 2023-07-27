@@ -20,7 +20,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
@@ -91,6 +91,8 @@ public class TwilightForestMod implements ModInitializer {
 		TFMenuTypes.CONTAINERS.register();
 		TFEnchantments.ENCHANTMENTS.register();
 		TFEntities.ENTITIES.register();
+		BiomeLayerTypes.BIOME_LAYER_TYPES.register(modbus);
+		BiomeLayerStack.BIOME_LAYER_STACKS.register(modbus);
 		TFFeatures.FEATURES.register();
 		TFFeatureModifiers.FOLIAGE_PLACERS.register();
 		TFLoot.FUNCTIONS.register();
@@ -108,25 +110,27 @@ public class TwilightForestMod implements ModInitializer {
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register();
 		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register();
 		TFStructureTypes.STRUCTURE_TYPES.register();
+		TFCreativeTabs.TABS.register(modbus);
 		TFFeatureModifiers.TREE_DECORATORS.register();
 		TFFeatureModifiers.TRUNK_PLACERS.register();
 
 		DwarfRabbitVariant.DWARF_RABBITS.register();
 		TinyBirdVariant.TINY_BIRDS.register();
-//		WoodPalettes.WOOD_PALETTES.register(); We don't need this on fabric or even on forge really
+		WoodPalettes.WOOD_PALETTES.register();
+		Enforcement.ENFORCEMENTS.register();
+		Restrictions.RESTRICTIONS.register();
 
-		TFStructures.register();
-		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-			TrinketsCompat.init();
+		modbus.addListener(this::sendIMCs);
+		modbus.addListener(this::init);
+		modbus.addListener(this::registerExtraStuff);
+		modbus.addListener(this::setRegistriesForDatapack);
+		modbus.addListener(CapabilityList::registerCapabilities);
+
+		if (ModList.get().isLoaded("curios")) {
+			Bindings.getForgeBus().get().addListener(CuriosCompat::keepCurios);
+			modbus.addListener(CuriosCompat::registerCurioRenderers);
+			modbus.addListener(CuriosCompat::registerCurioLayers);
 		}
-		TFConfiguredFeatures.init();
-		TFPlacedFeatures.init();
-		TFStructureProcessors.init();
-		TFBlocks.registerItemblocks();
-		TFEntities.init();
-		TFCaveCarvers.register();
-		registerSerializers();
-
 
 		BiomeGrassColors.init();
 
@@ -137,7 +141,7 @@ public class TwilightForestMod implements ModInitializer {
 		TFCreativeTabs.registerTFBlocksTab();
 	}
 
-	public static void initEvents() {
+	public void initEvents() {
 		TFTickHandler.init();
 		CapabilityEvents.init();
 		EntityEvents.init();
@@ -149,24 +153,17 @@ public class TwilightForestMod implements ModInitializer {
 
 		ModConfigEvents.reloading(ID).register(TFConfig::onConfigReload);
 		TwilightForestMod.setRegistriesForDatapack();
+		event.dataPackRegistry(BiomeLayerStack.BIOME_STACK_KEY, BiomeLayerStack.DISPATCH_CODEC);
+		event.dataPackRegistry(Restrictions.RESTRICTION_KEY, Restriction.CODEC, Restriction.CODEC);
 	}
 
-	public static void setRegistriesForDatapack() {
-		DynamicRegistryHandler.register(new RegistryDataLoader.RegistryData<>(WoodPalettes.WOOD_PALETTE_TYPE_KEY, WoodPalette.CODEC));
-	}
-
-	public static void addClassicPack() {
-		ModContainer tf = FabricLoader.getInstance().getModContainer(ID)
-				.orElseThrow(() -> new IllegalStateException("Twilight Forest's ModContainer couldn't be found!"));
-		ResourceLocation packId = prefix("classic");
-		ResourceManagerHelper.registerBuiltinResourcePack(packId, tf, Component.literal("Twilight Classic"), ResourcePackActivationType.NORMAL);
-	}
-
-	public static void registerSerializers() {
+	public void registerExtraStuff(RegisterEvent evt) {
+		if (Objects.equals(evt.getRegistryKey(), Registries.BIOME_SOURCE)) {
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
-
+		} else if (Objects.equals(evt.getRegistryKey(), Registries.CHUNK_GENERATOR)) {
 			Registry.register(BuiltInRegistries.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
+		}
 	}
 
 	public static void init() {
@@ -174,9 +171,6 @@ public class TwilightForestMod implements ModInitializer {
 		TFAdvancements.init();
 
 //		evt.enqueueWork(() -> {
-			TFBlocks.tfCompostables();
-			TFBlocks.tfBurnables();
-			TFBlocks.tfPots();
 			TFSounds.registerParrotSounds();
 			TFDispenserBehaviors.init();
 			TFStats.init();
@@ -204,6 +198,132 @@ public class TwilightForestMod implements ModInitializer {
 			AxeItem.STRIPPABLES.put(TFBlocks.TRANSFORMATION_WOOD.get(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get());
 			AxeItem.STRIPPABLES.put(TFBlocks.MINING_WOOD.get(), TFBlocks.STRIPPED_MINING_WOOD.get());
 			AxeItem.STRIPPABLES.put(TFBlocks.SORTING_WOOD.get(), TFBlocks.STRIPPED_SORTING_WOOD.get());
+
+			FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
+
+			pot.addPlant(TFBlocks.TWILIGHT_OAK_SAPLING.getId(), TFBlocks.POTTED_TWILIGHT_OAK_SAPLING);
+			pot.addPlant(TFBlocks.CANOPY_SAPLING.getId(), TFBlocks.POTTED_CANOPY_SAPLING);
+			pot.addPlant(TFBlocks.MANGROVE_SAPLING.getId(), TFBlocks.POTTED_MANGROVE_SAPLING);
+			pot.addPlant(TFBlocks.DARKWOOD_SAPLING.getId(), TFBlocks.POTTED_DARKWOOD_SAPLING);
+			pot.addPlant(TFBlocks.HOLLOW_OAK_SAPLING.getId(), TFBlocks.POTTED_HOLLOW_OAK_SAPLING);
+			pot.addPlant(TFBlocks.RAINBOW_OAK_SAPLING.getId(), TFBlocks.POTTED_RAINBOW_OAK_SAPLING);
+			pot.addPlant(TFBlocks.TIME_SAPLING.getId(), TFBlocks.POTTED_TIME_SAPLING);
+			pot.addPlant(TFBlocks.TRANSFORMATION_SAPLING.getId(), TFBlocks.POTTED_TRANSFORMATION_SAPLING);
+			pot.addPlant(TFBlocks.MINING_SAPLING.getId(), TFBlocks.POTTED_MINING_SAPLING);
+			pot.addPlant(TFBlocks.SORTING_SAPLING.getId(), TFBlocks.POTTED_SORTING_SAPLING);
+			pot.addPlant(TFBlocks.MAYAPPLE.getId(), TFBlocks.POTTED_MAYAPPLE);
+			pot.addPlant(TFBlocks.FIDDLEHEAD.getId(), TFBlocks.POTTED_FIDDLEHEAD);
+			pot.addPlant(TFBlocks.MUSHGLOOM.getId(), TFBlocks.POTTED_MUSHGLOOM);
+			pot.addPlant(TFBlocks.BROWN_THORNS.getId(), TFBlocks.POTTED_THORN);
+			pot.addPlant(TFBlocks.GREEN_THORNS.getId(), TFBlocks.POTTED_GREEN_THORN);
+			pot.addPlant(TFBlocks.BURNT_THORNS.getId(), TFBlocks.POTTED_DEAD_THORN);
+
+			FireBlock fireblock = (FireBlock) Blocks.FIRE;
+			fireblock.setFlammable(TFBlocks.ROOT_BLOCK.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.ARCTIC_FUR_BLOCK.get(), 20, 20);
+			fireblock.setFlammable(TFBlocks.LIVEROOT_BLOCK.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get(), 30, 20);
+			fireblock.setFlammable(TFBlocks.DEATH_TOME_SPAWNER.get(), 30, 20);
+			fireblock.setFlammable(TFBlocks.TWILIGHT_OAK_WOOD.get(), 5, 5);
+			fireblock.setFlammable(TFBlocks.TWILIGHT_OAK_PLANKS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TWILIGHT_OAK_SLAB.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TWILIGHT_OAK_STAIRS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TWILIGHT_OAK_FENCE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TWILIGHT_OAK_GATE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.CANOPY_WOOD.get(), 5, 5);
+			fireblock.setFlammable(TFBlocks.CANOPY_PLANKS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.CANOPY_SLAB.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.CANOPY_STAIRS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.CANOPY_FENCE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.CANOPY_GATE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.CANOPY_BOOKSHELF.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MANGROVE_WOOD.get(), 5, 5);
+			fireblock.setFlammable(TFBlocks.MANGROVE_PLANKS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MANGROVE_SLAB.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MANGROVE_STAIRS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MANGROVE_FENCE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MANGROVE_GATE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MANGROVE_ROOT.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.DARK_WOOD.get(), 5, 5);
+			fireblock.setFlammable(TFBlocks.DARK_PLANKS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.DARK_SLAB.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.DARK_STAIRS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.DARK_FENCE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.DARK_GATE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TIME_WOOD.get(), 5, 5);
+			fireblock.setFlammable(TFBlocks.TIME_PLANKS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TIME_SLAB.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TIME_STAIRS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TIME_FENCE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TIME_GATE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TRANSFORMATION_WOOD.get(), 5, 5);
+			fireblock.setFlammable(TFBlocks.TRANSFORMATION_PLANKS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TRANSFORMATION_SLAB.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TRANSFORMATION_STAIRS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TRANSFORMATION_FENCE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.TRANSFORMATION_GATE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MINING_WOOD.get(), 5, 5);
+			fireblock.setFlammable(TFBlocks.MINING_PLANKS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MINING_SLAB.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MINING_STAIRS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MINING_FENCE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.MINING_GATE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.SORTING_WOOD.get(), 5, 5);
+			fireblock.setFlammable(TFBlocks.SORTING_PLANKS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.SORTING_SLAB.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.SORTING_STAIRS.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.SORTING_FENCE.get(), 5, 20);
+			fireblock.setFlammable(TFBlocks.SORTING_GATE.get(), 5, 20);
+
+			ComposterBlock.add(0.1F, TFBlocks.FALLEN_LEAVES.get());
+			ComposterBlock.add(0.3F, TFBlocks.CANOPY_LEAVES.get());
+			ComposterBlock.add(0.3F, TFBlocks.CLOVER_PATCH.get());
+			ComposterBlock.add(0.3F, TFBlocks.DARK_LEAVES.get());
+			ComposterBlock.add(0.3F, TFBlocks.FIDDLEHEAD.get());
+			ComposterBlock.add(0.3F, TFBlocks.HEDGE.get());
+			ComposterBlock.add(0.3F, TFBlocks.MANGROVE_LEAVES.get());
+			ComposterBlock.add(0.3F, TFBlocks.MAYAPPLE.get());
+			ComposterBlock.add(0.3F, TFBlocks.MINING_LEAVES.get());
+			ComposterBlock.add(0.3F, TFBlocks.TWILIGHT_OAK_LEAVES.get());
+			ComposterBlock.add(0.3F, TFBlocks.RAINBOW_OAK_LEAVES.get());
+			ComposterBlock.add(0.3F, TFBlocks.ROOT_STRAND.get());
+			ComposterBlock.add(0.3F, TFBlocks.SORTING_LEAVES.get());
+			ComposterBlock.add(0.3F, TFBlocks.THORN_LEAVES.get());
+			ComposterBlock.add(0.3F, TFBlocks.TIME_LEAVES.get());
+			ComposterBlock.add(0.3F, TFBlocks.TRANSFORMATION_LEAVES.get());
+			ComposterBlock.add(0.3F, TFBlocks.TWILIGHT_OAK_SAPLING.get());
+			ComposterBlock.add(0.3F, TFBlocks.CANOPY_SAPLING.get());
+			ComposterBlock.add(0.3F, TFBlocks.MANGROVE_SAPLING.get());
+			ComposterBlock.add(0.3F, TFBlocks.DARKWOOD_SAPLING.get());
+			ComposterBlock.add(0.3F, TFBlocks.RAINBOW_OAK_SAPLING.get());
+			ComposterBlock.add(0.5F, TFBlocks.BEANSTALK_LEAVES.get());
+			ComposterBlock.add(0.5F, TFBlocks.MOSS_PATCH.get());
+			ComposterBlock.add(0.5F, TFBlocks.ROOT_BLOCK.get());
+			ComposterBlock.add(0.5F, TFBlocks.THORN_ROSE.get());
+			ComposterBlock.add(0.5F, TFBlocks.TROLLVIDR.get());
+			ComposterBlock.add(0.5F, TFBlocks.HOLLOW_OAK_SAPLING.get());
+			ComposterBlock.add(0.5F, TFBlocks.TIME_SAPLING.get());
+			ComposterBlock.add(0.5F, TFBlocks.TRANSFORMATION_SAPLING.get());
+			ComposterBlock.add(0.5F, TFBlocks.MINING_SAPLING.get());
+			ComposterBlock.add(0.5F, TFBlocks.SORTING_SAPLING.get());
+			ComposterBlock.add(0.5F, TFBlocks.TORCHBERRY_PLANT.get());
+			ComposterBlock.add(0.65F, TFBlocks.HUGE_MUSHGLOOM_STEM.get());
+			ComposterBlock.add(0.65F, TFBlocks.HUGE_WATER_LILY.get());
+			ComposterBlock.add(0.65F, TFBlocks.LIVEROOT_BLOCK.get());
+			ComposterBlock.add(0.65F, TFBlocks.MUSHGLOOM.get());
+			ComposterBlock.add(0.65F, TFBlocks.UBEROUS_SOIL.get());
+			ComposterBlock.add(0.65F, TFBlocks.HUGE_STALK.get());
+			ComposterBlock.add(0.65F, TFBlocks.UNRIPE_TROLLBER.get());
+			ComposterBlock.add(0.65F, TFBlocks.TROLLBER.get());
+			ComposterBlock.add(0.85F, TFBlocks.HUGE_LILY_PAD.get());
+			ComposterBlock.add(0.85F, TFBlocks.HUGE_MUSHGLOOM.get());
+
+			//eh, we'll do items here too
+			ComposterBlock.add(0.3F, TFItems.TORCHBERRIES.get());
+			ComposterBlock.add(0.5F, TFItems.LIVEROOT.get());
+			ComposterBlock.add(0.65F, TFItems.MAZE_WAFER.get());
+			ComposterBlock.add(0.85F, TFItems.EXPERIMENT_115.get());
+			ComposterBlock.add(0.85F, TFItems.MAGIC_BEANS.get());
 //		});
 	}
 

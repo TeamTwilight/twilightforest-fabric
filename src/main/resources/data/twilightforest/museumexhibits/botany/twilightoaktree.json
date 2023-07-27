@@ -1,0 +1,22 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.twilightforest.twilightoaktree",
+  "relativeTo": "museumcurator.botany.twilightforest.transformationtree",
+  "items": [
+    "twilightforest:twilight_oak_sapling",
+    "twilightforest:rainbow_oak_sapling",
+    "twilightforest:hollow_oak_sapling",
+    "twilightforest:twilight_oak_leaves",
+    "twilightforest:rainbow_oak_leaves",
+    "twilightforest:hollow_twilight_oak_log",
+    "twilightforest:twilight_oak_log",
+    "twilightforest:stripped_twilight_oak_log",
+    "twilightforest:twilight_oak_wood",
+    "twilightforest:stripped_twilight_oak_wood",
+    "twilightforest:twilight_oak_planks",
+    "twilightforest:twilight_oak_slab",
+    "twilightforest:twilight_oak_stairs",
+    "twilightforest:root",
+    "twilightforest:liveroot_block"
+  ]
+}

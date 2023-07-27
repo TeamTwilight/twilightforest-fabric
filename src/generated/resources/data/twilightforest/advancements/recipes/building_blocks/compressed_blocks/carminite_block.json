@@ -28,5 +28,6 @@
     "recipes": [
       "twilightforest:compressed_blocks/carminite_block"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

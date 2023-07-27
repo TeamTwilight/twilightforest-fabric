@@ -132,8 +132,8 @@ public class ProgressionEvents {
 
 	public static boolean livingAttack(LivingEntity living, DamageSource source, float amount) {
 		// cancel attacks in protected areas
-		if (!living.getLevel().isClientSide() && living instanceof Enemy && source.getEntity() instanceof Player && !(living instanceof Kobold)
-				&& isAreaProtected(living.getLevel(), (Player) source.getEntity(), new BlockPos(living.blockPosition()))) {
+		if (!living.level().isClientSide() && living instanceof Enemy && source.getEntity() instanceof Player && !(living instanceof Kobold)
+				&& isAreaProtected(living.level(), (Player) source.getEntity(), new BlockPos(living.blockPosition()))) {
 
 			return true;
 		}
@@ -141,16 +141,16 @@ public class ProgressionEvents {
 	}
 
 	public static void playerPortals(ServerPlayer player, ServerLevel origin, ServerLevel destination) {
-		if (!player.getLevel().isClientSide()) {
-			if (TFGenerationSettings.usesTwilightChunkGenerator(player.getLevel())) {
-				sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(player.getLevel()));
+		if (!player.level().isClientSide()) {
+			if (TFGenerationSettings.usesTwilightChunkGenerator((ServerLevel) player.level())) {
+				sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(player.level()));
 			}
 		}
 	}
 
 	public static void playerLogsIn(ServerPlayer player) {
-		if (!player.getLevel().isClientSide()) {
-			sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(player.getLevel()));
+		if (!player.level().isClientSide()) {
+			sendEnforcedProgressionStatus(player, LandmarkUtil.isProgressionEnforced(player.level()));
 		}
 	}
 

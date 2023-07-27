@@ -1,18 +1,14 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nonnull;
 
 public abstract class Bird extends Animal {
 
@@ -33,7 +29,7 @@ public abstract class Bird extends Animal {
 		super.aiStep();
 		this.lastFlapLength = this.flapLength;
 		this.lastFlapIntensity = this.flapIntensity;
-		this.flapIntensity = (float) (this.flapIntensity + (this.onGround ? -1 : 4) * 0.3D);
+		this.flapIntensity = (float) (this.flapIntensity + (this.onGround() ? -1 : 4) * 0.3D);
 
 		if (this.flapIntensity < 0.0F) {
 			this.flapIntensity = 0.0F;
@@ -43,14 +39,14 @@ public abstract class Bird extends Animal {
 			this.flapIntensity = 1.0F;
 		}
 
-		if (!this.onGround && this.flapSpeed < 1.0F) {
+		if (!this.onGround() && this.flapSpeed < 1.0F) {
 			this.flapSpeed = 1.0F;
 		}
 
 		this.flapSpeed = (float) (this.flapSpeed * 0.9D);
 
 		// don't fall as fast
-		if (!this.onGround && this.getDeltaMovement().y() < 0.0D) {
+		if (!this.onGround() && this.getDeltaMovement().y() < 0.0D) {
 			this.setDeltaMovement(new Vec3(getDeltaMovement().x(), getDeltaMovement().y() * 0.6D, getDeltaMovement().z()));
 		}
 
@@ -60,6 +56,11 @@ public abstract class Bird extends Animal {
 
 	@Override
 	public boolean isSteppingCarefully() {
+		return false;
+	}
+
+	@Override
+	public boolean isFood(ItemStack stack) {
 		return false;
 	}
 

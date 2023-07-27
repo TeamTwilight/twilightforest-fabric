@@ -18,7 +18,7 @@ import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 public class IceTowerBeardComponent extends TFStructureComponentOld {
 
 	protected final int size;
-	protected int height;
+	protected final int height;
 
 	public IceTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFITBea.get(), nbt);

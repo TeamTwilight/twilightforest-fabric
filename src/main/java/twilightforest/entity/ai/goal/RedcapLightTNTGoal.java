@@ -27,7 +27,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!this.redcap.getLevel().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+		if (!this.redcap.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 			return false;
 		}
 
@@ -47,7 +47,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canContinueToUse() {
-		return this.redcap.getLevel().getBlockState(this.tntPos).is(Blocks.TNT);
+		return this.redcap.level().getBlockState(this.tntPos).is(Blocks.TNT);
 	}
 
 	@Override
@@ -70,9 +70,9 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 		if (this.redcap.distanceToSqr(Vec3.atLowerCornerOf(this.tntPos)) < 2.4D * 2.4D) {
 			redcap.playAmbientSound();
 
-			((TntBlock)Blocks.TNT).explode(this.redcap.getLevel(), this.tntPos);
+			((TntBlock)Blocks.TNT).explode(this.redcap.level(), this.tntPos);
 			this.redcap.swing(InteractionHand.MAIN_HAND);
-			this.redcap.getLevel().setBlock(this.tntPos, Blocks.AIR.defaultBlockState(), 2);
+			this.redcap.level().setBlock(this.tntPos, Blocks.AIR.defaultBlockState(), 2);
 			this.redcap.gameEvent(GameEvent.PRIME_FUSE);
 			this.redcap.getNavigation().stop();
 		} else {

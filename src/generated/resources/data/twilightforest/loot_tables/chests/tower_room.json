@@ -349,5 +349,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:chests/tower_room"
 }

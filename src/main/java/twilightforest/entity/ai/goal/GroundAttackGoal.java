@@ -40,7 +40,7 @@ public class GroundAttackGoal extends Goal {
 			double distance = this.attacker.distanceToSqr(this.attackTarget);
 			if (distance < MIN_RANGE_SQ || distance > MAX_RANGE_SQ) {
 				return false;
-			} else if (!this.attacker.isOnGround()) {
+			} else if (!this.attacker.onGround()) {
 				return false;
 			} else {
 				if (this.attacker.hasLineOfSight(attackTarget)) {
@@ -84,11 +84,11 @@ public class GroundAttackGoal extends Goal {
 
 			AABB selection = new AABB(this.attacker.blockPosition().getX() - 7.5F, this.attacker.blockPosition().getY(), this.attacker.blockPosition().getZ() - 7.5F, this.attacker.blockPosition().getX() + 7.5F, this.attacker.blockPosition().getY() + 3.0F, this.attacker.blockPosition().getZ() + 7.5F);
 
-			List<Entity> hit = attacker.getLevel().getEntitiesOfClass(Entity.class, selection, entity -> entity instanceof Player);
+			List<Entity> hit = attacker.level().getEntitiesOfClass(Entity.class, selection, entity -> entity instanceof Player);
 			for (Entity entity : hit) {
-				if (entity.isOnGround()) {
+				if (entity.onGround()) {
 					entity.push(0.0D, 0.23D, 0.0D);
-					entity.hurt(TFDamageTypes.getEntityDamageSource(this.attacker.getLevel(), TFDamageTypes.SLAM, this.attacker), (float) (this.attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F));
+					entity.hurt(TFDamageTypes.getEntityDamageSource(this.attacker.level(), TFDamageTypes.SLAM, this.attacker), (float) (this.attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F));
 				}
 			}
 		}

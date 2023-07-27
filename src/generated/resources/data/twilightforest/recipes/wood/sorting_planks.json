@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "twilightforest:sorting_log"
+      "tag": "twilightforest:sortwood_logs"
     }
   ],
   "result": {

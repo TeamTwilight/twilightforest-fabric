@@ -58,7 +58,7 @@ public class ToolEvents {
 				player.setYRot(living.getYRot());
 				player.teleportTo(living.getX(), living.getY(), living.getZ());
 				player.invulnerableTime = 40;
-				player.getLevel().broadcastEntityEvent(player, (byte) 46);
+				player.level().broadcastEntityEvent(player, (byte) 46);
 				if (living.isPassenger() && living.getVehicle() != null) {
 					player.startRiding(living.getVehicle(), true);
 					living.stopRiding();
@@ -68,7 +68,7 @@ public class ToolEvents {
 				living.setYRot(sourceYaw);
 				living.setXRot(sourcePitch);
 				living.teleportTo(sourceX, sourceY, sourceZ);
-				living.getLevel().broadcastEntityEvent(player, (byte) 46);
+				living.level().broadcastEntityEvent(player, (byte) 46);
 				if (playerVehicle != null) {
 					living.startRiding(playerVehicle, true);
 					player.stopRiding();
@@ -89,7 +89,7 @@ public class ToolEvents {
 	public static float onKnightmetalToolDamage(DamageSource source, LivingEntity target, float amount) {
 		float newAmount = amount;
 
-		if (!target.getLevel().isClientSide() && source.getDirectEntity() instanceof LivingEntity living) {
+		if (!target.level().isClientSide() && source.getDirectEntity() instanceof LivingEntity living) {
 			ItemStack weapon = living.getMainHandItem();
 
 			if (!weapon.isEmpty()) {
@@ -101,11 +101,11 @@ public class ToolEvents {
 						newAmount = newAmount + KNIGHTMETAL_BONUS_DAMAGE;
 					}
 					// enchantment attack sparkles
-					((ServerLevel) target.getLevel()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 				} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
 					newAmount = newAmount + KNIGHTMETAL_BONUS_DAMAGE;
 					// enchantment attack sparkles
-					((ServerLevel) target.getLevel()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 				}
 			}
 		}
@@ -114,12 +114,12 @@ public class ToolEvents {
 
 	public static float onMinotaurAxeCharge(DamageSource damageSource, LivingEntity target, float amount) {
 		Entity source = damageSource.getDirectEntity();
-		if (!target.getLevel().isClientSide() && source instanceof LivingEntity living && source.isSprinting() && (damageSource.getMsgId().equals("player") || damageSource.getMsgId().equals("mob"))) {
+		if (!target.level().isClientSide() && source instanceof LivingEntity living && source.isSprinting() && (damageSource.getMsgId().equals("player") || damageSource.getMsgId().equals("mob"))) {
 			ItemStack weapon = living.getMainHandItem();
 			if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
 				float newAmount = amount + MINOTAUR_AXE_BONUS_DAMAGE;
 				// enchantment attack sparkles
-				((ServerLevel) target.getLevel()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
+				((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 				return newAmount;
 			}
 		}
@@ -135,61 +135,62 @@ public class ToolEvents {
 			}
 		}
 	}
-// 	TODO: PORT (I'm too lazy to right now)
-//	@SubscribeEvent
-//	public static void onEntityInteract(PlayerInteractEvent event) {
-//		if (event instanceof PlayerInteractEvent.EntityInteractSpecific entityInteractSpecific) {
-//			checkEntityTooFar(entityInteractSpecific, entityInteractSpecific.getTarget(), entityInteractSpecific.getEntity(), entityInteractSpecific.getHand());
-//		} else if (event instanceof PlayerInteractEvent.EntityInteract entityInteract) {
-//			checkEntityTooFar(entityInteract, entityInteract.getTarget(), entityInteract.getEntity(), entityInteract.getHand());
-//		} else if (event instanceof PlayerInteractEvent.RightClickBlock rightClickBlock) {
-//			checkBlockTooFar(event, rightClickBlock.getEntity(), rightClickBlock.getHand());
-//		} else if (event instanceof PlayerInteractEvent.RightClickItem rightClickItem) {
-//			INTERACTION_HAND = rightClickItem.getHand();
-//		}
-//	}
-//
-//	private static void checkEntityTooFar(PlayerInteractEvent event, Entity target, Player player, InteractionHand hand) {
-//		if (!event.isCanceled()) {
-//			ItemStack heldStack = player.getItemInHand(hand);
-//			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
-//				UUID uuidForOppositeHand = GiantItem.GIANT_RANGE_MODIFIER;
-//				AttributeInstance attackRange = player.getAttribute(ReachEntityAttributes.ATTACK_RANGE);
-//				if (attackRange != null) {
-//					AttributeModifier giantModifier = attackRange.getModifier(uuidForOppositeHand);
-//					if (giantModifier != null) {
-//						attackRange.removeModifier(giantModifier);
-//						double range = player.getAttributeValue(ReachEntityAttributes.ATTACK_RANGE);
-//						double trueReach = range == 0 ? 0 : range + (player.isCreative() ? 3 : 0); // Copied from IForgePlayer#getAttackRange().
-//						boolean tooFar = !player.isCloseEnough(target, trueReach);
-//						attackRange.addTransientModifier(giantModifier);
-//						event.setCanceled(tooFar);
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	private static void checkBlockTooFar(PlayerInteractEvent event, Player player, InteractionHand hand) {
-//		if (!event.isCanceled()) {
-//			ItemStack heldStack = player.getItemInHand(hand);
-//			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
-//				UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
-//				AttributeInstance reachDistance = player.getAttribute(ReachEntityAttributes.REACH);
-//				if (reachDistance != null) {
-//					AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
-//					if (giantModifier != null) {
-//						reachDistance.removeModifier(giantModifier);
-//						double reach = player.getAttributeValue(ReachEntityAttributes.REACH);
-//						double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
-//						boolean tooFar = player.pick(trueReach, 0.0F, false).getType() != HitResult.Type.BLOCK;
-//						reachDistance.addTransientModifier(giantModifier);
-//						event.setCanceled(tooFar);
-//					}
-//				}
-//			}
-//		}
-//	}
+
+	// 	TODO: PORT (I'm too lazy to right now)
+	@SubscribeEvent
+	public static void onEntityInteract(PlayerInteractEvent event) {
+		if (event instanceof PlayerInteractEvent.EntityInteractSpecific entityInteractSpecific) {
+			checkEntityTooFar(entityInteractSpecific, entityInteractSpecific.getTarget(), entityInteractSpecific.getEntity(), entityInteractSpecific.getHand());
+		} else if (event instanceof PlayerInteractEvent.EntityInteract entityInteract) {
+			checkEntityTooFar(entityInteract, entityInteract.getTarget(), entityInteract.getEntity(), entityInteract.getHand());
+		} else if (event instanceof PlayerInteractEvent.RightClickBlock rightClickBlock) {
+			checkBlockTooFar(event, rightClickBlock.getEntity(), rightClickBlock.getHand());
+		} else if (event instanceof PlayerInteractEvent.RightClickItem rightClickItem) {
+			INTERACTION_HAND = rightClickItem.getHand();
+		}
+	}
+
+	private static void checkEntityTooFar(PlayerInteractEvent event, Entity target, Player player, InteractionHand hand) {
+		if (!event.isCanceled()) {
+			ItemStack heldStack = player.getItemInHand(hand);
+			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
+				UUID uuidForOppositeHand = GiantItem.GIANT_RANGE_MODIFIER;
+				AttributeInstance attackRange = player.getAttribute(ForgeMod.ENTITY_REACH.get());
+				if (attackRange != null) {
+					AttributeModifier giantModifier = attackRange.getModifier(uuidForOppositeHand);
+					if (giantModifier != null) {
+						attackRange.removeModifier(giantModifier);
+						double range = player.getAttributeValue(ForgeMod.ENTITY_REACH.get());
+						double trueReach = range == 0 ? 0 : range + (player.isCreative() ? 3 : 0); // Copied from IForgePlayer#getAttackRange().
+						boolean tooFar = !player.isCloseEnough(target, trueReach);
+						attackRange.addTransientModifier(giantModifier);
+						event.setCanceled(tooFar);
+					}
+				}
+			}
+		}
+	}
+
+	private static void checkBlockTooFar(PlayerInteractEvent event, Player player, InteractionHand hand) {
+		if (!event.isCanceled()) {
+			ItemStack heldStack = player.getItemInHand(hand);
+			if (hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
+				UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
+				AttributeInstance reachDistance = player.getAttribute(ForgeMod.BLOCK_REACH.get());
+				if (reachDistance != null) {
+					AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
+					if (giantModifier != null) {
+						reachDistance.removeModifier(giantModifier);
+						double reach = player.getAttributeValue(ForgeMod.BLOCK_REACH.get());
+						double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
+						boolean tooFar = player.pick(trueReach, 0.0F, false).getType() != HitResult.Type.BLOCK;
+						reachDistance.addTransientModifier(giantModifier);
+						event.setCanceled(tooFar);
+					}
+				}
+			}
+		}
+	}
 
 	public static boolean hasGiantItemInOneHand(Player player) {
 		ItemStack mainHandStack = player.getMainHandItem();

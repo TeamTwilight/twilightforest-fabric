@@ -17,42 +17,45 @@ public class TrollModel extends HumanoidModel<Troll> {
 		MeshDefinition mesh = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
 		PartDefinition partRoot = mesh.getRoot();
 
-		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(52, 31)
-						.addBox(-5.0F, -8.0F, -8.0F, 10.0F, 10.0F, 10.0F)
-						.texOffs(36, 41)
-						.addBox(-2.0F, -4.0F, -11.0F, 4.0F, 8.0F, 4.0F),
-				PartPose.offset(0.0F, -11.0F, -1.0F));
+		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
+						.texOffs(0, 0)
+						.addBox(-5.0F, -8.0F, -3.0F, 10.0F, 10.0F, 10.0F),
+				PartPose.offset(0.0F, -9.0F, -6.0F));
 
 		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),
 				PartPose.ZERO);
 
+		head.addOrReplaceChild("nose", CubeListBuilder.create()
+						.texOffs(0, 21)
+						.addBox(-2.0F, -2.0F, -2.0F, 4.0F, 8.0F, 4.0F),
+				PartPose.offset(0.0F, -2.0F, -4.0F));
+
 		partRoot.addOrReplaceChild("body", CubeListBuilder.create()
-						.texOffs(0, 0)
-						.addBox(-8.0F, -37.0F, -6.0F, 16.0F, 26.0F, 15.0F),
-				PartPose.offset(0.0F, 24.0F, 0.0F));
+						.texOffs(40, 0)
+						.addBox(-8.0F, 0.0F, -5.0F, 16.0F, 26.0F, 10.0F),
+				PartPose.offset(0.0F, -14.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("right_arm", CubeListBuilder.create()
-						.texOffs(0, 41)
-						.addBox(-6.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
-				PartPose.offset(-8.0F, -9.0F, 0.0F));
+						.texOffs(32, 36)
+						.addBox(-5.0F, -2.0F, -3.0F, 6.0F, 22.0F, 6.0F),
+				PartPose.offset(-9.0F, -9.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
-						.texOffs(0, 41)
-						.addBox(0.0F, -1.0F, -4.0F, 6.0F, 25.0F, 8.0F),
-				PartPose.offset(8.0F, -9.0F, 0.0F));
+						.texOffs(32, 36)
+						.addBox(-1.0F, -2.0F, -3.0F, 6.0F, 22.0F, 6.0F),
+				PartPose.offset(9.0F, -9.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("right_leg", CubeListBuilder.create()
-						.texOffs(28, 54)
-						.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
-				PartPose.offset(-4.0F, 13.0F, 0.0F));
+						.texOffs(0, 44)
+						.addBox(-3.0F, 0.0F, -4.0F, 6.0F, 12.0F, 8.0F),
+				PartPose.offset(-5.0F, 12.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("left_leg", CubeListBuilder.create().mirror()
-						.texOffs(28, 54)
-						.addBox(-3.0F, -1.0F, -4.0F, 6.0F, 12.0F, 8.0F),
-				PartPose.offset(4.0F, 13.0F, 0.0F));
+						.texOffs(0, 44)
+						.addBox(-3.0F, 0.0F, -4.0F, 6.0F, 12.0F, 8.0F),
+				PartPose.offset(5.0F, 12.0F, 0.0F));
 
-		return LayerDefinition.create(mesh, 128, 128);
+		return LayerDefinition.create(mesh, 128, 64);
 	}
 
 	@Override
@@ -74,6 +77,7 @@ public class TrollModel extends HumanoidModel<Troll> {
 			// arms up!
 			this.rightArm.xRot += Math.PI;
 			this.leftArm.xRot += Math.PI;
+
 		}
 
 		if (this.leftArmPose != ArmPose.EMPTY) {

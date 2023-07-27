@@ -21,7 +21,7 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instan
 	}
 
 	@Override
-	protected Instance createInstance(JsonObject json, EntityPredicate.Composite player, DeserializationContext ctx) {
+	protected Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext ctx) {
 		Block bug = deserializeBug(json);
 		return new Instance(player, bug);
 	}
@@ -45,13 +45,13 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instan
 		@Nullable
 		private final Block bugType;
 
-		public Instance(EntityPredicate.Composite player, @Nullable Block bugType) {
+		public Instance(ContextAwarePredicate player, @Nullable Block bugType) {
 			super(ID, player);
 			this.bugType = bugType;
 		}
 
 		public static Instance killBug(Block bug) {
-			return new Instance(EntityPredicate.Composite.ANY, bug);
+			return new Instance(ContextAwarePredicate.ANY, bug);
 		}
 
 		public boolean matches(BlockState bug) {

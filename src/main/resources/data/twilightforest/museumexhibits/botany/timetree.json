@@ -1,0 +1,17 @@
+{
+  "collection": "museumcurator.collection.botany",
+  "name": "museumcurator.botany.twilightforest.timetree",
+  "relativeTo": "museumcurator.botany.sprucetree",
+  "items": [
+    "twilightforest:time_sapling",
+    "twilightforest:time_leaves",
+    "twilightforest:hollow_time_log",
+    "twilightforest:time_log",
+    "twilightforest:stripped_time_log",
+    "twilightforest:time_wood",
+    "twilightforest:stripped_time_wood",
+    "twilightforest:time_planks",
+    "twilightforest:time_slab",
+    "twilightforest:time_stairs"
+  ]
+}

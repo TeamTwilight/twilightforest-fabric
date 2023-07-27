@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.material.Material;
 import twilightforest.block.HollowLogHorizontal;
 import twilightforest.init.TFBlocks;
 import twilightforest.enums.HollowLogVariants;
@@ -60,7 +59,7 @@ public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
 		if(config.hollow().isAir()) hollowLogState = null;
 
 		//sometimes make floating logs
-		if(rand.nextInt(5) == 0 && world.getBlockState(pos).getMaterial() == Material.WATER) {
+		if(rand.nextInt(5) == 0 && world.getBlockState(pos).liquid()) {
 			BlockPos.MutableBlockPos floatingPos = pos.mutable();
 			for(int i = 0; i < 10; i++) {
 				if(world.getBlockState(floatingPos.above()).isAir()) {
@@ -129,19 +128,19 @@ public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
 
 	private BlockState mossOrSeagrass(WorldGenLevel level, BlockPos pos) {
 		//no moss if we're cold
-		if(level.getBlockState(pos.below(2)).getMaterial() == Material.SNOW) {
+		if(level.getBlockState(pos.below(2)).is(BlockTags.SNOW)) {
 			return Blocks.AIR.defaultBlockState();
 		}
-		return level.getBlockState(pos).getMaterial() == Material.WATER ? Blocks.SEAGRASS.defaultBlockState() : TFBlocks.MOSS_PATCH.get().defaultBlockState();
+		return level.getBlockState(pos).is(Blocks.WATER) ? Blocks.SEAGRASS.defaultBlockState() : TFBlocks.MOSS_PATCH.get().defaultBlockState();
 	}
 
 	private BlockState hollowOrNormal(WorldGenLevel level, boolean shouldBeHollow, BlockState hollow, BlockState normal) {
-		return ((shouldBeHollow || level.getRandom().nextInt(3) == 0) && hollow != null) ? hollow : normal;
+		return ((shouldBeHollow || level.getRandom().nextInt(3) == 0) && !hollow.isAir()) ? hollow : normal;
 	}
 
 	private HollowLogVariants.Horizontal determineHollowProperties(WorldGenLevel world, BlockPos pos, RandomSource rand) {
 		return  //If we're underwater, submerge in water
-				world.getBlockState(pos).getMaterial() == Material.WATER ? HollowLogVariants.Horizontal.WATERLOGGED :
+				world.getBlockState(pos).is(Blocks.WATER) ? HollowLogVariants.Horizontal.WATERLOGGED :
 						//if we're in snow, add some snow
 						world.getBlockState(pos).is(BlockTags.SNOW) ? HollowLogVariants.Horizontal.SNOW :
 								//maybe add moss + grass

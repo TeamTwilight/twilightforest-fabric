@@ -79,14 +79,14 @@ public class LichMinion extends Zombie {
 	}
 
 	private void findNewMaster() {
-		List<Lich> nearbyLiches = this.getLevel().getEntitiesOfClass(Lich.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D));
+		List<Lich> nearbyLiches = this.level().getEntitiesOfClass(Lich.class, new AABB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).inflate(32.0D, 16.0D, 32.0D));
 
 		for (Lich nearbyLich : nearbyLiches) {
 			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewMinion()) {
 				this.master = nearbyLich;
 
 				// animate our new linkage!
-				if (!this.getLevel().isClientSide()) {
+				if (!this.level().isClientSide()) {
 					this.master.makeMagicTrail(this.getEyePosition(), this.master.getEyePosition(), 0.0F, 0.0F, 0.0F);
 				}
 

@@ -40,7 +40,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PhantomArmorItem extends ArmorItem implements CustomEnchantingBehaviorItem {
-	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.phantom_armor.tooltip").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.phantom_armor.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
 
 	public PhantomArmorItem(ArmorMaterial material, Type type, Properties properties) {
 		super(material, type, properties);

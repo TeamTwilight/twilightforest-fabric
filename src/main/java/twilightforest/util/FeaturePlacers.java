@@ -2,6 +2,7 @@ package twilightforest.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -17,6 +18,8 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraftforge.event.ForgeEventFactory;
+import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFBlocks;
 
 import java.util.function.BiConsumer;
@@ -35,7 +38,10 @@ public final class FeaturePlacers {
 
         mob.setPersistenceRequired();
         mob.moveTo(pos, 0.0F, 0.0F);
-        mob.finalizeSpawn(levelAccessor, levelAccessor.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null ,null);
+        ForgeEventFactory.onFinalizeSpawn(mob, levelAccessor, levelAccessor.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
+        if (mob instanceof EnforcedHomePoint home) {
+            home.setRestrictionPoint(GlobalPos.of(levelAccessor.getLevel().dimension(), pos));
+        }
         levelAccessor.addFreshEntityWithPassengers(mob);
         levelAccessor.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
     }

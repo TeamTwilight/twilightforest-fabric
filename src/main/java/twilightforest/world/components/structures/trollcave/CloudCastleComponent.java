@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.ArmoredGiant;
@@ -101,7 +102,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 				GiantMiner miner = TFEntities.GIANT_MINER.get().create(world.getLevel());
 				miner.setPos(bx, by, bz);
 				miner.setPersistenceRequired();
-				miner.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
+				ForgeEventFactory.onFinalizeSpawn(miner, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
 
 				world.addFreshEntity(miner);
 			}
@@ -118,7 +119,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 				ArmoredGiant warrior = TFEntities.ARMORED_GIANT.get().create(world.getLevel());
 				warrior.setPos(bx, by, bz);
 				warrior.setPersistenceRequired();
-				warrior.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
+				ForgeEventFactory.onFinalizeSpawn(warrior, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
 
 				world.addFreshEntity(warrior);
 			}

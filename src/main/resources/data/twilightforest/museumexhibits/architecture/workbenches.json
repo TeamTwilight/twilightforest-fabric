@@ -1,0 +1,13 @@
+{
+  "collection": "museumcurator.collection.architecture",
+  "name": "museumcurator.technology.workbenches",
+  "insertGroups": [
+    {
+      "relativeTo": "minecraft:crafting_table",
+      "placement": "after",
+      "items": [
+        "twilightforest:uncrafting_table"
+      ]
+    }
+  ]
+}

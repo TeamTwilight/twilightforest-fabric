@@ -69,7 +69,7 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 		}
 	}
 
-	//	[VanillaCopy] ItemBlock.onItemUse, harcoding the block
+	//	[VanillaCopy] ItemBlock.onItemUse, hardcoding the block
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Level level = context.getLevel();
@@ -78,7 +78,7 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 		Player player = context.getPlayer();
 		BlockPlaceContext blockItemUseContext = new BlockPlaceContext(context);
 
-		if (!state.getMaterial().isReplaceable()) {
+		if (!state.canBeReplaced()) {
 			pos = pos.relative(context.getClickedFace());
 		}
 

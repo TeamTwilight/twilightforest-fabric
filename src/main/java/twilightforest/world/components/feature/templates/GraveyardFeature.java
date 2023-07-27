@@ -1,6 +1,5 @@
 package twilightforest.world.components.feature.templates;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.math.StatsAccumulator;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Vec3i;
@@ -11,7 +10,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.core.Direction;
@@ -21,12 +19,12 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.Wraith;
@@ -35,13 +33,14 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.init.TFStructureProcessors;
 
 import org.jetbrains.annotations.Nullable;
+import twilightforest.util.FeatureLogic;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("feature/graveyard/graveyard");
 	private static final ResourceLocation TRAP = TwilightForestMod.prefix("feature/graveyard/grave_trap");
-	private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.DIRT, Material.GRASS, Material.LEAVES, Material.WOOD, Material.PLANT, Material.STONE);
 
 	public GraveyardFeature(Codec<NoneFeatureConfiguration> config) {
 		super(config);
@@ -60,9 +59,9 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 
 				while (y >= 0) {
 					BlockState state = world.getBlockState(new BlockPos(x, y, z));
-					if (isBlockNotOk(state))
+					if (FeatureLogic.isBlockNotOk(state))
 						return false;
-					if (isBlockOk(state))
+					if (FeatureLogic.isBlockOk(state))
 						break;
 					y--;
 				}
@@ -83,27 +82,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 
 		startPos.setY(baseY);
 
-		return isAreaClear(world, startPos.above(maxY - baseY + 1), startPos.offset(size));
-	}
-
-	private static boolean isAreaClear(BlockGetter world, BlockPos min, BlockPos max) {
-		for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
-			Material material = world.getBlockState(pos).getMaterial();
-			if (!material.isReplaceable() && !MATERIAL_WHITELIST.contains(material) && !material.isLiquid()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static boolean isBlockOk(BlockState state) {
-		Material material = state.getMaterial();
-		return material == Material.STONE || material == Material.DIRT || material == Material.GRASS || material == Material.SAND;
-	}
-
-	private static boolean isBlockNotOk(BlockState state) {
-		Material material = state.getMaterial();
-		return material == Material.WATER || material == Material.LAVA || state.getBlock() == Blocks.BEDROCK;
+		return FeatureLogic.isAreaClear(world, startPos.above(maxY - baseY + 1), startPos.offset(size));
 	}
 
 	@Override
@@ -201,7 +180,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						}
 						Wraith wraith = new Wraith(TFEntities.WRAITH.get(), world.getLevel());
 						wraith.setPos(placement.getX(), placement.getY(), placement.getZ());
-						wraith.finalizeSpawn(world, world.getCurrentDifficultyAt(placement), MobSpawnType.STRUCTURE, null, null);
+						ForgeEventFactory.onFinalizeSpawn(wraith, world, world.getCurrentDifficultyAt(placement), MobSpawnType.STRUCTURE, null, null);
 						world.addFreshEntity(wraith);
 					}
 				}
@@ -209,9 +188,9 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		}
 
 		data.forEach(info -> {
-			if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA) {
-				String s = info.nbt.getString("metadata");
-				BlockPos p = info.pos;
+			if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA) {
+				String s = info.nbt().getString("metadata");
+				BlockPos p = info.pos();
 				if ("spawner".equals(s)) {
 					world.removeBlock(p, false);
 					if (rand.nextInt(4) == 0) {
@@ -259,7 +238,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		@Nullable
 		@Override
 		public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_process_3_, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings) {
-			return blockInfo.state.getBlock() == Blocks.GRASS_BLOCK ? blockInfo : settings.getRandom(pos).nextInt(5) == 0 ? new StructureTemplate.StructureBlockInfo(pos, Blocks.COBWEB.defaultBlockState(), null) : blockInfo;
+			return blockInfo.state().getBlock() == Blocks.GRASS_BLOCK ? blockInfo : settings.getRandom(pos).nextInt(5) == 0 ? new StructureTemplate.StructureBlockInfo(pos, Blocks.COBWEB.defaultBlockState(), null) : blockInfo;
 		}
 	}
 }

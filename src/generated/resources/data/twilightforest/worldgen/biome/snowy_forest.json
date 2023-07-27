@@ -18,7 +18,7 @@
       "max_delay": 12000,
       "min_delay": 1200,
       "replace_current_music": true,
-      "sound": "twilightforest:music.bg"
+      "sound": "twilightforest:music.twilightforest.twilight_forest"
     },
     "sky_color": 8421504,
     "water_color": 4159204,
@@ -58,7 +58,16 @@
     ]
   ],
   "has_precipitation": true,
-  "spawn_costs": {},
+  "spawn_costs": {
+    "twilightforest:winter_wolf": {
+      "charge": 0.8,
+      "energy_budget": 0.11
+    },
+    "twilightforest:yeti": {
+      "charge": 0.8,
+      "energy_budget": 0.11
+    }
+  },
   "spawners": {
     "ambient": [],
     "axolotls": [],

@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "twilightforest:twilight_oak_log"
+      "tag": "twilightforest:twilight_oak_logs"
     }
   ],
   "result": {

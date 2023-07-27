@@ -88,5 +88,6 @@
       ],
       "rolls": 2.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:chests/troll_vault"
 }

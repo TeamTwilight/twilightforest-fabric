@@ -28,5 +28,6 @@
     "recipes": [
       "twilightforest:equipment/arctic_leggings"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

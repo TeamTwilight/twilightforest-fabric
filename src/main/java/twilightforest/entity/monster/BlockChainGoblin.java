@@ -7,7 +7,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -31,6 +30,7 @@ import twilightforest.entity.ai.goal.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.goal.ThrowSpikeBlockGoal;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
+import twilightforest.util.EntityUtil;
 
 import java.util.List;
 
@@ -89,9 +89,9 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		this.entityData.define(DATA_CHAINLENGTH, (byte) 0);
-		this.entityData.define(DATA_CHAINPOS, (byte) 0);
-		this.entityData.define(IS_THROWING, false);
+		this.getEntityData().define(DATA_CHAINLENGTH, (byte) 0);
+		this.getEntityData().define(DATA_CHAINPOS, (byte) 0);
+		this.getEntityData().define(IS_THROWING, false);
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {
@@ -109,17 +109,17 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.BLOCKCHAIN_AMBIENT.get();
+		return TFSounds.BLOCKCHAIN_GOBLIN_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.BLOCKCHAIN_HURT.get();
+		return TFSounds.BLOCKCHAIN_GOBLIN_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.BLOCKCHAIN_DEATH.get();
+		return TFSounds.BLOCKCHAIN_GOBLIN_DEATH.get();
 	}
 
 	/**
@@ -152,9 +152,7 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		this.swing(InteractionHand.MAIN_HAND);
-		entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.getLevel(), TFDamageTypes.SPIKED, this, this.block), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		return false;
+		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this, this.block));
 	}
 
 	@Override
@@ -172,9 +170,9 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 		this.chainAngle += CHAIN_SPEED;
 		this.chainAngle %= 360;
 
-		if (!this.getLevel().isClientSide()) {
-			this.entityData.set(DATA_CHAINLENGTH, (byte) Math.floor(this.getChainLength() * 127.0F));
-			this.entityData.set(DATA_CHAINPOS, (byte) Math.floor(this.getChainAngle() / 360.0F * 255.0F));
+		if (!this.level().isClientSide()) {
+			this.getEntityData().set(DATA_CHAINLENGTH, (byte) Math.floor(this.getChainLength() * 127.0F));
+			this.getEntityData().set(DATA_CHAINPOS, (byte) Math.floor(this.getChainAngle() / 360.0F * 255.0F));
 		} else {
 			// synch chain pos if it's wrong
 			if (Math.abs(this.chainAngle - this.getChainAngle()) > CHAIN_SPEED * 2) {
@@ -229,7 +227,7 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 		}
 
 		// collide things with the block
-		if (!level.isClientSide && this.isAlive() && (this.isThrowing() || this.isSwingingChain())) {
+		if (!this.level().isClientSide() && this.isAlive() && (this.isThrowing() || this.isSwingingChain())) {
 			this.applyBlockCollisions(this.block);
 		}
 		this.chainMove();
@@ -256,7 +254,7 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 	 * Check if the block is colliding with any nearby entities
 	 */
 	protected void applyBlockCollisions(Entity collider) {
-		List<Entity> list = this.getLevel().getEntities(collider, collider.getBoundingBox().inflate(0.2D, 0.0D, 0.2D));
+		List<Entity> list = this.level().getEntities(collider, collider.getBoundingBox().inflate(0.2D, 0.0D, 0.2D));
 
 		for (Entity entity : list) {
 			if (entity.isPushable()) {
@@ -266,7 +264,7 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 
 		if (this.isThrowing() && collider.isInWall()) {
 			this.setThrowing(false);
-			collider.playSound(TFSounds.BLOCKCHAIN_COLLIDE.get(), 0.65F, 0.75F);
+			collider.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.65F, 0.75F);
 			this.gameEvent(GameEvent.HIT_GROUND);
 		}
 	}
@@ -280,7 +278,7 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 			if (collided instanceof LivingEntity) {
 				if (super.doHurtTarget(collided)) {
 					collided.push(0, 0.4, 0);
-					this.playSound(TFSounds.BLOCKCHAIN_HIT.get(), 1.0F, 1.0F);
+					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0F, 1.0F);
 					this.gameEvent(GameEvent.PROJECTILE_LAND);
 					this.recoilCounter = 40;
 					if (this.isThrowing()) {
@@ -293,21 +291,21 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 	}
 
 	public boolean isThrowing() {
-		return this.entityData.get(IS_THROWING);
+		return this.getEntityData().get(IS_THROWING);
 	}
 
 	public void setThrowing(boolean isThrowing) {
-		this.entityData.set(IS_THROWING, isThrowing);
+		this.getEntityData().set(IS_THROWING, isThrowing);
 	}
 
 	/**
 	 * Angle between 0 and 360 to place the chain at
 	 */
 	private float getChainAngle() {
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			return this.chainAngle;
 		} else {
-			return (this.entityData.get(DATA_CHAINPOS) & 0xFF) / 255.0F * 360.0F;
+			return (this.getEntityData().get(DATA_CHAINPOS) & 0xFF) / 255.0F * 360.0F;
 		}
 	}
 
@@ -315,14 +313,14 @@ public class BlockChainGoblin extends Monster implements MultiPartEntity {
 	 * Between 0.0F and 2.0F, how long is the chain right now?
 	 */
 	private float getChainLength() {
-		if (!this.getLevel().isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (this.isSwingingChain()) {
 				return 0.9F;
 			} else {
 				return 0.3F;
 			}
 		} else {
-			return (this.entityData.get(DATA_CHAINLENGTH) & 0xFF) / 127.0F;
+			return (this.getEntityData().get(DATA_CHAINLENGTH) & 0xFF) / 127.0F;
 		}
 	}
 

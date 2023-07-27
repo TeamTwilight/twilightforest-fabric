@@ -27,10 +27,10 @@ public class PhantomAttackStartGoal extends Goal {
 		if (target != null) {
 			BlockPos targetPos = BlockPos.containing(target.xOld, target.yOld, target.zOld);
 
-			if (this.boss.isWithinRestriction(targetPos)) {
+			if (this.boss.isMobWithinHomeArea(this.boss)) {
 				this.boss.setChargePos(targetPos);
 			} else {
-				this.boss.setChargePos(this.boss.getRestrictCenter());
+				this.boss.setChargePos(this.boss.getRestrictionPoint().pos());
 			}
 		}
 	}

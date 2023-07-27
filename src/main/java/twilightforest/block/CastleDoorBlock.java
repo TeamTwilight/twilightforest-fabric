@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -73,11 +72,6 @@ public class CastleDoorBlock extends Block {
 		if (!(block instanceof CastleDoorBlock) && level.hasNeighborSignal(pos)) {
 			this.onActivation(level, pos, state);
 		}
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 
 	private InteractionResult onActivation(Level level, BlockPos pos, BlockState state) {

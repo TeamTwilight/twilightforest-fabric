@@ -84,5 +84,6 @@
       "scale",
       "was_in_fight"
     ]
-  ]
+  ],
+  "sends_telemetry_event": true
 }

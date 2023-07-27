@@ -33,8 +33,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class TomeSpawnerBlock extends BaseEntityBlock implements CaughtFireBlock, EnchantmentBonusBlock {
 
-	public static IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, 10);
-	public static BooleanProperty SPAWNER = BooleanProperty.create("spawner");
+	public static final IntegerProperty BOOK_STAGES = IntegerProperty.create("book_stages", 1, 10);
+	public static final BooleanProperty SPAWNER = BooleanProperty.create("spawner");
 
 	public TomeSpawnerBlock(Properties properties) {
 		super(properties);
@@ -71,7 +71,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock implements CaughtFireBlock
 	@Override
 	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity entity, ItemStack stack) {
 		if(!level.isClientSide && state.getValue(SPAWNER)) {
-			level.playSound(null, pos, TFSounds.TOME_DEATH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.playSound(null, pos, TFSounds.DEATH_TOME_DEATH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			for (int i = 0; i < 20; ++i) {
 				double d3 = level.random.nextGaussian() * 0.02D;
 				double d1 = level.random.nextGaussian() * 0.02D;

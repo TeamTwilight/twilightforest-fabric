@@ -17,7 +17,6 @@ public class TFPacketHandler {
 		int id = 0;
 
 		CHANNEL.registerS2CPacket(AreaProtectionPacket.class, id++);
-		CHANNEL.registerS2CPacket(ChangeBiomePacket.class, id++);
 		CHANNEL.registerS2CPacket(CreateMovingCicadaSoundPacket.class, id++);
 		CHANNEL.registerS2CPacket(EnforceProgressionStatusPacket.class, id++);
 		CHANNEL.registerS2CPacket(MagicMapPacket.class, id++);

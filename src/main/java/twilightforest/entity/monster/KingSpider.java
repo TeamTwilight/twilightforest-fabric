@@ -65,7 +65,7 @@ public class KingSpider extends Spider {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data, tag);
 
 		// will always have a druid riding the spider or whatever is riding the spider
-		SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.getLevel());
+		SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level());
 		druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 		druid.finalizeSpawn(accessor, difficulty, MobSpawnType.JOCKEY, null, null);
 		Entity lastRider = this;

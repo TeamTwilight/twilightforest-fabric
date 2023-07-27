@@ -30,5 +30,6 @@
     "recipes": [
       "twilightforest:wood/twilight_oak_slab"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

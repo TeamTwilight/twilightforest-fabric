@@ -1,0 +1,12 @@
+{
+  "collection": "museumcurator.collection.animalhusbandry",
+  "name": "museumcurator.animalhusbandry.twilightforest.bugs",
+  "items": [
+    "twilightforest:firefly",
+    "twilightforest:firefly_jar",
+    "twilightforest:firefly_particle_spawner",
+    "twilightforest:cicada",
+    "twilightforest:cicada_jar",
+    "twilightforest:moonworm"
+  ]
+}

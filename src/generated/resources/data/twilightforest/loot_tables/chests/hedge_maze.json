@@ -267,5 +267,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "twilightforest:chests/hedge_maze"
 }

@@ -12,7 +12,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
-public class WearableItem extends BlockItem {
+import java.util.function.Consumer;
+
+public class WearableItem extends BlockItem implements CurioItem {
     public WearableItem(Block block, FabricItemSettings props) {
         super(block, props.equipmentSlot(stack -> EquipmentSlot.HEAD));
 		CuriosCharmItem.setupTrinket(this);

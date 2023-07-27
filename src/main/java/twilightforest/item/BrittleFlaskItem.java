@@ -1,7 +1,6 @@
 package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -70,7 +69,7 @@ public class BrittleFlaskItem extends Item {
 							player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
 						}
 						flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-						player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
+						player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
 						return true;
 					} else if (!flaskTag.contains("Potion")) {
 						if (!player.getAbilities().instabuild) {
@@ -79,7 +78,7 @@ public class BrittleFlaskItem extends Item {
 						}
 						flaskTag.putString("Potion", potionTag.getString("Potion"));
 						flaskTag.putInt("Uses", flaskTag.getInt("Uses") + 1);
-						player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
+						player.playSound(TFSounds.FLASK_FILL.get(), flaskTag.getInt("Uses") * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
 						return true;
 					}
 				}
@@ -195,7 +194,7 @@ public class BrittleFlaskItem extends Item {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
 		if (stack.getTag() != null) {
-			tooltip.add(Component.translatable("item.twilightforest.flask_doses", stack.getTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
+			tooltip.add(Component.translatable("item.twilightforest.flask.doses", stack.getTag().getInt("Uses"), 4).withStyle(ChatFormatting.GRAY));
 			if (stack.getTag().contains("Refillable") && !stack.getTag().getBoolean("Refillable"))
 				tooltip.add(Component.translatable("item.twilightforest.flask_no_refill").withStyle(ChatFormatting.RED));
 		}

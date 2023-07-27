@@ -207,6 +207,24 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.requires(Tags.Items.NUGGETS_GOLD)
 				.unlockedBy("has_item", has(TFItems.LIVEROOT.get()))
 				.save(consumer, TwilightForestMod.prefix("material/" + TFItems.RAW_IRONWOOD.getId().getPath()));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.RAINY_CLOUD.get(), 8)
+				.pattern("ccc")
+				.pattern("cbc")
+				.pattern("ccc")
+				.define('c', Ingredient.of(TFBlocks.FLUFFY_CLOUD.get()))
+				.define('b', Ingredient.of(Items.WATER_BUCKET))
+				.unlockedBy("has_item", has(TFBlocks.FLUFFY_CLOUD.get()))
+				.save(consumer, TwilightForestMod.prefix("rainy_cloud"));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.SNOWY_CLOUD.get(), 8)
+				.pattern("ccc")
+				.pattern("cbc")
+				.pattern("ccc")
+				.define('c', Ingredient.of(TFBlocks.FLUFFY_CLOUD.get()))
+				.define('b', Ingredient.of(Items.POWDER_SNOW_BUCKET))
+				.unlockedBy("has_item", has(TFBlocks.FLUFFY_CLOUD.get()))
+				.save(consumer, TwilightForestMod.prefix("snowy_cloud"));
 	}
 
 	private void darkTowerRecipes(Consumer<FinishedRecipe> consumer) {
@@ -449,7 +467,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 	private void woodRecipes(Consumer<FinishedRecipe> consumer) {
 		buttonBlock(consumer, "canopy", TFBlocks.CANOPY_BUTTON, TFBlocks.CANOPY_PLANKS);
-		buttonBlock(consumer, "darkwood", TFBlocks.DARK_BUTTON, TFBlocks.DARK_PLANKS);
+		buttonBlock(consumer, "dark", TFBlocks.DARK_BUTTON, TFBlocks.DARK_PLANKS);
 		buttonBlock(consumer, "mangrove", TFBlocks.MANGROVE_BUTTON, TFBlocks.MANGROVE_PLANKS);
 		buttonBlock(consumer, "mining", TFBlocks.MINING_BUTTON, TFBlocks.MINING_PLANKS);
 		buttonBlock(consumer, "sorting", TFBlocks.SORTING_BUTTON, TFBlocks.SORTING_PLANKS);
@@ -458,7 +476,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		buttonBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_BUTTON, TFBlocks.TWILIGHT_OAK_PLANKS);
 
 		doorBlock(consumer, "canopy", TFBlocks.CANOPY_DOOR, TFBlocks.CANOPY_PLANKS);
-		doorBlock(consumer, "darkwood", TFBlocks.DARK_DOOR, TFBlocks.DARK_PLANKS);
+		doorBlock(consumer, "dark", TFBlocks.DARK_DOOR, TFBlocks.DARK_PLANKS);
 		doorBlock(consumer, "mangrove", TFBlocks.MANGROVE_DOOR, TFBlocks.MANGROVE_PLANKS);
 		doorBlock(consumer, "mining", TFBlocks.MINING_DOOR, TFBlocks.MINING_PLANKS);
 		doorBlock(consumer, "sorting", TFBlocks.SORTING_DOOR, TFBlocks.SORTING_PLANKS);
@@ -467,7 +485,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		doorBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_DOOR, TFBlocks.TWILIGHT_OAK_PLANKS);
 
 		fenceBlock(consumer, "canopy", TFBlocks.CANOPY_FENCE, TFBlocks.CANOPY_PLANKS);
-		fenceBlock(consumer, "darkwood", TFBlocks.DARK_FENCE, TFBlocks.DARK_PLANKS);
+		fenceBlock(consumer, "dark", TFBlocks.DARK_FENCE, TFBlocks.DARK_PLANKS);
 		fenceBlock(consumer, "mangrove", TFBlocks.MANGROVE_FENCE, TFBlocks.MANGROVE_PLANKS);
 		fenceBlock(consumer, "mining", TFBlocks.MINING_FENCE, TFBlocks.MINING_PLANKS);
 		fenceBlock(consumer, "sorting", TFBlocks.SORTING_FENCE, TFBlocks.SORTING_PLANKS);
@@ -476,7 +494,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		fenceBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_FENCE, TFBlocks.TWILIGHT_OAK_PLANKS);
 
 		gateBlock(consumer, "canopy", TFBlocks.CANOPY_GATE, TFBlocks.CANOPY_PLANKS);
-		gateBlock(consumer, "darkwood", TFBlocks.DARK_GATE, TFBlocks.DARK_PLANKS);
+		gateBlock(consumer, "dark", TFBlocks.DARK_GATE, TFBlocks.DARK_PLANKS);
 		gateBlock(consumer, "mangrove", TFBlocks.MANGROVE_GATE, TFBlocks.MANGROVE_PLANKS);
 		gateBlock(consumer, "mining", TFBlocks.MINING_GATE, TFBlocks.MINING_PLANKS);
 		gateBlock(consumer, "sorting", TFBlocks.SORTING_GATE, TFBlocks.SORTING_PLANKS);
@@ -484,44 +502,17 @@ public class CraftingGenerator extends CraftingDataHelper {
 		gateBlock(consumer, "transformation", TFBlocks.TRANSFORMATION_GATE, TFBlocks.TRANSFORMATION_PLANKS);
 		gateBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_GATE, TFBlocks.TWILIGHT_OAK_PLANKS);
 
-		planksBlock(consumer, "canopy", TFBlocks.CANOPY_PLANKS, TFBlocks.CANOPY_LOG);
-		planksBlock(consumer, "darkwood", TFBlocks.DARK_PLANKS, TFBlocks.DARK_LOG);
-		planksBlock(consumer, "mangrove", TFBlocks.MANGROVE_PLANKS, TFBlocks.MANGROVE_LOG);
-		planksBlock(consumer, "mining", TFBlocks.MINING_PLANKS, TFBlocks.MINING_LOG);
-		planksBlock(consumer, "sorting", TFBlocks.SORTING_PLANKS, TFBlocks.SORTING_LOG);
-		planksBlock(consumer, "time", TFBlocks.TIME_PLANKS, TFBlocks.TIME_LOG);
-		planksBlock(consumer, "transformation", TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.TRANSFORMATION_LOG);
-		planksBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.TWILIGHT_OAK_LOG);
-
-		planksBlock(consumer, "canopy_from_stripped", TFBlocks.CANOPY_PLANKS, TFBlocks.STRIPPED_CANOPY_LOG);
-		planksBlock(consumer, "darkwood_from_stripped", TFBlocks.DARK_PLANKS, TFBlocks.STRIPPED_DARK_LOG);
-		planksBlock(consumer, "mangrove_from_stripped", TFBlocks.MANGROVE_PLANKS, TFBlocks.STRIPPED_MANGROVE_LOG);
-		planksBlock(consumer, "mining_from_stripped", TFBlocks.MINING_PLANKS, TFBlocks.STRIPPED_MINING_LOG);
-		planksBlock(consumer, "sorting_from_stripped", TFBlocks.SORTING_PLANKS, TFBlocks.STRIPPED_SORTING_LOG);
-		planksBlock(consumer, "time_from_stripped", TFBlocks.TIME_PLANKS, TFBlocks.STRIPPED_TIME_LOG);
-		planksBlock(consumer, "transformation_from_stripped", TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.STRIPPED_TRANSFORMATION_LOG);
-		planksBlock(consumer, "twilight_oak_from_stripped", TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG);
-
-		planksBlock(consumer, "canopy_from_wood", TFBlocks.CANOPY_PLANKS, TFBlocks.CANOPY_WOOD);
-		planksBlock(consumer, "darkwood_from_wood", TFBlocks.DARK_PLANKS, TFBlocks.DARK_WOOD);
-		planksBlock(consumer, "mangrove_from_wood", TFBlocks.MANGROVE_PLANKS, TFBlocks.MANGROVE_WOOD);
-		planksBlock(consumer, "mining_from_wood", TFBlocks.MINING_PLANKS, TFBlocks.MINING_WOOD);
-		planksBlock(consumer, "sorting_from_wood", TFBlocks.SORTING_PLANKS, TFBlocks.SORTING_WOOD);
-		planksBlock(consumer, "time_from_wood", TFBlocks.TIME_PLANKS, TFBlocks.TIME_WOOD);
-		planksBlock(consumer, "transformation_from_wood", TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.TRANSFORMATION_WOOD);
-		planksBlock(consumer, "twilight_oak_from_wood", TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.TWILIGHT_OAK_WOOD);
-
-		planksBlock(consumer, "canopy_from_stripped_wood", TFBlocks.CANOPY_PLANKS, TFBlocks.STRIPPED_CANOPY_WOOD);
-		planksBlock(consumer, "darkwood_from_stripped_wood", TFBlocks.DARK_PLANKS, TFBlocks.STRIPPED_DARK_WOOD);
-		planksBlock(consumer, "mangrove_from_stripped_wood", TFBlocks.MANGROVE_PLANKS, TFBlocks.STRIPPED_MANGROVE_WOOD);
-		planksBlock(consumer, "mining_from_stripped_wood", TFBlocks.MINING_PLANKS, TFBlocks.STRIPPED_MINING_WOOD);
-		planksBlock(consumer, "sorting_from_stripped_wood", TFBlocks.SORTING_PLANKS, TFBlocks.STRIPPED_SORTING_WOOD);
-		planksBlock(consumer, "time_from_stripped_wood", TFBlocks.TIME_PLANKS, TFBlocks.STRIPPED_TIME_WOOD);
-		planksBlock(consumer, "transformation_from_stripped_wood", TFBlocks.TRANSFORMATION_PLANKS, TFBlocks.STRIPPED_TRANSFORMATION_WOOD);
-		planksBlock(consumer, "twilight_oak_from_stripped_wood", TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD);
+		planksBlock(consumer, "canopy", TFBlocks.CANOPY_PLANKS, ItemTagGenerator.CANOPY_LOGS);
+		planksBlock(consumer, "dark", TFBlocks.DARK_PLANKS, ItemTagGenerator.DARKWOOD_LOGS);
+		planksBlock(consumer, "mangrove", TFBlocks.MANGROVE_PLANKS, ItemTagGenerator.MANGROVE_LOGS);
+		planksBlock(consumer, "mining", TFBlocks.MINING_PLANKS, ItemTagGenerator.MINING_LOGS);
+		planksBlock(consumer, "sorting", TFBlocks.SORTING_PLANKS, ItemTagGenerator.SORTING_LOGS);
+		planksBlock(consumer, "time", TFBlocks.TIME_PLANKS, ItemTagGenerator.TIME_LOGS);
+		planksBlock(consumer, "transformation", TFBlocks.TRANSFORMATION_PLANKS, ItemTagGenerator.TRANSFORMATION_LOGS);
+		planksBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_PLANKS, ItemTagGenerator.TWILIGHT_OAK_LOGS);
 
 		woodBlock(consumer, "canopy", TFBlocks.CANOPY_WOOD, TFBlocks.CANOPY_LOG);
-		woodBlock(consumer, "darkwood", TFBlocks.DARK_WOOD, TFBlocks.DARK_LOG);
+		woodBlock(consumer, "dark", TFBlocks.DARK_WOOD, TFBlocks.DARK_LOG);
 		woodBlock(consumer, "mangrove", TFBlocks.MANGROVE_WOOD, TFBlocks.MANGROVE_LOG);
 		woodBlock(consumer, "mining", TFBlocks.MINING_WOOD, TFBlocks.MINING_LOG);
 		woodBlock(consumer, "sorting", TFBlocks.SORTING_WOOD, TFBlocks.SORTING_LOG);
@@ -530,7 +521,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		woodBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_WOOD, TFBlocks.TWILIGHT_OAK_LOG);
 
 		strippedWoodBlock(consumer, "canopy", TFBlocks.STRIPPED_CANOPY_WOOD, TFBlocks.STRIPPED_CANOPY_LOG);
-		strippedWoodBlock(consumer, "darkwood", TFBlocks.STRIPPED_DARK_WOOD, TFBlocks.STRIPPED_DARK_LOG);
+		strippedWoodBlock(consumer, "dark", TFBlocks.STRIPPED_DARK_WOOD, TFBlocks.STRIPPED_DARK_LOG);
 		strippedWoodBlock(consumer, "mangrove", TFBlocks.STRIPPED_MANGROVE_WOOD, TFBlocks.STRIPPED_MANGROVE_LOG);
 		strippedWoodBlock(consumer, "mining", TFBlocks.STRIPPED_MINING_WOOD, TFBlocks.STRIPPED_MINING_LOG);
 		strippedWoodBlock(consumer, "sorting", TFBlocks.STRIPPED_SORTING_WOOD, TFBlocks.STRIPPED_SORTING_LOG);
@@ -539,7 +530,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		strippedWoodBlock(consumer, "twilight_oak", TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG);
 
 		plateBlock(consumer, "canopy", TFBlocks.CANOPY_PLATE, TFBlocks.CANOPY_PLANKS);
-		plateBlock(consumer, "darkwood", TFBlocks.DARK_PLATE, TFBlocks.DARK_PLANKS);
+		plateBlock(consumer, "dark", TFBlocks.DARK_PLATE, TFBlocks.DARK_PLANKS);
 		plateBlock(consumer, "mangrove", TFBlocks.MANGROVE_PLATE, TFBlocks.MANGROVE_PLANKS);
 		plateBlock(consumer, "mining", TFBlocks.MINING_PLATE, TFBlocks.MINING_PLANKS);
 		plateBlock(consumer, "sorting", TFBlocks.SORTING_PLATE, TFBlocks.SORTING_PLANKS);
@@ -548,7 +539,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		plateBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_PLATE, TFBlocks.TWILIGHT_OAK_PLANKS);
 
 		slabBlock(consumer, "canopy", TFBlocks.CANOPY_SLAB, TFBlocks.CANOPY_PLANKS);
-		slabBlock(consumer, "darkwood", TFBlocks.DARK_SLAB, TFBlocks.DARK_PLANKS);
+		slabBlock(consumer, "dark", TFBlocks.DARK_SLAB, TFBlocks.DARK_PLANKS);
 		slabBlock(consumer, "mangrove", TFBlocks.MANGROVE_SLAB, TFBlocks.MANGROVE_PLANKS);
 		slabBlock(consumer, "mining", TFBlocks.MINING_SLAB, TFBlocks.MINING_PLANKS);
 		slabBlock(consumer, "sorting", TFBlocks.SORTING_SLAB, TFBlocks.SORTING_PLANKS);
@@ -557,7 +548,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		slabBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_SLAB, TFBlocks.TWILIGHT_OAK_PLANKS);
 
 		stairsBlock(consumer, locWood("canopy_stairs"), TFBlocks.CANOPY_STAIRS, TFBlocks.CANOPY_PLANKS, TFBlocks.CANOPY_PLANKS.get());
-		stairsBlock(consumer, locWood("darkwood_stairs"), TFBlocks.DARK_STAIRS, TFBlocks.DARK_PLANKS, TFBlocks.DARK_PLANKS.get());
+		stairsBlock(consumer, locWood("dark_stairs"), TFBlocks.DARK_STAIRS, TFBlocks.DARK_PLANKS, TFBlocks.DARK_PLANKS.get());
 		stairsBlock(consumer, locWood("mangrove_stairs"), TFBlocks.MANGROVE_STAIRS, TFBlocks.MANGROVE_PLANKS, TFBlocks.MANGROVE_PLANKS.get());
 		stairsBlock(consumer, locWood("mining_stairs"), TFBlocks.MINING_STAIRS, TFBlocks.MINING_PLANKS, TFBlocks.MINING_PLANKS.get());
 		stairsBlock(consumer, locWood("sorting_stairs"), TFBlocks.SORTING_STAIRS, TFBlocks.SORTING_PLANKS, TFBlocks.SORTING_PLANKS.get());
@@ -566,7 +557,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		stairsBlock(consumer, locWood("twilight_oak_stairs"), TFBlocks.TWILIGHT_OAK_STAIRS, TFBlocks.TWILIGHT_OAK_PLANKS, TFBlocks.TWILIGHT_OAK_PLANKS.get());
 
 		trapdoorBlock(consumer, "canopy", TFBlocks.CANOPY_TRAPDOOR, TFBlocks.CANOPY_PLANKS);
-		trapdoorBlock(consumer, "darkwood", TFBlocks.DARK_TRAPDOOR, TFBlocks.DARK_PLANKS);
+		trapdoorBlock(consumer, "dark", TFBlocks.DARK_TRAPDOOR, TFBlocks.DARK_PLANKS);
 		trapdoorBlock(consumer, "mangrove", TFBlocks.MANGROVE_TRAPDOOR, TFBlocks.MANGROVE_PLANKS);
 		trapdoorBlock(consumer, "mining", TFBlocks.MINING_TRAPDOOR, TFBlocks.MINING_PLANKS);
 		trapdoorBlock(consumer, "sorting", TFBlocks.SORTING_TRAPDOOR, TFBlocks.SORTING_PLANKS);
@@ -574,17 +565,26 @@ public class CraftingGenerator extends CraftingDataHelper {
 		trapdoorBlock(consumer, "transformation", TFBlocks.TRANSFORMATION_TRAPDOOR, TFBlocks.TRANSFORMATION_PLANKS);
 		trapdoorBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_TRAPDOOR, TFBlocks.TWILIGHT_OAK_PLANKS);
 
-		signBlock(consumer, "canopy_sign", TFBlocks.CANOPY_SIGN, TFBlocks.CANOPY_PLANKS);
-		signBlock(consumer, "darkwood_sign", TFBlocks.DARKWOOD_SIGN, TFBlocks.DARK_PLANKS);
-		signBlock(consumer, "mangrove_sign", TFBlocks.MANGROVE_SIGN, TFBlocks.MANGROVE_PLANKS);
-		signBlock(consumer, "mining_sign", TFBlocks.MINING_SIGN, TFBlocks.MINING_PLANKS);
-		signBlock(consumer, "sorting_sign", TFBlocks.SORTING_SIGN, TFBlocks.SORTING_PLANKS);
-		signBlock(consumer, "time_sign", TFBlocks.TIME_SIGN, TFBlocks.TIME_PLANKS);
-		signBlock(consumer, "transformation_sign", TFBlocks.TRANSFORMATION_SIGN, TFBlocks.TRANSFORMATION_PLANKS);
-		signBlock(consumer, "twilight_oak_sign", TFBlocks.TWILIGHT_OAK_SIGN, TFBlocks.TWILIGHT_OAK_PLANKS);
+		signBlock(consumer, "canopy", TFItems.CANOPY_SIGN, TFBlocks.CANOPY_PLANKS);
+		signBlock(consumer, "dark", TFItems.DARK_SIGN, TFBlocks.DARK_PLANKS);
+		signBlock(consumer, "mangrove", TFItems.MANGROVE_SIGN, TFBlocks.MANGROVE_PLANKS);
+		signBlock(consumer, "mining", TFItems.MINING_SIGN, TFBlocks.MINING_PLANKS);
+		signBlock(consumer, "sorting", TFItems.SORTING_SIGN, TFBlocks.SORTING_PLANKS);
+		signBlock(consumer, "time", TFItems.TIME_SIGN, TFBlocks.TIME_PLANKS);
+		signBlock(consumer, "transformation", TFItems.TRANSFORMATION_SIGN, TFBlocks.TRANSFORMATION_PLANKS);
+		signBlock(consumer, "twilight_oak", TFItems.TWILIGHT_OAK_SIGN, TFBlocks.TWILIGHT_OAK_PLANKS);
+
+		hangingSignBlock(consumer, "canopy", TFItems.CANOPY_HANGING_SIGN, TFBlocks.STRIPPED_CANOPY_LOG);
+		hangingSignBlock(consumer, "dark", TFItems.DARK_HANGING_SIGN, TFBlocks.STRIPPED_DARK_LOG);
+		hangingSignBlock(consumer, "mangrove", TFItems.MANGROVE_HANGING_SIGN, TFBlocks.STRIPPED_MANGROVE_LOG);
+		hangingSignBlock(consumer, "mining", TFItems.MINING_HANGING_SIGN, TFBlocks.STRIPPED_MINING_LOG);
+		hangingSignBlock(consumer, "sorting", TFItems.SORTING_HANGING_SIGN, TFBlocks.STRIPPED_SORTING_LOG);
+		hangingSignBlock(consumer, "time", TFItems.TIME_HANGING_SIGN, TFBlocks.STRIPPED_TIME_LOG);
+		hangingSignBlock(consumer, "transformation", TFItems.TRANSFORMATION_HANGING_SIGN, TFBlocks.STRIPPED_TRANSFORMATION_LOG);
+		hangingSignBlock(consumer, "twilight_oak", TFItems.TWILIGHT_OAK_HANGING_SIGN, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG);
 
 		banisterBlock(consumer, "canopy", TFBlocks.CANOPY_BANISTER, TFBlocks.CANOPY_SLAB);
-		banisterBlock(consumer, "darkwood", TFBlocks.DARKWOOD_BANISTER, TFBlocks.DARK_SLAB);
+		banisterBlock(consumer, "dark", TFBlocks.DARK_BANISTER, TFBlocks.DARK_SLAB);
 		banisterBlock(consumer, "mangrove", TFBlocks.MANGROVE_BANISTER, TFBlocks.MANGROVE_SLAB);
 		banisterBlock(consumer, "mining", TFBlocks.MINING_BANISTER, TFBlocks.MINING_SLAB);
 		banisterBlock(consumer, "sorting", TFBlocks.SORTING_BANISTER, TFBlocks.SORTING_SLAB);
@@ -601,11 +601,13 @@ public class CraftingGenerator extends CraftingDataHelper {
 		banisterBlock(consumer, "crimson", TFBlocks.CRIMSON_BANISTER, Blocks.CRIMSON_SLAB);
 		banisterBlock(consumer, "warped", TFBlocks.WARPED_BANISTER, Blocks.WARPED_SLAB);
 		banisterBlock(consumer, "vangrove", TFBlocks.VANGROVE_BANISTER, Blocks.MANGROVE_SLAB);
+		banisterBlock(consumer, "bamboo", TFBlocks.BAMBOO_BANISTER, Blocks.BAMBOO_SLAB);
+		banisterBlock(consumer, "cherry", TFBlocks.CHERRY_BANISTER, Blocks.CHERRY_SLAB);
 
 		chestBlock(consumer, "twilight_oak", TFBlocks.TWILIGHT_OAK_CHEST, TFBlocks.TWILIGHT_OAK_PLANKS);
 		chestBlock(consumer, "canopy", TFBlocks.CANOPY_CHEST, TFBlocks.CANOPY_PLANKS);
 		chestBlock(consumer, "mangrove", TFBlocks.MANGROVE_CHEST, TFBlocks.MANGROVE_PLANKS);
-		chestBlock(consumer, "darkwood", TFBlocks.DARKWOOD_CHEST, TFBlocks.DARK_PLANKS);
+		chestBlock(consumer, "dark", TFBlocks.DARK_CHEST, TFBlocks.DARK_PLANKS);
 		chestBlock(consumer, "time", TFBlocks.TIME_CHEST, TFBlocks.TIME_PLANKS);
 		chestBlock(consumer, "transformation", TFBlocks.TRANSFORMATION_CHEST, TFBlocks.TRANSFORMATION_PLANKS);
 		chestBlock(consumer, "mining", TFBlocks.MINING_CHEST, TFBlocks.MINING_PLANKS);
@@ -614,7 +616,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		buildBoats(consumer, TFItems.TWILIGHT_OAK_BOAT, TFItems.TWILIGHT_OAK_CHEST_BOAT, TFBlocks.TWILIGHT_OAK_PLANKS);
 		buildBoats(consumer, TFItems.CANOPY_BOAT, TFItems.CANOPY_CHEST_BOAT, TFBlocks.CANOPY_PLANKS);
 		buildBoats(consumer, TFItems.MANGROVE_BOAT, TFItems.MANGROVE_CHEST_BOAT, TFBlocks.MANGROVE_PLANKS);
-		buildBoats(consumer, TFItems.DARKWOOD_BOAT, TFItems.DARKWOOD_CHEST_BOAT, TFBlocks.DARK_PLANKS);
+		buildBoats(consumer, TFItems.DARK_BOAT, TFItems.DARK_CHEST_BOAT, TFBlocks.DARK_PLANKS);
 		buildBoats(consumer, TFItems.TIME_BOAT, TFItems.TIME_CHEST_BOAT, TFBlocks.TIME_PLANKS);
 		buildBoats(consumer, TFItems.TRANSFORMATION_BOAT, TFItems.TRANSFORMATION_CHEST_BOAT, TFBlocks.TRANSFORMATION_PLANKS);
 		buildBoats(consumer, TFItems.MINING_BOAT, TFItems.MINING_CHEST_BOAT, TFBlocks.MINING_PLANKS);
@@ -688,10 +690,6 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void fieryConversions(Consumer<FinishedRecipe> consumer) {
-		//FIXME smithing recipes changed. Figure out if we want to keep these or not
-//		UpgradeRecipeBuilder.smithing(Ingredient.of(Items.IRON_INGOT), Ingredient.of(ItemTagGenerator.FIERY_VIAL), RecipeCategory.MISC, TFItems.FIERY_INGOT.get()).unlocks("has_item", has(TFItems.FIERY_INGOT.get())).save(consumer, TwilightForestMod.prefix("material/fiery_iron_ingot"));
-//		UpgradeRecipeBuilder.smithing(Ingredient.of(ItemTagGenerator.FIERY_VIAL), Ingredient.of(Items.IRON_INGOT), RecipeCategory.MISC, TFItems.FIERY_INGOT.get()).unlocks("has_item", has(TFItems.FIERY_INGOT.get())).save(consumer, TwilightForestMod.prefix("material/fiery_iron_ingot_reversed"));
-
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.FIERY_INGOT.get())
 				.requires(Ingredient.of(ItemTagGenerator.FIERY_VIAL))
 				.requires(Ingredient.of(Tags.Items.INGOTS_IRON))

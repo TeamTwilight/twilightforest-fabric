@@ -36,6 +36,12 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 			Direction.EAST, Block.box(0.0D, 4.0D, 4.0D, 8.0D, 12.0D, 12.0D),
 			Direction.WEST, Block.box(8.0D, 4.0D, 4.0D, 16.0D, 12.0D, 12.0D)));
 
+	private static final Map<Direction, VoxelShape> PIGLIN_AABBS = Maps.newEnumMap(ImmutableMap.of(
+			Direction.NORTH, Block.box(3.0D, 4.0D, 8.0D, 13.0D, 12.0D, 16.0D),
+			Direction.SOUTH, Block.box(3.0D, 4.0D, 0.0D, 13.0D, 12.0D, 8.0D),
+			Direction.EAST, Block.box(0.0D, 4.0D, 3.0D, 8.0D, 12.0D, 13.0D),
+			Direction.WEST, Block.box(8.0D, 4.0D, 3.0D, 16.0D, 12.0D, 13.0D)));
+
 	private static final Int2ObjectMap<List<Vec3>> PARTICLE_OFFSETS = Util.make(() -> {
 		Int2ObjectMap<List<Vec3>> var0 = new Int2ObjectOpenHashMap<>();
 		var0.defaultReturnValue(ImmutableList.of());
@@ -52,13 +58,13 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 	}
 
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-		return AABBS.get(state.getValue(FACING));
+		return this.getType() == SkullBlock.Types.PIGLIN ? PIGLIN_AABBS.get(state.getValue(FACING)) : AABBS.get(state.getValue(FACING));
 	}
 
 	@Override
 	protected Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
 		if (accessor.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
-			return PARTICLE_OFFSETS.get(sc.candleAmount);
+			return PARTICLE_OFFSETS.get(sc.getCandleAmount());
 		}
 		return PARTICLE_OFFSETS.get(1);
 	}

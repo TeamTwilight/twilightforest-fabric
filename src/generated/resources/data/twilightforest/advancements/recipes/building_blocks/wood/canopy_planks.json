@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "twilightforest:canopy_log"
-            ]
+            "tag": "twilightforest:canopy_logs"
           }
         ]
       },
@@ -30,5 +28,6 @@
     "recipes": [
       "twilightforest:wood/canopy_planks"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
