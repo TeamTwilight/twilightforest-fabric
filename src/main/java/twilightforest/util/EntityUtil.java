@@ -78,7 +78,7 @@ public class EntityUtil {
 	}
 
 	public static BlockHitResult rayTrace(Player player, @Nullable DoubleUnaryOperator modifier) {
-		double range = player.getAttribute(ForgeMod.BLOCK_REACH.get()).getValue();
+		double range = player.getAttribute(PortingLibAttributes.BLOCK_REACH).getValue();
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}
 

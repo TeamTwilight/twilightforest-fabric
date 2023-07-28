@@ -1,5 +1,6 @@
 package twilightforest.dispenser;
 
+import io.github.fabricators_of_create.porting_lib.util.PortingHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
@@ -35,7 +36,7 @@ public class TransformationDispenseBehavior extends DefaultDispenseItemBehavior 
 						if (newEntity != null) {
 							newEntity.moveTo(livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity.getYRot(), livingentity.getXRot());
 							if (newEntity instanceof Mob mob && livingentity.level() instanceof ServerLevelAccessor accessor) {
-								ForgeEventFactory.onFinalizeSpawn(mob, accessor, livingentity.level().getCurrentDifficultyAt(livingentity.blockPosition()), MobSpawnType.CONVERSION, null, null);
+								PortingHooks.onFinalizeSpawn(mob, accessor, livingentity.level().getCurrentDifficultyAt(livingentity.blockPosition()), MobSpawnType.CONVERSION, null, null);
 							}
 
 							try {

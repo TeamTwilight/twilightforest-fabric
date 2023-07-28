@@ -1,5 +1,6 @@
 package twilightforest.block.entity.spawner;
 
+import io.github.fabricators_of_create.porting_lib.util.PortingHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.Difficulty;
@@ -9,11 +10,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFParticleType;
-import twilightforest.init.TFEntities;
 import twilightforest.entity.boss.KnightPhantom;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFParticleType;
 
 public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<KnightPhantom> {
 
@@ -45,7 +46,7 @@ public class KnightPhantomSpawnerBlockEntity extends BossSpawnerBlockEntity<Knig
 			double rz = this.getBlockPos().getZ() + 0.5D + Math.sin(angle * Math.PI / 180.0D) * distance;
 
 			myCreature.moveTo(rx, ry, rz, accessor.getLevel().getRandom().nextFloat() * 360F, 0.0F);
-			ForgeEventFactory.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(new BlockPos(myCreature.blockPosition())), MobSpawnType.SPAWNER, null, null);
+			PortingHooks.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(new BlockPos(myCreature.blockPosition())), MobSpawnType.SPAWNER, null, null);
 
 			if(i == 5 && accessor.getDifficulty() == Difficulty.HARD){
 				myCreature.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(TFItems.KNIGHTMETAL_SHIELD.get()));

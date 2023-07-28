@@ -1,6 +1,7 @@
 package twilightforest.client;
 
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
@@ -21,7 +22,11 @@ public final class ColorHandler {
 
 	public static void registerBlockColors() {
 
-		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : ColorUtil.hsvToRGB(getter == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.AURORA_BLOCK.get());
+		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
+			if (FabricLoader.getInstance().isModLoaded("canvas"))
+				return -1;
+				return tintIndex > 15 ? 0xFFFFFF : ColorUtil.hsvToRGB(getter == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f);
+		}, TFBlocks.AURORA_BLOCK.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -300,10 +305,10 @@ public final class ColorHandler {
 			}
 		}, TFBlocks.FIDDLEHEAD.get(), TFBlocks.POTTED_FIDDLEHEAD.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
-			if ((tintIndex & 1) == 0) {
-				return 0xFFFFFF;
-			} else {
-				return GrassColor.get(0.5D, 1.0D);
+					if ((tintIndex & 1) == 0) {
+						return 0xFFFFFF;
+					} else {
+						return GrassColor.get(0.5D, 1.0D);
 
 					}
 				}, TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.get(),
@@ -311,16 +316,16 @@ public final class ColorHandler {
 				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(),
 				TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
-			if (state.getValue(HollowLogClimbable.VARIANT) != HollowLogVariants.Climbable.VINE || (tintIndex & 1) == 0) {
-				return 0xFFFFFF;
-			} else {
-				if (getter != null && pos != null) {
-					return BiomeColors.getAverageFoliageColor(getter, pos);
-				} else {
-					return FoliageColor.getDefaultColor();
-				}
-			}
-		}, TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE.get(),
+					if (state.getValue(HollowLogClimbable.VARIANT) != HollowLogVariants.Climbable.VINE || (tintIndex & 1) == 0) {
+						return 0xFFFFFF;
+					} else {
+						if (getter != null && pos != null) {
+							return BiomeColors.getAverageFoliageColor(getter, pos);
+						} else {
+							return FoliageColor.getDefaultColor();
+						}
+					}
+				}, TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(), TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(), TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get(),
 				TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get());

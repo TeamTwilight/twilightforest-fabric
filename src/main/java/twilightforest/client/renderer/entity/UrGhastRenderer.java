@@ -10,7 +10,6 @@ import twilightforest.client.renderer.entity.CarminiteGhastRenderer;
 import twilightforest.entity.boss.Naga;
 import twilightforest.entity.boss.UrGhast;
 
-@Environment(EnvType.CLIENT)
 public class UrGhastRenderer extends CarminiteGhastRenderer<UrGhast, UrGhastModel> {
 
 	private final ResourceLocation textureLocClosed = TwilightForestMod.getModelTexture("towerboss.png");

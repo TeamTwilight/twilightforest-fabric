@@ -1,5 +1,6 @@
 package twilightforest.block.entity.spawner;
 
+import io.github.fabricators_of_create.porting_lib.util.PortingHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -13,7 +14,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.entity.EnforcedHomePoint;
 
 import java.util.Objects;
 

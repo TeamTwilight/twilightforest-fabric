@@ -1,4 +1,4 @@
-accessWidener	v1	named
+accessWidener	v2	named
 accessible field net/minecraft/world/entity/Entity yRot F
 accessible field net/minecraft/world/entity/Entity xRot F
 accessible field net/minecraft/world/entity/animal/Parrot MOB_SOUND_MAP Ljava/util/Map;
@@ -79,7 +79,6 @@ accessible class net/minecraft/client/gui/MapRenderer$MapInstance
 accessible field net/minecraft/client/gui/MapRenderer MAP_ICONS Lnet/minecraft/client/renderer/RenderType;
 accessible field net/minecraft/server/level/ServerLevel players Ljava/util/List;
 accessible field net/minecraft/server/level/ServerLevel navigatingMobs Ljava/util/Set;
-accessible field net/minecraft/server/level/ServerLevel navigatingMobs Ljava/util/Set;
 accessible method net/minecraft/world/entity/Entity unsetRemoved ()V
 extendable class net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator
 accessible method net/minecraft/world/level/block/BushBlock mayPlaceOn (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z
@@ -136,3 +135,6 @@ accessible method net/minecraft/world/level/chunk/ChunkGenerator tryGenerateStru
 accessible field net/minecraft/client/renderer/block/model/BlockModel textureMap Ljava/util/Map;
 
 accessible field net/minecraft/world/effect/MobEffectInstance amplifier I
+
+accessible method net/minecraft/world/level/storage/loot/LootTable shuffleAndSplitItems (Lit/unimi/dsi/fastutil/objects/ObjectArrayList;ILnet/minecraft/util/RandomSource;)V
+transitive-extendable method com/mojang/blaze3d/pipeline/MainTarget createFrameBuffer (II)V
