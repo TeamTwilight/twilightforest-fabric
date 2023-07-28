@@ -46,7 +46,9 @@ import twilightforest.entity.boss.NagaSegment;
 import twilightforest.entity.boss.SnowQueenIceShield;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFMenuTypes;
+import twilightforest.init.TFParticleType;
 import twilightforest.util.TFWoodTypes;
 
 import java.util.HashMap;

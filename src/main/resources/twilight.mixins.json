@@ -8,6 +8,7 @@
   "client": [
     "client.GuiMixin",
     "client.ItemBlockRenderTypesMixin",
+    "client.LevelRendererAccessor",
     "client.MapRendererMapInstanceMixin"
   ],
   "mixins": [
