@@ -23,6 +23,7 @@ sourceSets.main.resources {
 
 repositories {
     mavenLocal() // test builds of Porting Lib
+    maven { url = "https://maven.quiltmc.org/repository/release" } // QM
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU, Suggestion Tweaker
     maven { url = "https://maven.shedaniel.me/" } // Cloth Config
