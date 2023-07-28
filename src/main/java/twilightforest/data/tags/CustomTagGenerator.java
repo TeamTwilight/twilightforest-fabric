@@ -5,8 +5,8 @@ import io.github.fabricators_of_create.porting_lib.data.PortingLibTagsProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -14,8 +14,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBannerPatterns;
@@ -49,40 +47,40 @@ public class CustomTagGenerator {
 
 	public static class BlockEntityTagGenerator extends TagsProvider<BlockEntityType<?>> {
 
-		public static final TagKey<BlockEntityType<?>> RELOCATION_NOT_SUPPORTED = TagKey.create(Registries.BLOCK_ENTITY_TYPE, new ResourceLocation("forge", "relocation_not_supported"));
-		public static final TagKey<BlockEntityType<?>> IMMOVABLE = TagKey.create(Registries.BLOCK_ENTITY_TYPE, new ResourceLocation("forge", "immovable"));
+		public static final TagKey<BlockEntityType<?>> RELOCATION_NOT_SUPPORTED = TagKey.create(Registries.BLOCK_ENTITY_TYPE, new ResourceLocation("c", "relocation_not_supported"));
+		public static final TagKey<BlockEntityType<?>> IMMOVABLE = TagKey.create(Registries.BLOCK_ENTITY_TYPE, new ResourceLocation("c", "immovable"));
 
-		public BlockEntityTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
-			super(output, Registries.BLOCK_ENTITY_TYPE, provider, TwilightForestMod.ID, helper);
+		public BlockEntityTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+			super(output, Registries.BLOCK_ENTITY_TYPE, provider);
 		}
 
 		@Override
 		protected void addTags(HolderLookup.Provider provider) {
 			this.tag(RELOCATION_NOT_SUPPORTED).add(
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.ANTIBUILDER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.BEANSTALK_GROWER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.NAGA_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.LICH_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.MINOSHROOM_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.HYDRA_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.UR_GHAST_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.ALPHA_YETI_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.SNOW_QUEEN_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.FINAL_BOSS_SPAWNER.get()).get());
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.ANTIBUILDER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.BEANSTALK_GROWER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.NAGA_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.LICH_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.MINOSHROOM_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.HYDRA_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.UR_GHAST_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.ALPHA_YETI_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.SNOW_QUEEN_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.FINAL_BOSS_SPAWNER.get()).get());
 
 			this.tag(IMMOVABLE).add(
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.ANTIBUILDER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.BEANSTALK_GROWER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.NAGA_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.LICH_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.MINOSHROOM_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.HYDRA_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.UR_GHAST_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.ALPHA_YETI_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.SNOW_QUEEN_SPAWNER.get()).get(),
-					ForgeRegistries.BLOCK_ENTITY_TYPES.getResourceKey(TFBlockEntities.FINAL_BOSS_SPAWNER.get()).get());
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.ANTIBUILDER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.BEANSTALK_GROWER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.NAGA_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.LICH_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.MINOSHROOM_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.HYDRA_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.KNIGHT_PHANTOM_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.UR_GHAST_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.ALPHA_YETI_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.SNOW_QUEEN_SPAWNER.get()).get(),
+					BuiltInRegistries.BLOCK_ENTITY_TYPE.getResourceKey(TFBlockEntities.FINAL_BOSS_SPAWNER.get()).get());
 		}
 
 		@Override

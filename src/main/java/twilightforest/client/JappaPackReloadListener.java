@@ -1,13 +1,12 @@
 package twilightforest.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import twilightforest.TwilightForestMod;
 
 import java.util.function.BooleanSupplier;
@@ -16,8 +15,8 @@ import java.util.function.BooleanSupplier;
 // I would like to look at migrating the models to using EntityModelJson (https://www.curseforge.com/minecraft/mc-mods/entity-model-json) in the future.
 // we can make the pack depend on it to load the new models instead of having them hardcoded here.
 // could also shade the mod since I dont trust people to actually download the mod. I can already see the bug reports flooding in, yikes
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
-public class JappaPackReloadListener implements ResourceManagerReloadListener {
+public class JappaPackReloadListener implements ResourceManagerReloadListener, IdentifiableResourceReloadListener {
+	public static final ResourceLocation ID = TwilightForestMod.prefix("jappa");
 
 	private static boolean jappaPackLoaded = false;
 	public static final JappaPackReloadListener INSTANCE = new JappaPackReloadListener();
@@ -27,8 +26,7 @@ public class JappaPackReloadListener implements ResourceManagerReloadListener {
 		jappaPackLoaded = Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().anyMatch(pack -> pack.open().getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
 	}
 
-	@SubscribeEvent
-	public static void clientSetup(FMLClientSetupEvent event) {
+	public static void clientSetup() {
 		jappaPackLoaded = Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().anyMatch(pack -> pack.open().getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
 	}
 
@@ -39,5 +37,10 @@ public class JappaPackReloadListener implements ResourceManagerReloadListener {
 	//Avoid using this. Its needed for entity models only due to reload ordering.
 	public BooleanSupplier uncachedJappaPackCheck() {
 		return () -> Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().anyMatch(pack -> pack.open().getResource(PackType.CLIENT_RESOURCES, TwilightForestMod.prefix("jappa_models.marker")) != null);
+	}
+
+	@Override
+	public ResourceLocation getFabricId() {
+		return ID;
 	}
 }

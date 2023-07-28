@@ -1,7 +1,6 @@
 package twilightforest.data;
 
-import io.github.tropheusj.serialization_hooks.ingredient.CombinedIngredient;
-import me.alphamode.forgetags.Tags;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.*;
@@ -11,6 +10,8 @@ import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
+
+import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.helpers.CraftingDataHelper;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -406,7 +407,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.save(consumer, locEquip(TFItems.TWILIGHT_SCEPTER.getId().getPath()));
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, TFItems.ZOMBIE_SCEPTER.get())
-				.requires(new CombinedIngredient(potion(Potions.STRENGTH), potion(Potions.STRONG_STRENGTH), potion(Potions.LONG_STRENGTH)))
+				.requires(DefaultCustomIngredients.any(potion(Potions.STRENGTH), potion(Potions.STRONG_STRENGTH), potion(Potions.LONG_STRENGTH)))
 				.requires(scepter(TFItems.ZOMBIE_SCEPTER.get()))
 				.requires(Ingredient.of(Items.ROTTEN_FLESH))
 				.unlockedBy("has_item", has(TFItems.ZOMBIE_SCEPTER.get()))

@@ -1,6 +1,5 @@
 package twilightforest.block.entity;
 
-import me.alphamode.forgetags.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundSource;
@@ -12,6 +11,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import io.github.fabricators_of_create.porting_lib.tags.TagHelper;
 import twilightforest.block.CarminiteReactorBlock;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.monster.CarminiteGhastling;

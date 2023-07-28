@@ -14,8 +14,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
@@ -29,7 +30,7 @@ import java.util.Optional;
 
 public class Restrictions {
     public static final ResourceKey<Registry<Restriction>> RESTRICTION_KEY = ResourceKey.createRegistryKey(TwilightForestMod.namedRegistry("restrictions"));
-    public static final DeferredRegister<Restriction> RESTRICTIONS = DeferredRegister.create(RESTRICTION_KEY, TwilightForestMod.ID);
+    public static final LazyRegistrar<Restriction> RESTRICTIONS = LazyRegistrar.create(RESTRICTION_KEY, TwilightForestMod.ID);
     public static final Codec<Holder<Restriction>> CODEC = RegistryFileCodec.create(Restrictions.RESTRICTION_KEY, Restriction.CODEC, false);
 
     public static final ResourceKey<Restriction> DARK_FOREST = makeKey(TFBiomes.DARK_FOREST.location());

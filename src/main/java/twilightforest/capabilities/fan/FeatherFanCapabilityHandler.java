@@ -2,7 +2,8 @@ package twilightforest.capabilities.fan;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateFeatherFanFallPacket;
 
@@ -11,7 +12,7 @@ public class FeatherFanCapabilityHandler implements FeatherFanFallCapability {
 	private Player host;
 	private boolean falling;
 
-	public FeatherFanCapabilityHandler(LivingEntity entity) {
+	public FeatherFanCapabilityHandler(Player entity) {
 		host = entity;
 	}
 

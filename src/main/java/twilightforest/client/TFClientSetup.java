@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback.RegistrationHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,6 +26,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EntityType;
@@ -78,7 +80,8 @@ public class TFClientSetup implements ClientModInitializer {
 		clientSetup();
 		registerEntityRenderers();
 		LivingEntityFeatureRendererRegistrationCallback.EVENT.register(TFClientSetup::attachRenderLayers);
-		BuiltinItemRendererRegistry.INSTANCE.register(TFItems.KNIGHTMETAL_SHIELD.get(), new ISTER());
+		BuiltinItemRendererRegistry.INSTANCE.register(TFItems.KNIGHTMETAL_SHIELD.get(), ISTER.INSTANCE.get());
+		addJappaPackListener();
 	}
 
 	public static class FabricEvents {
@@ -114,14 +117,14 @@ public class TFClientSetup implements ClientModInitializer {
         TFMenuTypes.renderScreens();
 
 //        evt.enqueueWork(() -> {
-            Sheets.addWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.MANGROVE_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.DARK_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.TIME_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.MINING_WOOD_TYPE);
-            Sheets.addWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
+            registerWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
+			registerWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
+			registerWoodType(TFWoodTypes.MANGROVE_WOOD_TYPE);
+			registerWoodType(TFWoodTypes.DARK_WOOD_TYPE);
+			registerWoodType(TFWoodTypes.TIME_WOOD_TYPE);
+			registerWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
+			registerWoodType(TFWoodTypes.MINING_WOOD_TYPE);
+			registerWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
 //        });
 
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
@@ -129,9 +132,9 @@ public class TFClientSetup implements ClientModInitializer {
 		}
     }
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void addJappaPackListener(RegisterClientReloadListenersEvent event) {
-		event.registerReloadListener(JappaPackReloadListener.INSTANCE);
+	public static void addJappaPackListener() {
+		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(JappaPackReloadListener.INSTANCE);
+		JappaPackReloadListener.clientSetup();
 	}
 
 	public static void registerEntityRenderers() {

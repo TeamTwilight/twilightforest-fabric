@@ -1,7 +1,10 @@
 package twilightforest.init;
 
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -18,9 +21,9 @@ import java.util.Collection;
 
 public class TFCreativeTabs {
 
-	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TwilightForestMod.ID);
+	public static final LazyRegistrar<CreativeModeTab> TABS = LazyRegistrar.create(Registries.CREATIVE_MODE_TAB, TwilightForestMod.ID);
 
-	public static final RegistryObject<CreativeModeTab> BLOCKS = TABS.register("blocks", () -> CreativeModeTab.builder()
+	public static final RegistryObject<CreativeModeTab> BLOCKS = TABS.register("blocks", () -> FabricItemGroup.builder()
 			.title(Component.translatable("itemGroup.twilightforest.blocks"))
 			.icon(() -> new ItemStack(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get()))
 			.displayItems((parameters, output) -> {
@@ -384,8 +387,7 @@ public class TFCreativeTabs {
 				output.accept(TFBlocks.IRON_LADDER.get());
 			}).build());
 
-	public static final RegistryObject<CreativeModeTab> ITEMS = TABS.register("items", () -> CreativeModeTab.builder()
-			.withTabsBefore(BLOCKS.getKey())
+	public static final RegistryObject<CreativeModeTab> ITEMS = TABS.register("items", () -> FabricItemGroup.builder()
 			.title(Component.translatable("itemGroup.twilightforest.items"))
 			.icon(() -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get()))
 			.displayItems((parameters, output) -> {
@@ -471,8 +473,7 @@ public class TFCreativeTabs {
 				createSpawnEggsAlphabetical(output);
 			}).build());
 
-	public static final RegistryObject<CreativeModeTab> EQUIPMENT = TABS.register("equipment", () -> CreativeModeTab.builder()
-			.withTabsBefore(ITEMS.getKey())
+	public static final RegistryObject<CreativeModeTab> EQUIPMENT = TABS.register("equipment", () -> FabricItemGroup.builder()
 			.title(Component.translatable("itemGroup.twilightforest.equipment"))
 			.icon(() -> new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()))
 			.displayItems((parameters, output) -> {

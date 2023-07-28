@@ -5,6 +5,8 @@ import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+
 import twilightforest.capabilities.fan.FeatherFanCapabilityHandler;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.capabilities.giant_pick.GiantPickMineCapability;
@@ -30,7 +32,7 @@ public class CapabilityList {
 
 	public static void attachEntityCapability(EntityComponentFactoryRegistry e) {
 		e.registerFor(LivingEntity.class, SHIELDS, ShieldCapabilityHandler::new);
-		e.registerFor(LivingEntity.class, FEATHER_FAN_FALLING, FeatherFanCapabilityHandler::new);
+		e.registerFor(Player.class, FEATHER_FAN_FALLING, FeatherFanCapabilityHandler::new);
 		e.registerFor(LivingEntity.class, YETI_THROWN, YetiThrowCapabilityHandler::new);
 		e.registerFor(LivingEntity.class, GIANT_PICK_MINE, GiantPickMineCapabilityHandler::new);
 	}

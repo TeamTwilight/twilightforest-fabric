@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -8,15 +7,14 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
-import java.util.function.Consumer;
-
-public class WearableItem extends BlockItem implements CurioItem {
-    public WearableItem(Block block, FabricItemSettings props) {
-        super(block, props.equipmentSlot(stack -> EquipmentSlot.HEAD));
+public class WearableItem extends BlockItem implements Equipable {
+    public WearableItem(Block block, Properties props) {
+        super(block, props);
 		CuriosCharmItem.setupTrinket(this);
     }
 
@@ -35,5 +33,10 @@ public class WearableItem extends BlockItem implements CurioItem {
 		} else {
 			return InteractionResultHolder.fail(itemstack);
 		}
+	}
+
+	@Override
+	public EquipmentSlot getEquipmentSlot() {
+		return EquipmentSlot.HEAD;
 	}
 }

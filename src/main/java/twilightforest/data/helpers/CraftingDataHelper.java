@@ -1,13 +1,10 @@
 package twilightforest.data.helpers;
 
-import io.github.fabricators_of_create.porting_lib.crafting.PartialNBTIngredient;
-import me.alphamode.forgetags.Tags;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.Util;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.data.PackOutput;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +18,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+
+import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFChestBlock;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -34,20 +33,16 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 		super(output);
 	}
 
-	public final PartialNBTIngredient scepter(Item scepter) {
-		return PartialNBTIngredient.of(scepter, Util.make(() -> {
-			CompoundTag nbt = new CompoundTag();
-			nbt.putInt(ItemStack.TAG_DAMAGE, scepter.getMaxDamage());
-			return nbt;
-		}));
+	public final Ingredient scepter(Item scepter) {
+		CompoundTag nbt = new CompoundTag();
+		nbt.putInt(ItemStack.TAG_DAMAGE, scepter.getMaxDamage());
+		return DefaultCustomIngredients.nbt(Ingredient.of(scepter), nbt, false);
 	}
 
-	public final PartialNBTIngredient potion(Potion potion) {
-		return PartialNBTIngredient.of(Items.POTION, Util.make(() -> {
-			CompoundTag nbt = new CompoundTag();
-			nbt.putString("Potion", BuiltInRegistries.POTION.getKey(potion).toString());
-			return nbt;
-		}));
+	public final Ingredient potion(Potion potion) {
+		CompoundTag nbt = new CompoundTag();
+		nbt.putString("Potion", BuiltInRegistries.POTION.getKey(potion).toString());
+		return DefaultCustomIngredients.nbt(Ingredient.of(Items.POTION), nbt, false);
 	}
 
 	protected final void charmRecipe(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Item> result, Supplier<? extends Item> item) {

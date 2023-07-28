@@ -1,6 +1,7 @@
 package twilightforest.events;
 
-import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityDamageEvents;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityDamageEvents.HurtEvent;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -43,7 +44,7 @@ import java.util.Optional;
 public class ProgressionEvents {
 
 	public static void init() {
-		LivingEntityEvents.ATTACK.register(ProgressionEvents::livingAttack);
+		LivingEntityDamageEvents.HURT.register(ProgressionEvents::livingAttack);
 		UseBlockCallback.EVENT.register(ProgressionEvents::onPlayerRightClick);
 		PlayerBlockBreakEvents.BEFORE.register(ProgressionEvents::breakBlock);
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(ProgressionEvents::playerPortals);
@@ -130,14 +131,16 @@ public class ProgressionEvents {
 		TFPacketHandler.CHANNEL.sendToClientsAround(new AreaProtectionPacket(sbb, pos), (ServerLevel) level, pos, 64);
 	}
 
-	public static boolean livingAttack(LivingEntity living, DamageSource source, float amount) {
+	public static void livingAttack(HurtEvent event) {
+		LivingEntity living = event.damaged;
+		DamageSource source = event.damageSource;
+
 		// cancel attacks in protected areas
 		if (!living.level().isClientSide() && living instanceof Enemy && source.getEntity() instanceof Player && !(living instanceof Kobold)
 				&& isAreaProtected(living.level(), (Player) source.getEntity(), new BlockPos(living.blockPosition()))) {
 
-			return true;
+			event.cancel();
 		}
-		return false;
 	}
 
 	public static void playerPortals(ServerPlayer player, ServerLevel origin, ServerLevel destination) {

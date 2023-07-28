@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFBlocks;
 

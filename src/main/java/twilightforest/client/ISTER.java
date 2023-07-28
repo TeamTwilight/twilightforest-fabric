@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SkullModelBase;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
@@ -20,11 +19,11 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -32,8 +31,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import org.apache.commons.lang3.StringUtils;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -56,14 +55,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
+public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer, ResourceManagerReloadListener, IdentifiableResourceReloadListener {
+	// fabric: reloader stuff
+	public static final ResourceLocation ID = TwilightForestMod.prefix("ister");
+
 	public static final Supplier<ISTER> INSTANCE = Suppliers.memoize(ISTER::new);
-	public static final IClientItemExtensions CLIENT_ITEM_EXTENSION = Util.make(() -> new IClientItemExtensions() {
-		@Override
-		public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-			return INSTANCE.get();
-		}
-	});
 	private final KeepsakeCasketBlockEntity casket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState());
 	private final Map<Block, TwilightChestEntity> chestEntities = Util.make(new HashMap<>(), map -> {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
@@ -77,6 +73,10 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 	});
 	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 	private Map<BossVariant, GenericTrophyModel> trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
+
+	// Use the cached INSTANCE.get instead
+	private ISTER() {
+	}
 
 	@Override
 	public void onResourceManagerReload(ResourceManager manager) {
@@ -179,5 +179,10 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer {
 	public static void makeInstance(Map<Block, TwilightChestEntity> map, RegistryObject<? extends ChestBlock> registryObject) {
 		ChestBlock block = registryObject.get();
 		map.put(block, new TwilightChestEntity(BlockPos.ZERO, block.defaultBlockState()));
+	}
+
+	@Override
+	public ResourceLocation getFabricId() {
+		return ID;
 	}
 }

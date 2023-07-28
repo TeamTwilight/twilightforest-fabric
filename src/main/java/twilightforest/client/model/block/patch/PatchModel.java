@@ -1,8 +1,5 @@
 package twilightforest.client.model.block.patch;
 
-import com.mojang.math.Transformation;
-import io.github.fabricators_of_create.porting_lib.models.SimpleModelState;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -11,11 +8,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.NotNull;
+
+import com.mojang.math.Transformation;
+import io.github.fabricators_of_create.porting_lib.models.geometry.SimpleModelState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.block.PatchBlock;
-import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
 import java.util.List;

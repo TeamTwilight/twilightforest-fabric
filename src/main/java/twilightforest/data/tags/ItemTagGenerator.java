@@ -1,18 +1,16 @@
 package twilightforest.data.tags;
 
-import me.alphamode.forgetags.Tags;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -72,10 +70,10 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 	private static final TagKey<Item> NECKLACES = TagKey.create(Registries.ITEM, new ResourceLocation("trinkets", "chest/necklace"));
 	private static final TagKey<Item> HATS = TagKey.create(Registries.ITEM, new ResourceLocation("trinkets", "head/hat"));
 
-	public static final TagKey<Item> CA_PLANTS = ItemTags.create(new ResourceLocation("createaddition", "plants"));
-	public static final TagKey<Item> CA_PLANT_FOODS = ItemTags.create(new ResourceLocation("createaddition", "plant_foods"));
+	public static final TagKey<Item> CA_PLANTS = TagKey.create(Registries.ITEM, new ResourceLocation("createaddition", "plants"));
+	public static final TagKey<Item> CA_PLANT_FOODS = TagKey.create(Registries.ITEM, new ResourceLocation("createaddition", "plant_foods"));
 
-	public static final TagKey<Item> RANDOMIUM_BLACKLIST = ItemTags.create(new ResourceLocation("randomium", "blacklist"));
+	public static final TagKey<Item> RANDOMIUM_BLACKLIST = TagKey.create(Registries.ITEM, new ResourceLocation("randomium", "blacklist"));
 
 
 	public ItemTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> future, FabricTagProvider.BlockTagProvider provider) {
@@ -278,7 +276,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFItems.PLAYER_SKULL_CANDLE.get(),
 				TFItems.PIGLIN_SKULL_CANDLE.get());
 
-		tag(ItemTags.NOTE_BLOCK_TOP_INSTRUMENTS).add(
+		getOrCreateTagBuilder(ItemTags.NOTE_BLOCK_TOP_INSTRUMENTS).add(
 				TFItems.ZOMBIE_SKULL_CANDLE.get(),
 				TFItems.SKELETON_SKULL_CANDLE.get(),
 				TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),

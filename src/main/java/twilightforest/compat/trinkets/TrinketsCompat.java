@@ -37,7 +37,7 @@ public class TrinketsCompat {
 			public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
 				entity.playSound(SoundEvents.ARMOR_EQUIP_GENERIC, 1.0F, 1.0F);
 
-				if (!entity.level.isClientSide() && item == TFBlocks.CICADA.get().asItem()) {
+				if (!entity.level().isClientSide() && item == TFBlocks.CICADA.get().asItem()) {
 					//check that we dont have a cicada already on our head before trying to start the sound
 					if (!entity.getItemBySlot(EquipmentSlot.HEAD).is(item)) {
 						CreateMovingCicadaSoundPacket packet = new CreateMovingCicadaSoundPacket(entity.getId());
@@ -52,7 +52,7 @@ public class TrinketsCompat {
 	public static TrinketEnums.DropRule keepCurios(TrinketEnums.DropRule rule, ItemStack stack, SlotReference ref, LivingEntity entity) {
 		if (entity instanceof Player player) {
 			CompoundTag playerData = CharmEvents.getPlayerData(player);
-			if (!player.level.isClientSide() && playerData.contains(CharmEvents.CHARM_INV_TAG) && !playerData.getList(CharmEvents.CHARM_INV_TAG, 10).isEmpty()) {
+			if (!player.level().isClientSide() && playerData.contains(CharmEvents.CHARM_INV_TAG) && !playerData.getList(CharmEvents.CHARM_INV_TAG, 10).isEmpty()) {
 				//Keep all Curios items
 				return TrinketEnums.DropRule.KEEP;
 			}

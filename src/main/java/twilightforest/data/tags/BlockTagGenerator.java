@@ -1,20 +1,17 @@
 package twilightforest.data.tags;
 
 import com.google.common.collect.ImmutableSet;
-import me.alphamode.forgetags.Tags;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Material;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 
@@ -83,10 +80,10 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 	public static final TagKey<Block> PENGUINS_SPAWNABLE_ON = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("penguins_spawnable_on"));
 	public static final TagKey<Block> GIANTS_SPAWNABLE_ON = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("giants_spawnable_on"));
 
-	public static final TagKey<Block> RELOCATION_NOT_SUPPORTED = BlockTags.create(new ResourceLocation("forge", "relocation_not_supported"));
-	public static final TagKey<Block> IMMOVABLE = BlockTags.create(new ResourceLocation("forge", "immovable"));
+	public static final TagKey<Block> RELOCATION_NOT_SUPPORTED = TagKey.create(Registries.BLOCK, new ResourceLocation("c", "relocation_not_supported"));
+	public static final TagKey<Block> IMMOVABLE = TagKey.create(Registries.BLOCK, new ResourceLocation("c", "immovable"));
 
-	public static final TagKey<Block> DRUID_PROJECTILE_REPLACEABLE = BlockTags.create(TwilightForestMod.prefix("druid_projectile_replaceable"));
+	public static final TagKey<Block> DRUID_PROJECTILE_REPLACEABLE = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("druid_projectile_replaceable"));
 
 	public BlockTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> future) {
 		super(output, future);
@@ -278,8 +275,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 
 		getOrCreateTagBuilder(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.FIERY_BLOCK.get());
 		getOrCreateTagBuilder(BlockTags.PORTALS).add(TFBlocks.TWILIGHT_PORTAL.get());
-		tag(BlockTags.ENCHANTMENT_POWER_PROVIDER).add(TFBlocks.CANOPY_BOOKSHELF.get());
-		tag(BlockTags.REPLACEABLE_BY_TREES).add(
+		getOrCreateTagBuilder(BlockTags.ENCHANTMENT_POWER_PROVIDER).add(TFBlocks.CANOPY_BOOKSHELF.get());
+		getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_TREES).add(
 				TFBlocks.HARDENED_DARK_LEAVES.get(),
 				TFBlocks.MAYAPPLE.get(),
 				TFBlocks.FIDDLEHEAD.get(),
@@ -728,7 +725,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 
 		getOrCreateTagBuilder(BlockTags.INVALID_SPAWN_INSIDE).add(TFBlocks.TWILIGHT_PORTAL.get());
 
-		tag(RELOCATION_NOT_SUPPORTED).add(TFBlocks.TWILIGHT_PORTAL.get(), TFBlocks.STRONGHOLD_SHIELD.get(),
+		getOrCreateTagBuilder(RELOCATION_NOT_SUPPORTED).add(TFBlocks.TWILIGHT_PORTAL.get(), TFBlocks.STRONGHOLD_SHIELD.get(),
 				TFBlocks.TIME_LOG_CORE.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get(),
 				TFBlocks.MINING_LOG_CORE.get(), TFBlocks.SORTING_LOG_CORE.get(),
 				TFBlocks.ANTIBUILDER.get(), TFBlocks.BUILT_BLOCK.get(),
@@ -747,7 +744,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 				TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get(),
 				TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
 
-		tag(IMMOVABLE).add(TFBlocks.TWILIGHT_PORTAL.get(), TFBlocks.STRONGHOLD_SHIELD.get(),
+		getOrCreateTagBuilder(IMMOVABLE).add(TFBlocks.TWILIGHT_PORTAL.get(), TFBlocks.STRONGHOLD_SHIELD.get(),
 				TFBlocks.TIME_LOG_CORE.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get(),
 				TFBlocks.MINING_LOG_CORE.get(), TFBlocks.SORTING_LOG_CORE.get(),
 				TFBlocks.ANTIBUILDER.get(), TFBlocks.BUILT_BLOCK.get(),

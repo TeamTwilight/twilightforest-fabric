@@ -1,15 +1,12 @@
 package twilightforest.events;
 
-import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.advancements.TFAdvancements;
 import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.entity.passive.Bighorn;
 import twilightforest.entity.passive.DwarfRabbit;
@@ -25,7 +22,7 @@ public class MiscEvents {
 
 	public static void init() {
 		ServerEntityEvents.ENTITY_LOAD.register(MiscEvents::addPrey);
-		LivingEntityEvents.EQUIPMENT_CHANGE.register(MiscEvents::armorChanged);
+		ServerEntityEvents.EQUIPMENT_CHANGE.register(MiscEvents::armorChanged);
 	}
 
 	public static void addPrey(Entity entity, ServerLevel world) {
@@ -51,10 +48,6 @@ public class MiscEvents {
 	}
 
 	public static void armorChanged(LivingEntity living, EquipmentSlot slot, @Nonnull ItemStack from, @Nonnull ItemStack to) {
-		if (living instanceof ServerPlayer serverPlayer && !serverPlayer.level.isClientSide()) {
-			TFAdvancements.ARMOR_CHANGED.trigger(serverPlayer, from, to);
-		}
-
 		// from what I can see, vanilla doesnt have a hook for this in the item class. So this will have to do.
 		// we only have to check equipping, when its unequipped the sound instance handles the rest
 

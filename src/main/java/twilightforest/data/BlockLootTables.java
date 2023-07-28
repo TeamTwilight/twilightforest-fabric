@@ -1,15 +1,10 @@
 package twilightforest.data;
 
 import io.github.fabricators_of_create.porting_lib.data.ModdedBlockLootSubProvider;
-import me.alphamode.forgetags.Tags;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.Item;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
@@ -28,6 +23,8 @@ import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.enums.HollowLogVariants;
@@ -36,7 +33,6 @@ import twilightforest.init.TFItems;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.function.BiConsumer;
 
 public class BlockLootTables extends ModdedBlockLootSubProvider {
 	// [VanillaCopy] of BlockLoot fields, just changed shears to work with modded ones

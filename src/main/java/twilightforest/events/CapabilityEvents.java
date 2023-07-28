@@ -1,8 +1,11 @@
 package twilightforest.events;
 
-import io.github.fabricators_of_create.porting_lib.event.common.LivingEntityEvents;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityDamageEvents;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityDamageEvents.HurtEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -29,7 +32,7 @@ public class CapabilityEvents {
 
 	public static void init() {
 		LivingEntityEvents.TICK.register(CapabilityEvents::updateCaps);
-		LivingEntityEvents.ATTACK.register(CapabilityEvents::livingAttack);
+		LivingEntityDamageEvents.HURT.register(CapabilityEvents::livingAttack);
 		ServerPlayerEvents.AFTER_RESPAWN.register(CapabilityEvents::onPlayerRespawn);
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(CapabilityEvents::playerPortals);
 		EntityTrackingEvents.START_TRACKING.register(CapabilityEvents::onStartTracking);
@@ -41,10 +44,11 @@ public class CapabilityEvents {
 		CapabilityList.YETI_THROWN.maybeGet(entity).ifPresent(YetiThrowCapability::update);
 	}
 
-	public static boolean livingAttack(LivingEntity living, DamageSource source, float damage) {
+	public static void livingAttack(HurtEvent event) {
+		LivingEntity living = event.damaged;
 		// shields
 		AtomicBoolean cancel = new AtomicBoolean(false);
-		if (!living.level().isClientSide() && !source.is(DamageTypeTags.BYPASSES_ARMOR)) {
+		if (!living.level().isClientSide() && !event.damageSource.is(DamageTypeTags.BYPASSES_ARMOR)) {
 			CapabilityList.SHIELDS.maybeGet(living).ifPresent(cap -> {
 				if (cap.shieldsLeft() > 0) {
 					cap.breakShield();
@@ -52,7 +56,8 @@ public class CapabilityEvents {
 				}
 			});
 		}
-		return cancel.get();
+		if (cancel.get())
+			event.cancel();
 	}
 
 	public static void onPlayerRespawn(ServerPlayer oldPlayer, ServerPlayer serverPlayer, boolean alive) {
@@ -61,7 +66,7 @@ public class CapabilityEvents {
 		}
 
 		if (TFConfig.COMMON_CONFIG.DIMENSION.newPlayersSpawnInTF.get() && serverPlayer.getRespawnPosition() == null) {
-			CompoundTag tagCompound = serverPlayer.getExtraCustomData();
+			CompoundTag tagCompound = serverPlayer.getCustomData();
 			CompoundTag playerData = tagCompound.getCompound("PlayerPersisted");
 			playerData.putBoolean(NBT_TAG_TWILIGHT, false); // set to false so that the method works
 			tagCompound.put("PlayerPersisted", playerData); // commit
@@ -96,7 +101,7 @@ public class CapabilityEvents {
 
 	// Teleport first-time players to Twilight Forest
 	private static void banishNewbieToTwilightZone(Player player) {
-		CompoundTag tagCompound = player.getExtraCustomData();
+		CompoundTag tagCompound = player.getCustomData();
 		CompoundTag playerData = tagCompound.getCompound("PlayerPersisted");
 
 		// getBoolean returns false, if false or didn't exist

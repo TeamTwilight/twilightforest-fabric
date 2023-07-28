@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import com.mojang.authlib.GameProfile;
 import io.github.fabricators_of_create.porting_lib.block.LightEmissiveBlock;
-import me.alphamode.forgetags.Tags;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;

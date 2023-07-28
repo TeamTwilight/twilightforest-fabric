@@ -1,6 +1,5 @@
 package twilightforest;
 
-import io.github.fabricators_of_create.porting_lib.event.common.PlayerTickEvents;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.particles.ParticleTypes;
@@ -15,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+
+import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerTickEvents;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.data.tags.ItemTagGenerator;

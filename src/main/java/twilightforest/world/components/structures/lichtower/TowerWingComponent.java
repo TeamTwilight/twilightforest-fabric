@@ -3,7 +3,6 @@ package twilightforest.world.components.structures.lichtower;
 import com.google.common.collect.Lists;
 import io.github.fabricators_of_create.porting_lib.mixin.accessors.common.accessor.PaintingAccessor;
 import io.github.fabricators_of_create.porting_lib.util.TagUtil;
-import me.alphamode.forgetags.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;

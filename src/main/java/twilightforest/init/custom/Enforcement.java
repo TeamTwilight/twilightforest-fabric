@@ -1,5 +1,7 @@
 package twilightforest.init.custom;
 
+import java.util.function.Supplier;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -7,10 +9,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryBuilder;
-import net.minecraftforge.registries.RegistryObject;
+
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import org.apache.logging.log4j.util.TriConsumer;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDamageTypes;
@@ -19,12 +20,10 @@ import twilightforest.init.TFSounds;
 import twilightforest.util.Restriction;
 import twilightforest.world.components.structures.util.StructureHints;
 
-import java.util.function.Supplier;
-
 public record Enforcement(TriConsumer<Player, ServerLevel, Restriction> consumer) {
     public static final ResourceKey<Registry<Enforcement>> ENFORCEMENT_KEY = ResourceKey.createRegistryKey(TwilightForestMod.prefix("enforcement"));
-    public static final DeferredRegister<Enforcement> ENFORCEMENTS = DeferredRegister.create(ENFORCEMENT_KEY, TwilightForestMod.ID);
-    public static final Supplier<IForgeRegistry<Enforcement>> ENFORCEMENT_REGISTRY = ENFORCEMENTS.makeRegistry(RegistryBuilder::new);
+    public static final LazyRegistrar<Enforcement> ENFORCEMENTS = LazyRegistrar.create(ENFORCEMENT_KEY, TwilightForestMod.ID);
+    public static final Supplier<Registry<Enforcement>> ENFORCEMENT_REGISTRY = ENFORCEMENTS.makeRegistry();
 
     public static final RegistryObject<Enforcement> DARKNESS = ENFORCEMENTS.register("darkness", () -> new Enforcement((player, level, restriction) -> {
         if (player.tickCount % 60 == 0) {
@@ -62,7 +61,7 @@ public record Enforcement(TriConsumer<Player, ServerLevel, Restriction> consumer
 
     public static void enforceBiomeProgression(Player player, ServerLevel level) {
         Restrictions.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player).ifPresent(restriction -> {
-            Enforcement enforcement = ENFORCEMENT_REGISTRY.get().getValue(restriction.enforcement().location());
+            Enforcement enforcement = ENFORCEMENT_REGISTRY.get().get(restriction.enforcement().location());
             if (enforcement != null) {
                 enforcement.consumer().accept(player, level, restriction);
                 if (restriction.hintStructureKey() != null) {

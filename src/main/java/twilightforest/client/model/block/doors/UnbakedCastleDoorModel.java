@@ -1,7 +1,7 @@
 package twilightforest.client.model.block.doors;
 
 import com.mojang.math.Transformation;
-import io.github.fabricators_of_create.porting_lib.models.SimpleModelState;
+import io.github.fabricators_of_create.porting_lib.models.geometry.SimpleModelState;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
@@ -9,7 +9,6 @@ import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
 import org.joml.Vector3f;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,7 +18,6 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.mixin.BlockModelAccessor;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Function;
 

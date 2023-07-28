@@ -5,15 +5,10 @@ import com.google.common.collect.Maps;
 import com.mojang.brigadier.CommandDispatcher;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
-import io.github.fabricators_of_create.porting_lib.registries.DynamicRegistryHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -21,11 +16,15 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
+
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
@@ -33,22 +32,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.events.*;
 import twilightforest.init.*;
+import twilightforest.init.custom.BiomeLayerStack;
+import twilightforest.init.custom.BiomeLayerTypes;
 import twilightforest.init.custom.DwarfRabbitVariant;
+import twilightforest.init.custom.Enforcement;
+import twilightforest.init.custom.Restrictions;
 import twilightforest.init.custom.TinyBirdVariant;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.util.WoodPalette;
+import twilightforest.util.Restriction;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 import java.util.Locale;
+import java.util.Objects;
 
 public class TwilightForestMod implements ModInitializer {
 
@@ -91,8 +94,8 @@ public class TwilightForestMod implements ModInitializer {
 		TFMenuTypes.CONTAINERS.register();
 		TFEnchantments.ENCHANTMENTS.register();
 		TFEntities.ENTITIES.register();
-		BiomeLayerTypes.BIOME_LAYER_TYPES.register(modbus);
-		BiomeLayerStack.BIOME_LAYER_STACKS.register(modbus);
+		BiomeLayerTypes.BIOME_LAYER_TYPES.register();
+		BiomeLayerStack.BIOME_LAYER_STACKS.register();
 		TFFeatures.FEATURES.register();
 		TFFeatureModifiers.FOLIAGE_PLACERS.register();
 		TFLoot.FUNCTIONS.register();
@@ -110,7 +113,7 @@ public class TwilightForestMod implements ModInitializer {
 		TFStructureProcessors.STRUCTURE_PROCESSORS.register();
 		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register();
 		TFStructureTypes.STRUCTURE_TYPES.register();
-		TFCreativeTabs.TABS.register(modbus);
+		TFCreativeTabs.TABS.register();
 		TFFeatureModifiers.TREE_DECORATORS.register();
 		TFFeatureModifiers.TRUNK_PLACERS.register();
 

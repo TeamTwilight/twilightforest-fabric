@@ -29,7 +29,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
@@ -549,7 +548,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 				double z = (this.random.nextDouble() - 0.5D) * 0.05D * i;
 				particlePacket.queueParticle(DustParticleOptions.REDSTONE, false, particlePos.add(x, y, z), Vec3.ZERO);
 			}
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+			TFPacketHandler.CHANNEL.sendToClientsTracking(particlePacket, this);
 		}
 	}
 
