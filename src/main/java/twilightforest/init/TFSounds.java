@@ -38,6 +38,7 @@ public final class TFSounds {
 	public static final RegistryObject<SoundEvent> BOAR_DEATH = createEvent("entity.twilightforest.boar.death");
 	public static final RegistryObject<SoundEvent> BOAR_HURT = createEvent("entity.twilightforest.boar.hurt");
 	public static final RegistryObject<SoundEvent> BOAR_STEP = createEvent("entity.twilightforest.boar.step");
+	public static final RegistryObject<SoundEvent> BOSS_CHEST_APPEAR = createEvent("block.twilightforest.bosschest.appear");
 	public static final RegistryObject<SoundEvent> BRITTLE_FLASK_BREAK = createEvent("item.twilightforest.flask.break");
 	public static final RegistryObject<SoundEvent> BRITTLE_FLASK_CRACK = createEvent("item.twilightforest.flask.crack");
 	public static final RegistryObject<SoundEvent> BROODLING_AMBIENT = createEvent("entity.twilightforest.broodling.ambient");

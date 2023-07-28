@@ -1,6 +1,8 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -22,6 +24,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.entity.ai.village.poi.PoiRecord;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
@@ -36,7 +39,8 @@ import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
 import twilightforest.entity.projectile.UrGhastFireball;
 import twilightforest.init.*;
-import twilightforest.loot.TFLootTables;
+import twilightforest.network.ParticlePacket;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.LandmarkUtil;
 
@@ -48,9 +52,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 //ghastguards already set home points so theres no need to here
-public class UrGhast extends CarminiteGhastguard {
-
+public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
+	private static final Vec3 DYING_DECENT = new Vec3(0.0D, -0.03D, 0.0D);
 	private static final EntityDataAccessor<Boolean> DATA_TANTRUM = SynchedEntityData.defineId(UrGhast.class, EntityDataSerializers.BOOLEAN);
+	private final NonNullList<ItemStack> dyingInventory = NonNullList.withSize(27, ItemStack.EMPTY);
 
 	private List<BlockPos> trapLocations;
 	private int nextTantrumCry;
@@ -148,30 +153,13 @@ public class UrGhast extends CarminiteGhastguard {
 		if (!this.getLevel().isClientSide()) {
 			this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 		} else {
-			if (this.isInTantrum()) {
+			if (this.isInTantrum() && !this.isDeadOrDying()) {
 				this.getLevel().addParticle(TFParticleType.BOSS_TEAR.get(),
 						this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
 						this.getY() + this.getRandom().nextDouble() * this.getBbHeight() * 0.5D,
 						this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth() * 0.75D,
 						0, 0, 0
 				);
-			}
-
-			// extra death explosions
-			if (this.deathTime > 0) {
-				for (int k = 0; k < 5; k++) {
-
-					double d = this.getRandom().nextGaussian() * 0.02D;
-					double d1 = this.getRandom().nextGaussian() * 0.02D;
-					double d2 = this.getRandom().nextGaussian() * 0.02D;
-
-					this.getLevel().addParticle(this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
-							(this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
-							this.getY() + this.getRandom().nextFloat() * this.getBbHeight(),
-							(this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
-							d, d1, d2
-					);
-				}
 			}
 		}
 	}
@@ -210,7 +198,7 @@ public class UrGhast extends CarminiteGhastguard {
 		}
 
 		if (!this.getLevel().isClientSide()) {
-			if (this.hurtTime == this.hurtDuration) {
+			if (this.hurtTime == this.hurtDuration && !this.isDeadOrDying()) {
 				this.damageUntilNextPhase -= lastDamage;
 
 				if (this.damageUntilNextPhase <= 0) {
@@ -473,6 +461,7 @@ public class UrGhast extends CarminiteGhastguard {
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		compound.putBoolean("inTantrum", this.isInTantrum());
+		this.addDeathItemsSaveData(compound);
 		super.addAdditionalSaveData(compound);
 	}
 
@@ -480,6 +469,7 @@ public class UrGhast extends CarminiteGhastguard {
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		this.setInTantrum(compound.getBoolean("inTantrum"));
+		this.readDeathItemsSaveData(compound);
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
 		}
@@ -489,42 +479,96 @@ public class UrGhast extends CarminiteGhastguard {
 	public void die(DamageSource cause) {
 		super.die(cause);
 		// mark the tower as defeated
-		if (!this.getLevel().isClientSide()) {
+		if (this.getLevel() instanceof ServerLevel serverLevel) {
+			IBossLootBuffer.saveDropsIntoBoss(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), serverLevel);
 			LandmarkUtil.markStructureConquered(this.getLevel(), this, TFStructures.DARK_TOWER, true);
 			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 
-			TFLootTables.entityDropsIntoContainer(this, this.createLootContext(true, cause).create(LootContextParamSets.ENTITY), TFBlocks.DARKWOOD_CHEST.get().defaultBlockState(), this.findChestCoords());
+			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
+			if (lightningbolt != null) {
+				lightningbolt.moveTo(this.position().add(0.0D, this.getBbHeight() * 0.5F, 0.0D));
+				lightningbolt.setVisualOnly(true);
+				serverLevel.addFreshEntity(lightningbolt);
+			}
 		}
+	}
+
+	@Override
+	protected void tickDeath() {
+		++this.deathTime;
+		int maxDeath = 80;
+		// extra death explosions
+		if (this.deathTime <= maxDeath / 2) {
+			float bbWidth = this.getBbWidth();
+			float bbHeight = this.getBbHeight();
+			for (int k = 0; k < 12; k++) {
+				double d = this.random.nextGaussian() * 0.02D;
+				double d1 = this.random.nextGaussian() * 0.02D;
+				double d2 = this.random.nextGaussian() * 0.02D;
+
+				this.getLevel().addParticle(this.random.nextBoolean() ? (this.random.nextBoolean() ? ParticleTypes.POOF : ParticleTypes.EXPLOSION) : DustParticleOptions.REDSTONE,
+						(this.getX() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
+						this.getY() + this.random.nextFloat() * bbHeight,
+						(this.getZ() + this.random.nextFloat() * bbWidth * 1.8F) - bbWidth,
+						d, d1, d2
+				);
+			}
+		} else if (this.level instanceof ServerLevel serverLevel) {
+			if (this.deathTime >= maxDeath && !this.isRemoved()) {
+				this.level.broadcastEntityEvent(this, (byte)60);
+				this.remove(Entity.RemovalReason.KILLED);
+				return;
+			}
+			Vec3 start = this.position().add(0.0D, this.getBbHeight() * 0.5F, 0.0D);
+			Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
+			Vec3 diff = end.subtract(start);
+
+			int deathTime2 = this.deathTime - (maxDeath / 2);
+			double factor = (double)deathTime2 / (double) (maxDeath / 2);
+			Vec3 particlePos = start.add(diff.scale(factor)).add(Math.sin(deathTime2 * Math.PI * 0.1D) + 1.0D, Math.sin(deathTime2 * Math.PI * 0.05D), Math.cos(deathTime2* Math.PI * 0.1125D) - 1.0D);//Some sine waves to make it pretty
+
+			for (ServerPlayer serverplayer : serverLevel.players()) {//This is just particle math, we send a particle packet to every player in range
+				if (serverplayer.distanceToSqr(end) < 4096.0D) {
+					ParticlePacket particlePacket = new ParticlePacket();
+					if (factor * 1.2F >= 1.0F) {
+						for (int i = 0; i < maxDeath / 2; i++) {
+							double x = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+							double y = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+							double z = (this.random.nextDouble() - 0.5D) * 0.075D * i;
+							particlePacket.queueParticle(ParticleTypes.POOF, false, end.add(x, y, z), Vec3.ZERO);
+						}
+					}
+					for (int i = 0; i < maxDeath / 2; i++) {
+						double x = (this.random.nextDouble() - 0.5D) * 0.05D * i;
+						double y = (this.random.nextDouble() - 0.5D) * 0.05D * i;
+						double z = (this.random.nextDouble() - 0.5D) * 0.05D * i;
+						particlePacket.queueParticle(DustParticleOptions.REDSTONE, false, particlePos.add(x, y, z), Vec3.ZERO);
+					}
+					TFPacketHandler.CHANNEL.sendToClient(particlePacket, serverplayer);
+				}
+			}
+		}
+	}
+
+	@Override
+	public Vec3 getDeltaMovement() {
+		return this.isDeadOrDying() ? DYING_DECENT : super.getDeltaMovement();
+	}
+
+	@Override
+	public void remove(RemovalReason removalReason) {
+		if (removalReason.equals(RemovalReason.KILLED) && this.level instanceof ServerLevel serverLevel) {
+			IBossLootBuffer.depositDropsIntoChest(this, TFBlocks.DARKWOOD_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this), serverLevel);
+		}
+		super.remove(removalReason);
 	}
 
 	@Override
 	protected boolean shouldDropLoot() {
 		// Invoked the mob's loot during die, this will avoid duplicating during the actual drop phase
 		return false;
-	}
-
-	private BlockPos findChestCoords() {
-		if (this.getTrapLocations().size() > 0) {
-			// average the location of the traps we've found, and scan again from there
-			int ax = 0, ay = 0, az = 0;
-
-			for (BlockPos trapCoords : this.getTrapLocations()) {
-				ax += trapCoords.getX();
-				ay += trapCoords.getY();
-				az += trapCoords.getZ();
-			}
-
-			ax /= this.getTrapLocations().size();
-			ay /= this.getTrapLocations().size();
-			az /= this.getTrapLocations().size();
-
-
-			return new BlockPos(ax, ay + 2, az);
-		} else {
-			return EntityUtil.bossChestLocation(this);
-		}
 	}
 
 	// Don't attack (or even think about attacking) things while we're throwing a tantrum
@@ -541,5 +585,10 @@ public class UrGhast extends CarminiteGhastguard {
 	@Override
 	public boolean canChangeDimensions() {
 		return false;
+	}
+
+	@Override
+	public NonNullList<ItemStack> getItemStacks() {
+		return this.dyingInventory;
 	}
 }

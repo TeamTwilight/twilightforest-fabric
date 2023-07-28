@@ -372,7 +372,7 @@ public class Naga extends Monster implements EnforcedHomePoint, MultiPartEntity 
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		if (source.is(DamageTypeTags.IS_FALL) && super.hurt(source, amount)) {
+		if (!source.is(DamageTypeTags.IS_FALL) && super.hurt(source, amount)) {
 			this.ticksSinceDamaged = 0;
 			if (source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
 				this.hurtBy.add(player);

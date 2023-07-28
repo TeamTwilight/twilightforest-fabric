@@ -313,7 +313,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFItems.ARCTIC_BOOTS.get(),
 				TFItems.YETI_BOOTS.get());
 
-		getOrCreateTagBuilder(Tags.Items.TOOLS_SWORDS).add(
+		getOrCreateTagBuilder(ItemTags.SWORDS).add(
 				TFItems.IRONWOOD_SWORD.get(),
 				TFItems.STEELEAF_SWORD.get(),
 				TFItems.KNIGHTMETAL_SWORD.get(),
@@ -322,16 +322,16 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFItems.ICE_SWORD.get(),
 				TFItems.GLASS_SWORD.get());
 
-		getOrCreateTagBuilder(Tags.Items.TOOLS_PICKAXES).add(
+		getOrCreateTagBuilder(ItemTags.PICKAXES).add(
 				TFItems.IRONWOOD_PICKAXE.get(),
 				TFItems.STEELEAF_PICKAXE.get(),
 				TFItems.KNIGHTMETAL_PICKAXE.get(),
 				TFItems.FIERY_PICKAXE.get(),
 				TFItems.GIANT_PICKAXE.get());
 
-		getOrCreateTagBuilder(Tags.Items.TOOLS_AXES).add(TFItems.IRONWOOD_AXE.get(), TFItems.STEELEAF_AXE.get(), TFItems.KNIGHTMETAL_AXE.get());
-		getOrCreateTagBuilder(Tags.Items.TOOLS_SHOVELS).add(TFItems.IRONWOOD_SHOVEL.get(), TFItems.STEELEAF_SHOVEL.get());
-		getOrCreateTagBuilder(Tags.Items.TOOLS_HOES).add(TFItems.IRONWOOD_HOE.get(), TFItems.STEELEAF_HOE.get());
+		getOrCreateTagBuilder(ItemTags.AXES).add(TFItems.IRONWOOD_AXE.get(), TFItems.STEELEAF_AXE.get(), TFItems.KNIGHTMETAL_AXE.get());
+		getOrCreateTagBuilder(ItemTags.SHOVELS).add(TFItems.IRONWOOD_SHOVEL.get(), TFItems.STEELEAF_SHOVEL.get());
+		getOrCreateTagBuilder(ItemTags.HOES).add(TFItems.IRONWOOD_HOE.get(), TFItems.STEELEAF_HOE.get());
 		getOrCreateTagBuilder(Tags.Items.TOOLS_SHIELDS).add(TFItems.KNIGHTMETAL_SHIELD.get());
 		getOrCreateTagBuilder(Tags.Items.TOOLS_BOWS).add(TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get());
 

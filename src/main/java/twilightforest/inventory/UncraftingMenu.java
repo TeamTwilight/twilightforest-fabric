@@ -6,6 +6,7 @@ import net.fabricmc.fabric.impl.item.ItemExtensions;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -354,19 +355,19 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 * Checks if the result is a valid match for the input. Currently, only accepts armor or tools that are the same type as the input
 	 */
 	private static boolean isValidMatchForInput(ItemStack inputStack, ItemStack resultStack) {
-		if (inputStack.is(Tags.Items.TOOLS_PICKAXES) && resultStack.is(Tags.Items.TOOLS_PICKAXES)) {
+		if (inputStack.is(ItemTags.PICKAXES) && resultStack.is(ItemTags.PICKAXES)) {
 			return true;
 		}
-		if (inputStack.is(Tags.Items.TOOLS_AXES) && resultStack.is(Tags.Items.TOOLS_AXES)) {
+		if (inputStack.is(ItemTags.AXES) && resultStack.is(ItemTags.AXES)) {
 			return true;
 		}
-		if (inputStack.is(Tags.Items.TOOLS_SHOVELS) && resultStack.is(Tags.Items.TOOLS_SHOVELS)) {
+		if (inputStack.is(ItemTags.SHOVELS) && resultStack.is(ItemTags.SHOVELS)) {
 			return true;
 		}
-		if (inputStack.is(Tags.Items.TOOLS_HOES) && resultStack.is(Tags.Items.TOOLS_HOES)) {
+		if (inputStack.is(ItemTags.HOES) && resultStack.is(ItemTags.HOES)) {
 			return true;
 		}
-		if (inputStack.is(Tags.Items.TOOLS_SWORDS) && resultStack.is(Tags.Items.TOOLS_SWORDS)) {
+		if (inputStack.is(ItemTags.SWORDS) && resultStack.is(ItemTags.SWORDS)) {
 			return true;
 		}
 		if (inputStack.is(Tags.Items.TOOLS_BOWS) && resultStack.is(Tags.Items.TOOLS_BOWS)) {

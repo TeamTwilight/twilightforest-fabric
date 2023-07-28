@@ -3,6 +3,7 @@ package twilightforest.item;
 import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import io.github.fabricators_of_create.porting_lib.item.ShieldBlockItem;
 import io.github.fabricators_of_create.porting_lib.util.TierSortingRegistry;
+import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
@@ -25,7 +26,7 @@ import twilightforest.init.TFSounds;
 
 import java.util.UUID;
 
-public class ChainBlockItem extends Item implements CustomEnchantingBehaviorItem, ShieldBlockItem {
+public class ChainBlockItem extends Item implements CustomEnchantingBehaviorItem, ShieldBlockItem, FabricItem {
 
 	private static final String THROWN_UUID_KEY = "chainEntity";
 

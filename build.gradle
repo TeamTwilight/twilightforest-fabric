@@ -1,6 +1,6 @@
 //file:noinspection GradlePackageVersionRange
 plugins {
-    id "fabric-loom" version "1.1.+"
+    id "fabric-loom" version "1.2.+"
     id "io.github.juuxel.loom-quiltflower" version "1.+"
     id "org.quiltmc.quilt-mappings-on-loom" version "4.2.0"
     id "maven-publish"
@@ -44,16 +44,13 @@ repositories {
         }
     }
     maven { url = "https://maven.wispforest.io"}
+    maven { url "https://maven.vram.io" }
 }
 
 dependencies {
     // dev env
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings(loom.layered {
-        it.mappings("org.quiltmc:quilt-mappings:${project.minecraft_version}+build.${project.qm_version}:intermediary-v2")
-			it.parchment("org.parchmentmc.data:parchment-1.19.3:${project.parchment_version}@zip")
-        it.officialMojangMappings { nameSyntheticMembers = false }
-    })
+    mappings(loom.officialMojangMappings())
     modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 
     modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") { exclude(group: "net.fabricmc.fabric-api") }
@@ -62,7 +59,6 @@ dependencies {
 
     // dependencies
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-    modImplementation(include(fabricApi.module("fabric-data-generation-api-v1", project.fabric_version))) // include datagen api since FAPI fatjar doesn't
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:Porting-Lib:${project.port_lib_version}+${project.minecraft_version}"))
     modImplementation(include("io.github.tropheusj:serialization-hooks:${project.serialization_hooks_version}"))
     modImplementation(include("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.config_api_version}"))
@@ -75,6 +71,10 @@ dependencies {
     implementation(include("com.electronwill.night-config:toml:3.6.3"))
     implementation(include("javax.annotation:javax.annotation-api:1.3.2"))
     implementation(include("com.google.code.findbugs:jsr305:3.0.2"))
+
+    implementation ('net.fabricmc:tiny-remapper:0.8.6+local')
+
+    modImplementation "io.vram:canvas-fabric:19.4.2586"
 
     // compat
     modImplementation("dev.emi:trinkets:${project.trinkets_version}")

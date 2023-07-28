@@ -5,6 +5,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.stack.ListEmiIngredient;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.fabricmc.fabric.api.item.v1.FabricItemStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -44,7 +45,7 @@ public class EMIUncraftingRecipe extends TFEmiRecipe<CraftingRecipe> {
         for (int i = 0; i < outputs.size(); i++) {
             outputs.set(i, Ingredient.of(Arrays.stream(outputs.get(i).getItems())
                     .filter(o -> !(o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS)))
-                    .filter(o -> (o.getRecipeRemainder().isEmpty()))));//Remove any banned items
+                    .filter(o -> (((FabricItemStack)(Object)o).getRecipeRemainder().isEmpty()))));//Remove any banned items
         }
 
         for (int index = 0, offset = 0; index - offset < outputs.size() && index < 9; index++) {

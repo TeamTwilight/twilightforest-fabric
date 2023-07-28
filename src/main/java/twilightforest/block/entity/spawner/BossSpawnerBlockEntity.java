@@ -1,5 +1,6 @@
 package twilightforest.block.entity.spawner;
 
+import io.github.fabricators_of_create.porting_lib.util.PortingHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
@@ -54,7 +55,7 @@ public abstract class BossSpawnerBlockEntity<T extends Mob> extends BlockEntity 
 		T myCreature = makeMyCreature();
 
 		myCreature.moveTo(this.getBlockPos().below(), accessor.getLevel().getRandom().nextFloat() * 360F, 0.0F);
-		myCreature.finalizeSpawn(accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null, null);
+		PortingHooks.onFinalizeSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(this.getBlockPos()), MobSpawnType.SPAWNER, null, null);
 
 		// set creature's home to this
 		initializeCreature(myCreature);

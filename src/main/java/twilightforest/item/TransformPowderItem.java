@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.util.PortingHooks;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -49,7 +50,7 @@ public class TransformPowderItem extends Item {
 
 				newEntity.moveTo(target.getX(), target.getY(), target.getZ(), target.getYRot(), target.getXRot());
 				if (newEntity instanceof Mob mob && target.getLevel() instanceof ServerLevelAccessor world) {
-					mob.finalizeSpawn(world, target.getLevel().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
+					PortingHooks.onFinalizeSpawn(mob, world, target.getLevel().getCurrentDifficultyAt(target.blockPosition()), MobSpawnType.CONVERSION, null, null);
 				}
 
 				try { // try copying what can be copied

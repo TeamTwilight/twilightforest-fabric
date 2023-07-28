@@ -11,6 +11,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.data.tags.DamageTypeTagGenerator;
 import twilightforest.init.*;
@@ -44,6 +45,7 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 		// This is needed here because Minecraft Forge doesn't properly support tagging custom registries, without problems.
 		// If you think this looks fixable, please ensure the fixes are tested in runData & runClient as these current issues exist entirely within Forge's internals.
 		generator.addProvider((output, provider) -> new CustomTagGenerator.WoodPaletteTagGenerator(output, provider.thenApply(r -> append(r, BUILDER)), helper));
+		generator.addProvider((output, provider) -> new BiomeTagGenerator(output, provider.thenApply(r -> append(r, BUILDER)), helper));
 		generator.addProvider((output, provider) -> new DamageTypeTagGenerator(output, provider.thenApply(r -> append(r, BUILDER))));
 	}
 

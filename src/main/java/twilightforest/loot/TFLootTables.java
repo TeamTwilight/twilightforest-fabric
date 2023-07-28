@@ -27,7 +27,7 @@ public class TFLootTables {
 	// For easy testing:
 	// /give @p chest{BlockEntityTag:{LootTable:"twilightforest:all_bosses",CustomName:'{"text":"Master Loot Crate"}'}} 1
 	private static final Set<ResourceLocation> TF_LOOT_TABLES = Sets.newHashSet();
-	private static final int DEFAULT_PLACE_FLAG = 2;
+	public static final int DEFAULT_PLACE_FLAG = 2;
 	
 	public static final TFLootTables SMALL_HOLLOW_HILL = new TFLootTables("hill_1");
 	public static final TFLootTables MEDIUM_HOLLOW_HILL = new TFLootTables("hill_2");

@@ -1,0 +1,2 @@
+void frx_materialVertex() {
+}
