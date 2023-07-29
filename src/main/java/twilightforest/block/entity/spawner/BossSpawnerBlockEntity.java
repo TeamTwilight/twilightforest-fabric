@@ -1,6 +1,5 @@
 package twilightforest.block.entity.spawner;
 
-import io.github.fabricators_of_create.porting_lib.util.PortingHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -16,6 +15,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
+
+import twilightforest.entity.EnforcedHomePoint;
 
 public abstract class BossSpawnerBlockEntity<T extends Mob & EnforcedHomePoint> extends BlockEntity {
 
