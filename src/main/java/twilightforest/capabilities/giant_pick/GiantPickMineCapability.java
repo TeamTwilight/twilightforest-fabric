@@ -11,4 +11,14 @@ public interface GiantPickMineCapability extends Component {
 	void setMining(long mining);
 
 	long getMining();
+
+	void setBreaking(boolean breaking);
+
+	boolean getBreaking();
+
+	void setGiantBlockConversion(int giantBlockConversion);
+
+	int getGiantBlockConversion();
+
+	boolean canMakeGiantBlock();
 }

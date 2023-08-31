@@ -115,7 +115,7 @@ public class GiantBlockModel implements BakedModel, FabricBakedModel {
 
 	@Override
 	public boolean useAmbientOcclusion() {
-		return false;
+		return true;
 	}
 
 	@Override

@@ -447,8 +447,8 @@ public abstract class BiomeHelper {
 		MobSpawnSettings.Builder spawnInfo = new MobSpawnSettings.Builder();
 
 		spawnInfo.creatureGenerationProbability(0.05f);
-		spawnInfo.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TFEntities.WINTER_WOLF.get(), 5, 1, 1)).addMobCharge(TFEntities.WINTER_WOLF.get(), 0.8D, 0.11D);
-		spawnInfo.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 5, 1, 1)).addMobCharge(TFEntities.YETI.get(), 0.8D, 0.11D);
+		spawnInfo.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TFEntities.WINTER_WOLF.get(), 5, 1, 1));
+		spawnInfo.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 5, 1, 1));
 
 		return spawnInfo;
 	}

@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.block.AbstractLightableBlock;
+import twilightforest.block.LightableBlock;
 
 public class IgniteLightableDispenseBehavior extends OptionalDispenseItemBehavior {
 
@@ -34,10 +34,10 @@ public class IgniteLightableDispenseBehavior extends OptionalDispenseItemBehavio
 
 	private static boolean tryLightBlock(ServerLevel level, BlockPos pos) {
 		BlockState blockstate = level.getBlockState(pos);
-		if (blockstate.getBlock() instanceof AbstractLightableBlock) {
-			AbstractLightableBlock.Lighting lightValue = blockstate.getValue(AbstractLightableBlock.LIGHTING);
-			if (lightValue == AbstractLightableBlock.Lighting.NONE) {
-				level.setBlockAndUpdate(pos, blockstate.setValue(AbstractLightableBlock.LIGHTING, AbstractLightableBlock.Lighting.NORMAL));
+		if (blockstate.getBlock() instanceof LightableBlock) {
+			LightableBlock.Lighting lightValue = blockstate.getValue(LightableBlock.LIGHTING);
+			if (lightValue == LightableBlock.Lighting.NONE) {
+				level.setBlockAndUpdate(pos, blockstate.setValue(LightableBlock.LIGHTING, LightableBlock.Lighting.NORMAL));
 				return true;
 			}
 		}

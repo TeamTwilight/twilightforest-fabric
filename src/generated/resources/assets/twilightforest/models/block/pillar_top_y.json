@@ -1,9 +1,0 @@
-{
-  "parent": "twilightforest:block/pillar/pillar_top",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "top_cap": "twilightforest:block/stone_twist/cap/end_top_y",
-    "top_x": "twilightforest:block/stone_twist/cap/y_y_top",
-    "top_z": "twilightforest:block/stone_twist/cap/y_y_top"
-  }
-}

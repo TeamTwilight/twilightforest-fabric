@@ -7,6 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -60,7 +61,13 @@ public class GiantPickItem extends PickaxeItem implements GiantItem {
 	public boolean canAttackBlock(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) {
 		ItemStack stack = pPlayer.getMainHandItem();
 		if (stack.is(this)) {
-			CapabilityList.GIANT_PICK_MINE.maybeGet(pPlayer).ifPresent(cap -> cap.setMining(pLevel.getGameTime()));
+			CapabilityList.GIANT_PICK_MINE.maybeGet(pPlayer).ifPresent(cap -> {
+				if (cap.getMining() != pLevel.getGameTime()) {
+					cap.setMining(pLevel.getGameTime());
+					cap.setBreaking(false);
+					cap.setGiantBlockConversion(0);
+				}
+			});
 		}
 		return super.canAttackBlock(pState, pLevel, pPos, pPlayer);
 	}

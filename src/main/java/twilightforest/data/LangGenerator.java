@@ -1,10 +1,17 @@
 package twilightforest.data;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.data.helpers.TFLangProvider;
 import twilightforest.init.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LangGenerator extends TFLangProvider {
+	public static final Map<ResourceLocation, Pair<String, String>> MAGIC_PAINTING_HELPER = new HashMap<>();
+
 	public LangGenerator(PackOutput output) {
 		super(output);
 	}
@@ -38,7 +45,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBiome(TFBiomes.FINAL_PLATEAU, "Final Plateau");
 		this.addBiome(TFBiomes.UNDERGROUND, "Underground");
 
-		this.add("dimension.twilightforest.twilightforest", "Twilight Forest");
+		this.add("dimension.twilightforest.twilight_forest", "Twilight Forest");
 
 		this.addStructure(TFStructures.HEDGE_MAZE, "Hedge Maze");
 		this.addStructure(TFStructures.HOLLOW_HILL_SMALL, "Small Hollow Hill");
@@ -168,6 +175,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.TWISTED_STONE_PILLAR, "Twisted Stone Pillar");
 		this.addBlock(TFBlocks.BOLD_STONE_PILLAR, "Bold Stone Pillar");
 		this.addBlock(TFBlocks.CANDELABRA, "Candelabra");
+		this.addBlock(TFBlocks.WROUGHT_IRON_FENCE, "Wrought Iron Fence");
+		this.addBlock(TFBlocks.WROUGHT_IRON_FINIAL, "Wrought Iron Finial");
 		this.addBlock(TFBlocks.KEEPSAKE_CASKET, "Keepsake Casket");
 		this.add("block.twilightforest.casket.broken", "Your Keepsake Casket was too damaged to hold any more items. All items that would be stored in your casket were dropped on the ground.");
 		this.add("block.twilightforest.casket.locked", "This Casket can only be opened by %s!");
@@ -435,9 +444,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.PIGLIN_WALL_SKULL_CANDLE, "Piglin Wall Skull Candle");
 
 		this.addBlock(TFBlocks.UNCRAFTING_TABLE, "Uncrafting Table");
+		this.add("block.twilightforest.uncrafting_table.disabled", "This block has been disabled.");
 		this.add("container.twilightforest.uncrafting_table", "Uncrafting Table");
-		this.add("container.twilightforest.uncrafting_table.disabled", "Uncrafting is disabled via config");
 		this.add("container.twilightforest.uncrafting_table.disabled_item", "Uncrafting this item is disabled.");
+		this.add("container.twilightforest.uncrafting_table.uncrafting_disabled", "Uncrafting is disabled via config");
 
 		this.addItem(TFItems.NAGA_SCALE, "Naga Scale");
 		this.addItem(TFItems.NAGA_CHESTPLATE, "Naga Scale Tunic");
@@ -452,6 +462,7 @@ public class LangGenerator extends TFLangProvider {
 		this.add("item.twilightforest.flask.doses", "Doses: %s/%s");
 		this.add("item.twilightforest.flask.no_refill", "Cannot be refilled");
 
+		this.addItem(TFItems.MAGIC_PAINTING, "Magic Painting");
 		this.addItem(TFItems.ORE_METER, "Ore Meter");
 		this.addItem(TFItems.FILLED_MAGIC_MAP, "Magic Map");
 		this.addItem(TFItems.FILLED_MAZE_MAP, "Maze Map");
@@ -669,6 +680,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addEntityType(TFEntities.PROTECTION_BOX, "Progression Protection Box");
 		this.addEntityType(TFEntities.BOAT, "Boat");
 		this.addEntityType(TFEntities.CHEST_BOAT, "Boat with Chest");
+		this.addEntityType(TFEntities.MAGIC_PAINTING, "Magic Painting");
 
 		this.addSubtitle(TFSounds.ACID_RAIN_BURNS, "Acid rain scalds");
 
@@ -1131,5 +1143,10 @@ public class LangGenerator extends TFLangProvider {
 		this.add("museumcurator.metallurgy.twilightforest.fiery", "Fiery Metal");
 		this.add("museumcurator.metallurgy.twilightforest.ironwood", "Ironwood");
 		this.add("museumcurator.metallurgy.twilightforest.knightmetal", "Knightmetal");
+
+		MAGIC_PAINTING_HELPER.forEach((location, stringStringPair) -> {
+			this.add(location.toLanguageKey("magic_painting", "title"), stringStringPair.getFirst());
+			this.add(location.toLanguageKey("magic_painting", "author"), stringStringPair.getSecond());
+		});
 	}
 }

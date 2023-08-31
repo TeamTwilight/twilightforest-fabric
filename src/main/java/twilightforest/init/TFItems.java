@@ -46,6 +46,7 @@ public class TFItems {
 	public static final RegistryObject<Item> ZOMBIE_SCEPTER = ITEMS.register("zombie_scepter", () -> new ZombieWandItem(new Item.Properties().durability(9).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> FORTIFICATION_SCEPTER = ITEMS.register("fortification_scepter", () -> new FortificationWandItem(new Item.Properties().durability(9).rarity(Rarity.UNCOMMON)));
 	//items.register("Wand of Pacification [NYI]", new Item().setIconIndex(6).setTranslationKey("wandPacification").setMaxStackSize(1));
+	public static final RegistryObject<Item> MAGIC_PAINTING = ITEMS.register("magic_painting", () -> new MagicPaintingItem(new Item.Properties()));
 	public static final RegistryObject<Item> ORE_METER = ITEMS.register("ore_meter", () -> new OreMeterItem(new Item.Properties()));
 	public static final RegistryObject<Item> FILLED_MAGIC_MAP = ITEMS.register("filled_magic_map", () -> new MagicMapItem(new Item.Properties()));
 	public static final RegistryObject<Item> FILLED_MAZE_MAP = ITEMS.register("filled_maze_map", () -> new MazeMapItem(false, new Item.Properties()));
@@ -214,19 +215,19 @@ public class TFItems {
 
 	public static final RegistryObject<Item> TWILIGHT_OAK_SIGN = ITEMS.register("twilight_oak_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get()));
 	public static final RegistryObject<Item> TWILIGHT_OAK_HANGING_SIGN = ITEMS.register("twilight_oak_hanging_sign", () -> new HangingSignItem(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
-	public static final RegistryObject<Item> CANOPY_SIGN = ITEMS.register("canopy_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.CANOPY_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get()));
+	public static final RegistryObject<Item> CANOPY_SIGN = ITEMS.register("canopy_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.CANOPY_SIGN.get(), TFBlocks.CANOPY_WALL_SIGN.get()));
 	public static final RegistryObject<Item> CANOPY_HANGING_SIGN = ITEMS.register("canopy_hanging_sign", () -> new HangingSignItem(TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
-	public static final RegistryObject<Item> MANGROVE_SIGN = ITEMS.register("mangrove_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.MANGROVE_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get()));
+	public static final RegistryObject<Item> MANGROVE_SIGN = ITEMS.register("mangrove_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.MANGROVE_SIGN.get(), TFBlocks.MANGROVE_WALL_SIGN.get()));
 	public static final RegistryObject<Item> MANGROVE_HANGING_SIGN = ITEMS.register("mangrove_hanging_sign", () -> new HangingSignItem(TFBlocks.MANGROVE_HANGING_SIGN.get(), TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
-	public static final RegistryObject<Item> DARK_SIGN = ITEMS.register("dark_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.DARK_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get()));
+	public static final RegistryObject<Item> DARK_SIGN = ITEMS.register("dark_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.DARK_SIGN.get(), TFBlocks.DARK_WALL_SIGN.get()));
 	public static final RegistryObject<Item> DARK_HANGING_SIGN = ITEMS.register("dark_hanging_sign", () -> new HangingSignItem(TFBlocks.DARK_HANGING_SIGN.get(), TFBlocks.DARK_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
-	public static final RegistryObject<Item> TIME_SIGN = ITEMS.register("time_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.TIME_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get()));
+	public static final RegistryObject<Item> TIME_SIGN = ITEMS.register("time_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.TIME_SIGN.get(), TFBlocks.TIME_WALL_SIGN.get()));
 	public static final RegistryObject<Item> TIME_HANGING_SIGN = ITEMS.register("time_hanging_sign", () -> new HangingSignItem(TFBlocks.TIME_HANGING_SIGN.get(), TFBlocks.TIME_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
-	public static final RegistryObject<Item> TRANSFORMATION_SIGN = ITEMS.register("transformation_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get()));
+	public static final RegistryObject<Item> TRANSFORMATION_SIGN = ITEMS.register("transformation_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_SIGN.get()));
 	public static final RegistryObject<Item> TRANSFORMATION_HANGING_SIGN = ITEMS.register("transformation_hanging_sign", () -> new HangingSignItem(TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
-	public static final RegistryObject<Item> MINING_SIGN = ITEMS.register("mining_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.MINING_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get()));
+	public static final RegistryObject<Item> MINING_SIGN = ITEMS.register("mining_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get()));
 	public static final RegistryObject<Item> MINING_HANGING_SIGN = ITEMS.register("mining_hanging_sign", () -> new HangingSignItem(TFBlocks.MINING_HANGING_SIGN.get(), TFBlocks.MINING_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
-	public static final RegistryObject<Item> SORTING_SIGN = ITEMS.register("sorting_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.SORTING_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get()));
+	public static final RegistryObject<Item> SORTING_SIGN = ITEMS.register("sorting_sign", () -> new SignItem(new Item.Properties().stacksTo(16), TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get()));
 	public static final RegistryObject<Item> SORTING_HANGING_SIGN = ITEMS.register("sorting_hanging_sign", () -> new HangingSignItem(TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
 
 	public static final RegistryObject<Item> TWILIGHT_OAK_BOAT = ITEMS.register("twilight_oak_boat", () -> new TwilightBoatItem(false, TwilightBoat.Type.TWILIGHT_OAK, new Item.Properties().stacksTo(1)));

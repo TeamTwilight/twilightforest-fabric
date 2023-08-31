@@ -2,12 +2,8 @@
   "type": "twilightforest:giant_block_grouping",
   "conditions": [
     {
-      "condition": "minecraft:match_tool",
-      "predicate": {
-        "items": [
-          "twilightforest:giant_pickaxe"
-        ]
-      }
+      "condition": "twilightforest:giant_pick_used",
+      "entity": "this"
     }
   ]
 }

@@ -1,5 +1,7 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -17,12 +19,18 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import twilightforest.TFConfig;
 import twilightforest.entity.monster.GiantMiner;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, PlayerModel<T>> {
 	private final PlayerModel<T> normalModel;
@@ -30,8 +38,8 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 
 	public TFGiantRenderer(EntityRendererProvider.Context context) {
 		super(context, new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER), false), 1.8F);
-		normalModel = getModel();
-		slimModel = new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER_SLIM), true);
+		this.normalModel = this.getModel();
+		this.slimModel = new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER_SLIM), true);
 
 		this.addLayer(new GiantItemInHandLayer<>(this, context.getItemInHandRenderer()));
 		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
@@ -40,15 +48,28 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 	@Override
 	public ResourceLocation getTextureLocation(GiantMiner entity) {
 		Minecraft mc = Minecraft.getInstance();
-		boolean slim = false;
 		ResourceLocation texture = DefaultPlayerSkin.getDefaultSkin();
+		this.model = this.normalModel;
 
-		if (mc.getCameraEntity() instanceof AbstractClientPlayer client) {
+		GameProfile profile = TFConfig.GAME_PROFILES.isEmpty() ? null : TFConfig.GAME_PROFILES.get(Math.abs((int)entity.getUUID().getMostSignificantBits()) % TFConfig.GAME_PROFILES.size());
+
+		if (profile != null) {
+			Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = mc.getSkinManager().getInsecureSkinInformation(profile);
+
+			if (map.containsKey(MinecraftProfileTexture.Type.SKIN)) {
+				MinecraftProfileTexture profileTexture = map.get(MinecraftProfileTexture.Type.SKIN);
+				texture = mc.getSkinManager().registerTexture(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN);
+				if (Objects.equals(profileTexture.getMetadata("model"), "slim")) this.model = this.slimModel;
+			} else {
+				UUID uuid = UUIDUtil.getOrCreatePlayerUUID(profile);
+				texture = DefaultPlayerSkin.getDefaultSkin(uuid);
+				if (DefaultPlayerSkin.getSkinModelName(uuid).equals("slim")) this.model = this.slimModel;
+			}
+		} else if (mc.getCameraEntity() instanceof AbstractClientPlayer client) {
 			texture = client.getSkinTextureLocation();
-			slim = client.getModelName().equals("slim");
+			if (client.getModelName().equals("slim")) this.model = this.slimModel;
 		}
 
-		model = slim ? slimModel : normalModel;
 		return texture;
 	}
 

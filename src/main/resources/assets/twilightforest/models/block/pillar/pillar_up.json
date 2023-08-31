@@ -1,0 +1,19 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"particle": "twilightforest:block/stone_twist/twist_y",
+		"side_z": "twilightforest:block/stone_twist/twist_y"
+	},
+	"elements": [
+		{
+			"from": [2, 14, 2],
+			"to": [14, 16, 14],
+			"faces": {
+				"north": {"uv": [2, 0, 14, 2], "texture": "#side_z"},
+				"east": {"uv": [2, 0, 14, 2], "texture": "#side_z"},
+				"south": {"uv": [2, 0, 14, 2], "texture": "#side_z"},
+				"west": {"uv": [2, 0, 14, 2], "texture": "#side_z"}
+			}
+		}
+	]
+}

@@ -195,7 +195,9 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFBlocks.CANDELABRA.get().asItem(),
 				TFItems.BRITTLE_FLASK.get(),
 				TFItems.GREATER_FLASK.get(),
-				TFItems.CUBE_OF_ANNIHILATION.get()
+				TFItems.CUBE_OF_ANNIHILATION.get(),
+				TFBlocks.WROUGHT_IRON_FENCE.get().asItem(),
+				TFBlocks.WROUGHT_IRON_FINIAL.get().asItem()
 		);
 
 		getOrCreateTagBuilder(NYI).add(
@@ -207,8 +209,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get().asItem(),
 				TFBlocks.AURORALIZED_GLASS.get().asItem(),
 				TFBlocks.SLIDER.get().asItem(),
-				TFBlocks.TWISTED_STONE_PILLAR.get().asItem(),
-				TFItems.ORE_METER.get()
+				TFItems.ORE_METER.get(),
+				TFItems.MAGIC_PAINTING.get()
 		);
 
 		getOrCreateTagBuilder(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);

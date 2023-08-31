@@ -13,6 +13,11 @@ public class UncraftingContainer implements Container {
 	public int numberOfInputItems;
 	public int uncraftingCost;
 	public int recraftingCost;
+	public UncraftingMenu menu;
+
+	public UncraftingContainer(UncraftingMenu menu) {
+		this.menu = menu;
+	}
 
 	@Override
 	public int getContainerSize() {
@@ -76,7 +81,7 @@ public class UncraftingContainer implements Container {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get();
+		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get();
 	}
 
 	@Override

@@ -40,10 +40,15 @@ import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.BiomeLayerTypes;
 import twilightforest.init.custom.DwarfRabbitVariant;
 import twilightforest.init.custom.Enforcement;
+import twilightforest.init.custom.MagicPaintingVariants;
 import twilightforest.init.custom.Restrictions;
 import twilightforest.init.custom.TinyBirdVariant;
 import twilightforest.init.custom.WoodPalettes;
+import twilightforest.item.recipe.UncraftingTableCondition;
+import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.network.UpdateGamerulePacket;
+import twilightforest.util.MagicPaintingVariant;
 import twilightforest.util.Restriction;
 import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.world.components.biomesources.LandmarkBiomeSource;
@@ -51,7 +56,6 @@ import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 
 import java.util.Locale;
-import java.util.Objects;
 
 public class TwilightForestMod implements ModInitializer {
 
@@ -64,7 +68,7 @@ public class TwilightForestMod implements ModInitializer {
 	// odd one out, as armor textures are a stringy mess at present
 	public static final String ARMOR_DIR = ID + ":textures/armor/";
 
-	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRuleRegistry.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true)); //Putting it in UPDATES since other world stuff is here
+	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRuleRegistry.register("tfEnforcedProgression", GameRules.Category.UPDATES, GameRuleFactory.createBooleanRule(true, (server, enforced) -> TFPacketHandler.CHANNEL.send(PacketDistributor.ALL.noArg(), new UpdateGamerulePacket(enforced.get())))); //Putting it in UPDATES since other world stuff is here
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
@@ -122,6 +126,7 @@ public class TwilightForestMod implements ModInitializer {
 		WoodPalettes.WOOD_PALETTES.register();
 		Enforcement.ENFORCEMENTS.register();
 		Restrictions.RESTRICTIONS.register();
+		MagicPaintingVariants.MAGIC_PAINTINGS.register(modbus);
 
 		modbus.addListener(this::sendIMCs);
 		modbus.addListener(this::init);
@@ -158,14 +163,17 @@ public class TwilightForestMod implements ModInitializer {
 		TwilightForestMod.setRegistriesForDatapack();
 		event.dataPackRegistry(BiomeLayerStack.BIOME_STACK_KEY, BiomeLayerStack.DISPATCH_CODEC);
 		event.dataPackRegistry(Restrictions.RESTRICTION_KEY, Restriction.CODEC, Restriction.CODEC);
+		event.dataPackRegistry(MagicPaintingVariants.REGISTRY_KEY, MagicPaintingVariant.CODEC, MagicPaintingVariant.CODEC);
 	}
 
 	public void registerExtraStuff(RegisterEvent evt) {
-		if (Objects.equals(evt.getRegistryKey(), Registries.BIOME_SOURCE)) {
+		if (evt.getRegistryKey().equals(Registries.BIOME_SOURCE)) {
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("landmarks"), LandmarkBiomeSource.CODEC);
-		} else if (Objects.equals(evt.getRegistryKey(), Registries.CHUNK_GENERATOR)) {
+		} else if (evt.getRegistryKey().equals(Registries.CHUNK_GENERATOR)) {
 			Registry.register(BuiltInRegistries.CHUNK_GENERATOR, TwilightForestMod.prefix("structure_locating_wrapper"), ChunkGeneratorTwilight.CODEC);
+		} else if (evt.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
+			CraftingHelper.register(UncraftingTableCondition.Serializer.INSTANCE);
 		}
 	}
 
@@ -327,6 +335,11 @@ public class TwilightForestMod implements ModInitializer {
 			ComposterBlock.add(0.65F, TFItems.MAZE_WAFER.get());
 			ComposterBlock.add(0.85F, TFItems.EXPERIMENT_115.get());
 			ComposterBlock.add(0.85F, TFItems.MAGIC_BEANS.get());
+
+			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.COBBLESTONE, TFBlocks.GIANT_COBBLESTONE.get().asItem());
+			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.OAK_LOG, TFBlocks.GIANT_LOG.get().asItem());
+			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.OAK_LEAVES, TFBlocks.GIANT_LEAVES.get().asItem());
+			GiantToolGroupingModifier.CONVERSIONS.put(Blocks.OBSIDIAN, TFBlocks.GIANT_OBSIDIAN.get().asItem());
 //		});
 	}
 

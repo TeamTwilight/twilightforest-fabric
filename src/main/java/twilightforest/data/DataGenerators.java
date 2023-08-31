@@ -58,6 +58,8 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 //				Component.literal("Resources for Twilight Forest"),
 //				DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
 //				Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
+		generator.addProvider(AtlasGenerator::new);
+		generator.addProvider(LangGenerator::new);
 	}
 	
 	private record ProviderProvider(Pack pack, ExistingFileHelper helper) {

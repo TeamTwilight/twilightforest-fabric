@@ -12,14 +12,15 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest"
 updateJSONURL="https://gh.tamaized.com/TeamTwilight/twilightforest/update.json"
 logoFile="twilightforest_logo.png"
 credits="By Benimatic (Ben Mazur)"
-authors="Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus, Andromander, GizmoTheMoonPig, Jodlodi"
+authors="Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus, Andromander, GizmoTheMoonPig, jodlodi"
 description='''
-An enchanted forest dimension.'''
+An enchanted forest dimension.
+'''
 
 [[dependencies.twilightforest]]
     modId="forge"
     mandatory=true
-    versionRange="[47.0.45,47.1.3]"
+    versionRange="[47.1.0,)"
     ordering="NONE"
     side="BOTH"
 

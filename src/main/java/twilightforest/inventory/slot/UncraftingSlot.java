@@ -9,6 +9,7 @@ import net.fabricmc.api.Environment;
 import twilightforest.TFConfig;
 import twilightforest.inventory.UncraftingMenu;
 import twilightforest.inventory.UncraftingContainer;
+import twilightforest.item.recipe.UncraftingRecipe;
 
 public class UncraftingSlot extends Slot {
 
@@ -50,7 +51,7 @@ public class UncraftingSlot extends Slot {
 		}
 
 		// if uncrafting is disabled, no!
-		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get()) {
+		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get() && !(this.uncraftingMatrix.menu.storedGhostRecipe instanceof UncraftingRecipe)) {
 			return false;
 		}
 

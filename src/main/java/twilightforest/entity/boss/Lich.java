@@ -49,7 +49,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.AbstractLightableBlock;
+import twilightforest.block.LightableBlock;
 import twilightforest.data.tags.DamageTypeTagGenerator;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.*;
@@ -660,8 +660,8 @@ public class Lich extends Monster implements EnforcedHomePoint, IBossLootBuffer 
 			if (this.level().getBlockState(pos).getBlock() instanceof AbstractCandleBlock && this.level().getBlockState(pos).getValue(BlockStateProperties.LIT)) {
 				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(BlockStateProperties.LIT, false));
 				this.level().playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 1.0F);
-			} else if (this.level().getBlockState(pos).getBlock() instanceof AbstractLightableBlock && this.level().getBlockState(pos).getValue(AbstractLightableBlock.LIGHTING) == AbstractLightableBlock.Lighting.NORMAL) {
-				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(AbstractLightableBlock.LIGHTING, AbstractLightableBlock.Lighting.OMINOUS));
+			} else if (this.level().getBlockState(pos).getBlock() instanceof LightableBlock && this.level().getBlockState(pos).getValue(LightableBlock.LIGHTING) == LightableBlock.Lighting.NORMAL) {
+				this.level().setBlockAndUpdate(pos, this.level().getBlockState(pos).setValue(LightableBlock.LIGHTING, LightableBlock.Lighting.OMINOUS));
 				this.level().playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 0.75F);
 			}
 		}

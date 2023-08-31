@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 
 import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -43,7 +44,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	private static final String TAG_MARKER = "TwilightForestMarker";
 
 	// Inaccessible grid, for uncrafting logic
-	private final UncraftingContainer uncraftingMatrix = new UncraftingContainer();
+	private final UncraftingContainer uncraftingMatrix = new UncraftingContainer(this);
 	// Accessible grid, for actual crafting
 	public final CraftingContainer assemblyMatrix = new TransientCraftingContainer(this, 3, 3);
 	// Inaccessible grid, for recrafting logic
@@ -63,8 +64,10 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
 
-	// Need to store potential custom cost. If set to -1, will calculate uncrafting cost normally.
-	private int customCost;
+	// Store the currently selected recipe for use later down the line.
+	// Currently used for determining if the recipe is an uncrafting one and for determining custom costs
+	@Nullable
+	public Recipe<?> storedGhostRecipe = null;
 
 	public static UncraftingMenu fromNetwork(int id, Inventory inventory) {
 		return new UncraftingMenu(id, inventory, inventory.player.level(), ContainerLevelAccess.NULL);
@@ -124,8 +127,8 @@ public class UncraftingMenu extends AbstractContainerMenu {
 			if (size > 0 && !inputStack.is(ItemTagGenerator.BANNED_UNCRAFTABLES)) {
 
 				Recipe<?> recipe = recipes[Math.floorMod(this.unrecipeInCycle, size)];
-				this.customCost = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCost() : -1;
-				ItemStack[] recipeItems = getIngredients(recipe);
+				this.storedGhostRecipe = recipe;
+				ItemStack[] recipeItems = this.getIngredients(recipe);
 
 				if (recipe instanceof ShapedRecipe rec) {
 
@@ -175,12 +178,12 @@ public class UncraftingMenu extends AbstractContainerMenu {
 				}
 
 				// store number of items this recipe produces (and thus how many input items are required for uncrafting)
-				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.getCount() : recipe.getResultItem(this.level.registryAccess()).getCount();//Uncrafting recipes need this method call
+				this.uncraftingMatrix.numberOfInputItems = recipe instanceof UncraftingRecipe uncraftingRecipe ? uncraftingRecipe.count() : recipe.getResultItem(this.level.registryAccess()).getCount(); //Uncrafting recipes need this method call
 				this.uncraftingMatrix.uncraftingCost = this.calculateUncraftingCost();
 				this.uncraftingMatrix.recraftingCost = 0;
 
 			} else {
-				this.customCost = -1;
+				this.storedGhostRecipe = null;
 				this.uncraftingMatrix.numberOfInputItems = 0;
 				this.uncraftingMatrix.uncraftingCost = 0;
 			}
@@ -259,11 +262,6 @@ public class UncraftingMenu extends AbstractContainerMenu {
 				this.tinkerResult.setItem(0, result);
 				this.uncraftingMatrix.uncraftingCost = 0;
 				this.uncraftingMatrix.recraftingCost = this.calculateRecraftingCost();
-
-				// if there is a recrafting cost, increment the repair cost of the output
-				if (this.uncraftingMatrix.recraftingCost > 0 && !result.hasCustomHoverName()) {
-					result.setRepairCost(input.getBaseRepairCost() + 2);
-				}
 			}
 		}
 	}
@@ -399,9 +397,10 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	 */
 	private int calculateUncraftingCost() {
 		// we don't want to display anything if there is anything in the assembly grid
-		if (this.assemblyMatrix.isEmpty()) {
-			return this.customCost >= 0 ? this.customCost : (int) Math.round(countDamageableParts(this.uncraftingMatrix) * TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get());
-		} else return 0;
+		if ((!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get() || this.storedGhostRecipe instanceof UncraftingRecipe) && this.assemblyMatrix.isEmpty()) {
+			return this.storedGhostRecipe instanceof UncraftingRecipe recipe ? recipe.cost() : (int) Math.round(countDamageableParts(this.uncraftingMatrix) * TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get());
+		}
+		return 0;
 	}
 
 	/**
@@ -412,15 +411,17 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		ItemStack input = this.tinkerInput.getItem(0);
 		ItemStack output = this.tinkerResult.getItem(0);
 
-		if (input.isEmpty() || !input.isEnchanted() || output.isEmpty()) {
+		if (input.isEmpty() || output.isEmpty()) {
 			return 0;
 		}
 
 		// okay, if we're here the input item must be enchanted, and we are repairing or recrafting it
 		int cost = 0;
 
-		// add innate repair cost
-		cost += input.getBaseRepairCost();
+		if (!ItemStack.isSameItem(input, output)) {
+			// add each ingredient being used to the cost if recrafting
+			cost += this.assemblyMatrix.getItems().stream().filter(stack -> !stack.isEmpty()).toList().size();
+		}
 
 		// look at the input's enchantments and total them up
 		int enchantCost = countTotalEnchantmentCost(input);
@@ -429,10 +430,6 @@ public class UncraftingMenu extends AbstractContainerMenu {
 		// broken pieces cost
 		int damagedCost = (1 + this.countDamagedParts(input)) * EnchantmentHelper.getEnchantments(output).size();
 		cost += damagedCost;
-
-		// factor in enchantability difference
-		int enchantabilityDifference = input.getItem().getEnchantmentValue(/*input*/) - output.getItem().getEnchantmentValue(/*output*/);
-		cost += enchantabilityDifference;
 
 		// minimum cost of 1 if we're even calling this part
 		cost = Math.max(1, cost);
@@ -475,7 +472,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 				&& player.containerMenu.getCarried().isEmpty() && !this.slots.get(slotNum).hasItem()) {
 
 			// is the assembly matrix empty?
-			if (this.assemblyMatrix.isEmpty()) {
+			if (this.assemblyMatrix.isEmpty() && (clickType != ClickType.SWAP || player.getInventory().getItem(mouseButton).isEmpty())) {
 				slotNum -= 9;
 			}
 		}
@@ -489,13 +486,13 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 		if (slotNum > 0 && this.slots.get(slotNum).container == this.uncraftingMatrix) {
 
-			// similarly, reject uncrafting if they can't do that either
-			if (this.calculateUncraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
+			// don't allow uncrafting normal recipes if the server option is turned off
+			if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get() && !(this.storedGhostRecipe instanceof UncraftingRecipe)) {
 				return;
 			}
 
-			// don't allow uncrafting if the server option is turned off
-			if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get()) {
+			// similarly, reject uncrafting if they can't do that either
+			if (this.calculateUncraftingCost() > player.experienceLevel && !player.getAbilities().instabuild) {
 				return;
 			}
 
@@ -517,19 +514,17 @@ public class UncraftingMenu extends AbstractContainerMenu {
 	/**
 	 * Should the specified item count for taking damage?
 	 */
-	private static boolean isDamageableComponent(ItemStack itemStack) {
-		return !itemStack.is(ItemTagGenerator.UNCRAFTING_IGNORES_COST);
+	private static boolean isDamageableComponent(ItemStack stack) {
+		return !stack.isEmpty() && !stack.is(ItemTagGenerator.UNCRAFTING_IGNORES_COST);
 	}
 
 	/**
 	 * Count how many items in an inventory can take damage
 	 */
 	private static int countDamageableParts(Container matrix) {
-		int count = 0;
+		int count = matrix.getContainerSize();
 		for (int i = 0; i < matrix.getContainerSize(); i++) {
-			if (!matrix.getItem(i).isEmpty()) {
-				count++;
-			}
+
 			if (isIngredientProblematic(matrix.getItem(i)) || isMarked(matrix.getItem(i)) || !isDamageableComponent(matrix.getItem(i))) {
 				count--;
 			}
@@ -621,6 +616,6 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
+		return !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get() && stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE.get());
 	}
 }

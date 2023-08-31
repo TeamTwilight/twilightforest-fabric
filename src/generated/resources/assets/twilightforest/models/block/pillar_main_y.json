@@ -1,8 +1,0 @@
-{
-  "parent": "twilightforest:block/pillar/pillar_12_ctm",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "side_x": "twilightforest:block/stone_twist/twist_y",
-    "side_z": "twilightforest:block/stone_twist/twist_y"
-  }
-}

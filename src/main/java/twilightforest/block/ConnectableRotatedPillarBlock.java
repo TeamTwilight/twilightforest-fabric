@@ -54,11 +54,11 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos pos, BlockPos facingPos) {
-		return state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(facing), this.canConnectTo(facingState, facingState.isFaceSturdy(accessor, facingPos, facing.getOpposite())));
+		return state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(facing), this.canConnectTo(state.getValue(AXIS), facing, facingState, facingState.isFaceSturdy(accessor, facingPos, facing.getOpposite())));
 	}
 
-	public boolean canConnectTo(BlockState state, boolean solidSide) {
-		return !isExceptionForConnection(state) && solidSide;
+	public boolean canConnectTo(Direction.Axis thisAxis, Direction facing, BlockState facingState, boolean solidSide) {
+		return !isExceptionForConnection(facingState) && solidSide;
 	}
 
 	@Override
@@ -73,11 +73,13 @@ public abstract class ConnectableRotatedPillarBlock extends RotatedPillarBlock {
 		BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
 		BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
 		BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
-		return this.defaultBlockState().setValue(AXIS, context.getClickedFace().getAxis())
-				.setValue(NORTH, this.canConnectTo(blockstate, blockstate.isFaceSturdy(iblockreader, blockpos1, Direction.SOUTH)))
-				.setValue(SOUTH, this.canConnectTo(blockstate1, blockstate1.isFaceSturdy(iblockreader, blockpos2, Direction.NORTH)))
-				.setValue(WEST, this.canConnectTo(blockstate2, blockstate2.isFaceSturdy(iblockreader, blockpos3, Direction.EAST)))
-				.setValue(EAST, this.canConnectTo(blockstate3, blockstate3.isFaceSturdy(iblockreader, blockpos4, Direction.WEST)));
+
+		Direction.Axis axis = context.getClickedFace().getAxis();
+		return this.defaultBlockState().setValue(AXIS, axis)
+				.setValue(NORTH, this.canConnectTo(axis, Direction.NORTH, blockstate, blockstate.isFaceSturdy(iblockreader, blockpos1, Direction.SOUTH)))
+				.setValue(SOUTH, this.canConnectTo(axis, Direction.SOUTH, blockstate1, blockstate1.isFaceSturdy(iblockreader, blockpos2, Direction.NORTH)))
+				.setValue(WEST, this.canConnectTo(axis, Direction.WEST, blockstate2, blockstate2.isFaceSturdy(iblockreader, blockpos3, Direction.EAST)))
+				.setValue(EAST, this.canConnectTo(axis, Direction.EAST, blockstate3, blockstate3.isFaceSturdy(iblockreader, blockpos4, Direction.WEST)));
 	}
 
 	@Override

@@ -15,6 +15,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.client.model.data.ModelData;
+import twilightforest.client.model.entity.DeathTomeModel;
 import twilightforest.potions.FrostedEffect;
 
 public class IceLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
@@ -36,10 +38,12 @@ public class IceLayer<T extends LivingEntity, M extends EntityModel<T>> extends 
 
 		int numCubes = (int) (entity.getBbHeight() / 0.4F) + (int) (frost.getAmount() / FrostedEffect.FROST_MULTIPLIER) + 1; //Number of cubes, adds more cubes based on the level of the effect
 
+		float specialOffset = this.getParentModel() instanceof DeathTomeModel ? 1.0F : 0.0F;
+
 		for (int i = 0; i < numCubes; i++) { //Render cubes
 			stack.pushPose();
 			float dx = ((this.random.nextFloat() * (entity.getBbWidth() * 2.0F)) - entity.getBbWidth()) * 0.1F;
-			float dy = Math.max(1.5F - (this.random.nextFloat()) * (entity.getBbHeight()), -0.1F); //Gotta limit the height because otherwise frozen giants make blocks spawn like 10 blocks above them
+			float dy = Math.max(1.5F - (this.random.nextFloat()) * (entity.getBbHeight() - specialOffset), -0.1F) - specialOffset; //Gotta limit the height because otherwise frozen giants make blocks spawn like 10 blocks above them
 			float dz = ((this.random.nextFloat() * (entity.getBbWidth() * 2.0F)) - entity.getBbWidth()) * 0.1F;
 			stack.translate(dx, dy, dz);
 			stack.scale(0.5F, 0.5F, 0.5F);

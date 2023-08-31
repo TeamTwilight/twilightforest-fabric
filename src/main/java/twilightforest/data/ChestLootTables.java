@@ -19,6 +19,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEnchantments;
 import twilightforest.init.TFItems;
 import twilightforest.loot.TFLootTables;
+import twilightforest.loot.conditions.UncraftingTableEnabledCondition;
 
 import java.util.function.BiConsumer;
 
@@ -271,7 +272,7 @@ public class ChestLootTables implements LootTableSubProvider {
 								.setRolls(ConstantValue.exactly(1))
 								//rare loot
 								.add(LootItem.lootTableItem(TFItems.TRANSFORMATION_POWDER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))))
-								.add(LootItem.lootTableItem(TFBlocks.UNCRAFTING_TABLE.get().asItem()))
+								.add(LootItem.lootTableItem(TFBlocks.UNCRAFTING_TABLE.get().asItem()).when(UncraftingTableEnabledCondition.uncraftingTableEnabled()))
 								.add(LootItem.lootTableItem(Items.GOLDEN_APPLE))));
 
 		register.accept(TFLootTables.SMALL_HOLLOW_HILL.lootTable,
@@ -327,7 +328,7 @@ public class ChestLootTables implements LootTableSubProvider {
 								//rare loot
 								.add(LootItem.lootTableItem(TFItems.MAGIC_MAP.get()).setWeight(75))
 								.add(LootItem.lootTableItem(TFItems.TRANSFORMATION_POWDER.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 12))).setWeight(75))
-								.add(LootItem.lootTableItem(TFBlocks.UNCRAFTING_TABLE.get().asItem()).setWeight(75))
+								.add(LootItem.lootTableItem(TFBlocks.UNCRAFTING_TABLE.get().asItem()).when(UncraftingTableEnabledCondition.uncraftingTableEnabled()).setWeight(75))
 								//ultrarare loot
 								.add(LootItem.lootTableItem(Items.DIAMOND).setWeight(25))
 								.add(LootItem.lootTableItem(Items.EMERALD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 6))).setWeight(25))

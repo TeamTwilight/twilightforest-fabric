@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -34,11 +35,11 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.ToolActions;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.AxisUtil;
-
-import org.jetbrains.annotations.Nullable;
 
 public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 	public static final EnumProperty<Direction.Axis> HORIZONTAL_AXIS = BlockStateProperties.HORIZONTAL_AXIS;
@@ -128,7 +129,10 @@ public class HollowLogHorizontal extends Block implements WaterloggedBlock {
 
 		HollowLogVariants.Horizontal variant = state.getValue(VARIANT);
 
-		if (stack.is(TFBlocks.MOSS_PATCH.get().asItem())) {
+		if (stack.isEmpty() && player.isSecondaryUseActive() && player.getDirection().getAxis().equals(stateAxis) &&
+				player.blockPosition().getY() == pos.getY() && !player.isFallFlying() && player.position().distanceTo(Vec3.atBottomCenterOf(pos)) < 0.81D) {
+			player.setPose(Pose.SWIMMING);
+		} else if (stack.is(TFBlocks.MOSS_PATCH.get().asItem())) {
 			if (canChangeVariant(variant, level, pos, stateAxis)) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.MOSS), 3);
 				level.playSound(null, pos, SoundEvents.MOSS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);

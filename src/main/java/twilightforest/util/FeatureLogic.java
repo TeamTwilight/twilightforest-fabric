@@ -7,6 +7,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.block.GiantBlock;
 import twilightforest.data.tags.BlockTagGenerator;
 
 import java.util.function.Predicate;
@@ -92,6 +93,6 @@ public final class FeatureLogic {
     }
 
     public static boolean isBlockNotOk(BlockState state) {
-        return state.liquid() || state.is(Blocks.BEDROCK);
+        return state.liquid() || state.is(Blocks.BEDROCK) || state.getBlock() instanceof GiantBlock || state.is(BlockTagGenerator.CLOUDS);
     }
 }

@@ -12,107 +12,88 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.GiantBlock;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.giant_pick.GiantPickMineCapability;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFItems;
+import twilightforest.item.GiantPickItem;
 
-//FIXME I simply migrated this out of TFEventListener, it somehow needs to be redone in a more sane way.
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 public class GiantToolGroupingModifier extends LootModifier {
-	public static final Codec<GiantToolGroupingModifier> CODEC = RecordCodecBuilder.create(inst -> LootModifier.codecStart(inst).apply(inst, GiantToolGroupingModifier::new));
+    public static Map<Block, Item> CONVERSIONS = new HashMap<>(); // Map of block-to-giant block conversions. Supposed to be similar to vanilla's AxeItem.STRIPPABLES Map
 
-	static {
-		PlayerBlockBreakEvents.BEFORE.register(GiantToolGroupingModifier::breakBlock);
-	}
+    public static final Codec<GiantToolGroupingModifier> CODEC = RecordCodecBuilder.create(inst -> LootModifier.codecStart(inst).apply(inst, GiantToolGroupingModifier::new));
 
-	private static boolean isBreakingWithGiantPick = false;
-	private static boolean shouldMakeGiantCobble = false;
-	private static int amountOfCobbleToReplace = 0;
+    public GiantToolGroupingModifier(LootItemCondition[] conditions) {
+        super(conditions);
+    }
 
-	public GiantToolGroupingModifier(LootItemCondition[] conditions) {
-		super(conditions);
-	}
+    @Override
+    protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+        if (context.getParam(LootContextParams.THIS_ENTITY) instanceof Player player) {
+            BlockState state = context.getParam(LootContextParams.BLOCK_STATE);
+            if (CONVERSIONS.containsKey(state.getBlock())) { // Should be true but let's double-check
+                LazyOptional<GiantPickMineCapability> lazyOptional = player.getCapability(CapabilityList.GIANT_PICK_MINE);
+                int blockConversion = lazyOptional.map(GiantPickMineCapability::getGiantBlockConversion).orElse(0); // Get how many conversions are left
+                lazyOptional.ifPresent(giantPickMineCapability -> giantPickMineCapability.setGiantBlockConversion(blockConversion - 1));
+                if (blockConversion == 64) return ObjectArrayList.of(new ItemStack(CONVERSIONS.get(state.getBlock()))); // If it's the first conversion, drop our giant block
+                else return new ObjectArrayList<>(); // Drop nothing, all gets converted into giant block
+            }
+        }
+        return generatedLoot;
+    }
 
-	@Override
-	protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-		ObjectArrayList<ItemStack> newLoot = new ObjectArrayList<>();
-		boolean flag = false;
-		if (shouldMakeGiantCobble && generatedLoot.size() > 0) {
-			// turn the next 64 cobblestone drops into one giant cobble
-			if (generatedLoot.get(0).getItem() == Item.byBlock(Blocks.COBBLESTONE)) {
-				generatedLoot.remove(0);
-				if (amountOfCobbleToReplace == 64) {
-					newLoot.add(new ItemStack(TFBlocks.GIANT_COBBLESTONE.get()));
-					flag = true;
-				}
-				amountOfCobbleToReplace--;
-				if (amountOfCobbleToReplace <= 0) {
-					shouldMakeGiantCobble = false;
-				}
-			}
-		}
-		return flag ? newLoot : generatedLoot;
-	}
-
-	@Override
-	public Codec<? extends IGlobalLootModifier> codec() {
-		return GiantToolGroupingModifier.CODEC;
-	}
+    @Override
+    public Codec<? extends IGlobalLootModifier> codec() {
+        return GiantToolGroupingModifier.CODEC;
+    }
 
 	public static boolean breakBlock(Level world, Player player, BlockPos pos, BlockState state, /* Nullable */ BlockEntity blockEntity) {
-		if (!isBreakingWithGiantPick && canHarvestWithGiantPick(player, state)) {
+        if (event.getPlayer() instanceof ServerPlayer player && canHarvestWithGiantPick(player, state)) {
+            Optional<GiantPickMineCapability> optionalCapability = player.getCapability(CapabilityList.GIANT_PICK_MINE).resolve();
+            if (optionalCapability.isPresent() && shouldBreakGiantBlock(player, optionalCapability.get())) {
+                GiantPickMineCapability capability = optionalCapability.get();
+                capability.setBreaking(true); // Tell the capability that a block breaking loop is happening, so it knows to fail the if check above. Otherwise, this would go on forever
 
-			isBreakingWithGiantPick = true;
+                boolean allTheSame = CONVERSIONS.containsKey(state.getBlock()); // If the blockstate is convertible, check if the rest are too
+                for (BlockPos offsetPos : GiantBlock.getVolume(pos)) {
+                    if (allTheSame && !player.level().getBlockState(offsetPos).is(state.getBlock())) allTheSame = false;
+                }
+                capability.setGiantBlockConversion(allTheSame ? 64 : 0); // NO IN-BETWEEN! Either the whole 64 get converted, or none do
 
-			// pre-check for cobble!
-			Item cobbleItem = Blocks.COBBLESTONE.asItem();
-			boolean allCobble = state.getBlock().asItem() == cobbleItem;
+                event.setCanceled(true); // We cancel this event, since we want to break the block we're looking at first
+                player.level().levelEvent(2001, pos, Block.getId(state));
+                player.gameMode.destroyBlock(pos); // Brake the block we broke, for real this time
 
-			if (allCobble) {
-				for (BlockPos dPos : GiantBlock.getVolume(pos)) {
-					if (dPos.equals(pos))
-						continue;
-					BlockState stateThere = world.getBlockState(dPos);
-					if (stateThere.getBlock().asItem() != cobbleItem) {
-						allCobble = false;
-						break;
-					}
-				}
-			}
+                // Break all the other blocks, if they're the same type
+                for (BlockPos offsetPos : GiantBlock.getVolume(pos)) {
+                    if (!offsetPos.equals(pos) && player.level().getBlockState(offsetPos).is(state.getBlock())) {
+                        BlockPos newPos = new BlockPos(offsetPos); // This feels dumb, but without it, the client thinks the last block in the iterator is broken too
+                        player.level().levelEvent(2001, newPos, Block.getId(player.level().getBlockState(newPos)));
+                        player.gameMode.destroyBlock(newPos);
+                    }
+                }
 
-			if (allCobble && !player.getAbilities().instabuild) {
-				shouldMakeGiantCobble = true;
-				amountOfCobbleToReplace = 64;
-			} else {
-				shouldMakeGiantCobble = false;
-				amountOfCobbleToReplace = 0;
-			}
+                capability.setBreaking(false); // Tell the capability that the loop is over, and all is good in the world
+            }
+        }
+    }
 
-			// break all nearby blocks
-			if (player instanceof ServerPlayer playerMP) {
-				for (BlockPos dPos : GiantBlock.getVolume(pos)) {
-					if (!dPos.equals(pos) && state.getBlock() == world.getBlockState(dPos).getBlock()) {
-						// try to break that block too!
-						playerMP.gameMode.destroyBlock(dPos);
-					}
-				}
-			}
+    private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
+        return player.getMainHandItem().getItem() instanceof GiantPickItem && ForgeHooks.isCorrectToolForDrops(state, player);
+    }
 
-			isBreakingWithGiantPick = false;
-		}
-		return true;
-	}
-
-	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
-		return player.getMainHandItem().is(TFItems.GIANT_PICKAXE.get()) && player.hasCorrectToolForDrops(state)
-				&& CapabilityList.GIANT_PICK_MINE.maybeGet(player).map(GiantPickMineCapability::getMining).orElse(1L) == player.level().getGameTime();
-	}
+    private static boolean shouldBreakGiantBlock(Player player, GiantPickMineCapability capability) {
+        return capability.getMining() == player.level().getGameTime() && !capability.getBreaking();
+    }
 }

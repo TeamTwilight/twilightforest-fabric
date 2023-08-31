@@ -211,6 +211,8 @@ public class BlockLootTables extends ModdedBlockLootSubProvider {
 		dropWhenSilkTouch(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get());
 		add(TFBlocks.KEEPSAKE_CASKET.get(), casketInfo(TFBlocks.KEEPSAKE_CASKET.get()));
 		dropSelf(TFBlocks.CANDELABRA.get());
+		dropSelf(TFBlocks.WROUGHT_IRON_FENCE.get());
+		dropSelf(TFBlocks.WROUGHT_IRON_FINIAL.get());
 		dropPottedContents(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get());
 		dropPottedContents(TFBlocks.POTTED_CANOPY_SAPLING.get());
 		dropPottedContents(TFBlocks.POTTED_MANGROVE_SAPLING.get());

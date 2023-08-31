@@ -1,3 +1,20 @@
 {
-  "parent": "minecraft:block/obsidian"
+  "parent": "minecraft:block/obsidian",
+  "base": {
+    "parent": "twilightforest:item/giant_block_base",
+    "textures": {
+      "all": "minecraft:block/obsidian",
+      "top": "minecraft:block/obsidian"
+    }
+  },
+  "loader": "forge:separate_transforms",
+  "perspectives": {
+    "gui": {
+      "parent": "twilightforest:item/giant_block_gui",
+      "textures": {
+        "all": "minecraft:block/obsidian",
+        "top": "minecraft:block/obsidian"
+      }
+    }
+  }
 }

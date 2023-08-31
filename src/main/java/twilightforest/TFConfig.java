@@ -15,6 +15,8 @@ import twilightforest.util.PlayerHelper;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class TFConfig {
 
@@ -56,9 +58,9 @@ public class TFConfig {
 					define("disablePortalCreation", false);
 			checkPortalDestination = builder.
 					translation(config + "check_portal_destination").
-					comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
-
-							"\nNote that enabling this also reduces the rate at which portal formation checks are performed.").
+					comment("""
+							Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination.
+							Note that enabling this also reduces the rate at which portal formation checks are performed.""").
 					define("checkPortalDestination", false);
 			portalLightning = builder.
 					translation(config + "portal_lighting").
@@ -90,17 +92,22 @@ public class TFConfig {
 					worldRestart().
 					comment("""
 							If false, items that come enchanted when you craft them (such as ironwood or steeleaf gear) will not show this way in the creative inventory.
-							Please note that this doesnt affect the crafting recipes themselves, you will need a datapack to change those.
-							""").
+							Please note that this doesnt affect the crafting recipes themselves, you will need a datapack to change those.""").
 					define("default_item_enchantments", true);
 
 			bossDropChests = builder.
 					translation(config + "boss_drop_chests").
 					comment("""
 							If true, Twilight Forest's bosses will put their drops inside of a chest where they originally spawned instead of dropping the loot directly.
-							Note that the Knight Phantoms are not affected by this as their drops work differently.
-							""").
+							Note that the Knight Phantoms are not affected by this as their drops work differently.""").
 					define("boss_drop_chests", true);
+
+			cloudBlockPrecipitationDistanceCommon = builder.
+					translation(config + "cloud_block_precipitation_distance_server").
+					comment("""
+							Dictates how many blocks down from a cloud block should the game logic check for handling weather related code.
+							Lower if experiencing low tick rate. Set to 0 to turn all cloud precipitation logic off.""").
+					defineInRange("cloudBlockPrecipitationDistance", 32, 0, Integer.MAX_VALUE);
 
 			builder.
 					comment("Settings for all things related to the uncrafting table.").
@@ -156,11 +163,23 @@ public class TFConfig {
 								If true, the uncrafting table will also be allowed to uncraft shapeless recipes.
 								The table was originally intended to only take shaped recipes, but this option remains for people who wish to keep the functionality.""").
 						define("enableShapelessCrafting", false);
-				UNCRAFTING_STUFFS.disableUncrafting = builder.
+				UNCRAFTING_STUFFS.disableUncraftingOnly = builder.
 						worldRestart().
-						translation(config + "uncrafting").
-						comment("Disable the uncrafting function of the uncrafting table. Recommended as a last resort if there's too many things to change about its behavior.").
+						translation(config + "disable_uncrafting").
+						comment("""
+								Disables the uncrafting function of the uncrafting table. Recommended as a last resort if there's too many things to change about its behavior (or you're just lazy, I dont judge).
+								Do note that special uncrafting recipes are not disabled as the mod relies on them for other things.""").
 						define("disableUncrafting", false);
+
+				UNCRAFTING_STUFFS.disableEntireTable = builder.
+						worldRestart().
+						translation(config + "disable_uncrafting_table").
+						comment("""
+								Disables any usage of the uncrafting table, as well as prevents it from showing up in loot or crafted.
+								Please note that table has more uses than just uncrafting, you can read about them here! http://benimatic.com/tfwiki/index.php?title=Uncrafting_Table
+								It is highly recommended to keep the table enabled as the mod has special uncrafting exclusive recipes, but the option remains for people that dont want the table to be functional at all.
+								If you are looking to just prevent normal crafting recipes from being reversed, consider using the 'disableUncrafting' option instead.""").
+						define("disableUncraftingTable", false);
 			}
 			builder.pop();
 
@@ -256,6 +275,7 @@ public class TFConfig {
 		public final ForgeConfigSpec.BooleanValue disableSkullCandles;
 		public final ForgeConfigSpec.BooleanValue defaultItemEnchants;
 		public final ForgeConfigSpec.BooleanValue bossDropChests;
+		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceCommon;
 
 		public final MagicTrees MAGIC_TREES = new MagicTrees();
 
@@ -276,7 +296,8 @@ public class TFConfig {
 			public ForgeConfigSpec.DoubleValue uncraftingXpCostMultiplier;
 			public ForgeConfigSpec.DoubleValue repairingXpCostMultiplier;
 			public ForgeConfigSpec.BooleanValue allowShapelessUncrafting;
-			public ForgeConfigSpec.BooleanValue disableUncrafting;
+			public ForgeConfigSpec.BooleanValue disableUncraftingOnly;
+			public ForgeConfigSpec.BooleanValue disableEntireTable;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> disableUncraftingRecipes;
 			public ForgeConfigSpec.BooleanValue reverseRecipeBlacklist;
 			public ForgeConfigSpec.ConfigValue<List<? extends String>> blacklistedUncraftingModIds;
@@ -325,14 +346,18 @@ public class TFConfig {
 					translation(config + "ram_indicator").
 					comment("Renders a little check mark or x above your crosshair depending on if fed the Quest Ram that color of wool. Turn this off if you find it intrusive.").
 					define("questRamWoolIndicator", true);
-			cloudBlockPrecipitationRender = builder.
-					translation(config + "cloud_block_precipitation_render").
-					comment("Renders rain and snow underneath cloud blocks. Turn this off if you're experiencing poor performance.").
-					define("cloudBlockPrecipitationRender", true);
-			cloudBlockRainParticles = builder.
-					translation(config + "cloud_block_rain_particles").
-					comment("Spawns rain particles underneath cloud blocks. Turn this off if you're experiencing poor performance.").
-					define("cloudBlockRainParticles", true);
+			cloudBlockPrecipitationDistanceClient = builder.
+					translation(config + "cloud_block_precipitation_distance").
+					comment("""
+							Renders precipitation underneath cloud blocks. -1 sets it to be synced with the common config.
+							Set this to a lower number if you're experiencing poor performance, or set it to 0 if you wish to turn it off""").
+					defineInRange("cloudBlockPrecipitationDistance", -1, -1, Integer.MAX_VALUE);
+			giantSkinUUIDs = builder.
+					translation(config + "giant_skin_uuid_list").
+					comment("""
+							List of player UUIDs whose skins the giants of Twilight Forest should use.
+							If left empty, the giants will appear the same as the player viewing them does.""").
+					defineListAllowEmpty("giantSkinUUIDs", new ArrayList<>(), s -> s instanceof String);
 
 		}
 
@@ -343,11 +368,15 @@ public class TFConfig {
 		public final ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 		public final ForgeConfigSpec.BooleanValue disableLockedBiomeToasts;
 		public final ForgeConfigSpec.BooleanValue showQuestRamCrosshairIndicator;
-		public final ForgeConfigSpec.BooleanValue cloudBlockPrecipitationRender;
-		public final ForgeConfigSpec.BooleanValue cloudBlockRainParticles;
+		public final ForgeConfigSpec.IntValue cloudBlockPrecipitationDistanceClient;
+		public final ForgeConfigSpec.ConfigValue<List<? extends String>> giantSkinUUIDs;
 	}
 
-	private static final String config =  "config." + TwilightForestMod.ID;
+	private static final String config = "config." + TwilightForestMod.ID;
+
+	public static int getClientCloudBlockPrecipitationDistance() {
+		return (CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient.get() == -1 ? COMMON_CONFIG.cloudBlockPrecipitationDistanceCommon : CLIENT_CONFIG.cloudBlockPrecipitationDistanceClient).get();
+	}
 
 	@Nullable
 	public static ResourceLocation getPortalLockingAdvancement(Player player) {
@@ -375,14 +404,22 @@ public class TFConfig {
 					COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
-					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
+					COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
 					COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()), server);
 		}
+
+		TFConfig.giantCheck(event);
 		//sets cached portal locking advancement to null just in case it changed
 		COMMON_CONFIG.portalLockingAdvancement = null;
+	}
+
+	@SubscribeEvent
+	public static void onConfigReload(final ModConfigEvent.Loading event) {
+		TFConfig.giantCheck(event);
 	}
 
 	//damn forge events
@@ -395,12 +432,66 @@ public class TFConfig {
 						COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
-						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get(),
+						COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get(),
 						COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get()), player);
 			}
+		}
+	}
+
+	public static final List<GameProfile> GAME_PROFILES = new ArrayList<>();
+
+	public static void giantCheck(ModConfigEvent event) {
+		if (Objects.equals(event.getConfig().getModId(), TwilightForestMod.ID) && event.getConfig().getType().equals(ModConfig.Type.CLIENT)) {
+			new Thread() {
+				@Override
+				public void run() {
+					GAME_PROFILES.clear();
+
+					YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
+					String baseUrl = EnvironmentParser.getEnvironmentFromProperties().orElse(YggdrasilEnvironment.PROD.getEnvironment()).getSessionHost() + "/session/minecraft/";
+					boolean requireSecure = false;
+					for (String stringUUID : TFConfig.CLIENT_CONFIG.giantSkinUUIDs.get()) {
+						try {
+							UUID uuid = UUID.fromString(stringUUID);
+
+							URL url = HttpAuthenticationService.constantURL(baseUrl + "profile/" + uuid);
+							url = HttpAuthenticationService.concatenateURL(url, "unsigned=" + !requireSecure);
+
+							final MinecraftProfilePropertiesResponse response = ObjectMapper.create().readValue(service.performGetRequest(url), MinecraftProfilePropertiesResponse.class);
+
+							if (StringUtils.isNotBlank(response.getError())) {
+								if ("UserMigratedException".equals(response.getCause())) {
+									throw new UserMigratedException(response.getErrorMessage());
+								} else if ("ForbiddenOperationException".equals(response.getError())) {
+									throw new InvalidCredentialsException(response.getErrorMessage());
+								} else if ("InsufficientPrivilegesException".equals(response.getError())) {
+									throw new InsufficientPrivilegesException(response.getErrorMessage());
+								} else if ("multiplayer.access.banned".equals(response.getError())) {
+									throw new UserBannedException();
+								} else {
+									throw new AuthenticationException(response.getErrorMessage());
+								}
+							}
+
+							if (response.getId() != null) {
+								final GameProfile result = new GameProfile(response.getId(), response.getName());
+								if (response.getProperties() != null)
+									result.getProperties().putAll(response.getProperties());
+								GAME_PROFILES.add(result);
+							}
+						} catch (IllegalArgumentException e) {
+							TwilightForestMod.LOGGER.error("\"{}\" is not a valid UUID!", stringUUID);
+						} catch (AuthenticationException | IOException e) {
+							e.printStackTrace();
+						}
+					}
+					super.run();
+				}
+			}.start();
 		}
 	}
 }

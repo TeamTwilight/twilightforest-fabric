@@ -120,9 +120,9 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 
 	@Override
 	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-		graphics.drawString(this.font, this.title, 6, 6, 4210752);
-		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get()) {
-			graphics.drawString(this.font, Component.translatable("container.twilightforest.uncrafting_table.disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 4210752, false);
+		graphics.drawString(this.font, this.title, 6, 6, 4210752, false);
+		if (TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get()) {
+			graphics.drawString(this.font, Component.translatable("container.twilightforest.uncrafting_table.uncrafting_disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 4210752, false);
 		} else {
 			graphics.drawString(this.font, I18n.get("container.inventory"), 7, this.imageHeight - 96 + 2, 4210752, false);
 		}
@@ -182,13 +182,15 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
 		ItemStack itemStackToRender = backgroundSlot.getItem();
 
 		graphics.renderFakeItem(itemStackToRender, screenX, screenY);
-		graphics.renderItemDecorations(this.font, itemStackToRender, screenX, screenY, "");
 
 		boolean itemBroken = UncraftingMenu.isMarked(itemStackToRender);
 
 		// draw 50% gray rectangle over the item
 		RenderSystem.disableDepthTest();
+		graphics.pose().pushPose();
+		graphics.pose().translate(0.0D, 0.0D, 200.0D);
 		graphics.fill(appearSlot.x, appearSlot.y, appearSlot.x + 16, appearSlot.y + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
+		graphics.pose().popPose();
 		RenderSystem.enableDepthTest();
 	}
 

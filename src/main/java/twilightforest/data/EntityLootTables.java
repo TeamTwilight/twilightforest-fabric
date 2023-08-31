@@ -28,7 +28,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
 import twilightforest.loot.TFLootTables;
-import twilightforest.loot.conditions.IsMinion;
+import twilightforest.loot.conditions.IsMinionCondition;
 
 import java.util.stream.Stream;
 
@@ -109,7 +109,7 @@ public class EntityLootTables extends ModdedEntityLootSubProvider {
 						.withPool(LootPool.lootPool()
 								.setRolls(ConstantValue.exactly(1))
 								.add(LootTableReference.lootTableReference(EntityType.GHAST.getDefaultLootTable()))
-								.when(IsMinion.builder(true))));
+								.when(IsMinionCondition.builder(true))));
 
 		/*registerLootTable(TFEntities.BOGGARD.get(),
 				LootTable.builder()

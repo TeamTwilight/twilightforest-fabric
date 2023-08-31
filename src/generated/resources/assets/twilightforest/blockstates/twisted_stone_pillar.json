@@ -2,8 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "twilightforest:block/pillar_main_x",
-        "uvlock": true,
+        "model": "twilightforest:block/pillar/pillar_base",
         "x": 90,
         "y": 90
       },
@@ -13,7 +12,7 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/pillar_top_x",
+        "model": "twilightforest:block/pillar/pillar_top",
         "x": 90,
         "y": 90
       },
@@ -24,7 +23,7 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/pillar_bottom_x",
+        "model": "twilightforest:block/pillar/pillar_bottom",
         "x": 90,
         "y": 90
       },
@@ -35,8 +34,29 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/pillar_main_y",
-        "uvlock": true
+        "model": "twilightforest:block/pillar/pillar_up",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "y|z",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/pillar/pillar_down",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "y|z",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/pillar/pillar_base"
       },
       "when": {
         "axis": "y"
@@ -44,7 +64,7 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/pillar_top_y"
+        "model": "twilightforest:block/pillar/pillar_top"
       },
       "when": {
         "axis": "y",
@@ -53,7 +73,7 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/pillar_bottom_y"
+        "model": "twilightforest:block/pillar/pillar_bottom"
       },
       "when": {
         "axis": "y",
@@ -62,8 +82,25 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/pillar_main_z",
-        "uvlock": true,
+        "model": "twilightforest:block/pillar/pillar_up"
+      },
+      "when": {
+        "axis": "x|z",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/pillar/pillar_down"
+      },
+      "when": {
+        "axis": "x|z",
+        "down": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/pillar/pillar_base",
         "x": 90
       },
       "when": {
@@ -72,7 +109,7 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/pillar_top_z",
+        "model": "twilightforest:block/pillar/pillar_top",
         "x": 90
       },
       "when": {
@@ -82,12 +119,32 @@
     },
     {
       "apply": {
-        "model": "twilightforest:block/pillar_bottom_z",
+        "model": "twilightforest:block/pillar/pillar_bottom",
         "x": 90
       },
       "when": {
         "axis": "z",
         "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/pillar/pillar_up",
+        "x": 90
+      },
+      "when": {
+        "axis": "x|y",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "twilightforest:block/pillar/pillar_down",
+        "x": 90
+      },
+      "when": {
+        "axis": "x|y",
+        "south": "true"
       }
     }
   ]

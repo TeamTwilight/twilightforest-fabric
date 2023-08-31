@@ -35,14 +35,11 @@ public class ProtectionBoxRenderer<T extends ProtectionBox> extends EntityRender
 
 	@Override
 	public void render(T entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
-		float t = (float) entity.tickCount + partialTicks;
 
 		float alpha = 1.0F;
-		if (entity.lifeTime < 20) {
-			alpha = entity.lifeTime / 20F;
-		}
+		if (entity.lifeTime < 20) alpha = entity.lifeTime / 20F;
 
-		VertexConsumer vertexconsumer = buffer.getBuffer(TFRenderTypes.getProtectionBox(getTextureLocation(entity), (-t * 0.15F) % 1.0F, -t * 0.10F % 1.0F));
+		VertexConsumer vertexconsumer = buffer.getBuffer(TFRenderTypes.PROTECTION_BOX);
 		boxModel.prepareMobModel(entity, 0, 0, 0);
 		boxModel.renderToBuffer(stack, vertexconsumer, light, OverlayTexture.NO_OVERLAY,  1.0F, 1.0F, 1.0F, alpha);
 	}

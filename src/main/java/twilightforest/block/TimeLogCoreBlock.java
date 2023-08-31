@@ -36,7 +36,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 		for (int i = 0; i < numticks; i++) {
 
-			BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFConfig.COMMON_CONFIG.MAGIC_TREES.miningRange.get());
+			BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFConfig.COMMON_CONFIG.MAGIC_TREES.timeRange.get());
 
 			BlockState state = level.getBlockState(dPos);
 

@@ -78,8 +78,8 @@ public class TFBlockEntities {
 					TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get(),
 					TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get()).build(null));
 
-	public static final RegistryObject<BlockEntityType<TFSignBlockEntity>> TF_HANGING_SIGN = BLOCK_ENTITIES.register("tf_hanging_sign", () ->
-			BlockEntityType.Builder.of(TFSignBlockEntity::new,
+	public static final RegistryObject<BlockEntityType<TFHangingSignBlockEntity>> TF_HANGING_SIGN = BLOCK_ENTITIES.register("tf_hanging_sign", () ->
+			BlockEntityType.Builder.of(TFHangingSignBlockEntity::new,
 					TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(),
 					TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(),
 					TFBlocks.MANGROVE_HANGING_SIGN.get(), TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(),

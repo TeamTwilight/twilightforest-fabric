@@ -14,10 +14,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
@@ -28,7 +25,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
-public record UncraftingRecipe(ResourceLocation recipeID, int cost, int width, int height, Ingredient ingredient, int count, NonNullList<Ingredient> resultItems) implements IUncraftingRecipe {
+public record UncraftingRecipe(ResourceLocation recipeID, int cost, int width, int height, Ingredient input, int count, NonNullList<Ingredient> resultItems) implements CraftingRecipe, IShapedRecipe<CraftingContainer> {
 
     @Override //This method is never used, but it has to be implemented
     public boolean matches(CraftingContainer container, Level level) {
@@ -51,8 +48,8 @@ public record UncraftingRecipe(ResourceLocation recipeID, int cost, int width, i
     }
 
     //Checks if the itemStack is a part of the ingredient when UncraftingMenu's getRecipesFor() method iterates through all recipes.
-    public boolean isItemStackAnIngredient(ItemStack itemStack) {
-        return Arrays.stream(this.ingredient.getItems()).anyMatch(i -> (itemStack.getItem() == i.getItem() && itemStack.getCount() >= this.getCount()));
+    public boolean isItemStackAnIngredient(ItemStack stack) {
+        return Arrays.stream(this.input().getItems()).anyMatch(i -> (stack.getItem() == i.getItem() && stack.getCount() >= this.count()));
     }
 
     @Override
@@ -75,29 +72,16 @@ public record UncraftingRecipe(ResourceLocation recipeID, int cost, int width, i
         return CraftingBookCategory.MISC;
     }
 
-    public int getCost() {
-        return this.cost;
-    }
-
     @Override
     public NonNullList<Ingredient> getIngredients() {
-        return this.resultItems;
-    }
-
-    public Ingredient getIngredient() {
-        return this.ingredient;
-    }
-
-    //Since our recipe can need multiple input items for a recipe and ingredients can't directly store count, we store it separately
-    public int getCount() {
-        return this.count;
+        return this.resultItems();
     }
 
     public static class Serializer implements RecipeSerializer<UncraftingRecipe> {
         /**
          * This is mostly vanilla's shaped recipe serializer, with some changes made to make it work with the slightly different recipe type.
          * The recipe json has inputs for "cost", which determines how many levels the recipe will cost.
-         * "ingredient", which is made to be an ingredient instead of an itemStack, so the recipe can have multiple input options, such as any member of an item tag.
+         * "input", which is made to be an ingredient instead of an itemStack, so the recipe can have multiple input options, such as any member of an item tag.
          * "count" is how many of the same item are required by the recipe, since we're dealing with ingredients and not itemStacks, we get this separately.
          * "key" and "pattern", which work just like vanilla except this is output and not input, since we're uncrafting.
          * Width and height get assigned automatically.
@@ -106,10 +90,12 @@ public record UncraftingRecipe(ResourceLocation recipeID, int cost, int width, i
         public UncraftingRecipe fromJson(ResourceLocation id, JsonObject json) {
             int cost = GsonHelper.getAsInt(json, "cost");
 
-            JsonElement jsonelement = (GsonHelper.isArrayNode(json, "ingredient") ? GsonHelper.getAsJsonArray(json, "ingredient") : GsonHelper.getAsJsonObject(json, "ingredient"));
+            JsonObject input = GsonHelper.getAsJsonObject(json, "input");
+
+            JsonElement jsonelement = (GsonHelper.isArrayNode(input, "ingredient") ? GsonHelper.getAsJsonArray(input, "ingredient") : GsonHelper.getAsJsonObject(input, "ingredient"));
             Ingredient ingredient = Ingredient.fromJson(jsonelement);
 
-            int count = GsonHelper.getAsInt(json, "count");
+            int count = GsonHelper.getAsInt(input, "count", 1);
 
             Map<String, Ingredient> key = keyFromJson(GsonHelper.getAsJsonObject(json, "key"));
             String[] pattern = shrink(patternFromJson(GsonHelper.getAsJsonArray(json, "pattern")));
@@ -223,18 +209,18 @@ public record UncraftingRecipe(ResourceLocation recipeID, int cost, int width, i
             Ingredient result = Ingredient.fromNetwork(buffer);
             int count = buffer.readVarInt();
             NonNullList<Ingredient> ingredients = NonNullList.withSize(width * height, Ingredient.EMPTY);
-            for (int k = 0; k < ingredients.size(); ++k) ingredients.set(k, Ingredient.fromNetwork(buffer));
+			ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buffer));
             return new UncraftingRecipe(id, cost, width, height, result, count, ingredients);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buffer, UncraftingRecipe recipe) {
-            buffer.writeVarInt(recipe.cost);
-            buffer.writeVarInt(recipe.width);
-            buffer.writeVarInt(recipe.height);
-            recipe.ingredient.toNetwork(buffer);
-            buffer.writeVarInt(recipe.count);
-            for (Ingredient i : recipe.resultItems) i.toNetwork(buffer);
+            buffer.writeVarInt(recipe.cost());
+            buffer.writeVarInt(recipe.width());
+            buffer.writeVarInt(recipe.height());
+            recipe.input().toNetwork(buffer);
+            buffer.writeVarInt(recipe.count());
+            for (Ingredient i : recipe.resultItems()) i.toNetwork(buffer);
         }
     }
 }

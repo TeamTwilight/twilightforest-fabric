@@ -28,7 +28,7 @@ public final class FeatureUtil {
 				if (world.hasChunkAt(pos_)) {
 					// is there grass, dirt or stone below?
 					BlockState state = world.getBlockState(pos_.below());
-					if (!state.isSolidRender(world, pos_)) {
+					if (!state.isSolidRender(world, pos_) || FeatureLogic.isBlockNotOk(state)) {
 						if (underwaterAllowed && state.liquid()) {
 							continue;
 						}

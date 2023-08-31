@@ -85,6 +85,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 
 	public static final TagKey<Block> DRUID_PROJECTILE_REPLACEABLE = TagKey.create(Registries.BLOCK, TwilightForestMod.prefix("druid_projectile_replaceable"));
 
+	public static final TagKey<Block> CLOUDS = BlockTags.create(TwilightForestMod.prefix("clouds"));
+
 	public BlockTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> future) {
 		super(output, future);
 	}
@@ -532,7 +534,9 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 		getOrCreateTagBuilder(ROOT_GROUND).add(TFBlocks.ROOT_BLOCK.get());
 		getOrCreateTagBuilder(ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.get());
 
-		getOrCreateTagBuilder(BlockTags.DAMPENS_VIBRATIONS).add(TFBlocks.ARCTIC_FUR_BLOCK.get(), TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.WISPY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get());
+		getOrCreateTagBuilder(CLOUDS).add(TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.WISPY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get());
+
+		tag(BlockTags.DAMPENS_VIBRATIONS).addTag(CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		getOrCreateTagBuilder(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 
 		getOrCreateTagBuilder(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(TFBlocks.UBEROUS_SOIL.get());
@@ -550,7 +554,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 		getOrCreateTagBuilder(TIME_CORE_EXCLUDED).add(Blocks.NETHER_PORTAL);
 
 		getOrCreateTagBuilder(PENGUINS_SPAWNABLE_ON).add(Blocks.ICE, Blocks.PACKED_ICE, Blocks.BLUE_ICE);
-		getOrCreateTagBuilder(GIANTS_SPAWNABLE_ON).add(TFBlocks.WISPY_CLOUD.get(), TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get());
+		getOrCreateTagBuilder(GIANTS_SPAWNABLE_ON).addTag(CLOUDS);
 
 		getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_AXE).add(
 				TFBlocks.HEDGE.get(),

@@ -13,6 +13,7 @@ import twilightforest.entity.passive.DwarfRabbit;
 import twilightforest.entity.passive.Squirrel;
 import twilightforest.entity.passive.TinyBird;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 import twilightforest.network.TFPacketHandler;
 
@@ -60,6 +61,30 @@ public class MiscEvents {
 
 		if (living != null && !living.level().isClientSide() && slot == EquipmentSlot.HEAD && to.is(TFBlocks.CICADA.get().asItem())) {
 			TFPacketHandler.CHANNEL.sendToClientsTrackingAndSelf(new CreateMovingCicadaSoundPacket(living.getId()), living);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+		Player player = event.getEntity();
+		ItemStack stack = player.getItemInHand(event.getHand());
+		if (stack.getItem() instanceof SpawnEggItem spawnEggItem && spawnEggItem.getType(stack.getTag()) == TFEntities.DEATH_TOME.get()) {
+			BlockPos pos = event.getPos();
+			BlockState state = event.getLevel().getBlockState(pos);
+			if (state.getBlock() instanceof LecternBlock && !state.getValue(BlockStateProperties.HAS_BOOK)) {
+				event.setCanceled(true);
+				event.getLevel().playSound(null, pos, SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+				if (event.getLevel() instanceof ServerLevel serverLevel) {
+					DeathTome tome = TFEntities.DEATH_TOME.get().spawn(serverLevel, stack, player, pos.below(), MobSpawnType.SPAWN_EGG, true, false);
+					if (tome != null) {
+						if (!player.getAbilities().instabuild) stack.shrink(1);
+						serverLevel.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
+						tome.setOnLectern(true);
+					}
+				}
+
+			}
 		}
 	}
 }

@@ -9,7 +9,6 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -17,11 +16,11 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFLandmark;
+import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
-import twilightforest.init.TFLandmark;
-import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -283,11 +282,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, 12, 1, 12, 12, 10, 24, fieldBlock, fieldBlock, false);
 		this.generateBox(world, sbb, 24, 1, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
 		this.generateBox(world, sbb, 12, 1, 24, 24, 10, 24, fieldBlock, fieldBlock, false);
-
-		fieldBlock = fieldBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.X);
 		this.generateBox(world, sbb, 13, 10, 12, 23, 10, 24, fieldBlock, fieldBlock, false);
-
-		fieldBlock = fieldBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.Z);
 		this.generateBox(world, sbb, 12, 10, 12, 12, 10, 24, fieldBlock, fieldBlock, false);
 		this.generateBox(world, sbb, 24, 10, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
 

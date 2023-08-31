@@ -113,7 +113,13 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
     public void setupAnim(DeathTome entity, float limbAngle, float limbDistance, float customAngle, float headYaw, float headPitch) {
         this.root.yRot = Mth.HALF_PI;
 
-        this.book.zRot = -0.8726646259971647F;
+        if (entity.isOnLectern()) {
+            this.book.zRot = -0.8726646259971647F * 1.35F;
+            this.book.x = 1.75F;
+        } else {
+            this.book.zRot = -0.8726646259971647F;
+            this.book.x = 0.0F;
+        }
 
         this.paperStorm.yRot = customAngle * Mth.DEG_TO_RAD + Mth.HALF_PI;
         this.paperStorm.zRot = 0.8726646259971647F;
@@ -123,11 +129,43 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
     public void prepareMobModel(DeathTome entity, float limbSwing, float limbSwingAmount, float partialTicks) {
         float bounce = entity.tickCount + partialTicks;
         float open = 0.9f;
-        float flipRight = 0.4f;
-        float flipLeft = 0.6f;
 
-        // hoveriness
-        this.book.setPos(0, 8 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
+        float flip = Mth.lerp(partialTicks, entity.oFlip, entity.flip);
+        float flipRight = Mth.clamp(Mth.frac(flip + 0.25F) * 1.6F - 0.3F, 0.0F, 1.0F);
+        float flipLeft = Mth.clamp(Mth.frac(flip + 0.75F) * 1.6F - 0.3F, 0.0F, 1.0F);
+
+        boolean onLectern = entity.isOnLectern();
+
+        this.loosePage0.skipDraw = onLectern;
+        this.loosePage1.skipDraw = onLectern;
+        this.loosePage2.skipDraw = onLectern;
+        this.loosePage3.skipDraw = onLectern;
+
+        if (onLectern) {
+            bounce = 0.0F;
+            open = 1.2F;
+        } else {
+            // page rotations
+            this.loosePage0.yRot = (bounce) / 4.0F;
+            this.loosePage0.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
+            this.loosePage0.zRot = Mth.cos((bounce) / 5.0F) / 5.0F;
+
+            this.loosePage1.yRot = (bounce) / 3.0F;
+            this.loosePage1.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
+            this.loosePage1.zRot = Mth.cos((bounce) / 5.0F) / 4.0F + 2;
+
+            this.loosePage2.yRot = (bounce) / 4.0F;
+            this.loosePage2.xRot = -Mth.sin((bounce) / 5.0F) / 3.0F;
+            this.loosePage2.zRot = Mth.cos((bounce) / 5.0F) / 5.0F - 1.0F;
+
+            this.loosePage3.yRot = (bounce) / 4.0F;
+            this.loosePage3.xRot = -Mth.sin((bounce) / 2.0F) / 4.0F;
+            this.loosePage3.zRot = Mth.cos((bounce) / 7.0F) / 5.0F;
+
+            // hoveriness
+            this.book.setPos(0, 8 + Mth.sin((bounce) * 0.3F) * 2.0F, 0);
+        }
+
 
         // book openness
         float openAngle = (Mth.sin(bounce * 0.4F) * 0.3F + 1.25F) * open;
@@ -141,22 +179,5 @@ public class DeathTomeModel extends HierarchicalModel<DeathTome> {
         this.pagesLeft.x = Mth.sin(openAngle);
         this.flippingPageRight.x = Mth.sin(openAngle);
         this.flippingPageLeft.x = Mth.sin(openAngle);
-
-        // page rotations
-        this.loosePage0.yRot = (bounce) / 4.0F;
-        this.loosePage0.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
-        this.loosePage0.zRot = Mth.cos((bounce) / 5.0F) / 5.0F;
-
-        this.loosePage1.yRot = (bounce) / 3.0F;
-        this.loosePage1.xRot = Mth.sin((bounce) / 5.0F) / 3.0F;
-        this.loosePage1.zRot = Mth.cos((bounce) / 5.0F) / 4.0F + 2;
-
-        this.loosePage2.yRot = (bounce) / 4.0F;
-        this.loosePage2.xRot = -Mth.sin((bounce) / 5.0F) / 3.0F;
-        this.loosePage2.zRot = Mth.cos((bounce) / 5.0F) / 5.0F - 1.0F;
-
-        this.loosePage3.yRot = (bounce) / 4.0F;
-        this.loosePage3.xRot = -Mth.sin((bounce) / 2.0F) / 4.0F;
-        this.loosePage3.zRot = Mth.cos((bounce) / 7.0F) / 5.0F;
     }
 }

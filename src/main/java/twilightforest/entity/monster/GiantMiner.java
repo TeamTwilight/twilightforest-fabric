@@ -64,6 +64,11 @@ public class GiantMiner extends Monster {
 				.add(Attributes.FOLLOW_RANGE, 40.0D);
 	}
 
+	@Override
+	public float getStepHeight() {
+		return 1.2F;
+	}
+
 	@Nullable
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {

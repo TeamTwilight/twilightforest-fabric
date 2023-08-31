@@ -73,7 +73,7 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 	}
 
 	@Override
-	protected Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
+	public Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
 		return PARTICLE_OFFSETS.get(accessor.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc ? sc.getCandleAmount() : 1);
 	}
 
@@ -94,7 +94,6 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(ROTATION);
+		super.createBlockStateDefinition(builder.add(ROTATION));
 	}
 }

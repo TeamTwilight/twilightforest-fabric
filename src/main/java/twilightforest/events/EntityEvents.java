@@ -244,11 +244,11 @@ public class EntityEvents {
 			profile = skull.getOwnerProfile();
 		level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		level.setBlockAndUpdate(pos, newBlock.defaultBlockState()
-				.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
+				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION)));
 		level.setBlockEntity(new SkullCandleBlockEntity(pos,
 				newBlock.defaultBlockState()
-						.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
+						.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 						.setValue(SkullCandleBlock.ROTATION, level.getBlockState(pos).getValue(SkullBlock.ROTATION)),
 				AbstractSkullCandleBlock.candleToCandleColor(stack.getItem()).getValue(), 1));
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);
@@ -260,11 +260,11 @@ public class EntityEvents {
 			profile = skull.getOwnerProfile();
 		level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		level.setBlockAndUpdate(pos, newBlock.defaultBlockState()
-				.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
+				.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 				.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING)));
 		level.setBlockEntity(new SkullCandleBlockEntity(pos,
 				newBlock.defaultBlockState()
-						.setValue(AbstractSkullCandleBlock.LIGHTING, AbstractLightableBlock.Lighting.NONE)
+						.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)
 						.setValue(WallSkullCandleBlock.FACING, level.getBlockState(pos).getValue(WallSkullBlock.FACING)),
 				AbstractSkullCandleBlock.candleToCandleColor(stack.getItem()).getValue(), 1));
 		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) sc.setOwner(profile);

@@ -532,8 +532,6 @@ public class TFWeatherRenderer {
 		}
 	}
 
-	private static int rainSoundTime;
-
 	/**
 	 * [VanillaCopy]:<br>
 	 * {@link net.minecraft.client.renderer.LevelRenderer#tickRain(Camera)}<br>
@@ -575,8 +573,8 @@ public class TFWeatherRenderer {
 				}
 			}
 
-			if (blockpos1 != null && randomsource.nextInt(4) < rainSoundTime++) {
-				rainSoundTime = 0;
+			if (blockpos1 != null && randomsource.nextInt(4) < Minecraft.getInstance().levelRenderer.rainSoundTime++) {
+				Minecraft.getInstance().levelRenderer.rainSoundTime = 0;
 				if (blockpos1.getY() > blockpos.getY() + 1 && level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos).getY() > Mth.floor((float)blockpos.getY())) {
 					level.playLocalSound(blockpos1, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
 				} else {

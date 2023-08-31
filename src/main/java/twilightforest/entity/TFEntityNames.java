@@ -102,6 +102,7 @@ public class TFEntityNames {
 	public static final ResourceLocation PROTECTION_BOX = prefix("protection_box");
 	public static final ResourceLocation BOAT = prefix("boat");
 	public static final ResourceLocation CHEST_BOAT = prefix("chest_boat");
+	public static final ResourceLocation MAGIC_PAINTING = prefix("magic_painting");
 
 	// Projectiles
 	public static final ResourceLocation NATURE_BOLT = prefix("nature_bolt");

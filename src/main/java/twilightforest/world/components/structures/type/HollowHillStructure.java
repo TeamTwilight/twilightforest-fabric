@@ -7,7 +7,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -20,8 +22,10 @@ import twilightforest.world.components.structures.HollowHillComponent;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class HollowHillStructure extends LandmarkStructure implements ConfigurableSpawns {
     public static final Codec<HollowHillStructure> CODEC = RecordCodecBuilder.create(instance -> instance
@@ -84,7 +88,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
                 new DecorationConfig(1, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
-                        Map.of(), // Landmarks have Controlled Mob spawning
+                        Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
                         TerrainAdjustment.NONE
                 )
@@ -109,7 +113,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
                 new DecorationConfig(2, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
-                        Map.of(), // Landmarks have Controlled Mob spawning
+                        Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
                         TerrainAdjustment.NONE
                 )
@@ -135,7 +139,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
                 new DecorationConfig(3, true, false, false),
                 new StructureSettings(
                         context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
-                        Map.of(), // Landmarks have Controlled Mob spawning
+                        Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
                         GenerationStep.Decoration.SURFACE_STRUCTURES,
                         TerrainAdjustment.NONE
                 )

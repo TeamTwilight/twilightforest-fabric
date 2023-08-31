@@ -1,10 +1,7 @@
 {
   "replace": false,
   "values": [
-    "twilightforest:arctic_fur_block",
-    "twilightforest:fluffy_cloud",
-    "twilightforest:wispy_cloud",
-    "twilightforest:rainy_cloud",
-    "twilightforest:snowy_cloud"
+    "#twilightforest:clouds",
+    "twilightforest:arctic_fur_block"
   ]
 }

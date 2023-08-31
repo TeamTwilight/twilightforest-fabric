@@ -50,6 +50,12 @@ public class HostileMountEvents {
 		}
 	}
 
+	public static void hostileDismount(Entity rider) {
+		HostileMountEvents.allowDismount = true;
+		rider.stopRiding();
+		HostileMountEvents.allowDismount = false;
+	}
+
 	public static boolean preventMountDismount(Entity mounted, Entity mounting) {
 		if (!mounted.level().isClientSide() &&
 				mounted.isAlive() &&

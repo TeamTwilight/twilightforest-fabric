@@ -1,4 +1,4 @@
-// 1.20.1	2023-07-24T18:24:31.11775	Twilight Forest Block Tags
+// 1.20.1	2023-08-18T12:35:03.038368	Twilight Forest Block Tags
 3d56c0ea016f639fad4fae4272d928867251da04 data/forge/tags/blocks/chests/wooden.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences.json
 879fc86d9d7face7697fbbb62565885740fc7f41 data/forge/tags/blocks/fences/wooden.json
@@ -13,7 +13,7 @@
 82ad1b0beb97d202d619464e397341cab3fc4ea1 data/minecraft/tags/blocks/beacon_base_blocks.json
 6fe1e441c4085be357b16f3ef9158eda9139f939 data/minecraft/tags/blocks/ceiling_hanging_signs.json
 421e214e66436fb5f6d5903b7cdce6c73e7c4ef8 data/minecraft/tags/blocks/climbable.json
-8b7db1686f6d0356b2cfb9464b9bd759fc80aa6a data/minecraft/tags/blocks/dampens_vibrations.json
+d3606357bb7f5a88902b70183dfd0b2ef323608d data/minecraft/tags/blocks/dampens_vibrations.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/blocks/dirt.json
 1094f05635217cf3ce4a1062e85d14129a347cef data/minecraft/tags/blocks/dragon_immune.json
 58b5e0d0eea5536fb5d46cc844c5b8b71bc34f86 data/minecraft/tags/blocks/enchantment_power_provider.json
@@ -62,12 +62,13 @@ af8520c845f14fb320bcefd284018a5ad57a7528 data/twilightforest/tags/blocks/baniste
 65138d47619b3b87ed5cdf3b4ec226e0bfebfb64 data/twilightforest/tags/blocks/carminite_reactor_immune.json
 66c63c2aea9e2f572dee901056877665b812ae56 data/twilightforest/tags/blocks/carminite_reactor_ores.json
 ecd0a9f97ab5b54a7c21ed4f6af6896d564ea5f0 data/twilightforest/tags/blocks/castle_blocks.json
+63d6b8afab51c74ed26723c1e8a1588cbba120cb data/twilightforest/tags/blocks/clouds.json
 4955c5a75150132ea89493a413fbb4431eeba532 data/twilightforest/tags/blocks/common_protections.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/blocks/darkwood_logs.json
 29d004c820708d44b1747a2f31f506646efb1a27 data/twilightforest/tags/blocks/dark_tower_allowed_pots.json
 bf058833e8ea8ec1da7d6c84a022263ae758ea24 data/twilightforest/tags/blocks/druid_projectile_replaceable.json
 db6195d77bd598771b111d12750ba39f41fe35c7 data/twilightforest/tags/blocks/fire_jet_fuel.json
-f4b17069daa50f8a5cf2dfea2bdb6af2e0daf049 data/twilightforest/tags/blocks/giants_spawnable_on.json
+25aee6721c6ac17e92f2a9f5d0733f89a0a0489b data/twilightforest/tags/blocks/giants_spawnable_on.json
 e222b54e9f838dbf2e905bf0b137ed8b0c60b328 data/twilightforest/tags/blocks/hollow_logs.json
 e76ac35d93be5d3604434978c6f388542c03f06a data/twilightforest/tags/blocks/hollow_logs_climbable.json
 bb8b9b62d506ca43da000c49146b02a02db94cba data/twilightforest/tags/blocks/hollow_logs_horizontal.json

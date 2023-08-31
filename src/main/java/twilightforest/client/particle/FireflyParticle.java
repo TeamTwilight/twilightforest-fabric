@@ -4,26 +4,32 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LightLayer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 public class FireflyParticle extends TextureSheetParticle {
 
 	private final int halfLife;
+	private final boolean checkSkylight;
 
-	public FireflyParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz) {
-		super(level, x, y, z, vx, vy, vz);
-		xd *= 2.1;
-		yd *= 2.1;
-		zd *= 2.1;
-		rCol = 0.9F;
-		gCol = 1.0F;
-		bCol = 0.0F;
-		quadSize = 0.2f + (random.nextFloat() * 0.1f);
-		lifetime = 10 + random.nextInt(21);
-		halfLife = lifetime / 2;
-		hasPhysics = true;
+	public FireflyParticle(ClientLevel level, double x, double y, double z, float movementX, float movementY, float movementZ, int minlife, boolean checkSkylight) {
+		super(level, x, y, z, 0.0D, 0.0D, 0.0D);
+		this.xd *= movementX;
+		this.yd *= movementY;
+		this.zd *= movementZ;
+
+		this.rCol = 0.5F + (this.random.nextFloat() * 0.25f);
+		this.gCol = 0.85F - (this.random.nextFloat() * 0.25f);
+		this.bCol = 0.0F;
+		this.quadSize = 0.2f + (this.random.nextFloat() * 0.1f);
+		this.lifetime = minlife + this.random.nextInt(21);
+		this.halfLife = this.lifetime / 2;
+		this.hasPhysics = true;
+		this.checkSkylight = checkSkylight;
 	}
 
 	@Override
@@ -33,23 +39,24 @@ public class FireflyParticle extends TextureSheetParticle {
 
 	@Override
 	public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
-		alpha = getGlowBrightness();
+		this.alpha = this.getGlowBrightness();
 		super.render(buffer, camera, partialTicks);
 	}
 
 	@Override
 	public void tick() {
-		if (age++ >= lifetime) {
-			remove();
+		if (this.checkSkylight && this.level.getBrightness(LightLayer.SKY, BlockPos.containing(this.x, this.y, this.z)) < 1) {
+			this.remove();
 		}
+		super.tick();
 	}
 
 	public float getGlowBrightness() {
-		int lifeTime = lifetime - age;
-		if (lifeTime <= halfLife) {
-			return (float) lifeTime / (float) halfLife;
+		int lifeTime = this.lifetime - this.age;
+		if (lifeTime <= this.halfLife) {
+			return (float) lifeTime / (float) this.halfLife;
 		} else {
-			return Math.max(1.0f - (((float) lifeTime - halfLife) / halfLife), 0);
+			return Math.max(1.0f - (((float) lifeTime - this.halfLife) / this.halfLife), 0);
 		}
 	}
 
@@ -58,13 +65,40 @@ public class FireflyParticle extends TextureSheetParticle {
 		return 0xF000F0;
 	}
 
-	@Environment(EnvType.CLIENT)
-	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
+	public record StationaryProvider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			FireflyParticle particle = new FireflyParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
-			particle.pickSprite(this.sprite);
+			FireflyParticle particle = new FireflyParticle(level, x, y, z, 0.0F, 0.0F, 0.0F, 10, false);
+			particle.pickSprite(this.sprite());
+			return particle;
+		}
+	}
+
+	public record WanderingProvider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
+
+		@Override
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			FireflyParticle particle = new FireflyParticle(level, x, y, z, 0.1F, 0.1F, 0.1F, 30, true);
+			RandomSource rand = level.getRandom();
+			particle.xd += (double) rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double) rand.nextFloat() * 0.1D;
+			particle.yd += (double) rand.nextFloat() * -0.25D * (double) rand.nextFloat() * 0.1D;
+			particle.zd += (double) rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double) rand.nextFloat() * 0.1D;
+			particle.pickSprite(this.sprite());
+			return particle;
+		}
+	}
+
+	public record ParticleSpawnerProvider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
+
+		@Override
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			FireflyParticle particle = new FireflyParticle(level, x, y, z, 0.1F, 0.1F, 0.1F, 30, false);
+			RandomSource rand = level.getRandom();
+			particle.xd += (double) rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double) rand.nextFloat() * 0.1D;
+			particle.yd += (double) rand.nextFloat() * -0.25D * (double) rand.nextFloat() * 0.1D;
+			particle.zd += (double) rand.nextFloat() * (rand.nextBoolean() ? -3.9D : 3.9D) * (double) rand.nextFloat() * 0.1D;
+			particle.pickSprite(this.sprite());
 			return particle;
 		}
 	}

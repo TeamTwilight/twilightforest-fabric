@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -27,9 +28,7 @@ import twilightforest.network.ParticlePacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.WorldUtil;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
@@ -44,68 +43,82 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
-		Map<Storage<ItemVariant>, Vec3> inputHandlers = new HashMap<>();
-		Map<Storage<ItemVariant>, Vec3> outputHandlers = new HashMap<>();
+		Map<List<IItemHandler>, Vec3> inputMap = new HashMap<>();
+		Map<IItemHandler, Vec3> outputMap = new HashMap<>();
 
-		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.COMMON_CONFIG.MAGIC_TREES.sortingRange.get())) {
+		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.COMMON_CONFIG.MAGIC_TREES.sortingRange.get())) { // Get every itemHandler from every block in the area
 			if (!blockPos.equals(pos)) {
-				Storage<ItemVariant> storage = ItemStorage.SIDED.find(level, pos, null);
-				if (storage != null) {
-					boolean inputRange = Math.abs(blockPos.getX() - pos.getX()) <= 2
-							&& Math.abs(blockPos.getY() - pos.getY()) <= 2
-							&& Math.abs(blockPos.getZ() - pos.getZ()) <= 2;
-					if (inputRange && storage.supportsExtraction()) {
-						inputHandlers.put(storage, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-					} else if (!inputRange && storage.supportsInsertion()) {
-						outputHandlers.put(storage, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
+				BlockEntity blockEntity = level.getBlockEntity(blockPos);
+				if (blockEntity != null) {
+					// Put it in the input if its within 2 blocks
+					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
+						List<IItemHandler> handlers = new ArrayList<>();
+						for (Direction side : Direction.values()) {
+							blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(handlers::add);
+						}
+						if (!handlers.isEmpty()) {
+							inputMap.put(handlers, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
+						}
+					} else { // Output if its outside that range
+						for (Direction side : Direction.values()) {
+							blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(iItemHandler -> outputMap.put(iItemHandler, Vec3.upFromBottomCenterOf(blockPos, 1.9D)));
+						}
 					}
 				}
 			}
 		}
 
+		List<Entity> alreadyUsedForInput = new ArrayList<>(); // Keep track of entities we already have for inputs, so we can skip over them when looking for outputs
+
 		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
-			Storage<ItemVariant> storage = getEntityStorage(entity);
-			if (storage != null && storage.supportsExtraction())
-				inputHandlers.put(storage, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+			List<IItemHandler> handlers = new ArrayList<>();
+			for (Direction side : Direction.values()) {
+				entity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(handlers::add);
+			}
+			if (!handlers.isEmpty()) {
+				inputMap.put(handlers, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+				alreadyUsedForInput.add(entity);
+			}
 		});
 
-		if (inputHandlers.isEmpty()) return;
+		if (inputMap.isEmpty()) return; // No input
 
-		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
-			Storage<ItemVariant> storage = getEntityStorage(entity);
-			if (storage != null && storage.supportsInsertion() && !inputHandlers.containsKey(storage))
-				outputHandlers.put(storage, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
+			for (Direction side : Direction.values()) {
+				entity.getCapability(ForgeCapabilities.ITEM_HANDLER, side).ifPresent(iItemHandler -> outputMap.put(iItemHandler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D)));
+			}
 		});
 
-		if (outputHandlers.isEmpty()) return;
+		if (outputMap.isEmpty()) return; // No output
 
-		for (Storage<ItemVariant> inputStorage : inputHandlers.keySet()) {
-			for (StorageView<ItemVariant> view : TransferUtil.getNonEmpty(inputStorage)) {
-				ItemVariant inputVariant = view.getResource();
-				boolean transferred = false;
+		for (Map.Entry<List<IItemHandler>, Vec3> inputHandlers : inputMap.entrySet()) {
+			boolean transferred = false;
+			for (IItemHandler inputIItemHandler : inputHandlers.getKey()) {
+				for (int i = 0; i < inputIItemHandler.getSlots(); i++) {
+					ItemStack inputStack = inputIItemHandler.extractItem(i, 1, true);
+					if (!inputStack.isEmpty()) {
+						Map<Integer, IItemHandler> outputsByCount = new HashMap<>();
 
-				Map<Long, Storage<ItemVariant>> outputsByCount = new Long2ObjectOpenHashMap<>();
-
-				for (Storage<ItemVariant> outputStorage : outputHandlers.keySet()) {
+				for (Storage<ItemVariant> outputStorage : outputMap.keySet()) {
 					long stored = outputStorage.simulateExtract(inputVariant, Long.MAX_VALUE, null);
 					if (stored != Long.MAX_VALUE) // don't sort infinite inventories
-						outputsByCount.put(stored, outputStorage);
+							outputsByCount.put(stored, outputStorage);
 				}
 
 				for (Long count : outputsByCount.keySet().stream().sorted(Collections.reverseOrder(Long::compareTo)).toList()) {
 					try (Transaction t = TransferUtil.getTransaction()) {
 						Storage<ItemVariant> outputStorage = outputsByCount.get(count);
-						if (view.extract(inputVariant, 1, t) != 1)
+							if (view.extract(inputVariant, 1, t) != 1)
 							break; // failed to extract, catastrophe
 						if (outputStorage.insert(inputVariant, 1, t) != 1)
 							continue; // failed to insert, skip and try next one
 
 						// everything is good
-						transferred = true;
-						t.commit();
+							transferred = true;
+							t.commit();
 
-						Vec3 xyz = outputHandlers.get(outputStorage);
-						Vec3 diff = inputHandlers.get(inputStorage).subtract(xyz);
+									Vec3 xyz = outputMap.get(outputIItemHandler);
+									Vec3 diff = inputHandlers.getValue().subtract(xyz);
 
 						for (ServerPlayer serverplayer : ((ServerLevel) level).players()) {//This is just particle math, we send a particle packet to every player in range
 							if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
@@ -121,8 +134,10 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 					}
 				}
 
-				if (transferred) break;
-			}
+				}
+					if (transferred) break;// If we transferred the item from this Entry already, we break, since all IItemHandlers in one entry come from the same source
+				}
+			if (transferred) break; // Again, since we only transfer once per source, break
 		}
 	}
 

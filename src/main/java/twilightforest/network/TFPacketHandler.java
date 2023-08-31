@@ -30,6 +30,7 @@ public class TFPacketHandler {
 		CHANNEL.registerS2CPacket(ThrowPlayerPacket.class, id++);
 		CHANNEL.registerC2SPacket(UncraftingGuiPacket.class, id++);
 		CHANNEL.registerS2CPacket(UpdateFeatherFanFallPacket.class, id++);
+		CHANNEL.registerC2SPacket(UpdateGamerulePacket.class, id++);
 		CHANNEL.registerS2CPacket(UpdateShieldPacket.class, id++);
 		CHANNEL.registerS2CPacket(UpdateTFMultipartPacket.class, id++);
 		CHANNEL.registerS2CPacket(UpdateThrownPacket.class, id++);

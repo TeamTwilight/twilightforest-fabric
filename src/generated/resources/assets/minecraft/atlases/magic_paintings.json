@@ -1,0 +1,32 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/back"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/background"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/sky"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/terrain"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/gems"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/gems"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/darkness/lightning"
+    }
+  ]
+}

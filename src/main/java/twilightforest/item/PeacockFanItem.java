@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.block.AbstractLightableBlock;
+import twilightforest.block.LightableBlock;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
@@ -153,8 +153,8 @@ public class PeacockFanItem extends Item {
 			}
 		} else if (state.getBlock() instanceof AbstractCandleBlock && state.getValue(AbstractCandleBlock.LIT)) {
 			AbstractCandleBlock.extinguish(null, state, level, pos);
-		} else if (state.getBlock() instanceof AbstractSkullCandleBlock && state.getValue(AbstractSkullCandleBlock.LIGHTING) != AbstractLightableBlock.Lighting.NONE) {
-			AbstractSkullCandleBlock.extinguish(null, state, level, pos);
+		} else if (state.getBlock() instanceof LightableBlock lightable && state.getValue(LightableBlock.LIGHTING) != LightableBlock.Lighting.NONE) {
+			lightable.extinguish(null, state, level, pos);
 		}
 
 		return cost;

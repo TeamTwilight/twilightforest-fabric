@@ -78,7 +78,7 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 		}
 
 		if (recipe instanceof UncraftingRecipe uncraftingRecipe) {
-			ItemStack[] stacks = uncraftingRecipe.getIngredient().getItems();
+			ItemStack[] stacks = uncraftingRecipe.input().getItems();
 			ItemStack[] stackedStacks = new ItemStack[stacks.length];
 			for (int i = 0; i < stacks.length; i++) stackedStacks[i] = new ItemStack(stacks[0].getItem(), uncraftingRecipe.count());
 			builder.addSlot(RecipeIngredientRole.INPUT, 5, 19).addIngredients(Ingredient.of(stackedStacks));//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack

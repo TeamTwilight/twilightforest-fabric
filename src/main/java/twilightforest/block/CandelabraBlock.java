@@ -3,13 +3,16 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -17,16 +20,16 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 // The code is flexible to allow colors but I'm not sure if they'd look good on Candelabra
-public class CandelabraBlock extends AbstractLightableBlock implements SimpleWaterloggedBlock {
+public class CandelabraBlock extends Block implements LightableBlock, SimpleWaterloggedBlock {
 	public static final BooleanProperty ON_WALL = BooleanProperty.create("on_wall");
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -51,11 +54,11 @@ public class CandelabraBlock extends AbstractLightableBlock implements SimpleWat
 
 	public CandelabraBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(ON_WALL, false).setValue(LIGHTING, Lighting.NONE).setValue(WATERLOGGED, false));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(LIGHTING, Lighting.NONE).setValue(FACING, Direction.NORTH).setValue(ON_WALL, false).setValue(LIGHTING, Lighting.NONE).setValue(WATERLOGGED, false));
 	}
 
 	@Override
-	protected Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
+	public Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
 		if (state.getValue(ON_WALL)) {
 			return switch (state.getValue(FACING)) {
 				case SOUTH -> SOUTH_OFFSETS;
@@ -80,6 +83,16 @@ public class CandelabraBlock extends AbstractLightableBlock implements SimpleWat
 		} else {
 			return state.getValue(FACING).getAxis() == Direction.Axis.X ? CANDLES_X : CANDLES_Z;
 		}
+	}
+
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+		return this.lightCandles(state, level, pos, player, hand, result);
+	}
+
+	@Override
+	public void onProjectileHit(Level level, BlockState state, BlockHitResult result, Projectile projectile) {
+		this.lightCandlesWithProjectile(level, state, result, projectile);
 	}
 
 	@Override
@@ -121,8 +134,8 @@ public class CandelabraBlock extends AbstractLightableBlock implements SimpleWat
 	}
 
 	@Override
-	protected boolean canBeLit(BlockState state) {
-		return super.canBeLit(state) && !state.getValue(WATERLOGGED);
+	public boolean canBeLit(BlockState state) {
+		return state.getValue(LIGHTING) == Lighting.NONE && !state.getValue(WATERLOGGED);
 	}
 
 	@Override
@@ -174,12 +187,6 @@ public class CandelabraBlock extends AbstractLightableBlock implements SimpleWat
 		if (state.getValue(LIGHTING) != Lighting.NONE) {
 			this.getParticleOffsets(state, level, pos).forEach(vec3 -> addParticlesAndSound(level, pos, vec3.x, vec3.y, vec3.z, rand, ominous));
 		}
-	}
-
-	@Nullable
-	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return null;
 	}
 
 	@Override

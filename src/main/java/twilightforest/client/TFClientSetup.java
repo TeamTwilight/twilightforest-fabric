@@ -135,6 +135,7 @@ public class TFClientSetup implements ClientModInitializer {
 	public static void addJappaPackListener() {
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(JappaPackReloadListener.INSTANCE);
 		JappaPackReloadListener.clientSetup();
+		// TODO PORT 1.20 add MagicPaintingTextureManager
 	}
 
 	public static void registerEntityRenderers() {
@@ -187,6 +188,7 @@ public class TFClientSetup implements ClientModInitializer {
 		EntityRendererRegistry.register(TFEntities.MAZE_SLIME.get(), m -> new MazeSlimeRenderer(m, 0.625F));
 		EntityRendererRegistry.register(TFEntities.YETI.get(), m -> new TFBipedRenderer<>(m, new YetiModel<>(m.bakeLayer(TFModelLayers.YETI)), 0.625F, "yeti2.png"));
 		EntityRendererRegistry.register(TFEntities.PROTECTION_BOX.get(), ProtectionBoxRenderer::new);
+		EntityRendererRegistry.register(TFEntities.MAGIC_PAINTING.get(), MagicPaintingRenderer::new);
 		EntityRendererRegistry.register(TFEntities.ALPHA_YETI.get(), m -> new TFBipedRenderer<>(m, new AlphaYetiModel(m.bakeLayer(TFModelLayers.ALPHA_YETI)), 1.75F, "yetialpha.png"));
 		EntityRendererRegistry.register(TFEntities.WINTER_WOLF.get(), WinterWolfRenderer::new);
 		EntityRendererRegistry.register(TFEntities.SNOW_GUARDIAN.get(), m -> new SnowGuardianRenderer(m, new NoopModel<>(m.bakeLayer(TFModelLayers.NOOP))));

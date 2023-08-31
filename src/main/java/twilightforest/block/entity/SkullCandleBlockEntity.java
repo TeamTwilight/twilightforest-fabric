@@ -2,6 +2,7 @@ package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
@@ -45,6 +46,19 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 		this.candleAmount = tag.getInt("CandleAmount");
 	}
 
+	@Override
+	public CompoundTag getUpdateTag() {
+		CompoundTag tag = new CompoundTag();
+		tag.putInt("CandleColor", this.candleColor);
+		if (this.candleAmount != 0) tag.putInt("CandleAmount", this.candleAmount);
+		return tag;
+	}
+
+	@Override
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
+	}
+
 	public int getCandleColor() {
 		return this.candleColor;
 	}
@@ -55,14 +69,20 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 
 	public void setCandleColor(int color) {
 		this.candleColor = color;
+		this.setChanged();
+		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
 	}
 
 	public void setCandleAmount(int amount) {
 		this.candleAmount = amount;
+		this.setChanged();
+		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
 	}
 
 	public void incrementCandleAmount() {
 		this.candleAmount++;
+		this.setChanged();
+		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, SkullCandleBlockEntity entity) {
@@ -75,7 +95,7 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 
 	}
 
-	public float getAnimation(float pPartialTick) {
-		return this.isAnimating ? (float)this.animationTickCount + pPartialTick : (float)this.animationTickCount;
+	public float getAnimation(float partialTick) {
+		return this.isAnimating ? (float)this.animationTickCount + partialTick : (float)this.animationTickCount;
 	}
 }

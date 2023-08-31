@@ -1,3 +1,20 @@
 {
-  "parent": "minecraft:block/oak_log"
+  "parent": "minecraft:block/oak_log",
+  "base": {
+    "parent": "twilightforest:item/giant_block_base",
+    "textures": {
+      "all": "minecraft:block/oak_log",
+      "top": "minecraft:block/oak_log_top"
+    }
+  },
+  "loader": "forge:separate_transforms",
+  "perspectives": {
+    "gui": {
+      "parent": "twilightforest:item/giant_block_gui",
+      "textures": {
+        "all": "minecraft:block/oak_log",
+        "top": "minecraft:block/oak_log_top"
+      }
+    }
+  }
 }
