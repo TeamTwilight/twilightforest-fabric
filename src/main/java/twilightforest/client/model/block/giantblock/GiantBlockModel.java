@@ -1,7 +1,6 @@
 package twilightforest.client.model.block.giantblock;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
@@ -45,9 +44,7 @@ public class GiantBlockModel implements BakedModel, FabricBakedModel {
 	@Override
 	public void emitBlockQuads(BlockAndTintGetter blockView, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext context) {
 		QuadEmitter emitter = context.getEmitter();
-		context.pushTransform(quad -> {
-			return !Iterables.contains(GiantBlock.getVolume(pos), pos.offset(quad.cullFace().getNormal()));
-		});
+		context.pushTransform(quad -> !Iterables.contains(GiantBlock.getVolume(pos), pos.offset(quad.cullFace().getNormal())));
 		for (Direction side : Direction.values()) {
 			Vec2i coords = this.calculateOffset(side, pos.offset(this.magicOffsetFromDir(side)));
 

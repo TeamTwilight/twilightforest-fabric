@@ -13,10 +13,9 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.entity.EnforcedHomePoint;
 
 import java.util.Objects;
-
-import twilightforest.entity.EnforcedHomePoint;
 
 public abstract class BossSpawnerBlockEntity<T extends Mob & EnforcedHomePoint> extends BlockEntity {
 

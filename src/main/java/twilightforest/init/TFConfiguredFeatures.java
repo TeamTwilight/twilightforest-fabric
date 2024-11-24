@@ -27,7 +27,10 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.stateproviders.NoiseProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
-import net.minecraft.world.level.levelgen.structure.templatesystem.*;
+import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RandomBlockMatchTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TorchberryPlantBlock;
@@ -94,9 +97,9 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> BIRCH_FALLEN_LOG = registerKey("birch_fallen_log");
 
 	//smol stone veins
-	public static final ResourceKey<ConfiguredFeature<?,?>> SMALL_GRANITE = registerKey("small_granite");
-	public static final ResourceKey<ConfiguredFeature<?,?>> SMALL_DIORITE = registerKey("small_diorite");
-	public static final ResourceKey<ConfiguredFeature<?,?>> SMALL_ANDESITE = registerKey("small_andesite");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_GRANITE = registerKey("small_granite");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_DIORITE = registerKey("small_diorite");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> SMALL_ANDESITE = registerKey("small_andesite");
 
 	//Ores! Lets keep pre 1.18 ore rates :)
 	public static final ResourceKey<ConfiguredFeature<?, ?>> LEGACY_COAL_ORE = registerKey("legacy_coal_ore");
@@ -117,7 +120,7 @@ public final class TFConfiguredFeatures {
 
 	//troll caves special stuff
 	public static final ResourceKey<ConfiguredFeature<?, ?>> UBEROUS_SOIL_PATCH_BIG = registerKey("uberous_soil_patch_big");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_CAVE_MYCELIUM =  registerKey("troll_cave_mycelium");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_CAVE_MYCELIUM = registerKey("troll_cave_mycelium");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> TROLL_CAVE_DIRT = registerKey("troll_cave_dirt");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> UBEROUS_SOIL_PATCH_SMALL = registerKey("uberous_soil_patch_small");
 
@@ -362,5 +365,6 @@ public final class TFConfiguredFeatures {
 		context.register(GRAVEYARD, new ConfiguredFeature<>(TFFeatures.GRAVEYARD.get(), FeatureConfiguration.NONE));
 	}
 
-	public static void init() {}
+	public static void init() {
+	}
 }

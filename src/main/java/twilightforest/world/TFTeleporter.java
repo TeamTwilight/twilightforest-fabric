@@ -1,7 +1,8 @@
 package twilightforest.world;
 
 import com.google.common.collect.Maps;
-import io.github.fabricators_of_create.porting_lib.extensions.extensions.ITeleporter;
+import io.github.fabricators_of_create.porting_lib.tags.TagHelper;
+import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
@@ -26,8 +27,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
-
-import io.github.fabricators_of_create.porting_lib.tags.TagHelper;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
@@ -45,7 +44,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class TFTeleporter implements ITeleporter {
+public class TFTeleporter implements ITFTeleporter {
 
 	// destinationCoordinateCache is (src -> dest) [DestWorld, [SrcPos, DestPos]]
 	private static final Map<ResourceLocation, Map<ColumnPos, PortalPosition>> destinationCoordinateCache = new HashMap<>();
@@ -111,7 +110,17 @@ public class TFTeleporter implements ITeleporter {
 			pos = placeInExistingPortal(dest, entity, BlockPos.containing(pos.pos));
 		}
 
-		return pos == null ? ITeleporter.super.getPortalInfo(entity, dest, defaultPortalInfo) : pos;
+		return pos == null ? ITFTeleporter.super.getPortalInfo(entity, dest, defaultPortalInfo) : pos;
+	}
+
+	public static void changeDimension(Entity entity, ServerLevel destWorld, ITFTeleporter teleporter) {
+		PortalInfo portalinfo = teleporter.getPortalInfo(entity, destWorld, entity::findDimensionEntryPoint);
+		if (portalinfo == null) {
+			TwilightForestMod.LOGGER.error("TwilightForest unexpected error - portalInfo returned null, can't enter dimension safely. entity - {}", entity.toString());
+			return;
+		}
+		entity.resetFallDistance();
+		FabricDimensions.teleport(entity, destWorld, portalinfo);
 	}
 
 	@Nullable
@@ -217,11 +226,6 @@ public class TFTeleporter implements ITeleporter {
 						}
 					}
 				}
-
-				// mark unwatched chunks for unload
-				//						if (!this.world.getPlayerChunkMap().contains(chunkPos.x, chunkPos.z)) {
-				//							this.world.getChunkProvider().queueUnload(chunk);
-				//						}
 			}
 		}
 		return result;
@@ -596,12 +600,6 @@ public class TFTeleporter implements ITeleporter {
 
 	private static PortalInfo makePortalInfo(Entity entity, Vec3 pos) {
 		return new PortalInfo(pos, Vec3.ZERO, entity.getYRot(), entity.getXRot());
-	}
-
-	@Override
-	public Entity placeEntity(Entity entity, ServerLevel currentWorld, ServerLevel destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
-		entity.fallDistance = 0;
-		return repositionEntity.apply(false);
 	}
 
 	static class PortalPosition {

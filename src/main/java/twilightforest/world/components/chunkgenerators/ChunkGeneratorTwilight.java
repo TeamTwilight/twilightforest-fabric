@@ -25,7 +25,10 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -175,7 +178,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		int zMod = Math.floorMod(z, cellWidth);
 		int xMin = xMod / cellWidth;
 		int zMin = zMod / cellWidth;
-		double[][] columns = new double[][] {
+		double[][] columns = new double[][]{
 				this.makeAndFillNoiseColumn(random, xDiv, zDiv, min, max),
 				this.makeAndFillNoiseColumn(random, xDiv, zDiv + 1, min, max),
 				this.makeAndFillNoiseColumn(random, xDiv + 1, zDiv, min, max),
@@ -193,7 +196,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			double d31 = columns[3][cell + 1];
 
 			for (int height = cellHeight - 1; height >= 0; height--) {
-				double dcell = height / (double)cellHeight;
+				double dcell = height / (double) cellHeight;
 				double lcell = Mth.lerp3(dcell, xMin, zMin, d00, d01, d20, d21, d10, d11, d30, d31);
 				int layer = cell * cellHeight + height;
 				int maxlayer = layer + min * cellHeight;
@@ -285,7 +288,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					int advZ = cellZ;
 					list.forEach((noiseint) -> noiseint.selectYZ(advY, advZ));
 
-					for(int height = cellHeight - 1; height >= 0; height--) {
+					for (int height = cellHeight - 1; height >= 0; height--) {
 						int minheight = (min + cellY) * cellHeight + height;
 						int mincellY = minheight & 15;
 						int minindexY = access.getSectionIndex(minheight);
@@ -295,19 +298,19 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 							section = access.getSection(minindexY);
 						}
 
-						double heightdiv = (double)height / (double)cellHeight;
+						double heightdiv = (double) height / (double) cellHeight;
 						list.forEach((noiseint) -> noiseint.updateY(heightdiv));
 
 						for (int widthX = 0; widthX < cellWidth; widthX++) {
 							int minwidthX = minX + cellX * cellWidth + widthX;
 							int mincellX = minwidthX & 15;
-							double widthdivX = (double)widthX / (double)cellWidth;
+							double widthdivX = (double) widthX / (double) cellWidth;
 							list.forEach((noiseint) -> noiseint.updateX(widthdivX));
 
 							for (int widthZ = 0; widthZ < cellWidth; widthZ++) {
 								int minwidthZ = minZ + cellZ * cellWidth + widthZ;
 								int mincellZ = minwidthZ & 15;
-								double widthdivZ = (double)widthZ / (double)cellWidth;
+								double widthdivZ = (double) widthZ / (double) cellWidth;
 								double noiseval = interpolator.updateZ(widthdivZ);
 								//BlockState state = this.updateNoiseAndGenerateBaseState(beardifier, this.emptyAquifier, NoiseModifier.PASS, minwidthX, minheight, minwidthZ, noiseval); //TODO
 								BlockState state = this.generateBaseState(noiseval, minheight);
@@ -485,7 +488,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 				// we're still in ground
 				if (currentTerrain != Blocks.STONE) {
 					// we found the lowest chunk of earth
-					mazeHeight += ((y - mazeHeight) * squishFactor);
+					mazeHeight += (int) ((y - mazeHeight) * squishFactor);
 					break;
 				}
 			}
@@ -496,7 +499,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			BlockPos old2 = primer.getCenter().getWorldPosition().offset(x, 0, z);
 			BlockState b = primer.getBlockState(old2.atY(y));
 			BlockPos old1 = primer.getCenter().getWorldPosition().offset(x, 0, z);
-			if(!primer.getBiome(old1.atY(y)).is(TFBiomes.STREAM)) {
+			if (!primer.getBiome(old1.atY(y)).is(TFBiomes.STREAM)) {
 				if (b.isAir() || b.liquid()) {
 					BlockPos old = primer.getCenter().getWorldPosition().offset(x, 0, z);
 					primer.setBlock(old.atY(y), Blocks.STONE.defaultBlockState(), 3);
@@ -508,7 +511,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			BlockPos old2 = primer.getCenter().getWorldPosition().offset(x, 0, z);
 			BlockState b = primer.getBlockState(old2.atY(y));
 			BlockPos old1 = primer.getCenter().getWorldPosition().offset(x, 0, z);
-			if(!primer.getBiome(old1.atY(y)).is(TFBiomes.STREAM)) {
+			if (!primer.getBiome(old1.atY(y)).is(TFBiomes.STREAM)) {
 				if (!b.isAir() && !b.liquid()) {
 					BlockPos old = primer.getCenter().getWorldPosition().offset(x, 0, z);
 					primer.setBlock(old.atY(y), Blocks.AIR.defaultBlockState(), 3);
@@ -694,8 +697,8 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			for (int y = primer.getMinBuildHeight(); y <= primer.getMaxBuildHeight(); y++) {
 				if (!this.defaultBlock.equals(primer.getBlockState(movingPos.setY(y)))) {
 					// we found the lowest chunk of earth
-					topHeight += (y - topHeight) * squishFactor;
-					hollowFloor += (y - hollowFloor) * squishFactor;
+					topHeight += (int) ((y - topHeight) * squishFactor);
+					hollowFloor += (int) ((y - hollowFloor) * squishFactor);
 					break;
 				}
 			}
@@ -837,8 +840,21 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 	}
 
 	@Nullable
-	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos) {
-		for (Structure structure : structureManager.registryAccess().registryOrThrow(Registries.STRUCTURE)) {
+	public static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(@Nullable ChunkGeneratorTwilight key, StructureManager structureManager, MobCategory classification, BlockPos pos) {
+		Iterable<Structure> structures = structureManager.registryAccess().registryOrThrow(Registries.STRUCTURE);
+		if (key != null) {
+			List<Structure> l = ControlledSpawnsCache.CONTROLLED_SPAWNS.get(key);
+			if (l == null) {
+				List<Structure> list = new ArrayList<>();
+				for (Structure structure : structures)
+					if (structure instanceof ControlledSpawns)
+						list.add(structure);
+				ControlledSpawnsCache.CONTROLLED_SPAWNS.put(key, list);
+				structures = list;
+			} else
+				structures = l;
+		}
+		for (Structure structure : structures) {
 			if (structure instanceof ControlledSpawns landmark) {
 				StructureStart start = structureManager.getStructureAt(pos, structure);
 				if (!start.isValid())
@@ -865,7 +881,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 	@Override
 	public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureManager structureManager, MobCategory mobCategory, BlockPos pos) {
-		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(structureManager, mobCategory, pos);
+		List<MobSpawnSettings.SpawnerData> potentialStructureSpawns = gatherPotentialSpawns(this, structureManager, mobCategory, pos);
 		if (potentialStructureSpawns != null)
 			return WeightedRandomList.create(potentialStructureSpawns);
 
@@ -884,11 +900,10 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 		if (!LegacyLandmarkPlacements.chunkHasLandmarkCenter(chunkX, chunkZ)) return false;
 
 		var biomeKey = biome.unwrapKey();
-		if (biomeKey.isEmpty()) return false;
+		return biomeKey.filter(biomeResourceKey -> this.biomeLandmarkOverrides.containsKey(biomeResourceKey)
+				? this.biomeGuaranteedLandmark(biomeResourceKey, landmark)
+				: landmark == LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, seed)).isPresent();
 
-		return this.biomeLandmarkOverrides.containsKey(biomeKey.get())
-				? this.biomeGuaranteedLandmark(biomeKey.get(), landmark)
-				: landmark == LegacyLandmarkPlacements.pickVarietyLandmark(chunkX, chunkZ, seed);
 	}
 
 	public boolean biomeGuaranteedLandmark(ResourceKey<Biome> biome, TFLandmark landmark) {
@@ -906,7 +921,7 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 			StructurePlacement structureplacement = p_255564_.value().placement();
 			List<StructureSet.StructureSelectionEntry> list = p_255564_.value().structures();
 
-			for(StructureSet.StructureSelectionEntry structureset$structureselectionentry : list) {
+			for (StructureSet.StructureSelectionEntry structureset$structureselectionentry : list) {
 				StructureStart structurestart = manager.getStartForStructure(sectionpos, structureset$structureselectionentry.structure().value(), chunk);
 				if (structurestart != null && structurestart.isValid()) {
 					return;
@@ -925,15 +940,15 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 					worldgenrandom.setLargeFeatureSeed(state.getLevelSeed(), chunkpos.x, chunkpos.z);
 					int i = 0;
 
-					for(StructureSet.StructureSelectionEntry structureset$structureselectionentry1 : arraylist) {
+					for (StructureSet.StructureSelectionEntry structureset$structureselectionentry1 : arraylist) {
 						i += structureset$structureselectionentry1.weight();
 					}
 
-					while(!arraylist.isEmpty()) {
+					while (!arraylist.isEmpty()) {
 						int j = worldgenrandom.nextInt(i);
 						int k = 0;
 
-						for(StructureSet.StructureSelectionEntry structureset$structureselectionentry2 : arraylist) {
+						for (StructureSet.StructureSelectionEntry structureset$structureselectionentry2 : arraylist) {
 							j -= structureset$structureselectionentry2.weight();
 							if (j < 0) {
 								break;
@@ -979,7 +994,8 @@ public class ChunkGeneratorTwilight extends ChunkGeneratorWrapper {
 
 		for (BlockPos landmarkCenterPosition : LegacyLandmarkPlacements.landmarkCenterScanner(pos, Mth.ceil(Mth.sqrt(searchRadius)))) {
 			for (Map.Entry<BiomeForcedLandmarkPlacement, Set<Holder<Structure>>> landmarkPlacement : placementSetMap.entrySet()) {
-				if (!landmarkPlacement.getKey().isTFPlacementChunk(this, state, landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4)) continue;
+				if (!landmarkPlacement.getKey().isTFPlacementChunk(this, state, landmarkCenterPosition.getX() >> 4, landmarkCenterPosition.getZ() >> 4))
+					continue;
 
 				for (Holder<Structure> targetStructure : targetStructures) {
 					if (landmarkPlacement.getValue().contains(targetStructure)) {

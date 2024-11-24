@@ -1,19 +1,22 @@
 package twilightforest.advancements;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import twilightforest.TwilightForestMod;
 
 public class TrophyPedestalTrigger extends SimpleCriterionTrigger<TrophyPedestalTrigger.Instance> {
 
-    public static final ResourceLocation ID = TwilightForestMod.prefix("placed_on_trophy_pedestal");
+	public static final ResourceLocation ID = TwilightForestMod.prefix("placed_on_trophy_pedestal");
 
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
+	@Override
+	public ResourceLocation getId() {
+		return ID;
+	}
 
 	@Override
 	public TrophyPedestalTrigger.Instance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext condition) {
@@ -21,17 +24,17 @@ public class TrophyPedestalTrigger extends SimpleCriterionTrigger<TrophyPedestal
 	}
 
 	public void trigger(ServerPlayer player) {
-        this.trigger(player, (instance) -> true);
-    }
+		this.trigger(player, (instance) -> true);
+	}
 
-    public static class Instance extends AbstractCriterionTriggerInstance {
+	public static class Instance extends AbstractCriterionTriggerInstance {
 
-        public Instance(ContextAwarePredicate player) {
-            super(TrophyPedestalTrigger.ID, player);
-        }
+		public Instance(ContextAwarePredicate player) {
+			super(TrophyPedestalTrigger.ID, player);
+		}
 
-        public static Instance activatePedestal() {
-            return new Instance(ContextAwarePredicate.ANY);
-        }
-    }
+		public static Instance activatePedestal() {
+			return new Instance(ContextAwarePredicate.ANY);
+		}
+	}
 }

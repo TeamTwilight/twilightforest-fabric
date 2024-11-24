@@ -67,11 +67,11 @@ public class TFWeatherRenderer {
 	public TFWeatherRenderer() {
 		for (int i = 0; i < 32; ++i) {
 			for (int j = 0; j < 32; ++j) {
-				float f  = j - 16;
+				float f = j - 16;
 				float f1 = i - 16;
 				float f2 = Mth.sqrt(f * f + f1 * f1);
 				rainxs[i << 5 | j] = -f1 / f2;
-				rainzs[i << 5 | j] =   f / f2;
+				rainzs[i << 5 | j] = f / f2;
 			}
 		}
 	}
@@ -117,16 +117,16 @@ public class TFWeatherRenderer {
 
 			RenderSystem.depthMask(Minecraft.useShaderTransparency());
 			int i1 = -1;
-			float f1 = (float)rendererUpdateCount + ticks;
+			float f1 = (float) rendererUpdateCount + ticks;
 			RenderSystem.setShader(GameRenderer::getParticleShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-			for(int j1 = k - range; j1 <= k + range; ++j1) {
-				for(int k1 = i - range; k1 <= i + range; ++k1) {
+			for (int j1 = k - range; j1 <= k + range; ++j1) {
+				for (int k1 = i - range; k1 <= i + range; ++k1) {
 					int l1 = (j1 - k + 16) * 32 + k1 - i + 16;
-					double d0 = (double)rainxs[l1] * 0.5D;
-					double d1 = (double)rainzs[l1] * 0.5D;
+					double d0 = (double) rainxs[l1] * 0.5D;
+					double d1 = (double) rainzs[l1] * 0.5D;
 					blockpos$mutableblockpos.set(k1, 0, j1);
 					Biome biome = level.getBiome(blockpos$mutableblockpos).value();
 					if (biome.hasPrecipitation()) {
@@ -158,17 +158,17 @@ public class TFWeatherRenderer {
 								}
 
 								int i3 = rendererUpdateCount + k1 * k1 * 3121 + k1 * 45238971 + j1 * j1 * 418711 + j1 * 13761 & 31;
-								float f3 = -((float)i3 + ticks) / 32.0F * (3.0F + random.nextFloat());
-								double d2 = (double)k1 + 0.5D - x;
-								double d4 = (double)j1 + 0.5D - z;
-								float f4 = (float)Math.sqrt(d2 * d2 + d4 * d4) / (float)range;
+								float f3 = -((float) i3 + ticks) / 32.0F * (3.0F + random.nextFloat());
+								double d2 = (double) k1 + 0.5D - x;
+								double d4 = (double) j1 + 0.5D - z;
+								float f4 = (float) Math.sqrt(d2 * d2 + d4 * d4) / (float) range;
 								float f5 = ((1.0F - f4 * f4) * 0.5F + 0.5F) * rainLevel;
 								blockpos$mutableblockpos.set(k1, l2, j1);
 								int j3 = LevelRenderer.getLightColor(level, blockpos$mutableblockpos);
-								bufferbuilder.vertex((double)k1 - x - d0 + 0.5D, (double)k2 - y, (double)j1 - z - d1 + 0.5D).uv(0.0F, (float)j2 * 0.25F + f3).color(1.0F, 1.0F, 1.0F, f5).uv2(j3).endVertex();
-								bufferbuilder.vertex((double)k1 - x + d0 + 0.5D, (double)k2 - y, (double)j1 - z + d1 + 0.5D).uv(1.0F, (float)j2 * 0.25F + f3).color(1.0F, 1.0F, 1.0F, f5).uv2(j3).endVertex();
-								bufferbuilder.vertex((double)k1 - x + d0 + 0.5D, (double)j2 - y, (double)j1 - z + d1 + 0.5D).uv(1.0F, (float)k2 * 0.25F + f3).color(1.0F, 1.0F, 1.0F, f5).uv2(j3).endVertex();
-								bufferbuilder.vertex((double)k1 - x - d0 + 0.5D, (double)j2 - y, (double)j1 - z - d1 + 0.5D).uv(0.0F, (float)k2 * 0.25F + f3).color(1.0F, 1.0F, 1.0F, f5).uv2(j3).endVertex();
+								bufferbuilder.vertex((double) k1 - x - d0 + 0.5D, (double) k2 - y, (double) j1 - z - d1 + 0.5D).uv(0.0F, (float) j2 * 0.25F + f3).color(1.0F, 1.0F, 1.0F, f5).uv2(j3).endVertex();
+								bufferbuilder.vertex((double) k1 - x + d0 + 0.5D, (double) k2 - y, (double) j1 - z + d1 + 0.5D).uv(1.0F, (float) j2 * 0.25F + f3).color(1.0F, 1.0F, 1.0F, f5).uv2(j3).endVertex();
+								bufferbuilder.vertex((double) k1 - x + d0 + 0.5D, (double) j2 - y, (double) j1 - z + d1 + 0.5D).uv(1.0F, (float) k2 * 0.25F + f3).color(1.0F, 1.0F, 1.0F, f5).uv2(j3).endVertex();
+								bufferbuilder.vertex((double) k1 - x - d0 + 0.5D, (double) j2 - y, (double) j1 - z - d1 + 0.5D).uv(0.0F, (float) k2 * 0.25F + f3).color(1.0F, 1.0F, 1.0F, f5).uv2(j3).endVertex();
 							} else {
 								if (i1 != 1) {
 									if (i1 == 0) {
@@ -180,12 +180,12 @@ public class TFWeatherRenderer {
 									bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 								}
 
-								float f6 = -((float)(rendererUpdateCount & 511) + ticks) / 512.0F;
-								float f7 = (float)(random.nextDouble() + (double)f1 * 0.01D * (double)((float)random.nextGaussian()));
-								float f8 = (float)(random.nextDouble() + (double)(f1 * (float)random.nextGaussian()) * 0.001D);
-								double d3 = (double)k1 + 0.5D - x;
-								double d5 = (double)j1 + 0.5D - z;
-								float f9 = (float)Math.sqrt(d3 * d3 + d5 * d5) / (float)range;
+								float f6 = -((float) (rendererUpdateCount & 511) + ticks) / 512.0F;
+								float f7 = (float) (random.nextDouble() + (double) f1 * 0.01D * (double) ((float) random.nextGaussian()));
+								float f8 = (float) (random.nextDouble() + (double) (f1 * (float) random.nextGaussian()) * 0.001D);
+								double d3 = (double) k1 + 0.5D - x;
+								double d5 = (double) j1 + 0.5D - z;
+								float f9 = (float) Math.sqrt(d3 * d3 + d5 * d5) / (float) range;
 								float f10 = ((1.0F - f9 * f9) * 0.3F + 0.5F) * rainLevel;
 								blockpos$mutableblockpos.set(k1, l2, j1);
 								int k3 = LevelRenderer.getLightColor(level, blockpos$mutableblockpos);
@@ -193,10 +193,10 @@ public class TFWeatherRenderer {
 								int i4 = k3 & '\uffff';
 								int j4 = (l3 * 3 + 240) / 4;
 								int k4 = (i4 * 3 + 240) / 4;
-								bufferbuilder.vertex((double)k1 - x - d0 + 0.5D, (double)k2 - y, (double)j1 - z - d1 + 0.5D).uv(0.0F + f7, (float)j2 * 0.25F + f6 + f8).color(1.0F, 1.0F, 1.0F, f10).uv2(k4, j4).endVertex();
-								bufferbuilder.vertex((double)k1 - x + d0 + 0.5D, (double)k2 - y, (double)j1 - z + d1 + 0.5D).uv(1.0F + f7, (float)j2 * 0.25F + f6 + f8).color(1.0F, 1.0F, 1.0F, f10).uv2(k4, j4).endVertex();
-								bufferbuilder.vertex((double)k1 - x + d0 + 0.5D, (double)j2 - y, (double)j1 - z + d1 + 0.5D).uv(1.0F + f7, (float)k2 * 0.25F + f6 + f8).color(1.0F, 1.0F, 1.0F, f10).uv2(k4, j4).endVertex();
-								bufferbuilder.vertex((double)k1 - x - d0 + 0.5D, (double)j2 - y, (double)j1 - z - d1 + 0.5D).uv(0.0F + f7, (float)k2 * 0.25F + f6 + f8).color(1.0F, 1.0F, 1.0F, f10).uv2(k4, j4).endVertex();
+								bufferbuilder.vertex((double) k1 - x - d0 + 0.5D, (double) k2 - y, (double) j1 - z - d1 + 0.5D).uv(0.0F + f7, (float) j2 * 0.25F + f6 + f8).color(1.0F, 1.0F, 1.0F, f10).uv2(k4, j4).endVertex();
+								bufferbuilder.vertex((double) k1 - x + d0 + 0.5D, (double) k2 - y, (double) j1 - z + d1 + 0.5D).uv(1.0F + f7, (float) j2 * 0.25F + f6 + f8).color(1.0F, 1.0F, 1.0F, f10).uv2(k4, j4).endVertex();
+								bufferbuilder.vertex((double) k1 - x + d0 + 0.5D, (double) j2 - y, (double) j1 - z + d1 + 0.5D).uv(1.0F + f7, (float) k2 * 0.25F + f6 + f8).color(1.0F, 1.0F, 1.0F, f10).uv2(k4, j4).endVertex();
+								bufferbuilder.vertex((double) k1 - x - d0 + 0.5D, (double) j2 - y, (double) j1 - z - d1 + 0.5D).uv(0.0F + f7, (float) k2 * 0.25F + f6 + f8).color(1.0F, 1.0F, 1.0F, f10).uv2(k4, j4).endVertex();
 							}
 						}
 					}
@@ -354,7 +354,7 @@ public class TFWeatherRenderer {
 									int i4 = 15 << 20 | 15 << 4; // TF - fullbright
 									int j4 = i4 >> 16 & 65535;
 									int k4 = i4 & 65535;
-									float z1 = (float)yIn * 0.125F;
+									float z1 = (float) yIn * 0.125F;
 									bufferBuilder.vertex(x - xIn - rx + 0.5D, range, z - zIn - ry + 0.5D).uv(0.0F + d9, d8 + d10 - z1).color(1.0F, 1.0F, 1.0F, f5).uv2(j4, k4).endVertex();
 									bufferBuilder.vertex(x - xIn + rx + 0.5D, range, z - zIn + ry + 0.5D).uv(1.0F + d9, d8 + d10 - z1).color(1.0F, 1.0F, 1.0F, f5).uv2(j4, k4).endVertex();
 									float pV = range * 0.25F + d8 + d10 - z1;
@@ -508,7 +508,8 @@ public class TFWeatherRenderer {
 		if (restriction.enforcement().equals(Enforcement.FROST.getKey())) return RenderType.BLIZZARD;
 		else if (restriction.enforcement().equals(Enforcement.HUNGER.getKey())) return RenderType.MOSQUITO;
 		else if (restriction.enforcement().equals(Enforcement.FIRE.getKey())) return RenderType.ASHES;
-		else if (restriction.enforcement().equals(Enforcement.DARKNESS.getKey())) return random.nextBoolean() ? RenderType.DARK_STREAM : null;
+		else if (restriction.enforcement().equals(Enforcement.DARKNESS.getKey()))
+			return random.nextBoolean() ? RenderType.DARK_STREAM : null;
 		else if (restriction.enforcement().equals(Enforcement.ACID_RAIN.getKey())) return RenderType.BIG_RAIN;
 		return null;
 	}
@@ -545,11 +546,11 @@ public class TFWeatherRenderer {
 
 		float rainLevel = Math.max(level.getRainLevel(1.0F), urGhastRain) / (Minecraft.useFancyGraphics() ? 1.0F : 2.0F);
 		if (rainLevel > 0.0F) {
-			RandomSource randomsource = RandomSource.create((long)ticks * 312987231L);
+			RandomSource randomsource = RandomSource.create((long) ticks * 312987231L);
 			BlockPos blockpos1 = null;
-			int i = (int)(100.0F * rainLevel * rainLevel) / (Minecraft.getInstance().options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
+			int i = (int) (100.0F * rainLevel * rainLevel) / (Minecraft.getInstance().options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
 
-			for(int j = 0; j < i; ++j) {
+			for (int j = 0; j < i; ++j) {
 				int k = randomsource.nextInt(21) - 10;
 				int l = randomsource.nextInt(21) - 10;
 				BlockPos blockpos2 = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos.offset(k, 0, l));
@@ -569,13 +570,13 @@ public class TFWeatherRenderer {
 					double d3 = fluidstate.getHeight(level, blockpos1);
 					double d4 = Math.max(d2, d3);
 					ParticleOptions particleoptions = !fluidstate.is(FluidTags.LAVA) && !blockstate.is(Blocks.MAGMA_BLOCK) && !CampfireBlock.isLitCampfire(blockstate) ? ParticleTypes.RAIN : ParticleTypes.SMOKE;
-					level.addParticle(particleoptions, (double)blockpos1.getX() + d0, (double)blockpos1.getY() + d4, (double)blockpos1.getZ() + d1, 0.0D, 0.0D, 0.0D);
+					level.addParticle(particleoptions, (double) blockpos1.getX() + d0, (double) blockpos1.getY() + d4, (double) blockpos1.getZ() + d1, 0.0D, 0.0D, 0.0D);
 				}
 			}
 
 			if (blockpos1 != null && randomsource.nextInt(4) < Minecraft.getInstance().levelRenderer.rainSoundTime++) {
 				Minecraft.getInstance().levelRenderer.rainSoundTime = 0;
-				if (blockpos1.getY() > blockpos.getY() + 1 && level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos).getY() > Mth.floor((float)blockpos.getY())) {
+				if (blockpos1.getY() > blockpos.getY() + 1 && level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos).getY() > Mth.floor((float) blockpos.getY())) {
 					level.playLocalSound(blockpos1, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
 				} else {
 					level.playLocalSound(blockpos1, SoundEvents.WEATHER_RAIN, SoundSource.WEATHER, 0.2F, 1.0F, false);

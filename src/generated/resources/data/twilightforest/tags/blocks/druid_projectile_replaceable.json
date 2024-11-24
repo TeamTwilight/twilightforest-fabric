@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "#minecraft:leaves",
     "#minecraft:logs",
@@ -8,6 +9,6 @@
     "#minecraft:replaceable_by_trees",
     "#minecraft:lush_ground_replaceable",
     "#minecraft:sculk_replaceable",
-    "#forge:ores"
+    "#c:ores"
   ]
 }

@@ -119,7 +119,8 @@ public class DeathTome extends Monster implements RangedAttackMob {
 				this.yHeadRot = this.yRotO;
 				this.yHeadRotO = this.yRotO;
 
-				if (!this.level().isClientSide()) this.targetSelector.tick(); // Tick target selector, so that our Tome can find an enemy to ambush
+				if (!this.level().isClientSide())
+					this.targetSelector.tick(); // Tick target selector, so that our Tome can find an enemy to ambush
 
 				if (this.getTarget() != null && this.distanceToSqr(this.getTarget()) < 20.0D) {
 					this.setOnLectern(false);

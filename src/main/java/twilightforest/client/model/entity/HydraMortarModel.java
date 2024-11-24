@@ -35,5 +35,6 @@ public class HydraMortarModel extends HierarchicalModel<HydraMortar> {
 	}
 
 	@Override
-	public void setupAnim(HydraMortar entity, float v, float v1, float v2, float v3, float v4) { }
+	public void setupAnim(HydraMortar entity, float v, float v1, float v2, float v3, float v4) {
+	}
 }

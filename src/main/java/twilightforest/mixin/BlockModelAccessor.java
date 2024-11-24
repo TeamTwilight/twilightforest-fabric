@@ -8,6 +8,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(BlockModel.class)
 public interface BlockModelAccessor {
-    @Invoker("getItemOverrides")
-    ItemOverrides tf$callGetItemOverrides(ModelBaker baker, BlockModel model);
+	@Invoker("getItemOverrides")
+	ItemOverrides tf$callGetItemOverrides(ModelBaker baker, BlockModel model);
 }

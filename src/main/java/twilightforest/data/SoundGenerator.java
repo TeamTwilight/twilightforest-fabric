@@ -1,11 +1,10 @@
 package twilightforest.data;
 
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.data.SoundDefinition;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-
-import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
-import io.github.fabricators_of_create.porting_lib.data.SoundDefinition;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.helpers.TFSoundProvider;
 import twilightforest.init.TFSounds;
@@ -319,7 +318,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSound(TFSounds.UNCRAFTING_TABLE_ACTIVATE, SoundEvents.END_PORTAL_SPAWN, false);
 		this.generateExistingSoundWithSubtitle(TFSounds.UNLOCK_VANISHING_BLOCK, SoundEvents.COMPARATOR_CLICK);
 		this.generateExistingSoundWithSubtitle(TFSounds.VANISHING_BLOCK, SoundEvents.ITEM_PICKUP);
-
+		this.generateNewSoundWithSubtitle(TFSounds.WROUGHT_IRON_FENCE_EXTENDED, "random/casket/repair", 1);
 
 		this.generateExistingSoundWithSubtitle(TFSounds.BLOCK_AND_CHAIN_COLLIDE, SoundEvents.ANVIL_LAND);
 		this.generateExistingSoundWithSubtitle(TFSounds.BLOCK_AND_CHAIN_FIRED, SoundEvents.ARROW_SHOOT);

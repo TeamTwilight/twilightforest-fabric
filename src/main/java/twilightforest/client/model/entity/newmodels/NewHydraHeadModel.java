@@ -51,7 +51,8 @@ public class NewHydraHeadModel extends ListModel<HydraHead> {
 	}
 
 	@Override
-	public void setupAnim(HydraHead entity, float v, float v1, float v2, float v3, float v4) { }
+	public void setupAnim(HydraHead entity, float v, float v1, float v2, float v3, float v4) {
+	}
 
 	@Override
 	public void prepareMobModel(HydraHead entity, float limbSwing, float limbSwingAmount, float partialTicks) {

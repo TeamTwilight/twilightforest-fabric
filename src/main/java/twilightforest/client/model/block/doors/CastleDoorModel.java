@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -24,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
@@ -170,9 +168,10 @@ public class CastleDoorModel implements BakedModel, FabricBakedModel {
 	}
 
 	//we need a class to make model data. Fine, here you go
-	private static final class CastleDoorData {
+	public static final class CastleDoorData {
 		private final ConnectionLogic[][] logic = new ConnectionLogic[6][4];
 
-		private CastleDoorData() {}
+		private CastleDoorData() {
+		}
 	}
 }

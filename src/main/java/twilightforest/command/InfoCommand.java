@@ -46,7 +46,8 @@ public class InfoCommand {
 		Optional<Registry<Structure>> possibleStructureRegistry = level.registryAccess().registry(Registries.STRUCTURE);
 		Optional<StructureStart> possibleNearLandmark = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 
-		if (possibleStructureRegistry.isEmpty() || possibleNearLandmark.isEmpty() || !(possibleNearLandmark.get().getStructure() instanceof LandmarkStructure landmarkStructure)) return 0;
+		if (possibleStructureRegistry.isEmpty() || possibleNearLandmark.isEmpty() || !(possibleNearLandmark.get().getStructure() instanceof LandmarkStructure landmarkStructure))
+			return 0;
 		StructureStart structureStart = possibleNearLandmark.get();
 
 		ResourceLocation key = possibleStructureRegistry.get().getKey(landmarkStructure);
@@ -66,7 +67,7 @@ public class InfoCommand {
 			}
 
 			// what is the spawn list
-			List<MobSpawnSettings.SpawnerData> spawnList = ChunkGeneratorTwilight.gatherPotentialSpawns(level.structureManager(), MobCategory.MONSTER, pos);
+			List<MobSpawnSettings.SpawnerData> spawnList = ChunkGeneratorTwilight.gatherPotentialSpawns(null, level.structureManager(), MobCategory.MONSTER, pos);
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);
 			if (spawnList != null)
 				for (MobSpawnSettings.SpawnerData entry : spawnList)

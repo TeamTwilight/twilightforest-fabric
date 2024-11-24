@@ -6,19 +6,23 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SkullModelBase;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -31,9 +35,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.AbstractSkullCandleBlock;
@@ -49,7 +52,9 @@ import twilightforest.client.renderer.tileentity.SkullCandleTileEntityRenderer;
 import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlocks;
+import twilightforest.item.GiantItem;
 import twilightforest.item.KnightmetalShieldItem;
+import twilightforest.item.WearableItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,8 +76,12 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer, R
 		makeInstance(map, TFBlocks.MINING_CHEST);
 		makeInstance(map, TFBlocks.SORTING_CHEST);
 	});
-	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
-	private Map<BossVariant, GenericTrophyModel> trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
+	@Nullable
+	private KnightmetalShieldModel shield;
+	@Nullable
+	private Map<BossVariant, GenericTrophyModel> trophies;
+	@Nullable
+	private Map<SkullBlock.Type, SkullModelBase> skulls;
 
 	// Use the cached INSTANCE.get instead
 	private ISTER() {
@@ -82,6 +91,7 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer, R
 	public void onResourceManagerReload(ResourceManager manager) {
 		this.shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 		this.trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
+		this.skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
 
 		TwilightForestMod.LOGGER.debug("Reloaded ISTER!");
 	}
@@ -92,6 +102,9 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer, R
 		if (item instanceof BlockItem blockItem) {
 			Block block = blockItem.getBlock();
 			if (block instanceof AbstractTrophyBlock trophyBlock) {
+				if (trophies == null) {
+					trophies = TrophyTileEntityRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
+				}
 				BossVariant variant = trophyBlock.getVariant();
 				GenericTrophyModel trophy = this.trophies.get(variant);
 
@@ -145,7 +158,10 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer, R
 				}
 
 				SkullBlock.Type type = candleBlock.getType();
-				SkullModelBase base = SkullCandleTileEntityRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels()).get(type);
+				if (skulls == null) {
+					skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
+				}
+				SkullModelBase base = this.skulls.get(type);
 				RenderType renderType = SkullCandleTileEntityRenderer.getRenderType(type, gameprofile);
 				SkullCandleTileEntityRenderer.renderSkull(null, 180.0F, 0.0F, ms, buffers, light, base, renderType);
 
@@ -158,21 +174,22 @@ public class ISTER implements BuiltinItemRendererRegistry.DynamicItemRenderer, R
 							AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(tag.getInt("CandleColor")))
 									.defaultBlockState().setValue(CandleBlock.CANDLES, tag.getInt("CandleAmount")), ms, buffers, light, overlay);
 				}
-			} else {
-				if (block instanceof EntityBlock be) {
-					BlockEntity blockEntity = be.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
-					if (blockEntity != null) {
-						Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, ms, buffers, light, overlay);
-					}
+			} else if (block instanceof EntityBlock be) {
+				BlockEntity blockEntity = be.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
+				if (blockEntity != null) {
+					Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, ms, buffers, light, overlay);
 				}
 			}
-		} else if (item instanceof KnightmetalShieldItem) {
-			ms.pushPose();
-			ms.scale(1.0F, -1.0F, -1.0F);
-			Material material = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(TwilightForestMod.ID, "model/knightmetal_shield"));
-			VertexConsumer vertexconsumer = material.sprite().wrap(ItemRenderer.getFoilBufferDirect(buffers, this.shield.renderType(material.atlasLocation()), true, stack.hasFoil()));
-			this.shield.renderToBuffer(ms, vertexconsumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
-			ms.popPose();
+		} else {
+			if (item instanceof KnightmetalShieldItem) {
+				ms.pushPose();
+				ms.scale(1.0F, -1.0F, -1.0F);
+				Material material = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(TwilightForestMod.ID, "model/knightmetal_shield"));
+				if (this.shield == null) shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
+				VertexConsumer vertexconsumer = material.sprite().wrap(ItemRenderer.getFoilBufferDirect(buffers, this.shield.renderType(material.atlasLocation()), true, stack.hasFoil()));
+				this.shield.renderToBuffer(ms, vertexconsumer, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+				ms.popPose();
+			}
 		}
 	}
 

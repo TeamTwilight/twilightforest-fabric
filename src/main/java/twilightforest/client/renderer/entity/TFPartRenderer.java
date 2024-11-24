@@ -4,18 +4,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ListModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.model.ListModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import twilightforest.entity.TFPart;
-
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.entity.TFPart;
 
 public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>> extends EntityRenderer<T> {
 
@@ -81,12 +80,12 @@ public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>
 	}
 
 	protected float handleRotationFloat(T livingBase, float partialTicks) {
-		return (float)livingBase.tickCount + partialTicks;
+		return (float) livingBase.tickCount + partialTicks;
 	}
 
 	protected void applyRotations(T entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
 		if (entityLiving.deathTime > 0) {
-			float f = ((float)entityLiving.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
+			float f = ((float) entityLiving.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
 			f = Mth.sqrt(f);
 			if (f > 1.0F) {
 				f = 1.0F;

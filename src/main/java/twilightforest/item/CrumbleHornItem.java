@@ -5,7 +5,6 @@ import io.github.fabricators_of_create.porting_lib.item.ContinueUsingItem;
 import io.github.fabricators_of_create.porting_lib.item.ReequipAnimationItem;
 import io.github.fabricators_of_create.porting_lib.item.UsingTickItem;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +24,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFRecipes;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
@@ -156,8 +154,7 @@ public class CrumbleHornItem extends Item implements ReequipAnimationItem, Conti
 	}
 
 	private void postTrigger(LivingEntity living) {
-		if (living instanceof ServerPlayer) {
-			Player player = (Player) living;
+		if (living instanceof ServerPlayer player) {
 			player.awardStat(Stats.ITEM_USED.get(this));
 		}
 	}

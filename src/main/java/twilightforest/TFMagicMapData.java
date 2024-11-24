@@ -3,7 +3,6 @@ package twilightforest;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import org.joml.Matrix4f;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.fabricmc.api.EnvType;
@@ -20,9 +19,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import twilightforest.init.TFLandmark;
-
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
+import twilightforest.init.TFLandmark;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.LegacyLandmarkPlacements;
@@ -63,7 +62,7 @@ public class TFMagicMapData extends MapItemSavedData {
 	public CompoundTag save(CompoundTag cmp) {
 		cmp = super.save(cmp);
 
-		if (this.tfDecorations.size() > 0) {
+		if (!this.tfDecorations.isEmpty()) {
 			cmp.putByteArray("features", serializeFeatures());
 		}
 
@@ -122,13 +121,13 @@ public class TFMagicMapData extends MapItemSavedData {
 	@Nullable
 	public static TFMagicMapData getMagicMapData(Level world, String name) {
 		if (world.isClientSide) return CLIENT_DATA.get(name);
-		else return ((ServerLevel)world).getServer().overworld().getDataStorage().get(TFMagicMapData::load, name);
+		else return ((ServerLevel) world).getServer().overworld().getDataStorage().get(TFMagicMapData::load, name);
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
 	public static void registerMagicMapData(Level world, TFMagicMapData data, String id) {
 		if (world.isClientSide) CLIENT_DATA.put(id, data);
-		else ((ServerLevel)world).getServer().overworld().getDataStorage().set(id, data);
+		else ((ServerLevel) world).getServer().overworld().getDataStorage().set(id, data);
 	}
 
 	@Nullable
@@ -140,7 +139,7 @@ public class TFMagicMapData extends MapItemSavedData {
 
 	public static class TFMapDecoration extends MapDecoration {
 
-		private static final Int2ObjectArrayMap<TFLandmark> ICONS = new Int2ObjectArrayMap<>(){{
+		private static final Int2ObjectArrayMap<TFLandmark> ICONS = new Int2ObjectArrayMap<>() {{
 			defaultReturnValue(TFLandmark.NOTHING);
 			put(0, TFLandmark.NOTHING);
 			put(1, TFLandmark.SMALL_HILL);
@@ -159,7 +158,7 @@ public class TFMagicMapData extends MapItemSavedData {
 			put(18, TFLandmark.TROLL_CAVE);
 			put(19, TFLandmark.FINAL_CASTLE);
 		}};
-		private static final Object2IntArrayMap<TFLandmark> ICONS_FLIPPED = new Object2IntArrayMap<>(){{
+		private static final Object2IntArrayMap<TFLandmark> ICONS_FLIPPED = new Object2IntArrayMap<>() {{
 			ICONS.forEach((k, v) -> put(v, k.intValue()));
 		}};
 

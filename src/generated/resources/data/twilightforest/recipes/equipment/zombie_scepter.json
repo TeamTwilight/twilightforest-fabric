@@ -2,27 +2,50 @@
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
   "ingredients": [
-    [
-      {
-        "type": "forge:partial_nbt",
-        "item": "minecraft:potion",
-        "nbt": "{Potion:\"minecraft:strength\"}"
-      },
-      {
-        "type": "forge:partial_nbt",
-        "item": "minecraft:potion",
-        "nbt": "{Potion:\"minecraft:strong_strength\"}"
-      },
-      {
-        "type": "forge:partial_nbt",
-        "item": "minecraft:potion",
-        "nbt": "{Potion:\"minecraft:long_strength\"}"
-      }
-    ],
     {
-      "type": "forge:partial_nbt",
-      "item": "twilightforest:zombie_scepter",
-      "nbt": "{Damage:9}"
+      "fabric:type": "fabric:any",
+      "ingredients": [
+        {
+          "fabric:type": "fabric:nbt",
+          "base": {
+            "item": "minecraft:potion"
+          },
+          "nbt": {
+            "Potion": "minecraft:strength"
+          },
+          "strict": false
+        },
+        {
+          "fabric:type": "fabric:nbt",
+          "base": {
+            "item": "minecraft:potion"
+          },
+          "nbt": {
+            "Potion": "minecraft:strong_strength"
+          },
+          "strict": false
+        },
+        {
+          "fabric:type": "fabric:nbt",
+          "base": {
+            "item": "minecraft:potion"
+          },
+          "nbt": {
+            "Potion": "minecraft:long_strength"
+          },
+          "strict": false
+        }
+      ]
+    },
+    {
+      "fabric:type": "fabric:nbt",
+      "base": {
+        "item": "twilightforest:zombie_scepter"
+      },
+      "nbt": {
+        "Damage": 9
+      },
+      "strict": false
     },
     {
       "item": "minecraft:rotten_flesh"

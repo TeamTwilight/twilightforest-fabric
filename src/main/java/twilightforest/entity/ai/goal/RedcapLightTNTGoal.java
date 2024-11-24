@@ -1,10 +1,9 @@
 package twilightforest.entity.ai.goal;
 
-import net.minecraft.world.level.GameRules;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.TntBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -70,7 +69,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 		if (this.redcap.distanceToSqr(Vec3.atLowerCornerOf(this.tntPos)) < 2.4D * 2.4D) {
 			redcap.playAmbientSound();
 
-			((TntBlock)Blocks.TNT).explode(this.redcap.level(), this.tntPos);
+			TntBlock.explode(this.redcap.level(), this.tntPos);
 			this.redcap.swing(InteractionHand.MAIN_HAND);
 			this.redcap.level().setBlock(this.tntPos, Blocks.AIR.defaultBlockState(), 2);
 			this.redcap.gameEvent(GameEvent.PRIME_FUSE);

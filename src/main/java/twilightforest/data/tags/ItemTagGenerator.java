@@ -49,9 +49,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 	public static final TagKey<Item> STORAGE_BLOCKS_KNIGHTMETAL = TagKey.create(Registries.ITEM, new ResourceLocation("c", "knightmetal_storage_blocks"));
 	public static final TagKey<Item> STORAGE_BLOCKS_STEELEAF = TagKey.create(Registries.ITEM, new ResourceLocation("c", "steeleaf_storage_blocks"));
 
-	// FIXME PORT 1.20: which tag?
-	public static final TagKey<Item> RAW_MATERIALS_IRONWOOD = ItemTags.create(new ResourceLocation("forge", "raw_materials/ironwood"));
-	public static final TagKey<Item> RAW_MATERIALS_KNIGHTMETAL = ItemTags.create(new ResourceLocation("forge", "raw_materials/knightmetal"));
+	public static final TagKey<Item> RAW_MATERIALS_IRONWOOD = TagKey.create(Registries.ITEM, new ResourceLocation("c", "raw_materials/ironwood"));
+	public static final TagKey<Item> RAW_MATERIALS_KNIGHTMETAL = TagKey.create(Registries.ITEM, new ResourceLocation("c", "raw_materials/knightmetal"));
 
 	public static final TagKey<Item> PORTAL_ACTIVATOR = TagKey.create(Registries.ITEM, TwilightForestMod.prefix("portal_activators"));
 
@@ -162,9 +161,9 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		getOrCreateTagBuilder(PORTAL_ACTIVATOR).forceAddTag(Tags.Items.GEMS_DIAMOND);
 
 		getOrCreateTagBuilder(ItemTags.BOATS).add(
-				TFItems.TWILIGHT_OAK_BOAT.get(), TFItems.CANOPY_BOAT.get(), 
+				TFItems.TWILIGHT_OAK_BOAT.get(), TFItems.CANOPY_BOAT.get(),
 				TFItems.MANGROVE_BOAT.get(), TFItems.DARK_BOAT.get(),
-				TFItems.TIME_BOAT.get(), TFItems.TRANSFORMATION_BOAT.get(), 
+				TFItems.TIME_BOAT.get(), TFItems.TRANSFORMATION_BOAT.get(),
 				TFItems.MINING_BOAT.get(), TFItems.SORTING_BOAT.get()
 		);
 
@@ -196,8 +195,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFItems.BRITTLE_FLASK.get(),
 				TFItems.GREATER_FLASK.get(),
 				TFItems.CUBE_OF_ANNIHILATION.get(),
-				TFBlocks.WROUGHT_IRON_FENCE.get().asItem(),
-				TFBlocks.WROUGHT_IRON_FINIAL.get().asItem()
+				TFBlocks.WROUGHT_IRON_FENCE.get().asItem()
 		);
 
 		getOrCreateTagBuilder(NYI).add(

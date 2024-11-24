@@ -25,14 +25,13 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.ai.goal.ChargeAttackGoal;
 import twilightforest.entity.boss.Minoshroom;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 
 public class Minotaur extends Monster implements ITFCharger {
 
@@ -133,7 +132,7 @@ public class Minotaur extends Monster implements ITFCharger {
 			}
 
 			if (entity instanceof Player player) {
-				((MobAccessor)this).port_lib$maybeDisableShield(player, this.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
+				((MobAccessor) this).port_lib$maybeDisableShield(player, this.getMainHandItem(), player.isUsingItem() ? player.getUseItem() : ItemStack.EMPTY);
 			}
 
 			this.doEnchantDamageEffects(this, entity);

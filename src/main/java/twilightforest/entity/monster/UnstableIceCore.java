@@ -91,8 +91,6 @@ public class UnstableIceCore extends BaseIceMob {
 	private void transformBlocks() {
 		int range = 4;
 
-		BlockPos pos = new BlockPos(this.blockPosition());
-
 		for (int dx = -range; dx <= range; dx++) {
 			for (int dy = -range; dy <= range; dy++) {
 				for (int dz = -range; dz <= range; dz++) {
@@ -101,7 +99,7 @@ public class UnstableIceCore extends BaseIceMob {
 					float randRange = range + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 2.0F;
 
 					if (distance < randRange) {
-						this.transformBlock(pos.offset(dx, dy, dz));
+						this.transformBlock(this.blockPosition().offset(dx, dy, dz));
 					}
 				}
 			}
@@ -125,11 +123,11 @@ public class UnstableIceCore extends BaseIceMob {
 	}
 
 	private boolean shouldTransformClay(BlockState state, BlockPos pos) {
-		return state.isRedstoneConductor(this.level(), pos);
+		return !state.isAir() && state.isRedstoneConductor(this.level(), pos);
 	}
 
 	private boolean shouldTransformGlass(BlockState state, BlockPos pos) {
-		return state.getBlock() != Blocks.AIR && isBlockNormalBounds(state, pos) && (!state.isSolid() || state.is(BlockTags.LEAVES) || state.is(Blocks.ICE) || state.is(TFBlocks.AURORA_BLOCK.get()));
+		return !state.isAir() && isBlockNormalBounds(state, pos) && (!state.isSolid() || state.is(BlockTags.LEAVES) || state.is(Blocks.ICE) || state.is(TFBlocks.AURORA_BLOCK.get()));
 	}
 
 	private boolean isBlockNormalBounds(BlockState state, BlockPos pos) {

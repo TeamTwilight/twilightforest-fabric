@@ -16,61 +16,61 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 public abstract class ChunkGeneratorWrapper extends ChunkGenerator {
-    public final ChunkGenerator delegate;
+	public final ChunkGenerator delegate;
 
-    public ChunkGeneratorWrapper(ChunkGenerator delegate) {
-        super(delegate.getBiomeSource());
+	public ChunkGeneratorWrapper(ChunkGenerator delegate) {
+		super(delegate.getBiomeSource());
 
-        this.delegate = delegate;
-    }
+		this.delegate = delegate;
+	}
 
-    @Override
-    public void applyCarvers(WorldGenRegion region, long seed, RandomState random, BiomeManager biomeManager, StructureManager manager, ChunkAccess chunkAccess, GenerationStep.Carving carving) {
-        this.delegate.applyCarvers(region, seed, random, biomeManager, manager, chunkAccess, carving);
-    }
+	@Override
+	public void applyCarvers(WorldGenRegion region, long seed, RandomState random, BiomeManager biomeManager, StructureManager manager, ChunkAccess chunkAccess, GenerationStep.Carving carving) {
+		this.delegate.applyCarvers(region, seed, random, biomeManager, manager, chunkAccess, carving);
+	}
 
-    @Override
-    public void buildSurface(WorldGenRegion level, StructureManager manager, RandomState random, ChunkAccess chunkAccess) {
-        this.delegate.buildSurface(level, manager, random, chunkAccess);
-    }
+	@Override
+	public void buildSurface(WorldGenRegion level, StructureManager manager, RandomState random, ChunkAccess chunkAccess) {
+		this.delegate.buildSurface(level, manager, random, chunkAccess);
+	}
 
-    @Override
-    public void spawnOriginalMobs(WorldGenRegion region) {
-        this.delegate.spawnOriginalMobs(region);
-    }
+	@Override
+	public void spawnOriginalMobs(WorldGenRegion region) {
+		this.delegate.spawnOriginalMobs(region);
+	}
 
-    @Override
-    public int getSpawnHeight(LevelHeightAccessor level) {
-        return this.delegate.getSpawnHeight(level);
-    }
+	@Override
+	public int getSpawnHeight(LevelHeightAccessor level) {
+		return this.delegate.getSpawnHeight(level);
+	}
 
-    @Override
-    public int getGenDepth() {
-        return this.delegate.getGenDepth();
-    }
+	@Override
+	public int getGenDepth() {
+		return this.delegate.getGenDepth();
+	}
 
-    @Override
-    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, RandomState random, StructureManager structureManager, ChunkAccess chunkAccess) {
-        return this.delegate.fillFromNoise(executor, blender, random, structureManager, chunkAccess);
-    }
+	@Override
+	public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender blender, RandomState random, StructureManager structureManager, ChunkAccess chunkAccess) {
+		return this.delegate.fillFromNoise(executor, blender, random, structureManager, chunkAccess);
+	}
 
-    @Override
-    public int getSeaLevel() {
-        return this.delegate.getSeaLevel();
-    }
+	@Override
+	public int getSeaLevel() {
+		return this.delegate.getSeaLevel();
+	}
 
-    @Override
-    public int getMinY() {
-        return this.delegate.getMinY();
-    }
+	@Override
+	public int getMinY() {
+		return this.delegate.getMinY();
+	}
 
-    @Override
-    public int getBaseHeight(int x, int z, Heightmap.Types heightMap, LevelHeightAccessor level, RandomState random) {
-        return this.delegate.getBaseHeight(x, z, heightMap, level, random);
-    }
+	@Override
+	public int getBaseHeight(int x, int z, Heightmap.Types heightMap, LevelHeightAccessor level, RandomState random) {
+		return this.delegate.getBaseHeight(x, z, heightMap, level, random);
+	}
 
-    @Override
-    public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level, RandomState random) {
-        return this.delegate.getBaseColumn(x, z, level, random);
-    }
+	@Override
+	public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level, RandomState random) {
+		return this.delegate.getBaseColumn(x, z, level, random);
+	}
 }

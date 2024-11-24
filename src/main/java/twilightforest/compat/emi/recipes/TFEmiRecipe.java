@@ -40,6 +40,7 @@ public abstract class TFEmiRecipe<T extends Recipe<?>> implements EmiRecipe {
 	}
 
 	protected abstract void addInputs(List<EmiIngredient> inputs);
+
 	protected abstract void addOutputs(List<EmiStack> outputs);
 
 	@Override

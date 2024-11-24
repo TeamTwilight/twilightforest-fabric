@@ -107,9 +107,12 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 		Direction.Axis axis = level.getBlockState(pos).getValue(AXIS);
 
 		return switch (axis) {
-			case Y -> this.anyPlayerInRange(level, pos) || this.isConnectedInRangeRecursive(level, pos, Direction.UP) || this.isConnectedInRangeRecursive(level, pos, Direction.DOWN);
-			case X -> this.anyPlayerInRange(level, pos) || this.isConnectedInRangeRecursive(level, pos, Direction.WEST) || this.isConnectedInRangeRecursive(level, pos, Direction.EAST);
-			case Z -> this.anyPlayerInRange(level, pos) || this.isConnectedInRangeRecursive(level, pos, Direction.NORTH) || this.isConnectedInRangeRecursive(level, pos, Direction.SOUTH);
+			case Y ->
+					this.anyPlayerInRange(level, pos) || this.isConnectedInRangeRecursive(level, pos, Direction.UP) || this.isConnectedInRangeRecursive(level, pos, Direction.DOWN);
+			case X ->
+					this.anyPlayerInRange(level, pos) || this.isConnectedInRangeRecursive(level, pos, Direction.WEST) || this.isConnectedInRangeRecursive(level, pos, Direction.EAST);
+			case Z ->
+					this.anyPlayerInRange(level, pos) || this.isConnectedInRangeRecursive(level, pos, Direction.NORTH) || this.isConnectedInRangeRecursive(level, pos, Direction.SOUTH);
 		};
 	}
 

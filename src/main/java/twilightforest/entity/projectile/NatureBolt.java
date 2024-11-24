@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.util.EntityUtil;
@@ -82,7 +83,7 @@ public class NatureBolt extends TFThrowable implements ITFProjectile, ItemSuppli
 		Entity owner = this.getOwner();
 		Entity entityHit = result.getEntity();
 		if (entityHit instanceof LivingEntity living && (owner == null || (entityHit != owner && entityHit != owner.getVehicle()))) {
-			if (entityHit.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.LEAF_BRAIN, this.getOwner(), this), 2)
+			if (entityHit.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.LEAF_BRAIN, this, this.getOwner()), 2)
 					&& this.level().getDifficulty() != Difficulty.PEACEFUL) {
 				int poisonTime = this.level().getDifficulty() == Difficulty.HARD ? 7 : 3;
 				living.addEffect(new MobEffectInstance(MobEffects.POISON, poisonTime * 20, 0));

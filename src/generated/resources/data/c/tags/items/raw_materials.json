@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#c:raw_materials/ironwood",
+    "#c:raw_materials/knightmetal"
+  ]
+}

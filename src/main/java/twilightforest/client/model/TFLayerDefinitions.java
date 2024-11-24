@@ -1,48 +1,26 @@
 package twilightforest.client.model;
 
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
-import twilightforest.client.model.entity.newmodels.NewBighornModel;
-import twilightforest.client.model.entity.newmodels.NewBlockChainGoblinModel;
-import twilightforest.client.model.entity.newmodels.NewBoarModel;
-import twilightforest.client.model.entity.newmodels.NewDeerModel;
-import twilightforest.client.model.entity.newmodels.NewFireBeetleModel;
-import twilightforest.client.model.entity.newmodels.NewHelmetCrabModel;
-import twilightforest.client.model.entity.newmodels.NewHydraHeadModel;
-import twilightforest.client.model.entity.newmodels.NewHydraModel;
-import twilightforest.client.model.entity.newmodels.NewHydraNeckModel;
-import twilightforest.client.model.entity.newmodels.NewKoboldModel;
-import twilightforest.client.model.entity.newmodels.NewLowerGoblinKnightModel;
-import twilightforest.client.model.entity.newmodels.NewMinoshroomModel;
-import twilightforest.client.model.entity.newmodels.NewMinotaurModel;
-import twilightforest.client.model.entity.newmodels.NewNagaModel;
-import twilightforest.client.model.entity.newmodels.NewPinchBeetleModel;
-import twilightforest.client.model.entity.newmodels.NewQuestRamModel;
-import twilightforest.client.model.entity.newmodels.NewRavenModel;
-import twilightforest.client.model.entity.newmodels.NewRedcapModel;
-import twilightforest.client.model.entity.newmodels.NewSlimeBeetleModel;
-import twilightforest.client.model.entity.newmodels.NewSnowQueenModel;
-import twilightforest.client.model.entity.newmodels.NewSquirrelModel;
-import twilightforest.client.model.entity.newmodels.NewTinyBirdModel;
-import twilightforest.client.model.entity.newmodels.NewTrollModel;
-import twilightforest.client.model.entity.newmodels.NewUpperGoblinKnightModel;
-import twilightforest.client.model.entity.newmodels.NewUrGhastModel;
+import twilightforest.client.model.entity.newmodels.*;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.client.model.tileentity.legacy.*;
 import twilightforest.client.renderer.entity.TwilightBoatRenderer;
 import twilightforest.client.renderer.tileentity.CasketTileEntityRenderer;
+import twilightforest.compat.trinkets.model.CharmOfLifeNecklaceModel;
 import twilightforest.entity.TwilightBoat;
 
 public class TFLayerDefinitions {
 
 	public static void registerLayers() {
 
-		for(TwilightBoat.Type boatType : TwilightBoat.Type.values()) {
+		for (TwilightBoat.Type boatType : TwilightBoat.Type.values()) {
 			EntityModelLayerRegistry.registerModelLayer(TwilightBoatRenderer.createBoatModelName(boatType), BoatModel::createBodyModel);
 			EntityModelLayerRegistry.registerModelLayer(TwilightBoatRenderer.createChestBoatModelName(boatType), ChestBoatModel::createBodyModel);
 		}
@@ -181,5 +159,10 @@ public class TFLayerDefinitions {
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.RED_THREAD, RedThreadModel::create);
 
 		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.KNIGHTMETAL_SHIELD, KnightmetalShieldModel::create);
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) registerTrinketLayers();
+	}
+
+	public static void registerTrinketLayers() {
+		EntityModelLayerRegistry.registerModelLayer(TFModelLayers.CHARM_OF_LIFE, CharmOfLifeNecklaceModel::create);
 	}
 }

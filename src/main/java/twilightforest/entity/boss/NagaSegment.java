@@ -1,5 +1,7 @@
 package twilightforest.entity.boss;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -9,11 +11,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
 
@@ -146,7 +145,7 @@ public class NagaSegment extends TFPart<Naga> {
 		return false;
 	}
 
-//	@Override
+	//	@Override
 	public float getStepHeight() {
 		return 2.0F;
 	}

@@ -84,8 +84,8 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> {
 				CubeListBuilder.create()
 						.texOffs(0, 108)
 						.addBox(-9.0F, -5.0F, -5.0F, 10.0F, 10.0F, 10.0F),
-		PartPose.offsetAndRotation(-24.0F, height, -8.0F,
-				0.0F, -30F / (180F / (float) Math.PI), zangle / (180F / (float) Math.PI)));
+				PartPose.offsetAndRotation(-24.0F, height, -8.0F,
+						0.0F, -30F / (180F / (float) Math.PI), zangle / (180F / (float) Math.PI)));
 
 		leftHorn.addOrReplaceChild("left_horn_" + set + "_top",
 				CubeListBuilder.create()
@@ -105,8 +105,8 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> {
 				CubeListBuilder.create()
 						.texOffs(40, 108)
 						.addBox(-2.0F, -4.0F, -4.0F, 18, 8, 8),
-		PartPose.offsetAndRotation(8.0F, 0.0F, 0.0F,
-				0.0F, 20F / (180F / (float) Math.PI), -zangle / (180F / (float) Math.PI)));
+				PartPose.offsetAndRotation(8.0F, 0.0F, 0.0F,
+						0.0F, 20F / (180F / (float) Math.PI), -zangle / (180F / (float) Math.PI)));
 	}
 
 
@@ -172,19 +172,19 @@ public class AlphaYetiModel extends HumanoidModel<AlphaYeti> {
 			this.rightArm.xRot = Mth.cos(limbSwing * 0.66F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
 			this.leftArm.xRot = Mth.cos(limbSwing * 0.66F) * 2.0F * limbSwingAmount * 0.5F;
 
-            this.rightArm.yRot += Mth.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
+			this.rightArm.yRot += Mth.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
 			this.leftArm.yRot -= Mth.cos(limbSwing * 0.25F) * 0.5F + 0.5F;
 
-			this.rightArm.xRot += Math.PI * 1.25;
-			this.leftArm.xRot += Math.PI * 1.25;
+			this.rightArm.xRot += (float) (Math.PI * 1.25);
+			this.leftArm.xRot += (float) (Math.PI * 1.25);
 			this.rightArm.zRot = 0.0F;
 			this.leftArm.zRot = 0.0F;
 		}
 
 		if (entity.isVehicle()) {
 			// arms up!
-			this.rightArm.xRot += Math.PI;
-			this.leftArm.xRot += Math.PI;
+			this.rightArm.xRot += (float) Math.PI;
+			this.leftArm.xRot += (float) Math.PI;
 		}
 	}
 }

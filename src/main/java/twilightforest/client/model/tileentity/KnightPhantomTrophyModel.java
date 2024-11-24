@@ -2,7 +2,6 @@ package twilightforest.client.model.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -11,7 +10,7 @@ public class KnightPhantomTrophyModel extends GenericTrophyModel {
 
 	public final ModelPart head;
 	public final ModelPart helmet;
-	
+
 	public KnightPhantomTrophyModel(ModelPart part) {
 		this.head = part.getChild("head");
 		this.helmet = part.getChild("helmet");
@@ -26,7 +25,7 @@ public class KnightPhantomTrophyModel extends GenericTrophyModel {
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
-		PartPose.offset(0.0F, -4.0F, 0.0F));
+				PartPose.offset(0.0F, -4.0F, 0.0F));
 
 		var helm = partdefinition.addOrReplaceChild("helmet",
 				CubeListBuilder.create()
@@ -64,7 +63,7 @@ public class KnightPhantomTrophyModel extends GenericTrophyModel {
 
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
-	
+
 	@Override
 	public void setRotations(float x, float y, float z) {
 		this.head.yRot = y * ((float) Math.PI / 180F);
@@ -72,7 +71,7 @@ public class KnightPhantomTrophyModel extends GenericTrophyModel {
 		this.helmet.xRot = this.head.xRot;
 		this.helmet.yRot = this.head.yRot;
 	}
-	
+
 	@Override
 	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		this.head.render(matrix, buffer, packedLight, packedOverlay, red, green, blue, alpha);

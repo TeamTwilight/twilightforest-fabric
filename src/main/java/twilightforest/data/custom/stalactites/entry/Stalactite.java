@@ -45,9 +45,7 @@ public record Stalactite(Map<Block, Integer> ores, float sizeVariation, int maxL
 		private Map<Block, Integer> deserializeBlockMap(JsonObject json) {
 			JsonArray array = GsonHelper.getAsJsonArray(json, "blocks");
 			Map<Block, Integer> map = new HashMap<>();
-			array.forEach(jsonElement -> {
-				map.put(BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(jsonElement.getAsJsonObject(), "block"))), GsonHelper.getAsInt(jsonElement.getAsJsonObject(), "weight"));
-			});
+			array.forEach(jsonElement -> map.put(BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(GsonHelper.getAsString(jsonElement.getAsJsonObject(), "block"))), GsonHelper.getAsInt(jsonElement.getAsJsonObject(), "weight")));
 			return map;
 		}
 

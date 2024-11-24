@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 import twilightforest.item.MagicMapItem;
 import twilightforest.util.ColorUtil;
@@ -40,7 +41,7 @@ public class MapBiomesCommand {
 	private static void init() {
 
 
-        BIOME2COLOR.put(TFBiomes.STREAM.location(), new BiomeMapColor(0, 0, 255));
+		BIOME2COLOR.put(TFBiomes.STREAM.location(), new BiomeMapColor(0, 0, 255));
 		BIOME2COLOR.put(TFBiomes.LAKE.location(), new BiomeMapColor(0, 0, 255));
 		BIOME2COLOR.put(TFBiomes.CLEARING.location(), new BiomeMapColor(132, 245, 130));
 		BIOME2COLOR.put(TFBiomes.OAK_SAVANNAH.location(), new BiomeMapColor(239, 245, 130));
@@ -145,7 +146,7 @@ public class MapBiomesCommand {
 		try {
 			img.writeToFile(p.toAbsolutePath().toFile());
 		} catch (IOException e) {
-			e.printStackTrace();
+			TwilightForestMod.LOGGER.error(e);
 			source.sendFailure(Component.literal("Could not save image! Please report this!"));
 			return 0;
 		}

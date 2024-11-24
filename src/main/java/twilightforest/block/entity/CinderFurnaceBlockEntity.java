@@ -1,5 +1,6 @@
 package twilightforest.block.entity;
 
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -19,12 +20,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
-import io.github.fabricators_of_create.porting_lib.tags.Tags;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.CinderFurnaceBlock;
 import twilightforest.init.TFBlocks;
-
-import org.jetbrains.annotations.Nullable;
 
 public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 	private static final int SMELT_LOG_FACTOR = 10;

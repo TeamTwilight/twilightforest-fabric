@@ -86,13 +86,13 @@ public class SnowQueenTrophyLegacyModel extends GenericTrophyModel {
 				PartPose.offsetAndRotation(2.5F, 0.0F, 0.0F, angle / 180F * Mth.PI, 0.0F, 10F / 180F * 3.14159F));
 
 	}
-	
+
 	@Override
 	public void setRotations(float x, float y, float z) {
 		this.head.yRot = y * ((float) Math.PI / 180F);
 		this.head.xRot = z * ((float) Math.PI / 180F);
 	}
-	
+
 	@Override
 	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		this.head.render(matrix, buffer, packedLight, packedOverlay, red, green, blue, alpha);

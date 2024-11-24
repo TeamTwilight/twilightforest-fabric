@@ -1,9 +1,8 @@
 package twilightforest.mixin.client;
 
+import net.minecraft.client.renderer.LevelRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
-
-import net.minecraft.client.renderer.LevelRenderer;
 
 @Mixin(LevelRenderer.class)
 public interface LevelRendererAccessor {

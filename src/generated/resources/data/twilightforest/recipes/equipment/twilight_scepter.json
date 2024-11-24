@@ -3,9 +3,14 @@
   "category": "equipment",
   "ingredients": [
     {
-      "type": "forge:partial_nbt",
-      "item": "twilightforest:twilight_scepter",
-      "nbt": "{Damage:99}"
+      "fabric:type": "fabric:nbt",
+      "base": {
+        "item": "twilightforest:twilight_scepter"
+      },
+      "nbt": {
+        "Damage": 99
+      },
+      "strict": false
     },
     {
       "tag": "c:ender_pearls"

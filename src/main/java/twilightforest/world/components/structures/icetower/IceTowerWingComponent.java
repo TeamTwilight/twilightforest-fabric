@@ -86,8 +86,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 				int[] dest = getValidOpening(rand, dir);
 
 				if (this.getGenDepth() == 4 && (parent instanceof IceTowerMainComponent) && !((IceTowerMainComponent) parent).hasBossWing) {
-					boolean hasBoss = makeBossTowerWing(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], 15, 41, dir);
-					((IceTowerMainComponent) parent).hasBossWing = hasBoss;
+					((IceTowerMainComponent) parent).hasBossWing = makeBossTowerWing(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], 15, 41, dir);
 				} else {
 					int childHeight = (rand.nextInt(2) + rand.nextInt(2) + 2) * 10 + 1;
 					makeTowerWing(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], SIZE, childHeight, dir);
@@ -270,7 +269,6 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 	/**
 	 * Called to decorate each floor.  This is responsible for adding a ladder up, the stub of the ladder going down, then picking a theme for each floor and executing it.
-	 *
 	 */
 	@Override
 	@SuppressWarnings("fallthrough")
@@ -317,8 +315,10 @@ public class IceTowerWingComponent extends TowerWingComponent {
 		// make a bounding box of the area
 		BoundingBox exclusionBox = switch (rotation) {
 			case CLOCKWISE_90 -> new BoundingBox(this.size - 1 - maxZ, minY, minX, this.size - 1 - minZ, maxY, maxX);
-			case CLOCKWISE_180 -> new BoundingBox(this.size - 1 - maxX, minY, this.size - 1 - maxZ, this.size - 1 - minX, maxY, this.size - 1 - minZ);
-			case COUNTERCLOCKWISE_90 -> new BoundingBox(minZ, minY, this.size - 1 - maxX, maxZ, maxY, this.size - 1 - minX);
+			case CLOCKWISE_180 ->
+					new BoundingBox(this.size - 1 - maxX, minY, this.size - 1 - maxZ, this.size - 1 - minX, maxY, this.size - 1 - minZ);
+			case COUNTERCLOCKWISE_90 ->
+					new BoundingBox(minZ, minY, this.size - 1 - maxX, maxZ, maxY, this.size - 1 - minX);
 			default -> new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 		};
 
@@ -455,24 +455,23 @@ public class IceTowerWingComponent extends TowerWingComponent {
 	}
 
 	private void decorateWraparoundWallStepsPillars(WorldGenLevel world, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, BoundingBox sbb) {
-		Rotation rotation = ladderDownDir;
 		final BlockState pillarEW = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		final BlockState pillarNS = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		this.decorateWraparoundWallSteps(world, bottom, top, ladderUpDir, false, sbb);
-		this.decoratePillars(world, bottom, top, rotation, sbb);
+		this.decoratePillars(world, bottom, top, ladderDownDir, sbb);
 
-		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 2, pillarEW, rotation);
-		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 2, pillarEW, rotation);
-		this.fillBlocksRotated(world, sbb, 8, bottom + 5, 3, 9, bottom + 5, 3, pillarNS, rotation);
-		this.fillBlocksRotated(world, sbb, 8, bottom + 5, 7, 9, bottom + 5, 7, pillarNS, rotation);
+		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 2, pillarEW, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 2, pillarEW, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 8, bottom + 5, 3, 9, bottom + 5, 3, pillarNS, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 8, bottom + 5, 7, 9, bottom + 5, 7, pillarNS, ladderDownDir);
 
-		this.fillBlocksRotated(world, sbb, 1, bottom + 2, 3, 2, bottom + 2, 3, pillarNS, rotation);
-		this.fillBlocksRotated(world, sbb, 1, bottom + 6, 3, 2, bottom + 6, 3, pillarNS, rotation);
-		this.fillBlocksRotated(world, sbb, 1, bottom + 4, 7, 2, bottom + 4, 7, pillarNS, rotation);
-		this.fillBlocksRotated(world, sbb, 1, bottom + 8, 7, 2, bottom + 8, 7, pillarNS, rotation);
-		this.fillBlocksRotated(world, sbb, 3, bottom + 6, 8, 3, bottom + 6, 9, pillarEW, rotation);
-		this.fillBlocksRotated(world, sbb, 7, bottom + 8, 8, 7, bottom + 8, 9, pillarEW, rotation);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 2, 3, 2, bottom + 2, 3, pillarNS, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 6, 3, 2, bottom + 6, 3, pillarNS, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 4, 7, 2, bottom + 4, 7, pillarNS, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 8, 7, 2, bottom + 8, 7, pillarNS, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 3, bottom + 6, 8, 3, bottom + 6, 9, pillarEW, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 7, bottom + 8, 8, 7, bottom + 8, 9, pillarEW, ladderDownDir);
 
 		// treasure!
 		if (hasTreasure) {
@@ -617,50 +616,49 @@ public class IceTowerWingComponent extends TowerWingComponent {
 
 
 	private void decoratePillarParkour(WorldGenLevel world, RandomSource rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, BoundingBox sbb) {
-		Rotation rotation = ladderDownDir;
 
 		final BlockState pillarEW = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		final BlockState pillarNS = deco.pillarState.setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		// 4 pillars
-		this.decoratePillars(world, bottom, top, rotation, sbb);
+		this.decoratePillars(world, bottom, top, ladderDownDir, sbb);
 
 		// center pillar
-		this.setBlockStateRotated(world, deco.pillarState, 5, bottom + 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, deco.pillarState, 5, bottom + 1, 5, ladderDownDir, sbb);
 
 		// pillar 2
-		this.fillBlocksRotated(world, sbb, 5, bottom + 2, 7, 5, bottom + 2, 9, pillarEW, rotation);
+		this.fillBlocksRotated(world, sbb, 5, bottom + 2, 7, 5, bottom + 2, 9, pillarEW, ladderDownDir);
 
 		// gap 3
-		this.fillBlocksRotated(world, sbb, 1, bottom + 3, 7, 2, bottom + 3, 7, pillarNS, rotation);
-		this.fillBlocksRotated(world, sbb, 3, bottom + 3, 8, 3, bottom + 3, 9, pillarEW, rotation);
-		this.fillBlocksRotated(world, sbb, 1, bottom + 7, 7, 2, bottom + 7, 7, pillarNS, rotation);
-		this.fillBlocksRotated(world, sbb, 3, bottom + 7, 8, 3, bottom + 7, 9, pillarEW, rotation);
-		this.fillAirRotated(world, sbb, 3, bottom + 4, 7, 3, bottom + 6, 7, rotation);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 3, 7, 2, bottom + 3, 7, pillarNS, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 3, bottom + 3, 8, 3, bottom + 3, 9, pillarEW, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 7, 7, 2, bottom + 7, 7, pillarNS, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 3, bottom + 7, 8, 3, bottom + 7, 9, pillarEW, ladderDownDir);
+		this.fillAirRotated(world, sbb, 3, bottom + 4, 7, 3, bottom + 6, 7, ladderDownDir);
 
 		// pillar 4
-		this.fillBlocksRotated(world, sbb, 1, bottom + 4, 5, 2, bottom + 4, 5, pillarNS, rotation);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 4, 5, 2, bottom + 4, 5, pillarNS, ladderDownDir);
 
 		// gap 5
-		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 2, pillarEW, rotation);
-		this.fillBlocksRotated(world, sbb, 1, bottom + 5, 3, 2, bottom + 5, 3, pillarNS, rotation);
-		this.fillAirRotated(world, sbb, 3, bottom + 6, 3, 3, bottom + 8, 3, rotation);
+		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 2, pillarEW, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 1, bottom + 5, 3, 2, bottom + 5, 3, pillarNS, ladderDownDir);
+		this.fillAirRotated(world, sbb, 3, bottom + 6, 3, 3, bottom + 8, 3, ladderDownDir);
 
 		// pillar 6
-		this.fillBlocksRotated(world, sbb, 5, bottom + 6, 1, 5, bottom + 6, 2, pillarEW, rotation);
+		this.fillBlocksRotated(world, sbb, 5, bottom + 6, 1, 5, bottom + 6, 2, pillarEW, ladderDownDir);
 
 		// gap 7
-		this.fillAirRotated(world, sbb, 7, bottom + 8, 3, 7, bottom + 10, 3, rotation);
-		this.fillBlocksRotated(world, sbb, 7, bottom + 7, 1, 7, bottom + 7, 2, pillarEW, rotation);
-		this.fillBlocksRotated(world, sbb, 8, bottom + 7, 3, 9, bottom + 7, 3, pillarNS, rotation);
+		this.fillAirRotated(world, sbb, 7, bottom + 8, 3, 7, bottom + 10, 3, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 7, bottom + 7, 1, 7, bottom + 7, 2, pillarEW, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 8, bottom + 7, 3, 9, bottom + 7, 3, pillarNS, ladderDownDir);
 
 		// pillar 8
-		this.fillBlocksRotated(world, sbb, 8, bottom + 8, 5, 9, bottom + 8, 5, pillarNS, rotation);
+		this.fillBlocksRotated(world, sbb, 8, bottom + 8, 5, 9, bottom + 8, 5, pillarNS, ladderDownDir);
 
 		// gap 9 (no gap?)
 		//this.fillAirRotated(world, sbb, 7, bottom + 10, 7, 7, bottom + 10, 7, rotation);
-		this.fillBlocksRotated(world, sbb, 8, bottom + 9, 7, 9, bottom + 9, 7, pillarNS, rotation);
-		this.fillBlocksRotated(world, sbb, 7, bottom + 9, 8, 7, bottom + 9, 9, pillarEW, rotation);
+		this.fillBlocksRotated(world, sbb, 8, bottom + 9, 7, 9, bottom + 9, 7, pillarNS, ladderDownDir);
+		this.fillBlocksRotated(world, sbb, 7, bottom + 9, 8, 7, bottom + 9, 9, pillarEW, ladderDownDir);
 
 		// holes in ceiling
 		this.fillAirRotated(world, sbb, 2, top, 2, 8, top, 4, ladderUpDir);

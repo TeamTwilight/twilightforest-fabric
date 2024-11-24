@@ -1,5 +1,7 @@
 package twilightforest.entity.boss;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -27,8 +29,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.advancements.TFAdvancements;
@@ -158,7 +158,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 			}
 		}
 	}
-	
+
 	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.MINOSHROOM_AMBIENT.get();
@@ -201,7 +201,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 
 	@Override
 	public boolean hurt(DamageSource source, float amount) {
-		if(source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
+		if (source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
 			this.hurtBy.add(player);
 		}
 		return super.hurt(source, amount);
@@ -224,7 +224,7 @@ public class Minoshroom extends Minotaur implements EnforcedHomePoint {
 		if (!this.level().isClientSide()) {
 			this.bossInfo.setProgress(0.0F);
 			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.LABYRINTH, true);
-			for(ServerPlayer player : this.hurtBy) {
+			for (ServerPlayer player : this.hurtBy) {
 				TFAdvancements.HURT_BOSS.trigger(player, this);
 			}
 

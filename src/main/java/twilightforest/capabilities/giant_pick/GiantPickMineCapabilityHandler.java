@@ -9,7 +9,8 @@ public class GiantPickMineCapabilityHandler implements GiantPickMineCapability {
 	private boolean breaking;
 	private int giantBlockConversion;
 
-	public GiantPickMineCapabilityHandler(LivingEntity entity) {}
+	public GiantPickMineCapabilityHandler(LivingEntity entity) {
+	}
 
 	@Override
 	public void setMining(long mining) {

@@ -1,14 +1,14 @@
 package twilightforest.inventory.slot;
 
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.Container;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import twilightforest.TFConfig;
-import twilightforest.inventory.UncraftingMenu;
 import twilightforest.inventory.UncraftingContainer;
+import twilightforest.inventory.UncraftingMenu;
 import twilightforest.item.recipe.UncraftingRecipe;
 
 public class UncraftingSlot extends Slot {

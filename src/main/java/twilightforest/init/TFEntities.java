@@ -128,7 +128,7 @@ public class TFEntities {
 	@SuppressWarnings("unchecked")
 	private static <E extends Entity> RegistryObject<EntityType<E>> build(ResourceLocation id, FabricEntityTypeBuilder<E> builder, boolean fireproof, int primary, int secondary) {
 		if (fireproof) builder.fireImmune();
-		RegistryObject<EntityType<E>> ret = ENTITIES.register(id.getPath(), () -> builder.build());
+		RegistryObject<EntityType<E>> ret = ENTITIES.register(id.getPath(), builder::build);
 		if (primary != 0 && secondary != 0) {
 			SPAWN_EGGS.register(id.getPath() + "_spawn_egg", () -> new LazySpawnEggItem(() -> (EntityType<? extends Mob>) ret.get(), primary, secondary, new Item.Properties()));
 		}

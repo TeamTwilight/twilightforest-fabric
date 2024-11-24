@@ -1,6 +1,5 @@
 package twilightforest.entity.ai.goal;
 
-import io.github.fabricators_of_create.porting_lib.util.PortingHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -94,7 +93,7 @@ public class LichMinionsGoal extends Goal {
 			// put a clone there
 			LichMinion minion = new LichMinion(this.lich.level(), this.lich);
 			minion.setPos(minionSpot.x(), minionSpot.y(), minionSpot.z());
-			PortingHooks.onFinalizeSpawn(minion, accessor, this.lich.level().getCurrentDifficultyAt(BlockPos.containing(minionSpot)), MobSpawnType.MOB_SUMMONED, null, null);
+			minion.finalizeSpawn(accessor, this.lich.level().getCurrentDifficultyAt(BlockPos.containing(minionSpot)), MobSpawnType.MOB_SUMMONED, null, null);
 			this.lich.level().addFreshEntity(minion);
 
 			minion.setTarget(targetedEntity);

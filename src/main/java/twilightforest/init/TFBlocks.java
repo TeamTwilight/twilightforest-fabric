@@ -1,7 +1,5 @@
 package twilightforest.init;
 
-import java.util.function.Supplier;
-
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.Direction;
@@ -10,16 +8,15 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
-import twilightforest.client.ISTER;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.FireJetVariant;
@@ -29,12 +26,15 @@ import twilightforest.util.TFWoodTypes;
 import twilightforest.world.components.feature.trees.growers.*;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
 
 @SuppressWarnings({"WeakerAccess", "unused", "deprecation"})
 @Nonnull
 public class TFBlocks {
+	public static final List<ItemLike> ISTER_ITEMS = new ArrayList<>();
 	public static final LazyRegistrar<Block> BLOCKS = LazyRegistrar.create(Registries.BLOCK, TwilightForestMod.ID);
-
 	public static final RegistryObject<TFPortalBlock> TWILIGHT_PORTAL = BLOCKS.register("twilight_portal", () -> new TFPortalBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.BLOCK).strength(-1.0F).sound(SoundType.GLASS).lightLevel((state) -> 11).noCollission().noOcclusion().noLootTable()));
 
 	//misc.
@@ -71,16 +71,16 @@ public class TFBlocks {
 	public static final RegistryObject<Block> SPIRAL_BRICKS = register("spiral_bricks", () -> new SpiralBrickBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).noOcclusion().requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
 	public static final RegistryObject<Block> ETCHED_NAGASTONE = register("etched_nagastone", () -> new EtchedNagastoneBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
 	public static final RegistryObject<Block> NAGASTONE_PILLAR = register("nagastone_pillar", () -> new DirectionalRotatedPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
-	public static final RegistryObject<StairBlock> NAGASTONE_STAIRS_LEFT = register("nagastone_stairs_left", () -> new StairBlock(() -> ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(ETCHED_NAGASTONE.get())));
-	public static final RegistryObject<StairBlock> NAGASTONE_STAIRS_RIGHT = register("nagastone_stairs_right", () -> new StairBlock(() -> ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(ETCHED_NAGASTONE.get())));
+	public static final RegistryObject<StairBlock> NAGASTONE_STAIRS_LEFT = register("nagastone_stairs_left", () -> new StairBlock(ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(ETCHED_NAGASTONE.get())));
+	public static final RegistryObject<StairBlock> NAGASTONE_STAIRS_RIGHT = register("nagastone_stairs_right", () -> new StairBlock(ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(ETCHED_NAGASTONE.get())));
 	public static final RegistryObject<Block> MOSSY_ETCHED_NAGASTONE = register("mossy_etched_nagastone", () -> new EtchedNagastoneBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
 	public static final RegistryObject<Block> MOSSY_NAGASTONE_PILLAR = register("mossy_nagastone_pillar", () -> new DirectionalRotatedPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
-	public static final RegistryObject<StairBlock> MOSSY_NAGASTONE_STAIRS_LEFT = register("mossy_nagastone_stairs_left", () -> new StairBlock(() -> MOSSY_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(MOSSY_ETCHED_NAGASTONE.get())));
-	public static final RegistryObject<StairBlock> MOSSY_NAGASTONE_STAIRS_RIGHT = register("mossy_nagastone_stairs_right", () -> new StairBlock(() -> MOSSY_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(MOSSY_ETCHED_NAGASTONE.get())));
+	public static final RegistryObject<StairBlock> MOSSY_NAGASTONE_STAIRS_LEFT = register("mossy_nagastone_stairs_left", () -> new StairBlock(MOSSY_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(MOSSY_ETCHED_NAGASTONE.get())));
+	public static final RegistryObject<StairBlock> MOSSY_NAGASTONE_STAIRS_RIGHT = register("mossy_nagastone_stairs_right", () -> new StairBlock(MOSSY_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(MOSSY_ETCHED_NAGASTONE.get())));
 	public static final RegistryObject<Block> CRACKED_ETCHED_NAGASTONE = register("cracked_etched_nagastone", () -> new EtchedNagastoneBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
 	public static final RegistryObject<Block> CRACKED_NAGASTONE_PILLAR = register("cracked_nagastone_pillar", () -> new DirectionalRotatedPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
-	public static final RegistryObject<StairBlock> CRACKED_NAGASTONE_STAIRS_LEFT = register("cracked_nagastone_stairs_left", () -> new StairBlock(() -> CRACKED_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(CRACKED_ETCHED_NAGASTONE.get())));
-	public static final RegistryObject<StairBlock> CRACKED_NAGASTONE_STAIRS_RIGHT = register("cracked_nagastone_stairs_right", () -> new StairBlock(() -> CRACKED_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(CRACKED_ETCHED_NAGASTONE.get())));
+	public static final RegistryObject<StairBlock> CRACKED_NAGASTONE_STAIRS_LEFT = register("cracked_nagastone_stairs_left", () -> new StairBlock(CRACKED_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(CRACKED_ETCHED_NAGASTONE.get())));
+	public static final RegistryObject<StairBlock> CRACKED_NAGASTONE_STAIRS_RIGHT = register("cracked_nagastone_stairs_right", () -> new StairBlock(CRACKED_ETCHED_NAGASTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(CRACKED_ETCHED_NAGASTONE.get())));
 
 	//lich tower
 	public static final RegistryObject<RotatedPillarBlock> TWISTED_STONE = register("twisted_stone", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(1.5F, 6.0F)));
@@ -103,7 +103,7 @@ public class TFBlocks {
 	public static final RegistryObject<AbstractSkullCandleBlock> PIGLIN_SKULL_CANDLE = BLOCKS.register("piglin_skull_candle", () -> new SkullCandleBlock(SkullBlock.Types.PIGLIN, BlockBehaviour.Properties.copy(Blocks.PIGLIN_HEAD)));
 	public static final RegistryObject<AbstractSkullCandleBlock> PIGLIN_WALL_SKULL_CANDLE = BLOCKS.register("piglin_wall_skull_candle", () -> new WallSkullCandleBlock(SkullBlock.Types.PIGLIN, BlockBehaviour.Properties.copy(Blocks.PIGLIN_WALL_HEAD)));
 	public static final RegistryObject<WroughtIronFenceBlock> WROUGHT_IRON_FENCE = register("wrought_iron_fence", () -> new WroughtIronFenceBlock(BlockBehaviour.Properties.of().strength(5.0F, 6.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
-	public static final RegistryObject<Block> WROUGHT_IRON_FINIAL = register("wrought_iron_finial", () -> new WroughtIronFinialBlock(BlockBehaviour.Properties.of().strength(5.0F, 6.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
+
 
 	//labyrinth
 	public static final RegistryObject<Block> MAZESTONE = register("mazestone", () -> new Block(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASEDRUM).mapColor(MapColor.STONE).requiresCorrectToolForDrops().sound(SoundType.STONE).strength(100.0F, 5.0F)));
@@ -192,12 +192,12 @@ public class TFBlocks {
 	public static final RegistryObject<Block> ENCASED_CASTLE_BRICK_TILE = register("encased_castle_brick_tile", () -> new Block(BlockBehaviour.Properties.copy(CASTLE_BRICK.get())));
 	public static final RegistryObject<Block> BOLD_CASTLE_BRICK_PILLAR = register("bold_castle_brick_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(CASTLE_BRICK.get())));
 	public static final RegistryObject<Block> BOLD_CASTLE_BRICK_TILE = register("bold_castle_brick_tile", () -> new Block(BlockBehaviour.Properties.copy(CASTLE_BRICK.get())));
-	public static final RegistryObject<StairBlock> CASTLE_BRICK_STAIRS = register("castle_brick_stairs", () -> new StairBlock(() -> CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.copy(CASTLE_BRICK.get())));
-	public static final RegistryObject<StairBlock> WORN_CASTLE_BRICK_STAIRS = register("worn_castle_brick_stairs", () -> new StairBlock(() -> WORN_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.copy(WORN_CASTLE_BRICK.get())));
-	public static final RegistryObject<StairBlock> CRACKED_CASTLE_BRICK_STAIRS = register("cracked_castle_brick_stairs", () -> new StairBlock(() -> CRACKED_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.copy(CRACKED_CASTLE_BRICK.get())));
-	public static final RegistryObject<StairBlock> MOSSY_CASTLE_BRICK_STAIRS = register("mossy_castle_brick_stairs", () -> new StairBlock(() -> MOSSY_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.copy(MOSSY_CASTLE_BRICK.get())));
-	public static final RegistryObject<StairBlock> ENCASED_CASTLE_BRICK_STAIRS = register("encased_castle_brick_stairs", () -> new StairBlock(() -> ENCASED_CASTLE_BRICK_PILLAR.get().defaultBlockState(), BlockBehaviour.Properties.copy(ENCASED_CASTLE_BRICK_PILLAR.get())));
-	public static final RegistryObject<StairBlock> BOLD_CASTLE_BRICK_STAIRS = register("bold_castle_brick_stairs", () -> new StairBlock(() -> BOLD_CASTLE_BRICK_PILLAR.get().defaultBlockState(), BlockBehaviour.Properties.copy(BOLD_CASTLE_BRICK_PILLAR.get())));
+	public static final RegistryObject<StairBlock> CASTLE_BRICK_STAIRS = register("castle_brick_stairs", () -> new StairBlock(CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.copy(CASTLE_BRICK.get())));
+	public static final RegistryObject<StairBlock> WORN_CASTLE_BRICK_STAIRS = register("worn_castle_brick_stairs", () -> new StairBlock(WORN_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.copy(WORN_CASTLE_BRICK.get())));
+	public static final RegistryObject<StairBlock> CRACKED_CASTLE_BRICK_STAIRS = register("cracked_castle_brick_stairs", () -> new StairBlock(CRACKED_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.copy(CRACKED_CASTLE_BRICK.get())));
+	public static final RegistryObject<StairBlock> MOSSY_CASTLE_BRICK_STAIRS = register("mossy_castle_brick_stairs", () -> new StairBlock(MOSSY_CASTLE_BRICK.get().defaultBlockState(), BlockBehaviour.Properties.copy(MOSSY_CASTLE_BRICK.get())));
+	public static final RegistryObject<StairBlock> ENCASED_CASTLE_BRICK_STAIRS = register("encased_castle_brick_stairs", () -> new StairBlock(ENCASED_CASTLE_BRICK_PILLAR.get().defaultBlockState(), BlockBehaviour.Properties.copy(ENCASED_CASTLE_BRICK_PILLAR.get())));
+	public static final RegistryObject<StairBlock> BOLD_CASTLE_BRICK_STAIRS = register("bold_castle_brick_stairs", () -> new StairBlock(BOLD_CASTLE_BRICK_PILLAR.get().defaultBlockState(), BlockBehaviour.Properties.copy(BOLD_CASTLE_BRICK_PILLAR.get())));
 	public static final RegistryObject<Block> PINK_CASTLE_RUNE_BRICK = register("pink_castle_rune_brick", () -> new Block(BlockBehaviour.Properties.copy(CASTLE_BRICK.get()).mapColor(DyeColor.MAGENTA)));
 	public static final RegistryObject<Block> BLUE_CASTLE_RUNE_BRICK = register("blue_castle_rune_brick", () -> new Block(BlockBehaviour.Properties.copy(CASTLE_BRICK.get()).mapColor(DyeColor.LIGHT_BLUE)));
 	public static final RegistryObject<Block> YELLOW_CASTLE_RUNE_BRICK = register("yellow_castle_rune_brick", () -> new Block(BlockBehaviour.Properties.copy(CASTLE_BRICK.get()).mapColor(DyeColor.YELLOW)));
@@ -210,14 +210,14 @@ public class TFBlocks {
 	public static final RegistryObject<Block> CINDER_FURNACE = register("cinder_furnace", () -> new CinderFurnaceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).requiresCorrectToolForDrops().strength(7.0F).lightLevel((state) -> 15)));
 	public static final RegistryObject<RotatedPillarBlock> CINDER_LOG = register("cinder_log", () -> new TFLogBlock(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.COLOR_GRAY).strength(1.0F)));
 	public static final RegistryObject<Block> CINDER_WOOD = register("cinder_wood", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.COLOR_GRAY).strength(1.0F)));
-	public static final RegistryObject<Block> YELLOW_CASTLE_DOOR = register("yellow_castle_door", () -> new CastleDoorBlock(BlockBehaviour.Properties.of().mapColor((state) -> state.getValue(CastleDoorBlock.VANISHED) ? MapColor.NONE : DyeColor.YELLOW.getMapColor()).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE_TILES).strength(100.0F, 100.0F)));
-	public static final RegistryObject<Block> VIOLET_CASTLE_DOOR = register("violet_castle_door", () -> new CastleDoorBlock(BlockBehaviour.Properties.of().mapColor((state) -> state.getValue(CastleDoorBlock.VANISHED) ? MapColor.NONE : DyeColor.LIGHT_BLUE.getMapColor()).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE_TILES).strength(100.0F, 100.0F)));
-	public static final RegistryObject<Block> PINK_CASTLE_DOOR = register("pink_castle_door", () -> new CastleDoorBlock(BlockBehaviour.Properties.of().mapColor((state) -> state.getValue(CastleDoorBlock.VANISHED) ? MapColor.NONE : DyeColor.MAGENTA.getMapColor()).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE_TILES).strength(100.0F, 100.0F)));
-	public static final RegistryObject<Block> BLUE_CASTLE_DOOR = register("blue_castle_door", () -> new CastleDoorBlock(BlockBehaviour.Properties.of().mapColor((state) -> state.getValue(CastleDoorBlock.VANISHED) ? MapColor.NONE : DyeColor.PURPLE.getMapColor()).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE_TILES).strength(100.0F, 100.0F)));
+	public static final RegistryObject<Block> YELLOW_CASTLE_DOOR = registerBEWLR("yellow_castle_door", () -> new CastleDoorBlock(BlockBehaviour.Properties.of().mapColor((state) -> state.getValue(CastleDoorBlock.VANISHED) ? MapColor.NONE : DyeColor.YELLOW.getMapColor()).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE_TILES).strength(100.0F, 100.0F)));
+	public static final RegistryObject<Block> VIOLET_CASTLE_DOOR = registerBEWLR("violet_castle_door", () -> new CastleDoorBlock(BlockBehaviour.Properties.of().mapColor((state) -> state.getValue(CastleDoorBlock.VANISHED) ? MapColor.NONE : DyeColor.LIGHT_BLUE.getMapColor()).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE_TILES).strength(100.0F, 100.0F)));
+	public static final RegistryObject<Block> PINK_CASTLE_DOOR = registerBEWLR("pink_castle_door", () -> new CastleDoorBlock(BlockBehaviour.Properties.of().mapColor((state) -> state.getValue(CastleDoorBlock.VANISHED) ? MapColor.NONE : DyeColor.MAGENTA.getMapColor()).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE_TILES).strength(100.0F, 100.0F)));
+	public static final RegistryObject<Block> BLUE_CASTLE_DOOR = registerBEWLR("blue_castle_door", () -> new CastleDoorBlock(BlockBehaviour.Properties.of().mapColor((state) -> state.getValue(CastleDoorBlock.VANISHED) ? MapColor.NONE : DyeColor.PURPLE.getMapColor()).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE_TILES).strength(100.0F, 100.0F)));
 
 	//mini structures
 	public static final RegistryObject<Block> TWILIGHT_PORTAL_MINIATURE_STRUCTURE = register("twilight_portal_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.of().noCollission().noOcclusion().requiresCorrectToolForDrops().strength(0.75F)));
-//	public static final RegistryObject<Block> HEDGE_MAZE_MINIATURE_STRUCTURE = register("hedge_maze_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.copy(TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())));
+	//	public static final RegistryObject<Block> HEDGE_MAZE_MINIATURE_STRUCTURE = register("hedge_maze_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.copy(TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())));
 //	public static final RegistryObject<Block> HOLLOW_HILL_MINIATURE_STRUCTURE = register("hollow_hill_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.copy(TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())));
 //	public static final RegistryObject<Block> QUEST_GROVE_MINIATURE_STRUCTURE = register("quest_grove_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.copy(TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())));
 //	public static final RegistryObject<Block> MUSHROOM_TOWER_MINIATURE_STRUCTURE = register("mushroom_tower_miniature_structure", () -> new MiniatureStructureBlock(BlockBehaviour.Properties.copy(TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())));
@@ -439,7 +439,7 @@ public class TFBlocks {
 	public static final RegistryObject<SaplingBlock> RAINBOW_OAK_SAPLING = register("rainbow_oak_sapling", () -> new SaplingBlock(new RainboakTreeGrower(), BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).pushReaction(PushReaction.DESTROY).instabreak().sound(SoundType.GRASS).noCollission().randomTicks()));
 
 	public static final RegistryObject<Block> TWILIGHT_OAK_PLANKS = register("twilight_oak_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> TWILIGHT_OAK_STAIRS = register("twilight_oak_stairs", () -> new StairBlock(() -> TWILIGHT_OAK_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(TWILIGHT_OAK_PLANKS.get())));
+	public static final RegistryObject<StairBlock> TWILIGHT_OAK_STAIRS = register("twilight_oak_stairs", () -> new StairBlock(TWILIGHT_OAK_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(TWILIGHT_OAK_PLANKS.get())));
 	public static final RegistryObject<Block> TWILIGHT_OAK_SLAB = register("twilight_oak_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(TWILIGHT_OAK_PLANKS.get())));
 	public static final RegistryObject<Block> TWILIGHT_OAK_BUTTON = register("twilight_oak_button", () -> new ButtonBlock(BlockBehaviour.Properties.copy(TWILIGHT_OAK_PLANKS.get()).noCollission().strength(0.5F), TFWoodTypes.TWILIGHT_OAK_SET, 30, true));
 	public static final RegistryObject<Block> TWILIGHT_OAK_FENCE = registerBurningItem("twilight_oak_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(TWILIGHT_OAK_PLANKS.get())));
@@ -454,7 +454,7 @@ public class TFBlocks {
 	public static final RegistryObject<BanisterBlock> TWILIGHT_OAK_BANISTER = registerBurningItem("twilight_oak_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(TWILIGHT_OAK_PLANKS.get())));
 
 	public static final RegistryObject<Block> CANOPY_PLANKS = register("canopy_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.PODZOL).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> CANOPY_STAIRS = register("canopy_stairs", () -> new StairBlock(() -> CANOPY_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(CANOPY_PLANKS.get())));
+	public static final RegistryObject<StairBlock> CANOPY_STAIRS = register("canopy_stairs", () -> new StairBlock(CANOPY_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(CANOPY_PLANKS.get())));
 	public static final RegistryObject<Block> CANOPY_SLAB = register("canopy_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get())));
 	public static final RegistryObject<Block> CANOPY_BUTTON = register("canopy_button", () -> new ButtonBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get()).noCollission().strength(0.5F), TFWoodTypes.CANOPY_WOOD_SET, 30, true));
 	public static final RegistryObject<Block> CANOPY_FENCE = registerBurningItem("canopy_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get())));
@@ -470,7 +470,7 @@ public class TFBlocks {
 	public static final RegistryObject<BanisterBlock> CANOPY_BANISTER = registerBurningItem("canopy_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(CANOPY_PLANKS.get())));
 
 	public static final RegistryObject<Block> MANGROVE_PLANKS = register("mangrove_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.DIRT).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> MANGROVE_STAIRS = register("mangrove_stairs", () -> new StairBlock(() -> MANGROVE_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(MANGROVE_PLANKS.get())));
+	public static final RegistryObject<StairBlock> MANGROVE_STAIRS = register("mangrove_stairs", () -> new StairBlock(MANGROVE_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(MANGROVE_PLANKS.get())));
 	public static final RegistryObject<Block> MANGROVE_SLAB = register("mangrove_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(MANGROVE_PLANKS.get())));
 	public static final RegistryObject<Block> MANGROVE_BUTTON = register("mangrove_button", () -> new ButtonBlock(BlockBehaviour.Properties.copy(MANGROVE_PLANKS.get()).noCollission().strength(0.5F), TFWoodTypes.MANGROVE_WOOD_SET, 30, true));
 	public static final RegistryObject<Block> MANGROVE_FENCE = registerBurningItem("mangrove_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(MANGROVE_PLANKS.get())));
@@ -485,7 +485,7 @@ public class TFBlocks {
 	public static final RegistryObject<BanisterBlock> MANGROVE_BANISTER = registerBurningItem("mangrove_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(MANGROVE_PLANKS.get())));
 
 	public static final RegistryObject<Block> DARK_PLANKS = register("dark_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.COLOR_ORANGE).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> DARK_STAIRS = register("dark_stairs", () -> new StairBlock(() -> DARK_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(DARK_PLANKS.get())));
+	public static final RegistryObject<StairBlock> DARK_STAIRS = register("dark_stairs", () -> new StairBlock(DARK_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(DARK_PLANKS.get())));
 	public static final RegistryObject<Block> DARK_SLAB = register("dark_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(DARK_PLANKS.get()).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> DARK_BUTTON = register("dark_button", () -> new ButtonBlock(BlockBehaviour.Properties.copy(DARK_PLANKS.get()).noCollission().strength(0.5F), TFWoodTypes.DARK_WOOD_SET, 30, true));
 	public static final RegistryObject<Block> DARK_FENCE = registerBurningItem("dark_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(DARK_PLANKS.get())));
@@ -500,7 +500,7 @@ public class TFBlocks {
 	public static final RegistryObject<BanisterBlock> DARK_BANISTER = registerBurningItem("dark_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(DARK_PLANKS.get())));
 
 	public static final RegistryObject<Block> TIME_PLANKS = register("time_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.DIRT).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> TIME_STAIRS = register("time_stairs", () -> new StairBlock(() -> TIME_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(TIME_PLANKS.get())));
+	public static final RegistryObject<StairBlock> TIME_STAIRS = register("time_stairs", () -> new StairBlock(TIME_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(TIME_PLANKS.get())));
 	public static final RegistryObject<Block> TIME_SLAB = register("time_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(TIME_PLANKS.get()).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> TIME_BUTTON = register("time_button", () -> new ButtonBlock(BlockBehaviour.Properties.copy(TIME_PLANKS.get()).noCollission().strength(0.5F), TFWoodTypes.TIME_WOOD_SET, 30, true));
 	public static final RegistryObject<Block> TIME_FENCE = registerBurningItem("time_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(TIME_PLANKS.get())));
@@ -515,7 +515,7 @@ public class TFBlocks {
 	public static final RegistryObject<BanisterBlock> TIME_BANISTER = registerBurningItem("time_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(TIME_PLANKS.get())));
 
 	public static final RegistryObject<Block> TRANSFORMATION_PLANKS = register("transformation_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> TRANSFORMATION_STAIRS = register("transformation_stairs", () -> new StairBlock(() -> TRANSFORMATION_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(TRANSFORMATION_PLANKS.get())));
+	public static final RegistryObject<StairBlock> TRANSFORMATION_STAIRS = register("transformation_stairs", () -> new StairBlock(TRANSFORMATION_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(TRANSFORMATION_PLANKS.get())));
 	public static final RegistryObject<Block> TRANSFORMATION_SLAB = register("transformation_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(TRANSFORMATION_PLANKS.get())));
 	public static final RegistryObject<Block> TRANSFORMATION_BUTTON = register("transformation_button", () -> new ButtonBlock(BlockBehaviour.Properties.copy(TRANSFORMATION_PLANKS.get()).noCollission().strength(0.5F), TFWoodTypes.TRANSFORMATION_WOOD_SET, 30, true));
 	public static final RegistryObject<Block> TRANSFORMATION_FENCE = registerBurningItem("transformation_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(TRANSFORMATION_PLANKS.get())));
@@ -530,7 +530,7 @@ public class TFBlocks {
 	public static final RegistryObject<BanisterBlock> TRANSFORMATION_BANISTER = registerBurningItem("transformation_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(TRANSFORMATION_PLANKS.get())));
 
 	public static final RegistryObject<Block> MINING_PLANKS = register("mining_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.SAND).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> MINING_STAIRS = register("mining_stairs", () -> new StairBlock(() -> MINING_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(MINING_PLANKS.get())));
+	public static final RegistryObject<StairBlock> MINING_STAIRS = register("mining_stairs", () -> new StairBlock(MINING_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(MINING_PLANKS.get())));
 	public static final RegistryObject<Block> MINING_SLAB = register("mining_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(MINING_PLANKS.get())));
 	public static final RegistryObject<Block> MINING_BUTTON = register("mining_button", () -> new ButtonBlock(BlockBehaviour.Properties.copy(MINING_PLANKS.get()).noCollission().strength(0.5F), TFWoodTypes.MINING_WOOD_SET, 30, true));
 	public static final RegistryObject<Block> MINING_FENCE = registerBurningItem("mining_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(MINING_PLANKS.get())));
@@ -545,7 +545,7 @@ public class TFBlocks {
 	public static final RegistryObject<BanisterBlock> MINING_BANISTER = registerBurningItem("mining_banister", () -> new BanisterBlock(BlockBehaviour.Properties.copy(MINING_PLANKS.get())));
 
 	public static final RegistryObject<Block> SORTING_PLANKS = register("sorting_planks", () -> new Block(BlockBehaviour.Properties.of().ignitedByLava().instrument(NoteBlockInstrument.BASS).mapColor(MapColor.PODZOL).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<StairBlock> SORTING_STAIRS = register("sorting_stairs", () -> new StairBlock(() -> SORTING_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(SORTING_PLANKS.get())));
+	public static final RegistryObject<StairBlock> SORTING_STAIRS = register("sorting_stairs", () -> new StairBlock(SORTING_PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(SORTING_PLANKS.get())));
 	public static final RegistryObject<Block> SORTING_SLAB = register("sorting_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(SORTING_PLANKS.get())));
 	public static final RegistryObject<Block> SORTING_BUTTON = register("sorting_button", () -> new ButtonBlock(BlockBehaviour.Properties.copy(SORTING_PLANKS.get()).noCollission().strength(0.5F), TFWoodTypes.SORTING_WOOD_SET, 30, true));
 	public static final RegistryObject<Block> SORTING_FENCE = registerBurningItem("sorting_fence", () -> new FenceBlock(BlockBehaviour.Properties.copy(SORTING_PLANKS.get())));
@@ -601,12 +601,8 @@ public class TFBlocks {
 
 	public static <T extends Block> RegistryObject<T> registerBEWLR(String name, Supplier<Block> block) {
 		RegistryObject<? extends Block> ret = BLOCKS.register(name, block);
-		TFItems.ITEMS.register(name, () -> new BlockItem(ret.get(), new Item.Properties()) {
-			@Override
-			public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-				consumer.accept(ISTER.CLIENT_ITEM_EXTENSION);
-			}
-		});
+		TFItems.ITEMS.register(name, () -> new BlockItem(ret.get(), new Item.Properties()));
+		ISTER_ITEMS.add(ret.get());
 		return (RegistryObject<T>) ret;
 	}
 

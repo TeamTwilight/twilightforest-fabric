@@ -7,8 +7,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.level.Level;
@@ -46,7 +44,7 @@ public interface EnforcedHomePoint {
 
 	default boolean isMobWithinHomeArea(Entity entity) {
 		if (!this.isRestrictionPointValid(entity.level().dimension())) return true;
-		return this.getRestrictionPoint().pos().distSqr(entity.blockPosition()) < (double)(this.getHomeRadius() * this.getHomeRadius());
+		return this.getRestrictionPoint().pos().distSqr(entity.blockPosition()) < (double) (this.getHomeRadius() * this.getHomeRadius());
 	}
 
 	default boolean isRestrictionPointValid(ResourceKey<Level> currentMobLevel) {
@@ -54,7 +52,8 @@ public interface EnforcedHomePoint {
 
 	}
 
-	@Nullable GlobalPos getRestrictionPoint();
+	@Nullable
+	GlobalPos getRestrictionPoint();
 
 	void setRestrictionPoint(@Nullable GlobalPos pos);
 

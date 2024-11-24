@@ -29,7 +29,7 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 	protected static final ResourceLocation CUTOUT = new ResourceLocation("cutout");
 	protected static final ResourceLocation CUTOUT_MIPPED = new ResourceLocation("cutout_mipped");
 	protected static final ResourceLocation TRANSLUCENT = new ResourceLocation("translucent");
-	
+
 	public BlockModelHelpers(PackOutput output, ExistingFileHelper exFileHelper) {
 		super(output, TwilightForestMod.ID, exFileHelper);
 	}
@@ -111,7 +111,7 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 		String doorDir = "block/wood/door/" + variant + "/";
 		String trapdoorDir = "block/wood/trapdoor/" + variant + "/";
 
-		if(cutoutDoors) {
+		if (cutoutDoors) {
 			doorBlockWithRenderType(door, doorDir + name(door), prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"), CUTOUT);
 			trapdoorBlockWithRenderType(trapdoor, trapdoorDir + variant, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), true, CUTOUT);
 		} else {
@@ -270,7 +270,7 @@ public abstract class BlockModelHelpers extends BlockStateProvider {
 				case CEILING -> 180;
 			};
 			int rotY = 0;
-			if (state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE) == AttachFace.CEILING)  {
+			if (state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE) == AttachFace.CEILING) {
 				switch (state.getValue(HorizontalDirectionalBlock.FACING)) {
 					case NORTH -> rotY = 180;
 					case WEST -> rotY = 90;

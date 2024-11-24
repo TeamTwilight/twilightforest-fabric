@@ -35,10 +35,6 @@ import twilightforest.util.EntityUtil;
 import java.util.List;
 
 public class BlockChainGoblin extends Monster implements MultiPartEntity {
-	//this is here but its never been used
-	//private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
-	//private static final AttributeModifier MODIFIER = new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION);
-
 	private static final float CHAIN_SPEED = 16F;
 	private static final EntityDataAccessor<Byte> DATA_CHAINLENGTH = SynchedEntityData.defineId(BlockChainGoblin.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> DATA_CHAINPOS = SynchedEntityData.defineId(BlockChainGoblin.class, EntityDataSerializers.BYTE);

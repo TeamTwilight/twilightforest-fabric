@@ -114,7 +114,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 	}
 
 	protected ArrayList<DestroyArea> makeInitialDestroyList(RandomSource rand) {
-		ArrayList<DestroyArea> areas = new ArrayList<DestroyArea>(2);
+		ArrayList<DestroyArea> areas = new ArrayList<>(2);
 
 		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().maxY() - 1, areas));
 		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().maxY() - 1, areas));

@@ -488,7 +488,6 @@ public class TFMaze {
 
 	/**
 	 * Mark the cell as visited.  If we have any unvisited neighbors, pick one randomly, carve the wall between them, then call this function on that neighbor.
-	 *
 	 */
 	public void rbGen(int sx, int sz) {
 		// mark cell as visited

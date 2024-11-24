@@ -61,7 +61,8 @@ public class StrongholdUpperAscenderComponent extends StructureTFStrongholdCompo
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		/*if (this.edgesLiquid(world, sbb)) {
 			return false;
-		} else */{
+		} else */
+		{
 			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 9, 9, rand, deco.randomBlocks);
 
 			// entrance doorway

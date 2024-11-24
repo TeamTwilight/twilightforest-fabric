@@ -3,9 +3,12 @@ package twilightforest.data.helpers;
 import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.Util;
+import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -18,8 +21,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-
-import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFChestBlock;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -245,7 +246,7 @@ public abstract class CraftingDataHelper extends FabricRecipeProvider {
 				.unlockedBy("has_item", has(material.get()))
 				.save(consumer, locWood(name + "_trapdoor"));
 	}
-	
+
 	protected final void woodBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result.get(), 3)
 				.pattern("##")

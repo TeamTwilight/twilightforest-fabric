@@ -6,7 +6,8 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier;
 
 public class BiomeGrassColors {
 
-	public static void init() {}
+	public static void init() {
+	}
 
 	public static int getEnchantedColor(int x, int z) {
 		// center of the biome is at % 256 - 8
@@ -39,7 +40,7 @@ public class BiomeGrassColors {
 		int mask1 = 0x00FF00FF;
 		int mask2 = 0xFF00FF00;
 
-		int f2 = (int)(256 * ratio);
+		int f2 = (int) (256 * ratio);
 		int f1 = 256 - f2;
 
 		return (((((a & mask1) * f1) + ((b & mask1) * f2)) >> 8) & mask1)

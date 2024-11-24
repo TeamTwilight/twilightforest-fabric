@@ -102,13 +102,4 @@ public class HedgeBlock extends Block {
 	private boolean shouldDamage(Entity entity) {
 		return !(entity instanceof Spider || entity instanceof ItemEntity || entity.isIgnoringBlockTriggers());
 	}
-
-	// fabric: unnecessary
-//	public int getFlammability() {
-//		return 0;
-//	}
-//
-//	public int getFireSpreadSpeed() {
-//		return 0;
-//	}
 }

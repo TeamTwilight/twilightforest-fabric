@@ -44,8 +44,8 @@ public class MissingAdvancementToastPacket implements S2CPacket {
 		}
 	}
 
-    @Override
-    public void handle(Minecraft client, ClientPacketListener handler, PacketSender sender, SimpleChannel responseTarget) {
-        Handler.onMessage(this, client);
-    }
+	@Override
+	public void handle(Minecraft client, ClientPacketListener handler, PacketSender sender, SimpleChannel responseTarget) {
+		Handler.onMessage(this, client);
+	}
 }

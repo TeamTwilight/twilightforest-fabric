@@ -134,7 +134,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
 		float leftConstraint = hasShield ? 0.2F : limbSwingAmount;
 
 		if (entity.isShieldDisabled()) {
-			this.leftArm.zRot = ((float)(Math.cos((double)entity.tickCount * 3.25D) * Math.PI * (double)0.4F) * Mth.DEG_TO_RAD) - 0.4F;
+			this.leftArm.zRot = ((float) (Math.cos((double) entity.tickCount * 3.25D) * Math.PI * (double) 0.4F) * Mth.DEG_TO_RAD) - 0.4F;
 		} else {
 			this.leftArm.zRot = 0.0F;
 		}
@@ -162,7 +162,7 @@ public class UpperGoblinKnightModel extends HumanoidModel<UpperGoblinKnight> {
 
 		this.rightArm.xRot = this.rightArm.xRot * 0.5F - ((float) Math.PI / 10F);
 
-		rightArm.xRot -= (Math.PI * 0.66);
+		rightArm.xRot -= (float) (Math.PI * 0.66);
 
 		// during swing move arm forward
 		if (entity.heavySpearTimer > 0) {

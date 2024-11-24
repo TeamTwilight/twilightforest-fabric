@@ -1,5 +1,7 @@
 package twilightforest.entity.projectile;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
 import net.fabricmc.fabric.impl.item.ItemExtensions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -16,8 +18,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = ItemSupplier.class)
 public class SlimeProjectile extends TFThrowable implements ItemSupplier {

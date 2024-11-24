@@ -11,13 +11,11 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
@@ -27,7 +25,6 @@ import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import twilightforest.init.TFBlocks;
 
-import java.util.Random;
 import java.util.function.Function;
 
 //Framework taken from CaveWorldCarver, everything worth knowing is documented for easier changes in the future
@@ -117,9 +114,12 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 						if ((access.getBlockState(pos.above()).is(BlockTags.BASE_STONE_OVERWORLD) || access.getFluidState(pos.above()).is(FluidTags.WATER)) && access.getBlockState(pos).isAir() && !this.isHighlands) {
 							switch (rand.nextInt(5)) {
-								case 0, 1, 2 -> access.setBlockState(pos.above(), Blocks.DIRT.defaultBlockState(), false);
-								case 3 -> access.setBlockState(pos.above(), Blocks.ROOTED_DIRT.defaultBlockState(), false);
-								case 4 -> access.setBlockState(pos.above(), Blocks.COARSE_DIRT.defaultBlockState(), false);
+								case 0, 1, 2 ->
+										access.setBlockState(pos.above(), Blocks.DIRT.defaultBlockState(), false);
+								case 3 ->
+										access.setBlockState(pos.above(), Blocks.ROOTED_DIRT.defaultBlockState(), false);
+								case 4 ->
+										access.setBlockState(pos.above(), Blocks.COARSE_DIRT.defaultBlockState(), false);
 							}
 						}
 						if (isSurface.isTrue()) {

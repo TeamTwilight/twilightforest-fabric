@@ -1,5 +1,6 @@
 package twilightforest.block.entity;
 
+import io.github.fabricators_of_create.porting_lib.tags.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundSource;
@@ -11,8 +12,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
-import io.github.fabricators_of_create.porting_lib.tags.TagHelper;
 import twilightforest.block.CarminiteReactorBlock;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.entity.monster.CarminiteGhastling;
@@ -50,7 +49,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 	public static void tick(Level level, BlockPos pos, BlockState state, CarminiteReactorBlockEntity te) {
 
-		if (state.getValue(CarminiteReactorBlock.ACTIVE)) {
+		if (!level.isDebug() && state.getValue(CarminiteReactorBlock.ACTIVE)) {
 			te.counter++;
 
 			if (!level.isClientSide()) {

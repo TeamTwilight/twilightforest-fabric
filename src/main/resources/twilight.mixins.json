@@ -6,17 +6,23 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "twilightforest.mixin.TFMixinPlugin",
   "client": [
+    "ItemRendererMixin",
+    "ModelLoaderMixin",
     "client.GuiMixin",
     "client.ItemBlockRenderTypesMixin",
     "client.LevelRendererAccessor",
-    "client.MapRendererMapInstanceMixin"
+    "client.LevelRendererMixin",
+    "client.MapRendererMapInstanceMixin",
+    "client.MinecraftMixin"
   ],
   "mixins": [
     "AbstractHorseAccessor",
     "BlockModelAccessor",
+    "BlockStateBaseMixin",
     "ConnectionMixin",
     "DispenserBlockAccessor",
     "PlayerListMixin",
+    "RenderMaterialDeserializerMixin",
     "UncraftingMenuAccessor"
   ],
   "injectors": {

@@ -1,6 +1,8 @@
 package twilightforest.item;
 
 import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -17,8 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.init.TFEntities;

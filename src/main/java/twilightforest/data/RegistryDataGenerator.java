@@ -1,24 +1,22 @@
 package twilightforest.data;
 
 import io.github.fabricators_of_create.porting_lib.data.DatapackBuiltinEntriesProvider;
-import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.*;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.MagicPaintingVariants;
 import twilightforest.init.custom.Restrictions;
+import twilightforest.init.custom.TFDatapackBuiltinEntriesProvider;
 import twilightforest.init.custom.WoodPalettes;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
+public class RegistryDataGenerator extends TFDatapackBuiltinEntriesProvider {
 
 	public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
 			.add(Registries.CONFIGURED_FEATURE, TFConfiguredFeatures::bootstrap)

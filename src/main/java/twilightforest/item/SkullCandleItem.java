@@ -23,7 +23,6 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
-import twilightforest.client.ISTER;
 import twilightforest.init.TFBlocks;
 
 import java.util.List;
@@ -81,9 +80,7 @@ public class SkullCandleItem extends StandingAndWallBlockItem implements Equipab
 		super.verifyTagAfterLoad(tag);
 		if (tag.contains("SkullOwner", 8) && !StringUtils.isBlank(tag.getString("SkullOwner"))) {
 			GameProfile gameprofile = new GameProfile(null, tag.getString("SkullOwner"));
-			SkullCandleBlockEntity.updateGameprofile(gameprofile, (p_151177_) -> {
-				tag.put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), p_151177_));
-			});
+			SkullCandleBlockEntity.updateGameprofile(gameprofile, (p_151177_) -> tag.put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), p_151177_)));
 		}
 
 	}

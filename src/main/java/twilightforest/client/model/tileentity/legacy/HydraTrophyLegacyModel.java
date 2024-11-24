@@ -68,7 +68,7 @@ public class HydraTrophyLegacyModel extends GenericTrophyModel {
 
 		return LayerDefinition.create(mesh, 512, 256);
 	}
-	
+
 	@Override
 	public void setRotations(float x, float y, float z) {
 		this.head.yRot = y * Mth.DEG_TO_RAD;
@@ -83,7 +83,7 @@ public class HydraTrophyLegacyModel extends GenericTrophyModel {
 		head.xRot -= mouthOpen * (Mth.PI / 12.0F);
 		jaw.xRot = mouthOpen * (Mth.PI / 3.0F);
 	}
-	
+
 	@Override
 	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
 		this.head.render(stack, consumer, light, overlay, red, green, blue, alpha);

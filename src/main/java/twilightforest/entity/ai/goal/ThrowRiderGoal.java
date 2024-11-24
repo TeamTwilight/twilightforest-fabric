@@ -1,5 +1,6 @@
 package twilightforest.entity.ai.goal;
 
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -7,8 +8,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-
-import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.thrown.YetiThrowCapabilityHandler;
 import twilightforest.data.tags.EntityTagGenerator;

@@ -1,7 +1,6 @@
 //file:noinspection GradlePackageVersionRange
 plugins {
-    id "fabric-loom" version "1.3.+"
-    id "io.github.juuxel.loom-vineflower" version "1.+"
+    id "fabric-loom" version "1.6-SNAPSHOT"
     id "maven-publish"
 }
 
@@ -30,7 +29,7 @@ repositories {
     maven { url = "https://maven.wispforest.io" } // TOP
     maven { url = "https://storage.googleapis.com/devan-maven/" }
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu, Trinkets, EMI
-    maven { url = "https://mvn.devos.one/snapshots/" } // Porting Lib, Forge Tags, Tinkers, Mantle
+    maven { url = "https://mvn.devos.one/releases/" } // Porting Lib, Forge Tags, Tinkers, Mantle
     maven { url = "https://maven.ladysnake.org/releases" } // Cardinal Components API
     maven { url = "https://maven.parchmentmc.net/" } // Parchment
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
@@ -80,12 +79,12 @@ dependencies {
     // compat
     modImplementation("dev.emi:trinkets:${project.trinkets_version}")
     // EMI
-    modCompileOnly("dev.emi:emi:${project.emi_version}") { transitive = false }
+    modCompileOnly("dev.emi:emi-fabric:${project.emi_version}") { transitive = false }
     // JEI
     // FIXME remapping issues with API jar
 //    deps.modCompileOnly("mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}") { transitive = false }
 //    deps.modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric-api:${project.jei_version}") { transitive = false }
-    modCompileOnly("mezz.jei:jei-1.19.3-fabric:${project.jei_version}") { transitive = false }
+    modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}") { transitive = false }
     // REI
     modCompileOnly("me.shedaniel.cloth:basic-math:0.6.0") { transitive = false }
     modCompileOnly("dev.architectury:architectury-fabric:${project.architectury_version}") { transitive = false }
@@ -94,11 +93,12 @@ dependencies {
     // Jade
     modImplementation("curse.maven:jade-324717:${jade_id}")
     // TOP
-    modCompileOnly("mcjty.theoneprobe:theoneprobe-fabric:${top_version}")
+    // No longer update
+//    modCompileOnly("mcjty.theoneprobe:theoneprobe-fabric:${top_version}")
 
     String recipeViewer = project.recipe_viewer
     if (recipeViewer == "emi") {
-        modLocalRuntime("dev.emi:emi:${project.emi_version}") { transitive = false }
+        modLocalRuntime("dev.emi:emi-fabric:${project.emi_version}") { transitive = false }
     } else if (recipeViewer == "jei") {
         modLocalRuntime("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}") { transitive = false }
     } else if (recipeViewer == "rei") {

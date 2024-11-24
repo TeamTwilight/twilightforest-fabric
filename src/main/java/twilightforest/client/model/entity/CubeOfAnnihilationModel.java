@@ -49,7 +49,7 @@ public class CubeOfAnnihilationModel extends ListModel<CubeOfAnnihilation> {
 		return LayerDefinition.create(mesh, 64, 64);
 	}
 
-    @Override
+	@Override
 	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(
 				this.box,

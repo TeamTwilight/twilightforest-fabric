@@ -3,13 +3,13 @@ package twilightforest.client.model.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.IceCrystal;
 
@@ -77,7 +77,7 @@ public class IceCrystalModel extends HierarchicalModel<IceCrystal> {
 			this.spikes[i].yRot = (entity.tickCount + partialTicks) / 5.0F;
 			this.spikes[i].zRot = Mth.cos((entity.tickCount + partialTicks) / 5.0F) / 4.0F;
 
-			this.spikes[i].xRot += i * (Math.PI / 8F);
+			this.spikes[i].xRot += (float) (i * (Math.PI / 8F));
 
 			if (i % 4 == 0) {
 				this.spikes[i].yRot += 1;

@@ -55,9 +55,7 @@ public abstract class TFTreeFeature<T extends TFTreeFeatureConfig> extends Featu
 		if (flag && (!set1.isEmpty() || !set2.isEmpty())) {
 			if (!treeconfiguration.decorators.isEmpty()) {
 				TreeDecorator.Context treedecorator$context = new TreeDecorator.Context(worldgenlevel, biconsumer3, randomsource, set1, set2, set);
-				treeconfiguration.decorators.forEach((p_225282_) -> {
-					p_225282_.place(treedecorator$context);
-				});
+				treeconfiguration.decorators.forEach((p_225282_) -> p_225282_.place(treedecorator$context));
 			}
 
 			return BoundingBox.encapsulatingPositions(Iterables.concat(set, set1, set2, set3)).map((boundingBox) -> {

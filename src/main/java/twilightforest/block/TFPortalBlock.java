@@ -39,6 +39,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.client.MissingAdvancementToast;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -51,8 +52,6 @@ import twilightforest.util.PlayerHelper;
 import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
 import twilightforest.world.registration.TFGenerationSettings;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -152,7 +151,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 			for (Entity victim : list) {
 //				if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) {
-					victim.thunderHit((ServerLevel) level, bolt);
+				victim.thunderHit((ServerLevel) level, bolt);
 //				}
 			}
 		}
@@ -224,7 +223,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.getDisplay();
-						TFPacketHandler.CHANNEL.sendToClient(info == null ? MissingAdvancementToast.FALLBACK : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()), player);
+						TFPacketHandler.CHANNEL.sendToClient(info == null ? new MissingAdvancementToastPacket(MissingAdvancementToast.FALLBACK.title(), MissingAdvancementToast.FALLBACK.icon()) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()), player);
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
@@ -246,7 +245,8 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static ResourceKey<Level> getDestination(Entity entity) {
-		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
+		if (cachedOriginDimension == null)
+			cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
 		return !entity.getCommandSenderWorld().dimension().location().equals(TFGenerationSettings.DIMENSION)
 				? TFGenerationSettings.DIMENSION_KEY : cachedOriginDimension;
 	}
@@ -266,7 +266,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if (serverWorld == null)
 			return;
 
-		entity.changeDimension(serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
+		TFTeleporter.changeDimension(entity, serverWorld, makeReturnPortal ? new TFTeleporter(forcedEntry) : new NoReturnTeleporter());
 
 		if (destination == TFGenerationSettings.DIMENSION_KEY && entity instanceof ServerPlayer playerMP && forcedEntry) {
 			// set respawn point for TF dimension to near the arrival portal, only if we spawn here on world creation

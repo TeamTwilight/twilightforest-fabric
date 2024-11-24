@@ -22,8 +22,6 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.renderer.TFArmorRenderer;
 
-import java.util.function.Consumer;
-
 public class KnightmetalArmorItem extends ArmorItem {
 
 	public KnightmetalArmorItem(ArmorMaterial material, Type type, Properties properties) {

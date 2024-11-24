@@ -11,7 +11,7 @@ import twilightforest.entity.boss.UrGhast;
 public class NewUrGhastRenderer extends CarminiteGhastRenderer<UrGhast, NewUrGhastModel> {
 
 	private final ResourceLocation textureLocClosed = TwilightForestMod.getModelTexture("towerboss.png");
-	private final ResourceLocation textureLocOpen   = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
+	private final ResourceLocation textureLocOpen = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
 	private final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerboss_fire.png");
 
 	public NewUrGhastRenderer(EntityRendererProvider.Context manager, NewUrGhastModel modelTFGhast, float shadowSize, float scale) {

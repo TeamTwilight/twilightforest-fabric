@@ -58,7 +58,7 @@ public class QuestRamTrophyLegacyModel extends GenericTrophyModel {
 		this.head.yRot = y * ((float) Math.PI / 180F);
 		this.head.xRot = z * ((float) Math.PI / 180F);
 	}
-	
+
 	@Override
 	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		this.head.render(matrix, buffer, packedLight, packedOverlay, red, green, blue, alpha);

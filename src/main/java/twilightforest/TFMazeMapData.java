@@ -1,5 +1,6 @@
 package twilightforest;
 
+import io.github.fabricators_of_create.porting_lib.util.NetworkDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -23,6 +24,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	private static final Map<String, TFMazeMapData> CLIENT_DATA = new HashMap<>();
 
 	public int yCenter;
+	public boolean ore;
 
 	public TFMazeMapData(int x, int z, byte scale, boolean trackpos, boolean unlimited, boolean locked, ResourceKey<Level> dim) {
 		super(x, z, scale, trackpos, unlimited, locked, dim);
@@ -42,6 +44,7 @@ public class TFMazeMapData extends MapItemSavedData {
 		tfdata.trackedDecorationCount = data.trackedDecorationCount;
 
 		tfdata.yCenter = nbt.getInt("yCenter");
+		tfdata.ore = nbt.getBoolean("mapOres");
 
 		return tfdata;
 	}
@@ -50,6 +53,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	public CompoundTag save(CompoundTag nbt) {
 		CompoundTag ret = super.save(nbt);
 		ret.putInt("yCenter", this.yCenter);
+		ret.putBoolean("mapOres", this.ore);
 		return ret;
 	}
 
@@ -70,7 +74,7 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Nullable
 	public static TFMazeMapData getMazeMapData(Level world, String name) {
 		if (world.isClientSide) return CLIENT_DATA.get(name);
-		else return ((ServerLevel)world).getServer().overworld().getDataStorage().get(TFMazeMapData::load, name);
+		else return ((ServerLevel) world).getServer().overworld().getDataStorage().get(TFMazeMapData::load, name);
 	}
 
 	// [VanillaCopy] Adapted from World.registerMapData
@@ -83,6 +87,6 @@ public class TFMazeMapData extends MapItemSavedData {
 	@Override
 	public Packet<?> getUpdatePacket(int mapId, Player player) {
 		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.createVanillaPacket(new MazeMapPacket(mapItemDataPacket)) : packet;
+		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? TFPacketHandler.CHANNEL.createVanillaPacket(new MazeMapPacket(mapItemDataPacket, ore, yCenter)) : packet;
 	}
 }

@@ -2,7 +2,6 @@ package twilightforest.entity.boss;
 
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
-import me.pepperbell.simplenetworking.S2CPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.NonNullList;
@@ -208,7 +207,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer,
 		}
 
 		if (!this.level().isClientSide() && oldSegments != newSegments) {
-			double speedMod = ((float)MAX_SEGMENTS / newSegments * 0.02F);
+			double speedMod = ((float) MAX_SEGMENTS / newSegments * 0.02F);
 			AttributeModifier modifier = new AttributeModifier(MOVEMENT_SPEED_UUID, "Segment Count Speed Boost", speedMod, AttributeModifier.Operation.ADDITION);
 			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(MOVEMENT_SPEED_UUID);
 			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(modifier);
@@ -273,7 +272,8 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer,
 			this.setTarget(null);
 		}
 
-		if (ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+		//Replaced ForgeEventFactory.getMobGriefingEvent(this.level(), this)
+		if (this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 			AABB bb = this.getBoundingBox();
 
 			int minx = Mth.floor(bb.minX - 0.75D);
@@ -368,7 +368,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer,
 		if (super.hurt(source, amount)) {
 			this.ticksSinceDamaged = 0;
 			if (this.isDazed()) {
-				this.damageDuringCurrentStun += amount;
+				this.damageDuringCurrentStun += (int) amount;
 			}
 			if (source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
 				this.hurtBy.add(player);
@@ -399,7 +399,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer,
 					player.getUseItem().hurtAndBreak(10, player, user -> user.broadcastBreakEvent(player.getUsedItemHand()));
 					player.getCooldowns().addCooldown(player.getUseItem().getItem(), 200);
 					player.stopUsingItem();
-					this.level().broadcastEntityEvent(player, (byte)30);
+					this.level().broadcastEntityEvent(player, (byte) 30);
 				}
 				living.hurt(this.damageSources().mobAttack(this), 4.0F);
 				this.playSound(SoundEvents.FOX_BITE, 2.0F, 0.5F);
@@ -628,7 +628,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer,
 							particlePacket.queueParticle(ParticleTypes.COMPOSTER, false, blockhitresult.getLocation().add(0.0D, 0.15D, 0.0D), Vec3.ZERO);
 						}
 					}
-					TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), particlePacket);
+					TFPacketHandler.CHANNEL.sendToClientsTracking(particlePacket, this);
 				}
 			}
 		}
@@ -652,13 +652,13 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer,
 	}
 
 	@Override
-	protected boolean shouldDropLoot() {
-		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
+	public boolean isMultipartEntity() {
+		return true;
 	}
 
 	@Override
-	public boolean isMultipartEntity() {
-		return true;
+	protected boolean shouldDropLoot() {
+		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
 	}
 
 	@Override
@@ -691,7 +691,7 @@ public class Naga extends Monster implements EnforcedHomePoint, IBossLootBuffer,
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
-//	@Override TODO: PORT
+	//	@Override TODO: PORT
 	public float getStepHeight() {
 		return 2.0F;
 	}

@@ -449,7 +449,7 @@ public class TowerMainComponent extends TowerWingComponent {
 			// get some random coordinates on the wall in the chunk
 			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
-			if(wCoords == null)
+			if (wCoords == null)
 				continue;
 
 			// offset to see where the fence should be
@@ -458,7 +458,7 @@ public class TowerMainComponent extends TowerWingComponent {
 			// is there a painting or another torch there?
 			BlockState blockState = world.getBlockState(tCoords);
 			BlockState aboveBlockState = world.getBlockState(tCoords.above());
-			if (blockState.isAir() && aboveBlockState.isAir() && EntityUtil.getEntitiesInAABB(world, new AABB(tCoords)).size() == 0) {
+			if (blockState.isAir() && aboveBlockState.isAir() && EntityUtil.getEntitiesInAABB(world, new AABB(tCoords)).isEmpty()) {
 				// if not, place a torch
 				world.setBlock(tCoords, Blocks.OAK_FENCE.defaultBlockState().setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()), true), 2);
 				world.setBlock(tCoords.above(), Blocks.TORCH.defaultBlockState(), 2);

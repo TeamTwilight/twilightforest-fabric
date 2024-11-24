@@ -26,19 +26,19 @@ public class DeerModel extends QuadrupedModel<Deer> {
 				PartPose.offset(0.0F, 4.0F, -7.0F));
 
 		head.addOrReplaceChild("left_antler", CubeListBuilder.create()
-				.texOffs(20, 0)
-				.addBox(-3.0F, -10.0F, -2.0F, 2.0F, 2.0F, 2.0F)
-				.addBox(-3.0F, -10.0F, -2.0F, 2.0F, 2.0F, 2.0F)
-				.addBox(-4.0F, -10.0F, -1.0F, 1.0F, 1.0F, 3.0F)
-				.addBox(-5.0F, -11.0F, 1.0F, 1.0F, 1.0F, 5.0F)
-				.addBox(-5.0F, -14.0F, 2.0F, 1.0F, 4.0F, 1.0F)
-				.addBox(-6.0F, -17.0F, 3.0F, 1.0F, 4.0F, 1.0F)
-				.addBox(-6.0F, -13.0F, 0.0F, 1.0F, 1.0F, 3.0F)
-				.addBox(-6.0F, -14.0F, -3.0F, 1.0F, 1.0F, 4.0F)
-				.addBox(-7.0F, -15.0F, -6.0F, 1.0F, 1.0F, 4.0F)
-				.addBox(-6.0F, -16.0F, -9.0F, 1.0F, 1.0F, 4.0F)
-				.addBox(-7.0F, -18.0F, -1.0F, 1.0F, 5.0F, 1.0F)
-				.addBox(-6.0F, -19.0F, -6.0F, 1.0F, 5.0F, 1.0F),
+						.texOffs(20, 0)
+						.addBox(-3.0F, -10.0F, -2.0F, 2.0F, 2.0F, 2.0F)
+						.addBox(-3.0F, -10.0F, -2.0F, 2.0F, 2.0F, 2.0F)
+						.addBox(-4.0F, -10.0F, -1.0F, 1.0F, 1.0F, 3.0F)
+						.addBox(-5.0F, -11.0F, 1.0F, 1.0F, 1.0F, 5.0F)
+						.addBox(-5.0F, -14.0F, 2.0F, 1.0F, 4.0F, 1.0F)
+						.addBox(-6.0F, -17.0F, 3.0F, 1.0F, 4.0F, 1.0F)
+						.addBox(-6.0F, -13.0F, 0.0F, 1.0F, 1.0F, 3.0F)
+						.addBox(-6.0F, -14.0F, -3.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(-7.0F, -15.0F, -6.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(-6.0F, -16.0F, -9.0F, 1.0F, 1.0F, 4.0F)
+						.addBox(-7.0F, -18.0F, -1.0F, 1.0F, 5.0F, 1.0F)
+						.addBox(-6.0F, -19.0F, -6.0F, 1.0F, 5.0F, 1.0F),
 				PartPose.ZERO);
 
 		head.addOrReplaceChild("right_antler", CubeListBuilder.create()

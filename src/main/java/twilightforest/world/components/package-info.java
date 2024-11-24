@@ -3,4 +3,5 @@
 package twilightforest.world.components;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
+
 import javax.annotation.ParametersAreNonnullByDefault;

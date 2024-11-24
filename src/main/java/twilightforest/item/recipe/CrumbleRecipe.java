@@ -1,8 +1,8 @@
 package twilightforest.item.recipe;
 
 import com.google.gson.JsonObject;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -18,7 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFRecipes;
 
-public record CrumbleRecipe(ResourceLocation recipeID, BlockState input, BlockState result) implements Recipe<Container> {
+public record CrumbleRecipe(ResourceLocation recipeID, BlockState input,
+							BlockState result) implements Recipe<Container> {
 
 	@Override
 	public boolean matches(Container container, Level level) {

@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.util.BlockSnapshot;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -49,14 +48,8 @@ public class HugeWaterLilyItem extends PlaceOnWaterBlockItem {
 				FluidState ifluidstate = level.getFluidState(blockpos);
 				if ((ifluidstate.getType() == Fluids.WATER || blockstate.is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1)) {
 
-					// special case for handling block placement with water lilies
-					BlockSnapshot blocksnapshot = BlockSnapshot.create(level.dimension(), level, blockpos1);
 					// TF - getBlock() instead of hardcoded lilypad
 					level.setBlock(blockpos1, getBlock().defaultBlockState(), 11);
-//					if (net.minecraftforge.event.ForgeEventFactory.onBlockPlace(player, blocksnapshot, net.minecraft.core.Direction.UP)) {
-//						blocksnapshot.restore(true, false);
-//						return InteractionResultHolder.fail(itemstack);
-//					}
 
 					if (player instanceof ServerPlayer) {
 						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, blockpos1, itemstack);

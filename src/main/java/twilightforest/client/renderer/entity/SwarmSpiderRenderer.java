@@ -1,12 +1,11 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.resources.ResourceLocation;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.SwarmSpider;
 

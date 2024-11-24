@@ -62,11 +62,11 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, CraftingRecipe recipe, IFocusGroup focuses) {
 		List<Ingredient> outputs = new ArrayList<>(recipe.getIngredients()); //Collect each ingredient
-		for (int i = 0; i < outputs.size(); i++) {
-			outputs.set(i, Ingredient.of(Arrays.stream(outputs.get(i).getItems())
+		outputs.replaceAll(ingredient -> {
+			return Ingredient.of(Arrays.stream(ingredient.getItems())
 					.filter(o -> !(o.is(ItemTagGenerator.BANNED_UNCRAFTING_INGREDIENTS)))
-					.filter(o -> !(o.getItem().hasCraftingRemainingItem()))));//Remove any banned items
-		}
+					.filter(o -> !(o.getItem().hasCraftingRemainingItem())));//Remove any banned items
+		});
 
 		for (int j = 0, k = 0; j - k < outputs.size() && j < 9; j++) {
 			int x = j % 3, y = j / 3;
@@ -80,7 +80,8 @@ public class JEIUncraftingCategory implements IRecipeCategory<CraftingRecipe> {
 		if (recipe instanceof UncraftingRecipe uncraftingRecipe) {
 			ItemStack[] stacks = uncraftingRecipe.input().getItems();
 			ItemStack[] stackedStacks = new ItemStack[stacks.length];
-			for (int i = 0; i < stacks.length; i++) stackedStacks[i] = new ItemStack(stacks[0].getItem(), uncraftingRecipe.count());
+			for (int i = 0; i < stacks.length; i++)
+				stackedStacks[i] = new ItemStack(stacks[0].getItem(), uncraftingRecipe.count());
 			builder.addSlot(RecipeIngredientRole.INPUT, 5, 19).addIngredients(Ingredient.of(stackedStacks));//If the recipe is an uncrafting recipe, we need to get the ingredient instead of an itemStack
 		} else {
 			builder.addSlot(RecipeIngredientRole.INPUT, 5, 19).addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));//Set the outputs as inputs and draw the item you're uncrafting in the right spot as well

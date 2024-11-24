@@ -7,8 +7,8 @@ import twilightforest.inventory.UncraftingMenu;
 
 @Mixin(UncraftingMenu.class)
 public interface UncraftingMenuAccessor {
-    @Invoker
-    static int callCountDamageableParts(Container matrix) {
-        throw new UnsupportedOperationException();
-    }
+	@Invoker
+	static int callCountDamageableParts(Container matrix) {
+		throw new UnsupportedOperationException();
+	}
 }

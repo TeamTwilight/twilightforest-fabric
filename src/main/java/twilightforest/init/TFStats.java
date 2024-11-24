@@ -2,12 +2,11 @@ package twilightforest.init;
 
 
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
-import net.minecraft.core.Registry;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.Stats;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;

@@ -18,8 +18,8 @@ public class MinotaurModel extends HumanoidModel<Minotaur> {
 		PartDefinition partRoot = mesh.getRoot();
 
 		var head = partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
+						.texOffs(0, 0)
+						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		partRoot.addOrReplaceChild("hat", CubeListBuilder.create(),

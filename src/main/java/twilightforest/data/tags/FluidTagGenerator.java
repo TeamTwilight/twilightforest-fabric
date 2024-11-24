@@ -13,19 +13,19 @@ import java.util.concurrent.CompletableFuture;
 
 public class FluidTagGenerator extends FabricTagProvider.FluidTagProvider {
 
-    public static final TagKey<Fluid> FIRE_JET_FUEL = TagKey.create(Registries.FLUID, TwilightForestMod.prefix("fire_jet_fuel"));
+	public static final TagKey<Fluid> FIRE_JET_FUEL = TagKey.create(Registries.FLUID, TwilightForestMod.prefix("fire_jet_fuel"));
 
-    public FluidTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-        super(output, provider);
-    }
+	public FluidTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+		super(output, provider);
+	}
 
-    @Override
-    protected void addTags(HolderLookup.Provider provider) {
-        getOrCreateTagBuilder(FIRE_JET_FUEL).forceAddTag(FluidTags.LAVA);
-    }
+	@Override
+	protected void addTags(HolderLookup.Provider provider) {
+		getOrCreateTagBuilder(FIRE_JET_FUEL).forceAddTag(FluidTags.LAVA);
+	}
 
-    @Override
-    public String getName() {
-        return "Twilight Forest Fluid Tags";
-    }
+	@Override
+	public String getName() {
+		return "Twilight Forest Fluid Tags";
+	}
 }

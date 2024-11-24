@@ -1,7 +1,7 @@
 package twilightforest.world.components.structures;
 
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import twilightforest.world.components.structures.darktower.StructureDecoratorDarkTower;
 import twilightforest.world.components.structures.finalcastle.StructureTFDecoratorCastle;
@@ -47,22 +47,14 @@ public class TFStructureDecorator {
 	}
 
 	public static TFStructureDecorator getDecoFor(String decoString) {
-		if (decoString.equals("DecoDarkTower")) {
-			return new StructureDecoratorDarkTower();
-		}
-		if (decoString.equals("DecoIceTower")) {
-			return new IceTowerDecorator();
-		}
-		if (decoString.equals("DecoMushroomTower")) {
-			return new MushroomTowerDecorator();
-		}
-		if (decoString.equals("DecoStronghold")) {
-			return new StrongholdDecorator();
-		}
-		if (decoString.equals("DecoCastle")) {
-			return new StructureTFDecoratorCastle();
-		}
+		return switch (decoString) {
+			case "DecoDarkTower" -> new StructureDecoratorDarkTower();
+			case "DecoIceTower" -> new IceTowerDecorator();
+			case "DecoMushroomTower" -> new MushroomTowerDecorator();
+			case "DecoStronghold" -> new StrongholdDecorator();
+			case "DecoCastle" -> new StructureTFDecoratorCastle();
+			default -> new TFStructureDecorator();
+		};
 
-		return new TFStructureDecorator();
 	}
 }

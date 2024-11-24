@@ -23,18 +23,18 @@ import java.util.Optional;
  */
 
 public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, ResourceKey<Enforcement> enforcement,
-                          float multiplier, @Nullable ItemStack lockedBiomeToast, List<ResourceLocation> advancements) {
+						  float multiplier, @Nullable ItemStack lockedBiomeToast, List<ResourceLocation> advancements) {
 
-    public static final Codec<Restriction> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
-            ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_key").forGetter((restriction) -> Optional.ofNullable(restriction.hintStructureKey())),
-            ResourceKey.codec(Enforcement.ENFORCEMENT_KEY).fieldOf("enforcement").forGetter(Restriction::enforcement),
-            Codec.FLOAT.fieldOf("multiplier").forGetter(Restriction::multiplier),
-            ItemStack.CODEC.optionalFieldOf("locked_biome_toast").forGetter((restriction) -> Optional.ofNullable(restriction.lockedBiomeToast())),
-            ExtraCodecs.nonEmptyList(ResourceLocation.CODEC.listOf()).fieldOf("advancements").forGetter(Restriction::advancements)
-    ).apply(recordCodecBuilder, Restriction::create));
+	public static final Codec<Restriction> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
+			ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_key").forGetter((restriction) -> Optional.ofNullable(restriction.hintStructureKey())),
+			ResourceKey.codec(Enforcement.ENFORCEMENT_KEY).fieldOf("enforcement").forGetter(Restriction::enforcement),
+			Codec.FLOAT.fieldOf("multiplier").forGetter(Restriction::multiplier),
+			ItemStack.CODEC.optionalFieldOf("locked_biome_toast").forGetter((restriction) -> Optional.ofNullable(restriction.lockedBiomeToast())),
+			ExtraCodecs.nonEmptyList(ResourceLocation.CODEC.listOf()).fieldOf("advancements").forGetter(Restriction::advancements)
+	).apply(recordCodecBuilder, Restriction::create));
 
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Vanilla does this too
-    private static Restriction create(Optional<ResourceKey<Structure>> hintStructureKey, ResourceKey<Enforcement> enforcer, float multiplier, Optional<ItemStack> lockedBiomeToast, List<ResourceLocation> advancements) {
-        return new Restriction(hintStructureKey.orElse(null), enforcer, multiplier, lockedBiomeToast.orElse(null), advancements);
-    }
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Vanilla does this too
+	private static Restriction create(Optional<ResourceKey<Structure>> hintStructureKey, ResourceKey<Enforcement> enforcer, float multiplier, Optional<ItemStack> lockedBiomeToast, List<ResourceLocation> advancements) {
+		return new Restriction(hintStructureKey.orElse(null), enforcer, multiplier, lockedBiomeToast.orElse(null), advancements);
+	}
 }

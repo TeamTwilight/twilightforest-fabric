@@ -46,22 +46,25 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 
 	/**
 	 * Makes a bounding box that hangs forwards off of the tower wing we are on.  This is for attached roofs.
-	 *
 	 */
 	protected void makeAttachedOverhangBB(TowerWingComponent wing) {
 		// just hang out at the very top of the tower
 		switch (getOrientation()) {
-			case SOUTH -> this.boundingBox = new BoundingBox(wing.getBoundingBox().minX(), wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
-			case WEST -> this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ(), wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
-			case EAST -> this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX(), wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
-			case NORTH -> this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ());
-			default -> { }
+			case SOUTH ->
+					this.boundingBox = new BoundingBox(wing.getBoundingBox().minX(), wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
+			case WEST ->
+					this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ(), wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
+			case EAST ->
+					this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX(), wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);
+			case NORTH ->
+					this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ());
+			default -> {
+			}
 		}
 	}
 
 	/**
 	 * Makes a bounding box that sits at the top of the tower.  Works for attached or freestanding roofs.
-	 *
 	 */
 	protected void makeCapBB(TowerWingComponent wing) {
 		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX(), wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ(), wing.getBoundingBox().maxX(), wing.getBoundingBox().maxY() + this.height, wing.getBoundingBox().maxZ());
@@ -69,7 +72,6 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 
 	/**
 	 * Make a bounding box that hangs over the sides of the tower 1 block.  Freestanding towers only.
-	 *
 	 */
 	protected void makeOverhangBB(TowerWingComponent wing) {
 		this.boundingBox = new BoundingBox(wing.getBoundingBox().minX() - 1, wing.getBoundingBox().maxY(), wing.getBoundingBox().minZ() - 1, wing.getBoundingBox().maxX() + 1, wing.getBoundingBox().maxY() + this.height - 1, wing.getBoundingBox().maxZ() + 1);

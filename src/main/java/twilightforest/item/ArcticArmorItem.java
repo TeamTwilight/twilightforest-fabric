@@ -3,6 +3,8 @@ package twilightforest.item;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.fabricators_of_create.porting_lib.item.WalkOnSnowItem;
 import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -20,8 +22,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -141,14 +141,14 @@ public class ArcticArmorItem extends ArmorItem implements DyeableLeatherItem, Wa
 
 		@Override
 		public void render(PoseStack matrices, MultiBufferSource vertexConsumers, ItemStack itemStack, LivingEntity entityLiving, EquipmentSlot armorSlot, int light, HumanoidModel<LivingEntity> parentModel) {
-			if(armorModel == null) {
+			if (armorModel == null) {
 				EntityModelSet models = Minecraft.getInstance().getEntityModels();
 				ModelPart root = models.bakeLayer(armorSlot == EquipmentSlot.LEGS ? TFModelLayers.ARCTIC_ARMOR_INNER : TFModelLayers.ARCTIC_ARMOR_OUTER);
 				armorModel = new TFArmorModel(root);
 			}
 			parentModel.copyPropertiesTo(armorModel);
 			TFArmorRenderer.setPartVisibility(armorModel, armorSlot);
-			int color = ((DyeableLeatherItem)itemStack.getItem()).getColor(itemStack);
+			int color = ((DyeableLeatherItem) itemStack.getItem()).getColor(itemStack);
 			TFArmorRenderer.renderArmorPart(matrices, vertexConsumers, light, itemStack, armorModel, new ResourceLocation(getArmorTexture(itemStack, entityLiving, armorSlot, null)), color);
 			ArmorRenderer.renderPart(matrices, vertexConsumers, light, itemStack, armorModel, new ResourceLocation(getArmorTexture(itemStack, entityLiving, armorSlot, "overlay")));
 		}

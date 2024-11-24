@@ -54,7 +54,7 @@ public class FireReactEnchantment extends LootOnlyEnchantment {
 		if (level <= 0 || attacker.fireImmune()) {
 			return false;
 		} else {
-			return random.nextFloat() < 0.15F * (float)level;
+			return random.nextFloat() < 0.15F * (float) level;
 		}
 	}
 

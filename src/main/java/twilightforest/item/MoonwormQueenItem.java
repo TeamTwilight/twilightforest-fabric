@@ -106,7 +106,8 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 		if (!level.isClientSide() && useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
 
 			if (level.addFreshEntity(new MoonwormShot(TFEntities.MOONWORM_SHOT.get(), level, living))) {
-				if (living instanceof Player player && !player.getAbilities().instabuild) stack.hurt(2, level.getRandom(), null);
+				if (living instanceof Player player && !player.getAbilities().instabuild)
+					stack.hurt(2, level.getRandom(), null);
 
 				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MOONWORM_SQUISH.get(), living instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL, 1.0F, 1.0F);
 			}

@@ -40,7 +40,7 @@ public class DestroyArea {
 		for (int i = 0; i < attempts && area == null; i++) {
 			DestroyArea testArea = new DestroyArea(tower, rand, y);
 
-			if (otherAreas.size() == 0) {
+			if (otherAreas.isEmpty()) {
 				area = testArea;
 			} else {
 				for (DestroyArea otherArea : otherAreas) {

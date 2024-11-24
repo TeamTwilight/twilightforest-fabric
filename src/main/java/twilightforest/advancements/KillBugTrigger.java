@@ -8,9 +8,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TwilightForestMod;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 
 public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Instance> {
 	public static final ResourceLocation ID = TwilightForestMod.prefix("kill_bug");

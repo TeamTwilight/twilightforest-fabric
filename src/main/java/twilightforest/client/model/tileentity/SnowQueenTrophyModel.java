@@ -2,7 +2,6 @@ package twilightforest.client.model.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -44,7 +43,7 @@ public class SnowQueenTrophyModel extends GenericTrophyModel {
 				CubeListBuilder.create()
 						.texOffs(44, 0).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
 				PartPose.offsetAndRotation(0.0F, -6.0F, 4.0F, -0.39269908169872414F, 0.0F, 0.0F)
-				);
+		);
 		head.addOrReplaceChild("crown_left",
 				CubeListBuilder.create()
 						.texOffs(44, 4).addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
@@ -62,13 +61,13 @@ public class SnowQueenTrophyModel extends GenericTrophyModel {
 		modelRenderer.yRot = y;
 		modelRenderer.zRot = z;
 	}
-	
+
 	@Override
 	public void setRotations(float x, float y, float z) {
 		this.head.yRot = y * ((float) Math.PI / 180F);
 		this.head.xRot = z * ((float) Math.PI / 180F);
 	}
-	
+
 	@Override
 	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		this.head.render(matrix, buffer, packedLight, packedOverlay, red, green, blue, alpha);

@@ -1,9 +1,9 @@
 package twilightforest.inventory;
 
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import twilightforest.TFConfig;
 
 public class UncraftingContainer implements Container {
@@ -13,7 +13,7 @@ public class UncraftingContainer implements Container {
 	public int numberOfInputItems;
 	public int uncraftingCost;
 	public int recraftingCost;
-	public UncraftingMenu menu;
+	public final UncraftingMenu menu;
 
 	public UncraftingContainer(UncraftingMenu menu) {
 		this.menu = menu;

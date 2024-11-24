@@ -23,7 +23,7 @@ public class YetiArmorModel extends TFArmorModel {
 				CubeListBuilder.create()
 						.texOffs(0, 0)
 						.addBox(-4.5F, -8.0F, -4.0F, 9, 8, 8, deformation),
-		PartPose.offset(0.0F, 0.0F, 0.0F));
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
@@ -76,7 +76,7 @@ public class YetiArmorModel extends TFArmorModel {
 
 	private static void addPairHorns(PartDefinition partdefinition, int iter, float height, float zangle) {
 
-		var leftBottom = partdefinition.addOrReplaceChild("horn_" + iter +"_left_bottom",
+		var leftBottom = partdefinition.addOrReplaceChild("horn_" + iter + "_left_bottom",
 				CubeListBuilder.create()
 						.texOffs(52, 8)
 						.addBox(-3.0F, -1.5F, -1.5F, 3, 3, 3),

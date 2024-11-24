@@ -64,9 +64,9 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	protected int height;
 	protected Class<? extends TowerRoofComponent> roofType;
 
-	protected ArrayList<BlockPos> openings = new ArrayList<BlockPos>();
+	protected final ArrayList<BlockPos> openings = new ArrayList<>();
 	protected int highestOpening;
-	protected boolean[] openingTowards = new boolean[]{false, false, true, false};
+	protected final boolean[] openingTowards = new boolean[]{false, false, true, false};
 
 	protected TowerWingComponent(StructurePieceType type, int i, int x, int y, int z) {
 		super(type, i, x, y, z);
@@ -674,11 +674,11 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		final BlockState topStoneBrickStairs = stoneBrickStairs.setValue(StairBlock.HALF, Half.TOP);
 
 		placeBlock(world, stoneBrick, cx, bottom, cx, sbb);
-		placeBlock(world, stoneBrick, cx, top-1, cx, sbb);
-		if(size < 6) {
+		placeBlock(world, stoneBrick, cx, top - 1, cx, sbb);
+		if (size < 6) {
 			surroundBlockCardinalRotated(world, stoneBrickStairs, cx, bottom, cx, sbb);
 
-			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top-1, cx, sbb);
+			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top - 1, cx, sbb);
 		} else {
 			surroundBlockCardinalRotated(world, stoneBrickStairs, cx, bottom, cx, sbb);
 			surroundBlockCorners(world, stoneBrick, cx, bottom, cx, sbb);
@@ -688,8 +688,8 @@ public class TowerWingComponent extends TFStructureComponentOld {
 				surroundBlockCorners(world, stoneBrick, cx, cy, cx, sbb);
 			}
 
-			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top-1, cx, sbb);
-			surroundBlockCorners(world, stoneBrick, cx, top-1, cx, sbb);
+			surroundBlockCardinalRotated(world, topStoneBrickStairs, cx, top - 1, cx, sbb);
+			surroundBlockCorners(world, stoneBrick, cx, top - 1, cx, sbb);
 		}
 
 		placeTreasureAtCurrentPosition(world, cx, bottom + 1, cx, TFLootTables.TOWER_ROOM, sbb);
@@ -1108,7 +1108,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 */
 	protected void decorateHangingChains(WorldGenLevel world, RandomSource rand, int decoTop, BoundingBox sbb) {
 		// a list of existing chains
-		ArrayList<BlockPos> chainList = new ArrayList<BlockPos>();
+		ArrayList<BlockPos> chainList = new ArrayList<>();
 		// try size + 2 times to find a chain that does not collide
 		for (int i = 0; i < size + 2; i++) {
 			int filled = size < 15 ? 2 : 4;
@@ -1800,16 +1800,13 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (direction == Direction.SOUTH) {
 			minZ = this.boundingBox.minZ();
 			maxZ = this.boundingBox.minZ();
-		}
-		else if (direction == Direction.WEST) {
+		} else if (direction == Direction.WEST) {
 			maxX = this.boundingBox.maxX();
 			minX = this.boundingBox.maxX();
-		}
-		else if (direction == Direction.NORTH) {
+		} else if (direction == Direction.NORTH) {
 			maxZ = this.boundingBox.maxZ();
 			minZ = this.boundingBox.maxZ();
-		}
-		else if (direction == Direction.EAST) {
+		} else if (direction == Direction.EAST) {
 			minX = this.boundingBox.minX();
 			maxX = this.boundingBox.minX();
 		}

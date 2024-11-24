@@ -42,7 +42,7 @@ public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 		this.placeBlock(world, getStairState(Blocks.OAK_STAIRS.defaultBlockState(), Direction.NORTH, false), 3, 1, 3, sbb);
 
 		// chest
-		this.setDoubleLootChest(world, 2, 2, 4,3, 2, 4, Direction.SOUTH, TFLootTables.LABYRINTH_DEAD_END, sbb, true);
+		this.setDoubleLootChest(world, 2, 2, 4, 3, 2, 4, Direction.SOUTH, TFLootTables.LABYRINTH_DEAD_END, sbb, true);
 
 //		// torches
 //		this.setBlockState(world, Blocks.TORCH, 0, 1, 3, 4, sbb);
@@ -55,9 +55,9 @@ public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 
 		// TNT!
 		BlockState tnt = Blocks.TNT.defaultBlockState();
-		this.placeBlock(world, tnt, 2,  0, 3, sbb);
-		this.placeBlock(world, tnt, 3,  0, 3, sbb);
-		this.placeBlock(world, tnt, 2,  0, 4, sbb);
-		this.placeBlock(world, tnt, 3,  0, 4, sbb);
+		this.placeBlock(world, tnt, 2, 0, 3, sbb);
+		this.placeBlock(world, tnt, 3, 0, 3, sbb);
+		this.placeBlock(world, tnt, 2, 0, 4, sbb);
+		this.placeBlock(world, tnt, 3, 0, 4, sbb);
 	}
 }

@@ -13,10 +13,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 public class WearableItem extends BlockItem implements Equipable {
-    public WearableItem(Block block, Properties props) {
-        super(block, props);
+	public WearableItem(Block block, Properties props) {
+		super(block, props);
 		CuriosCharmItem.setupTrinket(this);
-    }
+	}
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {

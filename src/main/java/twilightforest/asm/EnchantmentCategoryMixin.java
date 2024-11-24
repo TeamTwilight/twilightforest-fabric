@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(EnchantmentCategory.class)
 abstract class EnchantmentCategoryMixin {
-    @Shadow
-    public abstract boolean canEnchant(Item item);
+	@Shadow
+	public abstract boolean canEnchant(Item item);
 }

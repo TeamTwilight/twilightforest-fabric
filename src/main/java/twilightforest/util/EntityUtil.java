@@ -1,24 +1,33 @@
 package twilightforest.util;
 
 import com.google.common.collect.Lists;
+import io.github.fabricators_of_create.porting_lib.attributes.PortingLibAttributes;
 import io.github.fabricators_of_create.porting_lib.mixin.accessors.common.accessor.LivingEntityAccessor;
+import io.github.fabricators_of_create.porting_lib.tags.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
@@ -33,8 +42,6 @@ import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-
-import io.github.fabricators_of_create.porting_lib.tags.TagHelper;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
 
@@ -58,9 +65,17 @@ public class EntityUtil {
 		/* rude type limit */
 		return hardness >= 0f && hardness < 50f && !state.isAir()
 				&& !(world.getBlockEntity(pos) instanceof Container)
-				&& state.getBlock().canEntityDestroy(state, world, pos, entity)
-				&& (/* rude type limit */!(entity instanceof LivingEntity)
-				|| ForgeEventFactory.onEntityDestroyBlock((LivingEntity) entity, pos, state));
+				&& canEntityDestroy(state, world, pos, entity)
+				&& (/* rude type limit */!(entity instanceof LivingEntity));
+	}
+
+	//Copy from net.minecraftforge.common.extensions.IForgeBlock#canEntityDestroy
+	private static boolean canEntityDestroy(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if (entity instanceof EnderDragon)
+			return !state.is(BlockTags.DRAGON_IMMUNE);
+		else if (entity instanceof WitherBoss || entity instanceof WitherSkull)
+			return state.isAir() || WitherBoss.canDestroy(state);
+		return true;
 	}
 
 	/**
@@ -83,7 +98,7 @@ public class EntityUtil {
 	}
 
 	public static SoundEvent getDeathSound(LivingEntity living) {
-		return ((LivingEntityAccessor)living).port_lib$getDeathSound();
+		return ((LivingEntityAccessor) living).port_lib$getDeathSound();
 	}
 
 	public static void killLavaAround(Entity entity) {
@@ -103,11 +118,11 @@ public class EntityUtil {
 
 	//copy of Mob.doHurtTarget, allows for using a custom DamageSource instead of the generic Mob Attack one
 	public static boolean properlyApplyCustomDamageSource(Mob entity, Entity victim, DamageSource source) {
-		float f = (float)entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
-		float f1 = (float)entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+		float f = (float) entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
+		float f1 = (float) entity.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 		if (victim instanceof LivingEntity) {
-			f += EnchantmentHelper.getDamageBonus(entity.getMainHandItem(), ((LivingEntity)victim).getMobType());
-			f1 += (float)EnchantmentHelper.getKnockbackBonus(entity);
+			f += EnchantmentHelper.getDamageBonus(entity.getMainHandItem(), ((LivingEntity) victim).getMobType());
+			f1 += (float) EnchantmentHelper.getKnockbackBonus(entity);
 		}
 
 		int i = EnchantmentHelper.getFireAspect(entity);
@@ -118,7 +133,7 @@ public class EntityUtil {
 		boolean flag = victim.hurt(source, f);
 		if (flag) {
 			if (f1 > 0.0F && victim instanceof LivingEntity) {
-				((LivingEntity)victim).knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(entity.getYRot() * ((float)Math.PI / 180F)));
+				((LivingEntity) victim).knockback(f1 * 0.5F, Mth.sin(entity.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(entity.getYRot() * ((float) Math.PI / 180F)));
 				entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.6D, 1.0D, 0.6D));
 			}
 
@@ -155,6 +170,7 @@ public class EntityUtil {
 		if (checkValidPaintingPosition(world, painting))
 			world.addFreshEntity(painting);
 	}
+
 	@Nullable
 	public static ResourceKey<PaintingVariant> getPaintingOfSize(RandomSource rand, int minSize) {
 		return getPaintingOfSize(rand, minSize, minSize, false);
@@ -176,7 +192,7 @@ public class EntityUtil {
 			}
 		}
 
-		if (valid.size() > 0) {
+		if (!valid.isEmpty()) {
 			return valid.get(rand.nextInt(valid.size()));
 		} else {
 			return null;

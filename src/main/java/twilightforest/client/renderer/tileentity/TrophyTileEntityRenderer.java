@@ -34,8 +34,7 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
-
-	private final Map<BossVariant, GenericTrophyModel> trophies;
+	public final Map<BossVariant, GenericTrophyModel> trophies;
 
 	private static final ResourceLocation textureLocHydra = TwilightForestMod.getModelTexture("hydra4.png");
 	private static final ResourceLocation textureLocNaga = TwilightForestMod.getModelTexture("nagahead.png");
@@ -54,17 +53,17 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	}
 
 	public static Map<BossVariant, GenericTrophyModel> createTrophyRenderers(EntityModelSet set) {
-		boolean jappa = JappaPackReloadListener.INSTANCE.isJappaPackLoaded();
+		BooleanSupplier jappa = JappaPackReloadListener.INSTANCE.uncachedJappaPackCheck();
 		ImmutableMap.Builder<BossVariant, GenericTrophyModel> trophyList = ImmutableMap.builder();
 		trophyList.put(BossVariant.NAGA, new NagaTrophyModel(set.bakeLayer(TFModelLayers.NAGA_TROPHY)));
 		trophyList.put(BossVariant.LICH, new LichTrophyModel(set.bakeLayer(TFModelLayers.LICH_TROPHY)));
-		trophyList.put(BossVariant.MINOSHROOM, !jappa ? new MinoshroomTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_MINOSHROOM_TROPHY)) : new MinoshroomTrophyModel(set.bakeLayer(TFModelLayers.MINOSHROOM_TROPHY)));
-		trophyList.put(BossVariant.HYDRA, !jappa ? new HydraTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_HYDRA_TROPHY)) : new HydraTrophyModel(set.bakeLayer(TFModelLayers.HYDRA_TROPHY)));
+		trophyList.put(BossVariant.MINOSHROOM, !jappa.getAsBoolean() ? new MinoshroomTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_MINOSHROOM_TROPHY)) : new MinoshroomTrophyModel(set.bakeLayer(TFModelLayers.MINOSHROOM_TROPHY)));
+		trophyList.put(BossVariant.HYDRA, !jappa.getAsBoolean() ? new HydraTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_HYDRA_TROPHY)) : new HydraTrophyModel(set.bakeLayer(TFModelLayers.HYDRA_TROPHY)));
 		trophyList.put(BossVariant.KNIGHT_PHANTOM, new KnightPhantomTrophyModel(set.bakeLayer(TFModelLayers.KNIGHT_PHANTOM_TROPHY)));
 		trophyList.put(BossVariant.UR_GHAST, new UrGhastTrophyModel(set.bakeLayer(TFModelLayers.UR_GHAST_TROPHY)));
 		trophyList.put(BossVariant.ALPHA_YETI, new AlphaYetiTrophyModel(set.bakeLayer(TFModelLayers.ALPHA_YETI_TROPHY)));
-		trophyList.put(BossVariant.SNOW_QUEEN, !jappa ? new SnowQueenTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_SNOW_QUEEN_TROPHY)) : new SnowQueenTrophyModel(set.bakeLayer(TFModelLayers.SNOW_QUEEN_TROPHY)));
-		trophyList.put(BossVariant.QUEST_RAM, !jappa ? new QuestRamTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_QUEST_RAM_TROPHY)) : new QuestRamTrophyModel(set.bakeLayer(TFModelLayers.QUEST_RAM_TROPHY)));
+		trophyList.put(BossVariant.SNOW_QUEEN, !jappa.getAsBoolean() ? new SnowQueenTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_SNOW_QUEEN_TROPHY)) : new SnowQueenTrophyModel(set.bakeLayer(TFModelLayers.SNOW_QUEEN_TROPHY)));
+		trophyList.put(BossVariant.QUEST_RAM, !jappa.getAsBoolean() ? new QuestRamTrophyLegacyModel(set.bakeLayer(TFModelLayers.NEW_QUEST_RAM_TROPHY)) : new QuestRamTrophyModel(set.bakeLayer(TFModelLayers.QUEST_RAM_TROPHY)));
 		return trophyList.build();
 	}
 
@@ -84,6 +83,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 	}
 
 	public static final ItemStack stack = new ItemStack(TFBlocks.NAGA_TROPHY.get());
+
 	@Override
 	public void render(TrophyBlockEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		float f = tileEntityIn.getAnimationProgress(partialTicks);
@@ -98,7 +98,7 @@ public class TrophyTileEntityRenderer implements BlockEntityRenderer<TrophyBlock
 			trophy.openMouthForTrophy(flag ? 0.5F : 0.0F);
 		}
 		if (variant == BossVariant.UR_GHAST) {
-			((UrGhastTrophyModel)trophy).setTranslate(matrixStackIn, 0F, 1.0F, 0F);
+			((UrGhastTrophyModel) trophy).setTranslate(matrixStackIn, 0F, 1.0F, 0F);
 		}
 		render(direction, f1, trophy, variant, f, matrixStackIn, bufferIn, combinedLightIn, ItemDisplayContext.NONE);
 		matrixStackIn.popPose();

@@ -1,23 +1,25 @@
 package twilightforest.entity;
 
-import net.minecraft.network.FriendlyByteBuf;
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.TwilightForestMod;
 import twilightforest.network.UpdateTFMultipartPacket;
 
 import java.util.Objects;
 
 public abstract class TFPart<T extends Entity> extends PartEntity<T> {
-
 	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("noop");
 
 	protected EntityDimensions realSize;
@@ -51,6 +53,11 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 		this.interpTargetYaw = yaw;
 		this.interpTargetPitch = pitch;
 		this.newPosRotationIncrements = posRotationIncrements;
+	}
+
+	@Override
+	public InteractionResult interact(Player player, InteractionHand hand) {
+		return this.getParent().interact(player, hand);
 	}
 
 	@Override
@@ -143,10 +150,12 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 	}
 
 	public static void assignPartIDs(Entity parent) {
-		PartEntity<?>[] parts = ((MultiPartEntity)parent).getParts();
+		PartEntity<?>[] parts = ((MultiPartEntity) parent).getParts();
 		for (int i = 0, partsLength = Objects.requireNonNull(parts).length; i < partsLength; i++) {
 			PartEntity<?> part = parts[i];
 			part.setId(parent.getId() + i);
+			if (parent.level() instanceof ClientLevel clientLevel)
+				clientLevel.putNonPlayerEntity(part.getId(), part);
 		}
 	}
 }

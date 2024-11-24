@@ -9,7 +9,7 @@ import twilightforest.item.ChainBlockItem;
 public class DestructionEnchantment extends LootOnlyEnchantment {
 
 	public DestructionEnchantment(Rarity rarity) {
-		super(rarity, TFEnchantments.BLOCK_AND_CHAIN, new EquipmentSlot[] {EquipmentSlot.MAINHAND});
+		super(rarity, TFEnchantments.BLOCK_AND_CHAIN, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
 	}
 
 	@Override

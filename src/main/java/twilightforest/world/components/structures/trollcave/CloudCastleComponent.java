@@ -1,6 +1,5 @@
 package twilightforest.world.components.structures.trollcave;
 
-import io.github.fabricators_of_create.porting_lib.util.PortingHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,13 +13,13 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
 import twilightforest.entity.monster.ArmoredGiant;
 import twilightforest.entity.monster.GiantMiner;
-import twilightforest.world.components.structures.TFStructureComponentOld;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
 public class CloudCastleComponent extends TFStructureComponentOld {
@@ -102,7 +101,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 				GiantMiner miner = TFEntities.GIANT_MINER.get().create(world.getLevel());
 				miner.setPos(bx, by, bz);
 				miner.setPersistenceRequired();
-				PortingHooks.onFinalizeSpawn(miner, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
+				miner.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
 
 				world.addFreshEntity(miner);
 			}
@@ -119,7 +118,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 				ArmoredGiant warrior = TFEntities.ARMORED_GIANT.get().create(world.getLevel());
 				warrior.setPos(bx, by, bz);
 				warrior.setPersistenceRequired();
-				PortingHooks.onFinalizeSpawn(warrior, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
+				warrior.finalizeSpawn(world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null, null);
 
 				world.addFreshEntity(warrior);
 			}

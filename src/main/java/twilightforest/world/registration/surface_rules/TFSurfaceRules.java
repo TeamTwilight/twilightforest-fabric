@@ -104,7 +104,7 @@ public class TFSurfaceRules {
 								SurfaceRules.ifTrue(
 										SurfaceRules.isBiome(TFBiomes.SWAMP, TFBiomes.FIRE_SWAMP),
 										SurfaceRules.sequence(
-										SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), DIRT)),
+												SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0), GRASS_BLOCK), DIRT)),
 								//make everything else grass
 								SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0),
 										SurfaceRules.sequence(

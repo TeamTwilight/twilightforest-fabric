@@ -1,25 +1,26 @@
 package twilightforest.data.tags;
 
 import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.data.PortingLibTagsProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDamageTypes;
 
 import java.util.concurrent.CompletableFuture;
 
-public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
+public class DamageTypeTagGenerator extends PortingLibTagsProvider<DamageType> {
 
 	public static final TagKey<DamageType> BREAKS_LICH_SHIELDS = create("breaks_lich_shields");
 
-	public DamageTypeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future) {
-		super(output, Registries.DAMAGE_TYPE, future);
+	public DamageTypeTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
+		super(output, Registries.DAMAGE_TYPE, provider, helper);
 	}
 
 	protected void addTags(HolderLookup.Provider provider) {

@@ -68,7 +68,6 @@ public enum StabilizeLayer implements AreaTransformer1 {
 //
 //		return output;
 //	}
-
 	@Override
 	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
 		int offX = getParentX(x << 4);
@@ -99,7 +98,7 @@ public enum StabilizeLayer implements AreaTransformer1 {
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return INSTANCE.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return INSTANCE.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override

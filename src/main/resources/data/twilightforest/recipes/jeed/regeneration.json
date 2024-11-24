@@ -1,27 +1,20 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "fabric:load_conditions": [
     {
-      "fabric:load_conditions": [
-        {
-          "condition": "fabric:all_mods_loaded",
-          "values": [
-            "jeed"
-          ]
-        }
-      ],
-      "recipe": {
-        "type": "jeed:effect_provider",
-        "effect": "minecraft:regeneration",
-        "providers": [
-          {
-            "item": "twilightforest:charm_of_life_1"
-          },
-          {
-            "item": "twilightforest:charm_of_life_2"
-          }
-        ]
-      }
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "jeed"
+      ]
+    }
+  ],
+  "type": "jeed:effect_provider",
+  "effect": "minecraft:regeneration",
+  "providers": [
+    {
+      "item": "twilightforest:charm_of_life_1"
+    },
+    {
+      "item": "twilightforest:charm_of_life_2"
     }
   ]
 }

@@ -1,0 +1,44 @@
+{
+  "height": 32,
+  "layers": [
+    {
+      "fullbright": true,
+      "path": "background"
+    },
+    {
+      "fullbright": true,
+      "parallax": {
+        "type": "sine_time",
+        "height": 32,
+        "multiplier": 0.01,
+        "width": 48
+      },
+      "path": "clouds"
+    },
+    {
+      "fullbright": true,
+      "path": "volcanic_lands"
+    },
+    {
+      "fullbright": true,
+      "parallax": {
+        "type": "view_angle",
+        "height": 32,
+        "multiplier": 0.02,
+        "width": 44
+      },
+      "path": "agate_jungle"
+    },
+    {
+      "fullbright": true,
+      "parallax": {
+        "type": "view_angle",
+        "height": 32,
+        "multiplier": 0.025,
+        "width": 58
+      },
+      "path": "crystal_plains"
+    }
+  ],
+  "width": 32
+}

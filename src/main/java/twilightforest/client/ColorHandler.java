@@ -25,7 +25,7 @@ public final class ColorHandler {
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (FabricLoader.getInstance().isModLoaded("canvas"))
 				return -1;
-				return tintIndex > 15 ? 0xFFFFFF : ColorUtil.hsvToRGB(getter == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f);
+			return tintIndex > 15 ? 0xFFFFFF : ColorUtil.hsvToRGB(getter == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f);
 		}, TFBlocks.AURORA_BLOCK.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
@@ -335,25 +335,29 @@ public final class ColorHandler {
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			int color = 0xFF00FF;
-			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
+			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED))
+				return color ^ 0xFFFFFF;
 			return color;
 		}, TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.PINK_CASTLE_DOOR.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			int color = 0x00FFFF;
-			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
+			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED))
+				return color ^ 0xFFFFFF;
 			return color;
 		}, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_DOOR.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			int color = 0xFFFF00;
-			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
+			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED))
+				return color ^ 0xFFFFFF;
 			return color;
 		}, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_DOOR.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 			int color = 0x4B0082;
-			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED)) return color ^ 0xFFFFFF;
+			if (state.getBlock() instanceof CastleDoorBlock && state.getValue(CastleDoorBlock.ACTIVE) && !state.getValue(CastleDoorBlock.VANISHED))
+				return color ^ 0xFFFFFF;
 			return color;
 		}, TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_DOOR.get());
 		ColorProviderRegistry.BLOCK.register((state, getter, pos, tintIndex) -> {

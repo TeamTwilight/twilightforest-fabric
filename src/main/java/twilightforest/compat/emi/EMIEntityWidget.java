@@ -5,17 +5,16 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.emi.emi.EmiRenderHelper;
-import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.Widget;
-import dev.emi.emi.api.widget.WidgetHolder;
+import dev.emi.emi.runtime.EmiDrawContext;
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
@@ -65,7 +64,7 @@ public class EMIEntityWidget extends Widget {
 	}
 
 	@Override
-	public void render(PoseStack stack, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		// only can draw living entities, plus non-living ones don't get recipes anyways
 		if (!invalid && entity instanceof LivingEntity livingEntity) {
 			// scale down large mobs, but don't scale up small ones
@@ -79,18 +78,18 @@ public class EMIEntityWidget extends Widget {
 			try {
 				PoseStack modelView = RenderSystem.getModelViewStack();
 				modelView.pushPose();
-				modelView.mulPoseMatrix(stack.last().pose());
+				modelView.mulPoseMatrix(guiGraphics.pose().last().pose());
 				modelView.translate(bounds.x(), bounds.y(), 0);
 				this.renderTheEntity(this.size / 2, this.size - 2, scale, livingEntity);
 				modelView.popPose();
 				RenderSystem.applyModelViewMatrix();
 				if (bounds.contains(mouseX, mouseY)) {
 					RenderSystem.disableDepthTest();
-					EmiRenderHelper.drawSlotHightlight(stack, bounds.x(), bounds.y(), bounds.width(), bounds.height());
+					EmiRenderHelper.drawSlotHightlight(EmiDrawContext.wrap(guiGraphics), bounds.x(), bounds.y(), bounds.width(), bounds.height(), 0);
 					RenderSystem.enableDepthTest();
 				}
 			} catch (Exception e) {
-				TwilightForestMod.LOGGER.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
+				TwilightForestMod.LOGGER.error("Error drawing entity {}", BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
 				this.invalid = true;
 			}
 		} else {

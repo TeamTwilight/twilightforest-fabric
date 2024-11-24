@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(BiomeSpecialEffects.GrassColorModifier.class)
 abstract class GrassColorModifierMixin {
 
-    @Shadow
-    public abstract int modifyColor(double x, double z, int grassColor);
+	@Shadow
+	public abstract int modifyColor(double x, double z, int grassColor);
 }

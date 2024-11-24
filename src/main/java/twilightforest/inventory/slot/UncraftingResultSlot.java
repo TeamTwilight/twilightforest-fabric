@@ -54,11 +54,13 @@ public class UncraftingResultSlot extends ResultSlot {
 
 			// if we are using a combined recipe, wipe the uncrafting matrix and decrement the input appropriately
 			for (int i = 0; i < this.uncraftingMatrix.getContainerSize(); i++) {
-				if (this.assemblyMatrix.getItem(i).isEmpty() || UncraftingMenu.isMarked(this.uncraftingMatrix.getItem(i))) {
-					this.uncraftingMatrix.setItem(i, ItemStack.EMPTY);
-				} else {
-					//if we have an ingredient in the grid and one in the uncrafting matrix, copy the uncrafting matrix item for later
-					this.tempRemainderMap.put(i, this.uncraftingMatrix.getItem(i));
+				if (this.assemblyMatrix.getItem(i).isEmpty()) {
+					if (!UncraftingMenu.isMarked(this.uncraftingMatrix.getItem(i))) {
+						this.uncraftingMatrix.setItem(i, ItemStack.EMPTY);
+					} else {
+						//if we have an ingredient in the grid and one in the uncrafting matrix, copy the uncrafting matrix item for later
+						this.tempRemainderMap.put(i, this.uncraftingMatrix.getItem(i));
+					}
 				}
 			}
 			this.inputSlot.removeItem(0, this.uncraftingMatrix.numberOfInputItems);
@@ -71,7 +73,7 @@ public class UncraftingResultSlot extends ResultSlot {
 		NonNullList<ItemStack> remainingItems = player.level().getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, this.assemblyMatrix, player.level());
 //		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
 
-		for(int i = 0; i < remainingItems.size(); ++i) {
+		for (int i = 0; i < remainingItems.size(); ++i) {
 			ItemStack currentStack = this.assemblyMatrix.getItem(i);
 			ItemStack remainingStack = remainingItems.get(i);
 			if (!currentStack.isEmpty()) {

@@ -24,7 +24,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -34,15 +33,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
-import twilightforest.init.TFParticleType;
 
 import java.util.Objects;
 
@@ -53,7 +49,7 @@ public class FallingIce extends Entity {
 	private BlockState blockState = Blocks.PACKED_ICE.defaultBlockState(); //TF: change default block to packed ice
 	public int time;
 	protected final int fallDamageMax = 100; //TF: change max damage to 100 damage from 40
-	public final float[] damagePerDifficulty = { 0.0F, 0.5F, 1.0F, 2.0F }; //TF: change the damage done per block fallen based on difficulty
+	public final float[] damagePerDifficulty = {0.0F, 0.5F, 1.0F, 2.0F}; //TF: change the damage done per block fallen based on difficulty
 	@Nullable
 	public CompoundTag blockData;
 	protected static final EntityDataAccessor<BlockPos> DATA_START_POS = SynchedEntityData.defineId(FallingIce.class, EntityDataSerializers.BLOCK_POS);
@@ -118,7 +114,6 @@ public class FallingIce extends Entity {
 			if (!this.level().isClientSide()) {
 				BlockPos blockpos = this.blockPosition();
 				boolean flag = this.blockState.getBlock() instanceof ConcretePowderBlock;
-				boolean flag1 = flag;// && this.blockState.canBeHydrated(this.level(), blockpos, this.level().getFluidState(blockpos), blockpos);
 				double d0 = this.getDeltaMovement().lengthSqr();
 //				if (flag && d0 > 1.0D) { TODO: there is no use for this since fabric doesn't have this method
 //					BlockHitResult blockhitresult = this.level().clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
@@ -128,7 +123,7 @@ public class FallingIce extends Entity {
 //					}
 //				}
 
-				if (!this.onGround() && !flag1) {
+				if (!this.onGround() && !flag) {
 					if (!this.level().isClientSide() && (this.time > 100 && (blockpos.getY() <= this.level().getMinBuildHeight() || blockpos.getY() > this.level().getMaxBuildHeight()) || this.time > 1000)) {
 						this.discard();
 					}
@@ -137,7 +132,7 @@ public class FallingIce extends Entity {
 					this.setDeltaMovement(this.getDeltaMovement().multiply(0.7D, -0.5D, 0.7D));
 					if (!blockstate.is(Blocks.MOVING_PISTON)) {
 						boolean flag2 = blockstate.canBeReplaced(new DirectionalPlaceContext(this.level(), blockpos, Direction.DOWN, ItemStack.EMPTY, Direction.UP));
-						boolean flag3 = FallingBlock.isFree(this.level().getBlockState(blockpos.below())) && (!flag || !flag1);
+						boolean flag3 = FallingBlock.isFree(this.level().getBlockState(blockpos.below())) && (!flag || !flag);
 						boolean flag4 = this.blockState.canSurvive(this.level(), blockpos) && !flag3;
 						if (flag2 && flag4) {
 							if (this.blockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level().getFluidState(blockpos).getType() == Fluids.WATER) {

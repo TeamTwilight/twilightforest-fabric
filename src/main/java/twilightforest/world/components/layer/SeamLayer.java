@@ -20,7 +20,8 @@ import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransfor
 import java.util.List;
 import java.util.function.LongFunction;
 
-public record SeamLayer(ResourceKey<Biome> partitioningBiome, List<ResourceKey<Biome>> excludedBiomeNeighbors, List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> excludedBiomeIntersections) implements CastleTransformer {
+public record SeamLayer(ResourceKey<Biome> partitioningBiome, List<ResourceKey<Biome>> excludedBiomeNeighbors,
+						List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> excludedBiomeIntersections) implements CastleTransformer {
 	@Override
 	public ResourceKey<Biome> apply(Context context, ResourceKey<Biome> up, ResourceKey<Biome> left, ResourceKey<Biome> down, ResourceKey<Biome> right, ResourceKey<Biome> mid) {
 		if (this.shouldPartition(mid, left) || this.shouldPartition(mid, right) || this.shouldPartition(mid, down) || this.shouldPartition(mid, up)) {
@@ -81,7 +82,7 @@ public record SeamLayer(ResourceKey<Biome> partitioningBiome, List<ResourceKey<B
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return this.instance.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return this.instance.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override

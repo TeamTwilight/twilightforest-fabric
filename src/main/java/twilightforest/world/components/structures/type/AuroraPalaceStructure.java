@@ -25,40 +25,40 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AuroraPalaceStructure extends ConquerableStructure {
-    public static final Codec<AuroraPalaceStructure> CODEC = RecordCodecBuilder.create(instance ->
-            conquerStatusCodec(instance).apply(instance, AuroraPalaceStructure::new)
-    );
+	public static final Codec<AuroraPalaceStructure> CODEC = RecordCodecBuilder.create(instance ->
+			conquerStatusCodec(instance).apply(instance, AuroraPalaceStructure::new)
+	);
 
-    public AuroraPalaceStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-        super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
-    }
+	public AuroraPalaceStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
+		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+	}
 
-    @Override
-    protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new IceTowerMainComponent(random, 0, x, y, z);
-    }
+	@Override
+	protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
+		return new IceTowerMainComponent(random, 0, x, y, z);
+	}
 
-    @Override
-    public StructureType<?> type() {
-        return TFStructureTypes.AURORA_PALACE.get();
-    }
+	@Override
+	public StructureType<?> type() {
+		return TFStructureTypes.AURORA_PALACE.get();
+	}
 
-    public static AuroraPalaceStructure buildAuroraPalaceConfig(BootstapContext<Structure> context) {
-        return new AuroraPalaceStructure(
-                ControlledSpawningConfig.firstIndexMonsters(
-                        new MobSpawnSettings.SpawnerData(TFEntities.SNOW_GUARDIAN.get(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.STABLE_ICE_CORE.get(), 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.UNSTABLE_ICE_CORE.get(), 5, 1, 2)
-                ),
-                new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_yeti"))),
-                new HintConfig(HintConfig.book("icetower", 3), TFEntities.KOBOLD.get()),
-                new DecorationConfig(2, false, true, false),
-                new StructureSettings(
-                        context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_AURORA_PALACE_BIOMES),
-                        Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
-                        GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.NONE
-                )
-        );
-    }
+	public static AuroraPalaceStructure buildAuroraPalaceConfig(BootstapContext<Structure> context) {
+		return new AuroraPalaceStructure(
+				ControlledSpawningConfig.firstIndexMonsters(
+						new MobSpawnSettings.SpawnerData(TFEntities.SNOW_GUARDIAN.get(), 10, 1, 2),
+						new MobSpawnSettings.SpawnerData(TFEntities.STABLE_ICE_CORE.get(), 10, 1, 2),
+						new MobSpawnSettings.SpawnerData(TFEntities.UNSTABLE_ICE_CORE.get(), 5, 1, 2)
+				),
+				new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_yeti"))),
+				new HintConfig(HintConfig.book("icetower", 3), TFEntities.KOBOLD.get()),
+				new DecorationConfig(2, false, true, false),
+				new StructureSettings(
+						context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_AURORA_PALACE_BIOMES),
+						Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
+						GenerationStep.Decoration.SURFACE_STRUCTURES,
+						TerrainAdjustment.NONE
+				)
+		);
+	}
 }

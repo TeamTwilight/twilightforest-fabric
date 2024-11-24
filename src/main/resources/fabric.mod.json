@@ -6,6 +6,7 @@
   "description": "An enchanted forest dimension.",
   "authors": [
     "Benimatic",
+    "IAFEnvoy",
     "AtomicBlom",
     "Drullkus",
     "Killer_Demon",
@@ -37,10 +38,10 @@
       "twilightforest.asm.TFASM"
     ],
     "cardinal-components-entity": [
-      "twilightforest.capabilities.CapabilityList::attachEntityCapability"
+      "twilightforest.capabilities.ModCapabilityEntry"
     ],
     "cardinal-components-world": [
-      "twilightforest.capabilities.CapabilityList::attachLevelCapability"
+      "twilightforest.capabilities.ModCapabilityEntry"
     ],
     "rei_client": [
       "twilightforest.compat.rei.TwilightForestREIClientPlugin"
@@ -56,9 +57,6 @@
     ],
     "jade": [
       "twilightforest.compat.jade.JadeCompat"
-    ],
-    "top_plugin": [
-      "twilightforest.compat.top.TopCompat"
     ]
   },
   "mixins": [
@@ -66,13 +64,10 @@
   ],
   "accessWidener": "twilightforest.accesswidener",
   "depends": {
-    "fabricloader": ">=${loader_version}",
-    "fabric-api": ">=${fabric_version}",
-    "minecraft": ">=${minecraft_version}",
-    "java": ">=${java_version}"
-  },
-  "breaks": {
-    "c2me": "*"
+    "fabricloader": "*",
+    "fabric-api": "*",
+    "minecraft": "1.20.1",
+    "java": ">=17"
   },
   "suggests": {
     "modmenu": "*"

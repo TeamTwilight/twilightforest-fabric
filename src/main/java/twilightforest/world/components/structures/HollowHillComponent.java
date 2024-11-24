@@ -27,8 +27,8 @@ import twilightforest.world.components.feature.BlockSpikeFeature;
 public class HollowHillComponent extends TFStructureComponentOld {
 	// Triangle-grid settings for placing features inside (Stalactites, Stalagmites, Chests, & Spawners)
 	private static final float SPACING = 3.75f;
-	private static final float X_OFFSET = Mth.cos(Mth.PI/6f) * SPACING;
-	private static final float Z_OFFSET = Mth.sin(Mth.PI/6f) * SPACING;
+	private static final float X_OFFSET = Mth.cos(Mth.PI / 6f) * SPACING;
+	private static final float Z_OFFSET = Mth.sin(Mth.PI / 6f) * SPACING;
 	private static final float X_SPACING = X_OFFSET * 2f;
 	private static final float Z_SPACING = SPACING;
 
@@ -121,7 +121,8 @@ public class HollowHillComponent extends TFStructureComponentOld {
 			pos.set(x, y, z);
 
 			if (floatChance < SPAWNER_SPAWN_CHANCE) {
-				setSpawnerInWorld(world, writeableBounds, this.getMobID(rand), v -> {}, pos.above());
+				setSpawnerInWorld(world, writeableBounds, this.getMobID(rand), v -> {
+				}, pos.above());
 			} else {
 				this.placeTreasureAtWorldPosition(world, this.getTreasureType(), false, writeableBounds, pos.above());
 			}
@@ -250,7 +251,6 @@ public class HollowHillComponent extends TFStructureComponentOld {
 
 	/**
 	 * Gets the id of a mob appropriate to the specified hill size.
-	 *
 	 */
 	protected EntityType<?> getMobID(RandomSource rand, int level) {
 		if (level == 1) {

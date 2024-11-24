@@ -1,10 +1,10 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.*;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.*;
+import net.minecraft.core.particles.SimpleParticleType;
 
 @Environment(EnvType.CLIENT)
 public class AnnihilateParticle extends TextureSheetParticle {
@@ -51,7 +51,7 @@ public class AnnihilateParticle extends TextureSheetParticle {
 			this.zd *= 0.7D;
 		}
 
-		this.quadSize *= 0.97D;
+		this.quadSize *= 0.97F;
 
 		if (this.quadSize < 0.04F) {
 			this.remove();

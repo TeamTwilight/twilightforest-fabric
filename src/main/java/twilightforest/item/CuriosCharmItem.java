@@ -12,8 +12,7 @@ public class CuriosCharmItem extends Item {
 	}
 
 	public static void setupTrinket(Item item) {
-		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+		if (FabricLoader.getInstance().isModLoaded("trinkets"))
 			TrinketsCompat.setupCuriosCapability(item);
-		}
 	}
 }

@@ -1,7 +1,7 @@
 package twilightforest.entity;
 
 import io.github.fabricators_of_create.porting_lib.block.EntityDestroyBlock;
-import io.github.fabricators_of_create.porting_lib.entity.ExtraSpawnDataEntity;
+import io.github.fabricators_of_create.porting_lib.entity.IEntityAdditionalSpawnData;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -21,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -38,7 +39,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 import twilightforest.util.WorldUtil;
 
-public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEntity {
+public class ChainBlock extends ThrowableProjectile implements IEntityAdditionalSpawnData {
 
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
@@ -133,13 +134,13 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 			}
 
 			//properly disable shields
-			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
+			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().getItem() instanceof ShieldItem) {//Here replaced canPerformAction(ToolActions.SHIELD_BLOCK), may cause compatibility issues.
 				player.getUseItem().hurtAndBreak(5, player, event -> event.broadcastBreakEvent(player.getUsedItemHand()));
 				player.disableShield(true);
 			}
 
 			if (damage > 0.0F) {
-				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this.getOwner(), this), damage)) {
+				if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this, this.getOwner()), damage)) {
 					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0f, this.random.nextFloat());
 					// age when we hit a monster so that we go back to the player faster
 					this.hitEntity = true;
@@ -244,16 +245,16 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 				BlockState state = this.level().getBlockState(pos);
 				Block block = state.getBlock();
 
-				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && block.canEntityDestroy(state, this.level(), pos, this)) {
-					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player))) {
-						if (ForgeEventFactory.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state))) {
-							this.level().destroyBlock(pos, false);
-							if (!creative) block.playerDestroy(this.level(), player, pos, state, this.level().getBlockEntity(pos), player.getItemInHand(this.getHand()));
-							this.blocksSmashed++;
-							if (this.blocksSmashed > MAX_SMASH) {
-								break;
-							}
-						}
+				if (!state.isAir() && this.stack.isCorrectToolForDrops(state) && canEntityDestroy(block, state, this.level(), pos, this)) {
+					//No need to check
+//                    if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player)))
+//                    if (ForgeEventFactory.doPlayerHarvestCheck(player, state, !state.requiresCorrectToolForDrops() || player.getItemInHand(this.getHand()).isCorrectToolForDrops(state))) {
+					this.level().destroyBlock(pos, false);
+					if (!creative)
+						block.playerDestroy(this.level(), player, pos, state, this.level().getBlockEntity(pos), player.getItemInHand(this.getHand()));
+					this.blocksSmashed++;
+					if (this.blocksSmashed > MAX_SMASH) {
+						break;
 					}
 				}
 			}
@@ -265,10 +266,8 @@ public class ChainBlock extends ThrowableProjectile implements ExtraSpawnDataEnt
 			return destroyBlock.canEntityDestroy(state, level, pos, entity);
 		if (entity instanceof EnderDragon) {
 			return !state.getBlock().defaultBlockState().is(BlockTags.DRAGON_IMMUNE);
-		}
-		else if ((entity instanceof WitherBoss) ||
-				(entity instanceof WitherSkull))
-		{
+		} else if ((entity instanceof WitherBoss) ||
+				(entity instanceof WitherSkull)) {
 			return state.isAir() || WitherBoss.canDestroy(state);
 		}
 

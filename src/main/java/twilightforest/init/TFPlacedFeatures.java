@@ -14,9 +14,9 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.*;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.components.placements.AvoidLandmarkModifier;
 import twilightforest.world.components.placements.ChunkBlanketingModifier;
 import twilightforest.world.components.placements.ChunkCenterModifier;
-import twilightforest.world.components.placements.AvoidLandmarkModifier;
 
 import java.util.List;
 
@@ -225,5 +225,6 @@ public class TFPlacedFeatures {
 		context.register(PLACED_CANOPY_MUSHROOMS_DENSE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.CANOPY_MUSHROOMS_DENSE), tfTreeCheckArea(PlacementUtils.countExtra(5, 0.1F, 1), TFBlocks.CANOPY_SAPLING.get().defaultBlockState())));
 	}
 
-	public static void init() {}
+	public static void init() {
+	}
 }

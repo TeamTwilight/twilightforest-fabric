@@ -19,7 +19,8 @@ import twilightforest.world.components.layer.vanillalegacy.traits.CastleTransfor
 import java.util.List;
 import java.util.function.LongFunction;
 
-public record CompanionBiomesLayer(List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> biomeCompanions) implements CastleTransformer {
+public record CompanionBiomesLayer(
+		List<Pair<ResourceKey<Biome>, ResourceKey<Biome>>> biomeCompanions) implements CastleTransformer {
 	@Override
 	public ResourceKey<Biome> apply(Context context, ResourceKey<Biome> up, ResourceKey<Biome> right, ResourceKey<Biome> down, ResourceKey<Biome> left, ResourceKey<Biome> center) {
 		for (Pair<ResourceKey<Biome>, ResourceKey<Biome>> biomeCompanion : this.biomeCompanions)
@@ -57,7 +58,7 @@ public record CompanionBiomesLayer(List<Pair<ResourceKey<Biome>, ResourceKey<Bio
 
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
-			return this.instance.run(contextFactory.apply(this.salt), this.parent.get().build(contextFactory));
+			return this.instance.run(contextFactory.apply(this.salt), this.parent.value().build(contextFactory));
 		}
 
 		@Override

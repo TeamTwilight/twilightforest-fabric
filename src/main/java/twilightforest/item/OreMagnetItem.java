@@ -1,12 +1,10 @@
 package twilightforest.item;
 
 import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
-import io.github.fabricators_of_create.porting_lib.item.XpRepairItem;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +35,10 @@ import twilightforest.init.TFSounds;
 import twilightforest.util.VoxelBresenhamIterator;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -258,7 +259,7 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem 
 		TwilightForestMod.LOGGER.info("GENERATING ORE TO BLOCK MAPPING");
 
 		//collect all tags
-		for (TagKey<Block> tag : Objects.requireNonNull(BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).collect(Collectors.toList()))) {
+		for (TagKey<Block> tag : Objects.requireNonNull(BuiltInRegistries.BLOCK.getTagNames().filter(location -> location.location().getNamespace().equals("c")).toList())) {
 			//check if the tag is a valid ore tag
 			if (tag.location().getPath().contains("ores_in_ground/")) {
 				//grab the part after the slash for use later
@@ -286,6 +287,7 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem 
 			public ResourceLocation getFabricId() {
 				return new ResourceLocation(TwilightForestMod.ID, "ore_magnet");
 			}
+
 			@Override
 			public CompletableFuture<Void> reload(PreparationBarrier stage, ResourceManager resourceManager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor) {
 				if (!cacheNeedsBuild) {
@@ -294,7 +296,7 @@ public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem 
 				}
 
 				return stage.wait(null).thenRun(() -> {
-			}); // Nothing to do here
+				}); // Nothing to do here
 			}
 		});
 	}

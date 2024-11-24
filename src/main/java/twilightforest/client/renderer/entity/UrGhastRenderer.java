@@ -1,19 +1,15 @@
 package twilightforest.client.renderer.entity;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.UrGhastModel;
-import twilightforest.client.renderer.entity.CarminiteGhastRenderer;
-import twilightforest.entity.boss.Naga;
 import twilightforest.entity.boss.UrGhast;
 
 public class UrGhastRenderer extends CarminiteGhastRenderer<UrGhast, UrGhastModel> {
 
 	private final ResourceLocation textureLocClosed = TwilightForestMod.getModelTexture("towerboss.png");
-	private final ResourceLocation textureLocOpen   = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
+	private final ResourceLocation textureLocOpen = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
 	private final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerboss_fire.png");
 
 	public UrGhastRenderer(EntityRendererProvider.Context manager, UrGhastModel model, float shadowSize, float scale) {

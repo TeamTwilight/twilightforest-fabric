@@ -29,59 +29,59 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TrollCaveStructure extends ProgressionStructure implements ConfigurableSpawns {
-    public static final Codec<TrollCaveStructure> CODEC = RecordCodecBuilder.create(instance -> instance
-                    .group(ControlledSpawns.ControlledSpawningConfig.FLAT_CODEC.forGetter(ConfigurableSpawns::getConfig))
-                    .and(progressionCodec(instance))
-                    .apply(instance, TrollCaveStructure::new)
-    );
-    private final ControlledSpawningConfig controlledSpawningConfig;
+	public static final Codec<TrollCaveStructure> CODEC = RecordCodecBuilder.create(instance -> instance
+			.group(ControlledSpawns.ControlledSpawningConfig.FLAT_CODEC.forGetter(ConfigurableSpawns::getConfig))
+			.and(progressionCodec(instance))
+			.apply(instance, TrollCaveStructure::new)
+	);
+	private final ControlledSpawningConfig controlledSpawningConfig;
 
-    public TrollCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-        super(advancementLockConfig, hintConfig, decorationConfig, structureSettings);
-        this.controlledSpawningConfig = controlledSpawningConfig;
-    }
+	public TrollCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
+		super(advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+		this.controlledSpawningConfig = controlledSpawningConfig;
+	}
 
-    @Override
-    protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.get(), 0, x, y, z);
-    }
+	@Override
+	protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
+		return new TrollCaveMainComponent(TFStructurePieceTypes.TFTCMai.get(), 0, x, y, z);
+	}
 
-    @Override
-    public StructureType<?> type() {
-        return TFStructureTypes.TROLL_CAVE.get();
-    }
+	@Override
+	public StructureType<?> type() {
+		return TFStructureTypes.TROLL_CAVE.get();
+	}
 
-    @Override
-    public ControlledSpawningConfig getConfig() {
-        return this.controlledSpawningConfig;
-    }
+	@Override
+	public ControlledSpawningConfig getConfig() {
+		return this.controlledSpawningConfig;
+	}
 
-    @Override
-    protected boolean dontCenter() {
-        return true;
-    }
+	@Override
+	protected boolean dontCenter() {
+		return true;
+	}
 
-    public static TrollCaveStructure buildTrollCaveConfig(BootstapContext<Structure> context) {
-        return new TrollCaveStructure(
-                ControlledSpawningConfig.create(List.of(List.of(
-                        new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 5, 1, 2),
-                        new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 1, 2),
-                        new MobSpawnSettings.SpawnerData(TFEntities.TROLL.get(), 20, 1, 2),
-                        new MobSpawnSettings.SpawnerData(EntityType.WITCH, 5, 1, 1)
-                ), List.of(
-                        // cloud monsters
-                        new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), 10, 1, 1),
-                        new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), 10, 1, 1)
-                )), List.of(), List.of()),
-                new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
-                new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get()),
-                new DecorationConfig(4, true, true, false),
-                new StructureSettings(
-                        context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_TROLL_CAVE_BIOMES),
-                        Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
-                        GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
-                        TerrainAdjustment.BURY
-                )
-        );
-    }
+	public static TrollCaveStructure buildTrollCaveConfig(BootstapContext<Structure> context) {
+		return new TrollCaveStructure(
+				ControlledSpawningConfig.create(List.of(List.of(
+						new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 5, 1, 2),
+						new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 1, 2),
+						new MobSpawnSettings.SpawnerData(TFEntities.TROLL.get(), 20, 1, 2),
+						new MobSpawnSettings.SpawnerData(EntityType.WITCH, 5, 1, 1)
+				), List.of(
+						// cloud monsters
+						new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), 10, 1, 1),
+						new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), 10, 1, 1)
+				)), List.of(), List.of()),
+				new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
+				new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get()),
+				new DecorationConfig(4, true, true, false),
+				new StructureSettings(
+						context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_TROLL_CAVE_BIOMES),
+						Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
+						GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
+						TerrainAdjustment.BURY
+				)
+		);
+	}
 }

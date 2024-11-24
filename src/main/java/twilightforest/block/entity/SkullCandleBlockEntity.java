@@ -96,6 +96,6 @@ public class SkullCandleBlockEntity extends SkullBlockEntity {
 	}
 
 	public float getAnimation(float partialTick) {
-		return this.isAnimating ? (float)this.animationTickCount + partialTick : (float)this.animationTickCount;
+		return this.isAnimating ? (float) this.animationTickCount + partialTick : (float) this.animationTickCount;
 	}
 }

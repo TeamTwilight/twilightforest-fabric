@@ -11,12 +11,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFParticleType;
@@ -24,7 +24,6 @@ import twilightforest.init.TFSounds;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +44,7 @@ public class HydraHeadContainer {
 
 	private static final State NEXT_AUTOMATIC = null;
 
-	enum State {
+	public enum State {
 		IDLE(10),
 
 		BITE_BEGINNING(40),
@@ -701,7 +700,7 @@ public class HydraHeadContainer {
 					}
 
 					// bite it!
-					nearby.hurt(TFDamageTypes.getDamageSource(living.level(), TFDamageTypes.HYDRA_BITE, TFEntities.HYDRA.get()), BITE_DAMAGE);
+					nearby.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.HYDRA_BITE, this.hydra, TFEntities.HYDRA.get()), BITE_DAMAGE);
 
 					//knockback!
 					if (living instanceof Player player) {
@@ -717,7 +716,7 @@ public class HydraHeadContainer {
 			Entity target = getHeadLookTarget();
 
 			if (target != null && target != this.headEntity.getParent() && (!(target instanceof HydraPart) || ((HydraPart) target).getParent() != this.headEntity.getParent())) {
-				if (!target.fireImmune() && target.hurt(TFDamageTypes.getDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
+				if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(target.level(), TFDamageTypes.HYDRA_FIRE, this.hydra, TFEntities.HYDRA.get()), FLAME_DAMAGE)) {
 					target.setSecondsOnFire(FLAME_BURN_FACTOR);
 				}
 			}
@@ -983,7 +982,7 @@ public class HydraHeadContainer {
 	 * Add to our damage taken counter
 	 */
 	public void addDamage(float damageAmount) {
-		this.damageTaken += damageAmount;
+		this.damageTaken += (int) damageAmount;
 	}
 
 	/**

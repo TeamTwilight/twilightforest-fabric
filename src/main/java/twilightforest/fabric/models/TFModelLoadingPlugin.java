@@ -8,7 +8,6 @@ public enum TFModelLoadingPlugin implements ModelLoadingPlugin {
 
 	@Override
 	public void onInitializeModelLoader(Context ctx) {
-		TFClientEvents.ModBusEvents.registerLoaders(ctx.resolveModel()::register);
 		TFClientEvents.ModBusEvents.registerModels(ctx::addModels);
 	}
 }

@@ -17,12 +17,11 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
-
-import org.jetbrains.annotations.Nullable;
 
 public class Bighorn extends Sheep {
 

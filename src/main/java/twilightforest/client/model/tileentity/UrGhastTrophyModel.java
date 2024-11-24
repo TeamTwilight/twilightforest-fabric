@@ -2,7 +2,6 @@ package twilightforest.client.model.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -16,7 +15,7 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 
 	public final ModelPart body;
 	private final ModelPart[][] tentacles = new ModelPart[9][3];
-	
+
 	public UrGhastTrophyModel(ModelPart part) {
 		this.body = part.getChild("body");
 
@@ -58,7 +57,7 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 					case 7 -> PartPose.offsetAndRotation(7.5F, 3.5F, -1F, 0F, 0F, -Mth.PI / 4.0F);
 					case 8 -> PartPose.offsetAndRotation(7.5F, -1.5F, 3.5F, 0F, 0F, -Mth.PI / 3.0F);
 					default -> {
-						TwilightForestMod.LOGGER.warn("Out of bounds with Ur-Ghast Trophy limb creation: Iteration " + iteration);
+						TwilightForestMod.LOGGER.warn("Out of bounds with Ur-Ghast Trophy limb creation: Iteration {}", iteration);
 						yield PartPose.ZERO;
 					}
 				});
@@ -74,7 +73,7 @@ public class UrGhastTrophyModel extends GenericTrophyModel {
 				PartPose.offset(0, 4, 0));
 
 	}
-	
+
 	@Override
 	public void setRotations(float x, float y, float z) {
 		this.body.yRot = y * ((float) Math.PI / 180F);

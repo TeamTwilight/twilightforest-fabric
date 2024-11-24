@@ -138,3 +138,12 @@ accessible field net/minecraft/world/effect/MobEffectInstance amplifier I
 
 accessible method net/minecraft/world/level/storage/loot/LootTable shuffleAndSplitItems (Lit/unimi/dsi/fastutil/objects/ObjectArrayList;ILnet/minecraft/util/RandomSource;)V
 transitive-extendable method com/mojang/blaze3d/pipeline/MainTarget createFrameBuffer (II)V
+
+accessible field net/minecraft/client/renderer/LevelRenderer rainSoundTime I
+accessible field net/minecraft/client/Minecraft timer Lnet/minecraft/client/Timer;
+accessible field net/minecraft/client/renderer/LevelRenderer ticks I
+accessible method net/minecraft/world/entity/Mob maybeDisableShield (Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)V
+accessible method net/minecraft/core/RegistryAccess$RegistryEntry fromMapEntry (Ljava/util/Map$Entry;)Lnet/minecraft/core/RegistryAccess$RegistryEntry;
+accessible method net/minecraft/world/entity/Entity findDimensionEntryPoint (Lnet/minecraft/server/level/ServerLevel;)Lnet/minecraft/world/level/portal/PortalInfo;
+accessible field net/minecraft/client/Minecraft pausePartialTick F
+accessible field net/minecraft/world/level/biome/BiomeManager biomeZoomSeed J

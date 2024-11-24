@@ -167,10 +167,14 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 
 					if (wingSize == otherWing.size && otherWing.getBoundingBox().intersects(x - 3, z - 3, x + 3, z + 3)) {
 						return switch (direction) {
-							case SOUTH -> new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().minZ()};
-							case WEST -> new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().minZ()};
-							case NORTH -> new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().maxZ()};
-							case EAST -> new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().maxZ()};
+							case SOUTH ->
+									new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().minZ()};
+							case WEST ->
+									new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().minZ()};
+							case NORTH ->
+									new int[]{otherWing.getBoundingBox().maxX(), y, otherWing.getBoundingBox().maxZ()};
+							case EAST ->
+									new int[]{otherWing.getBoundingBox().minX(), y, otherWing.getBoundingBox().maxZ()};
 							default -> new int[]{x, y, z};
 						};
 					}
@@ -385,7 +389,8 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 				int dist = (int) (Math.max(ax, az) + (Math.min(ax, az) * 0.4));
 
 				// make a floor!
-				if (dist <= hollow) { {
+				if (dist <= hollow) {
+					{
 						placeBlock(world, this.isAscender ? Blocks.JUNGLE_PLANKS.defaultBlockState() : deco.floorState, dx + diameter, dy, dz + diameter, sbb);
 					}
 				}
@@ -407,7 +412,6 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 
 	/**
 	 * Called to decorate each floor.  This is responsible for adding a ladder up, the stub of the ladder going down, then picking a theme for each floor and executing it.
-	 *
 	 */
 	@Override
 	protected void decorateFloor(WorldGenLevel world, RandomSource rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {

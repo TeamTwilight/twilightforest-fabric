@@ -6,10 +6,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import twilightforest.TwilightForestMod;
+import twilightforest.loot.conditions.GiantPickUsedCondition;
 import twilightforest.loot.conditions.IsMinionCondition;
 import twilightforest.loot.conditions.ModExistsCondition;
 import twilightforest.loot.conditions.UncraftingTableEnabledCondition;
-import twilightforest.loot.conditions.GiantPickUsedCondition;
 import twilightforest.loot.functions.ModItemSwap;
 
 public class TFLoot {

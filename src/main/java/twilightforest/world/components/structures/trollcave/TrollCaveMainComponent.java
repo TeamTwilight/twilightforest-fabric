@@ -240,7 +240,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, WorldUtil.getSeaLevel(Objects.requireNonNull(WorldUtil.getChunkGenerator(world))) + 15, dz);
 
-		for(int i = 0; i < 15; i++) {
+		for (int i = 0; i < 15; i++) {
 			pos.move(0, 1, 0);
 			if (sbb.isInside(pos) && world.getBlockState(pos.above()).isAir()) {
 				world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(feature).place(world, generator, rand, pos);

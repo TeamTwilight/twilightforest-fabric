@@ -11,17 +11,15 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.FeaturePlacers;
 import twilightforest.init.TFStructureProcessors;
-
-import org.jetbrains.annotations.Nullable;
+import twilightforest.util.FeaturePlacers;
 
 public final class NagastoneVariants extends StructureProcessor {
 	public static final NagastoneVariants INSTANCE = new NagastoneVariants();
 	public static final Codec<NagastoneVariants> CODEC = Codec.unit(() -> INSTANCE);
 
 	private NagastoneVariants() {
-    }
+	}
 
 	@Override
 	public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {

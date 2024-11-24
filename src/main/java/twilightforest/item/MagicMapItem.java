@@ -44,7 +44,7 @@ public class MagicMapItem extends MapItem implements CustomMapItem {
 		super(properties);
 	}
 
-	private static class MapColorBrightness {
+	public static class MapColorBrightness {
 		public final MapColor color;
 		public final int brightness;
 

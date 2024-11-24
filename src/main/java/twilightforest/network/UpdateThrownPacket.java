@@ -8,6 +8,7 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.thrown.YetiThrowCapability;
 
@@ -22,7 +23,7 @@ public class UpdateThrownPacket implements S2CPacket {
 		this.entityID = id;
 		this.thrown = cap.getThrown();
 		this.throwCooldown = cap.getThrowCooldown();
-		if(cap.getThrower() != null) {
+		if (cap.getThrower() != null) {
 			this.thrower = cap.getThrower().getId();
 		}
 	}
@@ -54,15 +55,15 @@ public class UpdateThrownPacket implements S2CPacket {
 
 		public static void onMessage(UpdateThrownPacket message) {
 //			ctx.get().enqueueWork(() -> {
-				Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
-				if (entity instanceof LivingEntity) {
-					CapabilityList.YETI_THROWN.maybeGet(entity).ifPresent(cap -> {
-						LivingEntity thrower = message.thrower != 0 ? (LivingEntity) Minecraft.getInstance().level.getEntity(message.thrower) : null;
-						if (entity instanceof Player)
-							cap.setThrown(message.thrown, thrower);
-						cap.setThrowCooldown(message.throwCooldown);
-					});
-				}
+			Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
+			if (entity instanceof LivingEntity) {
+				CapabilityList.YETI_THROWN.maybeGet(entity).ifPresent(cap -> {
+					LivingEntity thrower = message.thrower != 0 ? (LivingEntity) Minecraft.getInstance().level.getEntity(message.thrower) : null;
+					if (entity instanceof Player)
+						cap.setThrown(message.thrown, thrower);
+					cap.setThrowCooldown(message.throwCooldown);
+				});
+			}
 //			});
 		}
 	}

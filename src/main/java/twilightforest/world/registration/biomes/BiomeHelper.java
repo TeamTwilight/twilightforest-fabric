@@ -13,11 +13,7 @@ import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import twilightforest.init.TFConfiguredFeatures;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFParticleType;
-import twilightforest.init.TFPlacedFeatures;
-import twilightforest.init.TFCaveCarvers;
+import twilightforest.init.*;
 
 public abstract class BiomeHelper {
 

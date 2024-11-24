@@ -216,10 +216,10 @@ public class BlockChainGoblinModel<T extends BlockChainGoblin> extends HumanoidM
 		leftLeg.y = 18F;
 
 		rightArm.setPos(-3.5F, 12F, 0F);
-		rightArm.xRot += Math.PI;
+		rightArm.xRot += (float) Math.PI;
 
 		leftArm.setPos(3.5F, 12F, 0F);
-		leftArm.xRot += Math.PI;
+		leftArm.xRot += (float) Math.PI;
 
 		float angle = ageInTicks / 4F;
 		float length = 0;//16F;

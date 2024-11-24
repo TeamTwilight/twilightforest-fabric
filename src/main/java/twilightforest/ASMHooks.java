@@ -1,8 +1,6 @@
 package twilightforest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.datafixers.DataFixer;
-import com.mojang.serialization.Dynamic;
 import io.github.fabricators_of_create.porting_lib.attributes.PortingLibAttributes;
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
@@ -28,6 +26,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
@@ -49,11 +48,12 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import twilightforest.block.CloudBlock;
+import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.client.TFClientSetup;
+import twilightforest.entity.TFPart;
 import twilightforest.events.ToolEvents;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimensionSettings;
-import twilightforest.entity.TFPart;
 import twilightforest.init.TFItems;
 import twilightforest.item.GiantItem;
 import twilightforest.network.TFPacketHandler;
@@ -63,7 +63,6 @@ import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Optional;
 import java.util.UUID;
 
@@ -106,6 +105,16 @@ public class ASMHooks {
 	 */
 	public static boolean shouldMapRender(boolean o, ItemStack stack) {
 		return o || isOurMap(stack);
+	}
+
+	/**
+	 * Injection Point:<br>
+	 * {@link net.minecraft.world.entity.decoration.LeashFenceKnotEntity#survives()}<br>
+	 * [BEFORE IRETURN]
+	 */
+	public static boolean lead(boolean o, LeashFenceKnotEntity entity) {
+		BlockState fenceState = entity.level().getBlockState(entity.getPos());
+		return o || (fenceState.is(TFBlocks.WROUGHT_IRON_FENCE.get()) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE);
 	}
 
 	/**
@@ -154,7 +163,7 @@ public class ASMHooks {
 	@Nullable
 	@Environment(EnvType.CLIENT)
 	public static EntityRenderer<?> getMultipartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
-		if(entity instanceof TFPart<?>)
+		if (entity instanceof TFPart<?>)
 			return TFClientSetup.BakedMultiPartRenderers.lookup(((TFPart<?>) entity).renderer());
 		return renderer;
 	}
@@ -179,9 +188,9 @@ public class ASMHooks {
 		List<Entity> list = new ArrayList<>();
 		iter.forEach(entity -> {
 			list.add(entity);
-			if(entity instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity() && partEntity.getParts() != null) {
+			if (entity instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity() && partEntity.getParts() != null) {
 				for (PartEntity<?> part : partEntity.getParts()) {
-					if(part instanceof TFPart)
+					if (part instanceof TFPart)
 						list.add(part);
 				}
 			}
@@ -253,12 +262,12 @@ public class ASMHooks {
 		ItemStack heldStack = player.getItemInHand(hand);
 		if (ToolEvents.hasGiantItemInOneHand(player) && !(heldStack.getItem() instanceof GiantItem) && hand == InteractionHand.OFF_HAND) {
 			UUID uuidForOppositeHand = GiantItem.GIANT_REACH_MODIFIER;
-			AttributeInstance reachDistance = player.getAttribute(ForgeMod.BLOCK_REACH.get());
+			AttributeInstance reachDistance = player.getAttribute(PortingLibAttributes.BLOCK_REACH);
 			if (reachDistance != null) {
 				AttributeModifier giantModifier = reachDistance.getModifier(uuidForOppositeHand);
 				if (giantModifier != null) {
 					reachDistance.removeModifier(giantModifier);
-					double reach = player.getAttributeValue(ForgeMod.BLOCK_REACH.get());
+					double reach = player.getAttributeValue(PortingLibAttributes.BLOCK_REACH);
 					double trueReach = reach == 0 ? 0 : reach + (player.isCreative() ? 0.5 : 0); // Copied from IForgePlayer#getReachDistance().
 					BlockHitResult result = getPlayerPOVHitResultForReach(level, player, trueReach, fluidMode);
 					reachDistance.addTransientModifier(giantModifier);

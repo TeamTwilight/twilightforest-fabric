@@ -3,7 +3,8 @@ package twilightforest.init;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -29,7 +30,6 @@ import java.util.Collection;
 import java.util.Comparator;
 
 public class TFCreativeTabs {
-
 	public static final LazyRegistrar<CreativeModeTab> TABS = LazyRegistrar.create(Registries.CREATIVE_MODE_TAB, TwilightForestMod.ID);
 
 	public static final RegistryObject<CreativeModeTab> BLOCKS = TABS.register("blocks", () -> FabricItemGroup.builder()
@@ -302,7 +302,6 @@ public class TFCreativeTabs {
 				output.accept(TFBlocks.TWISTED_STONE_PILLAR.get());
 				output.accept(TFBlocks.CANDELABRA.get());
 				output.accept(TFBlocks.WROUGHT_IRON_FENCE.get());
-				output.accept(TFBlocks.WROUGHT_IRON_FINIAL.get());
 				makeSkullCandle(output, TFItems.ZOMBIE_SKULL_CANDLE.get());
 				makeSkullCandle(output, TFItems.SKELETON_SKULL_CANDLE.get());
 				makeSkullCandle(output, TFItems.WITHER_SKELETON_SKULL_CANDLE.get());

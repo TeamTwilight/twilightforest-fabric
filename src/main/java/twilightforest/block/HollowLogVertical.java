@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,11 +30,9 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.util.DirectionUtil;
-
-import org.jetbrains.annotations.Nullable;
 
 public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -48,8 +47,8 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 		this.climbable = climbable;
 
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
-        FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
-    }
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
+	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
@@ -116,11 +115,11 @@ public class HollowLogVertical extends Block implements SimpleWaterloggedBlock {
 		return (0.124 <= vec.x() && vec.x() <= 0.876) && (0.124 <= vec.z() && vec.z() <= 0.876);
 	}
 
-    public int getFlammability() {
-        return 5;
-    }
+	public int getFlammability() {
+		return 5;
+	}
 
-    public int getFireSpreadSpeed() {
-        return 5;
-    }
+	public int getFireSpreadSpeed() {
+		return 5;
+	}
 }

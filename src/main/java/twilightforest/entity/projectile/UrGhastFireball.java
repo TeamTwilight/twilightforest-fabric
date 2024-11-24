@@ -5,7 +5,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.LargeFireball;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -29,10 +28,10 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 	protected void onHit(HitResult pResult) {
 		HitResult.Type hitresult$type = pResult.getType();
 		if (hitresult$type == HitResult.Type.ENTITY) {
-			this.onHitEntity((EntityHitResult)pResult);
+			this.onHitEntity((EntityHitResult) pResult);
 			this.level().gameEvent(GameEvent.PROJECTILE_LAND, pResult.getLocation(), GameEvent.Context.of(this, null));
 		} else if (hitresult$type == HitResult.Type.BLOCK) {
-			BlockHitResult blockhitresult = (BlockHitResult)pResult;
+			BlockHitResult blockhitresult = (BlockHitResult) pResult;
 			this.onHitBlock(blockhitresult);
 			BlockPos blockpos = blockhitresult.getBlockPos();
 			this.level().gameEvent(GameEvent.PROJECTILE_LAND, blockpos, GameEvent.Context.of(this, this.level().getBlockState(blockpos)));
@@ -56,7 +55,7 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		//explode and leave fire when hitting a block, but dont destroy them
-		boolean flag = this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+		boolean flag = this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
 		this.level().explode(null, this.getX(), this.getY(), this.getZ(), (float) this.power, flag, Level.ExplosionInteraction.NONE);
 		this.discard();
 	}

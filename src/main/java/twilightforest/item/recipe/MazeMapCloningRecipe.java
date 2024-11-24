@@ -8,8 +8,8 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFRecipes;
 import twilightforest.init.TFItems;
+import twilightforest.init.TFRecipes;
 
 public class MazeMapCloningRecipe extends CustomRecipe {
 
@@ -22,7 +22,7 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 
-		for(int j = 0; j < container.getContainerSize(); j++) {
+		for (int j = 0; j < container.getContainerSize(); j++) {
 			ItemStack itemstack1 = container.getItem(j);
 			if (!itemstack1.isEmpty()) {
 				if (itemstack1.is(TFItems.FILLED_MAZE_MAP.get())) {
@@ -49,7 +49,7 @@ public class MazeMapCloningRecipe extends CustomRecipe {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 
-		for(int j = 0; j < container.getContainerSize(); j++) {
+		for (int j = 0; j < container.getContainerSize(); j++) {
 			ItemStack itemstack1 = container.getItem(j);
 			if (!itemstack1.isEmpty()) {
 				if (itemstack1.is(TFItems.FILLED_MAZE_MAP.get())) {

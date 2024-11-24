@@ -3,13 +3,13 @@ package twilightforest.world.components.biomesources;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.fabricators_of_create.porting_lib.util.ServerLifecycleHooks;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
-import twilightforest.init.TFDimensionSettings;
+import twilightforest.TwilightForestMod;
+import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.util.ComparableResourceKey;
 import twilightforest.world.components.chunkgenerators.warp.TerrainColumn;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
@@ -31,7 +31,7 @@ public class TFBiomeProvider extends BiomeSource {
 			TerrainColumn.CODEC.listOf().fieldOf("biome_landscape").xmap(l -> l.stream().collect(Collectors.toMap(TerrainColumn::getResourceKey, Function.identity())), m -> m.values().stream().sorted(Comparator.comparing(terrainColumn -> ComparableResourceKey.of(terrainColumn.getResourceKey()))).toList()).forGetter(o -> o.biomeList),
 			Codec.FLOAT.fieldOf("base_offset").forGetter(o -> o.baseOffset),
 			Codec.FLOAT.fieldOf("base_factor").forGetter(o -> o.baseFactor),
-			BiomeLayerStack.HOLDER_CODEC.fieldOf("biome_layer_config").orElseGet((String s) -> TwilightForestMod.LOGGER.warn(s), BiomeLayerStack::buildDefault).forGetter(TFBiomeProvider::getBiomeConfig)
+			BiomeLayerStack.HOLDER_CODEC.fieldOf("biome_layer_config").orElseGet((String s) -> TwilightForestMod.LOGGER.warn(s), BiomeLayerStack::getAllBiomesHolder).forGetter(TFBiomeProvider::getBiomeConfig)
 	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
 	private final Map<ResourceKey<Biome>, TerrainColumn> biomeList;
@@ -50,7 +50,7 @@ public class TFBiomeProvider extends BiomeSource {
 
 		//this.genBiomes = buildLayers((salt) -> new LazyAreaContext(25, salt));
 		this.genBiomeConfig = biomeLayerFactory;
-		this.genBiomes = Suppliers.memoize(() -> this.genBiomeConfig.get().build(salt -> new LazyAreaContext(25, salt)));
+		this.genBiomes = Suppliers.memoize(() -> this.genBiomeConfig.value().build(salt -> new LazyAreaContext(25, salt)));
 
 		this.baseOffset = offset;
 		this.baseFactor = factor;

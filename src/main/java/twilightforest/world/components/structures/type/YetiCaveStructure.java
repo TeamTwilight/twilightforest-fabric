@@ -21,45 +21,44 @@ import twilightforest.world.components.structures.util.ConquerableStructure;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class YetiCaveStructure extends ConquerableStructure {
-    public static final Codec<YetiCaveStructure> CODEC = RecordCodecBuilder.create(instance ->
-            conquerStatusCodec(instance).apply(instance, YetiCaveStructure::new)
-    );
+	public static final Codec<YetiCaveStructure> CODEC = RecordCodecBuilder.create(instance ->
+			conquerStatusCodec(instance).apply(instance, YetiCaveStructure::new)
+	);
 
-    public YetiCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-        super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
-    }
+	public YetiCaveStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
+		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, structureSettings);
+	}
 
-    @Override
-    protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new YetiCaveComponent(0, x, y, z);
-    }
+	@Override
+	protected @Nullable StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
+		return new YetiCaveComponent(0, x, y, z);
+	}
 
-    @Override
-    public StructureType<?> type() {
-        return TFStructureTypes.YETI_CAVE.get();
-    }
+	@Override
+	public StructureType<?> type() {
+		return TFStructureTypes.YETI_CAVE.get();
+	}
 
-    @Override
-    protected boolean dontCenter() {
-        return true;
-    }
+	@Override
+	protected boolean dontCenter() {
+		return true;
+	}
 
-    public static YetiCaveStructure buildYetiCaveConfig(BootstapContext<Structure> context) {
-        return new YetiCaveStructure(
-                ControlledSpawningConfig.firstIndexMonsters(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 5, 1, 2)),
-                new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
-                new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD.get()),
-                new DecorationConfig(2, true, false, false),
-                new StructureSettings(
-                        context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_YETI_CAVE_BIOMES),
-                        Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
-                        GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.BURY
-                )
-        );
-    }
+	public static YetiCaveStructure buildYetiCaveConfig(BootstapContext<Structure> context) {
+		return new YetiCaveStructure(
+				ControlledSpawningConfig.firstIndexMonsters(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 5, 1, 2)),
+				new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
+				new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD.get()),
+				new DecorationConfig(2, true, false, false),
+				new StructureSettings(
+						context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_YETI_CAVE_BIOMES),
+						Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
+						GenerationStep.Decoration.SURFACE_STRUCTURES,
+						TerrainAdjustment.BURY
+				)
+		);
+	}
 }

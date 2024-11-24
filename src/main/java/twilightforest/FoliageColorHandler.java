@@ -5,8 +5,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.world.components.BiomeGrassColors;
 import twilightforest.init.TFBiomes;
+import twilightforest.world.components.BiomeGrassColors;
 
 import java.util.HashMap;
 import java.util.Map;

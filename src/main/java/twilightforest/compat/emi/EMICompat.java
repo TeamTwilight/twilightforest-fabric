@@ -43,7 +43,7 @@ public class EMICompat implements EmiPlugin {
 
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 		RegistryAccess registryAccess = Minecraft.getInstance().level.registryAccess();
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncrafting.get()) { //we only do this if uncrafting is not disabled
+		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get()) { //we only do this if uncrafting is not disabled
 			List<CraftingRecipe> recipes = manager.getAllRecipesFor(RecipeType.CRAFTING);
 			recipes = recipes.stream().filter(recipe ->
 							!recipe.getResultItem(registryAccess).isEmpty() && //get rid of empty items

@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,8 +25,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.client.particle.data.LeafParticleData;
 import twilightforest.network.SpawnFallenLeafFromPacket;
 import twilightforest.network.TFPacketHandler;
@@ -136,7 +136,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		super.entityInside(state, level, pos, entity);
 		if (entity instanceof LivingEntity && (entity.getDeltaMovement().x() != 0 || entity.getDeltaMovement().z() != 0) && level.getRandom().nextBoolean()) {
-			if(level.isClientSide()) {
+			if (level.isClientSide()) {
 				int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), level, pos, 0);
 				int r = Mth.clamp(((color >> 16) & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
 				int g = Mth.clamp(((color >> 8) & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);

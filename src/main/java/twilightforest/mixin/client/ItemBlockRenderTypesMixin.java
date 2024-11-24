@@ -12,17 +12,18 @@ import twilightforest.block.GiantLeavesBlock;
 
 @Mixin(ItemBlockRenderTypes.class)
 public class ItemBlockRenderTypesMixin {
-    @Shadow private static boolean renderCutout;
+	@Shadow
+	private static boolean renderCutout;
 
-    @Inject(method = "getChunkRenderType", at = @At("HEAD"), cancellable = true)
-    private static void twilightforest$fixGiantLeavesChunkRenderType(BlockState blockState, CallbackInfoReturnable<RenderType> cir) {
-        if (blockState.getBlock() instanceof GiantLeavesBlock)
-            cir.setReturnValue(renderCutout ? RenderType.cutoutMipped() : RenderType.solid());
-    }
+	@Inject(method = "getChunkRenderType", at = @At("HEAD"), cancellable = true)
+	private static void twilightforest$fixGiantLeavesChunkRenderType(BlockState blockState, CallbackInfoReturnable<RenderType> cir) {
+		if (blockState.getBlock() instanceof GiantLeavesBlock)
+			cir.setReturnValue(renderCutout ? RenderType.cutoutMipped() : RenderType.solid());
+	}
 
-    @Inject(method = "getMovingBlockRenderType", at = @At("HEAD"), cancellable = true)
-    private static void twilightforest$fixGiantLeavesMovingRenderType(BlockState blockState, CallbackInfoReturnable<RenderType> cir) {
-        if (blockState.getBlock() instanceof GiantLeavesBlock)
-            cir.setReturnValue(renderCutout ? RenderType.cutoutMipped() : RenderType.solid());
-    }
+	@Inject(method = "getMovingBlockRenderType", at = @At("HEAD"), cancellable = true)
+	private static void twilightforest$fixGiantLeavesMovingRenderType(BlockState blockState, CallbackInfoReturnable<RenderType> cir) {
+		if (blockState.getBlock() instanceof GiantLeavesBlock)
+			cir.setReturnValue(renderCutout ? RenderType.cutoutMipped() : RenderType.solid());
+	}
 }

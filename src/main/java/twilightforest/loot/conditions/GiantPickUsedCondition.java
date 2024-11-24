@@ -18,46 +18,44 @@ import twilightforest.init.TFLoot;
 import java.util.Set;
 
 public class GiantPickUsedCondition implements LootItemCondition {
-    final LootContext.EntityTarget entityTarget;
+	final LootContext.EntityTarget entityTarget;
 
-    private GiantPickUsedCondition(LootContext.EntityTarget pEntityTarget) {
-        this.entityTarget = pEntityTarget;
-    }
+	private GiantPickUsedCondition(LootContext.EntityTarget pEntityTarget) {
+		this.entityTarget = pEntityTarget;
+	}
 
-    @Override
-    public LootItemConditionType getType() {
-        return TFLoot.GIANT_PICK_USED_CONDITION.get();
-    }
+	@Override
+	public LootItemConditionType getType() {
+		return TFLoot.GIANT_PICK_USED_CONDITION.get();
+	}
 
-    @Override
-    public Set<LootContextParam<?>> getReferencedContextParams() {
-        return ImmutableSet.of(this.entityTarget.getParam());
-    }
+	@Override
+	public Set<LootContextParam<?>> getReferencedContextParams() {
+		return ImmutableSet.of(this.entityTarget.getParam());
+	}
 
-    @Override
-    public boolean test(LootContext context) {
-        if (context.getParamOrNull(this.entityTarget.getParam()) instanceof Player player) {
-            GiantPickMineCapability capability = player.getCapability(CapabilityList.GIANT_PICK_MINE).resolve().orElse(null);
-            if (capability != null) {
-                return player.level().getGameTime() == capability.getMining() && capability.canMakeGiantBlock();
-            }
-        }
-        return false;
-    }
+	@Override
+	public boolean test(LootContext context) {
+		if (context.getParamOrNull(this.entityTarget.getParam()) instanceof Player player) {
+			GiantPickMineCapability capability = CapabilityList.GIANT_PICK_MINE.get(player);
+			return player.level().getGameTime() == capability.getMining() && capability.canMakeGiantBlock();
+		}
+		return false;
+	}
 
-    public static LootItemCondition.Builder builder(LootContext.EntityTarget target) {
-        return () -> new GiantPickUsedCondition(target);
-    }
+	public static LootItemCondition.Builder builder(LootContext.EntityTarget target) {
+		return () -> new GiantPickUsedCondition(target);
+	}
 
-    public static class ConditionSerializer implements Serializer<GiantPickUsedCondition> {
-        @Override
-        public void serialize(JsonObject json, GiantPickUsedCondition condition, JsonSerializationContext context) {
-            json.add("entity", context.serialize(condition.entityTarget));
-        }
+	public static class ConditionSerializer implements Serializer<GiantPickUsedCondition> {
+		@Override
+		public void serialize(JsonObject json, GiantPickUsedCondition condition, JsonSerializationContext context) {
+			json.add("entity", context.serialize(condition.entityTarget));
+		}
 
-        @Override
-        public GiantPickUsedCondition deserialize(JsonObject json, JsonDeserializationContext context) {
-            return new GiantPickUsedCondition(GsonHelper.getAsObject(json, "entity", context, LootContext.EntityTarget.class));
-        }
-    }
+		@Override
+		public GiantPickUsedCondition deserialize(JsonObject json, JsonDeserializationContext context) {
+			return new GiantPickUsedCondition(GsonHelper.getAsObject(json, "entity", context, LootContext.EntityTarget.class));
+		}
+	}
 }

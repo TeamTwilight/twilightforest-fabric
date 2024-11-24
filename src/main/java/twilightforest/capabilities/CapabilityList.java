@@ -6,7 +6,6 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.world.WorldComponentFactoryRegistry;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-
 import twilightforest.capabilities.fan.FeatherFanCapabilityHandler;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.capabilities.giant_pick.GiantPickMineCapability;

@@ -39,9 +39,7 @@ public class UpdateFeatherFanFallPacket implements S2CPacket {
 	public void handle(Minecraft client, ClientPacketListener listener, PacketSender responseSender, SimpleChannel channel) {
 		Entity entity = Minecraft.getInstance().level.getEntity(entityID);
 		if (entity instanceof LivingEntity) {
-			CapabilityList.FEATHER_FAN_FALLING.maybeGet(entity).ifPresent(cap -> {
-				cap.setFalling(falling);
-			});
+			CapabilityList.FEATHER_FAN_FALLING.maybeGet(entity).ifPresent(cap -> cap.setFalling(falling));
 		}
 	}
 }

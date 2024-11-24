@@ -1,7 +1,5 @@
 package twilightforest.init;
 
-import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
@@ -32,7 +30,6 @@ public class TFStructures {
 		return ResourceKey.create(Registries.STRUCTURE, TwilightForestMod.prefix(name));
 	}
 
-	@SuppressWarnings("deprecation")
 	public static void bootstrap(BootstapContext<Structure> context) {
 		context.register(HEDGE_MAZE, HedgeMazeStructure.buildStructureConfig(context));
 		context.register(QUEST_GROVE, QuestGroveStructure.buildStructureConfig(context));
@@ -52,5 +49,6 @@ public class TFStructures {
 		context.register(FINAL_CASTLE, FinalCastleStructure.buildFinalCastleConfig(context));
 	}
 
-	public static void register() {}
+	public static void register() {
+	}
 }

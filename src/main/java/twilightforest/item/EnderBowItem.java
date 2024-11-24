@@ -13,7 +13,7 @@ public class EnderBowItem extends BowItem implements CustomArrowItem {
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow) {
-		arrow.getExtraCustomData().putBoolean(KEY, true);
+		arrow.getCustomData().putBoolean(KEY, true);
 		return arrow;
 	}
 }

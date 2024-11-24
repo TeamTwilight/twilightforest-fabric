@@ -176,7 +176,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.BOLD_STONE_PILLAR, "Bold Stone Pillar");
 		this.addBlock(TFBlocks.CANDELABRA, "Candelabra");
 		this.addBlock(TFBlocks.WROUGHT_IRON_FENCE, "Wrought Iron Fence");
-		this.addBlock(TFBlocks.WROUGHT_IRON_FINIAL, "Wrought Iron Finial");
+		this.add("block.twilightforest.wrought_iron_fence.cap", "Right-click with an Iron Ingot or Nugget to add a finial");
 		this.addBlock(TFBlocks.KEEPSAKE_CASKET, "Keepsake Casket");
 		this.add("block.twilightforest.casket.broken", "Your Keepsake Casket was too damaged to hold any more items. All items that would be stored in your casket were dropped on the ground.");
 		this.add("block.twilightforest.casket.locked", "This Casket can only be opened by %s!");
@@ -449,6 +449,7 @@ public class LangGenerator extends TFLangProvider {
 		this.add("container.twilightforest.uncrafting_table.disabled_item", "Uncrafting this item is disabled.");
 		this.add("container.twilightforest.uncrafting_table.uncrafting_disabled", "Uncrafting is disabled via config");
 
+		this.add("item.twilightforest.boarkchop", "Raw Boarkchop");
 		this.addItem(TFItems.NAGA_SCALE, "Naga Scale");
 		this.addItem(TFItems.NAGA_CHESTPLATE, "Naga Scale Tunic");
 		this.addItem(TFItems.NAGA_LEGGINGS, "Naga Scale Leggings");
@@ -661,6 +662,7 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addEntityType(TFEntities.ICE_SNOWBALL, "Ice Snowball");
 		this.addEntityType(TFEntities.ICE_ARROW, "Ice Arrow");
+		this.addEntityType(TFEntities.THROWN_ICE, "Ice Bomb");
 		this.addEntityType(TFEntities.SEEKER_ARROW, "Seeker Arrow");
 		this.addEntityType(TFEntities.MOONWORM_SHOT, "Moonworm");
 		this.addEntityType(TFEntities.NATURE_BOLT, "Nature Bolt");
@@ -879,6 +881,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.TINY_BIRD_SONG, "Bird sings");
 		this.addSubtitle(TFSounds.TINY_BIRD_TAKEOFF, "Bird takes off");
 
+		this.addSubtitle(TFSounds.TOWERWOOD_BORER_AMBIENT, "Towerwood Borer hisses");
+		this.addSubtitle(TFSounds.TOWERWOOD_BORER_DEATH, "Towerwood Borer dies");
+		this.addSubtitle(TFSounds.TOWERWOOD_BORER_HURT, "Towerwood Borer hurts");
+
 		this.addSubtitle(TFSounds.TROLL_THROWS_ROCK, "Troll chucks block");
 
 		this.addSubtitle(TFSounds.UR_GHAST_AMBIENT, "Ur-Ghast cries");
@@ -952,6 +958,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addSubtitle(TFSounds.TRANSFORMATION_CORE, "Tree of Transformation hums");
 		this.addSubtitle(TFSounds.UNLOCK_VANISHING_BLOCK, "Towerwood door unlocks");
 		this.addSubtitle(TFSounds.VANISHING_BLOCK, "Vanishing Block vanishes");
+this.addSubtitle(TFSounds.WROUGHT_IRON_FENCE_EXTENDED, "Iron clanks");
 
 		this.addSubtitle(TFSounds.BLOCK_AND_CHAIN_COLLIDE, "Block and Chain hits block");
 		this.addSubtitle(TFSounds.BLOCK_AND_CHAIN_FIRED, "Block and Chain fires");

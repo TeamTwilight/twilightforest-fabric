@@ -122,7 +122,7 @@ public class CarminiteGolemModel<T extends CarminiteGolem> extends HierarchicalM
 		this.rightLeg.yRot = 0.0F;
 
 
-        this.rightArm.zRot = Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
+		this.rightArm.zRot = Mth.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
 		this.leftArm.zRot = -Mth.cos(ageInTicks * 0.09F) * 0.05F - 0.05F;
 	}
 

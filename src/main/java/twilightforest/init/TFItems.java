@@ -4,6 +4,7 @@ import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
@@ -24,7 +25,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
-
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.CustomTagGenerator;
@@ -33,9 +33,13 @@ import twilightforest.enums.TwilightArmorMaterial;
 import twilightforest.item.*;
 import twilightforest.util.TwilightItemTier;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class TFItems {
+	public static final List<Supplier<? extends Item>> ISTER_ITEMS = new ArrayList<>();
 	public static final LazyRegistrar<Item> ITEMS = LazyRegistrar.create(Registries.ITEM, TwilightForestMod.ID);
 
 	public static final RegistryObject<Item> NAGA_SCALE = ITEMS.register("naga_scale", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
@@ -148,8 +152,8 @@ public class TFItems {
 	public static final RegistryObject<Item> ICE_SWORD = ITEMS.register("ice_sword", () -> new IceSwordItem(TwilightItemTier.ICE, new Item.Properties()));
 	public static final RegistryObject<Item> GLASS_SWORD = ITEMS.register("glass_sword", () -> new GlassSwordItem(TwilightItemTier.GLASS, new Item.Properties()/*.setNoRepair()*/.rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> MAGIC_BEANS = ITEMS.register("magic_beans", () -> new MagicBeansItem(new Item.Properties()));
-	public static final RegistryObject<Item> GIANT_PICKAXE = ITEMS.register("giant_pickaxe", () -> new GiantPickItem(TwilightItemTier.GIANT, new Item.Properties()));
-	public static final RegistryObject<Item> GIANT_SWORD = ITEMS.register("giant_sword", () -> new GiantSwordItem(TwilightItemTier.GIANT, new Item.Properties()));
+	public static final RegistryObject<Item> GIANT_PICKAXE = registerISTERItem("giant_pickaxe", () -> new GiantPickItem(TwilightItemTier.GIANT, new Item.Properties()));
+	public static final RegistryObject<Item> GIANT_SWORD = registerISTERItem("giant_sword", () -> new GiantSwordItem(TwilightItemTier.GIANT, new Item.Properties()));
 	public static final RegistryObject<Item> LAMP_OF_CINDERS = ITEMS.register("lamp_of_cinders", () -> new LampOfCindersItem(new Item.Properties().fireResistant().durability(1024).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> CUBE_TALISMAN = ITEMS.register("cube_talisman", () -> new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> CUBE_OF_ANNIHILATION = ITEMS.register("cube_of_annihilation", () -> new CubeOfAnnihilationItem(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.UNCOMMON)));
@@ -172,26 +176,26 @@ public class TFItems {
 		}
 	});
 
-	public static final RegistryObject<Item> FIREFLY = ITEMS.register("firefly", () -> new WearableItem(TFBlocks.FIREFLY.get(), new Item.Properties()));
-	public static final RegistryObject<Item> CICADA = ITEMS.register("cicada", () -> new WearableItem(TFBlocks.CICADA.get(), new Item.Properties()));
-	public static final RegistryObject<Item> MOONWORM = ITEMS.register("moonworm", () -> new WearableItem(TFBlocks.MOONWORM.get(), new Item.Properties()));
+	public static final RegistryObject<Item> FIREFLY = registerISTERItem("firefly", () -> new WearableItem(TFBlocks.FIREFLY.get(), new Item.Properties()));
+	public static final RegistryObject<Item> CICADA = registerISTERItem("cicada", () -> new WearableItem(TFBlocks.CICADA.get(), new Item.Properties()));
+	public static final RegistryObject<Item> MOONWORM = registerISTERItem("moonworm", () -> new WearableItem(TFBlocks.MOONWORM.get(), new Item.Properties()));
 
-	public static final RegistryObject<Item> ZOMBIE_SKULL_CANDLE = ITEMS.register("zombie_skull_candle", () -> new SkullCandleItem(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> SKELETON_SKULL_CANDLE = ITEMS.register("skeleton_skull_candle", () -> new SkullCandleItem(TFBlocks.SKELETON_SKULL_CANDLE.get(), TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> WITHER_SKELETON_SKULL_CANDLE = ITEMS.register("wither_skeleton_skull_candle", () -> new SkullCandleItem(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> CREEPER_SKULL_CANDLE = ITEMS.register("creeper_skull_candle", () -> new SkullCandleItem(TFBlocks.CREEPER_SKULL_CANDLE.get(), TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> PLAYER_SKULL_CANDLE = ITEMS.register("player_skull_candle", () -> new SkullCandleItem(TFBlocks.PLAYER_SKULL_CANDLE.get(), TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> PIGLIN_SKULL_CANDLE = ITEMS.register("piglin_skull_candle", () -> new SkullCandleItem(TFBlocks.PIGLIN_SKULL_CANDLE.get(), TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> ZOMBIE_SKULL_CANDLE = registerISTERItem("zombie_skull_candle", () -> new SkullCandleItem(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> SKELETON_SKULL_CANDLE = registerISTERItem("skeleton_skull_candle", () -> new SkullCandleItem(TFBlocks.SKELETON_SKULL_CANDLE.get(), TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> WITHER_SKELETON_SKULL_CANDLE = registerISTERItem("wither_skeleton_skull_candle", () -> new SkullCandleItem(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get(), TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get(), new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> CREEPER_SKULL_CANDLE = registerISTERItem("creeper_skull_candle", () -> new SkullCandleItem(TFBlocks.CREEPER_SKULL_CANDLE.get(), TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(), new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> PLAYER_SKULL_CANDLE = registerISTERItem("player_skull_candle", () -> new SkullCandleItem(TFBlocks.PLAYER_SKULL_CANDLE.get(), TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> PIGLIN_SKULL_CANDLE = registerISTERItem("piglin_skull_candle", () -> new SkullCandleItem(TFBlocks.PIGLIN_SKULL_CANDLE.get(), TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), new FabricItemSettings().rarity(Rarity.UNCOMMON)));
 
-	public static final RegistryObject<Item> NAGA_TROPHY = ITEMS.register("naga_trophy", () -> new TrophyItem(TFBlocks.NAGA_TROPHY.get(), TFBlocks.NAGA_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> LICH_TROPHY = ITEMS.register("lich_trophy", () -> new TrophyItem(TFBlocks.LICH_TROPHY.get(), TFBlocks.LICH_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> MINOSHROOM_TROPHY = ITEMS.register("minoshroom_trophy", () -> new TrophyItem(TFBlocks.MINOSHROOM_TROPHY.get(), TFBlocks.MINOSHROOM_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> HYDRA_TROPHY = ITEMS.register("hydra_trophy", () -> new TrophyItem(TFBlocks.HYDRA_TROPHY.get(), TFBlocks.HYDRA_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> KNIGHT_PHANTOM_TROPHY = ITEMS.register("knight_phantom_trophy", () -> new TrophyItem(TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> UR_GHAST_TROPHY = ITEMS.register("ur_ghast_trophy", () -> new TrophyItem(TFBlocks.UR_GHAST_TROPHY.get(), TFBlocks.UR_GHAST_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> ALPHA_YETI_TROPHY = ITEMS.register("alpha_yeti_trophy", () -> new TrophyItem(TFBlocks.ALPHA_YETI_TROPHY.get(), TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> SNOW_QUEEN_TROPHY = ITEMS.register("snow_queen_trophy", () -> new TrophyItem(TFBlocks.SNOW_QUEEN_TROPHY.get(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
-	public static final RegistryObject<Item> QUEST_RAM_TROPHY = ITEMS.register("quest_ram_trophy", () -> new TrophyItem(TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get(), new Item.Properties().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> NAGA_TROPHY = registerISTERItem("naga_trophy", () -> new TrophyItem(TFBlocks.NAGA_TROPHY.get(), TFBlocks.NAGA_WALL_TROPHY.get(), new FabricItemSettings().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> LICH_TROPHY = registerISTERItem("lich_trophy", () -> new TrophyItem(TFBlocks.LICH_TROPHY.get(), TFBlocks.LICH_WALL_TROPHY.get(), new FabricItemSettings().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> MINOSHROOM_TROPHY = registerISTERItem("minoshroom_trophy", () -> new TrophyItem(TFBlocks.MINOSHROOM_TROPHY.get(), TFBlocks.MINOSHROOM_WALL_TROPHY.get(), new FabricItemSettings().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> HYDRA_TROPHY = registerISTERItem("hydra_trophy", () -> new TrophyItem(TFBlocks.HYDRA_TROPHY.get(), TFBlocks.HYDRA_WALL_TROPHY.get(), new FabricItemSettings().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> KNIGHT_PHANTOM_TROPHY = registerISTERItem("knight_phantom_trophy", () -> new TrophyItem(TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.get(), new FabricItemSettings().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> UR_GHAST_TROPHY = registerISTERItem("ur_ghast_trophy", () -> new TrophyItem(TFBlocks.UR_GHAST_TROPHY.get(), TFBlocks.UR_GHAST_WALL_TROPHY.get(), new FabricItemSettings().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> ALPHA_YETI_TROPHY = registerISTERItem("alpha_yeti_trophy", () -> new TrophyItem(TFBlocks.ALPHA_YETI_TROPHY.get(), TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), new FabricItemSettings().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> SNOW_QUEEN_TROPHY = registerISTERItem("snow_queen_trophy", () -> new TrophyItem(TFBlocks.SNOW_QUEEN_TROPHY.get(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), new FabricItemSettings().rarity(TwilightForestMod.getRarity())));
+	public static final RegistryObject<Item> QUEST_RAM_TROPHY = registerISTERItem("quest_ram_trophy", () -> new TrophyItem(TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get(), new FabricItemSettings().rarity(TwilightForestMod.getRarity())));
 
 	public static final RegistryObject<Item> HOLLOW_TWILIGHT_OAK_LOG = ITEMS.register("hollow_twilight_oak_log", () -> new HollowLogItem(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE, new Item.Properties()));
 	public static final RegistryObject<Item> HOLLOW_CANOPY_LOG = ITEMS.register("hollow_canopy_log", () -> new HollowLogItem(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE, new Item.Properties()));
@@ -267,6 +271,12 @@ public class TFItems {
 	public static final RegistryObject<Item> SNOW_QUEEN_BANNER_PATTERN = ITEMS.register("snow_queen_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.SNOW_QUEEN_BANNER_PATTERN, new Item.Properties().stacksTo(1).rarity(TwilightForestMod.getRarity())));
 	public static final RegistryObject<Item> QUEST_RAM_BANNER_PATTERN = ITEMS.register("quest_ram_banner_pattern", () -> new BannerPatternItem(CustomTagGenerator.BannerPatternTagGenerator.QUEST_RAM_BANNER_PATTERN, new Item.Properties().stacksTo(1).rarity(TwilightForestMod.getRarity())));
 
+	public static <T extends Item> RegistryObject<T> registerISTERItem(String id, Supplier<T> supplier) {
+		RegistryObject<T> obj = ITEMS.register(id, supplier);
+		ISTER_ITEMS.add(obj);
+		return obj;
+	}
+
 	@Environment(EnvType.CLIENT)
 	public static void addItemModelProperties() {
 		ItemProperties.register(CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity, idk) ->
@@ -286,11 +296,8 @@ public class TFItems {
 				return world == null ? 0.0F : (float) (world.dimensionType().natural() ? Mth.frac(world.getMoonPhase() / 8.0f) : this.wobble(world, Math.random()));
 			}
 
-			@Environment(EnvType.CLIENT)
 			double rotation;
-			@Environment(EnvType.CLIENT)
 			double rota;
-			@Environment(EnvType.CLIENT)
 			long lastUpdateTick;
 
 			@Environment(EnvType.CLIENT)

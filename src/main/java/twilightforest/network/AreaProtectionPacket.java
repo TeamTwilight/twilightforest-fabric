@@ -91,7 +91,6 @@ public class AreaProtectionPacket implements S2CPacket {
 					level.putNonPlayerEntity(0, new ProtectionBox(level, sbb));
 				}
 			});
-			ctx.get().setPacketHandled(true);
 			return true;
 		}
 	}

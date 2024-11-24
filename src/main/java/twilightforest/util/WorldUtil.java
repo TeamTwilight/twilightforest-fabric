@@ -7,13 +7,13 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
 import twilightforest.world.registration.TFGenerationSettings;
 
-import org.jetbrains.annotations.Nullable;
-
 public final class WorldUtil {
-	private WorldUtil() {}
+	private WorldUtil() {
+	}
 
 	/**
 	 * Inclusive of edges

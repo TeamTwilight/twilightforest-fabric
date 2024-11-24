@@ -52,14 +52,14 @@ public class FakeItemEntityRenderer implements IIngredientRenderer<FakeItemEntit
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, @Nullable FakeItemEntity item) {
+	public void render(GuiGraphics graphics, FakeItemEntity ingredient) {
 		Level level = Minecraft.getInstance().level;
-		if (item != null && level != null) {
+		if (level != null) {
 			try {
 				PoseStack modelView = RenderSystem.getModelViewStack();
 				modelView.pushPose();
 				modelView.mulPoseMatrix(graphics.pose().last().pose());
-				this.renderItemEntity(item.stack(), level);
+				this.renderItemEntity(ingredient.stack(), level);
 				modelView.popPose();
 				RenderSystem.applyModelViewMatrix();
 			} catch (Exception e) {

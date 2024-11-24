@@ -3,9 +3,14 @@
   "category": "equipment",
   "ingredients": [
     {
-      "type": "forge:partial_nbt",
-      "item": "twilightforest:lifedrain_scepter",
-      "nbt": "{Damage:99}"
+      "fabric:type": "fabric:nbt",
+      "base": {
+        "item": "twilightforest:lifedrain_scepter"
+      },
+      "nbt": {
+        "Damage": 99
+      },
+      "strict": false
     },
     {
       "item": "minecraft:fermented_spider_eye"

@@ -1,6 +1,8 @@
 package twilightforest.entity;
 
-import io.github.fabricators_of_create.porting_lib.entity.ExtraSpawnDataEntity;
+import io.github.fabricators_of_create.porting_lib.entity.IEntityAdditionalSpawnData;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -19,15 +21,13 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class SlideBlock extends Entity implements ExtraSpawnDataEntity {
+public class SlideBlock extends Entity implements IEntityAdditionalSpawnData {
 
 	private static final int WARMUP_TIME = 20;
 	private static final EntityDataAccessor<Direction> MOVE_DIRECTION = SynchedEntityData.defineId(SlideBlock.class, EntityDataSerializers.DIRECTION);

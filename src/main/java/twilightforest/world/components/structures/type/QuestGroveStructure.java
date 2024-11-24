@@ -21,31 +21,31 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class QuestGroveStructure extends LandmarkStructure {
-    public static final Codec<QuestGroveStructure> CODEC = RecordCodecBuilder.create(instance -> landmarkCodec(instance).apply(instance, QuestGroveStructure::new));
+	public static final Codec<QuestGroveStructure> CODEC = RecordCodecBuilder.create(instance -> landmarkCodec(instance).apply(instance, QuestGroveStructure::new));
 
-    public QuestGroveStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
-        super(decorationConfig, structureSettings);
-    }
+	public QuestGroveStructure(DecorationConfig decorationConfig, StructureSettings structureSettings) {
+		super(decorationConfig, structureSettings);
+	}
 
-    @Override
-    protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-        return new QuestGrove(context.structureTemplateManager(), new BlockPos(x - 12, context.chunkGenerator().getSeaLevel() + 5, z - 12));
-    }
+	@Override
+	protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
+		return new QuestGrove(context.structureTemplateManager(), new BlockPos(x - 12, context.chunkGenerator().getSeaLevel() + 5, z - 12));
+	}
 
-    @Override
-    public StructureType<?> type() {
-        return TFStructureTypes.QUEST_GROVE.get();
-    }
+	@Override
+	public StructureType<?> type() {
+		return TFStructureTypes.QUEST_GROVE.get();
+	}
 
-    public static QuestGroveStructure buildStructureConfig(BootstapContext<Structure> context) {
-        return new QuestGroveStructure(
-                new DecorationConfig(1, false, true, true),
-                new StructureSettings(
-                        context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_QUEST_GROVE_BIOMES),
-                        Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
-                        GenerationStep.Decoration.SURFACE_STRUCTURES,
-                        TerrainAdjustment.BEARD_THIN
-                )
-        );
-    }
+	public static QuestGroveStructure buildStructureConfig(BootstapContext<Structure> context) {
+		return new QuestGroveStructure(
+				new DecorationConfig(1, false, true, true),
+				new StructureSettings(
+						context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_QUEST_GROVE_BIOMES),
+						Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
+						GenerationStep.Decoration.SURFACE_STRUCTURES,
+						TerrainAdjustment.BEARD_THIN
+				)
+		);
+	}
 }

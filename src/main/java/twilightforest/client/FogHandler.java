@@ -33,7 +33,7 @@ public class FogHandler {
 				final boolean inverse = real > spoop;
 				spoopColors[i] = real == spoop ? spoop : Mth.clampedLerp(inverse ? spoop : real, inverse ? real : spoop, spoopColor);
 			}
-			float shift = (float) (0.01F * partialTicks);
+			float shift = 0.01F * partialTicks;
 			if (flag)
 				spoopColor += shift;
 			else

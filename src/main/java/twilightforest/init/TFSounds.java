@@ -9,7 +9,7 @@ import net.minecraft.world.entity.animal.Parrot;
 import twilightforest.TwilightForestMod;
 
 public final class TFSounds {
-	
+
 	public static final LazyRegistrar<SoundEvent> SOUNDS = LazyRegistrar.create(Registries.SOUND_EVENT, TwilightForestMod.ID);
 
 	public static final RegistryObject<SoundEvent> ACID_RAIN_BURNS = createEvent("environment.twilightforest.acid_rain");
@@ -265,6 +265,7 @@ public final class TFSounds {
 	public static final RegistryObject<SoundEvent> WRAITH_AMBIENT = createEvent("entity.twilightforest.wraith.ambient");
 	public static final RegistryObject<SoundEvent> WRAITH_DEATH = createEvent("entity.twilightforest.wraith.death");
 	public static final RegistryObject<SoundEvent> WRAITH_HURT = createEvent("entity.twilightforest.wraith.hurt");
+	public static final RegistryObject<SoundEvent> WROUGHT_IRON_FENCE_EXTENDED = createEvent("block.twilightforest.wrought_iron_fence.extend");
 	public static final RegistryObject<SoundEvent> YETI_DEATH = createEvent("entity.twilightforest.yeti.death");
 	public static final RegistryObject<SoundEvent> YETI_GRAB = createEvent("entity.twilightforest.yeti.grab");
 	public static final RegistryObject<SoundEvent> YETI_GROWL = createEvent("entity.twilightforest.yeti.growl");

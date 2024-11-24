@@ -27,7 +27,7 @@ public enum ZoomLayer implements AreaTransformer1 {
 	private static final int ZOOM_MASK = 1;
 
 	@Override
-    public int getParentX(int x) {
+	public int getParentX(int x) {
 		return x >> 1;
 	}
 
@@ -97,7 +97,7 @@ public enum ZoomLayer implements AreaTransformer1 {
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
 			LazyAreaContext seededContext = contextFactory.apply(this.salt);
-			LazyArea parentLayer = this.parent.get().build(contextFactory);
+			LazyArea parentLayer = this.parent.value().build(contextFactory);
 
 			if (this.fuzzy)
 				return FUZZY.run(seededContext, parentLayer);

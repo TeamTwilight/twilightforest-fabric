@@ -38,6 +38,4 @@ public class TFStructureProcessors {
 	public static <P extends StructureProcessor> RegistryObject<StructureProcessorType<P>> registerProcessor(String name, Supplier<StructureProcessorType<P>> processor) {
 		return STRUCTURE_PROCESSORS.register(name, processor);
 	}
-
-	public static void init() {}
 }

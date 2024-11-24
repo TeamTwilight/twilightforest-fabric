@@ -3,9 +3,14 @@
   "category": "equipment",
   "ingredients": [
     {
-      "type": "forge:partial_nbt",
-      "item": "twilightforest:fortification_scepter",
-      "nbt": "{Damage:9}"
+      "fabric:type": "fabric:nbt",
+      "base": {
+        "item": "twilightforest:fortification_scepter"
+      },
+      "nbt": {
+        "Damage": 9
+      },
+      "strict": false
     },
     {
       "item": "minecraft:golden_apple"

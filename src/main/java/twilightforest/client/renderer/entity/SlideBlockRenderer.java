@@ -21,8 +21,6 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.entity.SlideBlock;
 
-import java.util.Random;
-
 public class SlideBlockRenderer extends EntityRenderer<SlideBlock> {
 
 	public SlideBlockRenderer(EntityRendererProvider.Context manager) {

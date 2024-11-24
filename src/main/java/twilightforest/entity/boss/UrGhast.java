@@ -242,7 +242,8 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 	@Override
 	public void tick() {
-		if (this.level().isClientSide() && !this.isDeadOrDying() && this.isInTantrum()) TFWeatherRenderer.urGhastAlive = true;
+		if (this.level().isClientSide() && !this.isDeadOrDying() && this.isInTantrum())
+			TFWeatherRenderer.urGhastAlive = true;
 		super.tick();
 	}
 
@@ -348,7 +349,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	private List<BlockPos> scanForTraps(ServerLevel level) {
 		PoiManager poimanager = level.getPoiManager();
 		Stream<PoiRecord> stream = poimanager.getInRange(type ->
-				type.is(TFPOITypes.GHAST_TRAP.getKey()),
+						type.is(TFPOITypes.GHAST_TRAP.getKey()),
 				this.getLogicalScanPoint(),
 				this.getHomeRadius(),
 				PoiManager.Occupancy.ANY);
@@ -364,7 +365,7 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 
 		for (Player player : this.level().getEntitiesOfClass(Player.class, below)) {
 			if (this.level().canSeeSkyFromBelowWater(player.blockPosition())) {
-				player.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.GHAST_TEAR, TFEntities.UR_GHAST.get()), 3);
+				player.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.GHAST_TEAR, this, TFEntities.UR_GHAST.get()), 3);
 			}
 		}
 
@@ -574,11 +575,6 @@ public class UrGhast extends CarminiteGhastguard implements IBossLootBuffer {
 	@Override
 	public boolean shouldAttack(LivingEntity living) {
 		return !this.isInTantrum();
-	}
-
-	@Override
-	protected boolean canRide(Entity entityIn) {
-		return false;
 	}
 
 	@Override

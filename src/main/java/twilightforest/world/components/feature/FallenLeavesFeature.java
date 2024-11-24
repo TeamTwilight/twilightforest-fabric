@@ -69,8 +69,8 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	private void generateCircleOfLeaves(WorldGenLevel level, BlockPos origin, RandomSource random, int radius, int height) {
-		for(int i1 = origin.getX() - radius; i1 <= origin.getX() + radius; ++i1) {
-			for(int j1 = origin.getZ() - radius; j1 <= origin.getZ() + radius; ++j1) {
+		for (int i1 = origin.getX() - radius; i1 <= origin.getX() + radius; ++i1) {
+			for (int j1 = origin.getZ() - radius; j1 <= origin.getZ() + radius; ++j1) {
 				int k1 = i1 - origin.getX();
 				int l1 = j1 - origin.getZ();
 				if (k1 * k1 + l1 * l1 <= radius * radius) {

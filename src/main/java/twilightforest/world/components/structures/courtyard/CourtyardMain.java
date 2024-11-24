@@ -37,13 +37,13 @@ public class CourtyardMain extends StructureMazeGenerator {
 
 		this.setOrientation(Direction.NORTH);
 
-		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -RADIUS/2, -1, -RADIUS/2, RADIUS, 10, RADIUS, this.getOrientation(), false);
+		this.boundingBox = TFLandmark.getComponentToAddBoundingBox(x, y, z, -RADIUS / 2, -1, -RADIUS / 2, RADIUS, 10, RADIUS, this.getOrientation(), false);
 		this.sizeConstraints = TFLandmark.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getOrientation(), false);
 	}
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// naga spawner seems important
-		placeBlock(world, TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState(), RADIUS/2, 3, RADIUS/2, sbb);
+		placeBlock(world, TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState(), RADIUS / 2, 3, RADIUS / 2, sbb);
 	}
 }

@@ -2,10 +2,6 @@
   "sources": [
     {
       "type": "minecraft:single",
-      "resource": "twilightforest:magic_paintings/back"
-    },
-    {
-      "type": "minecraft:single",
       "resource": "twilightforest:magic_paintings/darkness/background"
     },
     {
@@ -27,6 +23,30 @@
     {
       "type": "minecraft:single",
       "resource": "twilightforest:magic_paintings/darkness/lightning"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/background"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/clouds"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/volcanic_lands"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/agate_jungle"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/lucid_lands/crystal_plains"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "twilightforest:magic_paintings/back"
     }
   ]
 }

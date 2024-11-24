@@ -2,7 +2,10 @@ package twilightforest.client.model.armor;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class ArcticArmorModel {
 
@@ -11,8 +14,8 @@ public class ArcticArmorModel {
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
 		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0)
-				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, deformation),
+						.texOffs(0, 0)
+						.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, deformation),
 				PartPose.offset(0.0F, 0.0F, 0.0F));
 
 		head.addOrReplaceChild("right_hood",

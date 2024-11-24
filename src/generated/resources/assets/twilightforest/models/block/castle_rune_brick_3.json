@@ -9,10 +9,6 @@
     },
     "runes": {
       "parent": "minecraft:block/block",
-      "render_material": {
-        "blendMode": ["minecraft:cutout"],
-        "emissive": [true]
-      },
       "elements": [
         {
           "faces": {

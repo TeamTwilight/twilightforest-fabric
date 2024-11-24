@@ -43,7 +43,7 @@ public class UrGhastTrophyLegacyModel extends GenericTrophyModel {
 
 		return LayerDefinition.create(mesh, 64, 32);
 	}
-	
+
 	protected static void makeTentacle(PartDefinition parent, String name, int iteration) {
 
 		var tentacleBase = parent.addOrReplaceChild(name + "_base", CubeListBuilder.create()
@@ -59,7 +59,7 @@ public class UrGhastTrophyLegacyModel extends GenericTrophyModel {
 					case 7 -> PartPose.offsetAndRotation(7.5F, 3.5F, -1F, 0F, 0F, -Mth.PI / 4.0F);
 					case 8 -> PartPose.offsetAndRotation(7.5F, -1.5F, 3.5F, 0F, 0F, -Mth.PI / 3.0F);
 					default -> {
-						TwilightForestMod.LOGGER.warn("Out of bounds with Ur-Ghast Trophy limb creation: Iteration " + iteration);
+						TwilightForestMod.LOGGER.warn("Out of bounds with Ur-Ghast Trophy limb creation: Iteration {}", iteration);
 						yield PartPose.ZERO;
 					}
 				});
@@ -80,7 +80,7 @@ public class UrGhastTrophyLegacyModel extends GenericTrophyModel {
 				PartPose.offset(0, 4, 0));
 
 	}
-	
+
 	@Override
 	public void setRotations(float x, float y, float z) {
 		this.body.yRot = y * ((float) Math.PI / 180F);
@@ -104,11 +104,11 @@ public class UrGhastTrophyLegacyModel extends GenericTrophyModel {
 			this.tentacles[i][0].yRot = yTwist * Mth.sin(time * 0.3F);
 		}
 	}
-	
+
 	public void setTranslate(PoseStack matrix, float x, float y, float z) {
 		matrix.translate(x, y, z);
 	}
-	
+
 	@Override
 	public void renderToBuffer(PoseStack matrix, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		this.body.render(matrix, buffer, packedLight, packedOverlay, red, green, blue, alpha);

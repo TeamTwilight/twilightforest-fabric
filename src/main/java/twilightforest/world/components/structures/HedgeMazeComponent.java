@@ -16,10 +16,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
-import twilightforest.loot.TFLootTables;
-import twilightforest.util.BoundingBoxUtils;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.loot.TFLootTables;
+import twilightforest.util.BoundingBoxUtils;
 
 
 public class HedgeMazeComponent extends TFStructureComponentOld {

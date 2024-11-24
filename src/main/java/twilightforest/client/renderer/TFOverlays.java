@@ -9,6 +9,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.player.Player;
@@ -25,7 +26,7 @@ public class TFOverlays {
 	//if we want to add any more overlay things in the future, we can simply add more icons!
 	private static final ResourceLocation TF_ICONS_SHEET = TwilightForestMod.prefix("textures/gui/tf_icons.png");
 
-	public static void registerOverlays(Gui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+	public static void registerOverlays(Gui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		if (player != null && !minecraft.options.hideGui && TFConfig.CLIENT_CONFIG.showQuestRamCrosshairIndicator.get()) {
@@ -33,7 +34,7 @@ public class TFOverlays {
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderTexture(0, TF_ICONS_SHEET);
 			RenderSystem.enableBlend();
-			renderIndicator(minecraft, poseStack, gui, player, screenWidth, screenHeight);
+			renderIndicator(minecraft, guiGraphics, gui, player, screenWidth, screenHeight);
 			RenderSystem.disableBlend();
 		}
 	}
@@ -41,7 +42,7 @@ public class TFOverlays {
 	public static void renderIndicator(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
 		Options options = minecraft.options;
 		if (options.getCameraType().isFirstPerson()) {
-			if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || ((GuiAccessor)gui).porting_lib$canRenderCrosshairForSpectator(minecraft.hitResult)) {
+			if (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || ((GuiAccessor) gui).porting_lib$canRenderCrosshairForSpectator(minecraft.hitResult)) {
 				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 				int j = ((screenHeight - 1) / 2) - 11;
 				int k = ((screenWidth - 1) / 2) - 3;

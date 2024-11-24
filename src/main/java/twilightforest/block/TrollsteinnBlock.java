@@ -1,7 +1,8 @@
 package twilightforest.block;
 
 import com.google.common.collect.ImmutableMap;
-import org.joml.Vector3f;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -13,8 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.joml.Vector3f;
 
 import java.util.Map;
 

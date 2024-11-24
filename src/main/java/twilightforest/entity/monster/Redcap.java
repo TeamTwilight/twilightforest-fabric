@@ -22,12 +22,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ai.goal.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.goal.RedcapLightTNTGoal;
 import twilightforest.entity.ai.goal.RedcapShyGoal;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 
 public class Redcap extends Monster {
 

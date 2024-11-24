@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
-  "loader": "porting_lib:item_layers",
+  "loader": "twilightforest:item_layers",
   "render_materials": {
     "layers": {
       "0": {

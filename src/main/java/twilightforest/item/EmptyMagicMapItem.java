@@ -24,7 +24,7 @@ public class EmptyMagicMapItem extends ComplexItem {
 		ItemStack emptyMapStack = player.getItemInHand(hand);
 		if (level.isClientSide())
 			return InteractionResultHolder.pass(emptyMapStack);
-		if(level instanceof ServerLevel server && !TFGenerationSettings.usesTwilightChunkGenerator(server)) {
+		if (level instanceof ServerLevel server && !TFGenerationSettings.usesTwilightChunkGenerator(server)) {
 			player.displayClientMessage(Component.translatable("misc.twilightforest.magic_map_fail"), true);
 			return InteractionResultHolder.fail(emptyMapStack);
 		}

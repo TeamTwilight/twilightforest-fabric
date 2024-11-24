@@ -72,7 +72,7 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		Direction direction = wallSkull ? state.getValue(WallSkullCandleBlock.FACING) : null;
 		int rotation = wallSkull ? RotationSegment.convertToSegment(direction.getOpposite()) : state.getValue(SkullCandleBlock.ROTATION);
 		float rotDegrees = RotationSegment.convertToDegrees(rotation);
-		SkullBlock.Type type = ((AbstractSkullCandleBlock)state.getBlock()).getType();
+		SkullBlock.Type type = ((AbstractSkullCandleBlock) state.getBlock()).getType();
 		SkullModelBase base = this.modelByType.get(type);
 		RenderType rendertype = getRenderType(type, entity.getOwnerProfile());
 		renderSkull(direction, rotDegrees, animationTime, stack, buffer, light, base, rendertype);
@@ -94,7 +94,7 @@ public class SkullCandleTileEntityRenderer<T extends SkullCandleBlockEntity> imp
 		if (direction == null) {
 			stack.translate(0.5F, 0.0F, 0.5F);
 		} else {
-			stack.translate(0.5F - (float)direction.getStepX() * 0.25F, 0.25F, 0.5F - (float)direction.getStepZ() * 0.25F);
+			stack.translate(0.5F - (float) direction.getStepX() * 0.25F, 0.25F, 0.5F - (float) direction.getStepZ() * 0.25F);
 		}
 
 		stack.scale(-1.0F, -1.0F, 1.0F);

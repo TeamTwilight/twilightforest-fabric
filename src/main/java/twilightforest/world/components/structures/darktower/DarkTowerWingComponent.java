@@ -130,10 +130,14 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 		int index = this.getGenDepth();
 
 		TowerRoofComponent roof = switch (rand.nextInt(5)) {
-			case 2 -> new DarkTowerRoofCactusComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
-			case 3 -> new DarkTowerRoofRingsComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
-			case 4 -> new DarkTowerRoofFourPostComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
-			default -> new DarkTowerRoofAntennaComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			case 2 ->
+					new DarkTowerRoofCactusComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			case 3 ->
+					new DarkTowerRoofRingsComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			case 4 ->
+					new DarkTowerRoofFourPostComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			default ->
+					new DarkTowerRoofAntennaComponent(index, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		};
 
 		list.addPiece(roof);
@@ -468,7 +472,6 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 	/**
 	 * Dark tower treasure rooms!
-	 *
 	 */
 	protected void decorateTreasureRoom(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int y, int spacing, TFStructureDecorator myDeco) {
 		//treasure chest!
@@ -852,7 +855,6 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 	/**
 	 * Generate walls for the tower with the distinct pattern of blocks and accent blocks
-	 *
 	 */
 	protected void makeEncasedWalls(WorldGenLevel world, RandomSource rand, BoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 
@@ -965,8 +967,10 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 			}
 
 			switch (doorType) {
-				case REAPPEARING -> makeReappearingDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
-				case LOCKED -> makeLockedDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
+				case REAPPEARING ->
+						makeReappearingDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
+				case LOCKED ->
+						makeLockedDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
 				default -> makeDoorOpening(world, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
 			}
 		}

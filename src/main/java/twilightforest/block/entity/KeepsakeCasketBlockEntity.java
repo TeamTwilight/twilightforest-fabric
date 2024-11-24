@@ -1,5 +1,7 @@
 package twilightforest.block.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -18,13 +20,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 //used a fair bit of chest logic in this for the lid
@@ -180,9 +180,9 @@ public class KeepsakeCasketBlockEntity extends RandomizableContainerBlockEntity 
 	}
 
 	//remove stored player when chest is broken
-    @Override
-    public void setRemoved() {
-        this.playeruuid = null;
+	@Override
+	public void setRemoved() {
+		this.playeruuid = null;
 		super.setRemoved();
 	}
 

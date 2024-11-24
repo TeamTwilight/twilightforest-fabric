@@ -1,6 +1,5 @@
 package twilightforest.entity.monster;
 
-import io.github.fabricators_of_create.porting_lib.util.PortingHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -20,11 +19,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFLandmark;
 import twilightforest.init.TFSounds;
-
-import org.jetbrains.annotations.Nullable;
 import twilightforest.util.LegacyLandmarkPlacements;
 
 public class SwarmSpider extends Spider {
@@ -188,7 +186,7 @@ public class SwarmSpider extends Spider {
 			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level());
 			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 			druid.setBaby(true);
-			PortingHooks.onFinalizeSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null, null);
+			druid.finalizeSpawn(accessor, difficulty, MobSpawnType.JOCKEY, null, null);
 
 			if (this.hasPassenger(e -> true)) {
 				this.ejectPassengers();

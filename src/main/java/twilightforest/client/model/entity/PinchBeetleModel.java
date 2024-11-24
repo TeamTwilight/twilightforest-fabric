@@ -62,7 +62,7 @@ public class PinchBeetleModel extends HierarchicalModel<PinchBeetle> {
 		head.addOrReplaceChild("left_antenna", CubeListBuilder.create()
 						.texOffs(42, 4)
 						.addBox(0F, -0.5F, -0.5F, 10, 1, 1),
-				PartPose.offsetAndRotation(-1F, -3F, -5F,  0F, 2.094395F, 0.296706F));
+				PartPose.offsetAndRotation(-1F, -3F, -5F, 0F, 2.094395F, 0.296706F));
 
 		head.addOrReplaceChild("right_eye", CubeListBuilder.create()
 						.texOffs(15, 12)

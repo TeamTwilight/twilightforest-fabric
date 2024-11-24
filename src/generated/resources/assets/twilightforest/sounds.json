@@ -309,6 +309,12 @@
     ],
     "subtitle": "subtitles.twilightforest.block.vanish.vanish"
   },
+  "block.twilightforest.wrought_iron_fence.extend": {
+    "sounds": [
+      "twilightforest:random/casket/repair"
+    ],
+    "subtitle": "subtitles.twilightforest.block.wrought_iron_fence.extend"
+  },
   "entity.twilightforest.alpha_yeti.alert": {
     "sounds": [
       "twilightforest:mob/alpha_yeti/alert"

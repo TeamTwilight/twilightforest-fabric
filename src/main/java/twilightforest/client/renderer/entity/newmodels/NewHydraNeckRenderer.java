@@ -9,8 +9,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.newmodels.NewHydraNeckModel;
 import twilightforest.client.renderer.entity.TFPartRenderer;
-import twilightforest.entity.boss.HydraNeck;
 import twilightforest.entity.boss.HydraHeadContainer;
+import twilightforest.entity.boss.HydraNeck;
 
 public class NewHydraNeckRenderer extends TFPartRenderer<HydraNeck, NewHydraNeckModel> {
 

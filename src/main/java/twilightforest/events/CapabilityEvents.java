@@ -1,17 +1,14 @@
 package twilightforest.events;
 
-import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityDamageEvents;
-import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityDamageEvents.HurtEvent;
-import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityEvents;
+import io.github.fabricators_of_create.porting_lib.entity.events.LivingEntityEvents;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingDamageEvent;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -31,33 +28,31 @@ public class CapabilityEvents {
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
 
 	public static void init() {
-		LivingEntityEvents.TICK.register(CapabilityEvents::updateCaps);
-		LivingEntityDamageEvents.HURT.register(CapabilityEvents::livingAttack);
+		LivingEntityEvents.LivingTickEvent.TICK.register(CapabilityEvents::updateCaps);
+		LivingDamageEvent.DAMAGE.register(CapabilityEvents::livingAttack);
 		ServerPlayerEvents.AFTER_RESPAWN.register(CapabilityEvents::onPlayerRespawn);
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(CapabilityEvents::playerPortals);
 		EntityTrackingEvents.START_TRACKING.register(CapabilityEvents::onStartTracking);
 	}
 
-	public static void updateCaps(LivingEntity entity) {
+	public static void updateCaps(LivingEntityEvents.LivingTickEvent event) {
+		LivingEntity entity = event.getEntity();
 		CapabilityList.SHIELDS.maybeGet(entity).ifPresent(IShieldCapability::update);
 		CapabilityList.FEATHER_FAN_FALLING.maybeGet(entity).ifPresent(FeatherFanFallCapability::update);
 		CapabilityList.YETI_THROWN.maybeGet(entity).ifPresent(YetiThrowCapability::update);
 	}
 
-	public static void livingAttack(HurtEvent event) {
-		LivingEntity living = event.damaged;
+	public static void livingAttack(LivingDamageEvent event) {
 		// shields
-		AtomicBoolean cancel = new AtomicBoolean(false);
-		if (!living.level().isClientSide() && !event.damageSource.is(DamageTypeTags.BYPASSES_ARMOR)) {
-			CapabilityList.SHIELDS.maybeGet(living).ifPresent(cap -> {
+		if (event.getEntity() instanceof Player player && player.getAbilities().invulnerable) return;
+		if (!event.getEntity().level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
+			CapabilityList.SHIELDS.maybeGet(event.getEntity()).ifPresent(cap -> {
 				if (cap.shieldsLeft() > 0) {
 					cap.breakShield();
-					cancel.set(true);
+					event.setCanceled(true);
 				}
 			});
 		}
-		if (cancel.get())
-			event.cancel();
 	}
 
 	public static void onPlayerRespawn(ServerPlayer oldPlayer, ServerPlayer serverPlayer, boolean alive) {

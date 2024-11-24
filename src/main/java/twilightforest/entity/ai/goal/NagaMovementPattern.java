@@ -5,8 +5,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.entity.boss.Naga;
 import twilightforest.init.TFSounds;
 import twilightforest.util.EntityUtil;
@@ -175,7 +175,8 @@ public class NagaMovementPattern extends Goal {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!this.naga.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || naga.getTarget() == null) return;
+		if (!this.naga.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || naga.getTarget() == null)
+			return;
 
 		int floor = (int) this.naga.getBoundingBox().minY;
 		int targetY = (int) this.naga.getTarget().getBoundingBox().minY;
@@ -222,7 +223,7 @@ public class NagaMovementPattern extends Goal {
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
 		// add a little, so he circles (clockwise)
-		rangle += clockwise ? rotation : -rotation;
+		rangle += (float) (clockwise ? rotation : -rotation);
 
 		// figure out where we're headed from the target angle
 		double dx = Mth.cos(rangle) * radius;

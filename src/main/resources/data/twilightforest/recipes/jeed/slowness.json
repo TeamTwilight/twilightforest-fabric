@@ -1,27 +1,20 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "fabric:load_conditions": [
     {
-      "fabric:load_conditions": [
-        {
-          "condition": "fabric:all_mods_loaded",
-          "values": [
-            "jeed"
-          ]
-        }
-      ],
-      "recipe": {
-        "type": "jeed:effect_provider",
-        "effect": "minecraft:slowness",
-        "providers": [
-          {
-            "item": "twilightforest:lifedrain_scepter"
-          },
-          {
-            "item": "twilightforest:death_tome_spawn_egg"
-          }
-        ]
-      }
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "jeed"
+      ]
+    }
+  ],
+  "type": "jeed:effect_provider",
+  "effect": "minecraft:slowness",
+  "providers": [
+    {
+      "item": "twilightforest:lifedrain_scepter"
+    },
+    {
+      "item": "twilightforest:death_tome_spawn_egg"
     }
   ]
 }

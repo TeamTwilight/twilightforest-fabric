@@ -1,15 +1,14 @@
 package twilightforest.events;
 
 import com.mojang.authlib.GameProfile;
-import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityDamageEvents;
-import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityDamageEvents.HurtEvent;
-import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityEvents;
-import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
+import io.github.fabricators_of_create.porting_lib.entity.events.LivingEntityEvents;
+import io.github.fabricators_of_create.porting_lib.entity.events.ProjectileImpactEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingDamageEvent;
+import io.github.fabricators_of_create.porting_lib.event.common.AdvancementCallback;
 import io.github.fabricators_of_create.porting_lib.event.common.ItemCraftedCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.loader.api.FabricLoader;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
@@ -33,6 +32,7 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.LeadItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.Block;
@@ -62,7 +62,6 @@ import twilightforest.item.YetiArmorItem;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class EntityEvents {
 
@@ -70,29 +69,45 @@ public class EntityEvents {
 
 	public static void init() {
 		ItemCraftedCallback.EVENT.register(EntityEvents::onCrafting);
-		LivingEntityDamageEvents.HURT.register(EntityEvents::entityHurts);
-		LivingEntityDamageEvents.HURT.register(EntityEvents::onLivingHurtEvent);
+		LivingDamageEvent.DAMAGE.register(EntityEvents::entityHurts);
+		LivingDamageEvent.DAMAGE.register(EntityEvents::onLivingHurtEvent);
+		UseBlockCallback.EVENT.register(EntityEvents::leadFenceWrought);
 		UseBlockCallback.EVENT.register(EntityEvents::createSkullCandle);
 		PlayerBlockBreakEvents.BEFORE.register(EntityEvents::onCasketBreak);
 		io.github.fabricators_of_create.porting_lib.entity.events.EntityEvents.PROJECTILE_IMPACT.register(EntityEvents::onParryProjectile);
-		PlayerEvents.ADVANCEMENT_GRANT.register(EntityEvents::alertPlayerCastleIsWIP);
-		LivingEntityEvents.TICK.register(EntityEvents::onLivingTickEvent);
-		LivingEntityEvents.JUMP.register(EntityEvents::onLivingJumpEvent);
+		AdvancementCallback.EVENT.register(EntityEvents::alertPlayerCastleIsWIP);
+		LivingEntityEvents.LivingTickEvent.TICK.register(EntityEvents::onLivingTickEvent);
+		LivingEntityEvents.LivingJumpEvent.JUMP.register(EntityEvents::onLivingJumpEvent);
+	}
+
+	public static InteractionResult leadFenceWrought(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
+		ItemStack stack = player.getItemInHand(hand);
+		if (stack.is(Items.LEAD)) {
+			BlockPos pos = hitResult.getBlockPos();
+			BlockState state = level.getBlockState(pos);
+			if (state.is(TFBlocks.WROUGHT_IRON_FENCE.get()) && state.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE) {
+				if (!level.isClientSide()) {
+					LeadItem.bindPlayerMobs(player, level, pos);
+					return InteractionResult.SUCCESS;
+				}
+			}
+		}
+		return InteractionResult.PASS;
 	}
 
 	public static void alertPlayerCastleIsWIP(Player player, Advancement advancement) {
 		if (advancement.getId().equals(TwilightForestMod.prefix("progression_end"))) {
-			player.sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/twilightforest")))));
+			player.sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.experiment115.com/")))));
 		}
 	}
 
-	public static void entityHurts(HurtEvent event) {
-		LivingEntity living = event.damaged;
-		DamageSource source = event.damageSource;
+	public static void entityHurts(LivingDamageEvent event) {
+		LivingEntity living = event.getEntity();
+		DamageSource source = event.getSource();
 		Entity trueSource = source.getEntity();
 
 		// fire react and chill aura
-		if (source.getEntity() != null && trueSource != null && event.damageAmount > 0) {
+		if (source.getEntity() != null && trueSource != null && event.getAmount() > 0) {
 			int fireLevel = getGearCoverage(living, false) * 5;
 			int chillLevel = getGearCoverage(living, true);
 
@@ -121,13 +136,8 @@ public class EntityEvents {
 		if (block == TFBlocks.KEEPSAKE_CASKET.get()) {
 			if (te instanceof KeepsakeCasketBlockEntity casket) {
 				checker = casket.playeruuid;
-			} else checker = null;
-			if (checker != null) {
-				if (!((KeepsakeCasketBlockEntity) te).isEmpty()) {
-					if (!player.hasPermissions(3) || !player.getGameProfile().getId().equals(checker)) {
-						return false;
-					}
-				}
+				if (!casket.isEmpty())
+					return player.hasPermissions(3) && player.getGameProfile().getId().equals(checker);
 			}
 		}
 		return true;
@@ -142,13 +152,13 @@ public class EntityEvents {
 		}
 	}
 
-	public static void onLivingHurtEvent(HurtEvent event) {
-		LivingEntity living = event.damaged;
+	public static void onLivingHurtEvent(LivingDamageEvent event) {
+		LivingEntity living = event.getEntity();
 		if (living != null) {
 			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY.get())).ifPresent(mobEffectInstance -> {
-				if (event.damageSource.is(DamageTypes.FREEZE)) {
-					event.damageAmount = event.damageAmount + (float)(mobEffectInstance.getAmplifier() / 2);
-				} else if (event.damageSource.is(DamageTypeTags.IS_FIRE)) {
+				if (event.getSource().is(DamageTypes.FREEZE)) {
+					event.setAmount(event.getAmount() + (float) (mobEffectInstance.getAmplifier() / 2));
+				} else if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
 					living.removeEffect(TFMobEffects.FROSTY.get());
 					mobEffectInstance.amplifier -= 1;
 					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
@@ -158,7 +168,9 @@ public class EntityEvents {
 	}
 
 	// Parrying
-	public static boolean onParryProjectile(final Projectile projectile, HitResult hitResult) {
+	public static boolean onParryProjectile(ProjectileImpactEvent event) {
+		Projectile projectile = event.getProjectile();
+		HitResult hitResult = event.getRayTraceResult();
 		if (!projectile.getCommandSenderWorld().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.parryNonTwilightAttacks.get() || projectile instanceof ITFProjectile)) {
 
 			if (hitResult instanceof EntityHitResult result) {
@@ -285,20 +297,24 @@ public class EntityEvents {
 		return amount;
 	}
 
-	public static void onLivingTickEvent(LivingEntity living) {
+	public static void onLivingTickEvent(LivingEntityEvents.LivingTickEvent event) {
+		LivingEntity living = event.getEntity();
 		if (living != null && canSpawnCloudParticles(living)) {
 			CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, false);
 		}
 	}
 
 	public static boolean canSpawnCloudParticles(LivingEntity living) {
-		if (living.getDeltaMovement().x == 0.0D && living.getDeltaMovement().z == 0.0D && living.getRandom().nextInt(20) != 0) return false;
+		if (living.getDeltaMovement().x == 0.0D && living.getDeltaMovement().z == 0.0D && living.getRandom().nextInt(20) != 0)
+			return false;
 		return living.tickCount % 2 == 0 && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock;
 	}
 
-	public static void onLivingJumpEvent(LivingEntity living) {
+	public static void onLivingJumpEvent(LivingEntityEvents.LivingJumpEvent event) {
+		LivingEntity living = event.getEntity();
 		if (living != null && living.level().isClientSide() && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock) {
-			for (int i = 0; i < 12; i++) CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
+			for (int i = 0; i < 12; i++)
+				CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
 		}
 	}
 }

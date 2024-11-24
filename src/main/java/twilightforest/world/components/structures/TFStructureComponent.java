@@ -97,10 +97,10 @@ public abstract class TFStructureComponent extends StructurePiece {
 	protected void setDebugCorners(Level world) {
 		if (rotation == null) rotation = Rotation.NONE;
 
-		if (shouldDebug() ) { // && rotation!= Rotation.NONE) {
+		if (shouldDebug()) { // && rotation!= Rotation.NONE) {
 			int i = rotation.ordinal() * 4;
 			DyeColor[] colors = DyeColor.values();
-			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().minX(), this.getBoundingBox().maxY() + i    , this.getBoundingBox().minZ()), ColorUtil.WOOL.getColor(colors[i]));
+			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().minX(), this.getBoundingBox().maxY() + i, this.getBoundingBox().minZ()), ColorUtil.WOOL.getColor(colors[i]));
 			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().maxX(), this.getBoundingBox().maxY() + i + 1, this.getBoundingBox().minZ()), ColorUtil.WOOL.getColor(colors[1 + i]));
 			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().minX(), this.getBoundingBox().maxY() + i + 2, this.getBoundingBox().maxZ()), ColorUtil.WOOL.getColor(colors[2 + i]));
 			world.setBlockAndUpdate(new BlockPos(this.getBoundingBox().maxX(), this.getBoundingBox().maxY() + i + 3, this.getBoundingBox().maxZ()), ColorUtil.WOOL.getColor(colors[3 + i]));
@@ -133,29 +133,29 @@ public abstract class TFStructureComponent extends StructurePiece {
 
 	@Override
 	protected void placeBlock(WorldGenLevel worldIn, BlockState blockstateIn, int x, int y, int z, BoundingBox boundingboxIn) {
-	      BlockPos blockpos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
+		BlockPos blockpos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
 
-	      if (boundingboxIn.isInside(blockpos)) {
-	          if (this.mirror != Mirror.NONE) {
-	             blockstateIn = blockstateIn.mirror(this.mirror);
-	          }
+		if (boundingboxIn.isInside(blockpos)) {
+			if (this.mirror != Mirror.NONE) {
+				blockstateIn = blockstateIn.mirror(this.mirror);
+			}
 
-	          if (this.rotation != Rotation.NONE) {
-	             blockstateIn = blockstateIn.rotate(this.rotation);
-	          }
+			if (this.rotation != Rotation.NONE) {
+				blockstateIn = blockstateIn.rotate(this.rotation);
+			}
 
-	          worldIn.setBlock(blockpos, blockstateIn, 2);
-	          FluidState fluidstate = worldIn.getFluidState(blockpos);
-	          if (!fluidstate.isEmpty()) {
-	             worldIn.scheduleTick(blockpos, fluidstate.getType(), 0);
-	          }
+			worldIn.setBlock(blockpos, blockstateIn, 2);
+			FluidState fluidstate = worldIn.getFluidState(blockpos);
+			if (!fluidstate.isEmpty()) {
+				worldIn.scheduleTick(blockpos, fluidstate.getType(), 0);
+			}
 
-	          if (BLOCKS_NEEDING_POSTPROCESSING.contains(blockstateIn.getBlock())) {
-	             worldIn.getChunk(blockpos).markPosForPostprocessing(blockpos);
-	          }
+			if (BLOCKS_NEEDING_POSTPROCESSING.contains(blockstateIn.getBlock())) {
+				worldIn.getChunk(blockpos).markPosForPostprocessing(blockpos);
+			}
 
-	       }
-	   }
+		}
+	}
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
 	protected void setDebugEntity(Level world, BlockPos blockpos, String s) {

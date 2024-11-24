@@ -10,9 +10,9 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.IBreathAttacker;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
@@ -114,8 +114,8 @@ public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
 		List<Entity> possibleList = this.entityHost.level().getEntities(this.entityHost, this.entityHost.getBoundingBox().move(lookVec.x() * offset, lookVec.y() * offset, lookVec.z() * offset).inflate(var9, var9, var9));
 		double hitDist = 0;
 
-		if(this.entityHost instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity())
-		possibleList.removeAll(Arrays.asList(Objects.requireNonNull(partEntity.getParts())));
+		if (this.entityHost instanceof MultiPartEntity partEntity && partEntity.isMultipartEntity())
+			possibleList.removeAll(Arrays.asList(Objects.requireNonNull(partEntity.getParts())));
 
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.isPickable() && possibleEntity != this.entityHost && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(possibleEntity)) {

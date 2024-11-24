@@ -1,15 +1,13 @@
 package twilightforest.client.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.particle.*;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LightLayer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 public class FireflyParticle extends TextureSheetParticle {
 

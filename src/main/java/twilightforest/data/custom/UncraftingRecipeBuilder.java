@@ -120,8 +120,8 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 			Set<Character> set = Sets.newHashSet(this.outputs.keySet());
 			set.remove(' ');
 
-			for(String s : this.pattern) {
-				for(int i = 0; i < s.length(); ++i) {
+			for (String s : this.pattern) {
+				for (int i = 0; i < s.length(); ++i) {
 					char c0 = s.charAt(i);
 					if (!this.outputs.containsKey(c0) && c0 != ' ') {
 						throw new IllegalStateException("Pattern in recipe " + id + " uses undefined symbol '" + c0 + "'");
@@ -163,14 +163,14 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 		public void serializeRecipeData(JsonObject object) {
 			JsonArray jsonarray = new JsonArray();
 
-			for(String s : this.pattern) {
+			for (String s : this.pattern) {
 				jsonarray.add(s);
 			}
 
 			object.add("pattern", jsonarray);
 			JsonObject keys = new JsonObject();
 
-			for(Map.Entry<Character, Ingredient> entry : this.outputs.entrySet()) {
+			for (Map.Entry<Character, Ingredient> entry : this.outputs.entrySet()) {
 				keys.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
 			}
 

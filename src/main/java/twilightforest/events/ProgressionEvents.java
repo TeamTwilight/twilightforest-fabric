@@ -1,7 +1,6 @@
 package twilightforest.events;
 
-import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityDamageEvents;
-import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEntityDamageEvents.HurtEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingDamageEvent;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -44,7 +43,7 @@ import java.util.Optional;
 public class ProgressionEvents {
 
 	public static void init() {
-		LivingEntityDamageEvents.HURT.register(ProgressionEvents::livingAttack);
+		LivingDamageEvent.DAMAGE.register(ProgressionEvents::livingAttack);
 		UseBlockCallback.EVENT.register(ProgressionEvents::onPlayerRightClick);
 		PlayerBlockBreakEvents.BEFORE.register(ProgressionEvents::breakBlock);
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(ProgressionEvents::playerPortals);
@@ -55,12 +54,7 @@ public class ProgressionEvents {
 	 */
 	public static boolean breakBlock(Level level, Player player, BlockPos pos, BlockState state, /* Nullable */ BlockEntity blockEntity) {
 		if (level.isClientSide()) return true;
-
-		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, player, pos)) {
-			return false;
-
-		}
-		return true;
+		return !isBlockProtectedFromBreaking(level, pos) || !isAreaProtected(level, player, pos);
 	}
 
 	/**
@@ -131,15 +125,15 @@ public class ProgressionEvents {
 		TFPacketHandler.CHANNEL.sendToClientsAround(new AreaProtectionPacket(sbb, pos), (ServerLevel) level, pos, 64);
 	}
 
-	public static void livingAttack(HurtEvent event) {
-		LivingEntity living = event.damaged;
-		DamageSource source = event.damageSource;
+	public static void livingAttack(LivingDamageEvent event) {
+		LivingEntity living = event.getEntity();
+		DamageSource source = event.getSource();
 
 		// cancel attacks in protected areas
 		if (!living.level().isClientSide() && living instanceof Enemy && source.getEntity() instanceof Player && !(living instanceof Kobold)
 				&& isAreaProtected(living.level(), (Player) source.getEntity(), new BlockPos(living.blockPosition()))) {
 
-			event.cancel();
+			event.setCanceled(true);
 		}
 	}
 

@@ -6,9 +6,6 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import twilightforest.TFConfig;
 
 import java.util.List;
@@ -71,8 +68,8 @@ public class SyncUncraftingTableConfigPacket implements S2CPacket {
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.set(this.uncraftingMultiplier);
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.set(this.repairingMultiplier);
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.set(this.allowShapeless);
-			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.set(message.disabledUncrafting);
-				TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.set(this.disabledTable);
+			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.set(this.disabledUncrafting);
+			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.set(this.disabledTable);
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.set(this.disabledRecipes);
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.set(this.flipRecipeList);
 			TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.set(this.disabledModids);

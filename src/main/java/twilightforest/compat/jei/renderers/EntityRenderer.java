@@ -77,7 +77,7 @@ public class EntityRenderer implements IIngredientRenderer<EntityType> {
 						modelView.popPose();
 						RenderSystem.applyModelViewMatrix();
 					} catch (Exception e) {
-						TwilightForestMod.LOGGER.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
+						TwilightForestMod.LOGGER.error("Error drawing entity {}", BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
 						IGNORED_ENTITIES.add(type);
 						this.ENTITY_MAP.remove(type);
 					}

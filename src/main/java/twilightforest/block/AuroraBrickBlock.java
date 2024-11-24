@@ -248,16 +248,7 @@ public class AuroraBrickBlock extends Block {
 
 		// Inner class to speed upp gradient computations
 		// (In Java, array access is a lot slower than member access)
-		private static class Grad {
-			final float x;
-			final float y;
-			final float z;
-
-			Grad(float x, float y, float z) {
-				this.x = x;
-				this.y = y;
-				this.z = z;
-			}
+		private record Grad(float x, float y, float z) {
 		}
 	}
 }

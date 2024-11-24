@@ -39,9 +39,8 @@ public interface LightableBlock {
 			if (player.getItemInHand(hand).is(Items.FLINT_AND_STEEL)) {
 				setLit(level, state, pos, true);
 				level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
-				if (!player.getAbilities().instabuild) player.getItemInHand(hand).hurtAndBreak(1, player, (res) -> {
-					res.broadcastBreakEvent(hand);
-				});
+				if (!player.getAbilities().instabuild)
+					player.getItemInHand(hand).hurtAndBreak(1, player, (res) -> res.broadcastBreakEvent(hand));
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			} else if (player.getItemInHand(hand).is(Items.FIRE_CHARGE)) {
 				setLit(level, state, pos, true);

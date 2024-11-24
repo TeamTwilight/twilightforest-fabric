@@ -1,6 +1,7 @@
 package twilightforest.client.model.block.doors;
 
 import com.mojang.math.Transformation;
+import io.github.fabricators_of_create.porting_lib.models.geometry.IUnbakedGeometry;
 import io.github.fabricators_of_create.porting_lib.models.geometry.SimpleModelState;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
@@ -9,31 +10,27 @@ import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import org.joml.Vector3f;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.*;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Vector3f;
 import twilightforest.mixin.BlockModelAccessor;
 
-import java.util.*;
+import java.util.Map;
 import java.util.function.Function;
 
-//for now, im keeping this hardcoded to a 2 layer block, with the overlay layer being fullbright and tinted.
-//It might be worth expanding this in the future to be more flexible for other kinds of blocks (1 layer blocks, determining emissivity and tinting per layer, maybe >2 layer blocks?) but for now, I see no point.
-//I only wanted this system for castle doors after all!
-public class UnbakedCastleDoorModel extends BlockModel {
+public class UnbakedCastleDoorModel implements IUnbakedGeometry<UnbakedCastleDoorModel> {
 
 	private final BlockElement[][] baseElements;
 	private final BlockElement[][][] faceElements;
 
-	private final BlockModel ownerModel;
-
-	public UnbakedCastleDoorModel(BlockModel ownerModel) {
-		super(ownerModel.parentLocation, ownerModel.getElements(), ownerModel.textureMap, ownerModel.hasAmbientOcclusion(), ownerModel.getGuiLight(), ownerModel.getTransforms(), ownerModel.getOverrides());
-		this.ownerModel = ownerModel;
+	public UnbakedCastleDoorModel() {
 		//base elements - the base block. No Connected Textures on this bit.
 		//the array is made of the directions and quads
 		this.baseElements = new BlockElement[6][4];
@@ -60,7 +57,7 @@ public class UnbakedCastleDoorModel extends BlockModel {
 	}
 
 	@Override
-	public BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ResourceLocation modelLocation) {
+	public BakedModel bake(BlockModel context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation, boolean isGui3d) {
 		Transformation transformation = Transformation.identity();
 		if (!transformation.isIdentity()) {
 			modelState = new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
@@ -71,7 +68,7 @@ public class UnbakedCastleDoorModel extends BlockModel {
 		//making an array list like this is cursed, would not recommend
 		@SuppressWarnings("unchecked") //this is fine, I hope
 		Mesh[] baseQuads = new Mesh[6];
-		TextureAtlasSprite baseTexture = spriteGetter.apply(ownerModel.getMaterial("base"));
+		TextureAtlasSprite baseTexture = spriteGetter.apply(context.getMaterial("base"));
 
 		for (int dir = 0; dir < 6; dir++) {
 			MeshBuilder builder = renderer.meshBuilder();
@@ -87,7 +84,7 @@ public class UnbakedCastleDoorModel extends BlockModel {
 
 		//we'll use this to figure out which texture to use with the Connected Texture logic
 		//NONE uses the first one, everything else uses the 2nd one
-		TextureAtlasSprite[] sprites = new TextureAtlasSprite[]{spriteGetter.apply(ownerModel.getMaterial("overlay")), spriteGetter.apply(ownerModel.getMaterial("overlay_connected"))};
+		TextureAtlasSprite[] sprites = new TextureAtlasSprite[]{spriteGetter.apply(context.getMaterial("overlay")), spriteGetter.apply(context.getMaterial("overlay_connected"))};
 
 		BakedQuad[][][] quads = new BakedQuad[6][4][5];
 
@@ -100,15 +97,6 @@ public class UnbakedCastleDoorModel extends BlockModel {
 			}
 		}
 
-		return new CastleDoorModel(baseQuads, quads, spriteGetter.apply(ownerModel.getMaterial("particle")), ((BlockModelAccessor)ownerModel).tf$callGetItemOverrides(baker, ownerModel), ownerModel.getTransforms());
-	}
-
-	@Override
-	public Collection<ResourceLocation> getDependencies() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public void resolveParents(Function<ResourceLocation, UnbakedModel> models) {
+		return new CastleDoorModel(baseQuads, quads, spriteGetter.apply(context.getMaterial("particle")), ((BlockModelAccessor) context).tf$callGetItemOverrides(baker, context), context.getTransforms());
 	}
 }

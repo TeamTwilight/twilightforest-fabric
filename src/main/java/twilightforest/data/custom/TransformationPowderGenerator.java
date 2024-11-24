@@ -1,7 +1,6 @@
 package twilightforest.data.custom;
 
 import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
 import twilightforest.TwilightForestMod;

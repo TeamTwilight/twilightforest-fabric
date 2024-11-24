@@ -8,10 +8,9 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.FireflyBlockEntity;
 import twilightforest.init.TFBlockEntities;
-
-import org.jetbrains.annotations.Nullable;
 import twilightforest.loot.TFLootTables;
 
 public class FireflyBlock extends CritterBlock {

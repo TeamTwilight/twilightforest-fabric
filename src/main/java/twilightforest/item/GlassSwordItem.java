@@ -21,7 +21,7 @@ public class GlassSwordItem extends SwordItem {
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if(target.level() instanceof ServerLevel server) {
+		if (target.level() instanceof ServerLevel server) {
 			for (int i = 0; i < 20; i++) {
 				double px = target.getX() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth();
 				double py = target.getY() + target.getRandom().nextFloat() * target.getBbHeight();

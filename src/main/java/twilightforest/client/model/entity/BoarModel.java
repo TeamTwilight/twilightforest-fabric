@@ -17,7 +17,7 @@ public class BoarModel<T extends Boar> extends PigModel<T> {
 		PartDefinition partRoot = mesh.getRoot();
 
 		partRoot.addOrReplaceChild("head", CubeListBuilder.create()
-						.texOffs(0,0)
+						.texOffs(0, 0)
 						.addBox(-4.0F, -2.0F, -6.0F, 8.0F, 7.0F, 6.0F)
 						.texOffs(28, 0)
 						.addBox(-3.0F, 1.0F, -9.0F, 6.0F, 4.0F, 3.0F)

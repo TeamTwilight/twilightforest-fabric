@@ -20,17 +20,25 @@ import java.util.concurrent.Executor;
 public class MazeMapPacket implements S2CPacket {
 
 	private final ClientboundMapItemDataPacket inner;
+	private final boolean ore;
+	private final int yCenter;
 
-	public MazeMapPacket(ClientboundMapItemDataPacket inner) {
+	public MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int yCenter) {
 		this.inner = inner;
+		this.ore = ore;
+		this.yCenter = yCenter;
 	}
 
 	public MazeMapPacket(FriendlyByteBuf buf) {
 		this.inner = new ClientboundMapItemDataPacket(buf);
+		this.ore = buf.readBoolean();
+		this.yCenter = buf.readVarInt();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
 		this.inner.write(buf);
+		buf.writeBoolean(ore);
+		buf.writeVarInt(yCenter);
 	}
 
 	@Override
@@ -54,6 +62,8 @@ public class MazeMapPacket implements S2CPacket {
 						TFMazeMapData.registerMazeMapData(Minecraft.getInstance().level, mapdata, s);
 					}
 
+					mapdata.ore = message.ore;
+					mapdata.yCenter = message.yCenter;
 					message.inner.applyToMap(mapdata);
 					mapitemrenderer.update(message.inner.getMapId(), mapdata);
 				}

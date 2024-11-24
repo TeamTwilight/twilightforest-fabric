@@ -25,7 +25,7 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichModel> {
 			if (lich.deathTime > 50) {
 				stack.translate(0.0D, -1.8D * Math.pow(Math.min(((float) (lich.deathTime - 50) + partialTicks) * 0.05D, 1.0D), 3.0D), 0.0D);
 			} else {
-				float time = (float)lich.deathTime + partialTicks;
+				float time = (float) lich.deathTime + partialTicks;
 				stack.translate(Math.sin(time * time) * 0.01D, 0.0D, Math.cos(time * time) * 0.01D);
 			}
 		}

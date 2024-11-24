@@ -307,7 +307,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
-		DamageSource source = this.getCurrentPhase() == Phase.DROP ? TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.SQUISH, TFEntities.SNOW_QUEEN.get()) : this.level().damageSources().mobAttack(this);
+		DamageSource source = this.getCurrentPhase() == Phase.DROP ? TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SQUISH, this, TFEntities.SNOW_QUEEN.get()) : this.level().damageSources().mobAttack(this);
 		return EntityUtil.properlyApplyCustomDamageSource(this, entity, source);
 	}
 
@@ -332,7 +332,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 		boolean result = super.hurt(source, damage);
 
 		if (result && this.getCurrentPhase() == Phase.BEAM) {
-			this.damageWhileBeaming += damage;
+			this.damageWhileBeaming += (int) damage;
 		}
 
 		if (source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
@@ -464,7 +464,7 @@ public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomeP
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		target.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.CHILLING_BREATH, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
+		target.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CHILLING_BREATH, this, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
 		// TODO: slow target?
 	}
 

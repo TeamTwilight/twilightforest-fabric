@@ -16,7 +16,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFRecipes;
 
-public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> input, EntityType<?> result, boolean isReversible) implements Recipe<Container> {
+public record TransformPowderRecipe(ResourceLocation recipeID, EntityType<?> input, EntityType<?> result,
+									boolean isReversible) implements Recipe<Container> {
 
 	@Override
 	public boolean matches(Container container, Level level) {

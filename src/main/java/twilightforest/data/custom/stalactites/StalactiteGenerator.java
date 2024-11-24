@@ -1,7 +1,6 @@
 package twilightforest.data.custom.stalactites;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.stalactites.entry.Stalactite;

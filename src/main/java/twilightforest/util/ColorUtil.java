@@ -1,10 +1,10 @@
 package twilightforest.util;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.AbstractMap;
 import java.util.Map;
@@ -105,7 +105,7 @@ public record ColorUtil(Function<DyeColor, Block> function) {
 			}
 			if (h < 0) {
 				h += 1;
-			}else if (h > 1) {
+			} else if (h > 1) {
 				h -= 1;
 			}
 		}
@@ -127,12 +127,13 @@ public record ColorUtil(Function<DyeColor, Block> function) {
 			case 3 -> rgb(p, q, value);
 			case 4 -> rgb(t, p, value);
 			case 5 -> rgb(value, p, q);
-			default -> throw new RuntimeException("Something went wrong when converting from HSV to RGB. Input was " + hue + ", " + saturation + ", " + value);
+			default ->
+					throw new RuntimeException("Something went wrong when converting from HSV to RGB. Input was " + hue + ", " + saturation + ", " + value);
 		};
 	}
 
 	private static int rgb(float r, float g, float b) {
-		return (((int)((r * 255F) + 0.5F) & 0xFF) << 16) | (((int)((g * 255F) + 0.5F) & 0xFF) << 8) | ((int)((b * 255F) + 0.5F) & 0xFF);
+		return (((int) ((r * 255F) + 0.5F) & 0xFF) << 16) | (((int) ((g * 255F) + 0.5F) & 0xFF) << 8) | ((int) ((b * 255F) + 0.5F) & 0xFF);
 	}
 
 	public static int argbToABGR(int argbColor) {

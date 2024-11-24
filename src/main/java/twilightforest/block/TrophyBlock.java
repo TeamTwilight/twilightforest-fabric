@@ -17,7 +17,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.enums.BossVariant;
 
 public class TrophyBlock extends AbstractTrophyBlock {
-
 	public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
 	protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
 	public static final VoxelShape GHAST_SHAPE = Block.box(4.0D, 8.0D, 4.0D, 12.0D, 16.0D, 12.0D);

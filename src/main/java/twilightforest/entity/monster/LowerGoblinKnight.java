@@ -1,5 +1,7 @@
 package twilightforest.entity.monster;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -21,13 +23,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFEntities;
-import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
-
 import org.jetbrains.annotations.Nullable;
+import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFSounds;
+
 import java.util.Objects;
 
 public class LowerGoblinKnight extends Monster {
@@ -134,17 +134,17 @@ public class LowerGoblinKnight extends Monster {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT.get() : TFSounds.GOBLIN_KNIGHT_AMBIENT.get();
+		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT.get() : TFSounds.GOBLIN_KNIGHT_AMBIENT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH.get() : TFSounds.GOBLIN_KNIGHT_DEATH.get();
+		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH.get() : TFSounds.GOBLIN_KNIGHT_DEATH.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return this.isVehicle() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT.get() : TFSounds.GOBLIN_KNIGHT_HURT.get();
+		return this.hasArmor() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT.get() : TFSounds.GOBLIN_KNIGHT_HURT.get();
 	}
 
 	@Override

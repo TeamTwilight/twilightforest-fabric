@@ -5,7 +5,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.ThrowPlayerPacket;
@@ -43,7 +42,7 @@ public class YetiThrowCapabilityHandler implements YetiThrowCapability {
 				this.host.push(this.throwVector.x(), this.throwVector.y(), this.throwVector.z());
 
 				if (this.host instanceof ServerPlayer player) {
-					TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new ThrowPlayerPacket(this.throwVector.x(), this.throwVector.y(), this.throwVector.z()));
+					TFPacketHandler.CHANNEL.sendToClient(new ThrowPlayerPacket(this.throwVector.x(), this.throwVector.y(), this.throwVector.z()), player);
 				}
 				this.throwVector = Vec3.ZERO;
 			}

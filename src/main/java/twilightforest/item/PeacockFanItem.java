@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.block.LightableBlock;
-import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.fan.FeatherFanFallCapability;
 import twilightforest.init.TFSounds;

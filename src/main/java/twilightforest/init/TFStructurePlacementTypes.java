@@ -15,7 +15,7 @@ public class TFStructurePlacementTypes {
 
 	public static final RegistryObject<StructurePlacementType<BiomeForcedLandmarkPlacement>> FORCED_LANDMARK_PLACEMENT_TYPE = registerPlacer("forced_landmark", () -> () -> BiomeForcedLandmarkPlacement.CODEC);
 
-    private static <P extends StructurePlacement> RegistryObject<StructurePlacementType<P>> registerPlacer(String name, Supplier<StructurePlacementType<P>> factory) {
-        return STRUCTURE_PLACEMENT_TYPES.register(name, factory);
-    }
+	private static <P extends StructurePlacement> RegistryObject<StructurePlacementType<P>> registerPlacer(String name, Supplier<StructurePlacementType<P>> factory) {
+		return STRUCTURE_PLACEMENT_TYPES.register(name, factory);
+	}
 }

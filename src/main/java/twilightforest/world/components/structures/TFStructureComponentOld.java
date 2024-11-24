@@ -88,11 +88,13 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	}
 
 	protected void setSpawner(WorldGenLevel world, Vec3i pos, BoundingBox sbb, EntityType<?> monsterID) {
-		setSpawner(world, pos.getX(), pos.getY(), pos.getZ(), sbb, monsterID, v -> {});
+		setSpawner(world, pos.getX(), pos.getY(), pos.getZ(), sbb, monsterID, v -> {
+		});
 	}
 
 	protected void setSpawner(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, EntityType<?> monsterID) {
-		setSpawner(world, x, y, z, sbb, monsterID, v -> {});
+		setSpawner(world, x, y, z, sbb, monsterID, v -> {
+		});
 	}
 
 	// [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
@@ -148,7 +150,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 	/**
 	 * Place a treasure chest at the specified coordinates
-	 *
 	 */
 	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFLootTables treasureType, BoundingBox sbb) {
 		this.placeTreasureAtCurrentPosition(world, x, y, z, treasureType, false, sbb);
@@ -156,7 +157,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 	/**
 	 * Place a treasure chest at the specified coordinates
-	 *
 	 */
 	protected void placeTreasureAtCurrentPosition(WorldGenLevel world, int x, int y, int z, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
 		int dx = getWorldX(x, z);
@@ -173,7 +173,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 	/**
 	 * Place a treasure chest at the specified coordinates
-	 *
 	 */
 	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFLootTables treasureType, BoundingBox sbb) {
 		this.placeTreasureRotated(world, x, y, z, facing, rotation, treasureType, false, sbb);
@@ -181,14 +180,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 
 	/**
 	 * Place a treasure chest at the specified coordinates
-	 *
 	 */
 	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, TFLootTables treasureType, boolean trapped, BoundingBox sbb) {
-		if(facing == null) {
-			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
-			facing = Direction.NORTH;
-		}
-
 		int dx = getXWithOffsetRotated(x, z, rotation);
 		int dy = getWorldY(y);
 		int dz = getZWithOffsetRotated(x, z, rotation);
@@ -231,9 +224,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 	/**
 	 * Places a tripwire.
 	 * <p>
-	 * Tries to delay notifying tripwire blocks of placement so they won't
+	 * Tries to delay notifying tripwire blocks of placement, so they won't
 	 * scan unloaded chunks looking for connections.
-	 *
 	 */
 	protected void placeTripwire(WorldGenLevel world, int x, int y, int z, int size, Direction facing, BoundingBox sbb) {
 
@@ -261,7 +253,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 			world.setBlock(pos, Blocks.OAK_SIGN.defaultBlockState().setValue(StandingSignBlock.ROTATION, this.getOrientation().get2DDataValue() * 4), 2);
 
 			if (world.getBlockEntity(pos) instanceof SignBlockEntity sign) {
-				sign.frontText = sign.frontText.setMessage(1, Component.literal(string0)).setMessage(2, Component.literal(string1));
+				sign.setLevel(world.getLevel());
+				sign.setText(sign.getFrontText().setMessage(1, Component.literal(string0)).setMessage(2, Component.literal(string1)), true);
 			}
 		}
 	}
@@ -285,7 +278,6 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 			return new int[]{dx - towerSize / 2, dy - 1, dz - 1};
 		}
 
-
 		// ugh?
 		return new int[]{x, y, z};
 	}
@@ -299,21 +291,17 @@ public abstract class TFStructureComponentOld extends TFStructureComponent {
 		int dy = getWorldY(y);
 		int dz = getWorldZ(x, z);
 
-		switch (direction) {
-			case SOUTH:
-				return new BlockPos(dx + 1, dy - 1, dz - towerSize / 2);
-			case WEST:
-				return new BlockPos(dx + towerSize / 2, dy - 1, dz + 1);
-			case NORTH:
-				return new BlockPos(dx - 1, dy - 1, dz + towerSize / 2);
-			case EAST:
-				return new BlockPos(dx - towerSize / 2, dy - 1, dz - 1);
-			default:
-				break;
-		}
+		return switch (direction) {
+			case SOUTH -> new BlockPos(dx + 1, dy - 1, dz - towerSize / 2);
+			case WEST -> new BlockPos(dx + towerSize / 2, dy - 1, dz + 1);
+			case NORTH -> new BlockPos(dx - 1, dy - 1, dz + towerSize / 2);
+			case EAST -> new BlockPos(dx - towerSize / 2, dy - 1, dz - 1);
+			default ->
 
-		// ugh?
-		return new BlockPos(x, y, z);
+				// ugh?
+					new BlockPos(x, y, z);
+		};
+
 	}
 
 	@Override

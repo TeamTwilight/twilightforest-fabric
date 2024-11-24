@@ -11,7 +11,6 @@ import twilightforest.entity.boss.Lich;
 public enum EffectRenders {
 
 	SHIELDS {
-
 		@Override
 		public boolean shouldRender(LivingEntity entity, boolean firstPerson) {
 			if (entity instanceof Lich) return false;
@@ -20,7 +19,7 @@ public enum EffectRenders {
 
 		@Override
 		public void render(LivingEntity entity, EntityModel<? extends LivingEntity> renderer,
-		                   double x, double y, double z, float partialTicks, boolean firstPerson) {
+						   double x, double y, double z, float partialTicks, boolean firstPerson) {
 
 			PoseStack ms = RenderSystem.getModelViewStack();
 			ms.pushPose();
@@ -42,7 +41,7 @@ public enum EffectRenders {
 	}
 
 	public void render(LivingEntity entity, EntityModel<? extends LivingEntity> renderer,
-	                   double x, double y, double z, float partialTicks, boolean firstPerson) {
+					   double x, double y, double z, float partialTicks, boolean firstPerson) {
 
 	}
 }

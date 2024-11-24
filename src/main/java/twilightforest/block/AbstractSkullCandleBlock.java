@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import com.mojang.authlib.GameProfile;
-import io.github.fabricators_of_create.porting_lib.block.LightEmissiveBlock;
 import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
 import net.minecraft.core.BlockPos;
@@ -57,7 +56,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	}
 
 	@Override
-	public int getLightEmission(BlockState state, BlockGetter getter, BlockPos pos) {
+	public int getLightBlock(BlockState state, BlockGetter getter, BlockPos pos) {
 		if (getter.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
 			switch (state.getValue(LIGHTING)) {
 				case NONE -> {
@@ -140,7 +139,8 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 					tag.putInt("CandleColor", sc.getCandleColor());
 					tag.putInt("CandleAmount", sc.getCandleAmount());
 					newStack.addTagElement("BlockEntityTag", tag);
-					if (sc.getOwnerProfile() != null) newStack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), sc.getOwnerProfile()));
+					if (sc.getOwnerProfile() != null)
+						newStack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), sc.getOwnerProfile()));
 					drops.remove(skullStack.get());
 					drops.add(newStack);
 				} else {

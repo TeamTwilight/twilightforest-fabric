@@ -15,9 +15,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.SilverfishModel;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.SilverfishModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
@@ -46,20 +43,12 @@ import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraNeck;
 import twilightforest.entity.boss.NagaSegment;
 import twilightforest.entity.boss.SnowQueenIceShield;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFItems;
-import twilightforest.init.TFMenuTypes;
-import twilightforest.init.TFParticleType;
+import twilightforest.init.*;
 import twilightforest.util.TFWoodTypes;
 
 import java.util.HashMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
-import java.util.function.BooleanSupplier;
-
-import static twilightforest.init.TFEntities.*;
 
 public class TFClientSetup implements ClientModInitializer {
 
@@ -81,7 +70,12 @@ public class TFClientSetup implements ClientModInitializer {
 		registerEntityRenderers();
 		LivingEntityFeatureRendererRegistrationCallback.EVENT.register(TFClientSetup::attachRenderLayers);
 		BuiltinItemRendererRegistry.INSTANCE.register(TFItems.KNIGHTMETAL_SHIELD.get(), ISTER.INSTANCE.get());
+		TFBlocks.ISTER_ITEMS.forEach(x -> BuiltinItemRendererRegistry.INSTANCE.register(x, ISTER.INSTANCE.get()));
+		TFItems.ISTER_ITEMS.forEach(x -> BuiltinItemRendererRegistry.INSTANCE.register(x.get(), ISTER.INSTANCE.get()));
+
 		addJappaPackListener();
+
+		CloudEvents.register();
 	}
 
 	public static class FabricEvents {
@@ -110,32 +104,28 @@ public class TFClientSetup implements ClientModInitializer {
 		Sheets.SIGN_MATERIALS.put(woodType, Sheets.createSignMaterial(woodType));
 	}
 
-    public static void clientSetup() {
+	public static void clientSetup() {
 		optifinePresent = FabricLoader.getInstance().isModLoaded("sodium") && !FabricLoader.getInstance().isModLoaded("indium");
 
-        TFBlockEntities.registerTileEntityRenders();
-        TFMenuTypes.renderScreens();
+		TFBlockEntities.registerTileEntityRenders();
+		TFMenuTypes.renderScreens();
 
-//        evt.enqueueWork(() -> {
-            registerWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
-			registerWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
-			registerWoodType(TFWoodTypes.MANGROVE_WOOD_TYPE);
-			registerWoodType(TFWoodTypes.DARK_WOOD_TYPE);
-			registerWoodType(TFWoodTypes.TIME_WOOD_TYPE);
-			registerWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
-			registerWoodType(TFWoodTypes.MINING_WOOD_TYPE);
-			registerWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
-//        });
+		registerWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
+		registerWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
+		registerWoodType(TFWoodTypes.MANGROVE_WOOD_TYPE);
+		registerWoodType(TFWoodTypes.DARK_WOOD_TYPE);
+		registerWoodType(TFWoodTypes.TIME_WOOD_TYPE);
+		registerWoodType(TFWoodTypes.TRANSFORMATION_WOOD_TYPE);
+		registerWoodType(TFWoodTypes.MINING_WOOD_TYPE);
+		registerWoodType(TFWoodTypes.SORTING_WOOD_TYPE);
 
-		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-			ClientLifecycleEvents.CLIENT_STARTED.register(TrinketsCompat::registerCurioRenderers);
-		}
-    }
+		if (FabricLoader.getInstance().isModLoaded("trinkets"))
+			ClientLifecycleEvents.CLIENT_STARTED.register(client -> TrinketsCompat.registerCurioRenderers());
+	}
 
 	public static void addJappaPackListener() {
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(JappaPackReloadListener.INSTANCE);
 		JappaPackReloadListener.clientSetup();
-		// TODO PORT 1.20 add MagicPaintingTextureManager
 	}
 
 	public static void registerEntityRenderers() {
@@ -247,7 +237,7 @@ public class TFClientSetup implements ClientModInitializer {
 		}
 	}
 
-	private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(EntityType<? extends LivingEntity> entityType, LivingEntityRenderer<?, ?> renderer, RegistrationHelper registrationHelper, EntityRendererProvider.Context context) {
+	private static void attachRenderLayers(EntityType<? extends LivingEntity> entityType, LivingEntityRenderer<?, ?> renderer, RegistrationHelper registrationHelper, EntityRendererProvider.Context context) {
 		registrationHelper.register(new ShieldLayer<>(renderer));
 		registrationHelper.register(new IceLayer<>(renderer));
 	}

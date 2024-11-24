@@ -1,5 +1,6 @@
 package twilightforest.inventory;
 
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,9 +20,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-
-import io.github.fabricators_of_create.porting_lib.tags.Tags;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
@@ -340,7 +338,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
 		CraftingRecipe recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
 
-		if (recipe != null && (recipe.isSpecial() || !this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe))) {
+		if (recipe != null && !recipe.isSpecial() && (!this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(recipe))) {
 			this.tinkerResult.setRecipeUsed(recipe);
 			this.tinkerResult.setItem(0, recipe.assemble(inventory, this.level.registryAccess()));
 		} else {

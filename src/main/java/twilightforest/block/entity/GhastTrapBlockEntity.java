@@ -10,14 +10,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFSounds;
 import twilightforest.block.GhastTrapBlock;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFParticleType;
 import twilightforest.entity.boss.UrGhast;
 import twilightforest.entity.monster.CarminiteGhastguard;
 import twilightforest.entity.monster.CarminiteGhastling;
+import twilightforest.init.TFBlockEntities;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFParticleType;
+import twilightforest.init.TFSounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 		if (level.isClientSide()) {
 			// occasionally make a redstone line to a mini ghast
-			if (te.counter % 20 == 0 && nearbyGhasts.size() > 0) {
+			if (te.counter % 20 == 0 && !nearbyGhasts.isEmpty()) {
 				CarminiteGhastling highlight = nearbyGhasts.get(te.rand.nextInt(nearbyGhasts.size()));
 				te.makeParticlesTo(highlight);
 			}
@@ -100,10 +100,12 @@ public class GhastTrapBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, GhastTrapBlockEntity te) {
-		if (state.getValue(GhastTrapBlock.ACTIVE)) {
-			te.tickActive(level, pos, state, te);
-		} else {
-			te.tickInactive(level, pos, state, te);
+		if (!level.isDebug()) {
+			if (state.getValue(GhastTrapBlock.ACTIVE)) {
+				te.tickActive(level, pos, state, te);
+			} else {
+				te.tickInactive(level, pos, state, te);
+			}
 		}
 	}
 

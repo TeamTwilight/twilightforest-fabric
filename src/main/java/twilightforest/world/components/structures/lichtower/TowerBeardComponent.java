@@ -57,10 +57,9 @@ public class TowerBeardComponent extends TFStructureComponentOld {
 
 	private void makePyramidBeard(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {
 		for (int y = 0; y <= height; y++) {
-			int min = y;
 			int max = size - y - 1;
 
-			generateBox(world, sbb, min, height - y, min, max, height - y, max, false, rand, TFStructureComponentOld.getStrongholdStones());
+			generateBox(world, sbb, y, height - y, y, max, height - y, max, false, rand, TFStructureComponentOld.getStrongholdStones());
 		}
 	}
 }

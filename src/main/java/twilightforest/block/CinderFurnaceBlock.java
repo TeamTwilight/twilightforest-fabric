@@ -1,6 +1,8 @@
 package twilightforest.block;
 
 import io.github.fabricators_of_create.porting_lib.block.LightEmissiveBlock;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -25,12 +27,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CinderFurnaceBlockEntity;
 import twilightforest.init.TFBlockEntities;
-
-import org.jetbrains.annotations.Nullable;
 
 public class CinderFurnaceBlock extends BaseEntityBlock implements LightEmissiveBlock {
 

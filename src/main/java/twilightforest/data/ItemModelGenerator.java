@@ -1,22 +1,21 @@
 package twilightforest.data;
 
 import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
-import io.github.fabricators_of_create.porting_lib.models.builders.ItemLayerModelBuilder;
 import io.github.fabricators_of_create.porting_lib.models.generators.ModelFile;
 import io.github.fabricators_of_create.porting_lib.models.generators.item.ItemModelBuilder;
 import io.github.fabricators_of_create.porting_lib.models.generators.item.ItemModelProvider;
-import net.minecraft.core.Registry;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.SeparateTransformsModelBuilder;
+import twilightforest.client.model.TFItemLayerModelBuilder;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.item.Experiment115Item;
@@ -33,7 +32,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		for (Item i : BuiltInRegistries.ITEM) {
 			if (i instanceof SpawnEggItem && BuiltInRegistries.ITEM.getKey(i).getNamespace().equals(TwilightForestMod.ID)) {
 				getBuilder(BuiltInRegistries.ITEM.getKey(i).getPath())
-								.parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
+						.parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
 			}
 		}
 		toBlock(TFBlocks.TOWERWOOD.get());
@@ -70,7 +69,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.CRACKED_DEADROCK.get());
 		toBlock(TFBlocks.WEATHERED_DEADROCK.get());
 		getBuilder(TFBlocks.TROLLSTEINN.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
-						.texture("all", prefix("block/trollsteinn"));
+				.texture("all", prefix("block/trollsteinn"));
 		toBlock(TFBlocks.WISPY_CLOUD.get());
 		toBlock(TFBlocks.FLUFFY_CLOUD.get());
 		toBlock(TFBlocks.RAINY_CLOUD.get());
@@ -79,16 +78,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 		float giant = 4.0F;
 
 		ItemModelBuilder giant_block = withExistingParent("giant_block_base", new ResourceLocation("block/cube")).transforms()
-				.transform(ItemDisplayContext.GROUND).translation( 0.0F, 3.0F, 0.0F).scale(0.25F * giant).end()
+				.transform(ItemDisplayContext.GROUND).translation(0.0F, 3.0F, 0.0F).scale(0.25F * giant).end()
 				.transform(ItemDisplayContext.FIXED).scale(0.5F * giant * 0.625F).end()
-				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(75.0F, 45.0F, 0.0F).translation( 0.0F, 2.5F * giant, 0.0F).scale(0.375F * giant).end()
-				.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, 45.0F, 0.0F).translation( 0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end()
-				.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(1.0F, 225.0F, 0.0F).translation( 0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end().end()
-				.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0,0,16,16).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
+				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(75.0F, 45.0F, 0.0F).translation(0.0F, 2.5F * giant, 0.0F).scale(0.375F * giant).end()
+				.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, 45.0F, 0.0F).translation(0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end()
+				.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(1.0F, 225.0F, 0.0F).translation(0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end().end()
+				.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0, 0, 16, 16).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
 
 		ItemModelBuilder gui_giant = withExistingParent("giant_block_gui", new ResourceLocation("block/cube")).transforms()
 				.transform(ItemDisplayContext.GUI).rotation(30.0F, 45.0F, 0.0F).scale(0.625F).end().end()
-				.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0,0,4,4).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
+				.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0, 0, 4, 4).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
 
 		toGiantModel(TFBlocks.GIANT_COBBLESTONE.get(), new ResourceLocation("block/cobblestone"), giant_block, gui_giant);
 		toGiantModel(TFBlocks.GIANT_LOG.get(), new ResourceLocation("block/oak_log"), new ResourceLocation("block/oak_log_top"), giant_block, gui_giant);
@@ -96,21 +95,21 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toGiantModel(TFBlocks.GIANT_OBSIDIAN.get(), new ResourceLocation("block/obsidian"), giant_block, gui_giant);
 
 		ItemModelBuilder giant_tool = withExistingParent("giant_tool_base", new ResourceLocation("item/generated")).transforms()
-				.transform(ItemDisplayContext.GROUND).translation( 0.0F, 2.0F, 0.0F).scale(2.5F).end()
-				.transform(ItemDisplayContext.HEAD).rotation(0.0F, 180.0F, 0.0F).translation( 0.0F, 13.0F, 7.0F).scale(5.0F).end()
+				.transform(ItemDisplayContext.GROUND).translation(0.0F, 2.0F, 0.0F).scale(2.5F).end()
+				.transform(ItemDisplayContext.HEAD).rotation(0.0F, 180.0F, 0.0F).translation(0.0F, 13.0F, 7.0F).scale(5.0F).end()
 				.transform(ItemDisplayContext.FIXED).rotation(0.0F, 180.0F, 0.0F).scale(5.0F).end()
-				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0.0F, -90.0F, 55.0F).translation( -0.1F, 24.0F, -5.5F).scale(4.25F).end()
-				.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0.0F, 90.0F, -55.0F).translation( -0.1F, 24.0F, -3.5F).scale(4.25F).end()
-				.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, -90.0F, 25.0F).translation(  1.13F, 3.2F, 1.13F).scale(1.7F).end()
-				.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0.0F, 90.0F, -25.0F).translation( 1.13F, 3.2F, 1.13F).scale(1.7F).end().end();
+				.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(0.0F, -90.0F, 55.0F).translation(-0.1F, 24.0F, -5.5F).scale(4.25F).end()
+				.transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(0.0F, 90.0F, -55.0F).translation(-0.1F, 24.0F, -3.5F).scale(4.25F).end()
+				.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, -90.0F, 25.0F).translation(1.13F, 3.2F, 1.13F).scale(1.7F).end()
+				.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0.0F, 90.0F, -25.0F).translation(1.13F, 3.2F, 1.13F).scale(1.7F).end().end();
 
-		toGiantItemModel(TFItems.GIANT_PICKAXE, new ResourceLocation("item/stone_pickaxe"), giant_tool, 7, 2);
-		toGiantItemModel(TFItems.GIANT_SWORD, new ResourceLocation("item/stone_sword"), giant_tool, 3, 5);
+		toGiantItemModel(TFItems.GIANT_PICKAXE, new ResourceLocation("item/stone_pickaxe"), giant_tool);
+		toGiantItemModel(TFItems.GIANT_SWORD, new ResourceLocation("item/stone_sword"), giant_tool);
 
 		toBlock(TFBlocks.UBEROUS_SOIL.get());
 		toBlock(TFBlocks.HUGE_STALK.get());
 		getBuilder(TFBlocks.HUGE_MUSHGLOOM.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
-						.texture("all", prefix("block/huge_gloom_cap"));
+				.texture("all", prefix("block/huge_gloom_cap"));
 		getBuilder(TFBlocks.HUGE_MUSHGLOOM_STEM.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
 				.texture("all", prefix("block/huge_mushgloom_stem"));
 		generated(TFBlocks.TROLLVIDR.getId().getPath(), prefix("block/" + TFBlocks.TROLLVIDR.getId().getPath()));
@@ -154,8 +153,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile think115 = generated("item/think115", prefix("item/think115"));
 		ModelFile fullBlockSprinkle = getExistingFile(prefix("block/experiment115_8_8_regenerating"));
 		generated(TFBlocks.EXPERIMENT_115.getId().getPath(), prefix("item/experiment_115"))
-						.override().predicate(Experiment115Item.THINK, 1).model(think115).end()
-						.override().predicate(Experiment115Item.FULL, 1).model(fullBlockSprinkle).end();
+				.override().predicate(Experiment115Item.THINK, 1).model(think115).end()
+				.override().predicate(Experiment115Item.FULL, 1).model(fullBlockSprinkle).end();
 		toBlockModel(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), "miniature/portal");
 		toBlockModel(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), "miniature/naga_courtyard");
 		toBlockModel(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), "miniature/lich_tower");
@@ -225,7 +224,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.EMPTY_CANOPY_BOOKSHELF.get());
 		toBlock(TFBlocks.CANOPY_BOOKSHELF.get());
 		toBlockModel(TFBlocks.CANDELABRA.get(), "candelabra_4_5_4_plain");
-		toBlockModel(TFBlocks.WROUGHT_IRON_FINIAL.get(), "wrought_iron_finial_ns");
+
 
 		withExistingParent(TFBlocks.OAK_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/oak_planks");
 		withExistingParent(TFBlocks.SPRUCE_BANISTER.getId().toString(), prefix("item/banister_item")).texture("texture", "minecraft:block/spruce_planks");
@@ -321,7 +320,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.DARK_DOOR.getId().getPath(), prefix("item/" + TFBlocks.DARK_DOOR.getId().getPath()));
 		generated(TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath(), prefix("block/" + TFBlocks.HOLLOW_OAK_SAPLING.getId().getPath()));
 		withExistingParent(TFBlocks.DARK_CHEST.getId().toString(), "item/chest").texture("particle", prefix("block/wood/planks_darkwood_0"));
-		
+
 		toBlock(TFBlocks.TIME_LOG.get());
 		toBlock(TFBlocks.STRIPPED_TIME_LOG.get());
 		toBlock(TFBlocks.TIME_WOOD.get());
@@ -606,7 +605,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile fill2_damaged = generated("brittle_flask_1_damaged", prefix("item/brittle_potion_flask_2"), prefix("item/brittle_potion_flask_damaged"));
 		ModelFile fill3_damaged = generated("brittle_flask_2_damaged", prefix("item/brittle_potion_flask_3"), prefix("item/brittle_potion_flask_damaged"));
 		ModelFile fill4_damaged = generated("brittle_flask_3_damaged", prefix("item/brittle_potion_flask_4"), prefix("item/brittle_potion_flask_damaged"));
-		
+
 		generated(TFItems.BRITTLE_FLASK.getId().getPath(), prefix("block/stone_twist/twist_blank"), prefix("item/brittle_potion_flask"))
 				.override().predicate(prefix("potion_level"), 1).model(fill1).end()
 				.override().predicate(prefix("potion_level"), 2).model(fill2).end()
@@ -706,7 +705,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
 		assert false;
-		if (emissivity > 0) builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(emissivity == 15, 0).renderType("forge_entity_unsorted_translucent", 0).end();
+		if (emissivity > 0)
+			builder = builder.customLoader(TFItemLayerModelBuilder::begin).emissive(emissivity == 15, 0).renderType(new ResourceLocation("translucent"), 0).end();
 		return builder;
 	}
 
@@ -715,7 +715,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
-		builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(true, 0).renderType(new ResourceLocation("translucent"), 0).end();
+		builder = builder.customLoader(TFItemLayerModelBuilder::begin).emissive(true, 0).renderType(new ResourceLocation("translucent"), 0).end();
 		return builder;
 	}
 
@@ -771,14 +771,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	private void woodenButton(Block button, String variant) {
 		getBuilder(BuiltInRegistries.BLOCK.getKey(button).getPath())
-						.parent(getExistingFile(mcLoc("block/button_inventory")))
-						.texture("texture", "block/wood/planks_" + variant + "_0");
+				.parent(getExistingFile(mcLoc("block/button_inventory")))
+				.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void woodenFence(Block fence, String variant) {
 		getBuilder(BuiltInRegistries.BLOCK.getKey(fence).getPath())
-						.parent(getExistingFile(mcLoc("block/fence_inventory")))
-						.texture("texture", "block/wood/planks_" + variant + "_0");
+				.parent(getExistingFile(mcLoc("block/fence_inventory")))
+				.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void hollowLog(RegistryObject<Item> hollowLog) {
@@ -810,21 +810,17 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void toGiantModel(Block b, ResourceLocation model, ResourceLocation top, ItemModelBuilder base, ItemModelBuilder gui) {
-		String name = ForgeRegistries.BLOCKS.getKey(b).getPath();
+		String name = BuiltInRegistries.BLOCK.getKey(b).getPath();
 		withExistingParent(name, model).customLoader(SeparateTransformsModelBuilder::begin)
 				.base(withExistingParent(name + "_base", base.getLocation()).texture("all", model).texture("top", top))
 				.perspective(ItemDisplayContext.GUI, withExistingParent(name + "_gui", gui.getLocation()).texture("all", model).texture("top", top)).end();
 	}
 
-	private void toGiantItemModel(RegistryObject<Item> item, ResourceLocation parent, ItemModelBuilder base, int x, int y) {
+	private void toGiantItemModel(RegistryObject<Item> item, ResourceLocation parent, ItemModelBuilder base) {
 		String name = item.getId().getPath();
 
-		ItemModelBuilder gui = getBuilder(name + "_gui").texture("all", parent)
-				.element().from(0,0,0).to(16, 16, 0).face(Direction.SOUTH).texture("#all").uvs(x, y, x + 8, y + 8).tintindex(0).end().end();
-
 		withExistingParent(name, parent).customLoader(SeparateTransformsModelBuilder::begin)
-				.base(withExistingParent(name + "_base", base.getLocation()).texture("layer0", parent))
-				.perspective(ItemDisplayContext.GUI, gui.texture("all", parent)).end();
+				.base(withExistingParent(name + "_base", base.getLocation()).texture("layer0", parent)).end();
 	}
 
 	@Override

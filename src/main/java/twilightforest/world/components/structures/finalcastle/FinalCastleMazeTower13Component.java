@@ -93,7 +93,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	@Override
-	public void addChildren(StructurePiece parent,StructurePieceAccessor list, RandomSource rand) {
+	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		if (parent != null && parent instanceof TFStructureComponentOld) {
 			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
@@ -292,7 +292,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 				return false;
 			}
 		}
-		 return false;
+		return false;
 	}
 
 	protected boolean buildDamagedTower(StructurePieceAccessor list, RandomSource rand, Direction facing) {
@@ -441,7 +441,8 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 			case WEST -> dz += howFar;
 			case NORTH -> dx -= howFar;
 			case EAST -> dz -= howFar;
-			default -> { }
+			default -> {
+			}
 		}
 
 		// ugh?

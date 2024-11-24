@@ -4,8 +4,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 
 @Environment(EnvType.CLIENT)
 public class DefaultArrowRenderer<T extends AbstractArrow> extends ArrowRenderer<T> {

@@ -1,6 +1,7 @@
 package twilightforest.entity.monster;
 
-import org.joml.Vector3f;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.sounds.SoundEvent;
@@ -20,8 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import org.joml.Vector3f;
 import twilightforest.init.TFSounds;
 
 public class CarminiteGolem extends Monster {
@@ -114,6 +114,6 @@ public class CarminiteGolem extends Monster {
 
 	@Override
 	public boolean canSpawnSprintParticle() {
-		return this.getDeltaMovement().horizontalDistanceSqr() > (double)2.5000003E-7F && this.getRandom().nextInt(5) == 0;
+		return this.getDeltaMovement().horizontalDistanceSqr() > (double) 2.5000003E-7F && this.getRandom().nextInt(5) == 0;
 	}
 }

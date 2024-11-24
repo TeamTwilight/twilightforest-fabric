@@ -58,7 +58,6 @@ public class TFParticleType {
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.FIREFLY.get(), FireflyParticle.StationaryProvider::new);
-		ParticleFactoryRegistry.getInstance().register(TFParticleType.WANDERING_FIREFLY.get(), WanderingFireflyParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.WANDERING_FIREFLY.get(), FireflyParticle.WanderingProvider::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.PARTICLE_SPAWNER_FIREFLY.get(), FireflyParticle.ParticleSpawnerProvider::new);
 		ParticleFactoryRegistry.getInstance().register(TFParticleType.FALLEN_LEAF.get(), LeafParticle.Factory::new);

@@ -49,25 +49,24 @@ public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 		BlockState birchStairsWest = Blocks.BIRCH_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.WEST);
 
 		for (int y = 0; y <= height; y++) {
-			int min = y;
 			int max = size - y - 1;
-			for (int x = min; x <= max; x++) {
-				for (int z = min; z <= max; z++) {
-					if (x == min) {
-						if (z == min || z == max) {
+			for (int x = y; x <= max; x++) {
+				for (int z = y; z <= max; z++) {
+					if (x == y) {
+						if (z == y || z == max) {
 							placeBlock(world, woodenSlab, x, y, z, sbb);
 						} else {
 							placeBlock(world, birchStairsWest, x, y, z, sbb);
 						}
 					} else if (x == max) {
-						if (z == min || z == max) {
+						if (z == y || z == max) {
 							placeBlock(world, woodenSlab, x, y, z, sbb);
 						} else {
 							placeBlock(world, birchStairsEast, x, y, z, sbb);
 						}
 					} else if (z == max) {
 						placeBlock(world, birchStairsSouth, x, y, z, sbb);
-					} else if (z == min) {
+					} else if (z == y) {
 						placeBlock(world, birchStairsNorth, x, y, z, sbb);
 					} else {
 						placeBlock(world, woodenPlanks, x, y, z, sbb);

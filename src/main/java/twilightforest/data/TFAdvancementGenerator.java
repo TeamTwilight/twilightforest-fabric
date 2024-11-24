@@ -4,9 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.*;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -51,12 +49,12 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 	@Override
 	public void generateAdvancement(Consumer<Advancement> consumer) {
 		Advancement root = Advancement.Builder.advancement().display(
-				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(),
-				Component.translatable("advancement.twilightforest.root"),
-				Component.translatable("advancement.twilightforest.root.desc"),
-				new ResourceLocation(TwilightForestMod.ID, "textures/block/mazestone_large_brick.png"),
-				FrameType.TASK,
-				true, false, false)
+						TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(),
+						Component.translatable("advancement.twilightforest.root"),
+						Component.translatable("advancement.twilightforest.root.desc"),
+						new ResourceLocation(TwilightForestMod.ID, "textures/block/mazestone_large_brick.png"),
+						FrameType.TASK,
+						true, false, false)
 				.requirements(RequirementsStrategy.OR)
 				.addCriterion("in_tf",
 						PlayerTrigger.TriggerInstance.located(
@@ -66,19 +64,19 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 				.save(consumer, "twilightforest:root");
 
 		Advancement silence = this.addTFKillable(Advancement.Builder.advancement().parent(root).display(
-				TFItems.RAVEN_FEATHER.get(),
+						TFItems.RAVEN_FEATHER.get(),
 						Component.translatable("advancement.twilightforest.twilight_hunter"),
 						Component.translatable("advancement.twilightforest.twilight_hunter.desc"),
-				null, FrameType.TASK, true, true, false).requirements(RequirementsStrategy.OR))
+						null, FrameType.TASK, true, true, false).requirements(RequirementsStrategy.OR))
 				.save(consumer, "twilightforest:twilight_hunter");
 
 		Advancement naga = Advancement.Builder.advancement().parent(root).display(
-				TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(),
-				Component.translatable("advancement.twilightforest.kill_naga"),
-				Component.translatable("advancement.twilightforest.kill_naga.desc",
-						Component.translatable(TFEntities.NAGA.get().getDescriptionId()),
-						Component.translatable(TFItems.NAGA_SCALE.get().getDescriptionId())),
-				null, FrameType.GOAL, true, true, false)
+						TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(),
+						Component.translatable("advancement.twilightforest.kill_naga"),
+						Component.translatable("advancement.twilightforest.kill_naga.desc",
+								Component.translatable(TFEntities.NAGA.get().getDescriptionId()),
+								Component.translatable(TFItems.NAGA_SCALE.get().getDescriptionId())),
+						null, FrameType.GOAL, true, true, false)
 				.addCriterion("naga", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.NAGA.get())))
 				.addCriterion("trophy", InventoryChangeTrigger.TriggerInstance.hasItems(TFBlocks.NAGA_TROPHY.get()))
 				.addCriterion("scale", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.NAGA_SCALE.get()))
@@ -149,13 +147,13 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 				.save(consumer, "twilightforest:progress_knights");
 
 		Advancement trap = Advancement.Builder.advancement().parent(knights).display(
-				TFBlocks.GHAST_TRAP.get(),
-				Component.translatable("advancement.twilightforest.ghast_trap"),
-				Component.translatable("advancement.twilightforest.ghast_trap.desc",
-						Component.translatable(TFEntities.CARMINITE_GHASTLING.get().getDescriptionId()),
-						Component.translatable(TFBlocks.GHAST_TRAP.get().getDescriptionId()),
-						Component.translatable(TFEntities.UR_GHAST.get().getDescriptionId())),
-				null, FrameType.TASK, true, true, false)
+						TFBlocks.GHAST_TRAP.get(),
+						Component.translatable("advancement.twilightforest.ghast_trap"),
+						Component.translatable("advancement.twilightforest.ghast_trap.desc",
+								Component.translatable(TFEntities.CARMINITE_GHASTLING.get().getDescriptionId()),
+								Component.translatable(TFBlocks.GHAST_TRAP.get().getDescriptionId()),
+								Component.translatable(TFEntities.UR_GHAST.get().getDescriptionId())),
+						null, FrameType.TASK, true, true, false)
 				.addCriterion("activate_ghast_trap", ActivateGhastTrapTrigger.Instance.activateTrap())
 				.save(consumer, "twilightforest:ghast_trap");
 
@@ -253,10 +251,10 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 				.save(consumer, "twilightforest:progress_troll");
 
 		Advancement.Builder.advancement().parent(lamp).display(
-				Items.STRUCTURE_VOID,
-				Component.translatable("advancement.twilightforest.progression_end"),
-				Component.translatable("advancement.twilightforest.progression_end.desc"),
-				null, FrameType.GOAL, true, false, false)
+						Items.STRUCTURE_VOID,
+						Component.translatable("advancement.twilightforest.progression_end"),
+						Component.translatable("advancement.twilightforest.progression_end.desc"),
+						null, FrameType.GOAL, true, false, false)
 				.addCriterion("previous_progression", this.advancementTrigger(lamp))
 				.addCriterion("plateau", PlayerTrigger.TriggerInstance.located(LocationPredicate.inBiome(TFBiomes.FINAL_PLATEAU)))
 				.save(consumer, "twilightforest:progression_end");
@@ -337,7 +335,7 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 				.addCriterion("ore_map", InventoryChangeTrigger.TriggerInstance.hasItems(TFItems.FILLED_ORE_MAP.get()))
 				.save(consumer, "twilightforest:ore_map");
 
-		Advancement hill1 =  Advancement.Builder.advancement().parent(root).display(
+		Advancement hill1 = Advancement.Builder.advancement().parent(root).display(
 						Items.IRON_BOOTS,
 						Component.translatable("advancement.twilightforest.hill1"),
 						Component.translatable("advancement.twilightforest.hill1.desc",
@@ -346,7 +344,7 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 				.addCriterion("redcap", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(TFEntities.REDCAP.get()).located(LocationPredicate.inStructure(TFStructures.HOLLOW_HILL_SMALL))))
 				.save(consumer, "twilightforest:hill1");
 
-		Advancement hill2 =  Advancement.Builder.advancement().parent(hill1).display(
+		Advancement hill2 = Advancement.Builder.advancement().parent(hill1).display(
 						TFItems.IRONWOOD_PICKAXE.get(),
 						Component.translatable("advancement.twilightforest.hill2"),
 						Component.translatable("advancement.twilightforest.hill2.desc",
@@ -503,11 +501,11 @@ public class TFAdvancementGenerator extends FabricAdvancementProvider {
 				.save(consumer, "twilightforest:break_glass_sword");
 
 		this.addDendrologistBlock(Advancement.Builder.advancement().parent(root)
-				.display(TFBlocks.TWILIGHT_OAK_FENCE.get(),
-						Component.translatable("advancement.twilightforest.arborist"),
-						Component.translatable("advancement.twilightforest.arborist.desc"),
-						null, FrameType.CHALLENGE, true, true, false)
-				.requirements(RequirementsStrategy.AND))
+						.display(TFBlocks.TWILIGHT_OAK_FENCE.get(),
+								Component.translatable("advancement.twilightforest.arborist"),
+								Component.translatable("advancement.twilightforest.arborist.desc"),
+								null, FrameType.CHALLENGE, true, true, false)
+						.requirements(RequirementsStrategy.AND))
 				.rewards(AdvancementRewards.Builder.experience(1000))
 				.save(consumer, "twilightforest:arborist");
 

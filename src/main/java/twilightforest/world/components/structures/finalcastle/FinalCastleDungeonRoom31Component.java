@@ -141,16 +141,20 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 		}
 
 		return switch (rotation) {
-			case CLOCKWISE_90 -> new BlockPos(this.boundingBox.minX() + offset, this.boundingBox.minY(), this.boundingBox.maxZ() + 9);
-			case CLOCKWISE_180 -> new BlockPos(this.boundingBox.minX() - 9, this.boundingBox.minY(), this.boundingBox.minZ() + offset);
-			case COUNTERCLOCKWISE_90 -> new BlockPos(this.boundingBox.minX() + offset, this.boundingBox.minY(), this.boundingBox.minZ() - 9);
-			default -> new BlockPos(this.boundingBox.maxX() + 9, this.boundingBox.minY(), this.boundingBox.minZ() + offset);
+			case CLOCKWISE_90 ->
+					new BlockPos(this.boundingBox.minX() + offset, this.boundingBox.minY(), this.boundingBox.maxZ() + 9);
+			case CLOCKWISE_180 ->
+					new BlockPos(this.boundingBox.minX() - 9, this.boundingBox.minY(), this.boundingBox.minZ() + offset);
+			case COUNTERCLOCKWISE_90 ->
+					new BlockPos(this.boundingBox.minX() + offset, this.boundingBox.minY(), this.boundingBox.minZ() - 9);
+			default ->
+					new BlockPos(this.boundingBox.maxX() + 9, this.boundingBox.minY(), this.boundingBox.minZ() + offset);
 		};
 	}
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		 Predicate<Biome> plateauBiomes = biome ->
+		Predicate<Biome> plateauBiomes = biome ->
 				biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.THORNLANDS) ||
 						biome == world.registryAccess().registryOrThrow(Registries.BIOME).get(TFBiomes.FINAL_PLATEAU);
 
@@ -171,8 +175,8 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		final int cs = 7;
 
-		this.fillWithBlocks(world, sbb, cs , -1, cs, this.size - 1 - cs, -1, this.size - 1 - cs, border, floor, replacing);
-		this.fillWithBlocks(world, sbb, cs , this.height, cs, this.size - 1 - cs, this.height, this.size - 1 - cs, border, floor, replacing);
+		this.fillWithBlocks(world, sbb, cs, -1, cs, this.size - 1 - cs, -1, this.size - 1 - cs, border, floor, replacing);
+		this.fillWithBlocks(world, sbb, cs, this.height, cs, this.size - 1 - cs, this.height, this.size - 1 - cs, border, floor, replacing);
 
 		BlockState forceField = getForceFieldColor(decoRNG);
 		BlockState castleMagic = getRuneColor(forceField);

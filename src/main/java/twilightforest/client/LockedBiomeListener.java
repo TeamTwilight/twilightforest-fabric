@@ -23,18 +23,18 @@ public class LockedBiomeListener {
 			return;
 
 		//attempt to send a biome locked toast if our player is in a locked biome, only every 5 ticks
-		if(level.isClientSide() && player.tickCount % 5 == 0
+		if (level.isClientSide() && player.tickCount % 5 == 0
 				&& LandmarkUtil.isProgressionEnforced(level)
 				&& !player.isCreative() && !player.isSpectator() && !TFConfig.CLIENT_CONFIG.disableLockedBiomeToasts.get()) {
 			Optional<Restriction> restriction = Restrictions.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player);
 			if (restriction.isPresent() && restriction.get().lockedBiomeToast() != null) {
 				timeUntilToast--;
-				if(!shownToast && timeUntilToast <= 0) {
+				if (!shownToast && timeUntilToast <= 0) {
 					Minecraft.getInstance().getToasts().addToast(new LockedBiomeToast(restriction.get().lockedBiomeToast()));
 					shownToast = true;
 				}
 			} else {
-				if(shownToast) {
+				if (shownToast) {
 					timeUntilToast = 60;
 					shownToast = false;
 				}

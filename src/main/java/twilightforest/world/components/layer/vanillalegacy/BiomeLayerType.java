@@ -4,5 +4,5 @@ import com.mojang.serialization.Codec;
 
 @FunctionalInterface
 public interface BiomeLayerType {
-    Codec<? extends BiomeLayerFactory> getCodec();
+	Codec<? extends BiomeLayerFactory> getCodec();
 }

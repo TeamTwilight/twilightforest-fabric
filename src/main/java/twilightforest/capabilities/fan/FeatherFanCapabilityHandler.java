@@ -3,7 +3,6 @@ package twilightforest.capabilities.fan;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.UpdateFeatherFanFallPacket;
 

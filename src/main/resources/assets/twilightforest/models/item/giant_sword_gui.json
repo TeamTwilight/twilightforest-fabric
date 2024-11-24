@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twilightforest:item/giantswordgui"
+  },
+  "display": {
+    "gui": {
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "translation": [
+        -4,
+        -4,
+        -8
+      ]
+    }
+  }
+}

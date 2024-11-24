@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
@@ -75,19 +76,22 @@ public class JEICompat implements IModPlugin {
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
-		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get()) { //we only do this if uncrafting is not disabled
-			List<CraftingRecipe> recipes = manager.getAllRecipesFor(RecipeType.CRAFTING);
-			recipes = recipes.stream().filter(recipe ->
-							!recipe.getResultItem(Minecraft.getInstance().level.registryAccess()).isEmpty() && //get rid of empty items
-							!recipe.getResultItem(Minecraft.getInstance().level.registryAccess()).is(ItemTagGenerator.BANNED_UNCRAFTABLES) && //Prevents things that are tagged as banned from showing up
-							TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString()) && //remove disabled recipes
-							TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) //remove blacklisted mod ids
-					.collect(Collectors.toList());
-			recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
-			registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, recipes);
-		}else if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
-			List<CraftingRecipe> recipes = new ArrayList<>(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
-			registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, recipes);
+		if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableEntireTable.get()) {
+			if (!TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingOnly.get()) { //we only do this if uncrafting is not disabled
+				List<CraftingRecipe> recipes = manager.getAllRecipesFor(RecipeType.CRAFTING);
+				recipes = recipes.stream().filter(recipe ->
+								!recipe.getResultItem(Minecraft.getInstance().level.registryAccess()).isEmpty() && //get rid of empty items
+										!recipe.getResultItem(Minecraft.getInstance().level.registryAccess()).is(ItemTagGenerator.BANNED_UNCRAFTABLES) && //Prevents things that are tagged as banned from showing up
+										TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.reverseRecipeBlacklist.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.disableUncraftingRecipes.get().contains(recipe.getId().toString()) && //remove disabled recipes
+										TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.flipUncraftingModIdList.get() == TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.blacklistedUncraftingModIds.get().contains(recipe.getId().getNamespace())) //remove blacklisted mod ids
+						.collect(Collectors.toList());
+				recipes.removeIf(recipe -> (recipe instanceof ShapelessRecipe && !TFConfig.COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get()));
+				recipes.addAll(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
+				registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, recipes);
+			} else {
+				List<CraftingRecipe> recipes = new ArrayList<>(manager.getAllRecipesFor(TFRecipes.UNCRAFTING_RECIPE.get()));
+				registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, recipes);
+			}
 		}
 		registration.addRecipes(TransformationPowderCategory.TRANSFORMATION, manager.getAllRecipesFor(TFRecipes.TRANSFORM_POWDER_RECIPE.get()));
 		registration.addRecipes(CrumbleHornCategory.CRUMBLE_HORN, manager.getAllRecipesFor(TFRecipes.CRUMBLE_RECIPE.get()));

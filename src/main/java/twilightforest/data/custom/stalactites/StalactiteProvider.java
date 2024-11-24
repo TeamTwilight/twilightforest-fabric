@@ -11,7 +11,6 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 import twilightforest.data.custom.stalactites.entry.Stalactite;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 

@@ -17,6 +17,7 @@ public class ChunkCenterModifier extends PlacementModifier {
 	public static ChunkCenterModifier center() {
 		return INSTANCE;
 	}
+
 	@Override
 	public Stream<BlockPos> getPositions(PlacementContext ctx, RandomSource random, BlockPos pos) {
 		return Stream.of(new BlockPos((pos.getX() & 0xfffffff0) + 8, pos.getY(), (pos.getZ() & 0xfffffff0) + 8));

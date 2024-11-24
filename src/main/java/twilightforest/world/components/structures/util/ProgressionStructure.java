@@ -10,65 +10,67 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 // Landmark structure with a progression lock; Lich Tower/Labyrinth/Hydra Lair/Final Castle/etc
 public abstract class ProgressionStructure extends LandmarkStructure implements AdvancementLockedStructure, StructureHints {
-    protected static <S extends ProgressionStructure> Products.P4<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, HintConfig, DecorationConfig, StructureSettings> progressionCodec(RecordCodecBuilder.Instance<S> instance) {
-        return instance.group(
-                AdvancementLockConfig.CODEC.fieldOf("advancements_required").forGetter(s -> s.advancementLockConfig),
-                HintConfig.FLAT_CODEC.forGetter(s -> s.hintConfig)
-        ).and(landmarkCodec(instance));
-    }
+	protected static <S extends ProgressionStructure> Products.P4<RecordCodecBuilder.Mu<S>, AdvancementLockConfig, HintConfig, DecorationConfig, StructureSettings> progressionCodec(RecordCodecBuilder.Instance<S> instance) {
+		return instance.group(
+				AdvancementLockConfig.CODEC.fieldOf("advancements_required").forGetter(s -> s.advancementLockConfig),
+				HintConfig.FLAT_CODEC.forGetter(s -> s.hintConfig)
+		).and(landmarkCodec(instance));
+	}
 
-    protected final AdvancementLockConfig advancementLockConfig;
-    protected final HintConfig hintConfig;
+	protected final AdvancementLockConfig advancementLockConfig;
+	protected final HintConfig hintConfig;
 
-    public ProgressionStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
-        super(decorationConfig, structureSettings);
+	public ProgressionStructure(AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, StructureSettings structureSettings) {
+		super(decorationConfig, structureSettings);
 
-        this.advancementLockConfig = advancementLockConfig;
-        this.hintConfig = hintConfig;
-    }
+		this.advancementLockConfig = advancementLockConfig;
+		this.hintConfig = hintConfig;
+	}
 
-    @Override
-    public List<ResourceLocation> getRequiredAdvancements() {
-        return this.advancementLockConfig.requiredAdvancements();
-    }
+	@Override
+	public List<ResourceLocation> getRequiredAdvancements() {
+		return this.advancementLockConfig.requiredAdvancements();
+	}
 
-    /**
-     * Try several times to spawn a hint monster
-     */
-    private long lastSpawnedHintMonsterTime;
-    @Override
-    public void trySpawnHintMonster(Level world, Player player, BlockPos pos) {
-        // check if the timer is valid
-        long currentTime = world.getGameTime();
+	/**
+	 * Try several times to spawn a hint monster
+	 */
+	private long lastSpawnedHintMonsterTime;
 
-        // if someone set the time backwards, fix the spawn timer
-        if (currentTime < this.lastSpawnedHintMonsterTime) {
-            this.lastSpawnedHintMonsterTime = 0;
-        }
+	@Override
+	public void trySpawnHintMonster(Level world, Player player, BlockPos pos) {
+		// check if the timer is valid
+		long currentTime = world.getGameTime();
 
-        if (currentTime - this.lastSpawnedHintMonsterTime > 1200) {
-            // okay, time is good, try several times to spawn one
-            for (int i = 0; i < 20; i++) {
-                if (didSpawnHintMonster(world, player, pos)) {
-                    this.lastSpawnedHintMonsterTime = currentTime;
-                    break;
-                }
-            }
-        }
-    }
+		// if someone set the time backwards, fix the spawn timer
+		if (currentTime < this.lastSpawnedHintMonsterTime) {
+			this.lastSpawnedHintMonsterTime = 0;
+		}
 
-    @Override
-    public ItemStack createHintBook() {
-        return this.hintConfig.hintItem().copy();
-    }
+		if (currentTime - this.lastSpawnedHintMonsterTime > 1200) {
+			// okay, time is good, try several times to spawn one
+			for (int i = 0; i < 20; i++) {
+				if (didSpawnHintMonster(world, player, pos)) {
+					this.lastSpawnedHintMonsterTime = currentTime;
+					break;
+				}
+			}
+		}
+	}
 
-    @Override
-    @Nullable
-    public Mob createHintMonster(Level world) {
-        return this.hintConfig.hintMob().create(world);
-    }
+	@Override
+	public ItemStack createHintBook() {
+		return this.hintConfig.hintItem().copy();
+	}
+
+	@Override
+	@Nullable
+	public Mob createHintMonster(Level world) {
+		return this.hintConfig.hintMob().create(world);
+	}
 }

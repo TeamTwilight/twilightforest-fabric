@@ -31,7 +31,7 @@ public class TFDimensionSettings {
 
 	public static final ResourceKey<DimensionType> TWILIGHT_DIM_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE, TwilightForestMod.prefix("twilight_forest_type"));
 
-	public static final ResourceKey<LevelStem> TWILIGHT_LEVEL_STEM =  ResourceKey.create(Registries.LEVEL_STEM, TwilightForestMod.prefix("twilight_forest"));
+	public static final ResourceKey<LevelStem> TWILIGHT_LEVEL_STEM = ResourceKey.create(Registries.LEVEL_STEM, TwilightForestMod.prefix("twilight_forest"));
 
 	private static DimensionType twilightDimType() {
 		return new DimensionType(

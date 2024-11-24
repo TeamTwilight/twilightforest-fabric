@@ -73,7 +73,7 @@ public class MazeMoundComponent extends TFStructureComponentOld {
 				int cz = z - DIAMETER / 2;
 
 				int dist = (int) Mth.sqrt(cx * cx + cz * cz);
-				int hheight = (int) (Mth.cos((float) dist / DIAMETER * Mth.PI) * (DIAMETER / 3));
+				int hheight = (int) (Mth.cos((float) dist / DIAMETER * Mth.PI) * ((float) DIAMETER / 3));
 
 				// leave a hole in the middle
 				if (!(cx <= 2 && cx >= -1 && cz <= 2 && cz >= -1) && ((!(cx <= 2 && cx >= -1) && !(cz <= 2 && cz >= -1)) || hheight > 6)) {

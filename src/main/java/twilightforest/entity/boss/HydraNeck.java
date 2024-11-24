@@ -1,8 +1,8 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.resources.ResourceLocation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
 public class HydraNeck extends HydraPart {

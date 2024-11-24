@@ -28,14 +28,14 @@ public class UncraftingGuiPacket implements C2SPacket {
 	}
 
 	@Override
-    public void handle(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, PacketSender sender, SimpleChannel responseTarget) {
-        Handler.onMessage(this, server, player);
-    }
+	public void handle(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, PacketSender sender, SimpleChannel responseTarget) {
+		Handler.onMessage(this, server, player);
+	}
 
-    public static class Handler {
+	public static class Handler {
 
 		public static boolean onMessage(UncraftingGuiPacket message, Executor ctx, ServerPlayer player) {
-            ctx.execute(() -> {
+			ctx.execute(() -> {
 				AbstractContainerMenu container = player.containerMenu;
 
 				if (container instanceof UncraftingMenu uncrafting) {
