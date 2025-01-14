@@ -55,7 +55,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 
 		if (level.isClientSide()) {
 			// occasionally make a redstone line to a mini ghast
-			if (te.counter % 20 == 0 && !nearbyGhasts.isEmpty()) {
+			if (te.counter % 20 == 0 && nearbyGhasts.size() > 0) {
 				CarminiteGhastling highlight = nearbyGhasts.get(te.rand.nextInt(nearbyGhasts.size()));
 				te.makeParticlesTo(highlight);
 			}
