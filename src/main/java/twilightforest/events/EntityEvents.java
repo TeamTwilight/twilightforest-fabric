@@ -61,12 +61,14 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.enchantment.ApplyFrostedEffect;
+import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
@@ -85,6 +87,9 @@ import java.util.UUID;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
 public class EntityEvents {
+
+	@Autowired
+	private static QuestingRamCurrentContext questingRamCurrentContext;
 
 	private static final boolean SHIELD_PARRY_MOD_LOADED = ModList.get().isLoaded("parry");
 
@@ -445,9 +450,9 @@ public class EntityEvents {
 	@SubscribeEvent
 	public static void handleQuestSyncing(OnDatapackSyncEvent event) {
 		if (event.getPlayer() != null) {
-			PacketDistributor.sendToPlayer(event.getPlayer(), new SyncQuestsPacket(TwilightForestMod.getQuests().getQuestingRam()));
+			PacketDistributor.sendToPlayer(event.getPlayer(), new SyncQuestsPacket(questingRamCurrentContext.getContext()));
 		} else {
-			event.getPlayerList().getPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(TwilightForestMod.getQuests().getQuestingRam())));
+			event.getPlayerList().getPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(questingRamCurrentContext.getContext())));
 		}
 	}
 }
