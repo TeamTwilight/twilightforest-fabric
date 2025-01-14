@@ -13,6 +13,7 @@ public class TFAdvancements {
 	public static final KillBugTrigger KILL_BUG = CriteriaTriggers.register(new KillBugTrigger());
 	public static final HurtBossTrigger HURT_BOSS = CriteriaTriggers.register(new HurtBossTrigger());
 	public static final KillAllPhantomsTrigger KILL_ALL_PHANTOMS = CriteriaTriggers.register(new KillAllPhantomsTrigger());
+	public static final UncraftItemTrigger UNCRAFT_ITEM = CriteriaTriggers.register(new UncraftItemTrigger());
 
 	public static void init() {
 	}
