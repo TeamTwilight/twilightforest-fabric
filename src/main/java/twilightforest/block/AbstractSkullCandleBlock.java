@@ -139,8 +139,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 					tag.putInt("CandleColor", sc.getCandleColor());
 					tag.putInt("CandleAmount", sc.getCandleAmount());
 					newStack.addTagElement("BlockEntityTag", tag);
-					if (sc.getOwnerProfile() != null)
-						newStack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), sc.getOwnerProfile()));
+					if (sc.getOwnerProfile() != null) newStack.getOrCreateTag().put("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), sc.getOwnerProfile()));
 					drops.remove(skullStack.get());
 					drops.add(newStack);
 				} else {
