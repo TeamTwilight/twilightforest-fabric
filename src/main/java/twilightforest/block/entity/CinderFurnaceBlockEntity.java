@@ -57,7 +57,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 							itemstack.shrink(1);
 
 							if (itemstack.isEmpty()) {
-								ItemStack item1 = new ItemStack(item.getCraftingRemainingItem(/*itemstack*/));
+								ItemStack item1 = new ItemStack(item.getCraftingRemainingItem(/*itemstack*/)); // [Parity] itemstack arg comes from Forge, our stuff doesn't need it
 								te.items.set(1, item1);
 							}
 						}
