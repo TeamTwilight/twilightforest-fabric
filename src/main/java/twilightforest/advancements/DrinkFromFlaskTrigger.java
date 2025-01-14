@@ -8,8 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.alchemy.Potion;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+
+import org.jetbrains.annotations.Nullable;
 
 public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.Instance> {
 
@@ -27,8 +28,7 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 			ResourceLocation resourcelocation = new ResourceLocation(GsonHelper.getAsString(json, "potion"));
 			potion = BuiltInRegistries.POTION.get(resourcelocation);
 		}
-		if (json.has("doses") && GsonHelper.getAsInt(json, "doses") > 4)
-			throw new JsonSyntaxException("DrinkFromFlaskTrigger: can't have more than 4 doses.");
+		if(json.has("doses") && GsonHelper.getAsInt(json, "doses") > 4) throw new JsonSyntaxException("DrinkFromFlaskTrigger: can't have more than 4 doses.");
 		MinMaxBounds.Ints doses = MinMaxBounds.Ints.fromJson(json.get("doses"));
 		return new Instance(player, doses, potion);
 	}
