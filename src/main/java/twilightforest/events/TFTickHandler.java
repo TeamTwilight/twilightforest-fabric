@@ -1,5 +1,6 @@
 package twilightforest.events;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.commands.Commands;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -28,8 +30,9 @@ import twilightforest.init.TFDimension;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.util.Enforcement;
-import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
+import twilightforest.util.landmarks.LandmarkUtil;
+import twilightforest.world.components.structures.TFStructureComponent;
 import twilightforest.world.components.structures.util.AdvancementLockedStructure;
 
 import java.util.List;
@@ -71,9 +74,9 @@ public class TFTickHandler {
 		}
 	}
 
-	private static void sendStructureProtectionPacket(Player player, BoundingBox sbb) {
+	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {
 		if (player instanceof ServerPlayer sp) {
-			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(Optional.of(sbb)));
+			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(Optional.of(sbbData)));
 		}
 	}
 
@@ -88,13 +91,22 @@ public class TFTickHandler {
 		ChunkPos chunkPlayer = player.chunkPosition();
 		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x, chunkPlayer.z).map(structureStart -> {
 			if (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && !advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player)) {
-				sendStructureProtectionPacket(player, structureStart.getBoundingBox());
+				List<Pair<BoundingBox, Boolean>> boundingBoxesData = structureStart.getPieces().stream()
+					.map(piece -> Pair.of(isProtected(piece) ? piece.getBoundingBox().inflatedBy(4) : piece.getBoundingBox(), isProtected(piece)))
+					.toList();
+
+				sendStructureProtectionPacket(player, boundingBoxesData);
 				return true;
 			}
 
 			sendAllClearPacket(player);
 			return false;
 		}).orElse(false);
+	}
+
+	@SuppressWarnings("deprecation")
+	private static boolean isProtected(StructurePiece piece) {
+		return !(piece instanceof TFStructureComponent tfStructureComponent) || tfStructureComponent.isComponentProtected();
 	}
 
 	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {

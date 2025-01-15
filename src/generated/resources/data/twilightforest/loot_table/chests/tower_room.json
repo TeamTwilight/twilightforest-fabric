@@ -13,16 +13,11 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 16.0,
-                "min": 4.0
-              },
-              "function": "minecraft:set_count"
+              "function": "minecraft:set_potion",
+              "id": "minecraft:water"
             }
           ],
-          "name": "minecraft:bone",
+          "name": "minecraft:potion",
           "weight": 75
         },
         {
@@ -32,13 +27,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 12.0,
-                "min": 6.0
+                "max": 6.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:clay_ball",
+          "name": "minecraft:glass_bottle",
           "weight": 75
         },
         {
@@ -48,13 +43,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 8.0,
-                "min": 3.0
+                "max": 5.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:string",
+          "name": "minecraft:sugar",
           "weight": 75
         },
         {
@@ -64,13 +59,18 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 24.0,
-                "min": 9.0
+                "max": 3.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:torch",
+          "name": "minecraft:spider_eye",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:ghast_tear",
           "weight": 75
         },
         {
@@ -80,18 +80,18 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 14.0,
-                "min": 4.0
+                "max": 2.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:candle",
+          "name": "minecraft:magma_cream",
           "weight": 75
         },
         {
-          "type": "minecraft:loot_table",
-          "value": "twilightforest:chests/suspicious_stew",
+          "type": "minecraft:item",
+          "name": "minecraft:fermented_spider_eye",
           "weight": 75
         },
         {
@@ -101,13 +101,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 9.0,
-                "min": 3.0
+                "max": 2.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:gold_nugget",
+          "name": "minecraft:glistering_melon_slice",
           "weight": 75
         },
         {
@@ -117,13 +117,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 20.0,
-                "min": 6.0
+                "max": 3.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:iron_nugget",
+          "name": "minecraft:blaze_powder",
           "weight": 75
         },
         {
@@ -133,13 +133,13 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 15.0,
-                "min": 5.0
+                "max": 6.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:bread",
+          "name": "minecraft:paper",
           "weight": 75
         }
       ],
@@ -152,95 +152,33 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+              "function": "minecraft:enchant_with_levels",
+              "levels": 10.0,
+              "options": "#minecraft:on_random_loot"
             }
           ],
-          "name": "twilightforest:transformation_powder"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:magic_map"
+          "name": "minecraft:golden_sword"
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 9.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
+              "function": "minecraft:enchant_with_levels",
+              "levels": 7.0,
+              "options": "#minecraft:on_random_loot"
             }
           ],
-          "name": "twilightforest:firefly"
+          "name": "minecraft:golden_sword"
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+              "function": "minecraft:set_potion",
+              "id": "minecraft:swiftness"
             }
           ],
-          "name": "twilightforest:exanimate_essence"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "twilightforest:brittle_potion_flask"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 13.0,
-                "min": 4.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:amethyst_shard"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:ender_pearl"
+          "name": "minecraft:potion"
         },
         {
           "type": "minecraft:item",
@@ -257,7 +195,7 @@
           "functions": [
             {
               "function": "minecraft:set_potion",
-              "id": "minecraft:regeneration"
+              "id": "minecraft:fire_resistance"
             }
           ],
           "name": "minecraft:potion"
@@ -267,50 +205,10 @@
           "functions": [
             {
               "function": "minecraft:set_potion",
-              "id": "minecraft:strength"
+              "id": "minecraft:harming"
             }
           ],
           "name": "minecraft:potion"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_randomly",
-              "options": "#minecraft:on_random_loot"
-            }
-          ],
-          "name": "minecraft:golden_sword"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:ender_pearl"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": {
-                "type": "minecraft:uniform",
-                "max": 30.0,
-                "min": 20.0
-              },
-              "options": "#minecraft:on_random_loot"
-            }
-          ],
-          "name": "minecraft:book"
         }
       ],
       "rolls": 2.0
@@ -319,7 +217,15 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:empty",
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 10.0,
+              "options": "#minecraft:on_random_loot"
+            }
+          ],
+          "name": "minecraft:golden_helmet",
           "weight": 75
         },
         {
@@ -329,24 +235,100 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 3.0
+                "max": 12.0,
+                "min": 1.0
               },
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:liveroot",
+          "name": "twilightforest:transformation_powder",
           "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:charm_of_keeping_1",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:charm_of_life_1",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_potion",
+              "id": "minecraft:healing"
+            }
+          ],
+          "name": "minecraft:splash_potion",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_potion",
+              "id": "minecraft:strong_harming"
+            }
+          ],
+          "name": "minecraft:splash_potion",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_potion",
+              "id": "minecraft:strong_swiftness"
+            }
+          ],
+          "name": "minecraft:potion",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_potion",
+              "id": "minecraft:strong_regeneration"
+            }
+          ],
+          "name": "minecraft:potion",
+          "weight": 75
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 20.0,
+              "options": "#minecraft:on_random_loot"
+            }
+          ],
+          "name": "minecraft:golden_axe",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:ender_pearl",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:diamond",
-          "weight": 75
+          "weight": 25
         },
         {
           "type": "minecraft:item",
-          "name": "twilightforest:crown_splinter",
-          "weight": 75
+          "name": "twilightforest:moonworm_queen",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:peacock_feather_fan",
+          "weight": 25
         },
         {
           "type": "minecraft:item",
@@ -362,70 +344,6 @@
             }
           ],
           "name": "minecraft:obsidian",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": {
-                "type": "minecraft:uniform",
-                "max": 15.0,
-                "min": 10.0
-              },
-              "options": "#minecraft:on_random_loot"
-            }
-          ],
-          "name": "minecraft:golden_helmet",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:charm_of_life_1",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": {
-                "type": "minecraft:uniform",
-                "max": 30.0,
-                "min": 20.0
-              },
-              "options": "#minecraft:on_random_loot"
-            }
-          ],
-          "name": "minecraft:book",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 20.0,
-              "options": "#minecraft:on_random_loot"
-            }
-          ],
-          "name": "minecraft:golden_axe",
-          "weight": 75
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:enchanted_golden_apple",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:moonworm_queen",
-          "weight": 25
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:peacock_feather_fan",
           "weight": 25
         }
       ],

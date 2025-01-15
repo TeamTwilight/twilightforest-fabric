@@ -2,6 +2,7 @@ package twilightforest.client.renderer;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
@@ -34,10 +35,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.Enforcements;
+import twilightforest.util.IntervalUtils;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.Restriction;
 
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Copypasta of LevelRenderer.renderRainSnow() hacked to include progression environmental effects
@@ -53,7 +55,11 @@ public class TFWeatherRenderer {
 	public static final float[] rainzs = new float[1024];
 
 	@Nullable
-	private static BoundingBox protectedBox;
+	private static List<Pair<BoundingBox, Boolean>> boxData;
+	@Nullable
+	private static HashMap<Pair<Integer, Integer>, List<Pair<Integer, Integer>>> rainIntervals;
+	@Nullable
+	private static BoundingBox pBoxOld;
 
 	private static final RandomSource random = RandomSource.create();
 
@@ -215,86 +221,127 @@ public class TFWeatherRenderer {
 		}
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	private static void renderLockedStructure(int ticks, float partialTicks, LightTexture lightmap, Vec3 camera) {
-		// draw locked structure thing
-		if (isNearLockedStructure(camera.x(), camera.z())) {
-			lightmap.turnOnLightLayer();
-			int px = Mth.floor(camera.x());
-			int py = Mth.floor(camera.y());
-			int pz = Mth.floor(camera.z());
-			Tesselator tessellator = Tesselator.getInstance();
-			BufferBuilder bufferbuilder = null;
-			RenderSystem.disableCull();
-			RenderSystem.enableBlend();
-			RenderSystem.defaultBlendFunc();
-			RenderSystem.enableDepthTest();
-			int range = 5;
-			if (Minecraft.useFancyGraphics()) {
-				range = 10;
-			}
+		int range = Minecraft.useFancyGraphics() ? 10 : 5;
+		int px = Mth.floor(camera.x());
+		int py = Mth.floor(camera.y());
+		int pz = Mth.floor(camera.z());
 
-			int drawFlag = -1;
-			float combinedTicks = ticks + partialTicks;
+		BoundingBox pBox = new BoundingBox(
+			px - range, py - range, pz - range,
+			px + range, py + 2 * range, pz + range
+		);
 
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			for (int dz = pz - range; dz <= pz + range; ++dz) {
-				for (int dx = px - range; dx <= px + range; ++dx) {
-					int i2 = (dz - pz + 16) * 32 + dx - px + 16;
-					double rainX = rainxs[i2] * 0.5D;
-					double rainZ = rainzs[i2] * 0.5D;
+		if (!isNearLockedPiece(pBox))
+			return;
 
-					if (protectedBox != null && protectedBox.intersects(dx, dz, dx, dz)) {
-						int structureMin = protectedBox.minY() - 4;
-						int structureMax = protectedBox.maxY() + 4;
-						int rainMin = py - range;
-						int rainMax = py + range * 2;
+		if (!pBox.equals(pBoxOld)) {
+			updateRainIntervals(pBox);
+			pBoxOld = pBox;
+		}
 
-						if (rainMin < structureMin) {
-							rainMin = structureMin;
-						}
+		lightmap.turnOnLightLayer();
+		Tesselator tessellator = Tesselator.getInstance();
+		BufferBuilder bufferbuilder = null;
 
-						if (rainMax < structureMin) {
-							rainMax = structureMin;
-						}
+		RenderSystem.disableCull();
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.enableDepthTest();
 
-						if (rainMin > structureMax) {
-							rainMin = structureMax;
-						}
+		float combinedTicks = ticks + partialTicks;
+		int drawFlag = -1;
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-						if (rainMax > structureMax) {
-							rainMax = structureMax;
-						}
+		for (int x = pBox.minX(); x <= pBox.maxX(); x++) {
+			for (int z = pBox.minZ(); z <= pBox.maxZ(); z++) {
+				for (Pair<Integer, Integer> segment : rainIntervals.get(Pair.of(x, z))) {
+					int rainMin = segment.getFirst();
+					int rainMax = segment.getSecond();
 
-						if (rainMin != rainMax) {
-							random.setSeed((long) dx * dx * 3121 + dx * 45238971L ^ (long) dz * dz * 418711 + dz * 13761L);
+					if (rainMin >= rainMax) continue;
 
-							if (drawFlag != 0) {
-								drawFlag = 0;
-								RenderSystem.setShaderTexture(0, SPARKLES_TEXTURE);
-								bufferbuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
-							}
-
-							float countFactor = ((float) (ticks & 511) + partialTicks) / 512.0F;
-							float uFactor = random.nextFloat() + combinedTicks * 0.02F * (float) random.nextGaussian();
-							float vFactor = random.nextFloat() + combinedTicks * 0.02F * (float) random.nextGaussian();
-							double xRange = dx + 0.5F - camera.x();
-							double zRange = dz + 0.5F - camera.z();
-							float distanceFromPlayer = Mth.sqrt((float) (xRange * xRange + zRange * zRange)) / range;
-							float alpha = ((1.0F - distanceFromPlayer * distanceFromPlayer) * 0.3F + 0.5F) * random.nextFloat();
-							renderEffect(bufferbuilder, rainX, rainZ, rainMin, rainMax, camera, dx, dz, countFactor, uFactor, vFactor, new float[]{1.0F, 1.0F, 1.0F, alpha}, 15 << 20 | 15 << 4);
-						}
+					random.setSeed((long) x * x * 3121 + x * 45238971L ^ (long) z * z * 418711 + z * 13761L);
+					if (drawFlag != 0) {
+						drawFlag = 0;
+						RenderSystem.setShader(GameRenderer::getParticleShader);
+						RenderSystem.setShaderTexture(0, SPARKLES_TEXTURE);
+						bufferbuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 					}
+
+					float countFactor = ((ticks & 511) + partialTicks) / 512.0F;
+					float uFactor = random.nextFloat() + combinedTicks * 0.02F * (float) random.nextGaussian();
+					float vFactor = random.nextFloat() + combinedTicks * 0.02F * (float) random.nextGaussian();
+					double xRange = x + 0.5 - camera.x();
+					double zRange = z + 0.5 - camera.z();
+					float distanceFromPlayer = Mth.sqrt((float) (xRange * xRange + zRange * zRange)) / range;
+					float alpha = ((1.0F - distanceFromPlayer * distanceFromPlayer) * 0.3F + 0.5F) * random.nextFloat();
+
+					renderEffect(
+						bufferbuilder,
+						rainxs[(z - pz + 16) * 32 + x - px + 16] * 0.5,
+						rainzs[(z - pz + 16) * 32 + x - px + 16] * 0.5,
+						rainMin, rainMax,
+						camera, x, z,
+						countFactor, uFactor, vFactor,
+						new float[] {1.0F, 1.0F, 1.0F, alpha},
+						(15 << 20) | (15 << 4)
+					);
 				}
 			}
-
-			if (drawFlag == 0) {
-				BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
-			}
-
-			RenderSystem.enableCull();
-			RenderSystem.disableBlend();
-			lightmap.turnOffLightLayer();
 		}
+
+		if (drawFlag == 0) {
+			BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+		}
+
+		RenderSystem.enableCull();
+		RenderSystem.disableBlend();
+		lightmap.turnOffLightLayer();
+	}
+
+	private static void updateRainIntervals(BoundingBox pBox) {
+		if (boxData == null) {
+			rainIntervals = null;
+			return;
+		}
+
+		List<Pair<BoundingBox, Boolean>> intersectingBoxesData = boxData.stream()
+			.filter(boxData -> boxData.getFirst().intersects(pBox))
+			.toList();
+		List<BoundingBox> protectedBoxes = new ArrayList<>();
+		List<BoundingBox> unprotectedBoxes = new ArrayList<>();
+		for (Pair<BoundingBox, Boolean> pair : intersectingBoxesData) {
+			if (pair.getSecond()) protectedBoxes.add(pair.getFirst());
+			else unprotectedBoxes.add(pair.getFirst());
+		}
+
+		rainIntervals = new HashMap<>();
+		for (int x = pBox.minX(); x <= pBox.maxX(); x++) {
+			for (int z = pBox.minZ(); z <= pBox.maxZ(); z++) {
+				List<Pair<Integer, Integer>> unprotectedIntervals = getRainIntervals(x, z, pBox, unprotectedBoxes);
+				List<Pair<Integer, Integer>> protectedIntervals = getRainIntervals(x, z, pBox, protectedBoxes);
+
+				List<Pair<Integer, Integer>> mergedUnprotected = IntervalUtils.mergeAndSortIntervals(unprotectedIntervals);
+				List<Pair<Integer, Integer>> mergedProtected = IntervalUtils.mergeAndSortIntervals(protectedIntervals);
+
+				rainIntervals.put(Pair.of(x, z), IntervalUtils.subtractIntervals(mergedProtected, mergedUnprotected));
+			}
+		}
+	}
+
+	private static List<Pair<Integer, Integer>> getRainIntervals(int x, int z, BoundingBox pBox, List<BoundingBox> boxes) {
+		List<Pair<Integer, Integer>> intervals = new ArrayList<>();
+		for (BoundingBox box : boxes) {
+			if (!box.intersects(x, z, x, z)) continue;
+			int rainMin = Math.max(pBox.minY(), box.minY());
+			int rainMax = Math.min(pBox.maxY(), box.maxY() + 1);  // + 1 because renderEffect() renders from rainMin to rainMax as floats
+			if (rainMin < rainMax) {
+				intervals.add(Pair.of(rainMin, rainMax));
+			}
+		}
+		return intervals;
 	}
 
 	private static void renderEffect(BufferBuilder bufferBuilder, double rainX, double rainZ, int minY, int maxY, Vec3 camera, int dx, int dz, float countFactor, float uFactor, float vFactor, float[] color, int light) {
@@ -340,16 +387,12 @@ public class TFWeatherRenderer {
 		return false;
 	}
 
-	private static boolean isNearLockedStructure(double camX, double camZ) {
-		final int range = 15;
-		int px = Mth.floor(camX);
-		int pz = Mth.floor(camZ);
-
-		return protectedBox != null && protectedBox.intersects(px - range, pz - range, px + range, pz + range);
+	private static boolean isNearLockedPiece(BoundingBox pBox) {
+		return boxData != null && boxData.stream().anyMatch(boxData -> boxData.getFirst().intersects(pBox));
 	}
 
-	public static void setProtectedBox(@Nullable BoundingBox protectedBox) {
-		TFWeatherRenderer.protectedBox = protectedBox;
+	public static void setProtectedBoxes(@Nullable List<Pair<BoundingBox, Boolean>> protectedBoxes) {
+		TFWeatherRenderer.boxData = protectedBoxes;
 	}
 
 	private static @Nullable RenderType getRenderType(Restriction restriction) {

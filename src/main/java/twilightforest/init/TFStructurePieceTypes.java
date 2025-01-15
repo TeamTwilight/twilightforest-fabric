@@ -8,6 +8,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.*;
 import twilightforest.world.components.structures.courtyard.*;
 import twilightforest.world.components.structures.darktower.*;
+import twilightforest.world.components.structures.fallentrunk.FallenTrunkPiece;
 import twilightforest.world.components.structures.finalcastle.*;
 import twilightforest.world.components.structures.hollowtree.*;
 import twilightforest.world.components.structures.icetower.*;
@@ -30,6 +31,8 @@ public class TFStructurePieceTypes {
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFQuestGrove = registerPieceType("TFQuest1", QuestGrove::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHydra = registerPieceType("TFHydra", HydraLairComponent::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFYeti = registerPieceType("TFYeti", YetiCaveComponent::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFFallenTrunk = registerPieceType("TFFallenTrunk", FallenTrunkPiece::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFUtilityPiece = registerPieceType("TFUtilityPiece", UtilityPiece::new);
 
 	// Hollow Tree
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHTLB = registerPieceType("TFHTLB", HollowTreeLargeBranch::new);

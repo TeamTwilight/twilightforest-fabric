@@ -16,7 +16,7 @@ import twilightforest.entity.passive.DwarfRabbit;
 public class BunnyModel extends QuadrupedModel<DwarfRabbit> {
 
 	public BunnyModel(ModelPart root) {
-		super(root, true, 4.0F, 4.0F, 2.0F, 2.0F, 24);
+		super(root, true, 8.5F, 0.0F, 2.0F, 2.0F, 24);
 	}
 
 	public static LayerDefinition create() {

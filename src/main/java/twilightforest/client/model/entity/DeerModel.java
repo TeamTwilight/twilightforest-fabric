@@ -10,7 +10,7 @@ import twilightforest.entity.passive.Deer;
 public class DeerModel extends QuadrupedModel<Deer> {
 
 	public DeerModel(ModelPart root) {
-		super(root, true, 4.0F, 4.0F, 2.0F, 2.0F, 10);
+		super(root, true, 15.25F, 4.0F, 2.0F, 2.0F, 24);
 	}
 
 	public static LayerDefinition checkForPack() {

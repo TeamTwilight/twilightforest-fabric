@@ -22,8 +22,8 @@ import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
-import twilightforest.world.components.structures.placements.AvoidLandmarkGridPlacement;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -74,6 +74,43 @@ public final class Codecs {
 			.compoundList(Codecs.DOUBLE_STRING, elementCodec)
 			.xmap(floatEList -> floatEList.stream().collect(Double2ObjectAVLTreeMap::new, (map, pair) -> map.put(pair.getFirst(), pair.getSecond()), Double2ObjectAVLTreeMap::putAll), map -> map.entrySet().stream().map(entry -> new Pair<>(entry.getKey(), entry.getValue())).toList());
 	}
+
+	public static <T> StreamCodec<ByteBuf, List<T>> listOf(StreamCodec<ByteBuf, T> elementCodec) {
+		return new StreamCodec<>() {
+			@Override
+			public List<T> decode(ByteBuf buf) {
+				int size = buf.readInt();
+				List<T> list = new ArrayList<>(size);
+				for (int i = 0; i < size; i++) {
+					list.add(elementCodec.decode(buf));
+				}
+				return list;
+			}
+
+			@Override
+			public void encode(ByteBuf buf, List<T> list) {
+				buf.writeInt(list.size());
+				for (T t : list) {
+					elementCodec.encode(buf, t);
+				}
+			}
+		};
+	}
+
+	public static final StreamCodec<ByteBuf, Pair<BoundingBox, Boolean>> BOX_AND_FLAG_STREAM_CODEC = new StreamCodec<>() {
+		@Override
+		public Pair<BoundingBox, Boolean> decode(ByteBuf buf) {
+			BoundingBox box = BOX_STREAM_CODEC.decode(buf);
+			boolean flag = buf.readBoolean();
+			return Pair.of(box, flag);
+		}
+
+		@Override
+		public void encode(ByteBuf buf, Pair<BoundingBox, Boolean> boxAndFlag) {
+			BOX_STREAM_CODEC.encode(buf, boxAndFlag.getFirst());
+			buf.writeBoolean(boxAndFlag.getSecond());
+		}
+	};
 
 	private static DataResult<BlockPos> parseString2BlockPos(String string) {
 		try {

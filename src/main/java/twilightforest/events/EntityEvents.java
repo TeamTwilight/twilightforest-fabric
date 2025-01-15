@@ -46,6 +46,8 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -62,17 +64,20 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.beans.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.enchantment.ApplyFrostedEffect;
+import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.*;
 import twilightforest.item.FieryArmorItem;
 import twilightforest.item.YetiArmorItem;
+import twilightforest.network.SyncQuestsPacket;
 import twilightforest.network.WipeOreMeterPacket;
 import twilightforest.util.datamaps.EntityTransformation;
 import twilightforest.util.entities.EntityUtil;
@@ -88,6 +93,9 @@ import java.util.UUID;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
 public class EntityEvents {
+
+	@Autowired
+	private static QuestingRamCurrentContext questingRamCurrentContext;
 
 	private static final boolean SHIELD_PARRY_MOD_LOADED = ModList.get().isLoaded("parry");
 
@@ -464,6 +472,15 @@ public class EntityEvents {
 	public static void onExplosionDetonationEvent(ExplosionEvent.Detonate event) {
 		if (event.getExplosion().getDirectSourceEntity() instanceof LichBomb) {
 			event.getAffectedEntities().removeIf(entity -> entity instanceof ItemEntity || entity instanceof LichBomb);
+		}
+	}
+
+	@SubscribeEvent
+	public static void handleQuestSyncing(OnDatapackSyncEvent event) {
+		if (event.getPlayer() != null) {
+			PacketDistributor.sendToPlayer(event.getPlayer(), new SyncQuestsPacket(questingRamCurrentContext.getContext()));
+		} else {
+			event.getPlayerList().getPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(questingRamCurrentContext.getContext())));
 		}
 	}
 }

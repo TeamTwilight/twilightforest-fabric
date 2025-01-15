@@ -27,80 +27,82 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 
 		manager.getResource(oak).ifPresent(vanillaResource -> {
 			try (InputStream vanillaStream = vanillaResource.open()) {
-				NativeImage vanillaImage = NativeImage.read(vanillaStream);
-				int defaultScale = 128;
-				int vanillaScale = vanillaImage.getWidth() / defaultScale;
-				for (Boat.Type type : Boat.Type.values()) {
-					ResourceLocation location = getTextureLocation(type);
-					if (location.getNamespace().equals(TwilightForestMod.ID)) { // We only want to do this to our boats
-						manager.getResource(location).ifPresent(tfResource -> {
-							try (InputStream tfStream = tfResource.open()) {
-								NativeImage tfImage = NativeImage.read(tfStream);
-								int tfScale = tfImage.getWidth() / defaultScale;
+				try (NativeImage vanillaImage = NativeImage.read(vanillaStream)) {
+					int defaultScale = 128;
+					int vanillaScale = vanillaImage.getWidth() / defaultScale;
+					for (Boat.Type type : Boat.Type.values()) {
+						ResourceLocation location = getTextureLocation(type);
+						if (location.getNamespace().equals(TwilightForestMod.ID)) { // We only want to do this to our boats
+							manager.getResource(location).ifPresent(tfResource -> {
+								try (InputStream tfStream = tfResource.open()) {
+									try (NativeImage tfImage = NativeImage.read(tfStream)) {
+										int tfScale = tfImage.getWidth() / defaultScale;
 
-								for (int x = 0; x < 48 * tfScale; x++) {
-									for (int y = 58 * tfScale; y < 96 * tfScale; y++) {
-										// If the loaded tf boat chest texture has non-transparent pixels below the boat section of the texture, return
-										if (tfImage.getPixelRGBA(x, y) != 0x00000000) return;
-									}
-								}
-
-								if (vanillaScale > tfScale) {
-									try (NativeImage newImage = new NativeImage(defaultScale * vanillaScale, defaultScale * vanillaScale, false)) {
-										newImage.copyFrom(vanillaImage);
-										for (int x = 0; x < 102 * vanillaScale; x++) {
-											for (int y = 0; y < 52 * vanillaScale; y++) {
-												newImage.setPixelRGBA(x, y, tfImage.getPixelRGBA(x / (vanillaScale / tfScale), y / (vanillaScale / tfScale)));
+										for (int x = 0; x < 48 * tfScale; x++) {
+											for (int y = 58 * tfScale; y < 96 * tfScale; y++) {
+												// If the loaded tf boat chest texture has non-transparent pixels below the boat section of the texture, return
+												if (tfImage.getPixelRGBA(x, y) != 0x00000000) return;
 											}
 										}
 
-										ref.set(newImage);
-
-										if (BOAT_CACHE.containsKey(type)) {
-											BOAT_CACHE.get(type).load(manager);
-										} else {
-											AbstractTexture texture = new AbstractTexture() {
-												@Override
-												public void load(ResourceManager resourceManager) {
-													if (ref.get() == null)
-														return;
-													TextureUtil.prepareImage(this.getId(), 0, ref.get().getWidth(), ref.get().getHeight());
-													ref.get().upload(0, 0, 0, 0, 0, ref.get().getWidth(), ref.get().getHeight(), false, false, false, true);
+										if (vanillaScale > tfScale) {
+											try (NativeImage newImage = new NativeImage(defaultScale * vanillaScale, defaultScale * vanillaScale, false)) {
+												newImage.copyFrom(vanillaImage);
+												for (int x = 0; x < 102 * vanillaScale; x++) {
+													for (int y = 0; y < 52 * vanillaScale; y++) {
+														newImage.setPixelRGBA(x, y, tfImage.getPixelRGBA(x / (vanillaScale / tfScale), y / (vanillaScale / tfScale)));
+													}
 												}
-											};
-											Minecraft.getInstance().getTextureManager().register(location, texture);
-											BOAT_CACHE.put(type, texture);
-										}
-									}
-								} else {
-									for (int x = 0; x < 48 * tfScale; x++) {
-										for (int y = 58 * tfScale; y < 96 * tfScale; y++) {
-											tfImage.setPixelRGBA(x, y, vanillaImage.getPixelRGBA(x / (tfScale / vanillaScale), y / (tfScale / vanillaScale)));
-										}
-									}
 
-									ref.set(tfImage);
+												ref.set(newImage);
 
-									if (BOAT_CACHE.containsKey(type)) {
-										BOAT_CACHE.get(type).load(manager);
-									} else {
-										AbstractTexture texture = new AbstractTexture() {
-											@Override
-											public void load(ResourceManager resourceManager) {
-												if (ref.get() == null)
-													return;
-												TextureUtil.prepareImage(this.getId(), 0, ref.get().getWidth(), ref.get().getHeight());
-												ref.get().upload(0, 0, 0, 0, 0, ref.get().getWidth(), ref.get().getHeight(), false, false, false, true);
+												if (BOAT_CACHE.containsKey(type)) {
+													BOAT_CACHE.get(type).load(manager);
+												} else {
+													AbstractTexture texture = new AbstractTexture() {
+														@Override
+														public void load(ResourceManager resourceManager) {
+															if (ref.get() == null)
+																return;
+															TextureUtil.prepareImage(this.getId(), 0, ref.get().getWidth(), ref.get().getHeight());
+															ref.get().upload(0, 0, 0, 0, 0, ref.get().getWidth(), ref.get().getHeight(), false, false, false, true);
+														}
+													};
+													Minecraft.getInstance().getTextureManager().register(location, texture);
+													BOAT_CACHE.put(type, texture);
+												}
 											}
-										};
-										Minecraft.getInstance().getTextureManager().register(location, texture);
-										BOAT_CACHE.put(type, texture);
+										} else {
+											for (int x = 0; x < 48 * tfScale; x++) {
+												for (int y = 58 * tfScale; y < 96 * tfScale; y++) {
+													tfImage.setPixelRGBA(x, y, vanillaImage.getPixelRGBA(x / (tfScale / vanillaScale), y / (tfScale / vanillaScale)));
+												}
+											}
+
+											ref.set(tfImage);
+
+											if (BOAT_CACHE.containsKey(type)) {
+												BOAT_CACHE.get(type).load(manager);
+											} else {
+												AbstractTexture texture = new AbstractTexture() {
+													@Override
+													public void load(ResourceManager resourceManager) {
+														if (ref.get() == null)
+															return;
+														TextureUtil.prepareImage(this.getId(), 0, ref.get().getWidth(), ref.get().getHeight());
+														ref.get().upload(0, 0, 0, 0, 0, ref.get().getWidth(), ref.get().getHeight(), false, false, false, true);
+													}
+												};
+												Minecraft.getInstance().getTextureManager().register(location, texture);
+												BOAT_CACHE.put(type, texture);
+											}
+										}
 									}
+								} catch (IOException e) {
+									// Fail silently, no boat texture bullshit here
 								}
-							} catch (IOException e) {
-								// Fail silently, no boat texture bullshit here
-							}
-						});
+							});
+						}
 					}
 				}
 			} catch (IOException e) {
