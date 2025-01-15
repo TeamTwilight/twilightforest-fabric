@@ -149,7 +149,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 
 	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
+		return this.doDirtMotley ? TerrainAdjustment.BEARD_BOX : TerrainAdjustment.NONE;
 	}
 
 	@Override
@@ -160,6 +160,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 	public static void beginYard(LichTowerFoyer foyerPiece, Structure.GenerationContext context, StructurePiecesBuilder pieces) {
 		WorldgenRandom random = context.random();
 		StructureTemplateManager structureManager = context.structureTemplateManager();
+		int ySurface = foyerPiece.getBoundingBox().minY() + foyerPiece.getGroundLevelDelta();
 
 		JigsawRecord path = foyerPiece.matchSpareJigsaws(r -> "twilightforest:lich_tower/path".equals(r.target())).getFirst();
 		if (path == null) return;
@@ -169,7 +170,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 
 		BlockPos generatePos = foyerPiece.templatePosition().offset(path.pos());
 		BlockPos fenceCenter = generatePos.relative(direction, pathLength);
-		LichPerimeterFence.generateFence(foyerPiece, context, pieces, structureManager, random, direction, fenceCenter);
+		LichPerimeterFence.generateFence(foyerPiece, context, pieces, structureManager, random, direction, fenceCenter.atY(ySurface));
 
 		BlockPos nearVestibule = generatePos.relative(direction, 4).above(4);
 		BlockPos nearFence = fenceCenter.relative(direction.getOpposite(), 6).below(4);
@@ -180,19 +181,22 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		Optional<BoundingBox> fullYard = BoundingBox.encapsulatingPositions(Streams.concat(foyerRootPos, fencePostPos).collect(Collectors.toUnmodifiableSet()));
 		if (fullYard.isEmpty()) return;
 
-		LichYardBox lichYardDirt = new LichYardBox(fullYard.get().inflatedBy(3), 8, Direction.Axis.Y, true, 0.1f, 0);
+		BoundingBox yardBox = BoundingBoxUtils.safeRetract(BoundingBoxUtils.setY(fullYard.get().inflatedBy(3), ySurface, ySurface + 10), foyerPiece.getSourceJigsaw().orientation().top().getOpposite(), 5);
+
+		LichYardBox lichYardDirt = new LichYardBox(yardBox, 8, Direction.Axis.Y, true, 0.1f, 0);
 		pieces.addPiece(lichYardDirt);
 		lichYardDirt.addDecoration(foyerPiece, pieces, random, context);
 	}
 
 	private static void generateYard(LichTowerFoyer foyerPiece, StructurePiecesBuilder pieces, BlockPos nearVestibule, BlockPos nearFence, WorldgenRandom random, Direction dirFromVestibule, Structure.GenerationContext context) {
+		int ySurface = foyerPiece.getBoundingBox().minY() + foyerPiece.getGroundLevelDelta();
 		List<LichYardBox> paths = new ArrayList<>(); // Add all pieces to a list instead of immediately adding children, so that paths can generate before graves check for overlap
 
 		// First path, from the vestibule
-		BoundingBox firstPathBox = BoundingBoxUtils.wrappedCoordinates(3, nearVestibule, nearFence);
+		BoundingBox firstPathBox = BoundingBoxUtils.setY(BoundingBoxUtils.wrappedCoordinates(3, nearVestibule, nearFence).inflatedBy(1), ySurface, ySurface + 10);
 
 		Direction.Axis axisFromVestibule = dirFromVestibule.getAxis();
-		LichYardBox lichYardBox = new LichYardBox(firstPathBox.inflatedBy(1), 2.5f, axisFromVestibule, false, 0.35f, -1);
+		LichYardBox lichYardBox = new LichYardBox(firstPathBox, 2.5f, axisFromVestibule, false, 0.35f, -1);
 		pieces.addPiece(lichYardBox);
 		paths.add(lichYardBox);
 
@@ -202,15 +206,15 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		BlockPos pathLeft = randomPos.relative(dirFromVestibule.getClockWise(), crossPathSpan);
 		BlockPos pathRight = randomPos.relative(dirFromVestibule.getCounterClockWise(), crossPathSpan);
 
-		BoundingBox crossPathBox = BoundingBoxUtils.wrappedCoordinates(1, pathLeft, pathRight);
+		BoundingBox crossPathBox = BoundingBoxUtils.setY(BoundingBoxUtils.wrappedCoordinates(1, pathLeft, pathRight), ySurface, ySurface + 10);
 
 		LichYardBox crossPath = new LichYardBox(crossPathBox, -1, dirFromVestibule.getClockWise().getAxis(), false, 0, 0);
 		pieces.addPiece(crossPath);
 		paths.add(crossPath);
 
 		// Last two paths, to the sides of the vestibule
-		paths.add(putSidePath(pieces, nearVestibule, dirFromVestibule, dirFromVestibule.getClockWise(), pathLeft, crossPathSpan));
-		paths.add(putSidePath(pieces, nearVestibule, dirFromVestibule, dirFromVestibule.getCounterClockWise(), pathRight, crossPathSpan));
+		paths.add(putSidePath(pieces, nearVestibule.atY(ySurface), dirFromVestibule, dirFromVestibule.getClockWise(), pathLeft, crossPathSpan));
+		paths.add(putSidePath(pieces, nearVestibule.atY(ySurface), dirFromVestibule, dirFromVestibule.getCounterClockWise(), pathRight, crossPathSpan));
 
 		// Put lights before beginning grave placements
 		BoundingBox boxLightPlace = firstPathBox.inflatedBy(axisFromVestibule == Direction.Axis.Z ? 3 : 0, 0, axisFromVestibule == Direction.Axis.X ? 3 : 0);
@@ -227,7 +231,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 	private static LichYardBox putSidePath(StructurePiecesBuilder structurePiecesBuilder, BlockPos nearVestibule, Direction dirFromVestibule, Direction sideDirection, BlockPos pathEnd, int spread) {
 		BlockPos fromVestibule = nearVestibule.relative(sideDirection, 24);
 
-		BoundingBox pathBox = BoundingBoxUtils.wrappedCoordinates(1, pathEnd, fromVestibule.relative(dirFromVestibule.getOpposite(), spread));
+		BoundingBox pathBox = BoundingBoxUtils.setY(BoundingBoxUtils.wrappedCoordinates(1, pathEnd, fromVestibule.relative(dirFromVestibule.getOpposite(), spread)), nearVestibule.getY(), nearVestibule.getY() + 10);
 		LichYardBox path = new LichYardBox(pathBox, -1, dirFromVestibule.getAxis(), false, 0, 0);
 		structurePiecesBuilder.addPiece(path);
 		return path;
@@ -242,13 +246,15 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 
 		if (this.placeGraveAxis == Direction.Axis.Y || this.scale != 0) return;
 
+		int baseY = this.boundingBox.minY();
+
 		for (int i = 0; i < 5; i++) {
 			Direction side = Direction.fromAxisAndDirection(this.placeGraveAxis, random.nextBoolean() ? Direction.AxisDirection.NEGATIVE : Direction.AxisDirection.POSITIVE).getClockWise();
 
 			BlockPos randomPos = BoundingBoxUtils.lerpPosInside(this.boundingBox, this.placeGraveAxis, Mth.lerp(random.nextFloat(), 0.05f, 0.95f)).relative(side, random.nextIntBetweenInclusive(2, 4));
 
 			FrontAndTop orientation = FrontAndTop.fromFrontAndTop(side, Direction.UP);
-			int baseY = context.chunkGenerator().getBaseHeight(randomPos.getX(), randomPos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+			// int baseY = context.chunkGenerator().getBaseHeight(randomPos.getX(), randomPos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
 
 			ResourceLocation templateId = lichTowerUtil.rollGrave(random);
 			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(randomPos.atY(baseY - 1), BlockPos.ZERO, orientation, context.structureTemplateManager(), templateId, "twilightforest:lich_tower/grave", random);

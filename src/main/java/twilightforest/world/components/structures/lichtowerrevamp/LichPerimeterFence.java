@@ -155,7 +155,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 	@Nullable
 	public static LichPerimeterFence startPerimeterFence(StructurePiece vestibule, Structure.GenerationContext context, StructurePiecesBuilder structurePiecesBuilder, StructureTemplateManager structureManager, WorldgenRandom random, Direction direction, BlockPos fenceCenter) {
 		FrontAndTop orientation = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
-		int baseY = context.chunkGenerator().getBaseHeight(fenceCenter.getX(), fenceCenter.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+		int baseY = fenceCenter.getY(); // context.chunkGenerator().getBaseHeight(fenceCenter.getX(), fenceCenter.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
 
 		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(fenceCenter.atY(baseY - 2), BlockPos.ZERO, orientation, structureManager, TwilightForestMod.prefix("lich_tower/outer_fence_7"), "twilightforest:lich_tower/fence_source", random);
 
@@ -281,7 +281,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 			// Begin "homing" onto Fence's vertical height if close enough to the trim
 			dY = Mth.clamp(parentFence.templatePosition().getY() - 1, destination.minY() + 2, destination.maxY() - 2) - 1 - parentFence.templatePosition().getY();
 		} else {
-			dY = -1 - parentFence.templatePosition().getY() + context.chunkGenerator().getBaseHeight(postPos.getX(), postPos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+			dY = 0;
 		}
 		BlockPos parentPos = parentFence.templatePosition().above(Mth.sign(dY) - 1);
 

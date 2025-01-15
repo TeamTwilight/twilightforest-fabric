@@ -31,6 +31,7 @@ import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.chunkgenerators.BoxDensityFunction;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.lichtower.TowerMainComponent;
+import twilightforest.world.components.structures.lichtowerrevamp.LichTowerBaseTrim;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerFoyer;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerWingBeard;
 import twilightforest.world.components.structures.lichtowerrevamp.LichYardBox;
@@ -131,11 +132,13 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 		List<BoundingBox> trimBoxes = new ArrayList<>();
 
 		for (var piece : structurePieceSource.getPieces()) {
-			if (piece instanceof LichTowerFoyer || (piece instanceof LichTowerWingBeard beard && beard.isTrim())) {
+			if (piece instanceof LichTowerFoyer || piece instanceof LichTowerBaseTrim || (piece instanceof LichTowerWingBeard beard && beard.isTrim())) {
 				trimBoxes.add(piece.getBoundingBox());
+			} else if (piece instanceof LichYardBox yard && yard.getTerrainAdjustment() != TerrainAdjustment.NONE) {
+				trimBoxes.add(piece.getBoundingBox().moved(0, -5, 0));
 			}
 		}
 
-		return DensityFunctions.max(BoxDensityFunction.combine(trimBoxes, 1, TerrainAdjustment.BEARD_BOX), DensityFunctions.constant(0));
+		return DensityFunctions.max(BoxDensityFunction.combine(trimBoxes, -5, -5, TerrainAdjustment.BURY), DensityFunctions.constant(0));
 	}
 }
