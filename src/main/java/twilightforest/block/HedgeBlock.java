@@ -37,6 +37,7 @@ public class HedgeBlock extends Block implements LandPathNodeTypesRegistry.Stati
 	public HedgeBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
+		LandPathNodeTypesRegistry.register(this, this);
 	}
 
 	@Override
