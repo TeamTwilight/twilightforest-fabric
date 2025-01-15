@@ -1,10 +1,11 @@
 package twilightforest.block;
 
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +28,7 @@ import twilightforest.util.EntityUtil;
 
 import java.util.List;
 
-public class HedgeBlock extends Block {
+public class HedgeBlock extends Block implements LandPathNodeTypesRegistry.StaticPathNodeTypeProvider {
 
 	private static final VoxelShape HEDGE_BB = Shapes.create(new AABB(0, 0, 0, 1, 0.9375, 1));
 
@@ -35,6 +36,7 @@ public class HedgeBlock extends Block {
 
 	public HedgeBlock(BlockBehaviour.Properties properties) {
 		super(properties);
+		FlammableBlockRegistry.getDefaultInstance().add(this, getFireSpreadSpeed(), getFlammability());
 	}
 
 	@Override
@@ -43,9 +45,9 @@ public class HedgeBlock extends Block {
 		return HEDGE_BB;
 	}
 
-	@Nullable
-//	@Override
-	public BlockPathTypes getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
+	@Override
+	public @Nullable BlockPathTypes getPathNodeType(BlockState state, boolean neighbor) {
+		Entity mob = null; // TODO: Forge apparently always passes null for mob anyway, but this needs to be confirmed.
 		return mob != null && this.shouldDamage(mob) ? BlockPathTypes.DANGER_OTHER : null;
 	}
 
@@ -101,5 +103,13 @@ public class HedgeBlock extends Block {
 
 	private boolean shouldDamage(Entity entity) {
 		return !(entity instanceof Spider || entity instanceof ItemEntity || entity.isIgnoringBlockTriggers());
+	}
+
+	public int getFlammability() {
+		return 0;
+	}
+
+	public int getFireSpreadSpeed() {
+		return 0;
 	}
 }
