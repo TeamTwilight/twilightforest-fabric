@@ -8,9 +8,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BrazierBlock;
 import twilightforest.block.entity.BrazierBlockEntity;
@@ -59,5 +63,11 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity> 
 	@Override
 	public boolean shouldRenderOffScreen(BrazierBlockEntity entity) {
 		return true;
+	}
+
+	@Override
+	public AABB getRenderBoundingBox(BrazierBlockEntity blockEntity) {
+		BlockPos pos = blockEntity.getBlockPos();
+		return new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 2.0, pos.getZ() + 1.0);
 	}
 }
