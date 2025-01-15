@@ -96,8 +96,7 @@ public class HollowLogClimbable extends HorizontalDirectionalBlock implements Wa
 	@Override
 	public BlockState setWaterlog(BlockState prior, boolean doWater) {
 		return switch (prior.getValue(VARIANT)) {
-			case VINE ->
-					doWater ? this.vertical.get().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, true) : prior;
+			case VINE -> doWater ? this.vertical.get().defaultBlockState().setValue(HollowLogVertical.WATERLOGGED, true) : prior;
 			case LADDER -> prior.setValue(VARIANT, HollowLogVariants.Climbable.LADDER_WATERLOGGED);
 			case LADDER_WATERLOGGED -> prior.setValue(VARIANT, HollowLogVariants.Climbable.LADDER);
 		};
