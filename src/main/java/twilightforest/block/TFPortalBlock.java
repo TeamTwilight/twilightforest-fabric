@@ -150,9 +150,9 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			List<Entity> list = level.getEntitiesOfClass(Entity.class, new AABB(pos).inflate(range));
 
 			for (Entity victim : list) {
-//				if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) {
-				victim.thunderHit((ServerLevel) level, bolt);
-//				}
+				// if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) { // [PARITY] No Forge Events here
+					victim.thunderHit((ServerLevel) level, bolt);
+				// }
 			}
 		}
 	}
@@ -245,8 +245,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static ResourceKey<Level> getDestination(Entity entity) {
-		if (cachedOriginDimension == null)
-			cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
+		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
 		return !entity.getCommandSenderWorld().dimension().location().equals(TFGenerationSettings.DIMENSION)
 				? TFGenerationSettings.DIMENSION_KEY : cachedOriginDimension;
 	}
