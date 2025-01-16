@@ -40,7 +40,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity> 
 		BlockRenderDispatcher dispatch = Minecraft.getInstance().getBlockRenderer();
 		BlockState state = Blocks.FIRE.defaultBlockState();
 		float y = 0.35F * lit.getFireSize();
-		stack.translate(0.26F, 1.7F, 0.5F);
+		stack.translate(0.26F, 1.6F, 0.5F);
 		stack.scale(0.35F, y, 0.35F);
 		stack.mulPose(Axis.YP.rotationDegrees(45.0F));
 		if (lit.isLit() && y > 0.0F) {
