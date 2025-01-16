@@ -48,8 +48,8 @@ public class TomeSpawnerBlock extends BaseEntityBlock implements CaughtFireBlock
 
 	@Override
 	public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
-		if (level.getDifficulty() != Difficulty.PEACEFUL && level.getBlockState(pos).getValue(SPAWNER) && level.getBlockEntity(pos) instanceof TomeSpawnerBlockEntity ts && level instanceof ServerLevel serverLevel) {
-			for (int i = 0; i < state.getValue(BOOK_STAGES); i++) {
+		if(level.getDifficulty() != Difficulty.PEACEFUL && level.getBlockState(pos).getValue(SPAWNER) && level.getBlockEntity(pos) instanceof TomeSpawnerBlockEntity ts && level instanceof ServerLevel serverLevel) {
+			for(int i = 0; i < state.getValue(BOOK_STAGES); i++) {
 				ts.attemptSpawnTome(serverLevel, pos, true);
 			}
 			level.destroyBlock(pos, false);
@@ -59,8 +59,8 @@ public class TomeSpawnerBlock extends BaseEntityBlock implements CaughtFireBlock
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		for (Direction direction : Direction.values()) {
-			if (level.getBlockState(pos.relative(direction)).is(BlockTags.FIRE)) {
+		for(Direction direction : Direction.values()) {
+			if(level.getBlockState(pos.relative(direction)).is(BlockTags.FIRE)) {
 				this.onCaughtFire(state, level, pos, direction, null);
 				break;
 			}
@@ -69,7 +69,7 @@ public class TomeSpawnerBlock extends BaseEntityBlock implements CaughtFireBlock
 
 	@Override
 	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity entity, ItemStack stack) {
-		if (!level.isClientSide && state.getValue(SPAWNER)) {
+		if(!level.isClientSide && state.getValue(SPAWNER)) {
 			level.playSound(null, pos, TFSounds.DEATH_TOME_DEATH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			for (int i = 0; i < 20; ++i) {
 				double d3 = level.random.nextGaussian() * 0.02D;
