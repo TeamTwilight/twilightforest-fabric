@@ -23,7 +23,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -32,6 +31,8 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.util.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
+
+import org.jetbrains.annotations.Nullable;
 
 public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock {
 
@@ -49,7 +50,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	private static final VoxelShape FINAL = Shapes.or(BOTTOM, MID, TOP, CORNER1, CORNER2, CORNER3, CORNER4);
 
 	public TrophyPedestalBlock(Properties properties) {
-		super(properties.pushReaction(PushReaction.BLOCK));
+		super(properties.pushReaction(PushReaction.BLOCK)); // [PARITY] No state sensitive PushReaction in fabric land
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false).setValue(WATERLOGGED, false));
 	}
 
