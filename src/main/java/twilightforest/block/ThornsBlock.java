@@ -24,9 +24,10 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
+
+import org.jetbrains.annotations.Nullable;
 
 public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock, PlayerDestroyBlock, LandPathNodeTypesRegistry.StaticPathNodeTypeProvider {
 
@@ -55,9 +56,9 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	@Override
 	public boolean canConnectTo(Direction.Axis thisAxis, Direction facing, BlockState facingState, boolean solidSide) {
 		return (facingState.getBlock() instanceof ThornsBlock
-				|| facingState.getBlock().equals(TFBlocks.THORN_ROSE.get())
-				|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES.get())
-				|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.get()));
+						|| facingState.getBlock().equals(TFBlocks.THORN_ROSE.get())
+						|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES.get())
+						|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.get()));
 	}
 
 	@Override
@@ -175,8 +176,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED))
-			accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
+		if (state.getValue(WATERLOGGED)) accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
 		if (facingState.is(Blocks.AIR)) return state;
 
 		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
