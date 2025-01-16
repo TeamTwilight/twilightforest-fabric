@@ -44,20 +44,20 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	void performTreeEffect(Level level, BlockPos pos, RandomSource rand) {
-		Map<Storage<ItemVariant>, Vec3> inputHandlers = new HashMap<>();
-		Map<Storage<ItemVariant>, Vec3> outputHandlers = new HashMap<>();
+		Map<Storage<ItemVariant>, Vec3> inputMap = new HashMap<>();
+		Map<Storage<ItemVariant>, Vec3> outputMap = new HashMap<>();
 
-		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.COMMON_CONFIG.MAGIC_TREES.sortingRange.get())) {
+		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.COMMON_CONFIG.MAGIC_TREES.sortingRange.get())) { // Get every itemHandler from every block in the area
 			if (!blockPos.equals(pos)) {
 				Storage<ItemVariant> storage = ItemStorage.SIDED.find(level, pos, null);
 				if (storage != null) {
-					boolean inputRange = Math.abs(blockPos.getX() - pos.getX()) <= 2
-							&& Math.abs(blockPos.getY() - pos.getY()) <= 2
-							&& Math.abs(blockPos.getZ() - pos.getZ()) <= 2;
-					if (inputRange && storage.supportsExtraction()) {
-						inputHandlers.put(storage, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-					} else if (!inputRange && storage.supportsInsertion()) {
-						outputHandlers.put(storage, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
+					// Put it in the input if its within 2 blocks
+					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
+						if (storage.supportsExtraction())
+							inputMap.put(storage, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
+					} else {
+						if (storage.supportsInsertion())
+							outputMap.put(storage, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 					}
 				}
 			}
@@ -66,27 +66,27 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
 			Storage<ItemVariant> storage = getEntityStorage(entity);
 			if (storage != null && storage.supportsExtraction())
-				inputHandlers.put(storage, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+				inputMap.put(storage, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 		});
 
-		if (inputHandlers.isEmpty()) return;
+		if (inputMap.isEmpty()) return; // No input
 
 		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
 			Storage<ItemVariant> storage = getEntityStorage(entity);
-			if (storage != null && storage.supportsInsertion() && !inputHandlers.containsKey(storage))
-				outputHandlers.put(storage, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+			if (storage != null && storage.supportsInsertion() && !inputMap.containsKey(storage))
+				outputMap.put(storage, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 		});
 
-		if (outputHandlers.isEmpty()) return;
+		if (outputMap.isEmpty()) return; // No output
 
-		for (Storage<ItemVariant> inputStorage : inputHandlers.keySet()) {
+		for (Storage<ItemVariant> inputStorage : inputMap.keySet()) {
 			for (StorageView<ItemVariant> view : inputStorage.nonEmptyViews()) {
 				ItemVariant inputVariant = view.getResource();
 				boolean transferred = false;
 
 				Map<Long, Storage<ItemVariant>> outputsByCount = new Long2ObjectOpenHashMap<>();
 
-				for (Storage<ItemVariant> outputStorage : outputHandlers.keySet()) {
+				for (Storage<ItemVariant> outputStorage : outputMap.keySet()) {
 					long stored = StorageUtil.simulateExtract(outputStorage, inputVariant, Long.MAX_VALUE, null);
 					if (stored != Long.MAX_VALUE) // don't sort infinite inventories
 						outputsByCount.put(stored, outputStorage);
@@ -104,8 +104,8 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 						transferred = true;
 						t.commit();
 
-						Vec3 xyz = outputHandlers.get(outputStorage);
-						Vec3 diff = inputHandlers.get(inputStorage).subtract(xyz);
+						Vec3 xyz = outputMap.get(outputStorage);
+						Vec3 diff = inputMap.get(inputStorage).subtract(xyz);
 
 						for (ServerPlayer serverplayer : ((ServerLevel) level).players()) {//This is just particle math, we send a particle packet to every player in range
 							if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
