@@ -51,6 +51,13 @@ public final class LichTowerWingBridge extends TwilightJigsawPiece implements Pi
 	}
 
 	@Override
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag structureTag) {
+		super.addAdditionalSaveData(ctx, structureTag);
+
+		structureTag.putBoolean("from_central", this.fromCentral);
+	}
+
+	@Override
 	protected void processJigsaw(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, JigsawRecord record, int jigsawIndex) {
 	}
 
