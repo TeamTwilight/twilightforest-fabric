@@ -401,27 +401,12 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			fillCorner(level, new BlockPos(this.boundingBox.maxX(), this.boundingBox.minY(), this.boundingBox.maxZ()), chunkBounds);
 			fillCorner(level, new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.maxZ()), chunkBounds);
 		}
-
-		// if (!FMLLoader.isProduction()) this.setInvisibleTextEntity(level, Mth.lerpInt(0.5f, this.boundingBox.minX(), this.boundingBox.maxX()), this.boundingBox.minY() + 3, Mth.lerpInt(0.5f, this.boundingBox.minZ(), this.boundingBox.maxZ()), chunkBounds, this.templateName, Display.BillboardConstraints.FIXED);
 	}
 
 	private static void fillCorner(WorldGenLevel level, BlockPos pos, BoundingBox chunkBounds) {
 		if (chunkBounds.isInside(pos)) {
 			level.setBlock(pos, Blocks.STONE_BRICKS.defaultBlockState(), Block.UPDATE_ALL);
 			level.setBlock(pos.above(), Blocks.STONE_BRICKS.defaultBlockState(), Block.UPDATE_ALL);
-		}
-	}
-
-	private void setInvisibleTextEntity(WorldGenLevel world, int x, int y, int z, BoundingBox sbb, String s, Display.BillboardConstraints billboardConstraint) {
-		final BlockPos pos = new BlockPos(x, y, z);
-
-		if (sbb.isInside(pos)) {
-			final Display.TextDisplay display = new Display.TextDisplay(EntityType.TEXT_DISPLAY, world.getLevel());
-			display.setText(Component.literal(s));
-			display.setBillboardConstraints(billboardConstraint);
-			display.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
-
-			world.addFreshEntity(display);
 		}
 	}
 
