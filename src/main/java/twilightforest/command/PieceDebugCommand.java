@@ -66,7 +66,7 @@ public class PieceDebugCommand {
 			BoundingBox boundingBox = piece.getBoundingBox();
 			if (this.spawnBlockDisplay(level, boundingBox, displayState, padding)) {
 				MutableComponent nameLabel = net.minecraft.network.chat.Component.literal(key == null ? "missing key" : key.toString());
-				this.setTextEntity(level, (boundingBox.minX() + boundingBox.maxX()) * 0.5, boundingBox.minY() - padding, boundingBox.maxZ() + padding + 1, Display.BillboardConstraints.FIXED, nameLabel);
+				this.setTextEntity(level, (boundingBox.minX() + boundingBox.maxX() + 1) * 0.5, boundingBox.minY() - padding, boundingBox.maxZ() + padding + 1, Display.BillboardConstraints.FIXED, nameLabel);
 
 				successes++;
 			}
