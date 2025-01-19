@@ -82,7 +82,7 @@ public final class LichTowerPieces {
 			TwilightForestMod.prefix("lich_tower/5x5/t_junction"),
 			TwilightForestMod.prefix("lich_tower/5x5/altar"),
 			TwilightForestMod.prefix("lich_tower/5x5/desk"),
-			TwilightForestMod.prefix("lich_tower/5x5/full_junction_1"),
+			TwilightForestMod.prefix("lich_tower/5x5/zombie_trap"),
 			TwilightForestMod.prefix("lich_tower/5x5/full_junction_2"),
 			TwilightForestMod.prefix("lich_tower/5x5/full_junction_3"),
 			TwilightForestMod.prefix("lich_tower/5x5/ladder"),
@@ -117,7 +117,8 @@ public final class LichTowerPieces {
 			TwilightForestMod.prefix("lich_tower/7x7/pedestal_junction"),
 			TwilightForestMod.prefix("lich_tower/7x7/shelved_jars"),
 			TwilightForestMod.prefix("lich_tower/7x7/walled_library"),
-			TwilightForestMod.prefix("lich_tower/7x7/pedestal_library")
+			TwilightForestMod.prefix("lich_tower/7x7/pedestal_library"),
+			TwilightForestMod.prefix("lich_tower/7x7/barbed_webs")
 		},
 		new ResourceLocation[] {
 			TwilightForestMod.prefix("lich_tower/9x9/elbow_junction"),
@@ -134,7 +135,8 @@ public final class LichTowerPieces {
 			TwilightForestMod.prefix("lich_tower/9x9/center_decor"),
 			TwilightForestMod.prefix("lich_tower/9x9/library_junction"),
 			TwilightForestMod.prefix("lich_tower/9x9/winding_ways"),
-			TwilightForestMod.prefix("lich_tower/9x9/tiered_spawner")
+			TwilightForestMod.prefix("lich_tower/9x9/tiered_spawner"),
+			TwilightForestMod.prefix("lich_tower/9x9/cauldron_keep")
 		}
 	};
 	final ResourceLocation[] galleryRooms = new ResourceLocation[] {
@@ -342,12 +344,14 @@ public final class LichTowerPieces {
 				TwilightForestMod.prefix("lich_tower/9x9/study"),
 				TwilightForestMod.prefix("lich_tower/9x9/centerpiece"),
 				TwilightForestMod.prefix("lich_tower/9x9/altar"),
-				TwilightForestMod.prefix("lich_tower/9x9/lectern_hall")
+				TwilightForestMod.prefix("lich_tower/9x9/lectern_hall"),
+				TwilightForestMod.prefix("lich_tower/9x9/cauldron_keep")
 			),
 			2, List.of(
 				TwilightForestMod.prefix("lich_tower/9x9/classic_library"),
 				TwilightForestMod.prefix("lich_tower/9x9/study"),
-				TwilightForestMod.prefix("lich_tower/9x9/library_junction")
+				TwilightForestMod.prefix("lich_tower/9x9/library_junction"),
+				TwilightForestMod.prefix("lich_tower/9x9/cauldron_keep")
 			),
 			4, List.of(
 				TwilightForestMod.prefix("lich_tower/9x9/classic_library"),

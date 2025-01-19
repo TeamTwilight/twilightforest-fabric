@@ -12,15 +12,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.RandomizableContainer;
-import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.Item;
@@ -60,6 +57,7 @@ import twilightforest.beans.Autowired;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.SkullCandleBlock;
+import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.entity.monster.DeathTome;
@@ -71,6 +69,7 @@ import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.DirectionUtil;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.WorldUtil;
+import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.util.jigsaw.JigsawUtil;
@@ -512,11 +511,13 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			case "zombie_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.ZOMBIE_SKULL_CANDLE.value(), dataRotation);
 			case "spawner" -> this.putSpawner(pos, level, random, parameters);
 			case "brewing_stand" -> this.putBrewingStand(pos, level, random);
-			case "lectern" -> this.putTrappableLectern(pos, level, dataRotation, random.nextBoolean() && WorldUtil.getDifficulty() != Difficulty.PEACEFUL);
+			case "lectern" -> this.putTrappableLectern(pos, level, dataRotation, random.nextBoolean());
 			case "chiseled_canopy_shelf" -> this.putTrappableBookshelf(pos, level, registryAccess, random, dataRotation);
 			case "chest" -> this.putChest(pos, level, random, parameters, dataRotation, Blocks.CHEST.defaultBlockState());
 			case "trapped_chest" -> this.putChest(pos, level, random, parameters, dataRotation, Blocks.TRAPPED_CHEST.defaultBlockState());
 			case "candle", "candles" -> this.putCandles(parameters, random, level, pos);
+			case "water_cauldron" -> this.putWaterCauldron(parameters, random, level, pos);
+			case "zombie_trap" -> this.putZombieTrap(random, level, pos);
 			case "empty_lectern" -> {
 				Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
 				level.setBlock(pos, Blocks.LECTERN.defaultBlockState().rotate(stateRotation), Block.UPDATE_CLIENTS);
@@ -637,9 +638,52 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 	private void putCandles(String[] parameters, RandomSource random, WorldGenLevel level, BlockPos pos) {
 		int amount = Math.min(4, parameters.length == 2 ? this.getCandleRanged(parameters[1], random) : random.nextIntBetweenInclusive(1, 3));
-		if (amount == 0) return;
+		if (amount <= 0) return;
 		BlockState candles = Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true).setValue(CandleBlock.CANDLES, amount);
 		level.setBlock(pos, candles, Block.UPDATE_CLIENTS);
+	}
+
+	private void putWaterCauldron(String[] parameters, RandomSource random, WorldGenLevel level, BlockPos pos) {
+		int amount = Math.min(3, parameters.length == 2 ? this.parseRange(parameters[1], random, 1, 3) : random.nextIntBetweenInclusive(1, 3));
+
+		BlockState cauldron = amount <= 0 ? Blocks.CAULDRON.defaultBlockState() : Blocks.WATER_CAULDRON.defaultBlockState().setValue(BlockStateProperties.LEVEL_CAULDRON, amount);
+		level.setBlock(pos, cauldron, Block.UPDATE_CLIENTS);
+	}
+
+	private void putZombieTrap(RandomSource random, WorldGenLevel level, BlockPos pos) {
+		BlockState fenceBlock = TFBlocks.WROUGHT_IRON_FENCE.value().defaultBlockState().setValue(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.CAPPED);
+		level.setBlock(pos, fenceBlock, Block.UPDATE_CLIENTS);
+
+		Direction randomDirection = this.getRandomDirectionInsideChunk(random, pos);
+		BlockPos zombiePos = pos.relative(randomDirection, 1);
+
+		var knot = EntityUtil.createEntityIgnoreException(level, EntityType.LEASH_KNOT);
+		var trapEntity = EntityUtil.createEntityIgnoreException(level, EntityType.ZOMBIE);
+		if (knot == null || trapEntity == null)
+			return;
+
+		knot.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+		level.addFreshEntity(knot);
+
+		trapEntity.setPersistenceRequired();
+		trapEntity.setLeashedTo(knot, false);
+		trapEntity.setPos(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
+		level.addFreshEntityWithPassengers(trapEntity);
+	}
+
+	private @NotNull Direction getRandomDirectionInsideChunk(RandomSource random, BlockPos pos) {
+		int xInChunk = SectionPos.sectionRelative(pos.getX());
+		int zInChunk = SectionPos.sectionRelative(pos.getZ());
+
+		List<Direction> directions = Direction.Plane.HORIZONTAL.shuffledCopy(random);
+
+		if (xInChunk == 0) directions.remove(Direction.WEST);
+		if (zInChunk == 0) directions.remove(Direction.NORTH);
+		if (xInChunk == 15) directions.remove(Direction.EAST);
+		if (zInChunk == 15) directions.remove(Direction.SOUTH);
+
+		Direction randomDirection = Util.getRandom(directions, random);
+		return randomDirection;
 	}
 
 	private BlockState blockFromLabel(String label) {
@@ -673,7 +717,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private void putTrappableBookshelf(BlockPos pos, WorldGenLevel level, RegistryAccess registryAccess, RandomSource random, Rotation dataRotation) {
-		boolean isHostile = random.nextInt(8) == 0 && WorldUtil.getDifficulty() != Difficulty.PEACEFUL;
+		boolean isHostile = random.nextInt(8) == 0;
 		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
 		BlockState shelf = TFBlocks.CHISELED_CANOPY_BOOKSHELF.value().defaultBlockState().setValue(ChiseledCanopyShelfBlock.SPAWNER, isHostile).rotate(stateRotation);
 
@@ -722,7 +766,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private int getCandleRanged(String amountLabel, RandomSource random) {
-		return this.parseRange(amountLabel, random, 1, 3);
+		return this.parseRange(amountLabel, random, 1, 3); // Don't want 4 because it's too bright for the LT
 	}
 
 	@SuppressWarnings("SameParameterValue")

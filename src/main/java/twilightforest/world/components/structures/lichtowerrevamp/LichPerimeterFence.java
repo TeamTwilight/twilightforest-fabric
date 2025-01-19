@@ -10,15 +10,12 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -32,6 +29,7 @@ import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
+import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.processors.MetaBlockProcessor;
@@ -318,8 +316,8 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		if (!chunkBounds.isInside(zombiePos))
 			return;
 
-		var knot = createEntityIgnoreException(level, EntityType.LEASH_KNOT);
-		var boundedEntity = createEntityIgnoreException(level, EntityType.ZOMBIE);
+		var knot = EntityUtil.createEntityIgnoreException(level, EntityType.LEASH_KNOT);
+		var boundedEntity = EntityUtil.createEntityIgnoreException(level, EntityType.ZOMBIE);
 		if (knot == null || boundedEntity == null)
 			return;
 
@@ -332,12 +330,4 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		level.addFreshEntityWithPassengers(boundedEntity);
 	}
 
-	@Nullable
-	private static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
-		try {
-			return type.create(level.getLevel());
-		} catch (Exception exception) {
-			return null;
-		}
-	}
 }

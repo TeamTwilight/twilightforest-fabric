@@ -353,4 +353,13 @@ public class EntityUtil {
 		}
 		return false;
 	}
+
+	@Nullable
+	public static <T extends Entity> T createEntityIgnoreException(ServerLevelAccessor level, EntityType<T> type) {
+		try {
+			return type.create(level.getLevel());
+		} catch (Exception exception) {
+			return null;
+		}
+	}
 }
