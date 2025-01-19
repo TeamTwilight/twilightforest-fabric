@@ -1,7 +1,9 @@
 package twilightforest;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.Reflection;
+import net.minecraft.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -76,6 +78,7 @@ import twilightforest.world.components.layer.BiomeDensitySource;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 
 import java.util.Locale;
+import java.util.function.Supplier;
 
 @Mod(TwilightForestMod.ID)
 public final class TwilightForestMod {
@@ -86,10 +89,13 @@ public final class TwilightForestMod {
 	private static final String GUI_DIR = "textures/gui/";
 	private static final String ENVIRO_DIR = "textures/environment/";
 
-	public static final GameRules.Key<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression",
+	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> ENFORCED_PROGRESSION_RULE = Suppliers.memoize(() -> GameRules.register("tfEnforcedProgression",
 		GameRules.Category.UPDATES,  //Putting it in UPDATES since other world stuff is here
 		GameRules.BooleanValue.create(true, (server, enforced) ->
-			PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(enforced.get())))); //sends a packet to every player online when this changes so weather effects update accordingly
+			//sends a packet to every player online when this changes so weather effects update accordingly
+			PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(enforced.get()))
+		)
+	));
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
@@ -110,6 +116,8 @@ public final class TwilightForestMod {
 		bus.post(new ProcessBeanAnnotationsEvent(this)); // Enables @Autowired
 		Reflection.initialize(ConfigSetup.class);
 		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
+		// Get main thread and use it to register our gamerule early
+		Util.backgroundExecutor().execute(ENFORCED_PROGRESSION_RULE::get);
 		if (dist.isClient()) {
 			RegistrationEvents.initModBusEvents(bus);
 			ClientEvents.initGameEvents();
