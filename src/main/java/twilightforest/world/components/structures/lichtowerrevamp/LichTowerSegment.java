@@ -48,8 +48,8 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		this.putGallery = compoundTag.getBoolean("put_gallery");
 	}
 
-	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean putWings, boolean putGallery) {
-		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/tower_slice"), jigsawContext);
+	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean putWings, boolean putGallery, ResourceLocation template) {
+		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT.get(), genDepth, structureManager, template, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 		stairDecay(this.genDepth, this.placeSettings);
@@ -93,7 +93,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 
 			boolean putWings = stackIndex > segments >> 1;
 			boolean putGallery = stackIndex == segments - 1;
-			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, mobBridge == 0, putWings, putGallery);
+			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, mobBridge == 0, putWings, putGallery, TwilightForestMod.prefix("lich_tower/tower_slice"));
 
 			pieceAccessor.addPiece(towerSegment);
 			pieces.add(towerSegment); // Add to list for adding children later, must build upwards to the boss room before beginning Sidetowers from the base & upwards too
@@ -114,6 +114,10 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 			StructurePiece bossRoom = new LichBossRoom(structureManager, bossRoomJunction);
 			pieceAccessor.addPiece(bossRoom);
 			bossRoom.addChildren(priorPiece, pieceAccessor, random);
+
+			StructurePiece boundary = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, bossRoomJunction, false, false, false, TwilightForestMod.prefix("lich_tower/tower_boss_boundary"));
+			pieceAccessor.addPiece(boundary);
+			boundary.addChildren(priorPiece, pieceAccessor, random);
 		}
 
 		if (pieces.isEmpty())
