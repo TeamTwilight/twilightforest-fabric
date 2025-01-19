@@ -75,7 +75,9 @@ public class TFMaze {
 		wallBlockState = TFBlocks.CUT_MAZESTONE.get().defaultBlockState();
 		rootBlockState = TFBlocks.MAZESTONE.get().defaultBlockState();
 		torchBlockState = Blocks.TORCH.defaultBlockState();
-		pillarBlockState = null;
+		pillarBlockState = Blocks.AIR.defaultBlockState();
+		headBlockState = Blocks.AIR.defaultBlockState();
+		doorBlockState = Blocks.AIR.defaultBlockState();
 
 		torchRarity = 0.75F;
 		doorRarity = 0F;
