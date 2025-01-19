@@ -115,7 +115,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 			pieceAccessor.addPiece(bossRoom);
 			bossRoom.addChildren(priorPiece, pieceAccessor, random);
 
-			StructurePiece boundary = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, bossRoomJunction, false, false, false, TwilightForestMod.prefix("lich_tower/tower_boss_boundary"));
+			StructurePiece boundary = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, bossRoomJunction.copy(), false, false, false, TwilightForestMod.prefix("lich_tower/tower_boss_boundary"));
 			pieceAccessor.addPiece(boundary);
 			boundary.addChildren(priorPiece, pieceAccessor, random);
 		}
@@ -153,8 +153,12 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 			}
 			case "twilightforest:mob_bridge" -> {
 				if (this.putMobBridge) {
+					FrontAndTop orientation = connection.orientation();
+					// Either keep match jigsaw rotation or spin it 180. This will "flip" a few bridges
+					FrontAndTop forPlacement = random.nextBoolean() ? orientation : FrontAndTop.fromFrontAndTop(orientation.front(), orientation.top().getOpposite());
+
 					ResourceLocation mobBridgeLocation = lichTowerUtil.rollRandomMobBridge(random);
-					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", random);
+					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), forPlacement, this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", random);
 
 					if (placeableJunction != null) {
 						StructurePiece mobBridgePiece = new LichTowerSpawnerBridge(this.genDepth + 1, this.structureManager, mobBridgeLocation, placeableJunction, random.nextBoolean());
