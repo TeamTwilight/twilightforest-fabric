@@ -49,10 +49,10 @@ public final class LichTowerPieces {
 	final ResourceLocation[] mobBridges = new ResourceLocation[] {
 		TwilightForestMod.prefix("lich_tower/bridge_spawner"),
 		TwilightForestMod.prefix("lich_tower/bridge_spawner_bend"),
-		TwilightForestMod.prefix("lich_tower/bridge_spawner_ring"),
 		TwilightForestMod.prefix("lich_tower/bridge_spawner_ropes"),
 		TwilightForestMod.prefix("lich_tower/bridge_spawner_wide"),
-		TwilightForestMod.prefix("lich_tower/bridge_spawner_zag")
+		TwilightForestMod.prefix("lich_tower/bridge_spawner_zag"),
+		TwilightForestMod.prefix("lich_tower/bridge_spawner_zig")
 	};
 	final ResourceLocation[] centerDecors = new ResourceLocation[] {
 		TwilightForestMod.prefix("lich_tower/3x3/tree"),
