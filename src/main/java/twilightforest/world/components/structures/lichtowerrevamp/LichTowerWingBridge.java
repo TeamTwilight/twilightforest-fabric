@@ -148,9 +148,11 @@ public final class LichTowerWingBridge extends TwilightJigsawPiece implements Pi
 	}
 
 	public static void putCover(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, RandomSource random, BlockPos sourceJigsawPos, FrontAndTop sourceOrientation, StructureTemplateManager structureManager, boolean noWindow, int newDepth) {
-		boolean onlyCobbleStopper = noWindow || pieceAccessor.findCollisionPiece(BoundingBox.fromCorners(sourceJigsawPos.relative(sourceOrientation.front(), 1), sourceJigsawPos.relative(sourceOrientation.front(), 3))) != null;
+		BlockPos parentTemplatePos = parent.templatePosition();
+		BoundingBox clearance = BoundingBox.fromCorners(parentTemplatePos.offset(sourceJigsawPos.relative(sourceOrientation.front(), 1)), parentTemplatePos.offset(sourceJigsawPos.relative(sourceOrientation.front(), 3)));
+		boolean onlyCobbleStopper = noWindow || pieceAccessor.findCollisionPiece(clearance) != null;
 		ResourceLocation bridgeCoverLocation = onlyCobbleStopper ? lichTowerUtil.getDefaultBridgeStopper() : lichTowerUtil.rollRandomCover(random);
-		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), sourceJigsawPos, sourceOrientation, structureManager, bridgeCoverLocation, "twilightforest:lich_tower/bridge", random);
+		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parentTemplatePos, sourceJigsawPos, sourceOrientation, structureManager, bridgeCoverLocation, "twilightforest:lich_tower/bridge", random);
 
 		if (placeableJunction != null) {
 			StructurePiece bridgeCoverPiece = new LichTowerWingBridge(structureManager, newDepth, placeableJunction, bridgeCoverLocation, false);
