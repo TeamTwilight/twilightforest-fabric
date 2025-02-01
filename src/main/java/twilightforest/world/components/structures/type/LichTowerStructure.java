@@ -129,6 +129,8 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 
 	@Override
 	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
+		if (!REVAMP) return DensityFunctions.constant(0);
+
 		List<BoundingBox> trimBoxes = new ArrayList<>();
 
 		for (var piece : structurePieceSource.getPieces()) {

@@ -60,9 +60,8 @@ public class TFStructurePieceTypes {
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFNCT = registerPieceType("TFNCT", NagaCourtyardHedgeTJunctionComponent::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFNCIs = registerPieceType("TFNCIs", NagaCourtyardHedgeIntersectionComponent::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFNCPd = registerPieceType("TFNCPd", NagaCourtyardHedgePadderComponent::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFNCTr = registerPieceType("TFNCTr", CourtyardTerraceBrazier::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFNCDu = registerPieceType("TFNCDu", CourtyardTerraceDuct::new);
-	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFNCSt = registerPieceType("TFNCSt", CourtyardTerraceStatue::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFNCTe = registerPieceType("TFNCTe", CourtyardTerrace::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFNCHe = registerPieceType("TFNCHe", CourtyardTerraceHedge::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFNCPa = registerPieceType("TFNCPa", CourtyardPathPiece::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFNCWl = registerPieceType("TFNCWl", CourtyardWall::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFNCWP = registerPieceType("TFNCWP", CourtyardWallPadder::new);

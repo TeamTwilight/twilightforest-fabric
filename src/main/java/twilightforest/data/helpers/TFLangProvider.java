@@ -218,8 +218,10 @@ public abstract class TFLangProvider extends LanguageProvider {
 		for (Map.Entry<String, String> entry : TF_TIPS.entrySet()) {
 			JsonObject object = new JsonObject();
 
+			object.addProperty("type", "tipsmod:simple");
+
 			Component tooltipText = Component.translatable(entry.getKey()).withStyle(ChatFormatting.GREEN);
-			object.add("tip", ComponentSerialization.CODEC.encodeStart(JsonOps.INSTANCE, tooltipText).getOrThrow());
+			object.add("text", ComponentSerialization.CODEC.encodeStart(JsonOps.INSTANCE, tooltipText).getOrThrow());
 			futuresBuilder.add(DataProvider.saveStable(cache, GSON.toJsonTree(object), this.output.getOutputFolder().resolve("assets/twilightforest/tips/" + entry.getValue() + ".json")));
 		}
 		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
