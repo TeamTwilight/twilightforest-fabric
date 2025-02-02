@@ -54,13 +54,14 @@ public class LichTowerUtil {
 	private final Supplier<StructureProcessor[]> stairDecayProcessors = Suppliers.memoize(() -> {
 		List<Block> filter = this.STAIR_DECAY_BLOCKS.get();
 		return new StructureProcessor[]{
+			new VerticalDecayProcessor(filter, 0.025f),
 			new VerticalDecayProcessor(filter, 0.05f),
+			new VerticalDecayProcessor(filter, 0.075f),
 			new VerticalDecayProcessor(filter, 0.1f),
+			new VerticalDecayProcessor(filter, 0.125f),
 			new VerticalDecayProcessor(filter, 0.15f),
-			new VerticalDecayProcessor(filter, 0.2f),
-			new VerticalDecayProcessor(filter, 0.25f),
-			new VerticalDecayProcessor(filter, 0.3f),
-			new VerticalDecayProcessor(filter, 0.35f)
+			new VerticalDecayProcessor(filter, 0.175f),
+			new VerticalDecayProcessor(filter, 0.2f)
 		};
 	});
 	private static final Supplier<StructureProcessor> UPDATE_MARKER = Suppliers.memoize(() -> UpdateMarkingProcessor.forBlocks(
