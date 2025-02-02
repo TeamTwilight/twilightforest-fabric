@@ -66,7 +66,7 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 
 		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(placePos, BlockPos.ZERO, oriented, context.structureTemplateManager(), TwilightForestMod.prefix("lich_tower/tower_foyer"), "twilightforest:lich_tower/vestibule", random);
 
-		return placeContext == null ? null : new LichTowerFoyer(context.structureTemplateManager(), placeContext, random.nextBoolean(), random.nextBoolean());
+		return placeContext == null ? null : new LichTowerFoyer(context.structureTemplateManager(), placeContext, true, random.nextBoolean());
 	}
 
 	@Override
