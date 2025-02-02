@@ -57,6 +57,6 @@ public class HedgeMazeStructure extends LandmarkStructure implements CustomDensi
 
 	@Override
 	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
-		return CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 54);
+		return CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 0, 4);
 	}
 }

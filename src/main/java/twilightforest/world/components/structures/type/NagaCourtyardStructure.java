@@ -56,6 +56,6 @@ public class NagaCourtyardStructure extends ConquerableStructure implements Cust
 
 	@Override
 	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
-		return CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 24);
+		return CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 3, 4);
 	}
 }
