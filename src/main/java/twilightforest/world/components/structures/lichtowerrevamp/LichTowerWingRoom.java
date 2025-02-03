@@ -605,16 +605,8 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	private void putSpawner(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters) {
 		level.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), Block.UPDATE_CLIENTS);
 
-		if (parameters.length >= 2 && level.getBlockEntity(pos) instanceof SpawnerBlockEntity spawner) {
-			String[] monsters = parameters[1].split(",");
-			EntityType<?> monster = monsters.length == 0 ? switch (random.nextInt(10)) {
-				case 7, 8, 9 -> EntityType.SKELETON;
-				case 6 -> EntityType.SPIDER;
-				case 5 -> EntityType.CAVE_SPIDER;
-				case 4 -> TFEntities.HEDGE_SPIDER.value();
-				case 3 -> TFEntities.SWARM_SPIDER.value();
-				default -> EntityType.ZOMBIE;
-			} : randEntity(random, monsters);
+		if (level.getBlockEntity(pos) instanceof SpawnerBlockEntity spawner) {
+			EntityType<?> monster = this.pickRandomMob(random, parameters);
 
 			CompoundTag entityToSpawn = new CompoundTag();
 			entityToSpawn.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(monster).toString());
@@ -627,7 +619,28 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		}
 	}
 
-	private static EntityType<?> randEntity(RandomSource random, String[] monsters) {
+	private EntityType<?> pickRandomMob(RandomSource random, String[] parameters) {
+		if (parameters.length >= 2) {
+			String[] monsters = parameters[1].split(",");
+			return monsters.length == 0 ? this.defaultRandomMob(random) : randomMobFromParams(random, monsters);
+		}
+
+		return this.defaultRandomMob(random);
+	}
+
+	@NotNull
+	private EntityType<?> defaultRandomMob(RandomSource random) {
+		return switch (random.nextInt(10)) {
+			case 7, 8, 9 -> EntityType.SKELETON;
+			case 6 -> EntityType.SPIDER;
+			case 5 -> EntityType.CAVE_SPIDER;
+			case 4 -> TFEntities.HEDGE_SPIDER.value();
+			case 3 -> TFEntities.SWARM_SPIDER.value();
+			default -> EntityType.ZOMBIE;
+		};
+	}
+
+	private static EntityType<?> randomMobFromParams(RandomSource random, String[] monsters) {
 		String label = Util.getRandom(monsters, random);
 		return switch (label) {
 			case "hedge_spider" -> TFEntities.HEDGE_SPIDER.value();
