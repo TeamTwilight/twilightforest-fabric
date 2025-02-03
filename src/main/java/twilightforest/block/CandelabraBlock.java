@@ -417,16 +417,19 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
 		int candleCount = getCandleCount(state);
 		return switch (state.getValue(LIGHTING)) {
-			default -> candleCount;
 			case DIM -> 3 + candleCount;
 			case OMINOUS -> 6 + candleCount;
 			case NORMAL -> 9 + candleCount;
+			default -> candleCount;
 		};
 	}
 
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
 		this.updateNeighborsBasedOnRotation(level, pos, state);
+		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
+			candelabra.updateState(0); //force an update so the blockstates are synced up with the block entity data
+		}
 		super.onPlace(state, level, pos, newState, moving);
 	}
 
