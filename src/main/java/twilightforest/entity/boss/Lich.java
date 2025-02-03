@@ -185,7 +185,9 @@ public class Lich extends BaseTFBoss {
 				if (((Lich)this.mob).getTeleportInvisibility() > 0) return;
 				super.tick();
 				if (this.mob.getTarget() != null && !this.mob.isWithinMeleeAttackRange(this.mob.getTarget()) && this.mob.getNavigation().isDone()) {
-					this.mob.getNavigation().moveTo(this.mob.getTarget(), this.speedModifier);
+					if (!this.mob.getNavigation().moveTo(this.mob.getTarget(), this.speedModifier)) {
+						Lich.this.teleportToSightOfEntity(this.mob.getTarget());
+					}
 				}
 			}
 
