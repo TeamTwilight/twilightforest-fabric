@@ -1,4 +1,4 @@
-// 1.21.1	2024-12-03T23:40:31.3862893	TwilightForest blockstates and block models
+// 1.21.1	2025-02-02T21:20:20.5097733	TwilightForest blockstates and block models
 cab88029518a1647ec691d136328ed93c18108be assets/twilightforest/blockstates/acacia_banister.json
 9472090eea384d675fee73a90ed033b799c88820 assets/twilightforest/blockstates/alpha_yeti_boss_spawner.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/alpha_yeti_trophy.json
@@ -234,6 +234,7 @@ b2d13c3f0b48b32cd22b298869622e5576c3e146 assets/twilightforest/blockstates/mazes
 437f589b25154f38ea5d5181d49e838c1f1524ba assets/twilightforest/blockstates/mazestone_border.json
 d2528a33d68497718881b0961720e2eb66e8dc0c assets/twilightforest/blockstates/mazestone_brick.json
 5b36ba1064db9f2984e50e6bbe7e9fa5dd235abf assets/twilightforest/blockstates/mazestone_mosaic.json
+c3b07e69e77559217b7a2d31818bc23e3eea3805 assets/twilightforest/blockstates/maze_slime_block.json
 606f96394916ab8c83866ce4255dbd3682c6879a assets/twilightforest/blockstates/mining_banister.json
 dd4b0220d8ba90a3ceee245449a8110dafd6b45c assets/twilightforest/blockstates/mining_button.json
 79dc4cb9c0a97d1cc0a6f98e4466ff820cff4bff assets/twilightforest/blockstates/mining_chest.json

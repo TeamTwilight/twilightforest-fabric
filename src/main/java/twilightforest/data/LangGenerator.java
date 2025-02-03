@@ -215,6 +215,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.MAZESTONE_MOSAIC, "Mazestone Mosaic");
 		this.addBlock(TFBlocks.MAZESTONE_BORDER, "Mazestone Border");
 		this.addBlock(TFBlocks.RED_THREAD, "Red Thread");
+		this.addBlock(TFBlocks.MAZE_SLIME_BLOCK, "Maze Slime Block");
 
 		this.addBlock(TFBlocks.SMOKER, "Smoker");
 		this.addBlock(TFBlocks.FIRE_JET, "Fire Jet");

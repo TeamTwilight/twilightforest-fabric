@@ -145,6 +145,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.MOSSY_MAZESTONE.get());
 		dropSelf(TFBlocks.MAZESTONE_MOSAIC.get());
 		dropSelf(TFBlocks.MAZESTONE_BORDER.get());
+		dropSelf(TFBlocks.MAZE_SLIME_BLOCK.get());
 		add(TFBlocks.RED_THREAD.get(), redThread());
 		dropWhenSilkTouch(TFBlocks.HEDGE.get());
 		add(TFBlocks.ROOT_BLOCK.get(), createSingleItemTableWithSilkTouch(TFBlocks.ROOT_BLOCK.get(), Items.STICK, UniformGenerator.between(3, 5)));
