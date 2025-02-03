@@ -136,7 +136,7 @@ public class TFDensityFunctions {
 			)
 		);
 
-		context.register(FORESTED_TERRAIN, finalDensity.clamp(-0.1, 1));
+		context.register(FORESTED_TERRAIN, finalDensity.clamp(-0.1, 0.5));
 	}
 
 	// Heavy WIP
@@ -169,6 +169,6 @@ public class TFDensityFunctions {
 			biomeDensity
 		);
 
-		context.register(SKYLIGHT_TERRAIN, finalDensity.clamp(-0.1, 1));
+		context.register(SKYLIGHT_TERRAIN, finalDensity.clamp(-0.1, 0.5));
 	}
 }

@@ -321,13 +321,12 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		if (knot == null || boundedEntity == null)
 			return;
 
-		knot.setPos(this.leashPos.getX() + 0.5, this.leashPos.getY(), this.leashPos.getZ() + 0.5);
-		level.addFreshEntity(knot);
+		knot.moveTo(this.leashPos.getX() + 0.5, this.leashPos.getY(), this.leashPos.getZ() + 0.5);
 
 		boundedEntity.setPersistenceRequired();
 		boundedEntity.setLeashedTo(knot, false);
-		boundedEntity.setPos(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
-		level.addFreshEntityWithPassengers(boundedEntity);
+		boundedEntity.moveTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
+		level.addFreshEntity(boundedEntity);
 	}
 
 }

@@ -2,12 +2,15 @@ package twilightforest.world.components.structures.type;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +21,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
@@ -37,10 +41,8 @@ import twilightforest.world.components.structures.lichtowerrevamp.LichTowerWingB
 import twilightforest.world.components.structures.lichtowerrevamp.LichYardBox;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class LichTowerStructure extends ControlledSpawningStructure implements CustomDensitySource {
@@ -133,6 +135,10 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 
 		List<BoundingBox> trimBoxes = new ArrayList<>();
 
+		int yBase = structurePieceSource.getPieces().getFirst().getBoundingBox().minY();
+
+		DensityFunction activator = DensityFunctions.yClampedGradient(yBase - 2, yBase - 1, 1, 0);
+
 		for (var piece : structurePieceSource.getPieces()) {
 			if (piece instanceof LichTowerFoyer || piece instanceof LichTowerBaseTrim || (piece instanceof LichTowerWingBeard beard && beard.isTrim())) {
 				trimBoxes.add(piece.getBoundingBox());
@@ -141,6 +147,31 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 			}
 		}
 
-		return DensityFunctions.max(BoxDensityFunction.combine(trimBoxes, -5, -5, TerrainAdjustment.BURY), DensityFunctions.constant(0));
+		return DensityFunctions.mul(activator, BoxDensityFunction.combine(trimBoxes, -5, -5, TerrainAdjustment.BURY));
+	}
+
+	@Override
+	public int adjustForTerrain(GenerationContext context, int x, int z) {
+		int chunkOriginX = x & ~0b1111;
+		int chunkOriginZ = z & ~0b1111;
+
+		// Here we use the geometric mean of the corners and the center
+
+		IntList heights = new IntArrayList(IntList.of(
+			context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
+			context.chunkGenerator().getFirstOccupiedHeight(chunkOriginX, chunkOriginZ, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
+			context.chunkGenerator().getFirstOccupiedHeight(chunkOriginX + 15, chunkOriginZ, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
+			context.chunkGenerator().getFirstOccupiedHeight(chunkOriginX, chunkOriginZ + 15, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
+			context.chunkGenerator().getFirstOccupiedHeight(chunkOriginX + 15, chunkOriginZ + 15, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState())
+		));
+
+		int minimumHeight = heights.intStream().min().orElse(0);
+		int multiplied = 1;
+		for (int index = 0; index < heights.size(); index++) {
+			multiplied *= heights.getInt(index) - minimumHeight;
+		}
+
+		// Exponent of 1/5 is the same as 5th root
+		return Mth.floor(Math.pow(multiplied, 0.2)) + minimumHeight;
 	}
 }

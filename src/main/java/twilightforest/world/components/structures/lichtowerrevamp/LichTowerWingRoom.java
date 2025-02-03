@@ -662,13 +662,12 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		if (knot == null || trapEntity == null)
 			return;
 
-		knot.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-		level.addFreshEntity(knot);
+		knot.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
 
 		trapEntity.setPersistenceRequired();
 		trapEntity.setLeashedTo(knot, false);
-		trapEntity.setPos(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
-		level.addFreshEntityWithPassengers(trapEntity);
+		trapEntity.moveTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
+		level.addFreshEntity(trapEntity);
 	}
 
 	private @NotNull Direction getRandomDirectionInsideChunk(RandomSource random, BlockPos pos) {
@@ -797,6 +796,8 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private void putTrappableLectern(BlockPos pos, WorldGenLevel level, Rotation dataRotation, boolean putMimic) {
+		if (true) return;
+
 		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
 		BlockState lectern = Blocks.LECTERN.defaultBlockState()
 			.setValue(LecternBlock.HAS_BOOK, !putMimic)
