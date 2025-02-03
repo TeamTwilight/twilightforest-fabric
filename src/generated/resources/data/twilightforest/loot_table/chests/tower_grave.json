@@ -5,15 +5,45 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": 177.0,
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:bone"
+          "type": "minecraft:loot_table",
+          "value": {
+            "pools": [
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "add": false,
+                        "count": 99.0,
+                        "function": "minecraft:set_count"
+                      }
+                    ],
+                    "name": "minecraft:bone"
+                  }
+                ],
+                "rolls": 1.0
+              },
+              {
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "functions": [
+                      {
+                        "add": false,
+                        "count": 78.0,
+                        "function": "minecraft:set_count"
+                      }
+                    ],
+                    "name": "minecraft:bone"
+                  }
+                ],
+                "rolls": 1.0
+              }
+            ]
+          }
         },
         {
           "type": "minecraft:item",

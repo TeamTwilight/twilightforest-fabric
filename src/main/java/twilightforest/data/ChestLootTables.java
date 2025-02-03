@@ -514,6 +514,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 						.setRolls(ConstantValue.exactly(1))
 						//rare loot
 						.add(EmptyLootItem.emptyItem().setWeight(3))
+						.add(LootItem.lootTableItem(TFItems.BRITTLE_FLASK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(2))
 						.add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 6))).setWeight(2))
 						.add(LootItem.lootTableItem(TFItems.CROWN_SPLINTER))
 						.add(LootItem.lootTableItem(Items.DIAMOND))
@@ -691,7 +692,11 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 
 		register.accept(TFLootTables.TOWER_GRAVE, LootTable.lootTable()
 			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-				.add(LootItem.lootTableItem(Items.BONE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(177.0F))))
+				.add(NestedLootTable.inlineLootTable(LootTable.lootTable()
+					.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+						.add(LootItem.lootTableItem(Items.BONE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(99.0F)))))
+					.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+						.add(LootItem.lootTableItem(Items.BONE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(78.0F))))).build()))
 				.add(LootItem.lootTableItem(Items.BONE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(30.0F))).setWeight(50))
 				.add(LootItem.lootTableItem(Items.BONE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(32.0F))).setWeight(50))
 				.add(LootItem.lootTableItem(Items.BONE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(25.0F))).setWeight(50))
@@ -733,14 +738,18 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 
 		register.accept(TFLootTables.TOWER_FOYER, LootTable.lootTable()
 			.withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3, 4))
-				.add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(4))
-				.add(LootItem.lootTableItem(Items.BONE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(4))
-				.add(LootItem.lootTableItem(Items.CHARCOAL).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))).setWeight(4))
-				.add(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))).setWeight(4))
-				.add(LootItem.lootTableItem(Items.BREAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))).setWeight(2))
-				.add(LootItem.lootTableItem(Items.POTATO).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))).setWeight(2))
-				.add(NestedLootTable.lootTableReference(TFLootTables.SUSPICIOUS_STEW).setWeight(2))
-				.add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1))));
+				.add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(6))
+				.add(LootItem.lootTableItem(Items.BONE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(6))
+				.add(LootItem.lootTableItem(Items.CHARCOAL).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))).setWeight(6))
+				.add(LootItem.lootTableItem(TFItems.RAVEN_FEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))).setWeight(6))
+				.add(LootItem.lootTableItem(TFItems.TORCHBERRIES).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).setWeight(6))
+				.add(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))).setWeight(6))
+				.add(LootItem.lootTableItem(Items.BREAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))).setWeight(3))
+				.add(LootItem.lootTableItem(Items.POTATO).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))).setWeight(3))
+				.add(NestedLootTable.lootTableReference(TFLootTables.SUSPICIOUS_STEW).setWeight(3))
+				.add(LootItem.lootTableItem(TFItems.CHARM_OF_KEEPING_1))
+				.add(LootItem.lootTableItem(Items.DIAMOND))
+			));
 
 		register.accept(TFLootTables.CASKET_LOOT, LootTable.lootTable()
 			.withPool(LootPool.lootPool().setRolls(UniformGenerator.between(8, 16))

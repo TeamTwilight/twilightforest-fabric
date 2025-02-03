@@ -41,8 +41,13 @@ public class BrittleFlaskItem extends Item {
 	}
 
 	@Override
+	public int getMaxStackSize(ItemStack stack) {
+		return stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().potion().isPresent() ? 1 : super.getMaxStackSize(stack);
+	}
+
+	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion() != PotionContents.EMPTY;
+		return stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().potion().isPresent();
 	}
 
 	@Override
@@ -63,7 +68,13 @@ public class BrittleFlaskItem extends Item {
 						player.drop(new ItemStack(Items.GLASS_BOTTLE), false);
 					}
 				}
-				stack.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents));
+				var copy = stack.copyWithCount(1);
+				stack.shrink(1);
+
+				copy.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents));
+				if (!player.getInventory().add(copy)) {
+					player.drop(copy, false);
+				}
 				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
 				return true;
 			}
@@ -116,11 +127,14 @@ public class BrittleFlaskItem extends Item {
 				}
 				player.awardStat(Stats.ITEM_USED.get(this));
 				if (!player.getAbilities().instabuild) {
-					stack.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> {
+					var copy = stack.copyWithCount(1);
+					stack.shrink(1);
+
+					copy.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> {
 						component = component.removeDose();
 						if (component.breakable() && !player.getAbilities().instabuild) {
 							if (component.breakage() >= DOSES) {
-								stack.shrink(1);
+								copy.shrink(1);
 								level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK.get(), player.getSoundSource(), 1.5F, 0.7F);
 							} else {
 								level.playSound(null, player, TFSounds.BRITTLE_FLASK_CRACK.get(), player.getSoundSource(), 1.5F, 2.0F);
@@ -128,6 +142,10 @@ public class BrittleFlaskItem extends Item {
 						}
 						return component;
 					});
+
+					if (!player.getInventory().add(copy)) {
+						player.drop(copy, false);
+					}
 				}
 			}
 		}
