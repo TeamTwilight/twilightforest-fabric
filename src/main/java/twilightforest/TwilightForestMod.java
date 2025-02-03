@@ -481,6 +481,7 @@ public final class TwilightForestMod {
 			fireblock.setFlammable(TFBlocks.ARCTIC_FUR_BLOCK.get(), 20, 20);
 			fireblock.setFlammable(TFBlocks.LIVEROOT_BLOCK.get(), 5, 20);
 			fireblock.setFlammable(TFBlocks.CHISELED_CANOPY_BOOKSHELF.get(), 30, 20);
+			fireblock.setFlammable(TFBlocks.HUGE_STALK.get(), 5, 5);
 
 			fireblock.setFlammable(TFBlocks.TOWERWOOD.get(), 0, 1);
 			fireblock.setFlammable(TFBlocks.CRACKED_TOWERWOOD.get(), 0, 1);
