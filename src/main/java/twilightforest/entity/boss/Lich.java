@@ -555,7 +555,7 @@ public class Lich extends BaseTFBoss {
 	public void teleportHome() {
 		if (this.getRestrictionPoint() != null) {
 			BlockPos pos = this.getRestrictionPoint().pos();
-			if (this.level().getBlockState(pos.below(2)).isAir()) this.level().setBlockAndUpdate(pos.below(2), TFBlocks.BOLD_STONE_PILLAR.defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
+			if (this.level().getBlockState(pos.below(2)).isAir()) this.level().setBlockAndUpdate(pos.below(2), TFBlocks.BOLD_STONE_PILLAR.get().defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
 			if (this.level().getBlockState(pos.below()).isAir()) pos = pos.below();
 			this.teleportToNoChecks(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
 		}
