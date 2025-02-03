@@ -1,4 +1,4 @@
-// 1.21.1	2025-02-02T19:52:20.1349816	Loot Tables
+// 1.21.1	2025-01-08T09:38:35.7798792	Loot Tables
 483a7e0c99d5cabeab1ba9f04bd8e88d0a8f7386 data/twilightforest/loot_table/aurora_cache.json
 002a6e2eccdc92db019bd775911912877b26771f data/twilightforest/loot_table/aurora_room.json
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
@@ -220,6 +220,7 @@ b879439fe5882fc240dc4d6ad1361711b7a242d4 data/twilightforest/loot_table/blocks/m
 497f33626a55a60cb6e749af2d76014f69d2cd08 data/twilightforest/loot_table/blocks/mazestone_border.json
 3a2b7fd9c822a0b24c593e18c0b5274ed2318532 data/twilightforest/loot_table/blocks/mazestone_brick.json
 a120479894a819df6d430b5c71a83bf8c8b64f50 data/twilightforest/loot_table/blocks/mazestone_mosaic.json
+23bdd17f75640854fb145cd0b717ff53104ab8af data/twilightforest/loot_table/blocks/maze_slime_block.json
 59749f5ab4c438ee2af3ca3c4fa5c953608699ae data/twilightforest/loot_table/blocks/mining_banister.json
 129fddad72bb46d8673ef60e8ab70b5888b9e4a7 data/twilightforest/loot_table/blocks/mining_button.json
 8fc0c9fb7f76f76453fd95710686b2ca93f119b2 data/twilightforest/loot_table/blocks/mining_chest.json

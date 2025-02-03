@@ -120,6 +120,7 @@ public class TFBlocks {
 	public static final DeferredBlock<Block> MAZESTONE_MOSAIC = register("mazestone_mosaic", () -> new Block(BlockBehaviour.Properties.ofFullCopy(MAZESTONE.get())));
 	public static final DeferredBlock<Block> MAZESTONE_BORDER = register("mazestone_border", () -> new Block(BlockBehaviour.Properties.ofFullCopy(MAZESTONE.get())));
 	public static final DeferredBlock<Block> RED_THREAD = register("red_thread", () -> new RedThreadBlock(BlockBehaviour.Properties.of().instabreak().mapColor(MapColor.FIRE).isValidSpawn(TFBlocks::noSpawning).noCollission().noOcclusion().noTerrainParticles().pushReaction(PushReaction.DESTROY)));
+	public static final DeferredBlock<Block> MAZE_SLIME_BLOCK = register("maze_slime_block", () -> new MazeSlimeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK).mapColor(MapColor.STONE)));
 
 	//stronghold
 	public static final DeferredBlock<Block> STRONGHOLD_SHIELD = register("stronghold_shield", () -> new StrongholdShieldBlock(BlockBehaviour.Properties.of().noLootTable().mapColor(MapColor.STONE).pushReaction(PushReaction.BLOCK).requiresCorrectToolForDrops().sound(SoundType.METAL).strength(-1.0F, 6000000.0F)));

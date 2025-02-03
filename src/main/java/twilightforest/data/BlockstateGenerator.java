@@ -1498,6 +1498,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 		ModelFile border = models().cubeColumn(TFBlocks.MAZESTONE_BORDER.getId().getPath(), brickTex, blockTexture(TFBlocks.MAZESTONE_BORDER.get()));
 		simpleBlock(TFBlocks.MAZESTONE_BORDER.get(), border);
+
+		simpleBlock(TFBlocks.MAZE_SLIME_BLOCK.get(), models().withExistingParent(TFBlocks.MAZE_SLIME_BLOCK.getId().getPath(), ResourceLocation.withDefaultNamespace("block/slime_block")).renderType(TRANSLUCENT)
+			.texture("particle", blockTexture(TFBlocks.MAZE_SLIME_BLOCK.get()))
+			.texture("texture", blockTexture(TFBlocks.MAZE_SLIME_BLOCK.get())));
 	}
 
 	private void lilyPad(Block b) {
