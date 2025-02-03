@@ -66,33 +66,6 @@ public class CraftingGenerator extends CraftingDataHelper {
 		bannerPattern(output, "snow_queen_banner_pattern", TFBlocks.SNOW_QUEEN_TROPHY, TFItems.SNOW_QUEEN_BANNER_PATTERN);
 //		bannerPattern(output, "questing_ram_banner_pattern", TFBlocks.QUEST_RAM_TROPHY, TFItems.QUEST_RAM_BANNER_PATTERN);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Blocks.MOSS_BLOCK)
-			.pattern("mmm")
-			.pattern("mtm")
-			.pattern("mmm")
-			.define('m', Ingredient.of(TFBlocks.MOSS_PATCH.get()))
-			.define('t', Ingredient.of(TFItems.TRANSFORMATION_POWDER.get()))
-			.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.get()))
-			.save(output, TwilightForestMod.prefix("tf_moss_to_vanilla"));
-
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.MOSS_PATCH.get(), 8)
-			.requires(Ingredient.of(Items.MOSS_BLOCK))
-			.requires(Ingredient.of(TFItems.TRANSFORMATION_POWDER.get()))
-			.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.get()))
-			.save(output, TwilightForestMod.prefix("vanilla_to_tf_moss"));
-
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, TFBlocks.HUGE_LILY_PAD.get())
-			.requires(Ingredient.of(Blocks.LILY_PAD), 4)
-			.requires(Ingredient.of(TFItems.TRANSFORMATION_POWDER.get()))
-			.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.get()))
-			.save(output, TwilightForestMod.prefix("vanilla_to_tf_lilypad"));
-
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, Blocks.LILY_PAD, 4)
-			.requires(Ingredient.of(TFBlocks.HUGE_LILY_PAD.get()))
-			.requires(Ingredient.of(TFItems.TRANSFORMATION_POWDER.get()))
-			.unlockedBy("has_item", has(TFItems.TRANSFORMATION_POWDER.get()))
-			.save(output, TwilightForestMod.prefix("tf_to_vanilla_lilypad"));
-
 		slabBlock(output, "aurora_slab", TFBlocks.AURORA_SLAB, TFBlocks.AURORA_BLOCK);
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.AURORA_PILLAR.get(), 2)
 			.pattern("#")
