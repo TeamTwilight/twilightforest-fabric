@@ -30,7 +30,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.joml.Matrix4f;
 import twilightforest.beans.Component;
-import twilightforest.world.components.structures.TFStructureComponent;
+import twilightforest.world.components.structures.util.ProgressionPiece;
 
 import java.util.List;
 import java.util.Optional;
@@ -60,7 +60,7 @@ public class PieceDebugCommand {
 		List<StructurePiece> structurePieces = structureAt.getPieces();
 		int maxPieces = structurePieces.size();
 		for (StructurePiece piece : structurePieces) {
-			BlockState displayState = piece instanceof TFStructureComponent shieldablePiece && shieldablePiece.isComponentProtected() ? Blocks.LIME_STAINED_GLASS.defaultBlockState() : Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState();
+			BlockState displayState = piece instanceof ProgressionPiece shieldablePiece && shieldablePiece.isComponentProtected() ? Blocks.LIME_STAINED_GLASS.defaultBlockState() : Blocks.LIGHT_BLUE_STAINED_GLASS.defaultBlockState();
 			ResourceLocation key = BuiltInRegistries.STRUCTURE_PIECE.getKey(piece.getType());
 			float padding = Mth.lerp((float) successes / maxPieces, 0.003f, 0.025f);
 			BoundingBox boundingBox = piece.getBoundingBox();
