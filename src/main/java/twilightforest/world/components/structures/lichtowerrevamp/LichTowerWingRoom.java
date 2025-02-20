@@ -809,8 +809,6 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private void putTrappableLectern(BlockPos pos, WorldGenLevel level, Rotation dataRotation, boolean putMimic) {
-		if (true) return;
-
 		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
 		BlockState lectern = Blocks.LECTERN.defaultBlockState()
 			.setValue(LecternBlock.HAS_BOOK, !putMimic)
