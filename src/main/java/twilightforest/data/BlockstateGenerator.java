@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -1601,12 +1602,12 @@ public class BlockstateGenerator extends BlockModelBuilders {
 	private static String curvesSuffixForFacing(int blockRotation, Direction blockFace) {
 		int rotationForFace = switch (blockFace) {
 			case UP -> 2 - blockRotation;
-			case DOWN -> 1 + blockRotation;
+			case DOWN -> 3 + blockRotation;
 			case SOUTH -> switch (blockRotation) {
-				case 3 -> 2;
-				case 2 -> 1;
-				case 1 -> 3;
-				default -> 0;
+				case 3 -> 0;
+				case 2 -> 3;
+				case 1 -> 1;
+				default -> 2;
 			};
 			case WEST -> switch (blockRotation) {
 				case 3 -> 1;
@@ -1621,10 +1622,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				default -> 1;
 			};
 			case EAST -> switch (blockRotation) {
-				case 3 -> 0;
-				case 2 -> 2;
-				case 1 -> 1;
-				default -> 3;
+				case 3 -> 2;
+				case 2 -> 0;
+				case 1 -> 3;
+				default -> 1;
 			};
 		};
 
@@ -1649,7 +1650,10 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	@NotNull
 	private static String linesSuffixForFacing(boolean blockRotation, Direction blockFace) {
-		return (blockFace.getAxis() == Direction.Axis.Z) != blockRotation ? "_a" : "_b";
+		Vec3i normal = blockFace.getNormal();
+		int axisDirection = normal.getX() + normal.getY() + normal.getZ();
+		// Biblically accurate XOR
+		return axisDirection > 0 == ((blockFace.getAxis() == Direction.Axis.Z) != blockRotation) ? "_a" : "_b";
 	}
 
 	private void hollowLogs(Block originalLog, Block strippedLog, DeferredHolder<Block, HorizontalHollowLogBlock> horizontalHollowLog, DeferredHolder<Block, VerticalHollowLogBlock> verticalHollowLog, DeferredHolder<Block, ClimbableHollowLogBlock> climbableHollowLog, ModelFile emptyLog, ModelFile mossLog, ModelFile grassLog, ModelFile snowLog, ModelFile hollowLog, ModelFile vineLog, ModelFile ladderLog) {
