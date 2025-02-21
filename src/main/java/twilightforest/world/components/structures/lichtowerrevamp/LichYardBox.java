@@ -103,43 +103,52 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 
 		for (int z = boxIntersection.minZ(); z <= boxIntersection.maxZ(); z++) {
 			for (int x = boxIntersection.minX(); x <= boxIntersection.maxX(); x++) {
-				int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
-				BlockPos placeAt = new BlockPos(x, y, z);
-
-				if (!level.getBlockState(placeAt).is(BlockTags.DIRT))
-					continue;
-
-				int xBorderDist = Math.min(x - this.boundingBox.minX(), this.boundingBox.maxX() - x);
-				int zBorderDist = Math.min(z - this.boundingBox.minZ(), this.boundingBox.maxZ() - z);
-				float borderDist = Math.min(xBorderDist, zBorderDist) + this.offset;
-
-				float featherLevel = borderDist > this.edgeFeatheringRange ? 1f : Mth.clamp(borderDist / this.edgeFeatheringRange, 0, 1);
-				float noise = SimplexNoise.noise(x * this.scale, y * this.scale, z * this.scale) * 0.5f - 0.5f;
-				float featheredNoise = noise + featherLevel;
-				if (featheredNoise < 0) {
-					if (!this.doDirtMotley) {
-						float fenceNoise = SimplexNoise.noise(x * 0.15f, y * 0.15f - 1024f, z * 0.15f) * 0.5f;
-						if (Math.abs(fenceNoise) > 0.15f) {
-							int noiseRounded = Math.round(fenceNoise + 0.5f);
-							if (this.placeGraveAxis == Direction.Axis.Z ? x == this.boundingBox.minX() + noiseRounded || x == this.boundingBox.maxX() - noiseRounded : z == this.boundingBox.minZ() + noiseRounded || z == this.boundingBox.maxZ() - noiseRounded) {
-								BlockPos fenceAt = placeAt.above();
-								level.setBlock(fenceAt, Blocks.SPRUCE_FENCE.defaultBlockState(), Block.UPDATE_ALL);
-								chunk.markPosForPostprocessing(fenceAt);
-							}
-						}
-					}
-
-					continue;
-				}
-
-				BlockState state = this.doDirtMotley ? this.pickDirt(x, y, z, random) : Blocks.DIRT_PATH.defaultBlockState();
-
-				level.setBlock(placeAt, state, Block.UPDATE_ALL);
-				// Remove the darned plants
-				level.setBlock(placeAt.above(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
-				level.setBlock(placeAt.above(2), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+				this.processPos(level, random, x, z, chunk);
 			}
 		}
+	}
+
+	private void processPos(WorldGenLevel level, RandomSource random, int x, int z, ChunkAccess chunk) {
+		int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
+		BlockPos placeAt = new BlockPos(x, y, z);
+
+		if (!level.getBlockState(placeAt).is(BlockTags.DIRT))
+			return;
+
+		int xBorderDist = Math.min(x - this.boundingBox.minX(), this.boundingBox.maxX() - x);
+		int zBorderDist = Math.min(z - this.boundingBox.minZ(), this.boundingBox.maxZ() - z);
+		float borderDist = Math.min(xBorderDist, zBorderDist) + this.offset;
+
+		float featherLevel = borderDist > this.edgeFeatheringRange ? 1f : Mth.clamp(borderDist / this.edgeFeatheringRange, 0, 1);
+		float noise = SimplexNoise.noise(x * this.scale, y * this.scale, z * this.scale) * 0.5f - 0.5f;
+		float featheredNoise = noise + featherLevel;
+		if (featheredNoise < 0) {
+			if (!this.doDirtMotley) {
+				float fenceNoise = SimplexNoise.noise(x * 0.15f, y * 0.15f - 1024f, z * 0.15f) * 0.5f;
+				if (Math.abs(fenceNoise) > 0.15f) {
+					int noiseRounded = Math.round(fenceNoise + 0.5f);
+					if (this.placeGraveAxis == Direction.Axis.Z ? x == this.boundingBox.minX() + noiseRounded || x == this.boundingBox.maxX() - noiseRounded : z == this.boundingBox.minZ() + noiseRounded || z == this.boundingBox.maxZ() - noiseRounded) {
+						BlockPos fenceAt = placeAt.above();
+						level.setBlock(fenceAt, Blocks.SPRUCE_FENCE.defaultBlockState(), Block.UPDATE_ALL);
+						chunk.markPosForPostprocessing(fenceAt);
+					}
+				}
+			}
+
+			return;
+		}
+
+		BlockState state = this.doDirtMotley ? this.pickDirt(x, y, z, random) : Blocks.DIRT_PATH.defaultBlockState();
+
+		level.setBlock(placeAt, state, Block.UPDATE_ALL);
+		// Remove the darned plants
+		if (this.doDirtMotley && random.nextFloat() < 0.0125f) {
+			// Place dead plant instead
+			level.setBlock(placeAt.above(), Blocks.DEAD_BUSH.defaultBlockState(), Block.UPDATE_ALL);
+		} else {
+			level.setBlock(placeAt.above(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+		}
+		level.setBlock(placeAt.above(2), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
 	}
 
 	@Override
