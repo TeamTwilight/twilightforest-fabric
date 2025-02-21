@@ -26,10 +26,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.SpawnData;
-import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
@@ -60,9 +57,11 @@ import twilightforest.block.SkullCandleBlock;
 import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
+import twilightforest.block.entity.spawner.SinisterSpawnerBlockEntity;
 import twilightforest.entity.monster.DeathTome;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFParticleType;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
@@ -510,6 +509,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			case "wither_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.WITHER_SKELE_SKULL_CANDLE.value(), dataRotation);
 			case "zombie_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.ZOMBIE_SKULL_CANDLE.value(), dataRotation);
 			case "spawner" -> this.putSpawner(pos, level, random, parameters);
+			case "sinister_spawner" -> this.putSinisterSpawner(pos, level, random, parameters);
 			case "brewing_stand" -> this.putBrewingStand(pos, level, random);
 			case "lectern" -> this.putTrappableLectern(pos, level, dataRotation, random.nextBoolean());
 			case "chiseled_canopy_shelf" -> this.putTrappableBookshelf(pos, level, registryAccess, random, dataRotation);
@@ -606,17 +606,43 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		level.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), Block.UPDATE_CLIENTS);
 
 		if (level.getBlockEntity(pos) instanceof SpawnerBlockEntity spawner) {
-			EntityType<?> monster = this.pickRandomMob(random, parameters);
-
-			CompoundTag entityToSpawn = new CompoundTag();
-			entityToSpawn.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(monster).toString());
-			SpawnData spawnData = new SpawnData(entityToSpawn, Optional.of(new SpawnData.CustomSpawnRules(new InclusiveRange<>(0, 7), new InclusiveRange<>(0, 15))), Optional.empty());
-			spawner.getSpawner().setNextSpawnData(null, pos, spawnData);
+			this.configureBaseSpawner(pos, random, parameters, spawner.getSpawner());
 
 			if (parameters.length == 3 && StringUtils.isNumeric(parameters[2])) {
 				spawner.getSpawner().spawnRange = Mth.clamp(Integer.parseInt(parameters[2]), 1, 16);
 			}
 		}
+	}
+
+	private void putSinisterSpawner(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters) {
+		level.setBlock(pos, TFBlocks.SINISTER_SPAWNER.value().defaultBlockState(), Block.UPDATE_CLIENTS);
+
+		if (!(level.getBlockEntity(pos) instanceof SinisterSpawnerBlockEntity spawner))
+			return;
+
+		spawner.addParticle(TFParticleType.OMINOUS_FLAME.value(), false);
+		spawner.setLootTable(TFLootTables.OMINOUS_SPAWNER_DROPS);
+
+		this.configureBaseSpawner(pos, random, parameters, spawner.getSpawner());
+
+		if (parameters.length >= 3 && StringUtils.isNumeric(parameters[2])) {
+			spawner.getSpawner().spawnRange = Mth.clamp(Integer.parseInt(parameters[2]), 1, 16);
+		}
+
+		if (parameters.length >= 4 && StringUtils.isNumeric(parameters[3])) {
+			spawner.getSpawner().entityScanRange = Mth.clamp(Integer.parseInt(parameters[3]), 1, 32);
+		} else {
+			spawner.getSpawner().entityScanRange = spawner.getSpawner().spawnRange;
+		}
+	}
+
+	private void configureBaseSpawner(BlockPos pos, RandomSource random, String[] parameters, BaseSpawner spawner) {
+		EntityType<?> monster = this.pickRandomMob(random, parameters);
+
+		CompoundTag entityToSpawn = new CompoundTag();
+		entityToSpawn.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(monster).toString());
+		SpawnData spawnData = new SpawnData(entityToSpawn, Optional.of(new SpawnData.CustomSpawnRules(new InclusiveRange<>(0, 7), new InclusiveRange<>(0, 15))), Optional.empty());
+		spawner.setNextSpawnData(null, pos, spawnData);
 	}
 
 	private EntityType<?> pickRandomMob(RandomSource random, String[] parameters) {
