@@ -53,7 +53,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.LightableBlock;
 import twilightforest.components.entity.FortificationShieldAttachment;
 import twilightforest.data.tags.DamageTypeTagGenerator;

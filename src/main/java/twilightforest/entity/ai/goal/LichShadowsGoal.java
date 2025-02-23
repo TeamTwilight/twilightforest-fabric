@@ -58,7 +58,7 @@ public class LichShadowsGoal extends Goal {
 			LivingEntity targetedEntity = this.lich.getTarget();
 
 			if (this.lich.getAttackCooldown() == 60) {
-				this.lich.teleportToNewTarget(targetedEntity, this.attackRange, this);
+				if (!this.lich.teleportToNewTarget(targetedEntity, this.attackRange, this)) this.lich.teleportHome();
 			} else if (targetedEntity != null && this.lich.getAttackCooldown() == 0) {
 				if (this.lich.distanceTo(targetedEntity) < this.attackRange) {
 					this.attack(this.lich);
@@ -94,15 +94,12 @@ public class LichShadowsGoal extends Goal {
 		}
 	}
 
-	public void checkAndSpawnClones() {
+	public void checkAndSpawnClones(LivingEntity targetedEntity) {
 		// if not, spawn one!
-		if (this.lich.countMyClones() < this.lich.getAttributeValue(TFAttributes.CLONE_COUNT))
-			this.spawnShadowClone();
+		if (this.lich.countMyClones() < this.lich.getAttributeValue(TFAttributes.CLONE_COUNT)) this.spawnShadowClone(targetedEntity);
 	}
 
-	private void spawnShadowClone() {
-		LivingEntity targetedEntity = this.lich.getTarget();
-
+	private void spawnShadowClone(LivingEntity targetedEntity) {
 		// find a good spot
 		Vec3 cloneSpot = this.lich.findVecInLOSOf(targetedEntity);
 
