@@ -53,6 +53,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.LightableBlock;
 import twilightforest.components.entity.FortificationShieldAttachment;
 import twilightforest.data.tags.DamageTypeTagGenerator;
@@ -570,9 +571,13 @@ public class Lich extends BaseTFBoss {
 		if (!possibleTargets.isEmpty()) target = possibleTargets.get(this.getRandom().nextInt(possibleTargets.size()));
 
 		if (target != null) {
+			this.setTarget(target);
 			if (this.teleportToSightOfEntity(target)) {
-				for (Lich clone : this.getAllClones()) clone.teleportToSightOfEntity(target);
-				if (lichShadowsGoal != null) lichShadowsGoal.checkAndSpawnClones();
+				for (Lich clone : this.getAllClones()) {
+					clone.setTarget(target);
+                    clone.teleportToSightOfEntity(target);
+                }
+				if (lichShadowsGoal != null) lichShadowsGoal.checkAndSpawnClones(target);
 				return true;
 			}
 		}
@@ -644,10 +649,6 @@ public class Lich extends BaseTFBoss {
 		this.jumping = false;
 		//extinguish when teleporting
 		this.clearFire();
-		//set null target after teleporting so we choose a new target (for multiplayer fights)
-		if (this.getTarget() instanceof Player) {
-			this.setTarget(null);
-		}
 	}
 
 	//-----------------------------------------//
