@@ -7,8 +7,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import twilightforest.block.OminousCandleBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
@@ -21,19 +23,26 @@ public class ExanimateEssenceItem extends Item {
 	public InteractionResult useOn(UseOnContext context) {
 		Level level = context.getLevel();
 		BlockPos blockpos = context.getClickedPos();
-        boolean flag = false;
-        blockpos = blockpos.relative(context.getClickedFace());
+		boolean flag = false;
 		BlockState state = level.getBlockState(blockpos);
-		BlockState fireState = TFBlocks.OMINOUS_FIRE.get().defaultBlockState();
+		if (state.getBlock() instanceof CandleBlock candleBlock && state.getValue(CandleBlock.LIT)) {
+			this.playSound(level, blockpos);
+			level.setBlockAndUpdate(blockpos, OminousCandleBlock.CANDLE_MAP.get(candleBlock).get().defaultBlockState().setValue(OminousCandleBlock.CANDLES, state.getValue(CandleBlock.CANDLES)));
+			level.gameEvent(context.getPlayer(), GameEvent.BLOCK_PLACE, blockpos);
+			flag = true;
+		} else {
+			blockpos = blockpos.relative(context.getClickedFace());
+			state = level.getBlockState(blockpos);
 
-        if (fireState.canSurvive(level, blockpos) && state.canBeReplaced() && !state.is(fireState.getBlock())) {
-            this.playSound(level, blockpos);
-            level.setBlockAndUpdate(blockpos, TFBlocks.OMINOUS_FIRE.get().defaultBlockState());
-            level.gameEvent(context.getPlayer(), GameEvent.BLOCK_PLACE, blockpos);
-            flag = true;
-        }
+			if (state.canBeReplaced() && TFBlocks.OMINOUS_FIRE.get().canSurvive(TFBlocks.OMINOUS_FIRE.get().defaultBlockState(), level, blockpos)) {
+				this.playSound(level, blockpos);
+				level.setBlockAndUpdate(blockpos, TFBlocks.OMINOUS_FIRE.get().defaultBlockState());
+				level.gameEvent(context.getPlayer(), GameEvent.BLOCK_PLACE, blockpos);
+				flag = true;
+			}
+		}
 
-        if (flag) {
+		if (flag) {
 			context.getItemInHand().shrink(1);
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		} else {

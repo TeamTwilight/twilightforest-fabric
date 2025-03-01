@@ -523,6 +523,24 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 		this.simpleBlock(TFBlocks.SINISTER_SPAWNER.value(), this.models().withExistingParent( "sinister_spawner", "block/spawner").texture("all", TwilightForestMod.prefix("block/sinister_spawner")).renderType(CUTOUT));
 
+		builtinEntity(TFBlocks.OMINOUS_CANDLE.get(), "minecraft:block/candle_lit");//FIXME
+		builtinEntity(TFBlocks.OMINOUS_WHITE_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_ORANGE_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_MAGENTA_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_LIGHT_BLUE_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_YELLOW_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_LIME_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_PINK_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_GRAY_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_LIGHT_GRAY_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_CYAN_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_PURPLE_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_BLUE_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_BROWN_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_GREEN_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_RED_CANDLE.get(), "minecraft:block/candle_lit");
+		builtinEntity(TFBlocks.OMINOUS_BLACK_CANDLE.get(), "minecraft:block/candle_lit");
+
 		ModelFile floor0 = this.models().withExistingParent(TFBlocks.OMINOUS_FIRE.getId().getPath() + "_floor0", ResourceLocation.withDefaultNamespace("block/template_fire_floor")).renderType(CUTOUT).texture("fire", blockTexture(TFBlocks.OMINOUS_FIRE.get()) + "_0");
 		ModelFile floor1 = this.models().withExistingParent(TFBlocks.OMINOUS_FIRE.getId().getPath() + "_floor1", ResourceLocation.withDefaultNamespace("block/template_fire_floor")).renderType(CUTOUT).texture("fire", blockTexture(TFBlocks.OMINOUS_FIRE.get()) + "_1");
 		ModelFile side0 = this.models().withExistingParent(TFBlocks.OMINOUS_FIRE.getId().getPath() + "_side0", ResourceLocation.withDefaultNamespace("block/template_fire_side")).renderType(CUTOUT).texture("fire", blockTexture(TFBlocks.OMINOUS_FIRE.get()) + "_0");
