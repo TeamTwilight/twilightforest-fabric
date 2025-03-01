@@ -2,6 +2,7 @@ package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -21,11 +22,14 @@ import twilightforest.block.entity.OminousCandleBlockEntity;
 import java.util.List;
 
 public class OminousCandleRenderer<T extends OminousCandleBlockEntity> implements BlockEntityRenderer<T> {
+	private final Minecraft minecraft;
+
 	protected final BlockRenderDispatcher blockRenderer;
 	protected static final float WOBBLE_AMPLITUDE = 0.125F;
 
 	public OminousCandleRenderer(BlockEntityRendererProvider.Context context) {
 		this.blockRenderer = context.getBlockRenderDispatcher();
+		this.minecraft = Minecraft.getInstance();
 	}
 
 	@Override
@@ -58,7 +62,13 @@ public class OminousCandleRenderer<T extends OminousCandleBlockEntity> implement
 
 		for (int i = 0; i < candles; i++) {
 			stack.pushPose();
-			stack.translate(-vec2s.get(i).x, OminousCandleBlock.getCurrentY(time, partialTick, blockEntity.getBlockPos(), i + 1), -vec2s.get(i).y);
+			double targetHeight = OminousCandleBlock.getCurrentY(time, partialTick, blockEntity.getBlockPos(), i + 1);
+
+			double yHeight = this.exponentialDecay(blockEntity.getVisualHeight(i), targetHeight, 0.05);
+
+			blockEntity.setVisualHeightScalar(yHeight, i);
+
+			stack.translate(-vec2s.get(i).x, yHeight, -vec2s.get(i).y);
 			for (RenderType rt : bakedModel.getRenderTypes(state, RandomSource.create(42), ModelData.EMPTY)) {
 				this.blockRenderer.getModelRenderer()
 					.renderModel(
@@ -78,5 +88,16 @@ public class OminousCandleRenderer<T extends OminousCandleBlockEntity> implement
 			stack.popPose();
 		}
 		stack.popPose();
+	}
+
+	/**
+	 * Yoinked from <a href="https://www.youtube.com/watch?v=LSNQuFEDOyQ&t=2982s">"Lerp smoothing is broken" by Freya</a>
+	 * @param prevValue Value from previous frame
+	 * @param targetValue Value to reach
+	 * @param decayFactor Higher value = faster progression towards targetValue
+	 * @return A value towards targetValue in respect to decayFactor
+	 */
+	private double exponentialDecay(double prevValue, double targetValue, double decayFactor) {
+		return targetValue + (prevValue - targetValue) * Math.exp(-decayFactor * this.minecraft.getTimer().getGameTimeDeltaTicks());
 	}
 }
