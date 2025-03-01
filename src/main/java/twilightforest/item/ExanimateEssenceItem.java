@@ -32,8 +32,9 @@ public class ExanimateEssenceItem extends Item {
 			flag = true;
 		} else {
 			blockpos = blockpos.relative(context.getClickedFace());
+			state = level.getBlockState(blockpos);
 
-			if (TFBlocks.OMINOUS_FIRE.get().canSurvive(TFBlocks.OMINOUS_FIRE.get().defaultBlockState(), level, blockpos)) {
+			if (state.canBeReplaced() && TFBlocks.OMINOUS_FIRE.get().canSurvive(TFBlocks.OMINOUS_FIRE.get().defaultBlockState(), level, blockpos)) {
 				this.playSound(level, blockpos);
 				level.setBlockAndUpdate(blockpos, TFBlocks.OMINOUS_FIRE.get().defaultBlockState());
 				level.gameEvent(context.getPlayer(), GameEvent.BLOCK_PLACE, blockpos);
