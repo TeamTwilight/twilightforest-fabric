@@ -60,7 +60,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 	}
 
 	private static void stairDecay(int depth, StructurePlaceSettings settings) {
-		int decayLevel = Mth.ceil((depth - 3) * 0.25);
+		int decayLevel = Mth.ceil((depth - 3) * 0.5);
 
 		if (decayLevel >= 0) {
 			StructureProcessor[] stairDecayProcessors = lichTowerUtil.getStairDecayProcessors();
