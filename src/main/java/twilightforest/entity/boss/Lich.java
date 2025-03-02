@@ -33,7 +33,6 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
@@ -43,7 +42,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -54,6 +53,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.LightableBlock;
+import twilightforest.block.OminousCandleBlock;
 import twilightforest.components.entity.FortificationShieldAttachment;
 import twilightforest.data.tags.DamageTypeTagGenerator;
 import twilightforest.entity.ai.goal.*;
@@ -339,10 +339,8 @@ public class Lich extends BaseTFBoss {
 		}
 
 		if (this.getTarget() != null) {
-			if (this.spawnTime > 0 && this.hasLineOfSight(this.getTarget())) {
-				if (--this.spawnTime < 30) {
-					this.extinguishNearbyCandles(30 - this.spawnTime);
-				}
+			if (this.spawnTime > 0 && this.spawnTime-- < 40) {
+				this.turnNearbyCandles(40 - this.spawnTime, !(this.spawnTime - 1 > 0 && this.spawnTime - 1 < 40));
 			}
 		}
 	}
@@ -708,45 +706,39 @@ public class Lich extends BaseTFBoss {
 	@Override
 	public void placeSpawner(BlockPos pos) {
 		super.placeSpawner(pos);
-		this.lightNearbyCandles(20);
+		this.lightNearbyCandles();
 	}
 
-	protected void extinguishNearbyCandles(int tick) {
-		if (!(this.level() instanceof ServerLevel serverLevel)) return;
+	@Override
+	protected void postRemoval(ServerLevel serverLevel, RemovalReason reason) {
+		super.postRemoval(serverLevel, reason);
+		this.lightNearbyCandles();
+	}
 
-		int range = (tick / 2) + 2;
-		int yRange = (tick / 3) + 2;
+	protected void turnNearbyCandles(int tick, boolean done) {
+		if (!(this.level() instanceof ServerLevel)) return;
+
+		int range = (int) (((float)tick / 2.5F) + 2);
+		int yRange = (int) (((float)tick / 2.0F) + 2);
 		for (BlockPos pos : BlockPos.betweenClosed(this.homeOrElseCurrent().offset(-range, -3, -range), this.homeOrElseCurrent().offset(range, yRange, range))) {
-			BlockState state = this.level().getBlockState(pos);
-			if (state.getBlock() instanceof AbstractCandleBlock) {
-				if (this.level().isEmptyBlock(pos.below())) {
-					// Nothing underneath? Drop the candle
-					FallingBlockEntity fallingBlock = FallingBlockEntity.fall(this.level(), pos, state.setValue(BlockStateProperties.LIT, false));
-					// Apply a little upwards velocity so the candles' falls are staggered
-					fallingBlock.setDeltaMovement(0, this.random.nextFloat() * 0.2f, 0);
-					fallingBlock.hurtMarked = true; // Notify clients of velocity change
-					fallingBlock.disableDrop(); // Disallow block placement
-					fallingBlock.dropItem = false; // Disallow item drop
-				} else if (state.getValue(BlockStateProperties.LIT)) {
-					// Only extinguish, if candle has support underneath
-					this.level().setBlockAndUpdate(pos, state.setValue(BlockStateProperties.LIT, false));
+			if (this.random.nextInt(Math.max(40 - tick, 2)) == 1 || done) {
+				BlockState state = this.level().getBlockState(pos);
+				if (state.getBlock() instanceof AbstractCandleBlock candleBlock && state.getValue(CandleBlock.LIT)) {
+					this.level().setBlockAndUpdate(pos, OminousCandleBlock.CANDLE_MAP.get(candleBlock).get().defaultBlockState().setValue(OminousCandleBlock.CANDLES, state.getValue(CandleBlock.CANDLES)));
+					this.level().playSound(null, pos, TFSounds.OMINOUS_FIRE.get(), SoundSource.BLOCKS, 0.5F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.75F);
+				} else if (state.getBlock() instanceof LightableBlock && state.getValue(LightableBlock.LIGHTING) == LightableBlock.Lighting.NORMAL) {
+					this.level().setBlockAndUpdate(pos, state.setValue(LightableBlock.LIGHTING, LightableBlock.Lighting.OMINOUS));
+					this.level().playSound(null, pos, TFSounds.CANDELABRA_OMINOUS.get(), SoundSource.BLOCKS, 0.5F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.75F);
 				}
-				serverLevel.sendParticles(ParticleTypes.LARGE_SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 1, 0.0, 0.05, 0.0, 0.0);
-				this.level().playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 1.0F);
-			} else if (state.getBlock() instanceof LightableBlock && state.getValue(LightableBlock.LIGHTING) == LightableBlock.Lighting.NORMAL) {
-				this.level().setBlockAndUpdate(pos, state.setValue(LightableBlock.LIGHTING, LightableBlock.Lighting.OMINOUS));
-				this.level().playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 2.0F, 0.75F);
 			}
 		}
 	}
 
-	protected void lightNearbyCandles(int tick) {
-		int range = (int) ((tick * 1.5F) + 2);
-		int yRange = tick + 2;
-		for (BlockPos pos : BlockPos.betweenClosed(this.homeOrElseCurrent().offset(-range, -3, -range), this.homeOrElseCurrent().offset(range, yRange, range))) {
+	protected void lightNearbyCandles() {
+		for (BlockPos pos : BlockPos.betweenClosed(this.homeOrElseCurrent().offset(-40, -3, -40), this.homeOrElseCurrent().offset(40, 40, 40))) {
 			BlockState state = this.level().getBlockState(pos);
-			if (state.getBlock() instanceof AbstractCandleBlock && !state.getValue(BlockStateProperties.LIT)) {
-				this.level().setBlockAndUpdate(pos, state.setValue(BlockStateProperties.LIT, true));
+			if (state.getBlock() instanceof OminousCandleBlock candleBlock) {
+				this.level().setBlockAndUpdate(pos, candleBlock.candle.defaultBlockState().setValue(CandleBlock.CANDLES, state.getValue(OminousCandleBlock.CANDLES)).setValue(BlockStateProperties.LIT, true));
 				this.level().playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 0.25F, 1.5F);
 			} else if (state.getBlock() instanceof LightableBlock && state.getValue(LightableBlock.LIGHTING) == LightableBlock.Lighting.OMINOUS) {
 				this.level().setBlockAndUpdate(pos, state.setValue(LightableBlock.LIGHTING, LightableBlock.Lighting.NORMAL));
@@ -1023,9 +1015,6 @@ public class Lich extends BaseTFBoss {
 	@Override
 	protected void tickDeath() {
 		super.tickDeath();
-		if (this.deathTime >= DEATH_ANIMATION_DURATION - 10) {
-			this.lightNearbyCandles(this.deathTime - DEATH_ANIMATION_DURATION + 10);
-		}
 		if (this.deathTime >= DEATH_ANIMATION_POINT_A) {
 			this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
 		} else if (this.lookAtUponDeath() instanceof LivingEntity living) {
