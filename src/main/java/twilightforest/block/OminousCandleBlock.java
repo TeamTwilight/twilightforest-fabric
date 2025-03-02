@@ -187,6 +187,15 @@ public class OminousCandleBlock extends BaseEntityBlock {
 		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 	}
 
+	public static void eruptFlameParticles(Level level, BlockPos pos, BlockState state) {
+		Vec3 start = Vec3.atLowerCornerOf(pos);
+		for (Vec2 vec2 : CANDLE_OFFSETS.get(state.getValue(CANDLES).intValue())) {
+			for (int j = 0; j < 5; j++) {
+				level.addParticle(TFParticleType.OMINOUS_FLAME.get(), start.x + vec2.x, start.y + 0.5D, start.z + vec2.y, (level.getRandom().nextDouble() - 0.5D) * 0.05D, 0.015F, (level.getRandom().nextDouble() - 0.5D) * 0.05D);
+			}
+		}
+	}
+
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(CANDLES);

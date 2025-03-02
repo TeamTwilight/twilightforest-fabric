@@ -29,6 +29,7 @@ public class ExanimateEssenceItem extends Item {
 			this.playSound(level, blockpos);
 			level.setBlockAndUpdate(blockpos, OminousCandleBlock.CANDLE_MAP.get(candleBlock).get().defaultBlockState().setValue(OminousCandleBlock.CANDLES, state.getValue(CandleBlock.CANDLES)));
 			level.gameEvent(context.getPlayer(), GameEvent.BLOCK_PLACE, blockpos);
+			OminousCandleBlock.eruptFlameParticles(level, blockpos, level.getBlockState(blockpos));
 			flag = true;
 		} else {
 			blockpos = blockpos.relative(context.getClickedFace());
