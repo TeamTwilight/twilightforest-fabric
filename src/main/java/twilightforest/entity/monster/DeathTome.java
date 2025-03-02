@@ -238,4 +238,9 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		super.addAdditionalSaveData(tag);
 		tag.putBoolean("on_lectern", this.entityData.get(DATA_LECTERN));
 	}
+
+	@Override
+	protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
+		// NO-OP: Fall damage immunity, and prevents spawning particles. It's a hovering book.
+	}
 }
