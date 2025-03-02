@@ -575,27 +575,21 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private void putBrewingStand(BlockPos pos, WorldGenLevel level, RandomSource random) {
-		BlockState brewingStandBlock = Blocks.BREWING_STAND.defaultBlockState();
-
-		IntList filledSlots = new IntArrayList();
-		for (int index = 0; index < 3; index++) {
-			if (random.nextInt(3) != 0) {
-				filledSlots.add(index);
-				brewingStandBlock = brewingStandBlock.setValue(BrewingStandBlock.HAS_BOTTLE[index], true);
-			}
-		}
+		BlockState brewingStandBlock = Blocks.BREWING_STAND.defaultBlockState()
+			.setValue(BrewingStandBlock.HAS_BOTTLE[0], true)
+			.setValue(BrewingStandBlock.HAS_BOTTLE[1], true)
+			.setValue(BrewingStandBlock.HAS_BOTTLE[2], true);
 
 		level.setBlock(pos, brewingStandBlock, Block.UPDATE_CLIENTS);
-		if (level.getBlockEntity(pos) instanceof BrewingStandBlockEntity brewingStandBE) {
+		if (level.getBlockEntity(pos) instanceof BrewingStandBlockEntity brewingStandBE) {ItemStack potionStack = new ItemStack(random.nextInt(4) == 0 ? Items.SPLASH_POTION : Items.POTION);
+			potionStack.set(DataComponents.POTION_CONTENTS, new PotionContents(switch (random.nextInt(7)) {
+				case 6 -> Potions.STRONG_HEALING;
+				case 4, 5 -> Potions.REGENERATION;
+				case 1, 2, 3 -> Potions.HEALING;
+				default -> Potions.WATER;
+			}));
 			for (int index = 0; index < 3; index++) {
-				ItemStack potionStack = new ItemStack(random.nextInt(4) == 0 ? Items.SPLASH_POTION : Items.POTION);
-				potionStack.set(DataComponents.POTION_CONTENTS, new PotionContents(switch (random.nextInt(8)) {
-					case 6 -> Potions.STRONG_HEALING;
-					case 4, 5 -> Potions.REGENERATION;
-					case 1, 2, 3 -> Potions.HEALING;
-					default -> Potions.WATER;
-				}));
-				brewingStandBE.setItem(index, potionStack);
+				brewingStandBE.setItem(index, potionStack.copy());
 			}
 			brewingStandBE.setItem(4, new ItemStack(Items.BLAZE_POWDER, random.nextIntBetweenInclusive(1, 5)));
 			brewingStandBE.fuel = random.nextIntBetweenInclusive(10, 20);
