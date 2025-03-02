@@ -12,6 +12,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -79,17 +80,22 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 	private void removeBanisters(WorldGenLevel level, BoundingBox chunkBounds) {
 		JigsawRecord sourceJigsaw = this.getSourceJigsaw();
 		BlockPos sourcePos = this.templatePosition.offset(sourceJigsaw.pos());
-		BlockPos leftPos = sourcePos.relative(sourceJigsaw.orientation().front().getClockWise(Direction.Axis.Y));
+		Direction front = sourceJigsaw.orientation().front();
 
-		Direction counterClockWise = sourceJigsaw.orientation().front().getCounterClockWise(Direction.Axis.Y);
+		BlockPos leftPos = sourcePos.relative(front.getClockWise(Direction.Axis.Y));
+
+		Direction counterClockWise = front.getCounterClockWise(Direction.Axis.Y);
 		// Special shifting for if this gallery has an entrance that is 2 blocks wide
 		int span = BoundingBoxUtils.getSpan(this.boundingBox, counterClockWise.getAxis());
-		BlockPos rightPos = sourcePos.relative(counterClockWise, 1 + ((span + 1) % 2));
+		int evenShift = (span + 1) % 2;
+		BlockPos rightPos = sourcePos.relative(counterClockWise, 1 + evenShift);
 
 		removeIfBanister(level, leftPos, chunkBounds);
 		removeIfBanister(level, leftPos.above(), chunkBounds);
 		removeIfBanister(level, rightPos, chunkBounds);
 		removeIfBanister(level, rightPos.below(), chunkBounds);
+		if (evenShift == 1) // Got another banister to remove
+			removeIfBanister(level, sourcePos.relative(counterClockWise, 1).below(), chunkBounds);
 	}
 
 	private static void removeIfBanister(WorldGenLevel level, BlockPos pos, BoundingBox chunkBounds) {
