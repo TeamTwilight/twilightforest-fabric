@@ -48,6 +48,7 @@ import twilightforest.util.entities.EntityRenderingUtil;
 import java.util.*;
 import java.util.stream.Stream;
 
+@SuppressWarnings("UnstableApiUsage")
 @REIPluginClient
 public class TFREIClientPlugin implements REIClientPlugin {
 

@@ -111,5 +111,7 @@ public class TFEmiCompat implements EmiPlugin {
 			}
 			return false;
 		});
+
+		registry.removeEmiStacks(stack -> TFItems.MAGIC_PAINTING.getId().equals(stack.getId()));
 	}
 }
