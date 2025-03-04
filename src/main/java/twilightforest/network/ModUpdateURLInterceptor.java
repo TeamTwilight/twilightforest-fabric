@@ -37,9 +37,9 @@ public class ModUpdateURLInterceptor {
 				if (ModInfo_updateJSONURL != null) {
 					try {
 						ModInfo_updateJSONURL.invokeExact(mod, Optional.of(URI.create("https://gh.tamaized.com/TeamTwilight/twilightforest/update.json?m=%s&l=%s&v=%s".formatted(
-							mod.getVersion().toString(),
+							ModList.get().getModFileById("minecraft").getFile().getModFileInfo().versionString(),
 							"NeoForge",
-							ModList.get().getModContainerById("neoforge").map(neo -> neo.getModInfo().getVersion().toString()).orElse("unknown")
+							ModList.get().getModFileById("neoforge").getFile().getModFileInfo().versionString()
 						)).toURL()));
 					} catch (Throwable ex) {
 						logger.error("Error", ex);
