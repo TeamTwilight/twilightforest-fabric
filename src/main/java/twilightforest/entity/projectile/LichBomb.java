@@ -5,6 +5,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -95,5 +96,10 @@ public class LichBomb extends TFThrowable {
 			return;
 		}
 		this.explode();
+	}
+
+	@Override
+	public boolean ignoreExplosion(Explosion explosion) {
+		return true;
 	}
 }

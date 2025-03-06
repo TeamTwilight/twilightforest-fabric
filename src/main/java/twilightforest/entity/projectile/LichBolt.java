@@ -10,6 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -108,5 +109,10 @@ public class LichBolt extends TFThrowable {
 			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
+	}
+
+	@Override
+	public boolean ignoreExplosion(Explosion explosion) {
+		return true;
 	}
 }
