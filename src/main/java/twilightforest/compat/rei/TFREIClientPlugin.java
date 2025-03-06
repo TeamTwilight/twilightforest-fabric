@@ -2,6 +2,7 @@ package twilightforest.compat.rei;
 
 import dev.architectury.event.CompoundEventResult;
 import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.client.entry.filtering.FilteringRuleTypeRegistry;
 import me.shedaniel.rei.api.client.entry.renderer.EntryRenderer;
 import me.shedaniel.rei.api.client.entry.renderer.EntryRendererRegistry;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
@@ -29,6 +30,7 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.rei.categories.*;
 import twilightforest.compat.rei.displays.REIOminousFireDisplay;
+import twilightforest.compat.rei.filter.HideItemFilterType;
 import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
@@ -54,6 +56,10 @@ public class TFREIClientPlugin implements REIClientPlugin {
 
 	public static final EntityEntryDefinition ENTITY_DEFINITION = new EntityEntryDefinition();
 	public Map<EntryStack<Entity>, EntryRenderer<Entity>> RENDER_CACHE = new WeakHashMap<>();
+
+	static {
+		FilteringRuleTypeRegistry.getInstance().register(TwilightForestMod.prefix("filter"), HideItemFilterType.INSTANCE);
+	}
 
 	@Override
 	public void registerCategories(CategoryRegistry registry) {
