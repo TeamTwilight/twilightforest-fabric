@@ -166,7 +166,7 @@ public class TFItems {
 	public static final DeferredItem<Item> CROWN_SPLINTER = ITEMS.register("crown_splinter", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final DeferredItem<Item> MYSTIC_CROWN = ITEMS.register("mystic_crown", () -> new MysticCrownItem(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).attributes(ItemAttributeModifiers.builder().add(Attributes.ARMOR, new AttributeModifier(ResourceLocation.withDefaultNamespace("armor.head"), 2.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HEAD).build())));
 
-	public static final DeferredItem<Item> KEEPSAKE_CASKET = ITEMS.register("keepsake_casket", () -> new KeepsakeCasketItem(TFBlocks.KEEPSAKE_CASKET.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final DeferredItem<Item> KEEPSAKE_CASKET = ITEMS.register("keepsake_casket", () -> new KeepsakeCasketItem(TFBlocks.KEEPSAKE_CASKET.get(), new Item.Properties().rarity(Rarity.UNCOMMON).component(TFDataComponents.CASKET_DAMAGE, 0)));
 	public static final DeferredItem<Item> HUGE_LILY_PAD = ITEMS.register("huge_lily_pad", () -> new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), new Item.Properties()));
 	public static final DeferredItem<Item> HUGE_WATER_LILY = ITEMS.register("huge_water_lily", () -> new PlaceOnWaterBlockItem(TFBlocks.HUGE_WATER_LILY.get(), new Item.Properties()));
 	public static final DeferredItem<Item> FALLEN_LEAVES = ITEMS.register("fallen_leaves", () -> new BlockItem(TFBlocks.FALLEN_LEAVES.get(), new Item.Properties()) {
