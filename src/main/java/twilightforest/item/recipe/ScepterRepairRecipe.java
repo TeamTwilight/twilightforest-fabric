@@ -35,37 +35,33 @@ public class ScepterRepairRecipe extends CustomRecipe {
 	@Override
 	public boolean matches(CraftingInput input, Level level) {
 		ItemStack scepter = null;
-		boolean hasEssence = false;
 		int ingredients = 0;
 		for (int i = 0; i < input.size(); ++i) {
 			ItemStack stackInQuestion = input.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
 				if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
+					if (scepter != null) return false;
 					scepter = stackInQuestion;
 				} else if (this.repairItems.size() == 1 && this.repairItems.getFirst().test(stackInQuestion)) {
 					ingredients++;
-				} else if (stackInQuestion.is(TFItems.EXANIMATE_ESSENCE)) {
-					if (hasEssence || ingredients > 0) return false; //essence ONLY. If there are other ingredients fail
-					hasEssence = true;
+				} else {
+					return false;
 				}
 			}
 		}
 		int duraRes = ingredients * this.getRepairDurability();
-		return scepter != null && (hasEssence || (ingredients > 0 && (duraRes + (scepter.getMaxDamage() - scepter.getDamageValue())) < scepter.getMaxDamage()) || input.stackedContents().canCraft(this, null));
+		return scepter != null && (ingredients > 0 && (duraRes + (scepter.getMaxDamage() - scepter.getDamageValue())) < scepter.getMaxDamage()) || input.stackedContents().canCraft(this, null);
 	}
 
 	@Override
 	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
 		ItemStack scepter = null;
-		boolean hasEssence = false;
 		int ingredients = 0;
 		for (int i = 0; i < input.size(); ++i) {
 			ItemStack stackInQuestion = input.getItem(i);
 			if (!stackInQuestion.isEmpty()) {
 				if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
 					scepter = stackInQuestion;
-				} else if (stackInQuestion.is(TFItems.EXANIMATE_ESSENCE)) {
-					hasEssence = true;
 				} else if (this.repairItems.size() == 1 && this.repairItems.getFirst().test(stackInQuestion)) {
 					ingredients++;
 				}
@@ -75,9 +71,7 @@ public class ScepterRepairRecipe extends CustomRecipe {
 		if (scepter != null) {
 			var copy = new ItemStack(this.scepter);
 			copy.applyComponents(scepter.getComponents());
-			if (hasEssence) {
-				copy.setDamageValue(0);
-			} else if (ingredients > 0) {
+			if (ingredients > 0) {
 				copy.setDamageValue(scepter.getDamageValue() - (this.getRepairDurability() * ingredients));
 			}
 			return copy;
