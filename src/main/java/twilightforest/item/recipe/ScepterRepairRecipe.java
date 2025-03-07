@@ -100,6 +100,10 @@ public class ScepterRepairRecipe extends CustomRecipe {
 		return this.scepter;
 	}
 
+	public List<Ingredient> getRepairItems() {
+		return this.repairItems;
+	}
+
 	public int getRepairDurability() {
 		return this.durability;
 	}

@@ -12,6 +12,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import twilightforest.compat.jei.categories.*;
+import twilightforest.compat.jei.extension.NoTemplateSmithingExtension;
+import twilightforest.compat.jei.extension.ScepterRepairExtension;
 import twilightforest.compat.jei.subtype.CasketSubtypeInterpreter;
 import twilightforest.compat.jei.util.OminousFireRecipe;
 import twilightforest.config.TFConfig;
@@ -29,6 +31,8 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFMenuTypes;
 import twilightforest.inventory.UncraftingMenu;
 import twilightforest.item.recipe.MoonwormQueenRepairRecipe;
+import twilightforest.item.recipe.NoTemplateSmithingRecipe;
+import twilightforest.item.recipe.ScepterRepairRecipe;
 
 import java.util.Collections;
 import java.util.List;
@@ -87,6 +91,12 @@ public class JEICompat implements IModPlugin {
 	}
 
 	@Override
+	public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
+		registration.getSmithingCategory().addExtension(NoTemplateSmithingRecipe.class, new NoTemplateSmithingExtension());
+		registration.getCraftingCategory().addExtension(ScepterRepairRecipe.class, new ScepterRepairExtension());
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public void registerRecipes(IRecipeRegistration registration) {
 		RecipeManager manager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
@@ -98,6 +108,8 @@ public class JEICompat implements IModPlugin {
 		registration.addRecipes(OminousFireCategory.OMINOUS_FIRE, RecipeViewerConstants.getOminousFireRecipes().stream().map(info -> new OminousFireRecipe(new FakeEntityType(info.input()), new FakeEntityType(info.output()))).toList());
 		registration.addRecipes(CrumbleHornCategory.CRUMBLE_HORN, RecipeViewerConstants.getCrumbleHornRecipes().stream().map(info -> new CrumbleRecipe(info.getFirst(), info.getSecond())).toList());
 		registration.addRecipes(MoonwormQueenCategory.MOONWORM_QUEEN, List.of(new MoonwormQueenRepairRecipe(CraftingBookCategory.MISC)));
+
+		//registration.addRecipes(RecipeTypes.CRAFTING, manager.getAllRecipesFor(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof ScepterRepairRecipe).toList());
 	}
 
 	@Override
