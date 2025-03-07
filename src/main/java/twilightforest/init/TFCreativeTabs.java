@@ -284,8 +284,8 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.TERRORCOTTA_LINES);
 			output.accept(TFBlocks.TERRORCOTTA_CURVES);
 			output.accept(TFBlocks.TERRORCOTTA_ARCS);
+			createCaskets(output);
 			output.accept(TFBlocks.SKULL_CHEST);
-			output.accept(TFBlocks.KEEPSAKE_CASKET);
 			output.accept(TFBlocks.WROUGHT_IRON_FENCE);
 			output.accept(TFBlocks.CANDELABRA);
 			output.accept(TFBlocks.CORONATION_CARPET);
@@ -572,10 +572,12 @@ public class TFCreativeTabs {
 		eggs.forEach(output::accept);
 	}
 
-	private static void makeSkullCandle(CreativeModeTab.Output output, ItemLike item) {
-		ItemStack stack = new ItemStack(item);
-		stack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(0, 1));
-		output.accept(stack);
+	private static void createCaskets(CreativeModeTab.Output output) {
+		for (int i = 0; i< 3; i++) {
+			ItemStack stack = new ItemStack(TFItems.KEEPSAKE_CASKET.get());
+			stack.set(TFDataComponents.CASKET_DAMAGE, i);
+			output.accept(stack);
+		}
 	}
 
 	private static void createGlassSwordAndLoreVer(CreativeModeTab.Output output) {

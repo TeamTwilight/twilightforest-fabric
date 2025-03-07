@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import twilightforest.compat.jei.categories.*;
+import twilightforest.compat.jei.subtype.CasketSubtypeInterpreter;
 import twilightforest.compat.jei.util.OminousFireRecipe;
 import twilightforest.config.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -50,6 +51,11 @@ public class JEICompat implements IModPlugin {
 		registration.addRecipeCatalyst(new ItemStack(TFItems.EXANIMATE_ESSENCE.get()), OminousFireCategory.OMINOUS_FIRE);
 		registration.addRecipeCatalyst(new ItemStack(TFItems.CRUMBLE_HORN.get()), CrumbleHornCategory.CRUMBLE_HORN);
 		registration.addRecipeCatalyst(new ItemStack(TFItems.MOONWORM_QUEEN.get()), MoonwormQueenCategory.MOONWORM_QUEEN);
+	}
+
+	@Override
+	public void registerItemSubtypes(ISubtypeRegistration registration) {
+		registration.registerSubtypeInterpreter(TFItems.KEEPSAKE_CASKET.asItem(), CasketSubtypeInterpreter.INSTANCE);
 	}
 
 	@Override
