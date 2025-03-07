@@ -13,6 +13,10 @@ import net.neoforged.api.distmarker.OnlyIn;
 public class AngryLichParticle extends HeartParticle {
 	protected AngryLichParticle(ClientLevel level, double x, double y, double z) {
 		super(level, x, y, z);
+
+		this.lifetime = 10;
+
+		this.yd -= 0.05;
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -24,7 +28,7 @@ public class AngryLichParticle extends HeartParticle {
 		}
 
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			AngryLichParticle lichParticle = new AngryLichParticle(level, x, y + 0.5, z);
+			AngryLichParticle lichParticle = new AngryLichParticle(level, x, y, z);
 			lichParticle.pickSprite(this.sprite);
 			lichParticle.setColor(1.0F, 1.0F, 1.0F);
 			lichParticle.scale(0.75F);
