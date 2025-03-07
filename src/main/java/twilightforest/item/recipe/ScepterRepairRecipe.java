@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScepterRepairRecipe extends CustomRecipe {
@@ -35,22 +36,36 @@ public class ScepterRepairRecipe extends CustomRecipe {
 	@Override
 	public boolean matches(CraftingInput input, Level level) {
 		ItemStack scepter = null;
-		int ingredients = 0;
-		for (int i = 0; i < input.size(); ++i) {
-			ItemStack stackInQuestion = input.getItem(i);
-			if (!stackInQuestion.isEmpty()) {
-				if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
-					if (scepter != null) return false;
-					scepter = stackInQuestion;
-				} else if (this.repairItems.size() == 1 && this.repairItems.getFirst().test(stackInQuestion)) {
-					ingredients++;
-				} else {
-					return false;
+		if (this.repairItems.size() == 1) {
+			int ingredients = 0;
+			for (int i = 0; i < input.size(); ++i) {
+				ItemStack stackInQuestion = input.getItem(i);
+				if (!stackInQuestion.isEmpty()) {
+					if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
+						if (scepter != null) return false;
+						scepter = stackInQuestion;
+					} else if (this.repairItems.getFirst().test(stackInQuestion)) {
+						ingredients++;
+					} else {
+						return false;
+					}
 				}
 			}
+			int duraRes = ingredients * this.getRepairDurability();
+			return scepter != null && (ingredients > 0 && (duraRes + (scepter.getMaxDamage() - scepter.getDamageValue())) < scepter.getMaxDamage());
+		} else {
+			for (int i = 0; i < input.size(); ++i) {
+				ItemStack stackInQuestion = input.getItem(i);
+				if (!stackInQuestion.isEmpty()) {
+					if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
+						if (scepter != null) return false;
+						scepter = stackInQuestion;
+					}
+				}
+			}
+			return scepter != null && this.repairItems.size() == input.size() - 1 && input.stackedContents().canCraft(this, null);
 		}
-		int duraRes = ingredients * this.getRepairDurability();
-		return scepter != null && (ingredients > 0 && (duraRes + (scepter.getMaxDamage() - scepter.getDamageValue())) < scepter.getMaxDamage()) || input.stackedContents().canCraft(this, null);
+
 	}
 
 	@Override
@@ -73,6 +88,8 @@ public class ScepterRepairRecipe extends CustomRecipe {
 			copy.applyComponents(scepter.getComponents());
 			if (ingredients > 0) {
 				copy.setDamageValue(scepter.getDamageValue() - (this.getRepairDurability() * ingredients));
+			} else {
+				copy.setDamageValue(scepter.getDamageValue() - this.durability);
 			}
 			return copy;
 		}
