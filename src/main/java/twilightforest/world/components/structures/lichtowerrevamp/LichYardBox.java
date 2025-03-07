@@ -44,16 +44,16 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 	private static LichTowerUtil lichTowerUtil;
 
 	private final float edgeFeatheringRange;
-	private final Direction.Axis placeGraveAxis;
+	private final Direction direction;
 	private final boolean doDirtMotley;
 	private final float scale;
 	private final float offset;
 
-	public LichYardBox(BoundingBox boundingBox, float edgeFeatheringRange, Direction.Axis placeGraveAxis, boolean doDirtMotley, float scale, float offset) {
+	public LichYardBox(BoundingBox boundingBox, float edgeFeatheringRange, Direction direction, boolean doDirtMotley, float scale, float offset) {
 		super(TFStructurePieceTypes.LICH_YARD_PATH.value(), 0, boundingBox);
 
 		this.edgeFeatheringRange = edgeFeatheringRange;
-		this.placeGraveAxis = placeGraveAxis;
+		this.direction = direction;
 		this.doDirtMotley = doDirtMotley;
 		this.scale = scale;
 		this.offset = offset;
@@ -63,7 +63,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		super(TFStructurePieceTypes.LICH_YARD_PATH.value(), tag);
 
 		this.edgeFeatheringRange = tag.getFloat("feather");
-		this.placeGraveAxis = tag.contains("axis") ? Direction.Axis.values()[tag.getInt("axis")] : Direction.Axis.Y;
+		this.direction = tag.contains("direction") ? Direction.values()[tag.getInt("direction")] : Direction.UP;
 		this.doDirtMotley = tag.getBoolean("dirt_mix");
 		this.scale = tag.getFloat("dirt_scale");
 		this.offset = tag.getFloat("offset");
@@ -72,7 +72,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 	@Override
 	protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
 		tag.putFloat("feather", this.edgeFeatheringRange);
-		tag.putInt("axis", this.placeGraveAxis.ordinal());
+		tag.putInt("direction", this.direction.ordinal());
 		tag.putBoolean("dirt_mix", this.doDirtMotley);
 		tag.putFloat("dirt_scale", this.scale);
 		tag.putFloat("offset", this.offset);
@@ -101,14 +101,17 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 
 		ChunkAccess chunk = level.getChunk(chunkPos.getWorldPosition());
 
+		// Just pass the regular bounding box instead of doing the extra computation if the fence won't even place
+		BoundingBox fenceBounds = this.generateFence() ? BoundingBoxUtils.safeRetract(this.boundingBox, this.direction.getOpposite(), 4) : this.boundingBox;
+
 		for (int z = boxIntersection.minZ(); z <= boxIntersection.maxZ(); z++) {
 			for (int x = boxIntersection.minX(); x <= boxIntersection.maxX(); x++) {
-				this.processPos(level, random, x, z, chunk);
+				this.processPos(level, random, x, z, chunk, fenceBounds);
 			}
 		}
 	}
 
-	private void processPos(WorldGenLevel level, RandomSource random, int x, int z, ChunkAccess chunk) {
+	private void processPos(WorldGenLevel level, RandomSource random, int x, int z, ChunkAccess chunk, BoundingBox fenceBounds) {
 		int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
 		BlockPos placeAt = new BlockPos(x, y, z);
 
@@ -123,11 +126,11 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		float noise = SimplexNoise.noise(x * this.scale, y * this.scale, z * this.scale) * 0.5f - 0.5f;
 		float featheredNoise = noise + featherLevel;
 		if (featheredNoise < 0) {
-			if (!this.doDirtMotley) {
+			if (this.generateFence() && fenceBounds.intersects(x, z, x, z)) {
 				float fenceNoise = SimplexNoise.noise(x * 0.15f, y * 0.15f - 1024f, z * 0.15f) * 0.5f;
 				if (Math.abs(fenceNoise) > 0.15f) {
 					int noiseRounded = Math.round(fenceNoise + 0.5f);
-					if (this.placeGraveAxis == Direction.Axis.Z ? x == this.boundingBox.minX() + noiseRounded || x == this.boundingBox.maxX() - noiseRounded : z == this.boundingBox.minZ() + noiseRounded || z == this.boundingBox.maxZ() - noiseRounded) {
+					if (this.direction.getAxis() == Direction.Axis.Z ? x == this.boundingBox.minX() + noiseRounded || x == this.boundingBox.maxX() - noiseRounded : z == this.boundingBox.minZ() + noiseRounded || z == this.boundingBox.maxZ() - noiseRounded) {
 						BlockPos fenceAt = placeAt.above();
 						level.setBlock(fenceAt, Blocks.SPRUCE_FENCE.defaultBlockState(), Block.UPDATE_ALL);
 						chunk.markPosForPostprocessing(fenceAt);
@@ -149,6 +152,10 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 			level.setBlock(placeAt.above(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
 		}
 		level.setBlock(placeAt.above(2), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+	}
+
+	private boolean generateFence() {
+		return !this.doDirtMotley;
 	}
 
 	@Override
@@ -181,7 +188,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		BlockPos fenceCenter = generatePos.relative(direction, pathLength);
 		LichPerimeterFence.generateFence(foyerPiece, context, pieces, structureManager, random, direction, fenceCenter.atY(ySurface));
 
-		BlockPos nearVestibule = generatePos.relative(direction, 4).above(4);
+		BlockPos nearVestibule = generatePos.relative(direction, 1).above(4);
 		BlockPos nearFence = fenceCenter.relative(direction.getOpposite(), 6).below(4);
 		generateYard(foyerPiece, pieces, nearVestibule, nearFence, random, direction, context);
 
@@ -192,7 +199,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 
 		BoundingBox yardBox = BoundingBoxUtils.safeRetract(BoundingBoxUtils.setY(fullYard.get().inflatedBy(3), ySurface, ySurface + 10), foyerPiece.getSourceJigsaw().orientation().top().getOpposite(), 5);
 
-		LichYardBox lichYardDirt = new LichYardBox(yardBox, 8, Direction.Axis.Y, true, 0.1f, 0);
+		LichYardBox lichYardDirt = new LichYardBox(yardBox, 8, Direction.UP, true, 0.1f, 0);
 		pieces.addPiece(lichYardDirt);
 		lichYardDirt.addDecoration(foyerPiece, pieces, random, context);
 	}
@@ -205,7 +212,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		BoundingBox firstPathBox = BoundingBoxUtils.setY(BoundingBoxUtils.wrappedCoordinates(3, nearVestibule, nearFence).inflatedBy(1), ySurface, ySurface + 10);
 
 		Direction.Axis axisFromVestibule = dirFromVestibule.getAxis();
-		LichYardBox lichYardBox = new LichYardBox(firstPathBox, 2.5f, axisFromVestibule, false, 0.35f, -1);
+		LichYardBox lichYardBox = new LichYardBox(firstPathBox, 2.5f, dirFromVestibule, false, 0.35f, -1);
 		pieces.addPiece(lichYardBox);
 		paths.add(lichYardBox);
 
@@ -217,7 +224,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 
 		BoundingBox crossPathBox = BoundingBoxUtils.setY(BoundingBoxUtils.wrappedCoordinates(1, pathLeft, pathRight), ySurface, ySurface + 10);
 
-		LichYardBox crossPath = new LichYardBox(crossPathBox, -1, dirFromVestibule.getClockWise().getAxis(), false, 0, 0);
+		LichYardBox crossPath = new LichYardBox(crossPathBox, -1, dirFromVestibule.getClockWise(), false, 0, 0);
 		pieces.addPiece(crossPath);
 		paths.add(crossPath);
 
@@ -241,7 +248,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		BlockPos fromVestibule = nearVestibule.relative(sideDirection, 24);
 
 		BoundingBox pathBox = BoundingBoxUtils.setY(BoundingBoxUtils.wrappedCoordinates(1, pathEnd, fromVestibule.relative(dirFromVestibule.getOpposite(), spread)), nearVestibule.getY(), nearVestibule.getY() + 10);
-		LichYardBox path = new LichYardBox(pathBox, -1, dirFromVestibule.getAxis(), false, 0, 0);
+		LichYardBox path = new LichYardBox(pathBox, -1, dirFromVestibule, false, 0, 0);
 		structurePiecesBuilder.addPiece(path);
 		return path;
 	}
@@ -253,14 +260,15 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 	public void addDecoration(StructurePiece piece, StructurePieceAccessor pieces, RandomSource random, Structure.GenerationContext context) {
 		this.addChildren(piece, pieces, random);
 
-		if (this.placeGraveAxis == Direction.Axis.Y || this.scale != 0) return;
+		Direction.Axis axis = this.direction.getAxis();
+		if (axis == Direction.Axis.Y || this.scale != 0) return;
 
 		int baseY = this.boundingBox.minY();
 
 		for (int i = 0; i < 5; i++) {
-			Direction side = Direction.fromAxisAndDirection(this.placeGraveAxis, random.nextBoolean() ? Direction.AxisDirection.NEGATIVE : Direction.AxisDirection.POSITIVE).getClockWise();
+			Direction side = Direction.fromAxisAndDirection(axis, random.nextBoolean() ? Direction.AxisDirection.NEGATIVE : Direction.AxisDirection.POSITIVE).getClockWise();
 
-			BlockPos randomPos = BoundingBoxUtils.lerpPosInside(this.boundingBox, this.placeGraveAxis, Mth.lerp(random.nextFloat(), 0.05f, 0.95f)).relative(side, random.nextIntBetweenInclusive(2, 4));
+			BlockPos randomPos = BoundingBoxUtils.lerpPosInside(this.boundingBox, axis, Mth.lerp(random.nextFloat(), 0.05f, 0.95f)).relative(side, random.nextIntBetweenInclusive(2, 4));
 
 			FrontAndTop orientation = FrontAndTop.fromFrontAndTop(side, Direction.UP);
 			// int baseY = context.chunkGenerator().getBaseHeight(randomPos.getX(), randomPos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
