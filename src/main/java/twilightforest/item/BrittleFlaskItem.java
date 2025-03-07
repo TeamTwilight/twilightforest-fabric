@@ -7,6 +7,7 @@ import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +18,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import twilightforest.components.item.PotionFlaskComponent;
+import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
@@ -109,7 +111,10 @@ public class BrittleFlaskItem extends Item {
 			if (entity instanceof Player player) {
 				if (!level.isClientSide()) {
 					for (MobEffectInstance mobeffectinstance : flaskContents.potion().getAllEffects()) {
-						if (mobeffectinstance.getEffect().value().isInstantenous()) {
+						if (mobeffectinstance.is(MobEffects.HARM) != entity.isInvertedHealAndHarm() && mobeffectinstance.getAmplifier() > 0) {
+							//custom harming death message for the advancement
+							entity.hurt(entity.damageSources().source(TFDamageTypes.FAILED_CHALLENGE), (float)(6 << mobeffectinstance.getAmplifier()));
+						} else if (mobeffectinstance.getEffect().value().isInstantenous()) {
 							mobeffectinstance.getEffect().value().applyInstantenousEffect(player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
 						} else {
 							player.addEffect(new MobEffectInstance(mobeffectinstance));

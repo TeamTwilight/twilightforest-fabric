@@ -813,6 +813,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addDeathMessage("yeeted.item", "%1$s was yeeted for the last time by %2$s while somehow holding %3$s");
 		this.addDeathMessage("acid_rain", "%1$s went dancing in the acid rain");
 		this.addDeathMessage("ominous", "%1$s was subsumed by ominous fire");
+		this.addDeathMessage("failedChallenge", "%1$s failed to show their mettle and drank themselves to death");
 
 		this.addStat("blocks_crumbled", "Blocks Crumbled");
 		this.addStat("bugs_squished", "Bugs Squashed");

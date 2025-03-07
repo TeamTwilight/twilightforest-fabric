@@ -885,6 +885,7 @@
   "death.attack.twilightforest.clamped.item": "%1$s was squeezed to death by %2$s using %3$s",
   "death.attack.twilightforest.expired": "%1$s's life expired",
   "death.attack.twilightforest.expired.player": "%1$s's life expired",
+  "death.attack.twilightforest.failedChallenge": "%1$s failed to show their mettle and drank themselves to death",
   "death.attack.twilightforest.fiery": "%1$s walked onto a Fiery block",
   "death.attack.twilightforest.fiery.player": "%1$s walked onto a Fiery block while escaping %2$s",
   "death.attack.twilightforest.fireJet": "%1$s accidentally walked into a Fire Jet",
