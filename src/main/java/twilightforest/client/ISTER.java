@@ -205,7 +205,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					minecraft.getBlockEntityRenderDispatcher().renderItem(copy, pose, buffers, light, overlay);
 				}
 			} else if (block instanceof CritterBlock critter) {
-				minecraft.getBlockEntityRenderDispatcher().renderItem(this.critters.computeIfAbsent(critter, critterBlock -> critterBlock.newBlockEntity(BlockPos.ZERO, critterBlock.defaultBlockState())), pose, buffers, light, overlay);
+				var blockEntity = this.critters.computeIfAbsent(critter, critterBlock -> critterBlock.newBlockEntity(BlockPos.ZERO, critterBlock.defaultBlockState()));
+				minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0.0F, pose, buffers, light, overlay);
 			} else if (block instanceof JarBlock jarBlock) {
 				JarRenderer.renderJarModel(block.defaultBlockState(), minecraft.getBlockRenderer(), pose, buffers, light, overlay);
 				JarLid jarLid = stack.getComponents().get(TFDataComponents.JAR_LID.get());
