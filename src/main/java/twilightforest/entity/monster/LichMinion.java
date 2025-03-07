@@ -61,7 +61,7 @@ public class LichMinion extends Zombie {
 		LivingEntity prevTarget = getTarget();
 
 		if (super.hurt(source, amount)) {
-			if (source.getEntity() instanceof Lich && this.level().getDifficulty() == Difficulty.HARD) {
+			if (source.getEntity() instanceof Lich) {
 				// return to previous target but speed up
 				this.setLastHurtByMob(prevTarget);
 				this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 4));
