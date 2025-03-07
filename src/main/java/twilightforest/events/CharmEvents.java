@@ -3,6 +3,7 @@ package twilightforest.events;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -28,6 +29,7 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.KeepsakeCasketBlockEntity;
@@ -43,6 +45,7 @@ import twilightforest.network.SpawnCharmPacket;
 import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -120,37 +123,16 @@ public class CharmEvents {
 	}
 
 	private static void charmOfKeeping(Player player) {
-		//check our inventory for any charms of keeping. We also want to check curio slots (if the mod is installed)
-		// TODO also consider situations where the actual slots may be empty, and charm gets consumed anyway. Usually won't happen.
-		boolean tier3 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_3.get(), getPlayerData(player), true) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_3.get(), player);
-		boolean tier2 = tier3 || TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_2.get(), getPlayerData(player), true) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_2.get(), player);
-		boolean tier1 = tier2 || TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_KEEPING_1.get(), getPlayerData(player), true) || hasCharmCurio(TFItems.CHARM_OF_KEEPING_1.get(), player);
-
 		//create a fake inventory to organize our kept inventory in
 		Inventory keepInventory = new Inventory(player);
 		ListTag tagList = new ListTag();
 
-		//if we have any charm of keeping, all armor and offhand items are kept, so add those
-		if (tier1) {
-			keepWholeList(keepInventory.armor, player.getInventory().armor);
-			keepWholeList(keepInventory.offhand, player.getInventory().offhand);
-		}
-
-		if (tier3) {
-			//tier 3 keeps our entire inventory
-			keepWholeList(keepInventory.items, player.getInventory().items);
-		} else if (tier2) {
-			//tier 2 keeps our hotbar only
-			for (int i = 0; i < 9; i++) {
-				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
-				player.getInventory().items.set(i, ItemStack.EMPTY);
-			}
-		} else if (tier1) {
-			//tier 1 keeps our selected item only
-			int i = player.getInventory().selected;
-			if (Inventory.isHotbarSlot(i)) {
-				keepInventory.items.set(i, player.getInventory().items.get(i).copy());
-				player.getInventory().items.set(i, ItemStack.EMPTY);
+		if (!applyCharm(TFItems.CHARM_OF_KEEPING_3, keepInventory, player, player.getInventory().items)) {
+			if (!applyCharm(TFItems.CHARM_OF_KEEPING_2, keepInventory, player, player.getInventory().items.subList(0, 9))) {
+				int i = player.getInventory().selected;
+				if (Inventory.isHotbarSlot(i)) {
+					applyCharm(TFItems.CHARM_OF_KEEPING_1, keepInventory, player, List.of(player.getInventory().items.get(i)));
+				}
 			}
 		}
 
@@ -171,8 +153,8 @@ public class CharmEvents {
 			}
 		}
 
-		if (player.getInventory().offhand.get(0).is(ItemTagGenerator.KEPT_ON_DEATH)) {
-			keepInventory.offhand.set(0, player.getInventory().offhand.get(0).copy());
+		if (player.getInventory().offhand.getFirst().is(ItemTagGenerator.KEPT_ON_DEATH)) {
+			keepInventory.offhand.set(0, player.getInventory().offhand.getFirst().copy());
 			player.getInventory().offhand.set(0, ItemStack.EMPTY);
 		}
 
@@ -184,8 +166,40 @@ public class CharmEvents {
 		}
 	}
 
+	private static boolean applyCharm(DeferredItem<Item> charm, Inventory keptInventory, Player player, List<ItemStack> inventorySlots) {
+		List<ItemStack> mergedCheck = new ArrayList<>(inventorySlots);
+		//merge armor and offhand into check slots since theyll always be kept by a charm
+		mergedCheck.addAll(player.getInventory().armor);
+		mergedCheck.addAll(player.getInventory().offhand);
+		//first, check all affected slots to make sure they arent empty.
+		//filter out the charm so it doesnt count towards keeping items if its the only thing we are holding
+		if (mergedCheck.stream().filter(stack -> !stack.is(charm)).allMatch(ItemStack::isEmpty)) return false;
+
+		//do we even have a charm? No? Then stop operation
+		if (!TFItemStackUtils.consumeInventoryItem(player, charm, getPlayerData(player), true) && !hasCharmCurio(charm, player)) return false;
+
+		boolean keptACasket = false;
+		//store all items in the kept inventory tag
+		for (int i = 0; i < inventorySlots.size(); i++) {
+			var item = player.getInventory().items.get(i).copy();
+			//if we arent keeping our whole inventory, dont save the keepsake casket so it can be used to hold the remaining items you have.
+			//only keep 1 casket though
+			if (charm != TFItems.CHARM_OF_KEEPING_3 && (!item.is(TFBlocks.KEEPSAKE_CASKET.asItem()) || keptACasket)) {
+				keptInventory.items.set(i, item);
+				player.getInventory().items.set(i, ItemStack.EMPTY);
+			} else {
+				keptACasket = true;
+			}
+		}
+
+		keepWholeList(keptInventory.armor, player.getInventory().armor);
+		keepWholeList(keptInventory.offhand, player.getInventory().offhand);
+
+		return true;
+	}
+
 	private static void keepsakeCasket(Player player) {
-		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.KEEPSAKE_CASKET.get().asItem(), getPlayerData(player), false);
+		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.KEEPSAKE_CASKET, getPlayerData(player), false);
 
 		if (!casketConsumed)
 			return;
