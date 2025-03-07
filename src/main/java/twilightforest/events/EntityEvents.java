@@ -64,6 +64,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.advancements.DrinkFromFlaskTrigger;
 import twilightforest.beans.Autowired;
 import twilightforest.block.*;
 import twilightforest.block.entity.SkullChestBlockEntity;
@@ -481,6 +482,16 @@ public class EntityEvents {
 			PacketDistributor.sendToPlayer(event.getPlayer(), new SyncQuestsPacket(questingRamCurrentContext.getContext()));
 		} else {
 			event.getPlayerList().getPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(questingRamCurrentContext.getContext())));
+		}
+	}
+
+	@SubscribeEvent
+	public static void resetFlaskLogic(AdvancementEvent.AdvancementEarnEvent event) {
+		for (var criteria : event.getAdvancement().value().criteria().entrySet()) {
+			if (criteria.getValue().trigger() instanceof DrinkFromFlaskTrigger) {
+				event.getEntity().getData(TFDataAttachments.FLASK_DOSES).resetDoses();
+				break;
+			}
 		}
 	}
 }
