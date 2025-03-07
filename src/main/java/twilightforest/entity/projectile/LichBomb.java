@@ -92,7 +92,10 @@ public class LichBomb extends TFThrowable {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (result.getEntity() instanceof LichBolt || result.getEntity() instanceof LichBomb || result.getEntity() instanceof Lich) {
+		if (result.getEntity() instanceof Lich lich) {
+			this.deflectedAndEffects(lich);
+			return;
+		} else if (result.getEntity() instanceof LichBolt || result.getEntity() instanceof LichBomb || result.getEntity() instanceof Lich) {
 			return;
 		}
 		this.explode();

@@ -98,7 +98,10 @@ public class LichBolt extends TFThrowable {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		Entity hit = result.getEntity();
-		if (hit instanceof LichBolt || hit instanceof LichBomb || (hit instanceof Lich lich && lich.isShadowClone())) {
+		if (result.getEntity() instanceof Lich lich && lich.getPhase() > 1) {
+			this.deflectedAndEffects(lich);
+			return;
+		} else if (hit instanceof LichBolt || hit instanceof LichBomb || (hit instanceof Lich lich && lich.isShadowClone())) {
 			return;
 		}
 

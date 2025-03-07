@@ -2,7 +2,6 @@ package twilightforest.entity.projectile;
 
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
@@ -72,10 +71,7 @@ public class TwilightWandBolt extends TFThrowable {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		if (result.getEntity() instanceof Lich lich && lich.getPhase() > 1) { // Lich bounces that shit back in phases 2 and 3
-			this.setDeltaMovement(this.getDeltaMovement().add(0.5D - this.random.nextDouble(), 0.75D, 0.5D - this.random.nextDouble()).multiply(0.75D, 1.5D, 0.75D));
-			lich.playSound(TFSounds.SHIELD_BLOCK.get(), 0.5F, lich.getVoicePitch() * 1.5F);
-			lich.swing(InteractionHand.MAIN_HAND);
-			this.setOwner(lich);
+			this.deflectedAndEffects(lich);
 			return;
 		}
 		super.onHitEntity(result);

@@ -2,10 +2,13 @@ package twilightforest.entity.projectile;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
+import twilightforest.init.TFSounds;
 
 public abstract class TFThrowable extends ThrowableProjectile implements ITFProjectile {
 
@@ -37,5 +40,16 @@ public abstract class TFThrowable extends ThrowableProjectile implements ITFProj
 			double dz = this.getZ() + 0.5 * (this.random.nextDouble() - this.random.nextDouble());
 			this.level().addParticle(particle, dx, dy, dz, r, g, b);
 		}
+	}
+
+	protected void deflectedAndEffects(LivingEntity deflector) {
+		this.deflectedByEntity(deflector);
+		deflector.playSound(TFSounds.SHIELD_BLOCK.get(), 0.5F, deflector.getVoicePitch() * 1.5F);
+		deflector.swing(InteractionHand.MAIN_HAND);
+	}
+
+	private void deflectedByEntity(Entity deflector) {
+		this.setDeltaMovement(this.getDeltaMovement().add(0.5D - this.random.nextDouble(), 0.75D, 0.5D - this.random.nextDouble()).multiply(0.75D, 1.5D, 0.75D));
+		this.setOwner(deflector);
 	}
 }
