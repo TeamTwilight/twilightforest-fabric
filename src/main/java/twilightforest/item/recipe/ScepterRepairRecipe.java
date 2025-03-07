@@ -42,17 +42,15 @@ public class ScepterRepairRecipe extends CustomRecipe {
 			if (!stackInQuestion.isEmpty()) {
 				if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
 					scepter = stackInQuestion;
-				} else if (stackInQuestion.is(TFItems.EXANIMATE_ESSENCE)) {
-					if (hasEssence) return false; //only 1 essence
-					hasEssence = true;
 				} else if (this.repairItems.size() == 1 && this.repairItems.getFirst().test(stackInQuestion)) {
 					ingredients++;
-				} else if (this.repairItems.size() == 1 && !this.repairItems.getFirst().test(stackInQuestion)) {
-					break;
+				} else if (stackInQuestion.is(TFItems.EXANIMATE_ESSENCE)) {
+					if (hasEssence || ingredients > 0) return false; //essence ONLY. If there are other ingredients fail
+					hasEssence = true;
 				}
 			}
 		}
-		int duraRes = ingredients * this.durability;
+		int duraRes = ingredients * this.getRepairDurability();
 		return scepter != null && (hasEssence || (ingredients > 0 && (duraRes + (scepter.getMaxDamage() - scepter.getDamageValue())) < scepter.getMaxDamage()) || input.stackedContents().canCraft(this, null));
 	}
 
@@ -75,23 +73,24 @@ public class ScepterRepairRecipe extends CustomRecipe {
 		}
 
 		if (scepter != null) {
+			var copy = new ItemStack(this.scepter);
+			copy.applyComponents(scepter.getComponents());
 			if (hasEssence) {
-				return new ItemStack(this.scepter);
+				copy.setDamageValue(0);
 			} else if (ingredients > 0) {
-				var copy = new ItemStack(this.scepter);
-				copy.setDamageValue(scepter.getDamageValue() - (this.durability * ingredients));
-				return copy;
-			} else {
-				var copy = new ItemStack(this.scepter);
-				copy.setDamageValue(scepter.getDamageValue() - this.durability);
-				return copy;
+				copy.setDamageValue(scepter.getDamageValue() - (this.getRepairDurability() * ingredients));
 			}
+			return copy;
 		}
 		return ItemStack.EMPTY;
 	}
 
 	public Item getScepter() {
 		return this.scepter;
+	}
+
+	public int getRepairDurability() {
+		return this.durability;
 	}
 
 	@Override

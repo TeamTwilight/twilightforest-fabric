@@ -58,7 +58,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 								}
 							}
 						}
-						item.setDamageValue(0);
+						item.setDamageValue(item.getDamageValue() - recipe.getRepairDurability());
 					}
 				}
 			}
