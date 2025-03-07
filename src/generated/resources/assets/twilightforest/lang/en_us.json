@@ -307,7 +307,6 @@
   "block.twilightforest.carminite_block": "Block of Carminite",
   "block.twilightforest.carminite_builder": "Carminite Builder",
   "block.twilightforest.carminite_reactor": "Carminite Reactor",
-  "block.twilightforest.casket.broken": "Your Keepsake Casket was too damaged, it degraded into a Skull Chest while saving your items.",
   "block.twilightforest.casket.damage": "Damage: %s",
   "block.twilightforest.casket.locked": "This Casket can only be opened by %s!",
   "block.twilightforest.castle_brick": "Castle Brick",

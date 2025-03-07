@@ -50,7 +50,6 @@ public class CharmEvents {
 
 	public static final String CHARM_INV_TAG = "TFCharmInventory";
 	public static final String CASKET_DAMAGE_TAG = "CasketDamage";
-	public static final String CASKET_BROKEN_TAG = "CasketBroken";
 	public static final String CONSUMED_CHARM_TAG = "CharmStack";
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -87,10 +86,6 @@ public class CharmEvents {
 	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
 		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
 		if (!event.isEndConquered()) {
-			if (getPlayerData(serverPlayer).contains(CASKET_BROKEN_TAG)) {
-				serverPlayer.sendSystemMessage(Component.translatable("block.twilightforest.casket.broken").withStyle(ChatFormatting.RED));
-				getPlayerData(serverPlayer).remove(CASKET_BROKEN_TAG);
-			}
 			returnStoredItems(serverPlayer);
 		}
 	}
@@ -226,7 +221,6 @@ public class CharmEvents {
 		if (level.getRandom().nextFloat() <= 1.0F) {
 			if (damage >= 2) {
 				setState = TFBlocks.SKULL_CHEST.get().defaultBlockState().setValue(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getType()));
-				getPlayerData(player).putBoolean(CASKET_BROKEN_TAG, true);
 				TwilightForestMod.LOGGER.debug("{}'s Casket damage value was too high, alerting the player and placing Skull Chest instead", player.getName().getString());
 			} else {
 				damage = damage + 1;
