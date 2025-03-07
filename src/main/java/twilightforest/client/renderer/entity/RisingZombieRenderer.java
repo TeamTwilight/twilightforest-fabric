@@ -1,4 +1,4 @@
-package twilightforest.client.renderer;
+package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.RisingZombieModel;
-import twilightforest.client.renderer.entity.TFBipedRenderer;
 import twilightforest.entity.monster.RisingZombie;
 
 public class RisingZombieRenderer extends TFBipedRenderer<RisingZombie, RisingZombieModel> {

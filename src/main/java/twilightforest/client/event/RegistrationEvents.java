@@ -58,7 +58,7 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.renderer.PotionFlaskTooltipComponent;
-import twilightforest.client.renderer.RisingZombieRenderer;
+import twilightforest.client.renderer.entity.RisingZombieRenderer;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.entity.*;
