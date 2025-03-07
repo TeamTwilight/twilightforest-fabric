@@ -103,6 +103,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	private Map<SkullBlock.Type, SkullModelBase> skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
 	private final CandelabraBlockEntity candelabra = new CandelabraBlockEntity(BlockPos.ZERO, TFBlocks.CANDELABRA.get().defaultBlockState());
 	private final BrazierBlockEntity brazier = new BrazierBlockEntity(BlockPos.ZERO, TFBlocks.BRAZIER.get().defaultBlockState());
+	private final Map<CritterBlock, BlockEntity> critters = new HashMap<>();
 
 	// Use the cached INSTANCE.get instead
 	private ISTER() {
@@ -204,10 +205,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 					minecraft.getBlockEntityRenderDispatcher().renderItem(copy, pose, buffers, light, overlay);
 				}
 			} else if (block instanceof CritterBlock critter) {
-				BlockEntity blockEntity = critter.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
-				if (blockEntity != null) {
-					minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(null, 0, pose, buffers, light, overlay);
-				}
+				minecraft.getBlockEntityRenderDispatcher().renderItem(this.critters.computeIfAbsent(critter, critterBlock -> critterBlock.newBlockEntity(BlockPos.ZERO, critterBlock.defaultBlockState())), pose, buffers, light, overlay);
 			} else if (block instanceof JarBlock jarBlock) {
 				JarRenderer.renderJarModel(block.defaultBlockState(), minecraft.getBlockRenderer(), pose, buffers, light, overlay);
 				JarLid jarLid = stack.getComponents().get(TFDataComponents.JAR_LID.get());
@@ -226,11 +224,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 						bufferSource.endBatch();
 					}
 				}
-			} else if (block instanceof BrazierBlock brazierBlock) {
-				BlockEntity blockEntity = brazierBlock.newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
-				if (blockEntity != null) {
-					minecraft.getBlockEntityRenderDispatcher().getRenderer(blockEntity).render(blockEntity, 0, pose, buffers, light, overlay);
-				}
+			} else if (block instanceof BrazierBlock) {
+				minecraft.getBlockEntityRenderDispatcher().renderItem(this.brazier, pose, buffers, light, overlay);
 			}
 		} else if (item instanceof KnightmetalShieldItem) {
 			pose.pushPose();
