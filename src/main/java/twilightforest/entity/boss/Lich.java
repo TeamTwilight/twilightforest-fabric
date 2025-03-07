@@ -570,9 +570,13 @@ public class Lich extends BaseTFBoss {
 		if (!possibleTargets.isEmpty()) target = possibleTargets.get(this.getRandom().nextInt(possibleTargets.size()));
 
 		if (target != null) {
+			this.setTarget(target);
 			if (this.teleportToSightOfEntity(target)) {
-				for (Lich clone : this.getAllClones()) clone.teleportToSightOfEntity(target);
-				if (lichShadowsGoal != null) lichShadowsGoal.checkAndSpawnClones();
+				for (Lich clone : this.getAllClones()) {
+					clone.setTarget(target);
+                    clone.teleportToSightOfEntity(target);
+                }
+				if (lichShadowsGoal != null) lichShadowsGoal.checkAndSpawnClones(target);
 				return true;
 			}
 		}
