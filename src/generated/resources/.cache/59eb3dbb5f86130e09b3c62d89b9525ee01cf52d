@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-28T18:27:59.0275158	Loot Tables
+// 1.21.1	2025-03-06T19:28:22.570877	Loot Tables
 483a7e0c99d5cabeab1ba9f04bd8e88d0a8f7386 data/twilightforest/loot_table/aurora_cache.json
 002a6e2eccdc92db019bd775911912877b26771f data/twilightforest/loot_table/aurora_room.json
 afe7197a19b997d2f5c5980d9805b6093191b44f data/twilightforest/loot_table/blocks/acacia_banister.json
@@ -473,7 +473,7 @@ be8b7c0ceb9d362cafa2cefeab519b1b0d48e4e2 data/twilightforest/loot_table/chests/t
 d90da73cbfe0b9cc8c7b86e212efaf539745a9c6 data/twilightforest/loot_table/chests/tower_grave.json
 86f758d7b5588f62bd972f84306ca7e640fe8624 data/twilightforest/loot_table/chests/tower_jars.json
 0804c8ad3b88e2a40ccd2d4275a71825f2fa1e75 data/twilightforest/loot_table/chests/tower_library.json
-ca2803bd571283d969a428f7eed1ca469d1bfee3 data/twilightforest/loot_table/chests/tower_potion.json
+94d84e16a132f8e4629cee8da7ae8a3af488a162 data/twilightforest/loot_table/chests/tower_potion.json
 de0e9475e945cb5096634717c69b86971eb3e3f1 data/twilightforest/loot_table/chests/tower_room.json
 da3a125bcb0729346f71c1ee4776ba72c22b0328 data/twilightforest/loot_table/darktower_boss.json
 d37d1eab1d649e8e9a9bfdd1ed7b7882b2a544ed data/twilightforest/loot_table/darktower_cache.json
