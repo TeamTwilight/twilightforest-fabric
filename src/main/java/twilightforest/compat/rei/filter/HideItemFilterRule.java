@@ -20,7 +20,7 @@ public class HideItemFilterRule implements FilteringRule<Object> {
 	public FilteringResult processFilteredStacks(FilteringContext context, FilteringResultFactory resultFactory, Object o, boolean async) {
 		FilteringResult filteringResult = resultFactory.create();
 
-		Stream<EntryStack<?>> all = Streams.concat(context.getHiddenStacks().stream(), context.getShownStacks().stream(), context.getUnsetStacks().stream()).distinct();
+		Stream<EntryStack<?>> all = Streams.concat(context.getShownStacks().stream(), context.getUnsetStacks().stream());
 
 		filteringResult.hide(all.filter(stack -> TFItems.MAGIC_PAINTING.getId().equals(stack.getIdentifier())).toList());
 
