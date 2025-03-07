@@ -199,7 +199,8 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addBlock(TFBlocks.SKULL_CHEST, "Skull Chest");
 		this.addBlock(TFBlocks.KEEPSAKE_CASKET, "Keepsake Casket");
-		this.add("block.twilightforest.casket.damage", "Damage: %s");
+		this.add("block.twilightforest.chipped_keepsake_casket", "Chipped Keepsake Casket");
+		this.add("block.twilightforest.damaged_keepsake_casket", "Damaged Keepsake Casket");
 		this.add("block.twilightforest.casket.locked", "This Casket can only be opened by %s!");
 		this.addBlock(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE, "Miniature Lich Tower");
 
