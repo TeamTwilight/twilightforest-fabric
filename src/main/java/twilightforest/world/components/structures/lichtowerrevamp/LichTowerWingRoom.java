@@ -40,6 +40,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
@@ -95,6 +96,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		super(TFStructurePieceTypes.LICH_WING_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
+		this.placeSettings().setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 
 		this.roomSize = compoundTag.getInt("room_size");
 		this.generateGround = compoundTag.getBoolean("gen_ground");
@@ -108,6 +110,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		super(TFStructurePieceTypes.LICH_WING_ROOM.get(), genDepth, structureManager, roomId, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
+		this.placeSettings().setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 
 		this.roomSize = roomSize;
 		this.generateGround = generateGround;
@@ -735,7 +738,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		if (xInChunk == 15) directions.remove(Direction.EAST);
 		if (zInChunk == 15) directions.remove(Direction.SOUTH);
 
-		
+
 
 		if (directions.isEmpty())
 			return Direction.UP;
