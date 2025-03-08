@@ -782,6 +782,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addDeathMessage("thrownBlock.player", "%1$s was squashed by a thrown block while escaping %2$s");
 		this.addDeathMessage("expired", "%1$s's life expired");
 		this.addDeathMessage("expired.player", "%1$s's life expired");
+		this.addDeathMessage("ominousFire.zombified_player", "%1$s was killed by the zombified remains of %2$s");
+		this.addDeathMessage("ominousFire.zombified_player.self", "%1$s was killed by the zombified remains of themselves");
 
 		this.addDeathMessage("axing", "%1$s was chopped up by %2$s");
 		this.addDeathMessage("axing.item", "%1$s was chopped up by %2$s using %3$s");

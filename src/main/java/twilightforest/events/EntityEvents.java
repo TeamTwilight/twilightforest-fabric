@@ -19,6 +19,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
@@ -49,10 +50,7 @@ import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -82,6 +80,7 @@ import twilightforest.network.SyncQuestsPacket;
 import twilightforest.network.WipeOreMeterPacket;
 import twilightforest.util.datamaps.EntityTransformation;
 import twilightforest.util.entities.EntityUtil;
+import twilightforest.util.entities.OminousFireDamageSource;
 import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -107,6 +106,7 @@ public class EntityEvents {
 
 			if (event.getEntity() instanceof ServerPlayer player) {
 				var zombie = EntityType.ZOMBIE.create(player.level());
+				zombie.setData(TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
 				zombie.copyPosition(player);
 				zombie.setCanPickUpLoot(true);
 				zombie.setBaby(false);
@@ -115,6 +115,15 @@ public class EntityEvents {
 			} else if (dataMap != null && event.getEntity().level() instanceof ServerLevel) {
 				EntityUtil.convertEntity(event.getEntity(), dataMap.result());
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void zombifiedPlayerAttacks(LivingIncomingDamageEvent event) {
+		if (!(event.getSource() instanceof OminousFireDamageSource) && event.getSource().getEntity() instanceof Zombie zombie && zombie.hasData(TFDataAttachments.ZOMBIFIED_PLAYER)) {
+			float amount = event.getAmount();
+			event.setCanceled(true);
+			event.getEntity().hurt(new OminousFireDamageSource(event.getSource()), amount);
 		}
 	}
 
