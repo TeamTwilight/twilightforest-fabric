@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.TFThrowable;
 
 /**
@@ -23,16 +22,18 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable>
 	private final ResourceLocation texture;
 	private final float scale;
 	private final boolean fullBright;
+	private final boolean flashing;
 
-	public CustomProjectileTextureRenderer(EntityRendererProvider.Context ctx, ResourceLocation texture, float scale, boolean fullBright) {
+	public CustomProjectileTextureRenderer(EntityRendererProvider.Context ctx, ResourceLocation texture, float scale, boolean fullBright, boolean flashing) {
 		super(ctx);
 		this.texture = texture;
 		this.scale = scale;
 		this.fullBright = fullBright;
+		this.flashing = flashing;
 	}
 
 	public CustomProjectileTextureRenderer(EntityRendererProvider.Context ctx, ResourceLocation texture) {
-		this(ctx, texture, 1.0F, false);
+		this(ctx, texture, 1.0F, false, false);
 	}
 
 	@Override
@@ -42,8 +43,22 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable>
 
 	@Override
 	public void render(TFThrowable entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
-		this.render(entity, entityYaw, partialTicks, stack, buffer, light, OverlayTexture.NO_OVERLAY);
-		super.render(entity, entityYaw, partialTicks, stack, buffer, light);
+		if (this.flashing) {
+			stack.pushPose();
+			float age = entity.tickCount + partialTicks;
+			float f = (Mth.sin(age) + 1.0F) * 0.5F;
+			float f1 = 1.0F + Mth.sin(f * 100.0F) * f * 0.01F;
+			f = Mth.clamp(f, 0.0F, 1.0F);
+			f *= f;
+			f *= f;
+			float f2 = (1.0F + f * 0.4F) * f1;
+			float f3 = (1.0F + f * 0.1F) / f1;
+			stack.scale(f2, f3, f2);
+			this.render(entity, entityYaw, partialTicks, stack, buffer, light, OverlayTexture.pack(OverlayTexture.u(f), OverlayTexture.v(false)));
+			stack.popPose();
+		} else {
+			this.render(entity, entityYaw, partialTicks, stack, buffer, light, OverlayTexture.NO_OVERLAY);
+		}
 	}
 
 	//[VanillaCopy] of DragonFireballRender.render, we just input our own texture stuff instead
@@ -71,26 +86,5 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable>
 	@Override
 	public ResourceLocation getTextureLocation(TFThrowable entity) {
 		return this.texture;
-	}
-
-	public static class LichBomb extends CustomProjectileTextureRenderer {
-		public LichBomb(EntityRendererProvider.Context ctx) {
-			super(ctx, TwilightForestMod.prefix("textures/particle/twilight_bomb.png"), 1.0F, true);
-		}
-
-		public void render(TFThrowable entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlayTexture) {
-			stack.pushPose();
-			float age = entity.tickCount + partialTicks;
-			float f = (Mth.sin(age) + 1.0F) * 0.5F;
-			float f1 = 1.0F + Mth.sin(f * 100.0F) * f * 0.01F;
-			f = Mth.clamp(f, 0.0F, 1.0F);
-			f *= f;
-			f *= f;
-			float f2 = (1.0F + f * 0.4F) * f1;
-			float f3 = (1.0F + f * 0.1F) / f1;
-			stack.scale(f2, f3, f2);
-			super.render(entity, entityYaw, partialTicks, stack, buffer, light, OverlayTexture.pack(OverlayTexture.u(f), OverlayTexture.v(false)));
-			stack.popPose();
-		}
 	}
 }
