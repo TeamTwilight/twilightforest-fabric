@@ -497,6 +497,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			case "lava" -> level.setBlock(pos, Blocks.LAVA.defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "water" -> level.setBlock(pos, Blocks.WATER.defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "firefly_jar" -> level.setBlock(pos, TFBlocks.FIREFLY_JAR.value().defaultBlockState(), Block.UPDATE_CLIENTS);
+			case "wrought_iron_post" -> level.setBlock(pos, TFBlocks.WROUGHT_IRON_FENCE.value().defaultBlockState().setValue(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST), Block.UPDATE_CLIENTS);
 			case "mason_jar" -> this.putMasonJar(pos, level, random, parameters);
 			case "canopy_slab" -> level.setBlock(pos, TFBlocks.CANOPY_SLAB.value().defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "canopy_stairs" -> level.setBlock(pos, TFBlocks.CANOPY_STAIRS.value().defaultBlockState(), Block.UPDATE_CLIENTS);
@@ -515,7 +516,23 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			case "chiseled_canopy_shelf" -> this.putTrappableBookshelf(pos, level, registryAccess, random, dataRotation);
 			case "chest" -> this.putChest(pos, level, random, parameters, dataRotation, Blocks.CHEST.defaultBlockState());
 			case "trapped_chest" -> this.putChest(pos, level, random, parameters, dataRotation, Blocks.TRAPPED_CHEST.defaultBlockState());
-			case "candle", "candles" -> this.putCandles(parameters, random, level, pos);
+			case "candle", "candles" -> this.putCandles(parameters, random, level, pos, Blocks.CANDLE.defaultBlockState());
+			case "white_candle" -> this.putCandles(parameters, random, level, pos, Blocks.WHITE_CANDLE.defaultBlockState());
+			case "orange_candle" -> this.putCandles(parameters, random, level, pos, Blocks.ORANGE_CANDLE.defaultBlockState());
+			case "magenta_candle" -> this.putCandles(parameters, random, level, pos, Blocks.MAGENTA_CANDLE.defaultBlockState());
+			case "light_blue_candle" -> this.putCandles(parameters, random, level, pos, Blocks.LIGHT_BLUE_CANDLE.defaultBlockState());
+			case "yellow_candle" -> this.putCandles(parameters, random, level, pos, Blocks.YELLOW_CANDLE.defaultBlockState());
+			case "lime_candle" -> this.putCandles(parameters, random, level, pos, Blocks.LIME_CANDLE.defaultBlockState());
+			case "pink_candle" -> this.putCandles(parameters, random, level, pos, Blocks.PINK_CANDLE.defaultBlockState());
+			case "gray_candle" -> this.putCandles(parameters, random, level, pos, Blocks.GRAY_CANDLE.defaultBlockState());
+			case "light_gray_candle" -> this.putCandles(parameters, random, level, pos, Blocks.LIGHT_GRAY_CANDLE.defaultBlockState());
+			case "cyan_candle" -> this.putCandles(parameters, random, level, pos, Blocks.CYAN_CANDLE.defaultBlockState());
+			case "purple_candle" -> this.putCandles(parameters, random, level, pos, Blocks.PURPLE_CANDLE.defaultBlockState());
+			case "blue_candle" -> this.putCandles(parameters, random, level, pos, Blocks.BLUE_CANDLE.defaultBlockState());
+			case "brown_candle" -> this.putCandles(parameters, random, level, pos, Blocks.BROWN_CANDLE.defaultBlockState());
+			case "green_candle" -> this.putCandles(parameters, random, level, pos, Blocks.GREEN_CANDLE.defaultBlockState());
+			case "red_candle" -> this.putCandles(parameters, random, level, pos, Blocks.RED_CANDLE.defaultBlockState());
+			case "black_candle" -> this.putCandles(parameters, random, level, pos, Blocks.BLACK_CANDLE.defaultBlockState());
 			case "water_cauldron" -> this.putWaterCauldron(parameters, random, level, pos);
 			case "zombie_trap" -> this.putZombieTrap(random, level, pos);
 			case "empty_lectern" -> {
@@ -524,7 +541,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			}
 			case "candled_lectern" -> {
 				if (random.nextInt(4) != 0) {
-					this.putCandles(parameters, random, level, pos.above());
+					this.putCandles(parameters, random, level, pos.above(), Blocks.CANDLE.defaultBlockState());
 				} else {
 					this.putHeadCandles(pos.above(), level, random, parameters, TFBlocks.SKELETON_SKULL_CANDLE.value(), dataRotation);
 				}
@@ -669,10 +686,10 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		};
 	}
 
-	private void putCandles(String[] parameters, RandomSource random, WorldGenLevel level, BlockPos pos) {
+	private void putCandles(String[] parameters, RandomSource random, WorldGenLevel level, BlockPos pos, BlockState candle) {
 		int amount = Math.min(4, parameters.length == 2 ? this.getCandleRanged(parameters[1], random) : random.nextIntBetweenInclusive(1, 3));
 		if (amount <= 0) return;
-		BlockState candles = Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true).setValue(CandleBlock.CANDLES, amount);
+		BlockState candles = candle.setValue(CandleBlock.LIT, true).setValue(CandleBlock.CANDLES, amount);
 		level.setBlock(pos, candles, Block.UPDATE_CLIENTS);
 	}
 
@@ -684,10 +701,14 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private void putZombieTrap(RandomSource random, WorldGenLevel level, BlockPos pos) {
-		BlockState fenceBlock = TFBlocks.WROUGHT_IRON_FENCE.value().defaultBlockState().setValue(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.CAPPED);
+		WroughtIronFenceBlock.PostState postProperty = level.getBlockState(pos.above()).isAir() ? WroughtIronFenceBlock.PostState.CAPPED : WroughtIronFenceBlock.PostState.POST;
+		BlockState fenceBlock = TFBlocks.WROUGHT_IRON_FENCE.value().defaultBlockState().setValue(WroughtIronFenceBlock.POST, postProperty);
 		level.setBlock(pos, fenceBlock, Block.UPDATE_CLIENTS);
 
-		Direction randomDirection = this.getRandomDirectionInsideChunk(random, pos);
+		Direction randomDirection = this.getRandomDirectionInsideChunk(level, random, pos);
+
+		if (randomDirection.getAxis() == Direction.Axis.Y) return;
+
 		BlockPos zombiePos = pos.relative(randomDirection, 1);
 
 		var knot = EntityUtil.createEntityIgnoreException(level, EntityType.LEASH_KNOT);
@@ -703,7 +724,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		level.addFreshEntity(trapEntity);
 	}
 
-	private @NotNull Direction getRandomDirectionInsideChunk(RandomSource random, BlockPos pos) {
+	private @NotNull Direction getRandomDirectionInsideChunk(WorldGenLevel level, RandomSource random, BlockPos pos) {
 		int xInChunk = SectionPos.sectionRelative(pos.getX());
 		int zInChunk = SectionPos.sectionRelative(pos.getZ());
 
@@ -713,6 +734,11 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		if (zInChunk == 0) directions.remove(Direction.NORTH);
 		if (xInChunk == 15) directions.remove(Direction.EAST);
 		if (zInChunk == 15) directions.remove(Direction.SOUTH);
+
+		
+
+		if (directions.isEmpty())
+			return Direction.UP;
 
 		Direction randomDirection = Util.getRandom(directions, random);
 		return randomDirection;
