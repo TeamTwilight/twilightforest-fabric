@@ -102,8 +102,9 @@ public class LichTowerUtil {
 		return ArrayUtil.randomOrNull(odd ? this.lichRoomPieces.galleryRoofsOdd : this.lichRoomPieces.galleryRoofsEven, randomSource);
 	}
 
+	@Nullable
 	public ResourceLocation rollRandomMobBridge(RandomSource randomSource) {
-		return Util.getRandom(this.lichRoomPieces.mobBridges, randomSource);
+		return StructureTemplateDefinitions.getRandomTemplate(randomSource, LichTowerPieces.MOB_BRIDGE);
 	}
 
 	public ResourceLocation rollRandomCover(RandomSource randomSource) {

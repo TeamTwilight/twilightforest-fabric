@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-// TODO Greater configuration flexibility so that Datapacks can rewrite these lists. Use TagsUpdatedEvent to modify this bean?
 @Component
 public final class LichTowerPieces {
 	public static final int YARD_SPAWNS = 0;
@@ -46,14 +45,7 @@ public final class LichTowerPieces {
 		TwilightForestMod.prefix("lich_tower/wall_bars"),
 		this.cobblestoneWall
 	};
-	final ResourceLocation[] mobBridges = new ResourceLocation[] {
-		TwilightForestMod.prefix("lich_tower/bridge_spawner"),
-		TwilightForestMod.prefix("lich_tower/bridge_spawner_bend"),
-		TwilightForestMod.prefix("lich_tower/bridge_spawner_ropes"),
-		TwilightForestMod.prefix("lich_tower/bridge_spawner_wide"),
-		TwilightForestMod.prefix("lich_tower/bridge_spawner_zag"),
-		TwilightForestMod.prefix("lich_tower/bridge_spawner_zig")
-	};
+	public static final ResourceLocation MOB_BRIDGE = TwilightForestMod.prefix("lt_mob_bridge");
 	final ResourceLocation[] centerDecors = new ResourceLocation[] {
 		TwilightForestMod.prefix("lich_tower/3x3/tree"),
 		TwilightForestMod.prefix("lich_tower/3x3/water_fountain"),

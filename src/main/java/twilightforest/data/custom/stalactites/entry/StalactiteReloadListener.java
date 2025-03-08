@@ -1,11 +1,13 @@
 package twilightforest.data.custom.stalactites.entry;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.profiling.ProfilerFiller;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.util.CodecResourceReloadListener;
 
@@ -14,6 +16,8 @@ import java.io.Reader;
 import java.util.*;
 
 public class StalactiteReloadListener extends CodecResourceReloadListener<SpeleothemVarietyConfig> {
+	public final static StalactiteReloadListener INSTANCE = new StalactiteReloadListener(); // TODO Autowired
+
 	public static final String STALACTITE_DIRECTORY = "twilight/stalactites";
 
 	public static final Map<String, SpeleothemVarietyConfig> HILL_CONFIGS = new HashMap<>();
@@ -23,6 +27,16 @@ public class StalactiteReloadListener extends CodecResourceReloadListener<Speleo
 
 	public StalactiteReloadListener() {
 		super(STALACTITE_DIRECTORY, SpeleothemVarietyConfig.CODEC);
+	}
+
+	@Override
+	protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
+		HILL_CONFIGS.clear();
+		ORE_STALACTITES_PER_HILL.clear();
+		STALAGMITES_PER_HILL.clear();
+		HILL_CONFIGS.clear();
+
+		super.apply(map, manager, profiler);
 	}
 
 	@Override
