@@ -6,11 +6,12 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedEntry;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.world.components.structures.util.CodecResourceReloadListener;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class StructureTemplateDefinitions extends CodecResourceReloadListener<StructureTemplateDefinition> {
 	public static final StructureTemplateDefinitions INSTANCE = new StructureTemplateDefinitions(); // TODO Autowired
@@ -63,8 +64,25 @@ public class StructureTemplateDefinitions extends CodecResourceReloadListener<St
 		return templatePool == null ? null : templatePool.getRandomValue(random).orElse(null);
 	}
 
+	private Iterable<ResourceLocation> shuffledTemplatePool(RandomSource random, ResourceLocation templatePoolId) {
+		SimpleWeightedRandomList<ResourceLocation> templatePool = this.templatePools.get(templatePoolId);
+
+		Map<ResourceLocation, Double> reservoirSampled = new HashMap<>();
+		for (WeightedEntry.Wrapper<ResourceLocation> entry : templatePool.unwrap()) {
+			double rand = random.nextDouble();
+			reservoirSampled.put(entry.data(), -Math.log(rand) / entry.getWeight().asInt());
+		}
+
+		return reservoirSampled.entrySet().stream().sorted(Map.Entry.comparingByValue()).map(Map.Entry::getKey).collect(Collectors.toList());
+	}
+
 	@Nullable // TODO Autowired
 	public static ResourceLocation getRandomTemplate(RandomSource random, ResourceLocation poolId) {
 		return INSTANCE.rollTemplatePool(random, poolId);
+	}
+
+	// TODO Autowired
+	public static Iterable<ResourceLocation> getShuffled(RandomSource random, ResourceLocation poolId) {
+		return INSTANCE.shuffledTemplatePool(random, poolId);
 	}
 }

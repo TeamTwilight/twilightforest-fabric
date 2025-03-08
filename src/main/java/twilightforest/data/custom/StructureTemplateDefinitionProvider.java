@@ -34,6 +34,12 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 		}
 	}
 
+	protected void addToAllPools(String roomId, int weight, ResourceLocation... poolIds) {
+		for(ResourceLocation poolId : poolIds) {
+			this.add(roomId, poolId, weight);
+		}
+	}
+
 	protected void addAllTemplatesToPool(ResourceLocation poolId, int weight, String... roomIds) {
 		for(String roomId : roomIds) {
 			this.add(roomId, poolId, weight);
