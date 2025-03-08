@@ -63,7 +63,7 @@ public class ScepterRepairRecipe extends CustomRecipe {
 					}
 				}
 			}
-			return scepter != null && this.repairItems.size() == input.size() - 1 && input.stackedContents().canCraft(this, null);
+			return scepter != null && this.repairItems.size() == input.ingredientCount() - 1 && input.stackedContents().canCraft(this, null);
 		}
 
 	}
