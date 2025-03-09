@@ -275,7 +275,7 @@ public class CharmEvents {
 				if (player.getInventory().getItem(i).is(TFItems.KEEPSAKE_CASKET)) {
 					Inventory tmp = new Inventory(player);
 					tmp.load(getPlayerData(player).getList(CHARM_INV_TAG, 10));
-					tmp.setItem(i, player.getInventory().getItem(i).copy());
+					tmp.add(player.getInventory().getItem(i).copy());
 					player.getInventory().setItem(i, ItemStack.EMPTY);
 					getPlayerData(player).put(CHARM_INV_TAG, tmp.save(new ListTag()));
 				}
