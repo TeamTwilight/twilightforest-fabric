@@ -184,7 +184,7 @@ public class CharmEvents {
 			var item = player.getInventory().items.get(i).copy();
 			//if we arent keeping our whole inventory, dont save the keepsake casket so it can be used to hold the remaining items you have.
 			//only keep 1 casket though
-			if (charm != TFItems.CHARM_OF_KEEPING_3 && (!item.is(TFBlocks.KEEPSAKE_CASKET.asItem()) || keptACasket)) {
+			if (charm == TFItems.CHARM_OF_KEEPING_3 || (!item.is(TFBlocks.KEEPSAKE_CASKET.asItem()) || keptACasket)) {
 				keptInventory.items.set(i, item);
 				player.getInventory().items.set(i, ItemStack.EMPTY);
 			} else {
