@@ -19,6 +19,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -241,6 +242,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			pose.scale(1.0F, -1.0F, -1.0F);
 			if (camera == ItemDisplayContext.GUI) {
 				pose.translate(0.5F, -0.1F, 0.0F);
+				pose.last().normal().rotate(Mth.PI * 0.5f, 0, 1, 0);
 				pose.mulPose(Axis.XP.rotationDegrees(30));
 				pose.mulPose(Axis.YP.rotationDegrees(45));
 			} else {
