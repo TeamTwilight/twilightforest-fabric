@@ -236,7 +236,8 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 		this.add("lich_tower/7x7/beard_flat", LichTowerPieces.ROOM_7_BEARD_FALLBACK, 1);
 		this.add("lich_tower/9x9/beard_flat", LichTowerPieces.ROOM_9_BEARD_FALLBACK, 1);
 
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_5_LADDER_0, 1,
+		int ladderRoomWeightDefault = 100;
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_5_LADDER_0, ladderRoomWeightDefault,
 			"lich_tower/5x5/straight_junction",
 			"lich_tower/5x5/elbow_junction",
 			"lich_tower/5x5/t_junction",
@@ -247,7 +248,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/5x5/potion",
 			"lich_tower/5x5/trinity"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_5_LADDER_2, 1,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_5_LADDER_2, ladderRoomWeightDefault,
 			"lich_tower/5x5/straight_junction",
 			"lich_tower/5x5/elbow_junction",
 			"lich_tower/5x5/t_junction",
@@ -259,13 +260,13 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/5x5/trinity"
 		);
 
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_0, 1,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_0, ladderRoomWeightDefault,
 			"lich_tower/7x7/full_junction_1",
 			"lich_tower/7x7/desk",
 			"lich_tower/7x7/altars",
 			"lich_tower/7x7/altar"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_1, 1,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_1, ladderRoomWeightDefault,
 			"lich_tower/7x7/potion",
 			"lich_tower/7x7/library_hall",
 			"lich_tower/7x7/jar_study",
@@ -273,7 +274,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/7x7/guarded_chest",
 			"lich_tower/7x7/potion_lab"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_3, 1,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_3, ladderRoomWeightDefault,
 			"lich_tower/7x7/library_hall",
 			"lich_tower/7x7/jar_study",
 			"lich_tower/7x7/elbow_chest",
@@ -281,7 +282,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/7x7/garden_lab",
 			"lich_tower/7x7/potion_lab"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_4, 1,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_4, ladderRoomWeightDefault,
 			"lich_tower/7x7/full_junction_1",
 			"lich_tower/7x7/desk",
 			"lich_tower/7x7/altars",
@@ -289,7 +290,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/7x7/altar"
 		);
 
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_1, 1,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_1, ladderRoomWeightDefault,
 			"lich_tower/9x9/archives",
 			"lich_tower/9x9/enchanting_prison",
 			"lich_tower/9x9/mossy_junction",
@@ -300,20 +301,19 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/9x9/cauldron_keep",
 			"lich_tower/9x9/large_study"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_2, 1,
-			"lich_tower/9x9/classic_library",
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_2, ladderRoomWeightDefault,
 			"lich_tower/9x9/study",
 			"lich_tower/9x9/library_junction",
-			"lich_tower/9x9/cauldron_keep",
-			"lich_tower/9x9/seven"
+			"lich_tower/9x9/cauldron_keep"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_4, 1,
-			"lich_tower/9x9/classic_library",
+		this.add("lich_tower/9x9/classic_library", LichTowerPieces.ROOM_9_LADDER_2, 20);
+		this.add("lich_tower/9x9/seven", LichTowerPieces.ROOM_9_LADDER_2, 1);
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_4, ladderRoomWeightDefault,
 			"lich_tower/9x9/study",
-			"lich_tower/9x9/library_junction",
-			"lich_tower/9x9/seven"
+			"lich_tower/9x9/library_junction"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_5, 1,
+		this.add("lich_tower/9x9/seven", LichTowerPieces.ROOM_9_LADDER_4, 1);
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_5, ladderRoomWeightDefault,
 			"lich_tower/9x9/archives",
 			"lich_tower/9x9/enchanting_prison",
 			"lich_tower/9x9/mossy_junction",
