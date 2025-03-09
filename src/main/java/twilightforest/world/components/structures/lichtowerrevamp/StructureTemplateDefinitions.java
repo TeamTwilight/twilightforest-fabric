@@ -47,7 +47,9 @@ public class StructureTemplateDefinitions extends CodecResourceReloadListener<St
 		for(Map.Entry<ResourceLocation, Map<ResourceLocation, Integer>> rawTemplatePool : this.rawTemplatePools.entrySet()) {
 			SimpleWeightedRandomList.Builder<ResourceLocation> poolBuilder = SimpleWeightedRandomList.builder();
 
-			for (Map.Entry<ResourceLocation, Integer> templateIdWeight : rawTemplatePool.getValue().entrySet()) {
+			// Ensures that the order of elements stays deterministic between sessions, as Sets are not implicitly ordered
+			List<Map.Entry<ResourceLocation, Integer>> sortedTemplateWeights = rawTemplatePool.getValue().entrySet().stream().sorted(Map.Entry.comparingByKey()).toList();
+			for (Map.Entry<ResourceLocation, Integer> templateIdWeight : sortedTemplateWeights) {
 				poolBuilder.add(templateIdWeight.getKey(), templateIdWeight.getValue());
 			}
 
@@ -64,8 +66,12 @@ public class StructureTemplateDefinitions extends CodecResourceReloadListener<St
 		return templatePool == null ? null : templatePool.getRandomValue(random).orElse(null);
 	}
 
+	// https://en.wikipedia.org/wiki/Reservoir_sampling
 	private Iterable<ResourceLocation> shuffledTemplatePool(RandomSource random, ResourceLocation templatePoolId) {
 		SimpleWeightedRandomList<ResourceLocation> templatePool = this.templatePools.get(templatePoolId);
+
+		if (templatePool == null)
+			return List.of();
 
 		Map<ResourceLocation, Double> reservoirSampled = new HashMap<>();
 		for (WeightedEntry.Wrapper<ResourceLocation> entry : templatePool.unwrap()) {
@@ -82,7 +88,7 @@ public class StructureTemplateDefinitions extends CodecResourceReloadListener<St
 	}
 
 	// TODO Autowired
-	public static Iterable<ResourceLocation> getShuffled(RandomSource random, ResourceLocation poolId) {
+	public static Iterable<ResourceLocation> getShuffledSequence(RandomSource random, ResourceLocation poolId) {
 		return INSTANCE.shuffledTemplatePool(random, poolId);
 	}
 }

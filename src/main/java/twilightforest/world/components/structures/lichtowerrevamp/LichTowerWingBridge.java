@@ -124,8 +124,8 @@ public final class LichTowerWingBridge extends TwilightJigsawPiece implements Pi
 		}
 
 		if (fromCentralTower) {
-			tryBridge(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, true, roomMaxSize, generateGround, newDepth, lichTowerUtil.getEnclosedCentralBridge(), true, override, false);
-		} else if (!tryBridge(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, false, roomMaxSize, generateGround, newDepth, lichTowerUtil.getDirectRoomAttachment(), true, override, true)) {
+			tryBridge(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, true, roomMaxSize, generateGround, newDepth, lichTowerUtil.getEnclosedCentralBridge(random), true, override, false);
+		} else if (!tryBridge(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, false, roomMaxSize, generateGround, newDepth, lichTowerUtil.getDirectRoomAttachment(random), true, override, true)) {
 			// This here is reached only if a room was not successfully generated - now a wall must be placed to cover where the bridge would have been
 			putCover(parent, pieceAccessor, random, connection.pos(), connection.orientation(), structureManager, generateGround, newDepth);
 		}

@@ -240,7 +240,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				FrontAndTop orientationToMatch = getVerticalOrientation(connection, Direction.DOWN, this);
 
 				if (this.generateGround) {
-					ResourceLocation trim = lichTowerUtil.getTrim(this.roomSize);
+					ResourceLocation trim = lichTowerUtil.getTrim(random, this.roomSize);
 					this.tryBeard(pieceAccessor, random, connection, trim, orientationToMatch, true, true);
 				} else {
 					for (ResourceLocation beardLocation : lichTowerUtil.shuffledBeards(random, this.roomSize)) {
@@ -249,7 +249,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 						}
 					}
 
-					ResourceLocation fallbackBeard = lichTowerUtil.getFallbackBeard(this.roomSize);
+					ResourceLocation fallbackBeard = lichTowerUtil.getFallbackBeard(random, this.roomSize);
 					this.tryBeard(pieceAccessor, random, connection, fallbackBeard, orientationToMatch, true, false);
 				}
 			}
@@ -318,7 +318,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			}
 		}
 
-		ResourceLocation fallbackRoof = lichTowerUtil.getFallbackRoof(this.roomSize, doSideAttachment);
+		ResourceLocation fallbackRoof = lichTowerUtil.getFallbackRoof(random, this.roomSize, doSideAttachment);
 		tryRoof(pieceAccessor, random, connection, fallbackRoof, orientationToMatch, true, this, this.genDepth + 1, this.structureManager);
 		return false;
 	}
