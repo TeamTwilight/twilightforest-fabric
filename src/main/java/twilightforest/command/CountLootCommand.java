@@ -37,20 +37,20 @@ import java.util.Map;
 public class CountLootCommand {
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("count_loot").requires(cs -> cs.hasPermission(2))
-			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::debugDisplayPieces)
-				.then(Commands.argument("show_common", BoolArgumentType.bool()).executes(this::debugDisplayPiecesFiltered))
+			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::countLoot)
+				.then(Commands.argument("show_common", BoolArgumentType.bool()).executes(this::countLootFiltered))
 			);
 	}
 
-	private int debugDisplayPieces(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-		return this.debugDisplayPieces(context, true);
+	private int countLoot(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+		return this.countLoot(context, true);
 	}
 
-	private int debugDisplayPiecesFiltered(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-		return this.debugDisplayPieces(context, BoolArgumentType.getBool(context, "show_common"));
+	private int countLootFiltered(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+		return this.countLoot(context, BoolArgumentType.getBool(context, "show_common"));
 	}
 
-	private int debugDisplayPieces(CommandContext<CommandSourceStack> context, boolean showCommon) throws CommandSyntaxException {
+	private int countLoot(CommandContext<CommandSourceStack> context, boolean showCommon) throws CommandSyntaxException {
 		Holder.Reference<Structure> structure = ResourceKeyArgument.getStructure(context, "filter_structure");
 
 		if (!structure.isBound()) return 0;
