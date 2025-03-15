@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-09T16:19:30.205531	twilight/template_definition generator for twilightforest
+// 1.21.1	2025-03-14T23:08:29.87048	twilight/template_definition generator for twilightforest
 abe76aa1d2e89fd09494b5b4a851d3357e79e58b data/twilightforest/twilight/template_definition/lich_tower/3x3/chest.json
 30dfb218af770189516b230c1eb9d39466b1e1ac data/twilightforest/twilight/template_definition/lich_tower/3x3/curved_roof.json
 e14c13f3cfa03da278919737c9603d582788e4ac data/twilightforest/twilight/template_definition/lich_tower/3x3/double.json
@@ -112,6 +112,7 @@ a658ebc25b5e5d8d77e75f3152b413e8e5724925 data/twilightforest/twilight/template_d
 8bffb38f3e7c56b7b1291a9a013cae0c94f960a5 data/twilightforest/twilight/template_definition/lich_tower/9x9/flat_roof.json
 8bffb38f3e7c56b7b1291a9a013cae0c94f960a5 data/twilightforest/twilight/template_definition/lich_tower/9x9/flat_side_roof.json
 a658ebc25b5e5d8d77e75f3152b413e8e5724925 data/twilightforest/twilight/template_definition/lich_tower/9x9/full_junction.json
+3b5a6af83c1b0d4dba95826334d03641179a3a28 data/twilightforest/twilight/template_definition/lich_tower/9x9/keepsake_casket.json
 69ad82fa7e119e1f16bbabde2574a2be35743243 data/twilightforest/twilight/template_definition/lich_tower/9x9/large_study.json
 69ad82fa7e119e1f16bbabde2574a2be35743243 data/twilightforest/twilight/template_definition/lich_tower/9x9/lectern_hall.json
 a77a570ada0ae6f150bc0fa8cf865f8ae1008894 data/twilightforest/twilight/template_definition/lich_tower/9x9/library_junction.json

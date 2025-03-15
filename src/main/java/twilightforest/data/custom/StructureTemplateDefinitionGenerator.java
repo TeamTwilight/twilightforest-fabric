@@ -351,9 +351,12 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/end_bridge_5"
 		);
 
-
 		this.addAllTemplatesToPool(LichTowerPieces.YARD_GRAVE, 1,
 			"lich_tower/grave"
+		);
+
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_SPECIAL, 1,
+			"lich_tower/9x9/keepsake_casket"
 		);
 	}
 }
