@@ -76,7 +76,7 @@ public class PieceDebugCommand {
 	}
 
 	// Instead of making methods in Display and Display.BlockDisplay public, this is a lazy way of compiling the NBT data then using it to initialize the entity
-	private boolean spawnBlockDisplay(ServerLevel level, BoundingBox box, BlockState displayState, float padding) {
+	boolean spawnBlockDisplay(ServerLevel level, BoundingBox box, BlockState displayState, float padding) {
 		Transformation transform = new Transformation(new Matrix4f().scale(box.getXSpan() + padding * 2, box.getYSpan() + padding * 2, box.getZSpan() + padding * 2));
 		transform.getScale(); // Dummy call to ensure the matrix is factorized, or else there will be nulls on serialization
 
@@ -113,7 +113,7 @@ public class PieceDebugCommand {
 		return listtag;
 	}
 
-	private void setTextEntity(WorldGenLevel world, double x, double y, double z, Display.BillboardConstraints billboardConstraint, MutableComponent name) {
+	void setTextEntity(WorldGenLevel world, double x, double y, double z, Display.BillboardConstraints billboardConstraint, net.minecraft.network.chat.Component name) {
 		final Display.TextDisplay display = new Display.TextDisplay(EntityType.TEXT_DISPLAY, world.getLevel());
 		display.setText(name);
 		display.setBillboardConstraints(billboardConstraint);

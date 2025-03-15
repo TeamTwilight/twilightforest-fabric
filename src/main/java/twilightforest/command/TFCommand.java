@@ -48,6 +48,9 @@ public class TFCommand {
 	@Autowired
 	private CountTemplateCommand countTemplateCommand;
 
+	@Autowired
+	private StructureDistanceCommand structureDistanceCommand;
+
 	public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext) {
 		LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("twilightforest")
 			.executes(this::run)
@@ -61,7 +64,8 @@ public class TFCommand {
 			.then(spawnerCommand.register(buildContext))
 			.then(pieceDebugCommand.register())
 			.then(countLootCommand.register())
-			.then(countTemplateCommand.register());
+			.then(countTemplateCommand.register())
+			.then(structureDistanceCommand.register());
 		LiteralCommandNode<CommandSourceStack> node = dispatcher.register(builder);
 		dispatcher.register(Commands.literal("tf").executes(this::run).redirect(node));
 		dispatcher.register(Commands.literal("tffeature").executes(this::run).redirect(node));
