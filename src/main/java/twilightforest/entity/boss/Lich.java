@@ -716,7 +716,7 @@ public class Lich extends BaseTFBoss {
 	@Override
 	protected void postRemoval(ServerLevel serverLevel, RemovalReason reason) {
 		super.postRemoval(serverLevel, reason);
-		this.lightNearbyCandles();
+		if (!this.isShadowClone()) this.lightNearbyCandles();
 	}
 
 	protected void turnNearbyCandles(int tick, boolean done) {
