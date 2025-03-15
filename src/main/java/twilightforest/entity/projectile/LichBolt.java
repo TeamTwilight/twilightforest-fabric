@@ -91,7 +91,7 @@ public class LichBolt extends TFThrowable {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		this.level().broadcastEntityEvent(this, (byte) 3);
+		this.level().broadcastEntityEvent(this, EntityEvent.DEATH);
 		this.discard();
 	}
 
@@ -101,7 +101,7 @@ public class LichBolt extends TFThrowable {
 		if (result.getEntity() instanceof Lich lich && lich.getPhase() > 1) {
 			this.deflectedAndEffects(lich);
 			return;
-		} else if (hit instanceof LichBolt || hit instanceof LichBomb || (hit instanceof Lich lich && lich.isShadowClone())) {
+		} else if (hit instanceof LichBolt || hit instanceof LichBomb || hit instanceof TwilightWandBolt || (hit instanceof Lich lich && (lich.isShadowClone() || this.getOwner() instanceof Lich))) {
 			return;
 		}
 
@@ -109,7 +109,7 @@ public class LichBolt extends TFThrowable {
 			if (hit instanceof LivingEntity) {
 				hit.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.LICH_BOLT, TFEntities.LICH.get()), 6);
 			}
-			this.level().broadcastEntityEvent(this, (byte) 3);
+			this.level().broadcastEntityEvent(this, EntityEvent.DEATH);
 			this.discard();
 		}
 	}
