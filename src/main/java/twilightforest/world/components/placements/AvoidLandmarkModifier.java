@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.init.TFFeatureModifiers;
 import twilightforest.util.landmarks.LandmarkUtil;
@@ -85,6 +86,17 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 
 		if ((!this.occupiesSurface || decorationClearance.isSurfaceDecorationsAllowed()) && (!this.occupiesUnderground || decorationClearance.isUndergroundDecoAllowed()) && (!this.occupiesVegetation || decorationClearance.isGrassDecoAllowed()))
 			return Stream.of(blockPos);
+
+		if (decorationClearance.chunkClearanceRadius() <= 0) {
+			StructureStart structureStart = possibleStructureStart.get();
+			for (StructurePiece piece : structureStart.getPieces()) {
+				if (piece.getBoundingBox().isInside(blockPos)) {
+					return Stream.empty();
+				}
+			}
+
+			return Stream.of(blockPos);
+		}
 
 		// Turn Feature Center into Feature Offset
 		featurePos.set(Math.abs(featurePos.getX() - blockPos.getX()), 0, Math.abs(featurePos.getZ() - blockPos.getZ()));

@@ -63,7 +63,7 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 	@Nullable
 	private static LichTowerFoyer makeFoyer(GenerationContext context, RandomSource random, int x, int y, int z) {
 		Direction direction = Rotation.getRandom(random).rotate(Direction.SOUTH);
-		BlockPos placePos = new BlockPos(x, y, z).relative(direction, -7); // Shift to re-align yard with grass-clearing zone
+		BlockPos placePos = new BlockPos(x, y, z).relative(direction, 24);
 		FrontAndTop oriented = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
 
 		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(placePos, BlockPos.ZERO, oriented, context.structureTemplateManager(), TwilightForestMod.prefix("lich_tower/tower_foyer"), "twilightforest:lich_tower/vestibule", random);
@@ -118,7 +118,7 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 			monsters,
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_naga"))),
 			new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD.get()),
-			new DecorationConfig(2.5f, false, true, false, true),
+			new DecorationConfig(0, false, true, false, true),
 			true, Optional.of(TFMapDecorations.LICH_TOWER),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_LICH_TOWER_BIOMES),
