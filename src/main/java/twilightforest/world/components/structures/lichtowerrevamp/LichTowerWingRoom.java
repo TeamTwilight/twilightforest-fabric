@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Unit;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -60,10 +61,7 @@ import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.block.entity.spawner.SinisterSpawnerBlockEntity;
 import twilightforest.entity.monster.DeathTome;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFParticleType;
-import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.DirectionUtil;
@@ -724,6 +722,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		trapEntity.setPersistenceRequired();
 		trapEntity.setLeashedTo(knot, false);
 		trapEntity.moveTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
+		trapEntity.setData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);
 		level.addFreshEntity(trapEntity);
 	}
 

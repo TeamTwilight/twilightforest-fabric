@@ -47,8 +47,8 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
@@ -501,6 +501,17 @@ public class EntityEvents {
 				event.getEntity().getData(TFDataAttachments.FLASK_DOSES).resetDoses();
 				break;
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void entityJoinedWorld(EntityJoinLevelEvent event) {
+		if (!(event.getEntity() instanceof PathfinderMob mob && mob.hasData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE))) {
+			return;
+		}
+
+		if (!mob.mayBeLeashed()) {
+			mob.removeData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
 		}
 	}
 }
