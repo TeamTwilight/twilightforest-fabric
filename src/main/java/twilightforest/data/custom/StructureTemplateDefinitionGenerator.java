@@ -4,6 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerPieces;
 
 import java.util.concurrent.CompletableFuture;
@@ -358,5 +359,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_SPECIAL, 1,
 			"lich_tower/9x9/keepsake_casket"
 		);
+
+		this.add("final_castle/temp/gazebo", FinalCastleBossGazeboComponent.GAZEBO_TEMP_POOL, 1);
 	}
 }
