@@ -27,9 +27,7 @@ import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.fallentrunk.FallenTrunkPiece;
 import twilightforest.world.components.structures.fallentrunk.TrunkUnderDensityFunction;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FallenTrunkStructure extends Structure implements CustomDensitySource {
@@ -55,45 +53,93 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 	@Override
 	public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
 		ChunkPos chunkPos = context.chunkPos();
-
 		RandomSource random = RandomSource.create(context.seed() + chunkPos.x * 14413411L + chunkPos.z * 43387781L);
 
 		int x = SectionPos.sectionToBlockCoord(chunkPos.x, random.nextInt(16));
 		int z = SectionPos.sectionToBlockCoord(chunkPos.z, random.nextInt(16));
 		int worldY = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
-
 		int length = this.length.sample(random);
 
-		if (!this.getModifiedStructureSettings().biomes().contains(context.chunkGenerator().getBiomeSource().getNoiseBiome(x >> 2, worldY >> 2, z >> 2, context.randomState().sampler())))
+		if (!isValidNoiseBiome(context, x, worldY, z))
 			return Optional.empty();
-
-		Pair<BlockPos, Holder<Biome>> invalidBiome = context.biomeSource().findBiomeHorizontal(x, worldY, z, this.length.getMaxValue(), 1, biomeHolder -> !context.validBiome().test(biomeHolder), random, false, context.randomState().sampler());
-
-		if (invalidBiome != null) {  // we don't want to see it in the rivers
+		if (hasInvalidNearbyBiome(context, x, worldY, z, random))
 			return Optional.empty();
-		}
 
 		int radius = Util.getRandom(radiuses, random);
-
 		Direction orientation = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-		int xOff = 0;
-		int yOff = 0;
-		int zOff = 0;
 		int xySize = radius > 1 ? radius * 2 + 1 : 4;
 		int zSize = length - 1;
 
-		BoundingBox boundingBox = BoundingBox.orientBox(x, worldY, z,
-			xOff, yOff, zOff,
+		BoundingBox baseBox = BoundingBox.orientBox(x, worldY, z,
+			0, 0, 0,
 			xySize, xySize, zSize,
 			orientation);
-		long holeSeed = random.nextLong();
 
-		return Optional.of(new GenerationStub(new BlockPos(x, worldY, z), structurePiecesBuilder -> {
-			StructurePiece piece = new FallenTrunkPiece(length, radius, log, chestLootTable,
-				orientation, boundingBox, holeSeed);
+		if (isTerrainSteep(context, baseBox))
+			return Optional.empty();
+
+		int targetY = computeTargetY(context, baseBox, worldY, radius);
+		BoundingBox adjustedBox = BoundingBox.orientBox(x, targetY, z,
+			0, 0, 0,
+			xySize, xySize, zSize,
+			orientation);
+
+		long holeSeed = random.nextLong();
+		return Optional.of(new GenerationStub(new BlockPos(x, adjustedBox.minY(), z), structurePiecesBuilder -> {
+			StructurePiece piece = new FallenTrunkPiece(length, radius, log, chestLootTable, orientation, adjustedBox, holeSeed);
 			structurePiecesBuilder.addPiece(piece);
 			piece.addChildren(piece, structurePiecesBuilder, random);
 		}));
+	}
+
+	private boolean isValidNoiseBiome(GenerationContext context, int x, int worldY, int z) {
+		Holder<Biome> noiseBiome = context.chunkGenerator().getBiomeSource()
+			.getNoiseBiome(x >> 2, worldY >> 2, z >> 2, context.randomState().sampler());
+		return this.getModifiedStructureSettings().biomes().contains(noiseBiome);
+	}
+
+	private boolean hasInvalidNearbyBiome(GenerationContext context, int x, int worldY, int z, RandomSource random) {
+		Pair<BlockPos, Holder<Biome>> invalidBiome = context.biomeSource().findBiomeHorizontal(
+			x, worldY, z,
+			this.length.getMaxValue(), 1,
+			biomeHolder -> !context.validBiome().test(biomeHolder),
+			random, false, context.randomState().sampler());
+		return invalidBiome != null;
+	}
+
+	private boolean isTerrainSteep(GenerationContext context, BoundingBox box) {
+		int minY = Integer.MAX_VALUE;
+		int maxY = Integer.MIN_VALUE;
+
+		for (int i = box.minX() - 8; i <= box.maxX() + 8; i += 2) {
+			for (int j = box.minZ() - 8; j <= box.maxZ() + 8; j += 2) {
+				int y = context.chunkGenerator().getFirstOccupiedHeight(i, j, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+				minY = Math.min(minY, y);
+				maxY = Math.max(maxY, y);
+			}
+		}
+		return maxY - minY > 5;
+	}
+
+	// Don't do anything for small trunks. For larger ones, we want to pick y less than the median of nearby surface y to make the beardifier less noticeable
+	private int computeTargetY(GenerationContext context, BoundingBox box, int defaultY, int radius) {
+		if (radius == radiuses.getFirst())
+			return defaultY;
+
+		List<Integer> yValues = new ArrayList<>();
+
+		for (int i = box.minX() - 5; i <= box.maxX() + 5; i += 3) {
+			for (int j = box.minZ() - 5; j <= box.maxZ() + 5; j += 3) {
+				int y = context.chunkGenerator().getFirstOccupiedHeight(i, j, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+				yValues.add(y);
+			}
+		}
+
+		Collections.sort(yValues);
+		int index = (int) (yValues.size() * 0.35);
+		index = Math.min(index, yValues.size() - 1);
+
+		return yValues.get(index);
 	}
 
 	@Override
@@ -116,7 +162,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 	@Override
 	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
 		FallenTrunkPiece piece = ((FallenTrunkPiece) structurePieceSource.getPieces().getFirst());
-		ObjectList<Beardifier.Rigid> objectlist = ObjectArrayList.of(new Beardifier.Rigid(piece.getBoundingBox(), TerrainAdjustment.NONE, 0));
+		ObjectList<Beardifier.Rigid> objectlist = ObjectArrayList.of(new Beardifier.Rigid(piece.getBoundingBox(), TerrainAdjustment.BEARD_THIN , 0));
 		boolean isBigTree = piece.radius == radiuses.get(2);
 		int minMounds = 3;
 		int maxMounds = 5;

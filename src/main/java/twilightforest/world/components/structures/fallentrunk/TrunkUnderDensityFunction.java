@@ -51,7 +51,7 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		int adjustedGroundLevel = boundingBox.minY() + groundLevelDelta + (isBigTree ? 2 : 1);
 		int verticalDistance = y - adjustedGroundLevel;
 
-		return Math.max(getBeardContribution(horizontalDistanceX, verticalDistance, horizontalDistanceZ, verticalDistance) * 5, computeMoundsContribution(context));
+		return Math.max(getBeardContribution(horizontalDistanceX, verticalDistance, horizontalDistanceZ, verticalDistance), computeMoundsContribution(context));
 	}
 
 	protected double computeMoundsContribution(FunctionContext context) {
