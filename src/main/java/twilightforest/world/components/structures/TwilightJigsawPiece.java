@@ -42,7 +42,9 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	private TerrainAdjustment terrainAdjustment;
 
 	public static TwilightJigsawPiece defaultDeserialize(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		return new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), compoundTag, ctx, readSettings(compoundTag));
+		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), compoundTag, ctx, readSettings(compoundTag));
+		twilightJigsawPiece.placeSettings().addProcessor(MetaBlockProcessor.INSTANCE);
+		return twilightJigsawPiece;
 	}
 
 	@Nullable
