@@ -1,6 +1,8 @@
 package twilightforest.util;
 
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.Util;
@@ -10,6 +12,7 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.ChunkPos;
@@ -17,6 +20,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureCheckResult;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
@@ -140,5 +144,25 @@ public final class WorldUtil {
 		}
 
 		return Optional.ofNullable(nearest);
+	}
+
+	public static int adjustForTerrain(Structure.GenerationContext context, int xMin, int zMin, int xMax, int zMax) {
+		// Here we use the geometric mean of the corners and the center
+		IntList heights = new IntArrayList(IntList.of(
+			context.chunkGenerator().getFirstOccupiedHeight((xMin + xMax) >> 1, (zMin + zMax) >> 1, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
+			context.chunkGenerator().getFirstOccupiedHeight(xMin, zMin, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
+			context.chunkGenerator().getFirstOccupiedHeight(xMax, zMin, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
+			context.chunkGenerator().getFirstOccupiedHeight(xMin, zMax, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
+			context.chunkGenerator().getFirstOccupiedHeight(xMax, zMax, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState())
+		));
+
+		int minimumHeight = heights.intStream().min().orElse(0);
+		int multiplied = 1;
+		for (int index = 0; index < heights.size(); index++) {
+			multiplied *= heights.getInt(index) - minimumHeight;
+		}
+
+		// Exponent of 1/5 is the same as 5th root
+		return Mth.floor(Math.pow(multiplied, 0.2)) + minimumHeight;
 	}
 }

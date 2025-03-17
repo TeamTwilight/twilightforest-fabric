@@ -23,6 +23,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.loot.TFLootTables;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.fallentrunk.FallenTrunkPiece;
 import twilightforest.world.components.structures.fallentrunk.TrunkUnderDensityFunction;
@@ -75,9 +76,6 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 			xySize, xySize, zSize,
 			orientation);
 
-		if (isTerrainSteep(context, baseBox))
-			return Optional.empty();
-
 		int targetY = computeTargetY(context, baseBox, worldY, radius);
 		BoundingBox adjustedBox = BoundingBox.orientBox(x, targetY, z,
 			0, 0, 0,
@@ -107,39 +105,12 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		return invalidBiome != null;
 	}
 
-	private boolean isTerrainSteep(GenerationContext context, BoundingBox box) {
-		int minY = Integer.MAX_VALUE;
-		int maxY = Integer.MIN_VALUE;
-
-		for (int i = box.minX() - 8; i <= box.maxX() + 8; i += 2) {
-			for (int j = box.minZ() - 8; j <= box.maxZ() + 8; j += 2) {
-				int y = context.chunkGenerator().getFirstOccupiedHeight(i, j, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
-				minY = Math.min(minY, y);
-				maxY = Math.max(maxY, y);
-			}
-		}
-		return maxY - minY > 5;
-	}
-
 	// Don't do anything for small trunks. For larger ones, we want to pick y less than the median of nearby surface y to make the beardifier less noticeable
 	private int computeTargetY(GenerationContext context, BoundingBox box, int defaultY, int radius) {
 		if (radius == radiuses.getFirst())
 			return defaultY;
 
-		List<Integer> yValues = new ArrayList<>();
-
-		for (int i = box.minX() - 5; i <= box.maxX() + 5; i += 3) {
-			for (int j = box.minZ() - 5; j <= box.maxZ() + 5; j += 3) {
-				int y = context.chunkGenerator().getFirstOccupiedHeight(i, j, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
-				yValues.add(y);
-			}
-		}
-
-		Collections.sort(yValues);
-		int index = (int) (yValues.size() * 0.35);
-		index = Math.min(index, yValues.size() - 1);
-
-		return yValues.get(index);
+		return WorldUtil.adjustForTerrain(context, box.minX(), box.minZ(), box.maxX(), box.maxZ());
 	}
 
 	@Override

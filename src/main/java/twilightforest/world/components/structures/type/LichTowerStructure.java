@@ -31,6 +31,7 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.util.WorldUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.chunkgenerators.BoxDensityFunction;
 import twilightforest.world.components.structures.CustomDensitySource;
@@ -155,23 +156,6 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 		int chunkOriginX = x & ~0b1111;
 		int chunkOriginZ = z & ~0b1111;
 
-		// Here we use the geometric mean of the corners and the center
-
-		IntList heights = new IntArrayList(IntList.of(
-			context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
-			context.chunkGenerator().getFirstOccupiedHeight(chunkOriginX, chunkOriginZ, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
-			context.chunkGenerator().getFirstOccupiedHeight(chunkOriginX + 15, chunkOriginZ, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
-			context.chunkGenerator().getFirstOccupiedHeight(chunkOriginX, chunkOriginZ + 15, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
-			context.chunkGenerator().getFirstOccupiedHeight(chunkOriginX + 15, chunkOriginZ + 15, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState())
-		));
-
-		int minimumHeight = heights.intStream().min().orElse(0);
-		int multiplied = 1;
-		for (int index = 0; index < heights.size(); index++) {
-			multiplied *= heights.getInt(index) - minimumHeight;
-		}
-
-		// Exponent of 1/5 is the same as 5th root
-		return Mth.floor(Math.pow(multiplied, 0.2)) + minimumHeight;
+		return WorldUtil.adjustForTerrain(context, chunkOriginX, chunkOriginZ, chunkOriginX + 15, chunkOriginZ + 15);
 	}
 }
