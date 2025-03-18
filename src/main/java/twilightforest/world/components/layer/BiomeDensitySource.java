@@ -69,7 +69,7 @@ public class BiomeDensitySource {
 	}
 
 	public Optional<TerrainColumn> getTerrainColumn(ResourceKey<Biome> biome) {
-		return this.biomeList.values().stream().filter(p -> p.is(biome)).findFirst();
+		return Optional.ofNullable(this.biomeList.get(biome));
 	}
 
 	// Only used for building a cache
