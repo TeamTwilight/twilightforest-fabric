@@ -16,6 +16,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -160,10 +161,10 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if (stack.is(ItemTags.CANDLES) || player.isSecondaryUseActive()) {
+		if (stack.is(ItemTags.CANDLES) || player.isShiftKeyDown()) {
 			if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
 				int i = this.getSlot(state.getValue(FACING), result.getLocation().subtract(result.getBlockPos().getX(), result.getBlockPos().getY(), result.getBlockPos().getZ()));
-				if (state.getValue(CANDLES.get(i)) && player.isSecondaryUseActive()) {
+				if (state.getValue(CANDLES.get(i)) && player.isShiftKeyDown()) {
 					ItemStack itemstack = new ItemStack(candelabra.removeCandle(i));
 					level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 					if (player.hasInfiniteMaterials()) {
@@ -205,7 +206,12 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 			}
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		}
-		return this.lightCandles(state, level, pos, player, hand);
+		return this.tryLightCandles(stack, state, level, pos, player);
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+		return this.tryExtinguishCandles(state, level, pos, player);
 	}
 
 	private void eruptFlameParticles(ParticleOptions particle, Level level, BlockPos pos, BlockState state) {
@@ -427,7 +433,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
 		this.updateNeighborsBasedOnRotation(level, pos, state);
-		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra) {
+		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra && !newState.is(state.getBlock())) {
 			candelabra.updateState(0); //force an update so the blockstates are synced up with the block entity data
 		}
 		super.onPlace(state, level, pos, newState, moving);
