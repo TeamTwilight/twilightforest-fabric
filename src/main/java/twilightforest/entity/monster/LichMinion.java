@@ -128,18 +128,12 @@ public class LichMinion extends Zombie {
 	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
 		boolean baby = false;
 
-		if (this.master != null) {
-			if (difficulty.getDifficulty() != Difficulty.EASY) {
-				int babiesSummoned = this.master.getBabyMinionsSummoned();
-				if (difficulty.getDifficulty() == Difficulty.NORMAL) {
-					if (babiesSummoned < this.master.getAttributeValue(TFAttributes.MINION_COUNT) / 4) { // One quarter can be babies on normal, by default: 9 / 4 = 2
-						baby = this.getRandom().nextInt(100) <= 20; // 20%
-					}
-				} else if (babiesSummoned < this.master.getAttributeValue(TFAttributes.MINION_COUNT) / 3) { // One third can be babies on hard, by default: 9 / 3 = 3
-					baby = this.getRandom().nextInt(100) <= 40; // 40%
-				}
-				if (baby) this.master.setBabyMinionsSummoned(babiesSummoned + 1);
+		if (this.master != null && difficulty.getDifficulty() == Difficulty.HARD) {
+			int babiesSummoned = this.master.getBabyMinionsSummoned();
+			if (babiesSummoned < this.master.getAttributeValue(TFAttributes.MINION_COUNT) / 4) { // One quarter can be babies on hard, by default: 9 / 4 = 2
+				baby = this.getRandom().nextInt(100) <= 20; // 20%
 			}
+			if (baby) this.master.setBabyMinionsSummoned(babiesSummoned + 1);
 		}
 
 		spawnGroupData = new ZombieGroupData(baby, true);
