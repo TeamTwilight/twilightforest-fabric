@@ -34,20 +34,15 @@ public interface LightableBlock {
 	EnumProperty<Lighting> LIGHTING = EnumProperty.create("lighting", Lighting.class);
 
 	default ItemInteractionResult tryLightCandles(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player) {
-		if (this.canBeLit(state)) {
+		if (stack.isEmpty() && player.getAbilities().mayBuild && state.getValue(LIGHTING) != Lighting.NONE) {
+			this.extinguish(player, state, level, pos);
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
+		} else if (this.canBeLit(state)) {
 			if (stack.canPerformAction(ItemAbilities.FIRESTARTER_LIGHT)) {
 				return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 			}
 		}
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-	}
-
-	default InteractionResult tryExtinguishCandles(BlockState state, Level level, BlockPos pos, Player player) {
-		if (player.getAbilities().mayBuild && state.getValue(LIGHTING) != Lighting.NONE) {
-			this.extinguish(player, state, level, pos);
-			return InteractionResult.SUCCESS;
-		}
-		return InteractionResult.PASS;
 	}
 
 	default void lightCandlesWithProjectile(Level level, BlockState state, BlockHitResult result, Projectile projectile) {
