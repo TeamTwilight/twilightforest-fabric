@@ -64,7 +64,7 @@ public class LichMinion extends Zombie {
 			if (source.getEntity() instanceof Lich) {
 				// return to previous target but speed up
 				this.setLastHurtByMob(prevTarget);
-				this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 4));
+				this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2));
 				this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 1));
 			}
 			return true;
