@@ -26,6 +26,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.LecternBlock;
@@ -33,6 +34,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.projectile.TomeBolt;
@@ -50,7 +52,6 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	public float flipT;
 	public float flipA;
 
-	@SuppressWarnings("this-escape")
 	public DeathTome(EntityType<? extends DeathTome> type, Level world) {
 		super(type, world);
 		this.moveControl = new FlyingMoveControl(this, 10, false);
@@ -123,9 +124,9 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 				if (!this.level().isClientSide()) this.targetSelector.tick(); // Tick target selector, so that our Tome can find an enemy to ambush
 
-				if (this.getTarget() != null && this.distanceToSqr(this.getTarget()) < 2.25D) {
+				if (this.getTarget() != null && !this.getTarget().isShiftKeyDown() && this.distanceToSqr(this.getTarget()) < 30.0D && this.isInPlayersView(this.getTarget(), 0.25D, false, true, this.getEyeY(), this.getY() + 0.5D * this.getScale(), (this.getEyeY() + this.getY()) / 2.0D)) {
 					this.setOnLectern(false);
-					this.jumpControl.jump();
+					this.setDeltaMovement(0.0D, 0.25D, 0.0D);
 					this.performRangedAttack(this.getTarget(), 1.0F);
 				}
 
@@ -145,6 +146,34 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		for (int i = 0; i < 1; ++i) {
 			this.level().addParticle(ParticleTypes.ENCHANT, this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * (this.getBbHeight() - 0.75D) + 0.5D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(),
 				0.0D, 0.5D, 0.0D);
+		}
+	}
+
+	//TODO replace with LivingEntity.isLookingAtMe in 1.21.4
+	private boolean isInPlayersView(LivingEntity target, double tolerance, boolean scaleByDistance, boolean visual, double... yValues) {
+		Vec3 vec3 = target.getViewVector(1.0F).normalize();
+
+		for (double d0 : yValues) {
+			Vec3 vec31 = new Vec3(this.getX() - target.getX(), d0 - target.getEyeY(), this.getZ() - target.getZ());
+			double d1 = vec31.length();
+			vec31 = vec31.normalize();
+			double d2 = vec3.dot(vec31);
+			if (d2 > 1.0 - tolerance / (scaleByDistance ? d1 : 1.0)
+				&& this.hasLineOfSight(target, visual ? ClipContext.Block.VISUAL : ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, d0)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean hasLineOfSight(Entity entity, ClipContext.Block block, ClipContext.Fluid fluid, double eyeHeight) {
+		if (entity.level() != this.level()) {
+			return false;
+		} else {
+			Vec3 vec3 = new Vec3(this.getX(), eyeHeight, this.getZ());
+			Vec3 vec31 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
+			return !(vec31.distanceTo(vec3) > 128.0) && this.level().clip(new ClipContext(vec3, vec31, block, fluid, this)).getType() == HitResult.Type.MISS;
 		}
 	}
 
@@ -171,17 +200,16 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 	@Override
 	public boolean hurt(DamageSource src, float damage) {
-		if (this.isOnLectern()) {
-			this.jumpControl.jump();
-			this.setOnLectern(false);
-		}
-
 		if (src.is(DamageTypeTags.IS_FIRE)) {
 			damage *= 2;
 		}
 
 		if (super.hurt(src, damage)) {
 			if (damage > 0) {
+				if (this.isOnLectern()) {
+					this.setDeltaMovement(0.0D, 0.25D, 0.0D);
+					this.setOnLectern(false);
+				}
 				if (!this.level().isClientSide()) {
 					LootParams ctx = TFLootTables.createLootParams(this, true, src).create(LootContextParamSets.ENTITY);
 

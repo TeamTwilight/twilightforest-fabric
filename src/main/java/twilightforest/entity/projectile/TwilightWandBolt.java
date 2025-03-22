@@ -22,7 +22,6 @@ public class TwilightWandBolt extends TFThrowable {
 		super(type, world);
 	}
 
-	@SuppressWarnings("this-escape")
 	public TwilightWandBolt(Level world, LivingEntity thrower) {
 		super(TFEntities.WAND_BOLT.get(), world, thrower);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0, 1.5F, 1.0F);
@@ -70,10 +69,6 @@ public class TwilightWandBolt extends TFThrowable {
 
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
-		if (result.getEntity() instanceof Lich lich && lich.getPhase() > 1) { // Lich bounces that shit back in phases 2 and 3
-			this.deflectedAndEffects(lich);
-			return;
-		}
 		super.onHitEntity(result);
 		if (!this.level().isClientSide()) {
 			result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.TWILIGHT_SCEPTER, this, this.getOwner()), 6);

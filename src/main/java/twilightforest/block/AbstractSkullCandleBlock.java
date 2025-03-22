@@ -178,7 +178,6 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 					level.getLightEngine().checkBlock(pos);
 					return ItemInteractionResult.sidedSuccess(level.isClientSide());
 				}
-
 			}
 		}
 		return this.tryLightCandles(stack, state, level, pos, player);
@@ -220,7 +219,7 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 			}
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
-		return this.tryExtinguishCandles(state, level, pos, player);
+		return super.useWithoutItem(state, level, pos, player, hitResult);
 	}
 
 	@Nullable

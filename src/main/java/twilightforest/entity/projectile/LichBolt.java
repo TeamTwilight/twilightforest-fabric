@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
@@ -96,18 +97,18 @@ public class LichBolt extends TFThrowable {
 	}
 
 	@Override
+	protected boolean canHitEntity(Entity target) {
+		if (target instanceof Lich lich && (lich.getTeleportInvisibility() > 0 || !(this.getOwner() instanceof Player))) return false;
+		return !(target instanceof LichBomb) && !(target instanceof LichBolt);
+	}
+
+	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		Entity hit = result.getEntity();
-		if (result.getEntity() instanceof Lich lich && lich.getPhase() > 1) {
-			this.deflectedAndEffects(lich);
-			return;
-		} else if (hit instanceof LichBolt || hit instanceof LichBomb || hit instanceof TwilightWandBolt || (hit instanceof Lich lich && (lich.isShadowClone() || this.getOwner() instanceof Lich))) {
-			return;
-		}
 
 		if (!this.level().isClientSide()) {
 			if (hit instanceof LivingEntity) {
-				hit.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.LICH_BOLT, TFEntities.LICH.get()), 6);
+				hit.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.LICH_BOLT, this, this.getOwner(), TFEntities.LICH.get()), 6);
 			}
 			this.level().broadcastEntityEvent(this, EntityEvent.DEATH);
 			this.discard();

@@ -189,6 +189,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 						return ItemInteractionResult.sidedSuccess(level.isClientSide());
 					}
 				}
+				return ItemInteractionResult.CONSUME;
 			}
 		} else if (stack.is(Tags.Items.DUSTS_REDSTONE) && state.getValue(LIGHTING) == Lighting.NORMAL) {
 			level.setBlockAndUpdate(pos, state.setValue(LIGHTING, Lighting.DIM));
@@ -207,11 +208,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return this.tryLightCandles(stack, state, level, pos, player);
-	}
-
-	@Override
-	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-		return this.tryExtinguishCandles(state, level, pos, player);
 	}
 
 	private void eruptFlameParticles(ParticleOptions particle, Level level, BlockPos pos, BlockState state) {

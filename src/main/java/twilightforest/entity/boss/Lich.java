@@ -35,6 +35,8 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -56,6 +58,7 @@ import twilightforest.block.LightableBlock;
 import twilightforest.block.OminousCandleBlock;
 import twilightforest.components.entity.FortificationShieldAttachment;
 import twilightforest.data.tags.DamageTypeTagGenerator;
+import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.entity.ai.goal.*;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBomb;
@@ -1064,5 +1067,18 @@ public class Lich extends BaseTFBoss {
 	public int getBossBarColor() {
 		if (this.getShieldStrength() > 0) return 0xFFD800;
 		return this.getPhase() == 2 ? 0xBE23FF : 0xFF0000;
+	}
+
+	@Override
+	public ProjectileDeflection deflection(Projectile projectile) {
+		if (projectile.getType().is(EntityTagGenerator.LICH_DEFLECTS_PHASE_2) && projectile.getOwner() instanceof Player && this.getPhase() > 1) {
+			return (proj, entity, random) -> {
+				proj.setDeltaMovement(this.getDeltaMovement().add(0.5D - this.getRandom().nextDouble(), 0.75D, 0.5D - this.getRandom().nextDouble()).multiply(0.75D, 1.5D, 0.75D));
+				proj.setOwner(this);
+				this.playSound(TFSounds.SHIELD_BLOCK.get(), 0.5F, this.getVoicePitch() * 1.5F);
+				this.swing(InteractionHand.MAIN_HAND);
+			};
+		}
+		return super.deflection(projectile);
 	}
 }

@@ -3,12 +3,15 @@ package twilightforest.entity.projectile;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
@@ -84,21 +87,15 @@ public class LichBomb extends TFThrowable {
 	}
 
 	@Override
-	protected void onHitBlock(BlockHitResult result) {
-		super.onHitBlock(result);
+	protected void onHit(HitResult result) {
+		super.onHit(result);
 		this.explode();
 	}
 
 	@Override
-	protected void onHitEntity(EntityHitResult result) {
-		super.onHitEntity(result);
-		if (result.getEntity() instanceof Lich lich) {
-			this.deflectedAndEffects(lich);
-			return;
-		} else if (result.getEntity() instanceof LichBolt || result.getEntity() instanceof LichBomb || result.getEntity() instanceof Lich) {
-			return;
-		}
-		this.explode();
+	protected boolean canHitEntity(Entity target) {
+		if (target instanceof Lich lich && (lich.getTeleportInvisibility() > 0 || !(this.getOwner() instanceof Player))) return false;
+		return !(target instanceof LichBomb) && !(target instanceof Lich) && !(target instanceof LichBolt);
 	}
 
 	@Override
