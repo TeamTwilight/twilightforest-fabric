@@ -147,7 +147,6 @@ public final class WorldUtil {
 	}
 
 	public static int adjustForTerrain(Structure.GenerationContext context, int xMin, int zMin, int xMax, int zMax) {
-		// Here we use the geometric mean of the corners and the center
 		IntList heights = new IntArrayList(IntList.of(
 			context.chunkGenerator().getFirstOccupiedHeight((xMin + xMax) >> 1, (zMin + zMax) >> 1, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
 			context.chunkGenerator().getFirstOccupiedHeight(xMin, zMin, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
@@ -156,13 +155,15 @@ public final class WorldUtil {
 			context.chunkGenerator().getFirstOccupiedHeight(xMax, zMax, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState())
 		));
 
-		int minimumHeight = heights.intStream().min().orElse(0);
-		int multiplied = 1;
-		for (int index = 0; index < heights.size(); index++) {
-			multiplied *= heights.getInt(index) - minimumHeight;
-		}
+		heights.sort((a, b) -> Integer.compare(b, a));  // sort from highest to lowest
 
-		// Exponent of 1/5 is the same as 5th root
-		return Mth.floor(Math.pow(multiplied, 0.2)) + minimumHeight;
+		double weightedSum = 0;
+		double totalWeight = 0;
+		for (int i = 0; i < heights.size(); i++) {
+			double weight = i + 1;
+			weightedSum += weight * heights.getInt(i);
+			totalWeight += weight;
+		}
+		return (int) Math.round(weightedSum / totalWeight);
 	}
 }
