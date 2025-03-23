@@ -6,9 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.RegistryFileCodec;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.KeyDispatchDataCodec;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
@@ -106,8 +104,6 @@ public class NoiseDensityRouter implements DensityFunction.SimpleFunction {
 		private final BiomeDensitySource biomeDensitySource;
 
 		private final BiomeDensitySource.DensityData[] horizontalCache = new BiomeDensitySource.DensityData[16 * 16];
-		@SuppressWarnings("unchecked")
-		private final ResourceKey<Biome>[] biomeCache = (ResourceKey<Biome>[]) new ResourceKey<?>[9 * 9];
 
 		public ChunkCachedNoiseDensityRouter(Holder<BiomeDensitySource> biomeDensitySource, double lowerDensityBound, double upperDensityBound, double depthScalar) {
 			super(biomeDensitySource, lowerDensityBound, upperDensityBound, depthScalar);
@@ -125,7 +121,7 @@ public class NoiseDensityRouter implements DensityFunction.SimpleFunction {
 			BiomeDensitySource.DensityData dataColumn = this.horizontalCache[arrayCoord];
 
 			if (dataColumn == null) {
-				dataColumn = this.biomeDensitySource.sampleTerrain(context.blockX(), context.blockZ(), context, biomeCache);
+				dataColumn = this.biomeDensitySource.sampleTerrain(context.blockX(), context.blockZ(), context);
 				this.horizontalCache[arrayCoord] = dataColumn;
 			}
 

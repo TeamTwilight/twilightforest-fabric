@@ -12,14 +12,16 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.chunkgenerators.TerrainColumn;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -62,16 +64,8 @@ public class BiomeDensitySource {
 		return this.biomeList.get(this.genBiomes.get().getBiome(biomeX, biomeZ)).getBiome(biomeY);
 	}
 
-	public Optional<TerrainColumn> getTerrainColumn(int biomeX, int biomeZ, @Nullable ResourceKey<Biome>[] biomeCache) {
-		if (biomeCache == null)
-			return this.getTerrainColumn(this.genBiomes.get().getBiome(biomeX, biomeZ));
-		int i = Math.floorMod(biomeX, 9) * 9 + Math.floorMod(biomeZ, 9);
-		ResourceKey<Biome> biome = biomeCache[i];
-		if (biome == null) {
-			biome = this.genBiomes.get().getBiome(biomeX, biomeZ);
-			biomeCache[i] = biome;
-		}
-		return this.getTerrainColumn(biome);
+	public Optional<TerrainColumn> getTerrainColumn(int biomeX, int biomeZ) {
+		return this.getTerrainColumn(this.genBiomes.get().getBiome(biomeX, biomeZ));
 	}
 
 	public Optional<TerrainColumn> getTerrainColumn(ResourceKey<Biome> biome) {
@@ -110,7 +104,7 @@ public class BiomeDensitySource {
 	private static final int BLEND_RADIUS_INT = Mth.floor(BLEND_RADIUS + 1.0);
 	private static final int BLOCK_XYZ_OFFSET = QuartPos.SIZE / 2;
 
-	public DensityData sampleTerrain(int blockX, int blockZ, DensityFunction.FunctionContext context, @Nullable ResourceKey<Biome>[] biomeCache) {
+	public DensityData sampleTerrain(int blockX, int blockZ, DensityFunction.FunctionContext context) {
 		double totalMappedDepth = 0.0;
 		double totalContribution = 0.0;
 		double totalScale = 0.0;
@@ -136,7 +130,7 @@ public class BiomeDensitySource {
 			double distSq = dX * dX + dZ * dZ;
 
 			if (distSq < BLEND_RADIUS * BLEND_RADIUS) {
-				Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(cx + xQuartStart, cz + zQuartStart, biomeCache);
+				Optional<TerrainColumn> terrainColumn = this.getTerrainColumn(cx + xQuartStart, cz + zQuartStart);
 				if (terrainColumn.isPresent()) {
 					double falloff = BLEND_RADIUS * BLEND_RADIUS * terrainColumn.get().weight(context);
 					double scaleFalloff = BLEND_RADIUS * BLEND_RADIUS * terrainColumn.get().weight(context);
@@ -162,9 +156,5 @@ public class BiomeDensitySource {
 		}
 
 		return new DensityData(totalMappedDepth / totalContribution, totalScale / totalScaleContribution);
-	}
-
-	public DensityData sampleTerrain(int blockX, int blockZ, DensityFunction.FunctionContext context) {
-		return this.sampleTerrain(context.blockX(), context.blockZ(), context, null);
 	}
 }
