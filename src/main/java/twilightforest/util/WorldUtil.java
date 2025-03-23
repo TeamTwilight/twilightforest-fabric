@@ -146,14 +146,18 @@ public final class WorldUtil {
 		return Optional.ofNullable(nearest);
 	}
 
-	public static int adjustForTerrain(Structure.GenerationContext context, int xMin, int zMin, int xMax, int zMax) {
-		IntList heights = new IntArrayList(IntList.of(
-			context.chunkGenerator().getFirstOccupiedHeight((xMin + xMax) >> 1, (zMin + zMax) >> 1, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
-			context.chunkGenerator().getFirstOccupiedHeight(xMin, zMin, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
-			context.chunkGenerator().getFirstOccupiedHeight(xMax, zMin, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
-			context.chunkGenerator().getFirstOccupiedHeight(xMin, zMax, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()),
-			context.chunkGenerator().getFirstOccupiedHeight(xMax, zMax, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState())
-		));
+	public static int adjustForTerrain(Structure.GenerationContext context, int xMin, int zMin, int xMax, int zMax, int gridLength) {
+		int subDivisions = gridLength - 1;
+		IntList heights = new IntArrayList(gridLength * gridLength);
+
+		for (int zStep = 0; zStep <= subDivisions; zStep++) {
+			int zPos = Mth.lerpDiscrete((float) zStep / subDivisions, zMin, zMax);
+			for (int xStep = 0; xStep <= subDivisions; xStep++) {
+				int xPos = Mth.lerpDiscrete((float) xStep / subDivisions, xMin, xMax);
+
+				heights.add(context.chunkGenerator().getFirstOccupiedHeight(xPos, zPos, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState()));
+			}
+		}
 
 		heights.sort((a, b) -> Integer.compare(b, a));  // sort from highest to lowest
 
@@ -165,5 +169,12 @@ public final class WorldUtil {
 			totalWeight += weight;
 		}
 		return (int) Math.round(weightedSum / totalWeight);
+	}
+
+	public static int adjustForTerrain(Structure.GenerationContext context, int xInCenterChunk, int zInCenterChunk, int radiusFromCenterChunk, int gridLength) {
+		int chunkOriginX = xInCenterChunk & ~0b1111;
+		int chunkOriginZ = zInCenterChunk & ~0b1111;
+
+		return WorldUtil.adjustForTerrain(context, chunkOriginX - radiusFromCenterChunk, chunkOriginZ - radiusFromCenterChunk, chunkOriginX + 15 + radiusFromCenterChunk, chunkOriginZ + 15 + radiusFromCenterChunk, gridLength);
 	}
 }

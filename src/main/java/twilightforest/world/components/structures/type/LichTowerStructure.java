@@ -2,15 +2,12 @@ package twilightforest.world.components.structures.type;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
@@ -21,7 +18,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
@@ -43,7 +39,6 @@ import twilightforest.world.components.structures.lichtowerrevamp.LichYardBox;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class LichTowerStructure extends ControlledSpawningStructure implements CustomDensitySource {
@@ -153,9 +148,6 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 
 	@Override
 	public int adjustForTerrain(GenerationContext context, int x, int z) {
-		int chunkOriginX = x & ~0b1111;
-		int chunkOriginZ = z & ~0b1111;
-
-		return WorldUtil.adjustForTerrain(context, chunkOriginX, chunkOriginZ, chunkOriginX + 15, chunkOriginZ + 15);
+		return WorldUtil.adjustForTerrain(context, x, z, 32, 4);
 	}
 }
