@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-22T00:45:08.207403	twilight/template_definition generator for twilightforest
+// 1.21.1	2025-03-22T16:47:56.196755	twilight/template_definition generator for twilightforest
 1860c2bf129206449bfb3fd3d5046eaa7b824bfd data/twilightforest/twilight/template_definition/final_castle/temp/bell_tower.json
 46ff2dec430eb0e38a6fb102c0f36e7dbac9ddb7 data/twilightforest/twilight/template_definition/final_castle/temp/gazebo.json
 72a61954e8fae58d6c58295df38cb7454bfa9e5e data/twilightforest/twilight/template_definition/final_castle/temp/large_tower.json
@@ -158,7 +158,7 @@ f2c97397ec7154bec157da4bc434e6bd2cc5b30f data/twilightforest/twilight/template_d
 241fc5b2de03f98b7903a633200e810150872d03 data/twilightforest/twilight/template_definition/lich_tower/gallery/stairs_roof_odd.json
 d7801e0a200ce29ec85e3ee2fe2fd570043d2e40 data/twilightforest/twilight/template_definition/lich_tower/gallery/the_hostile_paradise.json
 898b8513525d0ae3c20fed44e7f97f522e24de91 data/twilightforest/twilight/template_definition/lich_tower/grave.json
-8de24bdc4a94706a9fe5870ae5d2ccc3bc45ec57 data/twilightforest/twilight/template_definition/lich_tower/grave_ajar.json
+ed662ef2475bdf5cbe39243d847212c7aac68eb2 data/twilightforest/twilight/template_definition/lich_tower/grave_ajar.json
 4d8941d12b0db4a837bb341d2bb9fe32a4887479 data/twilightforest/twilight/template_definition/lich_tower/grave_open.json
 8abc4b6a7e462cb24608474a8a66b4683a04d5ad data/twilightforest/twilight/template_definition/lich_tower/no_bridge.json
 8e4619b79ebe9a4b7869a0934e5244091eadf2af data/twilightforest/twilight/template_definition/lich_tower/room_bridge_1.json
