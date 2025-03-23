@@ -1270,10 +1270,9 @@
   },
   "entity.twilightforest.lich.pop_mob": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.chicken.egg"
-      }
+      "twilightforest:random/scepter/drain1",
+      "twilightforest:random/scepter/drain2",
+      "twilightforest:random/scepter/drain3"
     ],
     "subtitle": "subtitles.twilightforest.entity.lich.pop_mob"
   },
@@ -1431,10 +1430,7 @@
   },
   "entity.twilightforest.minion.summon": {
     "sounds": [
-      {
-        "type": "event",
-        "name": "entity.item.pickup"
-      }
+      "twilightforest:random/scepter/zombie"
     ],
     "subtitle": "subtitles.twilightforest.entity.minion.summon"
   },

@@ -137,7 +137,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.LICH_CLONE_HURT, SoundEvents.FIRE_EXTINGUISH, "Lich clone ignores attack");
 		this.generateExistingSoundWithSubtitle(TFSounds.LICH_DEATH, SoundEvents.BLAZE_DEATH, "Lich dies");
 		this.generateExistingSoundWithSubtitle(TFSounds.LICH_HURT, SoundEvents.BLAZE_HURT, "Lich hurts");
-		this.generateExistingSoundWithSubtitle(TFSounds.LICH_POP_MOB, SoundEvents.CHICKEN_EGG, "Lich absorbs mob");
+		this.generateNewSoundWithSubtitle(TFSounds.LICH_POP_MOB, "random/scepter/drain", 3, "Lich absorbs mob");
 		this.generateNewSoundWithSubtitle(TFSounds.LICH_SHOOT, "random/scepter/twilight_use", 3, "Lich shoots");
 		this.generateExistingSoundWithSubtitle(TFSounds.LICH_TELEPORT, SoundEvents.CHORUS_FRUIT_TELEPORT, "Lich teleports");
 
@@ -158,7 +158,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.MINION_DEATH, SoundEvents.ZOMBIE_DEATH, "Lich Minion dies");
 		this.generateExistingSoundWithSubtitle(TFSounds.MINION_HURT, SoundEvents.ZOMBIE_HURT, "Lich Minion hurts");
 		this.makeStepSound(TFSounds.MINION_STEP, SoundEvents.ZOMBIE_STEP);
-		this.generateExistingSoundWithSubtitle(TFSounds.MINION_SUMMON, SoundEvents.ITEM_PICKUP, "Lich summons new minion");
+		this.generateNewSoundWithSubtitle(TFSounds.MINION_SUMMON, "random/scepter/zombie", 1, "Lich summons new minion");
 
 		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_AMBIENT, SoundEvents.COW_AMBIENT, "Minoshroom moos");
 		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_ATTACK, SoundEvents.IRON_GOLEM_ATTACK, "Minoshroom attacks");

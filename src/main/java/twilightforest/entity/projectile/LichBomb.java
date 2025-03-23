@@ -9,8 +9,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDamageTypes;
@@ -95,7 +93,7 @@ public class LichBomb extends TFThrowable {
 	@Override
 	protected boolean canHitEntity(Entity target) {
 		if (target instanceof Lich lich && (lich.getTeleportInvisibility() > 0 || !(this.getOwner() instanceof Player))) return false;
-		return !(target instanceof LichBomb) && !(target instanceof Lich) && !(target instanceof LichBolt);
+		return !(target instanceof LichBomb) && !(target instanceof Lich) && !(target instanceof LichBolt) && !(target instanceof TwilightWandBolt);
 	}
 
 	@Override

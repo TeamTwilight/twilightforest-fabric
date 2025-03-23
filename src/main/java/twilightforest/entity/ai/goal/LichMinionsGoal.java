@@ -135,7 +135,7 @@ public class LichMinionsGoal extends Goal {
 			minion.setTarget(targetedEntity);
 
 			minion.spawnAnim();
-			minion.playSound(TFSounds.MINION_SUMMON.get(), 1.0F, ((this.lich.getRandom().nextFloat() - this.lich.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			minion.playSound(TFSounds.MINION_SUMMON.get(), 1.0F, ((this.lich.getRandom().nextFloat() - this.lich.getRandom().nextFloat()) * 0.7F + 1.0F) * 0.75F);
 
 			this.lich.swing(InteractionHand.MAIN_HAND);
 			// make sparkles leading to it

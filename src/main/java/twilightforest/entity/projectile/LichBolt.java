@@ -98,8 +98,8 @@ public class LichBolt extends TFThrowable {
 
 	@Override
 	protected boolean canHitEntity(Entity target) {
-		if (target instanceof Lich lich && (lich.getTeleportInvisibility() > 0 || !(this.getOwner() instanceof Player))) return false;
-		return !(target instanceof LichBomb) && !(target instanceof LichBolt);
+		if (target instanceof Lich lich && (lich.getTeleportInvisibility() > 0 || (!(this.getOwner() instanceof Player) && lich.getPhase() == 1))) return false;
+		return !(target instanceof LichBomb) && !(target instanceof LichBolt) && !(target instanceof TwilightWandBolt);
 	}
 
 	@Override

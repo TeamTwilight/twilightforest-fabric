@@ -11,7 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFParticleType;
@@ -55,6 +54,11 @@ public class TwilightWandBolt extends TFThrowable {
 	@Override
 	protected double getDefaultGravity() {
 		return 0.003F;
+	}
+
+	@Override
+	protected boolean canHitEntity(Entity target) {
+		return super.canHitEntity(target) && !(target instanceof LichBolt) && !(target instanceof LichBomb);
 	}
 
 	@Override

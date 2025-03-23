@@ -117,7 +117,7 @@ public class Lich extends BaseTFBoss {
 
 	@Nullable
 	@Override
-	@SuppressWarnings({"deprecation", "OverrideOnly"})
+	@SuppressWarnings({"deprecation"})
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
 		SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
 		if (!this.isShadowClone()) {
@@ -627,6 +627,7 @@ public class Lich extends BaseTFBoss {
 			this.teleportTo(origX, origY, origZ);
 
 			Vec3 tpPos = new Vec3(tx, ty, tz);
+			if (i < 75 && ty + 1 <= targetEntity.getY()) return null; // Try to not TP below the playa
 			if (destClear && canSeeTargetAtDest && !this.isOutsideHomeRange(tpPos) && tpPos.distanceToSqr(targetEntity.position()) >= 25.0F) return tpPos;
 		}
 
@@ -861,6 +862,7 @@ public class Lich extends BaseTFBoss {
 	//                OVERRIDES                //
 	//-----------------------------------------//
 
+	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
 		return this.isShadowClone() ? null : TFSounds.LICH_AMBIENT.get();
@@ -1071,7 +1073,7 @@ public class Lich extends BaseTFBoss {
 
 	@Override
 	public ProjectileDeflection deflection(Projectile projectile) {
-		if (projectile.getType().is(EntityTagGenerator.LICH_DEFLECTS_PHASE_2) && projectile.getOwner() instanceof Player && this.getPhase() > 1) {
+		if (projectile.getType().is(EntityTagGenerator.LICH_DEFLECTS_PHASE_2) && (projectile.getOwner() instanceof Player || (projectile.getOwner() instanceof Lich lich && lich.isShadowClone())) && this.getPhase() > 1) {
 			return (proj, entity, random) -> {
 				proj.setDeltaMovement(this.getDeltaMovement().add(0.5D - this.getRandom().nextDouble(), 0.75D, 0.5D - this.getRandom().nextDouble()).multiply(0.75D, 1.5D, 0.75D));
 				proj.setOwner(this);
