@@ -3,6 +3,7 @@ package twilightforest.entity.projectile;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -71,8 +72,11 @@ public class TwilightWandBolt extends TFThrowable {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		if (!this.level().isClientSide()) {
-			result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.TWILIGHT_SCEPTER, this, this.getOwner()), 6);
-			this.level().playSound(null, result.getEntity().blockPosition(), TFSounds.TWILIGHT_SCEPTER_HIT.get(), this.getOwner() != null ? this.getOwner().getSoundSource() : SoundSource.PLAYERS);
+			Entity hit = result.getEntity();
+			if (hit instanceof LivingEntity) {
+				hit.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.TWILIGHT_SCEPTER, this, this.getOwner()), 6);
+			}
+			this.level().playSound(null, hit.blockPosition(), TFSounds.TWILIGHT_SCEPTER_HIT.get(), this.getOwner() != null ? this.getOwner().getSoundSource() : SoundSource.PLAYERS);
 			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
