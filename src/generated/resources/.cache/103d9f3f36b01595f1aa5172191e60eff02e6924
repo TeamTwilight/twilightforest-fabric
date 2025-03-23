@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-16T22:09:41.359395949	Registries
+// 1.21.1	2025-03-22T20:42:05.611288	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -279,7 +279,7 @@ ed07f065cfb7a5086353305b5c8dc01c4e35e82e data/twilightforest/worldgen/placed_fea
 a221b821ebb699e3758a8f5559814aa0eb3a9c36 data/twilightforest/worldgen/placed_feature/dense_ferns.json
 0d471a5121809fb99f1e6c0a38acf33c7688f798 data/twilightforest/worldgen/placed_feature/dense_large_ferns.json
 d01bb99018125568c3b795d9baedf168900616ed data/twilightforest/worldgen/placed_feature/dense_water_lake.json
-26200501198360f45196316370e3272dda9152c6 data/twilightforest/worldgen/placed_feature/druid_hut.json
+3aa45cbb47f8843386b2ed0a69e24cb658b66ec9 data/twilightforest/worldgen/placed_feature/druid_hut.json
 558fc6fc1afda17c9b52e9864b67dd03a4e6af4c data/twilightforest/worldgen/placed_feature/enchanted_forest_vines.json
 21f1f58fe3b6282765421d56b8a19aca8823672f data/twilightforest/worldgen/placed_feature/fallen_leaves.json
 575df3da21e8b7a4fdbd4a1bc6f89495f8447a45 data/twilightforest/worldgen/placed_feature/fiddlehead.json

@@ -186,7 +186,7 @@ public class TFPlacedFeatures {
 		context.register(PLACED_LAKE_LAVA, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LAKE_LAVA), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 10).build()));
 		context.register(PLACED_LAKE_WATER, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LAKE_WATER), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 32).build()));
 		context.register(PLACED_LAKE_FROZEN, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LAKE_FROZEN), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 4).build()));
-		context.register(PLACED_DRUID_HUT, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DRUID_HUT), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 105).build()));
+		context.register(PLACED_DRUID_HUT, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DRUID_HUT), tfFeatureCheckArea(new AvoidLandmarkModifier(true, true, 16, HolderSet.empty()), 105).build()));
 		context.register(PLACED_DENSE_FERNS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DENSE_FERNS), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.countExtra(3, 0.5F, 1), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome(), avoidLichTower).build()));
 		context.register(PLACED_DENSE_LARGE_FERNS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.DENSE_LARGE_FERNS), ImmutableList.<PlacementModifier>builder().add(CountPlacement.of(2), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome(), avoidLichTower).build()));
 		context.register(PLACED_DENSE_LAKE_WATER, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.LAKE_WATER), tfFeatureCheckArea(AvoidLandmarkModifier.checkBoth(), 4).build()));

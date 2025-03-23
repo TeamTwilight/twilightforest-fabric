@@ -498,7 +498,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			case "lava" -> level.setBlock(pos, Blocks.LAVA.defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "water" -> level.setBlock(pos, Blocks.WATER.defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "firefly_jar" -> level.setBlock(pos, TFBlocks.FIREFLY_JAR.value().defaultBlockState(), Block.UPDATE_CLIENTS);
-			case "wrought_iron_post" -> level.setBlock(pos, TFBlocks.WROUGHT_IRON_FENCE.value().defaultBlockState().setValue(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST), Block.UPDATE_CLIENTS);
+			case "terrorcotta_arcs" -> level.setBlock(pos, TFBlocks.TERRORCOTTA_ARCS.value().defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "mason_jar" -> this.putMasonJar(pos, level, random, parameters);
 			case "canopy_slab" -> level.setBlock(pos, TFBlocks.CANOPY_SLAB.value().defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "canopy_stairs" -> level.setBlock(pos, TFBlocks.CANOPY_STAIRS.value().defaultBlockState(), Block.UPDATE_CLIENTS);
@@ -536,6 +536,10 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			case "black_candle" -> this.putCandles(parameters, random, level, pos, Blocks.BLACK_CANDLE.defaultBlockState());
 			case "water_cauldron" -> this.putWaterCauldron(parameters, random, level, pos);
 			case "zombie_trap" -> this.putZombieTrap(random, level, pos);
+			case "wrought_iron_post" -> {
+				level.setBlock(pos, TFBlocks.WROUGHT_IRON_FENCE.value().defaultBlockState().setValue(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST), Block.UPDATE_CLIENTS);
+				level.getChunk(pos).markPosForPostprocessing(pos);
+			}
 			case "empty_lectern" -> {
 				Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
 				level.setBlock(pos, Blocks.LECTERN.defaultBlockState().rotate(stateRotation), Block.UPDATE_CLIENTS);
@@ -705,6 +709,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		WroughtIronFenceBlock.PostState postProperty = level.getBlockState(pos.above()).isAir() ? WroughtIronFenceBlock.PostState.CAPPED : WroughtIronFenceBlock.PostState.POST;
 		BlockState fenceBlock = TFBlocks.WROUGHT_IRON_FENCE.value().defaultBlockState().setValue(WroughtIronFenceBlock.POST, postProperty);
 		level.setBlock(pos, fenceBlock, Block.UPDATE_CLIENTS);
+		level.getChunk(pos).markPosForPostprocessing(pos);
 
 		Direction randomDirection = this.getRandomDirectionInsideChunk(level, random, pos);
 
@@ -777,7 +782,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private void putTrappableBookshelf(BlockPos pos, WorldGenLevel level, RegistryAccess registryAccess, RandomSource random, Rotation dataRotation) {
-		boolean isHostile = random.nextInt(8) == 0;
+		boolean isHostile = random.nextInt(12) == 0;
 		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
 		BlockState shelf = TFBlocks.CHISELED_CANOPY_BOOKSHELF.value().defaultBlockState().setValue(ChiseledCanopyShelfBlock.SPAWNER, isHostile).rotate(stateRotation);
 

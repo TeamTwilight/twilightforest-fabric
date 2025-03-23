@@ -363,7 +363,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 
 		this.add("lich_tower/grave", LichTowerPieces.YARD_GRAVE, weightDefault);
 		this.add("lich_tower/grave_open", LichTowerPieces.YARD_GRAVE, weightDefault >> 1); // A little rarer
-		this.add("lich_tower/grave_ajar", LichTowerPieces.YARD_GRAVE, 5); // Rarest
+		this.add("lich_tower/grave_ajar", LichTowerPieces.YARD_GRAVE, weightDefault >> 2); // Rarest
 
 		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_SPECIAL, weightDefault,
 			"lich_tower/9x9/keepsake_casket"
