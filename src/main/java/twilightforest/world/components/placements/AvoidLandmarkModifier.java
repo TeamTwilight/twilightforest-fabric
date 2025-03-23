@@ -92,9 +92,14 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 		for (long packedChunkCoord : coordsForStarts) {
 			int startChunkX = (int) packedChunkCoord;
 			int startChunkZ = (int) (packedChunkCoord >> 32);
-			StructureStart startForStructure = worldDecoratingHelper.getLevel()
-				.getChunk(startChunkX, startChunkZ)
-				.getStartForStructure(structure);
+
+			ChunkAccess startChunk = worldDecoratingHelper.getLevel().getChunk(startChunkX, startChunkZ);
+			//noinspection ConstantValue
+			if (startChunk == null) { // Underlying LevelReader's getChunk() is nullable
+				continue; // FIXME Is the chunk actually never null? Is it possible for the start's chunk to be unloaded? Leave break-point here to find out!
+			}
+
+			StructureStart startForStructure = startChunk.getStartForStructure(structure);
 
 			if (startForStructure == null)
 				continue;
