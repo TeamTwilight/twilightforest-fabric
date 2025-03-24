@@ -12,6 +12,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -69,7 +70,8 @@ public class DeathTome extends Monster implements RangedAttackMob {
 			@Override
 			protected void findTarget() {
 				if (this.mob instanceof DeathTome tome && tome.isOnLectern()) {
-					this.target = tome.level().getNearestPlayer(tome, this.getFollowDistance());
+					this.target = tome.level().getNearestPlayer(tome.getX(), tome.getY(), tome.getZ(), 30.0D, entity ->
+						entity instanceof Player player && !player.isShiftKeyDown() && tome.isInPlayersView(player, 0.25D, false, true, tome.getEyeY(), tome.getY() + 0.5D * tome.getScale(), (tome.getEyeY() + tome.getY()) / 2.0D) && EntitySelector.NO_SPECTATORS.test(player));
 				} else super.findTarget();
 			}
 		});
@@ -131,7 +133,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 				if (!this.level().isClientSide()) this.targetSelector.tick(); // Tick target selector, so that our Tome can find an enemy to ambush
 
-				if (this.getTarget() != null && !this.getTarget().isShiftKeyDown() && this.distanceToSqr(this.getTarget()) < 30.0D && this.isInPlayersView(this.getTarget(), 0.25D, false, true, this.getEyeY(), this.getY() + 0.5D * this.getScale(), (this.getEyeY() + this.getY()) / 2.0D)) {
+				if (this.getTarget() != null) {
 					this.setOnLectern(false);
 					this.setDeltaMovement(0.0D, 0.25D, 0.0D);
 					this.performRangedAttack(this.getTarget(), 1.0F);
