@@ -41,6 +41,13 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	}
 
 	@Override
+	protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tagCompound) {
+		super.addAdditionalSaveData(ctx, tagCompound);
+
+		this.mural.writeIntoTag(tagCompound);
+	}
+
+	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		final BlockState castleMagic = TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
