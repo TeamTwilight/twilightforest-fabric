@@ -16,7 +16,11 @@
                     "functions": [
                       {
                         "add": false,
-                        "count": 99.0,
+                        "count": {
+                          "type": "minecraft:uniform",
+                          "max": 50.0,
+                          "min": 49.0
+                        },
                         "function": "minecraft:set_count"
                       }
                     ],
@@ -33,7 +37,7 @@
                     "functions": [
                       {
                         "add": false,
-                        "count": 78.0,
+                        "count": 39.0,
                         "function": "minecraft:set_count"
                       }
                     ],
@@ -50,7 +54,7 @@
           "functions": [
             {
               "add": false,
-              "count": 30.0,
+              "count": 15.0,
               "function": "minecraft:set_count"
             }
           ],
@@ -62,7 +66,7 @@
           "functions": [
             {
               "add": false,
-              "count": 32.0,
+              "count": 16.0,
               "function": "minecraft:set_count"
             }
           ],
@@ -74,119 +78,32 @@
           "functions": [
             {
               "add": false,
-              "count": 25.0,
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:bone",
-          "weight": 50
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": 26.0,
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:bone",
-          "weight": 50
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:skeleton_skull"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "damage": {
+              "count": {
                 "type": "minecraft:uniform",
-                "max": 0.2,
-                "min": 0.1
+                "max": 13.0,
+                "min": 12.0
               },
-              "function": "minecraft:set_damage"
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:leather_boots"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
+          "name": "minecraft:bone",
+          "weight": 50
+        },
         {
           "type": "minecraft:item",
           "functions": [
             {
               "add": false,
-              "damage": {
-                "type": "minecraft:uniform",
-                "max": 0.2,
-                "min": 0.1
-              },
-              "function": "minecraft:set_damage"
+              "count": 13.0,
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:iron_leggings"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "damage": {
-                "type": "minecraft:uniform",
-                "max": 0.2,
-                "min": 0.1
-              },
-              "function": "minecraft:set_damage"
-            }
-          ],
-          "name": "minecraft:iron_chestplate"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:diamond"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:golden_apple"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "twilightforest:charm_of_keeping_1"
+          "name": "minecraft:bone",
+          "weight": 50
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "twilightforest:chests/tower_grave"
+  "random_sequence": "twilightforest:chests/just_bones"
 }

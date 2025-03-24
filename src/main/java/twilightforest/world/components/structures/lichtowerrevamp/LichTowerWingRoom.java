@@ -578,7 +578,6 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 					case "room" -> TFLootTables.TOWER_ROOM;
 					case "library" -> TFLootTables.TOWER_LIBRARY;
 					case "potion" -> TFLootTables.TOWER_POTION;
-					case "grave" -> TFLootTables.TOWER_GRAVE;
 					case "enchanting" -> TFLootTables.TOWER_ENCHANTING;
 					default -> ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.bySeparator(label, '.'));
 				};
@@ -769,7 +768,6 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				case "room" -> TFLootTables.TOWER_ROOM;
 				case "library" -> TFLootTables.TOWER_LIBRARY;
 				case "potion" -> TFLootTables.TOWER_POTION;
-				case "grave" -> TFLootTables.TOWER_GRAVE;
 				case "enchanting" -> TFLootTables.TOWER_ENCHANTING;
 				default -> ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.bySeparator(parameters[1], '.'));
 			};
