@@ -37,14 +37,17 @@ public final class MetaBlockProcessor extends StructureProcessor {
 			}
 
 			BlockState blockstate = Blocks.AIR.defaultBlockState();
+			CompoundTag nbt = null;
 
 			try {
-				blockstate = BlockStateParser.parseForBlock(level.holderLookup(Registries.BLOCK), replaceWith, false).blockState();
+				BlockStateParser.BlockResult blockResult = BlockStateParser.parseForBlock(level.holderLookup(Registries.BLOCK), replaceWith, true);
+				blockstate = blockResult.blockState();
+				nbt = blockResult.nbt();
 			} catch (CommandSyntaxException syntaxException) {
 				TwilightForestMod.LOGGER.error("Error while parsing blockstate {} in jigsaw block @ {}", replaceWith, modifiedInfo.pos());
 			}
 
-			return new StructureTemplate.StructureBlockInfo(modifiedInfo.pos(), blockstate, null);
+			return new StructureTemplate.StructureBlockInfo(modifiedInfo.pos(), blockstate, nbt);
 		} else if (modifiedInfo.state().is(Blocks.STRUCTURE_BLOCK)) {
 			return new StructureTemplate.StructureBlockInfo(modifiedInfo.pos(), Blocks.AIR.defaultBlockState(), null);
 		}
