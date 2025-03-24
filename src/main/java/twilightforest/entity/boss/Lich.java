@@ -627,7 +627,7 @@ public class Lich extends BaseTFBoss {
 			this.teleportTo(origX, origY, origZ);
 
 			Vec3 tpPos = new Vec3(tx, ty, tz);
-			if (i < 75 && ty + 1 <= targetEntity.getY()) return null; // Try to not TP below the playa
+			if (i < 75 && ty + 1 <= targetEntity.getY()) continue; // Try to not TP below the playa
 			if (destClear && canSeeTargetAtDest && !this.isOutsideHomeRange(tpPos) && tpPos.distanceToSqr(targetEntity.position()) >= 25.0F) return tpPos;
 		}
 
