@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
 
@@ -23,7 +24,11 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	public FinalCastleMuralComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFFCMur.get(), nbt);
 
-		this.mural = new FinalCastleMural(this.boundingBox, this.orientation, 0L);
+		if (nbt.contains("muralBytes")) {
+			this.mural = new FinalCastleMural(nbt);
+		} else {
+			this.mural = new FinalCastleMural(this.boundingBox, this.orientation, WorldUtil.getOverworldSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
+		}
 	}
 
 	@SuppressWarnings("this-escape")
@@ -32,7 +37,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
 
-		this.mural = new FinalCastleMural(this.boundingBox, this.orientation, 0L);
+		this.mural = new FinalCastleMural(this.boundingBox, this.orientation, WorldUtil.getOverworldSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 	}
 
 	@Override

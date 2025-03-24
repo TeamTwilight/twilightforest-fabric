@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
@@ -9,20 +10,36 @@ public class FinalCastleMural {
 	final int width;
 
 	// we will model the mural in this byte array
-	private final byte[][] mural;
+	private final byte[] mural;
+
+	public FinalCastleMural(CompoundTag compoundTag) {
+		this.width = compoundTag.getInt("muralWidth");
+		this.height = compoundTag.getInt("muralHeight");
+
+		if (this.width == 0 || this.height == 0) {
+			this.mural = new byte[0];
+		} else {
+			this.mural = compoundTag.getByteArray("muralBytes");
+		}
+	}
+
+	public void writeIntoTag(CompoundTag compoundTag) {
+		compoundTag.putInt("muralWidth", this.width);
+		compoundTag.putInt("muralHeight", this.height);
+		compoundTag.putByteArray("muralBytes", this.mural);
+	}
 
 	public FinalCastleMural(BoundingBox boundingBox, Direction orientation, long seed) {
 		this.height = boundingBox.getYSpan();
 		this.width = (orientation == Direction.SOUTH || orientation == Direction.NORTH) ? boundingBox.getZSpan() : boundingBox.getXSpan();
 
-		RandomSource decoRNG = RandomSource.create(seed + (boundingBox.minX() * 321534781L) ^ (boundingBox.minZ() * 756839L));
-
-		// only make it once
-		this.mural = new byte[this.width][this.height];
-		this.generateMural(decoRNG);
+		this.mural = new byte[this.width * this.height];
+		this.generateMural(seed);
 	}
 
-	private void generateMural(RandomSource decoRNG) {
+	private void generateMural(long seed) {
+		RandomSource decoRNG = RandomSource.create(seed);
+
 		int startX = this.width / 2 - 1;
 		int startY = 2;
 
@@ -189,14 +206,14 @@ public class FinalCastleMural {
 
 	private void makeSingleStripe(int y) {
 		for (int x = 0; x < this.width - 2; x++) {
-			if (this.mural[x + 1][y] == 0 && this.mural[x + 1][y + 1] == 0) {
+			if (this.get(x + 1, y) == 0 && this.get(x + 1, y + 1) == 0) {
 				this.set(x, y, (byte) 1);
 			} else {
 				break;
 			}
 		}
 		for (int x = this.width - 1; x > 2; x--) {
-			if (this.mural[x - 1][y] == 0 && this.mural[x - 1][y + 1] == 0) {
+			if (this.get(x - 1, y) == 0 && this.get(x - 1, y + 1) == 0) {
 				this.set(x, y, (byte) 1);
 			} else {
 				break;
@@ -205,10 +222,12 @@ public class FinalCastleMural {
 	}
 
 	public void set(int x, int y, byte value) {
-		this.mural[x][y] = value;
+		int index = x * this.height + y;
+		this.mural[index] = value;
 	}
 
 	public byte get(int x, int y) {
-		return this.mural[x][y];
+		int index = x * this.height + y;
+		return this.mural[index];
 	}
 }
