@@ -74,6 +74,8 @@ public class CountLootCommand {
 
 		for (int chunkIndexZ = chunkMinZ; chunkIndexZ <= chunkMaxZ; chunkIndexZ++) {
 			for (int chunkIndexX = chunkMinX; chunkIndexX <= chunkMaxX; chunkIndexX++) {
+				if (!level.hasChunk(chunkIndexX, chunkIndexZ))
+					continue;
 				for (Map.Entry<BlockPos, BlockEntity> posBE : level.getChunk(chunkIndexX, chunkIndexZ).getBlockEntities().entrySet()) {
 					if (this.isInsideStructure(structureBoxes, posBE.getKey())) {
 						this.countItemsInContainer(lootCounts, posBE.getValue(), showCommon);
