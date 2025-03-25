@@ -32,14 +32,10 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.world.components.chunkgenerators.HollowHillFunction;
 import twilightforest.world.components.structures.UtilityPiece;
 import twilightforest.world.components.structures.type.FallenTrunkStructure;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class FallenTrunkPiece extends StructurePiece {
 	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get());
@@ -88,7 +84,7 @@ public class FallenTrunkPiece extends StructurePiece {
 
 	@Override
 	public void addChildren(@NotNull StructurePiece parent, StructurePieceAccessor list, @NotNull RandomSource rand) {
-		StructurePiece terraformingPiece = new UtilityPiece(0, boundingBox.inflatedBy(16));
+		StructurePiece terraformingPiece = new UtilityPiece(0, boundingBox.inflatedBy(8));
 		list.addPiece(terraformingPiece);
 	}
 
@@ -110,7 +106,7 @@ public class FallenTrunkPiece extends StructurePiece {
 				if (Math.abs(dx - 1.5) + Math.abs(dy - 1.5) != 2)
 					continue;
 
-				generateTrunkRod(level, random, box, pos, dx, dy, hasHole, hole);
+				generateTrunkRod(level, random, box, pos, dx, dy, hasHole);
 			}
 		}
 	}
@@ -131,30 +127,30 @@ public class FallenTrunkPiece extends StructurePiece {
 				if (dist > radius || dist <= hollow)
 					continue;
 
-				generateTrunkRod(level, random, box, pos, dx, dy, hasHole, hole);
+				generateTrunkRod(level, random, box, pos, dx, dy, hasHole);
 			}
 		}
 	}
 
-	private void generateTrunkRod(WorldGenLevel level, RandomSource random, BoundingBox box, BlockPos pos, int dx, int dy, boolean hasHole, Hole hole) {
-		generateTrunkMainRod(level, random, box, pos, dx, dy, hasHole, hole);
-		generateErodedEnds(level, random, box, pos, dx, dy, hasHole, hole);
+	private void generateTrunkRod(WorldGenLevel level, RandomSource random, BoundingBox box, BlockPos pos, int dx, int dy, boolean hasHole) {
+		generateTrunkMainRod(level, random, box, pos, dx, dy, hasHole);
+		generateErodedEnds(level, random, box, pos, dx, dy, hasHole);
 	}
 
-	private void generateTrunkMainRod(WorldGenLevel level, RandomSource random, BoundingBox box, BlockPos pos, int dx, int dy, boolean hasHole, Hole hole) {
+	private void generateTrunkMainRod(WorldGenLevel level, RandomSource random, BoundingBox box, BlockPos pos, int dx, int dy, boolean hasHole) {
 		for (int dz = ERODED_LENGTH; dz < length - 1 - ERODED_LENGTH; dz++) {
 			BlockPos offsetPos = pos.offset(dx, dy, dz);
-			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole, hole);
+			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole);
 		}
 	}
 
-	private void generateErodedEnds(WorldGenLevel level, RandomSource random, BoundingBox box, BlockPos pos, int dx, int dy, boolean hasHole, Hole hole) {
+	private void generateErodedEnds(WorldGenLevel level, RandomSource random, BoundingBox box, BlockPos pos, int dx, int dy, boolean hasHole) {
 		for (int dz = ERODED_LENGTH - 1; dz >= 0; dz--) {
 			if (random.nextBoolean())
 				break;
 
 			BlockPos offsetPos = pos.offset(dx, dy, dz);
-			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole, hole);
+			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole);
 		}
 
 		for (int dz = length - 1 - ERODED_LENGTH; dz < length - 1; dz++) {
@@ -162,7 +158,7 @@ public class FallenTrunkPiece extends StructurePiece {
 				break;
 
 			BlockPos offsetPos = pos.offset(dx, dy, dz);
-			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole, hole);
+			this.placeLog(level, getLogState(random, offsetPos), dx, dy, dz, box, random, hasHole);
 		}
 	}
 
@@ -212,17 +208,15 @@ public class FallenTrunkPiece extends StructurePiece {
 		return log.getState(random, pos).trySetValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 	}
 
-	private void placeLog(WorldGenLevel level, BlockState blockstate, int x, int y, int z, BoundingBox boundingbox, RandomSource random, boolean hasHole, Hole hole) {
+	private void placeLog(WorldGenLevel level, BlockState blockstate, int x, int y, int z, BoundingBox boundingbox, RandomSource random, boolean hasHole) {
 		// getBlock() returns air outside the chunk we are generating, we create new random to call random.next() constant amount of times in this function
 		RandomSource randomChild = RandomSource.create(random.nextLong());
-		int holeCoordinates = convertXYtoLength(x, y);
-		if (hasHole && z > ERODED_LENGTH && z < length - 1 - ERODED_LENGTH - 1 && hole.isInHole(holeCoordinates, z - ERODED_LENGTH - 1)) {
+		if (hasHole && z > ERODED_LENGTH && z < length - 1 - ERODED_LENGTH - 1 && getAllAbsoluteHoleBlockPos().contains(getWorldPos(x, y, z)))
 			return;
-		}
 		BlockState blockState = this.getBlock(level, x, y, z, boundingbox);
 		if (blockState.is(BlockTags.REPLACEABLE_BY_TREES) || blockState.is(BlockTags.FLOWERS) || blockState.isEmpty() || randomChild.nextBoolean()) {
 			placeBlock(level, blockstate, x, y, z, boundingbox);
-			if (randomChild.nextFloat() <= MOSS_CHANCE && this.getBlock(level, x, y + 1, z, boundingbox).is(BlockTags.REPLACEABLE)) {
+			if (randomChild.nextFloat() <= MOSS_CHANCE && boundingbox.isInside(getWorldPos(x, y + 1, z)) && this.getBlock(level, x, y + 1, z, boundingbox).is(BlockTags.REPLACEABLE)) {
 				placeBlock(level, TFBlocks.MOSS_PATCH.get().defaultBlockState(), x, y + 1, z, boundingbox);
 				level.blockUpdated(getWorldPos(x, y + 1, z), TFBlocks.MOSS_PATCH.get());  // to connect moss patches
 				level.getChunk(getWorldPos(x, y + 1, z)).markPosForPostprocessing(getWorldPos(x, y + 1, z));
@@ -276,38 +270,54 @@ public class FallenTrunkPiece extends StructurePiece {
 		}
 	}
 
-	public boolean isHoleCoveredByHill(HollowHillFunction hollowHillFunction) {
-		for (int length = 0; length < hole.sizeXY; length++) {
+	private Set<BlockPos> getAllAbsoluteHoleBlockPos() {
+		int zOffset = ERODED_LENGTH + 1;  // hole z coordinate has offset because of eroded ends
+		Set<BlockPos> holeBlockPos = new HashSet<>();
+		for (int xy = 0; xy < hole.sizeXY; xy++) {
 			for (int z = 0; z < hole.sizeZ; z++) {
-				if (!hole.isInHole(length, z))
-					continue;
-				int[] xy = convertLengthToXY(length);
-				int x = xy[0];
-				int y = xy[1];
-
-				int zOffset = ERODED_LENGTH + 1;  // hole coordinates has offset because of eroded ends
-				BlockPos worldPos = getWorldPos(x, y, z + zOffset);
-				int worldX = worldPos.getX();
-				int worldY = worldPos.getY();
-				int worldZ = worldPos.getZ();
-
-				if (checkForMoundAroundTheBlock(worldX, worldY, worldZ, hollowHillFunction))
-					return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean checkForMoundAroundTheBlock(int x, int y, int z, HollowHillFunction hollowHillFunction) {
-		float hillX = x - hollowHillFunction.centerX();
-		float hillY = y - hollowHillFunction.bottomY();
-		float hillZ = z - hollowHillFunction.centerZ();
-		for (int dx = -1; dx <= 1; dx++) {
-				for (int dz = -1; dz <= 1; dz++) {
-					if (hollowHillFunction.compute(hillX + dx, hillY, hillZ + dz) > 0)
-						return true;
+				if (hole.isInHole(xy, z)) {
+					int[] separatedXY = convertLengthToXY(xy);
+					holeBlockPos.add(getWorldPos(separatedXY[0], separatedXY[1], z + zOffset));
 				}
 			}
-		return false;
+		}
+		return holeBlockPos;
+	}
+
+	// returns all blockPos adjacent hole
+	private Set<BlockPos> getAllForbiddenMoundApexBlockPos() {
+		Set<BlockPos> allAbsoluteHoleBlockPos = getAllAbsoluteHoleBlockPos();
+		Set<BlockPos> forbiddenBlockPos = new HashSet<>(allAbsoluteHoleBlockPos);
+		for (BlockPos blockPos : allAbsoluteHoleBlockPos) {
+			for (Direction direction : Direction.values()) {
+				forbiddenBlockPos.add(blockPos.relative(direction).atY(boundingBox.minY()));
+			}
+		}
+
+		return forbiddenBlockPos;
+	}
+
+	public Set<BlockPos> getAllPotentialApexMoundBlockPos() {
+		Set<BlockPos> potentialBlockPos = new HashSet<>();
+		for (int offset = length / 4; offset <= length * 3 / 4; offset++) {
+			potentialBlockPos.add(getWorldPos(0, 0, offset));
+			potentialBlockPos.add(getWorldPos(Math.min(boundingBox.getXSpan(), boundingBox.getZSpan()) - 1, 0, offset));
+		}
+		return potentialBlockPos;
+	}
+
+	public Set<BlockPos> getAllowedApexMoundBlockPos() {
+		Set<BlockPos> allowedBlockPos = getAllPotentialApexMoundBlockPos();
+		allowedBlockPos.removeAll(getAllForbiddenMoundApexBlockPos());
+		return allowedBlockPos;
+	}
+
+	public Set<BlockPos> getAllowedOrPotentialApexMoundBlockPos() {
+		Set<BlockPos> allowedPos = getAllowedApexMoundBlockPos();
+		if (!allowedPos.isEmpty())
+			return allowedPos;
+
+		TwilightForestMod.LOGGER.error("No allowed pos for mounds in Fallen Trunk! Please report to https://github.com/TeamTwilight/twilightforest/issues the with seed and {}", boundingBox.getCenter().toString());
+		return getAllPotentialApexMoundBlockPos();
 	}
 }

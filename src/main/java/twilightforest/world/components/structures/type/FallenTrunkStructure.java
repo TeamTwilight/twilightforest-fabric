@@ -27,11 +27,12 @@ import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.fallentrunk.FallenTrunkPiece;
 import twilightforest.world.components.structures.fallentrunk.TrunkUnderDensityFunction;
+import twilightforest.world.components.structures.util.DecorationClearance;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class FallenTrunkStructure extends Structure implements CustomDensitySource {
+public class FallenTrunkStructure extends Structure implements CustomDensitySource, DecorationClearance {
 	public static final MapCodec<FallenTrunkStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Structure.settingsCodec(instance),
 		IntProvider.codec(16, 32).fieldOf("length").forGetter(s -> s.length),
@@ -105,7 +106,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		return invalidBiome != null;
 	}
 
-	// Don't do anything for small trunks. For larger ones, we want to pick y less than the median of nearby surface y to make the beardifier less noticeable
+	// Don't do anything for small trunks
 	private int computeTargetY(GenerationContext context, BoundingBox box, int defaultY, int radius) {
 		if (radius == radiuses.getFirst())
 			return defaultY;
@@ -135,12 +136,37 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		FallenTrunkPiece piece = ((FallenTrunkPiece) structurePieceSource.getPieces().getFirst());
 		ObjectList<Beardifier.Rigid> objectlist = ObjectArrayList.of(new Beardifier.Rigid(piece.getBoundingBox(), TerrainAdjustment.BEARD_THIN , 0));
 		boolean isBigTree = piece.radius == radiuses.get(2);
-		int minMounds = 3;
-		int maxMounds = 5;
+		int minMounds = 2;
+		int maxMounds = 3;
 		if (piece.radius == radiuses.get(2)) {
 			minMounds += 5;
 			maxMounds += 5;
 		}
 		return new TrunkUnderDensityFunction(objectlist.iterator(), piece, isBigTree, minMounds, maxMounds);  // big trees are a special case
+	}
+
+	@Override
+	public float chunkClearanceRadius() {
+		return 2;
+	}
+
+	@Override
+	public boolean isSurfaceDecorationsAllowed() {
+		return false;
+	}
+
+	@Override
+	public boolean isUndergroundDecoAllowed() {
+		return true;
+	}
+
+	@Override
+	public boolean isGrassDecoAllowed() {
+		return true;
+	}
+
+	@Override
+	public boolean shouldAdjustToTerrain() {
+		return false;
 	}
 }
