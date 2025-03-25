@@ -70,7 +70,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 			@Override
 			protected void findTarget() {
 				if (this.mob instanceof DeathTome tome && tome.isOnLectern()) {
-					this.target = tome.level().getNearestPlayer(tome.getX(), tome.getY(), tome.getZ(), 30.0D, entity ->
+					this.target = tome.level().getNearestPlayer(tome.getX(), tome.getY(), tome.getZ(), 3.0D, entity ->
 						entity instanceof Player player && !player.isShiftKeyDown() && tome.isInPlayersView(player, 0.25D, false, true, tome.getEyeY(), tome.getY() + 0.5D * tome.getScale(), (tome.getEyeY() + tome.getY()) / 2.0D) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(player));
 				} else super.findTarget();
 			}
@@ -79,7 +79,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 
 	public static AttributeSupplier.Builder registerAttributes() {
 		return Monster.createMonsterAttributes()
-			.add(Attributes.MAX_HEALTH, 30.0D)
+			.add(Attributes.MAX_HEALTH, 20.0D)
 			.add(Attributes.MOVEMENT_SPEED, 0.25D)
 			.add(Attributes.FLYING_SPEED, 0.6D)
 			.add(Attributes.ATTACK_DAMAGE, 4.0D);
