@@ -42,9 +42,7 @@ public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements Area
 
 	@Override
 	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
-		final Random rand = new Random();
-
-		rand.setSeed(WorldUtil.getOverworldSeed() + (x & -4) * 25117L + (z & -4) * 151121L);
+		final Random rand = new Random(WorldUtil.getOverworldSeed() + (x & -4) * 25117L + (z & -4) * 151121L);
 		int ox = rand.nextInt(2) + 1;
 		int oz = rand.nextInt(2) + 1;
 		rand.setSeed(WorldUtil.getOverworldSeed() + (x / 8) * 25117L + (z / 8) * 151121L);
