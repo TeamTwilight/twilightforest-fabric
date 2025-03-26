@@ -297,27 +297,29 @@ public class FallenTrunkPiece extends StructurePiece {
 		return forbiddenBlockPos;
 	}
 
-	public Set<BlockPos> getAllPotentialBaseMoundBlockPos() {
+	public Set<BlockPos> getAllPotentialBaseMoundBlockPos(boolean isOnRightSide) {
 		Set<BlockPos> potentialBlockPos = new HashSet<>();
 		for (int offset = length / 4; offset <= length * 3 / 4; offset++) {
-			potentialBlockPos.add(getWorldPos(0, 0, offset));
-			potentialBlockPos.add(getWorldPos(Math.min(boundingBox.getXSpan(), boundingBox.getZSpan()) - 1, 0, offset));
+			if (isOnRightSide)
+				potentialBlockPos.add(getWorldPos(Math.min(boundingBox.getXSpan(), boundingBox.getZSpan()) - 1, 0, offset));
+			else
+				potentialBlockPos.add(getWorldPos(0, 0, offset));
 		}
 		return potentialBlockPos;
 	}
 
-	public Set<BlockPos> getAllowedBaseMoundBlockPos() {
-		Set<BlockPos> allowedBlockPos = getAllPotentialBaseMoundBlockPos();
+	public Set<BlockPos> getAllowedBaseMoundBlockPos(boolean isOnRightSide) {
+		Set<BlockPos> allowedBlockPos = getAllPotentialBaseMoundBlockPos(isOnRightSide);
 		allowedBlockPos.removeAll(getAllForbiddenMoundBaseBlockPos());
 		return allowedBlockPos;
 	}
 
-	public Set<BlockPos> getAllowedOrPotentialBaseMoundBlockPos() {
-		Set<BlockPos> allowedPos = getAllowedBaseMoundBlockPos();
+	public Set<BlockPos> getAllowedOrPotentialBaseMoundBlockPos(boolean isOnRightSide) {
+		Set<BlockPos> allowedPos = getAllowedBaseMoundBlockPos(isOnRightSide);
 		if (!allowedPos.isEmpty())
 			return allowedPos;
 
 		TwilightForestMod.LOGGER.error("No allowed pos for mounds in Fallen Trunk! Please report to https://github.com/TeamTwilight/twilightforest/issues the with seed and {}", boundingBox.getCenter().toString());
-		return getAllPotentialBaseMoundBlockPos();
+		return getAllPotentialBaseMoundBlockPos(isOnRightSide);
 	}
 }

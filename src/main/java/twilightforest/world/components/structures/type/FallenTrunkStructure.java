@@ -136,18 +136,14 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		FallenTrunkPiece piece = ((FallenTrunkPiece) structurePieceSource.getPieces().getFirst());
 		ObjectList<Beardifier.Rigid> objectlist = ObjectArrayList.of(new Beardifier.Rigid(piece.getBoundingBox(), TerrainAdjustment.BEARD_THIN , 0));
 		boolean isBigTree = piece.radius == radiuses.get(2);
-		int minMounds = 2;
-		int maxMounds = 3;
-		if (piece.radius == radiuses.get(2)) {
-			minMounds += 5;
-			maxMounds += 5;
-		}
+		int minMounds = 0;
+		int maxMounds = 2;
 		return new TrunkUnderDensityFunction(objectlist.iterator(), piece, isBigTree, minMounds, maxMounds);  // big trees are a special case
 	}
 
 	@Override
 	public float chunkClearanceRadius() {
-		return 2;
+		return 0;
 	}
 
 	@Override
