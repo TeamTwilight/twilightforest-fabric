@@ -98,6 +98,15 @@
     ],
     "subtitle": "subtitles.twilightforest.block.casket.repair"
   },
+  "block.twilightforest.chiseled_bookshelf.convert": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.zombie_villager.cure"
+      }
+    ],
+    "subtitle": "subtitles.twilightforest.block.chiseled_bookshelf.convert"
+  },
   "block.twilightforest.cicada": {
     "sounds": [
       "twilightforest:mob/cicada1",

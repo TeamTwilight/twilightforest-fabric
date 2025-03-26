@@ -300,6 +300,7 @@ public class SoundGenerator extends TFSoundProvider {
 
 		this.generateNewSoundWithSubtitle(TFSounds.BEANSTALK_GROWTH, "random/beanstalk_grow", 1, "Ground rumbles");
 		this.generateExistingSoundWithSubtitle(TFSounds.BLOCK_ANNIHILATED, SoundEvents.FIRE_EXTINGUISH, "Block dissolves");
+		this.generateExistingSoundWithSubtitle(TFSounds.BOOKSHELF_CONVERTS, SoundEvents.ZOMBIE_VILLAGER_CURE, "Chiseled Bookshelf converts");
 		this.generateExistingSoundWithSubtitle(TFSounds.BOSS_CHEST_APPEAR, SoundEvents.EVOKER_PREPARE_SUMMON, "Boss Chest appears");
 		this.generateExistingSoundWithSubtitle(TFSounds.BUG_SQUISH, SoundEvents.SLIME_SQUISH_SMALL, "Bug gets squished :(");
 		this.generateExistingSoundWithSubtitle(TFSounds.BUILDER_CREATE, SoundEvents.COMPARATOR_CLICK, "Carminite Builder creates block");

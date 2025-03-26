@@ -36,6 +36,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> BOAR_DEATH = createEvent("entity.twilightforest.boar.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BOAR_HURT = createEvent("entity.twilightforest.boar.hurt");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BOAR_STEP = createEvent("entity.twilightforest.boar.step");
+	public static final DeferredHolder<SoundEvent, SoundEvent> BOOKSHELF_CONVERTS = createEvent("block.twilightforest.chiseled_bookshelf.convert");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BOSS_CHEST_APPEAR = createEvent("block.twilightforest.boss_chest.appear");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BRITTLE_FLASK_BREAK = createEvent("item.twilightforest.flask.break");
 	public static final DeferredHolder<SoundEvent, SoundEvent> BRITTLE_FLASK_CRACK = createEvent("item.twilightforest.flask.crack");
