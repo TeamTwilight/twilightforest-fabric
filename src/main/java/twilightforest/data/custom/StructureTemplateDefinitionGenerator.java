@@ -18,8 +18,6 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 
 	@Override
 	protected void generatePools() {
-		int weightDefault = 100;
-
 		this.addAllTemplatesToPool(LichTowerPieces.MOB_BRIDGE, 100,
 			"lich_tower/bridge_spawner",
 			"lich_tower/bridge_spawner_bend",
@@ -242,7 +240,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 		this.add("lich_tower/7x7/beard_flat", LichTowerPieces.ROOM_7_BEARD_FALLBACK, 100);
 		this.add("lich_tower/9x9/beard_flat", LichTowerPieces.ROOM_9_BEARD_FALLBACK, 100);
 
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_5_LADDER_0, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_5_LADDER_0, 100,
 			"lich_tower/5x5/straight_junction",
 			"lich_tower/5x5/elbow_junction",
 			"lich_tower/5x5/t_junction",
@@ -253,7 +251,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/5x5/potion",
 			"lich_tower/5x5/trinity"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_5_LADDER_2, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_5_LADDER_2, 100,
 			"lich_tower/5x5/straight_junction",
 			"lich_tower/5x5/elbow_junction",
 			"lich_tower/5x5/t_junction",
@@ -265,13 +263,13 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/5x5/trinity"
 		);
 
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_0, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_0, 100,
 			"lich_tower/7x7/full_junction_1",
 			"lich_tower/7x7/desk",
 			"lich_tower/7x7/altars",
 			"lich_tower/7x7/altar"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_1, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_1, 100,
 			"lich_tower/7x7/potion",
 			"lich_tower/7x7/library_hall",
 			"lich_tower/7x7/jar_study",
@@ -279,7 +277,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/7x7/guarded_chest",
 			"lich_tower/7x7/potion_lab"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_3, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_3, 100,
 			"lich_tower/7x7/library_hall",
 			"lich_tower/7x7/jar_study",
 			"lich_tower/7x7/elbow_chest",
@@ -287,7 +285,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/7x7/garden_lab",
 			"lich_tower/7x7/potion_lab"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_4, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_7_LADDER_4, 100,
 			"lich_tower/7x7/full_junction_1",
 			"lich_tower/7x7/desk",
 			"lich_tower/7x7/altars",
@@ -295,7 +293,7 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/7x7/altar"
 		);
 
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_1, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_1, 100,
 			"lich_tower/9x9/archives",
 			"lich_tower/9x9/enchanting_prison",
 			"lich_tower/9x9/mossy_junction",
@@ -306,17 +304,17 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/9x9/cauldron_keep",
 			"lich_tower/9x9/large_study"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_2, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_2, 100,
 			"lich_tower/9x9/study",
 			"lich_tower/9x9/library_junction",
 			"lich_tower/9x9/cauldron_keep"
 		);
 
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_4, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_4, 100,
 			"lich_tower/9x9/study",
 			"lich_tower/9x9/library_junction"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_5, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_LADDER_5, 100,
 			"lich_tower/9x9/archives",
 			"lich_tower/9x9/enchanting_prison",
 			"lich_tower/9x9/mossy_junction",
@@ -334,26 +332,26 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			this.add("lich_tower/9x9/seven", LichTowerPieces.ROOM_9_LADDER_4, 1);
 		}
 
-		this.addAllTemplatesToPool(LichTowerPieces.BRIDGE_FROM_CENTRAL, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.BRIDGE_FROM_CENTRAL, 100,
 			"lich_tower/central_bridge",
 			"lich_tower/central_bridge_open"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.BRIDGE_FROM_CENTRAL_FALLBACK, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.BRIDGE_FROM_CENTRAL_FALLBACK, 100,
 			"lich_tower/central_bridge"
 		);
 
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_BRIDGE, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_BRIDGE, 100,
 			"lich_tower/room_bridge_1",
 			"lich_tower/room_bridge_2",
 			"lich_tower/room_bridge_3",
 			"lich_tower/room_bridge_4",
 			"lich_tower/room_bridge_5"
 		);
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_BRIDGE_FALLBACK, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_BRIDGE_FALLBACK, 100,
 			"lich_tower/no_bridge"
 		);
 
-		this.addAllTemplatesToPool(LichTowerPieces.END_BRIDGE, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.END_BRIDGE, 100,
 			"lich_tower/end_bridge_1",
 			"lich_tower/end_bridge_2",
 			"lich_tower/end_bridge_3",
@@ -361,16 +359,16 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/end_bridge_5"
 		);
 
-		this.add("lich_tower/grave", LichTowerPieces.YARD_GRAVE, weightDefault);
-		this.add("lich_tower/grave_open", LichTowerPieces.YARD_GRAVE, weightDefault >> 1); // A little rarer
-		this.add("lich_tower/grave_ajar", LichTowerPieces.YARD_GRAVE, weightDefault >> 2); // Rarest
+		this.add("lich_tower/grave", LichTowerPieces.YARD_GRAVE, 100);
+		this.add("lich_tower/grave_open", LichTowerPieces.YARD_GRAVE, 50); // A little rarer
+		this.add("lich_tower/grave_ajar", LichTowerPieces.YARD_GRAVE, 25); // Rarest
 
-		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_SPECIAL, weightDefault,
+		this.addAllTemplatesToPool(LichTowerPieces.ROOM_9_SPECIAL, 100,
 			"lich_tower/9x9/keepsake_casket"
 		);
 
-		this.add("final_castle/temp/large_tower", FinalCastleLargeTowerComponent.LARGE_TOWER_TEMP_POOL, weightDefault);
-		this.add("final_castle/temp/bell_tower", FinalCastleBellTower21Component.BELL_TOWER_TEMP_POOL, weightDefault);
-		this.add("final_castle/temp/gazebo", FinalCastleBossGazeboComponent.GAZEBO_TEMP_POOL, weightDefault);
+		this.add("final_castle/temp/large_tower", FinalCastleLargeTowerComponent.LARGE_TOWER_TEMP_POOL, 100);
+		this.add("final_castle/temp/bell_tower", FinalCastleBellTower21Component.BELL_TOWER_TEMP_POOL, 100);
+		this.add("final_castle/temp/gazebo", FinalCastleBossGazeboComponent.GAZEBO_TEMP_POOL, 100);
 	}
 }
