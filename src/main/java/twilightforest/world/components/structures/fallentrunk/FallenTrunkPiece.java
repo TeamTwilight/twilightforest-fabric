@@ -285,7 +285,7 @@ public class FallenTrunkPiece extends StructurePiece {
 	}
 
 	// returns all blockPos adjacent hole
-	private Set<BlockPos> getAllForbiddenMoundApexBlockPos() {
+	private Set<BlockPos> getAllForbiddenMoundBaseBlockPos() {
 		Set<BlockPos> allAbsoluteHoleBlockPos = getAllAbsoluteHoleBlockPos();
 		Set<BlockPos> forbiddenBlockPos = new HashSet<>(allAbsoluteHoleBlockPos);
 		for (BlockPos blockPos : allAbsoluteHoleBlockPos) {
@@ -297,7 +297,7 @@ public class FallenTrunkPiece extends StructurePiece {
 		return forbiddenBlockPos;
 	}
 
-	public Set<BlockPos> getAllPotentialApexMoundBlockPos() {
+	public Set<BlockPos> getAllPotentialBaseMoundBlockPos() {
 		Set<BlockPos> potentialBlockPos = new HashSet<>();
 		for (int offset = length / 4; offset <= length * 3 / 4; offset++) {
 			potentialBlockPos.add(getWorldPos(0, 0, offset));
@@ -306,18 +306,18 @@ public class FallenTrunkPiece extends StructurePiece {
 		return potentialBlockPos;
 	}
 
-	public Set<BlockPos> getAllowedApexMoundBlockPos() {
-		Set<BlockPos> allowedBlockPos = getAllPotentialApexMoundBlockPos();
-		allowedBlockPos.removeAll(getAllForbiddenMoundApexBlockPos());
+	public Set<BlockPos> getAllowedBaseMoundBlockPos() {
+		Set<BlockPos> allowedBlockPos = getAllPotentialBaseMoundBlockPos();
+		allowedBlockPos.removeAll(getAllForbiddenMoundBaseBlockPos());
 		return allowedBlockPos;
 	}
 
-	public Set<BlockPos> getAllowedOrPotentialApexMoundBlockPos() {
-		Set<BlockPos> allowedPos = getAllowedApexMoundBlockPos();
+	public Set<BlockPos> getAllowedOrPotentialBaseMoundBlockPos() {
+		Set<BlockPos> allowedPos = getAllowedBaseMoundBlockPos();
 		if (!allowedPos.isEmpty())
 			return allowedPos;
 
 		TwilightForestMod.LOGGER.error("No allowed pos for mounds in Fallen Trunk! Please report to https://github.com/TeamTwilight/twilightforest/issues the with seed and {}", boundingBox.getCenter().toString());
-		return getAllPotentialApexMoundBlockPos();
+		return getAllPotentialBaseMoundBlockPos();
 	}
 }

@@ -20,6 +20,7 @@ public record TanhHillFunction(float centerX, float bottomY, float centerZ, floa
 		Codec.BOOL.fieldOf("is_x_oriented").forGetter(TanhHillFunction::isXOriented)
 	).apply(instance, TanhHillFunction::new));
 	public static final KeyDispatchDataCodec<TanhHillFunction> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
+	private static final float PERPENDICULAR_BIAS = 1.4F;
 
 	public TanhHillFunction(float centerX, float bottomY, float centerZ, float radius, float heightScale, float angleBiasDirection, boolean isXOriented) {
 		this(centerX, bottomY, centerZ, radius, heightScale, Mth.cos(angleBiasDirection), Mth.sin(angleBiasDirection), isXOriented);
@@ -31,15 +32,15 @@ public record TanhHillFunction(float centerX, float bottomY, float centerZ, floa
 		float dX = context.blockX() - this.centerX;
 		float dY = context.blockY() - this.bottomY;
 		float dZ = context.blockZ() - this.centerZ;
-		if (isXOriented)  // Make mounds more perpendicular to the trunk axis
-			dZ *= 0.8F;
+		if (isXOriented)  // Make mounds less perpendicular to the trunk axis
+			dZ *= PERPENDICULAR_BIAS;
 		else
-			dX *= 0.8F;
+			dX *= PERPENDICULAR_BIAS;
 		return compute(dX, dY, dZ);
 	}
 
 	public double compute(float dX, float dY, float dZ) {
-		if (dY < -10)
+		if (dY > 10 || dY < -10)
 			return -1;
 		double distSquared = dX * dX + dZ * dZ;
 		if (distSquared > 9 * radius * radius)
@@ -59,7 +60,7 @@ public record TanhHillFunction(float centerX, float bottomY, float centerZ, floa
 
 	private double getHeight(double dist) {
 		double tanhExp = Math.exp(2 * (2 - 2 * dist / radius));  // use tanh(x) = (exp(2x) - 1) / (exp(2x) + 1) because exp is more likely be jit optimized
-		double height =  // simple example without biases https://www.wolframalpha.com/input?i=tanh%282+-+2+*+d+%2F+3%29+%2B+1+-+d+*+%281+-+exp%28-d+*+3+*+0.01%29%29+plot+d+%3D+0..10
+		double height =  // simple example without biases https://www.wolframalpha.com/input?i=tanh%282+-+2+*+d+%2F+3%29+-+d+*+%281+-+exp%28-d+*+3+*+0.01%29%29+plot+d+%3D+0..10
 			((tanhExp - 1) / (tanhExp + 1))  // Make tanh shaped mound with angle and axis biases
 			- dist * (1 - Math.exp(-dist * radius * 0.01));  // Make beardifier weaker and weaker with distance (slant asymptote k ≈ -1)
 		return height;
