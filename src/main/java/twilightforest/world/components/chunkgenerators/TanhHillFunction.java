@@ -33,7 +33,7 @@ public record TanhHillFunction(float centerX, float bottomY, float centerZ, floa
 		float dX = context.blockX() - this.centerX;
 		float dY = context.blockY() - this.bottomY;
 		float dZ = context.blockZ() - this.centerZ;
-		if (isXOriented)  // Make mounds less perpendicular to the trunk axis
+		if (isXOriented)  // Make mounds more parallel to the trunk axis in shape
 			dZ *= PERPENDICULAR_BIAS;
 		else
 			dX *= PERPENDICULAR_BIAS;
