@@ -12,14 +12,19 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawJunction;
 import twilightforest.world.components.chunkgenerators.TanhHillFunction;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 public class TrunkUnderDensityFunction extends Beardifier {
 	private final boolean isBigTree;
 	private final boolean isXOriented;
 	private final RandomSource random;  // used to create dirt mounds
 	private final BoundingBox boundingBox;
-	private final TanhHillFunction[] tanhHillFunctions;
+	private final List<TanhHillFunction> tanhHillFunctions;
 	protected final BoundingBox moundBase;
-	protected static final float MOUND_RADIUS = 2.5F;
+	protected static final float MOUND_RADIUS = 3F;
 	protected static final int MAX_RANDOM_RADIUS_INCREASE_BIG_TREE = 4;
 	protected static final int MAX_RANDOM_RADIUS_INCREASE_NON_BIG_TREE = 2;
 	protected static final float BIG_TREE_MOUND_HEIGHT = 3F;
@@ -37,9 +42,11 @@ public class TrunkUnderDensityFunction extends Beardifier {
 			1,
 			!isXOriented ? length / 2 : 0);
 		this.moundBase = BoundingBox.fromCorners(moundBaseCorner, moundBaseCorner);
-		this.tanhHillFunctions = new TanhHillFunction[random.nextInt(minMounds, maxMounds + 1)];
-		for(int i = 0; i < tanhHillFunctions.length; i++) {
-			tanhHillFunctions[i] = getTanhHillFunctionWithoutCoveringHole(piece, i % 2 == 0);
+		this.tanhHillFunctions = new ArrayList<>();
+		int attemptedMoundsNumber = random.nextInt(minMounds, maxMounds + 1);
+		for(int i = 0; i < attemptedMoundsNumber; i++) {
+			Optional<TanhHillFunction> function = getTanhHillFunctionWithoutCoveringHole(piece, i % 2 == 0);
+			function.ifPresent(tanhHillFunctions::add);
 		}
 	}
 
@@ -66,22 +73,22 @@ public class TrunkUnderDensityFunction extends Beardifier {
 			return 0;
 		if (x == 0 && z == 0 && y > 0)
 			return -1;  // flat everything inside the trunk
-		final double a = 12.0, c = 12.0;
+		final double a = FallenTrunkPiece.UTILITY_PIECE_SIZE, c = FallenTrunkPiece.UTILITY_PIECE_SIZE;
 		final double verticalScale = 0.7;
 		double normX = Math.abs(x / a);
 		double normZ = Math.abs(z / c);
-		double ellipseValue = normX * normX + normZ * normZ;
+		double normalizedSquaredDistance = normX * normX + normZ * normZ;
 
-		if (ellipseValue >= 1.0)
+		if (normalizedSquaredDistance >= 1.0)
 			return 0.0;
 
-		ellipseValue = Math.pow(ellipseValue, 1 / 8D);
+		double normalizedDistance = Math.sqrt(normalizedSquaredDistance);
 
-		double factor = 1.0 - ellipseValue;
+		double factor = 1.0 - normalizedDistance;
 		if (y < 0)  // make less steep to avoid vertical walls around the trunk
-			y = Math.tanh(Math.pow(ellipseValue, 4) * 0.5 + y / 5);  // add ellipseValue to avoid axis aligned "stairs"
-		// divide by exponent to make the beardifier weaker with distance
-		return -y * factor / verticalScale / (Math.exp(ellipseValue));
+			y = normalizedDistance * 0.5 + y / 5;  // add normalizedDistance to avoid axis aligned "stairs"
+		// multiply by exponent to make the beardifier weaker with distance
+		return -y * factor / verticalScale * (Math.exp(-normalizedDistance / (Math.max(1 - normalizedDistance, 1e-8))));
 	}
 
 	protected double computeMoundsContribution(FunctionContext context) {
@@ -108,12 +115,15 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		return max;
 	}
 
-	protected TanhHillFunction getTanhHillFunctionWithoutCoveringHole(FallenTrunkPiece piece, boolean isOnRightSide) {
+	protected Optional<TanhHillFunction> getTanhHillFunctionWithoutCoveringHole(FallenTrunkPiece piece, boolean isOnRightSide) {
 		if (isBigTree)
-			return getTanhHillFunction((BlockPos) Util.getRandom(piece.getAllPotentialBaseMoundBlockPos(isOnRightSide).toArray(), random), isOnRightSide);  // Big trees don't have holes
+			return Optional.ofNullable(getTanhHillFunction((BlockPos) Util.getRandom(piece.getAllPotentialBaseMoundBlockPos(isOnRightSide).toArray(), random), isOnRightSide));  // Big trees don't have holes
 
-		BlockPos moundBLockPos = (BlockPos) Util.getRandom(piece.getAllowedOrPotentialBaseMoundBlockPos(isOnRightSide).toArray(), random);
-		return getTanhHillFunction(moundBLockPos, isOnRightSide);
+		Set<BlockPos> blockPosSet = piece.getAllowedBaseMoundBlockPos(isOnRightSide);
+		if (blockPosSet.isEmpty())
+			return Optional.empty();
+		BlockPos moundBLockPos = (BlockPos) Util.getRandom(blockPosSet.toArray(), random);
+		return Optional.ofNullable(getTanhHillFunction(moundBLockPos, isOnRightSide));
 	}
 
 	protected TanhHillFunction getTanhHillFunction(BlockPos baseBlockPos, boolean isOnRightSide) {

@@ -21,7 +21,7 @@ public record TanhHillFunction(float centerX, float bottomY, float centerZ, floa
 		Codec.BOOL.fieldOf("is_on_right_side").forGetter(TanhHillFunction::isOnRightSide)
 	).apply(instance, TanhHillFunction::new));
 	public static final KeyDispatchDataCodec<TanhHillFunction> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
-	private static final float PERPENDICULAR_BIAS = 1.4F;
+	private static final float PERPENDICULAR_BIAS = 1.3F;
 
 	public TanhHillFunction(float centerX, float bottomY, float centerZ, float radius, float heightScale, float angleBiasDirection, boolean isXOriented, boolean isOnRightSide) {
 		this(centerX, bottomY, centerZ, radius, heightScale, Mth.cos(angleBiasDirection), Mth.sin(angleBiasDirection), isXOriented, isOnRightSide);

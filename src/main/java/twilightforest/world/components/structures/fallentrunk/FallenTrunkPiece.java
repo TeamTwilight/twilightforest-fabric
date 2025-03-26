@@ -43,6 +43,7 @@ public class FallenTrunkPiece extends StructurePiece {
 	public static final int ERODED_LENGTH = 3;
 	protected static final float MOSS_CHANCE = 0.44F;
 	protected static final List<EntityType<?>> SPAWNER_MONSTERS = List.of(TFEntities.SWARM_SPIDER.get(), TFEntities.HOSTILE_WOLF.get(), EntityType.CAVE_SPIDER);
+	public static final int UTILITY_PIECE_SIZE = 10;
 	protected final BlockStateProvider log;
 	public final int length;
 	public final int radius;
@@ -84,7 +85,7 @@ public class FallenTrunkPiece extends StructurePiece {
 
 	@Override
 	public void addChildren(@NotNull StructurePiece parent, StructurePieceAccessor list, @NotNull RandomSource rand) {
-		StructurePiece terraformingPiece = new UtilityPiece(0, boundingBox.inflatedBy(8));
+		StructurePiece terraformingPiece = new UtilityPiece(0, boundingBox.inflatedBy(UTILITY_PIECE_SIZE));
 		list.addPiece(terraformingPiece);
 	}
 
@@ -299,12 +300,15 @@ public class FallenTrunkPiece extends StructurePiece {
 
 	public Set<BlockPos> getAllPotentialBaseMoundBlockPos(boolean isOnRightSide) {
 		Set<BlockPos> potentialBlockPos = new HashSet<>();
-		for (int offset = length / 4; offset <= length * 3 / 4; offset++) {
+		// It's difficult to calculate the size of the mound because of different biases. So, use just "safe" distance (determined experimentally)
+		int forbiddenLength = Math.ceilDiv(length, 4) + ERODED_LENGTH;
+		for (int offset = forbiddenLength; offset <= length - forbiddenLength; offset++) {
 			if (isOnRightSide)
 				potentialBlockPos.add(getWorldPos(Math.min(boundingBox.getXSpan(), boundingBox.getZSpan()) - 1, 0, offset));
 			else
 				potentialBlockPos.add(getWorldPos(0, 0, offset));
 		}
+		System.out.println(potentialBlockPos.size());
 		return potentialBlockPos;
 	}
 
@@ -312,14 +316,5 @@ public class FallenTrunkPiece extends StructurePiece {
 		Set<BlockPos> allowedBlockPos = getAllPotentialBaseMoundBlockPos(isOnRightSide);
 		allowedBlockPos.removeAll(getAllForbiddenMoundBaseBlockPos());
 		return allowedBlockPos;
-	}
-
-	public Set<BlockPos> getAllowedOrPotentialBaseMoundBlockPos(boolean isOnRightSide) {
-		Set<BlockPos> allowedPos = getAllowedBaseMoundBlockPos(isOnRightSide);
-		if (!allowedPos.isEmpty())
-			return allowedPos;
-
-		TwilightForestMod.LOGGER.error("No allowed pos for mounds in Fallen Trunk! Please report to https://github.com/TeamTwilight/twilightforest/issues the with seed and {}", boundingBox.getCenter().toString());
-		return getAllPotentialBaseMoundBlockPos(isOnRightSide);
 	}
 }
