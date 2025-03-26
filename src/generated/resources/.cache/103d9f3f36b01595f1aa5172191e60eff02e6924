@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-25T22:18:16.697719	Registries
+// 1.21.1	2025-03-25T23:59:19.363483	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -369,7 +369,7 @@ aa35ddc2eb6f2e470d743c83a8b882a420291061 data/twilightforest/worldgen/structure/
 d46575dc4f45c10821b533389322fda77b9ca9dc data/twilightforest/worldgen/structure/final_castle.json
 f3dd6746ddee506d0e5ce66db99546a6d2b1bc48 data/twilightforest/worldgen/structure/giant_house.json
 96718e6c4d0937959a03e8c993417389ee21bc0f data/twilightforest/worldgen/structure/hedge_maze.json
-f35e8eb12aec608aca086710548b4cb796b412ba data/twilightforest/worldgen/structure/hollow_tree.json
+5bb4e2e8a35238af61bb068d00c814db1a246921 data/twilightforest/worldgen/structure/hollow_tree.json
 8b984ac036f5a7d29cbb522d24785f87a085c572 data/twilightforest/worldgen/structure/hydra_lair.json
 12f1dd565ef18b5c7f1a23486791db6c9f2d2524 data/twilightforest/worldgen/structure/knight_stronghold.json
 b144587f63f08ae87eeefd48fa70fdca6da7b57a data/twilightforest/worldgen/structure/labyrinth.json
@@ -380,7 +380,7 @@ b7bd5daaa8cef97751de34cd8297629062d3509a data/twilightforest/worldgen/structure/
 7ef96d683b85d38e93ec244d821e2310571337c9 data/twilightforest/worldgen/structure/naga_courtyard.json
 087300c760f5f8b61e28882b71c6803c400a0772 data/twilightforest/worldgen/structure/quest_grove.json
 007d6ea9fc2a1702934cbc4218f87e282f97e367 data/twilightforest/worldgen/structure/small_hollow_hill.json
-acf20eb7074734b5fd5500e3be2a300610b086b2 data/twilightforest/worldgen/structure/swamp_hollow_tree.json
+68d9bd71b42815538f565ec04f54d8a1cafbe46b data/twilightforest/worldgen/structure/swamp_hollow_tree.json
 b4e3f13db15d63249aff1a8d10e10eb51f8abafb data/twilightforest/worldgen/structure/troll_cave.json
 cda5d4a45d2987d6f0d28ca90606e84449864601 data/twilightforest/worldgen/structure/yeti_cave.json
 9b7532428e43ad07cbd01befa87d2e61c1b3665b data/twilightforest/worldgen/structure_set/aurora_palace.json
