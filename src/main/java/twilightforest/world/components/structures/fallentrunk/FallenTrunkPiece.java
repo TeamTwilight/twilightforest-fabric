@@ -312,7 +312,6 @@ public class FallenTrunkPiece extends StructurePiece {
 			else
 				potentialBlockPos.add(getWorldPos(0, 0, offset));
 		}
-//		System.out.println(potentialBlockPos.size());
 		return potentialBlockPos;
 	}
 
