@@ -8,7 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.DensityFunction;
 
 // Negative radius values cause a bowling-up shaped zero-threshold over this DensityFunction's field, making it useful for the hollow hill's floor alongside as its regular mound shape
-public record TanhHillFunction(float centerX, float bottomY, float centerZ, float radius, float heightScale, float cosAngleBiasDirection, float sinAngleBiasDirection, boolean isXOriented) implements DensityFunction.SimpleFunction {
+public record TanhHillFunction(float centerX, float bottomY, float centerZ, float radius, float heightScale, float cosAngleBiasDirection, float sinAngleBiasDirection, boolean isXOriented, boolean isOnRightSide) implements DensityFunction.SimpleFunction {
 	public static final MapCodec<TanhHillFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Codec.FLOAT.fieldOf("x_center").forGetter(TanhHillFunction::centerX),
 		Codec.FLOAT.fieldOf("y_bottom").forGetter(TanhHillFunction::bottomY),
@@ -17,13 +17,14 @@ public record TanhHillFunction(float centerX, float bottomY, float centerZ, floa
 		Codec.FLOAT.fieldOf("height_scale").forGetter(TanhHillFunction::heightScale),
 		Codec.FLOAT.fieldOf("cos_angle_bias_direction").forGetter(TanhHillFunction::cosAngleBiasDirection),
 		Codec.FLOAT.fieldOf("sin_angle_bias_direction").forGetter(TanhHillFunction::sinAngleBiasDirection),
-		Codec.BOOL.fieldOf("is_x_oriented").forGetter(TanhHillFunction::isXOriented)
+		Codec.BOOL.fieldOf("is_x_oriented").forGetter(TanhHillFunction::isXOriented),
+		Codec.BOOL.fieldOf("is_on_right_side").forGetter(TanhHillFunction::isOnRightSide)
 	).apply(instance, TanhHillFunction::new));
 	public static final KeyDispatchDataCodec<TanhHillFunction> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
 	private static final float PERPENDICULAR_BIAS = 1.4F;
 
-	public TanhHillFunction(float centerX, float bottomY, float centerZ, float radius, float heightScale, float angleBiasDirection, boolean isXOriented) {
-		this(centerX, bottomY, centerZ, radius, heightScale, Mth.cos(angleBiasDirection), Mth.sin(angleBiasDirection), isXOriented);
+	public TanhHillFunction(float centerX, float bottomY, float centerZ, float radius, float heightScale, float angleBiasDirection, boolean isXOriented, boolean isOnRightSide) {
+		this(centerX, bottomY, centerZ, radius, heightScale, Mth.cos(angleBiasDirection), Mth.sin(angleBiasDirection), isXOriented, isOnRightSide);
 	}
 
 
@@ -42,6 +43,12 @@ public record TanhHillFunction(float centerX, float bottomY, float centerZ, floa
 	public double compute(float dX, float dY, float dZ) {
 		if (dY > 10 || dY < -10)
 			return -1;
+		float perpendicularDist = isXOriented ? dZ : dX;
+		if (!isOnRightSide)
+			perpendicularDist = -perpendicularDist;
+		if (perpendicularDist < 0)
+			return -1;
+
 		double distSquared = dX * dX + dZ * dZ;
 		if (distSquared > 9 * radius * radius)
 			return -1;

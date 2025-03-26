@@ -20,9 +20,9 @@ public class TrunkUnderDensityFunction extends Beardifier {
 	private final TanhHillFunction[] tanhHillFunctions;
 	protected final BoundingBox moundBase;
 	protected static final float MOUND_RADIUS = 2.5F;
-	protected static final int MAX_RANDOM_RADIUS_INCREASE_BIG_TREE = 3;
+	protected static final int MAX_RANDOM_RADIUS_INCREASE_BIG_TREE = 4;
 	protected static final int MAX_RANDOM_RADIUS_INCREASE_NON_BIG_TREE = 2;
-	protected static final float BIG_TREE_MOUND_HEIGHT = 3.5F;
+	protected static final float BIG_TREE_MOUND_HEIGHT = 3F;
 	protected static final float NON_BIG_TREE_MOUND_HEIGHT = 1.5F;
 
 	public TrunkUnderDensityFunction(ObjectListIterator<Rigid> pieceIterator, FallenTrunkPiece piece, boolean isBigTree, int minMounds, int maxMounds) {
@@ -62,6 +62,8 @@ public class TrunkUnderDensityFunction extends Beardifier {
 	}
 
 	public static double flatSurroundingTerrain(double x, double y, double z) {
+		if (y > 20 || y < -10)
+			return 0;
 		if (x == 0 && z == 0 && y > 0)
 			return -1;  // flat everything inside the trunk
 		final double a = 12.0, c = 12.0;
@@ -78,8 +80,8 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		double factor = 1.0 - ellipseValue;
 		if (y < 0)  // make less steep to avoid vertical walls around the trunk
 			y = Math.tanh(Math.pow(ellipseValue, 4) * 0.5 + y / 5);  // add ellipseValue to avoid axis aligned "stairs"
-
-		return -y * factor / verticalScale;
+		// divide by exponent to make the beardifier weaker with distance
+		return -y * factor / verticalScale / (Math.exp(ellipseValue));
 	}
 
 	protected double computeMoundsContribution(FunctionContext context) {
@@ -108,19 +110,19 @@ public class TrunkUnderDensityFunction extends Beardifier {
 
 	protected TanhHillFunction getTanhHillFunctionWithoutCoveringHole(FallenTrunkPiece piece, boolean isOnRightSide) {
 		if (isBigTree)
-			return getTanhHillFunction((BlockPos) Util.getRandom(piece.getAllPotentialBaseMoundBlockPos(isOnRightSide).toArray(), random));  // Big trees don't have holes
+			return getTanhHillFunction((BlockPos) Util.getRandom(piece.getAllPotentialBaseMoundBlockPos(isOnRightSide).toArray(), random), isOnRightSide);  // Big trees don't have holes
 
 		BlockPos moundBLockPos = (BlockPos) Util.getRandom(piece.getAllowedOrPotentialBaseMoundBlockPos(isOnRightSide).toArray(), random);
-		return getTanhHillFunction(moundBLockPos);
+		return getTanhHillFunction(moundBLockPos, isOnRightSide);
 	}
 
-	protected TanhHillFunction getTanhHillFunction(BlockPos baseBlockPos) {
+	protected TanhHillFunction getTanhHillFunction(BlockPos baseBlockPos, boolean isOnRightSide) {
 		int maxRandomRadiusIncrease = isBigTree ? MAX_RANDOM_RADIUS_INCREASE_BIG_TREE : MAX_RANDOM_RADIUS_INCREASE_NON_BIG_TREE;
 		float moundRadius = MOUND_RADIUS + random.nextInt(0, maxRandomRadiusIncrease);
 		float moundHeight = isBigTree ? BIG_TREE_MOUND_HEIGHT : NON_BIG_TREE_MOUND_HEIGHT;
 
 		float moundBiasAngle = Mth.TWO_PI * random.nextFloat();
-		return new TanhHillFunction(baseBlockPos.getX(), baseBlockPos.getY(), baseBlockPos.getZ(), moundRadius, moundHeight, moundBiasAngle, isXOriented);
+		return new TanhHillFunction(baseBlockPos.getX(), baseBlockPos.getY(), baseBlockPos.getZ(), moundRadius, moundHeight, moundBiasAngle, isXOriented, isOnRightSide);
 	}
 
 
