@@ -137,7 +137,7 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 	private boolean placementIsBlocked(BlockPos blockPos, StructureStart startForStructure, BlockPos featureDistanceXZ, float chunkClearanceRadius) {
 		if (chunkClearanceRadius <= 0) {
 			for (StructurePiece piece : startForStructure.getPieces()) {
-				if (piece instanceof UtilityPiece) {
+				if (piece instanceof UtilityPiece utilityPiece && utilityPiece.allowFeatures) {
 					continue;
 				}
 

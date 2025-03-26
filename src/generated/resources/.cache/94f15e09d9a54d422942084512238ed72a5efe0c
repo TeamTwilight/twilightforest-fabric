@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-16T22:26:22.024871826	TwilightForest Item and BlockItem models
+// 1.21.1	2025-03-26T23:27:03.964749356	TwilightForest Item and BlockItem models
 387b18dfa614fda790f7b8e8324e3b139fa177c2 assets/twilightforest/models/item/acacia_banister.json
 0ca7dc7b4daec376dd0f85d57465830781584c7d assets/twilightforest/models/item/alpha_yeti_banner_pattern.json
 061906a0c9a9a334fbb82acb809c3748e2b1f9cb assets/twilightforest/models/item/alpha_yeti_boss_spawner.json
@@ -199,6 +199,7 @@ c6a5b686b47547226129b880b6a6187d41c8afaf assets/twilightforest/models/item/ender
 0ba0c5992fe74351e12cd6b4edad06b81a35b021 assets/twilightforest/models/item/fake_diamond.json
 b3c7ac87f735c9813d09ee46f1d26c844c06353c assets/twilightforest/models/item/fake_gold.json
 801236d4cfd188d04b0fb89d2b1b5e0d21942d0d assets/twilightforest/models/item/fallen_leaves.json
+759026cc7a61c40a10f9d5091d9f949e8cd0a0dc assets/twilightforest/models/item/fallen_trunk_locator.json
 47b5e16cf269b2e6645653c5c184984eb596f6ca assets/twilightforest/models/item/fiddlehead.json
 e5e543041934e9511beef2019f8e713e4f1f94f4 assets/twilightforest/models/item/fiery_block.json
 d72400c69238734c9e25d9fbac2cd71419aa2ac9 assets/twilightforest/models/item/fiery_blood.json

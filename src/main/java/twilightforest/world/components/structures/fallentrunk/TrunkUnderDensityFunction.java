@@ -73,7 +73,7 @@ public class TrunkUnderDensityFunction extends Beardifier {
 			return 0;
 		if (x == 0 && z == 0 && y > 0)
 			return -1;  // flat everything inside the trunk
-		final double a = FallenTrunkPiece.UTILITY_PIECE_SIZE, c = FallenTrunkPiece.UTILITY_PIECE_SIZE;
+		final double a = FallenTrunkPiece.TERRAFORM_PIECE_SIZE, c = FallenTrunkPiece.TERRAFORM_PIECE_SIZE;
 		final double verticalScale = 0.7;
 		double normX = Math.abs(x / a);
 		double normZ = Math.abs(z / c);

@@ -36,18 +36,21 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 	public static final MapCodec<FallenTrunkStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Structure.settingsCodec(instance),
 		IntProvider.codec(16, 32).fieldOf("length").forGetter(s -> s.length),
+		IntProvider.codec(20, 32).fieldOf("big_trunk_length").forGetter(s -> s.bigTrunkLength),
 		BlockStateProvider.CODEC.fieldOf("log").forGetter(s -> s.log),
 		ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("chest_loot_table").forGetter(s -> s.chestLootTable)
 	).apply(instance, FallenTrunkStructure::new));
 	public static final List<Integer> radiuses = List.of(1, 2, 4);
 
 	private final IntProvider length;
+	private final IntProvider bigTrunkLength;
 	private final BlockStateProvider log;
 	private final ResourceKey<LootTable> chestLootTable;
 
-	protected FallenTrunkStructure(StructureSettings settings, IntProvider length, BlockStateProvider log, ResourceKey<LootTable> chestLootTable) {
+	protected FallenTrunkStructure(StructureSettings settings, IntProvider length, IntProvider bigTrunkLength, BlockStateProvider log, ResourceKey<LootTable> chestLootTable) {
 		super(settings);
 		this.length = length;
+		this.bigTrunkLength = bigTrunkLength;
 		this.log = log;
 		this.chestLootTable = chestLootTable;
 	}
@@ -60,14 +63,14 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 		int x = SectionPos.sectionToBlockCoord(chunkPos.x, random.nextInt(16));
 		int z = SectionPos.sectionToBlockCoord(chunkPos.z, random.nextInt(16));
 		int worldY = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
-		int length = this.length.sample(random);
+		int radius = Util.getRandom(radiuses, random);
+		int length = radius == radiuses.getLast() ? this.bigTrunkLength.sample(random) : this.length.sample(random);
 
 		if (!isValidNoiseBiome(context, x, worldY, z))
 			return Optional.empty();
 		if (hasInvalidNearbyBiome(context, x, worldY, z, random))
 			return Optional.empty();
 
-		int radius = Util.getRandom(radiuses, random);
 		Direction orientation = Direction.Plane.HORIZONTAL.getRandomDirection(random);
 		int xySize = radius > 1 ? radius * 2 + 1 : 4;
 		int zSize = length - 1;
@@ -127,7 +130,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
 			),
-			UniformInt.of(17, 24), BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()), TFLootTables.FALLEN_TRUNK_LOOT
+			UniformInt.of(17, 24), UniformInt.of(22, 28), BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()), TFLootTables.FALLEN_TRUNK_LOOT
 		);
 	}
 

@@ -40,10 +40,11 @@ import java.util.*;
 public class FallenTrunkPiece extends StructurePiece {
 	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get());
 
-	public static final int ERODED_LENGTH = 3;
+	public static final int ERODED_LENGTH = 2;
 	protected static final float MOSS_CHANCE = 0.44F;
 	protected static final List<EntityType<?>> SPAWNER_MONSTERS = List.of(TFEntities.SWARM_SPIDER.get(), TFEntities.HOSTILE_WOLF.get(), EntityType.CAVE_SPIDER);
-	public static final int UTILITY_PIECE_SIZE = 10;
+	public static final int TERRAFORM_PIECE_SIZE = 10;
+	public static final int FEATURE_PIECE_SIZE = 3;
 	protected final BlockStateProvider log;
 	public final int length;
 	public final int radius;
@@ -85,8 +86,11 @@ public class FallenTrunkPiece extends StructurePiece {
 
 	@Override
 	public void addChildren(@NotNull StructurePiece parent, StructurePieceAccessor list, @NotNull RandomSource rand) {
-		StructurePiece terraformingPiece = new UtilityPiece(0, boundingBox.inflatedBy(UTILITY_PIECE_SIZE));
+		StructurePiece terraformingPiece = new UtilityPiece(0, boundingBox.inflatedBy(TERRAFORM_PIECE_SIZE));
 		list.addPiece(terraformingPiece);
+
+		StructurePiece featurePiece = new UtilityPiece(0, boundingBox.inflatedBy(FEATURE_PIECE_SIZE), false);
+		list.addPiece(featurePiece);
 	}
 
 	@Override
@@ -308,6 +312,7 @@ public class FallenTrunkPiece extends StructurePiece {
 			else
 				potentialBlockPos.add(getWorldPos(0, 0, offset));
 		}
+//		System.out.println(potentialBlockPos.size());
 		return potentialBlockPos;
 	}
 
