@@ -15,7 +15,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.*;
@@ -189,7 +193,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		BlockPos fencePostPos = fence.templatePosition.offset(first.pos());
 		// Since the fencepost is directly in front of one of the box's faces; this should the same as a regular distance function. If not, then a deeper issue has happened inside generateUntilNearDest()
 
-		for (int distance = Math.min(BoundingBoxUtils.greatestAxalDistance(destination, fencePostPos), 32); distance > 2;) {
+		for (int distance = Math.min(BoundingBoxUtils.greatestAxalDistance(destination, fencePostPos) + 1, 32); distance > 2;) {
 			int stepSize = Math.min(distance, 7);
 			distance -= stepSize;
 
@@ -310,6 +314,11 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGen, RandomSource random, BoundingBox chunkBounds, ChunkPos chunkPos, BlockPos structureCenterPos) {
 		super.postProcess(level, structureManager, chunkGen, random, chunkBounds, chunkPos, structureCenterPos);
 
+		this.generateBoundZombie(level, chunkBounds);
+		this.generateEscapeLadder(level, chunkBounds);
+	}
+
+	private void generateBoundZombie(WorldGenLevel level, BoundingBox chunkBounds) {
 		Direction fenceFacing = this.getSourceJigsaw().orientation().top();
 		if (this.leashPos == null || !chunkBounds.isInside(this.leashPos))
 			return;
@@ -332,4 +341,17 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		level.addFreshEntity(boundedEntity);
 	}
 
+	private void generateEscapeLadder(WorldGenLevel level, BoundingBox chunkBounds) {
+		JigsawRecord sourceJigsaw = this.getSourceJigsaw();
+		Direction ladderDirection = sourceJigsaw.orientation().top().getOpposite();
+		BlockPos ladderColumnPos = this.templatePosition().offset(sourceJigsaw.pos()).relative(ladderDirection);
+
+		if (!chunkBounds.isInside(ladderColumnPos) || this.getSpareJigsaws().size() != 1 || ladderDirection.getAxis() == Direction.Axis.Y)
+			return;
+
+		BlockState ladderState = Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, ladderDirection);
+		for (BlockPos ladderPos : BlockPos.betweenClosed(ladderColumnPos.above(), ladderColumnPos.above(4))) {
+			level.setBlock(ladderPos, ladderState, Block.UPDATE_ALL);
+		}
+	}
 }
