@@ -51,9 +51,9 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 			stack.pushPose();
 			stack.translate(0.0D, entity.getBbHeight() * 0.5D, 0.0D);
 			Vec3 xyz = owner.getEyePosition(partialTicks).subtract(entity.getPosition(partialTicks).add(0.0D, entity.getBbHeight(), 0.0D));
-			double multiplier = 1.0F; // Defines how many chain links per meter. 2.0F there will be two per meter, 0.5F will be one per two meters, etc.
-			double links = xyz.length() / multiplier;
-			Vec3 offset = xyz.normalize().scale(-multiplier);
+			double linksPerMeter = 1.5F; // Defines how many chain links per meter. 2.0F there will be two per meter, 0.5F will be one per two meters, etc.
+			double links = xyz.length() / linksPerMeter;
+			Vec3 offset = xyz.normalize().scale(-linksPerMeter);
 			int ownerLight = Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(owner, partialTicks);
 			for (int i = 1; i < links; i++) {
 				renderChain(entity, xyz.add(offset.scale(links  - i)), stack, buffer, Math.max(light, ownerLight), this.chainModel);
