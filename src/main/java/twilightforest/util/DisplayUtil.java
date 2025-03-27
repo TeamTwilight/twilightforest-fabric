@@ -17,6 +17,8 @@ import java.util.Optional;
 
 @Component
 public class DisplayUtil {
+	public final String tag = "twilightforest_debug_display";
+
 	// Instead of making methods in Display and Display.BlockDisplay public, this is a lazy way of compiling the NBT data then using it to initialize the entity
 	public boolean spawnBlockDisplay(Level level, BoundingBox box, BlockState displayState, float padding) {
 		Transformation transform = new Transformation(new Matrix4f().scale(box.getXSpan() + padding * 2, box.getYSpan() + padding * 2, box.getZSpan() + padding * 2));
@@ -34,6 +36,10 @@ public class DisplayUtil {
 		entityNBT.put("block_state", NbtUtils.writeBlockState(displayState));
 
 		entityNBT.put("Pos", this.newDoubleList(box.minX() - padding, box.minY() - padding, box.minZ() - padding));
+
+		ListTag listtag = new ListTag();
+		listtag.add(StringTag.valueOf(this.tag));
+		entityNBT.put("Tags", listtag);
 
 		entityNBT.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.BLOCK_DISPLAY).toString());
 
@@ -61,10 +67,19 @@ public class DisplayUtil {
 		entityNBT.put("Pos", this.newDoubleList(x, y, z));
 		entityNBT.putString("text", net.minecraft.network.chat.Component.Serializer.toJson(name, level.registryAccess()));
 
+		DataResult<Tag> serializedAlignment = Display.TextDisplay.Align.CODEC.encodeStart(NbtOps.INSTANCE, Display.TextDisplay.Align.CENTER);
+		if (serializedAlignment.isSuccess()) {
+			entityNBT.put("alignment", serializedAlignment.getPartialOrThrow());
+		}
+
 		DataResult<Tag> serializedBillboard = Display.BillboardConstraints.CODEC.encodeStart(NbtOps.INSTANCE, billboardConstraint);
 		if (serializedBillboard.isSuccess()) {
 			entityNBT.put("billboard", serializedBillboard.getPartialOrThrow());
 		}
+
+		ListTag listtag = new ListTag();
+		listtag.add(StringTag.valueOf(this.tag));
+		entityNBT.put("Tags", listtag);
 
 		entityNBT.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.TEXT_DISPLAY).toString());
 

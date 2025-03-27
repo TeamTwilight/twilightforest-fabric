@@ -51,9 +51,13 @@ public class TFCommand {
 	@Autowired
 	private StructureDistanceCommand structureDistanceCommand;
 
+	@Autowired
+	private ClearDisplayCommand clearDisplayCommand;
+
 	public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext) {
 		LiteralArgumentBuilder<CommandSourceStack> structureBranch = Commands.literal("structure_util")
 			.then(displayPiecesCommand.register())
+			.then(clearDisplayCommand.register())
 			.then(countLootCommand.register())
 			.then(countTemplateCommand.register())
 			.then(structureDistanceCommand.register());
