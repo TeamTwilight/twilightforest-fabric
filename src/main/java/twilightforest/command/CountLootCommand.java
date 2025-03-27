@@ -36,7 +36,7 @@ import java.util.Map;
 @twilightforest.beans.Component
 public class CountLootCommand {
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
-		return Commands.literal("count_loot").requires(cs -> cs.hasPermission(2))
+		return Commands.literal("count_loot").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::countLoot)
 				.then(Commands.argument("show_common", BoolArgumentType.bool()).executes(this::countLootFiltered))
 			);

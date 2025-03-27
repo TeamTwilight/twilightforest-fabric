@@ -29,16 +29,21 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.joml.Matrix4f;
+import twilightforest.beans.Autowired;
 import twilightforest.beans.Component;
+import twilightforest.util.DisplayUtil;
 import twilightforest.world.components.structures.util.ProgressionPiece;
 
 import java.util.List;
 import java.util.Optional;
 
 @Component
-public class PieceDebugCommand {
+public class DisplayPiecesCommand {
+	@Autowired
+	private DisplayUtil displayUtil;
+
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
-		return Commands.literal("display_debug").requires(cs -> cs.hasPermission(2))
+		return Commands.literal("display_pieces").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::debugDisplayPieces))
 			.then(Commands.literal("clear").executes(this::clearDisplayPieces));
 	}
@@ -55,7 +60,7 @@ public class PieceDebugCommand {
 		StructureStart structureAt = level.structureManager().getStructureAt(commandPos, structure.value());
 
 		BoundingBox structureBox = structureAt.getBoundingBox();
-		int successes = this.spawnBlockDisplay(level, structureBox, Blocks.RED_STAINED_GLASS.defaultBlockState(), 0.01f) ? 1 : 0;
+		int successes = this.displayUtil.spawnBlockDisplay(level, structureBox, Blocks.RED_STAINED_GLASS.defaultBlockState(), 0.01f) ? 1 : 0;
 
 		List<StructurePiece> structurePieces = structureAt.getPieces();
 		int maxPieces = structurePieces.size();
@@ -64,62 +69,15 @@ public class PieceDebugCommand {
 			ResourceLocation key = BuiltInRegistries.STRUCTURE_PIECE.getKey(piece.getType());
 			float padding = Mth.lerp((float) successes / maxPieces, 0.003f, 0.025f);
 			BoundingBox boundingBox = piece.getBoundingBox();
-			if (this.spawnBlockDisplay(level, boundingBox, displayState, padding)) {
+			if (this.displayUtil.spawnBlockDisplay(level, boundingBox, displayState, padding)) {
 				MutableComponent nameLabel = net.minecraft.network.chat.Component.literal(key == null ? "missing key" : key.toString());
-				this.setTextEntity(level, (boundingBox.minX() + boundingBox.maxX() + 1) * 0.5, boundingBox.minY() - padding, boundingBox.maxZ() + padding + 1, Display.BillboardConstraints.FIXED, nameLabel);
+				this.displayUtil.setTextEntity(level, (boundingBox.minX() + boundingBox.maxX() + 1) * 0.5, boundingBox.minY() - padding, boundingBox.maxZ() + padding + 1, Display.BillboardConstraints.FIXED, nameLabel);
 
 				successes++;
 			}
 		}
 
 		return successes;
-	}
-
-	// Instead of making methods in Display and Display.BlockDisplay public, this is a lazy way of compiling the NBT data then using it to initialize the entity
-	boolean spawnBlockDisplay(ServerLevel level, BoundingBox box, BlockState displayState, float padding) {
-		Transformation transform = new Transformation(new Matrix4f().scale(box.getXSpan() + padding * 2, box.getYSpan() + padding * 2, box.getZSpan() + padding * 2));
-		transform.getScale(); // Dummy call to ensure the matrix is factorized, or else there will be nulls on serialization
-
-		// See Display.addAdditionalSaveData()
-		DataResult<Tag> serializedTransform = Transformation.EXTENDED_CODEC.encodeStart(NbtOps.INSTANCE, transform);
-
-		if (serializedTransform.isError()) return false;
-
-		CompoundTag entityNBT = new CompoundTag();
-		entityNBT.put("transformation", serializedTransform.resultOrPartial().orElseGet(CompoundTag::new));
-
-		// See Display.BlockDisplay.addAdditionalSaveData()
-		entityNBT.put("block_state", NbtUtils.writeBlockState(displayState));
-
-		entityNBT.put("Pos", this.newDoubleList(box.minX() - padding, box.minY() - padding, box.minZ() - padding));
-
-		entityNBT.putString("id", "block_display"); // Entity ID for EntityType.BLOCK_DISPLAY
-
-		Optional<Entity> spawned = EntityType.create(entityNBT, level);
-
-		if (spawned.isEmpty()) return false;
-		Entity entity = spawned.get();
-
-		return level.addFreshEntity(entity);
-	}
-
-	private ListTag newDoubleList(double... numbers) {
-		ListTag listtag = new ListTag();
-
-		for (double d0 : numbers) {
-			listtag.add(DoubleTag.valueOf(d0));
-		}
-
-		return listtag;
-	}
-
-	void setTextEntity(WorldGenLevel world, double x, double y, double z, Display.BillboardConstraints billboardConstraint, net.minecraft.network.chat.Component name) {
-		final Display.TextDisplay display = new Display.TextDisplay(EntityType.TEXT_DISPLAY, world.getLevel());
-		display.setText(name);
-		display.setBillboardConstraints(billboardConstraint);
-		display.moveTo(x, y, z, 0, 0);
-
-		world.addFreshEntity(display);
 	}
 
 	private int clearDisplayPieces(CommandContext<CommandSourceStack> context) {

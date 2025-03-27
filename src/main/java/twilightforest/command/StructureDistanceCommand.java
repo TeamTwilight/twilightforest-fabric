@@ -21,14 +21,15 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.beans.Autowired;
+import twilightforest.util.DisplayUtil;
 
 @twilightforest.beans.Component
 public class StructureDistanceCommand {
 	@Autowired
-	private PieceDebugCommand pieceDebugCommand;
+	private DisplayUtil displayUtil;
 
 	public ArgumentBuilder<CommandSourceStack, ?> register() {
-		return Commands.literal("structure_radius").requires(cs -> cs.hasPermission(2))
+		return Commands.literal("generator_radius").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::structureDistance));
 	}
 
@@ -68,16 +69,16 @@ public class StructureDistanceCommand {
 				default -> Blocks.GLASS.defaultBlockState();
 			};
 
-			this.pieceDebugCommand.spawnBlockDisplay(level, boundingBox, displayState, -0.1f);
+			this.displayUtil.spawnBlockDisplay(level, boundingBox, displayState, -0.1f);
 
 			double x = (boundingBox.minX() + boundingBox.maxX() + 1) * 0.5;
 			double z = (boundingBox.minZ() + boundingBox.maxZ() + 1) * 0.5;
 
 			String deltaChunkCoord = diffX + ", " + diffZ;
-			this.pieceDebugCommand.setTextEntity(level, x, boundingBox.maxY() + 1, z, Display.BillboardConstraints.CENTER, Component.literal(deltaChunkCoord));
+			this.displayUtil.setTextEntity(level, x, boundingBox.maxY() + 1, z, Display.BillboardConstraints.CENTER, Component.literal(deltaChunkCoord));
 
 			String squareRadiusFromCenter = squareRadiusDist == 0 ? "Structure Start's center chunk" : "Radius from center chunk: " + squareRadiusDist;
-			this.pieceDebugCommand.setTextEntity(level, x, boundingBox.maxY() + 2, z, Display.BillboardConstraints.CENTER, Component.literal(squareRadiusFromCenter));
+			this.displayUtil.setTextEntity(level, x, boundingBox.maxY() + 2, z, Display.BillboardConstraints.CENTER, Component.literal(squareRadiusFromCenter));
 		}
 
 		return 0;

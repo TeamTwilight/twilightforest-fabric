@@ -23,7 +23,7 @@ import java.util.List;
 @twilightforest.beans.Component
 public class CountTemplateCommand {
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
-		return Commands.literal("count_templates").requires(cs -> cs.hasPermission(2))
+		return Commands.literal("count_template").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::countTemplates));
 	}
 
