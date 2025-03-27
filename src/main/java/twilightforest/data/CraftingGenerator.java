@@ -82,6 +82,20 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_iron_bars", has(Blocks.IRON_BARS))
 			.save(output);
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.WROUGHT_IRON_FENCE.get(), 3)
+			.pattern("###")
+			.pattern("###")
+			.define('#', ItemTagGenerator.WROUGHT_IRON_INGOTS)
+			.unlockedBy("has_wrought_iron", has(ItemTagGenerator.WROUGHT_IRON_INGOTS))
+			.save(output);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANDELABRA.get(), 2)
+			.pattern("###")
+			.pattern(" # ")
+			.define('#', ItemTagGenerator.WROUGHT_IRON_INGOTS)
+			.unlockedBy("has_wrought_iron", has(ItemTagGenerator.WROUGHT_IRON_INGOTS))
+			.save(output);
+
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.ROPE.get(), 8)
 			.pattern("#")
 			.pattern("#")
@@ -90,21 +104,21 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_root_strand", has(TFBlocks.ROOT_STRAND.get()))
 			.save(output);
 
-//		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANOPY_WINDOW.value(), 4)
-//			.pattern("GPG")
-//			.pattern("PPP")
-//			.pattern("GPG")
-//			.define('G', Ingredient.of(Tags.Items.GLASS_BLOCKS))
-//			.define('P', Ingredient.of(TFBlocks.CANOPY_PLANKS.value()))
-//			.unlockedBy("has_planks", has(TFBlocks.CANOPY_PLANKS.value()))
-//			.save(output);
-//
-//		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANOPY_WINDOW_PANE.value(), 16)
-//			.pattern("GGG")
-//			.pattern("GGG")
-//			.define('G', Ingredient.of(TFBlocks.CANOPY_WINDOW.value()))
-//			.unlockedBy("has_windows", has(TFBlocks.CANOPY_WINDOW.value()))
-//			.save(output);
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANOPY_WINDOW.get(), 4)
+			.pattern("GPG")
+			.pattern("PPP")
+			.pattern("GPG")
+			.define('G', Ingredient.of(Tags.Items.GLASS_BLOCKS))
+			.define('P', Ingredient.of(TFBlocks.CANOPY_PLANKS.value()))
+			.unlockedBy("has_planks", has(TFBlocks.CANOPY_PLANKS.value()))
+			.save(output);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANOPY_WINDOW_PANE.get(), 16)
+			.pattern("GGG")
+			.pattern("GGG")
+			.define('G', Ingredient.of(TFBlocks.CANOPY_WINDOW.value()))
+			.unlockedBy("has_windows", has(TFBlocks.CANOPY_WINDOW.value()))
+			.save(output);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFItems.MASON_JAR.get(), 4)
 			.pattern("GLG")
@@ -177,6 +191,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		crackedWoodRecipes(output);
 		crackedStoneRecipes(output);
 
+		//TODO 1.21.4 use vanilla recipe with higher priority
 //		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.CHISELED_CANOPY_BOOKSHELF.get())
 //			.pattern("---")
 //			.pattern("   ")
@@ -193,15 +208,6 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('B', Items.BOOK)
 			.unlockedBy("has_item", has(TFBlocks.CANOPY_PLANKS.get()))
 			.save(output);
-
-//		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TFBlocks.CANDELABRA.get())
-//			.pattern("III")
-//			.pattern(" W ")
-//			.define('W', TFBlocks.WROUGHT_IRON_FENCE)
-//			.define('I', TFItems.WROUGHT_IRON_BAR)
-//			.unlockedBy("has_fence", has(TFBlocks.WROUGHT_IRON_FENCE))
-//			.unlockedBy("has_bar", has(TFItems.WROUGHT_IRON_BAR))
-//			.save(output);
 
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TFItems.ARMOR_SHARD_CLUSTER.get())
 			.requires(Ingredient.of(TFItems.ARMOR_SHARD.get()), 9)

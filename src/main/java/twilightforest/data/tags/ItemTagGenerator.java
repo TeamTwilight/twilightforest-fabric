@@ -44,6 +44,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	public static final TagKey<Item> IRONWOOD_INGOTS = makeCommonTag("ingots/ironwood");
 	public static final TagKey<Item> KNIGHTMETAL_INGOTS = makeCommonTag("ingots/knightmetal");
 	public static final TagKey<Item> STEELEAF_INGOTS = makeCommonTag("ingots/steeleaf");
+	public static final TagKey<Item> WROUGHT_IRON_INGOTS = makeCommonTag("ingots/wrought_iron");
 
 	public static final TagKey<Item> STORAGE_BLOCKS_ARCTIC_FUR = makeCommonTag("storage_blocks/arctic_fur");
 	public static final TagKey<Item> STORAGE_BLOCKS_CARMINITE = makeCommonTag("storage_blocks/carminite");
@@ -82,6 +83,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	public static final TagKey<Item> REPAIRS_GIANT_TOOLS = create("repairs_giant_tools");
 	public static final TagKey<Item> REPAIRS_ICE_TOOLS = create("repairs_ice_tools");
 	public static final TagKey<Item> SCEPTERS = create("scepters");
+	public static final TagKey<Item> IMMUNE_TO_THORNS = create("immune_to_thorns");
 
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> provider, ExistingFileHelper helper) {
 		super(output, future, provider, helper);
@@ -156,6 +158,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(IRONWOOD_INGOTS).add(TFItems.IRONWOOD_INGOT.get());
 		this.tag(KNIGHTMETAL_INGOTS).add(TFItems.KNIGHTMETAL_INGOT.get());
 		this.tag(STEELEAF_INGOTS).add(TFItems.STEELEAF_INGOT.get());
+		this.tag(WROUGHT_IRON_INGOTS).add(TFItems.WROUGHT_IRON_BAR.get());
 
 		this.tag(Tags.Items.GEMS).addTag(CARMINITE_GEMS);
 
@@ -236,6 +239,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(KEPT_ON_DEATH).add(TFItems.TOWER_KEY.get(), TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 
 		this.tag(SCEPTERS).add(TFItems.TWILIGHT_SCEPTER.get(), TFItems.LIFEDRAIN_SCEPTER.get(), TFItems.ZOMBIE_SCEPTER.get(), TFItems.FORTIFICATION_SCEPTER.get());
+
+		this.tag(IMMUNE_TO_THORNS).add(TFBlocks.THORN_LEAVES.asItem(), TFBlocks.THORN_ROSE.asItem());
 
 		this.tag(ItemTags.PIGLIN_LOVED).add(TFItems.GOLDEN_MINOTAUR_AXE.get(), TFItems.CHARM_OF_KEEPING_3.get(), TFItems.CHARM_OF_LIFE_2.get(), TFItems.LAMP_OF_CINDERS.get());
 
