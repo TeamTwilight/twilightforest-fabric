@@ -41,6 +41,7 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.processors.MetaBlockProcessor;
 import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
+import twilightforest.world.components.structures.UtilityPiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
 import java.util.List;
@@ -77,6 +78,21 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 
 		if (this.leashPos != null) {
 			structureTag.put("leash_pos", NbtUtils.writeBlockPos(this.leashPos));
+		}
+	}
+
+	@Override
+	public void addChildren(StructurePiece parent, StructurePieceAccessor pieceAccessor, RandomSource random) {
+		super.addChildren(parent, pieceAccessor, random);
+
+		Direction ladderDirection = this.getSourceJigsaw().orientation().top().getOpposite();
+		BlockPos ladderColumnPos = this.getSourcePosition().relative(ladderDirection, 2).above(2);
+
+		if (this.getSpareJigsaws().size() == 1 && ladderDirection.getAxis() != Direction.Axis.Y) {
+			BoundingBox box = new BoundingBox(ladderColumnPos).inflatedBy(3);
+			UtilityPiece treeClearance = new UtilityPiece(this.genDepth + 1, box, false);
+			pieceAccessor.addPiece(treeClearance);
+			treeClearance.addChildren(this, pieceAccessor, random);
 		}
 	}
 
@@ -342,9 +358,8 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 	}
 
 	private void generateEscapeLadder(WorldGenLevel level, BoundingBox chunkBounds) {
-		JigsawRecord sourceJigsaw = this.getSourceJigsaw();
-		Direction ladderDirection = sourceJigsaw.orientation().top().getOpposite();
-		BlockPos ladderColumnPos = this.templatePosition().offset(sourceJigsaw.pos()).relative(ladderDirection);
+		Direction ladderDirection = this.getSourceJigsaw().orientation().top().getOpposite();
+		BlockPos ladderColumnPos = this.getSourcePosition().relative(ladderDirection);
 
 		if (!chunkBounds.isInside(ladderColumnPos) || this.getSpareJigsaws().size() != 1 || ladderDirection.getAxis() == Direction.Axis.Y)
 			return;

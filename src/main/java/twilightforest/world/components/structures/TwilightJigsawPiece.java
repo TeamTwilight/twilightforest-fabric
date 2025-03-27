@@ -143,6 +143,10 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		return this.sourceJigsaw;
 	}
 
+	public BlockPos getSourcePosition() {
+		return this.templatePosition.offset(this.sourceJigsaw.pos());
+	}
+
 	public List<JigsawRecord> getSpareJigsaws() {
 		return this.spareJigsaws;
 	}
