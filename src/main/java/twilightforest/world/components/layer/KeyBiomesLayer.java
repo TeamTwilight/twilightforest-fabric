@@ -15,8 +15,8 @@ import twilightforest.world.components.layer.vanillalegacy.Area;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-import twilightforest.world.components.layer.vanillalegacy.context.BigContext;
 import twilightforest.world.components.layer.vanillalegacy.context.LazyAreaContext;
+import twilightforest.world.components.layer.vanillalegacy.context.RandomContext;
 import twilightforest.world.components.layer.vanillalegacy.traits.AreaTransformer1;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements Area
 	}
 
 	@Override
-	public ResourceKey<Biome> applyPixel(BigContext<?> context, Area layer, int x, int z) {
+	public ResourceKey<Biome> applyPixel(RandomContext randomContext, Area layer, int x, int z) {
 		final Random rand = new Random(WorldUtil.getOverworldSeed() + (x & -4) * 25117L + (z & -4) * 151121L);
 		int ox = rand.nextInt(2) + 1;
 		int oz = rand.nextInt(2) + 1;

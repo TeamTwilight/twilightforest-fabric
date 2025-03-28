@@ -15,13 +15,16 @@ public class LazyAreaContext implements BigContext<LazyArea> {
 	private final LinkedBlockingQueue<Long> evictionQueue;
 	private final int maxCache;
 	private final long seed;
-	private long rval;
 
 	public LazyAreaContext(int maxCache, long salt) {
 		this.seed = mixSeed(WorldUtil.getOverworldSeed(), salt);
 		this.cache = new ConcurrentHashMap<>();
 		this.evictionQueue = new LinkedBlockingQueue<>();
 		this.maxCache = maxCache;
+	}
+
+	public long getSeed() {
+		return seed;
 	}
 
 	@Override
@@ -37,23 +40,6 @@ public class LazyAreaContext implements BigContext<LazyArea> {
 	@Override
 	public LazyArea createResult(Area transformer, LazyArea layer1, LazyArea layer2) {
 		return new LazyArea(this.cache, this.evictionQueue, Math.min(1024, Math.max(layer1.getMaxCache(), layer2.getMaxCache()) * 4), transformer);
-	}
-
-	@Override
-	public void initRandom(long x, long z) {
-		long i = this.seed;
-		i = LinearCongruentialGenerator.next(i, x);
-		i = LinearCongruentialGenerator.next(i, z);
-		i = LinearCongruentialGenerator.next(i, x);
-		i = LinearCongruentialGenerator.next(i, z);
-		this.rval = i;
-	}
-
-	@Override
-	public int nextRandom(int limit) {
-		int result = Math.floorMod(this.rval >> 24, limit);
-		this.rval = LinearCongruentialGenerator.next(this.rval, this.seed);
-		return result;
 	}
 
 	private static long mixSeed(long seed, long salt) {
