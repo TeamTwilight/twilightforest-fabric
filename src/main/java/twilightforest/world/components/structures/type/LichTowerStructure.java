@@ -21,7 +21,6 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
@@ -31,7 +30,6 @@ import twilightforest.util.WorldUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.chunkgenerators.BoxDensityFunction;
 import twilightforest.world.components.structures.CustomDensitySource;
-import twilightforest.world.components.structures.lichtower.TowerMainComponent;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerBaseTrim;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerFoyer;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerWingBeard;
@@ -45,7 +43,6 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 	public static final MapCodec<LichTowerStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
 		controlledSpawningCodec(instance).apply(instance, LichTowerStructure::new)
 	);
-	public static final boolean REVAMP = true;
 
 	public LichTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
@@ -53,17 +50,14 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 
 	@Override
 	protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-		return REVAMP ? makeFoyer(context, random, x, y, z) : new TowerMainComponent(random, 0, x, y, z);
-	}
-
-	@Nullable
-	private static LichTowerFoyer makeFoyer(GenerationContext context, RandomSource random, int x, int y, int z) {
 		Direction direction = Rotation.getRandom(random).rotate(Direction.SOUTH);
 		BlockPos placePos = new BlockPos(x, y, z).relative(direction, 24);
 		FrontAndTop oriented = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
 
 		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(placePos, BlockPos.ZERO, oriented, context.structureTemplateManager(), TwilightForestMod.prefix("lich_tower/tower_foyer"), "twilightforest:lich_tower/vestibule", random);
 
+		// getFirstPiece() call is wrapped in an Optional#ofNullable
+		//noinspection DataFlowIssue
 		return placeContext == null ? null : new LichTowerFoyer(context.structureTemplateManager(), placeContext, true, random.nextBoolean());
 	}
 
@@ -84,32 +78,21 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 	@SuppressWarnings("unchecked")
 	public static LichTowerStructure buildLichTowerConfig(BootstrapContext<Structure> context) {
 		final ControlledSpawningConfig monsters;
-		if (REVAMP) { // For the new Lich Tower
-			List<MobSpawnSettings.SpawnerData> yardSpawns = List.of(
-				new MobSpawnSettings.SpawnerData(TFEntities.RISING_ZOMBIE.value(), 2, 1, 2)
-			);
-			List<MobSpawnSettings.SpawnerData> interiorSpawns = List.of(
-				new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 10, 1, 2),
-				new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 1, 2),
-				new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1, 1),
-				new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 1, 2),
-				new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME.value(), 10, 2, 3),
-				new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1)
-			);
-			monsters = ControlledSpawningConfig.justMonsters(
-				yardSpawns,
-				interiorSpawns
-			);
-		} else { // For the current Lich Tower
-			monsters = ControlledSpawningConfig.firstIndexMonsters(
-				new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 10, 1, 2),
-				new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 1, 2),
-				new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1, 1),
-				new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 1, 2),
-				new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME.value(), 10, 2, 3),
-				new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1)
-			);
-		}
+		List<MobSpawnSettings.SpawnerData> yardSpawns = List.of(
+			new MobSpawnSettings.SpawnerData(TFEntities.RISING_ZOMBIE.value(), 2, 1, 2)
+		);
+		List<MobSpawnSettings.SpawnerData> interiorSpawns = List.of(
+			new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 10, 1, 2),
+			new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 10, 1, 2),
+			new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1, 1),
+			new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 1, 2),
+			new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME.value(), 10, 2, 3),
+			new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1)
+		);
+		monsters = ControlledSpawningConfig.justMonsters(
+			yardSpawns,
+			interiorSpawns
+		);
 		return new LichTowerStructure(
 			monsters,
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_naga"))),
@@ -127,8 +110,6 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 
 	@Override
 	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
-		if (!REVAMP) return DensityFunctions.constant(0);
-
 		List<BoundingBox> trimBoxes = new ArrayList<>();
 
 		int yBase = structurePieceSource.getPieces().getFirst().getBoundingBox().minY();
