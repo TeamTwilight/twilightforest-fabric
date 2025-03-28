@@ -32,7 +32,7 @@ public final class MetaBlockProcessor extends StructureProcessor {
 		if (nbtInfo != null && modifiedInfo.state().is(Blocks.JIGSAW)) {
 			String replaceWith = nbtInfo.getString("final_state");
 
-			if ("empty".equals(replaceWith)) {
+			if ("minecraft:structure_void".equals(replaceWith)) {
 				return null;
 			}
 
