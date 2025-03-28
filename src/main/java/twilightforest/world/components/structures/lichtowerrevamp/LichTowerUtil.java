@@ -65,9 +65,11 @@ public class LichTowerUtil {
 	});
 	private static final Supplier<StructureProcessor> UPDATE_MARKER = Suppliers.memoize(() -> UpdateMarkingProcessor.forBlocks(
 		Blocks.BIRCH_FENCE,
-		Blocks.MOSSY_STONE_BRICK_WALL,
 		Blocks.POLISHED_ANDESITE_STAIRS,
 		Blocks.STONE_BRICK_WALL,
+		Blocks.MOSSY_STONE_BRICK_WALL,
+		Blocks.COBBLESTONE_WALL,
+		Blocks.MOSSY_COBBLESTONE_WALL,
 		TFBlocks.WROUGHT_IRON_FENCE.value(),
 		TFBlocks.CANOPY_FENCE.value(),
 		TFBlocks.TWISTED_STONE_PILLAR.value()
