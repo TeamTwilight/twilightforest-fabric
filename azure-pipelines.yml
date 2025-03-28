@@ -160,7 +160,7 @@ steps:
       messageType: 'embeds'
       embeds: |
         [$(DiscordMessage)]
-    condition: and(and(eq(variables.SKIP_BUILD, 'false'), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
+    condition: and(and(eq(variables.SKIP_BUILD, 'false'), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_DISCORD, 'false'))
 
   - powershell: |
       Write-Host "##vso[task.setvariable variable=RunMavenPublishTask]True"
