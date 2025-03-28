@@ -3,9 +3,6 @@ package twilightforest.world.components.layer.vanillalegacy.context;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.world.components.layer.vanillalegacy.Area;
-import twilightforest.world.components.layer.vanillalegacy.area.LazyArea;
-
 
 public class RandomContext implements Context {
 	private final long seed;
@@ -48,14 +45,5 @@ public class RandomContext implements Context {
 		int result = Math.floorMod(this.rval >> 24, limit);
 		this.rval = LinearCongruentialGenerator.next(this.rval, this.seed);
 		return result;
-	}
-
-	private static long mixSeed(long seed, long salt) {
-		long i = LinearCongruentialGenerator.next(salt, salt);
-		i = LinearCongruentialGenerator.next(i, salt);
-		i = LinearCongruentialGenerator.next(i, salt);
-		long j = LinearCongruentialGenerator.next(seed, i);
-		j = LinearCongruentialGenerator.next(j, i);
-		return LinearCongruentialGenerator.next(j, i);
 	}
 }
