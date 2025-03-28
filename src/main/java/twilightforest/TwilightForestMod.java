@@ -56,7 +56,7 @@ import twilightforest.command.TFCommand;
 import twilightforest.compat.CosmeticArmorCompat;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.ConfigSetup;
-import twilightforest.data.custom.stalactites.entry.Stalactite;
+import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
@@ -76,6 +76,7 @@ import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinitions;
 
 import java.util.Locale;
 import java.util.function.Supplier;
@@ -123,7 +124,8 @@ public final class TwilightForestMod {
 			ClientEvents.initGameEvents();
 		}
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-		NeoForge.EVENT_BUS.addListener(Stalactite::reloadStalactites);
+		NeoForge.EVENT_BUS.addListener(StalactiteReloadListener.INSTANCE::registerListener);
+		NeoForge.EVENT_BUS.addListener(StructureTemplateDefinitions.INSTANCE::registerListener);
 
 		TFItems.ITEMS.register(bus);
 		TFStats.STATS.register(bus);
@@ -140,6 +142,7 @@ public final class TwilightForestMod {
 		TFEntities.SPAWN_EGGS.register(bus);
 		TFMenuTypes.CONTAINERS.register(bus);
 		TFRecipes.RECIPE_TYPES.register(bus);
+		TFAttributes.ATTRIBUTES.register(bus);
 		TFAdvancements.TRIGGERS.register(bus);
 		TFMobEffects.MOB_EFFECTS.register(bus);
 		TFItemSubPredicates.TYPES.register(bus);
@@ -178,6 +181,7 @@ public final class TwilightForestMod {
 		bus.addListener(this::addBlockEntityTypes);
 		bus.addListener(this::setRegistriesForDatapack);
 		bus.addListener(this::registerGenericItemHandlers);
+		bus.addListener(TFCreativeTabs::addToTabs);
 
 		bus.addListener(ConfigSetup::loadConfigs);
 		bus.addListener(ConfigSetup::reloadConfigs);
@@ -271,6 +275,7 @@ public final class TwilightForestMod {
 	public void createDataMaps(RegisterDataMapTypesEvent event) {
 		event.register(TFDataMaps.CRUMBLE_HORN);
 		event.register(TFDataMaps.TRANSFORMATION_POWDER);
+		event.register(TFDataMaps.OMINOUS_FIRE);
 		event.register(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
 		event.register(TFDataMaps.ORE_MAP_ORE_COLOR);
 	}

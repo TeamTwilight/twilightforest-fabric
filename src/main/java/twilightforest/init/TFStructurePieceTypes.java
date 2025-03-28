@@ -33,6 +33,7 @@ public class TFStructurePieceTypes {
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFYeti = registerPieceType("TFYeti", YetiCaveComponent::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFFallenTrunk = registerPieceType("TFFallenTrunk", FallenTrunkPiece::new);
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFUtilityPiece = registerPieceType("TFUtilityPiece", UtilityPiece::new);
+	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFJigsawTemplate = registerPieceType("TFJigsawTemplate", TwilightJigsawPiece::defaultDeserialize);
 
 	// Hollow Tree
 	public static final DeferredHolder<StructurePieceType, StructurePieceType> TFHTLB = registerPieceType("TFHTLB", HollowTreeLargeBranch::new);

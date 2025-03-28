@@ -9,12 +9,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.HedgeMazeComponent;
 import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.LandmarkStructure;
@@ -23,7 +25,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class HedgeMazeStructure extends LandmarkStructure {
+public class HedgeMazeStructure extends LandmarkStructure implements CustomDensitySource {
 	public static final MapCodec<HedgeMazeStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> landmarkCodec(instance).apply(instance, HedgeMazeStructure::new));
 
 	public HedgeMazeStructure(DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
@@ -51,5 +53,10 @@ public class HedgeMazeStructure extends LandmarkStructure {
 				TerrainAdjustment.BEARD_BOX
 			)
 		);
+	}
+
+	@Override
+	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
+		return CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 0, 4);
 	}
 }

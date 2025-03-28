@@ -767,6 +767,9 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(BlockTags.WOOL_CARPETS)
 			.add(TFBlocks.CORONATION_CARPET.get());
+
+		this.tag(BlockTags.FIRE)
+			.add(TFBlocks.OMINOUS_FIRE.get());
 	}
 
 	public static TagKey<Block> create(String tagName) {
