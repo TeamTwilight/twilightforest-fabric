@@ -42,7 +42,6 @@ public class StructureTemplateDefinitionGenerator extends StructureTemplateDefin
 			"lich_tower/3x3/wither_rose"
 		);
 		this.addAllTemplatesToPool(LichTowerPieces.ROOM_DECOR, 100,
-			"lich_tower/3x3/chest",
 			"lich_tower/3x3/lava_well",
 			"lich_tower/3x3/sapling",
 			"lich_tower/3x3/water_fountain",
