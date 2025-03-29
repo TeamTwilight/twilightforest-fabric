@@ -16,6 +16,7 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.HedgeMazeComponent;
 import twilightforest.world.components.structures.util.DecorationClearance;
@@ -58,5 +59,10 @@ public class HedgeMazeStructure extends LandmarkStructure implements CustomDensi
 	@Override
 	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
 		return CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 0, 4);
+	}
+
+	@Override
+	public int adjustForTerrain(GenerationContext context, int x, int z) {
+		return WorldUtil.adjustForTerrain(context, x, z, 24, 4);
 	}
 }
