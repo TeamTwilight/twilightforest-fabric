@@ -426,7 +426,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.MANGROVE_ROOT, "Mangrove Roots");
 
 		this.addBlock(TFBlocks.NAGA_TROPHY, "Naga Trophy");
-		this.addBlock(TFBlocks.LICH_TROPHY, "Lich Trophy");
+		this.addBlock(TFBlocks.LICH_TROPHY, "Twilight Lich Trophy");
 		this.addBlock(TFBlocks.MINOSHROOM_TROPHY, "Minoshroom Trophy");
 		this.addBlock(TFBlocks.HYDRA_TROPHY, "Hydra Trophy");
 		this.addBlock(TFBlocks.KNIGHT_PHANTOM_TROPHY, "Knight Phantom Trophy");
