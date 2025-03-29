@@ -132,7 +132,7 @@ public class CharmEvents {
 			if (!applyCharm(TFItems.CHARM_OF_KEEPING_2, keepInventory, player, player.getInventory().items.subList(0, 9))) {
 				int i = player.getInventory().selected;
 				if (Inventory.isHotbarSlot(i)) {
-					applyCharm(TFItems.CHARM_OF_KEEPING_1, keepInventory, player, List.of(player.getInventory().items.get(i)));
+					applyCharm(TFItems.CHARM_OF_KEEPING_1, keepInventory, player, NonNullList.of(player.getInventory().items.get(i)));
 				}
 			}
 		}
