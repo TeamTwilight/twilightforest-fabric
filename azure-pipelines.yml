@@ -182,8 +182,8 @@ steps:
       tasks: 'publish'
     condition: and(and(succeeded(), eq(variables['RunMavenPublishTask'], 'True')), eq(variables.SKIP_BUILD, 'false'))
     env:
-      ARTIFACTORY_USER: $(Artifactory.User)
-      ARTIFACTORY_PASS: $(Artifactory.Password)
+      MAVEN_USER: $(Artifactory.User)
+      MAVEN_PASS: $(Artifactory.Password)
 
   - task: ado-discord-webhook@1
     displayName: Announce Failed Maven Publish to discord

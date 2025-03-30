@@ -268,9 +268,9 @@ jar {
 	}
 }
 
-def mavenUser = hasProperty("ARTIFACTORY_USER") ? ARTIFACTORY_USER : secrets.getProperty("maven_username")
-def mavenToken = hasProperty("ARTIFACTORY_PASS") ? ARTIFACTORY_PASS : secrets.getProperty("maven_password")
-logger.lifecycle(hasProperty("ARTIFACTORY_USER").toString())
+def mavenUser = hasProperty("MAVEN_USER") ? System.getenv("MAVEN_USER") : secrets.getProperty("maven_username")
+def mavenToken = hasProperty("MAVEN_PASS") ? System.getenv("MAVEN_PASS") : secrets.getProperty("maven_password")
+logger.lifecycle(hasProperty("MAVEN_USER").toString())
 logger.lifecycle(mavenUser)
 
 publishing {
