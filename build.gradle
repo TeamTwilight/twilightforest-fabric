@@ -1,5 +1,17 @@
 import net.neoforged.moddevgradle.internal.RunGameTask
 
+buildscript {
+	repositories {
+		maven {
+			name 'Beanification'
+			url 'https://maven.tamaized.com/releases/'
+		}
+	}
+	dependencies {
+		classpath "tamaized:beanification:${minecraft_version}-${beanification_version}:gradle"
+	}
+}
+
 plugins {
 	id 'java-library'
 	id 'eclipse'
@@ -8,6 +20,20 @@ plugins {
 	// Version List: https://projects.neoforged.net/neoforged/ModDevGradle
 	id 'net.neoforged.moddev' version "${mdg_version}"
 	id "com.dorongold.task-tree" version "4.0.0"
+	id 'com.gradleup.shadow' version '8.3.3'
+}
+
+apply plugin: 'tamaized.beanification'
+
+configurations {
+	shade
+}
+
+shadowJar {
+	archiveClassifier.set('')
+	configurations = [project.configurations.shade]
+	relocate 'tamaized.beanification', "tamaized.${project.mod_id}.beanification"
+	relocate 'tamaized.regutil', "tamaized.${project.mod_id}.regutil"
 }
 
 def secrets = new Properties()
@@ -124,6 +150,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
 	mavenLocal()
 	maven {
+		name 'Tama\'s Maven' // Beanification
+		url 'https://maven.tamaized.com/releases/'
+	}
+	maven {
 		name 'Jared\'s Maven' // JEI
 		url 'https://maven.blamejared.com/'
 	}
@@ -156,6 +186,12 @@ repositories {
 
 dependencies {
 	jarJar implementation(project(":tf-asm"))
+
+	def beanification = "tamaized:beanification:${project.minecraft_version}-${project.beanification_version}"
+	implementation beanification
+	shade beanification
+	testImplementation "${beanification}:tests"
+	testCompileOnly "${beanification}:test-sources"
 
 	//make sure to only pick one of these when testing (switch others to compileOnly)
 	implementation "mezz.jei:jei-${project.base_minecraft_version}-neoforge:${project.jei_version}"
@@ -264,3 +300,5 @@ tasks.register('sourceJar', Jar) {
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
 }
+
+build.dependsOn shadowJar
