@@ -43,7 +43,10 @@ java {
 	}
 }
 
-compileJava.options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+tasks.withType(JavaCompile).configureEach {
+	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+	options.encoding = 'UTF-8'
+}
 
 base {
 	archivesName = "${project.mod_id}-${project.minecraft_version}"
@@ -54,25 +57,29 @@ subprojects {
 }
 
 neoForge {
-	evaluationDependsOnChildren() // we need the subprojects to evaluate first so that the sourceSets are properly constructed
+	// we need the subprojects to evaluate first so that the sourceSets are properly constructed
+	evaluationDependsOnChildren()
 
+	def mod_id = project.mod_id
 	version = project.neo_version
 
 	validateAccessTransformers = true
 
 	mods {
-		twilightforest {
-			sourceSet this.sourceSets.main
+		"${mod_id}" {
+			it.sourceSet this.sourceSets.main
 		}
 
 		'tf-asm' {
-			sourceSet project(":tf-asm").sourceSets.main
+			it.sourceSet project(":tf-asm").sourceSets.main
 		}
 	}
 
+	def mainMod = mods."${project.mod_id}"
+
 	unitTest {
 		enable()
-		testedMod = mods.twilightforest
+		testedMod = mainMod
 	}
 
 	runs {
@@ -110,8 +117,6 @@ afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold
 
 jar {
 	exclude 'data/twilightforest/function/**'
-	if (hasProperty("CIRevision"))
-		exclude 'data/twilightforest/structure/lich_tower'
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -150,9 +155,6 @@ repositories {
 }
 
 dependencies {
-	// Purely so we can see MDG sources for debugging purposes
-	compileOnly "net.neoforged.moddev:net.neoforged.moddev.gradle.plugin:${project.mdg_version}"
-
 	jarJar implementation(project(":tf-asm"))
 
 	//make sure to only pick one of these when testing (switch others to compileOnly)
@@ -244,7 +246,6 @@ publishing {
 	}
 	repositories {
 		maven {
-			//url "file:///${project.projectDir}/mcmodsrepo"
 			url "https://maven.tamaized.com/releases"
 			credentials {
 				username System.getenv('ARTIFACTORY_USER')
