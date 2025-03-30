@@ -280,7 +280,7 @@ publishing {
 				artifact this.project.jar
 				artifact this.project.sourceJar
 			}
-			groupId 'team-twilight'
+			groupId mavenUser
 			artifactId this.project.mod_id
 		}
 	}
