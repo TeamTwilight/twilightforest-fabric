@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplacementProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
@@ -27,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
-import twilightforest.world.components.processors.MetaBlockProcessor;
 import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinitions;
 import twilightforest.world.components.structures.util.ProgressionPiece;
 
@@ -43,7 +43,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 	public static TwilightJigsawPiece defaultDeserialize(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), compoundTag, ctx, readSettings(compoundTag));
-		twilightJigsawPiece.placeSettings().addProcessor(MetaBlockProcessor.INSTANCE);
+		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
 		return twilightJigsawPiece;
 	}
 
@@ -60,7 +60,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
 		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext);
-		twilightJigsawPiece.placeSettings().addProcessor(MetaBlockProcessor.INSTANCE);
+		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
 		return twilightJigsawPiece;
 	}
 
