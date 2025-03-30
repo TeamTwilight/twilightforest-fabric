@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplacementProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
@@ -233,6 +234,7 @@ public class LichTowerUtil {
 
 	public static void addDefaultProcessors(StructurePlaceSettings settings) {
 		settings.addProcessor(JigsawReplacementProcessor.INSTANCE)
+			.addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK)
 			.addProcessor(StoneBricksVariants.INSTANCE)
 			.addProcessor(CobbleVariants.INSTANCE)
 			.addProcessor(InfestBlocksProcessor.INSTANCE)

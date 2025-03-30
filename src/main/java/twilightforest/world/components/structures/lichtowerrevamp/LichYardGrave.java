@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplacementProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
@@ -33,6 +34,7 @@ public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifie
 		super(TFStructurePieceTypes.LICH_YARD_GRAVE.value(), compoundTag, ctx, readSettings(compoundTag));
 
 		this.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
+		this.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 
 		this.fillUnder = this.makeFillerBox();
 	}
@@ -41,6 +43,7 @@ public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifie
 		super(TFStructurePieceTypes.LICH_YARD_GRAVE.value(), 0, structureManager, templateId, jigsawContext);
 
 		this.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
+		this.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 
 		this.fillUnder = this.makeFillerBox();
 	}
