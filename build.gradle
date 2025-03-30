@@ -270,6 +270,7 @@ jar {
 
 def mavenUser = System.getenv('ARTIFACTORY_USER')
 def mavenToken = System.getenv('ARTIFACTORY_PASS')
+logger.lifecycle(mavenUser)
 
 publishing {
 	publications {
