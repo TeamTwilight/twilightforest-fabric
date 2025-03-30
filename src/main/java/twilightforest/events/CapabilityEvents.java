@@ -84,7 +84,8 @@ public class CapabilityEvents {
 		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
 			updateCapabilities(player, event.getEntity());
 			dataFixLegacyBanish(player);
-			newSpawnInTwilightForest(player);
+			if (!player.hasData(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST))
+				newSpawnInTwilightForest(player);
 		}
 	}
 
