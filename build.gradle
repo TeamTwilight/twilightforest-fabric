@@ -271,6 +271,7 @@ jar {
 
 def mavenUser = hasProperty("ARTIFACTORY_USER") ? System.getenv('ARTIFACTORY_USER') : secrets.getProperty("maven_username")
 def mavenToken = hasProperty("ARTIFACTORY_PASS") ? System.getenv('ARTIFACTORY_PASS') : secrets.getProperty("maven_password")
+logger.lifecycle('def {}', mavenUser?: "huh")
 
 publishing {
 	publications {
@@ -287,6 +288,7 @@ publishing {
 		maven {
 			url "https://maven.tamaized.com/releases"
 			credentials {
+				logger.lifecycle('publish {}', mavenUser?: "what")
 				username mavenUser
 				password mavenToken
 			}
