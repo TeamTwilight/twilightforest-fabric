@@ -30,10 +30,9 @@ configurations {
 }
 
 shadowJar {
-	archiveClassifier.set('')
+	archiveClassifier.set('universal')
 	configurations = [project.configurations.shade]
-	relocate 'tamaized.beanification', "tamaized.${project.mod_id}.beanification"
-	relocate 'tamaized.regutil', "tamaized.${project.mod_id}.regutil"
+	relocate 'tamaized.beanification', "${project.mod_id}.beanification"
 }
 
 def secrets = new Properties()
