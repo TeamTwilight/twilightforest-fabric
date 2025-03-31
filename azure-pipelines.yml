@@ -70,7 +70,7 @@ steps:
     displayName: Create Azure DevOps variables from gradle properties file
     condition: eq(variables.SKIP_BUILD, 'false')
 
-  - task: Gradle@2
+  - task: Gradle@3
     displayName: Create Release Build
     inputs:
       workingDirectory: ''
@@ -167,7 +167,7 @@ steps:
     displayName: Allow Maven Publish tasks
     condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
 
-  - task: Gradle@2
+  - task: Gradle@3
     displayName: Publish to Maven
     inputs:
       workingDirectory: ''
