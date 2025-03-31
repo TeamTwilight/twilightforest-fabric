@@ -5,6 +5,9 @@ buildscript {
 		maven {
 			name 'Beanification'
 			url 'https://maven.tamaized.com/releases/'
+			content {
+				includeGroup("tamaized")
+			}
 		}
 	}
 	dependencies {
@@ -149,10 +152,6 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
 	mavenLocal()
 	maven {
-		name 'Tama\'s Maven' // Beanification
-		url 'https://maven.tamaized.com/releases/'
-	}
-	maven {
 		name 'Jared\'s Maven' // JEI
 		url 'https://maven.blamejared.com/'
 	}
@@ -181,6 +180,13 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+	maven {
+		name 'Tama\'s Maven' // Beanification
+		url 'https://maven.tamaized.com/releases/'
+		content {
+			includeGroup("tamaized")
+		}
+	}
 }
 
 dependencies {
