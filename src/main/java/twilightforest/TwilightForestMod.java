@@ -105,7 +105,7 @@ public final class TwilightForestMod {
 	private static QuestReloadListener QUEST_INSTANCE;
 
 	static {
-		BeanContext.init();
+		BeanContext.init(ID);
 	}
 
 	@Autowired

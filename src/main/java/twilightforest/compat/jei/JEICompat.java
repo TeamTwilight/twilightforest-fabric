@@ -75,10 +75,7 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public ResourceLocation getPluginUid() {
-//		return TwilightForestMod.prefix("jei_plugin");
-		// FIXME: Invoking TwilightForestMod here causes classloading during JEI's mod loading instead of TF's
-		// FIXME: This means `ModLoadingContext.get().getActiveContainer()` is `jei` which messes with BeanContext
-		return ResourceLocation.fromNamespaceAndPath("twilightforest", "jei_plugin");
+		return TwilightForestMod.prefix("jei_plugin");
 	}
 
 	@Override
