@@ -55,6 +55,7 @@ import twilightforest.client.event.RegistrationEvents;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.CosmeticArmorCompat;
 import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.components.block.ChiseledCanopyBookshelfWrapper;
 import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.dispenser.TFDispenserBehaviors;
@@ -224,6 +225,8 @@ public final class TwilightForestMod {
 
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.MASON_JAR.get(), (masonJarBlock, side) ->
 			side == Direction.UP ? masonJarBlock.getItemHandler() : null);
+
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), (container, side) -> new ChiseledCanopyBookshelfWrapper(container));
 	}
 
 	public void addBlockEntityTypes(BlockEntityTypeAddBlocksEvent event) {
