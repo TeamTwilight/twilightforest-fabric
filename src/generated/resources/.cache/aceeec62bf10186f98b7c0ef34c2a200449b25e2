@@ -1,8 +1,11 @@
-// 1.21.1	2024-11-26T22:08:19.96248	Twilight Forest Block Tags
+// 1.21.1	2025-04-27T21:32:02.7423658	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
 21c5678245eaba6b9d0d5a52cf8b03948dd1d8d8 data/artifacts/tags/block/campsite_chests.json
+9128d72c70ee7357b228f08da8eeb1dc81da059f data/create/tags/block/chest_mounted_storage.json
+3c9240d12210edeb8e1ff96c47f8ed15bc265aa6 data/create/tags/block/passive_boiler_heaters.json
+4b971923f491062646b2cd449c00a4b2210bd3b6 data/create/tags/block/tree_attachments.json
 58b5e0d0eea5536fb5d46cc844c5b8b71bc34f86 data/c/tags/block/bookshelves.json
 dbb45e0d36df554b46ceb4028ec61bc7b7a6315a data/c/tags/block/chests/trapped.json
 3d56c0ea016f639fad4fae4272d928867251da04 data/c/tags/block/chests/wooden.json
