@@ -20,7 +20,7 @@
         "type": "twilightforest:redcap_sapper",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 1
+        "weight": 2
       },
       {
         "type": "twilightforest:kobold",
@@ -50,7 +50,7 @@
         "type": "minecraft:creeper",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 10
+        "weight": 5
       },
       {
         "type": "twilightforest:fire_beetle",
