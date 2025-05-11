@@ -19,6 +19,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
+	id 'org.jetbrains.gradle.plugin.idea-ext' version "1.1.10"
 	id 'maven-publish'
 	// Version List: https://projects.neoforged.net/neoforged/ModDevGradle
 	id 'net.neoforged.moddev' version "${mdg_version}"
@@ -64,6 +65,11 @@ if (secretsFile.exists()) {
 }
 
 idea {
+	project.settings.compiler.javac {
+		// Disable “Report use of deprecated features” https://github.com/JetBrains/gradle-idea-ext-plugin/wiki#javac-settings-of-idea-compiler
+		generateDeprecationWarnings = false
+	}
+
 	module {
 		downloadJavadoc = true
 		downloadSources = true
