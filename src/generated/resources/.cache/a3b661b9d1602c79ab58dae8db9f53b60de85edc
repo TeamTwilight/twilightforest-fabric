@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-27T13:05:00.5163253	Twilight Forest Item Tags
+// 1.21.1	2025-07-27T13:03:02.2250352	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -39,6 +39,7 @@ e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/c/tags/item/storage_blocks/knightm
 2973abf7fe5598a763a9738ca24c06f80b1eb5b1 data/c/tags/item/tools/bow.json
 1b205b8add451aa431d3db9121828f233c2cbad2 data/c/tags/item/tools/shield.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/farmersdelight/tags/item/cabbage_roll_ingredients.json
+b40c8354ed3ca1a2a7af96684c97bc7afdeb9f05 data/forbidden_arcanus/tags/item/modifier/eternal_incompatible.json
 a60dbce39527970b03af723b64656128b26f70e6 data/minecraft/tags/item/axes.json
 6e4052d645637e55eca3bdbaebd8fbaf2a2cfbc4 data/minecraft/tags/item/beacon_payment_items.json
 932bd2980da6d582ac5ba3cb6d86e51597a713b4 data/minecraft/tags/item/boats.json
