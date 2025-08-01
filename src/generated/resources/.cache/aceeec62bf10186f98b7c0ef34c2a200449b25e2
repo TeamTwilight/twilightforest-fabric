@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-27T21:32:02.7423658	Twilight Forest Block Tags
+// 1.21.1	2025-07-31T22:59:56.6201119	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -23,6 +23,8 @@ c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/c/tags/block/storage_blocks/fiery.
 b1bdb774a7cf90e5cfbf8d045a3ccca943b8e073 data/c/tags/block/storage_blocks/ironwood.json
 e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/c/tags/block/storage_blocks/knightmetal.json
 34bb5d122fd15f6d868a5ff3cfe8ac8eafc6e892 data/c/tags/block/storage_blocks/steeleaf.json
+96e133a68b59752179daf0ace7f09c7aa6f86a6d data/c/tags/block/stripped_logs.json
+44805839a86579813bbaa5d7948e5adc4a4421a7 data/c/tags/block/stripped_woods.json
 27fc8e32e0e71b8dcbb82f0ada3b954d906256b6 data/farmersdelight/tags/block/compost_activators.json
 3c9240d12210edeb8e1ff96c47f8ed15bc265aa6 data/farmersdelight/tags/block/heat_sources.json
 0a52d65411c2027ae8e27da5af1fea4e9ef5f090 data/minecraft/tags/block/beacon_base_blocks.json

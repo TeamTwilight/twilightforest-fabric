@@ -1,4 +1,4 @@
-// 1.21.1	2025-07-27T13:03:02.2250352	Twilight Forest Item Tags
+// 1.21.1	2025-07-31T23:55:53.8299805	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
@@ -36,6 +36,8 @@ c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/c/tags/item/storage_blocks/fiery.j
 b1bdb774a7cf90e5cfbf8d045a3ccca943b8e073 data/c/tags/item/storage_blocks/ironwood.json
 e1e1daa9f0fa727681cf4eb0a0a2cbde40e6708d data/c/tags/item/storage_blocks/knightmetal.json
 34bb5d122fd15f6d868a5ff3cfe8ac8eafc6e892 data/c/tags/item/storage_blocks/steeleaf.json
+96e133a68b59752179daf0ace7f09c7aa6f86a6d data/c/tags/item/stripped_logs.json
+44805839a86579813bbaa5d7948e5adc4a4421a7 data/c/tags/item/stripped_woods.json
 2973abf7fe5598a763a9738ca24c06f80b1eb5b1 data/c/tags/item/tools/bow.json
 1b205b8add451aa431d3db9121828f233c2cbad2 data/c/tags/item/tools/shield.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/farmersdelight/tags/item/cabbage_roll_ingredients.json
