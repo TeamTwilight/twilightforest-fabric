@@ -21,7 +21,7 @@ public abstract class GrindstoneTravellersRecipesGetter {
 			List.of(modifiedStack),
 			List.of(ItemStack.EMPTY),
 			List.of(DefaultModifiedTravellersGearGetter.getDemodifiedStack(modifiedStack)),
-			0, 0, null, true
+			0, 0, null
 		);
 	}
 }
