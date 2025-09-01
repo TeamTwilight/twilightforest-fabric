@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,8 +22,10 @@ import net.minecraft.world.level.GameType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
+import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.components.entity.TFPortalAttachment;
 import twilightforest.components.item.OreScannerData;
 import twilightforest.config.TFConfig;
@@ -110,6 +111,12 @@ public class OverlayHandler {
 					graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 				}
 			}
+		});
+
+		event.registerAboveAll(TwilightForestMod.prefix("item_display_overlay"), (graphics, partialTick) -> {
+			Minecraft minecraft = Minecraft.getInstance();
+			Gui gui = minecraft.gui;
+			ItemDisplayOverlay.render(graphics, minecraft, minecraft.getWindow(), gui, getCameraPlayer());
 		});
 	}
 
@@ -330,5 +337,10 @@ public class OverlayHandler {
 				xOff += column.renderColumn(graphics, column, xOff, yOff, verticalTextPixelsAdvance);
 			}
 		}
+	}
+
+	@Nullable
+	private static Player getCameraPlayer() {
+		return Minecraft.getInstance().getCameraEntity() instanceof Player player ? player : null;
 	}
 }

@@ -1,0 +1,7 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:double_jump": {}
+  },
+  "equipment_slots": "legs"
+}

@@ -1,0 +1,7 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:red_thread_vision": {}
+  },
+  "equipment_slots": "head"
+}

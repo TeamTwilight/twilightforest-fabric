@@ -17,11 +17,13 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
+import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
 public class CourtyardMain extends StructureMazeGenerator {
 	static final int ROW_OF_CELLS = 8;
@@ -39,6 +41,9 @@ public class CourtyardMain extends StructureMazeGenerator {
 
 	@Deprecated // TODO remove in 1.22
 	private final boolean placeSpawner;
+
+	@Autowired
+	private static StructureTemplateDefinitions structureTemplateDefinitions;
 
 	public CourtyardMain(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(ctx.structureTemplateManager(), TFStructurePieceTypes.TFNCMn.get(), nbt);
@@ -73,10 +78,10 @@ public class CourtyardMain extends StructureMazeGenerator {
 		Direction direction = Rotation.getRandom(random).rotate(Direction.SOUTH);
 		FrontAndTop oriented = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
 
-		TwilightJigsawPiece bossSpawner = TwilightJigsawPiece.initializeTemplateFromPool(CENTER_POOL, pos, oriented, "twilightforest:center", random, this.genDepth + 1, this.structureManager);
+		TwilightJigsawPiece bossSpawner = structureTemplateDefinitions.initializeTemplateFromPool(CENTER_POOL, pos, oriented, "twilightforest:center", random, this.genDepth + 1, this.structureManager);
 		if (bossSpawner != null) {
 			list.addPiece(bossSpawner);
-			bossSpawner.addChildren(parent, list, random);
+			// bossSpawner.addChildren(parent, list, random);
 		}
 	}
 

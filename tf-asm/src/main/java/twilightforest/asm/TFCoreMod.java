@@ -7,18 +7,26 @@ import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierClassTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer;
 import twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer;
+import twilightforest.asm.transformers.block.SlimeBlockMomentumTransformer;
+import twilightforest.asm.transformers.block.UnrestrainedFrictionTransformer;
 import twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer;
 import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
 import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
+import twilightforest.asm.transformers.entity.PathFinderUnrestrainedByLeashTransformer;
+import twilightforest.asm.transformers.entity.UnrestrainedBlockSpeedAndJumpFactorTransformer;
+import twilightforest.asm.transformers.entity.WaterWalkTransformer;
 import twilightforest.asm.transformers.foliage.FoliageColorResolverTransformer;
 import twilightforest.asm.transformers.lead.LeashFenceKnotSurvivesTransformer;
 import twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer;
-import twilightforest.asm.transformers.mob.PathFinderUnrestrainedByLeash;
+import twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer;
 import twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer;
-import twilightforest.asm.transformers.multipart.SendDirtytEntityDataTransformer;
+import twilightforest.asm.transformers.multipart.SendDirtyEntityDataTransformer;
+import twilightforest.asm.transformers.player.GetFieldOfViewModifierTransformer;
+import twilightforest.asm.transformers.player.ReduceMovementFoodExhaustionTransformer;
 import twilightforest.asm.transformers.shroom.ModifySoilDecisionForMushroomBlockSurvivabilityTransformer;
+import twilightforest.asm.transformers.snow.KeepGrassSnowyForSnowloggableBlocksTransformer;
 
 import java.util.List;
 
@@ -38,6 +46,10 @@ public class TFCoreMod implements ICoreMod {
 			// book
 			new ModifyWrittenBookNameTransformer(),
 
+			//block
+			new SlimeBlockMomentumTransformer(),
+			new UnrestrainedFrictionTransformer(),
+
 			// chunk
 			new ChunkStatusTaskTransformer(),
 
@@ -47,6 +59,11 @@ public class TFCoreMod implements ICoreMod {
 			// conquered
 			new StructureStartLoadStaticTransformer(),
 
+			// entity
+			new WaterWalkTransformer(),
+			new PathFinderUnrestrainedByLeashTransformer(),
+			new UnrestrainedBlockSpeedAndJumpFactorTransformer(),
+
 			// foliage
 			new FoliageColorResolverTransformer(),
 
@@ -55,17 +72,22 @@ public class TFCoreMod implements ICoreMod {
 
 			// map
 			new ResolveNearestNonRandomSpreadMapStructureTransformer(),
+			new UpdateMapsInGogglesTransformer(),
 
 			// multipart
 			new ResolveEntitiesForRendereringTransformer(),
 			new ResolveEntityRendererTransformer(),
-			new SendDirtytEntityDataTransformer(),
+			new SendDirtyEntityDataTransformer(),
+
+			// player
+			new GetFieldOfViewModifierTransformer(),
+			new ReduceMovementFoodExhaustionTransformer(),
 
 			// shroom
 			new ModifySoilDecisionForMushroomBlockSurvivabilityTransformer(),
 
-			// mob
-			new PathFinderUnrestrainedByLeash()
+			//snow
+			new KeepGrassSnowyForSnowloggableBlocksTransformer()
 		);
 	}
 }

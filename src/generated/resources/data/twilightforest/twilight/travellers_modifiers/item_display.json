@@ -1,0 +1,7 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:item_display": []
+  },
+  "equipment_slots": "head"
+}

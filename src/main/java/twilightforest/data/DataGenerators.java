@@ -15,15 +15,14 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.custom.QuestGenerator;
-import twilightforest.data.custom.StructureTemplateDefinitionGenerator;
+import twilightforest.data.custom.*;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
 import twilightforest.data.tags.*;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = TwilightForestMod.ID)
 public class DataGenerators {
 
 	@SubscribeEvent
@@ -67,12 +66,15 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new CraftingGenerator(output, lookupProvider));
 		generator.addProvider(event.includeServer(), new LootModifierGenerator(output, lookupProvider));
 
-		generator.addProvider(event.includeServer(), new StructureTemplateDefinitionGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new CampStructureDefinitionGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new FinalCastleStructureDefinitionGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new LichTowerStructureDefinitionGenerator(output, lookupProvider, helper));
+		generator.addProvider(event.includeServer(), new NagaCourtyardStructureDefinitionGenerator(output, lookupProvider, helper));
 
 		//these have to go last due to magic paintings
 		//when magic paintings are registered their atlas and lang content is too
 		generator.addProvider(event.includeClient(), new AtlasGenerator(output, lookupProvider, helper));
-		generator.addProvider(event.includeClient(), new LangGenerator(output));
+		generator.addProvider(event.includeClient(), new LangGenerator(output, lookupProvider));
 
 		generator.addProvider(event.includeServer(), new QuestGenerator(output));
 

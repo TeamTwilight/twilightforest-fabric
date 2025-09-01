@@ -22,6 +22,9 @@ import twilightforest.network.SyncUncraftingTableConfigPacket;
 import twilightforest.util.PlayerHelper;
 
 import java.net.Proxy;
+import java.time.chrono.IsoChronology;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.FormatStyle;
 import java.util.*;
 
 public class TFConfig {
@@ -32,7 +35,7 @@ public class TFConfig {
 	private static final List<Holder<Biome>> VALID_AURORA_BIOMES = new ArrayList<>();
 	public static final List<GameProfile> GAME_PROFILES = new ArrayList<>();
 
-	/// --- CLIENT ---
+	// --- CLIENT ---
 	public static boolean silentCicadas = false;
 	public static boolean silentCicadasOnHead = false;
 	public static boolean firstPersonEffects = true;
@@ -45,6 +48,12 @@ public class TFConfig {
 	private static int clientCloudBlockPrecipitationDistance = 32;
 	public static boolean prettifyOreMeterGui = true;
 	public static boolean spawnCharmAnimationAsTotem = false;
+
+	// --- Item Display ---
+	public static int itemDisplayXOffs = 4;
+	public static int itemDisplayYOffs = 4;
+	public static double itemDisplayScale = 1.0D;
+	public static boolean clock24HourFormat = use24HourTimeDefault();
 
 	// --- COMMON ---
 	public static boolean casketUUIDLocking = false;
@@ -209,6 +218,11 @@ public class TFConfig {
 		clientCloudBlockPrecipitationDistance = config.cloudBlockPrecipitationDistance.get();
 		prettifyOreMeterGui = config.prettifyOreMeterGui.get();
 		spawnCharmAnimationAsTotem = config.spawnCharmAnimationAsTotem.get();
+
+		itemDisplayXOffs = config.ITEM_DISPLAY.screenOffsetX.get();
+		itemDisplayYOffs = config.ITEM_DISPLAY.screenOffsetY.get();
+		itemDisplayScale = config.ITEM_DISPLAY.screenScale.get();
+		clock24HourFormat = config.ITEM_DISPLAY.twentyFourHourFormat.get();
 	}
 
 	private static void reloadGiantSkins(TFClientConfig config) {
@@ -259,7 +273,16 @@ public class TFConfig {
 
 		@Override
 		public Component getTranslatedName() {
-			return Component.translatable("config.twilightforest.multiplayer_fight_adjuster." + this.name().toLowerCase(Locale.ROOT));
+			return Component.translatable(CONFIG_ID + "multiplayer_fight_adjuster." + this.name().toLowerCase(Locale.ROOT));
+		}
+	}
+
+	public static boolean use24HourTimeDefault() {
+		try {
+			String pattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, FormatStyle.SHORT, IsoChronology.INSTANCE, Locale.getDefault());
+			return !pattern.contains("a");  // "a" is used to display AM / PM.
+		} catch (Throwable throwable) {
+			return true;
 		}
 	}
 }

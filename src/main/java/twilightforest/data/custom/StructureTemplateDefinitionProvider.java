@@ -1,24 +1,37 @@
 package twilightforest.data.custom;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.util.random.Weight;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.GravityProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.JsonCodecProvider;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinition;
-import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinitions;
+import twilightforest.world.components.structures.util.StructureTemplateDefinition;
+import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
+import twilightforest.world.components.structures.util.TemplatePoolInstance;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvider<StructureTemplateDefinition> {
-	private final Map<ResourceLocation, Map<ResourceLocation, Integer>> poolsForTemplateWeights = new HashMap<>();
+	private final Map<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> poolsForTemplateWeights = new HashMap<>();
 
-	public StructureTemplateDefinitionProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId, ExistingFileHelper existingFileHelper) {
+	private final String name;
+
+	public StructureTemplateDefinitionProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId, ExistingFileHelper existingFileHelper, String name) {
 		super(output, PackOutput.Target.DATA_PACK, StructureTemplateDefinitions.DIRECTORY, PackType.SERVER_DATA, StructureTemplateDefinition.CODEC, lookupProvider, modId, existingFileHelper);
+		this.name = name;
 	}
 
 	protected abstract void generatePools();
@@ -27,7 +40,7 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	protected void gather() {
 		this.generatePools();
 
-		for(Map.Entry<ResourceLocation, Map<ResourceLocation, Integer>> poolWeightsForTemplate : this.poolsForTemplateWeights.entrySet()) {
+		for(Map.Entry<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> poolWeightsForTemplate : this.poolsForTemplateWeights.entrySet()) {
 			ResourceLocation templateId = poolWeightsForTemplate.getKey();
 
 			this.unconditional(templateId, new StructureTemplateDefinition(poolWeightsForTemplate.getValue()));
@@ -35,6 +48,12 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	}
 
 	protected void addToAllPools(String roomId, int weight, ResourceLocation... poolIds) {
+		for(ResourceLocation poolId : poolIds) {
+			this.add(roomId, poolId, weight);
+		}
+	}
+
+	protected void addToAllPools(String roomId, TemplatePoolInstance weight, ResourceLocation... poolIds) {
 		for(ResourceLocation poolId : poolIds) {
 			this.add(roomId, poolId, weight);
 		}
@@ -50,9 +69,48 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 		this.add(TwilightForestMod.prefix(roomId), poolId, weight);
 	}
 
-	protected void add(ResourceLocation templateId, ResourceLocation poolId, int weight) {
-		Map<ResourceLocation, Integer> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, k -> new HashMap<>());
+	protected void addEmpty(ResourceLocation poolId, int weight) {
+		this.add(TwilightForestMod.prefix("_empty"), poolId, weight);
+	}
 
-		poolWeightsForTemplate.put(poolId, weight);
+	protected void add(ResourceLocation templateId, ResourceLocation poolId, int weight) {
+		this.add(templateId, poolId, TemplatePoolInstance.defaultsWithWeight(weight));
+	}
+
+	protected void add(String roomId, ResourceLocation poolId, TemplatePoolInstance poolData) {
+		this.add(TwilightForestMod.prefix(roomId), poolId, poolData);
+	}
+
+	protected void add(ResourceLocation templateId, ResourceLocation poolId, TemplatePoolInstance poolData) {
+		Map<ResourceLocation, TemplatePoolInstance> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, k -> new HashMap<>());
+
+		poolWeightsForTemplate.put(poolId, poolData);
+	}
+
+	protected TemplatePoolInstance weightedPathTemplate(int weight) {
+		return new TemplatePoolInstance(
+			Weight.of(weight),
+			Optional.of(Holder.direct(new StructureProcessorList(List.of(new GravityProcessor(Heightmap.Types.WORLD_SURFACE_WG, -2))))),
+			StructureTemplatePool.Projection.RIGID,
+			TerrainAdjustment.NONE,
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 1, Optional.of(1))),
+			false
+		);
+	}
+
+	protected TemplatePoolInstance weightedRigidTemplate(int weight, int yOffset, Optional<Integer> groundJunctionDiffLimit) {
+		return new TemplatePoolInstance(
+			Weight.of(weight),
+			Optional.empty(),
+			StructureTemplatePool.Projection.RIGID,
+			TerrainAdjustment.BEARD_BOX,
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, yOffset, groundJunctionDiffLimit)),
+			true
+		);
+	}
+
+	@Override
+	public String getName() {
+		return String.format("%s generator for %s in %s", this.directory, this.name, this.modid);
 	}
 }

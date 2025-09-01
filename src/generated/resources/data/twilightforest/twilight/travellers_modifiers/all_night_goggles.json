@@ -1,0 +1,7 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:all_night_goggles": {}
+  },
+  "equipment_slots": "head"
+}

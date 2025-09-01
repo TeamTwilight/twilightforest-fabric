@@ -1,0 +1,7 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:swap_hotbar_modifier": {}
+  },
+  "equipment_slots": "legs"
+}

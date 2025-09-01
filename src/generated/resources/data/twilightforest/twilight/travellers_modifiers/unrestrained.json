@@ -1,0 +1,7 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:unrestrained": {}
+  },
+  "equipment_slots": "feet"
+}

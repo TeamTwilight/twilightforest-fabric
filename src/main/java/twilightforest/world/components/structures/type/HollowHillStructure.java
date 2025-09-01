@@ -32,6 +32,7 @@ import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.HollowHillComponent;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.util.ConfigurableSpawns;
+import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.Arrays;
@@ -44,7 +45,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 		.group(
 			// TODO Clean up findGenerationPoint() first before even thinking about increasing upper limit
 			Codec.intRange(1, 3).fieldOf("hill_size").forGetter(s -> s.size),
-			ControlledSpawningConfig.FLAT_CODEC.forGetter(s -> s.controlledSpawningConfig),
+			ControlledSpawningConfig.CODEC.fieldOf(ControlledSpawns.CODEC_NAME).forGetter(s -> s.controlledSpawningConfig),
 			StructureSpeleothemConfigs.CODEC.fieldOf("speleothem_config").forGetter(s -> s.speleothemConfig)
 		)
 		.and(landmarkCodec(instance))
@@ -55,7 +56,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 	private final ControlledSpawningConfig controlledSpawningConfig;
 	private final Holder.Reference<StructureSpeleothemConfig> speleothemConfig;
 
-	public HollowHillStructure(int size, ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public HollowHillStructure(int size, ControlledSpawningConfig controlledSpawningConfig, Holder<StructureSpeleothemConfig> speleothemConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(decorationConfig, centerInChunk, structureIcon, structureSettings);
 		this.size = size;
 		this.controlledSpawningConfig = controlledSpawningConfig;
@@ -101,7 +102,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 				new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 10, 4, 8)
 			)), List.of(), List.of()),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.SMALL_HILL),
-			new DecorationConfig(1, true, false, false),
+			Optional.of(new DecorationConfig(1, true, false, false)),
 			true, Optional.of(TFMapDecorations.SMALL_HOLLOW_HILL),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
@@ -128,7 +129,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 				new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1)
 			)), List.of(), List.of()),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.MEDIUM_HILL),
-			new DecorationConfig(2, true, false, false),
+			Optional.of(new DecorationConfig(2, true, false, false)),
 			true, Optional.of(TFMapDecorations.MEDIUM_HOLLOW_HILL),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),
@@ -156,7 +157,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 				new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1, 1)
 			),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.LARGE_HILL),
-			new DecorationConfig(3, true, false, false),
+			Optional.of(new DecorationConfig(3, true, false, false)),
 			true, Optional.of(TFMapDecorations.LARGE_HOLLOW_HILL),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_HOLLOW_HILL_BIOMES),

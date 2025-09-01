@@ -119,4 +119,5 @@ public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings pl
 	public JigsawPlaceContext copy() {
 		return new JigsawPlaceContext(this.templatePos.immutable(), this.placementSettings.copy(), this.seedJigsaw, List.copyOf(this.spareJigsaws), this.templateLocation);
 	}
+
 }

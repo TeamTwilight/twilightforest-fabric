@@ -1,0 +1,7 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:arrow_magnetism": {}
+  },
+  "equipment_slots": "chest"
+}
