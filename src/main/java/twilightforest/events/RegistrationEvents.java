@@ -62,6 +62,7 @@ import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.init.*;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.ChunkBlanketProcessors;
+import twilightforest.init.custom.TemplateMarkerHandlers;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
@@ -72,6 +73,7 @@ import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
+import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
 
 @Component
 public class RegistrationEvents {
@@ -163,6 +165,7 @@ public class RegistrationEvents {
 		event.register(TFRegistries.BIOME_LAYER_TYPE);
 		event.register(TFRegistries.ENFORCEMENT);
 		event.register(TFRegistries.CHUNK_BLANKET_TYPES);
+		event.register(TFRegistries.TEMPLATE_MARKER_HANDLER_TYPES);
 		event.register(TFRegistries.ITEM_DISPLAY_TYPE);
 		event.register(TFRegistries.TRAVELLERS_MODIFIER_TYPE);
 	}
@@ -175,6 +178,8 @@ public class RegistrationEvents {
 		event.dataPackRegistry(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC, MagicPaintingVariant.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, ChunkBlanketProcessors.DISPATCH_CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER, TemplateMarkerHandlers.DISPATCH_CODEC);
+		event.dataPackRegistry(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TemplateMarkerHandlerList.CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.DWARF_RABBIT_VARIANT, DwarfRabbitVariant.DIRECT_CODEC, DwarfRabbitVariant.DIRECT_CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.TINY_BIRD_VARIANT, TinyBirdVariant.DIRECT_CODEC, TinyBirdVariant.DIRECT_CODEC);
 		event.dataPackRegistry(TFRegistries.Keys.TRAVELLERS_MODIFIERS, TravellersModifier.CODEC, TravellersModifier.CODEC);

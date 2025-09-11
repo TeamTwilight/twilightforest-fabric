@@ -1,18 +1,19 @@
 package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
@@ -27,11 +28,9 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
-import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
-import twilightforest.world.components.structures.util.ProgressionPiece;
-import twilightforest.world.components.structures.util.TemplatePoolInstance;
+import twilightforest.world.components.structures.markerhandler.TemplateMarkerHandler;
+import twilightforest.world.components.structures.util.*;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,13 +48,15 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	private static final String NBT_PLACE_PROJECTION = "place_projection";
 	private static final String NBT_GROUND_OFFSET = "ground_offset";
 	private static final String NBT_IGNORE_WATERLOG = "ignore_waterlog";
+	private static final String NBT_MARKER_HANDLERS = "marker_handlers";
 
 	private final JigsawRecord sourceJigsaw;
 	private final List<JigsawRecord> spareJigsaws;
 	private final TerrainAdjustment terrainAdjustment;
-	private final Holder<StructureProcessorList> processors;
+	private final Optional<Holder<StructureProcessorList>> processors;
 	private final StructureTemplatePool.Projection projection;
-	private final int groundOffset;
+	private final Optional<Holder<TemplateMarkerHandlerList>> markerHandlers;
+	private final int beardifierGroundDelta;
 
 	public static TwilightJigsawPiece defaultDeserialize(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), compoundTag, ctx, readSettings(compoundTag));
@@ -71,27 +72,22 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		return twilightJigsawPiece;
 	}
 
-	@SuppressWarnings("OptionalIsPresent")
 	public TwilightJigsawPiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings placeSettings) {
 		super(structurePieceType, compoundTag, ctx, placeSettings);
 
 		this.sourceJigsaw = readSourceFromNBT(compoundTag);
 		this.spareJigsaws = readConnectionsFromNBT(compoundTag);
 		this.terrainAdjustment = compoundTag.contains(NBT_TERRAIN_ADAPT) ? TerrainAdjustment.valueOf(compoundTag.getString(NBT_TERRAIN_ADAPT)) : TerrainAdjustment.NONE;
-		Optional<Holder<StructureProcessorList>> parsedProcessors = compoundTag.contains(NBT_TEMPLATE_PROCESSORS) ? StructureProcessorType.LIST_CODEC.parse(NbtOps.INSTANCE, compoundTag.getCompound(NBT_TEMPLATE_PROCESSORS)).resultOrPartial(TwilightForestMod.LOGGER::error) : Optional.empty();
-		if (parsedProcessors.isPresent()) {
-			this.processors = parsedProcessors.get();
-		} else {
-			this.processors = Holder.direct(new StructureProcessorList(Collections.emptyList()));
-		}
+		this.processors = compoundTag.contains(NBT_TEMPLATE_PROCESSORS) ? StructureProcessorType.LIST_CODEC.parse(NbtOps.INSTANCE, compoundTag.getCompound(NBT_TEMPLATE_PROCESSORS)).resultOrPartial(TwilightForestMod.LOGGER::error) : Optional.empty();
 		this.projection = compoundTag.contains(NBT_PLACE_PROJECTION) ? StructureTemplatePool.Projection.valueOf(compoundTag.getString(NBT_PLACE_PROJECTION)) : StructureTemplatePool.Projection.RIGID;
+		this.markerHandlers = compoundTag.contains(NBT_MARKER_HANDLERS) ? TemplateMarkerHandlerList.HOLDER_CODEC.parse(NbtOps.INSTANCE, compoundTag.getCompound(NBT_MARKER_HANDLERS)).resultOrPartial(TwilightForestMod.LOGGER::error) : Optional.empty();
 
-		this.groundOffset = compoundTag.getInt(NBT_GROUND_OFFSET);
+		this.beardifierGroundDelta = compoundTag.getInt(NBT_GROUND_OFFSET);
 
 		if (compoundTag.getBoolean(NBT_IGNORE_WATERLOG))
 			this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 
-		this.processors.value().list().forEach(this.placeSettings::addProcessor);
+		this.processors.ifPresent(p -> p.value().list().forEach(this.placeSettings::addProcessor));
 	}
 
 	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
@@ -100,9 +96,10 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.sourceJigsaw = jigsawContext.seedJigsaw();
 		this.spareJigsaws = Collections.unmodifiableList(jigsawContext.spareJigsaws());
 		this.terrainAdjustment = TerrainAdjustment.NONE;
-		this.processors = Holder.direct(new StructureProcessorList(Collections.emptyList()));
+		this.processors = Optional.empty();
 		this.projection = StructureTemplatePool.Projection.RIGID;
-		this.groundOffset = 0;
+		this.markerHandlers = Optional.empty();
+		this.beardifierGroundDelta = 0;
 	}
 
 	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance) {
@@ -111,11 +108,12 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.sourceJigsaw = jigsawContext.seedJigsaw();
 		this.spareJigsaws = Collections.unmodifiableList(jigsawContext.spareJigsaws());
 		this.terrainAdjustment = templatePoolInstance.terrainAdjustment();
-		this.processors = templatePoolInstance.processors().orElseGet(() -> Holder.direct(new StructureProcessorList(Collections.emptyList())));
+		this.processors = templatePoolInstance.processors();
 		this.projection = templatePoolInstance.projection();
-		this.groundOffset = templatePoolInstance.heightAdjustment().map(TemplatePoolInstance.HeightAdjustment::yOffset).orElse(0);
+		this.markerHandlers = templatePoolInstance.markerHandlers();
+		this.beardifierGroundDelta = templatePoolInstance.beardifierGroundDelta().map(TemplatePoolInstance.HeightAdjustment::yOffset).orElse(0);
 		if (templatePoolInstance.ignoreWorldWaterlog()) this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
-		this.processors.value().list().forEach(this.placeSettings::addProcessor);
+		this.processors.ifPresent(p -> p.value().list().forEach(this.placeSettings::addProcessor));
 	}
 
 	protected static JigsawRecord readSourceFromNBT(CompoundTag structureTag) {
@@ -156,15 +154,22 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 			structureTag.putString(NBT_TERRAIN_ADAPT, this.terrainAdjustment.toString());
 		}
 
-		StructureProcessorList value = this.processors.value();
-		if (!value.list().isEmpty()) {
-			Optional<Tag> processorsList = StructureProcessorType.LIST_CODEC.encodeStart(NbtOps.INSTANCE, this.processors).resultOrPartial(TwilightForestMod.LOGGER::error);
+		RegistryOps<Tag> registryOps = RegistryOps.create(NbtOps.INSTANCE, ctx.registryAccess());
+		if (this.processors.isPresent()) {
+			Optional<Tag> processorsList = StructureProcessorType.LIST_CODEC.encodeStart(registryOps, this.processors.get()).resultOrPartial(TwilightForestMod.LOGGER::error);
 			if (processorsList.isPresent()) {
 				structureTag.put(NBT_TEMPLATE_PROCESSORS, processorsList.get());
 			}
 		}
 
-		structureTag.putInt(NBT_GROUND_OFFSET, this.groundOffset);
+		if (this.markerHandlers.isPresent()) {
+			Optional<Tag> markerHandlersList = TemplateMarkerHandlerList.HOLDER_CODEC.encodeStart(registryOps, this.markerHandlers.get()).resultOrPartial(TwilightForestMod.LOGGER::error);
+			if (markerHandlersList.isPresent()) {
+				structureTag.put(NBT_MARKER_HANDLERS, markerHandlersList.get());
+			}
+		}
+
+		structureTag.putInt(NBT_GROUND_OFFSET, this.beardifierGroundDelta);
 
 		if (!this.placeSettings.shouldApplyWaterlogging()) {
 			structureTag.putBoolean(NBT_IGNORE_WATERLOG, true);
@@ -214,6 +219,21 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		}
 	}
 
+	@Override
+	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
+		super.handleDataMarker(label, pos, level, random, chunkBounds, chunkGen, rotation);
+
+		if (this.markerHandlers.isEmpty()) {
+			return;
+		}
+
+		for (TemplateMarkerHandler handler : this.markerHandlers.get().value().markerHandlers()) {
+			if (handler.handleDataMarker(label, pos, level, random, chunkBounds, chunkGen, rotation)) {
+				break;
+			}
+		}
+	}
+
 	public JigsawRecord getSourceJigsaw() {
 		return this.sourceJigsaw;
 	}
@@ -256,6 +276,6 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 	@Override
 	public int getGroundLevelDelta() {
-		return this.groundOffset;
+		return this.beardifierGroundDelta;
 	}
 }

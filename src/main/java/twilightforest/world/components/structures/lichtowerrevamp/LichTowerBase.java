@@ -10,6 +10,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CandleBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.*;
@@ -97,7 +98,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	}
 
 	@Override
-	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
+	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
 		String[] splitLabel = label.split(":");
 		if (splitLabel.length == 2 && "candle".equals(splitLabel[0]) && StringUtils.isNumeric(splitLabel[1])) {
 			level.removeBlock(pos, false); // Clears block entity data left by Data Marker

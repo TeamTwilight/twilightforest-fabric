@@ -421,7 +421,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	@Override
-	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
+	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
 		String[] modifiedLabel = label.split(">");
 
 		String variety = modifiedLabel.length == 2 ? modifiedLabel[1] : label;

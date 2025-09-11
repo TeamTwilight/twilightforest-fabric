@@ -13,9 +13,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.GravityProces
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.JsonCodecProvider;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.util.StructureTemplateDefinition;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
+import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
 import twilightforest.world.components.structures.util.TemplatePoolInstance;
 
 import java.util.HashMap;
@@ -87,25 +89,29 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 		poolWeightsForTemplate.put(poolId, poolData);
 	}
 
-	protected TemplatePoolInstance weightedPathTemplate(int weight) {
+	protected TemplatePoolInstance weightedPathTemplate(int weight, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers) {
+		// TODO register and reference instead
+		Holder<StructureProcessorList> projectionProcessorHolder = Holder.direct(new StructureProcessorList(List.of(new GravityProcessor(Heightmap.Types.WORLD_SURFACE_WG, -2))));
 		return new TemplatePoolInstance(
 			Weight.of(weight),
-			Optional.of(Holder.direct(new StructureProcessorList(List.of(new GravityProcessor(Heightmap.Types.WORLD_SURFACE_WG, -2))))),
+			Optional.of(projectionProcessorHolder),
 			StructureTemplatePool.Projection.RIGID,
 			TerrainAdjustment.NONE,
-			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 1, Optional.of(1))),
-			false
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 2, Optional.of(1))),
+			false,
+			Optional.ofNullable(markerHandlers)
 		);
 	}
 
-	protected TemplatePoolInstance weightedRigidTemplate(int weight, int yOffset, Optional<Integer> groundJunctionDiffLimit) {
+	protected TemplatePoolInstance weightedRigidTemplate(int weight, int yOffset, @Nullable Integer groundJunctionDiffLimit, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers) {
 		return new TemplatePoolInstance(
 			Weight.of(weight),
 			Optional.empty(),
 			StructureTemplatePool.Projection.RIGID,
 			TerrainAdjustment.BEARD_BOX,
-			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, yOffset, groundJunctionDiffLimit)),
-			true
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, yOffset, Optional.ofNullable(groundJunctionDiffLimit))),
+			true,
+			Optional.ofNullable(markerHandlers)
 		);
 	}
 

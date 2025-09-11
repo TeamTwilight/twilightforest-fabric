@@ -24,14 +24,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProcessorList>> processors, StructureTemplatePool.Projection projection, TerrainAdjustment terrainAdjustment, Optional<HeightAdjustment> heightAdjustment, boolean ignoreWorldWaterlog) implements WeightedEntry {
+public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProcessorList>> processors, StructureTemplatePool.Projection projection, TerrainAdjustment terrainAdjustment, Optional<HeightAdjustment> beardifierGroundDelta, boolean ignoreWorldWaterlog, Optional<Holder<TemplateMarkerHandlerList>> markerHandlers) implements WeightedEntry {
 	private static final Codec<TemplatePoolInstance> CODEC_DIRECT = Codec.withAlternative(RecordCodecBuilder.create(instance -> instance.group(
 		Weight.CODEC.fieldOf("weight").forGetter(TemplatePoolInstance::weight),
 		StructureProcessorType.LIST_CODEC.optionalFieldOf("processors").forGetter(TemplatePoolInstance::processors),
 		StructureTemplatePool.Projection.CODEC.optionalFieldOf("projection", StructureTemplatePool.Projection.RIGID).forGetter(TemplatePoolInstance::projection),
 		TerrainAdjustment.CODEC.optionalFieldOf("terrain_adaptation", TerrainAdjustment.NONE).forGetter(TemplatePoolInstance::terrainAdjustment),
-		HeightAdjustment.CODEC.optionalFieldOf("height_adjustment").forGetter(TemplatePoolInstance::heightAdjustment),
-		Codec.BOOL.optionalFieldOf("ignore_world_waterlog", false).forGetter(TemplatePoolInstance::ignoreWorldWaterlog)
+		HeightAdjustment.CODEC.optionalFieldOf("height_adjustment").forGetter(TemplatePoolInstance::beardifierGroundDelta),
+		Codec.BOOL.optionalFieldOf("ignore_world_waterlog", false).forGetter(TemplatePoolInstance::ignoreWorldWaterlog),
+		TemplateMarkerHandlerList.HOLDER_CODEC.optionalFieldOf("marker_handlers").forGetter(TemplatePoolInstance::markerHandlers)
 	).apply(instance, TemplatePoolInstance::new)), Codec.INT, TemplatePoolInstance::defaultsWithWeight);
 
 	public static final Codec<TemplatePoolInstance> CODEC = new TemplatePoolInstanceCodec();
@@ -43,7 +44,8 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 			StructureTemplatePool.Projection.RIGID,
 			TerrainAdjustment.NONE,
 			Optional.empty(),
-			false
+			false,
+			Optional.empty()
 		);
 	}
 
@@ -54,10 +56,10 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 
 	@SuppressWarnings("OptionalIsPresent")
 	public JigsawPlaceContext adjustContextForTerrain(JigsawPlaceContext placeContext, Structure.GenerationContext generationContext, boolean parentProjectsTerrain) {
-		if (this.heightAdjustment.isEmpty())
+		if (this.beardifierGroundDelta.isEmpty())
 			return placeContext;
 
-		return this.heightAdjustment.get().adjustForTerrain(placeContext, generationContext, parentProjectsTerrain);
+		return this.beardifierGroundDelta.get().adjustForTerrain(placeContext, generationContext, parentProjectsTerrain);
 	}
 
 	@Override

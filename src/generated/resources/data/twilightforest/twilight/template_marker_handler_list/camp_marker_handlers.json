@@ -1,0 +1,31 @@
+[
+  {
+    "type": "twilightforest:handler_switch",
+    "element_processor": {
+      "twilight_oak_slab": {
+        "type": "twilightforest:block_placement",
+        "block_state": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "data": {
+                "Name": "twilightforest:twilight_oak_slab",
+                "Properties": {
+                  "type": "bottom",
+                  "waterlogged": "false"
+                }
+              },
+              "weight": 1
+            },
+            {
+              "data": {
+                "Name": "minecraft:air"
+              },
+              "weight": 3
+            }
+          ]
+        }
+      }
+    }
+  }
+]

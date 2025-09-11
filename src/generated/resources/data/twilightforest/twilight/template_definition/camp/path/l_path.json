@@ -3,7 +3,7 @@
     "height_adjustment": {
       "ground_junction_diff_clamp": 1,
       "heightmap": "WORLD_SURFACE_WG",
-      "y_offset": 1
+      "y_offset": 2
     },
     "processors": {
       "processors": [

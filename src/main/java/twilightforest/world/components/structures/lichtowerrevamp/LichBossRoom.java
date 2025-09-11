@@ -74,7 +74,7 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 	}
 
 	@Override
-	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
+	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
 		placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 3, 3, CustomTagGenerator.PaintingVariantTagGenerator.LICH_BOSS_PAINTINGS);
 	}
 

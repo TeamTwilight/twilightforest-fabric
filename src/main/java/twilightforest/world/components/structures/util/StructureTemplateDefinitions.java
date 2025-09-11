@@ -1,8 +1,11 @@
 package twilightforest.world.components.structures.util;
 
 import com.google.gson.JsonElement;
+import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.RandomSource;
@@ -12,6 +15,7 @@ import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Component;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -27,6 +31,9 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 	private final Map<ResourceLocation, WeightedRandomList<TemplatePoolEntry>> templatePools = new HashMap<>();
 
 	public static final String DIRECTORY = "twilight/template_definition";
+
+	@Nullable
+	private RegistryAccess registryAccess;
 
 	public StructureTemplateDefinitions() {
 		super(DIRECTORY, StructureTemplateDefinition.CODEC);
@@ -65,6 +72,18 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 		}
 
 		this.rawTemplatePools.clear();
+	}
+
+	@Override
+	public void registerListener(AddReloadListenerEvent event) {
+		this.registryAccess = event.getRegistryAccess();
+
+		super.registerListener(event);
+	}
+
+	@Override
+	protected DynamicOps<JsonElement> initDynamicOps() {
+		return RegistryOps.create(super.initDynamicOps(), this.registryAccess);
 	}
 
 	private Optional<TemplatePoolEntry> getRandomEntry(RandomSource random, ResourceLocation templatePoolId) {

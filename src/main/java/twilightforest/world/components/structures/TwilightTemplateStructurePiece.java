@@ -25,9 +25,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.util.ArrayUtil;
 import twilightforest.util.BoundingBoxUtils;
 
-import java.util.Comparator;
-import java.util.List;
-
 public abstract class TwilightTemplateStructurePiece extends TemplateStructurePiece {
 	protected final StructureTemplateManager structureManager;
 	private final BlockPos originalPlacement;
@@ -125,6 +122,7 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 		this.placeSettings.setBoundingBox(chunkBounds);
 		this.boundingBox = this.template.getBoundingBox(this.placeSettings, this.templatePosition);
 		if (this.template.placeInWorld(level, this.templatePosition, structureBottomCenter, this.placeSettings, random, this.placeFlag)) {
+			Rotation rotation = this.placeSettings.getRotation();
 			for (StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo : this.template
 				.filterBlocks(this.templatePosition, this.placeSettings, Blocks.STRUCTURE_BLOCK)) {
 				if (structuretemplate$structureblockinfo.nbt() != null) {
@@ -136,7 +134,8 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 							level,
 							random,
 							chunkBounds,
-							chunkGen // Additional param, new method callable
+							chunkGen, // Additional param, new method callable
+							rotation
 						);
 					}
 				}
@@ -144,8 +143,8 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 		}
 	}
 
-	// Enhanced version of handleDataMarker() method that up-levels ServerLevelAccessor into WorldGenLevel while also adding ChunkGenerator parameter
-	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
+	// Enhanced version of TemplateStructurePiece#handleDataMarker() method that up-levels ServerLevelAccessor into WorldGenLevel while also adding ChunkGenerator parameter
+	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
 	}
 
 	@Deprecated

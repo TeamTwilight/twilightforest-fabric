@@ -104,6 +104,7 @@ public final class TwilightForestMod {
 		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(bus);
 		ChunkBlanketProcessors.CHUNK_BLANKETING_TYPES.register(bus);
 		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(bus);
+		TemplateMarkerHandlers.TEMPLATE_MARKER_HANDLER_TYPES.register(bus);
 
 		TFRemapper.addRegistryAliases();
 

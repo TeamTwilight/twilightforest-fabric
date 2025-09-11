@@ -93,7 +93,7 @@ public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBe
 	}
 
 	@Override
-	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen) {
+	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
 		String[] directionSplit = label.split("@");
 
 		if (directionSplit.length == 0) return;
