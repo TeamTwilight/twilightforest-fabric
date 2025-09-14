@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryOps;
@@ -15,8 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.data.helpers.TFLangProvider;
-import twilightforest.init.TFItems;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -34,18 +33,20 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean matches(CraftingInput input, Level level) {
+	public boolean matches(@NotNull CraftingInput input, @NotNull Level level) {
 		ItemStack stack = getModifiableArmor(input);
 		if (stack == null)
 			return false;
 		int slots = 0;
 		if (stack.getItem() instanceof TravellersModifiable travellersModifiableItem)
 			slots = travellersModifiableItem.getModifierSlots();
-		return TravellersModifiersManager.countInsertableModifiers(level.registryAccess(), stack) < slots && !TravellersModifiersManager.hasTravellersModifier(level.registryAccess(), stack, this.travellersModifierKey);
+		return TravellersModifiersManager.countInsertableModifiers(level.registryAccess(), stack) < slots
+			&& !TravellersModifiersManager.hasTravellersModifier(level.registryAccess(), stack, this.travellersModifierKey)
+			&& TravellersModifiersManager.getModifierDataComponentProviders(level.registryAccess(), input.items().stream().map(Ingredient::of).toList(), this.travellersModifierKey) <= 1;
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
+	public @NotNull ItemStack assemble(@NotNull CraftingInput input, HolderLookup.@NotNull Provider registries) {
 		ItemStack travellerArmorStack = getModifiableArmor(input);
 		if (travellerArmorStack == null)
 			return ItemStack.EMPTY;  // Should never happen
@@ -55,25 +56,10 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 	}
 
 	public ItemStack applyModifier(HolderLookup.Provider registries, ItemStack stack, List<Ingredient> inputs) {
+		if (TravellersModifiersManager.transferModifier(registries, stack, inputs, this.travellersModifierKey))
+			return stack;
 		boolean modifierAdded = TravellersModifiersManager.addModifier(registries, stack, this.travellersModifierKey);
-		if (modifierAdded) {
-			ItemStack belt = getAndReturnBelt(inputs);
-			if (!belt.isEmpty()) {
-				stack.set(DataComponents.CONTAINER, belt.get(DataComponents.CONTAINER));
-			}
-		}
 		return modifierAdded ? stack : ItemStack.EMPTY;
-	}
-
-	protected static ItemStack getAndReturnBelt(List<Ingredient> ingredients) {
-		for (Ingredient ingredient : ingredients) {
-			for (ItemStack itemstack : ingredient.getItems()) {
-				if (itemstack.is(TFItems.TRAVELLERS_BELT)) {
-					return itemstack;
-				}
-			}
-		}
-		return ItemStack.EMPTY;
 	}
 
 	public abstract boolean isShapeless();
@@ -112,12 +98,12 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 		}
 
 		@Override
-		public MapCodec<T> codec() {
+		public @NotNull MapCodec<T> codec() {
 			return codec;
 		}
 
 		@Override
-		public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
+		public @NotNull StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
 			return StreamCodec.of(this::toNetwork, this::fromNetwork);
 		}
 

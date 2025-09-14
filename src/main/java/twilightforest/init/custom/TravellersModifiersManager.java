@@ -2,6 +2,7 @@ package twilightforest.init.custom;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
@@ -10,15 +11,19 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFAttributeModifiers;
 import twilightforest.init.TFDataComponents;
+import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.modifiers.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public class TravellersModifiersManager {
 
@@ -78,7 +83,7 @@ public class TravellersModifiersManager {
 		context.register(HASTE_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.CHEST, TFDataComponents.HASTE_AMPLIFIER.get(), 1));
 
 		context.register(SWAP_HOTBAR_ABILITY, new BuiltinTravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.SWAP_HOTBAR_ABILITY.get()));
-		context.register(SWAP_HOTBAR_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.SWAP_HOTBAR_MODIFIER.get(), Unit.INSTANCE));
+		context.register(SWAP_HOTBAR_MODIFIER, new TransferableComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.SWAP_HOTBAR_MODIFIER.get(), DataComponents.CONTAINER, TravellersArmorBeltItem.DEFAULT_EMPTY_BELT_CONTAINER));
 
 		context.register(HIGH_JUMP_ABILITY, new BuiltinTravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.HIGH_JUMP_AMPLIFIER.get()));
 		context.register(CONTROLLED_FALL_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.CONTROLLED_FALLING_MULTIPLIER.get(), 1 - 1 / 6F));
@@ -110,6 +115,20 @@ public class TravellersModifiersManager {
 		if (modifier.isEmpty() || !(modifier.get().value() instanceof InsertableTravellersModifier insertableTravellersModifier))
 			return false;
 		return insertableTravellersModifier.addModifier(stack);
+	}
+
+	public static boolean transferModifier(HolderLookup.Provider registries, ItemStack stack, List<Ingredient> ingredients, ResourceKey<TravellersModifier> modifierKey) {
+		Optional<Holder.Reference<TravellersModifier>> modifier = registries.holder(modifierKey);
+		if (modifier.isEmpty() || !(modifier.get().value() instanceof TransferableTravellersModifier transferableTravellersModifier))
+			return false;
+		return transferableTravellersModifier.transfer(stack, ingredients);
+	}
+
+	public static int getModifierDataComponentProviders(HolderLookup.Provider registries, List<Ingredient> ingredients, ResourceKey<TravellersModifier> modifierKey) {
+		Optional<Holder.Reference<TravellersModifier>> modifier = registries.holder(modifierKey);
+		if (modifier.isEmpty() || !(modifier.get().value() instanceof TransferableComponentModifier transferableComponentModifier))
+			return 0;
+		return transferableComponentModifier.findDataComponentProviders(ingredients).size();
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {

@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFRecipes;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -25,7 +26,7 @@ public class TravellersGearModifierShapedRecipe extends TravellersGearModifierRe
 	}
 
 	@Override
-	public boolean matches(CraftingInput input, Level level) {
+	public boolean matches(@NotNull CraftingInput input, @NotNull Level level) {
 		if (!super.matches(input, level))
 			return false;
 		return pattern.matches(input);

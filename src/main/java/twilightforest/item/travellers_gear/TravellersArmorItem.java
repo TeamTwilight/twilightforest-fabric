@@ -22,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -31,7 +30,9 @@ import twilightforest.client.model.armor.TravellersWingsModel;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
-import twilightforest.item.travellers_gear.modifiers.*;
+import twilightforest.item.travellers_gear.modifiers.TooltipStringInterpolator;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -157,13 +158,6 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	@Override
-	public void onCraftedPostProcess(ItemStack stack, @NotNull Level level) {
-		if (stack.has(TFDataComponents.SWAP_HOTBAR_MODIFIER)) {
-			stack.set(TFDataComponents.TRAVELLERS_HAS_BELT, Unit.INSTANCE);
-		}
-	}
-
-	@Override
 	public boolean canWalkOnPowderedSnow(ItemStack stack, @NotNull LivingEntity wearer) {
 		return stack.is(TFItems.TRAVELLERS_BOOTS);
 	}
@@ -229,7 +223,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 					ModelPart leggingsLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
 					leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
 					boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
-					boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT);
+					boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT) || TravellersModifiersManager.hasTravellersModifier(living.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER);
 
 					TravellersWingsModel.skipBelt(leggingsLayer, !hasBelt);
 					TravellersWingsModel.skipWings(leggingsLayer, !hasWings);
