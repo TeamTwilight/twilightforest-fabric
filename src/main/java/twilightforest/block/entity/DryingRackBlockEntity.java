@@ -6,6 +6,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.ReloadableServerRegistries;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -14,12 +18,21 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.ticks.ContainerSingleItem;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.DryingRackBlock;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFRecipes;
 import twilightforest.item.recipe.DryingRecipe;
+
+import java.util.Optional;
 
 public class DryingRackBlockEntity extends BlockEntity implements ContainerSingleItem.BlockContainerSingleItem, WorldlyContainer {
 
@@ -97,6 +110,23 @@ public class DryingRackBlockEntity extends BlockEntity implements ContainerSingl
 			this.dryTime = 0;
 			this.setChanged();
 		}
+	}
+
+	public boolean fillFromLootTable(ResourceKey<LootTable> lootTableKey, long seed, ServerLevel level) {
+		MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
+		return this.fillFromLootTable(lootTableKey, seed, level, currentServer.reloadableRegistries());
+	}
+
+	public boolean fillFromLootTable(ResourceKey<LootTable> lootTableKey, long seed, ServerLevel serverLevel, ReloadableServerRegistries.Holder holder) {
+		LootTable lootTable = holder.getLootTable(lootTableKey);
+
+		if (lootTable == LootTable.EMPTY) return false;
+
+		LootParams params = new LootParams.Builder(serverLevel).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.getBlockPos())).create(LootContextParamSets.CHEST);
+
+		lootTable.getRandomItemsRaw(new LootContext.Builder(params).withOptionalRandomSeed(seed).create(Optional.of(lootTableKey.location())), lootStack -> this.stack = lootStack);
+
+		return true;
 	}
 
 	private static int getDryingTime(Level level, DryingRackBlockEntity entity) {

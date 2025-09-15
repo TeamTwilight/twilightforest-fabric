@@ -40,7 +40,7 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 
 		this.configureSmallPaths();
 
-		this.configureDeco();
+		this.configureDeco(campMarkers);
 	}
 
 	private void configureTents() {
@@ -72,13 +72,13 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 		this.addToAllPools("camp/path/path_3x4", pathTemplateData, campPieces.mainPath, campPieces.path);
 	}
 
-	private void configureDeco() {
-		TemplatePoolInstance rigidTemplateDataAnyDiff = this.weightedRigidTemplate(100, 1, null, null);
-		TemplatePoolInstance rigidTemplateDataNoDiff = this.weightedRigidTemplate(100, 1, 0, null);
-		TemplatePoolInstance berryTemplateData = this.weightedRigidTemplate(75, 1, 0, null);
+	private void configureDeco(Holder.Reference<TemplateMarkerHandlerList> campMarkers) {
+		TemplatePoolInstance dryingRackTemplateData = this.weightedRigidTemplate(100, 2, 0, campMarkers);
+		TemplatePoolInstance rigidTemplateDataNoDiff = this.weightedRigidTemplate(100, 1, 0, campMarkers);
+		TemplatePoolInstance berryTemplateData = this.weightedRigidTemplate(75, 1, 0, campMarkers);
 
-		this.add("camp/deco/double_drying_rack", campPieces.deco, rigidTemplateDataAnyDiff);
-		this.add("camp/deco/long_drying_rack", campPieces.deco, rigidTemplateDataAnyDiff);
+		this.add("camp/deco/double_drying_rack", campPieces.deco, dryingRackTemplateData);
+		this.add("camp/deco/long_drying_rack", campPieces.deco, dryingRackTemplateData);
 
 		this.add("camp/deco/garden_1x2", campPieces.deco, rigidTemplateDataNoDiff);
 		this.add("camp/deco/garden_2x4", campPieces.deco, rigidTemplateDataNoDiff);
@@ -86,7 +86,7 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 		this.add("camp/deco/garden_u", campPieces.deco, rigidTemplateDataNoDiff);
 
 		this.add("camp/deco/berries_staked", campPieces.deco, berryTemplateData);
-		this.add("camp/deco/berries_trellis", campPieces.deco, berryTemplateData);
+		this.add("camp/deco/berries_trellis", campPieces.deco, this.weightedRigidTemplate(75, 2, 0, campMarkers));
 		this.add("camp/deco/blackberry_wall", campPieces.deco, berryTemplateData);
 		this.add("camp/deco/blueberry_wall", campPieces.deco, berryTemplateData);
 		this.add("camp/deco/raspberry_wall", campPieces.deco, berryTemplateData);

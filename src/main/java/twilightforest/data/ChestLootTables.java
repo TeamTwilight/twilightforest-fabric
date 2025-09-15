@@ -378,6 +378,77 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 					.add(LootItem.lootTableItem(TFBlocks.UNCRAFTING_TABLE).when(UncraftingTableEnabledCondition.uncraftingTableEnabled()))
 					.add(LootItem.lootTableItem(Items.GOLDEN_APPLE))));
 
+		register.accept(TFLootTables.CAMP_TENT,
+			LootTable.lootTable()
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(TFItems.TANNED_LEATHER))) // One guaranteed Tanned Leather
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(TFItems.TANNIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))) // Two guaranteed Tannin
+				.withPool(LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(2))
+					//common loot
+					.add(LootItem.lootTableItem(TFItems.TANNIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+					.add(LootItem.lootTableItem(TFItems.VENISON_JERKY).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+					.add(LootItem.lootTableItem(TFItems.MUTTON_JERKY).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+					.add(LootItem.lootTableItem(TFItems.PORK_JERKY).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+				)
+				.withPool(LootPool.lootPool()
+					.setRolls(UniformGenerator.between(1, 2))
+					//uncommon loot
+					.add(LootItem.lootTableItem(Items.LEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+					.add(LootItem.lootTableItem(TFBlocks.TWILIGHT_OAK_DRYING_RACK).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1))))
+					.add(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+					.add(LootItem.lootTableItem(Items.APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+				)
+				.withPool(LootPool.lootPool()
+					//rare loot
+					.add(LootItem.lootTableItem(Items.LEATHER_HELMET))
+					.add(LootItem.lootTableItem(Items.LEATHER_CHESTPLATE))
+					.add(LootItem.lootTableItem(Items.LEATHER_LEGGINGS))
+					.add(LootItem.lootTableItem(Items.LEATHER_BOOTS))
+					.add(LootItem.lootTableItem(Items.SHEARS))
+				)
+		);
+
+		register.accept(TFLootTables.CAMP_ARMOR_RACK,
+			LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+					.add(LootItem.lootTableItem(Items.LEATHER_HELMET))
+					.add(LootItem.lootTableItem(Items.LEATHER_CHESTPLATE))
+					.add(LootItem.lootTableItem(Items.LEATHER_LEGGINGS))
+					.add(LootItem.lootTableItem(Items.LEATHER_BOOTS))
+					.add(LootItem.lootTableItem(Items.CHAINMAIL_HELMET))
+					.add(LootItem.lootTableItem(Items.CHAINMAIL_CHESTPLATE))
+					.add(LootItem.lootTableItem(Items.CHAINMAIL_LEGGINGS))
+					.add(LootItem.lootTableItem(Items.CHAINMAIL_BOOTS))
+				)
+		);
+
+		register.accept(TFLootTables.CAMP_DRYING_RACK,
+			LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+					//empty
+					.add(LootItem.lootTableItem(Items.AIR).setWeight(20))
+					//common
+					.add(LootItem.lootTableItem(TFItems.CHICKEN_JERKY).setWeight(8))
+					.add(LootItem.lootTableItem(TFItems.MUTTON_JERKY).setWeight(8))
+					.add(LootItem.lootTableItem(TFItems.PORK_JERKY).setWeight(8))
+					.add(LootItem.lootTableItem(TFItems.VENISON_JERKY).setWeight(8))
+					//uncommon
+					.add(LootItem.lootTableItem(TFItems.BEEF_JERKY).setWeight(4))
+					.add(LootItem.lootTableItem(TFItems.TANNED_LEATHER).setWeight(4))
+					.add(LootItem.lootTableItem(TFItems.RABBIT_JERKY).setWeight(4))
+					//rare
+					.add(LootItem.lootTableItem(Items.LEATHER).setWeight(2))
+					.add(NestedLootTable.inlineLootTable(LootTable.lootTable().withPool(LootPool.lootPool()
+						.add(LootItem.lootTableItem(Items.LEATHER_HELMET))
+						.add(LootItem.lootTableItem(Items.LEATHER_CHESTPLATE))
+						.add(LootItem.lootTableItem(Items.LEATHER_LEGGINGS))
+						.add(LootItem.lootTableItem(Items.LEATHER_BOOTS))
+					).build()).setWeight(2))
+					//very rare
+					.add(LootItem.lootTableItem(TFItems.GELATINOUS_SLIME_DROP))
+				)
+		);
+
 		register.accept(TFLootTables.SMALL_HOLLOW_HILL,
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()

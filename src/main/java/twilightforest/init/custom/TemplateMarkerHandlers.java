@@ -8,16 +8,15 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
-import twilightforest.world.components.structures.markerhandler.BlockPlaceMarkerHandler;
-import twilightforest.world.components.structures.markerhandler.SwitchMarkerHandler;
-import twilightforest.world.components.structures.markerhandler.TemplateMarkerHandler;
-import twilightforest.world.components.structures.markerhandler.TemplateMarkerHandlerType;
+import twilightforest.loot.TFLootTables;
+import twilightforest.world.components.structures.markerhandler.*;
 import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
 
 import java.util.Map;
@@ -31,13 +30,12 @@ public class TemplateMarkerHandlers {
 
 	public static final DeferredHolder<TemplateMarkerHandlerType, TemplateMarkerHandlerType> BLOCK_PLACEMENT = TEMPLATE_MARKER_HANDLER_TYPES.register("block_placement", () -> () -> BlockPlaceMarkerHandler.CODEC);
 	public static final DeferredHolder<TemplateMarkerHandlerType, TemplateMarkerHandlerType> HANDLER_SWITCH = TEMPLATE_MARKER_HANDLER_TYPES.register("handler_switch", () -> () -> SwitchMarkerHandler.CODEC);
+	public static final DeferredHolder<TemplateMarkerHandlerType, TemplateMarkerHandlerType> ROTATION = TEMPLATE_MARKER_HANDLER_TYPES.register("rotation", () -> () -> RotationMarkerHandler.CODEC);
+	public static final DeferredHolder<TemplateMarkerHandlerType, TemplateMarkerHandlerType> DRYING_RACK = TEMPLATE_MARKER_HANDLER_TYPES.register("drying_rack", () -> () -> DryingRackMarkerHandler.CODEC);
 
 	public static final ResourceKey<TemplateMarkerHandlerList> CAMP_MARKER_HANDLERS = ResourceKey.create(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TwilightForestMod.prefix("camp_marker_handlers"));
 
 	// TODO
-	//  Rotation handler
-	//  Drying Rack handler
-	//  -
 	//  Lich Tower:
 	//    Dangling handler
 	//    List handler
@@ -51,14 +49,22 @@ public class TemplateMarkerHandlers {
 	//    Spawner handler
 
 	public static void bootstrap(BootstrapContext<TemplateMarkerHandlerList> context) {
+		BlockPlaceMarkerHandler campfireSeat = new BlockPlaceMarkerHandler(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
+			.add(TFBlocks.TWILIGHT_OAK_SLAB.value().defaultBlockState())
+			.add(Blocks.AIR.defaultBlockState(), 3)
+			.build()));
+
+		DryingRackMarkerHandler armorRack = new DryingRackMarkerHandler(SimpleStateProvider.simple(TFBlocks.CANOPY_DRYING_RACK.value()), TFLootTables.CAMP_ARMOR_RACK);
+
+		DryingRackMarkerHandler birchDryingRack = new DryingRackMarkerHandler(SimpleStateProvider.simple(TFBlocks.BIRCH_DRYING_RACK.value()), TFLootTables.CAMP_DRYING_RACK);
+
 		Map<String, Holder<TemplateMarkerHandler>> keyedHandlers = Map.of(
-			"twilight_oak_slab", Holder.direct(new BlockPlaceMarkerHandler(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
-				.add(TFBlocks.TWILIGHT_OAK_SLAB.value().defaultBlockState())
-				.add(Blocks.AIR.defaultBlockState(), 3)
-				.build())))
+			"twilight_oak_slab", Holder.direct(campfireSeat),
+			"camp_armor_rack", Holder.direct(armorRack),
+			"birch_drying_rack", Holder.direct(birchDryingRack)
 		);
 		context.register(CAMP_MARKER_HANDLERS, TemplateMarkerHandlerList.of(
-			new SwitchMarkerHandler(keyedHandlers)
+			new RotationMarkerHandler(Holder.direct(new SwitchMarkerHandler(keyedHandlers)))
 		));
 	}
 

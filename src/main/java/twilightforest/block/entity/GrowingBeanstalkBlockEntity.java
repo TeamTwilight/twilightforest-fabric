@@ -196,7 +196,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		compoundTag.putBoolean("isAreaClearEnough", this.isAreaClearEnough);
 
 		compoundTag.putInt("nextLeafY", this.nextLeafY);
-		compoundTag.putInt("yOffset", this.yOffset);
+		compoundTag.putInt("beardifierGroundDelta", this.yOffset);
 		compoundTag.putFloat("cScale", this.cScale);
 		compoundTag.putFloat("rScale", this.rScale);
 		compoundTag.putInt("maxY", this.maxY);
@@ -211,7 +211,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		this.isAreaClearEnough = compoundTag.getBoolean("isAreaClearEnough");
 
 		this.nextLeafY = compoundTag.getInt("nextLeafY");
-		this.yOffset = compoundTag.getInt("yOffset");
+		this.yOffset = compoundTag.getInt("beardifierGroundDelta");
 		this.cScale = compoundTag.getFloat("cScale");
 		this.rScale = compoundTag.getFloat("rScale");
 		this.maxY = compoundTag.getInt("maxY");
