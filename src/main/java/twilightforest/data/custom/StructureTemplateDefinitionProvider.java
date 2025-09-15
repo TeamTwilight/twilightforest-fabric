@@ -103,13 +103,13 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 		);
 	}
 
-	protected TemplatePoolInstance weightedRigidTemplate(int weight, int yOffset, @Nullable Integer groundJunctionDiffLimit, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers) {
+	protected TemplatePoolInstance weightedRigidTemplate(int weight, int beardifierGroundDelta, @Nullable Integer groundJunctionDiffLimit, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers) {
 		return new TemplatePoolInstance(
 			Weight.of(weight),
 			Optional.empty(),
 			StructureTemplatePool.Projection.RIGID,
 			TerrainAdjustment.BEARD_BOX,
-			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, yOffset, Optional.ofNullable(groundJunctionDiffLimit))),
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, beardifierGroundDelta, Optional.ofNullable(groundJunctionDiffLimit))),
 			true,
 			Optional.ofNullable(markerHandlers)
 		);

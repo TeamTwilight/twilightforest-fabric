@@ -77,10 +77,10 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 		return Objects.hash(this.weight(), this.processors().map(Holder::value).map(StructureProcessorList::list), this.projection(), this.terrainAdjustment());
 	}
 
-	public record HeightAdjustment(Heightmap.Types heightType, int yOffset, Optional<Integer> groundJunctionDiffLimit) {
+	public record HeightAdjustment(Heightmap.Types heightType, int beardifierGroundDelta, Optional<Integer> groundJunctionDiffLimit) {
 		public static final Codec<HeightAdjustment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Heightmap.Types.CODEC.fieldOf("heightmap").forGetter(HeightAdjustment::heightType),
-			Codec.INT.optionalFieldOf("y_offset", 0).forGetter(HeightAdjustment::yOffset),
+			Codec.INT.optionalFieldOf("y_offset", 0).forGetter(HeightAdjustment::beardifierGroundDelta),
 			Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("ground_junction_diff_clamp").forGetter(HeightAdjustment::groundJunctionDiffLimit)
 		).apply(instance, HeightAdjustment::new));
 
@@ -102,7 +102,7 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 
 		private int clampYLevelBox(Structure.GenerationContext generationContext, JigsawPlaceContext placeContext, BoundingBox box) {
 			if (this.groundJunctionDiffLimit.isEmpty()) {
-				return this.yOffset + WorldUtil.adjustForTerrain(generationContext, box.minX(), box.minZ(), box.maxX(), box.maxZ(), 2, this.heightType);
+				return this.beardifierGroundDelta + WorldUtil.adjustForTerrain(generationContext, box.minX(), box.minZ(), box.maxX(), box.maxZ(), 2, this.heightType);
 			}
 
 			int templateY = placeContext.templatePos().getY();
@@ -112,12 +112,12 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 			}
 
 			int yTerrain = WorldUtil.adjustForTerrain(generationContext, box.minX(), box.minZ(), box.maxX(), box.maxZ(), 2, this.heightType);
-			return Mth.clamp(this.yOffset + yTerrain, templateY - variantLimit, templateY + variantLimit);
+			return Mth.clamp(this.beardifierGroundDelta + yTerrain, templateY - variantLimit, templateY + variantLimit);
 		}
 
 		private int clampYLevelPos(Structure.GenerationContext generationContext, JigsawPlaceContext placeContext, BlockPos pos) {
 			if (this.groundJunctionDiffLimit.isEmpty()) {
-				return this.yOffset + generationContext.chunkGenerator().getFirstOccupiedHeight(pos.getX(), pos.getZ(), this.heightType, generationContext.heightAccessor(), generationContext.randomState());
+				return this.beardifierGroundDelta + generationContext.chunkGenerator().getFirstOccupiedHeight(pos.getX(), pos.getZ(), this.heightType, generationContext.heightAccessor(), generationContext.randomState());
 			}
 
 			int templateY = placeContext.templatePos().getY();
@@ -127,7 +127,7 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 			}
 
 			int yTerrain = generationContext.chunkGenerator().getFirstOccupiedHeight(pos.getX(), pos.getZ(), this.heightType, generationContext.heightAccessor(), generationContext.randomState());
-			return Mth.clamp(this.yOffset + yTerrain, templateY - variantLimit, templateY + variantLimit);
+			return Mth.clamp(this.beardifierGroundDelta + yTerrain, templateY - variantLimit, templateY + variantLimit);
 		}
 	}
 
