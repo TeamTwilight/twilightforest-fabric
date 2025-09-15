@@ -97,7 +97,7 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 			Optional.of(projectionProcessorHolder),
 			StructureTemplatePool.Projection.RIGID,
 			TerrainAdjustment.NONE,
-			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 2, Optional.of(1))),
+			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 2, Optional.of(0))),
 			false,
 			Optional.ofNullable(markerHandlers)
 		);
