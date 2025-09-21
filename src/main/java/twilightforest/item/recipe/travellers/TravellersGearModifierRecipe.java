@@ -74,7 +74,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 
 	protected static @Nullable ItemStack getModifiableArmor(Iterable<ItemStack> items) {
 		return StreamSupport.stream(items.spliterator(), false)
-			.filter(stack -> stack.getItem() instanceof TravellersModifiable).findFirst().orElse(null);
+			.filter(stack -> stack.getItem() instanceof TravellersModifiable modifiable && modifiable.getModifierSlots() > 0).findFirst().orElse(null);
 	}
 
 	public static ItemStack getModifiableArmorFromIngredients(Iterable<Ingredient> ingredients) {
