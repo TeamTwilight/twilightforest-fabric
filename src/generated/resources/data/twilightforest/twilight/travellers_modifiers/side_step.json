@@ -1,7 +1,7 @@
 {
   "type": "twilightforest:component",
   "component": {
-    "twilightforest:sidestep_cooldown": 60
+    "twilightforest:sidestep_cooldown": 50
   },
   "equipment_slots": "legs"
 }
