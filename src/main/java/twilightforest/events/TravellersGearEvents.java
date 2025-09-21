@@ -12,12 +12,14 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -47,7 +49,9 @@ import twilightforest.network.ParticlePacket;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 @Component
@@ -67,6 +71,7 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::cancelPhantomSpawns);
 		NeoForge.EVENT_BUS.addListener(this::fireCraftingModifierTrigger);
 		NeoForge.EVENT_BUS.addListener(this::removeModifiersFromTravellersGear);
+		NeoForge.EVENT_BUS.addListener(this::extractItemsFromSwapHotbarModifier);
 		NeoForge.EVENT_BUS.addListener(this::stopDamagingTravellersGear);
 	}
 
@@ -188,26 +193,27 @@ public class TravellersGearEvents {
 	}
 
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
-		if (ServerLifecycleHooks.getCurrentServer() != null) {
-			ItemStack armor = event.getItemStack();
-			if (!armor.has(TFDataComponents.IS_TRAVELLERS_GEAR) || !armor.isDamageableItem())
-				return;
+		if (ServerLifecycleHooks.getCurrentServer() == null)
+			return;
 
-			if (armor.getMaxDamage() - 1 <= armor.getDamageValue()) {
-				if (armor.has(DataComponents.ATTRIBUTE_MODIFIERS)) {
-					Set<ItemAttributeModifiers.Entry> entries = new LinkedHashSet<>(armor.get(DataComponents.ATTRIBUTE_MODIFIERS).modifiers());
-					if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES)) {
-						entries.addAll(armor.get(TFDataComponents.STORED_BROKEN_ATTRIBUTES).modifiers());
-					}
-					armor.set(TFDataComponents.STORED_BROKEN_ATTRIBUTES, new ItemAttributeModifiers(entries.stream().toList(), armor.get(DataComponents.ATTRIBUTE_MODIFIERS).showInTooltip()));
-					event.clearModifiers();
-				}
-			} else {
+		ItemStack armor = event.getItemStack();
+		if (!armor.has(TFDataComponents.IS_TRAVELLERS_GEAR) || !armor.isDamageableItem())
+			return;
+
+		if (armor.getMaxDamage() - 1 <= armor.getDamageValue()) {
+			if (armor.has(DataComponents.ATTRIBUTE_MODIFIERS)) {
+				Set<ItemAttributeModifiers.Entry> entries = new LinkedHashSet<>(armor.get(DataComponents.ATTRIBUTE_MODIFIERS).modifiers());
 				if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES)) {
-					armor.get(TFDataComponents.STORED_BROKEN_ATTRIBUTES).modifiers().forEach(entry -> event.replaceModifier(entry.attribute(), entry.modifier(), entry.slot()));
-					armor.remove(TFDataComponents.STORED_BROKEN_ATTRIBUTES);
-					armor.set(DataComponents.ATTRIBUTE_MODIFIERS, event.build());
+					entries.addAll(armor.get(TFDataComponents.STORED_BROKEN_ATTRIBUTES).modifiers());
 				}
+				armor.set(TFDataComponents.STORED_BROKEN_ATTRIBUTES, new ItemAttributeModifiers(entries.stream().toList(), armor.get(DataComponents.ATTRIBUTE_MODIFIERS).showInTooltip()));
+				event.clearModifiers();
+			}
+		} else {
+			if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES)) {
+				armor.get(TFDataComponents.STORED_BROKEN_ATTRIBUTES).modifiers().forEach(entry -> event.replaceModifier(entry.attribute(), entry.modifier(), entry.slot()));
+				armor.remove(TFDataComponents.STORED_BROKEN_ATTRIBUTES);
+				armor.set(DataComponents.ATTRIBUTE_MODIFIERS, event.build());
 			}
 		}
 	}
@@ -234,29 +240,49 @@ public class TravellersGearEvents {
 	}
 
 	private void removeModifiersFromTravellersGear(GrindstoneEvent.OnPlaceItem event) {
-		if (ServerLifecycleHooks.getCurrentServer() != null) {
-			RegistryAccess access = ServerLifecycleHooks.getCurrentServer().registryAccess();
-			List<ItemStack> travellersItemStacks = Stream.of(event.getTopItem(), event.getBottomItem())
+		if (ServerLifecycleHooks.getCurrentServer() == null)
+			return;
+		RegistryAccess access = ServerLifecycleHooks.getCurrentServer().registryAccess();
+		List<ItemStack> travellersItemStacks = Stream.of(event.getTopItem(), event.getBottomItem())
 				.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
 				.toList();
 
-			if (travellersItemStacks.isEmpty())
-				return; // Delegate to vanilla logic
-			if (travellersItemStacks.size() > 1) {
-				event.setCanceled(true);
-				return;
-			}
-			ItemStack inputStack = travellersItemStacks.getFirst();
-			List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(access, inputStack);
-			if (modifiers.isEmpty()) {
-				event.setCanceled(true);
-				return;
-			}
-
-			ItemStack unmodifiedStack = inputStack.copy();
-			modifiers.forEach(modifier -> ((InsertableTravellersModifier) modifier.value()).removeModifier(unmodifiedStack));
-			event.setOutput(unmodifiedStack.copy());
+		if (travellersItemStacks.isEmpty())
+			return; // Delegate to vanilla logic
+		if (travellersItemStacks.size() > 1) {
+			event.setCanceled(true);
+			return;
 		}
+		ItemStack inputStack = travellersItemStacks.getFirst();
+		List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(access, inputStack);
+		if (modifiers.isEmpty()) {
+			event.setCanceled(true);
+			return;
+		}
+
+		ItemStack unmodifiedStack = inputStack.copy();
+		modifiers.forEach(modifier -> ((InsertableTravellersModifier) modifier.value()).removeModifier(unmodifiedStack));
+		event.setOutput(unmodifiedStack.copy());
+	}
+
+	private void extractItemsFromSwapHotbarModifier(GrindstoneEvent.OnTakeItem event) {
+		if (event.getPlayer() == null)
+			return;
+		getUniqueTravellersGear(event.getTopItem(), event.getBottomItem(),
+			stack -> TravellersModifiersManager.hasTravellersModifier(event.getPlayer().registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER)
+		).ifPresent(beltStack -> {
+			ItemContainerContents container = beltStack.get(DataComponents.CONTAINER);
+			if (container == null) return; // should never happen
+			container.nonEmptyItems().forEach(itemStack -> ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), itemStack));
+		});
+	}
+
+	private Optional<ItemStack> getUniqueTravellersGear(ItemStack top, ItemStack bottom, Predicate<ItemStack> predicate) {
+		List<ItemStack> travellersItemStacks = Stream.of(top, bottom)
+			.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
+			.filter(predicate)
+			.toList();
+		return travellersItemStacks.size() == 1 ? Optional.of(travellersItemStacks.getFirst()) : Optional.empty();
 	}
 
 	private void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
