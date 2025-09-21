@@ -159,9 +159,9 @@ public class TravellersGearLogic {
 			livingEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 2, amplifier, false, false, false));
 	}
 
-	public static void travellersBootsUnrestrained(Player player) {
-		if (TravellersModifiersManager.isModifierActive(player, player.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER))
-			player.stuckSpeedMultiplier = Vec3.ZERO;
+	public static void travellersBootsUnrestrained(LivingEntity livingEntity) {
+		if (TravellersModifiersManager.isModifierActive(livingEntity, livingEntity.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER))
+			livingEntity.stuckSpeedMultiplier = Vec3.ZERO;
 	}
 
 	public static boolean tryPerformSidestep(Player player, boolean isLeftSidestep) {
