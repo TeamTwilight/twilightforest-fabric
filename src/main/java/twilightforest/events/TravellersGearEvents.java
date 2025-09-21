@@ -12,7 +12,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -151,14 +152,12 @@ public class TravellersGearEvents {
 		}
 
 		TravellersGearLogic.travellersWingsSidestepCooldownSound(player);
-		TravellersGearLogic.travellersBootsUnrestrained(player);
 	}
 
 	private void performStealth(PlayerTickEvent.Post event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
 			TravellersGearLogic.travellersStealth(player, player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
 		}
-		TravellersGearLogic.travellersBootsUnrestrained(event.getEntity());
 	}
 
 	private void disableHighStepWhileSneaking(PlayerTickEvent.Pre event) {
@@ -185,6 +184,7 @@ public class TravellersGearEvents {
 		TravellersGearLogic.travellersWingsHighJump(livingEntity);
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
 		TravellersGearLogic.travellersBootsForwardBoost(livingEntity);
+		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
 	}
 
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
