@@ -156,14 +156,12 @@ public class TravellersGearEvents {
 		}
 
 		TravellersGearLogic.travellersWingsSidestepCooldownSound(player);
-		TravellersGearLogic.travellersBootsUnrestrained(player);
 	}
 
 	private void performStealth(PlayerTickEvent.Post event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
 			TravellersGearLogic.travellersStealth(player, player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
 		}
-		TravellersGearLogic.travellersBootsUnrestrained(event.getEntity());
 	}
 
 	private void disableHighStepWhileSneaking(PlayerTickEvent.Pre event) {
@@ -190,6 +188,7 @@ public class TravellersGearEvents {
 		TravellersGearLogic.travellersWingsHighJump(livingEntity);
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
 		TravellersGearLogic.travellersBootsForwardBoost(livingEntity);
+		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
 	}
 
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
