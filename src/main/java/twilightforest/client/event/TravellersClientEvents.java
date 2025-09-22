@@ -26,6 +26,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
+import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
@@ -90,7 +91,9 @@ public class TravellersClientEvents {
 		Float agileRangerModifier = leggingsStack.get(TFDataComponents.AGILE_RANGER_MODIFIER);
 		if (!TravellersModifiersManager.isModifierActive(localPlayer, leggingsStack, TravellersModifiersManager.AGILE_RANGER_MODIFIER) || agileRangerModifier == null)
 			return;
-		if (localPlayer.isUsingItem() && !localPlayer.isPassenger() && localPlayer.getUseItem().getItem() instanceof ProjectileWeaponItem) {
+		ItemStack stack = localPlayer.getUseItem();
+		boolean isLegalItem = (stack.getItem() instanceof ProjectileWeaponItem || stack.is(ItemTagGenerator.TRAVELLERS_AGILE_RANGER_WHITELISTED)) && !stack.is(ItemTagGenerator.TRAVELLERS_AGILE_RANGER_BLACKLISTED);
+		if (localPlayer.isUsingItem() && !localPlayer.isPassenger() && isLegalItem) {
 			Input input = event.getInput();
 			input.leftImpulse *= agileRangerModifier;
 			input.forwardImpulse *= agileRangerModifier;
