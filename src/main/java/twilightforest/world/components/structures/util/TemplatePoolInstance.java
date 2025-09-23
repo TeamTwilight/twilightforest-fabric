@@ -8,6 +8,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -15,16 +17,15 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import twilightforest.util.WorldUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
-public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProcessorList>> processors, StructureTemplatePool.Projection projection, TerrainAdjustment terrainAdjustment, Optional<HeightAdjustment> beardifierGroundDelta, boolean ignoreWorldWaterlog, Optional<Holder<TemplateMarkerHandlerList>> markerHandlers) implements WeightedEntry {
+public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProcessorList>> processors, StructureTemplatePool.Projection projection, TerrainAdjustment terrainAdjustment, Optional<HeightAdjustment> beardifierGroundDelta, boolean ignoreWorldWaterlog, Optional<Holder<TemplateMarkerHandlerList>> markerHandlers, Optional<ChooseRandomProcessors> randomizedProcessors) implements WeightedEntry {
 	private static final Codec<TemplatePoolInstance> CODEC_DIRECT = Codec.withAlternative(RecordCodecBuilder.create(instance -> instance.group(
 		Weight.CODEC.fieldOf("weight").forGetter(TemplatePoolInstance::weight),
 		StructureProcessorType.LIST_CODEC.optionalFieldOf("processors").forGetter(TemplatePoolInstance::processors),
@@ -32,7 +33,8 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 		TerrainAdjustment.CODEC.optionalFieldOf("terrain_adaptation", TerrainAdjustment.NONE).forGetter(TemplatePoolInstance::terrainAdjustment),
 		HeightAdjustment.CODEC.optionalFieldOf("height_adjustment").forGetter(TemplatePoolInstance::beardifierGroundDelta),
 		Codec.BOOL.optionalFieldOf("ignore_world_waterlog", false).forGetter(TemplatePoolInstance::ignoreWorldWaterlog),
-		TemplateMarkerHandlerList.HOLDER_CODEC.optionalFieldOf("marker_handlers").forGetter(TemplatePoolInstance::markerHandlers)
+		TemplateMarkerHandlerList.HOLDER_CODEC.optionalFieldOf("marker_handlers").forGetter(TemplatePoolInstance::markerHandlers),
+		ChooseRandomProcessors.CODEC.optionalFieldOf("randomized_processors").forGetter(TemplatePoolInstance::randomizedProcessors)
 	).apply(instance, TemplatePoolInstance::new)), Codec.INT, TemplatePoolInstance::defaultsWithWeight);
 
 	public static final Codec<TemplatePoolInstance> CODEC = new TemplatePoolInstanceCodec();
@@ -45,6 +47,7 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 			TerrainAdjustment.NONE,
 			Optional.empty(),
 			false,
+			Optional.empty(),
 			Optional.empty()
 		);
 	}
@@ -60,6 +63,15 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 			return placeContext;
 
 		return this.beardifierGroundDelta.get().adjustForTerrain(placeContext, generationContext, parentProjectsTerrain);
+	}
+
+	@SuppressWarnings("OptionalIsPresent")
+	public StructureProcessorList chooseRandomProcessors(RandomSource randomSource) {
+		if (this.randomizedProcessors.isEmpty()) {
+			return new StructureProcessorList(List.of());
+		}
+
+		return this.randomizedProcessors.get().chooseRandomProcessors(randomSource);
 	}
 
 	@Override
@@ -151,6 +163,20 @@ public record TemplatePoolInstance(Weight weight, Optional<Holder<StructureProce
 				return DataResult.error(() -> "TemplatePoolInstance.CODEC deserialization problem:\n" + parse + "\n\n from data:\n" + input);
 			}
 			return DataResult.success(Pair.of(templatePoolInstance.get(), input));
+		}
+	}
+
+	public record ChooseRandomProcessors(List<SimpleWeightedRandomList<StructureProcessor>> processors) {
+		public static final Codec<ChooseRandomProcessors> CODEC = SimpleWeightedRandomList.wrappedCodec(StructureProcessorType.SINGLE_CODEC).listOf().xmap(ChooseRandomProcessors::new, ChooseRandomProcessors::processors);
+
+		public StructureProcessorList chooseRandomProcessors(RandomSource random) {
+			List<StructureProcessor> chosenProcessors = new ArrayList<>();
+
+			for (SimpleWeightedRandomList<StructureProcessor> list : this.processors) {
+				list.getRandomValue(random).ifPresent(chosenProcessors::add);
+			}
+
+			return new StructureProcessorList(Collections.unmodifiableList(chosenProcessors));
 		}
 	}
 }
