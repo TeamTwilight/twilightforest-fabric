@@ -4,15 +4,20 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderOwner;
 import net.minecraft.data.PackOutput;
+import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import tamaized.beanification.Autowired;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.TemplateMarkerHandlers;
+import twilightforest.world.components.processors.StateTransfiguringProcessor;
 import twilightforest.world.components.structures.camp.CampPieces;
 import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
 import twilightforest.world.components.structures.util.TemplatePoolInstance;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class CampStructureDefinitionGenerator extends StructureTemplateDefinitionProvider {
@@ -32,7 +37,7 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 		@SuppressWarnings("unchecked")
 		Holder.Reference<TemplateMarkerHandlerList> campMarkers = Holder.Reference.createStandAlone((HolderOwner<TemplateMarkerHandlerList>) provider.asGetterLookup().lookupOrThrow(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST), TemplateMarkerHandlers.CAMP_MARKER_HANDLERS);
 
-		this.add("camp/campfire", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers));
+		this.add("camp/campfire", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null));
 
 		this.configureTents();
 
@@ -44,9 +49,30 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 	}
 
 	private void configureTents() {
-		this.add("camp/tent/solo_tent", campPieces.tent, this.weightedRigidTemplate(100, 1, 0, null));
-		this.add("camp/tent/duo_tent", campPieces.tent, this.weightedRigidTemplate(75, 1, 0, null));
-		this.add("camp/tent/luxury_tent", campPieces.tent, this.weightedRigidTemplate(50, 1, 0, null));
+		int defaultWeight = 10;
+		TemplatePoolInstance.ChooseRandomProcessors randomizedProcessors = new TemplatePoolInstance.ChooseRandomProcessors(List.of(
+			SimpleWeightedRandomList.<StructureProcessor>builder()
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.LIGHT_GRAY_WOOL), AlwaysTrueTest.INSTANCE, Blocks.WHITE_WOOL.defaultBlockState()))), defaultWeight)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.LIGHT_GRAY_WOOL), AlwaysTrueTest.INSTANCE, Blocks.LIGHT_GRAY_WOOL.defaultBlockState()))), defaultWeight)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.LIGHT_GRAY_WOOL), AlwaysTrueTest.INSTANCE, Blocks.GRAY_WOOL.defaultBlockState()))), defaultWeight)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.LIGHT_GRAY_WOOL), AlwaysTrueTest.INSTANCE, Blocks.BROWN_WOOL.defaultBlockState()))), defaultWeight)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.LIGHT_GRAY_WOOL), AlwaysTrueTest.INSTANCE, Blocks.GREEN_WOOL.defaultBlockState()))), defaultWeight)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.LIGHT_GRAY_WOOL), AlwaysTrueTest.INSTANCE, Blocks.BLUE_WOOL.defaultBlockState()))), defaultWeight)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.LIGHT_GRAY_WOOL), AlwaysTrueTest.INSTANCE, Blocks.RED_WOOL.defaultBlockState()))), defaultWeight)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.LIGHT_GRAY_WOOL), AlwaysTrueTest.INSTANCE, Blocks.LIME_WOOL.defaultBlockState()))), 1)
+				.build(),
+			SimpleWeightedRandomList.<StructureProcessor>builder()
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.RED_BED), AlwaysTrueTest.INSTANCE, Blocks.RED_BED.defaultBlockState()))), defaultWeight)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.RED_BED), AlwaysTrueTest.INSTANCE, Blocks.LIGHT_BLUE_BED.defaultBlockState()))), defaultWeight)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.RED_BED), AlwaysTrueTest.INSTANCE, Blocks.LIME_BED.defaultBlockState()))), defaultWeight)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.RED_BED), AlwaysTrueTest.INSTANCE, Blocks.ORANGE_BED.defaultBlockState()))), defaultWeight)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(Blocks.RED_BED), AlwaysTrueTest.INSTANCE, Blocks.LIGHT_GRAY_BED.defaultBlockState()))), defaultWeight)
+				.build()
+		));
+
+		this.add("camp/tent/solo_tent", campPieces.tent, this.weightedRigidTemplate(100, 1, 0, null, randomizedProcessors));
+		this.add("camp/tent/duo_tent", campPieces.tent, this.weightedRigidTemplate(75, 1, 0, null, randomizedProcessors));
+		this.add("camp/tent/luxury_tent", campPieces.tent, this.weightedRigidTemplate(50, 1, 0, null, randomizedProcessors));
 	}
 
 	private void configureBigPaths() {
@@ -73,9 +99,9 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 	}
 
 	private void configureDeco(Holder.Reference<TemplateMarkerHandlerList> campMarkers) {
-		TemplatePoolInstance dryingRackTemplateData = this.weightedRigidTemplate(100, 2, 0, campMarkers);
-		TemplatePoolInstance rigidTemplateDataNoDiff = this.weightedRigidTemplate(100, 1, 0, campMarkers);
-		TemplatePoolInstance berryTemplateData = this.weightedRigidTemplate(75, 1, 0, campMarkers);
+		TemplatePoolInstance dryingRackTemplateData = this.weightedRigidTemplate(100, 2, 0, campMarkers, null);
+		TemplatePoolInstance rigidTemplateDataNoDiff = this.weightedRigidTemplate(100, 1, 0, campMarkers, null);
+		TemplatePoolInstance berryTemplateData = this.weightedRigidTemplate(75, 1, 0, campMarkers, null);
 
 		this.add("camp/deco/double_drying_rack", campPieces.deco, dryingRackTemplateData);
 		this.add("camp/deco/long_drying_rack", campPieces.deco, dryingRackTemplateData);
@@ -86,7 +112,7 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 		this.add("camp/deco/garden_u", campPieces.deco, rigidTemplateDataNoDiff);
 
 		this.add("camp/deco/berries_staked", campPieces.deco, berryTemplateData);
-		this.add("camp/deco/berries_trellis", campPieces.deco, this.weightedRigidTemplate(75, 2, 0, campMarkers));
+		this.add("camp/deco/berries_trellis", campPieces.deco, this.weightedRigidTemplate(75, 2, 0, campMarkers, null));
 		this.add("camp/deco/blackberry_wall", campPieces.deco, berryTemplateData);
 		this.add("camp/deco/blueberry_wall", campPieces.deco, berryTemplateData);
 		this.add("camp/deco/raspberry_wall", campPieces.deco, berryTemplateData);

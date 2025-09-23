@@ -39,6 +39,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implements ProgressionPiece, PieceBeardifierModifier {
+
 	@Autowired
 	private static StructureTemplateDefinitions structureTemplateDefinitions;
 
@@ -50,6 +51,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	private static final String NBT_GROUND_OFFSET = "ground_offset";
 	private static final String NBT_IGNORE_WATERLOG = "ignore_waterlog";
 	private static final String NBT_MARKER_HANDLERS = "marker_handlers";
+	private static final String NBT_RANDOMIZED_PROCESSORS = "randomized_processors";
 
 	private final JigsawRecord sourceJigsaw;
 	private final List<JigsawRecord> spareJigsaws;
@@ -58,6 +60,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	private final StructureTemplatePool.Projection projection;
 	private final Optional<Holder<TemplateMarkerHandlerList>> markerHandlers;
 	private final int beardifierGroundDelta;
+	private final StructureProcessorList serializedProcessors;
 
 	public static TwilightJigsawPiece defaultDeserialize(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), compoundTag, ctx, readSettings(compoundTag));
@@ -66,8 +69,8 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		return twilightJigsawPiece;
 	}
 
-	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance) {
-		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext, templatePoolInstance);
+	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance, StructureProcessorList serializedProcessors) {
+		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext, templatePoolInstance, serializedProcessors);
 		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
 		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 		return twilightJigsawPiece;
@@ -90,6 +93,8 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 			this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 
 		this.processors.ifPresent(p -> p.value().list().forEach(this.placeSettings::addProcessor));
+		this.serializedProcessors = compoundTag.contains(NBT_RANDOMIZED_PROCESSORS) ? StructureProcessorType.DIRECT_CODEC.parse(dynamicOps, compoundTag.getCompound(NBT_RANDOMIZED_PROCESSORS)).resultOrPartial().orElseGet(() -> new StructureProcessorList(List.of())) : new StructureProcessorList(List.of());
+		this.serializedProcessors.list().forEach(this.placeSettings::addProcessor);
 	}
 
 	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
@@ -102,9 +107,10 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.projection = StructureTemplatePool.Projection.RIGID;
 		this.markerHandlers = Optional.empty();
 		this.beardifierGroundDelta = 0;
+		this.serializedProcessors = new StructureProcessorList(List.of());
 	}
 
-	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance) {
+	public TwilightJigsawPiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance, StructureProcessorList serializedProcessors) {
 		super(type, genDepth, structureManager, templateLocation, jigsawContext.placementSettings(), jigsawContext.templatePos());
 
 		this.sourceJigsaw = jigsawContext.seedJigsaw();
@@ -116,6 +122,8 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.beardifierGroundDelta = templatePoolInstance.beardifierGroundDelta().map(TemplatePoolInstance.HeightAdjustment::beardifierGroundDelta).orElse(0);
 		if (templatePoolInstance.ignoreWorldWaterlog()) this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 		this.processors.ifPresent(p -> p.value().list().forEach(this.placeSettings::addProcessor));
+		this.serializedProcessors = serializedProcessors;
+		this.serializedProcessors.list().forEach(this.placeSettings::addProcessor);
 	}
 
 	protected static JigsawRecord readSourceFromNBT(CompoundTag structureTag) {

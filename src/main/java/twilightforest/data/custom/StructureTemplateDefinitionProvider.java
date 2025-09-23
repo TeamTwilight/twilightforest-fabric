@@ -99,11 +99,12 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 			TerrainAdjustment.NONE,
 			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 2, Optional.of(0))),
 			false,
-			Optional.ofNullable(markerHandlers)
+			Optional.ofNullable(markerHandlers),
+			Optional.empty()
 		);
 	}
 
-	protected TemplatePoolInstance weightedRigidTemplate(int weight, int beardifierGroundDelta, @Nullable Integer groundJunctionDiffLimit, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers) {
+	protected TemplatePoolInstance weightedRigidTemplate(int weight, int beardifierGroundDelta, @Nullable Integer groundJunctionDiffLimit, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers, @Nullable TemplatePoolInstance.ChooseRandomProcessors randomizedProcessors) {
 		return new TemplatePoolInstance(
 			Weight.of(weight),
 			Optional.empty(),
@@ -111,7 +112,8 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 			TerrainAdjustment.BEARD_BOX,
 			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, beardifierGroundDelta, Optional.ofNullable(groundJunctionDiffLimit))),
 			true,
-			Optional.ofNullable(markerHandlers)
+			Optional.ofNullable(markerHandlers),
+			Optional.ofNullable(randomizedProcessors)
 		);
 	}
 
