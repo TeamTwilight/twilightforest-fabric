@@ -1,5 +1,7 @@
 package twilightforest.init;
 
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
@@ -14,6 +16,7 @@ import twilightforest.world.components.structures.placements.AvoidLandmarkGridPl
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class TFStructureSets {
@@ -56,10 +59,14 @@ public class TFStructureSets {
 			new StructureSet.StructureSelectionEntry(structures.getOrThrow(TFStructures.HOLLOW_TREE), 1),
 			new StructureSet.StructureSelectionEntry(structures.getOrThrow(TFStructures.SWAMP_HOLLOW_TREE), 1)
 		);
-		context.register(FALLEN_TRUNK, new StructureSet(structures.getOrThrow(TFStructures.FALLEN_TRUNK), new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.8F, 1275623845, Optional.of(new StructurePlacement.ExclusionZone(structureSets.getOrThrow(HOLLOW_TREE), 1)), 7, 5, RandomSpreadType.TRIANGULAR)));
-		context.register(HOLLOW_TREE, new StructureSet(hollowTrees, new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.5F, 34481210, Optional.empty(), 7, 5, RandomSpreadType.TRIANGULAR)));
+		Holder.Reference<StructureSet> fallenTrunk = context.register(FALLEN_TRUNK, new StructureSet(structures.getOrThrow(TFStructures.FALLEN_TRUNK), new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.8F, 1275623845, Optional.of(new StructurePlacement.ExclusionZone(structureSets.getOrThrow(HOLLOW_TREE), 1)), 7, 5, RandomSpreadType.TRIANGULAR, Optional.empty())));
+		Holder.Reference<StructureSet> hollowTree = context.register(HOLLOW_TREE, new StructureSet(hollowTrees, new AvoidLandmarkGridPlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.5F, 34481210, Optional.empty(), 7, 5, RandomSpreadType.TRIANGULAR, Optional.empty())));
 
-		context.register(CAMP, new StructureSet(structures.getOrThrow(TFStructures.CAMP), new AvoidLandmarkGridPlacement(8, 6, RandomSpreadType.TRIANGULAR, 701432212)));
+		Optional<AvoidLandmarkGridPlacement.AvoidAdditionalStructures> avoidTrees = Optional.of(new AvoidLandmarkGridPlacement.AvoidAdditionalStructures(new Object2IntArrayMap<>(Map.of(
+			fallenTrunk, 2,
+			hollowTree, 1
+		))));
+		context.register(CAMP, new StructureSet(structures.getOrThrow(TFStructures.CAMP), new AvoidLandmarkGridPlacement(8, 6, RandomSpreadType.TRIANGULAR, 701432212, avoidTrees)));
 
 		context.register(HEDGE_MAZE, new StructureSet(structures.getOrThrow(TFStructures.HEDGE_MAZE), new LandmarkGridPlacement(Optional.of(TFStructures.HEDGE_MAZE))));
 		context.register(HOLLOW_HILL_SMALL, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_SMALL), new LandmarkGridPlacement(Optional.of(TFStructures.HOLLOW_HILL_SMALL))));

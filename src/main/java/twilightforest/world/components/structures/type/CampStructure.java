@@ -22,12 +22,13 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
+import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
 import java.util.Map;
 import java.util.Optional;
 
-public class CampStructure extends Structure {
+public class CampStructure extends Structure implements DecorationClearance {
 
 	public static final MapCodec<CampStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Structure.settingsCodec(instance)
@@ -80,4 +81,28 @@ public class CampStructure extends Structure {
 		));
 	}
 
+	@Override
+	public float chunkClearanceRadius() {
+		return 1;
+	}
+
+	@Override
+	public boolean isSurfaceDecorationsAllowed() {
+		return false;
+	}
+
+	@Override
+	public boolean isUndergroundDecoAllowed() {
+		return true;
+	}
+
+	@Override
+	public boolean isGrassDecoAllowed() {
+		return true;
+	}
+
+	@Override
+	public boolean shouldAdjustToTerrain() {
+		return false;
+	}
 }
