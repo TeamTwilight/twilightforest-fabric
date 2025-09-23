@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures;
 
+import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -78,9 +79,10 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.sourceJigsaw = readSourceFromNBT(compoundTag);
 		this.spareJigsaws = readConnectionsFromNBT(compoundTag);
 		this.terrainAdjustment = compoundTag.contains(NBT_TERRAIN_ADAPT) ? TerrainAdjustment.valueOf(compoundTag.getString(NBT_TERRAIN_ADAPT)) : TerrainAdjustment.NONE;
-		this.processors = compoundTag.contains(NBT_TEMPLATE_PROCESSORS) ? StructureProcessorType.LIST_CODEC.parse(NbtOps.INSTANCE, compoundTag.getCompound(NBT_TEMPLATE_PROCESSORS)).resultOrPartial(TwilightForestMod.LOGGER::error) : Optional.empty();
+		DynamicOps<Tag> dynamicOps = RegistryOps.create(NbtOps.INSTANCE, ctx.registryAccess());
+		this.processors = compoundTag.contains(NBT_TEMPLATE_PROCESSORS) ? StructureProcessorType.LIST_CODEC.parse(dynamicOps, compoundTag.getCompound(NBT_TEMPLATE_PROCESSORS)).resultOrPartial(TwilightForestMod.LOGGER::error) : Optional.empty();
 		this.projection = compoundTag.contains(NBT_PLACE_PROJECTION) ? StructureTemplatePool.Projection.valueOf(compoundTag.getString(NBT_PLACE_PROJECTION)) : StructureTemplatePool.Projection.RIGID;
-		this.markerHandlers = compoundTag.contains(NBT_MARKER_HANDLERS) ? TemplateMarkerHandlerList.HOLDER_CODEC.parse(NbtOps.INSTANCE, compoundTag.getCompound(NBT_MARKER_HANDLERS)).resultOrPartial(TwilightForestMod.LOGGER::error) : Optional.empty();
+		this.markerHandlers = compoundTag.contains(NBT_MARKER_HANDLERS) ? TemplateMarkerHandlerList.HOLDER_CODEC.parse(dynamicOps, compoundTag.getCompound(NBT_MARKER_HANDLERS)).resultOrPartial(TwilightForestMod.LOGGER::error) : Optional.empty();
 
 		this.beardifierGroundDelta = compoundTag.getInt(NBT_GROUND_OFFSET);
 
