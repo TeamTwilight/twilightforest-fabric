@@ -1,6 +1,10 @@
 {
   "placement": {
     "type": "twilightforest:avoid_landmark_grid",
+    "avoid_additional_structures": {
+      "twilightforest:fallen_trunk": 2,
+      "twilightforest:hollow_tree": 1
+    },
     "salt": 701432212,
     "separation": 6,
     "spacing": 8,
