@@ -380,7 +380,27 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(REPAIRS_GIANT_TOOLS).add(TFBlocks.GIANT_COBBLESTONE.asItem());
 		this.tag(REPAIRS_ICE_TOOLS).add(Blocks.ICE.asItem(), Blocks.PACKED_ICE.asItem(), Blocks.BLUE_ICE.asItem());
 
-		this.tag(ItemTags.MEAT).add(TFItems.RAW_VENISON.get(), TFItems.COOKED_VENISON.get(), TFItems.RAW_MEEF.get(), TFItems.COOKED_MEEF.get(), TFItems.MEEF_STROGANOFF.get(), TFItems.EXPERIMENT_115.get(), TFItems.HYDRA_CHOP.get());
+		this.tag(ItemTags.MEAT).add(
+			TFItems.RAW_VENISON.get(),
+			TFItems.COOKED_VENISON.get(),
+			TFItems.RAW_MEEF.get(),
+			TFItems.COOKED_MEEF.get(),
+			TFItems.MEEF_STROGANOFF.get(),
+			TFItems.EXPERIMENT_115.get(),
+			TFItems.HYDRA_CHOP.get(),
+			TFItems.MONSTER_JERKY.get(),
+			TFItems.BEEF_JERKY.get(),
+			TFItems.PORK_JERKY.get(),
+			TFItems.CHICKEN_JERKY.get(),
+			TFItems.RABBIT_JERKY.get(),
+			TFItems.MUTTON_JERKY.get(),
+			TFItems.VENISON_JERKY.get(),
+			TFItems.MEEF_JERKY.get(),
+			TFItems.COD_JERKY.get(),
+			TFItems.SALMON_JERKY.get(),
+			TFItems.TROPICAL_FISH_JERKY.get(),
+			TFItems.FUGU_JERKY.get()
+		);
 		this.tag(ItemTags.BEACON_PAYMENT_ITEMS).addTags(IRONWOOD_INGOTS, STEELEAF_INGOTS, KNIGHTMETAL_INGOTS, FIERY_INGOTS);
 
 		this.tag(ItemTags.TRIMMABLE_ARMOR)
