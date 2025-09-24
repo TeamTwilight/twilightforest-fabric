@@ -380,21 +380,19 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 
 		register.accept(TFLootTables.CAMP_TENT,
 			LootTable.lootTable()
-				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(TFItems.TANNED_LEATHER))) // One guaranteed Tanned Leather
-				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(TFItems.TANNIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))) // Two guaranteed Tannin
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(TFItems.TANNIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))) // Guaranteed Tannin
 				.withPool(LootPool.lootPool()
-					.setRolls(ConstantValue.exactly(2))
-					//common loot
-					.add(LootItem.lootTableItem(TFItems.TANNIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-					.add(LootItem.lootTableItem(TFItems.VENISON_JERKY).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-					.add(LootItem.lootTableItem(TFItems.MUTTON_JERKY).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-					.add(LootItem.lootTableItem(TFItems.PORK_JERKY).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+					.setRolls(ConstantValue.exactly(1))
+					//one of the jerkys
+					.add(LootItem.lootTableItem(TFItems.VENISON_JERKY).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+					.add(LootItem.lootTableItem(TFItems.MUTTON_JERKY).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+					.add(LootItem.lootTableItem(TFItems.PORK_JERKY).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
 				)
 				.withPool(LootPool.lootPool()
 					.setRolls(UniformGenerator.between(1, 2))
 					//uncommon loot
 					.add(LootItem.lootTableItem(Items.LEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-					.add(LootItem.lootTableItem(TFBlocks.TWILIGHT_OAK_DRYING_RACK).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1))))
+					.add(LootItem.lootTableItem(TFBlocks.BIRCH_DRYING_RACK).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1))))
 					.add(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
 					.add(LootItem.lootTableItem(Items.APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
 				)

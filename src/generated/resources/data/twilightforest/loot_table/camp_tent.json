@@ -6,23 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "twilightforest:tanned_leather"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
           "functions": [
             {
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
+                "max": 4.0,
+                "min": 2.0
               },
               "function": "minecraft:set_count"
             }
@@ -42,23 +32,8 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "twilightforest:tannin"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
+                "max": 4.0,
+                "min": 2.0
               },
               "function": "minecraft:set_count"
             }
@@ -72,8 +47,8 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
+                "max": 4.0,
+                "min": 2.0
               },
               "function": "minecraft:set_count"
             }
@@ -87,8 +62,8 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
+                "max": 4.0,
+                "min": 2.0
               },
               "function": "minecraft:set_count"
             }
@@ -96,7 +71,7 @@
           "name": "twilightforest:pork_jerky"
         }
       ],
-      "rolls": 2.0
+      "rolls": 1.0
     },
     {
       "bonus_rolls": 0.0,
@@ -125,7 +100,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "twilightforest:twilight_oak_drying_rack"
+          "name": "twilightforest:birch_drying_rack"
         },
         {
           "type": "minecraft:item",
