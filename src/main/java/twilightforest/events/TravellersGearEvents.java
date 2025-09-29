@@ -108,20 +108,20 @@ public class TravellersGearEvents {
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, chest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER) || probability == null || probability <= level.random.nextFloat())
 			return;
 		Entity projectile = event.getEntity();
-		level.playLocalSound(projectile, TFSounds.PERFECT_DODGE.get(), SoundSource.PLAYERS, 1.5F, livingEntity.getVoicePitch());
+		Vec3 hitPosition = projectile.position().add(projectile.getDeltaMovement());
+		level.playLocalSound(hitPosition.x(), hitPosition.y(), hitPosition.z(), TFSounds.PERFECT_DODGE.get(), livingEntity.getSoundSource(), 1.5F, livingEntity.getVoicePitch(), false);
 		event.setCanceled(true);
 		if (level.isClientSide())
 			return;
 		ParticlePacket particlePacket = new ParticlePacket();
 		for (int particleNumber = 0; particleNumber < 20; particleNumber++) {
-			Vec3 particlePos = projectile.position().add(projectile.getDeltaMovement());
 			Vec3 particleVelocity = new Vec3(
 				(level.random.nextDouble() - 0.5),
 				(level.random.nextDouble() - 0.5),
 				(level.random.nextDouble() - 0.5)
 			);
 			ParticleOptions type = TFParticleType.PERFECT_DODGE.get();
-			particlePacket.queueParticle(type, false, particlePos, particleVelocity);
+			particlePacket.queueParticle(type, false, hitPosition, particleVelocity);
 		}
 		PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, particlePacket);
 	}
