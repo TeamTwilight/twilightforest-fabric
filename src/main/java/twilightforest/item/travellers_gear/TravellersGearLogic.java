@@ -93,9 +93,14 @@ public class TravellersGearLogic {
 	public static void travellersWingsSidestepCooldownSound(Player player) {
 		ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
 		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
-		Long dt = player.level().getGameTime() - player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
-		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt.equals(cooldown))
+		if (cooldown == null)
+			return;
+		long dt = player.level().getGameTime() - player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
+		Boolean shouldPlaySound = player.getData(TFDataAttachments.SHOULD_PLAY_SIDE_STEP_COOLDOWN_SOUND);
+		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt > cooldown && shouldPlaySound) {
 			player.playSound(TFSounds.SIDE_STEP_CHARGED.get(), 1F, player.getVoicePitch());
+			player.setData(TFDataAttachments.SHOULD_PLAY_SIDE_STEP_COOLDOWN_SOUND, false);
+		}
 	}
 
 	public static void travellersWingsControlledFall(LivingEntity livingEntity) {
@@ -172,6 +177,7 @@ public class TravellersGearLogic {
 		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && cooldown != null && currentTime - lastSidestepTime > cooldown && !player.isFallFlying() && player.onGround() && !player.isCrouching()) {
 			TravellersGearLogic.performSidestep(player, isLeftSidestep);
 			player.setData(TFDataAttachments.LAST_SIDESTEP_TIME, currentTime);
+			player.setData(TFDataAttachments.SHOULD_PLAY_SIDE_STEP_COOLDOWN_SOUND, true);
 			return true;
 		}
 		return false;
