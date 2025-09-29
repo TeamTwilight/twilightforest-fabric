@@ -182,7 +182,7 @@ public class TravellersGearEvents {
 	}
 
 	private void updateOtherModifiers(EntityTickEvent.Post event) {
-		if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
+		if (!(event.getEntity() instanceof LivingEntity livingEntity) || livingEntity.level().isClientSide()) return;
 		TravellersGearLogic.travellersWingsControlledFall(livingEntity);
 		TravellersGearLogic.travellersVestHaste(livingEntity);
 		TravellersGearLogic.travellersWingsHighJump(livingEntity);
