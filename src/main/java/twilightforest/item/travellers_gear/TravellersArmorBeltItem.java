@@ -62,17 +62,18 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 
 		NonNullList<ItemStack> hotbarStacks = NonNullList.withSize(9, ItemStack.EMPTY);
 		Inventory inventory = player.getInventory();
+		boolean isSwapHotbarActive = isSwapHotbarActive(player, legArmor);
 		boolean hasChanged = false;
 		for (int slotIndex = 0; slotIndex < 9; slotIndex++) {
 			ItemStack inventoryStack = inventory.getItem(slotIndex);
 			ItemStack beltStack = containerContents.getSlots() <= slotIndex ? ItemStack.EMPTY : containerContents.getStackInSlot(slotIndex);
-			if (inventoryStack.getItem().canFitInsideContainerItems() && !inventoryStack.is(ItemTagGenerator.TRAVELLERS_BELT_BLACKLISTED)) {
+			if (inventoryStack.getItem().canFitInsideContainerItems() && !inventoryStack.is(ItemTagGenerator.TRAVELLERS_BELT_BLACKLISTED) && (isSwapHotbarActive || inventoryStack.isEmpty())) {
 				hotbarStacks.set(slotIndex, inventoryStack);
 				inventory.setItem(slotIndex, beltStack);
 				if (!beltStack.equals(inventoryStack))
 					hasChanged = true;
 			} else {
-				hotbarStacks.set(slotIndex, beltStack);
+				hotbarStacks.set(slotIndex, beltStack);  // keep the same item in belt inventory
 			}
 		}
 		legArmor.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(hotbarStacks));
@@ -80,8 +81,13 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 			player.level().playSound(null, player, TFSounds.SWAP_HOTBAR.get(), SoundSource.PLAYERS, 1F, 1F);
 	}
 
-	public static boolean hasSwapHotbar(Player player, ItemStack stack) {
+	public static boolean isSwapHotbarActive(Player player, ItemStack stack) {
 		return (TravellersModifiersManager.isModifierActive(player, stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER) || TravellersModifiersManager.isModifierActive(player, stack, TravellersModifiersManager.SWAP_HOTBAR_ABILITY))
+			&& stack.has(DataComponents.CONTAINER);
+	}
+
+	public static boolean hasSwapHotbar(Player player, ItemStack stack) {
+		return (TravellersModifiersManager.hasTravellersModifier(player.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER) || TravellersModifiersManager.hasTravellersModifier(player.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_ABILITY))
 			&& stack.has(DataComponents.CONTAINER);
 	}
 
