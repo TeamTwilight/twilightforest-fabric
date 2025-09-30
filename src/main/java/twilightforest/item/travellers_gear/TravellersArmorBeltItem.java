@@ -20,7 +20,7 @@ import twilightforest.init.custom.TravellersModifiersManager;
 import java.util.Optional;
 
 public class TravellersArmorBeltItem extends TravellersArmorItem {
-	public static ItemContainerContents DEFAULT_EMPTY_BELT_CONTAINER = ItemContainerContents.fromItems(NonNullList.withSize(9, ItemStack.EMPTY));
+	public static final ItemContainerContents DEFAULT_EMPTY_BELT_CONTAINER = ItemContainerContents.fromItems(NonNullList.withSize(9, ItemStack.EMPTY));
 
 	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
 		super(equipmentType, properties, insertableModifierSlots, durability);
