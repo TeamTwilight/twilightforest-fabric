@@ -14,15 +14,16 @@ public class TravellersBootsModel {
 			CubeListBuilder.create()
 				.texOffs(24, 0)
 				.addBox(-0.5F, -1.0F, 0.0F, 4, 3, 1, deform),
-			PartPose.offset(-1.5F, 10.0F, -3.75F)
+			PartPose.offset(-1.5F, 10.0F, -4.0F)
 		);
 
 		PartDefinition leftLeg = root.getChild("left_leg");
 		leftLeg.addOrReplaceChild("left_bump",
 			CubeListBuilder.create()
 				.texOffs(24, 0)
+				.mirror()
 				.addBox(-0.5F, -1.0F, 0.0F, 4, 3, 1, deform),
-			PartPose.offset(-1.5F, 10.0F, -3.75F)
+			PartPose.offset(-1.5F, 10.0F, -4.0F)
 		);
 
 		return mesh;

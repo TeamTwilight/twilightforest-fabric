@@ -46,27 +46,27 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		wbr.addOrReplaceChild("wingEdgeRight", CubeListBuilder.create()
 				.texOffs(64, 21)
 				.addBox(0.0F, 0.0F, -2.0F, 1, 9, 2),
-			PartPose.offsetAndRotation(-0.502F, -1.0F, 10.0F, ANGLE_10_DEG * 3, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(-0.498F, -1.0F, 10.0F, ANGLE_10_DEG * 3, 0.0F, 0.0F));
 
 		wbr.addOrReplaceChild("wingInsetRight", CubeListBuilder.create()
 				.texOffs(70, 21)
 				.addBox(0.0F, 0.0F, -1.0F, 1, 9, 2),
-			PartPose.offsetAndRotation(-0.504F, 0.0F, 7.8F, ANGLE_10_DEG * 2, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(-0.496F, 0.0F, 7.8F, ANGLE_10_DEG * 2, 0.0F, 0.0F));
 
 		wbr.addOrReplaceChild("wingCenterRight", CubeListBuilder.create()
 				.texOffs(76, 21)
 				.addBox(0.0F, 0.0F, -1.0F, 1, 9, 2),
-			PartPose.offsetAndRotation(-0.506F, 0.3F, 6.3F, ANGLE_10_DEG, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(-0.494F, 0.3F, 6.3F, ANGLE_10_DEG, 0.0F, 0.0F));
 
 		wbr.addOrReplaceChild("wingFlangeRight", CubeListBuilder.create()
 				.texOffs(82, 21)
 				.addBox(0.0F, 0.0F, -1.0F, 1, 8, 2),
-			PartPose.offsetAndRotation(-0.508F, 0.3F, 5.1F, 0.0F, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(-0.492F, 0.3F, 5.1F, 0.0F, 0.0F, 0.0F));
 
 		wbr.addOrReplaceChild("wingAuxRight", CubeListBuilder.create()
 				.texOffs(88, 21)
 				.addBox(0.0F, 0.0F, -1.0F, 1, 7, 2),
-			PartPose.offsetAndRotation(-0.51F, 0.1F, 4.0F, -ANGLE_10_DEG, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(-0.49F, 0.1F, 4.0F, -ANGLE_10_DEG, 0.0F, 0.0F));
 
 		PartDefinition wbl = root.addOrReplaceChild("wingBaseLeft", CubeListBuilder.create()
 				.texOffs(106, 9)
@@ -160,19 +160,19 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		} else {
 			float[] rotations;  // must be initialized later
 			if (this.riding)
-				rotations = this.calculateRotations(attachment, dtInTicks, 10.0F, ANGLE_10_DEG * 3, -0.6F, -0.3F, new float[]{15.0F, 15.0F, 15.0F});
+				rotations = this.calculateRotations(attachment, dtInTicks, 10.0F, ANGLE_10_DEG * 3, -0.6F, -0.3F, new float[]{15.0F, 15.0F, 15.0F * 2});
 			else if (entity.isSwimming())
-				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 4, -1.0F, -0.5F, new float[]{15.0F, 15.0F, 15.0F});
+				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 4, -1.0F, -0.5F, new float[]{15.0F, 15.0F, 15.0F * 2});
 			else if (!entity.onGround() && entity.fallDistance < 2.3F && (!(entity instanceof Player player) || !player.getAbilities().flying))
-				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 5, -1.1F, -0.1F, new float[]{15.0F, 15.0F, 15.0F});
+				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 5, -1.1F, -0.1F, new float[]{15.0F, 15.0F, 15.0F * 2});
 			else if (entity.getDeltaMovement().y < 0 && entity.fallDistance > 2.3F)
-				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 4, -1.1F, -0.3F, new float[]{8.0F, 8.0F, 8.0F});
+				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 4, -1.1F, -0.3F, new float[]{8.0F, 8.0F, 8.0F * 2});
 			else if (entity.isSprinting() || this.attackTime > 0)
-				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, -0.3F, 0.0F, new float[]{15.0F, 15.0F, 15.0F});
+				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, -0.3F, 0.0F, new float[]{15.0F, 15.0F, 15.0F * 2});
 			else {
 				boolean moving = entity.getDeltaMovement().horizontalDistanceSqr() > 0;
 				float speedFactor = moving ? 4.0F : 20.0F;
-				rotations = this.calculateRotations(attachment, dtInTicks, speedFactor, ANGLE_10_DEG * 3, -0.6F, -0.3F, new float[]{15.0F, 15.0F, 15.0F});
+				rotations = this.calculateRotations(attachment, dtInTicks, speedFactor, ANGLE_10_DEG * 3, -0.6F, -0.3F, new float[]{15.0F, 15.0F, 15.0F * 2});
 			}
 
 			targetXRot = rotations[0];
@@ -198,10 +198,11 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 	private float[] calculateRotations(TravellersWingsAnimAttachment attachment, double dtInTicks, float phaseDivisor, float xOffset, float yOffset, float zOffset, float[] sinDivisors) {
 		attachment.accumulatedPhase += dtInTicks / phaseDivisor;
 		float sinT = (float) Math.sin(attachment.accumulatedPhase);
+		float cosT = (float) Math.cos(attachment.accumulatedPhase);
 		return new float[]{
 			sinT / sinDivisors[0] + xOffset,
-			sinT / sinDivisors[1] + yOffset,
-			sinT / sinDivisors[2] + zOffset
+			cosT / sinDivisors[1] + yOffset,
+			cosT / sinDivisors[2] + zOffset
 		};
 	}
 
