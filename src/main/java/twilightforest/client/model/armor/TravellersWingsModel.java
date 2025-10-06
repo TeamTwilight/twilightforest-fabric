@@ -8,6 +8,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import org.joml.Vector3f;
 import twilightforest.components.entity.TravellersWingsAnimAttachment;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.util.TFMathUtil;
@@ -17,6 +18,9 @@ import java.util.Collections;
 public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 	private static final double TAU = 4;  // Time (in ticks) in which distance reduces in e times
 	private static final float ANGLE_10_DEG = Mth.PI / 18;
+	private static final Vector3f SMALL_SWING = new Vector3f(15.0F, 15.0F, 7.5F);
+	private static final Vector3f BIG_SWING = new Vector3f(8.0F, 8.0F, 4.0F);
+
 	private final ModelPart wingBaseRight;
 	private final ModelPart wingBaseLeft;
 
@@ -143,7 +147,6 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		super.setupAnim(entity, f, f1, (float) ageInTicks, netHeadYaw, headPitch);
 		TravellersWingsAnimAttachment attachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM);
 
-		float targetXRot, targetYRot, targetZRot;
 		double dtInTicks = ageInTicks - attachment.oldAgeInTicks;
 
 		//slightly move wings down when crouching so they arent detached
@@ -158,30 +161,26 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 			this.wingBaseRight.zRot = (float) TFMathUtil.interpolateToTarget(attachment.zRotOld, -0.1F, dtInTicks, TAU - 1);
 			attachment.doubleJumpTime++;
 		} else {
-			float[] rotations;  // must be initialized later
+			Vector3f rotations;  // must be initialized later
 			if (this.riding)
-				rotations = this.calculateRotations(attachment, dtInTicks, 10.0F, ANGLE_10_DEG * 3, -0.6F, -0.3F, new float[]{15.0F, 15.0F, 15.0F * 2});
+				rotations = this.calculateRotations(attachment, dtInTicks, 10.0F, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
 			else if (entity.isSwimming())
-				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 4, -1.0F, -0.5F, new float[]{15.0F, 15.0F, 15.0F * 2});
+				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 4, -1.0F, -0.5F, BIG_SWING);
 			else if (!entity.onGround() && entity.fallDistance < 2.3F && (!(entity instanceof Player player) || !player.getAbilities().flying))
-				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 5, -1.1F, -0.1F, new float[]{15.0F, 15.0F, 15.0F * 2});
+				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 5, -1.1F, -0.1F, BIG_SWING);
 			else if (entity.getDeltaMovement().y < 0 && entity.fallDistance > 2.3F)
-				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 4, -1.1F, -0.3F, new float[]{8.0F, 8.0F, 8.0F * 2});
+				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 4, -1.1F, -0.3F, SMALL_SWING);
 			else if (entity.isSprinting() || this.attackTime > 0)
-				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, -0.3F, 0.0F, new float[]{15.0F, 15.0F, 15.0F * 2});
+				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, -0.3F, 0.0F, BIG_SWING);
 			else {
 				boolean moving = entity.getDeltaMovement().horizontalDistanceSqr() > 0;
 				float speedFactor = moving ? 4.0F : 20.0F;
-				rotations = this.calculateRotations(attachment, dtInTicks, speedFactor, ANGLE_10_DEG * 3, -0.6F, -0.3F, new float[]{15.0F, 15.0F, 15.0F * 2});
+				rotations = this.calculateRotations(attachment, dtInTicks, speedFactor, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
 			}
 
-			targetXRot = rotations[0];
-			targetYRot = rotations[1];
-			targetZRot = rotations[2];
-
-			this.wingBaseRight.xRot = (float) TFMathUtil.interpolateToTarget(attachment.xRotOld, targetXRot, dtInTicks, TAU);
-			this.wingBaseRight.yRot = (float) TFMathUtil.interpolateToTarget(attachment.yRotOld, targetYRot, dtInTicks, TAU);
-			this.wingBaseRight.zRot = (float) TFMathUtil.interpolateToTarget(attachment.zRotOld, targetZRot, dtInTicks, TAU);
+			this.wingBaseRight.xRot = (float) TFMathUtil.interpolateToTarget(attachment.xRotOld, rotations.x, dtInTicks, TAU);
+			this.wingBaseRight.yRot = (float) TFMathUtil.interpolateToTarget(attachment.yRotOld, rotations.y, dtInTicks, TAU);
+			this.wingBaseRight.zRot = (float) TFMathUtil.interpolateToTarget(attachment.zRotOld, rotations.z, dtInTicks, TAU);
 		}
 
 		this.wingBaseLeft.xRot = this.wingBaseRight.xRot;
@@ -195,15 +194,15 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		attachment.zRotOld = this.wingBaseRight.zRot;
 	}
 
-	private float[] calculateRotations(TravellersWingsAnimAttachment attachment, double dtInTicks, float phaseDivisor, float xOffset, float yOffset, float zOffset, float[] sinDivisors) {
+	private Vector3f calculateRotations(TravellersWingsAnimAttachment attachment, double dtInTicks, float phaseDivisor, float xOffset, float yOffset, float zOffset, Vector3f sinDivisors) {
 		attachment.accumulatedPhase += dtInTicks / phaseDivisor;
 		float sinT = (float) Math.sin(attachment.accumulatedPhase);
 		float cosT = (float) Math.cos(attachment.accumulatedPhase);
-		return new float[]{
-			sinT / sinDivisors[0] + xOffset,
-			cosT / sinDivisors[1] + yOffset,
-			cosT / sinDivisors[2] + zOffset
-		};
+		return new Vector3f(
+			sinT / sinDivisors.x + xOffset,
+			cosT / sinDivisors.y + yOffset,
+			-sinT / sinDivisors.z + zOffset
+		);
 	}
 
 	@Override
