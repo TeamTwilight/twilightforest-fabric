@@ -6,6 +6,7 @@ import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -193,6 +194,12 @@ public class TravellersGearLogic {
 			player.playSound(TFSounds.DOUBLE_JUMP.get(), 1.5F, player.getVoicePitch());
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
 			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
+
+			if (player.level() instanceof ServerLevel serverLevel) {
+				Vec3 deltaMovement = player.getDeltaMovement();
+				serverLevel.sendParticles(ParticleTypes.POOF, player.getX() - deltaMovement.x * 0.2f, player.getY(0.8f), player.getZ() - deltaMovement.z * 0.2f, 5, -deltaMovement.x, 0, -deltaMovement.z, 0.2f);
+			}
+
 			return true;
 		}
 		return false;

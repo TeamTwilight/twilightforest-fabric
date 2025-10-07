@@ -45,7 +45,7 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		PartDefinition wbr = root.addOrReplaceChild("wingBaseRight", CubeListBuilder.create()
 				.texOffs(64, 9)
 				.addBox(-0.5F, -1.0F, 0.0F, 1, 2, 10),
-			PartPose.offsetAndRotation(-1.0F, 1.0F, 0.0F, ANGLE_10_DEG * 3, -ANGLE_10_DEG * 3, 0.0F));
+			PartPose.offsetAndRotation(-1.0F, 1.0F, 1.0F, ANGLE_10_DEG * 3, -ANGLE_10_DEG * 3, 0.0F));
 
 		wbr.addOrReplaceChild("wingEdgeRight", CubeListBuilder.create()
 				.texOffs(64, 21)
@@ -75,7 +75,7 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		PartDefinition wbl = root.addOrReplaceChild("wingBaseLeft", CubeListBuilder.create()
 				.texOffs(106, 9)
 				.addBox(-0.5F, -1.0F, 0.0F, 1, 2, 10),
-			PartPose.offsetAndRotation(1.0F, 1.0F, 0.0F, ANGLE_10_DEG * 3, ANGLE_10_DEG * 3, 0.0F));
+			PartPose.offsetAndRotation(1.0F, 1.0F, 1.0F, ANGLE_10_DEG * 3, ANGLE_10_DEG * 3, 0.0F));
 
 		wbl.addOrReplaceChild("wingEdgeLeft", CubeListBuilder.create()
 				.texOffs(122, 21)
@@ -156,9 +156,9 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		}
 
 		if (attachment.doubleJump && attachment.doubleJumpTime < 40) {
-			this.wingBaseRight.xRot = (float) TFMathUtil.interpolateToTarget(attachment.xRotOld, -0.4F, dtInTicks, TAU - 1);
-			this.wingBaseRight.yRot = (float) TFMathUtil.interpolateToTarget(attachment.yRotOld, -0.8F, dtInTicks, TAU - 1);
-			this.wingBaseRight.zRot = (float) TFMathUtil.interpolateToTarget(attachment.zRotOld, -0.1F, dtInTicks, TAU - 1);
+			this.wingBaseRight.xRot = (float) TFMathUtil.interpolateToTarget(attachment.xRotOld, 1.4F, dtInTicks, TAU - 1);
+			this.wingBaseRight.yRot = (float) TFMathUtil.interpolateToTarget(attachment.yRotOld, -0.4f, dtInTicks, TAU - 1);
+			this.wingBaseRight.zRot = (float) TFMathUtil.interpolateToTarget(attachment.zRotOld, -2F, dtInTicks, TAU - 1);
 			attachment.doubleJumpTime++;
 		} else {
 			Vector3f rotations;  // must be initialized later
