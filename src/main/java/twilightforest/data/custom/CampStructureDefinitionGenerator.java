@@ -11,6 +11,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import tamaized.beanification.Autowired;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.custom.TemplateMarkerHandlers;
 import twilightforest.world.components.processors.StateTransfiguringProcessor;
 import twilightforest.world.components.structures.camp.CampPieces;
@@ -37,7 +38,9 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 		@SuppressWarnings("unchecked")
 		Holder.Reference<TemplateMarkerHandlerList> campMarkers = Holder.Reference.createStandAlone((HolderOwner<TemplateMarkerHandlerList>) provider.asGetterLookup().lookupOrThrow(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST), TemplateMarkerHandlers.CAMP_MARKER_HANDLERS);
 
-		this.add("camp/campfire", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null));
+		this.add("camp/campfire_east", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null));
+		this.add("camp/campfire_south", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null));
+		this.add("camp/campfire_west", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null));
 
 		this.configureTents();
 
@@ -99,31 +102,44 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 	}
 
 	private void configureDeco(Holder.Reference<TemplateMarkerHandlerList> campMarkers) {
-		TemplatePoolInstance dryingRackTemplateData = this.weightedRigidTemplate(100, 2, 0, campMarkers, null);
-		TemplatePoolInstance rigidTemplateDataNoDiff = this.weightedRigidTemplate(100, 1, 0, campMarkers, null);
-		TemplatePoolInstance berryTemplateData = this.weightedRigidTemplate(75, 1, 0, campMarkers, null);
+		TemplatePoolInstance twoLayerTemplateData = this.weightedRigidTemplate(100, 2, 0, campMarkers, null);
+		TemplatePoolInstance berryTemplateData = this.weightedRigidTemplate(75, 2, 0, campMarkers, null);
 
-		this.add("camp/deco/double_drying_rack", campPieces.deco, dryingRackTemplateData);
-		this.add("camp/deco/long_drying_rack", campPieces.deco, dryingRackTemplateData);
+		this.add("camp/deco/double_drying_rack", campPieces.deco, twoLayerTemplateData);
+		this.add("camp/deco/long_drying_rack", campPieces.deco, twoLayerTemplateData);
 
-		this.add("camp/deco/garden_1x2", campPieces.deco, rigidTemplateDataNoDiff);
-		this.add("camp/deco/garden_2x4", campPieces.deco, rigidTemplateDataNoDiff);
-		this.add("camp/deco/garden_straight", campPieces.deco, rigidTemplateDataNoDiff);
-		this.add("camp/deco/garden_u", campPieces.deco, rigidTemplateDataNoDiff);
+		this.add("camp/deco/garden_1x3", campPieces.deco, twoLayerTemplateData);
+		this.add("camp/deco/garden_2x4", campPieces.deco, twoLayerTemplateData);
+		this.add("camp/deco/garden_straight", campPieces.deco, twoLayerTemplateData);
+		this.add("camp/deco/garden_u", campPieces.deco, twoLayerTemplateData);
 
 		this.add("camp/deco/berries_staked", campPieces.deco, berryTemplateData);
-		this.add("camp/deco/berries_trellis", campPieces.deco, this.weightedRigidTemplate(75, 2, 0, campMarkers, null));
+		this.add("camp/deco/berries_trellis", campPieces.deco, berryTemplateData);
 		this.add("camp/deco/blackberry_wall", campPieces.deco, berryTemplateData);
 		this.add("camp/deco/blueberry_wall", campPieces.deco, berryTemplateData);
 		this.add("camp/deco/raspberry_wall", campPieces.deco, berryTemplateData);
 
-		this.add("camp/deco/lumber1", campPieces.deco, rigidTemplateDataNoDiff);
-		this.add("camp/deco/lumber2", campPieces.deco, rigidTemplateDataNoDiff);
-		this.add("camp/deco/lumber3", campPieces.deco, rigidTemplateDataNoDiff);
+		this.add("camp/deco/compost_large", campPieces.deco, twoLayerTemplateData);
+		this.add("camp/deco/compost_small", campPieces.deco, twoLayerTemplateData);
 
-		this.add("camp/deco/water_basin", campPieces.deco, rigidTemplateDataNoDiff);
-		this.add("camp/deco/wooden_basin", campPieces.deco, rigidTemplateDataNoDiff);
-		this.add("camp/deco/repair_station", campPieces.deco, rigidTemplateDataNoDiff);
+		this.add("camp/deco/repair_station", campPieces.deco, twoLayerTemplateData);
+
+		this.add("camp/deco/pen", campPieces.deco, twoLayerTemplateData);
+
+		TemplatePoolInstance.ChooseRandomProcessors randomizedWoods = new TemplatePoolInstance.ChooseRandomProcessors(List.of(
+			SimpleWeightedRandomList.<StructureProcessor>builder()
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(TFBlocks.TWILIGHT_OAK_LOG.value()), AlwaysTrueTest.INSTANCE, TFBlocks.TWILIGHT_OAK_LOG.value().defaultBlockState()))), 100)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(TFBlocks.TWILIGHT_OAK_LOG.value()), AlwaysTrueTest.INSTANCE, TFBlocks.CANOPY_LOG.value().defaultBlockState()))), 90)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(TFBlocks.TWILIGHT_OAK_LOG.value()), AlwaysTrueTest.INSTANCE, Blocks.OAK_LOG.defaultBlockState()))), 80)
+				.add(new StateTransfiguringProcessor(List.of(new ProcessorRule(new BlockMatchTest(TFBlocks.TWILIGHT_OAK_LOG.value()), AlwaysTrueTest.INSTANCE, Blocks.BIRCH_LOG.defaultBlockState()))), 70)
+				.build()
+		));
+		TemplatePoolInstance lumberTemplateData = this.weightedRigidTemplate(100, 1, 0, campMarkers, randomizedWoods);
+
+		this.add("camp/deco/lumber1", campPieces.deco, lumberTemplateData);
+		this.add("camp/deco/lumber2", campPieces.deco, lumberTemplateData);
+		this.add("camp/deco/lumber3", campPieces.deco, lumberTemplateData);
+
 		this.addEmpty(campPieces.deco, 1000);
 	}
 }
