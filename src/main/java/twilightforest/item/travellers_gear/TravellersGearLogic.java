@@ -6,6 +6,7 @@ import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -193,18 +194,23 @@ public class TravellersGearLogic {
 
 	public static boolean performDoubleJump(Player player) {
 		boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
-		if (hasDoubleJump && !player.isFallFlying() && !player.onGround()) {
-			player.jumpFromGround();
-			player.resetFallDistance();
-			player.playSound(TFSounds.DOUBLE_JUMP.get(), 1.5F, player.getVoicePitch());
-			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
-			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
-			AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
-			if (instance != null) // Increase safe fall distance so the player can land up to 2 blocks below their starting height after performing a double jump at peak height without taking fall damage
-				instance.addOrUpdateTransientModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
-			return true;
+		if (!hasDoubleJump || player.isFallFlying() || player.onGround())
+			return false;
+		player.jumpFromGround();
+		player.fallDistance = 0;
+		player.playSound(TFSounds.DOUBLE_JUMP.get(), 1.5F, player.getVoicePitch());
+		player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
+		player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
+
+		if (player.level() instanceof ServerLevel serverLevel) {
+			Vec3 deltaMovement = player.getDeltaMovement();
+			serverLevel.sendParticles(ParticleTypes.POOF, player.getX() - deltaMovement.x * 0.2f, player.getY(0.8f), player.getZ() - deltaMovement.z * 0.2f, 5, -deltaMovement.x, 0, -deltaMovement.z, 0.2f);
 		}
-		return false;
+
+		AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
+		if (instance != null) // Increase safe fall distance so the player can land up to 2 blocks below their starting height after performing a double jump at peak height without taking fall damage
+			instance.addOrUpdateTransientModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
+		return true;
 	}
 
 	private static void validateMovement(ServerPlayer serverPlayer,
