@@ -89,7 +89,7 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 		poolWeightsForTemplate.put(poolId, poolData);
 	}
 
-	protected TemplatePoolInstance weightedPathTemplate(int weight, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers) {
+	protected TemplatePoolInstance weightedPathTemplate(int weight, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers, @Nullable Map<String, String> poolAliases) {
 		// TODO register and reference instead
 		Holder<StructureProcessorList> projectionProcessorHolder = Holder.direct(new StructureProcessorList(List.of(new GravityProcessor(Heightmap.Types.WORLD_SURFACE_WG, -2))));
 		return new TemplatePoolInstance(
@@ -100,11 +100,12 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, 2, Optional.of(0))),
 			false,
 			Optional.ofNullable(markerHandlers),
-			Optional.empty()
+			Optional.empty(),
+			poolAliases == null ? Map.of() : poolAliases
 		);
 	}
 
-	protected TemplatePoolInstance weightedRigidTemplate(int weight, int beardifierGroundDelta, @Nullable Integer groundJunctionDiffLimit, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers, @Nullable TemplatePoolInstance.ChooseRandomProcessors randomizedProcessors) {
+	protected TemplatePoolInstance weightedRigidTemplate(int weight, int beardifierGroundDelta, @Nullable Integer groundJunctionDiffLimit, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers, @Nullable TemplatePoolInstance.ChooseRandomProcessors randomizedProcessors, @Nullable Map<String, String> poolAliases) {
 		return new TemplatePoolInstance(
 			Weight.of(weight),
 			Optional.empty(),
@@ -113,7 +114,8 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 			Optional.of(new TemplatePoolInstance.HeightAdjustment(Heightmap.Types.WORLD_SURFACE_WG, beardifierGroundDelta, Optional.ofNullable(groundJunctionDiffLimit))),
 			true,
 			Optional.ofNullable(markerHandlers),
-			Optional.ofNullable(randomizedProcessors)
+			Optional.ofNullable(randomizedProcessors),
+			poolAliases == null ? Map.of() : poolAliases
 		);
 	}
 
