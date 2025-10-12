@@ -1,4 +1,4 @@
-// 1.21.1	2025-09-21T23:19:51.588267543	Registries
+// 1.21.1	2025-10-12T02:21:05.571451112	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -127,7 +127,7 @@ d8af0c3aa5fd707d5e25d08761fd947f8ca47760 data/twilightforest/twilight/travellers
 f98d9ff97239bf3c2c4f623771cb9a17230ba749 data/twilightforest/twilight/travellers_modifiers/item_display.json
 c8736d2b47f1a07438c83150a02698ece19e0d77 data/twilightforest/twilight/travellers_modifiers/perfect_dodge.json
 aa032b04a4b24a274990a28ba730ec2788cf98e7 data/twilightforest/twilight/travellers_modifiers/red_thread_vision.json
-9d4f3661976bd16df6507d6cb80d0e1f513804ad data/twilightforest/twilight/travellers_modifiers/side_step.json
+47defabeb4642ea7c302314187797d5b03ffd836 data/twilightforest/twilight/travellers_modifiers/side_step.json
 072ae754b5e75f14334d598576394ebd839e0281 data/twilightforest/twilight/travellers_modifiers/slimy_soles.json
 76f87a35691fd81cc40cfe67940a364315e9d0b9 data/twilightforest/twilight/travellers_modifiers/stealth.json
 38ce4ed96472c1ffe9d5cffc6be0470cff883f4f data/twilightforest/twilight/travellers_modifiers/straight_ahead.json
