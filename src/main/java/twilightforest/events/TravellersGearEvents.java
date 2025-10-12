@@ -145,6 +145,9 @@ public class TravellersGearEvents {
 		if (hasDoubleJump != null && hasDoubleJump != player.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, hasDoubleJump);
 			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
+			AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
+			if (instance != null)
+				instance.removeModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
 		}
 
 		//reset double jump wing anim if on the ground

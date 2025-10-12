@@ -195,10 +195,13 @@ public class TravellersGearLogic {
 		boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
 		if (hasDoubleJump && !player.isFallFlying() && !player.onGround()) {
 			player.jumpFromGround();
-			player.fallDistance = 0;
+			player.resetFallDistance();
 			player.playSound(TFSounds.DOUBLE_JUMP.get(), 1.5F, player.getVoicePitch());
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
 			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
+			AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
+			if (instance != null) // Increase safe fall distance so the player can land up to 2 blocks below their starting height after performing a double jump at peak height without taking fall damage
+				instance.addOrUpdateTransientModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
 			return true;
 		}
 		return false;
