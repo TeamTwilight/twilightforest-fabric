@@ -30,7 +30,6 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFTrappedChestBlock;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
 
@@ -401,7 +400,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 			.save(output, locWood(name + "_drying_rack"));
 	}
 
-	protected final void chestBlock(RecipeOutput output, String name, DeferredHolder<Block, ? extends ChestBlock> chest, DeferredHolder<Block, ? extends TFTrappedChestBlock> trapped, DeferredBlock<? extends Block> material) {
+	protected final void chestBlock(RecipeOutput output, String name, DeferredHolder<Block, ? extends ChestBlock> chest, DeferredHolder<Block, ? extends ChestBlock> trapped, DeferredBlock<? extends Block> material) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, chest.get(), 2)
 			.pattern("###")
 			.pattern("#C#")

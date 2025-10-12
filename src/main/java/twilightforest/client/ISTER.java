@@ -8,7 +8,10 @@ import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SkullModelBase;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -31,14 +34,18 @@ import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
-import twilightforest.block.entity.*;
+import twilightforest.block.entity.BrazierBlockEntity;
+import twilightforest.block.entity.CandelabraBlockEntity;
+import twilightforest.block.entity.KeepsakeCasketBlockEntity;
+import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.client.event.ClientGameEvents;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
@@ -78,7 +85,7 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 	});
 	private final SkullChestBlockEntity skullChest = new SkullChestBlockEntity(BlockPos.ZERO, TFBlocks.SKULL_CHEST.get().defaultBlockState());
 	private final KeepsakeCasketBlockEntity keepsakeCasket = new KeepsakeCasketBlockEntity(BlockPos.ZERO, TFBlocks.KEEPSAKE_CASKET.get().defaultBlockState());
-	private final Map<Block, TFChestBlockEntity> chestEntities = Util.make(new HashMap<>(), map -> {
+	private final Map<Block, ChestBlockEntity> chestEntities = Util.make(new HashMap<>(), map -> {
 		makeInstance(map, TFBlocks.TWILIGHT_OAK_CHEST);
 		makeInstance(map, TFBlocks.CANOPY_CHEST);
 		makeInstance(map, TFBlocks.MANGROVE_CHEST);
@@ -87,16 +94,14 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		makeInstance(map, TFBlocks.TRANSFORMATION_CHEST);
 		makeInstance(map, TFBlocks.MINING_CHEST);
 		makeInstance(map, TFBlocks.SORTING_CHEST);
-	});
-	private final Map<Block, TFTrappedChestBlockEntity> trappedChestEntities = Util.make(new HashMap<>(), map -> {
-		makeTrappedInstance(map, TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST);
-		makeTrappedInstance(map, TFBlocks.CANOPY_TRAPPED_CHEST);
-		makeTrappedInstance(map, TFBlocks.MANGROVE_TRAPPED_CHEST);
-		makeTrappedInstance(map, TFBlocks.DARK_TRAPPED_CHEST);
-		makeTrappedInstance(map, TFBlocks.TIME_TRAPPED_CHEST);
-		makeTrappedInstance(map, TFBlocks.TRANSFORMATION_TRAPPED_CHEST);
-		makeTrappedInstance(map, TFBlocks.MINING_TRAPPED_CHEST);
-		makeTrappedInstance(map, TFBlocks.SORTING_TRAPPED_CHEST);
+		makeInstance(map, TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST);
+		makeInstance(map, TFBlocks.CANOPY_TRAPPED_CHEST);
+		makeInstance(map, TFBlocks.MANGROVE_TRAPPED_CHEST);
+		makeInstance(map, TFBlocks.DARK_TRAPPED_CHEST);
+		makeInstance(map, TFBlocks.TIME_TRAPPED_CHEST);
+		makeInstance(map, TFBlocks.TRANSFORMATION_TRAPPED_CHEST);
+		makeInstance(map, TFBlocks.MINING_TRAPPED_CHEST);
+		makeInstance(map, TFBlocks.SORTING_TRAPPED_CHEST);
 	});
 	private KnightmetalShieldModel shield = new KnightmetalShieldModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.KNIGHTMETAL_SHIELD));
 	private Map<BossVariant, TrophyBlockModel> trophies = TrophyRenderer.createTrophyRenderers(Minecraft.getInstance().getEntityModels());
@@ -117,6 +122,11 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 		this.skulls = SkullBlockRenderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
 
 		TwilightForestMod.LOGGER.debug("Reloaded ISTER!");
+	}
+
+	public static void makeInstance(Map<Block, ChestBlockEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
+		ChestBlock block = registryObject.get();
+		map.put(block, (ChestBlockEntity) block.newBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
 	}
 
 	@Override
@@ -167,10 +177,8 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 				if (minecraft.getBlockEntityRenderDispatcher().getRenderer(this.skullChest) instanceof SkullChestRenderer<?> renderer) {
 					renderer.renderCasket(0.0F, pose, buffers, light, overlay, renderer.getTextureLocation(0), Direction.NORTH);
 				}
-			} else if (block instanceof TFChestBlock) {
+			} else if (block instanceof ChestBlock) {
 				minecraft.getBlockEntityRenderDispatcher().renderItem(this.chestEntities.get(block), pose, buffers, light, overlay);
-			} else if (block instanceof TFTrappedChestBlock) {
-				minecraft.getBlockEntityRenderDispatcher().renderItem(this.trappedChestEntities.get(block), pose, buffers, light, overlay);
 			} else if (block instanceof AbstractSkullCandleBlock candleBlock) {
 				ResolvableProfile profile = stack.get(DataComponents.PROFILE);
 
@@ -251,15 +259,5 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			lichModel.hat.render(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(LichRenderer.TEXTURE)), light, overlay);
 			pose.popPose();
 		}
-	}
-
-	public static void makeInstance(Map<Block, TFChestBlockEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
-		ChestBlock block = registryObject.get();
-		map.put(block, new TFChestBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
-	}
-
-	public static void makeTrappedInstance(Map<Block, TFTrappedChestBlockEntity> map, DeferredHolder<Block, ? extends ChestBlock> registryObject) {
-		ChestBlock block = registryObject.get();
-		map.put(block, new TFTrappedChestBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
 	}
 }
