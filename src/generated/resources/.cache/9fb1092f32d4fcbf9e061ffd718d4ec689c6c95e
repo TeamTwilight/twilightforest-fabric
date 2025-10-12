@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-31T23:30:29.074232	Recipes
+// 1.21.1	2025-10-12T08:19:30.948762312	Recipes
 c8fdba389667cca258d6f0a2a4be48f93bd7e333 data/minecraft/advancement/recipes/drying/dead_brain_coral.json
 81aca38f20243d53b6a6ce139ab1e7237bb6a2a5 data/minecraft/advancement/recipes/drying/dead_brain_coral_block.json
 5e11c49be557cf53712364dcadcd4bf5799ae3b1 data/minecraft/advancement/recipes/drying/dead_brain_coral_fan.json
@@ -652,7 +652,7 @@ e02387c46f0bee5f96a19fe04f07ab06b5a7c78f data/twilightforest/recipe/equipment/st
 d23af2fb80e4ddcfceff729fc61b85512148c9cd data/twilightforest/recipe/equipment/steeleaf_pickaxe.json
 4962499d89a740ca2351b202f271dd315a580c23 data/twilightforest/recipe/equipment/steeleaf_shovel.json
 f3afc948a189eb022256708e4a98f40cfe3ab84f data/twilightforest/recipe/equipment/steeleaf_sword.json
-a78ce92b02bd9f6725851306742a506a68f64c48 data/twilightforest/recipe/equipment/travellers_belt.json
+1829d916db54521a8307d57e8ef1ce76f7cd7e7c data/twilightforest/recipe/equipment/travellers_belt.json
 c0d236c1b7214c31e140f242a55d070a3497f718 data/twilightforest/recipe/equipment/travellers_boots.json
 3ce988c700309b63a1b8e9dab9a6cba2a687e76e data/twilightforest/recipe/equipment/travellers_gloves.json
 003330d599dade8443ae690ac0c8daa018556543 data/twilightforest/recipe/equipment/travellers_goggles.json

@@ -2,19 +2,25 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "c": {
-      "tag": "c:chests/wooden"
-    },
     "i": {
       "tag": "c:nuggets/iron"
     },
     "l": {
       "item": "twilightforest:tanned_leather"
+    },
+    "x": {
+      "type": "neoforge:difference",
+      "base": {
+        "tag": "c:chests/wooden"
+      },
+      "subtracted": {
+        "tag": "c:chests/trapped"
+      }
     }
   },
   "pattern": [
     "lll",
-    "ici",
+    "ixi",
     "lll"
   ],
   "result": {

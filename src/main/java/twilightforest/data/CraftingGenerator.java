@@ -21,10 +21,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
+import net.neoforged.neoforge.common.crafting.DifferenceIngredient;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.*;
-import twilightforest.data.custom.CartesianShapelessRecipeBuilder;
 import twilightforest.data.helpers.CraftingDataHelper;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -1355,10 +1355,10 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, TFItems.TRAVELLERS_BELT)
 			.pattern("lll")
-			.pattern("ici")
+			.pattern("ixi")
 			.pattern("lll")
 			.define('l', TFItems.TANNED_LEATHER)
-			.define('c', Tags.Items.CHESTS_WOODEN)
+			.define('x', DifferenceIngredient.of(Ingredient.of(Tags.Items.CHESTS_WOODEN), Ingredient.of(Tags.Items.CHESTS_TRAPPED)))
 			.define('i', Tags.Items.NUGGETS_IRON)
 			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
 			.save(output, locEquip(TFItems.TRAVELLERS_BELT.getId().getPath()));
