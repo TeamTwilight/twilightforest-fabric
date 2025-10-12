@@ -656,6 +656,13 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.TRANSFORMATION_CHEST.get(),
 			TFBlocks.MINING_CHEST.get(),
 			TFBlocks.SORTING_CHEST.get(),
+			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(),
+			TFBlocks.CANOPY_TRAPPED_CHEST.get(),
+			TFBlocks.MANGROVE_TRAPPED_CHEST.get(),
+			TFBlocks.DARK_TRAPPED_CHEST.get(), TFBlocks.TIME_TRAPPED_CHEST.get(),
+			TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(),
+			TFBlocks.MINING_TRAPPED_CHEST.get(),
+			TFBlocks.SORTING_TRAPPED_CHEST.get(),
 			TFBlocks.HUGE_LILY_PAD.get(),
 			TFBlocks.ENCASED_TOWERWOOD.get()
 		).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD, DRYING_RACKS);
