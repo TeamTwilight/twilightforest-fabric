@@ -101,14 +101,18 @@ public class TravellersGearEvents {
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
 		Level level = livingEntity.level();
-		if (!TravellersModifiersManager.isModifierActive(livingEntity, chest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER) || probability == null || probability <= level.random.nextFloat())
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, chest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER) || probability == null)
+			return;
+		if (level.isClientSide()) {
+			event.setCanceled(true); // always cancel on the client side because the game sends a damage packet when it hits the player
+			return;
+		}
+		if (probability <= level.random.nextFloat())
 			return;
 		Entity projectile = event.getEntity();
 		Vec3 hitPosition = projectile.position().add(projectile.getDeltaMovement());
 		level.playLocalSound(hitPosition.x(), hitPosition.y(), hitPosition.z(), TFSounds.PERFECT_DODGE.get(), livingEntity.getSoundSource(), 1.5F, livingEntity.getVoicePitch(), false);
 		event.setCanceled(true);
-		if (level.isClientSide())
-			return;
 		ParticlePacket particlePacket = new ParticlePacket();
 		for (int particleNumber = 0; particleNumber < 20; particleNumber++) {
 			Vec3 particleVelocity = new Vec3(
