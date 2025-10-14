@@ -3,7 +3,6 @@ package twilightforest.client.event;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
@@ -16,12 +15,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
@@ -54,15 +52,10 @@ public class TravellersClientEvents {
 		NeoForge.EVENT_BUS.addListener(this::playZoomSounds);
 	}
 
-	private void tickEntityGearEffects(LevelTickEvent.Post event) {
-		Level level = event.getLevel();
-		if (level instanceof ClientLevel clientLevel) {
-			clientLevel.entitiesForRendering().forEach(entity -> {
-				if (!(entity instanceof LivingEntity livingEntity))
-					return;
-				TravellersGearLogic.travellersWingsControlledFall(livingEntity);
-			});
-		}
+	private void tickEntityGearEffects(EntityTickEvent.Post event) {
+		if (!(event.getEntity() instanceof LivingEntity livingEntity) || !livingEntity.level().isClientSide()) return;
+		TravellersGearLogic.travellersWingsControlledFall(livingEntity);
+		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
 	}
 
 	private void tickPlayerGearEffects(PlayerTickEvent.Pre event) {
