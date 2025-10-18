@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -76,6 +77,11 @@ public class TravellersGearLogic {
 
 		if (!level.isClientSide())
 			PacketDistributor.sendToPlayersTrackingEntity(livingEntity, particlePacket);
+	}
+
+	public static boolean isBelowMaxWaterWalkingSubmergedHeight(LivingEntity livingEntity) {
+		double waterHeight = livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value());
+		return waterHeight < WATER_WALKING_MAX_SUBMERGED_HEIGHT;
 	}
 
 	public static void travellersBootsForwardBoost(LivingEntity livingEntity) {
