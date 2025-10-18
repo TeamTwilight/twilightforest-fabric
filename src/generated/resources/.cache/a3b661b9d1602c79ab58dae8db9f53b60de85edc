@@ -1,9 +1,8 @@
-// 1.21.1	2025-10-12T08:19:30.948238632	Twilight Forest Item Tags
+// 1.21.1	2025-09-22T23:33:09.982641661	Twilight Forest Item Tags
 3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
 4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
-dbb45e0d36df554b46ceb4028ec61bc7b7a6315a data/c/tags/item/chests/trapped.json
-44154bfab8aa5f48a23729d5e1312a8b8c0ae87c data/c/tags/item/chests/wooden.json
+3d56c0ea016f639fad4fae4272d928867251da04 data/c/tags/item/chests/wooden.json
 3fc964a8f6314a307c994f9481e1ad6ca6d39785 data/c/tags/item/feathers.json
 211134157771c86a72a0c5a1985c2b05da55729b data/c/tags/item/fence_gates/wooden.json
 8f7c0ef218710e60290d8d7964f0f0599e792877 data/c/tags/item/foods.json
@@ -136,6 +135,7 @@ aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/item/timewood_
 788e6e34a201c014ae3783bc128afbd75443273b data/twilightforest/tags/item/tiny_bird_tempt_items.json
 6352667067c11a27cfc37713a8f8543507c1f18e data/twilightforest/tags/item/towerwood.json
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/item/transwood_logs.json
+887c9dd9df2385de6250899c825c70da62b2d7e3 data/twilightforest/tags/item/travellers_agile_ranger_whitelisted.json
 53df7d57255dd3eb5af7094e75d5c6cf8e7cbcb5 data/twilightforest/tags/item/trophies.json
 d94381f990d5908c2d71247b1b14946ef4a4ef3d data/twilightforest/tags/item/twilight_oak_logs.json
 f98e3791b370872501ab48edb20af5fe8f410ac0 data/twilightforest/tags/item/uncrafting_ignores_cost.json

@@ -79,6 +79,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	public static final TagKey<Item> BLOCK_AND_CHAIN_ENCHANTABLE = create("enchantable/block_and_chain");
 
 	public static final TagKey<Item> TRAVELLERS_BELT_BLACKLISTED = create("travellers_belt_blacklisted");
+	public static final TagKey<Item> TRAVELLERS_AGILE_RANGER_WHITELISTED = create("travellers_agile_ranger_whitelisted");
+	public static final TagKey<Item> TRAVELLERS_AGILE_RANGER_BLACKLISTED = create("travellers_agile_ranger_blacklisted");
 
 	public static final TagKey<Item> REPAIRS_IRONWOOD_TOOLS = create("repairs_ironwood_tools");
 	public static final TagKey<Item> REPAIRS_STEELEAF_TOOLS = create("repairs_steeleaf_tools");
@@ -369,6 +371,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.asItem());
 
 		this.tag(ItemTags.TRIM_MATERIALS).add(TFItems.IRONWOOD_INGOT.get(), TFItems.STEELEAF_INGOT.get(), TFItems.KNIGHTMETAL_INGOT.get(), TFItems.NAGA_SCALE.get(), TFItems.CARMINITE.get(), TFItems.FIERY_INGOT.get());
+		this.tag(TRAVELLERS_AGILE_RANGER_WHITELISTED)
+			.add(TFItems.MOONWORM_QUEEN.get());
 
 		this.tag(REPAIRS_IRONWOOD_TOOLS).addTag(IRONWOOD_INGOTS);
 		this.tag(REPAIRS_STEELEAF_TOOLS).addTag(STEELEAF_INGOTS);

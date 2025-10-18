@@ -94,9 +94,14 @@ public class TravellersGearLogic {
 	public static void travellersWingsSidestepCooldownSound(Player player) {
 		ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
 		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
-		Long dt = player.level().getGameTime() - player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
-		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt.equals(cooldown))
+		if (cooldown == null)
+			return;
+		long dt = player.level().getGameTime() - player.getData(TFDataAttachments.LAST_SIDESTEP_TIME);
+		Boolean shouldPlaySound = player.getData(TFDataAttachments.SHOULD_PLAY_SIDE_STEP_COOLDOWN_SOUND);
+		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt > cooldown && shouldPlaySound) {
 			player.playSound(TFSounds.SIDE_STEP_CHARGED.get(), 1F, player.getVoicePitch());
+			player.setData(TFDataAttachments.SHOULD_PLAY_SIDE_STEP_COOLDOWN_SOUND, false);
+		}
 	}
 
 	public static void travellersWingsControlledFall(LivingEntity livingEntity) {
@@ -173,6 +178,7 @@ public class TravellersGearLogic {
 		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && cooldown != null && currentTime - lastSidestepTime > cooldown && !player.isFallFlying() && player.onGround() && !player.isCrouching()) {
 			TravellersGearLogic.performSidestep(player, isLeftSidestep);
 			player.setData(TFDataAttachments.LAST_SIDESTEP_TIME, currentTime);
+			player.setData(TFDataAttachments.SHOULD_PLAY_SIDE_STEP_COOLDOWN_SOUND, true);
 			return true;
 		}
 		return false;
@@ -188,21 +194,22 @@ public class TravellersGearLogic {
 
 	public static boolean performDoubleJump(Player player) {
 		boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
-		if (hasDoubleJump && !player.isFallFlying() && !player.onGround()) {
-			player.jumpFromGround();
-			player.fallDistance = 0;
-			player.playSound(TFSounds.DOUBLE_JUMP.get(), 1.5F, player.getVoicePitch());
-			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
-			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
+		if (!hasDoubleJump || player.isFallFlying() || player.onGround())
+			return false;
+		player.jumpFromGround();
+		player.resetFallDistance();
+		player.playSound(TFSounds.DOUBLE_JUMP.get(), 1.5F, player.getVoicePitch());
+		player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
+		player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
+		AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
+		if (instance != null) // Increase safe fall distance so the player can land up to 2 blocks below their starting height after performing a double jump at peak height without taking fall damage
+			instance.addOrUpdateTransientModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
 
-			if (player.level() instanceof ServerLevel serverLevel) {
-				Vec3 deltaMovement = player.getDeltaMovement();
-				serverLevel.sendParticles(ParticleTypes.POOF, player.getX() - deltaMovement.x * 0.2f, player.getY(0.8f), player.getZ() - deltaMovement.z * 0.2f, 5, -deltaMovement.x, 0, -deltaMovement.z, 0.2f);
-			}
-
-			return true;
+		if (player.level() instanceof ServerLevel serverLevel) {
+			Vec3 deltaMovement = player.getDeltaMovement();
+			serverLevel.sendParticles(ParticleTypes.POOF, player.getX() - deltaMovement.x * 0.2f, player.getY(0.8f), player.getZ() - deltaMovement.z * 0.2f, 5, -deltaMovement.x, 0, -deltaMovement.z, 0.2f);
 		}
-		return false;
+		return true;
 	}
 
 	private static void validateMovement(ServerPlayer serverPlayer,

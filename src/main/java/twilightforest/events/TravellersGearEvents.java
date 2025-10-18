@@ -71,7 +71,6 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::cancelPhantomSpawns);
 		NeoForge.EVENT_BUS.addListener(this::fireCraftingModifierTrigger);
 		NeoForge.EVENT_BUS.addListener(this::removeModifiersFromTravellersGear);
-		NeoForge.EVENT_BUS.addListener(this::extractItemsFromSwapHotbarModifier);
 		NeoForge.EVENT_BUS.addListener(this::stopDamagingTravellersGear);
 	}
 
@@ -105,14 +104,18 @@ public class TravellersGearEvents {
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
 		Level level = livingEntity.level();
-		if (!TravellersModifiersManager.isModifierActive(livingEntity, chest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER) || probability == null || probability <= level.random.nextFloat())
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, chest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER) || probability == null)
+			return;
+		if (level.isClientSide()) {
+			event.setCanceled(true); // always cancel on the client side because the game sends a damage packet when it hits the player
+			return;
+		}
+		if (probability <= level.random.nextFloat())
 			return;
 		Entity projectile = event.getEntity();
 		Vec3 hitPosition = projectile.position().add(projectile.getDeltaMovement());
-		level.playLocalSound(hitPosition.x(), hitPosition.y(), hitPosition.z(), TFSounds.PERFECT_DODGE.get(), livingEntity.getSoundSource(), 1.5F, livingEntity.getVoicePitch(), false);
+		level.playSound(null, hitPosition.x(), hitPosition.y(), hitPosition.z(), TFSounds.PERFECT_DODGE.get(), livingEntity.getSoundSource(), 1.5F, livingEntity.getVoicePitch());
 		event.setCanceled(true);
-		if (level.isClientSide())
-			return;
 		ParticlePacket particlePacket = new ParticlePacket();
 		for (int particleNumber = 0; particleNumber < 20; particleNumber++) {
 			Vec3 particleVelocity = new Vec3(
@@ -145,6 +148,9 @@ public class TravellersGearEvents {
 		if (hasDoubleJump != null && hasDoubleJump != player.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
 			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, hasDoubleJump);
 			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
+			AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
+			if (instance != null)
+				instance.removeModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
 		}
 
 		//reset double jump wing anim if on the ground
