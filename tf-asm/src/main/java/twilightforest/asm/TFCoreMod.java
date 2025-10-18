@@ -7,6 +7,7 @@ import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierClassTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer;
 import twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer;
+import twilightforest.asm.transformers.block.SlimeBlockBounceUpTransformer;
 import twilightforest.asm.transformers.block.SlimeBlockMomentumTransformer;
 import twilightforest.asm.transformers.block.UnrestrainedFrictionTransformer;
 import twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer;
@@ -48,6 +49,7 @@ public class TFCoreMod implements ICoreMod {
 
 			//block
 			new SlimeBlockMomentumTransformer(),
+			new SlimeBlockBounceUpTransformer(),
 			new UnrestrainedFrictionTransformer(),
 
 			// chunk

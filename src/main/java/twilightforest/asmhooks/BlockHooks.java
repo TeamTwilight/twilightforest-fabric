@@ -13,6 +13,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.TriState;
 import tamaized.beanification.Autowired;
 import twilightforest.block.CloudBlock;
@@ -131,5 +132,19 @@ public class BlockHooks {
 			return true; //dont return false here as the original check is looking that an entity is NOT stepping carefully
 		}
 		return o;
+	}
+
+	/**
+	 * {@link twilightforest.asm.transformers.block.SlimeBlockBounceUpTransformer}<p/>
+	 * <p>
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.world.level.block.SlimeBlock#bounceUp(Entity)}
+	 */
+	public static boolean stopBouncing(Entity entity) {
+		if (entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity, living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER) && entity.getDeltaMovement().y() > -0.08) {
+			entity.setDeltaMovement(new Vec3(entity.getDeltaMovement().x, Math.max(0, entity.getDeltaMovement().y), entity.getDeltaMovement().z));
+			return true;
+		}
+		return false;
 	}
 }
