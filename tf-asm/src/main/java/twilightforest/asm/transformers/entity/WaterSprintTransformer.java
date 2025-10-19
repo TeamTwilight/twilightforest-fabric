@@ -21,12 +21,6 @@ public class WaterSprintTransformer implements ITransformer<MethodNode> {
 			.filter(insn -> insn instanceof MethodInsnNode)
 			.map(insn -> (MethodInsnNode) insn)
 			.filter(m -> "isInWater".equals(m.name) && "()Z".equals(m.desc))
-			.filter(m -> {
-				AbstractInsnNode prev = previousRealInsn(m);
-				return prev instanceof VarInsnNode vin &&
-					vin.getOpcode() == Opcodes.ALOAD &&
-					vin.var == 0;
-			})
 			.forEach(m -> {
 				InsnList patch = ASMAPI.listOf(
 					new InsnNode(Opcodes.DUP),
@@ -52,10 +46,6 @@ public class WaterSprintTransformer implements ITransformer<MethodNode> {
 				AbstractInsnNode indy = previousRealInsn(call);
 				if (!(indy instanceof InvokeDynamicInsnNode)) return;
 				AbstractInsnNode capturedThis = previousRealInsn(indy);
-				if (!(capturedThis instanceof VarInsnNode vin &&
-					vin.getOpcode() == Opcodes.ALOAD && vin.var == 0)) {
-					return;
-				}
 				node.instructions.insert(capturedThis, new InsnNode(Opcodes.DUP));
 				MethodInsnNode wrap = new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
