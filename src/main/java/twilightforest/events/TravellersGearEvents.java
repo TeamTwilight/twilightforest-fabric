@@ -47,10 +47,7 @@ import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifie
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.ParticlePacket;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -72,6 +69,7 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::fireCraftingModifierTrigger);
 		NeoForge.EVENT_BUS.addListener(this::removeModifiersFromTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::stopDamagingTravellersGear);
+		NeoForge.EVENT_BUS.addListener(this::setLastDamageArmorTime);
 	}
 
 	private void magnetizeArrows(ProjectileImpactEvent event) {
@@ -224,19 +222,26 @@ public class TravellersGearEvents {
 	}
 
 	private void stopDamagingTravellersGear(ArmorHurtEvent event) {
-		if (!event.isCanceled()) {
-			event.getArmorMap().forEach((slot, entry) -> {
-				ItemStack damagedStack = event.getArmorItemStack(slot);
-				if (damagedStack.has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
-					if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage()) {
-						event.setNewDamage(slot, damagedStack.getMaxDamage() - damagedStack.getDamageValue() - 1);
-					} else if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage() - 1 && event.getEntity() instanceof ServerPlayer player) {
-						player.playNotifySound(SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
-					}
-				}
-			});
-		}
+		if (event.isCanceled())
+			return;
+		event.getArmorMap().forEach((slot, entry) -> {
+			ItemStack damagedStack = event.getArmorItemStack(slot);
+			if (!damagedStack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
+				return;
+			if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage()) {
+				event.setNewDamage(slot, damagedStack.getMaxDamage() - damagedStack.getDamageValue() - 1);
+			} else if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage() - 1 && event.getEntity() instanceof ServerPlayer player) {
+				player.playNotifySound(SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
+			}
+		});
 	}
+
+	private void setLastDamageArmorTime(ArmorHurtEvent event) {
+		if (Arrays.stream(EquipmentSlot.values()).noneMatch(slot -> event.getNewDamage(slot) > 0)) return;
+		LivingEntity entity = event.getEntity();
+		entity.setData(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME, entity.level().getGameTime());
+	}
+
 
 	private void cancelCombiningTravellersGear(AnvilUpdateEvent event) {
 		if (event.getLeft().has(TFDataComponents.IS_TRAVELLERS_GEAR) && event.getRight().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {

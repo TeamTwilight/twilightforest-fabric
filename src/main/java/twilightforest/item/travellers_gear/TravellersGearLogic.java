@@ -125,6 +125,10 @@ public class TravellersGearLogic {
 	}
 
 	public static void travellersGearAutoRepair(LivingEntity livingEntity) {
+		long lastHitTime = livingEntity.getData(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME);
+		if (livingEntity.level().getGameTime() - lastHitTime <= 10 * 20)  // 10 seconds
+			return;
+
 		livingEntity.getArmorSlots().forEach(slot -> {
 			Float probability = slot.get(TFDataComponents.AUTO_REPAIR_PROBABILITY);
 			if (probability == null || !TravellersModifiersManager.isModifierActive(livingEntity, slot, TravellersModifiersManager.AUTO_REPAIR_MODIFIER))
