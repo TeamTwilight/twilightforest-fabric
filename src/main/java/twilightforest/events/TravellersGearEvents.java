@@ -165,8 +165,8 @@ public class TravellersGearEvents {
 	}
 
 	private void performStealth(PlayerTickEvent.Post event) {
-		if (event.getEntity() instanceof ServerPlayer player) {
-			TravellersGearLogic.travellersStealth(player, player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
+		if (!event.getEntity().level().isClientSide()) {
+			TravellersGearLogic.travellersStealth(event.getEntity(), player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
 		}
 	}
 

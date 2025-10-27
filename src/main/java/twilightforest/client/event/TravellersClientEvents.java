@@ -120,7 +120,7 @@ public class TravellersClientEvents {
 		int lastWalkingTime = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
 		boolean hasDoubleTapped = currentTime - lastWalkingTime < 4;
 
-		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped) {
+		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && input.leftImpulse != 0) {
 			boolean isLeftSidestep = input.leftImpulse > 0;
 			if (TravellersGearLogic.tryPerformSidestep(localPlayer, isLeftSidestep)) {
 				localPlayer.connection.send(new PerformSidestepPacket(isLeftSidestep));
