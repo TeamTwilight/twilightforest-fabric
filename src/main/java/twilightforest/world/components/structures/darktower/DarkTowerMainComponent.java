@@ -490,10 +490,10 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	private void decorateReappearingMaze(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource decoRNG, BoundingBox sbb, Rotation rotation, int y) {
 		// make maze object
 		int mazeSize = 6;
+		decoRNG.setSeed(world.getSeed() + this.boundingBox.minX() * 90342903L + y * 90342903L ^ this.boundingBox.minZ());
 		TFMaze maze = new TFMaze(mazeSize, mazeSize, decoRNG);
 
 		// set the seed to a fixed value based on this maze's x and z
-		maze.setSeed(world.getSeed() + this.boundingBox.minX() * 90342903L + y * 90342903L ^ this.boundingBox.minZ());
 
 		// tell it not to make outside walls by making them "ROOMS"
 		for (int i = 0; i < 13; i++) {
@@ -522,7 +522,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				maze.putRaw(6, 1, TFMaze.ROOM);
 				maze.putRaw(7, 1, TFMaze.ROOM);
 				maze.putRaw(8, 1, TFMaze.DOOR);
-				maze.generateRecursiveBacktracker(0, 5);
+				maze.generateRecursiveBacktracker(0, 5, decoRNG);
 			}
 			case CLOCKWISE_90 -> {
 				for (int x = 7; x < 12; x++) {
@@ -538,7 +538,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				maze.putRaw(11, 6, TFMaze.ROOM);
 				maze.putRaw(11, 7, TFMaze.ROOM);
 				maze.putRaw(11, 8, TFMaze.DOOR);
-				maze.generateRecursiveBacktracker(0, 0);
+				maze.generateRecursiveBacktracker(0, 0, decoRNG);
 			}
 			case CLOCKWISE_180 -> {
 				for (int x = 7; x < 12; x++) {
@@ -554,7 +554,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				maze.putRaw(6, 11, TFMaze.ROOM);
 				maze.putRaw(5, 11, TFMaze.ROOM);
 				maze.putRaw(4, 11, TFMaze.DOOR);
-				maze.generateRecursiveBacktracker(5, 0);
+				maze.generateRecursiveBacktracker(5, 0, decoRNG);
 			}
 			case COUNTERCLOCKWISE_90 -> {
 				for (int x = 1; x < 6; x++) {
@@ -570,7 +570,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				maze.putRaw(1, 6, TFMaze.ROOM);
 				maze.putRaw(1, 5, TFMaze.ROOM);
 				maze.putRaw(1, 4, TFMaze.DOOR);
-				maze.generateRecursiveBacktracker(5, 5);
+				maze.generateRecursiveBacktracker(5, 5, decoRNG);
 			}
 		}
 
@@ -585,7 +585,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		maze.head = 1;
 		maze.oddBias = 2;
 
-		maze.copyToStructure(world, manager, generator, 0, y + 1, 0, this, sbb);
+		maze.copyToStructure(world, manager, generator, 0, y + 1, 0, this, sbb, decoRNG);
 
 		decorateMazeDeadEnds(world, decoRNG, maze, y, rotation, sbb);
 	}
