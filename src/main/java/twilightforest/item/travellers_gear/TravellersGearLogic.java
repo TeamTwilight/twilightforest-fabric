@@ -111,7 +111,7 @@ public class TravellersGearLogic {
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER) || multiplier == null || deltaMovement.y() >= 0 || livingEntity.isFallFlying())
 			return;
 
-		if (livingEntity.isShiftKeyDown())
+		if (!livingEntity.isShiftKeyDown())
 			multiplier = 1 - (1 - multiplier) / 3F;
 
 		double newDeltaMovementY = deltaMovement.y() * multiplier;
