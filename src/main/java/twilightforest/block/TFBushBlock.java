@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -34,7 +35,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,7 +60,8 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[4]),
 		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[5]),
 		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[6]),
-		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[7])
+		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[7]),
+		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[8])
 	};
 
 	private static final VoxelShape[] MEDIUM_BUSH_SHAPES = new VoxelShape[]{
@@ -71,7 +72,8 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[4]),
 		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[5]),
 		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[6]),
-		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[7])
+		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[7]),
+		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[8])
 	};
 
 	public TFBushBlock(ResourceKey<LootTable> berryLoot, Properties properties) {
