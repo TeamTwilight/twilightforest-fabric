@@ -164,9 +164,11 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	) {
 		if (!stack.is(Items.SNOW) || state.getValue(SNOW_LAYERS) == MAX_SNOW_LAYERS || !Blocks.SNOW.defaultBlockState().canSurvive(level, pos))
 			return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+		BlockState newState = state.setValue(SNOW_LAYERS, state.getValue(SNOW_LAYERS) + 1);
+		if (isColliding(player, pos, newState))
+			return ItemInteractionResult.FAIL;
 		if (!player.hasInfiniteMaterials())
 			stack.shrink(1);
-		BlockState newState = state.setValue(SNOW_LAYERS, state.getValue(SNOW_LAYERS) + 1);
 		level.setBlock(pos, newState, Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
 		updateSnowBeneath(level, pos);
 		return ItemInteractionResult.SUCCESS;

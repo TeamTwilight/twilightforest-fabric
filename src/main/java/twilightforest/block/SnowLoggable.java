@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -55,5 +56,11 @@ public interface SnowLoggable {
 		Vec3 endPos = startPos.add(entity.getLookAngle().x() * 6.0D, entity.getLookAngle().y() * 6.0D, entity.getLookAngle().z() * (double) 6);
 		ClipContext rayTraceContext = new ClipContext(startPos, endPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity);
 		return entity.level().clip(rayTraceContext);
+	}
+
+	// [VANILLA COPY] BlockItem#canPlace(BlockPlaceContext context, BlockState state)
+	default boolean isColliding(Player player, BlockPos pos, BlockState state) {
+		CollisionContext collisioncontext = CollisionContext.of(player);
+		return !player.level().isUnobstructed(state, pos, collisioncontext);
 	}
 }
