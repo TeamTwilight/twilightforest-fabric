@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
@@ -21,17 +22,13 @@ public interface SnowLoggable {
 	int MIN_SNOW_LAYERS = 0;
 	int MAX_SNOW_LAYERS = SnowLayerBlock.MAX_HEIGHT;
 	IntegerProperty SNOW_LAYERS = IntegerProperty.create("layers", MIN_SNOW_LAYERS, MAX_SNOW_LAYERS);
-	VoxelShape[] SNOW_SHAPE_BY_LAYER = new VoxelShape[]{
-		Shapes.empty(),
-		Block.box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0),
-		Block.box(0.0, 0.0, 0.0, 16.0, 4.0, 16.0),
-		Block.box(0.0, 0.0, 0.0, 16.0, 6.0, 16.0),
-		Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0),
-		Block.box(0.0, 0.0, 0.0, 16.0, 10.0, 16.0),
-		Block.box(0.0, 0.0, 0.0, 16.0, 12.0, 16.0),
-		Block.box(0.0, 0.0, 0.0, 16.0, 14.0, 16.0),
-		Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0)
-	};
+	VoxelShape[] SNOW_SHAPE_BY_LAYER = Util.make(new VoxelShape[9], shapes -> {
+		shapes[0] = Shapes.empty();
+		for (int i = 1; i <= 8; i++) {
+			double height = i * 2.0;
+			shapes[i] = Block.box(0.0, 0.0, 0.0, 16.0, height, 16.0);
+		}
+	});
 
 	default void handleBreakingLogic(Level level, BlockPos pos, BlockState state, Player player, @Nullable BlockState blockToConvertTo) {
 		BlockHitResult rayTraceResult = this.clip(player);

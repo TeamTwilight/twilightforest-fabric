@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
@@ -52,33 +53,23 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	private static final VoxelShape SMALL_SNOWY_BUSH_SHAPE = Block.box(4.0, 0.0, 4.0, 12.0, 10.0, 12.0);
 	private static final VoxelShape MEDIUM_SNOWY_BUSH_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 14.0, 14.0);
 
-	private static final VoxelShape[] SMALL_BUSH_SHAPES = new VoxelShape[]{
-		Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0),
-		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[1]),
-		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[2]),
-		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[3]),
-		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[4]),
-		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[5]),
-		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[6]),
-		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[7]),
-		Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[8])
-	};
+	private static final VoxelShape[] SMALL_BUSH_SHAPES = Util.make(new VoxelShape[9], shapes -> {
+		shapes[0] = Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0);
+		for (int i = 1; i <= 8; i++) {
+			shapes[i] = Shapes.or(SMALL_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[i]);
+		}
+	});
 
-	private static final VoxelShape[] MEDIUM_BUSH_SHAPES = new VoxelShape[]{
-		Block.box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0),
-		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[1]),
-		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[2]),
-		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[3]),
-		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[4]),
-		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[5]),
-		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[6]),
-		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[7]),
-		Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[8])
-	};
+	private static final VoxelShape[] MEDIUM_BUSH_SHAPES = Util.make(new VoxelShape[9], shapes -> {
+		shapes[0] = Block.box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
+		for (int i = 1; i <= 8; i++) {
+			shapes[i] = Shapes.or(MEDIUM_SNOWY_BUSH_SHAPE, SNOW_SHAPE_BY_LAYER[i]);
+		}
+	});
+
 
 	public TFBushBlock(ResourceKey<LootTable> berryLoot, Properties properties) {
 		super(properties);
-
 		this.berryLoot = berryLoot;
 		this.registerDefaultState(this.getStateDefinition().any().setValue(AGE, 0).setValue(SNOW_LAYERS, 0));
 	}
