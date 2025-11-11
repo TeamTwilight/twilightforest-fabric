@@ -140,7 +140,7 @@ public class TravellersGearEvents {
 		Boolean hasDoubleJump = null;
 		if (!TravellersModifiersManager.isModifierActive(player, player.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER))
 			hasDoubleJump = false;
-		else if (player.onGround())
+		else if (player.onGround() || player.isInLiquid())
 			hasDoubleJump = true;
 
 		if (hasDoubleJump != null && hasDoubleJump != player.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
