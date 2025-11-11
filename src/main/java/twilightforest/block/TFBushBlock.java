@@ -67,7 +67,6 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 		}
 	});
 
-
 	public TFBushBlock(ResourceKey<LootTable> berryLoot, Properties properties) {
 		super(properties);
 		this.berryLoot = berryLoot;
@@ -105,7 +104,7 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return switch (state.getValue(AGE)) {
 			case 1 -> MEDIUM_BUSH_SHAPES[state.getValue(SNOW_LAYERS)];
-			case 2, 3 -> Block.box(0.001D, 0.0D, 0.001D, 15.999D, 15.999D, 15.999D);
+			case 2, 3 -> Shapes.block();
 			default -> SMALL_BUSH_SHAPES[state.getValue(SNOW_LAYERS)];
 		};
 	}

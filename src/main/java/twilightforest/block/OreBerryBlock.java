@@ -2,27 +2,23 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
 
 public class OreBerryBlock extends TFBushBlock {
+	protected static VoxelShape ENTITY_COLLISION_SHAPE = Block.box(0.001D, 0.0D, 0.001D, 15.999D, 15.999D, 15.999D);
 	protected boolean surviveInLight;
-
 	public OreBerryBlock(boolean surviveInLight, ResourceKey<LootTable> berryTable, Properties properties) {
 		super(berryTable, properties);
 		this.surviveInLight = surviveInLight;
@@ -34,6 +30,16 @@ public class OreBerryBlock extends TFBushBlock {
 			entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.OREBERRY), 1.0F);
 		}
 		super.entityInside(state, level, pos, entity);
+	}
+
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		VoxelShape shape = super.getCollisionShape(state, level, pos, context);
+		// Use the ENTITY_COLLISION_SHAPE for entities when the bush is fully grown; keep the normal shape for non-entity checks.
+		if (state.getValue(AGE) >= MAX_AGE - 1 && !context.equals(CollisionContext.empty())) {
+			return ENTITY_COLLISION_SHAPE;
+		}
+		return shape;
 	}
 
 	@Override
