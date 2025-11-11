@@ -118,6 +118,7 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (state.getValue(AGE) < MAX_AGE && random.nextInt(20) == 0 && canGrowAt(state, level, pos))
 			this.grow(state, level, pos, state.getValue(AGE) + 1);
+		meltSnow(state, level, pos);
 	}
 
 	protected void grow(BlockState state, ServerLevel level, BlockPos pos, int age) {

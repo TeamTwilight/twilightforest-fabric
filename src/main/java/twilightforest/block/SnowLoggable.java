@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -16,6 +17,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import static net.minecraft.world.level.block.Block.dropResources;
 
 public interface SnowLoggable {
 	float SNOW_Z_FIGHTING = 0.008F;
@@ -30,6 +33,15 @@ public interface SnowLoggable {
 		}
 	});
 
+	// Call from randomTick
+	default void meltSnow(BlockState state, Level level, BlockPos pos) {
+		int snowLayers = state.getValue(SNOW_LAYERS);
+		if (level.getBrightness(LightLayer.BLOCK, pos) > 11 && snowLayers > 0 && snowLayers < MAX_SNOW_LAYERS) {
+			dropResources(Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, snowLayers), level, pos);
+			level.setBlock(pos, state.setValue(SNOW_LAYERS, 0), Block.UPDATE_CLIENTS);
+		}
+	}
+
 	default void handleBreakingLogic(Level level, BlockPos pos, BlockState state, Player player, @Nullable BlockState blockToConvertTo) {
 		BlockHitResult rayTraceResult = this.clip(player);
 		Vec3 hitVec = rayTraceResult.getType() == BlockHitResult.Type.BLOCK ? rayTraceResult.getLocation() : null;
@@ -43,7 +55,7 @@ public interface SnowLoggable {
 		} else {
 			level.levelEvent(player, 2001, pos, Block.getId(state.setValue(SNOW_LAYERS, 0)));
 			if (!player.isCreative())
-				Block.dropResources(state, level, pos, null, player, player.getMainHandItem());
+				dropResources(state, level, pos, null, player, player.getMainHandItem());
 			level.setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, state.getValue(SNOW_LAYERS)));
 		}
 	}
