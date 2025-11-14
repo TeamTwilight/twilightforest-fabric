@@ -161,6 +161,7 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 		if (!player.hasInfiniteMaterials())
 			stack.shrink(1);
 		level.setBlock(pos, newState, Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
+		level.playSound(player, pos, SoundEvents.SNOW_PLACE, SoundSource.BLOCKS);
 		updateSnowBeneath(level, pos);
 		return ItemInteractionResult.SUCCESS;
 	}
