@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -74,7 +73,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 	@Override
 	public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-		return !innerModel && entity instanceof LocalPlayer && TFKeyBinds.ZOOM_KEY.isDown() ?
+		return !innerModel && entity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
 			TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
 			super.getArmorTexture(stack, entity, slot, layer, innerModel);
 	}
