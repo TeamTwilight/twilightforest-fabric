@@ -134,7 +134,7 @@ public class TravellersClientEvents {
 		boolean pressedKey = event.getAction() == InputConstants.PRESS;
 		if (pressedKey)
 			localPlayer.setData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, localPlayer.tickCount);
-		boolean avoidCreativeFly = localPlayer.isCreative() && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
+		boolean avoidCreativeFly = localPlayer.mayFly() && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
 		if (pressedKey && !avoidCreativeFly && TravellersModifiersManager.isModifierActive(localPlayer, localPlayer.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
 			if (TravellersGearLogic.performDoubleJump(localPlayer)) {
 				localPlayer.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = true;
