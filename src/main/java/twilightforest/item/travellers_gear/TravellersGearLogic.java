@@ -84,7 +84,7 @@ public class TravellersGearLogic {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Double multiplier = leggingsStack.get(TFDataComponents.FORWARD_BOOST_MULTIPLIER);
 		AttributeInstance attributeInstance = livingEntity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
-		if (attributeInstance == null)
+		if (attributeInstance == null || attributeInstance.hasModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION))
 			return;
 		if (multiplier == null)
 			multiplier = 1D;

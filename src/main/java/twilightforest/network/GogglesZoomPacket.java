@@ -22,6 +22,11 @@ public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements
 		this(registryFriendlyByteBuf.readBoolean(), registryFriendlyByteBuf.readUUID());
 	}
 
+	private void write(RegistryFriendlyByteBuf registryFriendlyByteBuf) {
+		registryFriendlyByteBuf.writeBoolean(isUsingZoom);
+		registryFriendlyByteBuf.writeUUID(playerUUID);
+	}
+
 	public static void handle(GogglesZoomPacket packet, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
 			Player player = ctx.player().level().getPlayerByUUID(packet.playerUUID);
@@ -39,11 +44,6 @@ public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements
 				PacketDistributor.sendToPlayersTrackingEntity(player, new GogglesZoomPacket(packet.isUsingZoom, player.getUUID()));
 			}
 		});
-	}
-
-	private void write(RegistryFriendlyByteBuf registryFriendlyByteBuf) {
-		registryFriendlyByteBuf.writeBoolean(isUsingZoom);
-		registryFriendlyByteBuf.writeUUID(playerUUID);
 	}
 
 	@Override
