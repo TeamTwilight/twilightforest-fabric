@@ -838,6 +838,8 @@
   "config.twilightforest.locked_toasts.tooltip": "Disables the toasts that appear when entering a locked biome. Not recommended if you're unfamiliar with progression.",
   "config.twilightforest.magic_trees": "Magic Trees",
   "config.twilightforest.magic_trees.tooltip": "Settings for all things related to the magic trees.",
+  "config.twilightforest.manual_travellers_wings_controlled_fall": "Manual Controlled Falling",
+  "config.twilightforest.manual_travellers_wings_controlled_fall.tooltip": "When this option is off, slow falling is the default. Holding the sneak key makes you fall at normal speed. When this option is on, normal falling is the default. Holding the sneak key activates slow falling.",
   "config.twilightforest.max_portal_size": "Max Portal Size",
   "config.twilightforest.max_portal_size.tooltip": "The max amount of water spaces the mod will check for when creating a portal. Very high numbers may cause performance issues.",
   "config.twilightforest.mining_range": "Miner's Tree Range",

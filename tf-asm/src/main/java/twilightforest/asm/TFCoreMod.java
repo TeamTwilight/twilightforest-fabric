@@ -15,6 +15,7 @@ import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
 import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
 import twilightforest.asm.transformers.entity.PathFinderUnrestrainedByLeashTransformer;
+import twilightforest.asm.transformers.entity.ResetStuckUnrestrainedTransformer;
 import twilightforest.asm.transformers.entity.UnrestrainedBlockSpeedAndJumpFactorTransformer;
 import twilightforest.asm.transformers.entity.WaterSprintTransformer;
 import twilightforest.asm.transformers.entity.WaterWalkTransformer;
@@ -67,6 +68,7 @@ public class TFCoreMod implements ICoreMod {
 			new WaterSprintTransformer(),
 			new PathFinderUnrestrainedByLeashTransformer(),
 			new UnrestrainedBlockSpeedAndJumpFactorTransformer(),
+			new ResetStuckUnrestrainedTransformer(),
 
 			// foliage
 			new FoliageColorResolverTransformer(),

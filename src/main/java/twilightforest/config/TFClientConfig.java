@@ -22,6 +22,7 @@ public class TFClientConfig {
 	final ModConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
 	final ModConfigSpec.BooleanValue prettifyOreMeterGui;
 	final ModConfigSpec.BooleanValue spawnCharmAnimationAsTotem;
+	final ModConfigSpec.BooleanValue manualTravellersWingsControlledFall;
 
 	final ItemDisplay ITEM_DISPLAY = new ItemDisplay();
 
@@ -94,6 +95,10 @@ public class TFClientConfig {
 		spawnCharmAnimationAsTotem = builder.translation(TFConfig.CONFIG_ID + "totem_charm_animation")
 			.comment(ConfigComments.CHARMS_AS_TOTEMS)
 			.define("totemCharmAnimation", false);
+
+		manualTravellersWingsControlledFall = builder.translation(TFConfig.CONFIG_ID + "manual_travellers_wings_controlled_fall")
+			.comment(ConfigComments.MANUAL_TRAVELLERS_WINGS_CONTROLLED_FALL)
+			.define("travellersWingsControlledFall", false);
 
 		builder.comment(ConfigComments.ITEM_DISPLAY).translation(TFConfig.CONFIG_ID + "item_display").push("Item Display Modifier Settings");
 		{

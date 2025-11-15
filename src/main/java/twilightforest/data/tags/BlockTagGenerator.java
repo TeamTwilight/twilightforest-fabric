@@ -575,19 +575,6 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		this.tag(BlockTags.DAMPENS_VIBRATIONS).addTag(CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 		this.tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
-		this.tag(BlockTags.SNOW_LAYER_CAN_SURVIVE_ON).add(
-			TFBlocks.RASPBERRY_BUSH.get(),
-			TFBlocks.BLUEBERRY_BUSH.get(),
-			TFBlocks.BLACKBERRY_BUSH.get(),
-			TFBlocks.MALOBERRY_BUSH.get(),
-			TFBlocks.BLIGHTBERRY_BUSH.get(),
-			TFBlocks.DUSKBERRY_BUSH.get(),
-			TFBlocks.SKYBERRY_BUSH.get(),
-			TFBlocks.STINGBERRY_BUSH.get(),
-			TFBlocks.IRON_OREBERRY.get(),
-			TFBlocks.GOLD_OREBERRY.get(),
-			TFBlocks.COPPER_OREBERRY.get(),
-			TFBlocks.ESSENCE_OREBERRY.get());
 
 		this.tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(TFBlocks.UBEROUS_SOIL.get());
 

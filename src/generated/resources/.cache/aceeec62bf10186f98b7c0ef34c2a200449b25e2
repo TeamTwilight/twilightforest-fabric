@@ -1,4 +1,4 @@
-// 1.21.1	2025-10-12T08:23:33.32560831	Twilight Forest Block Tags
+// 1.21.1	2025-11-06T20:38:18.991222174	Twilight Forest Block Tags
 9d529390443b5da5d71bd6e867c066632e1340b8 data/alexscaves/tags/block/ferromagnetic_blocks.json
 ddfcbead67bb9487c003af137a276963e5b20022 data/alexscaves/tags/block/gloomoth_light_sources.json
 c365018bd78f1335cd4508b5d74bc4500ae951bd data/alexscaves/tags/block/underzealot_light_sources.json
@@ -62,7 +62,6 @@ e33c5143db03e28da803a9f265902c39e93589e2 data/minecraft/tags/block/overworld_car
 c1c4b1bbf5dca762f8c2dc1b6021bf08b541ac8f data/minecraft/tags/block/saplings.json
 bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/block/slabs.json
 6be3f00e1fa63bb65b978bb8e2c63bbf79b5775e data/minecraft/tags/block/small_dripleaf_placeable.json
-a611586bbd92cd2b6fc215190312c76b12ce140f data/minecraft/tags/block/snow_layer_can_survive_on.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/block/stairs.json
 0074c60e923669a4539ccbc5bd0c293f255ff5a5 data/minecraft/tags/block/standing_signs.json
 c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/minecraft/tags/block/strider_warm_blocks.json

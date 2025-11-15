@@ -141,6 +141,7 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 		public BakedModel resolve(BakedModel originalModel, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
 			BakedModel overridden = this.nested.resolve(originalModel, stack, level, entity, seed);
 			if (overridden != originalModel) return overridden;
+			if (level == null) return originalModel;
 
 			List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(level, stack);
 			boolean broken = TravellersArmorItem.isTravellersArmorAndBroken(stack);

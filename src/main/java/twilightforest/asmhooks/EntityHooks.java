@@ -6,7 +6,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
@@ -91,5 +93,17 @@ public class EntityHooks {
 	 */
 	public static float resetFactorWithUnrestrained(float o, Entity entity) {
 		return entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity, living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 1.0F : o;
+	}
+
+	/**
+	 * {@link twilightforest.asm.transformers.entity.ResetStuckUnrestrainedTransformer} <p/>
+	 * <p>
+	 * Injection Points:<br/>
+	 * {@link net.minecraft.world.entity.Entity#move(MoverType, Vec3)}<br/>
+	 */
+	public static void resetStuckUnrestrained(Entity entity) {
+		if (!(entity instanceof LivingEntity living) || living.stuckSpeedMultiplier.lengthSqr() <= 1.0E-7 || !(TravellersModifiersManager.isModifierActive(entity, living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER)))
+			return;
+		living.stuckSpeedMultiplier = Vec3.ZERO;
 	}
 }

@@ -90,7 +90,7 @@ public class TravellersGearLogic {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Double multiplier = leggingsStack.get(TFDataComponents.FORWARD_BOOST_MULTIPLIER);
 		AttributeInstance attributeInstance = livingEntity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
-		if (attributeInstance == null)
+		if (attributeInstance == null || attributeInstance.hasModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION))
 			return;
 		if (multiplier == null)
 			multiplier = 1D;
@@ -117,7 +117,8 @@ public class TravellersGearLogic {
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER) || multiplier == null || deltaMovement.y() >= 0 || livingEntity.isFallFlying())
 			return;
 
-		if (livingEntity.isShiftKeyDown())
+		boolean isControlledFalling = !(livingEntity instanceof Player player) || player.getData(TFDataAttachments.IS_CONTROLLED_FALLING);
+		if (!isControlledFalling)
 			multiplier = 1 - (1 - multiplier) / 3F;
 
 		double newDeltaMovementY = deltaMovement.y() * multiplier;
@@ -131,6 +132,10 @@ public class TravellersGearLogic {
 	}
 
 	public static void travellersGearAutoRepair(LivingEntity livingEntity) {
+		long lastHitTime = livingEntity.getData(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME);
+		if (livingEntity.level().getGameTime() - lastHitTime <= 10 * 20)  // 10 seconds
+			return;
+
 		livingEntity.getArmorSlots().forEach(slot -> {
 			Float probability = slot.get(TFDataComponents.AUTO_REPAIR_PROBABILITY);
 			if (probability == null || !TravellersModifiersManager.isModifierActive(livingEntity, slot, TravellersModifiersManager.AUTO_REPAIR_MODIFIER))
@@ -200,7 +205,7 @@ public class TravellersGearLogic {
 
 	public static boolean performDoubleJump(Player player) {
 		boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
-		if (!hasDoubleJump || player.isFallFlying() || player.onGround())
+		if (!hasDoubleJump || player.isFallFlying() || player.onGround() || player.isSwimming() || player.getAbilities().flying || player.isInLiquid())
 			return false;
 		player.jumpFromGround();
 		player.resetFallDistance();

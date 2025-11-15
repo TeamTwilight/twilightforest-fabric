@@ -45,12 +45,10 @@ import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
+import twilightforest.network.ControlledFallPacket;
 import twilightforest.network.ParticlePacket;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -62,7 +60,7 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::magnetizeArrows);
 		NeoForge.EVENT_BUS.addListener(this::performPerfectDodge);
 		NeoForge.EVENT_BUS.addListener(this::reduceSlimySolesFallDamage);
-		NeoForge.EVENT_BUS.addListener(this::tickDoubleJumpAndSidestep);
+		NeoForge.EVENT_BUS.addListener(this::tickMovementModifiers);
 		NeoForge.EVENT_BUS.addListener(this::performStealth);
 		NeoForge.EVENT_BUS.addListener(this::disableHighStepWhileSneaking);
 		NeoForge.EVENT_BUS.addListener(this::updateOtherModifiers);
@@ -72,6 +70,7 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::fireCraftingModifierTrigger);
 		NeoForge.EVENT_BUS.addListener(this::removeModifiersFromTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::stopDamagingTravellersGear);
+		NeoForge.EVENT_BUS.addListener(this::setLastDamageArmorTime);
 	}
 
 	private void magnetizeArrows(ProjectileImpactEvent event) {
@@ -137,12 +136,12 @@ public class TravellersGearEvents {
 			event.setDamageMultiplier(coefficient);
 	}
 
-	private void tickDoubleJumpAndSidestep(PlayerTickEvent.Pre event) {
+	private void tickMovementModifiers(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
 		Boolean hasDoubleJump = null;
 		if (!TravellersModifiersManager.isModifierActive(player, player.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER))
 			hasDoubleJump = false;
-		else if (player.onGround())
+		else if (player.onGround() || player.isInLiquid())
 			hasDoubleJump = true;
 
 		if (hasDoubleJump != null && hasDoubleJump != player.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
@@ -151,6 +150,14 @@ public class TravellersGearEvents {
 			AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
 			if (instance != null)
 				instance.removeModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
+		}
+
+		if (!player.level().isClientSide()) {
+			boolean modifierActive = TravellersModifiersManager.isModifierActive(player, player.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.CONTROLLED_FALL_MODIFIER);
+			if (!modifierActive && player.getData(TFDataAttachments.IS_CONTROLLED_FALLING)) {
+				player.setData(TFDataAttachments.IS_CONTROLLED_FALLING, false);
+				PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new ControlledFallPacket(false, player.getUUID()));
+			}
 		}
 
 		//reset double jump wing anim if on the ground
@@ -165,8 +172,8 @@ public class TravellersGearEvents {
 	}
 
 	private void performStealth(PlayerTickEvent.Post event) {
-		if (event.getEntity() instanceof ServerPlayer player) {
-			TravellersGearLogic.travellersStealth(player, player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
+		if (!event.getEntity().level().isClientSide()) {
+			TravellersGearLogic.travellersStealth(event.getEntity(), player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
 		}
 	}
 
@@ -224,19 +231,26 @@ public class TravellersGearEvents {
 	}
 
 	private void stopDamagingTravellersGear(ArmorHurtEvent event) {
-		if (!event.isCanceled()) {
-			event.getArmorMap().forEach((slot, entry) -> {
-				ItemStack damagedStack = event.getArmorItemStack(slot);
-				if (damagedStack.has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
-					if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage()) {
-						event.setNewDamage(slot, damagedStack.getMaxDamage() - damagedStack.getDamageValue() - 1);
-					} else if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage() - 1 && event.getEntity() instanceof ServerPlayer player) {
-						player.playNotifySound(SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
-					}
-				}
-			});
-		}
+		if (event.isCanceled())
+			return;
+		event.getArmorMap().forEach((slot, entry) -> {
+			ItemStack damagedStack = event.getArmorItemStack(slot);
+			if (!damagedStack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
+				return;
+			if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage()) {
+				event.setNewDamage(slot, damagedStack.getMaxDamage() - damagedStack.getDamageValue() - 1);
+			} else if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage() - 1 && event.getEntity() instanceof ServerPlayer player) {
+				player.playNotifySound(SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, player.getVoicePitch());
+			}
+		});
 	}
+
+	private void setLastDamageArmorTime(ArmorHurtEvent event) {
+		if (Arrays.stream(EquipmentSlot.values()).noneMatch(slot -> event.getNewDamage(slot) > 0)) return;
+		LivingEntity entity = event.getEntity();
+		entity.setData(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME, entity.level().getGameTime());
+	}
+
 
 	private void cancelCombiningTravellersGear(AnvilUpdateEvent event) {
 		if (event.getLeft().has(TFDataComponents.IS_TRAVELLERS_GEAR) && event.getRight().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
