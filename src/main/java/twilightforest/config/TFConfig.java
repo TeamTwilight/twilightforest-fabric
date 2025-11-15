@@ -48,6 +48,7 @@ public class TFConfig {
 	private static int clientCloudBlockPrecipitationDistance = 32;
 	public static boolean prettifyOreMeterGui = true;
 	public static boolean spawnCharmAnimationAsTotem = false;
+	public static boolean manualTravellersWingsControlledFallDefault = false;
 
 	// --- Item Display ---
 	public static int itemDisplayXOffs = 4;
@@ -218,6 +219,7 @@ public class TFConfig {
 		clientCloudBlockPrecipitationDistance = config.cloudBlockPrecipitationDistance.get();
 		prettifyOreMeterGui = config.prettifyOreMeterGui.get();
 		spawnCharmAnimationAsTotem = config.spawnCharmAnimationAsTotem.get();
+		manualTravellersWingsControlledFallDefault = config.manualTravellersWingsControlledFall.get();
 
 		itemDisplayXOffs = config.ITEM_DISPLAY.screenOffsetX.get();
 		itemDisplayYOffs = config.ITEM_DISPLAY.screenOffsetY.get();

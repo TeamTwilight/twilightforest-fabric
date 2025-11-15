@@ -45,6 +45,7 @@ import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
+import twilightforest.network.ControlledFallPacket;
 import twilightforest.network.ParticlePacket;
 
 import java.util.*;
@@ -59,7 +60,7 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::magnetizeArrows);
 		NeoForge.EVENT_BUS.addListener(this::performPerfectDodge);
 		NeoForge.EVENT_BUS.addListener(this::reduceSlimySolesFallDamage);
-		NeoForge.EVENT_BUS.addListener(this::tickDoubleJumpAndSidestep);
+		NeoForge.EVENT_BUS.addListener(this::tickMovementModifiers);
 		NeoForge.EVENT_BUS.addListener(this::performStealth);
 		NeoForge.EVENT_BUS.addListener(this::disableHighStepWhileSneaking);
 		NeoForge.EVENT_BUS.addListener(this::updateOtherModifiers);
@@ -135,7 +136,7 @@ public class TravellersGearEvents {
 			event.setDamageMultiplier(coefficient);
 	}
 
-	private void tickDoubleJumpAndSidestep(PlayerTickEvent.Pre event) {
+	private void tickMovementModifiers(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
 		Boolean hasDoubleJump = null;
 		if (!TravellersModifiersManager.isModifierActive(player, player.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER))
@@ -149,6 +150,14 @@ public class TravellersGearEvents {
 			AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
 			if (instance != null)
 				instance.removeModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
+		}
+
+		if (!player.level().isClientSide()) {
+			boolean modifierActive = TravellersModifiersManager.isModifierActive(player, player.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.CONTROLLED_FALL_MODIFIER);
+			if (!modifierActive && player.getData(TFDataAttachments.IS_CONTROLLED_FALLING)) {
+				player.setData(TFDataAttachments.IS_CONTROLLED_FALLING, false);
+				PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new ControlledFallPacket(false, player.getUUID()));
+			}
 		}
 
 		//reset double jump wing anim if on the ground

@@ -24,15 +24,13 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
+import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
-import twilightforest.network.GogglesZoomPacket;
-import twilightforest.network.PerformDoubleJumpPacket;
-import twilightforest.network.PerformSidestepPacket;
-import twilightforest.network.SwapHotbarPacket;
+import twilightforest.network.*;
 
 @Component(dist = Dist.CLIENT)
 public class TravellersClientEvents {
@@ -56,6 +54,7 @@ public class TravellersClientEvents {
 		NeoForge.EVENT_BUS.addListener(this::handleSidestep);
 		NeoForge.EVENT_BUS.addListener(this::handleStealth);
 		NeoForge.EVENT_BUS.addListener(this::updateZoomState);
+		NeoForge.EVENT_BUS.addListener(this::updateControlledFallState);
 		NeoForge.EVENT_BUS.addListener(this::slowZoomSensitivity);
 		NeoForge.EVENT_BUS.addListener(this::swapHotbar);
 		NeoForge.EVENT_BUS.addListener(this::toggleItemDisplayVisibility);
@@ -160,6 +159,19 @@ public class TravellersClientEvents {
 		player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, isUsingZoom);
 		player.playSound(isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());
 		player.connection.send(new GogglesZoomPacket(isUsingZoom, player.getUUID()));
+	}
+
+	private void updateControlledFallState(RenderFrameEvent.Pre event) {
+		LocalPlayer player = Minecraft.getInstance().player;
+		if (player == null) return;
+		boolean wasControlledFalling = player.getData(TFDataAttachments.IS_CONTROLLED_FALLING);
+		boolean shiftHeld = player.isShiftKeyDown();
+		boolean isControlledFalling = TFConfig.manualTravellersWingsControlledFallDefault == shiftHeld;
+		if (isControlledFalling == wasControlledFalling)
+			return;
+
+		player.setData(TFDataAttachments.IS_CONTROLLED_FALLING, isControlledFalling);
+		player.connection.send(new ControlledFallPacket(isControlledFalling, player.getUUID()));
 	}
 
 	private void swapHotbar(InputEvent.Key event) {
