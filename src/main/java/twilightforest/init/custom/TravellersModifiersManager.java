@@ -53,7 +53,7 @@ public class TravellersModifiersManager {
 	public static final ResourceKey<TravellersModifier> SIDESTEP_MODIFIER = makeKey("side_step");
 	// boots
 	public static final ResourceKey<TravellersModifier> HIGH_STEP_ABILITY = makeKey("high_step");
-	public static final ResourceKey<TravellersModifier> STRAIGHT_AHEAD_MODIFIER = makeKey("straight_ahead");
+	public static final ResourceKey<TravellersModifier> FORWARD_BOOST_MODIFIER = makeKey("forward_boost");
 	public static final ResourceKey<TravellersModifier> SLIMY_SOLES_MODIFIER = makeKey("slimy_soles");
 	public static final ResourceKey<TravellersModifier> UNRESTRAINED_MODIFIER = makeKey("unrestrained");
 	public static final ResourceKey<TravellersModifier> WATER_WALK_MODIFIER = makeKey("water_walk");
@@ -92,7 +92,7 @@ public class TravellersModifiersManager {
 		context.register(SIDESTEP_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.SIDESTEP_COOLDOWN.get(), 2 * 20L));
 
 		context.register(HIGH_STEP_ABILITY, new TravellersEntryModifier(EquipmentSlotGroup.FEET, List.of(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET)), TFDataComponents.HIGH_STEP, true));
-		context.register(STRAIGHT_AHEAD_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.FORWARD_BOOST_MULTIPLIER.get(), 1.4));
+		context.register(FORWARD_BOOST_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.FORWARD_BOOST_MULTIPLIER.get(), 1.4));
 		context.register(SLIMY_SOLES_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.SLIMY_SOLES_COEFFICIENT.get(), 0.5F));
 		context.register(UNRESTRAINED_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.UNRESTRAINED.get(), Unit.INSTANCE));
 		context.register(WATER_WALK_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.WATER_WALK.get(), Unit.INSTANCE));
