@@ -12,28 +12,38 @@ import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.TravellersModifiersManager;
 
-public record GogglesZoomPacket(boolean isUsingZoom) implements CustomPacketPayload {
+import java.util.UUID;
+
+public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements CustomPacketPayload {
 	public static final Type<GogglesZoomPacket> TYPE = new Type<>(TwilightForestMod.prefix("goggles_zoom_packet"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, twilightforest.network.GogglesZoomPacket> STREAM_CODEC = CustomPacketPayload.codec(twilightforest.network.GogglesZoomPacket::write, twilightforest.network.GogglesZoomPacket::new);
 
 	public GogglesZoomPacket(RegistryFriendlyByteBuf registryFriendlyByteBuf) {
-		this(registryFriendlyByteBuf.readBoolean());
+		this(registryFriendlyByteBuf.readBoolean(), registryFriendlyByteBuf.readUUID());
 	}
 
 	public static void handle(GogglesZoomPacket packet, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
-			Player player = ctx.player();
+			Player player = ctx.player().level().getPlayerByUUID(packet.playerUUID);
+			if (player == null)
+				return;
+			if (player.level().isClientSide()) {
+				player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
+				return;
+			}
+
 			boolean canChangeZoomState = TravellersModifiersManager.isModifierActive(player, player.getItemBySlot(EquipmentSlot.HEAD), TravellersModifiersManager.ZOOM_ABILITY);
 			if (canChangeZoomState) {
 				player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
 				player.playSound(packet.isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());
-				PacketDistributor.sendToPlayersTrackingEntity(player, new GogglesZoomClientBoundPacket(packet.isUsingZoom, player.getUUID()));
+				PacketDistributor.sendToPlayersTrackingEntity(player, new GogglesZoomPacket(packet.isUsingZoom, player.getUUID()));
 			}
 		});
 	}
 
 	private void write(RegistryFriendlyByteBuf registryFriendlyByteBuf) {
 		registryFriendlyByteBuf.writeBoolean(isUsingZoom);
+		registryFriendlyByteBuf.writeUUID(playerUUID);
 	}
 
 	@Override

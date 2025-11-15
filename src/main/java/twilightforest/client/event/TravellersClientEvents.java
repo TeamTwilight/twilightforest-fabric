@@ -55,7 +55,6 @@ public class TravellersClientEvents {
 		NeoForge.EVENT_BUS.addListener(this::handleSidestep);
 		NeoForge.EVENT_BUS.addListener(this::handleStealth);
 		NeoForge.EVENT_BUS.addListener(this::updateZoomState);
-		NeoForge.EVENT_BUS.addListener(this::updateZoomFOV);
 		NeoForge.EVENT_BUS.addListener(this::slowZoomSensitivity);
 		NeoForge.EVENT_BUS.addListener(this::swapHotbar);
 		NeoForge.EVENT_BUS.addListener(this::toggleItemDisplayVisibility);
@@ -142,26 +141,21 @@ public class TravellersClientEvents {
 		}
 	}
 
-	private void updateZoomState(RenderFrameEvent.Pre event) {
+	private void updateZoomState(ComputeFovModifierEvent event) {
 		LocalPlayer player = Minecraft.getInstance().player;
 		if (player == null) return;
 		boolean wasUsingZoom = player.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
 		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
 		boolean isUsingZoom = isZoomKeyHeld(player) && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ZOOM_ABILITY) && zoomModifier != null;
-		if (isUsingZoom != wasUsingZoom) {
-			player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, isUsingZoom);
-			player.playSound(isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());
-			player.connection.send(new GogglesZoomPacket(isUsingZoom));
-		}
-	}
-
-	private void updateZoomFOV(ComputeFovModifierEvent event) {
-		Player player = event.getPlayer();
-		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
-		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
-		if (isZoomKeyHeld(player) && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ZOOM_ABILITY) && zoomModifier != null)
+		if (isUsingZoom)
 			event.setNewFovModifier(event.getNewFovModifier() * zoomModifier);
+		if (isUsingZoom == wasUsingZoom)
+			return;
+
+		player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, isUsingZoom);
+		player.playSound(isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());
+		player.connection.send(new GogglesZoomPacket(isUsingZoom, player.getUUID()));
 	}
 
 	private void swapHotbar(InputEvent.Key event) {
