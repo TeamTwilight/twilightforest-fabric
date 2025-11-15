@@ -4,10 +4,11 @@ import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.ITransformerVotingContext;
 import cpw.mods.modlauncher.api.TargetType;
 import cpw.mods.modlauncher.api.TransformerVoteResult;
-import net.neoforged.coremod.api.ASMAPI;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.*;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
 import twilightforest.asm.ASMUtil;
 
 /**
@@ -22,18 +23,16 @@ public class WaterSprintTransformer implements ITransformer<MethodNode> {
 			.map(insn -> (MethodInsnNode) insn)
 			.filter(m -> "isInWater".equals(m.name) && "()Z".equals(m.desc))
 			.forEach(m -> {
-				InsnList patch = ASMAPI.listOf(
-					new InsnNode(Opcodes.DUP),
-					new MethodInsnNode(
-						Opcodes.INVOKESTATIC,
-						"twilightforest/asmhooks/EntityHooks",
-						"unrestrainedSprintingInWater",
-						"(Lnet/minecraft/world/entity/LivingEntity;Z)Z",
-						false
-					)
+				VarInsnNode loadThis = new VarInsnNode(Opcodes.ALOAD, 0);
+				MethodInsnNode patch = new MethodInsnNode(
+					Opcodes.INVOKESTATIC,
+					"twilightforest/asmhooks/EntityHooks",
+					"unrestrainedSprintingInWater",
+					"(ZLnet/minecraft/world/entity/LivingEntity;)Z",
+					false
 				);
-				node.instructions.insertBefore(m, patch.getFirst());
-				node.instructions.insert(m, patch.getLast());
+				node.instructions.insert(m, patch);
+				node.instructions.insert(m, loadThis);
 			});
 	}
 
@@ -43,27 +42,17 @@ public class WaterSprintTransformer implements ITransformer<MethodNode> {
 			.map(insn -> (MethodInsnNode) insn)
 			.filter(m -> "isInFluidType".equals(m.name) && "(Ljava/util/function/BiPredicate;)Z".equals(m.desc))
 			.forEach(call -> {
-				AbstractInsnNode indy = previousRealInsn(call);
-				if (!(indy instanceof InvokeDynamicInsnNode)) return;
-				AbstractInsnNode capturedThis = previousRealInsn(indy);
-				node.instructions.insert(capturedThis, new InsnNode(Opcodes.DUP));
-				MethodInsnNode wrap = new MethodInsnNode(
+				VarInsnNode loadThis = new VarInsnNode(Opcodes.ALOAD, 0);
+				MethodInsnNode patch = new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
 					"twilightforest/asmhooks/EntityHooks",
 					"unrestrainedSwimPredicate",
-					"(Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/BiPredicate;)Ljava/util/function/BiPredicate;",
+					"(Ljava/util/function/BiPredicate;Lnet/minecraft/world/entity/LivingEntity;)Ljava/util/function/BiPredicate;",
 					false
 				);
-				node.instructions.insert(indy, wrap);
+				node.instructions.insertBefore(call, loadThis);
+				node.instructions.insert(loadThis, patch);
 			});
-	}
-
-	private static AbstractInsnNode previousRealInsn(AbstractInsnNode n) {
-		AbstractInsnNode p = n.getPrevious();
-		while (p instanceof LabelNode || p instanceof LineNumberNode || p instanceof FrameNode) {
-			p = p.getPrevious();
-		}
-		return p;
 	}
 
 	@Override

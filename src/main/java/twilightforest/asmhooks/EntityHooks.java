@@ -1,12 +1,8 @@
 package twilightforest.asmhooks;
 
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -48,7 +44,7 @@ public class EntityHooks {
 	 * {@link net.minecraft.client.player.LocalPlayer#aiStep()}
 	 * Targets: {@link Entity#isInWater()}
 	 */
-	public static boolean unrestrainedSprintingInWater(LivingEntity livingEntity, boolean isInWater) {
+	public static boolean unrestrainedSprintingInWater(boolean isInWater, LivingEntity livingEntity) {
 		ItemStack stack = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, stack, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			return isInWater;
@@ -62,13 +58,13 @@ public class EntityHooks {
 	 * {@link net.minecraft.client.player.LocalPlayer#aiStep()}
 	 * Targets: {@link net.neoforged.neoforge.common.extensions.IEntityExtension#isInFluidType(java.util.function.BiPredicate<net.neoforged.neoforge.fluids.FluidType, Double>)}
 	 */
-	public static BiPredicate<FluidType, Double> unrestrainedSwimPredicate(LivingEntity livingEntity, BiPredicate<FluidType, Double> o) {
+	public static BiPredicate<FluidType, Double> unrestrainedSwimPredicate(BiPredicate<FluidType, Double> o, LivingEntity livingEntity) {
 		return (fluidType, height) -> {
 			FluidState fs = livingEntity.level().getFluidState(livingEntity.blockPosition());
 			boolean oResult = o.test(fluidType, height);
 			if (fluidType != NeoForgeMod.WATER_TYPE.value())
 				return oResult;
-			return unrestrainedSprintingInWater(livingEntity, oResult);
+			return unrestrainedSprintingInWater(oResult, livingEntity);
 		};
 	}
 
