@@ -167,7 +167,7 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 				rotations = this.calculateRotations(attachment, dtInTicks, 10.0F, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
 			else if (entity.isSwimming())
 				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 4, -1.0F, -0.5F, BIG_SWING);
-			else if (!entity.onGround() && entity.fallDistance < 2.3F && (!(entity instanceof Player player) || !player.getAbilities().flying))
+			else if (!entity.onGround() && !entity.isInLiquid() && entity.fallDistance < 2.3F && (!(entity instanceof Player player) || !player.getAbilities().flying))
 				rotations = this.calculateRotations(attachment, dtInTicks, 17.0F, ANGLE_10_DEG * 5, -1.1F, -0.1F, BIG_SWING);
 			else if (entity.getDeltaMovement().y < 0 && entity.fallDistance > 2.3F)
 				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 4, -1.1F, -0.3F, SMALL_SWING);
