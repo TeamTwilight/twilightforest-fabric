@@ -85,16 +85,22 @@ public class TravellersGearLogic {
 	}
 
 	public static void travellersBootsForwardBoost(LivingEntity livingEntity) {
-		if (livingEntity instanceof Player)
-			return;
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Double multiplier = leggingsStack.get(TFDataComponents.FORWARD_BOOST_MULTIPLIER);
 		AttributeInstance attributeInstance = livingEntity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
-		if (attributeInstance == null || attributeInstance.hasModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION))
+		if (attributeInstance == null)
 			return;
 		if (multiplier == null)
 			multiplier = 1D;
-		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+		boolean hasModifier = TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.FORWARD_BOOST_MODIFIER) && multiplier != 1;
+		if (hasModifier == attributeInstance.hasModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION))
+			return;
+		if (hasModifier) {
+			attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+		} else {
+			attributeInstance.removeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
+		}
+
 	}
 
 	public static void travellersWingsSidestepCooldownSound(Player player) {
