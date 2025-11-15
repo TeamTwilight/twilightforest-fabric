@@ -144,7 +144,7 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 				level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
 				level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));
 			}
-			return InteractionResult.SUCCESS;
+			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
 		return super.useWithoutItem(state, level, pos, player, hitResult);
 	}
@@ -163,7 +163,7 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 		level.setBlock(pos, newState, Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
 		level.playSound(player, pos, SoundEvents.SNOW_PLACE, SoundSource.BLOCKS);
 		updateSnowBeneath(level, pos);
-		return ItemInteractionResult.SUCCESS;
+		return ItemInteractionResult.sidedSuccess(level.isClientSide());
 	}
 
 	private static void updateSnowBeneath(Level level, BlockPos pos) {
