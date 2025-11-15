@@ -1,5 +1,6 @@
 package twilightforest.client.event;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
@@ -20,7 +21,6 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
@@ -127,16 +127,15 @@ public class TravellersClientEvents {
 		}
 	}
 
-	private void handleDoubleJump(PlayerTickEvent.Pre event) {
-		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
+	private void handleDoubleJump(InputEvent.Key event) {
+		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || !Minecraft.getInstance().options.keyJump.matches(event.getKey(), event.getScanCode()))
 			return;
 		int lastJumpKeyPressTime = localPlayer.getData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
-		boolean holdsJumpKey = localPlayer.tickCount - lastJumpKeyPressTime <= 1;
-		boolean pressedKey = Minecraft.getInstance().options.keyJump.isDown();
+		boolean pressedKey = event.getAction() == InputConstants.PRESS;
 		if (pressedKey)
 			localPlayer.setData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, localPlayer.tickCount);
-
-		if (pressedKey && !holdsJumpKey && TravellersModifiersManager.isModifierActive(localPlayer, localPlayer.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
+		boolean avoidCreativeFly = localPlayer.isCreative() && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
+		if (pressedKey && !avoidCreativeFly && TravellersModifiersManager.isModifierActive(localPlayer, localPlayer.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
 			if (TravellersGearLogic.performDoubleJump(localPlayer)) {
 				localPlayer.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = true;
 				localPlayer.connection.send(new PerformDoubleJumpPacket());
