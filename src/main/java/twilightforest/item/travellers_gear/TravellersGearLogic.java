@@ -1,6 +1,7 @@
 package twilightforest.item.travellers_gear;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.chat.Component;
@@ -222,9 +223,20 @@ public class TravellersGearLogic {
 		if (instance != null) // Increase safe fall distance so the player can land up to 2 blocks below their starting height after performing a double jump at peak height without taking fall damage
 			instance.addOrUpdateTransientModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
 
-		if (player.level() instanceof ServerLevel serverLevel) {
+		if (player.level() instanceof ServerLevel serverLevel && player.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS)) {
+			ParticlePacket particlePacket = new ParticlePacket();
 			Vec3 deltaMovement = player.getDeltaMovement();
-			serverLevel.sendParticles(ParticleTypes.POOF, player.getX() - deltaMovement.x * 0.2f, player.getY(0.8f), player.getZ() - deltaMovement.z * 0.2f, 5, -deltaMovement.x, 0, -deltaMovement.z, 0.2f);
+			for (int particleNumber = 0; particleNumber < 10; particleNumber++) {
+				Vec3 particleVelocity = new Vec3(
+					(serverLevel.random.nextDouble() - 0.5),
+					serverLevel.random.nextDouble() + 1,
+					(serverLevel.random.nextDouble() - 0.5)
+				);
+				ParticleOptions type = TFParticleType.DOUBLE_JUMP.get();
+				Vec3 wingsPosition = player.position().add(Math.sin(Math.toRadians(player.yBodyRot)) / 3, 1.2, -Math.cos(Math.toRadians(player.yBodyRot)) / 3);
+				particlePacket.queueParticle(type, false, wingsPosition, particleVelocity.multiply(0.25, -0.5, 0.25).add(deltaMovement));
+			}
+			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, particlePacket);
 		}
 		return true;
 	}
