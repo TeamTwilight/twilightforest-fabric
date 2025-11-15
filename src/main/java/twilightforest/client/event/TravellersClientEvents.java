@@ -129,11 +129,10 @@ public class TravellersClientEvents {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
 		int lastJumpKeyPressTime = localPlayer.getData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
-		int currentJumpKeyPressTime = localPlayer.tickCount;
-		boolean holdsJumpKey = currentJumpKeyPressTime - lastJumpKeyPressTime <= 1;
+		boolean holdsJumpKey = localPlayer.tickCount - lastJumpKeyPressTime <= 1;
 		boolean pressedKey = Minecraft.getInstance().options.keyJump.isDown();
 		if (pressedKey)
-			localPlayer.setData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, currentJumpKeyPressTime);
+			localPlayer.setData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, localPlayer.tickCount);
 
 		if (pressedKey && !holdsJumpKey && TravellersModifiersManager.isModifierActive(localPlayer, localPlayer.getItemBySlot(EquipmentSlot.LEGS), TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
 			if (TravellersGearLogic.performDoubleJump(localPlayer)) {
