@@ -148,7 +148,7 @@ public class TravellersClientEvents {
 		boolean wasUsingZoom = player.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
 		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
-		boolean isUsingZoom = isZoomKeyHeld(player) && !player.isScoping() && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ZOOM_ABILITY) && zoomModifier != null;
+		boolean isUsingZoom = isZoomKeyHeld(player) && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ZOOM_ABILITY) && zoomModifier != null;
 		if (isUsingZoom != wasUsingZoom) {
 			player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, isUsingZoom);
 			player.playSound(isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());
@@ -160,7 +160,7 @@ public class TravellersClientEvents {
 		Player player = event.getPlayer();
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
 		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
-		if (isZoomKeyHeld(player) && !player.isScoping() && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ZOOM_ABILITY) && zoomModifier != null)
+		if (isZoomKeyHeld(player) && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ZOOM_ABILITY) && zoomModifier != null)
 			event.setNewFovModifier(event.getNewFovModifier() * zoomModifier);
 	}
 
