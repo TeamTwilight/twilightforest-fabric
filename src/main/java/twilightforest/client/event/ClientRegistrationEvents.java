@@ -576,6 +576,7 @@ public class ClientRegistrationEvents {
 		event.registerSpriteSet(TFParticleType.ICE_BEAM.get(), IceBeamParticle.Factory::new);
 		event.registerSpriteSet(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
 		event.registerSpriteSet(TFParticleType.PERFECT_DODGE.get(), PerfectDodgeParticle.Provider::new);
+		event.registerSpriteSet(TFParticleType.DOUBLE_JUMP.get(), DoubleJumpParticle.Provider::new);
 		event.registerSpriteSet(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);
 		event.registerSpriteSet(TFParticleType.FIREFLY.get(), FireflyParticle.StationaryProvider::new);
 		event.registerSpriteSet(TFParticleType.WANDERING_FIREFLY.get(), FireflyParticle.WanderingProvider::new);
