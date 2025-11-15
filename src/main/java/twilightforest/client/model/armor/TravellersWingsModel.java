@@ -156,11 +156,11 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 			this.wingBaseLeft.y += 2;
 		}
 
-		if (attachment.doubleJump && attachment.doubleJumpTime < 40) {
+		if (attachment.doubleJump && attachment.doubleJumpTime < 13.33) {
 			this.wingBaseRight.xRot = (float) TFMathUtil.interpolateToTarget(attachment.xRotOld, -0.4F, dtInTicks, TAU - 1);
 			this.wingBaseRight.yRot = (float) TFMathUtil.interpolateToTarget(attachment.yRotOld, -0.8F, dtInTicks, TAU - 1);
 			this.wingBaseRight.zRot = (float) TFMathUtil.interpolateToTarget(attachment.zRotOld, -0.1F, dtInTicks, TAU - 1);
-			attachment.doubleJumpTime++;
+			attachment.doubleJumpTime += dtInTicks;
 		} else {
 			Vector3f rotations;  // must be initialized later
 			if (this.riding)
