@@ -638,7 +638,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.ICE_SWORD, "Ice Sword");
 		this.addItem(TFItems.ICE_BOMB, "Ice Bomb");
 		this.addItem(TFItems.GLASS_SWORD, "Glass Sword");
-		this.add("item.twilightforest.glass_sword.desc", "Creative Mode only");
+		this.add("item.twilightforest.glass_sword.desc", "Creative Mode-only");
 		this.addItem(TFItems.TRIPLE_BOW, "Tri-Bow");
 		this.addItem(TFItems.SEEKER_BOW, "Seeker Bow");
 		this.addItem(TFItems.ICE_BOW, "Ice Bow");
@@ -1269,6 +1269,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addKeyMapping(TFKeyBinds.ITEM_DISPLAY_KEY, "Toggle Item Display Rendering");
 		this.addKeyMapping(TFKeyBinds.ZOOM_KEY, "Zoom With Goggles");
 		this.addKeyMapping(TFKeyBinds.SWAP_HOTBAR_KEY, "Swap Hotbar");
+
+		this.add("item.twilightforest.travellers_gloves.desc", "Cosmetic");
 
 		// built-in modifiers
 		this.addTravellersModifier(registries, TravellersModifiersManager.ZOOM_ABILITY, "Zoom (keybind: ${tfkeybinds/" + TFKeyBinds.ZOOM_KEY.getName() + "})");

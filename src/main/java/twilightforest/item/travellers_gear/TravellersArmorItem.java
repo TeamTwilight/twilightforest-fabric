@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.Entity;
@@ -37,7 +38,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class TravellersArmorItem extends ArmorItem implements TravellersModifiable {
-
+	private static final MutableComponent GLOVES_TOOLTIP = Component.translatable("item.twilightforest.travellers_gloves.desc").withStyle(ChatFormatting.GRAY);
 	private final int insertableModifierSlots;
 	@Nullable
 	private ItemAttributeModifiers attributeModifiers;
@@ -127,6 +128,10 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 			for (int i = insertableModifiers.size(); i < getModifierSlots(); i++) {
 				tooltip.add(Component.literal("- ").append(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY)));
+			}
+
+			if (TFItems.TRAVELLERS_GLOVES.get() == this) {
+				tooltip.add(GLOVES_TOOLTIP);
 			}
 		}
 	}
