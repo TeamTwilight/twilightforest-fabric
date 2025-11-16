@@ -9,5 +9,5 @@ public class TravellersWingsAnimAttachment {
 	public float yRotOld = 0;
 	public float zRotOld = 0;
 	public boolean doubleJump = false;
-	public int doubleJumpTime = 0;
+	public double doubleJumpTime = 0;
 }
