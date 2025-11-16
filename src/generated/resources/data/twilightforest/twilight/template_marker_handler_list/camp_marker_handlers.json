@@ -32,6 +32,10 @@
           },
           "loot_table": "twilightforest:camp_armor_rack"
         },
+        "painting": {
+          "type": "twilightforest:painting",
+          "paintings": "minecraft:placeable"
+        },
         "twilight_oak_slab": {
           "type": "twilightforest:block_placement",
           "block_state": {

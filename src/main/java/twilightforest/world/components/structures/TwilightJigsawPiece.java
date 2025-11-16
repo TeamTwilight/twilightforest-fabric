@@ -21,6 +21,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
@@ -33,6 +35,9 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implements ProgressionPiece, PieceBeardifierModifier {
+
+	private static final Logger LOGGER = LogManager.getLogger(TwilightForestMod.ID + "/TwilightJigsawPiece");
+
 	@Autowired
 	private static StructureTemplateDefinitions structureTemplateDefinitions;
 
@@ -77,9 +82,9 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		this.spareJigsaws = readConnectionsFromNBT(compoundTag);
 		this.terrainAdjustment = compoundTag.contains(NBT_TERRAIN_ADAPT) ? TerrainAdjustment.valueOf(compoundTag.getString(NBT_TERRAIN_ADAPT)) : TerrainAdjustment.NONE;
 		DynamicOps<Tag> dynamicOps = RegistryOps.create(NbtOps.INSTANCE, ctx.registryAccess());
-		this.processors = compoundTag.contains(NBT_TEMPLATE_PROCESSORS) ? StructureProcessorType.LIST_CODEC.parse(dynamicOps, compoundTag.getCompound(NBT_TEMPLATE_PROCESSORS)).resultOrPartial(message -> TwilightForestMod.LOGGER.error("Error deserializing " + NBT_TEMPLATE_PROCESSORS + ": {}", message)) : Optional.empty();
+		this.processors = compoundTag.contains(NBT_TEMPLATE_PROCESSORS) ? StructureProcessorType.LIST_CODEC.parse(dynamicOps, compoundTag.get(NBT_TEMPLATE_PROCESSORS)).resultOrPartial(message -> LOGGER.error("Error deserializing " + NBT_TEMPLATE_PROCESSORS + ": {}", message)) : Optional.empty();
 		this.projection = compoundTag.contains(NBT_PLACE_PROJECTION) ? StructureTemplatePool.Projection.valueOf(compoundTag.getString(NBT_PLACE_PROJECTION)) : StructureTemplatePool.Projection.RIGID;
-		this.markerHandlers = compoundTag.contains(NBT_MARKER_HANDLERS) ? TemplateMarkerHandlerList.HOLDER_CODEC.parse(dynamicOps, compoundTag.getCompound(NBT_MARKER_HANDLERS)).resultOrPartial(message -> TwilightForestMod.LOGGER.error("Error deserializing " + NBT_MARKER_HANDLERS + ": {}", message)) : Optional.empty();
+		this.markerHandlers = compoundTag.contains(NBT_MARKER_HANDLERS) ? TemplateMarkerHandlerList.HOLDER_CODEC.parse(dynamicOps, compoundTag.get(NBT_MARKER_HANDLERS)).resultOrPartial(message -> LOGGER.error("Error deserializing " + NBT_MARKER_HANDLERS + ": {}", message)) : Optional.empty();
 
 		this.beardifierGroundDelta = compoundTag.getInt(NBT_GROUND_OFFSET);
 
@@ -87,7 +92,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 			this.placeSettings.setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 
 		this.processors.ifPresent(p -> p.value().list().forEach(this.placeSettings::addProcessor));
-		this.serializedProcessors = compoundTag.contains(NBT_RANDOMIZED_PROCESSORS) ? StructureProcessorType.LIST_OBJECT_CODEC.parse(dynamicOps, compoundTag.getCompound(NBT_RANDOMIZED_PROCESSORS)).resultOrPartial(message -> TwilightForestMod.LOGGER.error("Error deserializing " + NBT_RANDOMIZED_PROCESSORS + ": {}", message)).orElseGet(() -> new StructureProcessorList(List.of())) : new StructureProcessorList(List.of());
+		this.serializedProcessors = compoundTag.contains(NBT_RANDOMIZED_PROCESSORS) ? StructureProcessorType.LIST_OBJECT_CODEC.parse(dynamicOps, compoundTag.get(NBT_RANDOMIZED_PROCESSORS)).resultOrPartial(message -> LOGGER.error("Error deserializing " + NBT_RANDOMIZED_PROCESSORS + ": {}", message)).orElseGet(() -> new StructureProcessorList(List.of())) : new StructureProcessorList(List.of());
 		this.serializedProcessors.list().forEach(this.placeSettings::addProcessor);
 		this.poolAliases = Map.of();
 	}
@@ -163,20 +168,20 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 		RegistryOps<Tag> registryOps = RegistryOps.create(NbtOps.INSTANCE, ctx.registryAccess());
 		if (this.processors.isPresent()) {
-			Optional<Tag> processorsList = StructureProcessorType.LIST_CODEC.encodeStart(registryOps, this.processors.get()).resultOrPartial(TwilightForestMod.LOGGER::error);
+			Optional<Tag> processorsList = StructureProcessorType.LIST_CODEC.encodeStart(registryOps, this.processors.get()).resultOrPartial(LOGGER::error);
 			if (processorsList.isPresent()) {
 				structureTag.put(NBT_TEMPLATE_PROCESSORS, processorsList.get());
 			}
 		}
 
 		if (this.markerHandlers.isPresent()) {
-			Optional<Tag> markerHandlersList = TemplateMarkerHandlerList.HOLDER_CODEC.encodeStart(registryOps, this.markerHandlers.get()).resultOrPartial(TwilightForestMod.LOGGER::error);
+			Optional<Tag> markerHandlersList = TemplateMarkerHandlerList.HOLDER_CODEC.encodeStart(registryOps, this.markerHandlers.get()).resultOrPartial(LOGGER::error);
 			if (markerHandlersList.isPresent()) {
 				structureTag.put(NBT_MARKER_HANDLERS, markerHandlersList.get());
 			}
 		}
 
-		Optional<Tag> markerHandlersList = StructureProcessorType.LIST_OBJECT_CODEC.encodeStart(registryOps, this.serializedProcessors).resultOrPartial(TwilightForestMod.LOGGER::error);
+		Optional<Tag> markerHandlersList = StructureProcessorType.LIST_OBJECT_CODEC.encodeStart(registryOps, this.serializedProcessors).resultOrPartial(LOGGER::error);
 		if (markerHandlersList.isPresent()) {
 			structureTag.put(NBT_RANDOMIZED_PROCESSORS, markerHandlersList.get());
 		}

@@ -43,4 +43,3 @@ public record ControlledFallPacket(boolean isControlledFalling, UUID playerUUID)
 		return TYPE;
 	}
 }
-

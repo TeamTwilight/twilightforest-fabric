@@ -2,7 +2,9 @@ package twilightforest.data.custom;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderOwner;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.util.random.Weight;
@@ -14,6 +16,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.JsonCodecProvider;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.util.StructureTemplateDefinition;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
@@ -117,6 +120,11 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 			Optional.ofNullable(randomizedProcessors),
 			poolAliases == null ? Map.of() : poolAliases
 		);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Holder.Reference<TemplateMarkerHandlerList> getMarkers(HolderLookup.Provider provider, ResourceKey<TemplateMarkerHandlerList> key) {
+		return Holder.Reference.createStandAlone((HolderOwner<TemplateMarkerHandlerList>) provider.asGetterLookup().lookupOrThrow(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST), key);
 	}
 
 	@Override

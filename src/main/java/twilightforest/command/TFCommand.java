@@ -57,6 +57,9 @@ public class TFCommand {
 	@Autowired
 	private TravellersGearCommand travellersGearCommand;
 
+	@Autowired
+	private TFTeleportCommand tfTeleportCommand;
+
 	public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext) {
 		LiteralArgumentBuilder<CommandSourceStack> structureBranch = Commands.literal("structure_util")
 			.then(displayPiecesCommand.register())
@@ -67,6 +70,7 @@ public class TFCommand {
 
 		LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("twilightforest")
 			.executes(this::run)
+			.then(tfTeleportCommand.register())
 			.then(centerCommand.register())
 			.then(mapLocatorCommand.register())
 			.then(conquerCommand.register())

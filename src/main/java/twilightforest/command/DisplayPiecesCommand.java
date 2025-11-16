@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -22,13 +23,12 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import tamaized.beanification.Autowired;
-import tamaized.beanification.Component;
 import twilightforest.util.DisplayUtil;
 import twilightforest.world.components.structures.util.ProgressionPiece;
 
 import java.util.List;
 
-@Component
+@tamaized.beanification.Component
 public class DisplayPiecesCommand {
 	@Autowired
 	private DisplayUtil displayUtil;
@@ -60,7 +60,9 @@ public class DisplayPiecesCommand {
 			float padding = Mth.lerp((float) successes / maxPieces, 0.003f, 0.025f);
 			BoundingBox boundingBox = piece.getBoundingBox();
 			if (this.displayUtil.spawnBlockDisplay(level, boundingBox, displayState, padding)) {
-				MutableComponent nameLabel = net.minecraft.network.chat.Component.literal(key == null ? "missing key" : key.toString());
+				MutableComponent nameLabel = key == null
+					? Component.translatable("commands.tffeature.display_pieces.missing_key")
+					: Component.literal(key.toString());
 				this.displayUtil.setTextEntity(level, (boundingBox.minX() + boundingBox.maxX() + 1) * 0.5, boundingBox.minY() - padding, boundingBox.maxZ() + padding + 1, Display.BillboardConstraints.FIXED, nameLabel);
 
 				successes++;
