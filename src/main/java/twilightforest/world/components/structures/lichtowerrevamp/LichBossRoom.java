@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.CustomTagGenerator;
@@ -78,25 +79,29 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 		placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 3, 3, CustomTagGenerator.PaintingVariantTagGenerator.LICH_BOSS_PAINTINGS);
 	}
 
-	public static void placePainting(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds, Rotation rotation, int limitTries, int rarityFactor, TagKey<PaintingVariant> lichTowerPaintings) {
+	public static boolean placePainting(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds, Rotation rotation, int limitTries, int rarityFactor, TagKey<PaintingVariant> lichTowerPaintings) {
 		if (!chunkBounds.isInside(pos) || random.nextInt(rarityFactor) != 0)
-			return;
+			return false;
 
 		String[] params = label.split(":");
 
 		if (params.length != 3)
-			return;
+			return false;
 
 		@Nullable
 		Direction dir = DirectionUtil.fromStringOrElse(params[0], null);
 
 		if (dir == null || dir.getAxis().isVertical() || !StringUtils.isNumeric(params[1]) || !StringUtils.isNumeric(params[2]) || !(level instanceof WorldGenLevel genLevel))
-			return;
+			return false;
 
 		dir = rotation.rotate(dir);
 
 		int width = Integer.parseInt(params[1]);
 		int height = Integer.parseInt(params[2]);
+		return placePainting(pos, random, limitTries, lichTowerPaintings, genLevel, width, height, dir);
+	}
+
+	public static boolean placePainting(BlockPos pos, RandomSource random, int limitTries, TagKey<PaintingVariant> lichTowerPaintings, WorldGenLevel genLevel, int width, int height, @NotNull Direction dir) {
 		int maxArea = width * height;
 
 		List<Holder<PaintingVariant>> paintingsOfSizeOrSmaller = EntityUtil.getPaintingsOfSizeOrSmaller(genLevel, lichTowerPaintings, width, height);
@@ -106,10 +111,11 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 			int area = painting.width() * painting.height();
 			if (random.nextInt(maxArea) <= area) {
 				if (EntityUtil.tryHangPainting(genLevel, pos, dir, paintingHolder) || limitTries-- <= 0) {
-					break;
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 	@Override

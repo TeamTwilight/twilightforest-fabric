@@ -2,14 +2,12 @@ package twilightforest.data.custom;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderOwner;
 import net.minecraft.data.PackOutput;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import tamaized.beanification.Autowired;
-import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.custom.TemplateMarkerHandlers;
@@ -36,14 +34,13 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 	}
 
 	private void generatePoolsWithProvider(HolderLookup.Provider provider) {
-		@SuppressWarnings("unchecked")
-		Holder.Reference<TemplateMarkerHandlerList> campMarkers = Holder.Reference.createStandAlone((HolderOwner<TemplateMarkerHandlerList>) provider.asGetterLookup().lookupOrThrow(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST), TemplateMarkerHandlers.CAMP_MARKER_HANDLERS);
+		Holder.Reference<TemplateMarkerHandlerList> campMarkers = this.getMarkers(provider, TemplateMarkerHandlers.CAMP_MARKER_HANDLERS);
 
 		this.add("camp/campfire_east", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null, null));
 		this.add("camp/campfire_south", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null, null));
 		this.add("camp/campfire_west", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null, null));
 
-		this.configureTents();
+		this.configureTents(provider);
 
 		this.configureRackPaths();
 
@@ -54,7 +51,9 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 		this.configureDeco(campMarkers);
 	}
 
-	private void configureTents() {
+	private void configureTents(HolderLookup.Provider provider) {
+		Holder.Reference<TemplateMarkerHandlerList> campMarkers = this.getMarkers(provider, TemplateMarkerHandlers.CAMP_MARKER_HANDLERS);
+
 		int defaultWeight = 10;
 		TemplatePoolInstance.ChooseRandomProcessors randomizedProcessors = new TemplatePoolInstance.ChooseRandomProcessors(List.of(
 			SimpleWeightedRandomList.<StructureProcessor>builder()
@@ -76,9 +75,10 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 				.build()
 		));
 
-		this.add("camp/tent/solo_tent", campPieces.tent, this.weightedRigidTemplate(100, 1, 0, null, randomizedProcessors, null));
-		this.add("camp/tent/duo_tent", campPieces.tent, this.weightedRigidTemplate(75, 1, 0, null, randomizedProcessors, null));
-		this.add("camp/tent/luxury_tent", campPieces.tent, this.weightedRigidTemplate(50, 1, 0, null, randomizedProcessors, null));
+		this.add("camp/tent/solo_tent", campPieces.tent, this.weightedRigidTemplate(100, 1, 0, campMarkers, randomizedProcessors, null));
+		this.add("camp/tent/duo_tent", campPieces.tent, this.weightedRigidTemplate(75, 1, 0, campMarkers, randomizedProcessors, null));
+		this.add("camp/tent/open_tent", campPieces.tent, this.weightedRigidTemplate(75, 1, 0, campMarkers, randomizedProcessors, null));
+		this.add("camp/tent/luxury_tent", campPieces.tent, this.weightedRigidTemplate(50, 1, 0, campMarkers, randomizedProcessors, null));
 	}
 
 	private void configureRackPaths() {
@@ -128,6 +128,7 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 		this.add("camp/deco/blackberry_wall", campPieces.deco, berryTemplateData);
 		this.add("camp/deco/blueberry_wall", campPieces.deco, berryTemplateData);
 		this.add("camp/deco/raspberry_wall", campPieces.deco, berryTemplateData);
+		this.add("camp/deco/berries_support", campPieces.deco, berryTemplateData);
 
 		this.add("camp/deco/compost_large", campPieces.deco, twoLayerTemplateData);
 		this.add("camp/deco/compost_small", campPieces.deco, twoLayerTemplateData);

@@ -5,6 +5,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.PaintingVariantTags;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,6 +33,7 @@ public class TemplateMarkerHandlers {
 	public static final DeferredHolder<TemplateMarkerHandlerType, TemplateMarkerHandlerType> HANDLER_SWITCH = TEMPLATE_MARKER_HANDLER_TYPES.register("handler_switch", () -> () -> SwitchMarkerHandler.CODEC);
 	public static final DeferredHolder<TemplateMarkerHandlerType, TemplateMarkerHandlerType> ROTATION = TEMPLATE_MARKER_HANDLER_TYPES.register("rotation", () -> () -> RotationMarkerHandler.CODEC);
 	public static final DeferredHolder<TemplateMarkerHandlerType, TemplateMarkerHandlerType> DRYING_RACK = TEMPLATE_MARKER_HANDLER_TYPES.register("drying_rack", () -> () -> DryingRackMarkerHandler.CODEC);
+	public static final DeferredHolder<TemplateMarkerHandlerType, TemplateMarkerHandlerType> PAINTING = TEMPLATE_MARKER_HANDLER_TYPES.register("painting", () -> () -> PaintingMarkerHandler.CODEC);
 
 	public static final ResourceKey<TemplateMarkerHandlerList> CAMP_MARKER_HANDLERS = ResourceKey.create(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TwilightForestMod.prefix("camp_marker_handlers"));
 
@@ -58,10 +60,13 @@ public class TemplateMarkerHandlers {
 
 		DryingRackMarkerHandler birchDryingRack = new DryingRackMarkerHandler(SimpleStateProvider.simple(TFBlocks.BIRCH_DRYING_RACK.value()), TFLootTables.CAMP_DRYING_RACK);
 
+		PaintingMarkerHandler painting = new PaintingMarkerHandler(PaintingVariantTags.PLACEABLE);
+
 		Map<String, Holder<TemplateMarkerHandler>> keyedHandlers = Map.of(
 			"twilight_oak_slab", Holder.direct(campfireSeat),
 			"camp_armor_rack", Holder.direct(armorRack),
-			"birch_drying_rack", Holder.direct(birchDryingRack)
+			"birch_drying_rack", Holder.direct(birchDryingRack),
+			"painting", Holder.direct(painting)
 		);
 		context.register(CAMP_MARKER_HANDLERS, TemplateMarkerHandlerList.of(
 			new RotationMarkerHandler(Holder.direct(new SwitchMarkerHandler(keyedHandlers)))
