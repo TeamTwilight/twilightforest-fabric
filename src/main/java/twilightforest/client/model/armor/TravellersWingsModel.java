@@ -174,7 +174,7 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 			else if (entity.isSprinting() || this.attackTime > 0)
 				rotations = this.calculateRotations(attachment, dtInTicks, 2.0F, ANGLE_10_DEG * 3, -0.3F, 0.0F, BIG_SWING);
 			else {
-				boolean moving = entity.getDeltaMovement().horizontalDistanceSqr() > 0;
+				boolean moving = entity.walkDist > 1E-3;
 				float speedFactor = moving ? 4.0F : 20.0F;
 				rotations = this.calculateRotations(attachment, dtInTicks, speedFactor, ANGLE_10_DEG * 3, -0.6F, -0.3F, BIG_SWING);
 			}
