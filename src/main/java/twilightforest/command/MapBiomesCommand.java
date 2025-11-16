@@ -120,12 +120,14 @@ public class MapBiomesCommand {
 			//send a progress update to let people know the server isn't dying
 			if (x % progressUpdate == 0) {
 				int finalX = x;
-				source.sendSuccess(() -> Component.translatable(((double) finalX / img.getHeight()) * 100 + "% Done mapping"), false);
+				double percentComplete = (double) finalX / img.getHeight() * 100;
+				String percentDisplay = this.numberFormat.format(percentComplete);
+				source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.progress", percentDisplay), false);
 			}
 		}
 
 		if (showBiomePercents) {
-			source.sendSuccess(() -> Component.literal("Approximate biome-block counts within a " + (width + "x" + height) + " region"), false);
+			source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.counts_header", width, height), false);
 			int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
 			biomeCount.forEach((biome, integer) -> source.sendSuccess(() -> Component.literal(
 					source.getLevel().registryAccess().registryOrThrow(Registries.BIOME).getKey(biome.value()).toString())
@@ -144,11 +146,11 @@ public class MapBiomesCommand {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			source.sendFailure(Component.literal("Could not save image! Please report this!"));
+			source.sendFailure(Component.translatable("commands.tffeature.biomepng.save_failed"));
 			return 0;
 		}
 
-		source.sendSuccess(() -> Component.literal("Image saved!"), false);
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.biomepng.save_success"), false);
 
 		return Command.SINGLE_SUCCESS;
 	}
