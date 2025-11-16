@@ -4,8 +4,10 @@ import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.ITransformerVotingContext;
 import cpw.mods.modlauncher.api.TargetType;
 import cpw.mods.modlauncher.api.TransformerVoteResult;
+import net.neoforged.coremod.api.ASMAPI;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -23,16 +25,17 @@ public class WaterSprintTransformer implements ITransformer<MethodNode> {
 			.map(insn -> (MethodInsnNode) insn)
 			.filter(m -> "isInWater".equals(m.name) && "()Z".equals(m.desc))
 			.forEach(m -> {
-				VarInsnNode loadThis = new VarInsnNode(Opcodes.ALOAD, 0);
-				MethodInsnNode patch = new MethodInsnNode(
-					Opcodes.INVOKESTATIC,
-					"twilightforest/asmhooks/EntityHooks",
-					"unrestrainedSprintingInWater",
-					"(ZLnet/minecraft/world/entity/LivingEntity;)Z",
-					false
+				InsnList patch = ASMAPI.listOf(
+					new VarInsnNode(Opcodes.ALOAD, 0),
+					new MethodInsnNode(
+						Opcodes.INVOKESTATIC,
+						"twilightforest/asmhooks/EntityHooks",
+						"unrestrainedSprintingInWater",
+						"(ZLnet/minecraft/world/entity/LivingEntity;)Z",
+						false
+					)
 				);
 				node.instructions.insert(m, patch);
-				node.instructions.insert(m, loadThis);
 			});
 	}
 
@@ -42,16 +45,17 @@ public class WaterSprintTransformer implements ITransformer<MethodNode> {
 			.map(insn -> (MethodInsnNode) insn)
 			.filter(m -> "isInFluidType".equals(m.name) && "(Ljava/util/function/BiPredicate;)Z".equals(m.desc))
 			.forEach(call -> {
-				VarInsnNode loadThis = new VarInsnNode(Opcodes.ALOAD, 0);
-				MethodInsnNode patch = new MethodInsnNode(
-					Opcodes.INVOKESTATIC,
-					"twilightforest/asmhooks/EntityHooks",
-					"unrestrainedSwimPredicate",
-					"(Ljava/util/function/BiPredicate;Lnet/minecraft/world/entity/LivingEntity;)Ljava/util/function/BiPredicate;",
-					false
+				InsnList patch = ASMAPI.listOf(
+					new VarInsnNode(Opcodes.ALOAD, 0),
+					new MethodInsnNode(
+						Opcodes.INVOKESTATIC,
+						"twilightforest/asmhooks/EntityHooks",
+						"unrestrainedSwimPredicate",
+						"(Ljava/util/function/BiPredicate;Lnet/minecraft/world/entity/LivingEntity;)Ljava/util/function/BiPredicate;",
+						false
+					)
 				);
-				node.instructions.insertBefore(call, loadThis);
-				node.instructions.insert(loadThis, patch);
+				node.instructions.insertBefore(call, patch);
 			});
 	}
 
