@@ -200,7 +200,7 @@ public class TravellersGearLogic {
 
 	public static boolean performDoubleJump(Player player) {
 		boolean hasDoubleJump = player.getData(TFDataAttachments.HAS_DOUBLE_JUMP);
-		if (!hasDoubleJump || player.isFallFlying() || player.onGround() || player.isSwimming() || player.getAbilities().flying || player.isInLiquid())
+		if (!hasDoubleJump || player.isFallFlying() || player.onClimbable() || player.onGround() || player.isSwimming() || player.getAbilities().flying || player.isInLiquid())
 			return false;
 		player.jumpFromGround();
 		player.resetFallDistance();
