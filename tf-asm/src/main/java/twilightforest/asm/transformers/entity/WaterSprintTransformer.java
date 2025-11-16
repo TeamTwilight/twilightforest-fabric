@@ -7,7 +7,6 @@ import cpw.mods.modlauncher.api.TransformerVoteResult;
 import net.neoforged.coremod.api.ASMAPI;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
@@ -20,43 +19,37 @@ import twilightforest.asm.ASMUtil;
 public class WaterSprintTransformer implements ITransformer<MethodNode> {
 
 	private static void injectIsInWater(MethodNode node) {
-		ASMUtil.findInstructions(node, Opcodes.INVOKEVIRTUAL)
-			.filter(insn -> insn instanceof MethodInsnNode)
-			.map(insn -> (MethodInsnNode) insn)
-			.filter(m -> "isInWater".equals(m.name) && "()Z".equals(m.desc))
-			.forEach(m -> {
-				InsnList patch = ASMAPI.listOf(
-					new VarInsnNode(Opcodes.ALOAD, 0),
-					new MethodInsnNode(
-						Opcodes.INVOKESTATIC,
-						"twilightforest/asmhooks/EntityHooks",
-						"unrestrainedSprintingInWater",
-						"(ZLnet/minecraft/world/entity/LivingEntity;)Z",
-						false
-					)
-				);
-				node.instructions.insert(m, patch);
-			});
+		ASMUtil.findMethodInstructions(node, Opcodes.INVOKEVIRTUAL,
+			"net/minecraft/client/player/LocalPlayer",
+			"isInWater",
+			"()Z"
+		).forEach(m -> node.instructions.insert(m, ASMAPI.listOf(
+			new VarInsnNode(Opcodes.ALOAD, 0),
+			new MethodInsnNode(
+				Opcodes.INVOKESTATIC,
+				"twilightforest/asmhooks/EntityHooks",
+				"unrestrainedSprintingInWater",
+				"(ZLnet/minecraft/world/entity/LivingEntity;)Z",
+				false
+			)
+		)));
 	}
 
 	private static void injectIsInFluidType(MethodNode node) {
-		ASMUtil.findInstructions(node, Opcodes.INVOKEVIRTUAL)
-			.filter(insn -> insn instanceof MethodInsnNode)
-			.map(insn -> (MethodInsnNode) insn)
-			.filter(m -> "isInFluidType".equals(m.name) && "(Ljava/util/function/BiPredicate;)Z".equals(m.desc))
-			.forEach(call -> {
-				InsnList patch = ASMAPI.listOf(
-					new VarInsnNode(Opcodes.ALOAD, 0),
-					new MethodInsnNode(
-						Opcodes.INVOKESTATIC,
-						"twilightforest/asmhooks/EntityHooks",
-						"unrestrainedSwimPredicate",
-						"(Ljava/util/function/BiPredicate;Lnet/minecraft/world/entity/LivingEntity;)Ljava/util/function/BiPredicate;",
-						false
-					)
-				);
-				node.instructions.insertBefore(call, patch);
-			});
+		ASMUtil.findMethodInstructions(node, Opcodes.INVOKEVIRTUAL,
+			"net/minecraft/client/player/LocalPlayer",
+			"isInFluidType",
+			"(Ljava/util/function/BiPredicate;)Z"
+		).forEach(call -> node.instructions.insertBefore(call, ASMAPI.listOf(
+			new VarInsnNode(Opcodes.ALOAD, 0),
+			new MethodInsnNode(
+				Opcodes.INVOKESTATIC,
+				"twilightforest/asmhooks/EntityHooks",
+				"unrestrainedSwimPredicate",
+				"(Ljava/util/function/BiPredicate;Lnet/minecraft/world/entity/LivingEntity;)Ljava/util/function/BiPredicate;",
+				false
+			)
+		)));
 	}
 
 	@Override
