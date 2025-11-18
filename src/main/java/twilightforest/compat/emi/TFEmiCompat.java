@@ -23,6 +23,7 @@ import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.recipe.*;
 import twilightforest.item.recipe.travellers.TravellersGearModifierRecipe;
 
@@ -36,7 +37,9 @@ public class TFEmiCompat implements EmiPlugin {
 	private static final Function<List<EmiIngredient>, Boolean> CANT_USE_ENCHANTS = stack ->
 		stack.contains(EmiStack.of(TFItems.MOONWORM_QUEEN)) || stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.ORE_MAGNET)) ||
 			stack.contains(EmiStack.of(TFItems.TWILIGHT_SCEPTER)) || stack.contains(EmiStack.of(TFItems.LIFEDRAIN_SCEPTER)) ||
-			stack.contains(EmiStack.of(TFItems.ZOMBIE_SCEPTER)) || stack.contains(EmiStack.of(TFItems.FORTIFICATION_SCEPTER));
+			stack.contains(EmiStack.of(TFItems.ZOMBIE_SCEPTER)) || stack.contains(EmiStack.of(TFItems.FORTIFICATION_SCEPTER)) ||
+			stack.contains(EmiStack.of(TFItems.TRAVELLERS_GOGGLES)) || stack.contains(EmiStack.of(TFItems.TRAVELLERS_VEST)) || stack.contains(EmiStack.of(TFItems.TRAVELLERS_GLOVES)) ||
+			stack.contains(EmiStack.of(TFItems.TRAVELLERS_BELT)) || stack.contains(EmiStack.of(TFItems.TRAVELLERS_WINGS)) || stack.contains(EmiStack.of(TFItems.TRAVELLERS_BOOTS));
 
 	private static final Function<List<EmiIngredient>, Boolean> NO_REPAIRING = stack ->
 		stack.contains(EmiStack.of(TFItems.LAMP_OF_CINDERS)) || stack.contains(EmiStack.of(TFItems.GLASS_SWORD)) || stack.contains(EmiStack.of(TFItems.MAZEBREAKER_PICKAXE));
@@ -102,7 +105,12 @@ public class TFEmiCompat implements EmiPlugin {
 						recipe.getRepairDurability(),
 						holder.id()
 					);
-				case TravellersGearModifierRecipe recipe -> new EmiTravellersGearModifierRecipe(recipe);
+				case TravellersGearModifierRecipe recipe -> {
+					if (TravellersModifiersManager.isModifierEnabled(Minecraft.getInstance().level.registryAccess(), recipe.getTravellersModifierKey()))
+						yield new EmiTravellersGearModifierRecipe(recipe);
+					else
+						yield null;
+				}
 
 				default -> null;
 			};

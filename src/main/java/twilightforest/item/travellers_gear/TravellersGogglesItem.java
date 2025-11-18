@@ -95,7 +95,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		//only tick while on the player's head
 		if (slotId != Inventory.INVENTORY_SIZE + EquipmentSlot.HEAD.getIndex())
 			return;
-		if (level.isClientSide() || !TravellersModifiersManager.isModifierActive(entity, stack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
+		if (level.isClientSide() || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
 			return;
 
 		ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY);
@@ -120,7 +120,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 
 	@Override
 	public boolean isEnderMask(ItemStack stack, Player player, EnderMan enderman) {
-		return TravellersModifiersManager.isModifierActive(player, stack, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER);
+		return TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER);
 	}
 
 	private void playRemoveOneSound(Entity entity) {

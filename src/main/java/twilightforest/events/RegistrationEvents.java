@@ -63,6 +63,7 @@ import twilightforest.init.*;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.init.custom.TemplateMarkerHandlers;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
@@ -107,6 +108,7 @@ public class RegistrationEvents {
 
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
 		NeoForge.EVENT_BUS.addListener(AddReloadListenerEvent.class, event -> event.addListener(new QuestReloadListener()));
+		NeoForge.EVENT_BUS.addListener(AddReloadListenerEvent.class, event -> event.addListener(TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE));
 		NeoForge.EVENT_BUS.addListener(StalactiteReloadListener.INSTANCE::registerListener);
 		NeoForge.EVENT_BUS.addListener(this.structureTemplateDefinitions::registerListener);
 		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);

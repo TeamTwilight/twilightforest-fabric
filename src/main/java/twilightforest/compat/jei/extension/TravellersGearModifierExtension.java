@@ -24,8 +24,6 @@ public class TravellersGearModifierExtension implements ICraftingCategoryExtensi
 	public void setRecipe(RecipeHolder<TravellersGearModifierRecipe> recipeHolder, @NotNull IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, @NotNull IFocusGroup focuses) {
 		TravellersGearModifierRecipe recipe = recipeHolder.value();
 		List<List<ItemStack>> inputs = new ArrayList<>(recipe.getIngredients().stream().map(ingredient -> Arrays.stream(ingredient.getItems()).toList()).toList());
-		craftingGridHelper.createAndSetInputs(builder, inputs, recipe.getWidth(), recipe.getHeight());
-
 		List<ItemStack> outputs = new ArrayList<>();
 		for (Ingredient ingredient : recipe.getIngredients()) {
 			for (ItemStack stack : ingredient.getItems()) {
@@ -35,7 +33,12 @@ public class TravellersGearModifierExtension implements ICraftingCategoryExtensi
 			}
 		}
 
+		outputs.stream().filter(ItemStack::isEmpty).forEach(outputs::remove);
+		if (outputs.isEmpty())
+			return;
+
 		if (recipe.isShapeless()) builder.setShapeless();
+		craftingGridHelper.createAndSetInputs(builder, inputs, recipe.getWidth(), recipe.getHeight());
 		// output slot; use RENDER_ONLY to prevent displaying modifier recipes when using the "Show Recipe" key
 		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 95, 19).setOutputSlotBackground().addItemStacks(outputs);
 	}

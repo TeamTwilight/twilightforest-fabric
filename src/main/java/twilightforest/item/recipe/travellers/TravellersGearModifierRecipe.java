@@ -90,6 +90,10 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 			.withSuffix("_modifier");
 	}
 
+	public ResourceKey<TravellersModifier> getTravellersModifierKey() {
+		return travellersModifierKey;
+	}
+
 	public static class AbstractModifierRecipeSerializer<T extends TravellersGearModifierRecipe> implements RecipeSerializer<T> {
 		protected final MapCodec<T> codec;
 

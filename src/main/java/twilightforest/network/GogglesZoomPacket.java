@@ -3,7 +3,6 @@ package twilightforest.network;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -37,7 +36,7 @@ public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements
 				return;
 			}
 
-			boolean canChangeZoomState = TravellersModifiersManager.isModifierActive(player, player.getItemBySlot(EquipmentSlot.HEAD), TravellersModifiersManager.ZOOM_ABILITY);
+			boolean canChangeZoomState = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ZOOM_ABILITY);
 			if (canChangeZoomState) {
 				player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
 				player.playSound(packet.isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());

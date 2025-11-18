@@ -5,9 +5,14 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.Unit;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
@@ -22,8 +27,10 @@ import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.modifiers.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TravellersModifiersManager {
 
@@ -59,6 +66,9 @@ public class TravellersModifiersManager {
 	public static final ResourceKey<TravellersModifier> WATER_WALK_MODIFIER = makeKey("water_walk");
 
 	public static final Set<ResourceKey<TravellersModifier>> ALWAYS_ACTIVE = Set.of(AUTO_REPAIR_MODIFIER);
+
+	private static final Map<ResourceKey<TravellersModifier>, TravellersModifier> CACHED_MODIFIERS = new ConcurrentHashMap<>();
+	private static final Set<ResourceKey<TravellersModifier>> MISSING_MODIFIERS = ConcurrentHashMap.newKeySet();
 
 	private static ResourceKey<TravellersModifier> makeKey(String name) {
 		return ResourceKey.create(TFRegistries.Keys.TRAVELLERS_MODIFIERS, TwilightForestMod.prefix(name));
@@ -99,34 +109,46 @@ public class TravellersModifiersManager {
 	}
 
 	public static boolean isModifierActive(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
-		return registries.holder(modifierKey).map(ref -> ref.value().isActive(stack, modifierKey)).orElse(false);
+		return getCachedModifier(registries, modifierKey).map(modifier -> modifier.isActive(stack, modifierKey)).orElse(false);
 	}
 
 	public static boolean isModifierActive(Entity entity, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
 		return isModifierActive(entity.registryAccess(), stack, modifierKey);
 	}
 
+	public static boolean isModifierActive(Entity entity, ResourceKey<TravellersModifier> modifierKey) {
+		return entity instanceof LivingEntity livingEntity && isModifierActive(livingEntity, modifierKey);
+	}
+
+	public static boolean isModifierActive(LivingEntity livingEntity, ResourceKey<TravellersModifier> modifierKey) {
+		Optional<TravellersModifier> modifier = getCachedModifier(livingEntity.registryAccess(), modifierKey);
+		if (modifier.isEmpty())
+			return false;
+		ItemStack equippedStack = getStackForGroup(livingEntity, modifier.get().group());
+		return !equippedStack.isEmpty() && modifier.get().isActive(equippedStack, modifierKey);
+	}
+
 	public static boolean hasTravellersModifier(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
-		return registries.holder(modifierKey).map(ref -> ref.value().hasModifier(stack)).orElse(false);
+		return getCachedModifier(registries, modifierKey).map(modifier -> modifier.hasModifier(stack)).orElse(false);
 	}
 
 	public static boolean addModifier(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
-		Optional<Holder.Reference<TravellersModifier>> modifier = registries.holder(modifierKey);
-		if (modifier.isEmpty() || !(modifier.get().value() instanceof InsertableTravellersModifier insertableTravellersModifier))
+		Optional<TravellersModifier> modifier = getCachedModifier(registries, modifierKey);
+		if (modifier.isEmpty() || !(modifier.get() instanceof InsertableTravellersModifier insertableTravellersModifier))
 			return false;
 		return insertableTravellersModifier.addModifier(stack);
 	}
 
 	public static boolean transferModifier(HolderLookup.Provider registries, ItemStack stack, List<Ingredient> ingredients, ResourceKey<TravellersModifier> modifierKey) {
-		Optional<Holder.Reference<TravellersModifier>> modifier = registries.holder(modifierKey);
-		if (modifier.isEmpty() || !(modifier.get().value() instanceof TransferableTravellersModifier transferableTravellersModifier))
+		Optional<TravellersModifier> modifier = getCachedModifier(registries, modifierKey);
+		if (modifier.isEmpty() || !(modifier.get() instanceof TransferableTravellersModifier transferableTravellersModifier))
 			return false;
 		return transferableTravellersModifier.transfer(stack, ingredients);
 	}
 
 	public static int getModifierDataComponentProviders(HolderLookup.Provider registries, List<Ingredient> ingredients, ResourceKey<TravellersModifier> modifierKey) {
-		Optional<Holder.Reference<TravellersModifier>> modifier = registries.holder(modifierKey);
-		if (modifier.isEmpty() || !(modifier.get().value() instanceof TransferableComponentModifier transferableComponentModifier))
+		Optional<TravellersModifier> modifier = getCachedModifier(registries, modifierKey);
+		if (modifier.isEmpty() || !(modifier.get() instanceof TransferableComponentModifier transferableComponentModifier))
 			return 0;
 		return transferableComponentModifier.findDataComponentProviders(ingredients).size();
 	}
@@ -149,5 +171,61 @@ public class TravellersModifiersManager {
 
 	public static long countInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {
 		return findAllInsertableModifiers(registries, stack).size();
+	}
+
+	public static boolean isModifierEnabled(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifierKey) {
+		return getCachedModifier(registries, modifierKey).isPresent();
+	}
+
+	private static ItemStack getStackForGroup(LivingEntity livingEntity, EquipmentSlotGroup group) {
+		EquipmentSlot matchedSlot = null;
+		for (EquipmentSlot slot : EquipmentSlot.values()) {
+			if (!slot.isArmor() || !group.test(slot))
+				continue;
+			if (matchedSlot != null)
+				return ItemStack.EMPTY;
+			matchedSlot = slot;
+		}
+		return matchedSlot == null ? ItemStack.EMPTY : livingEntity.getItemBySlot(matchedSlot);
+	}
+
+	public static void clearCache() {
+		CACHED_MODIFIERS.clear();
+		MISSING_MODIFIERS.clear();
+	}
+
+	private static Optional<TravellersModifier> getCachedModifier(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifierKey) {
+		TravellersModifier cached = CACHED_MODIFIERS.get(modifierKey);
+		if (cached != null)
+			return Optional.of(cached);
+		if (MISSING_MODIFIERS.contains(modifierKey))
+			return Optional.empty();
+
+		Optional<Holder.Reference<TravellersModifier>> modifier = registries.holder(modifierKey);
+		if (modifier.isPresent()) {
+			CACHED_MODIFIERS.put(modifierKey, modifier.get().value());
+			return Optional.of(modifier.get().value());
+		}
+
+		TwilightForestMod.LOGGER.warn("Travellers modifier {} is not present in the registry", modifierKey.location());
+		MISSING_MODIFIERS.add(modifierKey);
+		return Optional.empty();
+	}
+
+	public static final class CacheInvalidationReloadListener extends SimplePreparableReloadListener<Unit> {
+		public static final CacheInvalidationReloadListener INSTANCE = new CacheInvalidationReloadListener();
+
+		private CacheInvalidationReloadListener() {
+		}
+
+		@Override
+		protected Unit prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
+			return Unit.INSTANCE;
+		}
+
+		@Override
+		protected void apply(Unit object, ResourceManager resourceManager, ProfilerFiller profiler) {
+			clearCache();
+		}
 	}
 }

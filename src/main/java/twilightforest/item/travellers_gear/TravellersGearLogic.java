@@ -41,8 +41,7 @@ public class TravellersGearLogic {
 	private static final double AUTO_REPAIR_TWILIGHT_BOOST = AUTO_REPAIR_SUNLIGHT_BOOST / 2;
 
 	public static void travellersStealth(Player player, Consumer<Player> invisibilityHandler) {
-		ItemStack chestArmor = player.getInventory().getArmor(EquipmentSlot.CHEST.getIndex());
-		if (!TravellersModifiersManager.isModifierActive(player, chestArmor, TravellersModifiersManager.STEALTH_MODIFIER))
+		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.STEALTH_MODIFIER))
 			return;
 
 		if (player.isCrouching()) {
@@ -184,7 +183,7 @@ public class TravellersGearLogic {
 	}
 
 	public static void travellersBootsUnrestrained(LivingEntity livingEntity) {
-		if (TravellersModifiersManager.isModifierActive(livingEntity, livingEntity.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER))
+		if (TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			livingEntity.stuckSpeedMultiplier = Vec3.ZERO;
 	}
 

@@ -1,8 +1,10 @@
 package twilightforest.asmhooks;
 
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -28,7 +30,7 @@ public class EntityHooks {
 		if (!fluidState.is(FluidTags.WATER))
 			return null;
 
-		if (!TravellersModifiersManager.isModifierActive(livingEntity, livingEntity.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.WATER_WALK_MODIFIER))
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.WATER_WALK_MODIFIER))
 			return null;
 
 		boolean isWaterWalking = TravellersGearLogic.isBelowMaxWaterWalkingSubmergedHeight(livingEntity) && !livingEntity.isShiftKeyDown();
@@ -45,8 +47,7 @@ public class EntityHooks {
 	 * Targets: {@link Entity#isInWater()}
 	 */
 	public static boolean unrestrainedSprintingInWater(boolean isInWater, LivingEntity livingEntity) {
-		ItemStack stack = livingEntity.getItemBySlot(EquipmentSlot.FEET);
-		if (!TravellersModifiersManager.isModifierActive(livingEntity, stack, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			return isInWater;
 		return !livingEntity.canStandOnFluid(livingEntity.level().getFluidState(livingEntity.blockPosition())) && isInWater;
 	}
@@ -88,7 +89,7 @@ public class EntityHooks {
 	 * Targets: FRETURN
 	 */
 	public static float resetFactorWithUnrestrained(float o, Entity entity) {
-		return entity instanceof LivingEntity living && TravellersModifiersManager.isModifierActive(entity, living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 1.0F : o;
+		return TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 1.0F : o;
 	}
 
 	/**
@@ -98,7 +99,7 @@ public class EntityHooks {
 	 * {@link net.minecraft.world.entity.Entity#move(MoverType, Vec3)}<br/>
 	 */
 	public static void resetStuckUnrestrained(Entity entity) {
-		if (!(entity instanceof LivingEntity living) || living.stuckSpeedMultiplier.lengthSqr() <= 1.0E-7 || !(TravellersModifiersManager.isModifierActive(entity, living.getItemBySlot(EquipmentSlot.FEET), TravellersModifiersManager.UNRESTRAINED_MODIFIER)))
+		if (!(entity instanceof LivingEntity living) || living.stuckSpeedMultiplier.lengthSqr() <= 1.0E-7 || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			return;
 		living.stuckSpeedMultiplier = Vec3.ZERO;
 	}
