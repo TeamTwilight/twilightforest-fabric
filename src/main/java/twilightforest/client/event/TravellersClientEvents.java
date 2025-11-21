@@ -8,7 +8,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -20,7 +19,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
@@ -39,15 +37,8 @@ public class TravellersClientEvents {
 		return TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping();
 	}
 
-	private void tickEntityGearEffects(EntityTickEvent.Post event) {
-		if (!(event.getEntity() instanceof LivingEntity livingEntity) || !livingEntity.level().isClientSide()) return;
-		TravellersGearLogic.travellersWingsControlledFall(livingEntity);
-		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
-	}
-
 	@PostConstruct
 	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::tickEntityGearEffects);
 		NeoForge.EVENT_BUS.addListener(this::handleDoubleJump);
 		NeoForge.EVENT_BUS.addListener(this::handleAgileRanger);
 		NeoForge.EVENT_BUS.addListener(this::handleForwardBoost);

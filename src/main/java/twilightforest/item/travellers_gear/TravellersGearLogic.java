@@ -9,6 +9,7 @@ import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,6 +27,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import twilightforest.TwilightForestMod;
+import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.network.ParticlePacket;
@@ -238,6 +240,18 @@ public class TravellersGearLogic {
 			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, particlePacket);
 		}
 		return true;
+	}
+
+	public static void travellersBootsSlimySolesBounce(LivingEntity livingEntity) {
+		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		if (slimySolesAttachment.bounceVelocity == 0 || slimySolesAttachment.hasBounced) {
+			return;
+		}
+		Vec3 velocity = livingEntity.getDeltaMovement();
+		livingEntity.setDeltaMovement(velocity.x(), Math.sqrt(Math.pow(velocity.y(), 2) + Math.pow(slimySolesAttachment.bounceVelocity, 2)), velocity.z());
+		livingEntity.playSound(SoundEvents.SLIME_JUMP);
+		slimySolesAttachment.forceBounce = Math.abs(livingEntity.getDeltaMovement().y()) > 0.2;
+		slimySolesAttachment.hasBounced = true;
 	}
 
 	private static void validateMovement(ServerPlayer serverPlayer,

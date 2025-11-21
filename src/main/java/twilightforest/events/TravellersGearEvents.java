@@ -7,6 +7,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -30,6 +31,7 @@ import net.neoforged.neoforge.event.GrindstoneEvent;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.living.ArmorHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerSpawnPhantomsEvent;
@@ -40,6 +42,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
+import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
@@ -64,6 +67,7 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::performStealth);
 		NeoForge.EVENT_BUS.addListener(this::disableHighStepWhileSneaking);
 		NeoForge.EVENT_BUS.addListener(this::updateOtherModifiers);
+		NeoForge.EVENT_BUS.addListener(this::cancelSlimySolesJump);
 		NeoForge.EVENT_BUS.addListener(this::activateAndDeactivateTravellersModifiers);
 		NeoForge.EVENT_BUS.addListener(this::cancelCombiningTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::cancelPhantomSpawns);
@@ -132,8 +136,33 @@ public class TravellersGearEvents {
 		LivingEntity livingEntity = event.getEntity();
 		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
-		if (TravellersModifiersManager.isModifierActive(livingEntity, boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && coefficient != null)
-			event.setDamageMultiplier(coefficient);
+		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		if (TravellersModifiersManager.isModifierActive(livingEntity, boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && coefficient != null && (calculateFallDamage(event) > 0 || slimySolesAttachment.forceBounce)) {
+			event.setCanceled(true);
+			slimySolesAttachment.bounceVelocity = -livingEntity.getDeltaMovement().y() * Math.sqrt(coefficient);
+			slimySolesAttachment.hasBounced = false;
+			livingEntity.setData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
+		}
+	}
+
+	// [VanillaCopy]
+	private double calculateFallDamage(LivingFallEvent event) {
+		LivingEntity livingEntity = event.getEntity();
+		double safeFallDistance = livingEntity.getAttributeValue(Attributes.SAFE_FALL_DISTANCE);
+		double unsafeFallDistance = event.getDistance() - safeFallDistance;
+		return Mth.ceil(unsafeFallDistance * event.getDamageMultiplier() * livingEntity.getAttributeValue(Attributes.FALL_DAMAGE_MULTIPLIER));
+	}
+
+	private void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
+		LivingEntity livingEntity = event.getEntity();
+		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		if (slimySolesAttachment.hasBounced) {
+			Vec3 velocity = livingEntity.getDeltaMovement();
+			livingEntity.setDeltaMovement(velocity.x(), Math.sqrt(Math.pow(velocity.y(), 2) + Math.pow(slimySolesAttachment.bounceVelocity, 2)), velocity.z());
+			slimySolesAttachment.bounceVelocity = 0;
+			slimySolesAttachment.forceBounce = false;
+			livingEntity.setData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
+		}
 	}
 
 	private void tickMovementModifiers(PlayerTickEvent.Pre event) {
@@ -194,13 +223,16 @@ public class TravellersGearEvents {
 	}
 
 	private void updateOtherModifiers(EntityTickEvent.Post event) {
-		if (!(event.getEntity() instanceof LivingEntity livingEntity) || livingEntity.level().isClientSide()) return;
+		if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
 		TravellersGearLogic.travellersWingsControlledFall(livingEntity);
+		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
+		TravellersGearLogic.travellersBootsSlimySolesBounce(livingEntity);
+
+		if (livingEntity.level().isClientSide()) return;
 		TravellersGearLogic.travellersVestHaste(livingEntity);
 		TravellersGearLogic.travellersWingsHighJump(livingEntity);
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
 		TravellersGearLogic.travellersBootsForwardBoost(livingEntity);
-		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
 	}
 
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {

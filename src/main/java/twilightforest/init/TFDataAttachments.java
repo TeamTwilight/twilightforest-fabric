@@ -48,6 +48,8 @@ public class TFDataAttachments {
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SIDESTEP_VALIDATOR = ATTACHMENT_TYPES.register("sidestep_validator", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SIDESTEP_VALIDATOR_LAST_CHECK = ATTACHMENT_TYPES.register("sidestep_validator_last_check", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> IS_CONTROLLED_FALLING = ATTACHMENT_TYPES.register("is_controlled_falling", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<SlimySolesAttachment>> SLIMY_SOLES_BOUNCE_INFO = ATTACHMENT_TYPES.register("slimy_soles_bounce_info", () -> AttachmentType.builder(SlimySolesAttachment::new).serialize(SlimySolesAttachment.CODEC).build());
+
 
 	private static <T> T directCopy(T attachment, IAttachmentHolder holder, HolderLookup.Provider provider) {
 		return attachment;
