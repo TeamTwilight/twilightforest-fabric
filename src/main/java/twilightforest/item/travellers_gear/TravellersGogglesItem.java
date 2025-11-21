@@ -17,10 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.TFRegistries;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;
-import twilightforest.init.custom.ItemDisplays;
 import twilightforest.init.custom.TravellersModifiersManager;
 
 import java.util.Optional;
@@ -39,7 +37,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 	}
 
 	@Override
-	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
+	public boolean overrideStackedOnOther(ItemStack stack, @NotNull Slot slot, @NotNull ClickAction action, @NotNull Player player) {
 		if (stack.getCount() != 1 || action != ClickAction.SECONDARY)
 			return false;
 
@@ -56,7 +54,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 				ItemStack itemstack2 = slot.safeInsert(removedStack);
 				mutableContents.tryInsert(itemstack2);
 			}
-		} else if (itemstack.getItem().canFitInsideContainerItems()) {
+		} else if (itemstack.canFitInsideContainerItems()) {
 			if (mutableContents.trySwap(SlotAccess.of(slot::getItem, slot::set), player))
 				this.playInsertSound(player);
 		}
@@ -66,7 +64,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 	}
 
 	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+	public boolean overrideOtherStackedOnMe(ItemStack stack, @NotNull ItemStack other, @NotNull Slot slot, @NotNull ClickAction action, @NotNull Player player, @NotNull SlotAccess access) {
 		if (stack.getCount() != 1 || action != ClickAction.SECONDARY || !slot.allowModification(player))
 			return false;
 
@@ -91,7 +89,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+	public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
 		//only tick while on the player's head
 		if (slotId != Inventory.INVENTORY_SIZE + EquipmentSlot.HEAD.getIndex())
 			return;
@@ -102,9 +100,11 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		if (contents == null || contents.isEmpty())
 			return;
 
-		int mapSlot = TFRegistries.ITEM_DISPLAY_TYPE.getId(ItemDisplays.MAP.getKey());
-		ItemStack map = contents.items().get(mapSlot);
+		int mapSlot = ItemDisplayContents.findActiveMapSlot(contents.items(), entity);
+		if (mapSlot == -1)
+			return;
 
+		ItemStack map = contents.items().get(mapSlot);
 		if (map.isEmpty() || !(map.getItem() instanceof MapItem mapItem))
 			return;
 
@@ -119,7 +119,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 	}
 
 	@Override
-	public boolean isEnderMask(ItemStack stack, Player player, EnderMan enderman) {
+	public boolean isEnderMask(@NotNull ItemStack stack, @NotNull Player player, @NotNull EnderMan enderman) {
 		return TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER);
 	}
 

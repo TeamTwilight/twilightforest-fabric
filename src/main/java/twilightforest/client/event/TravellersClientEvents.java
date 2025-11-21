@@ -5,6 +5,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,9 +23,11 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
+import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
+import twilightforest.init.custom.ItemDisplays;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
@@ -46,6 +49,7 @@ public class TravellersClientEvents {
 		NeoForge.EVENT_BUS.addListener(this::handleStealth);
 		NeoForge.EVENT_BUS.addListener(this::updateZoomState);
 		NeoForge.EVENT_BUS.addListener(this::updateControlledFallState);
+		NeoForge.EVENT_BUS.addListener(this::cycleItemDisplayMap);
 		NeoForge.EVENT_BUS.addListener(this::slowZoomSensitivity);
 		NeoForge.EVENT_BUS.addListener(this::swapHotbar);
 		NeoForge.EVENT_BUS.addListener(this::toggleItemDisplayVisibility);
@@ -119,7 +123,7 @@ public class TravellersClientEvents {
 	}
 
 	private void handleDoubleJump(InputEvent.Key event) {
-		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || !Minecraft.getInstance().options.keyJump.matches(event.getKey(), event.getScanCode()))
+		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || ignoreKeyEvent(event, Minecraft.getInstance().options.keyJump))
 			return;
 		int lastJumpKeyPressTime = localPlayer.getData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
 		boolean pressedKey = event.getAction() == InputConstants.PRESS;
@@ -164,24 +168,37 @@ public class TravellersClientEvents {
 		player.connection.send(new ControlledFallPacket(isControlledFalling, player.getUUID()));
 	}
 
-	private void swapHotbar(InputEvent.Key event) {
-		if (TFKeyBinds.SWAP_HOTBAR_KEY.matches(event.getKey(), event.getScanCode())) {
-			Player player = Minecraft.getInstance().player;
-			if (!(player instanceof LocalPlayer localPlayer)) return;
-			ItemStack legArmor = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
-			ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
-			if (!TravellersArmorBeltItem.hasSwapHotbar(player, legArmor) || containerContents == null)
-				return;
+	private void cycleItemDisplayMap(InputEvent.Key event) {
+		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || ignoreKeyEvent(event, TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY))
+			return;
 
-			boolean isClicked = false;
-			while (TFKeyBinds.SWAP_HOTBAR_KEY.consumeClick()) {
-				isClicked = !isClicked;  // clickCount can be even, so we may not swap hotbar
-			}
-			boolean hasClicked = isClicked;
-			if (!hasClicked)
+		boolean pressedKey = event.getAction() == InputConstants.PRESS;
+		ItemStack headStack = localPlayer.getItemBySlot(EquipmentSlot.HEAD);
+		ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
+		if (contents == null || contents.isEmpty() || !pressedKey)
+			return;
+		NonNullList<ItemStack> items = contents.items();
+		int slots = Math.min(ItemDisplayContents.LAYOUT.size(), items.size());
+		int oldMapIndex = localPlayer.getData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT);
+		for (int newMapIndex = 0; newMapIndex < slots; newMapIndex++) {
+			if (ItemDisplayContents.LAYOUT.get(newMapIndex) == ItemDisplays.MAP && !items.get(newMapIndex).isEmpty() && newMapIndex > oldMapIndex) {
+				localPlayer.setData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT, newMapIndex);
 				return;
-			localPlayer.connection.send(SwapHotbarPacket.INSTANCE);
+			}
 		}
+		localPlayer.setData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT, -1);
+	}
+
+	private void swapHotbar(InputEvent.Key event) {
+		if (ignoreKeyEvent(event, TFKeyBinds.SWAP_HOTBAR_KEY))
+			return;
+		Player player = Minecraft.getInstance().player;
+		if (!(player instanceof LocalPlayer localPlayer)) return;
+		ItemStack legArmor = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
+		ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
+		if (!TravellersArmorBeltItem.hasSwapHotbar(player, legArmor) || containerContents == null)
+			return;
+		localPlayer.connection.send(SwapHotbarPacket.INSTANCE);
 	}
 
 	private void toggleRedThreadVision(InputEvent.Key event) {
@@ -193,7 +210,7 @@ public class TravellersClientEvents {
 	}
 
 	private void toggleBooleanDataAttachment(InputEvent.Key event, KeyMapping key, DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> attachment) {
-		if (!key.matches(event.getKey(), event.getScanCode()))
+		if (ignoreKeyEvent(event, key))
 			return;
 
 		Player player = Minecraft.getInstance().player;
@@ -201,13 +218,7 @@ public class TravellersClientEvents {
 			return;
 
 		boolean current = player.getData(attachment.get());
-		boolean isClicked = false;
-		while (key.consumeClick()) {
-			isClicked = !isClicked;  // clickCount can be even, so we may not toggle
-		}
-
-		if (isClicked)
-			player.setData(attachment.get(), !current);
+		player.setData(attachment.get(), !current);
 	}
 
 	private void slowZoomSensitivity(CalculatePlayerTurnEvent event) {
@@ -228,5 +239,9 @@ public class TravellersClientEvents {
 		double mod = 0.5D - 1 / (6 * mouseSensitivity);
 		double fovMod = zoomModifier + 0.05F;
 		event.setMouseSensitivity(mod * mouseSensitivity / fovMod);
+	}
+
+	private boolean ignoreKeyEvent(InputEvent.Key event, KeyMapping key) {
+		return !key.matches(event.getKey(), event.getScanCode()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().screen != null;
 	}
 }

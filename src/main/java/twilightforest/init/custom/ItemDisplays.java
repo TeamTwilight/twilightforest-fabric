@@ -19,8 +19,8 @@ public class ItemDisplays {
 
 	public static final DeferredRegister<ItemDisplayType> DISPLAYS = DeferredRegister.create(TFRegistries.Keys.ITEM_DISPLAY_TYPE, TwilightForestMod.ID);
 
-	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> MAP = DISPLAYS.register("map", () -> new ItemDisplayType(stack -> stack.getItem() instanceof MapItem, () -> new MapDisplay(), Optional.of(TwilightForestMod.prefix("textures/item/map_display.png"))));
-	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> COMPASS = DISPLAYS.register("compass", () -> new ItemDisplayType(stack -> stack.is(Items.COMPASS), () -> new CompassDisplay(), Optional.of(TwilightForestMod.prefix("textures/item/compass_display.png"))));
-	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> CLOCK = DISPLAYS.register("clock", () -> new ItemDisplayType(stack -> stack.is(Items.CLOCK), () -> new ClockDisplay(), Optional.of(TwilightForestMod.prefix("textures/item/clock_display.png"))));
-	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> MOON_DIAL = DISPLAYS.register("moon_dial", () -> new ItemDisplayType(stack -> stack.is(TFItems.MOON_DIAL), () -> new MoonDialDisplay(), Optional.of(TwilightForestMod.prefix("textures/item/moon_dial_display.png"))));
+	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> MAP = DISPLAYS.register("map", () -> new ItemDisplayType(stack -> stack.getItem() instanceof MapItem, MapDisplay::new, Optional.of(TwilightForestMod.prefix("textures/item/map_display.png"))));
+	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> COMPASS = DISPLAYS.register("compass", () -> new ItemDisplayType(stack -> stack.is(Items.COMPASS), CompassDisplay::new, Optional.of(TwilightForestMod.prefix("textures/item/compass_display.png"))));
+	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> CLOCK = DISPLAYS.register("clock", () -> new ItemDisplayType(stack -> stack.is(Items.CLOCK), ClockDisplay::new, Optional.of(TwilightForestMod.prefix("textures/item/clock_display.png"))));
+	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> MOON_DIAL = DISPLAYS.register("moon_dial", () -> new ItemDisplayType(stack -> stack.is(TFItems.MOON_DIAL), MoonDialDisplay::new, Optional.of(TwilightForestMod.prefix("textures/item/moon_dial_display.png"))));
 }

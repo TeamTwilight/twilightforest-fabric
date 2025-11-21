@@ -7,11 +7,9 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.TFRegistries;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
-
-import java.util.List;
+import twilightforest.item.travellers_gear.modifiers.display.ItemDisplayType;
 
 public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 	private static final ResourceLocation BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("container/bundle/background");
@@ -43,10 +41,10 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 		graphics.blitSprite(SLOT_SPRITE, x, y, 0, SLOT_WIDTH, SLOT_HEIGHT);
 
 		if (itemIndex < this.contents.size()) {
-			if (this.contents.isEmpty() || this.contents.get(itemIndex).isEmpty()) {
+			ItemStack itemstack = this.contents.get(itemIndex);
+			if (itemstack.isEmpty()) {
 				this.renderBlankSlot(graphics, itemIndex, x, y);
 			} else {
-				ItemStack itemstack = this.contents.get(itemIndex);
 				graphics.renderItem(itemstack, x + 1, y + 1, itemIndex);
 				graphics.renderItemDecorations(font, itemstack, x + 1, y + 1);
 			}
@@ -56,10 +54,9 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 	}
 
 	private void renderBlankSlot(GuiGraphics graphics, int index, int x, int y) {
-		var holder = TFRegistries.ITEM_DISPLAY_TYPE.asHolderIdMap().byId(index);
-		if (holder != null && holder.value().slotTexture().isPresent()) {
-			graphics.blit(holder.value().slotTexture().get(), x + 1, y + 1, 0, 0, 16, 16, 16, 16);
-		}
+		if (index < 0 || index >= ItemDisplayContents.LAYOUT.size()) return;
+		ItemDisplayType type = ItemDisplayContents.LAYOUT.get(index).get();
+		type.slotTexture().ifPresent(resourceLocation -> graphics.blit(resourceLocation, x + 1, y + 1, 0, 0, 16, 16, 16, 16));
 	}
 
 	private int backgroundWidth() {
@@ -71,7 +68,7 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 	}
 
 	private int gridSizeX() {
-		return TFRegistries.ITEM_DISPLAY_TYPE.size();
+		return ItemDisplayContents.LAYOUT.size();
 	}
 
 	private int gridSizeY() {

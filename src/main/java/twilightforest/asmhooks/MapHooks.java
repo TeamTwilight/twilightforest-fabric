@@ -10,10 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFRegistries;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;
-import twilightforest.init.custom.ItemDisplays;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.util.WorldUtil;
 
@@ -43,14 +41,14 @@ public class MapHooks {
 	public static boolean updateMapsInGoggles(boolean o, ItemStack stack, Player player) {
 		if (o) return true;
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
-		if (TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) {
-			ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
-			if (!contents.isEmpty()) {
-				int mapSlot = TFRegistries.ITEM_DISPLAY_TYPE.getId(ItemDisplays.MAP.getKey());
-				ItemStack map = contents.items().get(mapSlot);
-				return !map.isEmpty() && ItemStack.isSameItemSameComponents(stack, map);
-			}
-		}
-		return false;
+		if (!TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) return false;
+		ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
+		if (contents == null || contents.isEmpty()) return false;
+		var items = contents.items();
+		int activeMapSlot = ItemDisplayContents.findActiveMapSlot(items, player);
+		if (activeMapSlot < 0) return false;
+
+		ItemStack map = items.get(activeMapSlot);
+		return !map.isEmpty() && ItemStack.isSameItemSameComponents(stack, map);
 	}
 }

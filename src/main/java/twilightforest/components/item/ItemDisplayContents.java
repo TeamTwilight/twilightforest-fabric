@@ -6,12 +6,15 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFDataAttachments;
+import twilightforest.init.custom.ItemDisplays;
 import twilightforest.item.travellers_gear.modifiers.display.ItemDisplayType;
 import twilightforest.util.TFItemStackUtils;
 
@@ -21,8 +24,8 @@ import java.util.OptionalInt;
 import java.util.function.Consumer;
 
 public class ItemDisplayContents implements TooltipComponent {
-
-	public static final ItemDisplayContents EMPTY = new ItemDisplayContents(TFRegistries.ITEM_DISPLAY_TYPE.size());
+	public static final List<DeferredHolder<ItemDisplayType, ItemDisplayType>> LAYOUT = List.of(ItemDisplays.MAP, ItemDisplays.MAP, ItemDisplays.MAP, ItemDisplays.COMPASS, ItemDisplays.CLOCK, ItemDisplays.MOON_DIAL);
+	public static final ItemDisplayContents EMPTY = new ItemDisplayContents(LAYOUT.size());
 	public static final Codec<ItemDisplayContents> CODEC = DisplaySlot.CODEC.listOf().xmap(ItemDisplayContents::fromSlots, ItemDisplayContents::asSlots);
 	public static final StreamCodec<RegistryFriendlyByteBuf, ItemDisplayContents> STREAM_CODEC = ItemStack.OPTIONAL_STREAM_CODEC.apply(ByteBufCodecs.list()).map(ItemDisplayContents::new, contents -> contents.items);
 	final NonNullList<ItemStack> items;
@@ -70,6 +73,21 @@ public class ItemDisplayContents implements TooltipComponent {
 		return list;
 	}
 
+	public static int findActiveMapSlot(NonNullList<ItemStack> items, Entity player) {
+		int chosenMapSlot = player.getData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT);
+		int slots = Math.min(ItemDisplayContents.LAYOUT.size(), items.size());
+		if (chosenMapSlot < slots)
+			return chosenMapSlot;
+
+		for (int i = 0; i < slots; i++) {
+			if (ItemDisplayContents.LAYOUT.get(i).get() == ItemDisplays.MAP.get()) {
+				if (!items.get(i).isEmpty()) return i;
+			}
+		}
+
+		return -1;
+	}
+
 	public NonNullList<ItemStack> items() {
 		return this.items;
 	}
@@ -105,14 +123,23 @@ public class ItemDisplayContents implements TooltipComponent {
 		private final NonNullList<ItemStack> items;
 
 		public Mutable(ItemDisplayContents contents) {
-			this.items = NonNullList.withSize(TFRegistries.ITEM_DISPLAY_TYPE.size(), ItemStack.EMPTY);
+			this.items = NonNullList.withSize(LAYOUT.size(), ItemStack.EMPTY);
 			contents.copyInto(this.items);
 		}
 
-		private int findFreeSlot(ItemStack stack) {
-			for (ItemDisplayType type : TFRegistries.ITEM_DISPLAY_TYPE) {
-				if (type.validItems().test(stack)) {
-					return TFRegistries.ITEM_DISPLAY_TYPE.getId(type);
+		private int findSwapSlot(ItemStack stack) {
+			for (int i = 0; i < LAYOUT.size(); i++) {
+				if (LAYOUT.get(i).get().validItems().test(stack)) {
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		private int findInsertSlot(ItemStack stack) {
+			for (int i = 0; i < LAYOUT.size(); i++) {
+				if (LAYOUT.get(i).get().validItems().test(stack) && this.items.get(i).isEmpty()) {
+					return i;
 				}
 			}
 			return -1;
@@ -124,12 +151,22 @@ public class ItemDisplayContents implements TooltipComponent {
 
 		public boolean trySwap(SlotAccess source, Consumer<ItemStack> remainder) {
 			ItemStack slottedStack = source.get();
-			if (slottedStack.isEmpty() || !slottedStack.getItem().canFitInsideContainerItems())
+			if (slottedStack.isEmpty() || !slottedStack.canFitInsideContainerItems()) {
 				return false;
+			}
 
-			int slotForStack = this.findFreeSlot(slottedStack);
-			if (slotForStack < 0 || ItemStack.isSameItemSameComponents(slottedStack, this.items.get(slotForStack)))
+			int slotForStack = this.findInsertSlot(slottedStack);
+			if (slotForStack < 0) {
+				slotForStack = this.findSwapSlot(slottedStack);
+			}
+			if (slotForStack < 0) {
 				return false;
+			}
+
+			ItemStack targetStack = this.items.get(slotForStack);
+			if (!targetStack.isEmpty() && ItemStack.isSameItemSameComponents(slottedStack, targetStack)) {
+				return false;
+			}
 
 			ItemStack insert = slottedStack.split(1);
 			ItemStack replaced = this.items.set(slotForStack, insert);
@@ -144,9 +181,9 @@ public class ItemDisplayContents implements TooltipComponent {
 		}
 
 		public boolean tryInsert(ItemStack stack) {
-			if (!stack.isEmpty() && stack.getItem().canFitInsideContainerItems()) {
-				int j = this.findFreeSlot(stack);
-				if (j != -1 && this.items.get(j).isEmpty()) {
+			if (!stack.isEmpty() && stack.canFitInsideContainerItems()) {
+				int j = this.findInsertSlot(stack);
+				if (j != -1) {
 					this.items.set(j, stack.split(1));
 					return true;
 				}

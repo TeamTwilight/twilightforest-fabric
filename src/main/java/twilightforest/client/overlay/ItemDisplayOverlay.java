@@ -4,15 +4,16 @@ import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.TFRegistries;
 import twilightforest.client.overlay.display.ItemDisplay;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
+import twilightforest.init.custom.ItemDisplays;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.display.ItemDisplayType;
 
@@ -60,16 +61,36 @@ public class ItemDisplayOverlay {
 
 	private static int fillDisplayHolders(List<DisplayHolder> typesToRender, ItemDisplayContents contents, Minecraft minecraft, Gui gui, Player player) {
 		int widest = 0;
-		for (ItemDisplayType type : TFRegistries.ITEM_DISPLAY_TYPE) {
-			for (ItemStack stack : contents.items()) {
-				if (type.validItems().test(stack)) {
-					ItemDisplay display = type.display().get();
-					ItemDisplay.Bounds bounds = display.getWidgetSize(stack, minecraft, gui, player, widest);
-					widest = Math.max(widest, bounds.width());
-					typesToRender.add(new DisplayHolder(stack, display, bounds));
-					break;
+
+		NonNullList<ItemStack> items = contents.items();
+		int slots = Math.min(ItemDisplayContents.LAYOUT.size(), items.size());
+		int activeMapSlot = ItemDisplayContents.findActiveMapSlot(items, player);
+
+		for (int i = 0; i < slots; i++) {
+			ItemStack stack = items.get(i);
+			if (stack.isEmpty()) continue;
+
+			ItemDisplayType type = ItemDisplayContents.LAYOUT.get(i).get();
+			if (type == ItemDisplays.MAP.get() && i != activeMapSlot)
+				continue;
+
+			if (!type.validItems().test(stack)) {
+				type = null;
+				for (var holder : ItemDisplayContents.LAYOUT) {
+					ItemDisplayType candidate = holder.get();
+					if (candidate.validItems().test(stack)) {
+						type = candidate;
+						break;
+					}
 				}
+				if (type == null) continue;
+				if (type == ItemDisplays.MAP.get() && i != activeMapSlot) continue;
 			}
+
+			ItemDisplay display = type.display().get();
+			ItemDisplay.Bounds bounds = display.getWidgetSize(stack, minecraft, gui, player, widest);
+			widest = Math.max(widest, bounds.width());
+			typesToRender.add(new DisplayHolder(stack, display, bounds));
 		}
 		return widest;
 	}
