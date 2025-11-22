@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import twilightforest.client.overlay.display.ItemDisplay;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.config.TFConfig;
-import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.ItemDisplays;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -24,7 +23,7 @@ import java.util.List;
 public class ItemDisplayOverlay {
 
 	public static void render(GuiGraphics graphics, Minecraft minecraft, Window window, Gui gui, Player player) {
-		if (player == null || gui.getDebugOverlay().showDebugScreen() || minecraft.options.hideGui || !player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_ITEM_DISPLAY))
+		if (player == null || gui.getDebugOverlay().showDebugScreen() || minecraft.options.hideGui)
 			return;
 
 		ItemStack goggles = player.getItemBySlot(EquipmentSlot.HEAD);

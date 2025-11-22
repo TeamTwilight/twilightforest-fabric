@@ -52,7 +52,6 @@ public class TravellersClientEvents {
 		NeoForge.EVENT_BUS.addListener(this::cycleItemDisplayMap);
 		NeoForge.EVENT_BUS.addListener(this::slowZoomSensitivity);
 		NeoForge.EVENT_BUS.addListener(this::swapHotbar);
-		NeoForge.EVENT_BUS.addListener(this::toggleItemDisplayVisibility);
 		NeoForge.EVENT_BUS.addListener(this::toggleRedThreadVision);
 	}
 
@@ -180,13 +179,16 @@ public class TravellersClientEvents {
 		NonNullList<ItemStack> items = contents.items();
 		int slots = Math.min(ItemDisplayContents.LAYOUT.size(), items.size());
 		int oldMapIndex = localPlayer.getData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT);
-		for (int newMapIndex = 0; newMapIndex < slots; newMapIndex++) {
-			if (ItemDisplayContents.LAYOUT.get(newMapIndex) == ItemDisplays.MAP && !items.get(newMapIndex).isEmpty() && newMapIndex > oldMapIndex) {
-				localPlayer.setData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT, newMapIndex);
-				return;
+		int index = -1;
+		for (int newMapIndex = oldMapIndex + 1; newMapIndex < slots; newMapIndex++) {
+			if (ItemDisplayContents.LAYOUT.get(newMapIndex) == ItemDisplays.MAP && !items.get(newMapIndex).isEmpty()) {
+				index = newMapIndex;
+				break;
 			}
 		}
-		localPlayer.setData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT, -1);
+		localPlayer.setData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT, index);
+		localPlayer.playNotifySound(TFSounds.CYCLE_MAPS.get(), localPlayer.getSoundSource(), 1F, 1F);
+		localPlayer.connection.send(new SendChosenMapSlotPacket(index));
 	}
 
 	private void swapHotbar(InputEvent.Key event) {
@@ -205,9 +207,6 @@ public class TravellersClientEvents {
 		this.toggleBooleanDataAttachment(event, TFKeyBinds.RED_THREAD_VISION_KEY, TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
 	}
 
-	private void toggleItemDisplayVisibility(InputEvent.Key event) {
-		this.toggleBooleanDataAttachment(event, TFKeyBinds.ITEM_DISPLAY_KEY, TFDataAttachments.TRAVELLERS_GOGGLES_ITEM_DISPLAY);
-	}
 
 	private void toggleBooleanDataAttachment(InputEvent.Key event, KeyMapping key, DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> attachment) {
 		if (ignoreKeyEvent(event, key))

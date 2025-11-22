@@ -2543,6 +2543,13 @@
     ],
     "subtitle": "subtitles.twilightforest.item.transformation_powder.use"
   },
+  "item.twilightforest.travellers_gear.cycle_maps": {
+    "sounds": [
+      "item/book/open_flip1",
+      "item/book/open_flip2"
+    ],
+    "subtitle": "subtitles.twilightforest.item.travellers_gear.cycle_maps"
+  },
   "item.twilightforest.travellers_gear.double_jump": {
     "sounds": [
       "twilightforest:random/travellers/double_jump"

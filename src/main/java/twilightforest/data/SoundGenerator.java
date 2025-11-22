@@ -63,6 +63,8 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.CARMINITE_GOLEM_HURT, SoundEvents.IRON_GOLEM_HURT, "Carminite Golem hurts");
 		this.makeStepSound(TFSounds.CARMINITE_GOLEM_STEP, SoundEvents.IRON_GOLEM_STEP);
 
+		this.generateNewSoundMC(TFSounds.CYCLE_MAPS, "item/book/open_flip", 2, "Map swaps");
+
 		this.generateNewSoundWithSubtitle(TFSounds.DEATH_TOME_AMBIENT, "mob/tome/idle", 2, "Death Tome flips pages");
 		this.generateNewSoundWithSubtitle(TFSounds.DEATH_TOME_DEATH, "mob/tome/death", 1, "Death Tome falls apart");
 		this.generateNewSoundWithSubtitle(TFSounds.DEATH_TOME_HURT, "mob/tome/hurt", 3, "Death Tome creases");
