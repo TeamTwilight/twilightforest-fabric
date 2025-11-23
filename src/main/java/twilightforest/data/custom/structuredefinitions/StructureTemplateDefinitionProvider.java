@@ -1,4 +1,4 @@
-package twilightforest.data.custom;
+package twilightforest.data.custom.structuredefinitions;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;

@@ -17,6 +17,10 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.*;
 import twilightforest.data.custom.stalactites.StalactiteGenerator;
+import twilightforest.data.custom.structuredefinitions.CampStructureDefinitionGenerator;
+import twilightforest.data.custom.structuredefinitions.FinalCastleStructureDefinitionGenerator;
+import twilightforest.data.custom.structuredefinitions.LichTowerStructureDefinitionGenerator;
+import twilightforest.data.custom.structuredefinitions.NagaCourtyardStructureDefinitionGenerator;
 import twilightforest.data.tags.*;
 
 import java.util.Optional;

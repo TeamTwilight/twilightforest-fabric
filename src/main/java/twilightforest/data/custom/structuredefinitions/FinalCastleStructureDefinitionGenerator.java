@@ -1,4 +1,4 @@
-package twilightforest.data.custom;
+package twilightforest.data.custom.structuredefinitions;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -7,7 +7,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBellTower21Component;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 import twilightforest.world.components.structures.finalcastle.FinalCastleLargeTowerComponent;
-import twilightforest.world.components.structures.lichtowerrevamp.LichTowerPieces;
 
 import java.util.concurrent.CompletableFuture;
 
