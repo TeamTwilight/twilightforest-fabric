@@ -66,7 +66,7 @@ public class TFStructureSets {
 			fallenTrunk, 2,
 			hollowTree, 1
 		))));
-		context.register(CAMP, new StructureSet(structures.getOrThrow(TFStructures.CAMP), new AvoidLandmarkGridPlacement(8, 6, RandomSpreadType.TRIANGULAR, 701432212, avoidTrees)));
+		context.register(CAMP, new StructureSet(structures.getOrThrow(TFStructures.CAMP), new AvoidLandmarkGridPlacement(18, 14, RandomSpreadType.TRIANGULAR, 701432212, avoidTrees)));
 
 		context.register(HEDGE_MAZE, new StructureSet(structures.getOrThrow(TFStructures.HEDGE_MAZE), new LandmarkGridPlacement(Optional.of(TFStructures.HEDGE_MAZE))));
 		context.register(HOLLOW_HILL_SMALL, new StructureSet(structures.getOrThrow(TFStructures.HOLLOW_HILL_SMALL), new LandmarkGridPlacement(Optional.of(TFStructures.HOLLOW_HILL_SMALL))));
