@@ -1277,7 +1277,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addKeyBindCategory(TFKeyBindsCategories.TRAVELLERS_GEAR, "Twilight Forest (Traveller's Gear)");
 
 		this.addKeyMapping(TFKeyBinds.RED_THREAD_VISION_KEY, "See Red Thread with Goggles");
-		this.addKeyMapping(TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY, "Cycle Maps Inside the Item Display");
+		this.addKeyMapping(TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY, "Cycle Item Display's stored maps");
 		this.addKeyMapping(TFKeyBinds.ZOOM_KEY, "Zoom With Goggles");
 		this.addKeyMapping(TFKeyBinds.SWAP_HOTBAR_KEY, "Swap Hotbar");
 
