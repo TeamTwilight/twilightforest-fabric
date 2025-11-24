@@ -1277,7 +1277,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addKeyBindCategory(TFKeyBindsCategories.TRAVELLERS_GEAR, "Twilight Forest (Traveller's Gear)");
 
 		this.addKeyMapping(TFKeyBinds.RED_THREAD_VISION_KEY, "See Red Thread with Goggles");
-		this.addKeyMapping(TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY, "Cycle Maps Inside the Item Display Modifier");
+		this.addKeyMapping(TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY, "Cycle Maps Inside the Item Display");
 		this.addKeyMapping(TFKeyBinds.ZOOM_KEY, "Zoom With Goggles");
 		this.addKeyMapping(TFKeyBinds.SWAP_HOTBAR_KEY, "Swap Hotbar");
 
@@ -1296,7 +1296,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addTravellersModifier(registries, TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER, "Aquatic Agility");
 		this.addTravellersModifier(registries, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, "Red Thread Vision (keybind: ${tfkeybinds/" + TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
 		this.addTravellersModifier(registries, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER, "All-Night Goggles");
-		this.addTravellersModifier(registries, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER, "Item Display (keybinds: ${tfkeybinds/" + TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY.getName() + "})");
+		this.addTravellersModifier(registries, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER, "Item Display (keybind: ${tfkeybinds/" + TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY.getName() + "})");
 		this.add("travellers_gear.modifier.twilightforest.item_display.clock.unknown", "Time Unknown");
 		this.add("travellers_gear.modifier.twilightforest.item_display.compass.lodestone", "%s (%s blocks away)");
 
