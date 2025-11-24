@@ -1,7 +1,10 @@
 package twilightforest.init;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.core.*;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
@@ -235,12 +238,11 @@ public class TFPlacedFeatures {
 		context.register(PLACED_COPPER_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.COPPER_OREBERRIES), oreberry(5)));
 		context.register(PLACED_ESSENCE_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.ESSENCE_OREBERRIES), oreberry(5)));
 
-		AvoidLandmarkModifier vegetationAvoidLandmark = new AvoidLandmarkModifier(true, false, true, 0, HolderSet.empty());
-		context.register(PLACED_RASPBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.RASPBERRY_BUSHES), tfFeatureCheckArea(vegetationAvoidLandmark, 50, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
-		context.register(PLACED_SWAMP_RASPBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.RASPBERRY_BUSHES), tfFeatureCheckArea(vegetationAvoidLandmark, 200, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
-		context.register(PLACED_BLUEBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.BLUEBERRY_BUSHES), tfFeatureCheckArea(vegetationAvoidLandmark, 50, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
-		context.register(PLACED_BLACKBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.BLACKBERRY_BUSHES), tfFeatureCheckArea(vegetationAvoidLandmark, 50, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
-		context.register(PLACED_MALOBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MALOBERRY_BUSHES), tfFeatureCheckArea(vegetationAvoidLandmark, 25, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
+		context.register(PLACED_RASPBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.RASPBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 50, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
+		context.register(PLACED_SWAMP_RASPBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.RASPBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 200, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
+		context.register(PLACED_BLUEBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.BLUEBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 50, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
+		context.register(PLACED_BLACKBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.BLACKBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 50, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
+		context.register(PLACED_MALOBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MALOBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 25, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
 		context.register(PLACED_PUMPKIN_LAMPPOST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.PUMPKIN_LAMPPOST), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 10).build()));
 		context.register(PLACED_SMOKER, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.SMOKER), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, InSquarePlacement.spread(), BiomeFilter.biome()).build()));
 		context.register(PLACED_STONE_CIRCLE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.STONE_CIRCLE), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 105).build()));
