@@ -30,7 +30,7 @@ public class TFDataAttachments {
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Unit>> LEASH_PATHFINDER_OVERRIDE = ATTACHMENT_TYPES.register("leashed_pathfinder_override", () -> AttachmentType.builder(() -> Unit.INSTANCE).serialize(Codec.unit(Unit.INSTANCE)).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Unit>> BANISHED_TO_TWILIGHT_FOREST = ATTACHMENT_TYPES.register("twilightforest_banished", () -> AttachmentType.builder(() -> Unit.INSTANCE).serialize(Codec.unit(Unit.INSTANCE)).copyOnDeath().build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<TravellersWingsAnimAttachment>> TRAVELLERS_WINGS_ANIM = ATTACHMENT_TYPES.register("travellers_wings_anim", () -> AttachmentType.builder(TravellersWingsAnimAttachment::new).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> IS_USING_GOGGLES_ZOOM_MODIFIER = ATTACHMENT_TYPES.register("is_using_goggles_zoom_modifier", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> IS_USING_GOGGLES_ZOOM_MODIFIER = ATTACHMENT_TYPES.register("is_using_goggles_zoom_modifier", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).sync(ByteBufCodecs.BOOL).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> TRAVELLERS_GOGGLES_RED_THREAD_VISION = ATTACHMENT_TYPES.register("travellers_goggles_red_thread_vision", () -> AttachmentType.builder(() -> true).serialize(Codec.BOOL).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Long>> LAST_TICK_WATER_WALKING = ATTACHMENT_TYPES.register("last_tick_water_walking", () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> HAS_DOUBLE_JUMP = ATTACHMENT_TYPES.register("has_double_jump", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).build());
@@ -46,9 +46,9 @@ public class TFDataAttachments {
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> LAST_HORIZONTAL_WALKING_TIME = ATTACHMENT_TYPES.register("last_horizontal_walking_time", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SIDESTEP_VALIDATOR = ATTACHMENT_TYPES.register("sidestep_validator", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SIDESTEP_VALIDATOR_LAST_CHECK = ATTACHMENT_TYPES.register("sidestep_validator_last_check", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> IS_CONTROLLED_FALLING = ATTACHMENT_TYPES.register("is_controlled_falling", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> IS_CONTROLLED_FALLING = ATTACHMENT_TYPES.register("is_controlled_falling", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).sync(ByteBufCodecs.BOOL).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<SlimySolesAttachment>> SLIMY_SOLES_BOUNCE_INFO = ATTACHMENT_TYPES.register("slimy_soles_bounce_info", () -> AttachmentType.builder(SlimySolesAttachment::new).serialize(SlimySolesAttachment.CODEC).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> ITEM_DISPLAY_CHOSEN_MAP_SLOT = ATTACHMENT_TYPES.register("item_display_chosen_map_slot", () -> AttachmentType.builder(() -> -1).serialize(Codec.INT).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> ITEM_DISPLAY_CHOSEN_MAP_SLOT = ATTACHMENT_TYPES.register("item_display_chosen_map_slot", () -> AttachmentType.builder(() -> -1).serialize(Codec.INT).sync(ByteBufCodecs.INT).build());
 
 
 	private static <T> T directCopy(T attachment, IAttachmentHolder holder, HolderLookup.Provider provider) {

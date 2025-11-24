@@ -21,7 +21,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ItemDisplayOverlay {
-
 	public static void render(GuiGraphics graphics, Minecraft minecraft, Window window, Gui gui, Player player) {
 		if (player == null || gui.getDebugOverlay().showDebugScreen() || minecraft.options.hideGui)
 			return;
@@ -73,18 +72,8 @@ public class ItemDisplayOverlay {
 			if (type == ItemDisplays.MAP.get() && i != activeMapSlot)
 				continue;
 
-			if (!type.validItems().test(stack)) {
-				type = null;
-				for (var holder : ItemDisplayContents.LAYOUT) {
-					ItemDisplayType candidate = holder.get();
-					if (candidate.validItems().test(stack)) {
-						type = candidate;
-						break;
-					}
-				}
-				if (type == null) continue;
-				if (type == ItemDisplays.MAP.get() && i != activeMapSlot) continue;
-			}
+			if (!ItemDisplayContents.LAYOUT.get(i).get().validItems().test(stack))
+				continue;
 
 			ItemDisplay display = type.display().get();
 			ItemDisplay.Bounds bounds = display.getWidgetSize(stack, minecraft, gui, player, widest);
