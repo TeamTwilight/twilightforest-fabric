@@ -19,8 +19,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
+import twilightforest.TwilightForestMod;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.enums.extensions.TFBoatTypeEnumExtension;
@@ -330,8 +330,8 @@ public class TFItems {
 	public static final DeferredItem<Item> VENISON_JERKY = ITEMS.register("venison_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
 	public static final DeferredItem<Item> MEEF_JERKY = ITEMS.register("meef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
 
-	public static final DeferredItem<Item> GELATINOUS_SLIME_DROP = ITEMS.register("gelatinous_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.2F).fast().effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600), 1.0F).build())));
-	public static final DeferredItem<Item> GELATINOUS_MAZE_SLIME_DROP = ITEMS.register("gelatinous_maze_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).fast().effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 600), 1.0F).build())));
+	public static final DeferredItem<Item> GELATINOUS_SLIME_DROP = ITEMS.register("gelatinous_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.2F).effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600), 1.0F).build())));
+	public static final DeferredItem<Item> GELATINOUS_MAZE_SLIME_DROP = ITEMS.register("gelatinous_maze_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 600), 1.0F).build())));
 
 	public static final DeferredItem<Item> TREATED_LEATHER = ITEMS.register("treated_leather", () -> new Item(new Item.Properties()));
 	public static final DeferredItem<Item> TANNED_LEATHER = ITEMS.register("tanned_leather", () -> new Item(new Item.Properties()));
