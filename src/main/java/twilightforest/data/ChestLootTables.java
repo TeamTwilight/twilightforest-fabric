@@ -447,6 +447,23 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 				)
 		);
 
+		register.accept(TFLootTables.CAMP_POT,
+			LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+					//common
+					.add(LootItem.lootTableItem(TFItems.CHICKEN_JERKY).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+					.add(LootItem.lootTableItem(TFItems.MUTTON_JERKY).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+					.add(LootItem.lootTableItem(TFItems.PORK_JERKY).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+					.add(LootItem.lootTableItem(TFItems.VENISON_JERKY).setWeight(8).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+					//uncommon
+					.add(LootItem.lootTableItem(TFItems.BEEF_JERKY).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+					.add(LootItem.lootTableItem(TFItems.TANNED_LEATHER).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+					.add(LootItem.lootTableItem(TFItems.RABBIT_JERKY).setWeight(4).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
+					//very rare
+					.add(LootItem.lootTableItem(TFItems.GELATINOUS_SLIME_DROP).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+				)
+		);
+
 		register.accept(TFLootTables.SMALL_HOLLOW_HILL,
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()

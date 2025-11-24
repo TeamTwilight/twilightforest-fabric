@@ -76,6 +76,7 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> CAMP_TENT = register("camp_tent");
 	public static final ResourceKey<LootTable> CAMP_ARMOR_RACK = register("camp_armor_rack");
 	public static final ResourceKey<LootTable> CAMP_DRYING_RACK = register("camp_drying_rack");
+	public static final ResourceKey<LootTable> CAMP_POT = register("camp_pot");
 
 	// Sheep wool drops
 	public static final ResourceKey<LootTable> BIGHORN_SHEEP_WHITE = register("entities/bighorn_sheep/white");

@@ -36,6 +36,21 @@
           "type": "twilightforest:painting",
           "paintings": "minecraft:placeable"
         },
+        "tent_pot": {
+          "type": "twilightforest:loot",
+          "loot_block": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "minecraft:decorated_pot",
+              "Properties": {
+                "cracked": "false",
+                "facing": "north",
+                "waterlogged": "false"
+              }
+            }
+          },
+          "loot_table": "twilightforest:camp_pot"
+        },
         "twilight_oak_slab": {
           "type": "twilightforest:block_placement",
           "block_state": {
