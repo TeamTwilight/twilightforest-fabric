@@ -1,6 +1,7 @@
 package twilightforest.item.travellers_gear;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.DisconnectionDetails;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -250,8 +252,29 @@ public class TravellersGearLogic {
 		Vec3 velocity = livingEntity.getDeltaMovement();
 		livingEntity.setDeltaMovement(velocity.x(), Math.sqrt(Math.pow(velocity.y(), 2) + Math.pow(slimySolesAttachment.bounceVelocity, 2)), velocity.z());
 		livingEntity.playSound(SoundEvents.SLIME_JUMP, 0.5F, 1F);
+		travellersBootsSlimySolesParticles(livingEntity, slimySolesAttachment);
 		slimySolesAttachment.forceBounce = Math.abs(livingEntity.getDeltaMovement().y()) > 0.25;
 		slimySolesAttachment.hasBounced = true;
+	}
+
+	public static void travellersBootsSlimySolesParticles(LivingEntity entity, SlimySolesAttachment attachment) {
+		if (!(entity.level() instanceof ServerLevel level) || attachment.bounceVelocity <= 0)
+			return;
+
+		double particleX = entity.getX();
+		double particleY = entity.getY();
+		double particleZ = entity.getZ();
+		double intensity = Math.min(0.2 + attachment.bounceVelocity, 2.5);
+		int count = (int) (40 * intensity);
+
+		if (count > 0) {
+			level.sendParticles(
+				new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()),
+				particleX, particleY, particleZ,
+				count,
+				0.0, 0.0, 0.0, 0.15F
+			);
+		}
 	}
 
 	private static void validateMovement(ServerPlayer serverPlayer,
