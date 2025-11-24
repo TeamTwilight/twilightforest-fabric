@@ -7,6 +7,7 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -31,6 +32,7 @@ import twilightforest.init.custom.ItemDisplays;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.*;
 
 @Component(dist = Dist.CLIENT)
@@ -204,16 +206,16 @@ public class TravellersClientEvents {
 	}
 
 	private void toggleRedThreadVision(InputEvent.Key event) {
-		this.toggleBooleanDataAttachment(event, TFKeyBinds.RED_THREAD_VISION_KEY, TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
+		this.toggleBooleanDataAttachment(event, TFKeyBinds.RED_THREAD_VISION_KEY, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
 	}
 
 
-	private void toggleBooleanDataAttachment(InputEvent.Key event, KeyMapping key, DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> attachment) {
+	private void toggleBooleanDataAttachment(InputEvent.Key event, KeyMapping key, ResourceKey<TravellersModifier> modifier, DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> attachment) {
 		if (ignoreKeyEvent(event, key))
 			return;
 
 		Player player = Minecraft.getInstance().player;
-		if (player == null)
+		if (player == null || !TravellersModifiersManager.isModifierActive(player, modifier))
 			return;
 
 		boolean current = player.getData(attachment.get());
