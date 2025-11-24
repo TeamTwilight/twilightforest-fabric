@@ -250,7 +250,7 @@ public class TravellersGearLogic {
 		Vec3 velocity = livingEntity.getDeltaMovement();
 		livingEntity.setDeltaMovement(velocity.x(), Math.sqrt(Math.pow(velocity.y(), 2) + Math.pow(slimySolesAttachment.bounceVelocity, 2)), velocity.z());
 		livingEntity.playSound(SoundEvents.SLIME_JUMP, 0.5F, 1F);
-		slimySolesAttachment.forceBounce = Math.abs(livingEntity.getDeltaMovement().y()) > 0.2;
+		slimySolesAttachment.forceBounce = Math.abs(livingEntity.getDeltaMovement().y()) > 0.25;
 		slimySolesAttachment.hasBounced = true;
 	}
 
