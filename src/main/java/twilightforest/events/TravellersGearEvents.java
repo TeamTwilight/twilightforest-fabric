@@ -72,6 +72,7 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::cancelCombiningTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::cancelPhantomSpawns);
 		NeoForge.EVENT_BUS.addListener(this::fireCraftingModifierTrigger);
+		NeoForge.EVENT_BUS.addListener(this::extractItemsFromSwapHotbarModifier);
 		NeoForge.EVENT_BUS.addListener(this::removeModifiersFromTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::stopDamagingTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::setLastDamageArmorTime);
