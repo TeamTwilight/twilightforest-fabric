@@ -55,7 +55,7 @@ public class IceTowerStairsComponent extends TowerWingComponent {
 			}
 		}
 
-		this.placeBlock(world, deco.blockState, 0, stairsLength, stairsLength, sbb);
+		this.placeBlock(world, deco.blockState, 0, stairsLength - 1, stairsLength, sbb);
 	}
 
 	private void placeStairs(WorldGenLevel world, BoundingBox sbb, int x, int y, int z) {
