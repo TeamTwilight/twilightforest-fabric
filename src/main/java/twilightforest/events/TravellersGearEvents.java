@@ -75,6 +75,7 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::removeModifiersFromTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::stopDamagingTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::setLastDamageArmorTime);
+		NeoForge.EVENT_BUS.addListener(this::keepSettingsOnDeath);
 	}
 
 	private void magnetizeArrows(ProjectileImpactEvent event) {
@@ -354,6 +355,12 @@ public class TravellersGearEvents {
 					.filter(modifier -> !oldMods.contains(modifier)).toList()
 						.forEach(modifier -> TFAdvancements.ADD_MODIFIER.get().trigger(player, modifier.key().location()));
 			}
+		}
+	}
+
+	public void keepSettingsOnDeath(PlayerEvent.Clone event) {
+		if (event.isWasDeath() && event.getOriginal().hasData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION)) {
+			event.getEntity().setData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION, event.getOriginal().getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION));
 		}
 	}
 }
