@@ -109,6 +109,7 @@ public class TFLootTables {
 	// Big bug squish loot
 	public static final ResourceKey<LootTable> CICADA_SQUISH_DROPS = register("blocks/cicada_squish");
 	public static final ResourceKey<LootTable> FIREFLY_SQUISH_DROPS = register("blocks/firefly_squish");
+	public static final ResourceKey<LootTable> MOONWORM_FAILED_TO_PLACE_DROPS = register("blocks/moonworm_failed_to_place");
 	public static final ResourceKey<LootTable> MOONWORM_SQUISH_DROPS = register("blocks/moonworm_squish");
 
 	//bushes
