@@ -1,16 +1,7 @@
 package twilightforest;
 
-import com.google.common.base.Suppliers;
 import com.google.common.reflect.Reflection;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FireBlock;
-import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
@@ -19,18 +10,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.neoforged.neoforge.registries.DataPackRegistryEvent;
-import net.neoforged.neoforge.registries.NewRegistryEvent;
-import net.neoforged.neoforge.registries.RegisterEvent;
-import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tamaized.beanification.BeanContext;
@@ -40,7 +19,6 @@ import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
-import twilightforest.network.*;
 import twilightforest.util.TFRemapper;
 
 import java.util.Locale;
@@ -66,13 +44,6 @@ public final class TwilightForestMod {
 		Reflection.initialize(ConfigSetup.class);
 		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
 		TFGameRules.register();
-		if (dist.isClient()) {
-			RegistrationEvents.initModBusEvents(bus);
-			ClientEvents.initGameEvents();
-		}
-		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-		NeoForge.EVENT_BUS.addListener(StalactiteReloadListener.INSTANCE::registerListener);
-		NeoForge.EVENT_BUS.addListener(StructureTemplateDefinitions.INSTANCE::registerListener);
 
 		TFItems.ITEMS.register(bus);
 		TFStats.STATS.register(bus);
