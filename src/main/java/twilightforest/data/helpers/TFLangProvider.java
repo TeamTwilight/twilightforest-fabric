@@ -18,6 +18,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public abstract class TFLangProvider extends LanguageProvider {
 
@@ -101,6 +103,14 @@ public abstract class TFLangProvider extends LanguageProvider {
 		for (DyeColor color : DyeColor.values()) {
 			this.add("block.minecraft.banner.twilightforest." + patternPrefix + "." + color.getName(), WordUtils.capitalize(color.getName().replace('_', ' ')) + " " + patternName);
 		}
+	}
+
+	public <T extends GameRules.Value<T>> void addGameRule(Supplier<GameRules.Key<T>> gameRule, String gameRuleName) {
+		this.add("gamerule." + gameRule.get().getId(), gameRuleName);
+	}
+
+	public <T extends GameRules.Value<T>> void addGameRuleDescription(Supplier<GameRules.Key<T>> gameRule, String gameRuleDescription) {
+		this.add("gamerule." + gameRule.get().getId() + ".description", gameRuleDescription);
 	}
 
 	public void addStoneVariants(String blockKey, String blockName) {
