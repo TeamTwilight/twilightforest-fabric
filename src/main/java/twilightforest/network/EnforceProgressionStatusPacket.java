@@ -7,6 +7,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
+import twilightforest.init.TFGameRules;
 
 public record EnforceProgressionStatusPacket(boolean enforce) implements CustomPacketPayload {
 
@@ -28,7 +29,7 @@ public record EnforceProgressionStatusPacket(boolean enforce) implements CustomP
 
 	public static void handle(EnforceProgressionStatusPacket message, IPayloadContext ctx) {
 		ctx.enqueueWork(() ->
-			Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE.get()).set(message.enforce(), null)
+			Minecraft.getInstance().level.getGameRules().getRule(TFGameRules.ENFORCED_PROGRESSION_RULE.get()).set(message.enforce(), null)
 		);
 	}
 }

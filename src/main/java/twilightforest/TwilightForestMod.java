@@ -1,9 +1,7 @@
 package twilightforest;
 
-import com.google.common.base.Suppliers;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.Reflection;
-import net.minecraft.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -12,7 +10,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
@@ -36,7 +33,6 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
@@ -80,7 +76,6 @@ import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.lichtowerrevamp.StructureTemplateDefinitions;
 
 import java.util.Locale;
-import java.util.function.Supplier;
 
 @Configurable
 @Mod(TwilightForestMod.ID)
@@ -91,14 +86,6 @@ public final class TwilightForestMod {
 	private static final String MODEL_DIR = "textures/entity/";
 	private static final String GUI_DIR = "textures/gui/";
 	private static final String ENVIRO_DIR = "textures/environment/";
-
-	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> ENFORCED_PROGRESSION_RULE = Suppliers.memoize(() -> GameRules.register("tfEnforcedProgression",
-		GameRules.Category.UPDATES,  //Putting it in UPDATES since other world stuff is here
-		GameRules.BooleanValue.create(true, (server, enforced) ->
-			//sends a packet to every player online when this changes so weather effects update accordingly
-			PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(enforced.get()))
-		)
-	));
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
@@ -118,8 +105,7 @@ public final class TwilightForestMod {
 	public TwilightForestMod(IEventBus bus, Dist dist) {
 		Reflection.initialize(ConfigSetup.class);
 		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
-		// Get main thread and use it to register our gamerule early
-		Util.backgroundExecutor().execute(ENFORCED_PROGRESSION_RULE::get);
+		TFGameRules.register();
 		if (dist.isClient()) {
 			RegistrationEvents.initModBusEvents(bus);
 			ClientEvents.initGameEvents();

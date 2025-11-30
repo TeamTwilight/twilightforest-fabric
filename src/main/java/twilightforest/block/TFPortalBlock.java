@@ -43,13 +43,10 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDataAttachments;
-import twilightforest.init.TFDimension;
-import twilightforest.init.TFSounds;
+import twilightforest.init.*;
 import twilightforest.network.MissingAdvancementToastPacket;
-import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.PlayerHelper;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.TFTeleporter;
 
 import java.util.*;
@@ -274,7 +271,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 	@Override
 	public int getPortalTransitionTime(ServerLevel level, Entity entity) {
-		return 60;
+		if (!(entity instanceof Player player))
+			return 0;
+		return player.getAbilities().invulnerable
+			? level.getGameRules().getInt(TFGameRules.RULE_PLAYERS_TF_PORTAL_CREATIVE_DELAY.get())
+			: level.getGameRules().getInt(TFGameRules.RULE_PLAYERS_TF_PORTAL_DEFAULT_DELAY.get());
 	}
 
 	@Nullable
