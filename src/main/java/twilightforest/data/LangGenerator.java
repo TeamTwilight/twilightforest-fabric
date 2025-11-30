@@ -109,8 +109,12 @@ public class LangGenerator extends TFLangProvider {
 		this.addCommand("added_modifier", "Added %s to %s!");
 		this.addCommand("removed_modifier", "Removed %s from %s!");
 
-		this.add("gamerule.tfEnforcedProgression", "Twilight Forest: Enforced Progression");
-		this.add("gamerule.tfEnforcedProgression.description", "Some Twilight Forest biomes will be locked until you defeat certain bosses in the dimension. (You can check the progression order in your advancements)");
+		this.addGameRule(TFGameRules.ENFORCED_PROGRESSION_RULE, "Twilight Forest: Enforced Progression");
+		this.addGameRuleDescription(TFGameRules.ENFORCED_PROGRESSION_RULE, "Some Twilight Forest biomes are locked until you defeat certain bosses in the dimension. Check your advancements for the progression order.");
+		this.addGameRule(TFGameRules.RULE_PLAYERS_TF_PORTAL_CREATIVE_DELAY, "Player's The Twilight Forest portal delay in creative mode");
+		this.addGameRuleDescription(TFGameRules.RULE_PLAYERS_TF_PORTAL_CREATIVE_DELAY, "Time (in ticks) that a creative mode player needs to stand in The Twilight Forest portal before changing dimensions.");
+		this.addGameRule(TFGameRules.RULE_PLAYERS_TF_PORTAL_DEFAULT_DELAY, "Player's The Twilight Forest portal delay in non-creative mode");
+		this.addGameRuleDescription(TFGameRules.RULE_PLAYERS_TF_PORTAL_DEFAULT_DELAY, "Time (in ticks) that a non-creative mode player needs to stand in The Twilight Forest portal before changing dimensions.");
 
 		this.add("effect.twilightforest.frosted", "Frosted");
 

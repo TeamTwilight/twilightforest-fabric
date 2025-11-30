@@ -15,10 +15,10 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.StructureTagGenerator;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFGameRules;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.CustomStructureData;
 
@@ -124,7 +124,7 @@ public final class LandmarkUtil {
 	}
 
 	public static boolean isProgressionEnforced(Level world) {
-		return world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE.get());
+		return world.getGameRules().getBoolean(TFGameRules.ENFORCED_PROGRESSION_RULE.get());
 	}
 
 	private LandmarkUtil() {
