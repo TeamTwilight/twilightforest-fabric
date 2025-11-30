@@ -7,6 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,6 +21,7 @@ import java.util.Locale;
 public class TFTeleportCommand {
 	private static final SimpleCommandExceptionType PLAYER_ONLY = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.teleport.player_only"));
 	private static final SimpleCommandExceptionType DIMENSION_MISSING = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.teleport.dimension_missing"));
+	private static final SimpleCommandExceptionType INVALID_POSITION = new SimpleCommandExceptionType(Component.translatable("commands.teleport.invalidPosition"));
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("tp")
@@ -41,6 +43,9 @@ public class TFTeleportCommand {
 		Vec3 pos = source.getPosition();
 		Level level = player.level();
 		double yConverted = (pos.y - level.getMinBuildHeight()) / (level.getMaxBuildHeight() - level.getMinBuildHeight()) * (twilight.getMaxBuildHeight() - twilight.getMinBuildHeight()) + twilight.getMinBuildHeight();
+		Vec3 teleportPos = new Vec3(pos.x, yConverted, pos.z);
+		if (twilight.isInWorldBounds(BlockPos.containing(teleportPos)))
+			throw INVALID_POSITION.create();
 		player.teleportTo(twilight, pos.x, yConverted, pos.z, player.getYRot(), player.getXRot());
 		String formattedX = String.format(Locale.ROOT, "%.1f", pos.x);
 		String formattedY = String.format(Locale.ROOT, "%.1f", yConverted);
