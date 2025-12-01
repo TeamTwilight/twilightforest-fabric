@@ -106,7 +106,7 @@ public class DryingRackBlockEntity extends BlockEntity implements ContainerSingl
 		this.stack = newItem;
 		newItem.limitSize(this.getMaxStackSize(newItem));
 		if (!flag) {
-			this.totalDryTime = getDryingTime(this.level, this);
+			this.totalDryTime = getDryingTime();
 			this.dryTime = 0;
 			this.setChanged();
 		}
@@ -129,9 +129,12 @@ public class DryingRackBlockEntity extends BlockEntity implements ContainerSingl
 		return true;
 	}
 
-	private static int getDryingTime(Level level, DryingRackBlockEntity entity) {
-		SingleRecipeInput singlerecipeinput = new SingleRecipeInput(entity.getTheItem());
-		return entity.quickCheck.getRecipeFor(singlerecipeinput, level).map(holder -> holder.value().getDryingTime()).orElse(DEFAULT_DRYING_TIME);
+	private int getDryingTime() {
+		SingleRecipeInput singlerecipeinput = new SingleRecipeInput(this.getTheItem());
+		Level level = getLevel();
+		if (level == null)
+			return DEFAULT_DRYING_TIME;
+		return this.quickCheck.getRecipeFor(singlerecipeinput, level).map(holder -> holder.value().getDryingTime()).orElse(DEFAULT_DRYING_TIME);
 	}
 
 	public boolean isDrying() {
