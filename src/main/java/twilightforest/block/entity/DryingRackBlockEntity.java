@@ -53,9 +53,9 @@ public class DryingRackBlockEntity extends BlockEntity implements ContainerSingl
 			if (!entity.getTheItem().isEmpty()) {
 				SingleRecipeInput input = new SingleRecipeInput(entity.getTheItem());
 				RecipeHolder<DryingRecipe> recipeholder = entity.quickCheck.getRecipeFor(input, level).orElse(null);
-
-				entity.updateDryingTime(recipeholder != null);
-				if (recipeholder != null) {
+				boolean recipeHolderExists = recipeholder != null;
+				entity.updateDryingTime(recipeHolderExists);
+				if (recipeHolderExists) {
 					entity.dryTime++;
 
 					if (entity.dryTime >= entity.totalDryTime) {
