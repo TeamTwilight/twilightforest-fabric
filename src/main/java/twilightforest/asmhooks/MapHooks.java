@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -44,7 +45,7 @@ public class MapHooks {
 		if (!TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER)) return false;
 		ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
 		if (contents == null || contents.isEmpty()) return false;
-		var items = contents.items();
+		NonNullList<ItemStack> items = contents.items();
 		int activeMapSlot = ItemDisplayContents.findActiveMapSlot(items, player);
 		if (activeMapSlot < 0) return false;
 
