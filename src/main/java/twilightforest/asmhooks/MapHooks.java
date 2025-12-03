@@ -36,7 +36,7 @@ public class MapHooks {
 	 * {@link twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer}
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.saveddata.maps.MapItemSavedData}<br/>
+	 * {@link net.minecraft.world.level.saveddata.maps.MapItemSavedData#tickCarriedBy(Player, ItemStack)}<br/>
 	 * Targets: {@link net.minecraft.world.entity.player.Inventory.contains( Predicate )}
 	 */
 	public static boolean updateMapsInGoggles(boolean o, ItemStack stack, Player player) {
