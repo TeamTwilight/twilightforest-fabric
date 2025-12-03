@@ -122,7 +122,7 @@ public class BlockHooks {
 	 * {@link twilightforest.asm.transformers.block.SlimeBlockMomentumTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.block.Block#stepOn(Level, BlockPos, BlockState, Entity)}
+	 * {@link net.minecraft.world.level.block.SlimeBlock#stepOn(Level, BlockPos, BlockState, Entity)}
 	 * Targets: {@link Entity#isSteppingCarefully()}
 	 */
 	public static boolean resetSlimeMomentumWithUnrestrained(boolean o, Entity entity) {
