@@ -4,9 +4,13 @@ import cpw.mods.modlauncher.api.ITransformer;
 import cpw.mods.modlauncher.api.ITransformerVotingContext;
 import cpw.mods.modlauncher.api.TargetType;
 import cpw.mods.modlauncher.api.TransformerVoteResult;
+import net.neoforged.coremod.api.ASMAPI;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.*;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
+import twilightforest.asm.ASMUtil;
 
 import java.util.Set;
 
@@ -14,55 +18,19 @@ import java.util.Set;
  * {@link twilightforest.asmhooks.EntityHooks#processWaterWalking}
  */
 public class WaterWalkTransformer implements ITransformer<MethodNode> {
-
-	/*
-		 We insert roughly this at the beginning of LivingEntity::canStandOnFluid
-
-		 Boolean tmp = EntityHooks.processWaterWalking(this, fluidState);
-		 if (tmp != null) {
-			 return tmp.booleanValue();
-		 }
-	 */
-
 	@Override
 	public @NotNull MethodNode transform(MethodNode method, ITransformerVotingContext context) {
-		InsnList list = new InsnList();
-
-		// Reserve a new local variable slot for our Boolean result.
-		int resultVar = method.maxLocals;
-		method.maxLocals += 1;
-		LabelNode continueLabel = new LabelNode();  // label for continuing after our method didn't return true or false
-
-		list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-		list.add(new VarInsnNode(Opcodes.ALOAD, 1));
-
-		list.add(new MethodInsnNode(
-			Opcodes.INVOKESTATIC,
-			"twilightforest/asmhooks/EntityHooks",
-			"processWaterWalking",
-			"(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/material/FluidState;)Ljava/lang/Boolean;",
-			false
-		));
-
-		list.add(new VarInsnNode(Opcodes.ASTORE, resultVar));
-
-		list.add(new VarInsnNode(Opcodes.ALOAD, resultVar));
-		list.add(new JumpInsnNode(Opcodes.IFNULL, continueLabel));
-
-		// If not null, unbox the Boolean and return its primitive value.
-		list.add(new VarInsnNode(Opcodes.ALOAD, resultVar));
-		list.add(new MethodInsnNode(
-			Opcodes.INVOKEVIRTUAL,
-			"java/lang/Boolean",
-			"booleanValue",
-			"()Z",
-			false
-		));
-		list.add(new InsnNode(Opcodes.IRETURN));
-
-		list.add(continueLabel);
-
-		method.instructions.insert(list);
+		ASMUtil.findInstructions(method, Opcodes.IRETURN).forEach(
+			(instruction) -> method.instructions.insertBefore(instruction, ASMAPI.listOf(
+				new VarInsnNode(Opcodes.ALOAD, 0),
+				new VarInsnNode(Opcodes.ALOAD, 1),
+				new MethodInsnNode(
+					Opcodes.INVOKESTATIC,
+					"twilightforest/asmhooks/EntityHooks",
+					"processWaterWalking",
+					"(ZLnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/material/FluidState;)Z",
+					false
+				))));
 		return method;
 	}
 

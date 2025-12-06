@@ -26,12 +26,12 @@ public class EntityHooks {
 	 * {@link net.minecraft.world.entity.LivingEntity#canStandOnFluid(FluidState)}
 	 */
 	@Nullable
-	public static Boolean processWaterWalking(LivingEntity livingEntity, FluidState fluidState) {
+	public static boolean processWaterWalking(boolean o, LivingEntity livingEntity, FluidState fluidState) {
 		if (!fluidState.is(FluidTags.WATER))
-			return null;
+			return o;
 
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.WATER_WALK_MODIFIER))
-			return null;
+			return o;
 
 		boolean isWaterWalking = TravellersGearLogic.isBelowMaxWaterWalkingSubmergedHeight(livingEntity) && !livingEntity.isShiftKeyDown();
 		if (livingEntity.getFluidTypeHeight(NeoForgeMod.WATER_TYPE.value()) > 0 && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
