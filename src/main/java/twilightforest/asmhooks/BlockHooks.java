@@ -138,11 +138,8 @@ public class BlockHooks {
 	 * Injection Point:<br/>
 	 * {@link net.minecraft.world.level.block.SlimeBlock#bounceUp(Entity)}
 	 */
-	public static boolean stopBouncing(Entity entity) {
-		if (TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER) && entity.getDeltaMovement().y() > -0.08) {
+	public static void stopBouncing(Entity entity) {
+		if (TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER) && entity.getDeltaMovement().y() > -0.08)
 			entity.setDeltaMovement(new Vec3(entity.getDeltaMovement().x, Math.max(0, entity.getDeltaMovement().y), entity.getDeltaMovement().z));
-			return true;
-		}
-		return false;
 	}
 }

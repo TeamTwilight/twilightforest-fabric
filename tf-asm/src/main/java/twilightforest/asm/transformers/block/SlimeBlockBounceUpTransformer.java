@@ -17,27 +17,15 @@ public final class SlimeBlockBounceUpTransformer implements ITransformer<MethodN
 
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		/* This function inserts
-		```
-		if (BlockHooks.stopBouncing(entity))
-	    	return;
-		```
-		at the very start of SlimeBlock.bounceUp(entity) */
-
 		InsnList inject = new InsnList();
 		inject.add(new VarInsnNode(Opcodes.ALOAD, 1));
 		inject.add(new MethodInsnNode(
 			Opcodes.INVOKESTATIC,
 			"twilightforest/asmhooks/BlockHooks",
 			"stopBouncing",
-			"(Lnet/minecraft/world/entity/Entity;)Z",
+			"(Lnet/minecraft/world/entity/Entity;)V",
 			false
 		));
-
-		LabelNode CONTINUE = new LabelNode();
-		inject.add(new JumpInsnNode(Opcodes.IFEQ, CONTINUE));
-		inject.add(new InsnNode(Opcodes.RETURN));
-		inject.add(CONTINUE);
 		AbstractInsnNode first = node.instructions.getFirst();
 		node.instructions.insertBefore(first, inject);
 		return node;
