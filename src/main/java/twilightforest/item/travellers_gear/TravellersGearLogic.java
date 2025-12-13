@@ -219,7 +219,8 @@ public class TravellersGearLogic {
 			return false;
 		player.jumpFromGround();
 		player.resetFallDistance();
-		player.playSound(TFSounds.DOUBLE_JUMP.get(), 1.5F, player.getVoicePitch());
+		float pitchShift = 0.1F;
+		player.playSound(TFSounds.DOUBLE_JUMP.get(), 1.5F, (player.getVoicePitch() - 1) * (1 + pitchShift) + (1 - pitchShift * 0.2F));
 		player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, false);
 		player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
 		AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
