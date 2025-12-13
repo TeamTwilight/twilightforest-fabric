@@ -197,7 +197,8 @@ public class TravellersClientEvents {
 			}
 		}
 		localPlayer.setData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT, index);
-		localPlayer.playNotifySound(index == -1 ? TFSounds.CYCLE_MAPS_EMPTY.get() : TFSounds.CYCLE_MAPS.get(), localPlayer.getSoundSource(), 1F, 1F);
+		if (oldMapIndex != index)
+			localPlayer.playNotifySound(index == -1 ? TFSounds.CYCLE_MAPS_EMPTY.get() : TFSounds.CYCLE_MAPS.get(), localPlayer.getSoundSource(), 1F, 1F);
 		localPlayer.connection.send(new SendChosenMapSlotPacket(index));
 	}
 
