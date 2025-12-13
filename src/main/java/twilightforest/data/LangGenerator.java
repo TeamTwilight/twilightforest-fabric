@@ -1312,7 +1312,7 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER, "Swap Hotbar (keybind: ${tfkeybinds/" + TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
 
-		this.addTravellersModifier(registries, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER, "Gradual Glide");
+		this.addTravellersModifier(registries, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER, "Gradual Glide (sneak to activate)");
 		this.addTravellersModifier(registries, TravellersModifiersManager.AGILE_RANGER_MODIFIER, "Agile Ranger");
 		this.addTravellersModifier(registries, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER, "Double Jump");
 		this.addTravellersModifier(registries, TravellersModifiersManager.SIDESTEP_MODIFIER, "Sidestep");
