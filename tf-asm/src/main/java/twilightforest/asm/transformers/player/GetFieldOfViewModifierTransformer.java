@@ -7,9 +7,13 @@ import cpw.mods.modlauncher.api.TransformerVoteResult;
 import net.neoforged.coremod.api.ASMAPI;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.*;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
 import twilightforest.asm.ASMUtil;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -25,7 +29,10 @@ public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNod
 
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		node.instructions.insert(ASMAPI.listOf(
+		Optional<AbstractInsnNode> firstNode = ASMUtil.findInstructions(node, Opcodes.FCONST_1).findFirst();
+		if (firstNode.isEmpty())
+			return node;
+		node.instructions.insertBefore(firstNode.get(), ASMAPI.listOf(
 			new VarInsnNode(Opcodes.ALOAD, 0),
 			new MethodInsnNode(Opcodes.INVOKESTATIC,
 				"twilightforest/asmhooks/PlayerHooks",
