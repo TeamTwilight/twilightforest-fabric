@@ -1292,10 +1292,10 @@ public class LangGenerator extends TFLangProvider {
 		this.addTravellersModifier(registries, TravellersModifiersManager.SWIFT_SWIM_ABILITY, "Swift Swim");
 		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_ABILITY, "Swap Hotbar (keybind: ${tfkeybinds/" + TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
 		this.addTravellersModifier(registries, TravellersModifiersManager.HIGH_JUMP_ABILITY, "High Jump");
-		this.addTravellersModifier(registries, TravellersModifiersManager.HIGH_STEP_ABILITY, "High Step");
+		this.addTravellersModifier(registries, TravellersModifiersManager.HIGH_STEP_ABILITY, "Step-Up");
 
 		// insertable modifiers
-		this.addTravellersModifier(registries, TravellersModifiersManager.AUTO_REPAIR_MODIFIER, "Auto Repair");
+		this.addTravellersModifier(registries, TravellersModifiersManager.AUTO_REPAIR_MODIFIER, "Auto-Repair");
 
 		this.addTravellersModifier(registries, TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER, "Aquatic Agility");
 		this.addTravellersModifier(registries, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, "Red Thread Vision (keybind: ${tfkeybinds/" + TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
@@ -1312,7 +1312,7 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER, "Swap Hotbar (keybind: ${tfkeybinds/" + TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
 
-		this.addTravellersModifier(registries, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER, "Controlled Fall");
+		this.addTravellersModifier(registries, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER, "Gradual Glide");
 		this.addTravellersModifier(registries, TravellersModifiersManager.AGILE_RANGER_MODIFIER, "Agile Ranger");
 		this.addTravellersModifier(registries, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER, "Double Jump");
 		this.addTravellersModifier(registries, TravellersModifiersManager.SIDESTEP_MODIFIER, "Sidestep");
