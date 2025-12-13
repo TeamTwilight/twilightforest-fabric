@@ -129,7 +129,7 @@ public class TravellersGearLogic {
 
 		boolean isControlledFalling = !(livingEntity instanceof Player player) || player.getData(TFDataAttachments.IS_CONTROLLED_FALLING);
 		if (!isControlledFalling)
-			multiplier = 1 - (1 - multiplier) / 3F;
+			return;
 
 		double newDeltaMovementY = deltaMovement.y() * multiplier;
 		livingEntity.setDeltaMovement(
