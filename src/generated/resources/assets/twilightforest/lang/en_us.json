@@ -998,6 +998,7 @@
   "death.attack.twilightforest.spiked.item": "%1$s was skewered by %2$s using %3$s",
   "death.attack.twilightforest.squish": "%1$s was squashed by the Snow Queen",
   "death.attack.twilightforest.squish.player": "%1$s was squashed by the Snow Queen while escaping %2$s",
+  "death.attack.twilightforest.stale_sandwich": "%1$s was turned into a stale sandwich by %2$s",
   "death.attack.twilightforest.thorns": "%1$s walked into some thorns",
   "death.attack.twilightforest.thorns.player": "%1$s walked into some thorns while escaping %2$s",
   "death.attack.twilightforest.thrownAxe": "%1$s was decapitated by a thrown axe",

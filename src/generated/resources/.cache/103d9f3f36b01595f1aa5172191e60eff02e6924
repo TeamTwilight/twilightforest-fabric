@@ -1,4 +1,4 @@
-// 1.21.1	2025-11-24T15:37:30.04522237	Registries
+// 1.21.1	2025-12-13T12:28:29.98671	Registries
 9089ada9ce06fd30adf8b10e50f02233c7d5a76e data/minecraft/twilight/wood_palettes/acacia.json
 dca1ef01d0df4e956fd414782de57c25dfddd290 data/minecraft/twilight/wood_palettes/birch.json
 01becb45438b7f2bfdc77baba72bc986341510c8 data/minecraft/twilight/wood_palettes/crimson.json
@@ -53,6 +53,7 @@ a66797f1cd4859ca4d6d1715be9b337d3b962630 data/twilightforest/damage_type/slam.js
 cc2d967606545285e0900d5bd212522cc76385b5 data/twilightforest/damage_type/snowball_fight.json
 f30c3624699b87ad6127d92c5a458cbd59ff4e1d data/twilightforest/damage_type/spiked.json
 cd4441260df4d3563e61eea40fefd65556f3bea4 data/twilightforest/damage_type/squish.json
+365fce4218d64a6b3a3e48ca94ebe683f9dbadb3 data/twilightforest/damage_type/stale_sandwich.json
 a899c790d55966390cc13c8b8e3803af9f534f53 data/twilightforest/damage_type/thorns.json
 e0bcaf826b9a325b3f9a246f9ed4bf223ac73028 data/twilightforest/damage_type/thrown_axe.json
 1deb6a3b1b3e55c68e58217d6c12c9d96ac8e3cb data/twilightforest/damage_type/thrown_block.json

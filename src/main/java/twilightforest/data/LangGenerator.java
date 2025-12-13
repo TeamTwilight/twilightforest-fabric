@@ -921,6 +921,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addDeathMessage("acid_rain", "%1$s went dancing in the acid rain");
 		this.addDeathMessage("ominous", "%1$s was subsumed by ominous fire");
 		this.addDeathMessage("failedChallenge", "%1$s failed to show their mettle and drank themselves to death");
+		this.addDeathMessage("stale_sandwich", "%1$s was turned into a stale sandwich by %2$s");
 
 		this.addStat("blocks_crumbled", "Blocks Crumbled");
 		this.addStat("bugs_squished", "Bugs Squashed");

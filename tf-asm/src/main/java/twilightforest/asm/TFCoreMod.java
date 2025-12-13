@@ -14,6 +14,7 @@ import twilightforest.asm.transformers.book.ModifyWrittenBookNameTransformer;
 import twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer;
 import twilightforest.asm.transformers.cloud.IsRainingAtTransformer;
 import twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer;
+import twilightforest.asm.transformers.damagesources.DamageSourcesTransformer;
 import twilightforest.asm.transformers.entity.PathFinderUnrestrainedByLeashTransformer;
 import twilightforest.asm.transformers.entity.ResetStuckUnrestrainedTransformer;
 import twilightforest.asm.transformers.entity.UnrestrainedBlockSpeedAndJumpFactorTransformer;
@@ -62,6 +63,9 @@ public class TFCoreMod implements ICoreMod {
 
 			// conquered
 			new StructureStartLoadStaticTransformer(),
+
+			// damagesources
+			new DamageSourcesTransformer(),
 
 			// entity
 			new WaterWalkTransformer(),
