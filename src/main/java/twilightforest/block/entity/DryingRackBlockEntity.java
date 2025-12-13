@@ -1,7 +1,6 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -10,7 +9,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -24,9 +22,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.ticks.ContainerSingleItem;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.DryingRackBlock;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFRecipes;
@@ -34,7 +31,7 @@ import twilightforest.item.recipe.DryingRecipe;
 
 import java.util.Optional;
 
-public class DryingRackBlockEntity extends BlockEntity implements ContainerSingleItem.BlockContainerSingleItem, WorldlyContainer {
+public class DryingRackBlockEntity extends BlockEntity {
 
 	public static final int DEFAULT_DRYING_TIME = 20 * 60 * 5; //5 Minutes
 	private ItemStack stack = ItemStack.EMPTY;
@@ -85,31 +82,33 @@ public class DryingRackBlockEntity extends BlockEntity implements ContainerSingl
 		}
 	}
 
-	@Override
-	public BlockEntity getContainerBlockEntity() {
-		return this;
-	}
-
-	@Override
 	public ItemStack getTheItem() {
 		return this.stack;
 	}
 
-	@Override
-	public int getMaxStackSize(ItemStack stack) {
-		return 1;
-	}
-
-	@Override
 	public void setTheItem(ItemStack newItem) {
-		boolean flag = !newItem.isEmpty() && ItemStack.isSameItemSameComponents(this.stack, newItem);
+		boolean updateDryTime = newItem.isEmpty() || !ItemStack.isSameItemSameComponents(this.stack, newItem);
 		this.stack = newItem;
-		newItem.limitSize(this.getMaxStackSize(newItem));
-		if (!flag) {
+		this.stack.limitSize(1);
+		if (updateDryTime) {
 			this.totalDryTime = getDryingTime();
 			this.dryTime = 0;
 			this.setChanged();
+
+			if (this.level != null && !this.level.isClientSide) {
+				if (newItem.isEmpty() || this.getBlockState().getValue(DryingRackBlock.WATERLOGGED)) {
+					this.drying = false;
+				} else {
+					this.drying = this.quickCheck.getRecipeFor(new SingleRecipeInput(newItem), this.level).isPresent();
+				}
+			}
 		}
+	}
+
+	public ItemStack takeTheItem() {
+		ItemStack theItem = this.getTheItem();
+		this.setTheItem(ItemStack.EMPTY);
+		return theItem;
 	}
 
 	public boolean fillFromLootTable(ResourceKey<LootTable> lootTableKey, long seed, ServerLevel level) {
@@ -184,18 +183,54 @@ public class DryingRackBlockEntity extends BlockEntity implements ContainerSingl
 		return tag;
 	}
 
-	@Override
-	public int[] getSlotsForFace(Direction side) {
-		return new int[]{0};
-	}
+	public record DryingRackHandler(DryingRackBlockEntity inventory) implements IItemHandlerModifiable {
+		@Override
+		public int getSlots() {
+			return 1;
+		}
 
-	@Override
-	public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction direction) {
-		return this.getTheItem().isEmpty();
-	}
+		@Override
+		public ItemStack getStackInSlot(int slot) {
+			return this.inventory.getTheItem();
+		}
 
-	@Override
-	public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-		return !this.drying;
+		@Override
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			if (!this.inventory.getTheItem().isEmpty()) {
+				return stack;
+			}
+
+			ItemStack copyStack = stack.copy();
+			ItemStack splitOut = copyStack.split(1);
+			if (!simulate) {
+				this.inventory.setTheItem(splitOut);
+			}
+
+			return copyStack;
+		}
+
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			if (this.inventory.drying) {
+				return ItemStack.EMPTY;
+			}
+
+			return simulate ? this.inventory.getTheItem() : this.inventory.takeTheItem();
+		}
+
+		@Override
+		public int getSlotLimit(int slot) {
+			return 1;
+		}
+
+		@Override
+		public boolean isItemValid(int slot, ItemStack stack) {
+			return true;
+		}
+
+		@Override
+		public void setStackInSlot(int slot, ItemStack stack) {
+			this.inventory.setTheItem(stack);
+		}
 	}
 }

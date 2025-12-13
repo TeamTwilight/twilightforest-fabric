@@ -48,6 +48,7 @@ import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
 import twilightforest.config.ConfigSetup;
@@ -139,6 +140,8 @@ public class RegistrationEvents {
 
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.MASON_JAR.get(), (masonJarBlock, side) ->
 			side == Direction.UP ? masonJarBlock.getItemHandler() : null);
+
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, TFBlockEntities.DRYING_RACK.value(),  (dryingRackBlock, side) -> new DryingRackBlockEntity.DryingRackHandler(dryingRackBlock));
 	}
 
 	public void addBlockEntityTypes(BlockEntityTypeAddBlocksEvent event) {
