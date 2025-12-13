@@ -48,7 +48,7 @@ public class TFConfig {
 	private static int clientCloudBlockPrecipitationDistance = 32;
 	public static boolean prettifyOreMeterGui = true;
 	public static boolean spawnCharmAnimationAsTotem = false;
-	public static boolean manualTravellersWingsControlledFallDefault = false;
+	public static boolean manualTravellersWingsControlledFallDefault = true;
 
 	// --- Item Display ---
 	public static int itemDisplayXOffs = 4;

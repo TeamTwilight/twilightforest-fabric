@@ -98,7 +98,7 @@ public class TFClientConfig {
 
 		manualTravellersWingsControlledFall = builder.translation(TFConfig.CONFIG_ID + "manual_travellers_wings_controlled_fall")
 			.comment(ConfigComments.MANUAL_TRAVELLERS_WINGS_CONTROLLED_FALL)
-			.define("travellersWingsControlledFall", false);
+			.define("travellersWingsControlledFall", true);
 
 		builder.comment(ConfigComments.ITEM_DISPLAY).translation(TFConfig.CONFIG_ID + "item_display").push("Item Display Modifier Settings");
 		{
