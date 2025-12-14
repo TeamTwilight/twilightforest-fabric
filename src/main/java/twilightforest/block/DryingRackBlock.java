@@ -91,10 +91,8 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 
 		if (rack.getTheItem().isEmpty() && !playerStack.isEmpty()) {
 			rack.setTheItem(player.hasInfiniteMaterials() ? playerStack.copyWithCount(1) : playerStack.split(1));
-		} else {
-			ItemStack taken = rack.takeTheItem();
-			if (playerStack.isEmpty()) player.setItemInHand(hand, taken);
-			else ItemHandlerHelper.giveItemToPlayer(player, taken);
+		} else if (!level.isClientSide()) {
+			ItemHandlerHelper.giveItemToPlayer(player, rack.takeTheItem(), hand == InteractionHand.MAIN_HAND ? player.getInventory().selected : 40);
 		}
 		return ItemInteractionResult.sidedSuccess(level.isClientSide());
 	}
