@@ -189,6 +189,8 @@ public class TravellersClientEvents {
 		NonNullList<ItemStack> items = contents.items();
 		int slots = Math.min(ItemDisplayContents.LAYOUT.size(), items.size());
 		int oldMapIndex = localPlayer.getData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT);
+		if (oldMapIndex > -1 && oldMapIndex < slots && items.get(oldMapIndex).isEmpty())
+			return;
 		int index = -1;
 		for (int newMapIndex = oldMapIndex + 1; newMapIndex < slots; newMapIndex++) {
 			if (ItemDisplayContents.LAYOUT.get(newMapIndex) == ItemDisplays.MAP && !items.get(newMapIndex).isEmpty()) {

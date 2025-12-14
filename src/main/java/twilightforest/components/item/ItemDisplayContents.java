@@ -74,14 +74,15 @@ public class ItemDisplayContents implements TooltipComponent {
 	}
 
 	public static int findActiveMapSlot(NonNullList<ItemStack> items, Entity player) {
-		int chosenMapSlot = player.getData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT);
 		int slots = Math.min(ItemDisplayContents.LAYOUT.size(), items.size());
-		if (chosenMapSlot < slots)
-			return chosenMapSlot;
-
+		int startSlot = player.getData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT);
+		if (slots == 0 || startSlot == -1) return -1;
 		for (int i = 0; i < slots; i++) {
-			if (ItemDisplayContents.LAYOUT.get(i).get() == ItemDisplays.MAP.get()) {
-				if (!items.get(i).isEmpty()) return i;
+			int slot = (startSlot + i) % slots;
+			boolean isMapSlot = ItemDisplayContents.LAYOUT.get(slot).get() == ItemDisplays.MAP.get();
+			if (isMapSlot && !items.get(slot).isEmpty()) {
+				player.setData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT, slot);
+				return slot;
 			}
 		}
 
