@@ -1,6 +1,8 @@
 package twilightforest.client.model.armor;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,6 +16,7 @@ import twilightforest.init.TFDataAttachments;
 import twilightforest.util.TFMathUtil;
 
 import java.util.Collections;
+import java.util.List;
 
 public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 	private static final double TAU = 4;  // Time (in ticks) in which distance reduces in e times
@@ -21,15 +24,36 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 	private static final Vector3f SMALL_SWING = new Vector3f(8.0F, 8.0F, 8.0F);
 	private static final Vector3f BIG_SWING = new Vector3f(15.0F, 15.0F, 15.0F);
 
+	private static final float BASE_OFFSET = -0.50F;
+	private static final float PART_OFFSET = 0.002f;
+
 	private final ModelPart wingBaseRight;
 	private final ModelPart wingBaseLeft;
+	private final List<ModelPart> wingPartsRight;
+	private final List<ModelPart> wingPartsLeft;
+	private final Camera mainCamera;
 
 	public TravellersWingsModel(ModelPart root) {
 		super(root);
 		root = root.getChild("body");
 		this.wingBaseLeft = root.getChild("wingBaseLeft");
+		this.wingPartsLeft = List.of(
+			this.wingBaseLeft.getChild("wingEdgeLeft"),
+			this.wingBaseLeft.getChild("wingInsetLeft"),
+			this.wingBaseLeft.getChild("wingCenterLeft"),
+			this.wingBaseLeft.getChild("wingFlangeLeft"),
+			this.wingBaseLeft.getChild("wingAuxLeft")
+		);
 		this.wingBaseRight = root.getChild("wingBaseRight");
+		this.wingPartsRight = List.of(
+			this.wingBaseRight.getChild("wingEdgeRight"),
+			this.wingBaseRight.getChild("wingInsetRight"),
+			this.wingBaseRight.getChild("wingCenterRight"),
+			this.wingBaseRight.getChild("wingFlangeRight"),
+			this.wingBaseRight.getChild("wingAuxRight")
+		);
 		this.body.skipDraw = true;
+		this.mainCamera = Minecraft.getInstance().gameRenderer.getMainCamera();
 	}
 
 	public static LayerDefinition createLayer(float deformation) {
@@ -44,63 +68,63 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 	protected static void createWings(PartDefinition root) {
 		PartDefinition wbl = root.addOrReplaceChild("wingBaseLeft", CubeListBuilder.create()
 				.texOffs(64, 9).mirror()
-				.addBox(-0.5F, -1.0F, 0.0F, 1, 2, 10),
+				.addBox(BASE_OFFSET, -1.0F, 0.0F, 1, 2, 10),
 			PartPose.offsetAndRotation(1.0F, 1.0F, 0.0F, ANGLE_10_DEG * 3, ANGLE_10_DEG * 3, 0.0F));
 
 		wbl.addOrReplaceChild("wingEdgeLeft", CubeListBuilder.create()
 				.texOffs(64, 21).mirror()
 				.addBox(0.0F, 0.0F, -2.0F, 1, 9, 2),
-			PartPose.offsetAndRotation(-0.498F, -1.0F, 10.0F, ANGLE_10_DEG * 3, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(BASE_OFFSET + PART_OFFSET * 1, -1.0F, 10.0F, ANGLE_10_DEG * 3, 0.0F, 0.0F));
 
 		wbl.addOrReplaceChild("wingInsetLeft", CubeListBuilder.create()
 				.texOffs(70, 21).mirror()
 				.addBox(0.0F, 0.0F, -1.0F, 1, 9, 2),
-			PartPose.offsetAndRotation(-0.496F, 0.0F, 7.8F, ANGLE_10_DEG * 2, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(BASE_OFFSET + PART_OFFSET * 2, 0.0F, 7.8F, ANGLE_10_DEG * 2, 0.0F, 0.0F));
 
 		wbl.addOrReplaceChild("wingCenterLeft", CubeListBuilder.create()
 				.texOffs(76, 21).mirror()
 				.addBox(0.0F, 0.0F, -1.0F, 1, 9, 2),
-			PartPose.offsetAndRotation(-0.494F, 0.3F, 6.3F, ANGLE_10_DEG, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(BASE_OFFSET + PART_OFFSET * 3, 0.3F, 6.3F, ANGLE_10_DEG, 0.0F, 0.0F));
 
 		wbl.addOrReplaceChild("wingFlangeLeft", CubeListBuilder.create()
 				.texOffs(82, 21).mirror()
 				.addBox(0.0F, 0.0F, -1.0F, 1, 8, 2),
-			PartPose.offsetAndRotation(-0.492F, 0.3F, 5.1F, 0.0F, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(BASE_OFFSET + PART_OFFSET * 4, 0.3F, 5.1F, 0.0F, 0.0F, 0.0F));
 
 		wbl.addOrReplaceChild("wingAuxLeft", CubeListBuilder.create()
 				.texOffs(88, 21).mirror()
 				.addBox(0.0F, 0.0F, -1.0F, 1, 7, 2),
-			PartPose.offsetAndRotation(-0.49F, 0.1F, 4.0F, -ANGLE_10_DEG, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(BASE_OFFSET + PART_OFFSET * 5, 0.1F, 4.0F, -ANGLE_10_DEG, 0.0F, 0.0F));
 
 		PartDefinition wbr = root.addOrReplaceChild("wingBaseRight", CubeListBuilder.create()
 				.texOffs(98, 9)
-				.addBox(-0.5F, -1.0F, 0.0F, 1, 2, 10),
+				.addBox(BASE_OFFSET, -1.0F, 0.0F, 1, 2, 10),
 			PartPose.offsetAndRotation(-1.0F, 1.0F, 0.0F, ANGLE_10_DEG * 3, -ANGLE_10_DEG * 3, 0.0F));
 
 		wbr.addOrReplaceChild("wingEdgeRight", CubeListBuilder.create()
 				.texOffs(98, 21)
 				.addBox(0.0F, 0.0F, -2.0F, 1, 9, 2),
-			PartPose.offsetAndRotation(-0.502F, -1.0F, 10.0F, ANGLE_10_DEG * 3, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(BASE_OFFSET - PART_OFFSET * 1, -1.0F, 10.0F, ANGLE_10_DEG * 3, 0.0F, 0.0F));
 
 		wbr.addOrReplaceChild("wingInsetRight", CubeListBuilder.create()
 				.texOffs(104, 21)
 				.addBox(0.0F, 0.0F, -1.0F, 1, 9, 2),
-			PartPose.offsetAndRotation(-0.504F, 0.0F, 7.8F, ANGLE_10_DEG * 2, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(BASE_OFFSET - PART_OFFSET * 2, 0.0F, 7.8F, ANGLE_10_DEG * 2, 0.0F, 0.0F));
 
 		wbr.addOrReplaceChild("wingCenterRight", CubeListBuilder.create()
 				.texOffs(110, 21)
 				.addBox(0.0F, 0.0F, -1.0F, 1, 9, 2),
-			PartPose.offsetAndRotation(-0.506F, 0.3F, 6.3F, ANGLE_10_DEG, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(BASE_OFFSET - PART_OFFSET * 3, 0.3F, 6.3F, ANGLE_10_DEG, 0.0F, 0.0F));
 
 		wbr.addOrReplaceChild("wingFlangeRight", CubeListBuilder.create()
 				.texOffs(116, 21)
 				.addBox(0.0F, 0.0F, -1.0F, 1, 8, 2),
-			PartPose.offsetAndRotation(-0.508F, 0.3F, 5.1F, 0.0F, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(BASE_OFFSET - PART_OFFSET * 4, 0.3F, 5.1F, 0.0F, 0.0F, 0.0F));
 
 		wbr.addOrReplaceChild("wingAuxRight", CubeListBuilder.create()
 				.texOffs(122, 21)
 				.addBox(0.0F, 0.0F, -1.0F, 1, 7, 2),
-			PartPose.offsetAndRotation(-0.51F, 0.1F, 4.0F, -ANGLE_10_DEG, 0.0F, 0.0F));
+			PartPose.offsetAndRotation(BASE_OFFSET - PART_OFFSET * 5, 0.1F, 4.0F, -ANGLE_10_DEG, 0.0F, 0.0F));
 
 	}
 
@@ -192,6 +216,16 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 		attachment.xRotOld = this.wingBaseRight.xRot;
 		attachment.yRotOld = this.wingBaseRight.yRot;
 		attachment.zRotOld = this.wingBaseRight.zRot;
+
+		// If the wing model keeps a non-changing offset then looking at it with a spyglass even 4 chunks away will reveal Z-fighting.
+		float distance = (float) (Math.sqrt(entity.distanceToSqr(this.mainCamera.getPosition())) * PART_OFFSET);
+		// The below solution is to animate its offset based off of camera distance. The animation is not time-based.
+		int partCount = Math.min(this.wingPartsLeft.size(), this.wingPartsRight.size());
+		for (int partIndex = 0; partIndex < partCount; partIndex++) {
+			float offset = (partIndex + 1) * distance;
+			this.wingPartsLeft.get(partIndex).x = BASE_OFFSET + offset;
+			this.wingPartsRight.get(partIndex).x = BASE_OFFSET - offset;
+		}
 	}
 
 	private Vector3f calculateRotations(TravellersWingsAnimAttachment attachment, double dtInTicks, float phaseDivisor, float xOffset, float yOffset, float zOffset, Vector3f sinDivisors) {
