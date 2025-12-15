@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.GrindstoneEvent;
@@ -39,6 +40,7 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
@@ -57,6 +59,10 @@ import java.util.stream.Stream;
 
 @Component
 public class TravellersGearEvents {
+	private static final List<DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
+		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION,
+		TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT
+	);
 
 	@PostConstruct
 	private void setup() {
@@ -76,7 +82,7 @@ public class TravellersGearEvents {
 		NeoForge.EVENT_BUS.addListener(this::removeModifiersFromTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::stopDamagingTravellersGear);
 		NeoForge.EVENT_BUS.addListener(this::setLastDamageArmorTime);
-		NeoForge.EVENT_BUS.addListener(this::keepSettingsOnDeath);
+		NeoForge.EVENT_BUS.addListener(this::keepAttachmentsOnDeath);
 	}
 
 	private void magnetizeArrows(ProjectileImpactEvent event) {
@@ -359,9 +365,17 @@ public class TravellersGearEvents {
 		}
 	}
 
-	public void keepSettingsOnDeath(PlayerEvent.Clone event) {
-		if (event.isWasDeath() && event.getOriginal().hasData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION)) {
-			event.getEntity().setData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION, event.getOriginal().getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION));
+	public void keepAttachmentsOnDeath(PlayerEvent.Clone event) {
+		if (event.isWasDeath()) {
+			for (DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>> attachmentHolder : ATTACHMENTS_TO_PRESERVE_ON_DEATH) {
+				copyAttachmentData(event.getOriginal(), event.getEntity(), attachmentHolder.get());
+			}
+		}
+	}
+
+	private <T> void copyAttachmentData(Player source, Player target, AttachmentType<T> type) {
+		if (source.hasData(type)) {
+			target.setData(type, source.getData(type));
 		}
 	}
 }

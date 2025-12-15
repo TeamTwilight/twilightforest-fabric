@@ -52,7 +52,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 			ItemStack removedStack = mutableContents.removeFirstFree();
 			if (removedStack != null) {
 				ItemStack itemstack2 = slot.safeInsert(removedStack);
-				mutableContents.tryInsert(itemstack2);
+				mutableContents.tryInsert(itemstack2, player);
 			}
 		} else if (itemstack.canFitInsideContainerItems()) {
 			if (mutableContents.trySwap(SlotAccess.of(slot::getItem, slot::set), player))
