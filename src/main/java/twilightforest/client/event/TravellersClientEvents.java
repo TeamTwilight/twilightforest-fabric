@@ -178,7 +178,7 @@ public class TravellersClientEvents {
 	}
 
 	private void cycleItemDisplayMap(InputEvent.Key event) {
-		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || ignoreKeyEvent(event, TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY))
+		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || !TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY.consumeClick())
 			return;
 
 		boolean pressedKey = event.getAction() == InputConstants.PRESS;
@@ -205,7 +205,7 @@ public class TravellersClientEvents {
 	}
 
 	private void swapHotbar(InputEvent.Key event) {
-		if (ignoreKeyEvent(event, TFKeyBinds.SWAP_HOTBAR_KEY))
+		if (!TFKeyBinds.SWAP_HOTBAR_KEY.consumeClick())
 			return;
 		Player player = Minecraft.getInstance().player;
 		if (!(player instanceof LocalPlayer localPlayer)) return;
@@ -217,12 +217,12 @@ public class TravellersClientEvents {
 	}
 
 	private void toggleRedThreadVision(InputEvent.Key event) {
-		this.toggleBooleanDataAttachment(event, TFKeyBinds.RED_THREAD_VISION_KEY, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
+		this.toggleBooleanDataAttachment(TFKeyBinds.RED_THREAD_VISION_KEY.consumeClick(), TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
 	}
 
 
-	private void toggleBooleanDataAttachment(InputEvent.Key event, KeyMapping key, ResourceKey<TravellersModifier> modifier, DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> attachment) {
-		if (ignoreKeyEvent(event, key))
+	private void toggleBooleanDataAttachment(boolean pressed, ResourceKey<TravellersModifier> modifier, DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> attachment) {
+		if (!pressed)
 			return;
 
 		Player player = Minecraft.getInstance().player;
