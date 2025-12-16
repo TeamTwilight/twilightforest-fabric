@@ -183,19 +183,6 @@ public class ItemDisplayContents implements TooltipComponent {
 			}
 		}
 
-		// returns slot where it inserter, otherwise 0
-		public int tryInsert(ItemStack stack, Player player) {
-			if (!stack.isEmpty() && stack.canFitInsideContainerItems()) {
-				int insertSlotIndex = this.findInsertSlot(stack);
-				if (insertSlotIndex != -1) {
-					this.items.set(insertSlotIndex, stack.split(1));
-					tryResetChosenMapSlot(player, insertSlotIndex);
-				}
-				return insertSlotIndex;
-			}
-			return -1;
-		}
-
 		@Nullable
 		public ItemStack removeFirstFree() {
 			for (int i = 0; i < this.items.size(); i++) {

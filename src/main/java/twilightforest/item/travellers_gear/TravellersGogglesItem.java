@@ -51,8 +51,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 			this.playRemoveOneSound(player);
 			ItemStack removedStack = mutableContents.removeFirstFree();
 			if (removedStack != null) {
-				ItemStack itemstack2 = slot.safeInsert(removedStack);
-				mutableContents.tryInsert(itemstack2, player);
+				slot.safeInsert(removedStack);
 			}
 		} else if (itemstack.canFitInsideContainerItems()) {
 			if (mutableContents.trySwap(SlotAccess.of(slot::getItem, slot::set), player))
