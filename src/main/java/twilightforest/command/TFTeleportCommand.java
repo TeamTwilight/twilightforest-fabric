@@ -44,7 +44,7 @@ public class TFTeleportCommand {
 		Level level = player.level();
 		double yConverted = (pos.y - level.getMinBuildHeight()) / (level.getMaxBuildHeight() - level.getMinBuildHeight()) * (twilight.getMaxBuildHeight() - twilight.getMinBuildHeight()) + twilight.getMinBuildHeight();
 		Vec3 teleportPos = new Vec3(pos.x, yConverted, pos.z);
-		if (twilight.isInWorldBounds(BlockPos.containing(teleportPos)))
+		if (!twilight.isInWorldBounds(BlockPos.containing(teleportPos)))
 			throw INVALID_POSITION.create();
 		player.teleportTo(twilight, pos.x, yConverted, pos.z, player.getYRot(), player.getXRot());
 		String formattedX = String.format(Locale.ROOT, "%.1f", pos.x);
