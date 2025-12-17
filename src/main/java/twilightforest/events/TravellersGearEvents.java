@@ -2,8 +2,10 @@ package twilightforest.events;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -54,6 +56,7 @@ import twilightforest.network.ControlledFallPacket;
 import twilightforest.network.ParticlePacket;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -323,15 +326,30 @@ public class TravellersGearEvents {
 	}
 
 	private void extractItemsFromSwapHotbarModifier(GrindstoneEvent.OnTakeItem event) {
+		returnModifierItems(event,
+			TravellersModifiersManager.SWAP_HOTBAR_MODIFIER,
+			DataComponents.CONTAINER,
+			ItemContainerContents::nonEmptyStream
+		);
+
+		returnModifierItems(event,
+			TravellersModifiersManager.ITEM_DISPLAY_MODIFIER,
+			TFDataComponents.ITEM_DISPLAY.get(),
+			contents -> contents.items().stream()
+		);
+	}
+
+	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
 		if (event.getPlayer() == null)
 			return;
-		getUniqueTravellersGear(event.getTopItem(), event.getBottomItem(),
-			stack -> TravellersModifiersManager.hasTravellersModifier(event.getPlayer().registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER)
-		).ifPresent(beltStack -> {
-			ItemContainerContents container = beltStack.get(DataComponents.CONTAINER);
-			if (container == null) return; // should never happen
-			container.nonEmptyItems().forEach(itemStack -> ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), itemStack));
-		});
+
+		getUniqueTravellersGear(event.getTopItem(), event.getBottomItem(), stack ->
+			TravellersModifiersManager.hasTravellersModifier(event.getPlayer().registryAccess(), stack, modifierKey)
+		).map(stack -> stack.get(componentType))
+			.ifPresent(component ->
+				itemStreamExtractor.apply(component)
+					.forEach(itemStack -> ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), itemStack))
+			);
 	}
 
 	private Optional<ItemStack> getUniqueTravellersGear(ItemStack top, ItemStack bottom, Predicate<ItemStack> predicate) {
