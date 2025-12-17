@@ -99,7 +99,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		if (contents == null || contents.isEmpty())
 			return;
 
-		int mapSlot = ItemDisplayContents.findActiveMapSlot(contents.items(), entity);
+		int mapSlot = contents.findActiveMapSlot();
 		if (mapSlot == -1)
 			return;
 

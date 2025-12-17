@@ -60,8 +60,7 @@ import java.util.stream.Stream;
 @Component
 public class TravellersGearEvents {
 	private static final List<DeferredHolder<AttachmentType<?>, ? extends AttachmentType<?>>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
-		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION,
-		TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT
+		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION
 	);
 
 	@PostConstruct

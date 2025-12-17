@@ -5,7 +5,6 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
@@ -24,11 +23,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
-import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
-import twilightforest.init.custom.ItemDisplays;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
@@ -180,28 +177,7 @@ public class TravellersClientEvents {
 	private void cycleItemDisplayMap(InputEvent.Key event) {
 		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || !TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY.consumeClick())
 			return;
-
-		boolean pressedKey = event.getAction() == InputConstants.PRESS;
-		ItemStack headStack = localPlayer.getItemBySlot(EquipmentSlot.HEAD);
-		ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
-		if (contents == null || contents.isEmpty() || !pressedKey)
-			return;
-		NonNullList<ItemStack> items = contents.items();
-		int slots = Math.min(ItemDisplayContents.LAYOUT.size(), items.size());
-		int oldMapIndex = localPlayer.getData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT);
-		if (oldMapIndex > -1 && oldMapIndex < slots && items.get(oldMapIndex).isEmpty())
-			return;
-		int index = -1;
-		for (int newMapIndex = oldMapIndex + 1; newMapIndex < slots; newMapIndex++) {
-			if (ItemDisplayContents.LAYOUT.get(newMapIndex) == ItemDisplays.MAP && !items.get(newMapIndex).isEmpty()) {
-				index = newMapIndex;
-				break;
-			}
-		}
-		localPlayer.setData(TFDataAttachments.ITEM_DISPLAY_CHOSEN_MAP_SLOT, index);
-		if (oldMapIndex != index)
-			localPlayer.playNotifySound(index == -1 ? TFSounds.CYCLE_MAPS_EMPTY.get() : TFSounds.CYCLE_MAPS.get(), localPlayer.getSoundSource(), 1F, 1F);
-		localPlayer.connection.send(new SendChosenMapSlotPacket(index));
+		localPlayer.connection.send(CycleMapSlotPacket.INSTANCE);
 	}
 
 	private void swapHotbar(InputEvent.Key event) {
@@ -219,7 +195,6 @@ public class TravellersClientEvents {
 	private void toggleRedThreadVision(InputEvent.Key event) {
 		this.toggleBooleanDataAttachment(TFKeyBinds.RED_THREAD_VISION_KEY.consumeClick(), TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
 	}
-
 
 	private void toggleBooleanDataAttachment(boolean pressed, ResourceKey<TravellersModifier> modifier, DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> attachment) {
 		if (!pressed)

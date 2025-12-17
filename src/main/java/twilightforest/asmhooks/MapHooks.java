@@ -46,7 +46,7 @@ public class MapHooks {
 		ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
 		if (contents == null || contents.isEmpty()) return false;
 		NonNullList<ItemStack> items = contents.items();
-		int activeMapSlot = ItemDisplayContents.findActiveMapSlot(items, player);
+		int activeMapSlot = contents.findActiveMapSlot();
 		if (activeMapSlot < 0) return false;
 
 		ItemStack map = items.get(activeMapSlot);

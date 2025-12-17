@@ -62,7 +62,7 @@ public class ItemDisplayOverlay {
 
 		NonNullList<ItemStack> items = contents.items();
 		int slots = Math.min(ItemDisplayContents.LAYOUT.size(), items.size());
-		int activeMapSlot = ItemDisplayContents.findActiveMapSlot(items, player);
+		int activeMapSlot = contents.findActiveMapSlot();
 
 		for (int i = 0; i < slots; i++) {
 			ItemStack stack = items.get(i);

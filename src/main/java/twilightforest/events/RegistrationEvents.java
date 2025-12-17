@@ -245,7 +245,7 @@ public class RegistrationEvents {
 		registrar.playToServer(PerformDoubleJumpPacket.TYPE, PerformDoubleJumpPacket.STREAM_CODEC, PerformDoubleJumpPacket::handle);
 		registrar.playToServer(SwapHotbarPacket.TYPE, SwapHotbarPacket.STREAM_CODEC, SwapHotbarPacket::handle);
 		registrar.playToServer(PerformSidestepPacket.TYPE, PerformSidestepPacket.STREAM_CODEC, PerformSidestepPacket::handle);
-		registrar.playToServer(SendChosenMapSlotPacket.TYPE, SendChosenMapSlotPacket.STREAM_CODEC, SendChosenMapSlotPacket::handle);
+		registrar.playToServer(CycleMapSlotPacket.TYPE, CycleMapSlotPacket.STREAM_CODEC, CycleMapSlotPacket::handle);
 		registrar.playToClient(SpawnCharmPacket.TYPE, SpawnCharmPacket.STREAM_CODEC, SpawnCharmPacket::handle);
 		registrar.playToClient(SpawnFallenLeafFromPacket.TYPE, SpawnFallenLeafFromPacket.STREAM_CODEC, SpawnFallenLeafFromPacket::handle);
 		registrar.playToClient(StructureProtectionPacket.TYPE, StructureProtectionPacket.STREAM_CODEC, StructureProtectionPacket::handle);
