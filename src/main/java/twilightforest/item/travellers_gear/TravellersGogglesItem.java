@@ -48,7 +48,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		ItemDisplayContents.Mutable mutableContents = new ItemDisplayContents.Mutable(contents);
 		ItemStack itemstack = slot.getItem();
 		if (itemstack.isEmpty()) {
-			ItemStack removedStack = mutableContents.removeFirstFree();
+			ItemStack removedStack = mutableContents.removeFirstFree(slot);
 			if (removedStack != null) {
 				slot.safeInsert(removedStack);
 				this.playRemoveOneSound(player);
@@ -73,7 +73,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 
 		ItemDisplayContents.Mutable mutableContents = new ItemDisplayContents.Mutable(contents);
 		if (other.isEmpty()) {
-			ItemStack itemstack = mutableContents.removeFirstFree();
+			ItemStack itemstack = mutableContents.removeFirstFree(slot);
 			if (itemstack != null) {
 				this.playRemoveOneSound(player);
 				access.set(itemstack);

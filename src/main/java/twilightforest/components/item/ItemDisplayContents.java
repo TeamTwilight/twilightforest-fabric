@@ -8,6 +8,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -186,9 +187,10 @@ public class ItemDisplayContents implements TooltipComponent {
 		}
 
 		@Nullable
-		public ItemStack removeFirstFree() {
+		public ItemStack removeFirstFree(Slot slot) {
 			for (int i = 0; i < this.items.size(); i++) {
-				if (!this.items.get(i).isEmpty()) {
+				ItemStack itemstack = this.items.get(i);
+				if (!itemstack.isEmpty() && slot.mayPlace(itemstack)) {
 					if (i == chosenMapSlot)
 						cycleChosenMapSlot();
 					return this.items.set(i, ItemStack.EMPTY);
