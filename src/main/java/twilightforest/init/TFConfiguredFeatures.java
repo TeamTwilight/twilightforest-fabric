@@ -83,7 +83,7 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> PLANT_ROOTS = registerKey("plant_roots");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> IRON_OREBERRIES = registerKey("iron_oreberries");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> GOLD_OREBERRIES = registerKey("gold_oreberries");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> COPPER_OREBERRIES = registerKey("coper_oreberries");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> COPPER_OREBERRIES = registerKey("copper_oreberries");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> ESSENCE_OREBERRIES = registerKey("essence_oreberries");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> PUMPKIN_LAMPPOST = registerKey("pumpkin_lamppost");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> RASPBERRY_BUSHES = registerKey("raspberry_bushes");
