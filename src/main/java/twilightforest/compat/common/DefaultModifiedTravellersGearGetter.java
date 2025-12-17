@@ -47,7 +47,7 @@ public class DefaultModifiedTravellersGearGetter {
 	private static ItemStack getDefaultBoots(HolderLookup.Provider registries) {
 		ItemStack boots = new ItemStack(TFItems.TRAVELLERS_BOOTS.get());
 		TravellersModifiersManager.addModifier(registries, boots, TravellersModifiersManager.AUTO_REPAIR_MODIFIER);
-		TravellersModifiersManager.addModifier(registries, boots, TravellersModifiersManager.FORWARD_BOOST_MODIFIER);
+		TravellersModifiersManager.addModifier(registries, boots, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER);
 		TravellersModifiersManager.addModifier(registries, boots, TravellersModifiersManager.WATER_WALK_MODIFIER);
 		return boots;
 	}

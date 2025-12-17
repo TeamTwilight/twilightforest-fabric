@@ -1222,7 +1222,7 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("aurora_biomes", "Aurora Shader Biomes", ConfigComments.AURORA_SHADER, "Edit Biomes");
 		this.configEntry("prettify_ore_meter_gui", "Prettify Ore Meter GUI", ConfigComments.PRETTIFY_ORE_METER);
 		this.configEntry("totem_charm_animation", "Totem of Undying Charm Animation", ConfigComments.CHARMS_AS_TOTEMS);
-		this.configEntry("manual_travellers_wings_controlled_fall", "Manual Controlled Falling", ConfigComments.MANUAL_TRAVELLERS_WINGS_CONTROLLED_FALL);
+		this.configEntry("manual_travellers_wings_gradual_glide", "Manual Gradually Gliding", ConfigComments.MANUAL_TRAVELLERS_WINGS_GRADUAL_GLIDE);
 
 		this.configCategory("item_display", "Item Display Modifier Settings", ConfigComments.ITEM_DISPLAY);
 		this.configEntry("screen_offset_x", "Display X Offset", ConfigComments.DISPLAY_SCREEN_OFFSET_Y);
@@ -1293,7 +1293,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addTravellersModifier(registries, TravellersModifiersManager.SWIFT_SWIM_ABILITY, "Swift Swim");
 		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_ABILITY, "Swap Hotbar (keybind: ${tfkeybinds/" + TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
 		this.addTravellersModifier(registries, TravellersModifiersManager.HIGH_JUMP_ABILITY, "High Jump");
-		this.addTravellersModifier(registries, TravellersModifiersManager.HIGH_STEP_ABILITY, "Step-Up");
+		this.addTravellersModifier(registries, TravellersModifiersManager.STEP_UP_ABILITY, "Step-Up");
 
 		// insertable modifiers
 		this.addTravellersModifier(registries, TravellersModifiersManager.AUTO_REPAIR_MODIFIER, "Auto-Repair");
@@ -1307,18 +1307,18 @@ public class LangGenerator extends TFLangProvider {
 
 		this.addTravellersModifier(registries, TravellersModifiersManager.STEALTH_MODIFIER, "Stealth (sneak to activate)");
 		this.addTravellersModifier(registries, TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER, "Arrow Magnetism");
-		this.addTravellersModifier(registries, TravellersModifiersManager.FOOD_EFFICIENCY_MODIFIER, "Efficient Eater");
+		this.addTravellersModifier(registries, TravellersModifiersManager.EFFICIENT_EATER_MODIFIER, "Efficient Eater");
 		this.addTravellersModifier(registries, TravellersModifiersManager.PERFECT_DODGE_MODIFIER, "Perfect Dodge");
 		this.addTravellersModifier(registries, TravellersModifiersManager.HASTE_MODIFIER, "Haste");
 
 		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER, "Swap Hotbar (keybind: ${tfkeybinds/" + TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
 
-		this.addTravellersModifier(registries, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER, "Gradual Glide (sneak to activate)");
+		this.addTravellersModifier(registries, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER, "Gradual Glide (sneak to activate)");
 		this.addTravellersModifier(registries, TravellersModifiersManager.AGILE_RANGER_MODIFIER, "Agile Ranger");
 		this.addTravellersModifier(registries, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER, "Double Jump");
 		this.addTravellersModifier(registries, TravellersModifiersManager.SIDESTEP_MODIFIER, "Sidestep");
 
-		this.addTravellersModifier(registries, TravellersModifiersManager.FORWARD_BOOST_MODIFIER, "Straight Ahead");
+		this.addTravellersModifier(registries, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER, "Straight Ahead");
 		this.addTravellersModifier(registries, TravellersModifiersManager.SLIMY_SOLES_MODIFIER, "Slimy Soles");
 		this.addTravellersModifier(registries, TravellersModifiersManager.UNRESTRAINED_MODIFIER, "Unrestrained");
 		this.addTravellersModifier(registries, TravellersModifiersManager.WATER_WALK_MODIFIER, "Water Walk");

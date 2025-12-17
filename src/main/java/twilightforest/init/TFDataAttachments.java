@@ -36,7 +36,7 @@ public class TFDataAttachments {
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> HAS_DOUBLE_JUMP = ATTACHMENT_TYPES.register("has_double_jump", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> DOUBLE_JUMP_VALIDATOR = ATTACHMENT_TYPES.register("double_jump_validator", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> DOUBLE_JUMP_VALIDATOR_LAST_CHECK = ATTACHMENT_TYPES.register("double_jump_validator_last_check", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Double>> TEMPORARY_SAVED_FORWARD_BOOST = ATTACHMENT_TYPES.register("temporary_saved_forward_boost", () -> AttachmentType.builder(() -> 1D).serialize(Codec.DOUBLE).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Double>> TEMPORARY_SAVED_STRAIGHT_AHEAD = ATTACHMENT_TYPES.register("temporary_saved_straight_ahead", () -> AttachmentType.builder(() -> 1D).serialize(Codec.DOUBLE).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Long>> LAST_DAMAGE_ARMOR_TIME = ATTACHMENT_TYPES.register("last_damage_armor_time", () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> LAST_JUMP_KEY_PRESS_TIME = ATTACHMENT_TYPES.register("last_jump_key_press_time", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Long>> LAST_SIDESTEP_TIME = ATTACHMENT_TYPES.register("last_sidestep_time", () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG).build());
@@ -46,7 +46,7 @@ public class TFDataAttachments {
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> LAST_HORIZONTAL_WALKING_TIME = ATTACHMENT_TYPES.register("last_horizontal_walking_time", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SIDESTEP_VALIDATOR = ATTACHMENT_TYPES.register("sidestep_validator", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SIDESTEP_VALIDATOR_LAST_CHECK = ATTACHMENT_TYPES.register("sidestep_validator_last_check", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> IS_CONTROLLED_FALLING = ATTACHMENT_TYPES.register("is_controlled_falling", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).sync(ByteBufCodecs.BOOL).build());
+	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> IS_GRADUALLY_GLIDING = ATTACHMENT_TYPES.register("is_gradually_gliding", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).sync(ByteBufCodecs.BOOL).build());
 	public static final DeferredHolder<AttachmentType<?>, AttachmentType<SlimySolesAttachment>> SLIMY_SOLES_BOUNCE_INFO = ATTACHMENT_TYPES.register("slimy_soles_bounce_info", () -> AttachmentType.builder(SlimySolesAttachment::new).serialize(SlimySolesAttachment.CODEC).build());
 
 	private static <T> T directCopy(T attachment, IAttachmentHolder holder, HolderLookup.Provider provider) {

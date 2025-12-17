@@ -1,7 +1,7 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
   "is_rotated": false,
-  "modifier_key": "twilightforest:controlled_fall",
+  "modifier_key": "twilightforest:gradual_glide",
   "pattern": {
     "key": {
       "C": {

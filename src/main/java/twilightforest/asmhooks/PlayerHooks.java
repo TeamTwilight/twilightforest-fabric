@@ -30,7 +30,7 @@ public class PlayerHooks {
 	public static float getFoodExhaustion(float f, Player player) {
 		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
 		Float divisor = chestStack.get(TFDataComponents.EFFICIENT_EATER);
-		if (!TravellersModifiersManager.isModifierActive(player, chestStack, TravellersModifiersManager.FOOD_EFFICIENCY_MODIFIER) || divisor == null)
+		if (!TravellersModifiersManager.isModifierActive(player, chestStack, TravellersModifiersManager.EFFICIENT_EATER_MODIFIER) || divisor == null)
 			return f;
 		return f * (1 / divisor);
 	}
@@ -41,14 +41,14 @@ public class PlayerHooks {
 	 * Injection Point:<br/>
 	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()} ()}
 	 */
-	public static void forwardBoostNullify(AbstractClientPlayer player) {
+	public static void straightAheadNullify(AbstractClientPlayer player) {
 		AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		if (attributeInstance == null)
 			return;
-		AttributeModifier modifier = attributeInstance.getModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
+		AttributeModifier modifier = attributeInstance.getModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION);
 		double multiplier = modifier == null ? 1 : modifier.amount() + 1;
-		player.setData(TFDataAttachments.TEMPORARY_SAVED_FORWARD_BOOST, multiplier);
-		attributeInstance.removeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
+		player.setData(TFDataAttachments.TEMPORARY_SAVED_STRAIGHT_AHEAD, multiplier);
+		attributeInstance.removeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION);
 	}
 
 	/**
@@ -57,13 +57,13 @@ public class PlayerHooks {
 	 * Injection Point:<br/>
 	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()} ()}
 	 */
-	public static void forwardBoostRestore(AbstractClientPlayer player) {
+	public static void straightAheadRestore(AbstractClientPlayer player) {
 		if (!(player instanceof LocalPlayer))
 			return;
 		AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		if (attributeInstance == null)
 			return;
-		double multiplier = player.getData(TFDataAttachments.TEMPORARY_SAVED_FORWARD_BOOST);
-		attributeInstance.addTransientModifier(new AttributeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+		double multiplier = player.getData(TFDataAttachments.TEMPORARY_SAVED_STRAIGHT_AHEAD);
+		attributeInstance.addTransientModifier(new AttributeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 	}
 }

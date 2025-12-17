@@ -88,21 +88,21 @@ public class TravellersGearLogic {
 		return waterHeight < WATER_WALKING_MAX_SUBMERGED_HEIGHT;
 	}
 
-	public static void travellersBootsForwardBoost(LivingEntity livingEntity) {
+	public static void travellersBootsStraightAhead(LivingEntity livingEntity) {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.FEET);
-		Double multiplier = leggingsStack.get(TFDataComponents.FORWARD_BOOST_MULTIPLIER);
+		Double multiplier = leggingsStack.get(TFDataComponents.STRAIGHT_AHEAD_MULTIPLIER);
 		AttributeInstance attributeInstance = livingEntity.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		if (attributeInstance == null)
 			return;
 		if (multiplier == null)
 			multiplier = 1D;
-		boolean hasModifier = TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.FORWARD_BOOST_MODIFIER) && multiplier != 1;
-		if (hasModifier == attributeInstance.hasModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION))
+		boolean hasModifier = TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER) && multiplier != 1;
+		if (hasModifier == attributeInstance.hasModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION))
 			return;
 		if (hasModifier) {
-			attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+			attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 		} else {
-			attributeInstance.removeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION);
+			attributeInstance.removeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION);
 		}
 
 	}
@@ -120,15 +120,15 @@ public class TravellersGearLogic {
 		}
 	}
 
-	public static void travellersWingsControlledFall(LivingEntity livingEntity) {
+	public static void travellersWingsGradualGlide(LivingEntity livingEntity) {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
-		Float multiplier = leggingsStack.get(TFDataComponents.CONTROLLED_FALLING_MULTIPLIER);
+		Float multiplier = leggingsStack.get(TFDataComponents.GRADUALLY_GLIDING_MULTIPLIER);
 		Vec3 deltaMovement = livingEntity.getDeltaMovement();
-		if (!TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER) || multiplier == null || deltaMovement.y() >= 0 || livingEntity.isFallFlying())
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER) || multiplier == null || deltaMovement.y() >= 0 || livingEntity.isFallFlying())
 			return;
 
-		boolean isControlledFalling = !(livingEntity instanceof Player player) || player.getData(TFDataAttachments.IS_CONTROLLED_FALLING);
-		if (!isControlledFalling)
+		boolean isGraduallyGliding = !(livingEntity instanceof Player player) || player.getData(TFDataAttachments.IS_GRADUALLY_GLIDING);
+		if (!isGraduallyGliding)
 			return;
 
 		double newDeltaMovementY = deltaMovement.y() * multiplier;

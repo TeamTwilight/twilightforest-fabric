@@ -720,7 +720,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.ingredient(Items.BUNDLE)
 				.ingredient(TFItems.TRAVELLERS_VEST)
 				.build(),
-			TravellersModifiersManager.FOOD_EFFICIENCY_MODIFIER).save(output);
+			TravellersModifiersManager.EFFICIENT_EATER_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShapeless(CartesianShapelessRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.ingredient(TFItems.TRAVELLERS_WINGS)
@@ -737,7 +737,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('W', TFItems.TRAVELLERS_WINGS)
 				.define('E', TFItems.BORER_ESSENCE)
 				.build(),
-			TravellersModifiersManager.CONTROLLED_FALL_MODIFIER).save(output);
+			TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" L ")
@@ -808,7 +808,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.define('B', TFItems.TRAVELLERS_BOOTS)
 				.define('H', Items.RABBIT_HIDE)
 				.build(),
-			TravellersModifiersManager.FORWARD_BOOST_MODIFIER).save(output);
+			TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER).save(output);
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" E ")

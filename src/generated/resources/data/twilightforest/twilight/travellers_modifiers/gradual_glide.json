@@ -1,7 +1,7 @@
 {
   "type": "twilightforest:component",
   "component": {
-    "twilightforest:controlled_falling_multiplier": 0.8333333
+    "twilightforest:gradually_gliding_multiplier": 0.8333333
   },
   "equipment_slots": "legs"
 }

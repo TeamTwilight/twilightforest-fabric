@@ -52,7 +52,7 @@ import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
-import twilightforest.network.ControlledFallPacket;
+import twilightforest.network.GradualGlidePacket;
 import twilightforest.network.ParticlePacket;
 
 import java.util.*;
@@ -192,10 +192,10 @@ public class TravellersGearEvents {
 		}
 
 		if (!player.level().isClientSide()) {
-			boolean modifierActive = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.CONTROLLED_FALL_MODIFIER);
-			if (!modifierActive && player.getData(TFDataAttachments.IS_CONTROLLED_FALLING)) {
-				player.setData(TFDataAttachments.IS_CONTROLLED_FALLING, false);
-				PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new ControlledFallPacket(false, player.getUUID()));
+			boolean modifierActive = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER);
+			if (!modifierActive && player.getData(TFDataAttachments.IS_GRADUALLY_GLIDING)) {
+				player.setData(TFDataAttachments.IS_GRADUALLY_GLIDING, false);
+				PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new GradualGlidePacket(false, player.getUUID()));
 			}
 		}
 
@@ -218,7 +218,7 @@ public class TravellersGearEvents {
 
 	private void disableHighStepWhileSneaking(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
-		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.HIGH_STEP_ABILITY))
+		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.STEP_UP_ABILITY))
 			return;
 		AttributeInstance attribute = player.getAttributes().getInstance(Attributes.STEP_HEIGHT);
 		if (attribute == null)
@@ -234,7 +234,7 @@ public class TravellersGearEvents {
 
 	private void updateOtherModifiers(EntityTickEvent.Post event) {
 		if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
-		TravellersGearLogic.travellersWingsControlledFall(livingEntity);
+		TravellersGearLogic.travellersWingsGradualGlide(livingEntity);
 		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
 		TravellersGearLogic.travellersBootsSlimySolesBounce(livingEntity);
 
@@ -242,7 +242,7 @@ public class TravellersGearEvents {
 		TravellersGearLogic.travellersVestHaste(livingEntity);
 		TravellersGearLogic.travellersWingsHighJump(livingEntity);
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
-		TravellersGearLogic.travellersBootsForwardBoost(livingEntity);
+		TravellersGearLogic.travellersBootsStraightAhead(livingEntity);
 	}
 
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {

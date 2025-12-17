@@ -12,5 +12,5 @@ public class TFAttributeModifiers {
 	public static final AttributeModifier TRAVELLERS_AQUATIC_AGILITY_OXYGEN = new AttributeModifier(TwilightForestMod.prefix("travellers_gear.goggles_aquatic_agility_oxygen"), 3.0F, AttributeModifier.Operation.ADD_VALUE);
 	public static final AttributeModifier TRAVELLERS_AQUATIC_AGILITY_MINING = new AttributeModifier(TwilightForestMod.prefix("travellers_gear.goggles_aquatic_agility_mining"), 4.0F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
-	public static final ResourceLocation FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION = TwilightForestMod.prefix("travellers_gear.boots_forward_boost");
+	public static final ResourceLocation STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION = TwilightForestMod.prefix("travellers_gear.boots_straight_ahead");
 }

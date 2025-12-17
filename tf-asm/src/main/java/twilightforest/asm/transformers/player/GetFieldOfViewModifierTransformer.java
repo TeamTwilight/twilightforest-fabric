@@ -17,8 +17,8 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * {@link twilightforest.asmhooks.PlayerHooks#forwardBoostNullify}
- * {@link twilightforest.asmhooks.PlayerHooks#forwardBoostRestore}
+ * {@link twilightforest.asmhooks.PlayerHooks#straightAheadNullify}
+ * {@link twilightforest.asmhooks.PlayerHooks#straightAheadRestore}
  */
 public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNode> {
 
@@ -36,7 +36,7 @@ public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNod
 			new VarInsnNode(Opcodes.ALOAD, 0),
 			new MethodInsnNode(Opcodes.INVOKESTATIC,
 				"twilightforest/asmhooks/PlayerHooks",
-				"forwardBoostNullify",
+				"straightAheadNullify",
 				"(Lnet/minecraft/client/player/AbstractClientPlayer;)V",
 				false)
 		));
@@ -46,7 +46,7 @@ public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNod
 				new VarInsnNode(Opcodes.ALOAD, 0),
 				new MethodInsnNode(Opcodes.INVOKESTATIC,
 					"twilightforest/asmhooks/PlayerHooks",
-					"forwardBoostRestore",
+					"straightAheadRestore",
 					"(Lnet/minecraft/client/player/AbstractClientPlayer;)V",
 					false)
 			))

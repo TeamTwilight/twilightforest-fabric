@@ -43,12 +43,12 @@ public class TravellersClientEvents {
 	private void setup() {
 		NeoForge.EVENT_BUS.addListener(this::handleDoubleJump);
 		NeoForge.EVENT_BUS.addListener(this::handleAgileRanger);
-		NeoForge.EVENT_BUS.addListener(this::handleForwardBoost);
+		NeoForge.EVENT_BUS.addListener(this::handleStraightAhead);
 		NeoForge.EVENT_BUS.addListener(this::speedUpControlledWhileSneaking);
 		NeoForge.EVENT_BUS.addListener(this::handleSidestep);
 		NeoForge.EVENT_BUS.addListener(this::handleStealth);
 		NeoForge.EVENT_BUS.addListener(this::updateZoomState);
-		NeoForge.EVENT_BUS.addListener(this::updateControlledFallState);
+		NeoForge.EVENT_BUS.addListener(this::updateGradualGlideState);
 		NeoForge.EVENT_BUS.addListener(this::cycleItemDisplayMap);
 		NeoForge.EVENT_BUS.addListener(this::slowZoomSensitivity);
 		NeoForge.EVENT_BUS.addListener(this::swapHotbar);
@@ -71,24 +71,24 @@ public class TravellersClientEvents {
 		}
 	}
 
-	private void handleForwardBoost(MovementInputUpdateEvent event) {
+	private void handleStraightAhead(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
 		ItemStack bootsStack = localPlayer.getItemBySlot(EquipmentSlot.FEET);
-		Double multiplier = bootsStack.get(TFDataComponents.FORWARD_BOOST_MULTIPLIER);
+		Double multiplier = bootsStack.get(TFDataComponents.STRAIGHT_AHEAD_MULTIPLIER);
 		AttributeInstance attributeInstance = localPlayer.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		if (attributeInstance == null)
 			return;
 
 		Input input = localPlayer.input;
-		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.FORWARD_BOOST_MODIFIER) || multiplier == null || input.forwardImpulse <= 0)
+		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER) || multiplier == null || input.forwardImpulse <= 0)
 			multiplier = 1D;
-		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.FORWARD_BOOTS_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 		input.leftImpulse /= multiplier;
 	}
 
 	private void speedUpControlledWhileSneaking(MovementInputUpdateEvent event) {
-		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.getData(TFDataAttachments.IS_CONTROLLED_FALLING) || !localPlayer.isShiftKeyDown())
+		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.getData(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
 			return;
 		localPlayer.input.forwardImpulse /= 0.2F;
 		localPlayer.input.leftImpulse /= 0.2F;
@@ -161,17 +161,17 @@ public class TravellersClientEvents {
 		player.connection.send(new GogglesZoomPacket(isUsingZoom, player.getUUID()));
 	}
 
-	private void updateControlledFallState(RenderFrameEvent.Pre event) {
+	private void updateGradualGlideState(RenderFrameEvent.Pre event) {
 		LocalPlayer player = Minecraft.getInstance().player;
 		if (player == null) return;
-		boolean wasControlledFalling = player.getData(TFDataAttachments.IS_CONTROLLED_FALLING);
+		boolean wasGraduallyGliding = player.getData(TFDataAttachments.IS_GRADUALLY_GLIDING);
 		boolean shiftHeld = player.isShiftKeyDown();
-		boolean isControlledFalling = TFConfig.manualTravellersWingsControlledFallDefault == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround();
-		if (isControlledFalling == wasControlledFalling)
+		boolean isGraduallyGliding = TFConfig.manualTravellersWingsGradualGlideDefault == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround();
+		if (isGraduallyGliding == wasGraduallyGliding)
 			return;
 
-		player.setData(TFDataAttachments.IS_CONTROLLED_FALLING, isControlledFalling);
-		player.connection.send(new ControlledFallPacket(isControlledFalling, player.getUUID()));
+		player.setData(TFDataAttachments.IS_GRADUALLY_GLIDING, isGraduallyGliding);
+		player.connection.send(new GradualGlidePacket(isGraduallyGliding, player.getUUID()));
 	}
 
 	private void cycleItemDisplayMap(InputEvent.Key event) {
