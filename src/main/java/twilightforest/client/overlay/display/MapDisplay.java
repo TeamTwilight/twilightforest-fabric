@@ -30,7 +30,9 @@ public class MapDisplay implements ItemDisplay {
 			return;
 
 		MapItemSavedData data = MapItem.getSavedData(item, minecraft.level);
-		VertexConsumer consumer = graphics.bufferSource().getBuffer(data == null ? MAP_BACKGROUND : MAP_BACKGROUND_CHECKERBOARD);
+		if (data == null)
+			return;
+		VertexConsumer consumer = graphics.bufferSource().getBuffer(MAP_BACKGROUND_CHECKERBOARD);
 		Matrix4f matrix4f = stack.last().pose();
 		//render map background
 		float start = Math.max(widestWidgetWidth / 2 - 50, 0);
@@ -38,8 +40,6 @@ public class MapDisplay implements ItemDisplay {
 		consumer.addVertex(matrix4f, start + 100.0F, 100.0F, -2.0F).setColor(-1).setUv(1.0F, 1.0F).setLight(LightTexture.FULL_BRIGHT);
 		consumer.addVertex(matrix4f, start + 100.0F, 0.0F, -2.0F).setColor(-1).setUv(1.0F, 0.0F).setLight(LightTexture.FULL_BRIGHT);
 		consumer.addVertex(matrix4f, start, 0.0F, -2.0F).setColor(-1).setUv(0.0F, 0.0F).setLight(LightTexture.FULL_BRIGHT);
-		if (data == null)
-			return;
 		//render map data
 		stack.pushPose();
 		//these transformations are very important, otherwise icons render behind the map graphics
