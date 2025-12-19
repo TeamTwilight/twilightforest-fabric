@@ -989,9 +989,8 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		switch (age) {
 			case 0 -> addShrunkBox(b,  4,  0,  4, 12,  8, 12, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.texture("#all"));
 			case 1 -> addShrunkBox(b,  2,  0,  2, 14, 12, 14, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.texture("#all"));
-			case 2 -> addShrunkBox(b,  0,  0,  0, 16, 16, 16, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.texture("#all"));
-			case 3 -> addShrunkBox(b,  0,  0,  0, 16, 16, 16, snowHeight, blockLight, skyLight,
-				(direction, faceBuilder) -> faceBuilder.cullface(direction).tintindex(1).texture("#all"));
+			case 2 -> addShrunkBox(b,  0,  0,  0, 16, 16, 16, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.cullface(direction).texture("#all"));
+			case 3 -> addShrunkBox(b,  0,  0,  0, 16, 16, 16, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.cullface(direction).texture("#all"));
 			default -> throw new IllegalArgumentException("Age out of range: " + age);
 		}
 	}
