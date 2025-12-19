@@ -76,10 +76,10 @@ public class BerryBushFeature extends Feature<BerryBushConfig> {
 	protected boolean generateMediumNode(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, RandomSource random, boolean isInSnowyBiome) {
 		boolean placed = false;
 		for (int dy = 0; dy <= 2; dy++) {
-			int maxTaxicabDistance = (2 - dy) * 2;
+			int maxTaxicabDistance = 2 - dy;
 			for (int dx = -maxTaxicabDistance; dx <= maxTaxicabDistance; dx++) {
 				for (int dz = -maxTaxicabDistance; dz <= maxTaxicabDistance; dz++) {
-					if (TFMathUtil.taxicabGeometryDistance(dx, dz) < maxTaxicabDistance || random.nextBoolean())
+					if (TFMathUtil.taxicabGeometryDistance(dx, dz) < 2 * maxTaxicabDistance || random.nextBoolean())
 						placed |= this.setBush(level, pos.offset(dx, dy, dz), state, generatesOn, random, isInSnowyBiome);
 				}
 			}
