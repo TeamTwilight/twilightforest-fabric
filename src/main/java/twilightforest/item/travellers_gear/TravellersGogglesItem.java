@@ -73,7 +73,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 
 		ItemDisplayContents.Mutable mutableContents = new ItemDisplayContents.Mutable(contents);
 		if (other.isEmpty()) {
-			ItemStack itemstack = mutableContents.removeFirstFree(slot);
+			ItemStack itemstack = mutableContents.removeFirstFree(null);
 			if (itemstack != null) {
 				this.playRemoveOneSound(player);
 				access.set(itemstack);

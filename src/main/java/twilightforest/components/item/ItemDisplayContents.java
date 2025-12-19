@@ -187,10 +187,10 @@ public class ItemDisplayContents implements TooltipComponent {
 		}
 
 		@Nullable
-		public ItemStack removeFirstFree(Slot slot) {
+		public ItemStack removeFirstFree(@Nullable Slot slot) {
 			for (int i = 0; i < this.items.size(); i++) {
 				ItemStack itemstack = this.items.get(i);
-				if (!itemstack.isEmpty() && slot.mayPlace(itemstack)) {
+				if (!itemstack.isEmpty() && (slot == null || slot.mayPlace(itemstack))) {
 					if (i == chosenMapSlot)
 						cycleChosenMapSlot();
 					return this.items.set(i, ItemStack.EMPTY);
