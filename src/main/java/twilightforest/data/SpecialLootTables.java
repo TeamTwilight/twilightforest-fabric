@@ -44,10 +44,10 @@ public record SpecialLootTables(HolderLookup.Provider registries) implements Loo
 		consumer.accept(TFLootTables.SKYBERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.SKYBERRY))));
 		consumer.accept(TFLootTables.STINGBERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.STINGBERRY))));
 
-		consumer.accept(TFLootTables.COPPER_OREBERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.COPPER_BERRY)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))));
-		consumer.accept(TFLootTables.IRON_OREBERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.IRON_BERRY)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))));
-		consumer.accept(TFLootTables.GOLD_OREBERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.GOLD_BERRY)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))));
-		consumer.accept(TFLootTables.ESSENCE_BERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.ESSENCE_BERRY)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))));
+		consumer.accept(TFLootTables.COPPER_OREBERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.COPPER_BERRY))));
+		consumer.accept(TFLootTables.IRON_OREBERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.IRON_BERRY))));
+		consumer.accept(TFLootTables.GOLD_OREBERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.GOLD_BERRY))));
+		consumer.accept(TFLootTables.ESSENCE_BERRY_BUSH_DROPS, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(TFItems.ESSENCE_BERRY))));
 
 	}
 }
