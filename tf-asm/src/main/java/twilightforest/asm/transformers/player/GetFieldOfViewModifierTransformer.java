@@ -29,28 +29,27 @@ public class GetFieldOfViewModifierTransformer implements ITransformer<MethodNod
 
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
-		Optional<AbstractInsnNode> firstNode = ASMUtil.findInstructions(node, Opcodes.FCONST_1).findFirst();
-		if (firstNode.isEmpty())
-			return node;
-		node.instructions.insertBefore(firstNode.get(), ASMAPI.listOf(
-			new VarInsnNode(Opcodes.ALOAD, 0),
-			new MethodInsnNode(Opcodes.INVOKESTATIC,
-				"twilightforest/asmhooks/PlayerHooks",
-				"straightAheadNullify",
-				"(Lnet/minecraft/client/player/AbstractClientPlayer;)V",
-				false)
-		));
-
-		ASMUtil.findInstructions(node, Opcodes.FRETURN).forEach(insn ->
-			node.instructions.insertBefore(insn, ASMAPI.listOf(
+		ASMUtil.findInstructions(node, Opcodes.FCONST_1).findFirst().ifPresent(target -> {
+			node.instructions.insertBefore(target, ASMAPI.listOf(
 				new VarInsnNode(Opcodes.ALOAD, 0),
 				new MethodInsnNode(Opcodes.INVOKESTATIC,
 					"twilightforest/asmhooks/PlayerHooks",
-					"straightAheadRestore",
+					"straightAheadNullify",
 					"(Lnet/minecraft/client/player/AbstractClientPlayer;)V",
 					false)
-			))
-		);
+			));
+
+			ASMUtil.findInstructions(node, Opcodes.FRETURN).forEach(insn ->
+				node.instructions.insertBefore(insn, ASMAPI.listOf(
+					new VarInsnNode(Opcodes.ALOAD, 0),
+					new MethodInsnNode(Opcodes.INVOKESTATIC,
+						"twilightforest/asmhooks/PlayerHooks",
+						"straightAheadRestore",
+						"(Lnet/minecraft/client/player/AbstractClientPlayer;)V",
+						false)
+				))
+			);
+		});
 
 		return node;
 	}
