@@ -17,6 +17,7 @@ import net.neoforged.neoforge.client.model.generators.loaders.CompositeModelBuil
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelBuilder;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import static twilightforest.TwilightForestMod.prefix;
 
@@ -42,6 +44,9 @@ import static twilightforest.TwilightForestMod.prefix;
 //make better helper methods and move them to BlockModelBuilders
 //finish datagenning blocks that arent done yet
 public class BlockstateGenerator extends BlockModelBuilders {
+	@Nullable
+	private static ModelFile[][] abstractBushStates;
+
 	public BlockstateGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
 		super(output, exFileHelper);
 	}
@@ -343,6 +348,19 @@ public class BlockstateGenerator extends BlockModelBuilders {
 				.texture("1", item.getNamespace() + ":block/" + item.getPath() + "_top")
 				.texture("2", item.getNamespace() + ":block/" + item.getPath());
 		}
+
+		registerBush(TFBlocks.IRON_OREBERRY.get());
+		registerBush(TFBlocks.GOLD_OREBERRY.get());
+		registerBush(TFBlocks.COPPER_OREBERRY.get());
+		registerBush(TFBlocks.ESSENCE_OREBERRY.get(), 3, 3);
+		registerBush(TFBlocks.RASPBERRY_BUSH.get());
+		registerBush(TFBlocks.BLUEBERRY_BUSH.get());
+		registerBush(TFBlocks.BLACKBERRY_BUSH.get());
+		registerBush(TFBlocks.MALOBERRY_BUSH.get());
+		registerBush(TFBlocks.BLIGHTBERRY_BUSH.get());
+		registerBush(TFBlocks.DUSKBERRY_BUSH.get());
+		registerBush(TFBlocks.SKYBERRY_BUSH.get());
+		registerBush(TFBlocks.STINGBERRY_BUSH.get());
 
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.ROOT_BLOCK.get());
@@ -901,10 +919,144 @@ public class BlockstateGenerator extends BlockModelBuilders {
 			.with(FireJetBlock.STATE, FireJetVariant.FLAME).setModels(new ConfiguredModel(encasedJetOn));
 	}
 
+	private void registerBush(Block block) {
+		registerBush(block, 0, 0);
+	}
+
+
+	private void registerBush(Block block, int blockLight, int skyLight) {
+		String blockName = name(block);
+		ModelFile[][] bushModels;
+		ResourceLocation baseTexture = prefix("block/" + blockName);
+		ResourceLocation ripeTexture = prefix("block/" + blockName + "_ripe");
+		if (blockLight == 0 && skyLight == 0)
+			bushModels = createBushStatesWithoutEmissivity(blockName, baseTexture, ripeTexture);
+		else
+			bushModels = createBushStates(blockName, blockLight, skyLight, baseTexture, ripeTexture);
+
+		getVariantBuilder(block).forAllStates(state -> {
+			int age = state.getValue(BlockStateProperties.AGE_3);
+			int snowLayers = state.getValue(SnowLoggable.SNOW_LAYERS);
+			return new ConfiguredModel[]{
+				new ConfiguredModel(bushModels[age][snowLayers], 0, 0, false)
+			};
+		});
+	}
+
+	private ModelFile[][] createBushStatesWithoutEmissivity(String blockName, ResourceLocation baseTexture, ResourceLocation ripeTexture) {
+		ModelFile[][] bushModels = new ModelFile[TFBushBlock.MAX_AGE + 1][SnowLoggable.MAX_SNOW_LAYERS + 1];
+		for (int age = 0; age <= TFBushBlock.MAX_AGE; age++) {
+			ResourceLocation texture = age == 3 ? ripeTexture : baseTexture;
+			for (int snowLayers = SnowLoggable.MIN_SNOW_LAYERS; snowLayers <= SnowLoggable.MAX_SNOW_LAYERS; snowLayers++) {
+				bushModels[age][snowLayers] = models()
+					.getBuilder("block/" + blockName + getSuffix(age, snowLayers))
+					.parent(getAbstractBushesStates()[age][snowLayers])
+					.texture("all",  texture);
+			}
+		}
+		return bushModels;
+	}
+
+	private ModelFile[][] createBushStates(String blockName, int blockLight, int skyLight, ResourceLocation baseTexture, ResourceLocation ripeTexture) {
+		ModelFile[][] bushModels = new ModelFile[TFBushBlock.MAX_AGE + 1][SnowLoggable.MAX_SNOW_LAYERS + 1];
+
+		for (int age = 0; age <= TFBushBlock.MAX_AGE; age++) {
+			ResourceLocation texture = age == 3 ? ripeTexture : baseTexture;
+			for (int snowLayers = SnowLoggable.MIN_SNOW_LAYERS; snowLayers <= SnowLoggable.MAX_SNOW_LAYERS; snowLayers++) {
+				bushModels[age][snowLayers] = createBushModel(blockName, age, snowLayers, texture, blockLight, skyLight);
+			}
+		}
+		return bushModels;
+	}
+
+
+	private ModelFile createBushModel(String bushName, int age, int snowLayers, ResourceLocation texturePath, int blockLight, int skyLight) {
+		String modelName = bushName + getSuffix(age, snowLayers);
+		float snowHeight = 16F / SnowLoggable.MAX_SNOW_LAYERS * snowLayers;
+
+		ModelBuilder<BlockModelBuilder> builder = models().cubeAll(modelName, texturePath);
+		addBushElements(builder, age, snowHeight, blockLight, skyLight);
+
+		if (snowLayers > 0) {
+			builder.texture("snow", ResourceLocation.withDefaultNamespace("block/snow"));
+			addSnowElements(builder, age, snowHeight);
+		}
+
+		return builder.renderType(CUTOUT);
+	}
+
+	private void addBushElements(ModelBuilder<BlockModelBuilder> b, int age, float snowHeight, int blockLight, int skyLight) {
+		switch (age) {
+			case 0 -> addShrunkBox(b,  4,  0,  4, 12,  8, 12, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.texture("#all"));
+			case 1 -> addShrunkBox(b,  2,  0,  2, 14, 12, 14, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.texture("#all"));
+			case 2 -> addShrunkBox(b,  0,  0,  0, 16, 16, 16, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.cullface(direction).texture("#all"));
+			case 3 -> addShrunkBox(b,  0,  0,  0, 16, 16, 16, snowHeight, blockLight, skyLight, (direction, faceBuilder) -> faceBuilder.cullface(direction).texture("#all"));
+			default -> throw new IllegalArgumentException("Age out of range: " + age);
+		}
+	}
+
+	private void addSnowElements(ModelBuilder<BlockModelBuilder> b, int age, float snowHeight) {
+		switch (age) {
+			case 0 -> addSnowCap(b, 4, 8, 4,12,10, 12);
+			case 1 -> addSnowCap(b, 2, 12, 2,14, 14, 14);
+		}
+		addSnowCover(b, snowHeight);
+	}
+
+	private void addShrunkBox(ModelBuilder<BlockModelBuilder> b,
+							  float x1, float y1, float z1,
+							  float x2, float y2, float z2,
+							  float snowHeight, int blockLight, int skyLight,
+							  BiConsumer<Direction, ModelBuilder<BlockModelBuilder>.ElementBuilder.FaceBuilder> faces) {
+		if (snowHeight > y2 - SnowLoggable.SNOW_Z_FIGHTING)
+			return;
+		b.element()
+			.from(x1, Math.max(y1, snowHeight + SnowLoggable.SNOW_Z_FIGHTING), z1)
+			.to(x2, y2, z2)
+			.allFaces(faces)
+			.emissivity(blockLight, skyLight)
+			.end();
+	}
+
+	private void addSnowCap(ModelBuilder<BlockModelBuilder> b, float x1, float y1, float z1, float x2, float y2, float z2) {
+		b.element()
+			.from(x1, y1, z1)
+			.to(x2, y2, z2)
+			.allFaces((d,f) -> f.texture("#snow"))
+			.end();
+	}
+
+	private void addSnowCover(ModelBuilder<BlockModelBuilder> b, float snowHeight) {
+		b.element()
+			.from(0, 0, 0)
+			.to(16, snowHeight, 16)
+			.allFaces((d,f) -> f.texture("#snow"))
+			.end();
+	}
+
+	@SuppressWarnings("ConstantValue")  // abstractBushStates can be null.
+	private ModelFile[][] getAbstractBushesStates() {
+		if (abstractBushStates == null) {
+			ResourceLocation defaultAbstractBushTexture = ResourceLocation.withDefaultNamespace("block/bedrock");
+			abstractBushStates = createBushStates("abstract_bush", 0, 0, defaultAbstractBushTexture, defaultAbstractBushTexture);
+		}
+		return abstractBushStates;
+	}
+
+	private String getSuffix(int age, int snowLayer) {
+		return switch (age) {
+			case 0 -> "_small_" + snowLayer;
+			case 1 -> "_" + snowLayer;
+			case 2 -> "_large_" + snowLayer;
+			case 3 -> "_grown_" + snowLayer;
+			default -> throw new IllegalArgumentException("Age out of range: " + age);
+		};
+	}
+
 	private void registerPlantBlocks() {
-		simpleBlock(TFBlocks.MOSS_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/moss_patch"))));
+		simpleBlock(TFBlocks.MOSS_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(prefix("block/moss_patch"))));
 		simpleBlockExisting(TFBlocks.MAYAPPLE.get());
-		simpleBlock(TFBlocks.CLOVER_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(TwilightForestMod.prefix("block/clover_patch"))));
+		simpleBlock(TFBlocks.CLOVER_PATCH.get(), new ConfiguredModel(new ModelFile.UncheckedModelFile(prefix("block/clover_patch"))));
 		simpleBlock(TFBlocks.FIDDLEHEAD.get(), models().withExistingParent(TFBlocks.FIDDLEHEAD.getId().getPath(), "block/tinted_cross").renderType(CUTOUT)
 			.texture("cross", blockTexture(TFBlocks.FIDDLEHEAD.get())));
 		simpleBlock(TFBlocks.MUSHGLOOM.get(), this.make2layerCross(TFBlocks.MUSHGLOOM.getId().getPath(), CUTOUT, 10, 6)
@@ -940,7 +1092,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 
 	private void registerWoodBlocks() {
 		logWoodSapling(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get(), TFBlocks.TWILIGHT_OAK_SAPLING.get());
-		plankBlocks("twilight_oak", TFBlocks.TWILIGHT_OAK_PLANKS.get(), TFBlocks.TWILIGHT_OAK_SLAB.get(), TFBlocks.TWILIGHT_OAK_STAIRS.get(), TFBlocks.TWILIGHT_OAK_BUTTON.get(), TFBlocks.TWILIGHT_OAK_FENCE.get(), TFBlocks.TWILIGHT_OAK_GATE.get(), TFBlocks.TWILIGHT_OAK_PLATE.get(), TFBlocks.TWILIGHT_OAK_DOOR.get(), TFBlocks.TWILIGHT_OAK_TRAPDOOR.get(), TFBlocks.TWILIGHT_OAK_BANISTER.get());
+		plankBlocks("twilight_oak", TFBlocks.TWILIGHT_OAK_PLANKS.get(), TFBlocks.TWILIGHT_OAK_SLAB.get(), TFBlocks.TWILIGHT_OAK_STAIRS.get(), TFBlocks.TWILIGHT_OAK_BUTTON.get(), TFBlocks.TWILIGHT_OAK_FENCE.get(), TFBlocks.TWILIGHT_OAK_GATE.get(), TFBlocks.TWILIGHT_OAK_PLATE.get(), TFBlocks.TWILIGHT_OAK_DOOR.get(), TFBlocks.TWILIGHT_OAK_TRAPDOOR.get(), TFBlocks.TWILIGHT_OAK_BANISTER.get(), TFBlocks.TWILIGHT_OAK_DRYING_RACK.get());
 		singleBlockBoilerPlate(TFBlocks.TWILIGHT_OAK_LEAVES.get(), "block/leaves", m -> m.texture("all", "minecraft:block/oak_leaves"));
 
 		ResourceLocation rainboakSaplTex = prefix("block/" + TFBlocks.RAINBOW_OAK_SAPLING.getId().getPath());
@@ -948,35 +1100,35 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		singleBlockBoilerPlate(TFBlocks.RAINBOW_OAK_LEAVES.get(), "block/leaves", m -> m.texture("all", "minecraft:block/oak_leaves"));
 
 		logWoodSapling(TFBlocks.CANOPY_LOG.get(), TFBlocks.STRIPPED_CANOPY_LOG.get(), TFBlocks.CANOPY_WOOD.get(), TFBlocks.STRIPPED_CANOPY_WOOD.get(), TFBlocks.CANOPY_SAPLING.get());
-		plankBlocks("canopy", TFBlocks.CANOPY_PLANKS.get(), TFBlocks.CANOPY_SLAB.get(), TFBlocks.CANOPY_STAIRS.get(), TFBlocks.CANOPY_BUTTON.get(), TFBlocks.CANOPY_FENCE.get(), TFBlocks.CANOPY_GATE.get(), TFBlocks.CANOPY_PLATE.get(), TFBlocks.CANOPY_DOOR.get(), TFBlocks.CANOPY_TRAPDOOR.get(), TFBlocks.CANOPY_BANISTER.get());
+		plankBlocks("canopy", TFBlocks.CANOPY_PLANKS.get(), TFBlocks.CANOPY_SLAB.get(), TFBlocks.CANOPY_STAIRS.get(), TFBlocks.CANOPY_BUTTON.get(), TFBlocks.CANOPY_FENCE.get(), TFBlocks.CANOPY_GATE.get(), TFBlocks.CANOPY_PLATE.get(), TFBlocks.CANOPY_DOOR.get(), TFBlocks.CANOPY_TRAPDOOR.get(), TFBlocks.CANOPY_BANISTER.get(), TFBlocks.CANOPY_DRYING_RACK.get());
 		singleBlockBoilerPlate(TFBlocks.CANOPY_LEAVES.get(), "block/leaves", m -> m.texture("all", "minecraft:block/spruce_leaves"));
 
 		logWoodSapling(TFBlocks.MANGROVE_LOG.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get(), TFBlocks.MANGROVE_WOOD.get(), TFBlocks.STRIPPED_MANGROVE_WOOD.get(), TFBlocks.MANGROVE_SAPLING.get());
-		plankBlocks("mangrove", TFBlocks.MANGROVE_PLANKS.get(), TFBlocks.MANGROVE_SLAB.get(), TFBlocks.MANGROVE_STAIRS.get(), TFBlocks.MANGROVE_BUTTON.get(), TFBlocks.MANGROVE_FENCE.get(), TFBlocks.MANGROVE_GATE.get(), TFBlocks.MANGROVE_PLATE.get(), TFBlocks.MANGROVE_DOOR.get(), TFBlocks.MANGROVE_TRAPDOOR.get(), TFBlocks.MANGROVE_BANISTER.get());
+		plankBlocks("mangrove", TFBlocks.MANGROVE_PLANKS.get(), TFBlocks.MANGROVE_SLAB.get(), TFBlocks.MANGROVE_STAIRS.get(), TFBlocks.MANGROVE_BUTTON.get(), TFBlocks.MANGROVE_FENCE.get(), TFBlocks.MANGROVE_GATE.get(), TFBlocks.MANGROVE_PLATE.get(), TFBlocks.MANGROVE_DOOR.get(), TFBlocks.MANGROVE_TRAPDOOR.get(), TFBlocks.MANGROVE_BANISTER.get(), TFBlocks.MANGROVE_DRYING_RACK.get());
 		singleBlockBoilerPlate(TFBlocks.MANGROVE_LEAVES.get(), "block/leaves", m -> m.texture("all", "minecraft:block/birch_leaves"));
 
 		logWoodSapling(TFBlocks.DARK_LOG.get(), TFBlocks.STRIPPED_DARK_LOG.get(), TFBlocks.DARK_WOOD.get(), TFBlocks.STRIPPED_DARK_WOOD.get(), TFBlocks.DARKWOOD_SAPLING.get());
-		plankBlocks("darkwood", TFBlocks.DARK_PLANKS.get(), TFBlocks.DARK_SLAB.get(), TFBlocks.DARK_STAIRS.get(), TFBlocks.DARK_BUTTON.get(), TFBlocks.DARK_FENCE.get(), TFBlocks.DARK_GATE.get(), TFBlocks.DARK_PLATE.get(), TFBlocks.DARK_DOOR.get(), TFBlocks.DARK_TRAPDOOR.get(), TFBlocks.DARK_BANISTER.get());
+		plankBlocks("darkwood", TFBlocks.DARK_PLANKS.get(), TFBlocks.DARK_SLAB.get(), TFBlocks.DARK_STAIRS.get(), TFBlocks.DARK_BUTTON.get(), TFBlocks.DARK_FENCE.get(), TFBlocks.DARK_GATE.get(), TFBlocks.DARK_PLATE.get(), TFBlocks.DARK_DOOR.get(), TFBlocks.DARK_TRAPDOOR.get(), TFBlocks.DARK_BANISTER.get(), TFBlocks.DARK_DRYING_RACK.get());
 		singleBlockBoilerPlate(TFBlocks.DARK_LEAVES.get(), "block/leaves", m -> m.texture("all", "block/darkwood_leaves"));
 		singleBlockBoilerPlate(TFBlocks.HARDENED_DARK_LEAVES.get(), "block/leaves", m -> m.texture("all", "block/darkwood_leaves"));
 
 		logWoodSapling(TFBlocks.TIME_LOG.get(), TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.TIME_WOOD.get(), TFBlocks.STRIPPED_TIME_WOOD.get(), TFBlocks.TIME_SAPLING.get());
-		plankBlocks("time", TFBlocks.TIME_PLANKS.get(), TFBlocks.TIME_SLAB.get(), TFBlocks.TIME_STAIRS.get(), TFBlocks.TIME_BUTTON.get(), TFBlocks.TIME_FENCE.get(), TFBlocks.TIME_GATE.get(), TFBlocks.TIME_PLATE.get(), TFBlocks.TIME_DOOR.get(), TFBlocks.TIME_TRAPDOOR.get(), true, false, TFBlocks.TIME_BANISTER.get());
+		plankBlocks("time", TFBlocks.TIME_PLANKS.get(), TFBlocks.TIME_SLAB.get(), TFBlocks.TIME_STAIRS.get(), TFBlocks.TIME_BUTTON.get(), TFBlocks.TIME_FENCE.get(), TFBlocks.TIME_GATE.get(), TFBlocks.TIME_PLATE.get(), TFBlocks.TIME_DOOR.get(), TFBlocks.TIME_TRAPDOOR.get(), true, false, TFBlocks.TIME_BANISTER.get(), TFBlocks.TIME_DRYING_RACK.get());
 		makeTimeLeaves();
 		magicLogCore(TFBlocks.TIME_LOG_CORE.get());
 
 		logWoodSapling(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), TFBlocks.TRANSFORMATION_WOOD.get(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get(), TFBlocks.TRANSFORMATION_SAPLING.get());
-		plankBlocks("trans", TFBlocks.TRANSFORMATION_PLANKS.get(), TFBlocks.TRANSFORMATION_SLAB.get(), TFBlocks.TRANSFORMATION_STAIRS.get(), TFBlocks.TRANSFORMATION_BUTTON.get(), TFBlocks.TRANSFORMATION_FENCE.get(), TFBlocks.TRANSFORMATION_GATE.get(), TFBlocks.TRANSFORMATION_PLATE.get(), TFBlocks.TRANSFORMATION_DOOR.get(), TFBlocks.TRANSFORMATION_TRAPDOOR.get(), true, false, TFBlocks.TRANSFORMATION_BANISTER.get());
+		plankBlocks("trans", TFBlocks.TRANSFORMATION_PLANKS.get(), TFBlocks.TRANSFORMATION_SLAB.get(), TFBlocks.TRANSFORMATION_STAIRS.get(), TFBlocks.TRANSFORMATION_BUTTON.get(), TFBlocks.TRANSFORMATION_FENCE.get(), TFBlocks.TRANSFORMATION_GATE.get(), TFBlocks.TRANSFORMATION_PLATE.get(), TFBlocks.TRANSFORMATION_DOOR.get(), TFBlocks.TRANSFORMATION_TRAPDOOR.get(), true, false, TFBlocks.TRANSFORMATION_BANISTER.get(), TFBlocks.TRANSFORMATION_DRYING_RACK.get());
 		makeTransformationLeaves();
 		magicLogCore(TFBlocks.TRANSFORMATION_LOG_CORE.get());
 
 		logWoodSapling(TFBlocks.MINING_LOG.get(), TFBlocks.STRIPPED_MINING_LOG.get(), TFBlocks.MINING_WOOD.get(), TFBlocks.STRIPPED_MINING_WOOD.get(), TFBlocks.MINING_SAPLING.get());
-		plankBlocks("mine", TFBlocks.MINING_PLANKS.get(), TFBlocks.MINING_SLAB.get(), TFBlocks.MINING_STAIRS.get(), TFBlocks.MINING_BUTTON.get(), TFBlocks.MINING_FENCE.get(), TFBlocks.MINING_GATE.get(), TFBlocks.MINING_PLATE.get(), TFBlocks.MINING_DOOR.get(), TFBlocks.MINING_TRAPDOOR.get(), TFBlocks.MINING_BANISTER.get());
+		plankBlocks("mine", TFBlocks.MINING_PLANKS.get(), TFBlocks.MINING_SLAB.get(), TFBlocks.MINING_STAIRS.get(), TFBlocks.MINING_BUTTON.get(), TFBlocks.MINING_FENCE.get(), TFBlocks.MINING_GATE.get(), TFBlocks.MINING_PLATE.get(), TFBlocks.MINING_DOOR.get(), TFBlocks.MINING_TRAPDOOR.get(), TFBlocks.MINING_BANISTER.get(), TFBlocks.MINING_DRYING_RACK.get());
 		makeMiningLeaves();
 		magicLogCore(TFBlocks.MINING_LOG_CORE.get());
 
 		logWoodSapling(TFBlocks.SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.SORTING_WOOD.get(), TFBlocks.STRIPPED_SORTING_WOOD.get(), TFBlocks.SORTING_SAPLING.get());
-		plankBlocks("sort", TFBlocks.SORTING_PLANKS.get(), TFBlocks.SORTING_SLAB.get(), TFBlocks.SORTING_STAIRS.get(), TFBlocks.SORTING_BUTTON.get(), TFBlocks.SORTING_FENCE.get(), TFBlocks.SORTING_GATE.get(), TFBlocks.SORTING_PLATE.get(), TFBlocks.SORTING_DOOR.get(), TFBlocks.SORTING_TRAPDOOR.get(), true, true, TFBlocks.SORTING_BANISTER.get());
+		plankBlocks("sort", TFBlocks.SORTING_PLANKS.get(), TFBlocks.SORTING_SLAB.get(), TFBlocks.SORTING_STAIRS.get(), TFBlocks.SORTING_BUTTON.get(), TFBlocks.SORTING_FENCE.get(), TFBlocks.SORTING_GATE.get(), TFBlocks.SORTING_PLATE.get(), TFBlocks.SORTING_DOOR.get(), TFBlocks.SORTING_TRAPDOOR.get(), true, true, TFBlocks.SORTING_BANISTER.get(), TFBlocks.SORTING_DRYING_RACK.get());
 		buildSortingLeaves();
 		magicLogCore(TFBlocks.SORTING_LOG_CORE.get());
 
@@ -991,6 +1143,18 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		banisterVanilla(TFBlocks.VANGROVE_BANISTER.get(), "mangrove_planks", "vanilla_mangrove");
 		banisterVanilla(TFBlocks.BAMBOO_BANISTER.get(), "bamboo_planks", "bamboo");
 		banisterVanilla(TFBlocks.CHERRY_BANISTER.get(), "cherry_planks", "cherry");
+
+		dryingRackVanilla(TFBlocks.OAK_DRYING_RACK.get(), "oak_planks", "oak");
+		dryingRackVanilla(TFBlocks.SPRUCE_DRYING_RACK.get(), "spruce_planks", "spruce");
+		dryingRackVanilla(TFBlocks.BIRCH_DRYING_RACK.get(), "birch_planks", "birch");
+		dryingRackVanilla(TFBlocks.JUNGLE_DRYING_RACK.get(), "jungle_planks", "jungle");
+		dryingRackVanilla(TFBlocks.ACACIA_DRYING_RACK.get(), "acacia_planks", "acacia");
+		dryingRackVanilla(TFBlocks.DARK_OAK_DRYING_RACK.get(), "dark_oak_planks", "dark_oak");
+		dryingRackVanilla(TFBlocks.CRIMSON_DRYING_RACK.get(), "crimson_planks", "crimson");
+		dryingRackVanilla(TFBlocks.WARPED_DRYING_RACK.get(), "warped_planks", "warped");
+		dryingRackVanilla(TFBlocks.VANGROVE_DRYING_RACK.get(), "mangrove_planks", "vanilla_mangrove");
+		dryingRackVanilla(TFBlocks.BAMBOO_DRYING_RACK.get(), "bamboo_planks", "bamboo");
+		dryingRackVanilla(TFBlocks.CHERRY_DRYING_RACK.get(), "cherry_planks", "cherry");
 
 		final ResourceLocation MOSS = TwilightForestMod.prefix("block/mosspatch");
 		final ResourceLocation MOSS_OVERHANG = TwilightForestMod.prefix("block/moss_overhang");

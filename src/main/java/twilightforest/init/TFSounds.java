@@ -72,6 +72,8 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> CHARM_KEEP = createEvent("item.twilightforest.charm.keep");
 	public static final DeferredHolder<SoundEvent, SoundEvent> CHARM_LIFE = createEvent("item.twilightforest.charm.life");
 	public static final DeferredHolder<SoundEvent, SoundEvent> CICADA = createEvent("block.twilightforest.cicada");
+	public static final DeferredHolder<SoundEvent, SoundEvent> CYCLE_MAPS = createEvent("item.twilightforest.travellers_gear.cycle_maps");
+	public static final DeferredHolder<SoundEvent, SoundEvent> CYCLE_MAPS_EMPTY = createEvent("item.twilightforest.travellers_gear.cycle_maps_empty");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DEATH_TOME_AMBIENT = createEvent("entity.twilightforest.death_tome.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DEATH_TOME_DEATH = createEvent("entity.twilightforest.death_tome.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DEATH_TOME_HURT = createEvent("entity.twilightforest.death_tome.hurt");
@@ -81,6 +83,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> DOOR_ACTIVATED = createEvent("block.twilightforest.door.activate");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DOOR_REAPPEAR = createEvent("block.twilightforest.door.reappear");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DOOR_VANISH = createEvent("block.twilightforest.door.vanish");
+	public static final DeferredHolder<SoundEvent, SoundEvent> DOUBLE_JUMP = createEvent("item.twilightforest.travellers_gear.double_jump");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DWARF_RABBIT_AMBIENT = createEvent("entity.twilightforest.dwarf_rabbit.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DWARF_RABBIT_DEATH = createEvent("entity.twilightforest.dwarf_rabbit.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DWARF_RABBIT_HURT = createEvent("entity.twilightforest.dwarf_rabbit.hurt");
@@ -103,6 +106,8 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> GOBLIN_KNIGHT_MUFFLED_AMBIENT = createEvent("entity.twilightforest.goblin_knight.muffled.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> GOBLIN_KNIGHT_MUFFLED_DEATH = createEvent("entity.twilightforest.goblin_knight.muffled.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> GOBLIN_KNIGHT_MUFFLED_HURT = createEvent("entity.twilightforest.goblin_knight.muffled.hurt");
+	public static final DeferredHolder<SoundEvent, SoundEvent> GOGGLES_ZOOM_IN = createEvent("item.twilightforest.travellers_goggles.zoom_in");
+	public static final DeferredHolder<SoundEvent, SoundEvent> GOGGLES_ZOOM_OUT = createEvent("item.twilightforest.travellers_goggles.zoom_out");
 	public static final DeferredHolder<SoundEvent, SoundEvent> HEDGE_SPIDER_AMBIENT = createEvent("entity.twilightforest.hedge_spider.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> HEDGE_SPIDER_DEATH = createEvent("entity.twilightforest.hedge_spider.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> HEDGE_SPIDER_HURT = createEvent("entity.twilightforest.hedge_spider.hurt");
@@ -198,6 +203,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> PENGUIN_AMBIENT = createEvent("entity.twilightforest.penguin.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PENGUIN_DEATH = createEvent("entity.twilightforest.penguin.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PENGUIN_HURT = createEvent("entity.twilightforest.penguin.hurt");
+	public static final DeferredHolder<SoundEvent, SoundEvent> PERFECT_DODGE = createEvent("item.twilightforest.travellers_gear.perfect_dodge");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PICKED_TORCHBERRIES = createEvent("block.twilightforest.torchberry.harvest");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PINCH_BEETLE_AMBIENT = createEvent("entity.twilightforest.pinch_beetle.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> PINCH_BEETLE_ATTACK = createEvent("entity.twilightforest.pinch_beetle.attack");
@@ -222,6 +228,8 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> SHIELD_BLOCK = createEvent("entity.twilightforest.fortification_shield.block");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SHIELD_BREAK = createEvent("entity.twilightforest.fortification_shield.break");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SHIELD_EXPIRE = createEvent("entity.twilightforest.fortification_shield.expire");
+	public static final DeferredHolder<SoundEvent, SoundEvent> SIDE_STEP = createEvent("item.twilightforest.travellers_gear.side_step");
+	public static final DeferredHolder<SoundEvent, SoundEvent> SIDE_STEP_CHARGED = createEvent("item.twilightforest.travellers_gear.side_step_ready");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SKELETON_DRUID_AMBIENT = createEvent("entity.twilightforest.skeleton_druid.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SKELETON_DRUID_DEATH = createEvent("entity.twilightforest.skeleton_druid.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SKELETON_DRUID_HURT = createEvent("entity.twilightforest.skeleton_druid.hurt");
@@ -248,6 +256,7 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> SQUIRREL_AMBIENT = createEvent("entity.twilightforest.squirrel.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SQUIRREL_DEATH = createEvent("entity.twilightforest.squirrel.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SQUIRREL_HURT = createEvent("entity.twilightforest.squirrel.hurt");
+	public static final DeferredHolder<SoundEvent, SoundEvent> SWAP_HOTBAR = createEvent("item.twilightforest.travellers_gear.swap_hotbar");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SWARM_SPIDER_AMBIENT = createEvent("entity.twilightforest.swarm_spider.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SWARM_SPIDER_DEATH = createEvent("entity.twilightforest.swarm_spider.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> SWARM_SPIDER_HURT = createEvent("entity.twilightforest.swarm_spider.hurt");

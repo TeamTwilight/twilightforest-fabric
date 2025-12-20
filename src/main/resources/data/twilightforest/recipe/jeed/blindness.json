@@ -10,6 +10,9 @@
   "providers": [
     {
       "item": "twilightforest:mist_wolf_spawn_egg"
+    },
+    {
+      "item": "twilightforest:duskberry"
     }
   ]
 }

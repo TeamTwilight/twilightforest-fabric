@@ -1,0 +1,8 @@
+{
+  "type": "twilightforest:transferable_component",
+  "component": "twilightforest:swap_hotbar_modifier",
+  "equipment_slots": "legs",
+  "transferable_components": {
+    "minecraft:container": []
+  }
+}

@@ -32,7 +32,7 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 		controlledSpawningCodec(instance).apply(instance, AuroraPalaceStructure::new)
 	);
 
-	public AuroraPalaceStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public AuroraPalaceStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
@@ -54,8 +54,8 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 				new MobSpawnSettings.SpawnerData(TFEntities.UNSTABLE_ICE_CORE.get(), 5, 1, 2)
 			),
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_yeti"))),
-			new HintConfig(HintConfig.book("icetower", 3), TFEntities.KOBOLD.get()),
-			new DecorationConfig(2, false, true, false),
+			Optional.of(new HintConfig(HintConfig.book("icetower", 3), TFEntities.KOBOLD.get())),
+			Optional.of(new DecorationConfig(2, false, true, false)),
 			true, Optional.of(TFMapDecorations.AURORA_PALACE),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_AURORA_PALACE_BIOMES),

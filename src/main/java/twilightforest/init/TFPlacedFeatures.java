@@ -1,14 +1,16 @@
 package twilightforest.init;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.core.*;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ClampedInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.Biome;
@@ -54,6 +56,18 @@ public class TFPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> PLACED_MYCELIUM_BLOB = registerKey("mycelium_blob");
 	public static final ResourceKey<PlacedFeature> PLACED_OUTSIDE_STALAGMITE = registerKey("outside_stalagmite");
 	public static final ResourceKey<PlacedFeature> PLACED_PLANT_ROOTS = registerKey("plant_roots");
+	public static final ResourceKey<PlacedFeature> PLACED_IRON_OREBERRIES = registerKey("iron_oreberries");
+	public static final ResourceKey<PlacedFeature> PLACED_GOLD_OREBERRIES = registerKey("gold_oreberries");
+	public static final ResourceKey<PlacedFeature> PLACED_COPPER_OREBERRIES = registerKey("copper_oreberries");
+	public static final ResourceKey<PlacedFeature> PLACED_IRON_OREBERRIES_ENCHANTED_FOREST = registerKey("iron_oreberries_enchanted_forest");
+	public static final ResourceKey<PlacedFeature> PLACED_GOLD_OREBERRIES_ENCHANTED_FOREST = registerKey("gold_oreberries_enchanted_forest");
+	public static final ResourceKey<PlacedFeature> PLACED_COPPER_OREBERRIES_ENCHANTED_FOREST = registerKey("copper_oreberries_enchanted_forest");
+	public static final ResourceKey<PlacedFeature> PLACED_ESSENCE_OREBERRIES_ENCHANTED_FOREST = registerKey("essence_oreberries_enchanted_forest");
+	public static final ResourceKey<PlacedFeature> PLACED_RASPBERRY_BUSHES = registerKey("raspberry_bushes");
+	public static final ResourceKey<PlacedFeature> PLACED_SWAMP_RASPBERRY_BUSHES = registerKey("swamp_raspberry_bushes");
+	public static final ResourceKey<PlacedFeature> PLACED_BLUEBERRY_BUSHES = registerKey("blueberry_bushes");
+	public static final ResourceKey<PlacedFeature> PLACED_BLACKBERRY_BUSHES = registerKey("blackberry_bushes");
+	public static final ResourceKey<PlacedFeature> PLACED_MALOBERRY_BUSHES = registerKey("maloberry_bushes");
 	public static final ResourceKey<PlacedFeature> PLACED_PUMPKIN_LAMPPOST = registerKey("pumpkin_lamppost");
 	public static final ResourceKey<PlacedFeature> PLACED_SMOKER = registerKey("smoker");
 	public static final ResourceKey<PlacedFeature> PLACED_STONE_CIRCLE = registerKey("stone_circle");
@@ -163,11 +177,19 @@ public class TFPlacedFeatures {
 	}
 
 	private static ImmutableList.Builder<PlacementModifier> tfFeatureCheckArea(AvoidLandmarkModifier filter, int rarity, PlacementModifier... extra) {
-		return ImmutableList.<PlacementModifier>builder().add(extra).add(filter, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
+		return ImmutableList.<PlacementModifier>builder().add(extra).add(RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, filter, BiomeFilter.biome());
+	}
+
+	private static ImmutableList.Builder<PlacementModifier> tfFeatureCheckArea(AvoidLandmarkModifier filter, int rarity, VerticalAnchor minAnchor, VerticalAnchor maxAnchor, PlacementModifier... extra) {
+		return ImmutableList.<PlacementModifier>builder().add(extra).add(filter, RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), HeightRangePlacement.uniform(minAnchor, maxAnchor));
 	}
 
 	private static ImmutableList.Builder<PlacementModifier> hollowLog(AvoidLandmarkModifier filter) {
 		return ImmutableList.<PlacementModifier>builder().add(RarityFilter.onAverageOnceEvery(40), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, filter, BiomeFilter.biome());
+	}
+
+	private static ImmutableList<PlacementModifier> oreberry(int rarity) {
+		return tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), rarity, VerticalAnchor.absolute(-10), VerticalAnchor.absolute(-8)).build();
 	}
 
 	public static ResourceKey<PlacedFeature> registerKey(String name) {
@@ -206,6 +228,21 @@ public class TFPlacedFeatures {
 		context.register(PLACED_MYCELIUM_BLOB, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MYCELIUM_BLOB), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 3).build()));
 		context.register(PLACED_OUTSIDE_STALAGMITE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.OUTSIDE_STALAGMITE), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 77).build()));
 		context.register(PLACED_PLANT_ROOTS, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.PLANT_ROOTS), tfFeatureCheckArea(AvoidLandmarkModifier.checkUnderground(), 1, CountPlacement.of(4), HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(10))).build()));
+
+		// Rarity was determined through empirical experiments, so the number of oreberries per chunk is 0.2
+		context.register(PLACED_IRON_OREBERRIES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.IRON_OREBERRIES), oreberry(3)));
+		context.register(PLACED_GOLD_OREBERRIES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.GOLD_OREBERRIES), oreberry(3)));
+		context.register(PLACED_COPPER_OREBERRIES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.COPPER_OREBERRIES), oreberry(3)));
+		context.register(PLACED_IRON_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.IRON_OREBERRIES), oreberry(5)));
+		context.register(PLACED_GOLD_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.GOLD_OREBERRIES), oreberry(5)));
+		context.register(PLACED_COPPER_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.COPPER_OREBERRIES), oreberry(5)));
+		context.register(PLACED_ESSENCE_OREBERRIES_ENCHANTED_FOREST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.ESSENCE_OREBERRIES), oreberry(5)));
+
+		context.register(PLACED_RASPBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.RASPBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 50, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
+		context.register(PLACED_SWAMP_RASPBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.RASPBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 200, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
+		context.register(PLACED_BLUEBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.BLUEBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 50, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
+		context.register(PLACED_BLACKBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.BLACKBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 50, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
+		context.register(PLACED_MALOBERRY_BUSHES, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.MALOBERRY_BUSHES), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 25, PlacementUtils.HEIGHTMAP_TOP_SOLID).build()));
 		context.register(PLACED_PUMPKIN_LAMPPOST, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.PUMPKIN_LAMPPOST), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 10).build()));
 		context.register(PLACED_SMOKER, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.SMOKER), ImmutableList.<PlacementModifier>builder().add(PlacementUtils.HEIGHTMAP_WORLD_SURFACE, InSquarePlacement.spread(), BiomeFilter.biome()).build()));
 		context.register(PLACED_STONE_CIRCLE, new PlacedFeature(features.getOrThrow(TFConfiguredFeatures.STONE_CIRCLE), tfFeatureCheckArea(AvoidLandmarkModifier.checkSurface(), 105).build()));

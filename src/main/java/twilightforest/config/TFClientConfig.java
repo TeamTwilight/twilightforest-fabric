@@ -22,6 +22,9 @@ public class TFClientConfig {
 	final ModConfigSpec.ConfigValue<List<? extends String>> auroraBiomes;
 	final ModConfigSpec.BooleanValue prettifyOreMeterGui;
 	final ModConfigSpec.BooleanValue spawnCharmAnimationAsTotem;
+	final ModConfigSpec.BooleanValue manualTravellersWingsGradualGlide;
+
+	final ItemDisplay ITEM_DISPLAY = new ItemDisplay();
 
 	public TFClientConfig(ModConfigSpec.Builder builder) {
 		silentCicadas = builder
@@ -92,5 +95,41 @@ public class TFClientConfig {
 		spawnCharmAnimationAsTotem = builder.translation(TFConfig.CONFIG_ID + "totem_charm_animation")
 			.comment(ConfigComments.CHARMS_AS_TOTEMS)
 			.define("totemCharmAnimation", false);
+
+		manualTravellersWingsGradualGlide = builder.translation(TFConfig.CONFIG_ID + "manual_travellers_wings_gradual_glide")
+			.comment(ConfigComments.MANUAL_TRAVELLERS_WINGS_GRADUAL_GLIDE)
+			.define("travellersWingsGradualGlide", true);
+
+		builder.comment(ConfigComments.ITEM_DISPLAY).translation(TFConfig.CONFIG_ID + "item_display").push("Item Display Modifier Settings");
+		{
+
+			ITEM_DISPLAY.screenOffsetX = builder
+				.translation(TFConfig.CONFIG_ID + "screen_offset_x")
+				.comment(ConfigComments.DISPLAY_SCREEN_OFFSET_X)
+				.defineInRange("screenOffsetX", 4, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+			ITEM_DISPLAY.screenOffsetY = builder
+				.translation(TFConfig.CONFIG_ID + "screen_offset_y")
+				.comment(ConfigComments.DISPLAY_SCREEN_OFFSET_Y)
+				.defineInRange("screenOffsetY", 4, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+			ITEM_DISPLAY.screenScale = builder
+				.translation(TFConfig.CONFIG_ID + "screen_scale")
+				.comment(ConfigComments.DISPLAY_SCALE)
+				.defineInRange("screenScale", 1.0D, 0.1D, 10.0D);
+
+			ITEM_DISPLAY.twentyFourHourFormat = builder
+				.translation(TFConfig.CONFIG_ID + "twenty_four_hour_format")
+				.comment(ConfigComments.TWENTY_FOUR_HOUR_FORMAT)
+				.define("twentyFourHourFormat", TFConfig.use24HourTimeDefault());
+		}
+		builder.pop();
+	}
+
+	static class ItemDisplay {
+		ModConfigSpec.IntValue screenOffsetX;
+		ModConfigSpec.IntValue screenOffsetY;
+		ModConfigSpec.DoubleValue screenScale;
+		ModConfigSpec.BooleanValue twentyFourHourFormat;
 	}
 }

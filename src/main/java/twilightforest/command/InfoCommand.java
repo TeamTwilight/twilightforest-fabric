@@ -49,8 +49,9 @@ public class InfoCommand {
 
 		ResourceLocation key = possibleStructureRegistry.get().getKey(landmarkStructure);
 
-		if (FMLLoader.isProduction())
-			source.sendSuccess(() -> Component.translatable("This command is still WIP, some things may still be broken.").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
+		if (FMLLoader.isProduction()) {
+			source.sendSuccess(() -> Component.translatable("commands.tffeature.info.wip").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
+		}
 
 		// nearest feature
 		String structureName = Component.translatable("structure." + key.getNamespace() + "." + key.getPath()).getString();

@@ -1,0 +1,7 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:stealth_crouching": {}
+  },
+  "equipment_slots": "chest"
+}

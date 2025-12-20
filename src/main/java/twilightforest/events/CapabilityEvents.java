@@ -6,38 +6,42 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Unit;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.TwilightForestMod;
+import tamaized.beanification.Component;
+import tamaized.beanification.PostConstruct;
 import twilightforest.components.entity.FortificationShieldAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDimension;
-import twilightforest.network.UpdateShieldPacket;
 import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
 
-@EventBusSubscriber(modid = TwilightForestMod.ID)
+@Component
 public class CapabilityEvents {
 
-	@SubscribeEvent
-	public static void updateShields(EntityTickEvent.Post event) {
+	@PostConstruct
+	private void setup() {
+		NeoForge.EVENT_BUS.addListener(this::updateShields);
+		NeoForge.EVENT_BUS.addListener(this::updatePlayerCaps);
+		NeoForge.EVENT_BUS.addListener(this::absorbShieldHits);
+		NeoForge.EVENT_BUS.addListener(this::spawnInTFIfNecessary);
+		NeoForge.EVENT_BUS.addListener(this::playerLogsIn);
+	}
+
+	private void updateShields(EntityTickEvent.Post event) {
 		if (event.getEntity() instanceof LivingEntity living && !living.level().isClientSide() && living.hasData(TFDataAttachments.FORTIFICATION_SHIELDS)) {
 			event.getEntity().getData(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);
 		}
 	}
 
-	@SubscribeEvent
-	public static void updatePlayerCaps(PlayerTickEvent.Post event) {
+	private void updatePlayerCaps(PlayerTickEvent.Post event) {
 		if (event.getEntity().getData(TFDataAttachments.FEATHER_FAN)) {
 			event.getEntity().setIgnoreFallDamageFromCurrentImpulse(true);
 			event.getEntity().currentImpulseImpactPos = event.getEntity().position();
@@ -50,8 +54,7 @@ public class CapabilityEvents {
 		event.getEntity().getData(TFDataAttachments.TF_PORTAL_COOLDOWN).tick(event.getEntity());
 	}
 
-	@SubscribeEvent
-	public static void livingAttack(LivingIncomingDamageEvent event) {
+	private void absorbShieldHits(LivingIncomingDamageEvent event) {
 		LivingEntity living = event.getEntity();
 		// shields
 		if (!living.level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
@@ -67,8 +70,7 @@ public class CapabilityEvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+	private void spawnInTFIfNecessary(PlayerEvent.PlayerRespawnEvent event) {
 		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
 
 		if (serverPlayer.getRespawnPosition() == null) {
@@ -79,34 +81,12 @@ public class CapabilityEvents {
 	/**
 	 * When player logs in, report conflict status, set progression status
 	 */
-	@SubscribeEvent
-	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
+	public void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
 		if (event.getEntity().level().isClientSide() || !(event.getEntity() instanceof ServerPlayer player))
 			return;
-		updateCapabilities(player, event.getEntity());
 		dataFixLegacyBanish(player);
 		if (!player.hasData(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST))
 			newSpawnInTwilightForest(player);
-	}
-
-	@SubscribeEvent
-	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
-		if (!event.getEntity().level().isClientSide() && event.getEntity() instanceof ServerPlayer player) {
-			updateCapabilities(player, event.getEntity());
-		}
-	}
-
-	@SubscribeEvent
-	public static void onStartTracking(PlayerEvent.StartTracking event) {
-		updateCapabilities((ServerPlayer) event.getEntity(), event.getTarget());
-	}
-
-	// send any capabilities that are needed client-side
-	private static void updateCapabilities(ServerPlayer clientTarget, Entity shielded) {
-		var attachment = shielded.getData(TFDataAttachments.FORTIFICATION_SHIELDS);
-		if (attachment.shieldsLeft() > 0) {
-			PacketDistributor.sendToPlayer(clientTarget, new UpdateShieldPacket(shielded.getId(), attachment.temporaryShieldsLeft(), attachment.permanentShieldsLeft()));
-		}
 	}
 
 	private static void newSpawnInTwilightForest(ServerPlayer player) {

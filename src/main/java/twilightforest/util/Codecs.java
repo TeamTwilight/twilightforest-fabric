@@ -4,7 +4,9 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.PrimitiveCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.doubles.Double2ObjectAVLTreeMap;
@@ -65,6 +67,7 @@ public final class Codecs {
 		UUIDUtil.AUTHLIB_CODEC.fieldOf("id").forGetter(GameProfile::getId),
 		ExtraCodecs.PLAYER_NAME.fieldOf("name").forGetter(GameProfile::getName)
 	).apply(instance, GameProfile::new));
+	public static final Codec<Character> CHARACTER_CODEC = new CharacterCodec();
 
 	public static final Codec<Climate.ParameterList<Holder<Biome>>> CLIMATE_SYSTEM = ExtraCodecs.nonEmptyList(RecordCodecBuilder.<Pair<Climate.ParameterPoint, Holder<Biome>>>create((instance) -> instance.group(Climate.ParameterPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst), Biome.CODEC.fieldOf("biome").forGetter(Pair::getSecond)).apply(instance, Pair::of)).listOf()).xmap(Climate.ParameterList::new, Climate.ParameterList::values);
 
@@ -151,6 +154,22 @@ public final class Codecs {
 
 	private static DataResult<MapColor> validateMapColor(MapColor color) {
 		return color.id <= 63 && MapColor.byId(color.id) != MapColor.NONE ? DataResult.success(color) : DataResult.error(() -> "Provided MapColor is not a valid MapColor");
+	}
+
+	private static class CharacterCodec implements PrimitiveCodec<Character> {
+		@Override
+		public <T> DataResult<Character> read(DynamicOps<T> ops, T input) {
+			DataResult<String> stringValue = ops.getStringValue(input);
+			if (stringValue.isSuccess() && stringValue.resultOrPartial().map(String::isEmpty).orElse(true)) {
+				return DataResult.error(() -> "Expected character value, received empty string.");
+			}
+			return stringValue.map(s -> s.charAt(0));
+		}
+
+		@Override
+		public <T> T write(DynamicOps<T> ops, Character value) {
+			return ops.createString(value.toString());
+		}
 	}
 
 	private Codecs() {

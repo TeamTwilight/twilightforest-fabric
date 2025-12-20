@@ -32,6 +32,7 @@ public class TFDamageTypes {
 	public static final ResourceKey<DamageType> THROWN_AXE = create("thrown_axe");
 	public static final ResourceKey<DamageType> THROWN_PICKAXE = create("thrown_pickaxe");
 	public static final ResourceKey<DamageType> THORNS = create("thorns");
+	public static final ResourceKey<DamageType> OREBERRY = create("oreberry");
 	public static final ResourceKey<DamageType> KNIGHTMETAL = create("knightmetal");
 	public static final ResourceKey<DamageType> FIERY = create("fiery");
 	public static final ResourceKey<DamageType> FIRE_JET = create("fire_jet");
@@ -59,6 +60,7 @@ public class TFDamageTypes {
 	public static final ResourceKey<DamageType> ACID_RAIN = create("acid_rain"); //Acid rain Enforcement
 	public static final ResourceKey<DamageType> OMINOUS_FIRE = create("ominous_fire"); //Standing in cursed fire
 	public static final ResourceKey<DamageType> FAILED_CHALLENGE = create("failed_challenge"); //Being an absolute loser
+	public static final ResourceKey<DamageType> STALE_SANDWICH = create("stale_sandwich"); //You're a stale sandwich
 
 	public static ResourceKey<DamageType> create(String name) {
 		return ResourceKey.create(Registries.DAMAGE_TYPE, TwilightForestMod.prefix(name));
@@ -88,6 +90,7 @@ public class TFDamageTypes {
 		context.register(THROWN_AXE, new DamageType("twilightforest.thrownAxe", 0.0F));
 		context.register(THROWN_PICKAXE, new DamageType("twilightforest.thrownPickaxe", 0.0F));
 		context.register(THORNS, new DamageType("twilightforest.thorns", 0.1F));
+		context.register(OREBERRY, new DamageType("twilightforest.oreberry", 0.1F));
 		context.register(KNIGHTMETAL, new DamageType("twilightforest.knightmetal", 0.1F));
 		context.register(FIERY, new DamageType("twilightforest.fiery", 0.1F, DamageEffects.BURNING));
 		context.register(FIRE_JET, new DamageType("twilightforest.fireJet", 0.1F, DamageEffects.BURNING));
@@ -115,5 +118,6 @@ public class TFDamageTypes {
 		context.register(ACID_RAIN, new DamageType("twilightforest.acid_rain", 0.0F));
 		context.register(OMINOUS_FIRE, new DamageType("twilightforest.ominous", 0.1F, DamageEffects.BURNING));
 		context.register(FAILED_CHALLENGE, new DamageType("twilightforest.failedChallenge", 0.0F));
+		context.register(STALE_SANDWICH, new DamageType("twilightforest.stale_sandwich", 0.0F));
 	}
 }

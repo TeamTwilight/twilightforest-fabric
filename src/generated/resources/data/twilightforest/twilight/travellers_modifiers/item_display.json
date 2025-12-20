@@ -1,0 +1,10 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:item_display": {
+      "chosen_map_slot": 0,
+      "slots": []
+    }
+  },
+  "equipment_slots": "head"
+}

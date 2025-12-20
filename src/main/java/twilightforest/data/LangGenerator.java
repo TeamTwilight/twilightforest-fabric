@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.config.ConfigComments;
@@ -8,24 +9,27 @@ import twilightforest.data.helpers.TFLangProvider;
 import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
+import twilightforest.init.custom.TravellersModifiersManager;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class LangGenerator extends TFLangProvider {
 	public static final Map<ResourceLocation, Pair<String, String>> MAGIC_PAINTING_HELPER = new HashMap<>();
 	public static final Map<String, String> SUBTITLE_GENERATOR = new HashMap<>();
 
-	public LangGenerator(PackOutput output) {
-		super(output);
+	public LangGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+		super(output, registries);
 	}
 
 	@Override
-	protected void addTranslations() {
+	protected void addTranslations(HolderLookup.Provider registries) {
 
 		this.add("itemGroup.twilightforest.blocks", "Twilight Forest: Blocks");
 		this.add("itemGroup.twilightforest.items", "Twilight Forest: Items");
 		this.add("itemGroup.twilightforest.equipment", "Twilight Forest: Equipment");
+		this.add("itemGroup.twilightforest.food", "Twilight Forest: Food");
 
 		this.addBiome(TFBiomes.FOREST, "Twilight Forest");
 		this.addBiome(TFBiomes.DENSE_FOREST, "Dense Forest");
@@ -83,6 +87,27 @@ public class LangGenerator extends TFLangProvider {
 		this.addCommand("structure.spawn_list", "Spawn list for this area is:");
 		this.addCommand("structure.spawn_info", "%s, Weight %s");
 		this.addCommand("structure.boundaries", "Structure boundaries: %s");
+		this.addCommand("info.wip", "This command is still WIP, some things may still be broken.");
+		this.addCommand("biomepng.progress", "%s%% Done mapping");
+		this.addCommand("biomepng.counts_header", "Approximate biome-block counts within a %sx%s region");
+		this.addCommand("biomepng.save_failed", "Could not save image! Please report this!");
+		this.addCommand("biomepng.save_success", "Image saved!");
+		this.addCommand("display_pieces.missing_key", "missing key");
+		this.addCommand("generator_radius.center_chunk", "Structure start's center chunk");
+		this.addCommand("generator_radius.radius", "Radius from center chunk: %s");
+		this.addCommand("teleport.player_only", "Command must be run by a player.");
+		this.addCommand("teleport.dimension_missing", "The Twilight Forest dimension is unavailable.");
+		this.addCommand("teleport.success", "Teleported to The Twilight Forest at %s %s %s");
+
+		this.addCommand("invalid_modifier", "%s is not a valid Traveller's Gear Modifier");
+		this.addCommand("not_travellers_gear", "You are not holding a piece of Traveller's Gear");
+		this.addCommand("too_many_modifiers", "This piece of Traveller's Gear already has the maximum amount of modifiers");
+		this.addCommand("no_modifier", "%s is not applied to this piece of Traveller's Gear");
+		this.addCommand("has_modifier", "This piece of Traveller's Gear already has %s");
+		this.addCommand("wrong_modifier_slot", "%s is not allowed on this piece of Traveller's Gear");
+		this.addCommand("ability_modifier", "Abilities cannot be added or removed from Traveller's Gear");
+		this.addCommand("added_modifier", "Added %s to %s!");
+		this.addCommand("removed_modifier", "Removed %s from %s!");
 
 		this.addGameRule(TFGameRules.ENFORCED_PROGRESSION_RULE, "Twilight Forest: Enforced Progression");
 		this.addGameRuleDescription(TFGameRules.ENFORCED_PROGRESSION_RULE, "Some Twilight Forest biomes are locked until you defeat certain bosses in the dimension. Check your advancements for the progression order.");
@@ -112,7 +137,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addAdvancement("ore_map", "How Can That Be Worth It?", "Craft the %s");
 		this.addAdvancement("twilight_hunter", "The Silence of the Forest", "Hunt some of the local wildlife");
 		this.addAdvancement("kill_naga", "Time To Even The Scales", "Slay the %s in its forest courtyard and obtain a %s to overcome the barrier magic surrounding the Lich's tower");
-		this.addAdvancement("naga_armors", "Naga Armorer", "Craft both %s chest and leg armor");
+		this.addAdvancement("naga_armors", "Naga Armorer", "Craft a %s and %s");
 		this.addAdvancement("kill_lich", "Bring Out Your Dead", "Slay the %s at top of his tower and retrieve a scepter to clear poisonous mosquitoes from the Swamp, see through blinding darkness of the Dark Forest's curse, and resist the Snowy Forest's chill");
 		this.addAdvancement("lich_scepters", "By Our Powers Combined!", "Acquire all four scepters of power");
 		this.addAdvancement("full_mettle_alchemist", "Full Mettle Alchemist", "Drink three doses of Harming II from a potion flask in under 6 seconds and survive");
@@ -140,8 +165,11 @@ public class LangGenerator extends TFLangProvider {
 		this.addAdvancement("progression_end", "End of Progression", "Anything past this point in the Highlands is a work in progress. It will be finished in the future");
 		//this.addAdvancement("progress_thorns", "Past the Thorns [NYI]", "Make it past the Thornlands, and unlock the door of the castle");
 		//this.addAdvancement("progress_castle", "So Castle Very Wow [NYI]", "What could even be in that castle?!?");
-		this.addAdvancement("twilight_dining", "We Dine At Eternal Sundown", "Eat every edible item exclusive to Twilight Forest");
+		this.addAdvancement("twilight_dining", "We Dine At Eternal Sundown", "Eat every edible item type exclusive to Twilight Forest");
 		this.addAdvancement("arborist", "Maniacal Dendrologist", "Get your axes and shears ready. Search every nook and cranny and get anything and everything that comes from trees! Craft, loot, obtain every slab... sapling... leaves... more... everything. ALL OF IT!");
+		this.add("advancement.twilightforest.chicken_jerky", "CHICKEN JERKEY!");
+		this.addAdvancement("craft_travellers_gear", "Around the Forest in 80 Days", "Craft a piece of traveller's gear");
+		this.addAdvancement("modify_travellers_gear", "Apparel Oft Proclaims the Man", "Add a modifier to a piece of traveller's gear");
 
 		this.addMessage("advancement_hidden", "<Hidden Advancement>");
 		this.addMessage("advancement_required", "Advancement Required:");
@@ -318,7 +346,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.IRONWOOD_BLOCK, "Block of Ironwood");
 		this.addBlock(TFBlocks.STEELEAF_BLOCK, "Block of Steeleaf");
 		this.addBlock(TFBlocks.KNIGHTMETAL_BLOCK, "Block of Knightmetal");
-		this.add("block.twilightforest.knightmetal_block.desc", "Works as a stronger cactus");
+		this.add("block.twilightforest.knightmetal_block.desc", "Deals strong contact damage");
 		this.addBlock(TFBlocks.ARCTIC_FUR_BLOCK, "Block of Arctic Fur");
 		this.add("block.twilightforest.arctic_fur_block.desc", "Reduces fall damage by 90%");
 		this.addBlock(TFBlocks.FIERY_BLOCK, "Block of Fiery Metal");
@@ -334,6 +362,20 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.CANOPY_WINDOW_PANE, "Canopy Window Pane");
 		this.addBlock(TFBlocks.SLIDER, "Slide Trap");
 		this.addBlock(TFBlocks.BRAZIER, "Brazier");
+
+		this.addBlock(TFBlocks.IRON_OREBERRY, "Iron Oreberry Bush");
+		this.addBlock(TFBlocks.GOLD_OREBERRY, "Gold Oreberry Bush");
+		this.addBlock(TFBlocks.COPPER_OREBERRY, "Copper Oreberry Bush");
+		this.addBlock(TFBlocks.ESSENCE_OREBERRY, "Essence Berry Bush");
+		this.addBlock(TFBlocks.RASPBERRY_BUSH, "Raspberry Bush");
+		this.addBlock(TFBlocks.BLUEBERRY_BUSH, "Blueberry Bush");
+		this.addBlock(TFBlocks.BLACKBERRY_BUSH, "Blackberry Bush");
+		this.addBlock(TFBlocks.MALOBERRY_BUSH, "Maloberry Bush");
+		this.addBlock(TFBlocks.BLIGHTBERRY_BUSH, "Blightberry Bush");
+		this.addBlock(TFBlocks.DUSKBERRY_BUSH, "Duskberry Bush");
+		this.addBlock(TFBlocks.SKYBERRY_BUSH, "Skyberry Bush");
+		this.addBlock(TFBlocks.STINGBERRY_BUSH, "Stingberry Bush");
+
 
 		this.addBlock(TFBlocks.TWILIGHT_OAK_LEAVES, "Twilight Oak Leaves");
 		this.addSapling("twilight_oak", "Sickly Twilight Oak Sapling");
@@ -397,6 +439,18 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.VANGROVE_BANISTER, "Mangrove Banister");
 		this.addBlock(TFBlocks.BAMBOO_BANISTER, "Bamboo Banister");
 		this.addBlock(TFBlocks.CHERRY_BANISTER, "Cherry Banister");
+
+		this.addBlock(TFBlocks.OAK_DRYING_RACK, "Oak Drying Rack");
+		this.addBlock(TFBlocks.SPRUCE_DRYING_RACK, "Spruce Drying Rack");
+		this.addBlock(TFBlocks.BIRCH_DRYING_RACK, "Birch Drying Rack");
+		this.addBlock(TFBlocks.JUNGLE_DRYING_RACK, "Jungle Drying Rack");
+		this.addBlock(TFBlocks.ACACIA_DRYING_RACK, "Acacia Drying Rack");
+		this.addBlock(TFBlocks.DARK_OAK_DRYING_RACK, "Dark Oak Drying Rack");
+		this.addBlock(TFBlocks.CRIMSON_DRYING_RACK, "Crimson Drying Rack");
+		this.addBlock(TFBlocks.WARPED_DRYING_RACK, "Warped Drying Rack");
+		this.addBlock(TFBlocks.VANGROVE_DRYING_RACK, "Mangrove Drying Rack");
+		this.addBlock(TFBlocks.BAMBOO_DRYING_RACK, "Bamboo Drying Rack");
+		this.addBlock(TFBlocks.CHERRY_DRYING_RACK, "Cherry Drying Rack");
 
 		this.createHollowLogs("oak", "Oak", false);
 		this.createHollowLogs("spruce", "Spruce", false);
@@ -535,6 +589,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.RAVEN_FEATHER, "Raven Feather");
 		this.addItem(TFItems.MAGIC_MAP_FOCUS, "Magic Map Focus");
 		this.addItem(TFItems.MAZE_MAP_FOCUS, "Maze Map Focus");
+		this.addItem(TFItems.MAZE_SLIME_BALL, "Maze Slimeball");
 
 		this.addItem(TFItems.LIVEROOT, "Liveroot");
 		this.addItem(TFItems.RAW_IRONWOOD, "Raw Ironwood");
@@ -566,6 +621,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.PHANTOM_CHESTPLATE, "Phantom Chestplate");
 		this.add("item.twilightforest.phantom_armor.desc", "Is never lost on death");
 
+		this.addItem(TFItems.TANNIN, "Tannin");
 		this.addItem(TFItems.FIERY_BLOOD, "Fiery Blood");
 		this.addItem(TFItems.FIERY_TEARS, "Fiery Tears");
 		this.addItem(TFItems.FIERY_INGOT, "Fiery Ingot");
@@ -590,7 +646,6 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.YETI_BOOTS, "Yeti Boots");
 		this.add("item.twilightforest.yeti_armor.desc", "Chills attackers");
 
-
 		this.addItem(TFItems.DIAMOND_MINOTAUR_AXE, "Diamond Minotaur Axe");
 		this.addItem(TFItems.GOLDEN_MINOTAUR_AXE, "Golden Minotaur Axe");
 		this.add("item.twilightforest.minotaur_axe.desc", "Extra damage while charging");
@@ -598,7 +653,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.ICE_SWORD, "Ice Sword");
 		this.addItem(TFItems.ICE_BOMB, "Ice Bomb");
 		this.addItem(TFItems.GLASS_SWORD, "Glass Sword");
-		this.add("item.twilightforest.glass_sword.desc", "Creative Mode only");
+		this.add("item.twilightforest.glass_sword.desc", "Creative Mode-only");
 		this.addItem(TFItems.TRIPLE_BOW, "Tri-Bow");
 		this.addItem(TFItems.SEEKER_BOW, "Seeker Bow");
 		this.addItem(TFItems.ICE_BOW, "Ice Bow");
@@ -608,6 +663,13 @@ public class LangGenerator extends TFLangProvider {
 		this.add("item.twilightforest.giant_pickaxe.desc", "Breaks giant blocks");
 		this.addItem(TFItems.LAMP_OF_CINDERS, "Lamp of Cinders");
 		this.addItem(TFItems.CUBE_OF_ANNIHILATION, "Cube of Annihilation");
+
+		this.addItem(TFItems.TRAVELLERS_GOGGLES, "Traveller's Goggles");
+		this.addItem(TFItems.TRAVELLERS_VEST, "Traveller's Vest");
+		this.addItem(TFItems.TRAVELLERS_GLOVES, "Traveller's Gloves");
+		this.addItem(TFItems.TRAVELLERS_BELT, "Traveller's Belt");
+		this.addItem(TFItems.TRAVELLERS_WINGS, "Traveller's Wings");
+		this.addItem(TFItems.TRAVELLERS_BOOTS, "Traveller's Boots");
 
 		this.addItem(TFItems.MOON_DIAL, "Moon Dial");
 		this.add("item.twilightforest.moon_dial.phase_0", "Full Moon");
@@ -642,6 +704,15 @@ public class LangGenerator extends TFLangProvider {
 		this.add("item.twilightforest.skull_candle.desc.multiple", "Has: %s %s Candles");
 
 		this.addItem(TFItems.TORCHBERRIES, "Torchberries");
+		this.addItem(TFItems.RASPBERRY, "Raspberry");
+		this.addItem(TFItems.BLUEBERRY, "Blueberry");
+		this.addItem(TFItems.BLACKBERRY, "Blackberry");
+		this.addItem(TFItems.MALOBERRY, "Maloberry");
+		this.addItem(TFItems.BLIGHTBERRY, "Blightberry");
+		this.addItem(TFItems.DUSKBERRY, "Duskberry");
+		this.addItem(TFItems.SKYBERRY, "Skyberry");
+		this.addItem(TFItems.STINGBERRY, "Stingberry");
+		this.addItem(TFItems.BERRY_MEDLEY, "Berry Medley");
 		this.addItem(TFItems.RAW_VENISON, "Raw Venison");
 		this.addItem(TFItems.COOKED_VENISON, "Venison Steak");
 		this.addItem(TFItems.MAZE_WAFER, "Maze Wafer");
@@ -649,6 +720,33 @@ public class LangGenerator extends TFLangProvider {
 		this.addItem(TFItems.COOKED_MEEF, "Meef Steak");
 		this.addItem(TFItems.MEEF_STROGANOFF, "Meef Stroganoff");
 		this.addItem(TFItems.HYDRA_CHOP, "Hydra Chop");
+		this.addItem(TFItems.MOSS_SOUP, "Moss Soup");
+
+		this.addItem(TFItems.MONSTER_JERKY, "Monster Jerky");
+		this.addItem(TFItems.BEEF_JERKY, "Beef Jerky");
+		this.addItem(TFItems.CHICKEN_JERKY, "Chicken Jerky");
+		this.addItem(TFItems.PORK_JERKY, "Pork Jerky");
+		this.addItem(TFItems.MUTTON_JERKY, "Mutton Jerky");
+		this.addItem(TFItems.RABBIT_JERKY, "Rabbit Jerky");
+		this.addItem(TFItems.COD_JERKY, "Cod Jerky");
+		this.addItem(TFItems.SALMON_JERKY, "Salmon Jerky");
+		this.addItem(TFItems.TROPICAL_FISH_JERKY, "Tropical Fish Jerky");
+		this.addItem(TFItems.FUGU_JERKY, "Fugu Jerky");
+		this.addItem(TFItems.VENISON_JERKY, "Venison Jerky");
+		this.addItem(TFItems.MEEF_JERKY, "Meef Jerky");
+
+		this.addItem(TFItems.GELATINOUS_SLIME_DROP, "Gelatinous Slime Drop");
+		this.addItem(TFItems.GELATINOUS_MAZE_SLIME_DROP, "Gelatinous Maze Slime Drop");
+
+		this.addItem(TFItems.TREATED_LEATHER, "Treated Leather");
+		this.addItem(TFItems.TANNED_LEATHER, "Tanned Leather");
+		this.addItem(TFItems.STALE_BREAD, "Stale Bread");
+
+		this.addItem(TFItems.COPPER_NUGGET, "Copper Nugget");
+		this.addItem(TFItems.IRON_BERRY, "Iron Oreberry");
+		this.addItem(TFItems.GOLD_BERRY, "Gold Oreberry");
+		this.addItem(TFItems.COPPER_BERRY, "Copper Oreberry");
+		this.addItem(TFItems.ESSENCE_BERRY, "Concentrated Essence Berry");
 
 		this.addItem(TFItems.CHARM_OF_LIFE_1, "Charm of Life I");
 		this.addItem(TFItems.CHARM_OF_LIFE_2, "Charm of Life II");
@@ -789,6 +887,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addDeathMessage("expired.player", "%1$s's life expired");
 		this.addDeathMessage("ominousFire.zombified_player", "%1$s was killed by the zombified remains of %2$s");
 		this.addDeathMessage("ominousFire.zombified_player.self", "%1$s was killed by the zombified remains of themselves");
+		this.addDeathMessage("oreberry", "%1$s was stabbed to death by an oreberry bush");
+		this.addDeathMessage("oreberry.player", "%1$s was stabbed to death by an oreberry bush while escaping %2$s");
 
 		this.addDeathMessage("axing", "%1$s was chopped up by %2$s");
 		this.addDeathMessage("axing.item", "%1$s was chopped up by %2$s using %3$s");
@@ -821,6 +921,7 @@ public class LangGenerator extends TFLangProvider {
 		this.addDeathMessage("acid_rain", "%1$s went dancing in the acid rain");
 		this.addDeathMessage("ominous", "%1$s was subsumed by ominous fire");
 		this.addDeathMessage("failedChallenge", "%1$s failed to show their mettle and drank themselves to death");
+		this.addDeathMessage("stale_sandwich", "%1$s was turned into a stale sandwich by %2$s");
 
 		this.addStat("blocks_crumbled", "Blocks Crumbled");
 		this.addStat("bugs_squished", "Bugs Squashed");
@@ -835,6 +936,8 @@ public class LangGenerator extends TFLangProvider {
 
 		this.add("config.jade.plugin_twilightforest.quest_ram_wool", "Questing Ram Wool");
 		this.add("config.jade.plugin_twilightforest.chiseled_bookshelf_spawner", "Chiseled Canopy Bookshelf Spawns");
+		this.add("config.jade.plugin_twilightforest.drying_rack", "Drying Rack Time");
+		this.add("jade.drying_rack.remaining", "%s remaining");
 
 		this.add("twilightforest.book.author", "a forgotten explorer");
 
@@ -894,6 +997,13 @@ public class LangGenerator extends TFLangProvider {
 		this.addScreenMessage("progression_end.message", "This is the end of progression for now. The Final Castle that awaits on the plateau is still unfinished and a work in progress. If you would like to keep up with the mod's development you can join our %s.");
 		this.addScreenMessage("progression_end.discord", "Discord Server");
 
+		this.addScreenMessage("drying_jei", "Drying Rack");
+		this.addScreenMessage("drying_time", "%sm %ss");
+		this.addScreenMessage("drying_minutes", "%s Minutes");
+		this.addScreenMessage("drying_minute", "%s Minute");
+		this.addScreenMessage("drying_seconds", "%s Seconds");
+		this.addScreenMessage("drying_second", "%s Second");
+		this.addScreenMessage("drying_ticks", "%s ticks");
 		this.addScreenMessage("crumble_horn_jei", "Crumble Horn");
 		this.addScreenMessage("transformation_jei", "Transformation Powder");
 		this.addScreenMessage("ominous_fire_jei", "Ominous Fire");
@@ -936,8 +1046,10 @@ public class LangGenerator extends TFLangProvider {
 			this.add(location.toLanguageKey("magic_painting", "author"), stringStringPair.getSecond());
 		});
 
+		this.createTip("alpha_yeti", "The Alpha Yeti's rampage causes blocks to become dislodged from the ceiling. Watch out for falling icicles!");
 		this.createTip("anvil_squashing", "Bugs can be squashed by Anvils.");
 		this.createTip("arctic_armor", "Arctic Armor can be dyed any color.");
+		this.createTip("baby_jockey", "Baby Skeleton Druids can be found riding Swarm Spiders.");
 		this.createTip("banister_shape", "Banisters can be right-clicked with an axe to change their height.");
 		this.createTip("block_and_chain", "Enchanting a Block and Chain with Destruction allows it to break blocks.");
 		this.createTip("boggard", "What the heck is a Boggard?");
@@ -946,13 +1058,17 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("carminite_builder", "Carminite Builders place temporary blocks in the direction you're looking.");
 		this.createTip("charm_of_keeping", "A Charm of Keeping will return parts of your inventory after death.");
 		this.createTip("charm_of_life", "A Charm of Life can save you from a fatal blow.");
+		this.createTip("clouds", "Rainy and Snowy Clouds can be used to simulate weather effects!");
 		this.createTip("crumble_horn", "The Crumble Horn will deteriorate nearby blocks when used.");
 		this.createTip("druid_hut", "Druid huts sometimes have hidden basements.");
 		this.createTip("e115_pickup", "Sneak + right-click placed Experiment 115 to pick it back up.");
 		this.createTip("e115_sprinkle", "Redstone can be sprinkled on top of Experiment 115.");
+		this.createTip("emperors_cloth", "Emperor's Cloth will prevent armor from rendering when crafted with it.");
 		this.createTip("experiment_115", "Does anyone know what Experiment 115 really is?");
+		this.createTip("feather_fan", "The Peacock Feather Fan can be used to push mobs away, or yourself into the air if used while jumping. It also works well with the Elytra and Mace!");
 		this.createTip("fiery_pickaxe", "A Fiery Pickaxe will smelt any blocks it breaks.");
 		this.createTip("ghast_trap", "Killing Carminite Ghastlings near a Ghast Trap will charge it.");
+		this.createTip("giant_block", "Mining a 4x4x4 area of the same block with a Giant's Pickaxe will drop 1 giant block instead.");
 		this.createTip("glass_sword", "Glass Swords break after a single hit.");
 		this.createTip("hollow_log", "Various things can be placed inside Hollow Logs such as snow, moss, or ladders.");
 		this.createTip("hollow_oak_sapling", "Saplings that grow into giant hollow trees can be found in Druid Huts.");
@@ -962,6 +1078,8 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("hydra_mortars", "You can deflect the Hydra's mortar attack.");
 		this.createTip("ice_core", "Ice Cores and Snow Guardians melt in hot biomes.");
 		this.createTip("jars", "Fireflies and Cicadas can be put into jars.");
+		this.createTip("key_biomes", "Progression biomes generate in clusters of 4 minibosses surrounding a normal boss.");
+		this.createTip("key_biome_locations", "Progression biome clusters generate roughly 600 blocks away from each other, meaning the next boss is never too far away.");
 		this.createTip("kobold", "Kobold");
 		this.createTip("labyrinth_vault", "The Labyrinth contains a secret room.");
 		this.createTip("lich_scepters", "The Lich drops a variety of magic-based scepters.");
@@ -970,8 +1088,10 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("magic_leaves", "Magic Tree Leaves won't drop saplings when broken.");
 		this.createTip("magic_map", "Magic Maps are used to easily locate structures.");
 		this.createTip("magic_saplings", "Special magic saplings can be found inside Hollow Oak trees.");
+		this.createTip("maze_map_focus", "Minotaurs can occasionally drop Maze Map Focuses, which can be used to make Maze Maps.");
 		this.createTip("mazebreaker", "The Mazebreaker can break Mazestone blocks 16 times faster and doesn't take extra durability damage.");
 		this.createTip("mining_tree", "The Miner's Tree will pull ores up to the surface.");
+		this.createTip("minoshroom", "The Minoshroom will perform a slam attack if a player lingers too close to it.");
 		this.createTip("moon_dial", "The Moon Dial shows the current phase of the moon.");
 		this.createTip("moonworm_queen", "The Moonworm Queen can be fed Torchberries.");
 		this.createTip("mushglooms", "Mushglooms cannot be bonemealed into giant mushrooms. However, placing them on Uberous Soil will make them grow.");
@@ -979,8 +1099,12 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("naga", "The Naga can be stunned by making it ram something hard!");
 		this.createTip("netherite_axe", "There will never be a Netherite Minotaur Axe.");
 		this.createTip("ore_magnet", "The Ore Magnet can pull ore veins up to the surface.");
+		this.createTip("ore_meter", "The Ore Meter will display all nearby ores when turned on. It can also target certain blocks by shift-right clicking them, and will then only show a count of those blocks nearby. ");
+		this.createTip("parrying", "A well-timed shield block can parry a projectile back at a mob.");
 		this.createTip("peacock_feather_fan", "The Peacock Feather Fan can be used to extinguish Candles.");
 		this.createTip("phantom_armor", "Phantom Armor is automatically kept on death.");
+		this.createTip("phantoms", "Knight Phantoms take a lot less damage if they're invisible. Try to target the visible one when fighting them!");
+		this.createTip("pocket_watch", "The Rabbit's Pocket Watch will grants additional speed while in the hotbar, and will increase mining speed when held.");
 		this.createTip("quest_ram", "The Questing Ram will reward anyone who gives it what it's missing.");
 		this.createTip("red_thread", "Red Thread can be seen through walls.");
 		this.createTip("redcap", "Redcaps can place and light TNT.");
@@ -989,23 +1113,47 @@ public class LangGenerator extends TFLangProvider {
 		this.createTip("spooky_forest", "The Spooky Forest is not Halloween themed.");
 		this.createTip("structure_conquering", "Killing a boss will make mobs stop spawning in that structure.");
 		this.createTip("structure_spawning", "Structures spawn in a grid-like pattern.");
+		this.createTip("the_lore", "The story is all here, you just need to figure it out yourself!");
 		this.createTip("time_tree", "The Tree of Time will accelerate the growth of nearby crops.");
 		this.createTip("torchberries", "We did glow berries first!");
 		this.createTip("towerwood", "Towerwood Planks are very resistant, but not immune, to fire.");
 		this.createTip("transformation_tree", "The Tree of Transformation will convert the area around it into an Enchanted Forest.");
 		this.createTip("trollber_ripening", "Killing a Troll will ripen nearby Trollber.");
+		this.createTip("trophy_pedestal", "Trophy Pedestals can only be mined after they have been activated.");
 		this.createTip("twilight_portal", "Throw a diamond into a pool of water surrounded by flowers.");
+		this.createTip("uncrafting_table", "The Uncrafting Table isn't just used to uncraft items. It can also recraft items into other ones, repair tools and armor, and transfer enchantments across gear!");
 		this.createTip("ur_ghast", "The Ur-Ghast can be pulled down from the sky using Ghast Traps.");
 		this.createTip("vanishing_block", "Vanishing Blocks will disappear forever when activated.");
 		this.createTip("worldgen_features", "The forest is filled with many ruins. Some may even contain unique items.");
 		this.createTip("yeti", "Yetis love throwing things.");
 		this.createTip("zombie_healing", "Zombies summoned with a Zombie Scepter can be healed with Rotten Flesh.");
 
+		this.createTip("mystic_crown", "The Mystic Crown slightly buffs scepters when worn.");
+		this.createTip("potion_flask", "Potion Flasks can hold up to 3 doses of the same potion.");
+		this.createTip("minion_buff", "If the Twilight Lich hits one of his minions with a projectile, it will make the minion stronger and faster. ");
+		this.createTip("ominous_fire", "Ominous fire can turn creatures undead.");
+		this.createTip("the_walls", "The Death Tomes are in your walls. They're in your walls.");
+		this.createTip("lich_deflection", "The Twilight Lich will deflect Scepter of Twilight bolts after his shields are down.");
+		this.createTip("candelabra", "Using Redstone Dust on a Candelabra will make its flames turn red and emit a redstone signal.");
+		this.createTip("wrought_iron", "Wrought Iron Bars cannot be obtained normally. They can only be obtained by uncrafting blocks made of them.");
+		this.createTip("essence_charge", "Exanimate Essence will fully charge any scepter it is crafted with.");
+		this.createTip("casket_usage", "The Keepsake Casket acts as a limited use gravestone. If in your inventory on death, it will place itself and hold all your items inside.");
+		this.createTip("casket_logging", "The Keepsake Casket can be waterlogged, lavalogged, and encased in a block if it falls victim to a fluid interaction.");
+		this.createTip("renewal", "Scepters enchanted with Renewal will automatically recharge themselves using the required items in the player's inventory.");
+
+		this.createTip("jerky", "Meat can be dried into jerky using Drying Racks.");
+		this.createTip("berry_bushes", "Berry bushes can be found all over the Twilight Forest.");
+		this.createTip("oreberries", "Metal berry bushes rarely generate underground.");
+		this.createTip("craft_travellers_gear", "Traveller's gear can be crafted from drying Treated Leather and turning it into Tanned Leather.");
+		this.createTip("modify_travellers_gear", "Each piece of traveller's gear has 1 built-in ability, and up to 3 more can be added per piece.");
+		this.createTip("nether_bushes", "Along with other foreign objects and materials, strange plantlife has made itself native to the Dark Tower.");
+
 		this.translateTag(ItemTagGenerator.CARMINITE_GEMS, "Carminite Gems");
 		this.translateTag(ItemTagGenerator.FIERY_INGOTS, "Fiery Ingots");
 		this.translateTag(ItemTagGenerator.IRONWOOD_INGOTS, "Ironwood Ingots");
 		this.translateTag(ItemTagGenerator.KNIGHTMETAL_INGOTS, "Knightmetal Ingots");
 		this.translateTag(ItemTagGenerator.STEELEAF_INGOTS, "Steeleaf Ingots");
+		this.translateTag(ItemTagGenerator.WROUGHT_IRON_INGOTS, "Wrought Iron Ingots");
 		this.translateTag(ItemTagGenerator.PAPER, "Papers");
 		this.translateTag(ItemTagGenerator.RAW_MATERIALS_IRONWOOD, "Raw Ironwood");
 		this.translateTag(ItemTagGenerator.RAW_MATERIALS_KNIGHTMETAL, "Raw Knightmetal");
@@ -1049,6 +1197,8 @@ public class LangGenerator extends TFLangProvider {
 		this.translateTag(ItemTagGenerator.TWILIGHT_OAK_LOGS, "Twilight Oak Logs");
 		this.translateTag(ItemTagGenerator.UNCRAFTING_IGNORES_COST, "Uncrafting Table Ignores Cost");
 		this.translateTag(ItemTagGenerator.WIP, "Work In Progress Items");
+		this.translateTag(ItemTagGenerator.IMMUNE_TO_THORNS, "Immune to Thorns");
+		this.translateTag(ItemTagGenerator.SCEPTERS, "Scepters");
 		this.translateTag(FluidTagGenerator.FIRE_JET_FUEL, "Fire Jet Fuel");
 
 		//config
@@ -1068,12 +1218,17 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("ram_indicator", "Questing Ram Wool Indicator", ConfigComments.QUESTING_RAM_WOOL);
 		this.configEntry("shield_indicator", "Fortification Shield Indicator", ConfigComments.FORTIFICATION);
 		this.configEntry("shield_indicator_creative", "Fortification Shield Indicator (creative)", ConfigComments.FORTIFICATION_CREATIVE);
-		this.configEntry("giant_skin_uuid_list", "Giant Skins", ConfigComments.GIANT_SKINS);
-		this.add("giantSkinUUIDs.button", "Edit Skins");
-		this.configEntry("aurora_biomes", "Aurora Shader Biomes", ConfigComments.AURORA_SHADER);
-		this.add("auroraBiomes.button", "Edit Biomes");
+		this.configEntry("giant_skin_uuid_list", "Giant Skins", ConfigComments.GIANT_SKINS, "Edit Skins");
+		this.configEntry("aurora_biomes", "Aurora Shader Biomes", ConfigComments.AURORA_SHADER, "Edit Biomes");
 		this.configEntry("prettify_ore_meter_gui", "Prettify Ore Meter GUI", ConfigComments.PRETTIFY_ORE_METER);
 		this.configEntry("totem_charm_animation", "Totem of Undying Charm Animation", ConfigComments.CHARMS_AS_TOTEMS);
+		this.configEntry("manual_travellers_wings_gradual_glide", "Manual Gradually Gliding", ConfigComments.MANUAL_TRAVELLERS_WINGS_GRADUAL_GLIDE);
+
+		this.configCategory("item_display", "Item Display Modifier Settings", ConfigComments.ITEM_DISPLAY);
+		this.configEntry("screen_offset_x", "Display X Offset", ConfigComments.DISPLAY_SCREEN_OFFSET_Y);
+		this.configEntry("screen_offset_y", "Display Y Offset", ConfigComments.DISPLAY_SCREEN_OFFSET_Y);
+		this.configEntry("screen_scale", "Display Scale", ConfigComments.DISPLAY_SCALE);
+		this.configEntry("twenty_four_hour_format", "24-Hour Format", ConfigComments.TWENTY_FOUR_HOUR_FORMAT);
 
 		//common config
 		this.configCategory("dim_settings", "Dimension Settings", ConfigComments.DIMENSION);
@@ -1110,7 +1265,6 @@ public class LangGenerator extends TFLangProvider {
 		this.configEntry("sorting_range", "Sorting Tree Range", ConfigComments.SORTING_CORE);
 
 		this.configEntry("shield", "Shield Interactions", ConfigComments.SHIELD_PARRYING);
-		this.add("Shield Parrying.button", "Edit");
 		this.configEntry("parry_non_twilight", "Parry Non-TF Projectiles", ConfigComments.PARRY_NON_TF);
 		this.configEntry("parry_window", "Parry Window", ConfigComments.PARRY_WINDOW);
 
@@ -1124,5 +1278,54 @@ public class LangGenerator extends TFLangProvider {
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_loot", "More Loot");
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_health", "More Health");
 		this.add("config.twilightforest.multiplayer_fight_adjuster.more_loot_and_health", "More Loot & Health");
+
+		this.addKeyBindCategory(TFKeyBindsCategories.TRAVELLERS_GEAR, "Twilight Forest (Traveller's Gear)");
+
+		this.addKeyMapping(TFKeyBinds.RED_THREAD_VISION_KEY, "See Red Thread with Goggles");
+		this.addKeyMapping(TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY, "Cycle Item Display's Stored Maps");
+		this.addKeyMapping(TFKeyBinds.ZOOM_KEY, "Zoom With Goggles");
+		this.addKeyMapping(TFKeyBinds.SWAP_HOTBAR_KEY, "Swap Hotbar");
+
+		this.add("item.twilightforest.travellers_gloves.desc", "Cosmetic");
+
+		// built-in modifiers
+		this.addTravellersModifier(registries, TravellersModifiersManager.ZOOM_ABILITY, "Zoom (keybind: ${tfkeybinds/" + TFKeyBinds.ZOOM_KEY.getName() + "})");
+		this.addTravellersModifier(registries, TravellersModifiersManager.SWIFT_SWIM_ABILITY, "Swift Swim");
+		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_ABILITY, "Swap Hotbar (keybind: ${tfkeybinds/" + TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
+		this.addTravellersModifier(registries, TravellersModifiersManager.HIGH_JUMP_ABILITY, "High Jump");
+		this.addTravellersModifier(registries, TravellersModifiersManager.STEP_UP_ABILITY, "Step-Up");
+
+		// insertable modifiers
+		this.addTravellersModifier(registries, TravellersModifiersManager.AUTO_REPAIR_MODIFIER, "Auto-Repair");
+
+		this.addTravellersModifier(registries, TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER, "Aquatic Agility");
+		this.addTravellersModifier(registries, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, "Red Thread Vision (keybind: ${tfkeybinds/" + TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
+		this.addTravellersModifier(registries, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER, "All-Night Goggles");
+		this.addTravellersModifier(registries, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER, "Item Display (keybind: ${tfkeybinds/" + TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY.getName() + "})");
+		this.add("travellers_gear.modifier.twilightforest.item_display.clock.unknown", "Time Unknown");
+		this.add("travellers_gear.modifier.twilightforest.item_display.compass.lodestone", "%s (%s blocks away)");
+
+		this.addTravellersModifier(registries, TravellersModifiersManager.STEALTH_MODIFIER, "Stealth (sneak to activate)");
+		this.addTravellersModifier(registries, TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER, "Arrow Magnetism");
+		this.addTravellersModifier(registries, TravellersModifiersManager.EFFICIENT_EATER_MODIFIER, "Efficient Eater");
+		this.addTravellersModifier(registries, TravellersModifiersManager.PERFECT_DODGE_MODIFIER, "Perfect Dodge");
+		this.addTravellersModifier(registries, TravellersModifiersManager.HASTE_MODIFIER, "Haste");
+
+		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER, "Swap Hotbar (keybind: ${tfkeybinds/" + TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
+
+		this.addTravellersModifier(registries, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER, "Gradual Glide (sneak to activate)");
+		this.addTravellersModifier(registries, TravellersModifiersManager.AGILE_RANGER_MODIFIER, "Agile Ranger");
+		this.addTravellersModifier(registries, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER, "Double Jump");
+		this.addTravellersModifier(registries, TravellersModifiersManager.SIDESTEP_MODIFIER, "Sidestep");
+
+		this.addTravellersModifier(registries, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER, "Straight Ahead");
+		this.addTravellersModifier(registries, TravellersModifiersManager.SLIMY_SOLES_MODIFIER, "Slimy Soles");
+		this.addTravellersModifier(registries, TravellersModifiersManager.UNRESTRAINED_MODIFIER, "Unrestrained");
+		this.addTravellersModifier(registries, TravellersModifiersManager.WATER_WALK_MODIFIER, "Water Walk");
+
+		// Other Traveller's gear components
+		this.add("travellers_gear.ability", "Ability: %s");
+		this.add("travellers_gear.modifier.empty", "Empty");
+		this.add("travellers_gear.broken", " (Broken)");
 	}
 }

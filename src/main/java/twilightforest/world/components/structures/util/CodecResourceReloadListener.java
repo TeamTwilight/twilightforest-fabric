@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -44,7 +45,7 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 
 			if (TwilightForestMod.ID.equals(location.getNamespace())) {
 				JsonElement jsonElement = entry.getValue();
-				this.deserialize(manager, location, jsonElement);
+				this.deserialize(manager, this.initDynamicOps(), location, jsonElement);
 			} else {
 				nonTwilight.add(entry);
 			}
@@ -53,13 +54,13 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 		for (Map.Entry<ResourceLocation, JsonElement> entry : nonTwilight) {
 			ResourceLocation location = entry.getKey();
 			JsonElement jsonElement = entry.getValue();
-			this.deserialize(manager, location, jsonElement);
+			this.deserialize(manager, this.initDynamicOps(), location, jsonElement);
 		}
 	}
 
-	protected void deserialize(ResourceManager manager, ResourceLocation location, JsonElement jsonElement) {
+	protected void deserialize(ResourceManager manager, DynamicOps<JsonElement> ops, ResourceLocation location, JsonElement jsonElement) {
 		try {
-			Optional<T> checkFile = this.codec.parse(JsonOps.INSTANCE, jsonElement).result();
+			Optional<T> checkFile = this.codec.parse(ops, jsonElement).result();
 			if (checkFile.isPresent()) {
 				this.forLocation(manager, location, checkFile.get());
 			} else {
@@ -68,6 +69,10 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 		} catch (Exception e) {
 			TwilightForestMod.LOGGER.error("Listener '{}' couldn't read element {}", this.getName(), location, e);
 		}
+	}
+
+	protected DynamicOps<JsonElement> initDynamicOps() {
+		return JsonOps.INSTANCE;
 	}
 
 	protected abstract void forLocation(ResourceManager manager, ResourceLocation location, T element);

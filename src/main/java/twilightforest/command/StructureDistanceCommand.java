@@ -77,8 +77,10 @@ public class StructureDistanceCommand {
 			String deltaChunkCoord = diffX + ", " + diffZ;
 			this.displayUtil.setTextEntity(level, x, boundingBox.maxY() + 1, z, Display.BillboardConstraints.CENTER, Component.literal(deltaChunkCoord));
 
-			String squareRadiusFromCenter = squareRadiusDist == 0 ? "Structure Start's center chunk" : "Radius from center chunk: " + squareRadiusDist;
-			this.displayUtil.setTextEntity(level, x, boundingBox.maxY() + 2, z, Display.BillboardConstraints.CENTER, Component.literal(squareRadiusFromCenter));
+			Component radiusInfo = squareRadiusDist == 0
+				? Component.translatable("commands.tffeature.generator_radius.center_chunk")
+				: Component.translatable("commands.tffeature.generator_radius.radius", squareRadiusDist);
+			this.displayUtil.setTextEntity(level, x, boundingBox.maxY() + 2, z, Display.BillboardConstraints.CENTER, radiusInfo);
 		}
 
 		return 0;

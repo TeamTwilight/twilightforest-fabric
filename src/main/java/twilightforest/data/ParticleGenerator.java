@@ -45,6 +45,8 @@ public class ParticleGenerator extends ParticleDescriptionProvider {
 		this.sprite(TFParticleType.LOG_CORE_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
 		this.sprite(TFParticleType.OMINOUS_FLAME.get(), TwilightForestMod.prefix("ominous_flame"));
 		this.sprite(TFParticleType.PARTICLE_SPAWNER_FIREFLY.get(), TwilightForestMod.prefix("firefly"));
+		this.spriteSet(TFParticleType.PERFECT_DODGE.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
+		this.spriteSet(TFParticleType.DOUBLE_JUMP.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
 		this.sprite(TFParticleType.PROTECTION.get(), ResourceLocation.withDefaultNamespace("glint"));
 		this.spriteSet(TFParticleType.SNOW.get(), TwilightForestMod.prefix("snow"), 4, false);
 		this.spriteSet(TFParticleType.SNOW_GUARDIAN.get(), TwilightForestMod.prefix("snow"), 4, false);
@@ -52,6 +54,7 @@ public class ParticleGenerator extends ParticleDescriptionProvider {
 		this.sprite(TFParticleType.SORTING_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
 		this.sprite(TFParticleType.TRANSFORMATION_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
 		this.sprite(TFParticleType.WANDERING_FIREFLY.get(), TwilightForestMod.prefix("firefly"));
+		this.spriteSet(TFParticleType.DRYING_RACK.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
 		this.spriteSet(TFParticleType.MAGIC_EFFECT.get(), ResourceLocation.withDefaultNamespace("effect"), 8, true);
 		this.sprite(TFParticleType.ANGRY_LICH.get(), ResourceLocation.withDefaultNamespace("angry"));
 		this.sprite(TFParticleType.TWILIGHT_ORB.get(), TwilightForestMod.prefix("twilight_orb"));

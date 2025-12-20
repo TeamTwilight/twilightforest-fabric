@@ -69,18 +69,6 @@ public class TFBlockEntities {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BrazierBlockEntity>> BRAZIER = BLOCK_ENTITIES.register("brazier", () ->
 		BlockEntityType.Builder.of(BrazierBlockEntity::new, TFBlocks.BRAZIER.get()).build(null));
 
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TFChestBlockEntity>> TF_CHEST = BLOCK_ENTITIES.register("tf_chest", () ->
-		BlockEntityType.Builder.of(TFChestBlockEntity::new,
-			TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.MANGROVE_CHEST.get(),
-			TFBlocks.DARK_CHEST.get(), TFBlocks.TIME_CHEST.get(), TFBlocks.TRANSFORMATION_CHEST.get(),
-			TFBlocks.MINING_CHEST.get(), TFBlocks.SORTING_CHEST.get()).build(null));
-
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TFTrappedChestBlockEntity>> TF_TRAPPED_CHEST = BLOCK_ENTITIES.register("tf_trapped_chest", () ->
-		BlockEntityType.Builder.of(TFTrappedChestBlockEntity::new,
-			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), TFBlocks.CANOPY_TRAPPED_CHEST.get(), TFBlocks.MANGROVE_TRAPPED_CHEST.get(),
-			TFBlocks.DARK_TRAPPED_CHEST.get(), TFBlocks.TIME_TRAPPED_CHEST.get(), TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(),
-			TFBlocks.MINING_TRAPPED_CHEST.get(), TFBlocks.SORTING_TRAPPED_CHEST.get()).build(null));
-
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SkullCandleBlockEntity>> SKULL_CANDLE = BLOCK_ENTITIES.register("skull_candle", () ->
 		BlockEntityType.Builder.of(SkullCandleBlockEntity::new,
 			TFBlocks.ZOMBIE_SKULL_CANDLE.get(), TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(),
@@ -110,6 +98,19 @@ public class TFBlockEntities {
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SinisterSpawnerBlockEntity>> SINISTER_SPAWNER = BLOCK_ENTITIES.register("sinister_spawner", () ->
 		BlockEntityType.Builder.of(SinisterSpawnerBlockEntity::new, TFBlocks.SINISTER_SPAWNER.get()).build(null));
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DryingRackBlockEntity>> DRYING_RACK = BLOCK_ENTITIES.register("drying_rack", () ->
+		BlockEntityType.Builder.of(DryingRackBlockEntity::new,
+			TFBlocks.OAK_DRYING_RACK.get(), TFBlocks.SPRUCE_DRYING_RACK.get(),
+			TFBlocks.BIRCH_DRYING_RACK.get(), TFBlocks.JUNGLE_DRYING_RACK.get(),
+			TFBlocks.ACACIA_DRYING_RACK.get(), TFBlocks.DARK_OAK_DRYING_RACK.get(),
+			TFBlocks.CRIMSON_DRYING_RACK.get(), TFBlocks.WARPED_DRYING_RACK.get(),
+			TFBlocks.VANGROVE_DRYING_RACK.get(), TFBlocks.BAMBOO_DRYING_RACK.get(),
+			TFBlocks.CHERRY_DRYING_RACK.get(),
+			TFBlocks.TWILIGHT_OAK_DRYING_RACK.get(), TFBlocks.CANOPY_DRYING_RACK.get(),
+			TFBlocks.MANGROVE_DRYING_RACK.get(), TFBlocks.DARK_DRYING_RACK.get(),
+			TFBlocks.TIME_DRYING_RACK.get(), TFBlocks.TRANSFORMATION_DRYING_RACK.get(),
+			TFBlocks.MINING_DRYING_RACK.get(), TFBlocks.SORTING_DRYING_RACK.get()).build(null));
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<OminousCandleBlockEntity>> OMINOUS_CANDLE = BLOCK_ENTITIES.register("ominous_candle", () ->
 		BlockEntityType.Builder.of(OminousCandleBlockEntity::new, TFBlocks.OMINOUS_CANDLE.get(), TFBlocks.OMINOUS_WHITE_CANDLE.get(),

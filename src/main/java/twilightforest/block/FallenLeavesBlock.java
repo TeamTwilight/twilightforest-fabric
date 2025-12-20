@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,7 +37,13 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	public static final int MAX_HEIGHT = 8;
 	public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
 	public static final MapCodec<FallenLeavesBlock> CODEC = simpleCodec(FallenLeavesBlock::new);
-	protected static final VoxelShape[] SHAPE_BY_LAYER = new VoxelShape[]{Block.box(0.0D, 0.0D, 0.0D, 16.0D, 0.2D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)};
+	protected static final VoxelShape[] SHAPE_BY_LAYER = Util.make(new VoxelShape[9], arr -> {
+		arr[0] = Block.box(0.0, 0.0, 0.0, 16.0, 0.2, 16.0);
+		for (int i = 1; i <= 8; i++) {
+			double height = i * 2.0;
+			arr[i] = Block.box(0.0, 0.0, 0.0, 16.0, height, 16.0);
+		}
+	});
 
 	public FallenLeavesBlock(Properties properties) {
 		super(properties);

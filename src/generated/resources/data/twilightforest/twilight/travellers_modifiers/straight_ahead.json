@@ -1,0 +1,7 @@
+{
+  "type": "twilightforest:component",
+  "component": {
+    "twilightforest:straight_ahead_multiplier": 1.4
+  },
+  "equipment_slots": "feet"
+}

@@ -63,6 +63,9 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.CARMINITE_GOLEM_HURT, SoundEvents.IRON_GOLEM_HURT, "Carminite Golem hurts");
 		this.makeStepSound(TFSounds.CARMINITE_GOLEM_STEP, SoundEvents.IRON_GOLEM_STEP);
 
+		this.generateNewSoundMC(TFSounds.CYCLE_MAPS, "item/book/open_flip1", 1, "Map swaps");
+		this.generateNewSoundMC(TFSounds.CYCLE_MAPS_EMPTY, "item/book/open_flip2", 1, "Map swaps");
+
 		this.generateNewSoundWithSubtitle(TFSounds.DEATH_TOME_AMBIENT, "mob/tome/idle", 2, "Death Tome flips pages");
 		this.generateNewSoundWithSubtitle(TFSounds.DEATH_TOME_DEATH, "mob/tome/death", 1, "Death Tome falls apart");
 		this.generateNewSoundWithSubtitle(TFSounds.DEATH_TOME_HURT, "mob/tome/hurt", 3, "Death Tome creases");
@@ -353,6 +356,8 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundMC(TFSounds.FAN_WHOOSH, "random/breath", 1, "Peacock Feather Fan blows");
 		this.generateExistingSoundWithSubtitle(TFSounds.FLASK_FILL, SoundEvents.BREWING_STAND_BREW, "Potion Flask fills");
 		this.generateExistingSoundWithSubtitle(TFSounds.GLASS_SWORD_BREAK, SoundEvents.GLASS_BREAK, "Glass Sword shatters");
+		this.generateExistingSoundWithSubtitle(TFSounds.GOGGLES_ZOOM_IN, SoundEvents.SPYGLASS_USE, "Traveller's Goggles zoom in");
+		this.generateExistingSoundWithSubtitle(TFSounds.GOGGLES_ZOOM_OUT, SoundEvents.SPYGLASS_STOP_USING, "Traveller's Goggles zoom out");
 		this.generateExistingSoundWithSubtitle(TFSounds.ICE_BOMB_FIRED, SoundEvents.ARROW_SHOOT, "Ice Bomb thrown");
 		this.generateExistingSoundWithSubtitle(TFSounds.KNIGHTMETAL_EQUIP, SoundEvents.ARMOR_EQUIP_NETHERITE.value(), "Knightmetal Armor clanks");
 		this.generateExistingSoundWithSubtitle(TFSounds.LAMP_BURN, SoundEvents.GHAST_SHOOT, "Lamp of Cinders ignites area");
@@ -369,6 +374,12 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.WOOD_SHIELD_SHATTERS, SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR, "Wooden Shield shatters");
 		this.generateNewSoundWithSubtitle(TFSounds.ZOMBIE_SCEPTER_USE, "random/scepter/zombie", 1, "Loyal Zombie summoned");
 		this.generateNewSoundWithSubtitle(TFSounds.OMINOUS_FIRE, "random/candelabra/ominous", 1, "Flame Whooshes Ominously");
+
+		this.generateNewSoundWithSubtitle(TFSounds.DOUBLE_JUMP, "random/travellers/double_jump", 1, "Double Jump performed");
+		this.generateNewSoundWithSubtitle(TFSounds.PERFECT_DODGE, "random/travellers/perfect_dodge", 1, "Attack dodged");
+		this.generateNewSoundWithSubtitle(TFSounds.SIDE_STEP, "random/travellers/side_step", 1, "Side Step performed");
+		this.generateNewSoundWithSubtitle(TFSounds.SIDE_STEP_CHARGED, "random/travellers/side_step_ready", 1, "Side Step recharged");
+		this.generateExistingSoundWithSubtitle(TFSounds.SWAP_HOTBAR, SoundEvents.ARMOR_EQUIP_LEATHER.value(), "Belt rustles");
 
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_RADIANCE, "radiance");
 		this.makeMusicDisc(TFSounds.MUSIC_DISC_STEPS, "steps");

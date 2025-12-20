@@ -54,6 +54,12 @@ public class TFCommand {
 	@Autowired
 	private ClearDisplayCommand clearDisplayCommand;
 
+	@Autowired
+	private TravellersGearCommand travellersGearCommand;
+
+	@Autowired
+	private TFTeleportCommand tfTeleportCommand;
+
 	public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext) {
 		LiteralArgumentBuilder<CommandSourceStack> structureBranch = Commands.literal("structure_util")
 			.then(displayPiecesCommand.register())
@@ -64,6 +70,7 @@ public class TFCommand {
 
 		LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("twilightforest")
 			.executes(this::run)
+			.then(tfTeleportCommand.register())
 			.then(centerCommand.register())
 			.then(mapLocatorCommand.register())
 			.then(conquerCommand.register())
@@ -72,6 +79,7 @@ public class TFCommand {
 			.then(mapBiomesCommand.register())
 			.then(shieldCommand.register())
 			.then(spawnerCommand.register(buildContext))
+			.then(travellersGearCommand.register())
 			.then(structureBranch);
 		LiteralCommandNode<CommandSourceStack> node = dispatcher.register(builder);
 		dispatcher.register(Commands.literal("tf").executes(this::run).redirect(node));

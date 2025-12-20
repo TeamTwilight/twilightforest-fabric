@@ -33,7 +33,7 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 		controlledSpawningCodec(instance).apply(instance, DarkTowerStructure::new)
 	);
 
-	public DarkTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public DarkTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
@@ -62,12 +62,12 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 				// roof ghasts
 				new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GHASTGUARD.get(), 10, 1, 2)
 			)), List.of(), List.of(
-				// aquarium squids (only in aquariums between y = 35 and y = 64. :/
+				// aquarium squids (only in aquariums between y = 35 and y = 64. :/)
 				new MobSpawnSettings.SpawnerData(EntityType.SQUID, 10, 4, 4)
 			)),
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_knights"))),
-			new HintConfig(HintConfig.book("darktower", 3), TFEntities.KOBOLD.get()),
-			new DecorationConfig(1, false, true, true),
+			Optional.of(new HintConfig(HintConfig.book("darktower", 3), TFEntities.KOBOLD.get())),
+			Optional.of(new DecorationConfig(1, false, true, true)),
 			true, Optional.of(TFMapDecorations.DARK_TOWER),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_DARK_TOWER_BIOMES),

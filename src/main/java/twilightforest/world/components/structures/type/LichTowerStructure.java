@@ -30,6 +30,7 @@ import twilightforest.util.WorldUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.chunkgenerators.BoxDensityFunction;
 import twilightforest.world.components.structures.CustomDensitySource;
+import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerBaseTrim;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerFoyer;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerWingBeard;
@@ -44,7 +45,7 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 		controlledSpawningCodec(instance).apply(instance, LichTowerStructure::new)
 	);
 
-	public LichTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, HintConfig hintConfig, DecorationConfig decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
+	public LichTowerStructure(ControlledSpawningConfig controlledSpawningConfig, AdvancementLockConfig advancementLockConfig, Optional<HintConfig> hintConfig, Optional<DecorationConfig> decorationConfig, boolean centerInChunk, Optional<Holder<MapDecorationType>> structureIcon, StructureSettings structureSettings) {
 		super(controlledSpawningConfig, advancementLockConfig, hintConfig, decorationConfig, centerInChunk, structureIcon, structureSettings);
 	}
 
@@ -63,7 +64,12 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 
 	@Override
 	protected void generateFromStartingPiece(StructurePiece startingPiece, GenerationContext context, StructurePiecesBuilder structurePiecesBuilder) {
-		super.generateFromStartingPiece(startingPiece, context, structurePiecesBuilder);
+		structurePiecesBuilder.addPiece(startingPiece);
+		if (startingPiece instanceof TwilightJigsawPiece jigsaw) {
+			jigsaw.addJigsaws(jigsaw, structurePiecesBuilder, context);
+		} else {
+			startingPiece.addChildren(startingPiece, structurePiecesBuilder, context.random());
+		}
 
 		if (startingPiece instanceof LichTowerFoyer foyerPiece) {
 			LichYardBox.beginYard(foyerPiece, context, structurePiecesBuilder);
@@ -96,8 +102,8 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 		return new LichTowerStructure(
 			monsters,
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_naga"))),
-			new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD.get()),
-			new DecorationConfig(0, false, true, false, true),
+			Optional.of(new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD.get())),
+			Optional.of(new DecorationConfig(0, false, true, false, true)),
 			true, Optional.of(TFMapDecorations.LICH_TOWER),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_LICH_TOWER_BIOMES),
