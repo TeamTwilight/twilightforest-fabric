@@ -98,9 +98,11 @@ public class EntityHooks {
 	 * Injection Points:<br/>
 	 * {@link net.minecraft.world.entity.Entity#move(MoverType, Vec3)}<br/>
 	 */
-	public static void resetStuckUnrestrained(Entity entity) {
+	public static Entity resetStuckUnrestrained(Entity entity) {
 		if (!(entity instanceof LivingEntity living) || living.stuckSpeedMultiplier.lengthSqr() <= 1.0E-7 || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
-			return;
+			return entity;
 		living.stuckSpeedMultiplier = Vec3.ZERO;
+
+		return entity;
 	}
 }

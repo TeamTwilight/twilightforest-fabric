@@ -25,15 +25,13 @@ public class ResetStuckUnrestrainedTransformer implements ITransformer<MethodNod
 				"net/minecraft/world/entity/Entity",
 				"stuckSpeedMultiplier"
 			)
-			.filter(f -> "Lnet/minecraft/world/phys/Vec3;".equals(f.desc))
 			.forEach(target -> node.instructions.insertBefore(target, ASMAPI.listOf(
 				new MethodInsnNode(
 					Opcodes.INVOKESTATIC,
 					"twilightforest/asmhooks/EntityHooks",
 					"resetStuckUnrestrained",
-					"(Lnet/minecraft/world/entity/Entity;)V"
-				),
-				new VarInsnNode(Opcodes.ALOAD, 0)
+					"(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/entity/Entity;"
+				)
 			)));
 		return node;
 	}
