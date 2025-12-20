@@ -14,6 +14,9 @@ import twilightforest.asm.ASMUtil;
 
 import java.util.Set;
 
+/**
+ * {@link twilightforest.asmhooks.DamageSourceHooks#getCustomDamageSource}
+ */
 public class DamageSourcesTransformer implements ITransformer<MethodNode> {
 	@Override
 	public @NotNull MethodNode transform(MethodNode node, ITransformerVotingContext context) {
