@@ -52,12 +52,12 @@ public class ScepterRepairRecipe extends CustomRecipe {
 				}
 			}
 			int duraRes = ingredients * this.getRepairDurability();
-			return scepter != null && (ingredients > 0 && (duraRes + (scepter.getMaxDamage() - scepter.getDamageValue())) < scepter.getMaxDamage());
+			return scepter != null && (ingredients > 0 && (duraRes + (scepter.getMaxDamage() - scepter.getDamageValue())) <= scepter.getMaxDamage());
 		} else {
 			for (int i = 0; i < input.size(); ++i) {
 				ItemStack stackInQuestion = input.getItem(i);
 				if (!stackInQuestion.isEmpty()) {
-					if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
+					if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() >= this.getRepairDurability()) {
 						if (scepter != null) return false;
 						scepter = stackInQuestion;
 					}
