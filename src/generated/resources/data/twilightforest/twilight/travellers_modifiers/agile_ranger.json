@@ -3,5 +3,10 @@
   "component": {
     "twilightforest:agile_ranger_modifier": 5.0
   },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.agile_ranger.description"
+    }
+  ],
   "equipment_slots": "legs"
 }

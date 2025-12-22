@@ -3,5 +3,10 @@
   "component": {
     "twilightforest:gradually_gliding_multiplier": 0.8333333
   },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.gradual_glide.description"
+    }
+  ],
   "equipment_slots": "legs"
 }

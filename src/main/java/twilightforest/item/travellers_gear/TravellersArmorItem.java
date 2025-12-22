@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.neoforged.neoforge.common.util.ConcatenatedListView;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -36,6 +37,7 @@ import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class TravellersArmorItem extends ArmorItem implements TravellersModifiable {
 	private static final MutableComponent GLOVES_TOOLTIP = Component.translatable("item.twilightforest.travellers_gloves.desc").withStyle(ChatFormatting.GRAY);
@@ -119,12 +121,21 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flags) {
 		super.appendHoverText(stack, context, tooltip, flags);
 		if (context.registries() != null) {
-			TravellersModifiersManager.findAllAbilityModifiers(context.registries(), stack).forEach(modifier ->
-				tooltip.add(Component.translatable("travellers_gear.ability", this.getModifierTooltipComponent(modifier)).withStyle(ChatFormatting.GOLD)));
+			List<Holder.Reference<TravellersModifier>> abilityModifiers = TravellersModifiersManager.findAllAbilityModifiers(context.registries(), stack);
+			for (Holder.Reference<TravellersModifier> travellersModifierReference : abilityModifiers) {
+				tooltip.add(Component.translatable("travellers_gear.ability", this.getModifierTooltipComponent(travellersModifierReference)).withStyle(ChatFormatting.GOLD));
+			}
 
 			List<Holder.Reference<TravellersModifier>> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(context.registries(), stack);
-			insertableModifiers.forEach(modifier ->
-				tooltip.add(Component.literal("- ").append(this.getModifierTooltipComponent(modifier))));
+			for (Holder.Reference<TravellersModifier> modifier : insertableModifiers) {
+				tooltip.add(Component.literal("- ").append(this.getModifierTooltipComponent(modifier)));
+				if (flags.hasShiftDown()) {
+					for (Component description : modifier.value().getDescription()) {
+						// FIXME There has to be a better way to bold only the indent and arrow and not the information component
+						tooltip.add(Component.literal("").append(Component.translatable("travellers_gear.info_indent").withStyle(ChatFormatting.BOLD)).append(description));
+					}
+				}
+			}
 
 			for (int i = insertableModifiers.size(); i < getModifierSlots(); i++) {
 				tooltip.add(Component.literal("- ").append(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY)));
@@ -132,6 +143,14 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 			if (TFItems.TRAVELLERS_GLOVES.get() == this) {
 				tooltip.add(GLOVES_TOOLTIP);
+			}
+
+			if (!flags.hasShiftDown()) {
+				ConcatenatedListView<Holder.Reference<TravellersModifier>> modifiers = ConcatenatedListView.of(abilityModifiers, insertableModifiers);
+				boolean hasHiddenDescriptions = modifiers.stream().map(Holder::value).map(TravellersModifier::getDescription).anyMatch(Predicate.not(List::isEmpty));
+				if (hasHiddenDescriptions) {
+					tooltip.add(Component.translatable("travellers_gear.shift_desc", Component.literal("Shift").withStyle(ChatFormatting.YELLOW)).withStyle(ChatFormatting.WHITE));
+				}
 			}
 		}
 	}

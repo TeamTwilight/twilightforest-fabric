@@ -18,5 +18,10 @@
   ],
   "builtin_modifier": false,
   "component": "twilightforest:aquatic_agility",
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.aquatic_agility.description"
+    }
+  ],
   "equipment_slots": "head"
 }

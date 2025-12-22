@@ -3,5 +3,10 @@
   "component": {
     "twilightforest:stealth_crouching": {}
   },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.stealth.description"
+    }
+  ],
   "equipment_slots": "chest"
 }

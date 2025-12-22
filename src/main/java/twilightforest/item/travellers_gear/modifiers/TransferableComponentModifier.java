@@ -5,6 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.TypedDataComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.ItemStack;
@@ -18,23 +20,24 @@ import java.util.List;
 public record TransferableComponentModifier(
 	EquipmentSlotGroup group,
 	DataComponentType<Unit> markerComponent,
-	TypedDataComponent<?> transferableComponent
+	TypedDataComponent<?> transferableComponent,
+	List<Component> description
 ) implements TransferableTravellersModifier {
 	public static final MapCodec<TransferableComponentModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		EquipmentSlotGroup.CODEC.fieldOf("equipment_slots").validate(TravellersModifier::validateEquipment).forGetter(TransferableComponentModifier::group),
 		DataComponentType.CODEC.fieldOf("component").forGetter(o -> o.markerComponent),
-		DataComponentMap.CODEC.fieldOf("transferable_components").forGetter(o -> DataComponentMap.builder().set((DataComponentType<Object>) o.transferableComponent().type(), o.transferableComponent().value()).build()
-		)
-	).apply(instance, (group, markerComponentMap, transferableComponentsMap) -> {
+		DataComponentMap.CODEC.fieldOf("transferable_components").forGetter(o -> DataComponentMap.builder().set((DataComponentType<Object>) o.transferableComponent().type(), o.transferableComponent().value()).build()),
+		ComponentSerialization.CODEC.listOf().optionalFieldOf("description", List.of()).forGetter(TransferableComponentModifier::description)
+	).apply(instance, (group, markerComponentMap, transferableComponentsMap, description) -> {
 		if (transferableComponentsMap.size() != 1)
 			throw new IllegalArgumentException(String.format("Expected exactly one entry in this data component maps: %s", transferableComponentsMap));
 		DataComponentType<Unit> marker = (DataComponentType<Unit>) markerComponentMap;
 		TypedDataComponent<?> transferable = transferableComponentsMap.stream().findFirst().orElseThrow();
-		return new TransferableComponentModifier(group, marker, transferable);
+		return new TransferableComponentModifier(group, marker, transferable, description);
 	}));
 
-	public <T> TransferableComponentModifier(EquipmentSlotGroup group, DataComponentType<Unit> component, DataComponentType<T> transferableComponent, T defaultTransferableComponentValue) {
-		this(group, component, new TypedDataComponent<>(transferableComponent, defaultTransferableComponentValue));
+	public <T> TransferableComponentModifier(EquipmentSlotGroup group, DataComponentType<Unit> component, DataComponentType<T> transferableComponent, T defaultTransferableComponentValue, List<Component> description) {
+		this(group, component, new TypedDataComponent<>(transferableComponent, defaultTransferableComponentValue), description);
 	}
 
 	@Override
@@ -85,5 +88,10 @@ public record TransferableComponentModifier(
 			.filter(itemStacks -> Arrays.stream(itemStacks)
 				.anyMatch(itemStack -> itemStack.has(transferableComponent.type())))
 			.toList();
+	}
+
+	@Override
+	public List<Component> getDescription() {
+		return this.description;
 	}
 }

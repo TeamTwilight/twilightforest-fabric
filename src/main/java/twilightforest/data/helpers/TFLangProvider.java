@@ -221,6 +221,10 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add(modifier.location().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix()), name);
 	}
 
+	public void addTravellersDescription(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String description) {
+		this.add(modifier.location().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix()) + ".description", description);
+	}
+
 	public void createTip(String key, String translation) {
 		String fullKey = "twilightforest.tips." + key;
 		this.add(fullKey, translation);
