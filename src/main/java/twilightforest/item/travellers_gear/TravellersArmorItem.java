@@ -149,7 +149,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 				ConcatenatedListView<Holder.Reference<TravellersModifier>> modifiers = ConcatenatedListView.of(abilityModifiers, insertableModifiers);
 				boolean hasHiddenDescriptions = modifiers.stream().map(Holder::value).map(TravellersModifier::getDescription).anyMatch(Predicate.not(List::isEmpty));
 				if (hasHiddenDescriptions) {
-					tooltip.add(Component.translatable("travellers_gear.shift_desc", Component.literal("Shift").withStyle(ChatFormatting.YELLOW)).withStyle(ChatFormatting.WHITE));
+					tooltip.add(Component.translatable("travellers_gear.shift_info", Component.literal("Shift").withStyle(ChatFormatting.YELLOW)).withStyle(ChatFormatting.WHITE));
 				}
 			}
 		}
