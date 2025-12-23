@@ -6,5 +6,10 @@
       "slots": []
     }
   },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.item_display.description"
+    }
+  ],
   "equipment_slots": "head"
 }

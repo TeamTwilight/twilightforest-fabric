@@ -1297,35 +1297,56 @@ public class LangGenerator extends TFLangProvider {
 
 		// insertable modifiers
 		this.addTravellersModifier(registries, TravellersModifiersManager.AUTO_REPAIR_MODIFIER, "Auto-Repair");
+		this.addTravellersDescription(registries, TravellersModifiersManager.AUTO_REPAIR_MODIFIER, "Repairs durability over time");
 
 		this.addTravellersModifier(registries, TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER, "Aquatic Agility");
+		this.addTravellersDescription(registries, TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER, "Respiration and Aqua Affinity in one");
 		this.addTravellersModifier(registries, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, "Red Thread Vision (keybind: ${tfkeybinds/" + TFKeyBinds.RED_THREAD_VISION_KEY.getName() + "})");
+		this.addTravellersDescription(registries, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, "Allows you to see placed Red Thread");
 		this.addTravellersModifier(registries, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER, "All-Night Goggles");
+		this.addTravellersDescription(registries, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER, "Prevents Insomnia and Enderman aggression");
 		this.addTravellersModifier(registries, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER, "Item Display (keybind: ${tfkeybinds/" + TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY.getName() + "})");
+		this.addTravellersDescription(registries, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER, "Right-click items on the Goggles to add displays");
 		this.add("travellers_gear.modifier.twilightforest.item_display.clock.unknown", "Time Unknown");
 		this.add("travellers_gear.modifier.twilightforest.item_display.compass.lodestone", "%s (%s blocks away)");
 
 		this.addTravellersModifier(registries, TravellersModifiersManager.STEALTH_MODIFIER, "Stealth (sneak to activate)");
+		this.addTravellersDescription(registries, TravellersModifiersManager.STEALTH_MODIFIER, "Sneak to turn invisible");
 		this.addTravellersModifier(registries, TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER, "Arrow Magnetism");
+		this.addTravellersDescription(registries, TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER, "Retrieves missed arrows");
 		this.addTravellersModifier(registries, TravellersModifiersManager.EFFICIENT_EATER_MODIFIER, "Efficient Eater");
+		this.addTravellersDescription(registries, TravellersModifiersManager.EFFICIENT_EATER_MODIFIER, "Reduces movement-based hunger drain");
 		this.addTravellersModifier(registries, TravellersModifiersManager.PERFECT_DODGE_MODIFIER, "Perfect Dodge");
+		this.addTravellersDescription(registries, TravellersModifiersManager.PERFECT_DODGE_MODIFIER, "30% chance to dodge projectiles");
 		this.addTravellersModifier(registries, TravellersModifiersManager.HASTE_MODIFIER, "Haste");
+		this.addTravellersDescription(registries, TravellersModifiersManager.HASTE_MODIFIER, "Grants Haste II");
 
 		this.addTravellersModifier(registries, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER, "Swap Hotbar (keybind: ${tfkeybinds/" + TFKeyBinds.SWAP_HOTBAR_KEY.getName() + "})");
+		this.addTravellersDescription(registries, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER, "Allows you to store and withdraw your hotbar");
 
 		this.addTravellersModifier(registries, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER, "Gradual Glide (sneak to activate)");
+		this.addTravellersDescription(registries, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER, "Allows for gliding through the air");
 		this.addTravellersModifier(registries, TravellersModifiersManager.AGILE_RANGER_MODIFIER, "Agile Ranger");
+		this.addTravellersDescription(registries, TravellersModifiersManager.AGILE_RANGER_MODIFIER, "Allows normal movement when using bow-like items");
 		this.addTravellersModifier(registries, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER, "Double Jump");
+		this.addTravellersDescription(registries, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER, "Lets you do a second jump in mid-air");
 		this.addTravellersModifier(registries, TravellersModifiersManager.SIDESTEP_MODIFIER, "Sidestep");
+		this.addTravellersDescription(registries, TravellersModifiersManager.SIDESTEP_MODIFIER, "Double-tap %s or %s to do a dash");
 
 		this.addTravellersModifier(registries, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER, "Straight Ahead");
+		this.addTravellersDescription(registries, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER, "Increases forward movement speed");
 		this.addTravellersModifier(registries, TravellersModifiersManager.SLIMY_SOLES_MODIFIER, "Slimy Soles");
+		this.addTravellersDescription(registries, TravellersModifiersManager.SLIMY_SOLES_MODIFIER, "Prevents fall damage by making you bounce");
 		this.addTravellersModifier(registries, TravellersModifiersManager.UNRESTRAINED_MODIFIER, "Unrestrained");
+		this.addTravellersDescription(registries, TravellersModifiersManager.UNRESTRAINED_MODIFIER, "Prevents blocks from slowing you down");
 		this.addTravellersModifier(registries, TravellersModifiersManager.WATER_WALK_MODIFIER, "Water Walk");
+		this.addTravellersDescription(registries, TravellersModifiersManager.WATER_WALK_MODIFIER, "Allows you to walk on Water");
 
 		// Other Traveller's gear components
 		this.add("travellers_gear.ability", "Ability: %s");
 		this.add("travellers_gear.modifier.empty", "Empty");
 		this.add("travellers_gear.broken", " (Broken)");
+		this.add("travellers_gear.shift_info", "Hold %s for info");
+		this.add("travellers_gear.info_indent", "  ⤷ ");
 	}
 }

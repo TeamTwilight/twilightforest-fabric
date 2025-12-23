@@ -3,5 +3,10 @@
   "component": {
     "twilightforest:unrestrained": {}
   },
+  "description": [
+    {
+      "translate": "travellers_gear.modifier.twilightforest.unrestrained.description"
+    }
+  ],
   "equipment_slots": "feet"
 }
