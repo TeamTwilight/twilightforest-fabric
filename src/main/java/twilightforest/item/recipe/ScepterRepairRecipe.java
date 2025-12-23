@@ -14,10 +14,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ScepterRepairRecipe extends CustomRecipe {
@@ -52,12 +50,12 @@ public class ScepterRepairRecipe extends CustomRecipe {
 				}
 			}
 			int duraRes = ingredients * this.getRepairDurability();
-			return scepter != null && (ingredients > 0 && (duraRes + (scepter.getMaxDamage() - scepter.getDamageValue())) <= scepter.getMaxDamage());
+			return scepter != null && (ingredients > 0 && (scepter.getDamageValue() + this.getRepairDurability() - duraRes) > 0);
 		} else {
 			for (int i = 0; i < input.size(); ++i) {
 				ItemStack stackInQuestion = input.getItem(i);
 				if (!stackInQuestion.isEmpty()) {
-					if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() >= this.getRepairDurability()) {
+					if (stackInQuestion.is(this.scepter) && stackInQuestion.getDamageValue() > 0) {
 						if (scepter != null) return false;
 						scepter = stackInQuestion;
 					}
