@@ -222,7 +222,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void addTravellersDescription(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String description) {
-		this.add(modifier.location().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix()) + ".description", description);
+		this.add(modifier.location().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix(), "description"), description);
 	}
 
 	public void createTip(String key, String translation) {

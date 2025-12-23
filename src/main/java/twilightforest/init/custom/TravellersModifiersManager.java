@@ -110,7 +110,7 @@ public class TravellersModifiersManager {
 	}
 
 	private static List<Component> componentText(ResourceKey<TravellersModifier> modifier, Object... args) {
-		return List.of(Component.translatable(modifier.location().toLanguageKey("travellers_gear.modifier") + ".description", args));
+		return List.of(Component.translatable(modifier.location().toLanguageKey("travellers_gear.modifier", "description"), args));
 	}
 
 	public static boolean isModifierActive(HolderLookup.Provider registries, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
