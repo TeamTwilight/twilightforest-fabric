@@ -34,8 +34,7 @@
           "state": {
             "Name": "twilightforest:firefly",
             "Properties": {
-              "facing": "up",
-              "waterlogged": "false"
+              "facing": "up"
             }
           }
         },
@@ -49,8 +48,7 @@
           "state": {
             "Name": "twilightforest:firefly",
             "Properties": {
-              "facing": "north",
-              "waterlogged": "false"
+              "facing": "north"
             }
           }
         },

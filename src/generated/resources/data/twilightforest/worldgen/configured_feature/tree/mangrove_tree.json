@@ -9,8 +9,7 @@
           "state": {
             "Name": "twilightforest:firefly",
             "Properties": {
-              "facing": "up",
-              "waterlogged": "false"
+              "facing": "up"
             }
           }
         },

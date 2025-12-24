@@ -8,8 +8,7 @@
         "data": {
           "Name": "twilightforest:firefly",
           "Properties": {
-            "facing": "north",
-            "waterlogged": "false"
+            "facing": "north"
           }
         },
         "weight": 1
@@ -18,8 +17,7 @@
         "data": {
           "Name": "twilightforest:cicada",
           "Properties": {
-            "facing": "north",
-            "waterlogged": "false"
+            "facing": "north"
           }
         },
         "weight": 1

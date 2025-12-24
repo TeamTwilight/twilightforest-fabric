@@ -31,11 +31,8 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -50,10 +47,9 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.*;
 
-public abstract class CritterBlock extends BaseEntityBlock implements SimpleWaterloggedBlock, Equipable {
+public abstract class CritterBlock extends BaseEntityBlock implements Equipable {
 
 	public static final DirectionProperty FACING = DirectionalBlock.FACING;
-	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private final VoxelShape DOWN_BB = Shapes.create(new AABB(0.2F, 0.85F, 0.2F, 0.8F, 1.0F, 0.8F));
 	private final VoxelShape UP_BB = Shapes.create(new AABB(0.2F, 0.0F, 0.2F, 0.8F, 0.15F, 0.8F));
 	private final VoxelShape NORTH_BB = Shapes.create(new AABB(0.2F, 0.2F, 0.85F, 0.8F, 0.8F, 1.0F));
@@ -63,7 +59,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	protected CritterBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, Boolean.FALSE));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP));
 	}
 
 	public static boolean canSurvive(LevelReader reader, BlockPos pos, Direction facing) {
@@ -84,15 +80,10 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	}
 
 	@Override
-	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-	}
-
-	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Direction clicked = context.getClickedFace();
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-		BlockState state = defaultBlockState().setValue(FACING, clicked).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+		BlockState state = defaultBlockState().setValue(FACING, clicked);
 
 		if (canSurvive(state, context.getLevel(), context.getClickedPos())) {
 			return state;
@@ -109,9 +100,6 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
-		if (state.getValue(WATERLOGGED)) {
-			accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
-		}
 		if (state.getValue(FACING).getOpposite() == direction && !state.canSurvive(accessor, pos)) {
 			return Blocks.AIR.defaultBlockState();
 		} else {
@@ -139,7 +127,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 					ItemStack newStack = Util.make(new ItemStack(TFBlocks.FIREFLY_JAR.get()), jar -> jar.set(TFDataComponents.JAR_LID.get(), stack.get(TFDataComponents.JAR_LID.get())));
 					stack.consume(1, player);
 					player.getInventory().add(newStack);
-					level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
+					level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 					return ItemInteractionResult.sidedSuccess(level.isClientSide());
 				} else if (this == TFBlocks.CICADA.get()) {
 					ItemStack newStack = Util.make(new ItemStack(TFBlocks.CICADA_JAR.get()), jar -> jar.set(TFDataComponents.JAR_LID.get(), stack.get(TFDataComponents.JAR_LID.get())));
@@ -147,7 +135,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 					player.getInventory().add(newStack);
 					if (level.isClientSide())
 						Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
-					level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
+					level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 					return ItemInteractionResult.sidedSuccess(level.isClientSide());
 				}
 			}
@@ -158,7 +146,7 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if ((entity instanceof Projectile && !entity.getType().is(EntityTagGenerator.DONT_KILL_BUGS)) || entity instanceof FallingBlockEntity) {
-			level.setBlockAndUpdate(pos, state.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState());
+			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			if (level.isClientSide())
 				Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().getLocation(), SoundSource.NEUTRAL);
 
@@ -197,6 +185,6 @@ public abstract class CritterBlock extends BaseEntityBlock implements SimpleWate
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(FACING, WATERLOGGED);
+		builder.add(FACING);
 	}
 }
