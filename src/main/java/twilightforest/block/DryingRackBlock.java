@@ -120,9 +120,9 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 		double y = pos.getY();
 		double z = pos.getZ();
 		BlockEntity blockEntity = level.getBlockEntity(pos);
-		if (!(blockEntity instanceof DryingRackBlockEntity)) {return;}
-		ItemStack item = ((DryingRackBlockEntity) blockEntity).takeTheItem();
-		Containers.dropItemStack(level, x, y, z, item);
+		if (!(blockEntity instanceof DryingRackBlockEntity dryingRackBlockEntity))
+			return;
+		Containers.dropItemStack(level, x, y, z, dryingRackBlockEntity.takeTheItem());
 		super.onRemove(state, level, pos, newState, movedByPiston);
 	}
 
