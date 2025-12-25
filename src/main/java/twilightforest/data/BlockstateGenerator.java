@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
@@ -863,11 +864,11 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.SMOKER.get(), this.makeTintedBlockColumnUniqueBottom(TFBlocks.SMOKER.getId().getPath())
 			.texture("side", prefix("block/firejet_side"))
 			.texture("top", prefix("block/firejet_top"))
-			.texture("bottom", ResourceLocation.withDefaultNamespace("block/grass_block_top")));
+			.texture("bottom", TextureMapping.getBlockTexture(Blocks.BLACK_CONCRETE_POWDER)));
 		simpleBlock(TFBlocks.FIRE_JET.get(), this.makeTintedBlockColumnUniqueBottom(TFBlocks.FIRE_JET.getId().getPath())
 			.texture("side", prefix("block/firejet_side"))
 			.texture("top", prefix("block/firejet_top"))
-			.texture("bottom", ResourceLocation.withDefaultNamespace("block/grass_block_top")));
+			.texture("bottom", TextureMapping.getBlockTexture(Blocks.BLACK_CONCRETE_POWDER)));
 
 		ModelFile smokerOff = this.make3LayerCubeIdenticalSides1Bottom(TFBlocks.ENCASED_SMOKER.getId().getPath(), 0, 10, 15, 10, 10)
 			.texture("top", prefix("block/towerdev_ghasttraplid_off"))
