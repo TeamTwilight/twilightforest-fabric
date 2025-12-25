@@ -236,18 +236,20 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 			ItemStack result = this.tinkerResult.getItem(0);
 
 			if (!result.isEmpty() && isValidMatchForInput(input, result)) {
-				//store copy of input enchants
-				ItemEnchantments.Mutable enchants = new ItemEnchantments.Mutable(input.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
-				//add all resulting item enchants to the list. This allows pre-enchanted gear to keep its enchants
-				if (result.has(DataComponents.ENCHANTMENTS)) {
-					result.get(DataComponents.ENCHANTMENTS).entrySet().forEach(enchantment -> enchants.set(enchantment.getKey(), enchantment.getIntValue()));
-				}
-				//remove any incompatible enchants
-				enchants.removeIf(holder -> !holder.value().canEnchant(result));
+				if (result.getItem().isEnchantable(result)) {
+					//store copy of input enchants
+					ItemEnchantments.Mutable enchants = new ItemEnchantments.Mutable(input.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
+					//add all resulting item enchants to the list. This allows pre-enchanted gear to keep its enchants
+					if (result.has(DataComponents.ENCHANTMENTS)) {
+						Objects.requireNonNull(result.get(DataComponents.ENCHANTMENTS)).entrySet().forEach(enchantment -> enchants.set(enchantment.getKey(), enchantment.getIntValue()));
+					}
+					//remove any incompatible enchants
+					enchants.removeIf(holder -> !result.supportsEnchantment(holder));
 
-				//remove enchantments and replace with filtered list
-				result.remove(DataComponents.ENCHANTMENTS);
-				EnchantmentHelper.setEnchantments(result, enchants.toImmutable());
+					//remove enchantments and replace with filtered list
+					result.remove(DataComponents.ENCHANTMENTS);
+					EnchantmentHelper.setEnchantments(result, enchants.toImmutable());
+				}
 
 				this.tinkerResult.setItem(0, result);
 				this.uncraftingMatrix.uncraftingCost = 0;
@@ -397,7 +399,6 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 	 * Return the cost of recrafting, if any.  Return 0 if recrafting is not available at this time
 	 */
 	private int calculateRecraftingCost() {
-
 		ItemStack input = this.tinkerInput.getItem(0);
 		ItemStack output = this.tinkerResult.getItem(0);
 
@@ -406,6 +407,8 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 		}
 
 		// okay, if we're here the input item must be enchanted, and we are repairing or recrafting it
+		if (!output.getItem().isEnchantable(output)) return 0; // Assuming the above comment is correct, we check this here and return 0 if true
+
 		int cost = 0;
 
 		if (!ItemStack.isSameItem(input, output)) {
@@ -454,7 +457,6 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 
 	@Override
 	public void clicked(int slotNum, int mouseButton, ClickType clickType, Player player) {
-
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
 		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.assemblyMatrix
 			&& player.containerMenu.getCarried().isEmpty() && !this.slots.get(slotNum).hasItem()) {
