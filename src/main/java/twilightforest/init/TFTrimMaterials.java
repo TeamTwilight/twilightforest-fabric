@@ -15,7 +15,6 @@ import twilightforest.TwilightForestMod;
 import java.util.Map;
 
 public class TFTrimMaterials {
-
 	public static final ResourceKey<TrimMaterial> IRONWOOD = registerKey("ironwood");
 	public static final ResourceKey<TrimMaterial> STEELEAF = registerKey("steeleaf");
 	public static final ResourceKey<TrimMaterial> KNIGHTMETAL = registerKey("knightmetal");
