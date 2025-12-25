@@ -4,11 +4,13 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.DyedItemColor;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
@@ -42,7 +44,7 @@ public class ArcticArmorItem extends ArmorItem {
 
 		@Override
 		public int getDefaultDyeColor(ItemStack stack) {
-			return DEFAULT_COLOR;
+			return FastColor.ARGB32.opaque(DyedItemColor.getOrDefault(stack, DEFAULT_COLOR));
 		}
 	}
 }
