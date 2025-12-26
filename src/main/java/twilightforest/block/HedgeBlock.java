@@ -43,7 +43,7 @@ public class HedgeBlock extends Block {
 	}
 
 	@Override
-	public PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
 		return mob != null && this.shouldDamage(mob) ? PathType.DANGER_OTHER : null;
 	}
 

@@ -73,7 +73,7 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return PathType.DAMAGE_OTHER;
 	}
 
