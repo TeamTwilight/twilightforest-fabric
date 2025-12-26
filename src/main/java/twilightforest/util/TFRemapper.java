@@ -17,6 +17,8 @@ public class TFRemapper {
 		DeferredRegister<Item> itemReg = TFItems.ITEMS;
 		DeferredRegister<StructurePieceType> pieceTypeReg = TFStructurePieceTypes.STRUCTURE_PIECE_TYPES;
 
+		TFBlockEntities.BLOCK_ENTITIES.addAlias(TwilightForestMod.prefix("tf_chest"), ResourceLocation.withDefaultNamespace("chest"));
+
 		remapEntryFromRegistries("yeti_trophy", "alpha_yeti_trophy", blockReg, itemReg);
 		remapEntryFromRegistries("yeti_wall_trophy", "alpha_yeti_wall_trophy", blockReg, itemReg);
 		remapEntryFromRegistries("boss_spawner_naga", "naga_boss_spawner", blockReg, itemReg);
