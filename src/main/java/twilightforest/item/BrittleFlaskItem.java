@@ -17,6 +17,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
+import twilightforest.TwilightForestMod;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
@@ -59,6 +60,29 @@ public class BrittleFlaskItem extends Item {
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
 		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		PotionContents potionContents = other.get(DataComponents.POTION_CONTENTS);
+
+		if (action == ClickAction.SECONDARY && potionContents != null) {
+			if ((flaskContents.potion().potion().isEmpty() || flaskContents.potion().equals(potionContents)) && flaskContents.doses() < DOSES - flaskContents.breakage()) {
+				if (!player.getAbilities().instabuild) {
+					other.shrink(1);
+					if (!player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE))) {
+						player.drop(new ItemStack(Items.GLASS_BOTTLE), false);
+					}
+				}
+
+				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
+				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
+		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+		ItemStack other = slot.getItem();
 		PotionContents potionContents = other.get(DataComponents.POTION_CONTENTS);
 
 		if (action == ClickAction.SECONDARY && potionContents != null) {
