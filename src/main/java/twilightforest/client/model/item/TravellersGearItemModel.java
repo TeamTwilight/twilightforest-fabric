@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.mojang.math.Transformation;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
@@ -140,8 +141,12 @@ public class TravellersGearItemModel implements IUnbakedGeometry<TravellersGearI
 		@Override
 		public BakedModel resolve(BakedModel originalModel, ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
 			BakedModel overridden = this.nested.resolve(originalModel, stack, level, entity, seed);
-			if (overridden != originalModel) return overridden;
-			if (level == null) return originalModel;
+			if (overridden != originalModel)
+				return overridden;
+			if (level == null)
+				level = Minecraft.getInstance().level;
+			if (level == null)
+				return originalModel;
 
 			List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(level, stack);
 			boolean broken = TravellersArmorItem.isTravellersArmorAndBroken(stack);
