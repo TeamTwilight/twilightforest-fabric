@@ -136,7 +136,13 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 
 	@Override
 	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-		Containers.dropContentsOnDestroy(state, newState, level, pos);
+		double x = pos.getX();
+		double y = pos.getY();
+		double z = pos.getZ();
+		BlockEntity blockEntity = level.getBlockEntity(pos);
+		if (!(blockEntity instanceof DryingRackBlockEntity dryingRackBlockEntity))
+			return;
+		Containers.dropItemStack(level, x, y, z, dryingRackBlockEntity.takeTheItem());
 		super.onRemove(state, level, pos, newState, movedByPiston);
 	}
 
