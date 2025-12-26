@@ -84,6 +84,8 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> DOOR_REAPPEAR = createEvent("block.twilightforest.door.reappear");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DOOR_VANISH = createEvent("block.twilightforest.door.vanish");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DOUBLE_JUMP = createEvent("item.twilightforest.travellers_gear.double_jump");
+	public static final DeferredHolder<SoundEvent, SoundEvent> DRYING_RACK_ADD_ITEM = createEvent("block.twilightforest.drying_rack.add_item");
+	public static final DeferredHolder<SoundEvent, SoundEvent> DRYING_RACK_REMOVE_ITEM = createEvent("block.twilightforest.drying_rack.remove_item");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DWARF_RABBIT_AMBIENT = createEvent("entity.twilightforest.dwarf_rabbit.ambient");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DWARF_RABBIT_DEATH = createEvent("entity.twilightforest.dwarf_rabbit.death");
 	public static final DeferredHolder<SoundEvent, SoundEvent> DWARF_RABBIT_HURT = createEvent("entity.twilightforest.dwarf_rabbit.hurt");

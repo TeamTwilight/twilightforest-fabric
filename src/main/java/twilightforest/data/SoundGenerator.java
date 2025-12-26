@@ -320,6 +320,8 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateExistingSoundWithSubtitle(TFSounds.DOOR_ACTIVATED, SoundEvents.COMPARATOR_CLICK, "Castle Door clicks");
 		this.generateExistingSoundWithSubtitle(TFSounds.DOOR_REAPPEAR, SoundEvents.FIRE_EXTINGUISH, "Castle Door reappears");
 		this.generateExistingSoundWithSubtitle(TFSounds.DOOR_VANISH, SoundEvents.FIRE_EXTINGUISH, "Castle Door vanishes");
+		this.generateExistingSoundWithSubtitle(TFSounds.DRYING_RACK_ADD_ITEM, SoundEvents.ITEM_FRAME_ADD_ITEM, "Drying Rack Fills");
+		this.generateExistingSoundWithSubtitle(TFSounds.DRYING_RACK_REMOVE_ITEM, SoundEvents.ITEM_FRAME_ADD_ITEM, "Drying Rack Empties");
 		this.generateExistingSoundWithSubtitle(TFSounds.GHAST_TRAP_AMBIENT, SoundEvents.NOTE_BLOCK_HARP.value(), "Ghast Trap dings");
 		this.generateNewSoundWithSubtitle(TFSounds.GHAST_TRAP_ON, "mob/ur_ghast/trap_on", 5, "Ghast Trap buzzes");
 		this.generateNewSoundWithSubtitle(TFSounds.GHAST_TRAP_SPINDOWN, "mob/ur_ghast/trap_spin_down", 1, "Ghast Trap shuts off");

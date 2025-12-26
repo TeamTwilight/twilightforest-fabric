@@ -1534,6 +1534,8 @@
   "subtitles.twilightforest.block.door.activate": "Castle Door clicks",
   "subtitles.twilightforest.block.door.reappear": "Castle Door reappears",
   "subtitles.twilightforest.block.door.vanish": "Castle Door vanishes",
+  "subtitles.twilightforest.block.drying_rack.add_item": "Drying Rack Fills",
+  "subtitles.twilightforest.block.drying_rack.remove_item": "Drying Rack Empties",
   "subtitles.twilightforest.block.generic.annihilation": "Block dissolves",
   "subtitles.twilightforest.block.ghast_trap.ambient": "Ghast Trap dings",
   "subtitles.twilightforest.block.ghast_trap.on": "Ghast Trap buzzes",

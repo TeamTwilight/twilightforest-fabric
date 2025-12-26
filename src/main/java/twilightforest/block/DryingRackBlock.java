@@ -5,13 +5,18 @@ import com.google.common.collect.Maps;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -25,6 +30,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -36,6 +42,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFParticleType;
+import twilightforest.init.TFSounds;
 
 import java.util.Map;
 
@@ -91,8 +98,21 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 
 		if (rack.getTheItem().isEmpty() && !playerStack.isEmpty()) {
 			rack.setTheItem(player.hasInfiniteMaterials() ? playerStack.copyWithCount(1) : playerStack.split(1));
-		} else if (!level.isClientSide()) {
-			ItemHandlerHelper.giveItemToPlayer(player, rack.takeTheItem(), hand == InteractionHand.MAIN_HAND ? player.getInventory().selected : 40);
+			if (!level.isClientSide()) {
+				level.playSound(null, pos, TFSounds.DRYING_RACK_ADD_ITEM.get(), SoundSource.BLOCKS, 1.0F, 0.75F + level.random.nextFloat() * 0.5F);
+				level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+			}
+		} else {
+			if (!level.isClientSide()) {
+				ItemStack item = rack.takeTheItem();
+				if (!item.isEmpty()) {
+					if (!player.getInventory().add(item)) player.drop(item, false);
+					level.playSound(null, pos, TFSounds.DRYING_RACK_REMOVE_ITEM.get(), SoundSource.BLOCKS, 0.75F, 0.75F + level.random.nextFloat() * 0.5F);
+					level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+				} else return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+			} else if (rack.getTheItem().isEmpty()) {
+				return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+			}
 		}
 		return ItemInteractionResult.sidedSuccess(level.isClientSide());
 	}
