@@ -5,8 +5,6 @@ import com.google.common.collect.Maps;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
@@ -14,9 +12,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -37,7 +33,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.init.TFBlockEntities;
@@ -88,7 +83,7 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
 		boolean flag = fluidstate.getType() == Fluids.WATER;
-		return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection()).setValue(WATERLOGGED, flag);
+		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(WATERLOGGED, flag);
 	}
 
 	@Override
@@ -136,13 +131,9 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 
 	@Override
 	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-		double x = pos.getX();
-		double y = pos.getY();
-		double z = pos.getZ();
-		BlockEntity blockEntity = level.getBlockEntity(pos);
-		if (!(blockEntity instanceof DryingRackBlockEntity dryingRackBlockEntity))
-			return;
-		Containers.dropItemStack(level, x, y, z, dryingRackBlockEntity.takeTheItem());
+		if (level.getBlockEntity(pos) instanceof DryingRackBlockEntity blockEntity) {
+			Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), blockEntity.takeTheItem());
+		}
 		super.onRemove(state, level, pos, newState, movedByPiston);
 	}
 
@@ -164,6 +155,7 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	protected BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
