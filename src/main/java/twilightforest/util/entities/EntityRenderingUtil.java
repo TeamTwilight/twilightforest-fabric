@@ -7,6 +7,7 @@ import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforgespi.language.IModInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +37,7 @@ import java.util.*;
 public class EntityRenderingUtil {
 
 	private static final Set<EntityType<?>> IGNORED_ENTITIES = new HashSet<>();
-	private static final Map<EntityType<?>, Entity> ENTITY_MAP = new HashMap<>();
+	public static final Map<EntityType<?>, Entity> ENTITY_MAP = new HashMap<>();
 
 	@Nullable
 	public static Entity fetchEntity(EntityType<?> type, @Nullable Level level) {

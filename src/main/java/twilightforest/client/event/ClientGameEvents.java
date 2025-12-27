@@ -59,6 +59,7 @@ import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.util.HolderMatcher;
+import twilightforest.util.entities.EntityRenderingUtil;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -88,6 +89,7 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(this::addCustomTooltips);
 		NeoForge.EVENT_BUS.addListener(this::clientTick);
 		NeoForge.EVENT_BUS.addListener(this::customizeSplashes);
+		NeoForge.EVENT_BUS.addListener(this::clearEntityRenderUtilMap);
 		NeoForge.EVENT_BUS.addListener(this::handleGameBootup);
 		NeoForge.EVENT_BUS.addListener(this::killVignette);
 		NeoForge.EVENT_BUS.addListener(this::removeHostileMountHealth);
@@ -137,6 +139,10 @@ public class ClientGameEvents {
 				}
 			}
 		}
+	}
+
+	private void clearEntityRenderUtilMap(ScreenEvent.Closing event) {
+		if (!EntityRenderingUtil.ENTITY_MAP.isEmpty()) EntityRenderingUtil.ENTITY_MAP.clear();
 	}
 
 	private void setMusicInDimension(SelectMusicEvent event) {
