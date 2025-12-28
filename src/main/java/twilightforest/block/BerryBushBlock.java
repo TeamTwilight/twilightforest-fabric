@@ -3,18 +3,18 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.common.ItemAbilities;
 import twilightforest.data.tags.BlockTagGenerator;
 
 import java.util.stream.IntStream;
@@ -35,6 +35,11 @@ public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 	}
 
 	@Override
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
+		return player.getMainHandItem().canPerformAction(ItemAbilities.SHEARS_DIG) ? 0.2F : super.getDestroyProgress(state, player, getter, pos);
+	}
+
+	@Override
 	public boolean canBePlacedAt(BlockState state) {
 		return state.is(BlockTagGenerator.TF_BERRY_BUSHES_SURVIVE);
 	}
@@ -48,7 +53,6 @@ public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 				level.setBlock(pos.above(), state.getBlock().defaultBlockState().setValue(SNOW_LAYERS, aboveState.getValue(SnowLayerBlock.LAYERS)), Block.UPDATE_CLIENTS);
 			}
 		}
-
 	}
 
 	@Override
