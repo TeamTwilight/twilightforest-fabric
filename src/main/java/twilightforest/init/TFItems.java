@@ -317,18 +317,18 @@ public class TFItems {
 	public static final DeferredItem<Item> BERRY_MEDLEY = ITEMS.register("berry_medley", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
 	public static final DeferredItem<Item> MOSS_SOUP = ITEMS.register("moss_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
 
-	public static final DeferredItem<Item> MONSTER_JERKY = ITEMS.register("monster_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.4F).build())));
-	public static final DeferredItem<Item> BEEF_JERKY = ITEMS.register("beef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
-	public static final DeferredItem<Item> CHICKEN_JERKY = ITEMS.register("chicken_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.4F).build())));
-	public static final DeferredItem<Item> PORK_JERKY = ITEMS.register("pork_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
-	public static final DeferredItem<Item> MUTTON_JERKY = ITEMS.register("mutton_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.4F).build())));
-	public static final DeferredItem<Item> RABBIT_JERKY = ITEMS.register("rabbit_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.4F).build())));
-	public static final DeferredItem<Item> COD_JERKY = ITEMS.register("cod_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
-	public static final DeferredItem<Item> SALMON_JERKY = ITEMS.register("salmon_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
-	public static final DeferredItem<Item> TROPICAL_FISH_JERKY = ITEMS.register("tropical_fish_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
-	public static final DeferredItem<Item> FUGU_JERKY = ITEMS.register("fugu_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4F).build())));
-	public static final DeferredItem<Item> VENISON_JERKY = ITEMS.register("venison_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
-	public static final DeferredItem<Item> MEEF_JERKY = ITEMS.register("meef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).build())));
+	public static final DeferredItem<Item> MONSTER_JERKY = ITEMS.register("monster_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.275F).build())));
+	public static final DeferredItem<Item> BEEF_JERKY = ITEMS.register("beef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.18F).build())));
+	public static final DeferredItem<Item> CHICKEN_JERKY = ITEMS.register("chicken_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(1.075F).build())));
+	public static final DeferredItem<Item> PORK_JERKY = ITEMS.register("pork_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.18F).build())));
+	public static final DeferredItem<Item> MUTTON_JERKY = ITEMS.register("mutton_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(1.35F).build())));
+	public static final DeferredItem<Item> RABBIT_JERKY = ITEMS.register("rabbit_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.925F).build())));
+	public static final DeferredItem<Item> COD_JERKY = ITEMS.register("cod_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.875F).build())));
+	public static final DeferredItem<Item> SALMON_JERKY = ITEMS.register("salmon_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(1.35F).build())));
+	public static final DeferredItem<Item> TROPICAL_FISH_JERKY = ITEMS.register("tropical_fish_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.6F).build())));
+	public static final DeferredItem<Item> FUGU_JERKY = ITEMS.register("fugu_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.6F).build())));
+	public static final DeferredItem<Item> VENISON_JERKY = ITEMS.register("venison_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.18F).build())));
+	public static final DeferredItem<Item> MEEF_JERKY = ITEMS.register("meef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.18F).build())));
 
 	public static final DeferredItem<Item> GELATINOUS_SLIME_DROP = ITEMS.register("gelatinous_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.2F).effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600), 1.0F).build())));
 	public static final DeferredItem<Item> GELATINOUS_MAZE_SLIME_DROP = ITEMS.register("gelatinous_maze_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 600), 1.0F).build())));
