@@ -70,9 +70,7 @@ public class MoonwormShot extends TFThrowable {
 			for (int i = 0; i < 8; ++i) {
 				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true, this.getX(), this.getY() + 0.1D, this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
-		} else {
-			super.handleEntityEvent(id);
-		}
+		} else super.handleEntityEvent(id);
 	}
 
 	@Override
@@ -82,8 +80,7 @@ public class MoonwormShot extends TFThrowable {
 		BlockState currentState = this.level().getBlockState(pos);
 		if (currentState.canBeReplaced() && !currentState.is(BlockTags.FIRE) && MoonwormBlock.canSurvive(this.level(), pos, result.getDirection()) && !currentState.is(Blocks.LAVA)) {
 			this.level().setBlockAndUpdate(pos, TFBlocks.MOONWORM.get().defaultBlockState()
-				.setValue(DirectionalBlock.FACING, result.getDirection())
-				.setValue(BlockStateProperties.WATERLOGGED, currentState.getFluidState().is(Fluids.WATER)));
+				.setValue(DirectionalBlock.FACING, result.getDirection()));
 
 			this.gameEvent(GameEvent.PROJECTILE_LAND, this.getOwner());
 			this.level().playSound(null, result.getBlockPos(), TFSounds.MOONWORM_SQUISH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
