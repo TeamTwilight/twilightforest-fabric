@@ -75,8 +75,8 @@ public class BerryBushFeature extends Feature<BerryBushConfig> {
 
 	protected boolean generateMediumNode(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, RandomSource random, boolean isInSnowyBiome) {
 		boolean placed = false;
-		for (int dy = 0; dy <= 2; dy++) {
-			int maxTaxicabDistance = 2 - dy;
+		for (int dy = -1; dy <= 2; dy++) {
+			int maxTaxicabDistance = Math.min(2 - dy, 2);
 			for (int dx = -maxTaxicabDistance; dx <= maxTaxicabDistance; dx++) {
 				for (int dz = -maxTaxicabDistance; dz <= maxTaxicabDistance; dz++) {
 					if (TFMathUtil.taxicabGeometryDistance(dx, dz) < 2 * maxTaxicabDistance || random.nextBoolean())
@@ -90,9 +90,11 @@ public class BerryBushFeature extends Feature<BerryBushConfig> {
 	protected boolean generateSmallNode(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, RandomSource random, boolean isInSnowyBiome) {
 		boolean placed = this.setBush(level, pos.offset(0, 0, 0), state, generatesOn, random, isInSnowyBiome);
 		for (int dx = -1; dx <= 1; dx++) {
-			for (int dz = -1; dz <= 1; dz++) {
-				if (TFMathUtil.taxicabGeometryDistance(dx, dz) == 1 && random.nextBoolean())
-					placed |= this.setBush(level, pos.offset(dx, 0, dz), state, generatesOn, random.nextInt(4), isInSnowyBiome);
+			for (int dy = -1; dy <= 0; dy++) {
+				for (int dz = -1; dz <= 1; dz++) {
+					if (TFMathUtil.taxicabGeometryDistance(dx, dz) == 1 && random.nextBoolean())
+						placed |= this.setBush(level, pos.offset(dx, dy, dz), state, generatesOn, random.nextInt(4), isInSnowyBiome);
+				}
 			}
 		}
 		return placed;
