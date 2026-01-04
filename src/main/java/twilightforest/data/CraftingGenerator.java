@@ -861,10 +861,6 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(),
 			TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER).save(output);
 
-		DryingRecipeBuilder.drying(Ingredient.of(Tags.Items.FOODS_COOKED_MEAT), new ItemStack(Items.LEATHER), 8.5F)
-			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))
-			.save(output, TwilightForestMod.prefix("drying/cooked_meat_to_leather"));
-
 		DryingRecipeBuilder.drying(Ingredient.of(ItemTags.SAPLINGS), new ItemStack(Items.DEAD_BUSH), 6)
 			.unlockedBy("has_sapling", has(ItemTags.SAPLINGS))
 			.save(output, TwilightForestMod.prefix("drying/sapling_to_dead_bush"));
