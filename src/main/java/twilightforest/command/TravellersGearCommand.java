@@ -11,10 +11,10 @@ import net.minecraft.commands.arguments.ResourceKeyArgument;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import twilightforest.TFRegistries;
 import twilightforest.init.custom.TravellersModifiersManager;
-import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -44,28 +44,32 @@ public class TravellersGearCommand {
 	}
 
 	private int addModifier(CommandSourceStack source, Holder.Reference<TravellersModifier> modifier) throws CommandSyntaxException {
-		Component modKey = Component.translatable(modifier.key().location().toLanguageKey(modifier.value().getPrefix()));
-		if (!(source.getEntity() instanceof Player player) || player instanceof FakePlayer) throw ERROR_NOT_RUN_BY_PLAYER.create();
-		if (!(player.getMainHandItem().getItem() instanceof TravellersModifiable armor)) throw ERROR_NOT_HOLDING_GEAR.create();
-		if (modifier.value().isAbility()) throw ERROR_ABILITY.create();
-		if (TravellersModifiersManager.countInsertableModifiers(source.registryAccess(), player.getMainHandItem()) >= armor.getModifierSlots()) throw ERROR_TOO_MANY_MODIFIERS.create();
-		if (TravellersModifiersManager.hasTravellersModifier(source.registryAccess(), player.getMainHandItem(), modifier.key())) throw ERROR_HAS_MODIFIER.apply(modKey).create();
-		if (!modifier.value().group().test(player.getEquipmentSlotForItem(player.getMainHandItem()))) throw ERROR_WRONG_SLOT.apply(modKey).create();
+		Context ctx = validate(source, modifier);
+		if (TravellersModifiersManager.countInsertableModifiers(source.registryAccess(), ctx.stack()) >= ctx.item().getModifierSlots()) throw ERROR_TOO_MANY_MODIFIERS.create();
+		if (TravellersModifiersManager.hasTravellersModifier(source.registryAccess(), ctx.stack(), modifier.key())) throw ERROR_HAS_MODIFIER.apply(ctx.modKey()).create();
+		if (!modifier.value().group().test(ctx.player().getEquipmentSlotForItem(ctx.stack()))) throw ERROR_WRONG_SLOT.apply(ctx.modKey()).create();
 
-		TravellersModifiersManager.addModifier(source.registryAccess(), player.getMainHandItem(), modifier.key());
-		source.sendSuccess(() -> Component.translatable("commands.tffeature.added_modifier", modKey, player.getMainHandItem().getHoverName()), true);
+		TravellersModifiersManager.addModifier(source.registryAccess(), ctx.stack(), modifier.key());
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.added_modifier", ctx.modKey(), ctx.stack().getHoverName()), true);
 		return Command.SINGLE_SUCCESS;
 	}
 
 	private int removeModifier(CommandSourceStack source, Holder.Reference<TravellersModifier> modifier) throws CommandSyntaxException {
-		Component modKey = Component.translatable(modifier.key().location().toLanguageKey(modifier.value().getPrefix()));
-		if (!(source.getEntity() instanceof Player player) || player instanceof FakePlayer) throw ERROR_NOT_RUN_BY_PLAYER.create();
-		if (!(player.getMainHandItem().getItem() instanceof TravellersArmorItem)) throw ERROR_NOT_HOLDING_GEAR.create();
-		if (modifier.value().isAbility()) throw ERROR_ABILITY.create();
-		if (!TravellersModifiersManager.hasTravellersModifier(source.registryAccess(), player.getMainHandItem(), modifier.key())) throw ERROR_NO_MODIFIER.apply(modKey).create();
+		Context ctx = validate(source, modifier);
+		if (!TravellersModifiersManager.hasTravellersModifier(source.registryAccess(), ctx.stack(), modifier.key())) throw ERROR_NO_MODIFIER.apply(ctx.modKey()).create();
 
-		((InsertableTravellersModifier) modifier.value()).removeModifier(player.getMainHandItem());
-		source.sendSuccess(() -> Component.translatable("commands.tffeature.removed_modifier", modKey, player.getMainHandItem().getHoverName()), true);
+		((InsertableTravellersModifier) modifier.value()).removeModifier(ctx.stack());
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.removed_modifier", ctx.modKey(), ctx.stack().getHoverName()), true);
 		return Command.SINGLE_SUCCESS;
 	}
+
+	private Context validate(CommandSourceStack source, Holder.Reference<TravellersModifier> modifier) throws CommandSyntaxException {
+		if (!(source.getEntity() instanceof Player player) || player instanceof FakePlayer) throw ERROR_NOT_RUN_BY_PLAYER.create();
+		if (!(player.getMainHandItem().getItem() instanceof TravellersModifiable armor)) throw ERROR_NOT_HOLDING_GEAR.create();
+		if (modifier.value().isAbility()) throw ERROR_ABILITY.create();
+		Component modKey = TravellersModifiersManager.getModifierTooltipComponent(modifier);
+		return new Context(player, player.getMainHandItem(), armor, modKey);
+	}
+
+	private record Context(Player player, ItemStack stack, TravellersModifiable item, Component modKey) {}
 }

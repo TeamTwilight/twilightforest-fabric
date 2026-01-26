@@ -5,6 +5,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -120,37 +121,39 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	@Override
 	public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flags) {
 		super.appendHoverText(stack, context, tooltip, flags);
-		if (context.registries() != null) {
-			List<Holder.Reference<TravellersModifier>> abilityModifiers = TravellersModifiersManager.findAllAbilityModifiers(context.registries(), stack);
-			for (Holder.Reference<TravellersModifier> travellersModifierReference : abilityModifiers) {
-				tooltip.add(Component.translatable("travellers_gear.ability", this.getModifierTooltipComponent(travellersModifierReference)).withStyle(ChatFormatting.GOLD));
-			}
+		HolderLookup.Provider registries = context.registries();
+		if (registries == null)
+			return;
 
-			List<Holder.Reference<TravellersModifier>> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(context.registries(), stack);
-			for (Holder.Reference<TravellersModifier> modifier : insertableModifiers) {
-				tooltip.add(Component.literal("- ").append(this.getModifierTooltipComponent(modifier)));
-				if (flags.hasShiftDown()) {
-					for (Component description : modifier.value().getDescription()) {
-						// FIXME There has to be a better way to bold only the indent and arrow and not the information component
-						tooltip.add(Component.literal("").append(Component.translatable("travellers_gear.info_indent").withStyle(ChatFormatting.BOLD)).append(description));
-					}
+		List<Holder.Reference<TravellersModifier>> abilityModifiers = TravellersModifiersManager.findAllAbilityModifiers(registries, stack);
+		for (Holder.Reference<TravellersModifier> travellersModifierReference : abilityModifiers) {
+			tooltip.add(Component.translatable("travellers_gear.ability", TravellersModifiersManager.getModifierTooltipComponent(travellersModifierReference).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.GOLD));
+		}
+
+		List<Holder.Reference<TravellersModifier>> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(registries, stack);
+		for (Holder.Reference<TravellersModifier> modifier : insertableModifiers) {
+			tooltip.add(Component.literal("- ").append(TravellersModifiersManager.getModifierTooltipComponent(modifier).withStyle(ChatFormatting.GRAY)));
+			if (flags.hasShiftDown()) {
+				for (Component description : modifier.value().getDescription()) {
+					// FIXME There has to be a better way to bold only the indent and arrow and not the information component
+					tooltip.add(Component.literal("").append(Component.translatable("travellers_gear.info_indent").withStyle(ChatFormatting.BOLD)).append(description));
 				}
 			}
+		}
 
-			for (int i = insertableModifiers.size(); i < getModifierSlots(); i++) {
-				tooltip.add(Component.literal("- ").append(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY)));
-			}
+		for (int i = insertableModifiers.size(); i < getModifierSlots(); i++) {
+			tooltip.add(Component.literal("- ").append(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY)));
+		}
 
-			if (TFItems.TRAVELLERS_GLOVES.get() == this) {
-				tooltip.add(GLOVES_TOOLTIP);
-			}
+		if (TFItems.TRAVELLERS_GLOVES.get() == this) {
+			tooltip.add(GLOVES_TOOLTIP);
+		}
 
-			if (!flags.hasShiftDown()) {
-				ConcatenatedListView<Holder.Reference<TravellersModifier>> modifiers = ConcatenatedListView.of(abilityModifiers, insertableModifiers);
-				boolean hasHiddenDescriptions = modifiers.stream().map(Holder::value).map(TravellersModifier::getDescription).anyMatch(Predicate.not(List::isEmpty));
-				if (hasHiddenDescriptions) {
-					tooltip.add(Component.translatable("travellers_gear.shift_info", Component.literal("Shift").withStyle(ChatFormatting.YELLOW)).withStyle(ChatFormatting.WHITE));
-				}
+		if (!flags.hasShiftDown()) {
+			ConcatenatedListView<Holder.Reference<TravellersModifier>> modifiers = ConcatenatedListView.of(abilityModifiers, insertableModifiers);
+			boolean hasHiddenDescriptions = modifiers.stream().map(Holder::value).map(TravellersModifier::getDescription).anyMatch(Predicate.not(List::isEmpty));
+			if (hasHiddenDescriptions) {
+				tooltip.add(Component.translatable("travellers_gear.shift_info", Component.literal("Shift").withStyle(ChatFormatting.YELLOW)).withStyle(ChatFormatting.WHITE));
 			}
 		}
 	}
@@ -183,10 +186,6 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	@Override
 	public boolean canWalkOnPowderedSnow(ItemStack stack, @NotNull LivingEntity wearer) {
 		return stack.is(TFItems.TRAVELLERS_BOOTS);
-	}
-
-	private Component getModifierTooltipComponent(Holder.Reference<TravellersModifier> modifier) {
-		return TooltipStringInterpolator.render(modifier.getKey().location().toLanguageKey(modifier.value().getPrefix())).withStyle(ChatFormatting.GRAY);
 	}
 
 	public static boolean isTravellersArmorAndBroken(ItemStack stack) {

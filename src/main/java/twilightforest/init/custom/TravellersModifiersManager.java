@@ -1,10 +1,12 @@
 package twilightforest.init.custom;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
@@ -156,6 +158,10 @@ public class TravellersModifiersManager {
 		if (modifier.isEmpty() || !(modifier.get() instanceof TransferableComponentModifier transferableComponentModifier))
 			return 0;
 		return transferableComponentModifier.findDataComponentProviders(ingredients).size();
+	}
+
+	public static MutableComponent getModifierTooltipComponent(Holder.Reference<TravellersModifier> modifier) {
+		return TooltipStringInterpolator.render(modifier.getKey().location().toLanguageKey(modifier.value().getPrefix()));
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {
