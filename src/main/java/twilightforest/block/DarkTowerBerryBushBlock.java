@@ -5,12 +5,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.neoforged.neoforge.registries.DeferredItem;
 import twilightforest.data.tags.BlockTagGenerator;
 
 public class DarkTowerBerryBushBlock extends BerryBushBlock {
@@ -37,6 +35,11 @@ public class DarkTowerBerryBushBlock extends BerryBushBlock {
 	@Override
 	public boolean canBePlacedAt(BlockState state) {
 		return state.is(BlockTagGenerator.DARK_TOWER_BERRY_BUSHES_SURVIVE);
+	}
+
+	@Override
+	protected boolean canGrowAt(BlockState state, LevelReader level, BlockPos pos) {
+		return super.canGrowAt(state, level, pos) && state.getValue(SNOW_LAYERS) == 0;
 	}
 
 	protected boolean shouldDie(LevelAccessor level, BlockPos pos) {
