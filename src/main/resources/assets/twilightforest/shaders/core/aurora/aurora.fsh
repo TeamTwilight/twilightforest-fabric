@@ -83,14 +83,6 @@ vec4 openSimplex2Base(vec3 X) {
     return vec4(derivative, dot(aaaa, extrapolations));
 }
 
-// Use this if you don't want Z to look different from X and Y
-vec4 openSimplex2_Conventional(vec3 X) {
-
-    // Rotate around the main diagonal. Not a skew transform.
-    vec4 result = openSimplex2Base(dot(X, vec3(2.0/3.0)) - X);
-    return vec4(dot(result.xyz, vec3(2.0/3.0)) - result.xyz, result.w);
-}
-
 // Use this if you want to show X and Y in a plane, then use Z for time, vertical, etc.
 vec4 openSimplex2_ImproveXY(vec3 X) {
 
