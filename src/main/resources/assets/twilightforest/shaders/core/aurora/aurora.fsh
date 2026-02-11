@@ -19,13 +19,17 @@ vec3 grad(float hash) {
     // Random edge of the three edges connected to that vertex
     // Also a cuboctahedral vertex
     // And corresponds to the face of its dual, the rhombic dodecahedron
-    // vec3 cuboct = cube;
+    vec3 cuboct = cube;
     // cuboct[int(hash / 16.0)] = 0.0;
-    // The following block of code substitutes the line above. The above line will cause Intel Iris Xe drivers to crash
-    float[] cubeArray = float[](cube.x, cube.y, cube.z);
-    int cubeAxis = int(mod(hash / 16.0, 3));
-    cubeArray[cubeAxis] = 0.0;
-    vec3 cuboct = vec3(cubeArray[0], cubeArray[1], cubeArray[2]);
+    // Copy the OpenSimplex2 HLSL version to avoid an Intel Driver crash
+    int idx = int(hash * (1.0 / 16.0));
+
+    if (idx == 0)
+        cuboct.x = 0.0;
+    else if (idx == 1)
+        cuboct.y = 0.0;
+    else
+        cuboct.z = 0.0;
 
     // In a funky way, pick one of the four points on the rhombic face
     float type = mod(floor(hash / 8.0), 2.0);
