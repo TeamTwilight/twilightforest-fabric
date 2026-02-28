@@ -138,7 +138,6 @@ public class TravellersClientEvents {
 		boolean avoidCreativeFly = localPlayer.mayFly() && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
 		if (pressedKey && !avoidCreativeFly && TravellersModifiersManager.isModifierActive(localPlayer, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
 			if (TravellersGearLogic.performDoubleJump(localPlayer)) {
-				localPlayer.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = true;
 				localPlayer.connection.send(new PerformDoubleJumpPacket());
 			}
 		}
