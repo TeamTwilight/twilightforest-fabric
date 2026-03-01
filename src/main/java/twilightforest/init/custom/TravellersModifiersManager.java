@@ -120,6 +120,7 @@ public class TravellersModifiersManager {
 	}
 
 	public static boolean isModifierActive(Entity entity, ItemStack stack, ResourceKey<TravellersModifier> modifierKey) {
+		if (entity.isSpectator()) return false;
 		return isModifierActive(entity.registryAccess(), stack, modifierKey);
 	}
 
@@ -128,6 +129,7 @@ public class TravellersModifiersManager {
 	}
 
 	public static boolean isModifierActive(LivingEntity livingEntity, ResourceKey<TravellersModifier> modifierKey) {
+		if (livingEntity.isSpectator()) return false;
 		Optional<TravellersModifier> modifier = getCachedModifier(livingEntity.registryAccess(), modifierKey);
 		if (modifier.isEmpty())
 			return false;
