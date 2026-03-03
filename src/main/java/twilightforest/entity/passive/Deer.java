@@ -65,7 +65,7 @@ public class Deer extends Animal {
 		if (stack.is(TFItems.SHIKA_SENBEI)) {
 			if (!this.level().isClientSide())
 				this.heal(4.0F);
-			this.level().playSound(null, getX(), getY(), getZ(), TFSounds.DEER_CRUNCH.get(), this.getSoundSource(), 1, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+			this.level().playSound(null, getX(), getY(), getZ(), TFSounds.DEER_EAT.get(), this.getSoundSource(), 1, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
 		}
 		super.usePlayerItem(player, hand, stack);
 	}
