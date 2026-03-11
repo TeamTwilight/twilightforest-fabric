@@ -7,6 +7,6 @@
     "twilightforest:emperors_cloth": {}
   },
   "base": {
-    "tag": "c:armors"
+    "tag": "twilightforest:emperors_cloth_applicable"
   }
 }

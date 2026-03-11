@@ -95,6 +95,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	public static final TagKey<Item> NUGGETS_COPPER = makeCommonTag("nuggets/copper");
 	public static final TagKey<Item> RENDER_LOWER_ON_DRYING_RACK = create("lower_on_drying_rack");
 	public static final TagKey<Item> TROPHIES = create("trophies");
+	public static final TagKey<Item> EMPERORS_CLOTH_APPLICABLE = create("emperors_cloth_applicable");
 
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> provider, ExistingFileHelper helper) {
 		super(output, future, provider, helper);
@@ -513,6 +514,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.MINOSHROOM_TROPHY.get(), TFItems.HYDRA_TROPHY.get(),
 			TFItems.KNIGHT_PHANTOM_TROPHY.get(), TFItems.UR_GHAST_TROPHY.get(),
 			TFItems.ALPHA_YETI_TROPHY.get(), TFItems.SNOW_QUEEN_TROPHY.get());
+
+		this.tag(EMPERORS_CLOTH_APPLICABLE).addTag(Tags.Items.ARMORS).add(Items.ELYTRA);
 	}
 
 	public static TagKey<Item> create(String tagName) {

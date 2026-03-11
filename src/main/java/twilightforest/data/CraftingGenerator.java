@@ -574,7 +574,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SpecialRecipeBuilder.special(TravellersVestGlovesMergeRecipe::new).save(output, TwilightForestMod.prefix("travellers_vest_gloves_merge_recipe").toString());
 
 		NoSmithingTemplateRecipeBuilder
-			.noTemplate(Ingredient.of(Tags.Items.ARMORS), Ingredient.of(TFItems.EMPERORS_CLOTH.get()), RecipeCategory.MISC)
+			.noTemplate(Ingredient.of(ItemTagGenerator.EMPERORS_CLOTH_APPLICABLE), Ingredient.of(TFItems.EMPERORS_CLOTH.get()), RecipeCategory.MISC)
 			.attachData(TFDataComponents.EMPERORS_CLOTH::value, Unit.INSTANCE)
 			.unlocks("has_cloth", has(TFItems.EMPERORS_CLOTH))
 			.save(output, TwilightForestMod.prefix("emperors_cloth_smithing"));

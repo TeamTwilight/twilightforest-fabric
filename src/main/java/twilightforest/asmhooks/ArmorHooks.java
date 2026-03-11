@@ -31,8 +31,9 @@ public class ArmorHooks {
 	/**
 	 * {@link twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer}<p/>
 	 *
-	 * Injection Point:<br/>
+	 * Injection Points:<br/>
 	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel, float, float, float, float, float, float)}
+	 * {@link net.minecraft.client.renderer.entity.layers.ElytraLayer#shouldRender(ItemStack, LivingEntity)}
 	 */
 	public static boolean cancelArmorRendering(boolean o, ItemStack stack) {
 		if (o && stack.has(TFDataComponents.EMPERORS_CLOTH)) {
