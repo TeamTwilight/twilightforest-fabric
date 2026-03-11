@@ -58,7 +58,7 @@ public interface IBossLootBuffer {
 
 			//If our loot stack size is bigger than the inventory, drop everything else outside it. Don't want to lose any loot now do we?
 			if (stacks.size() > CONTAINER_SIZE) {
-				for (ItemStack stack : stacks.subList(28, stacks.size())) {
+				for (ItemStack stack : stacks.subList(CONTAINER_SIZE, stacks.size())) {
 					ItemEntity item = new ItemEntity(serverLevel, boss.getX(), boss.getY(), boss.getZ(), stack);
 					item.setExtendedLifetime();
 					item.setNoPickUpDelay();
