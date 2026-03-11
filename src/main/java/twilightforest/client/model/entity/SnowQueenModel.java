@@ -131,7 +131,7 @@ public class SnowQueenModel extends HumanoidModel<SnowQueen> implements TrophyBl
 				.addBox(-4.5F, 10.0F, -2.5F, 9.0F, 14.0F, 5.0F),
 			PartPose.ZERO);
 
-		partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+		var head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
 				.texOffs(0, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F),
 			PartPose.ZERO);
@@ -156,24 +156,25 @@ public class SnowQueenModel extends HumanoidModel<SnowQueen> implements TrophyBl
 				.addBox(-2.0F, -2.0F, -2.0F, 3.0F, 12.0F, 4.0F),
 			PartPose.offset(-5.0F, 2.0F, 0.0F));
 
-		var hat = partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		partdefinition.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+		var crown = head.addOrReplaceChild("crown", CubeListBuilder.create(), PartPose.ZERO);
 
-		hat.addOrReplaceChild("crown_front", CubeListBuilder.create()
+		crown.addOrReplaceChild("crown_front", CubeListBuilder.create()
 				.texOffs(24, 0)
 				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
 			PartPose.offsetAndRotation(0.0F, -6.0F, -4.0F, 0.39269908169872414F, 0.0F, 0.0F));
 
-		hat.addOrReplaceChild("crown_right", CubeListBuilder.create()
+		crown.addOrReplaceChild("crown_right", CubeListBuilder.create()
 				.texOffs(24, 4)
 				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
 			PartPose.offsetAndRotation(-4.0F, -6.0F, 0.0F, 0.39269908169872414F, 1.5707963267948966F, 0.0F));
 
-		hat.addOrReplaceChild("crown_left", CubeListBuilder.create()
+		crown.addOrReplaceChild("crown_left", CubeListBuilder.create()
 				.texOffs(44, 4)
 				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
 			PartPose.offsetAndRotation(4.0F, -6.0F, 0.0F, -0.39269908169872414F, 1.5707963267948966F, 0.0F));
 
-		hat.addOrReplaceChild("crown_back", CubeListBuilder.create()
+		crown.addOrReplaceChild("crown_back", CubeListBuilder.create()
 				.texOffs(44, 0)
 				.addBox(-5.0F, -4.0F, 0.0F, 10.0F, 4.0F, 0.0F),
 			PartPose.offsetAndRotation(0.0F, -6.0F, 4.0F, -0.39269908169872414F, 0.0F, 0.0F));
@@ -214,7 +215,6 @@ public class SnowQueenModel extends HumanoidModel<SnowQueen> implements TrophyBl
 		}
 		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(SnowQueenRenderer.TEXTURE));
 		this.head.render(stack, consumer, light, overlay, color);
-		this.hat.render(stack, consumer, light, overlay, color);
 	}
 
 	@Override
