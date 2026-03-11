@@ -5,6 +5,7 @@ import net.neoforged.neoforgespi.coremod.ICoreMod;
 import twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer;
 import twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer;
 import twilightforest.asm.transformers.armor.CancelElytraRenderingTransformer;
+import twilightforest.asm.transformers.armor.FixCapeUnrenderingTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierClassTransformer;
 import twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer;
 import twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer;
@@ -43,6 +44,7 @@ public class TFCoreMod implements ICoreMod {
 			new ArmorVisibilityRenderingTransformer(),
 			new CancelArmorRenderingTransformer(),
 			new CancelElytraRenderingTransformer(),
+			new FixCapeUnrenderingTransformer(),
 
 			// beardifier
 			new BeardifierClassTransformer(),

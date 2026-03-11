@@ -2,6 +2,7 @@ package twilightforest.asmhooks;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -30,6 +31,7 @@ public class ArmorHooks {
 
 	/**
 	 * {@link twilightforest.asm.transformers.armor.CancelArmorRenderingTransformer}<p/>
+	 * {@link twilightforest.asm.transformers.armor.CancelElytraRenderingTransformer}<p/>
 	 *
 	 * Injection Points:<br/>
 	 * {@link net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer#renderArmorPiece(PoseStack, MultiBufferSource, LivingEntity, EquipmentSlot, int, HumanoidModel, float, float, float, float, float, float)}
@@ -40,5 +42,15 @@ public class ArmorHooks {
 			return false;
 		}
 		return o;
+	}
+
+	/**
+	 * {@link twilightforest.asm.transformers.armor.FixCapeUnrenderingTransformer}<p/>
+	 *
+	 * Injection Point:<br/>
+	 * {@link net.minecraft.client.renderer.entity.layers.CapeLayer#render(PoseStack, MultiBufferSource, int, AbstractClientPlayer, float, float, float, float, float, float)}
+	 */
+	public static boolean fixCapeRendering(boolean o, PoseStack poseStack, ItemStack stack) {
+		return o && !stack.has(TFDataComponents.EMPERORS_CLOTH);
 	}
 }
