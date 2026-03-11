@@ -4,10 +4,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 public class SlimySolesAttachment {
+
+	//optionals are here as the fields were improperly named and caused logspam after the fix
 	public static final Codec<SlimySolesAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Codec.DOUBLE.fieldOf("bounce_velocity").forGetter(o -> o.bounceVelocity),
-			Codec.BOOL.fieldOf("bounce_velocity").forGetter(o -> o.forceBounce),
-			Codec.BOOL.fieldOf("bounce_velocity").forGetter(o -> o.hasBounced))
+			Codec.DOUBLE.optionalFieldOf("bounce_velocity", 0.0D).forGetter(o -> o.bounceVelocity),
+			Codec.BOOL.optionalFieldOf("force_bounce", false).forGetter(o -> o.forceBounce),
+			Codec.BOOL.optionalFieldOf("bounce", false).forGetter(o -> o.hasBounced))
 		.apply(instance, SlimySolesAttachment::new));
 
 	public double bounceVelocity;
