@@ -117,7 +117,7 @@ public class TravellersGearLogic {
 		TravellersWingsAttachment attachment = player.getData(TFDataAttachments.TRAVELLERS_WINGS);
 		long dt = player.level().getGameTime() - attachment.lastSidestepTime;
 		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt > cooldown && attachment.shouldPlaySideStepCooldownSound) {
-			player.playSound(TFSounds.SIDE_STEP_CHARGED.get(), 1F, player.getVoicePitch());
+			player.playNotifySound(TFSounds.SIDE_STEP_CHARGED.get(), player.getSoundSource(), 1F, player.getVoicePitch());
 			attachment.shouldPlaySideStepCooldownSound = false;
 		}
 	}
