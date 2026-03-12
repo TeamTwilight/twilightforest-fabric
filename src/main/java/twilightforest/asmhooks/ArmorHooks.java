@@ -50,7 +50,7 @@ public class ArmorHooks {
 	 * Injection Point:<br/>
 	 * {@link net.minecraft.client.renderer.entity.layers.CapeLayer#render(PoseStack, MultiBufferSource, int, AbstractClientPlayer, float, float, float, float, float, float)}
 	 */
-	public static boolean fixCapeRendering(boolean o, PoseStack poseStack, ItemStack stack) {
+	public static boolean fixCapeRendering(boolean o, ItemStack stack) {
 		return o && !stack.has(TFDataComponents.EMPERORS_CLOTH);
 	}
 }
