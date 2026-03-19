@@ -275,12 +275,8 @@ public class TravellersGearLogic {
 		livingEntity.playSound(SoundEvents.SLIME_JUMP, 0.5F, 1F);
 		travellersBootsSlimySolesParticles(livingEntity, slimySolesAttachment);
 		slimySolesAttachment.hasBounced = true;
-		if (!livingEntity.isCrouching()) {
-			livingEntity.setDeltaMovement(velocity.x(), Math.sqrt(Math.pow(velocity.y(), 2) + Math.pow(slimySolesAttachment.bounceVelocity, 2)), velocity.z());
-			slimySolesAttachment.forceBounce = Math.abs(livingEntity.getDeltaMovement().y()) > 0.25;
-			return;
-		}
-		slimySolesAttachment.forceBounce = false;
+		livingEntity.setDeltaMovement(velocity.x(), Math.sqrt(Math.pow(velocity.y(), 2) + Math.pow(slimySolesAttachment.bounceVelocity, 2)), velocity.z());
+		slimySolesAttachment.forceBounce = Math.abs(livingEntity.getDeltaMovement().y()) > 0.25;
 	}
 
 	public static void travellersBootsSlimySolesParticles(LivingEntity entity, SlimySolesAttachment attachment) {
