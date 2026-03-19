@@ -272,11 +272,15 @@ public class TravellersGearLogic {
 			return;
 		}
 		Vec3 velocity = livingEntity.getDeltaMovement();
-		livingEntity.setDeltaMovement(velocity.x(), Math.sqrt(Math.pow(velocity.y(), 2) + Math.pow(slimySolesAttachment.bounceVelocity, 2)), velocity.z());
 		livingEntity.playSound(SoundEvents.SLIME_JUMP, 0.5F, 1F);
 		travellersBootsSlimySolesParticles(livingEntity, slimySolesAttachment);
-		slimySolesAttachment.forceBounce = Math.abs(livingEntity.getDeltaMovement().y()) > 0.25;
 		slimySolesAttachment.hasBounced = true;
+		if (!livingEntity.isCrouching()) {
+			livingEntity.setDeltaMovement(velocity.x(), Math.sqrt(Math.pow(velocity.y(), 2) + Math.pow(slimySolesAttachment.bounceVelocity, 2)), velocity.z());
+			slimySolesAttachment.forceBounce = Math.abs(livingEntity.getDeltaMovement().y()) > 0.25;
+			return;
+		}
+		slimySolesAttachment.forceBounce = false;
 	}
 
 	public static void travellersBootsSlimySolesParticles(LivingEntity entity, SlimySolesAttachment attachment) {

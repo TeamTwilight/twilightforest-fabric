@@ -166,13 +166,9 @@ public class TravellersGearEvents {
 	private void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
 		LivingEntity livingEntity = event.getEntity();
 		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
-		if (slimySolesAttachment.hasBounced) {
-			Vec3 velocity = livingEntity.getDeltaMovement();
-			livingEntity.setDeltaMovement(velocity.x(), Math.sqrt(Math.pow(velocity.y(), 2) + Math.pow(slimySolesAttachment.bounceVelocity, 2)), velocity.z());
-			slimySolesAttachment.bounceVelocity = 0;
-			slimySolesAttachment.forceBounce = false;
-			livingEntity.setData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
-		}
+		slimySolesAttachment.bounceVelocity = 0;
+		slimySolesAttachment.forceBounce = false;
+		livingEntity.setData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
 	}
 
 	private void tickMovementModifiers(PlayerTickEvent.Pre event) {
