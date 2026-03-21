@@ -231,6 +231,12 @@ public class TravellersGearLogic {
 		if (!hasDoubleJump || player.isFallFlying() || player.onClimbable() || player.onGround() || player.isSwimming() || player.getAbilities().flying || player.isInLiquid() || player.isPassenger())
 			return false;
 		player.jumpFromGround();
+		Vec3 velocity = player.getDeltaMovement();
+		double boostVelocity = player.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO).doubleJumpBoostVelocity;
+		if (boostVelocity != 0) {
+			player.setDeltaMovement(velocity.x(), Math.sqrt(Math.pow(velocity.y(), 2) + Math.pow(boostVelocity, 2)), velocity.z());
+			player.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO).doubleJumpBoostVelocity = 0;
+		}
 		player.resetFallDistance();
 		float pitchShift = 0.1F;
 		player.playSound(TFSounds.DOUBLE_JUMP.get(), 1.5F, (player.getVoicePitch() - 1) * (1 + pitchShift) + (1 - pitchShift * 0.2F));
@@ -268,9 +274,8 @@ public class TravellersGearLogic {
 
 	public static void travellersBootsSlimySolesBounce(LivingEntity livingEntity) {
 		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
-		if (slimySolesAttachment.bounceVelocity == 0 || slimySolesAttachment.hasBounced) {
+		if (slimySolesAttachment.bounceVelocity == 0 || slimySolesAttachment.hasBounced)
 			return;
-		}
 		Vec3 velocity = livingEntity.getDeltaMovement();
 		livingEntity.playSound(SoundEvents.SLIME_JUMP, 0.5F, 1F);
 		travellersBootsSlimySolesParticles(livingEntity, slimySolesAttachment);
