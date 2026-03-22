@@ -165,6 +165,8 @@ public class HelmetCrabModel extends HierarchicalModel<HelmetCrab> {
 				.addBox(0.5F, -5.0F, -3.5F, 1.0F, 2.0F, 1.0F),
 			PartPose.offset(0.0F, 21.0F, 0.0F));
 
+		partdefinition.addOrReplaceChild("helmet_base", CubeListBuilder.create(), PartPose.ZERO);
+
 		var helmet = body.addOrReplaceChild("helmet", CubeListBuilder.create()
 				.texOffs(40, 0)
 				.addBox(-4.0F, -8.0F, -4.0F, 6.0F, 8.0F, 6.0F)
