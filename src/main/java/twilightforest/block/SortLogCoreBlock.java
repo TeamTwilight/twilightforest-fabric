@@ -5,14 +5,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
 import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
@@ -20,7 +21,10 @@ import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.WorldUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
@@ -93,54 +97,41 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		for (Map.Entry<List<ResourceHandler<ItemResource>>, Vec3> inputHandlers : inputMap.entrySet()) {
 			boolean transferred = false;
 			for (ResourceHandler<ItemResource> inputIItemHandler : inputHandlers.getKey()) {
-				for (int i = 0; i < inputIItemHandler.getSlots(); i++) {
-					ItemStack inputStack = inputIItemHandler.extractItem(i, 1, true);
-					if (!inputStack.isEmpty()) {
-						Map<Integer, ResourceHandler<ItemResource>> outputsByCount = new HashMap<>();
+				for (int i = 0; i < inputIItemHandler.size(); i++) {
+					ItemResource itemResource = inputIItemHandler.getResource(i);
+					if (itemResource.isEmpty()) continue;
+					try (Transaction tx = Transaction.openRoot()) {
+						if (inputIItemHandler.extract(i, itemResource, 1, tx) == 0) continue;
+						Map<ResourceHandler<ItemResource>, Integer> outputCounts = new HashMap<>();
 
-						for (ResourceHandler<ItemResource> outputIItemHandler : outputMap.keySet()) {
+						for (ResourceHandler<ItemResource> outputHandler : outputMap.keySet()) {
 							int count = 0;
-							for (int j = 0; j < outputIItemHandler.getSlots(); j++) {
-								ItemStack stack = outputIItemHandler.getStackInSlot(j);
-								if (stack.is(inputStack.getItem())) count += stack.getCount();
+							for (int j = 0; j < outputHandler.size(); j++) {
+								if (itemResource.equals(outputHandler.getResource(j))) count += outputHandler.getAmountAsInt(j);
 							}
-							if (count > 0) outputsByCount.put(count, outputIItemHandler);
+							if (count > 0) outputCounts.put(outputHandler, count);
 						}
 
-						for (Integer count : outputsByCount.keySet().stream().sorted(Comparator.comparingInt(Integer::intValue).reversed()).toList()) {
-							ResourceHandler<ItemResource> outputIItemHandler = outputsByCount.get(count);
-							int firstProperStack = -1;
-							for (int j = 0; j < outputIItemHandler.getSlots(); j++) {
-								if (outputIItemHandler.isItemValid(j, inputStack)) {
-									ItemStack outputStack = outputIItemHandler.getStackInSlot(j);
+						List<ResourceHandler<ItemResource>> sortedOutputs = outputCounts.entrySet().stream()
+							.sorted(Map.Entry.<ResourceHandler<ItemResource>, Integer>comparingByValue().reversed())
+							.map(Map.Entry::getKey)
+							.toList();
 
-									if (firstProperStack == -1 && outputStack.isEmpty()) {
-										firstProperStack = j; //We reference the index of the first empty slot, in case there is no stacks that aren't at max size
-									} else if (ItemStack.isSameItemSameComponents(inputStack, outputStack)
-										&& outputStack.getCount() < outputStack.getMaxStackSize()
-										&& outputStack.getCount() < outputIItemHandler.getSlotLimit(j)) {
-										firstProperStack = j;
-										break;
-									}
-								}
-							}
-							if (firstProperStack != -1) { // If there weren't any non-full stacks, we transfer to an empty space instead
-								ItemStack newStack = inputIItemHandler.extractItem(i, 1, false);
-								if (!newStack.isEmpty() && outputIItemHandler.insertItem(firstProperStack, newStack, true).isEmpty()) {
-									outputIItemHandler.insertItem(firstProperStack, newStack, false);
-									transferred = true;
+						for (ResourceHandler<ItemResource> outputHandler : sortedOutputs) {
+							if (ResourceHandlerUtil.insertStacking(outputHandler, itemResource, 1, tx) == 1) {
+								tx.commit();
+								transferred = true;
 
-									Vec3 xyz = outputMap.get(outputIItemHandler);
-									Vec3 diff = inputHandlers.getValue().subtract(xyz);
+								Vec3 xyz = outputMap.get(outputHandler);
+								Vec3 diff = inputHandlers.getValue().subtract(xyz);
 
-									ParticlePacket particlePacket = new ParticlePacket();
-									double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
-									double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
-									double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
-									particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
-									PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
-									break;
-								}
+								ParticlePacket particlePacket = new ParticlePacket();
+								double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
+								double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
+								double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
+								particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
+								PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
+								break;
 							}
 						}
 					}
