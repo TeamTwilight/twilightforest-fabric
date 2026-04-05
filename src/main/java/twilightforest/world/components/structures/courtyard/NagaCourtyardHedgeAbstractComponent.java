@@ -2,7 +2,7 @@ package twilightforest.world.components.structures.courtyard;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -21,19 +21,19 @@ import twilightforest.world.components.structures.TFStructureComponentTemplate;
 
 public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureComponentTemplate {
 
-	private final ResourceLocation HEDGE;
-	private final ResourceLocation HEDGE_BIG;
+	private final Identifier HEDGE;
+	private final Identifier HEDGE_BIG;
 
 	private StructureTemplate templateBig;
 
-	public NagaCourtyardHedgeAbstractComponent(StructurePieceSerializationContext ctx, StructurePieceType piece, CompoundTag nbt, ResourceLocation hedge, ResourceLocation hedgeBig) {
+	public NagaCourtyardHedgeAbstractComponent(StructurePieceSerializationContext ctx, StructurePieceType piece, CompoundTag nbt, Identifier hedge, Identifier hedgeBig) {
 		super(ctx, piece, nbt);
 		this.HEDGE = hedge;
 		this.HEDGE_BIG = hedgeBig;
 	}
 
 	@SuppressWarnings("WeakerAccess")
-	public NagaCourtyardHedgeAbstractComponent(StructureTemplateManager manager, StructurePieceType type, int i, int x, int y, int z, Rotation rotation, ResourceLocation hedge, ResourceLocation hedgeBig) {
+	public NagaCourtyardHedgeAbstractComponent(StructureTemplateManager manager, StructurePieceType type, int i, int x, int y, int z, Rotation rotation, Identifier hedge, Identifier hedgeBig) {
 		super(manager, type, i, x, y, z, rotation);
 		this.HEDGE = hedge;
 		this.HEDGE_BIG = hedgeBig;

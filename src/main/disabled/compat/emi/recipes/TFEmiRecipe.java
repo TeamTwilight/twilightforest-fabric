@@ -6,7 +6,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +18,7 @@ public abstract class TFEmiRecipe<T extends Recipe<?>> implements EmiRecipe {
 
 	private final EmiRecipeCategory category;
 	private final RecipeHolder<T> recipe;
-	private final ResourceLocation id;
+	private final Identifier id;
 	private final int width;
 	private final int height;
 	private final List<EmiIngredient> inputs;
@@ -28,7 +28,7 @@ public abstract class TFEmiRecipe<T extends Recipe<?>> implements EmiRecipe {
 		this(category, recipe, EmiPort.getId(recipe.value()).withPrefix(prefix), width, height);
 	}
 
-	public TFEmiRecipe(EmiRecipeCategory category, RecipeHolder<T> recipe, ResourceLocation id, int width, int height) {
+	public TFEmiRecipe(EmiRecipeCategory category, RecipeHolder<T> recipe, Identifier id, int width, int height) {
 		this.category = category;
 		this.recipe = recipe;
 		this.width = width;
@@ -58,7 +58,7 @@ public abstract class TFEmiRecipe<T extends Recipe<?>> implements EmiRecipe {
 
 	@Override
 	@Nullable
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return this.id;
 	}
 

@@ -6,10 +6,11 @@ import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -32,7 +33,7 @@ import java.util.function.Function;
 
 public abstract class WoodBlockBuilders extends BlockModelGenerators {
 
-	public WoodBlockBuilders(Consumer<BlockStateGenerator> stateOutput, ItemModelOutput itemOutput, BiConsumer<ResourceLocation, ModelInstance> modelOutput) {
+	public WoodBlockBuilders(Consumer<BlockModelDefinitionGenerator> stateOutput, ItemModelOutput itemOutput, BiConsumer<Identifier, ModelInstance> modelOutput) {
 		super(stateOutput, itemOutput, modelOutput);
 	}
 
@@ -47,7 +48,7 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		Variant[] modelFiles = new Variant[CHOSEN_VARIANTS.length];
 		for(int i = 0; i < CHOSEN_VARIANTS.length; i++) {
 			int finalI = i;
-			ResourceLocation model = TFModelTemplates.CUBE_ALL.extend().element(builder -> builder.from(0, 0, 0).to(16, 16, 16).allFaces((direction, faceBuilder) -> {
+			Identifier model = TFModelTemplates.CUBE_ALL.extend().element(builder -> builder.from(0, 0, 0).to(16, 16, 16).allFaces((direction, faceBuilder) -> {
 				FaceRotation rotation = FaceRotation.values()[CHOSEN_VARIANTS[finalI][direction.ordinal()]];
 				faceBuilder.cullface(direction).texture(TextureSlot.ALL).rotation(rotation).tintindex(0);
 			})).build().createWithSuffix(block, (i > 0 ? "_" + i : ""), TextureMapping.cube(block), this.modelOutput);
@@ -67,96 +68,96 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		float u2 = isRotation180 ? 0 : 16;
 		float v2 = isRotation180 ? 0 : 16;
 
-		ResourceLocation model = ModelTemplates.CUBE_ALL.extend().element(builder -> builder.from(0, 0, 0).to(16, 16, 16).allFaces(((dir, faceBuilder) -> faceBuilder.cullface(dir).uvs(u1, v1, u2, v2).tintindex(0).rotation(faceRotation).texture(TextureSlot.ALL)))).build().create(leaves, TextureMapping.cube(leaves), this.modelOutput);
+		Identifier model = ModelTemplates.CUBE_ALL.extend().element(builder -> builder.from(0, 0, 0).to(16, 16, 16).allFaces(((dir, faceBuilder) -> faceBuilder.cullface(dir).uvs(u1, v1, u2, v2).tintindex(0).rotation(faceRotation).texture(TextureSlot.ALL)))).build().create(leaves, TextureMapping.cube(leaves), this.modelOutput);
 		this.wrapTintedBlockItem(leaves, ItemModelUtils.constantTint(tint), block -> this.blockStateOutput.accept(createSimpleBlock(block, model)));
 	}
 
 	public void generateSapling(Block block, Block pottedBlock, BlockModelGenerators.PlantType type) {
-		ResourceLocation sapling = type.getCross().extend().renderType("cutout").build().create(block, type.getTextureMapping(block), this.modelOutput);
+		Identifier sapling = type.getCross().extend().renderType("cutout").build().create(block, type.getTextureMapping(block), this.modelOutput);
 		this.blockStateOutput.accept(createSimpleBlock(block, sapling));
-		ResourceLocation potted = type.getCrossPot().extend().renderType("cutout").build().create(pottedBlock, type.getPlantTextureMapping(block), this.modelOutput);
+		Identifier potted = type.getCrossPot().extend().renderType("cutout").build().create(pottedBlock, type.getPlantTextureMapping(block), this.modelOutput);
 		this.blockStateOutput.accept(createSimpleBlock(pottedBlock, potted));
 		this.registerSimpleItemModel(block.asItem(), type.createItemModel(this, block));
 	}
 
 	public void generateWood(Block woodBlock, TextureMapping mapping) {
 		TextureMapping texturemapping = mapping.copyAndUpdate(TextureSlot.END, mapping.get(TextureSlot.SIDE));
-		ResourceLocation model = ModelTemplates.CUBE_COLUMN.create(woodBlock, texturemapping, this.modelOutput);
+		Identifier model = ModelTemplates.CUBE_COLUMN.create(woodBlock, texturemapping, this.modelOutput);
 		this.blockStateOutput.accept(BlockModelGenerators.createAxisAlignedPillarBlock(woodBlock, model));
 	}
 
 	public void generateLog(Block logBlock, TextureMapping mapping) {
-		ResourceLocation vertical = ModelTemplates.CUBE_COLUMN.create(logBlock, mapping, this.modelOutput);
-		ResourceLocation horizontal = ModelTemplates.CUBE_COLUMN_HORIZONTAL.create(logBlock, mapping, this.modelOutput);
+		Identifier vertical = ModelTemplates.CUBE_COLUMN.create(logBlock, mapping, this.modelOutput);
+		Identifier horizontal = ModelTemplates.CUBE_COLUMN_HORIZONTAL.create(logBlock, mapping, this.modelOutput);
 		this.blockStateOutput.accept(BlockModelGenerators.createRotatedPillarWithHorizontalVariant(logBlock, vertical, horizontal));
 	}
 
 	public void generateButton(Block button, TextureMapping mapping) {
-		ResourceLocation unpressed = ModelTemplates.BUTTON.create(button, mapping, this.modelOutput);
-		ResourceLocation pressed = ModelTemplates.BUTTON_PRESSED.create(button, mapping, this.modelOutput);
+		Identifier unpressed = ModelTemplates.BUTTON.create(button, mapping, this.modelOutput);
+		Identifier pressed = ModelTemplates.BUTTON_PRESSED.create(button, mapping, this.modelOutput);
 		this.blockStateOutput.accept(BlockModelGenerators.createButton(button, unpressed, pressed));
-		ResourceLocation inventory = ModelTemplates.BUTTON_INVENTORY.create(button, mapping, this.modelOutput);
+		Identifier inventory = ModelTemplates.BUTTON_INVENTORY.create(button, mapping, this.modelOutput);
 		this.registerSimpleItemModel(button, inventory);
 	}
 
 	public void generateFence(Block fence, TextureMapping mapping) {
-		ResourceLocation post = ModelTemplates.FENCE_POST.create(fence, mapping, this.modelOutput);
-		ResourceLocation side = ModelTemplates.FENCE_SIDE.create(fence, mapping, this.modelOutput);
+		Identifier post = ModelTemplates.FENCE_POST.create(fence, mapping, this.modelOutput);
+		Identifier side = ModelTemplates.FENCE_SIDE.create(fence, mapping, this.modelOutput);
 		this.blockStateOutput.accept(BlockModelGenerators.createFence(fence, post, side));
-		ResourceLocation inventory = ModelTemplates.FENCE_INVENTORY.create(fence, mapping, this.modelOutput);
+		Identifier inventory = ModelTemplates.FENCE_INVENTORY.create(fence, mapping, this.modelOutput);
 		this.registerSimpleItemModel(fence, inventory);
 	}
 
 	public void generateFenceGate(Block fenceGate, TextureMapping mapping) {
-		ResourceLocation open = ModelTemplates.FENCE_GATE_OPEN.create(fenceGate, mapping, this.modelOutput);
-		ResourceLocation closed = ModelTemplates.FENCE_GATE_CLOSED.create(fenceGate, mapping, this.modelOutput);
-		ResourceLocation wallOpen = ModelTemplates.FENCE_GATE_WALL_OPEN.create(fenceGate, mapping, this.modelOutput);
-		ResourceLocation wallClosed = ModelTemplates.FENCE_GATE_WALL_CLOSED.create(fenceGate, mapping, this.modelOutput);
+		Identifier open = ModelTemplates.FENCE_GATE_OPEN.create(fenceGate, mapping, this.modelOutput);
+		Identifier closed = ModelTemplates.FENCE_GATE_CLOSED.create(fenceGate, mapping, this.modelOutput);
+		Identifier wallOpen = ModelTemplates.FENCE_GATE_WALL_OPEN.create(fenceGate, mapping, this.modelOutput);
+		Identifier wallClosed = ModelTemplates.FENCE_GATE_WALL_CLOSED.create(fenceGate, mapping, this.modelOutput);
 		this.blockStateOutput.accept(BlockModelGenerators.createFenceGate(fenceGate, open, closed, wallOpen, wallClosed, true));
 		this.registerSimpleItemModel(fenceGate, closed);
 	}
 
 	public void generatePressurePlate(Block pressurePlate, TextureMapping mapping) {
-		ResourceLocation unpressed = ModelTemplates.PRESSURE_PLATE_UP.create(pressurePlate, mapping, this.modelOutput);
-		ResourceLocation pressed = ModelTemplates.PRESSURE_PLATE_DOWN.create(pressurePlate, mapping, this.modelOutput);
+		Identifier unpressed = ModelTemplates.PRESSURE_PLATE_UP.create(pressurePlate, mapping, this.modelOutput);
+		Identifier pressed = ModelTemplates.PRESSURE_PLATE_DOWN.create(pressurePlate, mapping, this.modelOutput);
 		this.blockStateOutput.accept(BlockModelGenerators.createPressurePlate(pressurePlate, unpressed, pressed));
 		this.registerSimpleItemModel(pressurePlate, unpressed);
 	}
 
 	public void generateSign(Block floor, Block wall, TextureMapping mapping) {
-		ResourceLocation model = ModelTemplates.PARTICLE_ONLY.create(floor, mapping, this.modelOutput);
+		Identifier model = ModelTemplates.PARTICLE_ONLY.create(floor, mapping, this.modelOutput);
 		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(floor, model));
 		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(wall, model));
 		this.registerSimpleFlatItemModel(floor.asItem());
 	}
 
 	public void generateHangingSign(Block ceiling, Block wall, Block particle) {
-		ResourceLocation resourcelocation = ModelTemplates.PARTICLE_ONLY.create(ceiling, new TextureMapping().put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(particle)), this.modelOutput);
-		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(ceiling, resourcelocation));
-		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(wall, resourcelocation));
+		Identifier identifier = ModelTemplates.PARTICLE_ONLY.create(ceiling, new TextureMapping().put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(particle)), this.modelOutput);
+		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(ceiling, identifier));
+		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(wall, identifier));
 		this.registerSimpleFlatItemModel(ceiling.asItem());
 	}
 
 	public void generateSlab(Block slab, Block full, TextureMapping mapping) {
-		ResourceLocation bottom = ModelTemplates.SLAB_BOTTOM.create(slab, mapping, this.modelOutput);
-		ResourceLocation top = ModelTemplates.SLAB_TOP.create(slab, mapping, this.modelOutput);
+		Identifier bottom = ModelTemplates.SLAB_BOTTOM.create(slab, mapping, this.modelOutput);
+		Identifier top = ModelTemplates.SLAB_TOP.create(slab, mapping, this.modelOutput);
 		this.blockStateOutput.accept(createSlab(slab, bottom, top, ModelLocationUtils.getModelLocation(full)));
 		this.registerSimpleItemModel(slab, bottom);
 	}
 
 	public void generateStairs(Block stairs, TextureMapping mapping) {
-		ResourceLocation inner = ModelTemplates.STAIRS_INNER.createWithSuffix(stairs, "_inner", mapping, this.modelOutput);
-		ResourceLocation straight = ModelTemplates.STAIRS_STRAIGHT.create(stairs, mapping, this.modelOutput);
-		ResourceLocation outer = ModelTemplates.STAIRS_OUTER.createWithSuffix(stairs, "_outer", mapping, this.modelOutput);
+		Identifier inner = ModelTemplates.STAIRS_INNER.createWithSuffix(stairs, "_inner", mapping, this.modelOutput);
+		Identifier straight = ModelTemplates.STAIRS_STRAIGHT.create(stairs, mapping, this.modelOutput);
+		Identifier outer = ModelTemplates.STAIRS_OUTER.createWithSuffix(stairs, "_outer", mapping, this.modelOutput);
 		this.blockStateOutput.accept(BlockModelGenerators.createStairs(stairs, inner, straight, outer));
 		this.registerSimpleItemModel(stairs, straight);
 	}
 
 	public void generateTrapdoor(Block trapdoor, boolean orientable, String renderType) {
 		TextureMapping texturemapping = TextureMapping.defaultTexture(trapdoor);
-		ResourceLocation top = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_TOP : ModelTemplates.TRAPDOOR_TOP).extend().renderType(renderType).build().create(trapdoor, texturemapping, this.modelOutput);
-		ResourceLocation bottom = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_BOTTOM : ModelTemplates.TRAPDOOR_BOTTOM).extend().renderType(renderType).build().create(trapdoor, texturemapping, this.modelOutput);
-		ResourceLocation open = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_OPEN : ModelTemplates.TRAPDOOR_OPEN).extend().renderType(renderType).build().create(trapdoor, texturemapping, this.modelOutput);
+		Identifier top = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_TOP : ModelTemplates.TRAPDOOR_TOP).extend().renderType(renderType).build().create(trapdoor, texturemapping, this.modelOutput);
+		Identifier bottom = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_BOTTOM : ModelTemplates.TRAPDOOR_BOTTOM).extend().renderType(renderType).build().create(trapdoor, texturemapping, this.modelOutput);
+		Identifier open = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_OPEN : ModelTemplates.TRAPDOOR_OPEN).extend().renderType(renderType).build().create(trapdoor, texturemapping, this.modelOutput);
 		this.blockStateOutput.accept(createTrapdoor(trapdoor, top, bottom, open));
 		this.registerSimpleItemModel(trapdoor, bottom);
 	}
@@ -164,34 +165,34 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	//holy ternary batman
 	public void generateDoor(Block door, boolean useSideTexture, String renderType) {
 		TextureMapping texturemapping = useSideTexture ? TFTextureMapping.sideDoor(door) : TextureMapping.door(door);
-		ResourceLocation bottomLeft = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT : ModelTemplates.DOOR_BOTTOM_LEFT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		ResourceLocation bottomLeftOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT_OPEN : ModelTemplates.DOOR_BOTTOM_LEFT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		ResourceLocation bottomRight = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT : ModelTemplates.DOOR_BOTTOM_RIGHT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		ResourceLocation bottomRightOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT_OPEN : ModelTemplates.DOOR_BOTTOM_RIGHT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		ResourceLocation topLeft = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT : ModelTemplates.DOOR_TOP_LEFT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		ResourceLocation topLeftOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT_OPEN : ModelTemplates.DOOR_TOP_LEFT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		ResourceLocation topRight = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT : ModelTemplates.DOOR_TOP_RIGHT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		ResourceLocation topRightOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT_OPEN : ModelTemplates.DOOR_TOP_RIGHT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
+		Identifier bottomLeft = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT : ModelTemplates.DOOR_BOTTOM_LEFT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
+		Identifier bottomLeftOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT_OPEN : ModelTemplates.DOOR_BOTTOM_LEFT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
+		Identifier bottomRight = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT : ModelTemplates.DOOR_BOTTOM_RIGHT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
+		Identifier bottomRightOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT_OPEN : ModelTemplates.DOOR_BOTTOM_RIGHT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
+		Identifier topLeft = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT : ModelTemplates.DOOR_TOP_LEFT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
+		Identifier topLeftOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT_OPEN : ModelTemplates.DOOR_TOP_LEFT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
+		Identifier topRight = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT : ModelTemplates.DOOR_TOP_RIGHT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
+		Identifier topRightOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT_OPEN : ModelTemplates.DOOR_TOP_RIGHT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
 		this.registerSimpleFlatItemModel(door.asItem());
 		this.blockStateOutput.accept(createDoor(door, bottomLeft, bottomLeftOpen, bottomRight, bottomRightOpen, topLeft, topLeftOpen, topRight, topRightOpen));
 	}
 
 	public void generateBanister(Block banister, TextureMapping mapping) {
-		ResourceLocation connected = TFModelTemplates.BANISTER_CONNECTED.create(banister, mapping, this.modelOutput);
-		ResourceLocation connectedExtended = TFModelTemplates.BANISTER_CONNECTED_EXTENDED.create(banister, mapping, this.modelOutput);
-		ResourceLocation shorty = TFModelTemplates.BANISTER_SHORT.create(banister, mapping, this.modelOutput);
-		ResourceLocation shortExtended = TFModelTemplates.BANISTER_SHORT_EXTENDED.create(banister, mapping, this.modelOutput);
-		ResourceLocation tall = TFModelTemplates.BANISTER_TALL.create(banister, mapping, this.modelOutput);
-		ResourceLocation tallExtended = TFModelTemplates.BANISTER_TALL_EXTENDED.create(banister, mapping, this.modelOutput);
+		Identifier connected = TFModelTemplates.BANISTER_CONNECTED.create(banister, mapping, this.modelOutput);
+		Identifier connectedExtended = TFModelTemplates.BANISTER_CONNECTED_EXTENDED.create(banister, mapping, this.modelOutput);
+		Identifier shorty = TFModelTemplates.BANISTER_SHORT.create(banister, mapping, this.modelOutput);
+		Identifier shortExtended = TFModelTemplates.BANISTER_SHORT_EXTENDED.create(banister, mapping, this.modelOutput);
+		Identifier tall = TFModelTemplates.BANISTER_TALL.create(banister, mapping, this.modelOutput);
+		Identifier tallExtended = TFModelTemplates.BANISTER_TALL_EXTENDED.create(banister, mapping, this.modelOutput);
 		this.blockStateOutput.accept(createBanister(banister, connected, connectedExtended, shorty, shortExtended, tall, tallExtended));
-		ResourceLocation inventory = TFModelTemplates.BANISTER_INVENTORY.create(banister, mapping, this.modelOutput);
+		Identifier inventory = TFModelTemplates.BANISTER_INVENTORY.create(banister, mapping, this.modelOutput);
 		this.registerSimpleItemModel(banister, inventory);
 	}
 
-	public static BlockStateGenerator createBanister(Block banister, ResourceLocation connected, ResourceLocation connectedExtended, ResourceLocation shorty, ResourceLocation shortExtended, ResourceLocation tall, ResourceLocation tallExtended) {
+	public static BlockStateGenerator createBanister(Block banister, Identifier connected, Identifier connectedExtended, Identifier shorty, Identifier shortExtended, Identifier tall, Identifier tallExtended) {
 		return MultiVariantGenerator.multiVariant(banister).with(
 				PropertyDispatch.properties(BanisterBlock.EXTENDED, BanisterBlock.SHAPE).generate((extended, shape) -> {
-					ResourceLocation model = switch (shape) {
+					Identifier model = switch (shape) {
 						case SHORT -> extended ? shortExtended : shorty;
 						case TALL -> extended ? tallExtended : tall;
 						case CONNECTED -> extended ? connectedExtended : connected;
@@ -203,23 +204,23 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 
 	public void generateHollowLog(Block log, Block stripped, Block horizontal, Block vertical, Block climbable) {
 		TextureMapping base = TextureMapping.logColumn(log).put(TextureSlot.INSIDE, TextureMapping.getBlockTexture(stripped));
-		ResourceLocation horizModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG.create(horizontal, base, this.modelOutput);
-		ResourceLocation mossModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_moss", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, TwilightForestMod.prefix("block/moss_overhang")), this.modelOutput);
-		ResourceLocation grassModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_PLANT.createWithSuffix(horizontal, "_grass", base.put(TextureSlot.PLANT, TextureMapping.getBlockTexture(Blocks.SHORT_GRASS)).put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, TwilightForestMod.prefix("block/moss_overhang")), this.modelOutput);
-		ResourceLocation snowModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_snow", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(Blocks.SNOW)).put(TFTextureSlot.OVERHANG, TwilightForestMod.prefix("block/snow_overhang")), this.modelOutput);
-		ResourceLocation vertModel = TFModelTemplates.VERTICAL_HOLLOW_LOG.create(vertical, base, this.modelOutput);
-		ResourceLocation ladderModel = TFModelTemplates.CLIMBABLE_HOLLOW_LOG.createWithSuffix(climbable, "_ladder", base.put(TFTextureSlot.CLIMBABLE, TextureMapping.getBlockTexture(Blocks.LADDER)), this.modelOutput);
-		ResourceLocation vineModel = TFModelTemplates.CLIMBABLE_HOLLOW_LOG.createWithSuffix(climbable, "_vine", base.put(TFTextureSlot.CLIMBABLE, TextureMapping.getBlockTexture(Blocks.VINE)), this.modelOutput);
+		Identifier horizModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG.create(horizontal, base, this.modelOutput);
+		Identifier mossModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_moss", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, TwilightForestMod.prefix("block/moss_overhang")), this.modelOutput);
+		Identifier grassModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_PLANT.createWithSuffix(horizontal, "_grass", base.put(TextureSlot.PLANT, TextureMapping.getBlockTexture(Blocks.SHORT_GRASS)).put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, TwilightForestMod.prefix("block/moss_overhang")), this.modelOutput);
+		Identifier snowModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_snow", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(Blocks.SNOW)).put(TFTextureSlot.OVERHANG, TwilightForestMod.prefix("block/snow_overhang")), this.modelOutput);
+		Identifier vertModel = TFModelTemplates.VERTICAL_HOLLOW_LOG.create(vertical, base, this.modelOutput);
+		Identifier ladderModel = TFModelTemplates.CLIMBABLE_HOLLOW_LOG.createWithSuffix(climbable, "_ladder", base.put(TFTextureSlot.CLIMBABLE, TextureMapping.getBlockTexture(Blocks.LADDER)), this.modelOutput);
+		Identifier vineModel = TFModelTemplates.CLIMBABLE_HOLLOW_LOG.createWithSuffix(climbable, "_vine", base.put(TFTextureSlot.CLIMBABLE, TextureMapping.getBlockTexture(Blocks.VINE)), this.modelOutput);
 		this.blockStateOutput.accept(createHorizontalHollowLog(horizontal, horizModel, mossModel, grassModel, snowModel));
 		this.blockStateOutput.accept(createSimpleBlock(vertical, vertModel));
 		this.blockStateOutput.accept(createClimableHollowLog(climbable, ladderModel, vineModel));
 		this.registerSimpleItemModel(horizontal, horizModel);
 	}
 
-	public static BlockStateGenerator createHorizontalHollowLog(Block horizontal, ResourceLocation base, ResourceLocation moss, ResourceLocation grass, ResourceLocation snow) {
+	public static BlockStateGenerator createHorizontalHollowLog(Block horizontal, Identifier base, Identifier moss, Identifier grass, Identifier snow) {
 		return MultiVariantGenerator.multiVariant(horizontal).with(
 				PropertyDispatch.property(HorizontalHollowLogBlock.VARIANT).generate(variant -> {
-					ResourceLocation model = switch (variant) {
+					Identifier model = switch (variant) {
 						case MOSS -> moss;
 						case MOSS_AND_GRASS -> grass;
 						case SNOW -> snow;
@@ -232,10 +233,10 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 				.select(Direction.Axis.X, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)));
 	}
 
-	public static BlockStateGenerator createClimableHollowLog(Block climbable, ResourceLocation ladder, ResourceLocation vine) {
+	public static BlockStateGenerator createClimableHollowLog(Block climbable, Identifier ladder, Identifier vine) {
 		return MultiVariantGenerator.multiVariant(climbable).with(
 				PropertyDispatch.property(ClimbableHollowLogBlock.VARIANT).generate(variant -> {
-					ResourceLocation model = switch (variant) {
+					Identifier model = switch (variant) {
 						case VINE -> vine;
 						case LADDER, LADDER_WATERLOGGED -> ladder;
 					};
@@ -245,14 +246,14 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	}
 
 	public void generateTreeCore(Block log, Block core) {
-		ResourceLocation off = ModelTemplates.CUBE_COLUMN.create(core, TextureMapping.column(TextureMapping.getBlockTexture(core), TextureMapping.getBlockTexture(log, "_top")), this.modelOutput);
-		ResourceLocation on = ModelTemplates.CUBE_COLUMN.createWithSuffix(core, "_on", TextureMapping.column(TextureMapping.getBlockTexture(core, "_on"), TextureMapping.getBlockTexture(log, "_top")), this.modelOutput);
+		Identifier off = ModelTemplates.CUBE_COLUMN.create(core, TextureMapping.column(TextureMapping.getBlockTexture(core), TextureMapping.getBlockTexture(log, "_top")), this.modelOutput);
+		Identifier on = ModelTemplates.CUBE_COLUMN.createWithSuffix(core, "_on", TextureMapping.column(TextureMapping.getBlockTexture(core, "_on"), TextureMapping.getBlockTexture(log, "_top")), this.modelOutput);
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(core).with(PropertyDispatch.property(SpecialMagicLogBlock.ACTIVE).generate(active -> Variant.variant().with(VariantProperties.MODEL, active ? on : off))));
 		this.generateBlockItem(core);
 	}
 
 	public void generateChiseledBookshelf(Block shelf) {
-		ResourceLocation resourcelocation = ModelLocationUtils.getModelLocation(shelf);
+		Identifier identifier = ModelLocationUtils.getModelLocation(shelf);
 		MultiPartGenerator multipartgenerator = MultiPartGenerator.multiPart(shelf);
 		List.of(
 						Pair.of(Direction.NORTH, VariantProperties.Rotation.R0),
@@ -266,7 +267,7 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 							Condition.TerminalCondition condition = Condition.condition().term(BlockStateProperties.HORIZONTAL_FACING, direction);
 							multipartgenerator.with(condition,
 									Variant.variant()
-											.with(VariantProperties.MODEL, resourcelocation)
+											.with(VariantProperties.MODEL, identifier)
 											.with(VariantProperties.Y_ROT, rotation)
 											.with(VariantProperties.UV_LOCK, true)
 							);
@@ -302,10 +303,10 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		String suffix = occupied ? "_occupied" : "_empty";
 		TextureMapping texturemapping = new TextureMapping().put(TextureSlot.TEXTURE, TextureMapping.getBlockTexture(shelf, suffix));
 		BlockModelGenerators.BookSlotModelCacheKey cache = new BlockModelGenerators.BookSlotModelCacheKey(template, suffix);
-		ResourceLocation resourcelocation = CHISELED_BOOKSHELF_SLOT_MODEL_CACHE.computeIfAbsent(cache, key -> template.createWithSuffix(shelf, suffix, texturemapping, this.modelOutput));
+		Identifier identifier = CHISELED_BOOKSHELF_SLOT_MODEL_CACHE.computeIfAbsent(cache, key -> template.createWithSuffix(shelf, suffix, texturemapping, this.modelOutput));
 		generator.with(
 				Condition.and(condition, Condition.condition().term(property, occupied)),
-				Variant.variant().with(VariantProperties.MODEL, resourcelocation).with(VariantProperties.Y_ROT, rotation)
+				Variant.variant().with(VariantProperties.MODEL, identifier).with(VariantProperties.Y_ROT, rotation)
 		);
 	}
 

@@ -1,6 +1,6 @@
 package twilightforest.potions;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,7 +11,7 @@ import twilightforest.TwilightForestMod;
 import java.util.UUID;
 
 public class FrostedEffect extends MobEffect {
-	public static final ResourceLocation MOVEMENT_SPEED_MODIFIER = TwilightForestMod.prefix("frosted_slowdown");
+	public static final Identifier MOVEMENT_SPEED_MODIFIER = TwilightForestMod.prefix("frosted_slowdown");
 	public static final double FROST_MULTIPLIER = -0.15D;
 
 	@SuppressWarnings("this-escape")

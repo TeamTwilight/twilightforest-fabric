@@ -7,7 +7,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
@@ -43,7 +43,7 @@ public class EmiOminousFireRecipe implements EmiRecipe {
 	}
 
 	@Override
-	public @Nullable ResourceLocation getId() {
+	public @Nullable Identifier getId() {
 		return TwilightForestMod.prefix("/ominous/" + BuiltInRegistries.ENTITY_TYPE.getKey(this.output).getNamespace() + "/" + BuiltInRegistries.ENTITY_TYPE.getKey(this.output).getPath());
 	}
 

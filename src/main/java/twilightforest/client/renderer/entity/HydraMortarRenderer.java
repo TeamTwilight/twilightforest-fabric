@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
@@ -17,7 +17,7 @@ import twilightforest.entity.boss.HydraMortar;
 
 public class HydraMortarRenderer extends EntityRenderer<HydraMortar> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("hydramortar.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("hydramortar.png");
 	private final HydraMortarModel mortarModel;
 
 	public HydraMortarRenderer(EntityRendererProvider.Context context) {
@@ -53,7 +53,7 @@ public class HydraMortarRenderer extends EntityRenderer<HydraMortar> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(HydraMortar entity) {
+	public Identifier getTextureLocation(HydraMortar entity) {
 		return TEXTURE;
 	}
 }

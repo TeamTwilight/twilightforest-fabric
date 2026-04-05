@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
@@ -20,7 +20,7 @@ import twilightforest.entity.boss.Minoshroom;
 
 public class MinoshroomRenderer<T extends Minoshroom, M extends MinoshroomModel<T>> extends HumanoidMobRenderer<T, M> {
 
-	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("minoshroomtaur.png");
+	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 
 	public MinoshroomRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
 		super(context, model, shadowSize);
@@ -82,7 +82,7 @@ public class MinoshroomRenderer<T extends Minoshroom, M extends MinoshroomModel<
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(Minoshroom entity) {
+	public Identifier getTextureLocation(Minoshroom entity) {
 		return TEXTURE;
 	}
 }

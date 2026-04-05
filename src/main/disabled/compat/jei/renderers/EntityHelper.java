@@ -4,7 +4,7 @@ import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.jei.FakeEntityType;
 import twilightforest.compat.jei.JEICompat;
@@ -32,7 +32,7 @@ public class EntityHelper implements IIngredientHelper<FakeEntityType> {
 	}
 
 	@Override
-	public ResourceLocation getResourceLocation(FakeEntityType type) {
+	public Identifier getIdentifier(FakeEntityType type) {
 		return Objects.requireNonNull(BuiltInRegistries.ENTITY_TYPE.getKey(type.type()));
 	}
 
@@ -46,7 +46,7 @@ public class EntityHelper implements IIngredientHelper<FakeEntityType> {
 		if (type == null) {
 			return "null";
 		}
-		ResourceLocation name = BuiltInRegistries.ENTITY_TYPE.getKey(type.type());
+		Identifier name = BuiltInRegistries.ENTITY_TYPE.getKey(type.type());
 		if (name == null) {
 			return "unnamed sadface :(";
 		}

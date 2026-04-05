@@ -1,6 +1,6 @@
 package twilightforest.util;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +17,7 @@ public class TFRemapper {
 		DeferredRegister<Item> itemReg = TFItems.ITEMS;
 		DeferredRegister<StructurePieceType> pieceTypeReg = TFStructurePieceTypes.STRUCTURE_PIECE_TYPES;
 
-		TFBlockEntities.BLOCK_ENTITIES.addAlias(TwilightForestMod.prefix("tf_chest"), ResourceLocation.withDefaultNamespace("chest"));
+		TFBlockEntities.BLOCK_ENTITIES.addAlias(TwilightForestMod.prefix("tf_chest"), Identifier.withDefaultNamespace("chest"));
 
 		remapEntryFromRegistries("yeti_trophy", "alpha_yeti_trophy", blockReg, itemReg);
 		remapEntryFromRegistries("yeti_wall_trophy", "alpha_yeti_wall_trophy", blockReg, itemReg);
@@ -191,7 +191,7 @@ public class TFRemapper {
 		remapEntry(pieceTypeReg, "TFNCDu", "TFNCTe"); // Terrace Duct
 		remapEntry(pieceTypeReg, "TFNCSt", "TFNCTe"); // Terrace Statue
 
-		TFStructureProcessors.STRUCTURE_PROCESSORS.addAlias(TwilightForestMod.prefix("meta_block_processor"), ResourceLocation.withDefaultNamespace("jigsaw_replacement"));
+		TFStructureProcessors.STRUCTURE_PROCESSORS.addAlias(TwilightForestMod.prefix("meta_block_processor"), Identifier.withDefaultNamespace("jigsaw_replacement"));
 	}
 
 	private static void remapEntry(DeferredRegister<?> registry, String oldId, String newId) {

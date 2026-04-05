@@ -15,7 +15,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -61,7 +61,7 @@ public class EntityEntryDefinition implements EntryDefinition<Entity>, EntrySeri
 	}
 
 	@Override
-	public @Nullable ResourceLocation getIdentifier(EntryStack<Entity> entry, Entity value) {
+	public @Nullable Identifier getIdentifier(EntryStack<Entity> entry, Entity value) {
 		return BuiltInRegistries.ENTITY_TYPE.getKey(value.getType());
 	}
 

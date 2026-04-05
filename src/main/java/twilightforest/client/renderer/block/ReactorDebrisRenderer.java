@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 import twilightforest.block.entity.ReactorDebrisBlockEntity;
@@ -21,7 +21,7 @@ public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisB
 
 	public ReactorDebrisRenderer(BlockEntityRendererProvider.Context context) {}
 
-	private static final Map<ResourceLocation, TextureAtlasSprite> spriteCache = new HashMap<>();
+	private static final Map<Identifier, TextureAtlasSprite> spriteCache = new HashMap<>();
 
 	private enum Axis {
 		X, Y, Z
@@ -103,7 +103,7 @@ public class ReactorDebrisRenderer implements BlockEntityRenderer<ReactorDebrisB
 		}
 	}
 
-	public static TextureAtlasSprite getSprite(ResourceLocation location) {
+	public static TextureAtlasSprite getSprite(Identifier location) {
 		if (location == null)  // Handles cases with too many debris placed at once
 			return getSprite(ReactorDebrisBlockEntity.DEFAULT_TEXTURE);
 		return spriteCache.computeIfAbsent(location, loc ->

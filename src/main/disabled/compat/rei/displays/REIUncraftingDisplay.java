@@ -8,7 +8,7 @@ import me.shedaniel.rei.api.common.registry.RecipeManagerContext;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
@@ -55,7 +55,7 @@ public class REIUncraftingDisplay extends BasicDisplay {
 		return this.recipe.value();
 	}
 
-	public ResourceLocation getRecipeId() {
+	public Identifier getRecipeId() {
 		return this.recipe.id();
 	}
 
@@ -72,7 +72,7 @@ public class REIUncraftingDisplay extends BasicDisplay {
 		@Override
 		@SuppressWarnings("unchecked")
 		public REIUncraftingDisplay read(CompoundTag tag) {
-			ResourceLocation location = ResourceLocation.tryParse(tag.getString("recipe_id"));
+			Identifier location = Identifier.tryParse(tag.getString("recipe_id"));
 
 			if (location != null) {
 				Optional<RecipeHolder<?>> recipe = RecipeManagerContext.getInstance().getRecipeManager().byKey(location);

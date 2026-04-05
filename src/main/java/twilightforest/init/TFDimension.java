@@ -2,17 +2,17 @@ package twilightforest.init;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import twilightforest.TwilightForestMod;
 
 public class TFDimension {
 
-	public static final ResourceLocation DIMENSION = TwilightForestMod.prefix("twilight_forest");
+	public static final Identifier DIMENSION = TwilightForestMod.prefix("twilight_forest");
 	public static final ResourceKey<Level> DIMENSION_KEY = ResourceKey.create(Registries.DIMENSION, DIMENSION);
 
 	// Referenced by our DimensionType 'twilight_forest_type'.
-	public static final ResourceLocation DIMENSION_RENDERER = TwilightForestMod.prefix("renderer");
+	public static final Identifier DIMENSION_RENDERER = TwilightForestMod.prefix("renderer");
 
 	// Checks if the world is linked by the default Twilight Portal.
 	// Only use this method if you need to know if a world is a destination for portals!

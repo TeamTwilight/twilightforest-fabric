@@ -8,7 +8,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -21,20 +21,20 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public record MagicPaintingVariant(int width, int height, List<Layer> layers, Component author, ResourceLocation backTexture) {
+public record MagicPaintingVariant(int width, int height, List<Layer> layers, Component author, Identifier backTexture) {
 	public static final Codec<MagicPaintingVariant> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
 		ExtraCodecs.POSITIVE_INT.fieldOf("width").forGetter(MagicPaintingVariant::width),
 		ExtraCodecs.POSITIVE_INT.fieldOf("height").forGetter(MagicPaintingVariant::height),
 		ExtraCodecs.nonEmptyList(Layer.CODEC.listOf()).fieldOf("layers").forGetter(MagicPaintingVariant::layers),
 		ComponentSerialization.CODEC.fieldOf("author").forGetter(MagicPaintingVariant::author),
-		ResourceLocation.CODEC.fieldOf("back_texture").forGetter(MagicPaintingVariant::backTexture)
+		Identifier.CODEC.fieldOf("back_texture").forGetter(MagicPaintingVariant::backTexture)
 	).apply(recordCodecBuilder, MagicPaintingVariant::new));
 
 	public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, String id) {
-		return getVariant(regAccess, ResourceLocation.withDefaultNamespace(id));
+		return getVariant(regAccess, Identifier.withDefaultNamespace(id));
 	}
 
-	public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, ResourceLocation id) {
+	public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, Identifier id) {
 		return getVariant(regAccess, ResourceKey.create(TFRegistries.Keys.MAGIC_PAINTINGS, id));
 	}
 
@@ -43,10 +43,10 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 	}
 
 	public static String getVariantId(RegistryAccess regAccess, MagicPaintingVariant variant) {
-		return getVariantResourceLocation(regAccess, variant).toString();
+		return getVariantIdentifier(regAccess, variant).toString();
 	}
 
-	public static ResourceLocation getVariantResourceLocation(RegistryAccess regAccess, MagicPaintingVariant variant) {
+	public static Identifier getVariantIdentifier(RegistryAccess regAccess, MagicPaintingVariant variant) {
 		return regAccess.registry(TFRegistries.Keys.MAGIC_PAINTINGS).map(reg -> reg.getKey(variant)).orElse(MagicPaintingVariants.DEFAULT.location());
 	}
 

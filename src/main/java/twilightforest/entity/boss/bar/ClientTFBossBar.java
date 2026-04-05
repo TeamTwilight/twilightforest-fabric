@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.BossHealthOverlay;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 
@@ -32,8 +32,8 @@ public class ClientTFBossBar extends LerpingBossEvent {
 		this.setTime = setTime;
 	}
 
-	private static final ResourceLocation BAR_BACKGROUND = ResourceLocation.withDefaultNamespace("boss_bar/white_background");
-	private static final ResourceLocation BAR_PROGRESS = ResourceLocation.withDefaultNamespace("boss_bar/white_progress");
+	private static final Identifier BAR_BACKGROUND = Identifier.withDefaultNamespace("boss_bar/white_background");
+	private static final Identifier BAR_PROGRESS = Identifier.withDefaultNamespace("boss_bar/white_progress");
 
 	public void renderBossBar(GuiGraphics guiGraphics, int x, int y) {
 		RenderSystem.enableBlend();

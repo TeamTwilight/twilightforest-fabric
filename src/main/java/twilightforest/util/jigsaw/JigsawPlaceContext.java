@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.JigsawBlock;
 import net.minecraft.world.level.block.Mirror;
@@ -20,9 +20,9 @@ import twilightforest.util.RotationUtil;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings placementSettings, JigsawRecord seedJigsaw, List<JigsawRecord> spareJigsaws, ResourceLocation templateLocation) {
+public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings placementSettings, JigsawRecord seedJigsaw, List<JigsawRecord> spareJigsaws, Identifier templateLocation) {
 	@Nullable
-	public static JigsawPlaceContext pickPlaceableJunction(BlockPos parentStructureTemplatePos, BlockPos sourceJigsawPos, FrontAndTop sourceOrientation, StructureTemplateManager structureManager, @Nullable ResourceLocation templateLocation, String jigsawNameLabel, RandomSource random) {
+	public static JigsawPlaceContext pickPlaceableJunction(BlockPos parentStructureTemplatePos, BlockPos sourceJigsawPos, FrontAndTop sourceOrientation, StructureTemplateManager structureManager, @Nullable Identifier templateLocation, String jigsawNameLabel, RandomSource random) {
 		if (templateLocation == null)
 			return null;
 
@@ -37,7 +37,7 @@ public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings pl
 	}
 
 	@Nullable
-	private static JigsawPlaceContext pickPlaceableJunction(List<StructureTemplate.StructureBlockInfo> connectableJigsaws, BlockPos sourceTemplatePos, FrontAndTop sourceOrientation, String jigsawNameLabel, RandomSource random, ResourceLocation templateLocation) {
+	private static JigsawPlaceContext pickPlaceableJunction(List<StructureTemplate.StructureBlockInfo> connectableJigsaws, BlockPos sourceTemplatePos, FrontAndTop sourceOrientation, String jigsawNameLabel, RandomSource random, Identifier templateLocation) {
 		StructureTemplate.StructureBlockInfo connectable = null;
 
 		for (int i = 0; i < connectableJigsaws.size(); i++) {
@@ -58,7 +58,7 @@ public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings pl
 		return null;
 	}
 
-	private static JigsawPlaceContext generateAtJunction(boolean useVertical, RandomSource random, BlockPos sourceTemplatePos, FrontAndTop sourceState, StructureTemplate.StructureBlockInfo otherJigsaw, List<StructureTemplate.StructureBlockInfo> spareJigsaws, ResourceLocation templateLocation) {
+	private static JigsawPlaceContext generateAtJunction(boolean useVertical, RandomSource random, BlockPos sourceTemplatePos, FrontAndTop sourceState, StructureTemplate.StructureBlockInfo otherJigsaw, List<StructureTemplate.StructureBlockInfo> spareJigsaws, Identifier templateLocation) {
 		Direction sourceFront = sourceState.front();
 		BlockPos otherOffset = otherJigsaw.pos();
 
@@ -74,7 +74,7 @@ public record JigsawPlaceContext(BlockPos templatePos, StructurePlaceSettings pl
 		}
 	}
 
-	private static JigsawPlaceContext getPlacement(BlockPos centerPos, BlockPos otherOffset, Direction sourceFront, Rotation relativeRotation, StructureTemplate.StructureBlockInfo seedJigsaw, List<StructureTemplate.StructureBlockInfo> unconnectedJigsaws, RandomSource random, ResourceLocation templateLocation) {
+	private static JigsawPlaceContext getPlacement(BlockPos centerPos, BlockPos otherOffset, Direction sourceFront, Rotation relativeRotation, StructureTemplate.StructureBlockInfo seedJigsaw, List<StructureTemplate.StructureBlockInfo> unconnectedJigsaws, RandomSource random, Identifier templateLocation) {
 		BlockPos placePos = centerPos.relative(sourceFront).subtract(otherOffset);
 
 		StructurePlaceSettings placementSettings = new StructurePlaceSettings();

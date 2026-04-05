@@ -4,14 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.CarminiteGolemModel;
 import twilightforest.entity.monster.CarminiteGolem;
 
 public class CarminiteGolemRenderer<T extends CarminiteGolem, M extends CarminiteGolemModel<T>> extends MobRenderer<T, M> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("carminitegolem.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("carminitegolem.png");
 
 	public CarminiteGolemRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
 		super(context, model, shadowSize);
@@ -32,7 +32,7 @@ public class CarminiteGolemRenderer<T extends CarminiteGolem, M extends Carminit
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		return TEXTURE;
 	}
 }

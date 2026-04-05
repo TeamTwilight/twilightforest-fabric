@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -33,7 +33,7 @@ import twilightforest.init.TFBlocks;
  */
 //Most of the other stuff is derived from ChestRenderer
 public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implements BlockEntityRenderer<T> {
-	private static final ResourceLocation SKULL_CHEST_TEXTURE = TwilightForestMod.getModelTexture("casket/skull_chest.png");
+	private static final Identifier SKULL_CHEST_TEXTURE = TwilightForestMod.getModelTexture("casket/skull_chest.png");
 
 	private final ModelPart base;
 	private final ModelPart lid;
@@ -87,13 +87,13 @@ public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implemen
 	public void render(T entity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlay) {
 		BlockState blockstate = entity.getBlockState();
 
-		ResourceLocation textureLocation = this.getTextureLocation(blockstate);
+		Identifier textureLocation = this.getTextureLocation(blockstate);
 		Direction facing = blockstate.getValue(HorizontalDirectionalBlock.FACING);
 
 		this.renderCasket(entity.getOpenNess(partialTicks), stack, buffer, light, overlay, textureLocation, facing);
 	}
 
-	public void renderCasket(float lidRotation, PoseStack stack, MultiBufferSource buffer, int light, int overlay, ResourceLocation texture, Direction facing) {
+	public void renderCasket(float lidRotation, PoseStack stack, MultiBufferSource buffer, int light, int overlay, Identifier texture, Direction facing) {
 		stack.pushPose();
 		stack.translate(0.5F, 0.0F, 0.5F);
 		stack.mulPose(facing.getRotation());
@@ -113,12 +113,12 @@ public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implemen
 	}
 
 	@NotNull
-	protected ResourceLocation getTextureLocation(BlockState blockstate) {
+	protected Identifier getTextureLocation(BlockState blockstate) {
 		return SKULL_CHEST_TEXTURE;
 	}
 
 	@NotNull
-	public ResourceLocation getTextureLocation(int damage) {
+	public Identifier getTextureLocation(int damage) {
 		return SKULL_CHEST_TEXTURE;
 	}
 }

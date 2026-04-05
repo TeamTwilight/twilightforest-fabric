@@ -7,7 +7,7 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import twilightforest.item.recipe.travellers.TravellersGearModifierRecipe;
 
 public class EmiTravellersGearModifierRecipe extends EmiPatternCraftingRecipe {
@@ -26,7 +26,7 @@ public class EmiTravellersGearModifierRecipe extends EmiPatternCraftingRecipe {
 	}
 
 	@Override
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return super.getId().withPrefix("/");
 	}
 

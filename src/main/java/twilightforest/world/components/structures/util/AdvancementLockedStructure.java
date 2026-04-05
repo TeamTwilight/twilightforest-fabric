@@ -1,7 +1,7 @@
 package twilightforest.world.components.structures.util;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import twilightforest.util.PlayerHelper;
 
@@ -15,9 +15,9 @@ public interface AdvancementLockedStructure {
 		return PlayerHelper.playerHasRequiredAdvancements(player, this.getRequiredAdvancements());
 	}
 
-	List<ResourceLocation> getRequiredAdvancements();
+	List<Identifier> getRequiredAdvancements();
 
-	record AdvancementLockConfig(List<ResourceLocation> requiredAdvancements) {
-		public static final Codec<AdvancementLockConfig> CODEC = ResourceLocation.CODEC.listOf().xmap(AdvancementLockConfig::new, AdvancementLockConfig::requiredAdvancements);
+	record AdvancementLockConfig(List<Identifier> requiredAdvancements) {
+		public static final Codec<AdvancementLockConfig> CODEC = Identifier.CODEC.listOf().xmap(AdvancementLockConfig::new, AdvancementLockConfig::requiredAdvancements);
 	}
 }

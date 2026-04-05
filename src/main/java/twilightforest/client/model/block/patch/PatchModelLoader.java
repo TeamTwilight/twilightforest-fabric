@@ -4,7 +4,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.realmsclient.util.JsonUtils;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
 
 public final class PatchModelLoader implements IGeometryLoader<UnbakedPatchModel> {
@@ -18,6 +18,6 @@ public final class PatchModelLoader implements IGeometryLoader<UnbakedPatchModel
 		if (!object.has("texture"))
 			throw new JsonParseException("Patch model missing value for 'texture'.");
 
-		return new UnbakedPatchModel(ResourceLocation.parse(object.get("texture").getAsString()), JsonUtils.getBooleanOr("shaggify", object, false));
+		return new UnbakedPatchModel(Identifier.parse(object.get("texture").getAsString()), JsonUtils.getBooleanOr("shaggify", object, false));
 	}
 }

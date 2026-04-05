@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.*;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,13 +19,13 @@ import twilightforest.init.TFBlockEntities;
 import java.util.Random;
 
 public class ReactorDebrisBlockEntity extends BlockEntity {
-	private static final ResourceLocation[] TEXTURES = {
-		ResourceLocation.withDefaultNamespace("block/netherrack"),
-		ResourceLocation.withDefaultNamespace("block/bedrock"),
-		ResourceLocation.withDefaultNamespace("block/nether_portal"),
-		ResourceLocation.withDefaultNamespace("block/obsidian"),
+	private static final Identifier[] TEXTURES = {
+		Identifier.withDefaultNamespace("block/netherrack"),
+		Identifier.withDefaultNamespace("block/bedrock"),
+		Identifier.withDefaultNamespace("block/nether_portal"),
+		Identifier.withDefaultNamespace("block/obsidian"),
 	};
-	public static final ResourceLocation DEFAULT_TEXTURE = TEXTURES[0];
+	public static final Identifier DEFAULT_TEXTURE = TEXTURES[0];
 	private static final float Z_FIGHTING_MIN = 0.008F;
 	private static final float Z_FIGHTING_MAX = 1 - 0.008F;
 	private static final Random RANDOM = new Random();
@@ -34,7 +34,7 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	private byte timeAlive = 0;
 	public VoxelShape shape = Shapes.empty();
 
-	public ResourceLocation[] textures = new ResourceLocation[6];
+	public Identifier[] textures = new Identifier[6];
 	public Vector3f minPos = new Vector3f(Z_FIGHTING_MIN);
 	public Vector3f maxPos = new Vector3f(Z_FIGHTING_MAX);
 
@@ -91,11 +91,11 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	}
 
 	@NotNull
-	private static ResourceLocation nonEmptyNotNull(String texturesString) {
+	private static Identifier nonEmptyNotNull(String texturesString) {
 		if (texturesString.isBlank()) {
 			return ReactorDebrisBlockEntity.DEFAULT_TEXTURE;
 		}
-		return MoreObjects.firstNonNull(ResourceLocation.tryParse(texturesString), ReactorDebrisBlockEntity.DEFAULT_TEXTURE);
+		return MoreObjects.firstNonNull(Identifier.tryParse(texturesString), ReactorDebrisBlockEntity.DEFAULT_TEXTURE);
 	}
 
 	@Override

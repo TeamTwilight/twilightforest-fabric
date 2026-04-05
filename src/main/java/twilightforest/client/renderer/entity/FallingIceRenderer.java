@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
@@ -47,7 +47,7 @@ public class FallingIceRenderer extends EntityRenderer<FallingIce> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(FallingIce entity) {
+	public Identifier getTextureLocation(FallingIce entity) {
 		return InventoryMenu.BLOCK_ATLAS;
 	}
 }

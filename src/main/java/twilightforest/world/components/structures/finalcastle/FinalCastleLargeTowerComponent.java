@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -28,7 +28,7 @@ import twilightforest.world.components.structures.util.StructureTemplateDefiniti
 
 public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 
-	public static final ResourceLocation LARGE_TOWER_TEMP_POOL = TwilightForestMod.prefix("final_castle/temp/large_tower");
+	public static final Identifier LARGE_TOWER_TEMP_POOL = TwilightForestMod.prefix("final_castle/temp/large_tower");
 
 	@Autowired
 	private static StructureTemplateDefinitions structureTemplateDefinitions;

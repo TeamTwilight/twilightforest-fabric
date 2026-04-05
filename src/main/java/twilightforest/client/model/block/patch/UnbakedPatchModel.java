@@ -6,7 +6,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
 import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
@@ -14,7 +14,7 @@ import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 import java.util.function.Function;
 
 public record UnbakedPatchModel(Material material, boolean shaggify) implements IUnbakedGeometry<UnbakedPatchModel> {
-	public UnbakedPatchModel(ResourceLocation texture, boolean shaggify) {
+	public UnbakedPatchModel(Identifier texture, boolean shaggify) {
 		this(new Material(InventoryMenu.BLOCK_ATLAS, texture), shaggify);
 	}
 

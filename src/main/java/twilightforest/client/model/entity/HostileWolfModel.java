@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import twilightforest.entity.monster.HostileWolf;
 
@@ -25,7 +25,7 @@ public class HostileWolfModel<T extends HostileWolf> extends AgeableListModel<T>
 		this(RenderType::entityCutoutNoCull, root);
 	}
 
-	public HostileWolfModel(Function<ResourceLocation, RenderType> type, ModelPart root) {
+	public HostileWolfModel(Function<Identifier, RenderType> type, ModelPart root) {
 		super(type, false, 5.0F, 2.0F, 2.0F, 2.0F, 24.0F);
 		this.head = root.getChild("head");
 		this.body = root.getChild("body");

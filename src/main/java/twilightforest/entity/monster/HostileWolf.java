@@ -8,7 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -68,7 +68,7 @@ public class HostileWolf extends Monster implements VariantHolder<Holder<WolfVar
 		builder.define(VARIANT, this.registryAccess().registryOrThrow(Registries.WOLF_VARIANT).getHolderOrThrow(WolfVariants.PALE));
 	}
 
-	public ResourceLocation getTexture() {
+	public Identifier getTexture() {
 		WolfVariant wolfvariant = this.getVariant().value();
 		return this.isAggressive() ? wolfvariant.angryTexture() : wolfvariant.wildTexture();
 	}
@@ -92,7 +92,7 @@ public class HostileWolf extends Monster implements VariantHolder<Holder<WolfVar
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		Optional.ofNullable(ResourceLocation.tryParse(tag.getString("variant")))
+		Optional.ofNullable(Identifier.tryParse(tag.getString("variant")))
 			.map(location -> ResourceKey.create(Registries.WOLF_VARIANT, location))
 			.flatMap(key -> this.registryAccess().registryOrThrow(Registries.WOLF_VARIANT).getHolder(key))
 			.ifPresent(this::setVariant);

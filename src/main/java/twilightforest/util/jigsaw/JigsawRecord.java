@@ -5,7 +5,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
@@ -23,7 +23,7 @@ import java.util.List;
  * @param pos Offset from template origin. Not the world position
  */
 public record JigsawRecord(int priority, FrontAndTop orientation, BlockPos pos, String pool, String name, String target) {
-	public static List<JigsawRecord> allFromTemplate(StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings) {
+	public static List<JigsawRecord> allFromTemplate(StructureTemplateManager structureManager, Identifier templateLocation, StructurePlaceSettings placeSettings) {
 		// StructureTemplate#filterBlocks() does not support mirroring, force NONE
 		placeSettings.setMirror(Mirror.NONE);
 		return structureManager.getOrCreate(templateLocation).filterBlocks(BlockPos.ZERO, placeSettings, Blocks.JIGSAW).stream().map(JigsawRecord::fromJigsawBlock).toList();

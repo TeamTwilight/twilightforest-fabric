@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.client.renderer.item.properties.select.TrimMaterialProperty;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
@@ -56,7 +56,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		new ItemModelGenerators.TrimMaterialData("carminite", TFTrimMaterials.CARMINITE, Map.of()),
 		new ItemModelGenerators.TrimMaterialData("naga_scale", TFTrimMaterials.NAGA_SCALE, Map.of()));
 
-	public ItemModelGenerator(ItemModelOutput output, BiConsumer<ResourceLocation, ModelInstance> modelOutput) {
+	public ItemModelGenerator(ItemModelOutput output, BiConsumer<Identifier, ModelInstance> modelOutput) {
 		super(output, modelOutput);
 	}
 
@@ -103,7 +103,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.FIERY_INGOT.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.ARCTIC_FUR.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.ALPHA_YETI_FUR.get(), ModelTemplates.FLAT_ITEM);
-		ResourceLocation empty = ModelTemplates.FLAT_ITEM.create(TwilightForestMod.prefix("item/potion_flask_empty"), TextureMapping.layer0(TwilightForestMod.prefix("block/blank")), this.modelOutput);
+		Identifier empty = ModelTemplates.FLAT_ITEM.create(TwilightForestMod.prefix("item/potion_flask_empty"), TextureMapping.layer0(TwilightForestMod.prefix("block/blank")), this.modelOutput);
 		this.generatePotionFlask(TFItems.BRITTLE_FLASK.get(), true, empty);
 		this.generatePotionFlask(TFItems.GREATER_FLASK.get(), false, empty);
 		this.generateTwoLayerItem(TFItems.EXANIMATE_ESSENCE.get(), "_flames", ModelTemplates.TWO_LAYERED_ITEM);
@@ -239,8 +239,8 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.POCKET_WATCH.get(), ModelTemplates.FLAT_ITEM);
 		this.generateMoonDial(TFItems.MOON_DIAL.get());
 		this.generateBooleanDispatch(TFItems.CRUMBLE_HORN.get(), ItemModelUtils.isUsingItem(),
-			ItemModelUtils.plainModel(ModelTemplates.createItem(ResourceLocation.withDefaultNamespace("tooting_goat_horn").toString(), TextureSlot.LAYER0).create(TwilightForestMod.prefix("tooting_crumble_horn"), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)),
-			ItemModelUtils.plainModel(ModelTemplates.createItem(ResourceLocation.withDefaultNamespace("goat_horn").toString(), TextureSlot.LAYER0).create(TFItems.CRUMBLE_HORN.get(), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)));
+			ItemModelUtils.plainModel(ModelTemplates.createItem(Identifier.withDefaultNamespace("tooting_goat_horn").toString(), TextureSlot.LAYER0).create(TwilightForestMod.prefix("tooting_crumble_horn"), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)),
+			ItemModelUtils.plainModel(ModelTemplates.createItem(Identifier.withDefaultNamespace("goat_horn").toString(), TextureSlot.LAYER0).create(TFItems.CRUMBLE_HORN.get(), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)));
 		this.generateFlatItem(TFItems.PEACOCK_FEATHER_FAN.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.itemModelOutput.accept(TFItems.MOONWORM_QUEEN.get(), ItemModelUtils.conditional(new MoonwormQueenPulse(),
 			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), "_alt", ModelTemplates.FLAT_HANDHELD_ITEM)),
@@ -337,14 +337,14 @@ public class ItemModelGenerator extends ItemModelBuilders {
 	}
 
 	public void generateExpandedTrimmableItem(Item item, ResourceKey<EquipmentAsset> key, String name, int dyeColor) {
-		ResourceLocation model = ModelLocationUtils.getModelLocation(item);
-		ResourceLocation texture = TextureMapping.getItemTexture(item);
-		ResourceLocation overlayTexture = TextureMapping.getItemTexture(item, "_overlay");
+		Identifier model = ModelLocationUtils.getModelLocation(item);
+		Identifier texture = TextureMapping.getItemTexture(item);
+		Identifier overlayTexture = TextureMapping.getItemTexture(item, "_overlay");
 		List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> trims = new ArrayList<>(TRIM_MATERIAL_MODELS.size());
 
 		for (ItemModelGenerators.TrimMaterialData data : EX_TRIM_MATERIAL_MODELS) {
-			ResourceLocation trimModel = model.withSuffix("_" + data.name() + "_trim");
-			ResourceLocation trimTexture = ResourceLocation.withDefaultNamespace(
+			Identifier trimModel = model.withSuffix("_" + data.name() + "_trim");
+			Identifier trimTexture = Identifier.withDefaultNamespace(
 				"trims/items/" + name + "_trim_" + data.textureName(key)
 			);
 			ItemModel.Unbaked trimMaterialModel;
@@ -410,7 +410,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.rangeSelect(new Time(true, Time.TimeSource.RANDOM), 8.0F, list)));
 	}
 
-	public void generatePotionFlask(Item flask, boolean crackable, ResourceLocation empty) {
+	public void generatePotionFlask(Item flask, boolean crackable, Identifier empty) {
 		List<RangeSelectItemModel.Entry> potionEntries = new ArrayList<>();
 		List<RangeSelectItemModel.Entry> flaskEntries = new ArrayList<>();
 		String[] suffixes = {"_labelled", "_splintered", "_damaged"};
@@ -442,12 +442,12 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(this.twoLayerItem(item, "", "", suffix, template)));
 	}
 
-	public ResourceLocation twoLayerItem(Item item, String suffix, ModelTemplate template) {
+	public Identifier twoLayerItem(Item item, String suffix, ModelTemplate template) {
 		return this.twoLayerItem(item, "", "", suffix, template);
 	}
 
-	public ResourceLocation twoLayerItem(Item item, String modelSuffix, String suffix1, String suffix2, ModelTemplate template) {
-		ResourceLocation baseTex = TextureMapping.getItemTexture(item);
+	public Identifier twoLayerItem(Item item, String modelSuffix, String suffix1, String suffix2, ModelTemplate template) {
+		Identifier baseTex = TextureMapping.getItemTexture(item);
 		return template.create(ModelLocationUtils.getModelLocation(item, modelSuffix), TextureMapping.layered(baseTex.withSuffix(suffix1 + modelSuffix), baseTex.withSuffix(suffix2 + modelSuffix)), this.modelOutput);
 	}
 }

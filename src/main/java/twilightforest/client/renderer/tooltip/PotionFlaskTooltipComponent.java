@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.material.Fluids;
@@ -24,8 +24,8 @@ import java.util.List;
 
 public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 
-	private static final ResourceLocation BORDER_SPRITE = TwilightForestMod.prefix("flask_bar_border");
-	private static final ResourceLocation DOSE_SPRITE = TwilightForestMod.prefix("flask_dose_bar");
+	private static final Identifier BORDER_SPRITE = TwilightForestMod.prefix("flask_bar_border");
+	private static final Identifier DOSE_SPRITE = TwilightForestMod.prefix("flask_dose_bar");
 	private static final Component EMPTY_DESCRIPTION = Component.translatable("item.twilightforest.flask.empty_description");
 
 	public static final int WIDTH = 115; //hehe

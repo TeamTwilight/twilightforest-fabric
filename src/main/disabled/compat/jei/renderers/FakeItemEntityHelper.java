@@ -4,7 +4,7 @@ import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.compat.jei.FakeItemEntity;
 import twilightforest.compat.jei.JEICompat;
@@ -32,7 +32,7 @@ public class FakeItemEntityHelper implements IIngredientHelper<FakeItemEntity> {
 	}
 
 	@Override
-	public ResourceLocation getResourceLocation(FakeItemEntity ingredient) {
+	public Identifier getIdentifier(FakeItemEntity ingredient) {
 		return Objects.requireNonNull(BuiltInRegistries.ITEM.getKey(ingredient.stack().getItem()));
 	}
 

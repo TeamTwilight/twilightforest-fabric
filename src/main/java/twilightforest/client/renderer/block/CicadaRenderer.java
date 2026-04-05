@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.DirectionalBlock;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -19,7 +19,7 @@ import twilightforest.client.model.entity.CicadaModel;
 public class CicadaRenderer implements BlockEntityRenderer<CicadaBlockEntity> {
 
 	private final CicadaModel cicadaModel;
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("cicada-model.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("cicada-model.png");
 
 	public CicadaRenderer(BlockEntityRendererProvider.Context context) {
 		this.cicadaModel = new CicadaModel(context.bakeLayer(TFModelLayers.CICADA));

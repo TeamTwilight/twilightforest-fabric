@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.DirectionalBlock;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -20,7 +20,7 @@ import twilightforest.client.model.entity.MoonwormModel;
 
 public class MoonwormRenderer implements BlockEntityRenderer<MoonwormBlockEntity> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel moonwormModel;
 
 	public MoonwormRenderer(BlockEntityRendererProvider.Context context) {

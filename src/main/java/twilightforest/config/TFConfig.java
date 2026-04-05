@@ -8,7 +8,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -31,7 +31,7 @@ public class TFConfig {
 
 	public static final String CONFIG_ID = "config." + TwilightForestMod.ID + ".";
 	@Nullable
-	private static ResourceLocation portalLockingAdvancement;
+	private static Identifier portalLockingAdvancement;
 	private static final List<Holder<Biome>> VALID_AURORA_BIOMES = new ArrayList<>();
 	public static final List<GameProfile> GAME_PROFILES = new ArrayList<>();
 
@@ -110,17 +110,17 @@ public class TFConfig {
 	}
 
 	@Nullable
-	public static ResourceLocation getPortalLockingAdvancement(Player player) {
+	public static Identifier getPortalLockingAdvancement(Player player) {
 		//only run assigning logic if the config has an advancement set and the RL is null
 		if (portalLockingAdvancement == null && !ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get().isEmpty()) {
 
-			ResourceLocation lock = ResourceLocation.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
+			Identifier lock = Identifier.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
 			if (lock == null || PlayerHelper.getAdvancement(player, lock) == null) {
 				//if the RL is not a valid advancement fail us
 				TwilightForestMod.LOGGER.fatal("The portal locking advancement is not a valid advancement! Setting to null!");
 				ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.set("");
 			} else {
-				portalLockingAdvancement = ResourceLocation.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
+				portalLockingAdvancement = Identifier.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
 				TwilightForestMod.LOGGER.debug("Portal locking advancement reloaded. Current advancement to check for is: {}", portalLockingAdvancement);
 			}
 		}
@@ -132,7 +132,7 @@ public class TFConfig {
 	public static List<Holder<Biome>> getValidAuroraBiomes(RegistryAccess access) {
 		if (VALID_AURORA_BIOMES.isEmpty() && !ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().isEmpty()) {
 			ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().forEach(s -> {
-				Optional<Holder<Biome>> holder = Optional.ofNullable(ResourceLocation.tryParse(s)).flatMap(key -> access.registryOrThrow(Registries.BIOME).getHolder(key));
+				Optional<Holder<Biome>> holder = Optional.ofNullable(Identifier.tryParse(s)).flatMap(key -> access.registryOrThrow(Registries.BIOME).getHolder(key));
 				if (holder.isEmpty()) {
 					TwilightForestMod.LOGGER.warn("Biome {} in Twilight Forest's validAuroraBiomes config option is not a valid biome. Skipping!", s);
 				} else {

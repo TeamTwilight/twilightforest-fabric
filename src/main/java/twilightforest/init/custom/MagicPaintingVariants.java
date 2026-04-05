@@ -10,7 +10,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -39,7 +39,7 @@ public class MagicPaintingVariants {
 
 	public static final ResourceKey<MagicPaintingVariant> DEFAULT = MagicPaintingVariants.LUCID_LANDS; // FIXME Switch to a smaller one once available or create a blank 1x1 that's not accessible by normal means
 
-	private static ResourceKey<MagicPaintingVariant> makeKey(ResourceLocation name) {
+	private static ResourceKey<MagicPaintingVariant> makeKey(Identifier name) {
 		return ResourceKey.create(TFRegistries.Keys.MAGIC_PAINTINGS, name);
 	}
 
@@ -112,7 +112,7 @@ public class MagicPaintingVariants {
 	}
 
 	@SuppressWarnings("SameParameterValue")
-	private static void register(BootstrapContext<MagicPaintingVariant> context, ResourceKey<MagicPaintingVariant> key, String title, String author, int width, int height, ResourceLocation backSprite, List<Layer> layers) {
+	private static void register(BootstrapContext<MagicPaintingVariant> context, ResourceKey<MagicPaintingVariant> key, String title, String author, int width, int height, Identifier backSprite, List<Layer> layers) {
 		Component authorComponent = Component.translatable(key.location().toLanguageKey("magic_painting", "author"));
 		MagicPaintingVariant variant = new MagicPaintingVariant(width * 16, height * 16, layers, authorComponent, backSprite);
 		AtlasGenerator.MAGIC_PAINTING_HELPER.put(key.location(), variant);

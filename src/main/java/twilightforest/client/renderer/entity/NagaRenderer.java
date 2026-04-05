@@ -3,7 +3,7 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.JappaPackReloadListener;
 import twilightforest.client.model.entity.NagaModel;
@@ -11,9 +11,9 @@ import twilightforest.entity.boss.Naga;
 
 public class NagaRenderer<T extends Naga, M extends NagaModel<T>> extends MobRenderer<T, M> {
 
-	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("nagahead.png");
-	public static final ResourceLocation CHARGING_TEXTURE = TwilightForestMod.getModelTexture("nagahead_charging.png");
-	public static final ResourceLocation DAZED_TEXTURE = TwilightForestMod.getModelTexture("nagahead_dazed.png");
+	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("nagahead.png");
+	public static final Identifier CHARGING_TEXTURE = TwilightForestMod.getModelTexture("nagahead_charging.png");
+	public static final Identifier DAZED_TEXTURE = TwilightForestMod.getModelTexture("nagahead_dazed.png");
 
 	public NagaRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
 		super(context, model, shadowSize);
@@ -37,7 +37,7 @@ public class NagaRenderer<T extends Naga, M extends NagaModel<T>> extends MobRen
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		if (entity.isDazed()) {
 			return DAZED_TEXTURE;
 		} else if (entity.isCharging() || entity.isDeadOrDying()) {

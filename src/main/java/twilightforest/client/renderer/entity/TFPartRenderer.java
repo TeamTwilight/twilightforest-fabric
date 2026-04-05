@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
@@ -62,13 +62,13 @@ public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>
 
 	@Nullable
 	protected RenderType getRenderType(T entity, boolean visible, boolean ghostly, boolean glowing) {
-		ResourceLocation resourcelocation = this.getTextureLocation(entity);
+		Identifier identifier = this.getTextureLocation(entity);
 		if (ghostly) {
-			return RenderType.itemEntityTranslucentCull(resourcelocation);
+			return RenderType.itemEntityTranslucentCull(identifier);
 		} else if (visible) {
-			return this.model.renderType(resourcelocation);
+			return this.model.renderType(identifier);
 		} else {
-			return glowing ? RenderType.outline(resourcelocation) : null;
+			return glowing ? RenderType.outline(identifier) : null;
 		}
 	}
 

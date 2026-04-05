@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryFileCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.TFRegistries;
@@ -15,17 +15,17 @@ import twilightforest.init.custom.TinyBirdVariants;
 import java.util.List;
 import java.util.Optional;
 
-public record DwarfRabbitVariant(ResourceLocation texture, Optional<HolderSet<Biome>> spawnBiomes) {
+public record DwarfRabbitVariant(Identifier texture, Optional<HolderSet<Biome>> spawnBiomes) {
 	public static final Codec<DwarfRabbitVariant> DIRECT_CODEC = RecordCodecBuilder.create(
 		p_332779_ -> p_332779_.group(
-				ResourceLocation.CODEC.fieldOf("texture").forGetter(DwarfRabbitVariant::texture),
+				Identifier.CODEC.fieldOf("texture").forGetter(DwarfRabbitVariant::texture),
 				RegistryCodecs.homogeneousList(Registries.BIOME).optionalFieldOf("biomes").forGetter(DwarfRabbitVariant::spawnBiomes)
 			)
 			.apply(p_332779_, DwarfRabbitVariant::new)
 	);
 	public static final Codec<Holder<DwarfRabbitVariant>> CODEC = RegistryFileCodec.create(TFRegistries.Keys.DWARF_RABBIT_VARIANT, DIRECT_CODEC);
 
-	public DwarfRabbitVariant(ResourceLocation texture) {
+	public DwarfRabbitVariant(Identifier texture) {
 		this(texture, Optional.empty());
 	}
 

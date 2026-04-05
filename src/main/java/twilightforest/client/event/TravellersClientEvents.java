@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -256,7 +256,7 @@ public class TravellersClientEvents {
 				model.swimAmount = 0.0F;
 				model.setupAnim(player, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
 				armPart.xRot = 0.0F;
-				ResourceLocation gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
+				Identifier gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
 				armPart.render(event.getPoseStack(), event.getMultiBufferSource().getBuffer(RenderType.armorCutoutNoCull(gloveLocation)), event.getPackedLight(), OverlayTexture.NO_OVERLAY);
 			}
 		}

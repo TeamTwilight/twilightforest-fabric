@@ -3,7 +3,7 @@ package twilightforest.world.components.feature.templates;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
@@ -18,8 +18,8 @@ import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 
 public class SimpleWellFeature extends TemplateFeature<SwizzleConfig> {
-	private static final ResourceLocation WELL_TOP = TwilightForestMod.prefix("feature/well/simple_well_top");
-	private static final ResourceLocation WELL_BOTTOM = TwilightForestMod.prefix("feature/well/simple_well_bottom");
+	private static final Identifier WELL_TOP = TwilightForestMod.prefix("feature/well/simple_well_top");
+	private static final Identifier WELL_BOTTOM = TwilightForestMod.prefix("feature/well/simple_well_bottom");
 
 	public SimpleWellFeature(Codec<SwizzleConfig> config) {
 		super(config);

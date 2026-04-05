@@ -1,7 +1,7 @@
 package twilightforest.datagen.assets;
 
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.data.ParticleDescriptionProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFParticleType;
@@ -17,15 +17,15 @@ public class ParticleGenerator extends ParticleDescriptionProvider {
 	@Override
 	protected void addDescriptions() {
 		this.sprite(TFParticleType.ANNIHILATE.get(), TwilightForestMod.prefix("annihilate_particle"));
-		this.spriteSet(TFParticleType.CLOUD_PUFF.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
+		this.spriteSet(TFParticleType.CLOUD_PUFF.get(), Identifier.withDefaultNamespace("generic"), 8, true);
 		this.sprite(TFParticleType.DIM_FLAME.get(), TwilightForestMod.prefix("dim_flame"));
 		this.spriteSet(TFParticleType.EXTENDED_SNOW_WARNING.get(), TwilightForestMod.prefix("snow"), 4, false);
 		this.sprite(TFParticleType.FALLEN_LEAF.get(), TwilightForestMod.prefix("fallen_leaf"));
 		this.sprite(TFParticleType.FIREFLY.get(), TwilightForestMod.prefix("firefly"));
-		this.spriteSet(TFParticleType.GHAST_TRAP.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
-		this.spriteSet(TFParticleType.HUGE_SMOKE.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
+		this.spriteSet(TFParticleType.GHAST_TRAP.get(), Identifier.withDefaultNamespace("generic"), 8, true);
+		this.spriteSet(TFParticleType.HUGE_SMOKE.get(), Identifier.withDefaultNamespace("generic"), 8, true);
 		this.spriteSet(TFParticleType.ICE_BEAM.get(), TwilightForestMod.prefix("snow"), 4, false);
-		this.sprite(TFParticleType.LARGE_FLAME.get(), ResourceLocation.withDefaultNamespace("flame"));
+		this.sprite(TFParticleType.LARGE_FLAME.get(), Identifier.withDefaultNamespace("flame"));
 		this.spriteSet(TFParticleType.LEAF_RUNE.get(), () -> new Iterator<>() {
 			private int counter = 0;
 
@@ -35,8 +35,8 @@ public class ParticleGenerator extends ParticleDescriptionProvider {
 			}
 
 			@Override
-			public ResourceLocation next() {
-				ResourceLocation texture = ResourceLocation.withDefaultNamespace("sga_" + Character.toString('a' + this.counter));
+			public Identifier next() {
+				Identifier texture = Identifier.withDefaultNamespace("sga_" + Character.toString('a' + this.counter));
 				this.counter++;
 				return texture;
 			}
@@ -44,15 +44,15 @@ public class ParticleGenerator extends ParticleDescriptionProvider {
 		this.sprite(TFParticleType.LOG_CORE_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
 		this.sprite(TFParticleType.OMINOUS_FLAME.get(), TwilightForestMod.prefix("ominous_flame"));
 		this.sprite(TFParticleType.PARTICLE_SPAWNER_FIREFLY.get(), TwilightForestMod.prefix("firefly"));
-		this.sprite(TFParticleType.PROTECTION.get(), ResourceLocation.withDefaultNamespace("glint"));
+		this.sprite(TFParticleType.PROTECTION.get(), Identifier.withDefaultNamespace("glint"));
 		this.spriteSet(TFParticleType.SNOW.get(), TwilightForestMod.prefix("snow"), 4, false);
 		this.spriteSet(TFParticleType.SNOW_GUARDIAN.get(), TwilightForestMod.prefix("snow"), 4, false);
 		this.spriteSet(TFParticleType.SNOW_WARNING.get(), TwilightForestMod.prefix("snow"), 4, false);
 		this.sprite(TFParticleType.SORTING_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
 		this.sprite(TFParticleType.TRANSFORMATION_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
 		this.sprite(TFParticleType.WANDERING_FIREFLY.get(), TwilightForestMod.prefix("firefly"));
-		this.spriteSet(TFParticleType.MAGIC_EFFECT.get(), ResourceLocation.withDefaultNamespace("effect"), 8, true);
-		this.sprite(TFParticleType.ANGRY_LICH.get(), ResourceLocation.withDefaultNamespace("angry"));
+		this.spriteSet(TFParticleType.MAGIC_EFFECT.get(), Identifier.withDefaultNamespace("effect"), 8, true);
+		this.sprite(TFParticleType.ANGRY_LICH.get(), Identifier.withDefaultNamespace("angry"));
 		this.sprite(TFParticleType.TWILIGHT_ORB.get(), TwilightForestMod.prefix("twilight_orb"));
 		this.sprite(TFParticleType.SHIELD_BREAK.get(), TwilightForestMod.prefix("shield_break"));
 	}

@@ -13,7 +13,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.structure.*;
 
@@ -38,17 +38,17 @@ public class CountTemplateCommand {
 
 		StructureStart structureAt = level.structureManager().getStructureAt(commandPos, structure.value());
 
-		Object2IntMap<ResourceLocation> templateCounts = new Object2IntOpenHashMap<>();
+		Object2IntMap<Identifier> templateCounts = new Object2IntOpenHashMap<>();
 
 		List<StructurePiece> structurePieces = structureAt.getPieces();
 		for (StructurePiece piece : structurePieces) {
 			if (piece instanceof TemplateStructurePiece templatePiece) {
-				ResourceLocation resourceLocation = templatePiece.makeTemplateLocation();
-				templateCounts.put(resourceLocation, templateCounts.getOrDefault(resourceLocation, 0) + 1);
+				Identifier identifier = templatePiece.makeTemplateLocation();
+				templateCounts.put(identifier, templateCounts.getOrDefault(identifier, 0) + 1);
 			}
 		}
 
-		for (Object2IntMap.Entry<ResourceLocation> countedTemplate : templateCounts.object2IntEntrySet().stream().sorted(Comparator.comparing(Object2IntMap.Entry::getKey)).sorted(Comparator.comparing(Object2IntMap.Entry::getIntValue)).toList()) {
+		for (Object2IntMap.Entry<Identifier> countedTemplate : templateCounts.object2IntEntrySet().stream().sorted(Comparator.comparing(Object2IntMap.Entry::getKey)).sorted(Comparator.comparing(Object2IntMap.Entry::getIntValue)).toList()) {
 			MutableComponent text = Component.literal(countedTemplate.getKey() + "    " + countedTemplate.getIntValue());
 			context.getSource().sendSystemMessage(text);
 		}

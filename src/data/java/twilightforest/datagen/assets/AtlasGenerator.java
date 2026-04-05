@@ -3,7 +3,7 @@ package twilightforest.datagen.assets;
 import net.minecraft.client.renderer.texture.atlas.sources.SingleFile;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.data.SpriteSourceProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.MagicPaintingTextureManager;

@@ -7,7 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Rotation;
@@ -55,7 +55,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 		FrontAndTop oriented = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
 
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
-			ResourceLocation templatePool = TwilightForestMod.prefix("camp/structure_start");
+			Identifier templatePool = TwilightForestMod.prefix("camp/structure_start");
 			// TODO Instead use StructureTemplateDefinitions.initializeStubFromPool
 			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), context, 0, false);
 

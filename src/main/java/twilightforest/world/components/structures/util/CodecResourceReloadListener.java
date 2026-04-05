@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -34,11 +34,11 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 	}
 
 	@Override
-	protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
-		List<Map.Entry<ResourceLocation, JsonElement>> nonTwilight = new ArrayList<>();
+	protected void apply(Map<Identifier, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
+		List<Map.Entry<Identifier, JsonElement>> nonTwilight = new ArrayList<>();
 
-		for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
-			ResourceLocation location = entry.getKey();
+		for (Map.Entry<Identifier, JsonElement> entry : map.entrySet()) {
+			Identifier location = entry.getKey();
 
 			if (location.getPath().contains("entries"))
 				continue;
@@ -51,14 +51,14 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 			}
 		}
 
-		for (Map.Entry<ResourceLocation, JsonElement> entry : nonTwilight) {
-			ResourceLocation location = entry.getKey();
+		for (Map.Entry<Identifier, JsonElement> entry : nonTwilight) {
+			Identifier location = entry.getKey();
 			JsonElement jsonElement = entry.getValue();
 			this.deserialize(manager, this.initDynamicOps(), location, jsonElement);
 		}
 	}
 
-	protected void deserialize(ResourceManager manager, DynamicOps<JsonElement> ops, ResourceLocation location, JsonElement jsonElement) {
+	protected void deserialize(ResourceManager manager, DynamicOps<JsonElement> ops, Identifier location, JsonElement jsonElement) {
 		try {
 			Optional<T> checkFile = this.codec.parse(ops, jsonElement).result();
 			if (checkFile.isPresent()) {
@@ -75,7 +75,7 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 		return JsonOps.INSTANCE;
 	}
 
-	protected abstract void forLocation(ResourceManager manager, ResourceLocation location, T element);
+	protected abstract void forLocation(ResourceManager manager, Identifier location, T element);
 
 	/**
 	 * Intentionally not subscribed, it is on the subclasses to opt into subscription

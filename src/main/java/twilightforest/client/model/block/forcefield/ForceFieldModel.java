@@ -7,7 +7,7 @@ import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
@@ -49,7 +49,7 @@ public class ForceFieldModel implements IDynamicBakedModel {
 		this.context = context;
 		this.particle = spriteFunction.apply(context.getMaterial("particle"));
 		this.overrides = overrides;
-		ResourceLocation renderTypeHint = context.getRenderTypeHint();
+		Identifier renderTypeHint = context.getRenderTypeHint();
 		RenderTypeGroup group = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
 		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
 		this.itemRenderTypes = !group.isEmpty() ? List.of(group.entity()) : null;

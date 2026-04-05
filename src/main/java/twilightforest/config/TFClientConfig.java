@@ -1,6 +1,6 @@
 package twilightforest.config;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.ArrayList;
@@ -86,7 +86,7 @@ public class TFClientConfig {
 		auroraBiomes = builder
 			.translation(TFConfig.CONFIG_ID + "aurora_biomes")
 			.comment(ConfigComments.AURORA_SHADER)
-			.defineListAllowEmpty("auroraBiomes", List.of("twilightforest:glacier"), () -> "", s -> s instanceof String string && ResourceLocation.tryParse(string) != null);
+			.defineListAllowEmpty("auroraBiomes", List.of("twilightforest:glacier"), () -> "", s -> s instanceof String string && Identifier.tryParse(string) != null);
 
 		prettifyOreMeterGui = builder
 			.translation(TFConfig.CONFIG_ID + "prettify_ore_meter_gui")

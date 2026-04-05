@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.PipeBlock;
@@ -30,7 +30,7 @@ import twilightforest.init.TFDataAttachments;
 import twilightforest.init.custom.TravellersModifiersManager;
 
 public class RedThreadRenderer<T extends RedThreadBlockEntity> implements BlockEntityRenderer<T> {
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("red_thread.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("red_thread.png");
 	private final RedThreadModel redThreadModel;
 
 	private static final RenderType GLOW = RenderType

@@ -3,7 +3,7 @@ package twilightforest.client.model.block.aurorablock;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -47,7 +47,7 @@ public class NoiseVaryingModelBuilder<T extends ModelBuilder<T>> extends CustomL
 		JsonObject mainJson = super.toJson(json);
 
 		JsonArray variants = new JsonArray();
-		this.variants.stream().map(ModelFile::getLocation).map(ResourceLocation::toString).forEach(variants::add);
+		this.variants.stream().map(ModelFile::getLocation).map(Identifier::toString).forEach(variants::add);
 		mainJson.add("variants", variants);
 
 		return mainJson;

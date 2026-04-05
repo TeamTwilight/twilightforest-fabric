@@ -1,7 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,8 +17,8 @@ import twilightforest.init.TFStats;
 import static twilightforest.TwilightForestMod.prefix;
 
 public class Experiment115Item extends BlockItem {
-	public static final ResourceLocation THINK = prefix("think");
-	public static final ResourceLocation FULL = prefix("full");
+	public static final Identifier THINK = prefix("think");
+	public static final Identifier FULL = prefix("full");
 
 	public Experiment115Item(Block block, Properties properties) {
 		super(block, properties);

@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
@@ -22,8 +22,8 @@ import twilightforest.entity.monster.BlockChainGoblin;
 
 public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends HumanoidModel<T>> extends HumanoidMobRenderer<T, M> {
 
-	private static final ResourceLocation GOBLIN_TEXTURE = TwilightForestMod.getModelTexture("blockgoblin.png");
-	private static final ResourceLocation BLOCK_AND_CHAIN_TEXTURE = TwilightForestMod.getModelTexture("block_and_chain.png");
+	private static final Identifier GOBLIN_TEXTURE = TwilightForestMod.getModelTexture("blockgoblin.png");
+	private static final Identifier BLOCK_AND_CHAIN_TEXTURE = TwilightForestMod.getModelTexture("block_and_chain.png");
 
 	private final Model model;
 	private final Model chainModel;
@@ -86,7 +86,7 @@ public class BlockChainGoblinRenderer<T extends BlockChainGoblin, M extends Huma
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		return GOBLIN_TEXTURE;
 	}
 }

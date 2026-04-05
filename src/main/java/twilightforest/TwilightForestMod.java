@@ -1,7 +1,7 @@
 package twilightforest;
 
 import com.google.common.reflect.Reflection;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
@@ -104,19 +104,19 @@ public final class TwilightForestMod {
 		bus.addListener(CuriosCompat::registerCurioLayers);
 	}
 
-	public static ResourceLocation prefix(String name) {
-		return ResourceLocation.fromNamespaceAndPath(ID, name.toLowerCase(Locale.ROOT));
+	public static Identifier prefix(String name) {
+		return Identifier.fromNamespaceAndPath(ID, name.toLowerCase(Locale.ROOT));
 	}
 
-	public static ResourceLocation getModelTexture(String name) {
-		return ResourceLocation.fromNamespaceAndPath(ID, MODEL_DIR + name);
+	public static Identifier getModelTexture(String name) {
+		return Identifier.fromNamespaceAndPath(ID, MODEL_DIR + name);
 	}
 
-	public static ResourceLocation getGuiTexture(String name) {
-		return ResourceLocation.fromNamespaceAndPath(ID, GUI_DIR + name);
+	public static Identifier getGuiTexture(String name) {
+		return Identifier.fromNamespaceAndPath(ID, GUI_DIR + name);
 	}
 
-	public static ResourceLocation getEnvTexture(String name) {
-		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
+	public static Identifier getEnvTexture(String name) {
+		return Identifier.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
 	}
 }

@@ -4,7 +4,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.JigsawBlock;
@@ -50,7 +50,7 @@ public class JigsawUtil {
 		}
 	}
 
-	public static List<StructureTemplate.StructureBlockInfo> readConnectableJigsaws(StructureTemplateManager manager, ResourceLocation templateLocation, StructurePlaceSettings settings, @Nullable RandomSource random) {
+	public static List<StructureTemplate.StructureBlockInfo> readConnectableJigsaws(StructureTemplateManager manager, Identifier templateLocation, StructurePlaceSettings settings, @Nullable RandomSource random) {
 		return readConnectableJigsaws(manager.getOrCreate(templateLocation), settings, random);
 	}
 

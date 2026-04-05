@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FastColor;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -17,7 +17,7 @@ import twilightforest.entity.ProtectionBox;
 
 public class ProtectionBoxRenderer<T extends ProtectionBox> extends EntityRenderer<T> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("protectionbox.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("protectionbox.png");
 	private final ProtectionBoxModel<T> boxModel;
 
 	public ProtectionBoxRenderer(EntityRendererProvider.Context context) {
@@ -43,7 +43,7 @@ public class ProtectionBoxRenderer<T extends ProtectionBox> extends EntityRender
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		return TEXTURE;
 	}
 }

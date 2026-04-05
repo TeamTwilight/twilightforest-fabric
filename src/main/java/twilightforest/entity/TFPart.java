@@ -1,6 +1,6 @@
 package twilightforest.entity;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 
-	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("noop");
+	public static final Identifier RENDERER = TwilightForestMod.prefix("noop");
 
 	protected EntityDimensions realSize = EntityDimensions.fixed(1F, 1F);
 
@@ -37,7 +37,7 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 		super(parent);
 	}
 
-	public ResourceLocation renderer() {
+	public Identifier renderer() {
 		return RENDERER;
 	}
 

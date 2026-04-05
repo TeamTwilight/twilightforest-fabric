@@ -5,7 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -42,7 +42,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 
 	// Settings for placing features inside (Stalactites, Stalagmites, Chests, & Spawners)
 	protected final StructureSpeleothemConfig speleothemConfig;
-	protected final ResourceLocation speleothemConfigId;
+	protected final Identifier speleothemConfigId;
 
 	public HollowHillComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		this(ctx, TFStructurePieceTypes.TFHill.get(), nbt);

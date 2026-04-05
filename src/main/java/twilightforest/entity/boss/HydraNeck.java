@@ -1,6 +1,6 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -8,7 +8,7 @@ import twilightforest.TwilightForestMod;
 
 public class HydraNeck extends HydraPart {
 
-	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("hydra_neck");
+	public static final Identifier RENDERER = TwilightForestMod.prefix("hydra_neck");
 
 	public final HydraHead head;
 
@@ -23,7 +23,7 @@ public class HydraNeck extends HydraPart {
 	}
 
 	@Override
-	public ResourceLocation renderer() {
+	public Identifier renderer() {
 		return RENDERER;
 	}
 }

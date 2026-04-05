@@ -2,7 +2,7 @@ package twilightforest.compat.jade;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec2;
 import snownee.jade.api.*;
@@ -38,7 +38,7 @@ public enum DryingRackProvider implements IBlockComponentProvider, IServerDataPr
 	}
 
 	@Override
-	public ResourceLocation getUid() {
+	public Identifier getUid() {
 		return TwilightForestMod.prefix("drying_rack");
 	}
 }

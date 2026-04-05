@@ -5,7 +5,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import twilightforest.TFRegistries;
@@ -31,7 +31,7 @@ public class Restrictions {
 	public static final ResourceKey<Restriction> SWAMP = makeKey(TFBiomes.SWAMP.location());
 	public static final ResourceKey<Restriction> THORNLANDS = makeKey(TFBiomes.THORNLANDS.location());
 
-	private static ResourceKey<Restriction> makeKey(ResourceLocation name) {
+	private static ResourceKey<Restriction> makeKey(Identifier name) {
 		return ResourceKey.create(TFRegistries.Keys.RESTRICTIONS, name);
 	}
 

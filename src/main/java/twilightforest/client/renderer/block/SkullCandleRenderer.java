@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.SkullBlock;
@@ -40,12 +40,12 @@ public class SkullCandleRenderer<T extends SkullCandleBlockEntity> implements Bl
 
 	private final Map<SkullBlock.Type, SkullModelBase> modelByType;
 
-	public static final Map<SkullBlock.Type, ResourceLocation> SKIN_BY_TYPE = Util.make(Maps.newHashMap(), map -> {
-		map.put(SkullBlock.Types.SKELETON, ResourceLocation.withDefaultNamespace("textures/entity/skeleton/skeleton.png"));
-		map.put(SkullBlock.Types.WITHER_SKELETON, ResourceLocation.withDefaultNamespace("textures/entity/skeleton/wither_skeleton.png"));
-		map.put(SkullBlock.Types.ZOMBIE, ResourceLocation.withDefaultNamespace("textures/entity/zombie/zombie.png"));
-		map.put(SkullBlock.Types.CREEPER, ResourceLocation.withDefaultNamespace("textures/entity/creeper/creeper.png"));
-		map.put(SkullBlock.Types.PIGLIN, ResourceLocation.withDefaultNamespace("textures/entity/piglin/piglin.png"));
+	public static final Map<SkullBlock.Type, Identifier> SKIN_BY_TYPE = Util.make(Maps.newHashMap(), map -> {
+		map.put(SkullBlock.Types.SKELETON, Identifier.withDefaultNamespace("textures/entity/skeleton/skeleton.png"));
+		map.put(SkullBlock.Types.WITHER_SKELETON, Identifier.withDefaultNamespace("textures/entity/skeleton/wither_skeleton.png"));
+		map.put(SkullBlock.Types.ZOMBIE, Identifier.withDefaultNamespace("textures/entity/zombie/zombie.png"));
+		map.put(SkullBlock.Types.CREEPER, Identifier.withDefaultNamespace("textures/entity/creeper/creeper.png"));
+		map.put(SkullBlock.Types.PIGLIN, Identifier.withDefaultNamespace("textures/entity/piglin/piglin.png"));
 		map.put(SkullBlock.Types.PLAYER, DefaultPlayerSkin.getDefaultTexture());
 	});
 
@@ -105,12 +105,12 @@ public class SkullCandleRenderer<T extends SkullCandleBlockEntity> implements Bl
 	}
 
 	public static RenderType getRenderType(SkullBlock.Type type, @Nullable ResolvableProfile profile) {
-		ResourceLocation resourcelocation = SKIN_BY_TYPE.get(type);
+		Identifier identifier = SKIN_BY_TYPE.get(type);
 		if (type == SkullBlock.Types.PLAYER && profile != null) {
 			SkinManager skinmanager = Minecraft.getInstance().getSkinManager();
 			return RenderType.entityTranslucent(skinmanager.getInsecureSkin(profile.gameProfile()).texture());
 		} else {
-			return RenderType.entityCutoutNoCullZOffset(resourcelocation);
+			return RenderType.entityCutoutNoCullZOffset(identifier);
 		}
 	}
 }

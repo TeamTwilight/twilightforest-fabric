@@ -12,7 +12,7 @@ import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
@@ -25,7 +25,7 @@ import twilightforest.inventory.UncraftingMenu;
 import twilightforest.network.UncraftingGuiPacket;
 
 public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> implements RecipeUpdateListener {
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
 	private final RecipeBookComponent recipeBookComponent = new UncraftingRecipeBookComponent();
 	private boolean widthTooNarrow;
 

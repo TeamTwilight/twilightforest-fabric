@@ -14,7 +14,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
@@ -152,7 +152,7 @@ public class LoadingScreen extends Screen {
 			//TwilightForestMod.prefix("textures/block/mossy_mazestone.png"     ),
 			TwilightForestMod.prefix("textures/block/cracked_mazestone.png")
 		) {
-			private final ResourceLocation mazestoneDecor = TwilightForestMod.prefix("textures/block/decorative_mazestone.png");
+			private final Identifier mazestoneDecor = TwilightForestMod.prefix("textures/block/decorative_mazestone.png");
 
 			@Override
 			void postRenderBackground(float width, float height) {
@@ -214,7 +214,7 @@ public class LoadingScreen extends Screen {
 			TwilightForestMod.prefix("textures/block/cracked_towerwood.png"),
 			TwilightForestMod.prefix("textures/block/cracked_towerwood_alt.png")
 		) {
-			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/block/encased_towerwood.png");
+			private final Identifier towerwoodEncased = TwilightForestMod.prefix("textures/block/encased_towerwood.png");
 
 			private final float stretch = 0.985F;
 			private final float depth = 1.15F;
@@ -364,7 +364,7 @@ public class LoadingScreen extends Screen {
 			TwilightForestMod.prefix("textures/block/cracked_castle_brick.png"),
 			TwilightForestMod.prefix("textures/block/worn_castle_brick.png")
 		) {
-			private final ResourceLocation[] magic = new ResourceLocation[]{
+			private final Identifier[] magic = new Identifier[]{
 				TwilightForestMod.prefix("textures/block/castleblock_magic_0.png"),
 				TwilightForestMod.prefix("textures/block/castleblock_magic_1.png"),
 				TwilightForestMod.prefix("textures/block/castleblock_magic_2.png"),
@@ -434,13 +434,13 @@ public class LoadingScreen extends Screen {
 			}
 		};
 
-		private final ResourceLocation[] backgroundMaterials;
+		private final Identifier[] backgroundMaterials;
 
-		BackgroundThemes(ResourceLocation... backgroundMaterials) {
+		BackgroundThemes(Identifier... backgroundMaterials) {
 			this.backgroundMaterials = backgroundMaterials;
 		}
 
-		ResourceLocation[] getBackgroundMaterials() {
+		Identifier[] getBackgroundMaterials() {
 			return backgroundMaterials;
 		}
 

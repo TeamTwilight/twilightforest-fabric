@@ -3,7 +3,7 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MistWolfModel;
@@ -11,7 +11,7 @@ import twilightforest.entity.monster.MistWolf;
 
 public class MistWolfRenderer extends MobRenderer<MistWolf, MistWolfModel> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("mistwolf.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("mistwolf.png");
 
 	public MistWolfRenderer(EntityRendererProvider.Context context) {
 		super(context, new MistWolfModel(context.bakeLayer(TFModelLayers.HOSTILE_WOLF)), 1.0F);
@@ -29,7 +29,7 @@ public class MistWolfRenderer extends MobRenderer<MistWolf, MistWolfModel> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(MistWolf entity) {
+	public Identifier getTextureLocation(MistWolf entity) {
 		return TEXTURE;
 	}
 }

@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -74,7 +74,7 @@ public class MagicPaintingItem extends Item {
 
 		if (magicPainting != null) {
 			MagicPaintingVariant painting = magicPainting.value();
-			ResourceLocation location = magicPainting.unwrapKey().orElse(MagicPaintingVariants.DEFAULT).location();
+			Identifier location = magicPainting.unwrapKey().orElse(MagicPaintingVariants.DEFAULT).location();
 			components.add(Component.translatable(location.toLanguageKey("magic_painting", "title")).withStyle(ChatFormatting.YELLOW));
 			components.add(Component.empty().withStyle(ChatFormatting.GRAY).append(painting.author()));
 			components.add(Component.translatable("painting.dimensions", Mth.positiveCeilDiv(painting.width(), 16), Mth.positiveCeilDiv(painting.height(), 16)));

@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
@@ -32,7 +32,7 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 
 	@Override
 	protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
-		return templateManager.getOrCreate(Util.getRandom(DruidHutFeature.HutType.values(), random).resourceLocation);
+		return templateManager.getOrCreate(Util.getRandom(DruidHutFeature.HutType.values(), random).identifier);
 	}
 
 	@Override
@@ -144,10 +144,10 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 		SIDEWAYS(TwilightForestMod.prefix("feature/druid_hut/druid_sideways")),
 		DOUBLE_DECK(TwilightForestMod.prefix("feature/druid_hut/druid_doubledeck"));
 
-		private final ResourceLocation resourceLocation;
+		private final Identifier identifier;
 
-		HutType(ResourceLocation rl) {
-			this.resourceLocation = rl;
+		HutType(Identifier rl) {
+			this.identifier = rl;
 		}
 	}
 
@@ -156,12 +156,12 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 		SHELVES(TwilightForestMod.prefix("feature/druid_hut/basement_shelves"), TwilightForestMod.prefix("feature/druid_hut/basement_shelves_trap")),
 		GALLERY(TwilightForestMod.prefix("feature/druid_hut/basement_gallery"), TwilightForestMod.prefix("feature/druid_hut/basement_gallery_trap"));
 
-		private final ResourceLocation resourceLocation;
-		private final ResourceLocation resourceLocationTrap;
+		private final Identifier identifier;
+		private final Identifier identifierTrap;
 
-		BasementType(ResourceLocation rl, ResourceLocation rlTrap) {
-			this.resourceLocation = rl;
-			this.resourceLocationTrap = rlTrap;
+		BasementType(Identifier rl, Identifier rlTrap) {
+			this.identifier = rl;
+			this.identifierTrap = rlTrap;
 			increment();
 		}
 
@@ -171,8 +171,8 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 			++size;
 		}
 
-		private ResourceLocation getBasement(boolean trapped) {
-			return trapped ? resourceLocationTrap : resourceLocation;
+		private Identifier getBasement(boolean trapped) {
+			return trapped ? identifierTrap : identifier;
 		}
 	}
 }

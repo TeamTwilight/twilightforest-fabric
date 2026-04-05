@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.TextureUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -23,7 +23,7 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 	@Override
 	public void onResourceManagerReload(ResourceManager manager) {
 		// Get a default boat chest texture
-		ResourceLocation oak = getTextureLocation(Boat.Type.OAK);
+		Identifier oak = getTextureLocation(Boat.Type.OAK);
 
 		manager.getResource(oak).ifPresent(vanillaResource -> {
 			try (InputStream vanillaStream = vanillaResource.open()) {
@@ -31,7 +31,7 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 					int defaultScale = 128;
 					int vanillaScale = vanillaImage.getWidth() / defaultScale;
 					for (Boat.Type type : Boat.Type.values()) {
-						ResourceLocation location = getTextureLocation(type);
+						Identifier location = getTextureLocation(type);
 						if (location.getNamespace().equals(TwilightForestMod.ID)) { // We only want to do this to our boats
 							manager.getResource(location).ifPresent(tfResource -> {
 								try (InputStream tfStream = tfResource.open()) {
@@ -112,7 +112,7 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 		ref.set(null);
 	}
 
-	private static ResourceLocation getTextureLocation(Boat.Type type) {
-		return ResourceLocation.parse(type.getName()).withPrefix("textures/entity/chest_boat/").withSuffix(".png");
+	private static Identifier getTextureLocation(Boat.Type type) {
+		return Identifier.parse(type.getName()).withPrefix("textures/entity/chest_boat/").withSuffix(".png");
 	}
 }

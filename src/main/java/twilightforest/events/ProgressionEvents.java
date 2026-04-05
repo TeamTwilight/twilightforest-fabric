@@ -7,7 +7,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -219,7 +219,7 @@ public class ProgressionEvents {
 	}
 
 	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
-		if (world.dimension().location().equals(ResourceLocation.parse(TFConfig.originDimension))
+		if (world.dimension().location().equals(Identifier.parse(TFConfig.originDimension))
 			|| TFDimension.isTwilightPortalDestination(world)
 			|| TFConfig.allowPortalsInOtherDimensions) {
 

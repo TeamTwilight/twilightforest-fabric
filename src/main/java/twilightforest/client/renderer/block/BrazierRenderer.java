@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,9 +25,9 @@ import twilightforest.enums.BrazierLight;
 public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity> {
 
 	private final BrazierModel model;
-	public static final ResourceLocation TEXTURE_OFF = TwilightForestMod.getModelTexture("brazier/brazier.png");
-	public static final ResourceLocation TEXTURE_ON = TwilightForestMod.getModelTexture("brazier/brazier_lit.png");
-	public static final ResourceLocation TEXTURE_OVERLAY = TwilightForestMod.getModelTexture("brazier/brazier_overlay.png");
+	public static final Identifier TEXTURE_OFF = TwilightForestMod.getModelTexture("brazier/brazier.png");
+	public static final Identifier TEXTURE_ON = TwilightForestMod.getModelTexture("brazier/brazier_lit.png");
+	public static final Identifier TEXTURE_OVERLAY = TwilightForestMod.getModelTexture("brazier/brazier_overlay.png");
 
 	public BrazierRenderer(BlockEntityRendererProvider.Context context) {
 		this.model = new BrazierModel(context.bakeLayer(TFModelLayers.BRAZIER));
@@ -50,7 +50,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity> 
 		stack.pushPose();
 		stack.translate(0.5F, 1.5F, 0.5F);
 		stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-		ResourceLocation loc = entity.getBlockState().getValue(BrazierBlock.LIGHT).isLit() ? TEXTURE_ON : TEXTURE_OFF;
+		Identifier loc = entity.getBlockState().getValue(BrazierBlock.LIGHT).isLit() ? TEXTURE_ON : TEXTURE_OFF;
 		VertexConsumer consumer = buffer.getBuffer(this.model.renderType(loc));
 		this.model.renderToBuffer(stack, consumer, light, overlay);
 		if (lit.isLit()) {

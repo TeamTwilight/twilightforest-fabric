@@ -9,7 +9,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -34,7 +34,7 @@ public class JarBlockEntity extends BlockEntity {
 	public static final Codec<Item> ITEM_CODEC = BuiltInRegistries.ITEM.byNameCodec();
 	public static final Map<Item, BooleanSupplier> REGISTERED_LOG_LIDS = new HashMap<>();
 	public static final String TAG_LID = "lid";
-	public static final ResourceLocation JAR_LID = TwilightForestMod.prefix("jar_lid");
+	public static final Identifier JAR_LID = TwilightForestMod.prefix("jar_lid");
 	public static final int EVENT_POT_WOBBLES = 1;
 
 	public static void addLid(Item item, BooleanSupplier supplier) {

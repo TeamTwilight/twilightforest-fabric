@@ -22,7 +22,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -143,10 +143,10 @@ public class ClientRegistrationEvents {
 		ItemProperties.register(TFItems.CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
 			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
 
-		ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.get(), ResourceLocation.parse("blocking"), (stack, level, entity, idk) ->
+		ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.get(), Identifier.parse("blocking"), (stack, level, entity, idk) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(TFItems.MOON_DIAL.get(), ResourceLocation.parse("phase"), new ClampedItemPropertyFunction() {
+		ItemProperties.register(TFItems.MOON_DIAL.get(), Identifier.parse("phase"), new ClampedItemPropertyFunction() {
 			@Override
 			public float unclampedCall(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entityBase, int idk) {
 				boolean flag = entityBase != null;
@@ -193,43 +193,43 @@ public class ClientRegistrationEvents {
 			return 0;
 		});
 
-		ItemProperties.register(TFItems.ENDER_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
+		ItemProperties.register(TFItems.ENDER_BOW.get(), Identifier.parse("pull"), (stack, level, entity, idk) -> {
 			if (entity == null) return 0.0F;
 			else
 				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
 		});
 
-		ItemProperties.register(TFItems.ENDER_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
+		ItemProperties.register(TFItems.ENDER_BOW.get(), Identifier.parse("pulling"), (stack, level, entity, idk) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(TFItems.ICE_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
+		ItemProperties.register(TFItems.ICE_BOW.get(), Identifier.parse("pull"), (stack, level, entity, idk) -> {
 			if (entity == null) return 0.0F;
 			else
 				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
 		});
 
-		ItemProperties.register(TFItems.ICE_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
+		ItemProperties.register(TFItems.ICE_BOW.get(), Identifier.parse("pulling"), (stack, level, entity, idk) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(TFItems.SEEKER_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
+		ItemProperties.register(TFItems.SEEKER_BOW.get(), Identifier.parse("pull"), (stack, level, entity, idk) -> {
 			if (entity == null) return 0.0F;
 			else
 				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
 		});
 
-		ItemProperties.register(TFItems.SEEKER_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
+		ItemProperties.register(TFItems.SEEKER_BOW.get(), Identifier.parse("pulling"), (stack, level, entity, idk) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(TFItems.TRIPLE_BOW.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
+		ItemProperties.register(TFItems.TRIPLE_BOW.get(), Identifier.parse("pull"), (stack, level, entity, idk) -> {
 			if (entity == null) return 0.0F;
 			else
 				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
 		});
 
-		ItemProperties.register(TFItems.TRIPLE_BOW.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
+		ItemProperties.register(TFItems.TRIPLE_BOW.get(), Identifier.parse("pulling"), (stack, level, entity, idk) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
-		ItemProperties.register(TFItems.ORE_MAGNET.get(), ResourceLocation.parse("pull"), (stack, level, entity, idk) -> {
+		ItemProperties.register(TFItems.ORE_MAGNET.get(), Identifier.parse("pull"), (stack, level, entity, idk) -> {
 			if (entity == null) return 0.0F;
 			else {
 				ItemStack itemstack = entity.getUseItem();
@@ -248,7 +248,7 @@ public class ClientRegistrationEvents {
 			return 0.0F;
 		});
 
-		ItemProperties.register(TFItems.ORE_MAGNET.get(), ResourceLocation.parse("pulling"), (stack, level, entity, idk) ->
+		ItemProperties.register(TFItems.ORE_MAGNET.get(), Identifier.parse("pulling"), (stack, level, entity, idk) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 
 		ItemProperties.register(TFItems.BLOCK_AND_CHAIN.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
@@ -273,7 +273,7 @@ public class ClientRegistrationEvents {
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
 		);
 
-		Predicate<ResourceLocation> mippedIDs = location -> location.getNamespace().equals(TwilightForestMod.ID) && //only TF blocks
+		Predicate<Identifier> mippedIDs = location -> location.getNamespace().equals(TwilightForestMod.ID) && //only TF blocks
 			((location.getPath().contains("leaves") && !location.getPath().contains("dark")) || //all TF leaves (except dark)
 				location.getPath().contains("_bush") || //all berry bushes
 				location.getPath().contains("_oreberry")); //all oreberry bushes
@@ -297,7 +297,7 @@ public class ClientRegistrationEvents {
 		event.register(TrollsteinnModel.LIT_TROLLSTEINN);
 
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
-			ResourceLocation location = lid.resourceLocation();
+			Identifier location = lid.identifier();
 			String name = location.getPath();
 			if (lid.customPath() != null) name = lid.customPath();
 			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name)));
@@ -306,7 +306,7 @@ public class ClientRegistrationEvents {
 
 	private void cacheJarLids(ModelEvent.BakingCompleted event) {
 		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
-			String name = lid.resourceLocation().getPath();
+			String name = lid.identifier().getPath();
 			if (lid.customPath() != null) name = lid.customPath();
 			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
 		});
@@ -419,7 +419,7 @@ public class ClientRegistrationEvents {
 		event.registerEntityRenderer(TFEntities.NATURE_BOLT.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(TFEntities.LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
 		event.registerEntityRenderer(TFEntities.WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
-		event.registerEntityRenderer(TFEntities.LICH_BOMB.get(), c -> new CustomProjectileTextureRenderer(c, ResourceLocation.withDefaultNamespace("textures/item/magma_cream.png"), 1.0F, true, true));
+		event.registerEntityRenderer(TFEntities.LICH_BOMB.get(), c -> new CustomProjectileTextureRenderer(c, Identifier.withDefaultNamespace("textures/item/magma_cream.png"), 1.0F, true, true));
 		event.registerEntityRenderer(TFEntities.TOME_BOLT.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(TFEntities.HYDRA_MORTAR.get(), HydraMortarRenderer::new);
 		event.registerEntityRenderer(TFEntities.SLIME_BLOB.get(), ThrownItemRenderer::new);

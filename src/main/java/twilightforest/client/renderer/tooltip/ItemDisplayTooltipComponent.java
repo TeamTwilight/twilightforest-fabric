@@ -4,7 +4,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.components.item.ItemDisplayContents;
@@ -12,8 +12,8 @@ import twilightforest.item.travellers_gear.TravellersGogglesItem;
 import twilightforest.item.travellers_gear.modifiers.display.ItemDisplayType;
 
 public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
-	private static final ResourceLocation BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("container/bundle/background");
-	private static final ResourceLocation SLOT_SPRITE = ResourceLocation.withDefaultNamespace("container/bundle/slot");
+	private static final Identifier BACKGROUND_SPRITE = Identifier.withDefaultNamespace("container/bundle/background");
+	private static final Identifier SLOT_SPRITE = Identifier.withDefaultNamespace("container/bundle/slot");
 	private static final int SLOT_WIDTH = 18;
 	private static final int SLOT_HEIGHT = 20;
 
@@ -56,7 +56,7 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 	private void renderBlankSlot(GuiGraphics graphics, int index, int x, int y) {
 		if (index < 0 || index >= ItemDisplayContents.LAYOUT.size()) return;
 		ItemDisplayType type = ItemDisplayContents.LAYOUT.get(index).get();
-		type.slotTexture().ifPresent(resourceLocation -> graphics.blit(resourceLocation, x + 1, y + 1, 0, 0, 16, 16, 16, 16));
+		type.slotTexture().ifPresent(identifier -> graphics.blit(identifier, x + 1, y + 1, 0, 0, 16, 16, 16, 16));
 	}
 
 	private int backgroundWidth() {

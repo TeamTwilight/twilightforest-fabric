@@ -2,7 +2,7 @@ package twilightforest.compat.jade;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,7 +29,7 @@ public enum ChiseledBookshelfSpawnProvider implements IBlockComponentProvider {
 				if (te instanceof ChiseledCanopyShelfBlockEntity shelf) {
 					SpawnData logic = shelf.getSpawner().getNextSpawnData();
 					if (logic != null) {
-						EntityType.by(logic.entityToSpawn()).ifPresent(type -> tooltip.replace(ResourceLocation.fromNamespaceAndPath("jade", "object_name"), IThemeHelper.get().title(Component.translatable("jade.spawner", accessor.getBlock().getName().getString(), type.getDescription().getString()))));
+						EntityType.by(logic.entityToSpawn()).ifPresent(type -> tooltip.replace(Identifier.fromNamespaceAndPath("jade", "object_name"), IThemeHelper.get().title(Component.translatable("jade.spawner", accessor.getBlock().getName().getString(), type.getDescription().getString()))));
 					}
 				}
 			}
@@ -37,7 +37,7 @@ public enum ChiseledBookshelfSpawnProvider implements IBlockComponentProvider {
 	}
 
 	@Override
-	public ResourceLocation getUid() {
+	public Identifier getUid() {
 		return TwilightForestMod.prefix("chiseled_bookshelf_spawner");
 	}
 }

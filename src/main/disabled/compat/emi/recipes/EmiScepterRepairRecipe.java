@@ -5,7 +5,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class EmiScepterRepairRecipe extends EmiPatternCraftingRecipe {
 
 	private final int durability;
 
-	public EmiScepterRepairRecipe(List<EmiIngredient> input, EmiStack output, int durability, ResourceLocation id) {
+	public EmiScepterRepairRecipe(List<EmiIngredient> input, EmiStack output, int durability, Identifier id) {
 		super(input, output, id);
 		this.durability = durability;
 	}

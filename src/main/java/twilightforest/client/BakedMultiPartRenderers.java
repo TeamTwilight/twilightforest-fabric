@@ -3,7 +3,7 @@ package twilightforest.client;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.NoopRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.LazyLoadedValue;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraHeadModel;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class BakedMultiPartRenderers {
-	private static final Map<ResourceLocation, LazyLoadedValue<EntityRenderer<?>>> renderers = new HashMap<>();
+	private static final Map<Identifier, LazyLoadedValue<EntityRenderer<?>>> renderers = new HashMap<>();
 
 	public static void bakeMultiPartRenderers(EntityRendererProvider.Context context) {
 		renderers.put(TFPart.RENDERER, new LazyLoadedValue<>(() -> new NoopRenderer<>(context)));
@@ -31,7 +31,7 @@ public class BakedMultiPartRenderers {
 		renderers.put(NagaSegment.RENDERER, new LazyLoadedValue<>(() -> new NagaSegmentRenderer<>(context, new NagaModel<>(context.bakeLayer(TFModelLayers.NAGA_BODY)))));
 	}
 
-	public static EntityRenderer<?> lookup(ResourceLocation location) {
+	public static EntityRenderer<?> lookup(Identifier location) {
 		return renderers.get(location).get();
 	}
 }

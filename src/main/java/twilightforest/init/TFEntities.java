@@ -1,7 +1,7 @@
 package twilightforest.init;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
@@ -102,39 +102,39 @@ public class TFEntities {
 	public static final DeferredHolder<EntityType<?>, EntityType<Yeti>> YETI = make(TFEntityNames.YETI, Yeti::new, MobCategory.MONSTER, 1.4F, 2.4F, 0xdedede, 0x4675bb);
 
 	//Same as below, but with riding offset set to 0.0F;
-	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int primary, int secondary) {
+	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(Identifier id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int primary, int secondary) {
 		return make(id, factory, classification, width, height, primary, secondary, 0.0F);
 	}
 
-	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int primary, int secondary, float ridingOffset) {
+	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(Identifier id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int primary, int secondary, float ridingOffset) {
 		return make(id, factory, classification, width, height, false, primary, secondary, ridingOffset);
 	}
 
 	//Same as below, but with riding offset set to 0.0F;
-	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, boolean fireproof, int primary, int secondary) {
+	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(Identifier id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, boolean fireproof, int primary, int secondary) {
 		return make(id, factory, classification, width, height, fireproof, primary, secondary, 0.0F);
 	}
 
-	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, boolean fireproof, int primary, int secondary, float ridingOffset) {
+	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(Identifier id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, boolean fireproof, int primary, int secondary, float ridingOffset) {
 		return build(id, makeBuilder(factory, classification, width, height, 80, 3, ridingOffset), fireproof, primary, secondary);
 	}
 
 	//Same as below, but with riding offset set to 0.0F;
-	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, float eyeHeight, boolean fireproof, int primary, int secondary) {
+	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(Identifier id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, float eyeHeight, boolean fireproof, int primary, int secondary) {
 		return make(id, factory, classification, width, height, eyeHeight, fireproof, primary, secondary, 0.0F);
 	}
 
-	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, float eyeHeight, boolean fireproof, int primary, int secondary, float ridingOffset) {
+	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(Identifier id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, float eyeHeight, boolean fireproof, int primary, int secondary, float ridingOffset) {
 		return build(id, makeBuilder(factory, classification, width, height, 80, 3, ridingOffset).eyeHeight(eyeHeight), fireproof, primary, secondary);
 	}
 
-	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> buildNoEgg(ResourceLocation id, EntityType.Builder<E> builder, boolean fireproof) {
+	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> buildNoEgg(Identifier id, EntityType.Builder<E> builder, boolean fireproof) {
 		if (fireproof) builder.fireImmune();
 		return ENTITIES.register(id.getPath(), () -> builder.build(id.toString()));
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> build(ResourceLocation id, EntityType.Builder<E> builder, boolean fireproof, int primary, int secondary) {
+	private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> build(Identifier id, EntityType.Builder<E> builder, boolean fireproof, int primary, int secondary) {
 		if (fireproof) builder.fireImmune();
 		DeferredHolder<EntityType<?>, EntityType<E>> ret = ENTITIES.register(id.getPath(), () -> builder.build(id.toString()));
 		if (primary != 0 && secondary != 0) {

@@ -7,7 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.DensityFunction;
@@ -85,7 +85,7 @@ public class BiomeDensitySource {
 		info.add("Twilight Biome Column:");
 		biomeColumn.getBiomesDebug(info::add);
 		info.add("Primary Biome: " + biomeKey.location());
-		info.add("Biome at elevation: " + biomeAtY.unwrapKey().map(ResourceKey::location).map(ResourceLocation::toString).orElse("NOT REFERENCED"));
+		info.add("Biome at elevation: " + biomeAtY.unwrapKey().map(ResourceKey::location).map(Identifier::toString).orElse("NOT REFERENCED"));
 	}
 
 	public static final class DensityData {

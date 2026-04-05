@@ -6,7 +6,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.ChunkPos;
@@ -36,8 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
-	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("feature/graveyard/graveyard");
-	private static final ResourceLocation TRAP = TwilightForestMod.prefix("feature/graveyard/grave_trap");
+	private static final Identifier GRAVEYARD = TwilightForestMod.prefix("feature/graveyard/graveyard");
+	private static final Identifier TRAP = TwilightForestMod.prefix("feature/graveyard/grave_trap");
 
 	public GraveyardFeature(Codec<NoneFeatureConfiguration> config) {
 		super(config);
@@ -213,9 +213,9 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		Lower(TwilightForestMod.prefix("feature/graveyard/grave_lower"));
 
 		private static final GraveType[] VALUES = values();
-		private final ResourceLocation RL;
+		private final Identifier RL;
 
-		GraveType(ResourceLocation rl) {
+		GraveType(Identifier rl) {
 			this.RL = rl;
 		}
 	}

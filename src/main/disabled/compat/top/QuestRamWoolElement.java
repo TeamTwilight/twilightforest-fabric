@@ -7,7 +7,7 @@ import mcjty.theoneprobe.api.IElementFactory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class QuestRamWoolElement implements IElement {
 
-	public static ResourceLocation ID = TwilightForestMod.prefix("quest_ram_wool");
+	public static Identifier ID = TwilightForestMod.prefix("quest_ram_wool");
 
 	private final int colorData;
 
@@ -91,7 +91,7 @@ public class QuestRamWoolElement implements IElement {
 	}
 
 	@Override
-	public ResourceLocation getID() {
+	public Identifier getID() {
 		return ID;
 	}
 
@@ -104,7 +104,7 @@ public class QuestRamWoolElement implements IElement {
 		}
 
 		@Override
-		public ResourceLocation getId() {
+		public Identifier getId() {
 			return ID;
 		}
 	}

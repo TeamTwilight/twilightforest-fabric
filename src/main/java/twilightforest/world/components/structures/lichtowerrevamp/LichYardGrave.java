@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.lichtowerrevamp;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -36,7 +36,7 @@ public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifie
 		this.fillUnder = this.makeFillerBox();
 	}
 
-	public LichYardGrave(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext, ResourceLocation templateId) {
+	public LichYardGrave(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext, Identifier templateId) {
 		super(TFStructurePieceTypes.LICH_YARD_GRAVE.value(), 0, structureManager, templateId, jigsawContext);
 
 		this.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);

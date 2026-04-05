@@ -10,7 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.entity.EntityType;
@@ -93,7 +93,7 @@ public class SpawnerProcessor extends StructureProcessor {
 					if (this.entityWidthMax.isPresent() && entitySpawnData instanceof CompoundTag compoundTag) {
 						// give @p command_block[block_entity_data={id:command_block,auto:1,Command:"/setblock ~ ~ ~ spawner{SpawnCount:4,MaxNearbyEntities:6,SpawnRange:4,Delay:1,MinSpawnDelay:200,MaxSpawnDelay:760,RequiredPlayerRange:16,SpawnData:{entity:{id:zombie,attributes:[{id:\"generic.scale\",base:2f}]}}} replace"}] 1
 
-						Optional<EntityType<?>> type = BuiltInRegistries.ENTITY_TYPE.getOptional(ResourceLocation.parse(spawn.entityToSpawn().getString("id")));
+						Optional<EntityType<?>> type = BuiltInRegistries.ENTITY_TYPE.getOptional(Identifier.parse(spawn.entityToSpawn().getString("id")));
 						float newScale = this.rescaleToFitWidth(type.map(EntityType::getWidth).orElse(0f));
 
 						if (Float.isFinite(newScale) && newScale != 1) {

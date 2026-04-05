@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.DirectionalBlock;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -21,7 +21,7 @@ import twilightforest.client.model.entity.FireflyModel;
 public class FireflyRenderer implements BlockEntityRenderer<FireflyBlockEntity> {
 
 	private final FireflyModel fireflyModel;
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("firefly-tiny.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("firefly-tiny.png");
 
 	public FireflyRenderer(BlockEntityRendererProvider.Context context) {
 		this.fireflyModel = new FireflyModel(context.bakeLayer(TFModelLayers.FIREFLY));

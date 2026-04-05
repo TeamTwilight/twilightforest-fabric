@@ -8,7 +8,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
@@ -83,7 +83,7 @@ public abstract class TravellersGearModifierRecipe extends CustomRecipe {
 			.filter(stack -> stack.getItem() instanceof TravellersModifiable).findFirst().orElseThrow();
 	}
 
-	public ResourceLocation getId() {
+	public Identifier getId() {
 		return travellersModifierKey.location()
 			.withPrefix(StringUtils.substringAfterLast(getModifiableArmorFromIngredients(getIngredients()).getDescriptionId(), '.') + "/")
 			.withPrefix("add_modifier_to_travellers_gear/")

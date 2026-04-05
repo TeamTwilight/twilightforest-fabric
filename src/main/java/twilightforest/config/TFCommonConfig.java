@@ -1,7 +1,7 @@
 package twilightforest.config;
 
 import net.minecraft.commands.Commands;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.ArrayList;
@@ -136,7 +136,7 @@ public class TFCommonConfig {
 				.worldRestart()
 				.translation(TFConfig.CONFIG_ID + "uncrafting_mod_ids")
 				.comment(ConfigComments.MOD_ID_WHITELIST)
-				.defineListAllowEmpty("blacklistedUncraftingModIds", new ArrayList<>(), () -> "", s -> s instanceof String string && ResourceLocation.isValidNamespace(string));
+				.defineListAllowEmpty("blacklistedUncraftingModIds", new ArrayList<>(), () -> "", s -> s instanceof String string && Identifier.isValidNamespace(string));
 			UNCRAFTING_STUFFS.flipUncraftingModIdList = builder
 				.worldRestart()
 				.translation(TFConfig.CONFIG_ID + "uncrafting_mod_id_flip")

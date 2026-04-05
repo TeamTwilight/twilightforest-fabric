@@ -2,7 +2,7 @@ package twilightforest.datagen.assets.models;
 
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
@@ -65,7 +65,7 @@ public class TFTextureMapping {
 		return giantBlock(tex, tex);
 	}
 
-	public static TextureMapping giantBlock(ResourceLocation side, ResourceLocation end) {
+	public static TextureMapping giantBlock(Identifier side, Identifier end) {
 		return new TextureMapping()
 			.put(TextureSlot.PARTICLE, side)
 			.put(TextureSlot.NORTH, side)
@@ -76,7 +76,7 @@ public class TFTextureMapping {
 			.put(TextureSlot.DOWN, end);
 	}
 
-	public static TextureMapping ctmBlock(@Nullable ResourceLocation base, ResourceLocation overlay) {
+	public static TextureMapping ctmBlock(@Nullable Identifier base, Identifier overlay) {
 		TextureMapping mapping = new TextureMapping();
 		if (base != null) {
 			mapping = mapping.put(TFTextureSlot.CTM_BASE, base).put(TextureSlot.PARTICLE, base);

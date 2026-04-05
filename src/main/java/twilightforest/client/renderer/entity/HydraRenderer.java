@@ -5,7 +5,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Pose;
 import twilightforest.TwilightForestMod;
@@ -13,7 +13,7 @@ import twilightforest.entity.boss.Hydra;
 
 public class HydraRenderer<T extends Hydra, M extends HierarchicalModel<T>> extends MobRenderer<T, M> {
 
-	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("hydra4.png");
+	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("hydra4.png");
 
 	public HydraRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
 		super(context, model, shadowSize);
@@ -49,7 +49,7 @@ public class HydraRenderer<T extends Hydra, M extends HierarchicalModel<T>> exte
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		return TEXTURE;
 	}
 }

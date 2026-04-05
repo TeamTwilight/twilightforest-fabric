@@ -3,7 +3,7 @@ package twilightforest.client.renderer.tooltip;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +14,7 @@ import java.util.List;
 
 // modified ClientBundleTooltip
 public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
-	private static final ResourceLocation BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("container/bundle/background");
+	private static final Identifier BACKGROUND_SPRITE = Identifier.withDefaultNamespace("container/bundle/background");
 	private final List<ItemStack> contents = new ArrayList<>();
 
 	public TravellersBeltTooltipComponent(TravellersArmorBeltItem.Tooltip tooltip) {
@@ -81,13 +81,13 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 	}
 
 	enum Texture {
-		SLOT(ResourceLocation.withDefaultNamespace("container/bundle/slot"), 18, 20);
+		SLOT(Identifier.withDefaultNamespace("container/bundle/slot"), 18, 20);
 
-		public final ResourceLocation sprite;
+		public final Identifier sprite;
 		public final int w;
 		public final int h;
 
-		Texture(ResourceLocation sprite, int w, int h) {
+		Texture(Identifier sprite, int w, int h) {
 			this.sprite = sprite;
 			this.w = w;
 			this.h = h;

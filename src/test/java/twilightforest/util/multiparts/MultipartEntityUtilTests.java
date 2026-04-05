@@ -1,7 +1,7 @@
 package twilightforest.util.multiparts;
 
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ public class MultipartEntityUtilTests {
 	@Test
 	public void tryLookupTFPartRenderer() {
 		try (MockedStatic<BakedMultiPartRenderers> lookup = mockStatic(BakedMultiPartRenderers.class)) {
-			ResourceLocation location = ResourceLocation.withDefaultNamespace("test");
+			Identifier location = Identifier.withDefaultNamespace("test");
 			EntityRenderer<?> partRenderer = mock(EntityRenderer.class);
 			lookup.when(() -> BakedMultiPartRenderers.lookup(location)).thenReturn(partRenderer);
 
@@ -48,7 +48,7 @@ public class MultipartEntityUtilTests {
 	public void tryLookupTFPartRendererNonTFPart() {
 		try (MockedStatic<BakedMultiPartRenderers> lookup = mockStatic(BakedMultiPartRenderers.class)) {
 			EntityRenderer<?> partRenderer = mock(EntityRenderer.class);
-			lookup.when(() -> BakedMultiPartRenderers.lookup(any(ResourceLocation.class))).thenReturn(partRenderer);
+			lookup.when(() -> BakedMultiPartRenderers.lookup(any(Identifier.class))).thenReturn(partRenderer);
 
 			EntityRenderer<?> originalRenderer = mock(EntityRenderer.class);
 

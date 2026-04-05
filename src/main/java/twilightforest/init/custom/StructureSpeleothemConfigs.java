@@ -5,7 +5,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFStructures;
@@ -22,7 +22,7 @@ public class StructureSpeleothemConfigs {
 	public static final ResourceKey<StructureSpeleothemConfig> YETI_CAVE = makeKey(TFStructures.YETI_CAVE.location());
 	public static final ResourceKey<StructureSpeleothemConfig> TROLL_CAVE = makeKey(TFStructures.TROLL_CAVE.location());
 
-	private static ResourceKey<StructureSpeleothemConfig> makeKey(ResourceLocation name) {
+	private static ResourceKey<StructureSpeleothemConfig> makeKey(Identifier name) {
 		return ResourceKey.create(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, name);
 	}
 
@@ -41,7 +41,7 @@ public class StructureSpeleothemConfigs {
 
 	@NotNull
 	public static Holder.Reference<StructureSpeleothemConfig> getConfigHolder(HolderLookup.Provider registryAccess, String strRL) {
-		return getConfigHolder(registryAccess, makeKey(ResourceLocation.parse(strRL)));
+		return getConfigHolder(registryAccess, makeKey(Identifier.parse(strRL)));
 	}
 
 	@NotNull

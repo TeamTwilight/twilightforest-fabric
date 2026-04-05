@@ -4,16 +4,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.TFGhastModel;
 import twilightforest.entity.boss.UrGhast;
 
 public class UrGhastRenderer<T extends UrGhast, M extends TFGhastModel<T>> extends MobRenderer<T, M> {
 
-	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("towerboss.png");
-	public static final ResourceLocation LOOKING_TEXTURE = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
-	public static final ResourceLocation ATTACKING_TEXTURE = TwilightForestMod.getModelTexture("towerboss_fire.png");
+	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("towerboss.png");
+	public static final Identifier LOOKING_TEXTURE = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
+	public static final Identifier ATTACKING_TEXTURE = TwilightForestMod.getModelTexture("towerboss_fire.png");
 	private final float scale;
 
 	public UrGhastRenderer(EntityRendererProvider.Context context, M model, float shadowSize, float scale) {
@@ -22,7 +22,7 @@ public class UrGhastRenderer<T extends UrGhast, M extends TFGhastModel<T>> exten
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		if (entity.isCharging() || entity.isDeadOrDying()) {
 			return ATTACKING_TEXTURE;
 		}

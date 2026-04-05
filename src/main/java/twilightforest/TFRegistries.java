@@ -3,7 +3,7 @@ package twilightforest;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.registries.RegistryBuilder;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
@@ -59,8 +59,8 @@ public class TFRegistries {
 		public static final ResourceKey<Registry<TemplateMarkerHandler>> TEMPLATE_MARKER_HANDLER = ResourceKey.createRegistryKey(namedRegistry("template_marker_handler"));
 		public static final ResourceKey<Registry<TemplateMarkerHandlerList>> TEMPLATE_MARKER_HANDLER_LIST = ResourceKey.createRegistryKey(namedRegistry("template_marker_handler_list"));
 
-		public static ResourceLocation namedRegistry(String name) {
-			return ResourceLocation.fromNamespaceAndPath(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
+		public static Identifier namedRegistry(String name) {
+			return Identifier.fromNamespaceAndPath(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
 		}
 	}
 }

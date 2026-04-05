@@ -4,7 +4,7 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.multiplayer.ClientAdvancements;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +18,7 @@ public class PlayerHelper {
 	 * Fulfills all remaining criteria of the given advancement
 	 */
 	@Deprecated
-	public static void grantAdvancement(ServerPlayer player, ResourceLocation id) {
+	public static void grantAdvancement(ServerPlayer player, Identifier id) {
 		PlayerAdvancements advancements = player.getAdvancements();
 		AdvancementHolder holder = player.getServer().getAdvancements().get(id);
 		if (holder != null) {
@@ -29,7 +29,7 @@ public class PlayerHelper {
 	}
 
 	@Deprecated
-	public static void grantCriterion(ServerPlayer player, ResourceLocation id, String criterion) {
+	public static void grantCriterion(ServerPlayer player, Identifier id, String criterion) {
 		PlayerAdvancements advancements = player.getAdvancements();
 		AdvancementHolder holder = player.getServer().getAdvancements().get(id);
 		if (holder != null) {
@@ -38,7 +38,7 @@ public class PlayerHelper {
 	}
 
 	@Nullable
-	public static AdvancementHolder getAdvancement(Player player, ResourceLocation advancementLocation) {
+	public static AdvancementHolder getAdvancement(Player player, Identifier advancementLocation) {
 		if (player.level().isClientSide() && player instanceof LocalPlayer localPlayer) {
 			ClientAdvancements manager = localPlayer.connection.getAdvancements();
 			return manager.get(advancementLocation);
@@ -68,16 +68,16 @@ public class PlayerHelper {
 		}
 	}
 
-	public static boolean doesPlayerHaveRequiredAdvancements(Player player, List<ResourceLocation> requiredAdvancements) {
+	public static boolean doesPlayerHaveRequiredAdvancements(Player player, List<Identifier> requiredAdvancements) {
 		return PlayerHelper.playerHasRequiredAdvancements(player, requiredAdvancements);
 	}
 
-	public static boolean doesPlayerHaveRequiredAdvancements(Player player, ResourceLocation... requiredAdvancements) {
+	public static boolean doesPlayerHaveRequiredAdvancements(Player player, Identifier... requiredAdvancements) {
 		return PlayerHelper.playerHasRequiredAdvancements(player, List.of(requiredAdvancements));
 	}
 
-	public static boolean playerHasRequiredAdvancements(Player player, Iterable<ResourceLocation> requiredAdvancements) {
-		for (ResourceLocation advancementLocation : requiredAdvancements) {
+	public static boolean playerHasRequiredAdvancements(Player player, Iterable<Identifier> requiredAdvancements) {
+		for (Identifier advancementLocation : requiredAdvancements) {
 			if (player.level().isClientSide()) {
 				if (player instanceof LocalPlayer local) {
 					ClientAdvancements manager = local.connection.getAdvancements();

@@ -11,7 +11,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -47,7 +47,7 @@ public class InfoCommand {
 		if (possibleStructureRegistry.isEmpty() || possibleNearLandmark.isEmpty() || !(possibleNearLandmark.get().getStructure() instanceof LandmarkStructure landmarkStructure)) return 0;
 		StructureStart structureStart = possibleNearLandmark.get();
 
-		ResourceLocation key = possibleStructureRegistry.get().getKey(landmarkStructure);
+		Identifier key = possibleStructureRegistry.get().getKey(landmarkStructure);
 
 		if (FMLLoader.isProduction()) {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.info.wip").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);

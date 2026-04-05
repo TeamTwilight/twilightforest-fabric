@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.LichModel;
@@ -16,7 +16,7 @@ import twilightforest.entity.boss.Lich;
 
 public class LichRenderer<T extends Lich, M extends LichModel<T>> extends HumanoidMobRenderer<T, M> {
 
-	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("twilightlich64.png");
+	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("twilightlich64.png");
 
 	public LichRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
 		super(context, model, shadowSize);
@@ -70,7 +70,7 @@ public class LichRenderer<T extends Lich, M extends LichModel<T>> extends Humano
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(Lich entity) {
+	public Identifier getTextureLocation(Lich entity) {
 		return TEXTURE;
 	}
 

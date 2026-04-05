@@ -2,13 +2,13 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.monster.HostileWolf;
 
 public class WinterWolfRenderer extends HostileWolfRenderer {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("winterwolf.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("winterwolf.png");
 
 	public WinterWolfRenderer(EntityRendererProvider.Context context) {
 		super(context);
@@ -22,7 +22,7 @@ public class WinterWolfRenderer extends HostileWolfRenderer {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(HostileWolf entity) {
+	public Identifier getTextureLocation(HostileWolf entity) {
 		return TEXTURE;
 	}
 }

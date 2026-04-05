@@ -5,14 +5,14 @@ import com.mojang.math.Axis;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.HydraHeadContainer;
 import twilightforest.entity.boss.HydraNeck;
 
 public class HydraNeckRenderer<T extends HydraNeck, M extends ListModel<T>> extends TFPartRenderer<T, M> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("hydra4.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("hydra4.png");
 
 	public HydraNeckRenderer(EntityRendererProvider.Context context, M model) {
 		super(context, model);
@@ -42,7 +42,7 @@ public class HydraNeckRenderer<T extends HydraNeck, M extends ListModel<T>> exte
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		return TEXTURE;
 	}
 }

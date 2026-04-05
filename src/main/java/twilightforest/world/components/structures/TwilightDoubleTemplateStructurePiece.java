@@ -6,7 +6,7 @@ import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -25,19 +25,19 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import twilightforest.TwilightForestMod;
 
 public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTemplateStructurePiece {
-	protected final ResourceLocation templateOverlayLocation;
+	protected final Identifier templateOverlayLocation;
 	protected final StructureTemplate templateOverlay;
 	protected final StructurePlaceSettings placeSettingsOverlay;
 
 	public TwilightDoubleTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings rl2SettingsFunction, StructurePlaceSettings placeSettingsOverlay) {
 		super(structurePieceType, compoundTag, ctx, rl2SettingsFunction);
 
-		this.templateOverlayLocation = ResourceLocation.parse(compoundTag.getString("TemplateOverlay"));
+		this.templateOverlayLocation = Identifier.parse(compoundTag.getString("TemplateOverlay"));
 		this.templateOverlay = this.structureManager.getOrCreate(this.templateOverlayLocation);
 		this.placeSettingsOverlay = placeSettingsOverlay;
 	}
 
-	public TwilightDoubleTemplateStructurePiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, ResourceLocation templateOverlayLocation, StructurePlaceSettings placeSettingsOverlay, BlockPos startPosition) {
+	public TwilightDoubleTemplateStructurePiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, StructurePlaceSettings placeSettings, Identifier templateOverlayLocation, StructurePlaceSettings placeSettingsOverlay, BlockPos startPosition) {
 		super(type, genDepth, structureManager, templateLocation, placeSettings, startPosition);
 
 		this.templateOverlayLocation = templateOverlayLocation;

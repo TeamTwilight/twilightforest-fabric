@@ -11,7 +11,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -78,7 +78,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	}
 
 	@Override
-	public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+	public @Nullable Identifier getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
 		return !innerModel && entity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
 			TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
 			super.getArmorTexture(stack, entity, slot, layer, innerModel);
@@ -200,18 +200,18 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		float toughness = TFArmorMaterials.TRAVELLERS.value().toughness();
 		ItemAttributeModifiers.Builder defaultArmorModifiers = ItemAttributeModifiers.builder();
 		EquipmentSlotGroup equipmentslotgroup = EquipmentSlotGroup.bySlot(type.getSlot());
-		ResourceLocation resourcelocation = ResourceLocation.withDefaultNamespace("armor." + type.getName());
+		Identifier identifier = Identifier.withDefaultNamespace("armor." + type.getName());
 		defaultArmorModifiers.add(
-			Attributes.ARMOR, new AttributeModifier(resourcelocation, defense, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup
+			Attributes.ARMOR, new AttributeModifier(identifier, defense, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup
 		);
 		defaultArmorModifiers.add(
-			Attributes.ARMOR_TOUGHNESS, new AttributeModifier(resourcelocation, toughness, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup
+			Attributes.ARMOR_TOUGHNESS, new AttributeModifier(identifier, toughness, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup
 		);
 		float knockbackResistance = TFArmorMaterials.TRAVELLERS.value().knockbackResistance();
 		if (knockbackResistance > 0.0F) {
 			defaultArmorModifiers.add(
 				Attributes.KNOCKBACK_RESISTANCE,
-				new AttributeModifier(resourcelocation, knockbackResistance, AttributeModifier.Operation.ADD_VALUE),
+				new AttributeModifier(identifier, knockbackResistance, AttributeModifier.Operation.ADD_VALUE),
 				equipmentslotgroup
 			);
 		}

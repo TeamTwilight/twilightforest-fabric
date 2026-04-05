@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -37,7 +37,7 @@ public class CourtyardMain extends StructureMazeGenerator {
 	static final BlockRotProcessor WALL_INTEGRITY_PROCESSOR = new BlockRotProcessor(CourtyardMain.WALL_INTEGRITY);
 	static final BlockRotProcessor WALL_DECAY_PROCESSOR = new BlockRotProcessor(CourtyardMain.WALL_DECAY);
 
-	public static final ResourceLocation CENTER_POOL = TwilightForestMod.prefix("courtyard/center");
+	public static final Identifier CENTER_POOL = TwilightForestMod.prefix("courtyard/center");
 
 	@Deprecated // TODO remove in 1.22
 	private final boolean placeSpawner;

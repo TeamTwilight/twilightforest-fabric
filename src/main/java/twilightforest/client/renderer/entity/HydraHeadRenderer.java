@@ -8,7 +8,7 @@ import net.minecraft.client.model.ListModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityAttachment;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.ClientHooks;
@@ -21,7 +21,7 @@ import twilightforest.entity.boss.HydraHeadContainer;
 
 public class HydraHeadRenderer<T extends HydraHead, M extends ListModel<T>> extends TFPartRenderer<T, M> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("hydra4.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("hydra4.png");
 
 
 	public HydraHeadRenderer(EntityRendererProvider.Context context, M model) {
@@ -92,7 +92,7 @@ public class HydraHeadRenderer<T extends HydraHead, M extends ListModel<T>> exte
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		return TEXTURE;
 	}
 }

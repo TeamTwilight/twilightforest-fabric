@@ -2,7 +2,7 @@ package twilightforest.world.components.structures.courtyard;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -25,7 +25,7 @@ public class CourtyardTerrace extends TwilightTemplateStructurePiece implements 
 		super(TFStructurePieceTypes.TFNCTe.value(), nbt, ctx, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
 	}
 
-	public CourtyardTerrace(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager, ResourceLocation templateLocation) {
+	public CourtyardTerrace(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager, Identifier templateLocation) {
 		super(TFStructurePieceTypes.TFNCTe.value(), i, structureManager, templateLocation, makeSettings(rotation).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), new BlockPos(x, y, z));
 	}
 
@@ -33,7 +33,7 @@ public class CourtyardTerrace extends TwilightTemplateStructurePiece implements 
 		super(structurePieceType, nbt, ctx, readSettings(nbt).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE));
 	}
 
-	public CourtyardTerrace(StructurePieceType structurePieceType, int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager, ResourceLocation templateLocation) {
+	public CourtyardTerrace(StructurePieceType structurePieceType, int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager, Identifier templateLocation) {
 		super(structurePieceType, i, structureManager, templateLocation, makeSettings(rotation).addProcessor(CourtyardTerraceTemplateProcessor.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE), new BlockPos(x, y, z));
 	}
 

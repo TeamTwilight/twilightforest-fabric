@@ -9,15 +9,15 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.QuestRamModel;
 import twilightforest.entity.passive.QuestRam;
 
 public class QuestRamRenderer<T extends QuestRam, M extends QuestRamModel<T>> extends MobRenderer<T, M> {
 
-	public static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("questram.png");
-	public static final ResourceLocation LINE_TEXTURE = TwilightForestMod.getModelTexture("questram_lines.png");
+	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("questram.png");
+	public static final Identifier LINE_TEXTURE = TwilightForestMod.getModelTexture("questram_lines.png");
 
 	public QuestRamRenderer(EntityRendererProvider.Context context, M model) {
 		super(context, model, 1.0F);
@@ -25,7 +25,7 @@ public class QuestRamRenderer<T extends QuestRam, M extends QuestRamModel<T>> ex
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		return TEXTURE;
 	}
 

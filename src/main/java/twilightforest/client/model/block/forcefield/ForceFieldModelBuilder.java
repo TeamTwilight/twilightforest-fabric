@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.block.model.BlockElementRotation;
 import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.neoforged.neoforge.client.model.ExtraFaceData;
 import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
@@ -129,7 +129,7 @@ public class ForceFieldModelBuilder<T extends ModelBuilder<T>> extends CustomLoa
 		if (tex.charAt(0) == '#') {
 			return tex;
 		}
-		return ResourceLocation.parse(tex).toString();
+		return Identifier.parse(tex).toString();
 	}
 
 	private JsonArray serializeVector3f(Vector3f vec) {

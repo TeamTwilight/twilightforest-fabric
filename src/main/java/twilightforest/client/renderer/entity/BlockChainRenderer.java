@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -22,7 +22,7 @@ import twilightforest.entity.projectile.ChainBlock;
 
 public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("block_and_chain.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("block_and_chain.png");
 	private final Model model;
 	private final Model chainModel;
 
@@ -79,7 +79,7 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(ChainBlock entity) {
+	public Identifier getTextureLocation(ChainBlock entity) {
 		return TEXTURE;
 	}
 }

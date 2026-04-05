@@ -4,7 +4,7 @@ import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +32,7 @@ public class TFShaders {
 
 		private ShaderInstance last;
 
-		public BindableShaderInstance(ResourceProvider p_173336_, ResourceLocation shaderLocation, VertexFormat p_173338_) throws IOException {
+		public BindableShaderInstance(ResourceProvider p_173336_, Identifier shaderLocation, VertexFormat p_173338_) throws IOException {
 			super(p_173336_, shaderLocation, p_173338_);
 		}
 
@@ -82,7 +82,7 @@ public class TFShaders {
 		@Nullable
 		public final Uniform POSITION;
 
-		public PositionAwareShaderInstance(ResourceProvider p_173336_, ResourceLocation shaderLocation, VertexFormat p_173338_) throws IOException {
+		public PositionAwareShaderInstance(ResourceProvider p_173336_, Identifier shaderLocation, VertexFormat p_173338_) throws IOException {
 			super(p_173336_, shaderLocation, p_173338_);
 			SEED = getUniform("SeedContext");
 			POSITION = getUniform("PositionContext");

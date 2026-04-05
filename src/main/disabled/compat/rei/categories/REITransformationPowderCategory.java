@@ -10,7 +10,7 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.rei.displays.REITransformationPowderDisplay;
@@ -22,9 +22,9 @@ import java.util.function.Function;
 
 public class REITransformationPowderCategory implements DisplayCategory<REITransformationPowderDisplay> {
 	public static final CategoryIdentifier<REITransformationPowderDisplay> TRANSFORMATION = CategoryIdentifier.of(TwilightForestMod.ID, "transformation");
-	public static final Function<Boolean, ResourceLocation> SLOT = dark -> dark ? TwilightForestMod.getGuiTexture("big_slot_dark.png") : TwilightForestMod.getGuiTexture("big_slot.png");
-	public static final ResourceLocation ARROW = TwilightForestMod.getGuiTexture("transformation_arrow.png");
-	public static final ResourceLocation DOUBLE_ARROW = TwilightForestMod.getGuiTexture("transformation_double_arrow.png");
+	public static final Function<Boolean, Identifier> SLOT = dark -> dark ? TwilightForestMod.getGuiTexture("big_slot_dark.png") : TwilightForestMod.getGuiTexture("big_slot.png");
+	public static final Identifier ARROW = TwilightForestMod.getGuiTexture("transformation_arrow.png");
+	public static final Identifier DOUBLE_ARROW = TwilightForestMod.getGuiTexture("transformation_double_arrow.png");
 
 	private final Renderer icon;
 	private final Component localizedName;

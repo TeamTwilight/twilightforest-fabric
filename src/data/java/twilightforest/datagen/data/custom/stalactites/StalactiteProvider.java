@@ -8,7 +8,7 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.components.spelothem.SpeleothemVarietyConfig;
@@ -38,7 +38,7 @@ public abstract class StalactiteProvider implements DataProvider {
 	@Override
 	public CompletableFuture<?> run(CachedOutput output) {
 		List<SpeleothemVarietyConfig> configs = new ArrayList<>();
-		Map<ResourceLocation, Stalactite> map = Maps.newHashMap();
+		Map<Identifier, Stalactite> map = Maps.newHashMap();
 
 		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
 
@@ -51,8 +51,8 @@ public abstract class StalactiteProvider implements DataProvider {
 			this.checkForIncorrectEntries(map, info.stalagmites());
 		});
 
-		map.forEach((resourceLocation, stalactite) -> {
-			Path path = this.entryPath.json(resourceLocation);
+		map.forEach((identifier, stalactite) -> {
+			Path path = this.entryPath.json(identifier);
 			futuresBuilder.add(DataProvider.saveStable(output, Stalactite.CODEC.encodeStart(JsonOps.INSTANCE, stalactite).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow(), path));
 		});
 		configs.forEach(hillConfig -> {
@@ -63,8 +63,8 @@ public abstract class StalactiteProvider implements DataProvider {
 	}
 
 	//checks for improper duplicate entries in the map. This will prevent you from registering multiple stalactites under the same name that have different properties.
-	private void checkForIncorrectEntries(Map<ResourceLocation, Stalactite> insertMap, Map<ResourceLocation, Stalactite> entries) {
-		for (Map.Entry<ResourceLocation, Stalactite> entry : entries.entrySet()) {
+	private void checkForIncorrectEntries(Map<Identifier, Stalactite> insertMap, Map<Identifier, Stalactite> entries) {
+		for (Map.Entry<Identifier, Stalactite> entry : entries.entrySet()) {
 			if (insertMap.containsKey(entry.getKey()) && !insertMap.get(entry.getKey()).toString().equals(entry.getValue().toString())) {
 				throw new IllegalArgumentException("A stalactite with the name " + entry.getKey() + " already exists!");
 			}
@@ -74,8 +74,8 @@ public abstract class StalactiteProvider implements DataProvider {
 
 	protected abstract void createStalactites();
 
-	public ResourceLocation makeStalactiteName(String name) {
-		return ResourceLocation.fromNamespaceAndPath(this.modid, "entries/" + name);
+	public Identifier makeStalactiteName(String name) {
+		return Identifier.fromNamespaceAndPath(this.modid, "entries/" + name);
 	}
 
 	public Stalactite buildStalactite(Block ore, float sizeVariation, int maxLength, int weight) {
@@ -98,9 +98,9 @@ public abstract class StalactiteProvider implements DataProvider {
 	public static class HillBuilder {
 
 		private final SpeleothemVarietyConfig config;
-		private final Map<ResourceLocation, Stalactite> baseStalactites = new HashMap<>();
-		private final Map<ResourceLocation, Stalactite> oreStalactites = new HashMap<>();
-		private final Map<ResourceLocation, Stalactite> stalagmites = new HashMap<>();
+		private final Map<Identifier, Stalactite> baseStalactites = new HashMap<>();
+		private final Map<Identifier, Stalactite> oreStalactites = new HashMap<>();
+		private final Map<Identifier, Stalactite> stalagmites = new HashMap<>();
 
 		public HillBuilder(String type, float stalactiteChance, float stalagmiteChance, float oreChance) {
 			this(type, stalactiteChance, stalagmiteChance, oreChance, false);
@@ -110,19 +110,19 @@ public abstract class StalactiteProvider implements DataProvider {
 			this.config = new SpeleothemVarietyConfig(type, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), oreChance, stalactitePlaceTries, stalagmitePlaceTries, replace);
 		}
 
-		public HillBuilder addBaseStalactite(ResourceLocation name, Stalactite stalactite) {
+		public HillBuilder addBaseStalactite(Identifier name, Stalactite stalactite) {
 			this.config.baseStalactites().add(name);
 			this.baseStalactites.put(name, stalactite);
 			return this;
 		}
 
-		public HillBuilder addOreStalactite(ResourceLocation name, Stalactite stalactite) {
+		public HillBuilder addOreStalactite(Identifier name, Stalactite stalactite) {
 			this.config.oreStalactites().add(name);
 			this.oreStalactites.put(name, stalactite);
 			return this;
 		}
 
-		public HillBuilder addStalagmite(ResourceLocation name, Stalactite stalactite) {
+		public HillBuilder addStalagmite(Identifier name, Stalactite stalactite) {
 			this.config.stalagmites().add(name);
 			this.stalagmites.put(name, stalactite);
 			return this;
@@ -139,6 +139,6 @@ public abstract class StalactiteProvider implements DataProvider {
 		}
 	}
 
-	private record HillInformation(SpeleothemVarietyConfig config, Map<ResourceLocation, Stalactite> baseStalactites, Map<ResourceLocation, Stalactite> oreStalactites, Map<ResourceLocation, Stalactite> stalagmites) {
+	private record HillInformation(SpeleothemVarietyConfig config, Map<Identifier, Stalactite> baseStalactites, Map<Identifier, Stalactite> oreStalactites, Map<Identifier, Stalactite> stalagmites) {
 	}
 }

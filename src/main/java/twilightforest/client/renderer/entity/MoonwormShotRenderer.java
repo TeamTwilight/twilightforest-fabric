@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -16,7 +16,7 @@ import twilightforest.entity.projectile.MoonwormShot;
 
 public class MoonwormShotRenderer extends EntityRenderer<MoonwormShot> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
 	private final MoonwormModel wormModel;
 
 	public MoonwormShotRenderer(EntityRendererProvider.Context context) {
@@ -42,7 +42,7 @@ public class MoonwormShotRenderer extends EntityRenderer<MoonwormShot> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(MoonwormShot entity) {
+	public Identifier getTextureLocation(MoonwormShot entity) {
 		return TEXTURE;
 	}
 }

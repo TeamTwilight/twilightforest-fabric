@@ -2,7 +2,7 @@ package twilightforest.world.components.structures.courtyard;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -20,7 +20,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 
 public class CourtyardTerraceHedge extends CourtyardTerrace {
-	private final ResourceLocation hedgeBig = TwilightForestMod.prefix("courtyard/terrace_hedge_big");
+	private final Identifier hedgeBig = TwilightForestMod.prefix("courtyard/terrace_hedge_big");
 	private StructureTemplate templateBig;
 
 	public CourtyardTerraceHedge(StructurePieceSerializationContext ctx, CompoundTag nbt) {

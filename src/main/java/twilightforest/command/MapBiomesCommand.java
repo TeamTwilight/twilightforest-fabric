@@ -11,7 +11,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
@@ -37,7 +37,7 @@ public class MapBiomesCommand {
 
 	private final DecimalFormat numberFormat = new DecimalFormat("#.00");
 
-	private final HashMap<ResourceLocation, BiomeMapColor> BIOME2COLOR = new HashMap<>();
+	private final HashMap<Identifier, BiomeMapColor> BIOME2COLOR = new HashMap<>();
 
 	private void init() {
 		BIOME2COLOR.put(TFBiomes.STREAM.location(), new BiomeMapColor(0, 0, 255));
@@ -95,7 +95,7 @@ public class MapBiomesCommand {
 			for (int z = 0; z < img.getWidth(); z++) {
 				ServerLevel level = source.getLevel();
 				Holder<Biome> b = level.getNoiseBiome(x - (img.getWidth() / 2), 0, z - (img.getHeight() / 2));
-				ResourceLocation key = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b.value());
+				Identifier key = level.registryAccess().registryOrThrow(Registries.BIOME).getKey(b.value());
 				BiomeMapColor color = BIOME2COLOR.get(key);
 
 				if (color == null) {

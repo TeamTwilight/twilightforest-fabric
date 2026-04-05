@@ -2,7 +2,7 @@ package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import twilightforest.entity.passive.TinyBird;
 
 public class TinyBirdRenderer<T extends TinyBird, M extends AgeableListModel<T>> extends BirdRenderer<T, M> {
@@ -12,7 +12,7 @@ public class TinyBirdRenderer<T extends TinyBird, M extends AgeableListModel<T>>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		return entity.getVariant().value().texture();
 	}
 }

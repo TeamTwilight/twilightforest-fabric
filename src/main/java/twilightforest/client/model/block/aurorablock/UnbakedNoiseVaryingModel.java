@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
 import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +23,7 @@ public class UnbakedNoiseVaryingModel implements IUnbakedGeometry<UnbakedNoiseVa
 	}
 
 	@Override
-	public void resolveParents(Function<ResourceLocation, UnbakedModel> modelGetter, IGeometryBakingContext context) {
+	public void resolveParents(Function<Identifier, UnbakedModel> modelGetter, IGeometryBakingContext context) {
 		for (String variant : this.importVariants) {
 			BlockModel checkedParent = resolveParent(modelGetter, variant);
 
@@ -32,8 +32,8 @@ public class UnbakedNoiseVaryingModel implements IUnbakedGeometry<UnbakedNoiseVa
 	}
 
 	@NotNull
-	private static BlockModel resolveParent(Function<ResourceLocation, UnbakedModel> modelGetter, String variant) {
-		if (modelGetter.apply(ResourceLocation.parse(variant)) instanceof BlockModel blockModel) {
+	private static BlockModel resolveParent(Function<Identifier, UnbakedModel> modelGetter, String variant) {
+		if (modelGetter.apply(Identifier.parse(variant)) instanceof BlockModel blockModel) {
 			blockModel.resolveParents(modelGetter);
 			return blockModel;
 		}

@@ -2,7 +2,7 @@ package twilightforest.datagen.assets.models;
 
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplate;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import net.neoforged.neoforge.client.model.generators.template.FaceRotation;
@@ -12,8 +12,8 @@ import net.neoforged.neoforge.client.model.generators.template.FaceRotation;
  */
 public class TFExtendedModelTemplates extends TFModelTemplates {
 	public static final ExtendedModelTemplate MASON_JAR = ExtendedModelTemplateBuilder.builder()
-		.parent(ResourceLocation.withDefaultNamespace("block/block"))
-		.renderType(ResourceLocation.withDefaultNamespace("cutout"))
+		.parent(Identifier.withDefaultNamespace("block/block"))
+		.renderType(Identifier.withDefaultNamespace("cutout"))
 		.requiredTextureSlot(TextureSlot.PARTICLE)
 		.requiredTextureSlot(TextureSlot.SIDE)
 		.requiredTextureSlot(TextureSlot.BOTTOM)
@@ -29,8 +29,8 @@ public class TFExtendedModelTemplates extends TFModelTemplates {
 		).build();
 
 	public static final ExtendedModelTemplate FIREFLY_PARTICLE_SPAWNER = ExtendedModelTemplateBuilder.builder()
-		.parent(ResourceLocation.withDefaultNamespace("block/block"))
-		.renderType(ResourceLocation.withDefaultNamespace("cutout"))
+		.parent(Identifier.withDefaultNamespace("block/block"))
+		.renderType(Identifier.withDefaultNamespace("cutout"))
 		.requiredTextureSlot(TextureSlot.PARTICLE)
 		.requiredTextureSlot(TextureSlot.SIDE)
 		.requiredTextureSlot(TextureSlot.BOTTOM)

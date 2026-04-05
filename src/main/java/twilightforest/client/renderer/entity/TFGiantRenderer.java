@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.PlayerSkin;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -41,9 +41,9 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(GiantMiner entity) {
+	public Identifier getTextureLocation(GiantMiner entity) {
 		Minecraft mc = Minecraft.getInstance();
-		ResourceLocation texture = DefaultPlayerSkin.getDefaultTexture();
+		Identifier texture = DefaultPlayerSkin.getDefaultTexture();
 		this.model = this.normalModel;
 
 		GameProfile profile = TFConfig.GAME_PROFILES.isEmpty() ? null : TFConfig.GAME_PROFILES.get(Math.abs((int) entity.getUUID().getMostSignificantBits()) % TFConfig.GAME_PROFILES.size());

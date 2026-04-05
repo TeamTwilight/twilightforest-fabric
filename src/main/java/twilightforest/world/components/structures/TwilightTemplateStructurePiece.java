@@ -2,7 +2,7 @@ package twilightforest.world.components.structures;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -49,7 +49,7 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 	}
 
 	@SuppressWarnings("this-escape")
-	public TwilightTemplateStructurePiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
+	public TwilightTemplateStructurePiece(StructurePieceType type, int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, StructurePlaceSettings placeSettings, BlockPos startPosition) {
 		super(type, genDepth, structureManager, templateLocation, templateLocation.toString(), placeSettings, startPosition);
 		this.rotation = this.getRotation();
 		this.mirror = this.getMirror();

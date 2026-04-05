@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.lichtowerrevamp;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -45,7 +45,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		this.putGallery = compoundTag.getBoolean("put_gallery");
 	}
 
-	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean putWings, boolean putGallery, ResourceLocation template) {
+	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean putWings, boolean putGallery, Identifier template) {
 		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT.get(), genDepth, structureManager, template, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
@@ -76,7 +76,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 	}
 
 	public static void buildTowerBySegments(StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, final BlockPos sourceJigsawPos, final FrontAndTop sourceOrientation, final TwilightJigsawPiece parentBase, StructureTemplateManager structureManager, final int segments) {
-		ResourceLocation segmentId = TwilightForestMod.prefix("lich_tower/tower_slice");
+		Identifier segmentId = TwilightForestMod.prefix("lich_tower/tower_slice");
 		ArrayList<TwilightJigsawPiece> pieces = new ArrayList<>();
 
 		TwilightJigsawPiece priorPiece = parentBase;
@@ -154,7 +154,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 					// Either keep match jigsaw rotation or spin it 180. This will "flip" a few bridges
 					FrontAndTop forPlacement = context.random().nextBoolean() ? orientation : FrontAndTop.fromFrontAndTop(orientation.front(), orientation.top().getOpposite());
 
-					ResourceLocation mobBridgeLocation = lichTowerUtil.rollRandomMobBridge(context.random());
+					Identifier mobBridgeLocation = lichTowerUtil.rollRandomMobBridge(context.random());
 					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), forPlacement, this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", context.random());
 
 					if (placeableJunction != null) {

@@ -3,7 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class NagaSegment extends TFPart<Naga> {
 
-	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("naga_segment");
+	public static final Identifier RENDERER = TwilightForestMod.prefix("naga_segment");
 
 	private int deathCounter;
 
@@ -35,7 +35,7 @@ public class NagaSegment extends TFPart<Naga> {
 	}
 
 	@Override
-	public ResourceLocation renderer() {
+	public Identifier renderer() {
 		return RENDERER;
 	}
 

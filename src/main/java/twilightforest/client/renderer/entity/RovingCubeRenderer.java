@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -17,7 +17,7 @@ import twilightforest.entity.RovingCube;
 
 public class RovingCubeRenderer<T extends RovingCube> extends EntityRenderer<T> {
 
-	private static final ResourceLocation TEXTURE = TwilightForestMod.getModelTexture("cubeofannihilation.png");
+	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("cubeofannihilation.png");
 	private final Model model;
 
 	public RovingCubeRenderer(EntityRendererProvider.Context context) {
@@ -40,7 +40,7 @@ public class RovingCubeRenderer<T extends RovingCube> extends EntityRenderer<T> 
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity) {
+	public Identifier getTextureLocation(T entity) {
 		return TEXTURE;
 	}
 }

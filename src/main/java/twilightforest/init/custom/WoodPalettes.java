@@ -5,7 +5,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
@@ -17,15 +17,15 @@ import java.util.Locale;
 public class WoodPalettes {
 	public static final Codec<Holder<WoodPalette>> CODEC = RegistryFileCodec.create(TFRegistries.Keys.WOOD_PALETTES, WoodPalette.CODEC, false);
 
-	public static final ResourceKey<WoodPalette> OAK = makeKey(ResourceLocation.withDefaultNamespace("oak"));
-	public static final ResourceKey<WoodPalette> SPRUCE = makeKey(ResourceLocation.withDefaultNamespace("spruce"));
-	public static final ResourceKey<WoodPalette> BIRCH = makeKey(ResourceLocation.withDefaultNamespace("birch"));
-	public static final ResourceKey<WoodPalette> JUNGLE = makeKey(ResourceLocation.withDefaultNamespace("jungle"));
-	public static final ResourceKey<WoodPalette> ACACIA = makeKey(ResourceLocation.withDefaultNamespace("acacia"));
-	public static final ResourceKey<WoodPalette> DARK_OAK = makeKey(ResourceLocation.withDefaultNamespace("dark_oak"));
-	public static final ResourceKey<WoodPalette> CRIMSON = makeKey(ResourceLocation.withDefaultNamespace("crimson"));
-	public static final ResourceKey<WoodPalette> WARPED = makeKey(ResourceLocation.withDefaultNamespace("warped"));
-	public static final ResourceKey<WoodPalette> VANGROVE = makeKey(ResourceLocation.withDefaultNamespace("mangrove"));
+	public static final ResourceKey<WoodPalette> OAK = makeKey(Identifier.withDefaultNamespace("oak"));
+	public static final ResourceKey<WoodPalette> SPRUCE = makeKey(Identifier.withDefaultNamespace("spruce"));
+	public static final ResourceKey<WoodPalette> BIRCH = makeKey(Identifier.withDefaultNamespace("birch"));
+	public static final ResourceKey<WoodPalette> JUNGLE = makeKey(Identifier.withDefaultNamespace("jungle"));
+	public static final ResourceKey<WoodPalette> ACACIA = makeKey(Identifier.withDefaultNamespace("acacia"));
+	public static final ResourceKey<WoodPalette> DARK_OAK = makeKey(Identifier.withDefaultNamespace("dark_oak"));
+	public static final ResourceKey<WoodPalette> CRIMSON = makeKey(Identifier.withDefaultNamespace("crimson"));
+	public static final ResourceKey<WoodPalette> WARPED = makeKey(Identifier.withDefaultNamespace("warped"));
+	public static final ResourceKey<WoodPalette> VANGROVE = makeKey(Identifier.withDefaultNamespace("mangrove"));
 
 	public static final ResourceKey<WoodPalette> TWILIGHT_OAK = makeKey("twilight_oak");
 	public static final ResourceKey<WoodPalette> CANOPY = makeKey("canopy");
@@ -40,7 +40,7 @@ public class WoodPalettes {
 		return makeKey(TwilightForestMod.prefix(name.toLowerCase(Locale.ROOT)));
 	}
 
-	private static ResourceKey<WoodPalette> makeKey(ResourceLocation name) {
+	private static ResourceKey<WoodPalette> makeKey(Identifier name) {
 		return ResourceKey.create(TFRegistries.Keys.WOOD_PALETTES, name);
 	}
 

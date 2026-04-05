@@ -1,7 +1,7 @@
 package twilightforest.world.components.feature.templates;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -12,8 +12,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.components.processors.StoneBricksVariants;
 
 public class GroveRuinsFeature extends TemplateFeature<NoneFeatureConfiguration> {
-	private static final ResourceLocation PILLAR = TwilightForestMod.prefix("feature/ruins/grove_pillar");
-	private static final ResourceLocation ARCH = TwilightForestMod.prefix("feature/ruins/grove_arch");
+	private static final Identifier PILLAR = TwilightForestMod.prefix("feature/ruins/grove_pillar");
+	private static final Identifier ARCH = TwilightForestMod.prefix("feature/ruins/grove_arch");
 
 	public GroveRuinsFeature(Codec<NoneFeatureConfiguration> config) {
 		super(config);

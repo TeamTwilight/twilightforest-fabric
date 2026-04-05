@@ -16,7 +16,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -55,7 +55,7 @@ public class BlockStateEntryDefinition implements EntryDefinition<BlockState>, E
 
 	@Override
 	@Nullable
-	public ResourceLocation getIdentifier(EntryStack<BlockState> entry, BlockState value) {
+	public Identifier getIdentifier(EntryStack<BlockState> entry, BlockState value) {
 		return BuiltInRegistries.BLOCK.getKey(value.getBlock());
 	}
 
